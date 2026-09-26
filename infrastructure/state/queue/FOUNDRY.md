@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T08:31:25Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T08:33:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -918,6 +918,15 @@ kind:     build
 summary:  1. The reaction: tar + acid → green gas (Helixien-compatible). One acid, three
 prose:    infrastructure/state/items/SUMP_GASLIGHT_1.md
 
+## BIOME_ARRIVAL_NARRATION_1 Biome arrival letters: RM-tier machinery in each biome mod fires one survival-reads letter at first gravship landing; Utinni patches the narrator voice
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  - RM-tier machinery: each biome mod ships one arrival letter — fired at the
+prose:    infrastructure/state/items/BIOME_ARRIVAL_NARRATION_1.md
+
 ## FORCE_DISTURBANCE_REFLAVOR_1 Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier
 state:    doing
 row:      unassigned
@@ -1607,16 +1616,6 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  - The vault: a buildable tar-pit store (pit or sunk barrel-rack). Anything
 prose:    infrastructure/state/items/SUMP_TAR_VAULT_1.md
-
-## BIOME_ARRIVAL_NARRATION_1 Biome arrival letters: RM-tier machinery in each biome mod fires one survival-reads letter at first gravship landing; Utinni patches the narrator voice
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  - RM-tier machinery: each biome mod ships one arrival letter — fired at the
-prose:    infrastructure/state/items/BIOME_ARRIVAL_NARRATION_1.md
 
 ## SUMP_UTINNI_LAYER_1 Sump campaign layer: rename the gas Sumpgas, flame-statue holy act to the evil sun god (ideoligion patch), Hssiss WildAnimals_Sump patch
 state:    proposed

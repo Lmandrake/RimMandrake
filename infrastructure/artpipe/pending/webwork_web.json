@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-26T08:30:25Z",
+  "drawsize": 1.2,
+  "facing": null,
+  "facings": [],
+  "id": "webwork_web",
+  "priority": 100,
+  "prompt": "RimWorld top-down game structure sprite: a sheet web, a broad taut plane of pale silk strung between trunks, thick and dense enough to blot out light passing through it, woven in a tight structural pattern rather than a loose cobweb. Painterly rendered game art with real volume, layered silk-sheet translucency and a soft woven-fiber highlight, not a flat cartoon outline. No Earth-nameable silhouette -- not a Halloween spider-web decoration, not a fishing net, not a hammock; keep the dense woven sheet alien and architectural, reading as a solid plane rather than a decorative lattice.",
+  "reference": null,
+  "rimflow_item_id": "WEBWORK_WEB_STRUCTURES_1",
+  "style_notes": "MUST SHOW: broad dense taut sheet of pale silk between anchor points, opaque/light-blotting (not a wispy lattice), tight structural weave. Replaces the current retinted-Hive placeholder texture. HARD BAN: no Halloween-cobweb/fishing-net/hammock look."
+}

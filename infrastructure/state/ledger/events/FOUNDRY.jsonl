@@ -581,3 +581,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"WEBWORK_SOUNDSCAPE_1","ts":"2026-09-26T08:25:15Z"}
 {"seat":"FOUNDRY","event":"start","id":"WEBWORK_SOUNDSCAPE_1","ts":"2026-09-26T08:25:17Z"}
 {"seat":"FOUNDRY","event":"close","id":"WEBWORK_SOUNDSCAPE_1","sha":"16f7b8d1f28ea3c4248cbaac2faaa31618c9772b","reason":"Two SoundDefs built per Lantern Deeps precedent: RM_Webwork_Hush (ambient near-silence bed, wired into RM_Webwork_Biome.xml soundsAmbient) and RM_Webwork_Thrum (one-shot cue on sense-web trip, hooked into RM_MapComponent_SenseWeb.ScanAndMark). No new audio assets, existing Anomaly clips reused verbatim per precedent.","ts":"2026-09-26T08:31:25Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BIOME_ARRIVAL_NARRATION_1","ts":"2026-09-26T08:33:05Z"}
+{"seat":"FOUNDRY","event":"start","id":"BIOME_ARRIVAL_NARRATION_1","ts":"2026-09-26T08:33:06Z"}

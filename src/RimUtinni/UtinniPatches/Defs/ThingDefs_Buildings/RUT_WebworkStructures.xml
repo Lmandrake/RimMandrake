@@ -29,9 +29,14 @@
   used, matching how other RM_-tier comps are referenced directly elsewhere
   in this campaign's RUT_ content.
 
-  Art: placeholder (Hive's own natural-structure texture, an always-present
-  base/Anomaly asset) — bespoke web/anchor/gutter sprites are owed, flagged
-  here rather than left silent.
+  Art: WEBWORK_WEB_STRUCTURES_1 — the retinted-Hive placeholder is replaced
+  with a flat-fill placeholder distinct per structure
+  (art/Structures/gen_webwork_structures_placeholder.py), Graphic_Single at
+  this mod's own texPath (matches RUT_ScaldVent's own-art convention). Real
+  bespoke art is QUEUED: infrastructure/artpipe/pending/webwork_anchor.json,
+  webwork_web.json, webwork_gutter.json (webwork_design_render.csv) — swap
+  the texPath back to the daemon's output when it lands, no def-shape
+  change needed.
 
   HP/fillPercent/pathCost are ❓INVENTED, expecting the same live-balance
   pass every other number in this kit's build carries.
@@ -53,10 +58,10 @@
          quicktest and every save load on the whole mod list. -->
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Natural/Hive</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/Natural/RUT_Webwork_Anchor</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
       <drawSize>1.0</drawSize>
-      <color>(224, 220, 205)</color>
     </graphicData>
     <uiIconScale>0.5</uiIconScale>
     <altitudeLayer>Building</altitudeLayer>
@@ -84,10 +89,10 @@
     <!-- see RUT_Webwork_Anchor's comment above: BuildingNaturalBase sets no thingClass -->
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Natural/Hive</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/Natural/RUT_Webwork_Web</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
       <drawSize>1.2</drawSize>
-      <color>(235, 230, 218)</color>
     </graphicData>
     <uiIconScale>0.5</uiIconScale>
     <altitudeLayer>Building</altitudeLayer>
@@ -102,6 +107,18 @@
     </statBases>
     <comps>
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode" />
+      <!-- WEBWORK_WEB_STRUCTURES_1 — the deferred "commandable adhesive
+           slick/locked" mechanism (kit spec §3), v1: this sheet web is the
+           one of the three structures a pawn actually stands IN, so it is
+           the one that carries the adhesive. CompProperties_Flickable is
+           the whole "commandable" half — the player's own Gizmo toggle,
+           zero new C#; see RUT_WebworkSlick.xml for the hediff's own
+           slick-vs-locked escalation. -->
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_AdhesiveSlick">
+        <slickHediff>RUT_Webwork_Slick</slickHediff>
+        <radiusCells>0</radiusCells>
+      </li>
     </comps>
   </ThingDef>
 
@@ -112,10 +129,10 @@
     <!-- see RUT_Webwork_Anchor's comment above: BuildingNaturalBase sets no thingClass -->
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Natural/Hive</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/Natural/RUT_Webwork_Gutter</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
       <drawSize>1.0</drawSize>
-      <color>(210, 206, 190)</color>
     </graphicData>
     <uiIconScale>0.5</uiIconScale>
     <altitudeLayer>Building</altitudeLayer>

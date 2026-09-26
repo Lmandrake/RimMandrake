@@ -209,6 +209,17 @@ namespace RimMandrake.CreatureBehaviors
     //      the experience" shape as breedRateMultiplier. No new setting is
     //      owed for the plant swarm specifically: it shares this exact dial
     //      because it shares the exact mechanism.
+    //  35. adhesiveSlickEnabled / adhesiveSlickSeverityMultiplier —
+    //      RM_CompAdhesiveSlick (WEBWORK_WEB_STRUCTURES_1, kit §3's deferred
+    //      "commandable adhesive slick/locked" mechanism — v1). Off: a
+    //      tagged structure's adhesive stops refreshing its slick hediff on
+    //      anyone standing on/near it — a carried hediff still decays and
+    //      still tends normally, it just never gets topped up again, same
+    //      "degrades cleanly" posture as every other toggle here. The dial
+    //      scales only the severity added per scan (never the hediff's own
+    //      stage thresholds, decay rate or tend rate, which stay whatever
+    //      RUT_Webwork_Slick says); a structure also carrying CompFlickable
+    //      is the player's own on/off command regardless of this setting.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -263,6 +274,8 @@ namespace RimMandrake.CreatureBehaviors
         public static float speciesSpacingCookDamageMultiplier = 1f;
         public static bool reactionSourceSpawnEnabled = true;
         public static float reactionSourceBudgetMultiplier = 1f;
+        public static bool adhesiveSlickEnabled = true;
+        public static float adhesiveSlickSeverityMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -318,6 +331,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref speciesSpacingCookDamageMultiplier, "speciesSpacingCookDamageMultiplier", 1f);
             Scribe_Values.Look(ref reactionSourceSpawnEnabled, "reactionSourceSpawnEnabled", true);
             Scribe_Values.Look(ref reactionSourceBudgetMultiplier, "reactionSourceBudgetMultiplier", 1f);
+            Scribe_Values.Look(ref adhesiveSlickEnabled, "adhesiveSlickEnabled", true);
+            Scribe_Values.Look(ref adhesiveSlickSeverityMultiplier, "adhesiveSlickSeverityMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -519,6 +534,15 @@ namespace RimMandrake.CreatureBehaviors
               + "budget spent.");
             list.Label("Reaction spawn budget: " + reactionSourceBudgetMultiplier.ToString("0.00") + "x");
             reactionSourceBudgetMultiplier = list.Slider(reactionSourceBudgetMultiplier, 0f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Adhesive slick surfaces", ref adhesiveSlickEnabled,
+                "On: a tagged structure's adhesive keeps refreshing its slick hediff on anyone "
+              + "standing on or near it, so lingering climbs from a slow-down toward a near-full "
+              + "stick; a doctor's tend still frees them faster than waiting it out. Off: a hediff "
+              + "already caught still decays and still tends normally, it just never tops back up.");
+            list.Label("Adhesive slick strength: " + adhesiveSlickSeverityMultiplier.ToString("0.00") + "x");
+            adhesiveSlickSeverityMultiplier = list.Slider(adhesiveSlickSeverityMultiplier, 0f, 3f);
 
             list.End();
         }
