@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_GRENADE_WEAPONS_1 — stench smoke, the first of the jungle's
+     three named grenades (owner, 2026-09-22) and the only one this item
+     builds (owner scoped it to prove the category with one weapon first).
+
+     This DamageDef is modelled directly on vanilla's own non-lethal
+     explosive DamageDef, Smoke (Defs/Core/DamageDefs/Damages_Misc.xml,
+     RimSage-verified this pass: harmsHealth=false, defaultDamage=0,
+     makesBlood=false — used by Verb_SmokePop / CompAbilityEffect_Smokepop),
+     plus ONE addition: makesAnimalsFlee=true (Verse/DamageDef.cs field,
+     also RimSage-verified), the exact vanilla mechanism several core
+     DamageDefs already carry (Bomb, Flame, the bullet family —
+     Damages_Misc.xml / Damages_RangedWeapon.xml) so that any pawn actually
+     hit by this damage type checks FleeUtility.ShouldAnimalFleeDanger.
+
+     Two vanilla mechanisms end up covering "every animal in the biome"
+     (owner ruling: beasts AND the wasps, "one tool, all the biome's
+     animals") with no new C# at all:
+       1. Pawn_MindState.PreApplyDamage reads dinfo.Def.makesAnimalsFlee for
+          every pawn actually standing in an affected cell —
+          DamageWorker.ExplosionDamageThing calls t.TakeDamage
+          unconditionally (RimSage-verified: harmsHealth does not gate
+          whether TakeDamage runs, only whether it counts as harm).
+       2. Pawn_MindState.Notify_Explosion fires for every faction-less
+          (wild) pawn within (explosionRadius + 7) of ANY explosion whose
+          radius is >= 3.5, regardless of DamageDef — this is why the
+          projectile (RM_StenchGrenade_Items.xml) uses explosionRadius=3.6:
+          it is the same reason a vanilla frag grenade already scatters
+          wildlife.
+
+     Deliberately chemical, not incendiary — RM_Greentide's own fire ruling
+     (jungle plants take fire damage but are not ignition sources) rules out
+     a flammable thrown weapon. No ignite chance, no isExplosive heat pulse.
+
+     Gas carrier is vanilla RotStink (Verse/GasType.cs), not a new gas type —
+     GasType is a fixed four-value C# enum (BlindSmoke/ToxGas/RotStink/
+     DeadlifeDust, RimSage-verified) with no def-driven registry, so a new
+     gas type is not buildable without decompiling Core. RotStink already
+     means "reeking area" in vanilla's own vocabulary and already carries a
+     real cost for anyone who lingers in it (ThoughtWorker_RotStink /
+     ThoughtWorker_RotStinkLingering mood penalties, plus a genuine
+     HediffComp_GiveHediffLungRot infection risk on prolonged exposure,
+     humanlike and animal alike, RimSage-verified GasUtility.cs). That
+     answers this item's own "friendly-fire" open question: stench on your
+     own animals or colonists is the SAME real cost as anyone else's — this
+     is not a free weapon, which is exactly what the item's Watch-out
+     ("price it like the answer to a biome, not a utility") asked for. -->
+<Defs>
+
+  <DamageDef>
+    <defName>RM_StenchGas</defName>
+    <label>stench</label>
+    <combatLogRules>Damage_Smoke</combatLogRules>
+    <defaultDamage>0</defaultDamage>
+    <harmsHealth>false</harmsHealth>
+    <makesBlood>false</makesBlood>
+    <makesAnimalsFlee>true</makesAnimalsFlee>
+    <explosionCellFleck>BlastExtinguisher</explosionCellFleck>
+    <explosionColorCenter>(0.45, 0.6, 0.15, 0.55)</explosionColorCenter>
+    <explosionColorEdge>(0.6, 0.7, 0.25, 0.1)</explosionColorEdge>
+    <soundExplosion>Explosion_Smoke</soundExplosion>
+  </DamageDef>
+
+</Defs>

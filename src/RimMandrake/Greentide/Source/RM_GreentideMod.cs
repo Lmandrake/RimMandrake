@@ -51,6 +51,18 @@ namespace RimMandrake.Greentide
         public static bool frenzyEnabled = true;
         public static float frenzySeverityMultiplier = 1f;
 
+        // GREENTIDE_GRENADE_WEAPONS_1. The stench smoke grenade — the only
+        // one of the jungle's three named grenades this item builds (the
+        // seeding grenade and both toxin routes stay designed-but-unbuilt,
+        // queued behind this proof). StenchGrenadeBaseRadius MUST match
+        // RM_Proj_GrenadeStenchSmoke's <explosionRadius> in
+        // RM_StenchGrenade_Items.xml — RM_Proj_GrenadeStenchSmoke.cs reads
+        // this constant every throw rather than the XML value directly, so
+        // the two are coupled by convention, not by a shared reference.
+        public const float StenchGrenadeBaseRadius = 3.6f;
+        public static bool stenchGrenadeEnabled = true;
+        public static float stenchGrenadeRadiusMultiplier = 1f;
+
         private string biomeListBuffer;
 
         public override void ExposeData()
@@ -65,6 +77,8 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
             Scribe_Values.Look(ref frenzyEnabled, "frenzyEnabled", true);
             Scribe_Values.Look(ref frenzySeverityMultiplier, "frenzySeverityMultiplier", 1f);
+            Scribe_Values.Look(ref stenchGrenadeEnabled, "stenchGrenadeEnabled", true);
+            Scribe_Values.Look(ref stenchGrenadeRadiusMultiplier, "stenchGrenadeRadiusMultiplier", 1f);
         }
 
         /// <summary>True if the cross-biome opt-in currently applies to this biome (never to Greentide's own — that is native, not "cross").</summary>
@@ -152,6 +166,21 @@ namespace RimMandrake.Greentide
             {
                 list.Label("  Dose strength: " + frenzySeverityMultiplier.ToString("0.00") + "x");
                 frenzySeverityMultiplier = list.Slider(frenzySeverityMultiplier, 0.5f, 2f);
+            }
+            list.GapLine();
+
+            list.Label("Jungle grenades");
+            list.CheckboxLabeled("Stench smoke grenades enabled", ref stenchGrenadeEnabled,
+                "Thrown grenades that burst into a reeking cloud every animal in the biome "
+              + "flees — beasts and the wasp swarm alike. Off: a thrown one is a dud, no "
+              + "explosion, no gas, no flee. The reek is real rot-stink gas, so it costs your "
+              + "own colonists and animals the same lingering-exposure risk it costs anyone "
+              + "else caught in it.");
+            if (stenchGrenadeEnabled)
+            {
+                list.Label("  Cloud radius: " + (StenchGrenadeBaseRadius * stenchGrenadeRadiusMultiplier).ToString("0.0")
+                    + " cells (" + stenchGrenadeRadiusMultiplier.ToString("0.00") + "x)");
+                stenchGrenadeRadiusMultiplier = list.Slider(stenchGrenadeRadiusMultiplier, 0.5f, 2f);
             }
 
             list.End();

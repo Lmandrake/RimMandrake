@@ -53,6 +53,7 @@
     <Compile Include="RM_WeatherOverlay_GreentideRoil.cs" />
     <Compile Include="RM_IncidentWorker_FrenzyDisease.cs" />
     <Compile Include="RM_IngestionOutcomeDoer_FrenzyDose.cs" />
+    <Compile Include="RM_Proj_GrenadeStenchSmoke.cs" />
   </ItemGroup>
 
   <ItemGroup>
