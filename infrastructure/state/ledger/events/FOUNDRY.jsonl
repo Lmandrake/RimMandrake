@@ -756,3 +756,6 @@
 {"seat":"FOUNDRY","event":"note","id":"SHARED_SYNC_DROPS_PEER_COMMITS_1","text":"Correction to the close event's sha: 2852c1ff26ab6e68aa7b1b2bb711dedd77d14d73 is a concurrent peer FOUNDRY window's commit (PRIMITIVEWELL_DEAD_DEFNAME_1 drop) that landed in this shared tree in the gap between my fix commit and the close call -- not this item's fix. The actual fix commit is db03e8343, confirmed an ancestor of origin/main (git merge-base --is-ancestor). Fitting irony: hit live, mid-close, the exact race this item fixes.","ts":"2026-09-26T23:50:29Z"}
 {"seat":"FOUNDRY","event":"claim","id":"GREYSEA_BRINE_ELDERS_1","ts":"2026-09-26T23:50:48Z"}
 {"seat":"FOUNDRY","event":"start","id":"GREYSEA_BRINE_ELDERS_1","ts":"2026-09-26T23:50:49Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DBH_LITE_UNDECLARED_DEPENDENCY_1","ts":"2026-09-26T23:52:24Z"}
+{"seat":"FOUNDRY","event":"start","id":"DBH_LITE_UNDECLARED_DEPENDENCY_1","ts":"2026-09-26T23:52:25Z"}
+{"seat":"FOUNDRY","event":"close","id":"DBH_LITE_UNDECLARED_DEPENDENCY_1","sha":"907589d2ef5c3ccb66d8ed4330c2341bec3be2e4","reason":"Chose soft loadAfter+comment over hard modDependencies: PrimitiveWell is optional decorative content, GenStep_RimplacePlan already degrades gracefully without it. Applied to all three About.xml (StructureInjections, StructureInjectionsRUT, StructureInjectionsSW).","ts":"2026-09-26T23:55:12Z"}

@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T23:50:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T23:55:12Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## GREYSEA_BRINE_ELDERS_1 The Brine Elders: colossal branching salt-crystal organisms with area discharges, geological memory, a novelty-only trade economy and one-of-each millennial treasures
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/GREYSEA_BRINE_ELDERS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_BRINE_ELDERS_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -1053,6 +1044,15 @@ kind:     task
 summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
 prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
 
+## GREYSEA_BRINE_ELDERS_1 The Brine Elders: colossal branching salt-crystal organisms with area discharges, geological memory, a novelty-only trade economy and one-of-each millennial treasures
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/GREYSEA_BRINE_ELDERS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_BRINE_ELDERS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1898,13 +1898,3 @@ kind:     build
 thin:     no ## criteria
 summary:  Phase 1 — the layer, offline-provable, no content:
 prose:    infrastructure/state/items/SEABED_PLANET_LAYER_1.md
-
-## DBH_LITE_UNDECLARED_DEPENDENCY_1 Declare dubwise.dubsbadhygiene.lite as a soft mod dependency
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     spec, verify and criteria all present
-summary:  StructureInjections, StructureInjectionsRUT and StructureInjectionsSW
-prose:    infrastructure/state/items/DBH_LITE_UNDECLARED_DEPENDENCY_1.md
