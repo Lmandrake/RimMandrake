@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SEA_DIVE_MAPS_BUILD_1 — carrier GenStepDefs for the three C# genSteps
+  shared by all four RM_SeaDiveGenerator_* defs. Execution order is the
+  GLOBAL GenStepDef.order, never XML list position (confirmed against
+  RimMandrake.LanternDeeps's own precedent and the live vanilla GenStepDef
+  order values read this session: ElevationFertility=10, Terrain=210,
+  PlaceCaveExit=400, RockChunks=970, Fog=1500).
+
+  RM_SeaFloorTerrain sits at Terrain's own order (210) since it REPLACES
+  that step rather than running alongside it (the vanilla Terrain step is
+  never listed in these generators at all). RM_PlaceSeaDiveExit mirrors
+  vanilla's own PlaceCaveExit order (400) for the same reason it exists —
+  see GenStep_PlaceSeaDiveExit.cs. RM_SeaFloorFauna runs at 900, after the
+  floor is painted and before RockChunks(970)/Fog(1500).
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_SeaFloorTerrain</defName>
+    <order>210</order>
+    <genStep Class="RimMandrake.DivingInteraction.GenStep_SeaFloorTerrain" />
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_PlaceSeaDiveExit</defName>
+    <order>400</order>
+    <genStep Class="RimMandrake.DivingInteraction.GenStep_PlaceSeaDiveExit" />
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_SeaFloorFauna</defName>
+    <order>900</order>
+    <genStep Class="RimMandrake.DivingInteraction.GenStep_SeaFloorFauna" />
+  </GenStepDef>
+
+  <!-- design/RimMandrake/sea_dive_maps_spec.md §2.2 (MEASURED): a sea's own
+       animalDensity (0.1-0.15) is a coastal/GravTide number, far too low
+       for a ~50x50 pocket map's ecosystem-weight budget — vanilla's own
+       ongoing WildAnimalSpawnerTick (runs on every map, pocket or not)
+       would compute a near-zero desired population without this. Boosting
+       it here, rather than editing each sea's own animalDensity, keeps the
+       surface number untouched (not this mechanism's to change) while
+       letting the vanilla Animals GenStep and ongoing tick meaningfully
+       repopulate the floor over time, on top of GenStep_SeaFloorFauna's
+       guaranteed one-time seed. -->
+  <TileMutatorDef>
+    <defName>RM_SeaFloorHabitat</defName>
+    <label>sea floor habitat</label>
+    <animalDensityFactor>30</animalDensityFactor>
+  </TileMutatorDef>
+
+</Defs>

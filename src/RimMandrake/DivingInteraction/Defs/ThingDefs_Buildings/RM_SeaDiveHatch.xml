@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SEA_DIVE_MAPS_BUILD_1 — the ship-only dive entry point. Replaces the
+  retired shore terrain-tag mechanism (RM_DiveEligible/
+  RM_FloatMenuOptionProvider_Dive, both removed this item).
+
+  thingClass is RM_SeaDiveHatch (RimMandrake.DivingInteraction), a MapPortal
+  subclass that picks its pocket-map generator at generate time from
+  whichever sea biome the parent map's tile carries (Map.Biome) rather than
+  needing four separate hatch ThingDefs — see the .cs header for why.
+
+  <portal><pocketMapGenerator> below names a real generator only to satisfy
+  MapPortalProperties' own config validation; RM_SeaDiveHatch.cs overrides
+  the actual choice at runtime. MayRequire mirrors the generators: without
+  mandrake.rm.terminalbiomes there is no sea to dive into and this ThingDef
+  does not load at all — same "ships inert absent the biome mod" posture as
+  the rest of this mod.
+
+  PLACEHOLDER ART: reusing vanilla's CaveEntranceA texture, same posture as
+  LanternDeepEmergence.
+
+  SHIP-ONLY ACCESS: gated at construction time by placeWorkers, not by a
+  research prerequisite (no `GravEngine`-adjacent research defName is
+  verified here — never guess one). See PlaceWorker_NeedsGravEngine.cs.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RM_SeaDiveHatch</defName>
+    <label>sea dive hatch</label>
+    <description>A sealed hatch cut into the hull, rated for the crushing dark below. Weighted belts hang ready beside it — step through with one on and the floor down there will actually hold you. Without a working grav engine to carry it, this hatch goes nowhere worth going.</description>
+    <size>(2,2)</size>
+    <useHitPoints>true</useHitPoints>
+    <thingClass>RimMandrake.DivingInteraction.RM_SeaDiveHatch</thingClass>
+    <rotatable>false</rotatable>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <canOverlapZones>false</canOverlapZones>
+    <category>Building</category>
+    <designationCategory>Structure</designationCategory>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <fillPercent>0.5</fillPercent>
+    <passability>Impassable</passability>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <costList>
+      <Steel>150</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <building>
+      <isEdifice>true</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <portal>
+      <pocketMapGenerator>RM_SeaDiveGenerator_TheScald</pocketMapGenerator>
+      <exitDef>RM_SeaDiveExit</exitDef>
+      <pocketMapSize>50</pocketMapSize>
+    </portal>
+    <placeWorkers>
+      <li>RimMandrake.DivingInteraction.PlaceWorker_NeedsGravEngine</li>
+    </placeWorkers>
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+    </inspectorTabs>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+  </ThingDef>
+
+  <!-- Every field below except label/description/graphicData/thingClass is
+       copied from CaveExit's own merged inheritance (read this session,
+       RimWorld/PocketMapExit.cs confirms the class is fully generic — no
+       cave-specific behavior lives in it, only CaveExit's art/glow/sound
+       comps do, which this def deliberately omits). thingClass is the base
+       PocketMapExit, not CaveExit — this exit needs none of CaveExit's
+       torch-glow dressing. -->
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RM_SeaDiveExit</defName>
+    <label>ascent line</label>
+    <description>A weighted line running up out of sight, back toward the hatch above.</description>
+    <thingClass>PocketMapExit</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <category>Building</category>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <canOverlapZones>false</canOverlapZones>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <passability>Standable</passability>
+    <repairEffect>Repair</repairEffect>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <building>
+      <deconstructible>false</deconstructible>
+      <isTargetable>false</isTargetable>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <statBases>
+      <SellPriceFactor>0.7</SellPriceFactor>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/Misc/CaveExit/CaveExit</texPath>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+  </ThingDef>
+
+</Defs>
