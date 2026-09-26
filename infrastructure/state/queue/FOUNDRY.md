@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T04:39:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T04:44:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -810,15 +810,6 @@ kind:     task
 summary:  1. Derive each feature's maxDrawSizeInTiles from its tile count — a curve, not a table,
 prose:    infrastructure/state/items/WORLD_LABEL_SIZE_HIERARCHY_1.md
 
-## SCARLANDS_STANDALONE_MOD_1 Scarlands biome-mod split: RM_Warscar, absorb ScarlandsLadder
-state:    doing
-row:      20
-needs:    offline
-target:   v1
-kind:     build
-summary:  - New biome def: RMWarscar, label Warscar (no article — deliberate, per the
-prose:    infrastructure/state/items/SCARLANDS_STANDALONE_MOD_1.md
-
 ## LONGSHADE_RM_MOD_BUILD_1 Phase A: build RM_LongShade as its own RimMandrake mod (mandrake.rm.longshade) — the Long Shade (the livable desert)
 state:    doing
 row:      unassigned
@@ -845,6 +836,15 @@ target:   v1
 kind:     task
 summary:  1. Look at it against the newer creature art in the same mod, and against the bar the
 prose:    infrastructure/state/items/STONEBACK_BOKKA_ART_STANDARD_1.md
+
+## SW_FAUNA_NEVER_IN_RM_TIER_1 Route every Star Wars fauna row out of RM_-tier biome defs into the Utinni patch layer (97 rows, 12 biomes) — owner ruling Q11, taken by question card
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. This is not a standalone sweep — it is a rule each <BIOMERMMODBUILD1 obeys at its
+prose:    infrastructure/state/items/SW_FAUNA_NEVER_IN_RM_TIER_1.md
 
 ## REACTION_MECHANISM_GENERALISE_1 One reaction mechanism for four consumers: event object, shared budget, pluggable response, suppression
 state:    doing
@@ -1440,16 +1440,6 @@ kind:     build
 thin:     no ## spec, no ## criteria
 summary:  FURNACEBEASTWORLDMIGRATION1
 prose:    infrastructure/state/items/FURNACEBEAST_WORLD_MIGRATION_1.md
-
-## SW_FAUNA_NEVER_IN_RM_TIER_1 Route every Star Wars fauna row out of RM_-tier biome defs into the Utinni patch layer (97 rows, 12 biomes) — owner ruling Q11, taken by question card
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1. This is not a standalone sweep — it is a rule each <BIOMERMMODBUILD1 obeys at its
-prose:    infrastructure/state/items/SW_FAUNA_NEVER_IN_RM_TIER_1.md
 
 ## GREENTIDE_JUNGLE_TREE_ROSTER_1 The Greentide gets ten-plus jungle trees of our own, plus its signature giant
 state:    proposed
