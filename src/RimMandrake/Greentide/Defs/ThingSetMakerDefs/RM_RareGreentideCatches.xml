@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_EXOTIC_JUNGLE_FISH_1 — franchise-free rare-catch pool for
+  RM_Greentide, parented on vanilla's own RareFishingCatchesBase, the same
+  shape as the campaign's RUT_RareGreentideCatches
+  (src/RimUtinni/UtinniPatches/Defs/ThingSetMakerDefs/RUT_RareGreentideCatches.xml,
+  fish_bestiary_commission_2026-09-10.md §2C.rare).
+
+  Two options ship unconditionally (weight 4 RM_LungerFry, weight 2 a
+  churnmud find); a third option — RSW_LaaCatch, weight 1, the canon
+  scalefish bonus — is gated MayRequire="mandrake.rsw.swbestiary" directly on
+  its own <li>, so this def degrades to a clean 2-option table on a Core-only
+  load and gains the Star Wars bonus catch automatically whenever that
+  bestiary mod is present, with no UtinniPatches/campaign dependency either
+  way (§7 Q11/Q11a: invented content inline, canon content gated by its own
+  mod, never routed through the campaign layer just to reach a MayRequire).
+-->
+<Defs>
+
+  <ThingSetMakerDef ParentName="RareFishingCatchesBase">
+    <defName>RM_RareGreentideCatches</defName>
+    <root Class="ThingSetMaker_RandomOption">
+      <options>
+        <li>
+          <weight>4</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RM_LungerFry</li>
+                </thingDefs>
+              </filter>
+              <countRange>1~1</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <weight>2</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>ComponentIndustrial</li>
+                </thingDefs>
+              </filter>
+              <countRange>1~1</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li MayRequire="mandrake.rsw.swbestiary">
+          <weight>1</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li MayRequire="mandrake.rsw.swbestiary">RSW_LaaCatch</li>
+                </thingDefs>
+              </filter>
+              <countRange>3~4</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+      </options>
+    </root>
+  </ThingSetMakerDef>
+
+</Defs>
