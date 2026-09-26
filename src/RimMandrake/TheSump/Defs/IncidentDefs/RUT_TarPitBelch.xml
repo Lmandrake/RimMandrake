@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_TarPitBelch.xml                    RM_TheSump · SUMP_TAR_BELCH_EVENT_1
+  ============================================================================
+  Owner ruling 2026-09-24, typed verbatim: "There should also occasionally be
+  a random event when a tar pit just belches a huge amount of tar out all
+  over the local terrain."
+
+  SCOPE: this is the scenario-scoped v1. A later same-day ledger note on this
+  item re-rules the belch's EVENTUAL shape as a FlowWorks flood pulse whose
+  fronts cool to walkable glass, full rulings on SUMP_TAR_HYDROLOGY_1 — that
+  item owns the whole canal-work/fire-network/Deep-Black-mere FlowWorks
+  integration (none of it built yet: no pulse-spread or glass-cooling code
+  exists on RM_Tar today). RUT_IncidentWorker_TarPitBelch.cs's own header
+  carries the full reasoning; this def's trigger/anchor shape is meant to
+  survive that later rebuild unchanged.
+
+  workerClass finds an existing RM_TarDeep/RM_TarShallow cell on the map
+  (LIQUID_TYPES_MOD_1's own generated tar-pit terrain, already real on Sump
+  maps — SUMP_TAR_NASTINESS_1's own verify plan names "quicktest map with
+  RM_TarShallow" as the reference) and splashes RM_Filth_Tar around it via
+  RM_TarCoatingUtility (SUMP_TAR_NASTINESS_1 S1's already-shipped mechanism,
+  which explicitly names this class as its intended first consumer).
+
+  category Misc / allowedBiomes [RM_TheSump]: same shape RUT_Breaklight.xml
+  already ships for a rare biome-restricted event — that header's own
+  reasoning applies verbatim here (CanFireNow enforces allowedBiomes even off
+  a Storyteller-driven roll, so baseChance is effectively "this biome's own
+  share of the Misc queue"). baseChance 1 / minRefireDays 9 are this pass's
+  own INVENTED-BUILD cadence — the owner said "occasionally," no number.
+
+  MayRequire is load-bearing: workerClass resolves into
+  mandrake.rm.environmentalhazards content (same posture RUT_TarMoat.xml and
+  RUT_BeastBulge.xml already take for defs physically shipped inside this
+  mod but depending on that shared assembly).
+  ============================================================================
+-->
+<Defs>
+
+  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RUT_TarPitBelch</defName>
+    <label>tar pit belch</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.EnvironmentalHazards.RUT_IncidentWorker_TarPitBelch</workerClass>
+    <baseChance>1</baseChance>
+    <minRefireDays>9</minRefireDays>
+    <allowedBiomes>
+      <li>RM_TheSump</li>
+    </allowedBiomes>
+  </IncidentDef>
+
+</Defs>
