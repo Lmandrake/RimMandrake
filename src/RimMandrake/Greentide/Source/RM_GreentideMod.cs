@@ -34,6 +34,18 @@ namespace RimMandrake.Greentide
         public static bool buriedCacheEnabled = true;
         public static float mireSeverityMultiplier = 1f;
 
+        // GREENTIDE_DENSITY_SETTINGS_1. Ship values from GREENTIDE_BIOME_DENSITY_1
+        // (RM_Greentide_Biome.xml, MEASURED against vanilla TropicalSwamp). Applied
+        // to the live RM_Greentide BiomeDef at runtime by
+        // RM_GreentideDensityApplier — BiomeDef has no settings hook of its own,
+        // so writing the runtime instance's fields directly is the mechanism
+        // (same shape as src/RimMandrake/Pyrelands/Source/RM_PyrelandsDensityEnforcer.cs).
+        // Slider floors match the item's own de-escalation target: vanilla
+        // TropicalRainforest (plantDensity 0.90, movementDifficulty 2), not zero
+        // — this stays a jungle at the softest setting, never a plain.
+        public static float plantDensity = 0.99f;
+        public static float movementDifficulty = 4f;
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -71,6 +83,8 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref mireEnabled, "mireEnabled", true);
             Scribe_Values.Look(ref buriedCacheEnabled, "buriedCacheEnabled", true);
             Scribe_Values.Look(ref mireSeverityMultiplier, "mireSeverityMultiplier", 1f);
+            Scribe_Values.Look(ref plantDensity, "plantDensity", 0.99f);
+            Scribe_Values.Look(ref movementDifficulty, "movementDifficulty", 4f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -134,6 +148,17 @@ namespace RimMandrake.Greentide
             list.CheckboxLabeled("Buried caches enabled", ref buriedCacheEnabled,
                 "Loose items left on churnmud long enough get buried (dig them back out, nothing "
               + "is destroyed). Off: items just sit there like any other terrain.");
+            list.GapLine();
+
+            list.Label("Jungle density");
+            list.Label("Plant density: " + plantDensity.ToString("0.00")
+              + " (new maps only — a map you've already generated keeps the coverage it was born with)");
+            plantDensity = list.Slider(plantDensity, 0.90f, 0.99f);
+            list.Label("World-map movement difficulty: " + movementDifficulty.ToString("0.0")
+              + " — how much SLOWER a caravan crosses Greentide tiles on the PLANET map. This does "
+              + "NOT affect walking speed inside a Greentide map at all; in-map crossing cost comes "
+              + "from the churnmud terrain above, not this number.");
+            movementDifficulty = list.Slider(movementDifficulty, 2f, 4f);
             list.GapLine();
 
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");
@@ -204,6 +229,16 @@ namespace RimMandrake.Greentide
         public override void DoSettingsWindowContents(Rect inRect)
         {
             settings.DoWindowContents(inRect);
+        }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            // GREENTIDE_DENSITY_SETTINGS_1: re-assert onto the live BiomeDef the
+            // moment the settings window closes, so a movementDifficulty change
+            // (a world-tile stat read on demand, not cached at worldgen) is felt
+            // immediately rather than waiting on the next game load.
+            RM_GreentideDensityApplier.Apply();
         }
     }
 }
