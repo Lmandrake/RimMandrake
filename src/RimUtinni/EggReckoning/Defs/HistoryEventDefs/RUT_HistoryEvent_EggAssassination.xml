@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_EGG_RECKONING_QUEST_1, §2d: "every path-3 completion fires
+  <RUT_HistoryEvent_EggAssassination> regardless of discovery — precepts and
+  moral-guide mechanics see what factions cannot." Wired onto both of
+  RUT_Reckoning's path-3 QuestNode_End nodes (successHistoryEvent on the hatch
+  kill, failedOrExpiredHistoryEvent on the post-plant-discovery fail) so the
+  colony's own ideoligion judges the attempt regardless of outcome — the skill's
+  own note that a HistoryEventDef "is a defName and a label, nothing more" when
+  none of Core's own (Data/Core/Defs/Goodwill/GoodwillEvents_Quests.xml) fits.
+-->
+<Defs>
+
+  <HistoryEventDef>
+    <defName>RUT_HistoryEvent_EggAssassination</defName>
+    <label>attempted an egg assassination</label>
+  </HistoryEventDef>
+
+</Defs>

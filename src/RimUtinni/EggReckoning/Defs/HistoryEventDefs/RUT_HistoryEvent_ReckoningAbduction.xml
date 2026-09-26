@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_EGG_RECKONING_QUEST_1, §2a path 2 ("Collect in person"): "Target's
+  faction goodwill down (you visibly abducted their pawn) — legal-adjacent, not
+  deniable." Two separate HistoryEventDefs carry the two distinct goodwill
+  reasons the design calls out as different in severity: this one for the open
+  fight (path 2, -8), RUT_HistoryEvent_ReckoningAttempt for a discovered
+  covert plant (path 3 fail, -25, "attempted assassination is worse than
+  abduction").
+-->
+<Defs>
+
+  <HistoryEventDef>
+    <defName>RUT_HistoryEvent_ReckoningAbduction</defName>
+    <label>abducted a debtor</label>
+  </HistoryEventDef>
+
+</Defs>
