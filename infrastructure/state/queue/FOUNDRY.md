@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T17:47:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T18:42:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1760,3 +1760,33 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  SUUSHCAULDRONDRIFTER1 — the Suush
 prose:    infrastructure/state/items/SUUSH_CAULDRON_DRIFTER_1.md
+
+## SEA_FISHABLES_ALIVE_IN_DEPTHS_1 Every fishable in EVERY sea owes a living creature swimming the floor map, not just a catch item - owner ruling 2026-09-26
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  Per sea, per catch entry without a living counterpart:
+prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
+
+## GREYSEA_SHORE_MUTATOR_SPECIFICS_1 RM_SeaCoast is generic across all four seas - make the shore respect the Grey Sea's specifics, above all the crusted white salt shoreline the owner supplied reference for
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  GREYSEASHOREMUTATORSPECIFICS1 — the shore is generic; the Grey Sea's shore should not be
+prose:    infrastructure/state/items/GREYSEA_SHORE_MUTATOR_SPECIFICS_1.md
+
+## BIOME_CONFIG_ERROR_TRIAGE_1 Triage the per-biome config errors the load-proof wave exposed against a zero baseline: floodedcanyon 53 distinct, webwork 30, thesump 14, contagion and therot 13 - real and attributable, not load failures
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BIOME_CONFIG_ERROR_TRIAGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_CONFIG_ERROR_TRIAGE_1.md

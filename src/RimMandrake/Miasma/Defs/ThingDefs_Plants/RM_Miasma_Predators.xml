@@ -76,7 +76,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Velluric</defName>
     <label>velluric</label>
-    <description>Above the channel, one small pale flower on a thin stalk, unremarkable. Everything else is submerged: a drifting mass of fine bladders, each with an inward trapdoor, invisible from the bank. The water above a velluric bed is very slightly clearer than the water beside it — the tell, and the only warning a small thing crossing it ever gets. ⚠️ Ships here as a shore/shallow plant, the same as any other wild plant; a true underwater growth habit is UNMEASURABLE without a Desktop pass against the RM_DiveEligible terrain work (mandrake.rm.divinginteraction) and is owed as a follow-on, not this pass.</description>
+    <description>Above the channel, one small pale flower on a thin stalk, unremarkable. Everything else is submerged: a drifting mass of fine bladders, each with an inward trapdoor, invisible from the bank. The water above a velluric bed is very slightly clearer than the water beside it — the tell, and the only warning a small thing crossing it ever gets. ⚠️ Ships here as a shore/shallow plant, the same as any other wild plant; a true underwater growth habit is UNMEASURABLE without a Desktop pass against the sea-floor pocket-map work (mandrake.rm.divinginteraction) and is owed as a follow-on, not this pass. (The RM_DiveEligible terrain tag this note used to name was deleted when the owner ruled diving ship-only, 2026-09-26.)</description>
     <graphicData>
       <texPath>Things/Plant/RM_Velluric/RM_Velluric_a</texPath>
       <graphicClass>Graphic_Single</graphicClass>

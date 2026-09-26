@@ -263,8 +263,21 @@ MEASURED about the live world — the live system is the only instrument for "ri
   well as what you can FISH out of the oceans on the shore. There should be defs made for each
   fish as something swimming around the floor area as well as something you can pull out as a
   fish."* ⇒ each sea species owes **two** defs: a floor resident in `<wildAnimals>` and a
-  catchable entry in `<fishTypes>`. The floor is reachable via the generic `RM_DiveEligible`
-  terrain mechanism in `mandrake.rm.divinginteraction`.
+  catchable entry in `<fishTypes>`.
+  🔴 **THE SHIP IS THE ONLY WAY DOWN AND THE ONLY WAY BACK — owner, 2026-09-26, verbatim:
+  *"You can't 'dive' as an individual pawn nor return as one. It's ship or nothing."*** The
+  gravship carries the player onto the sea floor and carries them off it. ⛔ The old
+  `RM_DiveEligible` shore-terrain mechanism — right-click a tagged shallow cell and a
+  colonist swims down — is **RETIRED AND DELETED FROM THE CODE**, along with
+  `RM_FloatMenuOptionProvider_Dive` and both JobDrivers. The live mechanism is
+  `RM_SeaDiveHatch` (a `MapPortal` subclass), buildable only on a map that carries a real
+  `GravEngine`, i.e. inside a gravship. ⚠️ Several docs still describe the retired
+  pawn-dive as if it were current — `sea_dive_maps_spec.md` and `SEA_FLOOR_AND_CATCH_PASS_1`
+  among them. Do not build from them; the ship-only rule wins.
+  🔑 **Every fishable is ALSO a living creature on the floor, in EVERY sea** (owner,
+  2026-09-26): *"All the fishables should also be alive and moving around in the depths
+  (this is true for ALL seas)."* A catch item with no living counterpart swimming the floor
+  map is incomplete work, not a finished species.
   ✅ **RE-MEASURED 2026-09-26 on the RM tier, which is what ships: all four seas now carry
   `fishTypes` AND a real floor roster** — Scald 3 inline + 3 canon patch-added, Grey Sea 6,
   Twilight Sea 6, Propane Lake 6. The old "no `fishTypes` at all and 2 animals each" line
