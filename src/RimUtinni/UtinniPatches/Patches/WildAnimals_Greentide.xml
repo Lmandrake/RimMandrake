@@ -92,6 +92,14 @@
      SW_FAUNA_NEVER_IN_RM_TIER_1 audit, 2026-09-25 — this is a real dependency,
      not an oversight.
 
+     🔴 `RUT_YearningFruit` is NOT one of the 8 above and is not blocked by
+     that dependency — it is a wholly new plant authored for this campaign
+     (GREENTIDE_YEARNING_FRUIT_1, COMMISSION_LEDGER_CLEANUP_1), defined in
+     UtinniPatches itself
+     (Defs/ThingDefs_Plants/RUT_YearningFruit.xml), so it is always loaded
+     whenever this file is — no MayRequire needed, same posture as the
+     RUT_Sytheclaw wildAnimals row above. Wired below.
+
   🔴 REVISED 2026-09-26 (GREENTIDE_EXOTIC_JUNGLE_FISH_1) — the 2026-09-25
   fishTypes fix below was WRONG in one respect: it added the whole
   `<maxFishPopulation>` + `<fishTypes>` block unconditionally, which made
@@ -226,6 +234,25 @@
       <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
       <value>
         <VFEI2_Swarmling>0.4</VFEI2_Swarmling>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- GREENTIDE_YEARNING_FRUIT_1, 2026-09-26. RUT_YearningFruit onto
+       RM_Greentide's wildPlants — commonality 1.2, matching the weight the
+       roster's own annotation gave this exact "the fruit yearns to be
+       eaten" design line (rosters/the_greentide.json, attached there to
+       Plant_JoganTree_Wild before this item split the mechanic into its own
+       new plant). No MayRequire: this def ships with UtinniPatches itself,
+       same reasoning as the RUT_Sytheclaw wildAnimals op above. Guarded on
+       the target node existing, same PatchOperationConditional shape as
+       every other op in this file. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildPlants</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildPlants</xpath>
+      <value>
+        <RUT_YearningFruit>1.2</RUT_YearningFruit>
       </value>
     </match>
   </Operation>
