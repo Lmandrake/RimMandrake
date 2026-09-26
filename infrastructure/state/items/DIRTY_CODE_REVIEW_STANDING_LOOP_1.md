@@ -4697,3 +4697,93 @@ biome-specific mod folders (`BlueDesert`, `FeverWood`, `ForsakenCrags`,
 `TerminalBiomes`, `TheForge`, `TheRot`, `Wasteland`, `Miasma`, `Contagion`,
 `Pyrelands`, `GelatinousSlime`, `LanternDeeps`, `RustCathedral`) and
 `biome_paint_list.md` until told the concurrent biome-split build is done.
+
+## Wave 13 — 2026-09-26
+
+Same concurrent-biome-build session as waves 9-12 — fresh `list
+--show-untracked` still showed untracked `Source/` files under most excluded
+biome folders (none picked), plus a new one worth flagging for later:
+`WeepingStones/` — not on the prior waves' exclusion list by name, but its
+`Source/RM_JobDriver_CullVhorrin.cs` / `RM_JobDriver_HarvestPoolPen.cs` /
+`RM_WorkGiver_HarvestPoolPen.cs` are exactly the files `STOCKED_POOL_BUILD_1`
+wave 4 (`bf8820260`, same day) just landed, and the mod itself carries a real
+`RM_WeepingStones_Biome.xml` + `RM_BiomeWorker_WeepingStones` — a biome mod
+with an active concurrent build in flight. Steered clear of it; add it to the
+standing exclusion list alongside the named biome folders.
+
+Picked instead 4 standalone Python tools under `src/RimMandrake/Utils/`
+(893 lines total, confirmed NEVER ENTERED via the fresh survey):
+`dll_source_stamp.py`, `scald_showcase.py`, `shared_sync.py`,
+`world_label_curve.py`. Not one mechanism, but each independently
+reachable and none touches biome content.
+
+Reachability: `dll_source_stamp.py` and `shared_sync.py` are both documented
+CLI commands in this repo's own `CLAUDE.md` (`DLL_SOURCE_STAMP_GUARD_1`'s
+verifier; the "Git" section's tree-sync tool) and `dll_source_stamp.py` is
+also invoked by `.claude/hooks/block_dll_source_mismatch.py`.
+`world_label_curve.py` is named and quoted from in
+`infrastructure/state/items/WORLD_LABEL_SIZE_HIERARCHY_1.md` (written today
+per the wave brief). `scald_showcase.py` is tracked and clean in git
+(`68e306bac`) and referenced from `design/RimMandrake/deepfire_luminous_pigment_spec.md`
+and two `FOUNDRY_REBOOT_HANDOFF_*` notes as an actually-run review tool — none
+are dead files, just absent from the review-status DB.
+
+Traced each for real bugs:
+- `dll_source_stamp.py`: recomputes `.dll.srchash` sidecars from committed
+  git blobs via a single long-lived `git cat-file --batch` process (correct
+  batching per the git-efficiency skill). Found a real defect in
+  `check_range()`: a skip branch (`if not ls_tree(b, dll, repo) and not
+  ls_tree(a, stamp, repo): continue`) could never fire — the loop only ever
+  sees dlls already filtered to exist at `b` (`changed_dlls`'s own
+  `_exists_at(b, p, repo)` filter), so `ls_tree(b, dll, repo)` is always
+  non-empty inside the loop, making the branch dead. Its comment claimed it
+  implemented the LANTERNDEEPS-rename exception, but that exception is
+  actually already provided by the `changed_dlls` filter itself. Removed the
+  dead branch and rewrote the comment to say so — no behavior change
+  (confirmed the branch never executed), just removes a false claim about
+  what the code does.
+- `shared_sync.py`: traced the full replay -> push -> `reset --keep` flow
+  against its own header's account of the 2026-09-25 merge disaster it
+  exists to avoid. `git()`'s index.lock retry, the `--cherry-pick
+  --right-only` local-only-commit detection, the `base`/`span` interleaving
+  guard, the `push()` fallback to the `gh` credential helper only on
+  non-rejection failures, and the final `checkout --` (clearing the local
+  dirty diff back to old-HEAD so `reset --keep` can then move those files to
+  origin's content) all check out against the documented intent. No bug
+  found.
+- `world_label_curve.py`: traced the byte-offset save edit (raw binary I/O,
+  document-order 1:1 zip between parsed `<li>` elements and raw-text
+  `<maxDrawSizeInTiles>` tag positions, refusing on a count mismatch rather
+  than guessing) — correct and appropriately defensive. Found a real bug in
+  `apply()`'s post-write **verify** step: it keyed the reread values by
+  feature `name`, but `WorldFeature.name` is not guaranteed unique — only
+  `uid` is, per this same module's own documented proof that the tile-grid's
+  values map 1:1 onto `uniqueID`. Two same-named features would let the
+  later one's value silently overwrite the earlier one's in the verify dict,
+  which could either mask a real failed write or raise a false
+  "VERIFY FAILED". Fixed by keying on `uid` instead — the edit logic itself
+  was already uid/position-based and unaffected; only the verification step
+  was wrong. This is exactly the class of bug this loop watches for (trusting
+  a field that isn't actually unique at a boundary), on a script that writes
+  savegames.
+- `scald_showcase.py`: a one-shot rimbridge review-staging script (paint
+  Scald terrain strip, spawn catch items + floor cast, screenshot, save).
+  Checked `rect_score`/`census`'s cell-range loops for off-by-one against
+  `W, H = 44, 28` — both cover the full height correctly. No bug found.
+
+Both fixes committed at `f596dcc26`. All 4 files marked CLEAN at that
+commit.
+
+Re-measured after: `TALLY CLEAN 3181 DIRTY 148 ORPHANED 192 NEVER ENTERED 446`
+(concurrent biome-split agents are still moving files across buckets each
+wave, same as every wave since 9; only the 4 files this wave touched are
+attributable to this pass).
+
+Next wave: re-survey `list --show-untracked` fresh — no candidate cluster is
+carried forward from this wave. ⛔ Keep avoiding biome-specific mod folders
+(`BlueDesert`, `FeverWood`, `ForsakenCrags`, `LeaningScrub`, `LongShade`,
+`NightsideIce`, `PoisonForest`, `Stillsand`, `TerminalBiomes`, `TheForge`,
+`TheRot`, `Wasteland`, `Miasma`, `Contagion`, `Pyrelands`, `GelatinousSlime`,
+`LanternDeeps`, `RustCathedral`, `WeepingStones` [new this wave —
+`STOCKED_POOL_BUILD_1` is actively landing in its `Source/`]) and
+`biome_paint_list.md` until told the concurrent biome-split build is done.

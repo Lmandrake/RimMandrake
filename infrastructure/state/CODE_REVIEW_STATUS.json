@@ -6766,6 +6766,12 @@
     "hash": "7c25565df526c76a7408d7805d8a60a3e57021744766f4d2585587cf233d50d6",
     "sha": "eb2cdddd"
   },
+  "src/RimMandrake/Utils/dll_source_stamp.py": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "4ede1f311418dcd8a46e82e5e951824efa477ca41f0df7e2efc2c1234978284c",
+    "sha": "f596dcc26"
+  },
   "src/RimMandrake/Utils/doc_claims.py": {
     "cleanCount": 2,
     "date": "2026-09-12",
@@ -7593,6 +7599,12 @@
     "hash": "5f88be12e2fd70f5d73108fbe9e245f256f78467ca2847d85461ac7a72169179",
     "sha": "9b556d77"
   },
+  "src/RimMandrake/Utils/scald_showcase.py": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "a7b4e5f6efb5211e2103a04223804fb552a35f410f47ff915088d84a1883184f",
+    "sha": "f596dcc26"
+  },
   "src/RimMandrake/Utils/selftest_aftermath.py": {
     "cleanCount": 1,
     "date": "2026-09-06",
@@ -7833,6 +7845,12 @@
     "hash": "d2fd2914c733f906675ccab9cedf2954d9a99df867ca2b5a0eaea2f97f60bf21",
     "sha": "39cd22d5"
   },
+  "src/RimMandrake/Utils/shared_sync.py": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "2bd2a9e222bca4c54ef5fc06dde26249ce93b5d1345bd79c4476eee88baf2765",
+    "sha": "f596dcc26"
+  },
   "src/RimMandrake/Utils/sheet_to_artifact.py": {
     "cleanCount": 2,
     "date": "2026-09-24",
@@ -7976,6 +7994,12 @@
     "date": "2026-09-03",
     "hash": "bb7cc415e92cccfe4ea962a74b6ba316f4d7b70f97015b6076c0fc7a53a46866",
     "sha": "2b988f1c"
+  },
+  "src/RimMandrake/Utils/world_label_curve.py": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "ec8e1773c2de7a37ae09e0ba6d1cd108f07190cd4f2373c9aff157aaa919c729",
+    "sha": "f596dcc26"
   },
   "src/RimMandrake/Utils/world_relief.py": {
     "cleanCount": 1,
