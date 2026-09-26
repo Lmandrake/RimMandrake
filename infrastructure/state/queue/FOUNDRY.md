@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T21:51:04Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-26T23:24:03Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1880,3 +1880,23 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  ELDERUNKNOWNWEAPONCONFIG1 — RMElderUnknownWeapon: recipeMaker with no cost, and a borrowed placeholder texPath
 prose:    infrastructure/state/items/ELDER_UNKNOWN_WEAPON_CONFIG_1.md
+
+## HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1 Our three hazard-protection stats sit in statBases, so JobGiver_OptimizeApparel cannot see them and no pawn will ever choose a boil-suit on its own
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1.md
+
+## WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1 RM_GameCondition_WetBulb is a second implementation of RM_HediffComp_EnvironmentalExposure living in the same assembly - retire it into the shared comp
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1.md

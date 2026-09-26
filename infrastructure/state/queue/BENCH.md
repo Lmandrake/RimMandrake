@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T21:51:04Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-26T23:24:03Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -22,15 +22,6 @@ target:   v1
 kind:     task
 summary:  (no items/GREYSEA_FLOOR_PASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GREYSEA_FLOOR_PASS_1.md
-
-## BIOME_LOAD_PROOF_WAVE_1 Prove every biome mod loads clean standalone on a minimal list - the narrow donor-retirement sense of PROVEN, not full functionality
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
-prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
 
 # IN PROGRESS
 
@@ -238,7 +229,17 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## BIOME_LOAD_PROOF_WAVE_1 Prove every biome mod loads clean standalone on a minimal list - the narrow donor-retirement sense of PROVEN, not full functionality
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+waiting:  needs `game-up`, game is DOWN
+summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
+prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
 
 # NOT THIS TARGET
 
@@ -757,3 +758,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  SCALDPLANTDENSITYUNSET1 — RMTheScald leaves plantDensity unset, so its one wildPlants row can never spawn
 prose:    infrastructure/state/items/SCALD_PLANTDENSITY_UNSET_1.md
+
+## LIQUID_TERRAIN_AUTHORED_TWICE_1 Boiling water, brine pool and liquid propane terrain are authored twice in two active mods with identical player labels and different burn numbers
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md
