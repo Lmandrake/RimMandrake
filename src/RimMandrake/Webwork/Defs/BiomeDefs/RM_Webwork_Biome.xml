@@ -101,6 +101,15 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
 
+    <!-- WEBWORK_SOUNDSCAPE_1: "eerily silent" (this def's own description
+         above) as a near-silence ambient bed, not the jungle-insect loop
+         Greentide/Pyrelands use — RM_Webwork_Hush is a low-volume reuse of
+         an existing Anomaly clip (Defs/SoundDefs/RM_WebworkSoundscape.xml),
+         same soundsAmbient wiring convention those two biomes already use. -->
+    <soundsAmbient>
+      <li>RM_Webwork_Hush</li>
+    </soundsAmbient>
+
     <!-- WEBWORK_FAUNA_ROSTER_1: 5 RM_-tier invented rows, the biome's thin
          resident cast. OLLATHRIX_OWNER_SPECIES_1 adds the owner species
          itself (webwork_owner_and_nest_2026-09-23.md §1) — solitary,
