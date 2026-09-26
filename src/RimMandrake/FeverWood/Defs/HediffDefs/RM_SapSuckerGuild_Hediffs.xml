@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SapSuckerGuild_Hediffs.xml                    FEVERWOOD_SAP_SUCKER_GUILD_1
+
+  The visible half of two of the guild's three ruled refusals
+  (fever_wood_deep_and_mud_2026-09-23.md §6, fever_wood_fauna_roster_2026-
+  09-23.md §2) — applied by RM_CompSapSuckerRefusal whenever the carrying
+  pawn takes damage, cooldown-gated, never a random roll. Ollareth's scream
+  carries no hediff (its refusal is an alarm, not a self-state) — see
+  RM_SapSuckerGuild.xml.
+
+  Both decay on their own (HediffCompProperties_SeverityPerDay, negative —
+  same shape as RM_HeatDrivenBurst/RM_FluidSacPoison in CreatureBehaviors)
+  so a sealed/swollen animal returns to normal once left alone, matching
+  "does not flee... refuses to be bothered" rather than being a permanent
+  state change.
+
+  🔴 Every numeric field below (statOffsets, severityPerDay, maxSeverity) is
+  an INVENTED placeholder — the design doc rules the SHAPE of each refusal
+  ("seals itself in hardened sap", "swells until it cannot be detached")
+  and explicitly leaves every number unset. FEVERWOOD_SAP_SUCKER_TUNING_1
+  owns the real pass.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_Hediff_SapSealed</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>sap-sealed</label>
+    <description>Bothered, this animal has flooded and set its own shell in hardened sap. It must be cracked open before anything more can be done to it.</description>
+    <defaultLabelColor>(0.75, 0.55, 0.15)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li>
+        <label>sealed</label>
+        <minSeverity>0</minSeverity>
+        <!-- INVENTED placeholder: the "must be cracked open" armour. -->
+        <statOffsets>
+          <ArmorRating_Sharp>0.6</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.4</ArmorRating_Blunt>
+          <MoveSpeed>-0.5</MoveSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <!-- INVENTED placeholder: ~2 in-game days to fully unseal once left alone. -->
+        <severityPerDay>-0.5</severityPerDay>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Hediff_Swollen</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>swollen</label>
+    <description>Bothered, this animal has inflated until it cannot be pulled from its perch. Bursting it now would yield a large one-time harvest — and end this animal as a renewable source for good.</description>
+    <defaultLabelColor>(0.6, 0.6, 0.68)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li>
+        <label>swollen</label>
+        <minSeverity>0</minSeverity>
+        <!-- INVENTED placeholder: "cannot be pulled off" — sluggish, tough. -->
+        <statOffsets>
+          <MoveSpeed>-1.0</MoveSpeed>
+          <ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+        </statOffsets>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <!-- INVENTED placeholder: ~1.5 in-game days to fully deflate. -->
+        <severityPerDay>-0.65</severityPerDay>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

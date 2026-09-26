@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SapSuckerGuildProducts.xml                    FEVERWOOD_SAP_SUCKER_GUILD_1
+
+  The four products the guild's ruled yields name (fever_wood_deep_and_mud_
+  2026-09-23.md §6, fever_wood_fauna_roster_2026-09-23.md §2):
+    - RM_ThornbugNectar — the nectar contract's own yield (row 1, "nectar —
+      the dairy the arboreal cantons run on"). Gathered continuously, calm-
+      gated, via RM_CompGatherableCalmGated (already shipped,
+      FEVER_WOOD_MECHANICS_1 F8) — the ThingDef/PawnKindDef precedent that
+      comp lacked is RM_Thornbug in RM_SapSuckerGuild.xml.
+    - RM_VaulmLacquer — row 2's yield ("a usable lacquer material, and the
+      reason to bother with a sealed one"). Butcher-only: reaching it means
+      killing and cracking the animal open, never a live gather.
+    - RM_DrommathSap — row 4's small ongoing yield while UNBOTHERED. Reuses
+      RM_CompGatherableCalmGated (EnvironmentalHazards, F8) rather than the
+      vanilla generic CompHasGatherableBodyResource pair, which has zero
+      precedent in this repo and whose exact XML fields this pass could not
+      verify against source — see RM_SapSuckerGuild.xml's own header.
+    - RM_DrommathBurstSap — row 4's "large one-time payout" from bursting
+      (butcherProducts) — "which destroys a renewable source": a butchered
+      drommath stops producing RM_DrommathSap for good, same as any killed
+      animal, so no special one-off bookkeeping is needed beyond a bigger
+      butcher yield.
+
+  Textures: no bespoke art for any of these four exists yet (checked
+  infrastructure/artpipe/done + registry.jsonl + _artsrc for "nectar",
+  "lacquer", "vaulm", "drommath" — nothing). ⚠️ A first pass reused vanilla
+  Things/Item/Resource/Chemfuel and Things/Item/Resource/Leather/Leather_Plain
+  by bare path, the way RM_DrainedFluids/RM_Greentide_Items/RM_SumpFaunaItems
+  do, but the offline patch validator's def/live texture check found this mod
+  (RM_FeverWood) already ships its own loose Things/ art (RM_OssagrelSap et
+  al.), and flagged the bare vanilla paths as unresolvable/ERROR from here
+  rather than the WARN a genuinely asset-bundled vanilla texture gets — so
+  this ships flat-color placeholders under this mod's own
+  Things/Item/Resource/&lt;defName&gt;/ instead (same posture as every pawn
+  placeholder in RM_SapSuckerGuild.xml). Real bespoke art for all four is
+  owed to the standing art pipeline.
+
+  🔴 All market values, masses, stack limits and rot rates below are
+  INVENTED placeholders — FEVERWOOD_SAP_SUCKER_TUNING_1 owns the real pass.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_ThornbugNectar</defName>
+    <label>thornbug nectar</label>
+    <description>Sweet, thick nectar wept by a calm thornbug — the dairy the arboreal cantons run on. A frightened herd dries up for days; every raid on the guild costs nectar before it costs blood.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>2.4</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>6</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+      <foodType>VegetableOrFruit</foodType>
+      <nutrition>0.05</nutrition>
+    </ingestible>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_VaulmLacquer</defName>
+    <label>vaulm lacquer</label>
+    <description>Amber-hard resin, cracked from a sealed vaulm's own shell. It sets glass-smooth and takes a fine finish — a real crafting material, and the reason anyone bothers a defended sap-sucker at all.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>4.5</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_DrommathSap</defName>
+    <label>drommath sap</label>
+    <description>A thin trickle of sugar-sap, drawn off a swelling drommath without pushing it to burst. Renewable, for as long as the animal is left alone.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_DrommathSap/RM_DrommathSap</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>1.0</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>8</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+      <foodType>VegetableOrFruit</foodType>
+      <nutrition>0.04</nutrition>
+    </ingestible>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_DrommathBurstSap</defName>
+    <label>burst drommath sap</label>
+    <description>A gluttonous payout of sap, all at once, from a drommath burst rather than milked — this animal will never yield again. Worth far more than a season of the trickle it used to give.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>1.1</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>1.0</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>8</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+      <foodType>VegetableOrFruit</foodType>
+      <nutrition>0.04</nutrition>
+    </ingestible>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

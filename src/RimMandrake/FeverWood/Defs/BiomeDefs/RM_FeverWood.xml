@@ -158,6 +158,14 @@
           <li>SoilRich</li>
         </convertFromTerrains>
       </li>
+      <!-- FEVERWOOD_ANT_HIVE_DUNGEON_1. v1 only: procedural layout + plain
+           hostile workers/queen. The reactive alarm/rally mechanism and the
+           farm/parasite/guard chambers are follow-on work — see
+           RM_AntHiveBiomeExtension's own header. -->
+      <li Class="RimMandrake.FeverWood.RM_AntHiveBiomeExtension">
+        <workerKind>RM_Kurreth</workerKind>
+        <queenKind>RM_KurrethQueen</queenKind>
+      </li>
     </modExtensions>
     <baseWeatherCommonalities>
       <Clear>30</Clear>
@@ -175,6 +183,28 @@
          instead — Q11a. -->
     <wildAnimals>
       <VFEI2_Megathrips MayRequire="oskarpotocki.vfe.insectoid2">0.5</VFEI2_Megathrips>  <!-- megathrips - wood-borer, keep -->
+
+      <!-- FEVERWOOD_SAP_SUCKER_GUILD_1: the sap-drinker guild, four species,
+           one rule ("clamped to bark, drinks sap, does not flee"), four
+           refusals. Commonalities are ENGINEERING DEFAULTS, not owner-set
+           values, same posture as the flora roster's own §8 — thornbug
+           highest (the existing, most numerous nectar-contract herd),
+           the other three lower and roughly even. -->
+      <RM_Thornbug>0.6</RM_Thornbug>  <!-- thornbug - the nectar contract -->
+      <RM_Vaulm>0.3</RM_Vaulm>  <!-- vaulm - seals itself in hardened sap -->
+      <RM_Ollareth>0.3</RM_Ollareth>  <!-- ollareth - screams for help -->
+      <RM_Drommath>0.3</RM_Drommath>  <!-- drommath - swells until it can't be pulled off -->
+
+      <!-- FEVERWOOD_ALIEN_BIRD_CHORUS_1: the crown's four birds — the
+           "loudest place on the planet, deliberately" cast whose ambient
+           chorus is the thing that falls silent for the water (see
+           RM_FeverWoodBirds.xml's own header). Commonalities are
+           ENGINEERING DEFAULTS, chellow highest since it is the tameable
+           row the owner explicitly wants cultivated near a base. -->
+      <RM_Chellow>0.5</RM_Chellow>  <!-- chellow - tameable, the chorus you can keep -->
+      <RM_Murrelith>0.35</RM_Murrelith>  <!-- murrelith - plumage worth money -->
+      <RM_Thavrik>0.3</RM_Thavrik>  <!-- thavrik - nests worth raiding -->
+      <RM_Skellick>0.25</RM_Skellick>  <!-- skellick - steals your things -->
     </wildAnimals>
     <coastalWildAnimals />
     <!-- FEVERWOOD_FLORA_ROSTER_1: the 3 AB_* donor placeholder rows
