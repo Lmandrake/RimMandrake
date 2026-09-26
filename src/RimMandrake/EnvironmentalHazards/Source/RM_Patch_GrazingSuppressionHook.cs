@@ -18,20 +18,11 @@ namespace RimMandrake.EnvironmentalHazards
     // the whole mechanism per the spec's own text ("zero new defs — any
     // plant-eater suppresses, which is exactly the sheet's ecology").
     //
-    // NOT calling into a real grid this pass: confirmed by grep before
-    // writing this file (grep -rn "ExplosivePlantGrowth\|SuppressionGrid"
-    // src/, zero hits outside this file's own TODO marker below) that
-    // EXPLOSIVE_PLANT_GROWTH_1 — a separate, larger, BENCH-owned item — has
-    // not shipped its suppression-grid engine yet (still design-only per
-    // infrastructure/state/items/EXPLOSIVE_PLANT_GROWTH_1.md, re-checked
-    // 2026-09-26: still "doing", only the design doc exists). Building that
-    // grid here would be doing a different item's whole job inside this
-    // hook — exactly the trap RM_CompDryFieldEmitter.SuppressPlantGrowth()
-    // (M2, same kit) already declined for the identical reason. This hook
-    // follows that same precedent: the seam is proven and armed, the actual
-    // grid write is a documented no-op with a TODO naming the item that
-    // owns it, so the day that grid ships, only WriteSuppression's body
-    // needs filling in — no new patch, no new choke-point hunt.
+    // WIRED 2026-09-26: the grid this hook was built to write into now
+    // exists (mandrake.rm.explosivegrowth, EXPLOSIVE_PLANT_GROWTH_1). The
+    // write goes through RM_ExplosiveGrowthSuppressionBridge by reflection,
+    // so this kit still takes no hard dependency on that mod — without it
+    // the hook stays armed and writes nothing.
     [StaticConstructorOnStartup]
     public static class RM_GrazingSuppressionHookPatch
     {
@@ -87,15 +78,13 @@ namespace RimMandrake.EnvironmentalHazards
             }
         }
 
-        // TODO(EXPLOSIVE_PLANT_GROWTH_1): once that engine's suppression
-        // grid exists, call its write here for `cell` at `SuppressionRadius`
-        // on `map` — do not build a new grid in this method when that day
-        // comes, call into the real one. `ingester` is threaded through
-        // already (unused today) since the real engine may want to
-        // distinguish a wild grazer from a player-owned animal or a
-        // colonist eating raw.
+        // `ingester` is unused: the spec's ecology is "any plant-eater
+        // suppresses" — a wild grazer, a penned herd and a colonist eating
+        // raw all hold the green back the same way.
         private static void WriteSuppression(IntVec3 cell, Map map, Pawn ingester)
         {
+            RM_ExplosiveGrowthSuppressionBridge.Suppress(map, cell, SuppressionRadius,
+                RM_ExplosiveGrowthSuppressionBridge.GrazingSuppressionTicks);
         }
     }
 }
