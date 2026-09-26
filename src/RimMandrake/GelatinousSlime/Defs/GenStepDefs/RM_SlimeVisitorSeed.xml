@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SlimeVisitorSeed.xml              §10, owner ruling 2026-09-24 ("Yes, I
+  think that's a good idea" to BENCH's offer of a visitor seed pass).
+
+  Runs once, at generation, on any newly generated RM_GelatinousSlime map:
+  spawns 3-5 never-hostile arrivals drawn from the neighbouring world tiles'
+  own wildAnimals (same read MapComponent_SlimeVisitors.BuildNeighbourRoster
+  uses for the ambient trickle), each carrying Slimification at the standard
+  arrival severity (0.25-0.7), so the biome opens already showing
+  "everything that ever touched it" instead of gelatids-only for the first
+  days.
+
+  Order 751: right after Core's own wildlife step (750) — after terrain,
+  roads and the biome's native wildAnimals have placed their pawns, so this
+  reads as part of the same population wave and MaxVisitorsOnMap's cap sees
+  an accurate count — and long before anything that matters to a fresh
+  landing (colonist placement, item scatter). Generate() below self-gates on
+  map.Biome, so registering it globally (below) is safe: it no-ops on every
+  non-Slime map, the same shape RM_GenStep_LiquidShores/
+  RUT_FungalSoilScatter already use.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_SlimeVisitorSeed</defName>
+    <order>751</order>
+    <genStep Class="RimMandrake.GelatinousSlime.GenStep_SlimeVisitorSeed" />
+  </GenStepDef>
+
+</Defs>

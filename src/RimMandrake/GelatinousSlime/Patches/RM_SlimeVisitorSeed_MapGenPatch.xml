@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  §10 registration — adds RM_SlimeVisitorSeed to the shared base map
+  generator, the same shape src/RimMandrake/FlowWorks/Patches/LiquidTypes/
+  RM_LiquidShores_MapGenPatch.xml and src/RimUtinni/FungalSoilTrade/Patches/
+  RUT_FungalSoilScatter_MapGenPatch.xml use: MapGenerator reads
+  MapGeneratorDef.genSteps, so a step not named in a generator's list never
+  runs at all.
+
+  Adding it globally is safe because GenStep_SlimeVisitorSeed self-gates in
+  its own Generate(): on any map whose biome is not RM_GelatinousSlime it
+  returns immediately, touching nothing.
+
+  ⚠️ PatchOperationAdd on an xpath that matches nothing returns FALSE and is
+  reported, unlike PatchOperationConditional/FindMod which return true on no
+  match. MapCommonBase is Core's own abstract generator and cannot be
+  absent, so a failure here means the xpath is wrong, not that a mod is
+  missing.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <value>
+      <li>RM_SlimeVisitorSeed</li>
+    </value>
+  </Operation>
+
+</Patch>
