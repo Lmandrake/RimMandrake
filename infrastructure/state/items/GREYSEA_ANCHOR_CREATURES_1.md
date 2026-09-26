@@ -11,9 +11,17 @@ existed as defs, and the roster's own `new_defs` list still names them as owed.
 
 | sheet anchor | status |
 |---|---|
-| the crusted giant | **probably built** — the roster's rename ledger maps it onto `RSW_Reefback` → "Brine Warden (adult)"; `RM_Reefback` ships. Confirm the mapping before building anything new. |
-| **the pillar-mason** | **NO DEF EXISTS** |
-| **the ossuary shrimp** | **NO DEF EXISTS** |
+| the crusted giant | **BUILT** — `RM_Reefback`, `baseBodySize` 32. *"So old the reef grows on it: coral, kelp, a hundred hangers-on that never leave."* |
+| **the ossuary shrimp** | 🔴 **BUILT — corrected 2026-09-26, same day.** It ships as **`RM_Fessk`**: *"A man-sized, bone-white picker that works the freshly dead before the Grey Sea's minerals can jacket them, all long forelimbs and no bulk, watching from half behind a salt pillar."* That is the sheet's shrimp exactly. |
+| **the pillar-mason** | **NO DEF EXISTS** — re-confirmed by searching every def whose body mentions "pillar": the pillars appear in four creatures' descriptions and nowhere as a thing, terrain or structure. |
+
+🔴 **CORRECTION, recorded because it was briefly wrong in this file and was said aloud to
+the owner.** The first pass reported the ossuary shrimp as unbuilt. It is built — the
+first pass matched on **defName** (`RM_OssuaryShrimp`, absent) instead of reading the
+**descriptions**, and the shrimp ships under an invented name like every other creature
+here. ⇒ 🔑 A creature census on this project must read descriptions, never defNames: our
+naming convention is invented exotic words, so a name-matched census will report a fully
+built roster as missing. Only ONE anchor is actually owed.
 
 What actually ships is `RM_Reefback`, `RM_Fessk`, `RM_Sorruth`, `RM_Essarn`,
 `RM_Otheska` — all real, all fine, and none of them the thing the sheet is about.
