@@ -45,5 +45,9 @@ this def ships only vanilla + one non-Star-Wars donor row
 AB_Iashiphus, AB_Gomphoeria) + this mod's own RM_GiantLeaf.
 
 Live proof (step 5, a scratch-world quicktest with all five expansions) is
-Desktop-only and OWED — see the item's own verify record.</description>
+DONE — loaded clean, 0 typeloads/patch failures/recovery, 18/18 def
+sentinels resolved live (2026-09-25). This mod ships in the owner's full
+626-mod list. All of the biome's F1/F5/F6/F7 mechanic content (mirror
+pools, ground-refusal marsh, boughway network, fever trunks) now lives
+here rather than in UtinniPatches — see the item's own verify record.</description>
 </ModMetaData>
