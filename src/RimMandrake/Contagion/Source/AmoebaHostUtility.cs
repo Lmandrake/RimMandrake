@@ -13,6 +13,11 @@ namespace RimMandrake.Contagion
     // forms every Bloom" — the one roster entry that reads as amoeba-like
     // rather than insect/reptile/bird-like). Consumable per owner ruling
     // 2026-09-22: the host dies producing exactly one batch.
+    //
+    // CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1: the batch pool now includes
+    // RM_GrownLeg/RM_GrownArm alongside the four vanilla organs -- "organs
+    // AND LIMBS," the owner's own words on the original ruling, deferred out
+    // of v1 until the limb mechanism existed.
     public static class AmoebaHostUtility
     {
         // AA_OcularJelly/etc. are all sarg.alphaanimals defNames; RedGoo is
@@ -77,7 +82,9 @@ namespace RimMandrake.Contagion
                 RM_OrganDefOf.Kidney,
                 RM_OrganDefOf.Liver,
                 RM_OrganDefOf.Lung,
-                RM_OrganDefOf.Heart
+                RM_OrganDefOf.Heart,
+                RM_OrganDefOf.RM_GrownLeg,
+                RM_OrganDefOf.RM_GrownArm
             }.Where(d => d != null).ToList();
 
             int count = OrganCountRange.RandomInRange;
@@ -101,7 +108,7 @@ namespace RimMandrake.Contagion
             if (spawned.Count > 0)
             {
                 Messages.Message(
-                    "A Contagion amoeba host has died producing " + spawned.Count + " organ(s) grown from " + sourcePawnName + "'s genome.",
+                    "A Contagion amoeba host has died producing " + spawned.Count + " organ(s) and/or limb(s) grown from " + sourcePawnName + "'s genome.",
                     new LookTargets(spawned),
                     MessageTypeDefOf.PositiveEvent);
             }
@@ -111,7 +118,10 @@ namespace RimMandrake.Contagion
     // Vanilla organ ThingDefs — resolved by convention-matched field name via
     // [DefOf], never invented as new defs of our own (see CompGenomeMatched's
     // header for why: a new ThingDef would not fit vanilla's existing
-    // install-organ recipes).
+    // install-organ recipes). RM_GrownLeg/RM_GrownArm (CONTAGION_GENOME_
+    // LIMB_AND_MATCH_BONUS_1) are the one exception — vanilla has no natural
+    // leg/arm ThingDef to reuse at all, so those two ARE new defs of our own
+    // (Defs/ThingDefs/RM_GrownLimbs.xml).
     [DefOf]
     public static class RM_OrganDefOf
     {
@@ -119,6 +129,8 @@ namespace RimMandrake.Contagion
         public static ThingDef Liver;
         public static ThingDef Lung;
         public static ThingDef Heart;
+        public static ThingDef RM_GrownLeg;
+        public static ThingDef RM_GrownArm;
 
         static RM_OrganDefOf()
         {

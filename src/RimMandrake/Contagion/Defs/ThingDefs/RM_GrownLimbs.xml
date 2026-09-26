@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1. The owner's "plethora of organs
+    AND LIMBS" (CONTAGION_GENOME_ORGAN_GROWING_1's own ruling) extended to
+    real limbs. Unlike the four vanilla organs (Kidney/Liver/Lung/Heart,
+    which already existed as installable ThingDefs and only needed a comp
+    patched onto them), vanilla ships NO natural leg/arm ThingDef at all —
+    confirmed via RimSage against the decompiled 1.6 source across every
+    DLC (Core/Biotech/Royalty/Ideology/Anomaly/Odyssey): only
+    SimpleProstheticLeg/Arm, BionicLeg/Arm and ArchotechLeg/Arm exist, all
+    clearly artificial. So these two are new ThingDefs of our own, parented
+    directly off vanilla's own BodyPartNaturalBase (Defs/Core/HediffDefs/
+    BodyParts/Hediffs_BodyParts_Natural.xml) — the exact abstract parent
+    Kidney/Liver/Lung/Heart themselves use — so a grown limb is
+    mechanically a REAL natural body part in every sense vanilla's own
+    organs are, just for Leg/Arm instead of an internal organ. Installing
+    one does not add a replacement device: RecipeDefs/RM_InstallGrownLimbs.xml
+    routes through vanilla's own Recipe_InstallNaturalBodyPart (confirmed
+    generic to any BodyPartRecord, not organ-specific) via our
+    Recipe_InstallGrownBodyPart subclass, which calls
+    MedicalRecipesUtility.RestorePartAndSpawnAllPreviousParts under the
+    hood — the limb is simply restored, exactly the "natural regrowth"
+    tier the item's spec asked for (matching what Biotech's own Biosculpter
+    Regeneration cycle does for Eye/Ear/Nose/Finger/Toe/Tongue: RESTORE, not
+    replace with a device).
+
+    <comps> here declares only the new CompProperties_GenomeMatched —
+    RimWorld's XML def inheritance merges (appends) list-type fields rather
+    than replacing them wholesale (confirmed against InstallNaturalKidney's
+    own raw-vs-merged ingredients/fixedIngredientFilter, which show the same
+    append behaviour), so BodyPartBase's inherited CompProperties_Forbiddable
+    survives alongside it without being redeclared.
+
+    ART: no queued or existing "grown limb" art found (infrastructure/
+    artpipe/done/, _artsrc/ and registry.jsonl grepped by subject, all
+    absent). Reuses BodyPartNaturalBase's own inherited HealthItem
+    placeholder texture — the same placeholder every vanilla organ ThingDef
+    (Kidney/Liver/Lung/Heart) already ships with. A dedicated icon is a fair
+    follow-on, not owed by this pass.
+  -->
+
+  <ThingDef ParentName="BodyPartNaturalBase">
+    <defName>RM_GrownLeg</defName>
+    <label>grown leg</label>
+    <description>A whole biological leg, gestated inside a Contagion amoeba from an injected genome sample. Installing it does not fit a device -- it restores the limb itself, matched to whoever the genome came from.</description>
+    <descriptionHyperlinks>
+      <RecipeDef>RM_InstallGrownLeg</RecipeDef>
+    </descriptionHyperlinks>
+    <thingClass>ThingWithComps</thingClass>
+    <statBases>
+      <MarketValue>1800</MarketValue>
+      <Mass>4</Mass>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.Contagion.CompProperties_GenomeMatched" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BodyPartNaturalBase">
+    <defName>RM_GrownArm</defName>
+    <label>grown arm</label>
+    <description>A whole biological arm, gestated inside a Contagion amoeba from an injected genome sample. Installing it does not fit a device -- it restores the limb itself, matched to whoever the genome came from.</description>
+    <descriptionHyperlinks>
+      <RecipeDef>RM_InstallGrownArm</RecipeDef>
+    </descriptionHyperlinks>
+    <thingClass>ThingWithComps</thingClass>
+    <statBases>
+      <MarketValue>1600</MarketValue>
+      <Mass>3</Mass>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.Contagion.CompProperties_GenomeMatched" />
+    </comps>
+  </ThingDef>
+
+</Defs>

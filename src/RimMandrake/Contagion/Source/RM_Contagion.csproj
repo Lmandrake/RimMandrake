@@ -54,6 +54,9 @@
     <!-- CONTAGION_UNFINISHED_SPAWNER_1 -->
     <Compile Include="CompRandomizeUnfinished.cs" />
     <Compile Include="CompSpawnerUnfinished.cs" />
+    <!-- CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1 -->
+    <Compile Include="Recipe_InstallGrownBodyPart.cs" />
+    <Compile Include="GenomeMatchBonusUtility.cs" />
   </ItemGroup>
 
   <ItemGroup>

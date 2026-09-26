@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1. Routes the four vanilla
+    natural-organ install recipes through Recipe_InstallGrownBodyPart
+    instead of vanilla's own Recipe_InstallNaturalBodyPart, so the SAME
+    install-match check that covers grown limbs also covers organs — the
+    item's own spec point 2 asks for exactly this. The subclass calls
+    straight through to unchanged vanilla behaviour first: this is a pure
+    superset, never a replacement. Every organ transplant carrying no
+    CompGenomeMatched data (i.e. every organ harvested the ordinary way,
+    from anyone but our own genome-injection mechanic) is a complete no-op,
+    exactly like CompGenomeMatched itself already is on these same four
+    ThingDefs (Patches/OrganGenomeComps.xml).
+
+    Each concrete InstallNatural<Organ> RecipeDef inherits its workerClass
+    from the abstract SurgeryInstallBodyPartNaturalBase and declares no
+    <workerClass> of its own (confirmed via RimSage against the decompiled
+    1.6 source XML, Defs/Core/HediffDefs/BodyParts/Hediffs_BodyParts_
+    Natural.xml) — so PatchOperationConditional's <nomatch> branch (Add,
+    not Replace) is the one that actually fires; <match> is kept only in
+    case a future game update or another mod adds an explicit override,
+    same defensive shape as OrganGenomeComps.xml's own conditional.
+  -->
+
+  <Operation Class="PatchOperationSequence">
+    <operations>
+
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/RecipeDef[defName="InstallNaturalHeart"]/workerClass</xpath>
+        <match Class="PatchOperationReplace">
+          <xpath>/Defs/RecipeDef[defName="InstallNaturalHeart"]/workerClass</xpath>
+          <value>
+            <workerClass>RimMandrake.Contagion.Recipe_InstallGrownBodyPart</workerClass>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/RecipeDef[defName="InstallNaturalHeart"]</xpath>
+          <value>
+            <workerClass>RimMandrake.Contagion.Recipe_InstallGrownBodyPart</workerClass>
+          </value>
+        </nomatch>
+      </li>
+
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/RecipeDef[defName="InstallNaturalLung"]/workerClass</xpath>
+        <match Class="PatchOperationReplace">
+          <xpath>/Defs/RecipeDef[defName="InstallNaturalLung"]/workerClass</xpath>
+          <value>
+            <workerClass>RimMandrake.Contagion.Recipe_InstallGrownBodyPart</workerClass>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/RecipeDef[defName="InstallNaturalLung"]</xpath>
+          <value>
+            <workerClass>RimMandrake.Contagion.Recipe_InstallGrownBodyPart</workerClass>
+          </value>
+        </nomatch>
+      </li>
+
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/RecipeDef[defName="InstallNaturalKidney"]/workerClass</xpath>
+        <match Class="PatchOperationReplace">
+          <xpath>/Defs/RecipeDef[defName="InstallNaturalKidney"]/workerClass</xpath>
+          <value>
+            <workerClass>RimMandrake.Contagion.Recipe_InstallGrownBodyPart</workerClass>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/RecipeDef[defName="InstallNaturalKidney"]</xpath>
+          <value>
+            <workerClass>RimMandrake.Contagion.Recipe_InstallGrownBodyPart</workerClass>
+          </value>
+        </nomatch>
+      </li>
+
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/RecipeDef[defName="InstallNaturalLiver"]/workerClass</xpath>
+        <match Class="PatchOperationReplace">
+          <xpath>/Defs/RecipeDef[defName="InstallNaturalLiver"]/workerClass</xpath>
+          <value>
+            <workerClass>RimMandrake.Contagion.Recipe_InstallGrownBodyPart</workerClass>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/RecipeDef[defName="InstallNaturalLiver"]</xpath>
+          <value>
+            <workerClass>RimMandrake.Contagion.Recipe_InstallGrownBodyPart</workerClass>
+          </value>
+        </nomatch>
+      </li>
+
+    </operations>
+  </Operation>
+
+</Patch>

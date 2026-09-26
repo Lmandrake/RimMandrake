@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1 — the install-match bonus.
+    Granted by GenomeMatchBonusUtility.ApplyMatchBonus, called from
+    Recipe_InstallGrownBodyPart.ApplyOnPawn only when the installed organ or
+    limb's CompGenomeMatched.sourcePawnID equals the RECIPIENT's own
+    thingIDNumber — i.e. only when a colonist gets a piece grown from their
+    OWN genome back. A mismatch (someone else's matched tissue, or an
+    ordinary vanilla-harvested organ carrying no genome data at all) grants
+    nothing — no bonus, and per the owner's body-horror caution on this
+    biome, no penalty either.
+  -->
+
+  <ThoughtDef>
+    <defName>RM_GenomeMatchedInstall</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>10</durationDays>
+    <stages>
+      <li>
+        <label>grown from my own genome</label>
+        <description>What they just installed in me grew from my own genome, inside one of the Contagion's amoebas. My body knows it as its own -- it never feels foreign at all.</description>
+        <baseMoodEffect>8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
