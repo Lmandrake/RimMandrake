@@ -29,5 +29,13 @@ Absorbed RimMandrake: RSW — Beast Lairs (mandrake.rsw.injections).</descriptio
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>ludeon.rimworld.odyssey</li>
     <li>mandrake.rm.inhabited</li>
+      <!-- DBH_LITE_UNDECLARED_DEPENDENCY_1 (2026-09-26): moisture_farm.txt places a
+           PrimitiveWell THING, a real ThingDef shipped only by Dubs Bad Hygiene Lite
+           (dubwise.dubsbadhygiene.lite). Soft dependency, not <modDependencies>: the
+           well is optional decorative content and mandrake.rm.injections' engine
+           already degrades gracefully without it (one THING line skipped, logged,
+           rest of the plan still places); see mandrake.rm.injections' About.xml for
+           the full rationale. -->
+    <li>dubwise.dubsbadhygiene.lite</li>
   </loadAfter>
 </ModMetaData>
