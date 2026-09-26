@@ -1010,7 +1010,9 @@ are recorded where they land.
    no-depletion patch behind a Mod Setting. He may mean the literal one.
 6. **A third light source** (§6.1) vs sheet §9 *"the two warm sources"*. **Position:**
    additive — the sheet's own *"busy and alive"* darkness; but §9 is the artistic-theme
-   section and he wrote it, so a word.
+   section and he wrote it, so a word. **ANSWERED by his second drop the same day
+   (§13.2):** cultivated living light — *"sphere colonies of microorganisms bright enough
+   to be like sunlight"* — is his own third source. Additive; no ruling needed.
 7. **The skylight as a real light and the shafts as real water** (§5, §6.3). Both are
    engine shapes for rulings already made, but they change what the floor *is*: kelp
    grows only in shafts; fishing happens only in shafts. **Position:** yes to both — it is
@@ -1117,7 +1119,7 @@ double because it was ruled *"rich and varied as the land"* and because every fi
 owes two defs.
 
 **Items BENCH thinks should be filed** (names in the project's grammar; BENCH files with
-him, not this pass): `TWILIGHT_FLOOR_LIGHTING_1` (steps 1–3, 11), `TWILIGHT_SEAWEED_FLORA_1`
+him, not this pass — §13 adds to this list at its end): `TWILIGHT_FLOOR_LIGHTING_1` (steps 1–3, 11), `TWILIGHT_SEAWEED_FLORA_1`
 (4, 5, 10, 15), `TWILIGHT_FISH_BODIES_1` (6 — the Twilight portion of
 `SEA_FISHABLES_ALIVE_IN_DEPTHS_1`), `TWILIGHT_CLINGING_LAYER_1` (7),
 `TWILIGHT_CHANNEL_CURRENT_1` (8–9, carries Q2 and the interaction list),
@@ -1125,3 +1127,264 @@ him, not this pass): `TWILIGHT_FLOOR_LIGHTING_1` (steps 1–3, 11), `TWILIGHT_SE
 `TWILIGHT_WHALE_SHADOW_1` (14, joint mockup), `TWILIGHT_CANOPY_REWORDING_1` (16, gated on
 Q1) — and a roster amendment at the next Twilight sitting (§10.3), a sheet edit on his
 word, not an item.
+
+## 13. Second drop, same day — farming, living light, living decor, the whale sequence
+
+_Captured 2026-09-26, later the same day, after §0–§12 were written and pushed. Same
+discipline: his words in the block quote are the authority; everything under a
+**BENCH NOTE** is ours. Most of this is new material; where it answers a flag above, the
+flag is marked answered in place._
+
+> "I love the idea that there is a rich opportunity to farm down here. Underwater plants in either on traditional grow zones on the sea floor or even tethered like floating cube cages or sphere cages with a chain leading down to its tether on the surface. Show case technology for the Deepwater faction. Unique plants and capabilities. Huge variety for starwars cuisine mod. The idea that you can grow sphere colonies of microorganisms bright enough to be like sunlight to grow plants is very cool. Luminous vines the players can lay around to decorate after they're grown and harvested. underwater plants have the unusual property of staying alive after you "pick" them, so you can then decorate with a living plant easily. I love the shadow of the whale-analog leads to eerie booming sounds and little light... animals freak out... and then it starts raining detritus, parasites, barnacle analogs with glowing bits in them like gems. and the whole ecosystem goes into overdrive and starts eating them at great speed. I love that the floating farming doesn't use up surface space because it floats above you."
+
+### 13.1 Farming — two routes, both ship
+
+> "Underwater plants in either on traditional grow zones on the sea floor or even tethered like floating cube cages or sphere cages …"
+
+> "I love that the floating farming doesn't use up surface space because it floats above you."
+
+**Route 1 — floor grow zones** are §8.3 unchanged: bank silt is fertile, the Twilight's
+sowables carry a Twilight sow tag, an ordinary growing zone works. Nothing new.
+
+**Route 2 — tethered cages.** **BENCH NOTE.** His stated reason is the design: growing
+capacity that **costs no floor area**, unique on the planet to a biome whose ceiling is
+water. What that is in a 2-D top-down game:
+
+- **The reading.** *"a chain leading down to its tether"* reads two ways — a buoyant cage
+  chained DOWN to an anchor on the floor, or a cage hung from a surface float. The first
+  is the one that lets a cage sit *above* anything (the current, a channel, a kelp stand,
+  a house) and is the one designed here; the picture is the same from above either way.
+  Q13 asks which he meant.
+- **The engine shape — a `Building_PlantGrower` you can walk under.** The GlowTank
+  (`src/RimMandrake/LuminousPigment/Defs/ThingDefs_Buildings/RM_GlowTank.xml`, MEASURED)
+  is already a 2×2 `Building_PlantGrower` on the vanilla hydroponics pattern, so the
+  crop-in-a-building half is shipped practice. The cage adds the vertical trick:
+  `passability PassThroughOnly`, `fillPercent 0`, drawn at an altitude layer **above
+  pawns** (the cage seen from above, chain and anchor at one corner, the crop visible
+  through the bars), so a pawn walks beneath it and the floor cell keeps every use except
+  *another building*. **Sphere cage** (`RM_SphereCage`, 2×2, 4 grow cells, cheap) and
+  **cube cage** (`RM_CubeCage`, 3×3, 9 grow cells, dear). Sow and harvest are the vanilla
+  plant-grower jobs, done from the cells themselves — the pawn is *at the cage*, standing
+  under it.
+- **How it differs from a floor zone, in play:** (1) **placeable over the channel bed**
+  — the one ground you cannot farm, farmed from above: the vertical payoff made legible
+  in one placement; (2) **immune to floor hazards** — the current does not move it (it is
+  chained), veil-fall does not bury it, nuudal do not graze it, tikkarr cannot reach it
+  (so a caged oruvell plot loses the tikkarr's growth bonus, §3.1 — a real trade); (3)
+  **its light is its own problem** — a cage in a shaft grows on skylight; a cage in the
+  dark needs a grow-sphere (§13.2) beside it, which is the thing that makes the two
+  ideas one system; (4) **no fertility** — it neither needs nor gets it; growth at the
+  plant's own rate, so the cage's gain is space and safety, never speed; (5) **it costs
+  Deepwater tech** (§13.5): a tether is not craftable from lattice-timber.
+- **Mod Setting:** cages on/off; cages passable-beneath on/off (for players who find
+  walking under a crop odd).
+
+### 13.2 Grow-light you farm — the sun-sphere
+
+> "The idea that you can grow sphere colonies of microorganisms bright enough to be like sunlight to grow plants is very cool."
+
+**BENCH NOTE — checked against `src/RimMandrake/LuminousPigment/` first, as briefed.**
+The **GlowTank** ships: a 2×2 `Building_PlantGrower` that cultures `RM_CrowncarpetCultured`
+(a Scald shore mat) from one seed of `RM_CrowncarpetFresh`, on power, and dies if power
+lapses; its `CompGlower` is radius 2.0, colour (200,220,255) — a *pigment* culture whose
+glow is incidental, *"slow and low-yield"* by its own description. **This is its big
+sibling, in the same family and the opposite purpose: cultured FOR light, and the light
+is the crop.**
+
+- **The organism: the ollumin** (`RM_OlluminCulture`, invented). A colony of luminous
+  micro-organisms — the same symbionts that light a pallu's mat and a hoolimbre's bladder
+  — grown in a glass sphere until it is bright enough to read as sun. Seed: a pallu (its
+  green mat) or a harvested hoolimbre bladder; either is a thing a first-day diver can
+  net or pick, so the technology is Deepwater but the *seed* is the sea's.
+- **The building: the sun-sphere** (`RM_SunSphere`, 1×1 or 2×2). A `Building_PlantGrower`
+  growing exactly one plant, the ollumin, whose `CompGlower` is the vanilla **sun lamp's
+  shape** — an overbright glower (the sun lamp's colour values exceed 255 so the glow grid
+  saturates to daylight; the exact values are UNMEASURED in this pass and must be read
+  from `Data/Core` before authoring, never guessed). Growth stages ARE brightness stages:
+  seeded (dark) → culturing (radius 3, dim gold-green) → mature (sun-strength, radius ~6):
+  **you watch your light grow.** Unlike the GlowTank it wants **no power** — it is fed:
+  `CompRefuelable` on a nutrient item (veil-fall gathered as filth-to-item, or kiruun, or
+  any raw fish — position: any raw floor food, so the fishery feeds the light that feeds
+  the farm). Starved, it dims over days and dies to a seedable husk; it does not
+  explode, it does not go out at once. A Mod Setting for the grace period, the
+  GlowTank's own `tankPowerGraceHours` idiom.
+- **What it is for:** a cage or a floor plot *outside* a shaft grows under a sun-sphere as
+  if under a skylight — farming freed from the skylight economy (§8.1), which is exactly
+  why the Compact will sell you the cage and not the culture (§13.5). It also lights a
+  house like day, which the Compact's own homes do (the manifest's *"growing beds under
+  lamps"* were always this).
+- **Reconciled with §3–§6:** noothelm and hoolimbre are *wild* light (radius 3–5, a lamp);
+  the ollumin is *cultivated* light (sun-strength, a crop). Three scales of living light
+  — a bladder you carry, a bulb you plant, a sphere you farm — and the GlowTank is the
+  cousin that makes pigment instead.
+- ✅ **Answers flag §10.2-6.** The sheet's §9 *"two warm sources"* was skylight and
+  Compact lamp; this drop makes *cultivated living light* his own third source. Marked
+  answered below; no further ruling needed.
+
+### 13.3 Picked plants stay alive — living decor, the Twilight's take-home
+
+> "Luminous vines the players can lay around to decorate after they're grown and harvested. underwater plants have the unusual property of staying alive after you "pick" them, so you can then decorate with a living plant easily."
+
+**BENCH NOTE.** This is the Twilight's answer to the Grey's coloured-salt cuisine: the
+Grey's take-home is eaten and gone; **the Twilight's is alive and kept.** The whole
+family, designed:
+
+- **The item class: a living cutting.** Harvesting a living-decor plant yields a
+  **cutting** item (`RM_*Cutting`) that is itself alive — it carries `Beauty`, it does not
+  rot, and the luminous ones carry `CompGlower` so a pile of hoolimbre cuttings on the
+  floor already glows (MEASURED: `CompGlower.ShouldBeLitNow` needs only `Spawned`, so an
+  item on the ground lights). **Laying it** is the vanilla build flow: a `Building` def
+  per decor form, cost = 1 cutting, `minifiable` so it can be picked up and moved (the
+  plant-pot idiom, pure XML). No new mechanism: a plant → an item → a building, all
+  shipped verbs.
+- **What stays alive** (each a decor building with its own look):
+  - **luminous vine** — hoolimbre (§3.3): laid cell by cell in lines and loops along a
+    wall or a path; `Graphic_Random` segments so a run reads as one vine; glower radius
+    2, gold. *His headline.*
+  - **living lamp** — a noothelm bulb on its stalk (§3.4): one cell, radius 4. Replaces
+    the aluun-pane lantern of §6.4 as the *plant* lamp; the pane lantern stays as the
+    *Compact-made* one.
+  - **sail-fan** — sennefan (§3.5): wall-hung, Beauty high, no light; the wardens' art.
+  - **glass-tile** — vaalstone (§3.10): a floor-crust tile, Beauty, catches light.
+  - **living rug** — murrgrave lace (§3.9): a 2×2 floor piece, faintly lit blue-white
+    (the kiruun in it), Beauty, and the one that *feeds* a kept waelune.
+  - **lantern-stem** — a cut oruvell stem with its aluun still on it (§5): a column of
+    small windows for a doorway; radius 3, gold.
+  - **kept waelune** — a creature, not a cutting (§3.7): the pet that is a lamp.
+  - **not** quellith (it stings), **not** skirroth (it tangles), **not** the sun-sphere
+    (that is a crop, §13.2).
+- **What it needs: nothing, by default.** His word is *easily*; a living cutting is alive
+  the way the aluun pane is alive — a sealed organism that keeps. Position: living decor
+  never dies from neglect; a Mod Setting *"living decor needs light"* (off) makes the
+  luminous forms dim to plain green in a room with no light, for players who want the
+  fiction stricter. Q15 asks.
+- **What it gives a room:** Beauty (each piece), light (the luminous ones — a room lit
+  entirely by living things is a room with no fuel bill), and **one thought**:
+  `RM_Thought_LivingLight` — *"lit by living things"*, a small mood in any room whose
+  light comes only from glowers of this family (a `ThoughtWorker` reading the room's
+  glowers; the pigment mod already ships `ThoughtDefs` for the same shape). Kept
+  *outside* the sea — on the surface, in a colony a thousand cells from any water — it
+  is proof you went down and came back with something that is still breathing.
+- **Propagation:** a mature living lamp or vine can be *harvested again* for one cutting
+  every N days (the decor building is a `Building_PlantGrower`-free plant? — no: keep it
+  a building; propagation is a `CompProperties_` on the building that spawns a cutting on
+  a timer, small C#, optional; position: yes for the vine and the lamp only). The
+  Twilight's take-home *multiplies*; the Grey's is consumed.
+
+### 13.4 The whale's shadow — the full sequence, five beats
+
+> "I love the shadow of the whale-analog leads to eerie booming sounds and little light... animals freak out... and then it starts raining detritus, parasites, barnacle analogs with glowing bits in them like gems. and the whole ecosystem goes into overdrive and starts eating them at great speed."
+
+**BENCH NOTE.** This supersedes §7.3 Grade A's simpler form (dim + letter + maybe a
+skylight moves) with an ordered event; Grade B (the moving shadow art) stays separate
+and, when built, plays under beat 2. One `IncidentDef` `RM_GardenerPasses`, one
+`IncidentWorker` that starts a `GameCondition` `RM_GardenerOverhead` (duration ~1 in-game
+hour) whose ticks fire the beats; the darkening is the vanilla `CompAffectsSky` route
+measured in §7.2. Timings are INVENTED placeholders to be judged by watching.
+
+| beat | at (ticks) | what happens | engine |
+|---|---|---|---|
+| **1 — the booming** | 0 | *"eerie booming sounds"* — the sheet's *"far slow calls through the roof"*; a letter (neutral, not threat): *the gardener is overhead* | a `SoundDef` on the condition's start, repeating every ~400 ticks for the duration; `LetterDef` neutral |
+| **2 — little light** | +300 | every skylight dims to ~20% (the skylight ticker reads the condition), the whole floor darkens 40% via `RM_PassingShadow`'s `CompAffectsSky` fade; the creatures' own light is suddenly all there is — §6.1's rule at full force | §6.3 ticker + §7.2 thing; Grade B overlay plays here when it exists |
+| **3 — animals freak out** | +600 | shoals scatter, nuudal bolt, the loohn goes to ground, the clingers vanish into their hosts | every wild animal on the map starts `PanicFlee` (a mental state; one loop in the condition tick — mods do exactly this); shoals' `herdAnimal` keeps them together as they run; the Compact's cast stands outside and watches (§9.3, the gardener-warden) |
+| **4 — the rain** | +900 → +2400 | *"it starts raining detritus, parasites, barnacle analogs with glowing bits in them like gems"* — over a minute and a half, things fall from the lid into the shafts and around them: **veil-fall** by the sheetful (a filth, `RM_Filth_VeilFall`, that the ecosystem eats — beat 5); **hullick** (`RM_Hullick`, invented: the gardener's parasite, a thumb-sized biter shaken loose, a short-lived nuisance animal that bites anything standing in the rain and dies within a day — a colonist bitten takes a minor *hullick bite* hediff, itch and a little pain, cured by any doctor; not lethal, not plot); and **orrilith** (`RM_Orrilith`, invented: the barnacle analog — a fist-sized shell that grew on the gardener's hide, with *"glowing bits in them like gems"* — an **item** with `CompGlower` radius 1.5 and `Beauty`, that falls and lies lit on the floor) | fall = the shipped skyfaller shape (a `Skyfaller` carrying a `ThingSetMaker`; the exact custom-def route is UNMEASURED here and must be read from `Data/Core`'s meteorite/drop-pod defs before authoring); density scaled by the map's skylight count — the rain comes *through the wells* |
+| **5 — overdrive** | +2400 → +6000 | *"the whole ecosystem goes into overdrive and starts eating them at great speed"* — every floor animal takes `RM_Hediff_Frenzy` (hunger rate ×6, MoveSpeed +50%, duration ~1 hour) and, because orrilith and veil-fall are **ingestible items in animal food categories**, vanilla food-seeking sends every nuudal, weloon, tikkarr and clinger to eat them off the floor at speed — no C# for the eating, only for the hediff | the **race**: the player hauls orrilith before the ecosystem eats them. A frenzied **loohn** (or kellu) is the **danger** — `maxPreyBodySize` raised by the hediff for its duration, so for one hour the floor's predator hunts things it never would, colonists included if they stand in the dark between shafts. Ban 4 untouched (no Compact hostility); ban 2 served (the roof's keeper passing) |
+
+**What orrilith is for.** Shelled (a `RecipeDef` at a crafting spot), an orrilith gives
+**orrilith gems** (`RM_OrrilithGem`) — the biome's only "gem", **and it comes from an
+animal, not a mine**: the designed absence of §8 held even here. A luminous stuff-less
+item: high `Beauty`, `CompGlower` radius 1, trade tag Exotic; inlaid into living-decor
+pieces (§13.3, a cost variant) or sold. Rarity is the rain's — one pass in a few days,
+a dozen orrilith, most eaten. **The Compact's cast collects them too** (the child of
+§9.3, for one).
+
+**Mod Settings:** the whole sequence on/off; rain density; frenzy strength; parasites
+bite colonists on/off.
+
+### 13.5 Deepwater showcase tech — what you covet and must earn
+
+> "Show case technology for the Deepwater faction."
+
+**BENCH NOTE.** The cages, the tethers and the sun-sphere read as **Compact engineering**,
+the thing a diver sees at the bottom-houses and cannot build. The mechanism is vanilla
+Royalty's own: **techprints** (`ResearchProjectDef.techprintCount` + a techprint item),
+which the player assumption of all DLC makes free to use (`CLAUDE.md`, 2026-09-25/26).
+
+- **`RM_Research_DeepwaterTethering`** — unlocks `RM_SphereCage`, `RM_CubeCage`, the
+  tether item `RM_TetherChain` (a build cost of every cage; uncraftable without the
+  research; sold by the bottom-house dealer in the meantime). Needs **1 techprint**,
+  `RM_Techprint_Tethering`, sold **only** by the Compact — the bottom-house lamp-wright
+  and the surface water-caravan (`RUT_Jawa_DeepwaterCompact`'s `Trader` group) — or
+  given with a permit (the bedazzle doc's §3.2 permits: dock, air, lamplight, charts;
+  *tethering* is the fifth).
+- **`RM_Research_OlluminCulture`** — unlocks `RM_SunSphere`; **2 techprints**, the dearer
+  one, because it frees the player from the skylight economy (§8.1) and the Compact
+  knows it. The *seed* is the sea's (§13.2); the *sphere* is theirs.
+- **The bottom-houses show it working**: §9.2's house genstep places one sphere cage on
+  a chain over the channel beside each house, a sun-sphere lighting its growing bed, and
+  a tether-buoy in the shaft — so a diver's first sight of the technology is the
+  Compact using it, which is what *showcase* means.
+- **Tier:** all invented, `RM_`; the techprint's *seller* being the Compact is a Utinni
+  patch on the trader stock (`MayRequire`), and a free-tier player finds the techprint in
+  the bottom-house stock instead.
+
+### 13.6 Star Wars cuisine — measured, and the pattern
+
+> "Huge variety for starwars cuisine mod."
+
+**BENCH NOTE — MEASURED 2026-09-26.** There is no third-party cuisine mod in any list.
+The only `cuisine` packageId in both full-list snapshots
+(`ModsConfig_full_plus_gelatinousslime_2026-09-21.xml`, 620 active;
+`ModsConfig_full_plus_longhunger_2026-09-19.xml`, 621 active) is **ours**:
+`mandrake.rsw.cuisine` (`src/RimStarWars/Cuisine/`, "RimStarWars: Cuisine"). The newest
+snapshot by date (`ModsConfig.PRESWAP.20260926_144543.xml`) is a 12-mod test list with
+no cuisine mod and proves nothing about the full list. So *"starwars cuisine mod"* IS
+`mandrake.rsw.cuisine`, and the pattern is the Grey's (`RSW_GreySaltCuisine.xml`, shipped
+this week): **ingredients `RM_` in `mandrake.rm.terminalbiomes`; recipes, dishes and
+thoughts in `mandrake.rsw.cuisine` behind `MayRequire`; no hard dependency either way.**
+
+**The variety, proposed** (ingredients already in this document; dishes are the
+cuisine mod's to name at its own sitting): oruvell fronds (staple green) · murrgrave
+(the floor's mushroom) · aluun (a coin of sweet white flesh) · niim (the fish that
+tastes like fish) · kellu (with its ink) · hollu (*"a delicacy in exactly one dock"*) ·
+vessik (*priced by the sting*) · kiruun (**a spoonful of light** — the one dish that
+glows on the plate, a meal with `CompGlower`; the cuisine mod's marquee) · waelune ·
+illuvane (a medicinal tea) · orrilith meat (once shelled) · and the Compact's own table:
+Grand Tessek's **Accord dinner** (the Hold's cook, `CastRoster_DEEPWATER.xml`) as a
+feast-class meal the campaign layer names. Twelve ingredients, and *"huge variety"* is
+then a recipe count for the cuisine mod's owner to set — position: one dish per
+ingredient plus three feasts, so the node you cut is a real decision, the Grey's own
+rule.
+
+### 13.7 What this drop answered, and what it opened
+
+**Answered:** §10.2-6 (a third light source — his, cultivated); §11 Q7 in part (the
+whale's shadow is now a specified five-beat sequence, Grade A; Grade B still a mockup).
+
+**Opened — added to §11:**
+
+- **Q13 — The cage's chain.** Buoyant cage chained down to a floor anchor (designed here),
+  or hung from a surface float? **Position:** anchor; same picture, more placements.
+- **Q14 — Walking under a cage.** The cage is passable-beneath so it costs no floor use;
+  a pawn stands under the crop to tend it. Acceptable in a top-down game, or should the
+  cage occupy its cells like hydroponics? **Position:** passable-beneath — it is the
+  whole point of his sentence.
+- **Q15 — Living decor neglect.** Never dies (default) with a stricter setting, or needs
+  light/water by default? **Position:** never dies; *"easily"* is his word.
+- **Q16 — The sun-sphere's feed.** Fed on raw floor food (no power), or powered like the
+  GlowTank? **Position:** fed — a living thing, and the fishery then feeds the farm.
+- **Q17 — The rain's parasites.** Do hullick bite colonists (minor hediff) or only
+  animals? **Position:** colonists too, minor, curable; the rain should be something you
+  stand out of.
+- **Q18 — Orrilith gems.** The biome's only gem, from an animal — a trade good and a
+  decor inlay, or a crafting material with more uses? **Position:** trade and inlay
+  only; the moment it is a material, someone asks for a mine.
+- **Q19 — Techprints.** Compact-only sellers for both prints, with the sun-sphere at two?
+  **Position:** yes.
+
+**Items BENCH thinks should be filed for this drop** (with him, not this pass):
+`TWILIGHT_TETHERED_CAGES_1` (§13.1, §13.5 — carries Q13/Q14/Q19),
+`TWILIGHT_SUN_SPHERE_1` (§13.2 — carries Q16; reads the GlowTank first),
+`TWILIGHT_LIVING_DECOR_1` (§13.3 — carries Q15), `TWILIGHT_WHALE_SEQUENCE_1` (§13.4 —
+absorbs `TWILIGHT_WHALE_SHADOW_1`'s Grade A; carries Q17/Q18), and a cuisine row on
+`mandrake.rsw.cuisine`'s own next wave (§13.6).
