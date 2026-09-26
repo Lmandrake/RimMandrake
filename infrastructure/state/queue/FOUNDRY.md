@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T05:24:13Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T05:34:37Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -845,15 +845,6 @@ target:   v1
 kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
-
-## WEBWORK_FLORA_ROSTER_1 Build the 16 invented Webwork flora defs (webwork_flora_roster doc) + Utinni tooke-trap patch (ruled kept-low); the 6 donor cuts stay PROPOSED pending owner
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/WEBWORK_FLORA_ROSTER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_FLORA_ROSTER_1.md
 
 ## SUMP_FAUNA_ROSTER_1 Build the invented Sump fauna defs per sump_fauna_roster_2026-09-24.md (incl. the ruled spike-legged flier; wrissen deleted by ruling)
 state:    doing
