@@ -111,12 +111,21 @@ which is correct there: in `mandrake.rm.webwork` the only source is a nest.
 
 **PROPOSED campaign patch, two lines:**
 
-1. `PatchOperationReplace` the egg's `tradeability` → `All`. ⚠️ This is safe against leakage into
-   ordinary stock because reaching a def requires a StockGenerator route: the egg's only trade tag
-   is `RM_Contraband` (sitting §4a), which no vanilla `StockGenerator_Tag` reads, it belongs to no
-   stocked category route, and nothing lists it by SingleDef — so `All` opens exactly the routes
-   the campaign then adds, and no other. A build-time sweep of live TraderKindDefs proves it
-   (§5-Q5 asks the owner to accept the `All` mechanism at all).
+1. `PatchOperationReplace` the egg's `tradeability` → `All`. 🔴 **CORRECTED at build time
+   (`WEBWORK_EGG_BLACKMARKET_BUILD_1`, 2026-09-26): the "belongs to no stocked category route"
+   half of this claim was WRONG.** The egg carries `thingCategories: ResourcesRaw`
+   (`WEBWORK_NEST_EGG_ECONOMY_1`'s own file), and `StockGenerator_Category categoryDef=ResourcesRaw`
+   is live on five vanilla/DLC TraderKindDefs (`TraderKinds_Base_Outlander`,
+   `TraderKinds_Base_Neolithic`, `TraderKinds_Orbital_Misc` in Core;
+   `TraderKinds_Base_Empire`, `TraderKinds_Caravan_Empire` in Royalty), none excluding it —
+   flipping to `All` alone would have let any of those ordinary traders randomly roll the
+   black-market egg into stock. The trade-tag half stands: `RM_Contraband` (sitting §4a) is
+   read by no live `StockGenerator_Tag` (MEASURED, whole-repo grep, zero hits). The build's
+   own patch (`ShokkweaveEggBlackMarket.xml`) closes the category leak by stripping
+   `ResourcesRaw` off the egg campaign-side, the same belt-and-braces idiom
+   `ShokkweaveTraderStrip.xml` already uses in reverse — so `All` now opens exactly the one
+   route the campaign adds (`RUT_Caravan_HuttCartel_EggMarket`'s `StockGenerator_SingleDef`)
+   and no other, which is what this line always intended to say.
 2. The `<RUT_HuttCartel_EggMarket>` kind stocks **1–3 eggs** (❓) via
    `StockGenerator_SingleDef`, and **buys** on the `RM_Contraband` tag at the §4b premium.
 
