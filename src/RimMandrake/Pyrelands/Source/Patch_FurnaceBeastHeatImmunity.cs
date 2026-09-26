@@ -3,7 +3,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.Utinni.PyrelandsMechanics
+namespace RimMandrake.Pyrelands
 {
     /// <summary>
     /// FURNACEBEAST_THERMAL_CYCLE_1, part 1 — TRUE fire and heat immunity.
@@ -66,7 +66,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             }
             if (HeatCategory == null)
             {
-                Log.Error("[RimMandrake.Utinni.PyrelandsMechanics] furnace-beast heat immunity: "
+                Log.Error("[RimMandrake.Pyrelands] furnace-beast heat immunity: "
                         + "no DamageArmorCategoryDef named 'Heat' — the rule is NOT in effect and "
                         + "the beast falls back to its XML ArmorRating_Heat. A game update renamed it.");
                 return;
@@ -74,15 +74,15 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
             try
             {
-                new Harmony("mandrake.rut.pyrelandsmechanics").Patch(
+                new Harmony("mandrake.rm.pyrelands").Patch(
                     AccessTools.Method(typeof(Pawn), nameof(Pawn.PreApplyDamage)),
                     prefix: new HarmonyMethod(typeof(Patch_FurnaceBeastHeatImmunity), nameof(Prefix)));
-                Log.Message("[RimMandrake.Utinni.PyrelandsMechanics] furnace-beast heat immunity: armed; "
+                Log.Message("[RimMandrake.Pyrelands] furnace-beast heat immunity: armed; "
                           + "RUT_FurnaceBeast absorbs all Heat-category damage.");
             }
             catch (Exception e)
             {
-                Log.Error("[RimMandrake.Utinni.PyrelandsMechanics] furnace-beast heat immunity: patch "
+                Log.Error("[RimMandrake.Pyrelands] furnace-beast heat immunity: patch "
                         + "FAILED, rule NOT in effect — " + e.Message);
             }
         }
@@ -96,7 +96,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         {
             try
             {
-                if (!PyrelandsMechanicsSettings.furnaceHeatImmunityEnabled)
+                if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
                 {
                     return true;
                 }
@@ -114,7 +114,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             }
             catch (Exception e)
             {
-                Log.WarningOnce("[RimMandrake.Utinni.PyrelandsMechanics] furnace-beast heat immunity: "
+                Log.WarningOnce("[RimMandrake.Pyrelands] furnace-beast heat immunity: "
                               + e.Message, 0x46E11);
                 return true;
             }

@@ -12,7 +12,9 @@ Ember grass regrows in under a day and dries to tinder almost as fast, so the fu
 
 Fire also pays. A scorch-fruit pod only exists where flame has just cracked it open and rots within a day, so the harvest happens during the burn or not at all. Lightning striking sand leaves fulgurite behind. A sprayed firebreak line and a firefoam sprayer let you decide where the next burn stops.
 
-Self-contained: the biome, its terrains, its plants and its weather all ship here, and it places itself on an ordinary generated world with no other mod required.</description>
+The biome is never quiet: a map component tracks every fire and re-lights a smoulder somewhere open if none has burned in two days, and a fire clock lights a fresh line every few days regardless. A twig-carrying bird can steal an ember from an existing fire and start a second one nearby; a wandering thermal-circuit grazer banks heat in the burn and bleeds it back out in the cold, and smoulders the ground it beds down on.
+
+Self-contained: the biome, its terrains, its plants, its weather and its fire-cycle mechanics all ship here, and it places itself on an ordinary generated world with no other mod required.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>

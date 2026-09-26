@@ -3,7 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.Utinni.PyrelandsMechanics
+namespace RimMandrake.Pyrelands
 {
     /// <summary>
     /// FURNACEBEAST_THERMAL_CYCLE_1, part 2 — the capacitor itself.
@@ -72,7 +72,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         {
             base.CompTickInterval(delta);
 
-            if (!PyrelandsMechanicsSettings.furnaceThermalChargeEnabled)
+            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 return;
             }
@@ -164,11 +164,11 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
         public override string CompInspectStringExtra()
         {
-            if (!PyrelandsMechanicsSettings.furnaceThermalChargeEnabled)
+            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 return null;
             }
-            return "RUT_FurnaceHeatCharge".Translate() + ": " + charge.ToStringPercent("F0");
+            return "RM_FurnaceHeatCharge".Translate() + ": " + charge.ToStringPercent("F0");
         }
     }
 }

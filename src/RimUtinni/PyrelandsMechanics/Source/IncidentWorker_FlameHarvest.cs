@@ -42,7 +42,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 return false;
             }
 
-            MapComponent_BurnLine watch = MapComponent_BurnLine.For(map);
+            RimMandrake.Pyrelands.MapComponent_BurnLine watch = RimMandrake.Pyrelands.MapComponent_BurnLine.For(map);
             if (watch == null || !watch.IsPyrelandsMap)
             {
                 return false;
@@ -63,7 +63,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 return false;
             }
 
-            MapComponent_BurnLine watch = MapComponent_BurnLine.For(map);
+            RimMandrake.Pyrelands.MapComponent_BurnLine watch = RimMandrake.Pyrelands.MapComponent_BurnLine.For(map);
             if (watch == null || !watch.AnyBurn)
             {
                 return false;
@@ -85,7 +85,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 groupKind = PawnGroupKindDefOf.Peaceful,
                 tile = map.Tile,
                 faction = tribes,
-                points = PyrelandsTuning.FlameHarvestPoints,
+                points = RimMandrake.Pyrelands.PyrelandsTuning.FlameHarvestPoints,
             };
 
             List<Pawn> harvesters = PawnGroupMakerUtility.GeneratePawns(groupParms).ToList();

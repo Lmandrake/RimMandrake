@@ -31,13 +31,13 @@
        this repo inserts at this tag.
   ======================================================================== -->
   <ThinkTreeDef>
-    <defName>RUT_FireHawk_CarryEmber</defName>
+    <defName>RM_FireHawk_CarryEmber</defName>
     <insertTag>Animal_PreWander</insertTag>
     <insertPriority>55</insertPriority>
     <thinkRoot Class="ThinkNode_Tagger">
       <tagToGive>Misc</tagToGive>
       <subNodes>
-        <li Class="RimMandrake.Utinni.PyrelandsMechanics.JobGiver_RUT_FireHawkCarryEmber" />
+        <li Class="RimMandrake.Pyrelands.JobGiver_RUT_FireHawkCarryEmber" />
       </subNodes>
     </thinkRoot>
   </ThinkTreeDef>

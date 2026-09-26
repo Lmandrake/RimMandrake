@@ -3,7 +3,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace RimMandrake.Utinni.PyrelandsMechanics
+namespace RimMandrake.Pyrelands
 {
     /// <summary>
     /// PYRELANDS_MECHANICS_1, mechanism 3 — the decision half of the fire-hawk's
@@ -37,7 +37,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
         protected override Job TryGiveJob(Pawn pawn)
         {
-            if (!PyrelandsMechanicsSettings.fireHawkSpreadEnabled)
+            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.fireHawkSpreadEnabled)
             {
                 return null;
             }
@@ -66,7 +66,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
             comp.Notify_SortieStarted();
 
-            Job job = JobMaker.MakeJob(PyrelandsMechanicsDefOf.RUT_FireHawkCarryEmber, source, target);
+            Job job = JobMaker.MakeJob(PyrelandsMechanicsDefOf.RM_FireHawkCarryEmber, source, target);
             job.count = 1;
             return job;
         }

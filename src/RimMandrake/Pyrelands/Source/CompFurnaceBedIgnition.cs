@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.Utinni.PyrelandsMechanics
+namespace RimMandrake.Pyrelands
 {
     /// <summary>
     /// PYRELANDS_MECHANICS_1, mechanism 4b — bed-down ignition
@@ -47,7 +47,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         {
             base.CompTickInterval(delta);
 
-            if (!PyrelandsMechanicsSettings.furnaceBedIgnitionEnabled)
+            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
             {
                 return;
             }
@@ -74,7 +74,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             {
                 return;
             }
-            if (!Rand.Chance(PyrelandsMechanicsSettings.furnaceBedIgnitionChance))
+            if (!Rand.Chance(PyrelandsTuning.FurnaceBedIgnitionChance))
             {
                 return;
             }

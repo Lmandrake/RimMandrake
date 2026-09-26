@@ -12,20 +12,19 @@
   <RUT_FireRaid>Fire raid</RUT_FireRaid>
   <RUT_FireRaidDesc>A burn went up on this land that nobody scheduled, and it was yours.\n\n{0} do not consider fire a hazard. They consider it a crop, and a crop has an owner and a season. Burning outside the season is theft from a debt that is not yours to collect — and they answer it the short way.</RUT_FireRaidDesc>
 
-  <!-- PYRELANDS_FIRE_CADENCE_1. No {0}: the front is nobody's, and naming an
-       instigator would contradict the null instigator it is actually lit with. -->
-  <RUT_FireFrontLetterLabel>The grass has gone up</RUT_FireFrontLetterLabel>
-  <RUT_FireFrontLetterText>A line of ember-grass has caught somewhere out in the open, and it is walking.\n\nThis is the biome, not an attack. It happens every few days here and it is why the Tribes plant firebreaks instead of fences. Decide now whether it comes anywhere near you — a burn-line is far cheaper to steer than to stop.</RUT_FireFrontLetterText>
+  <!-- PYRELANDS_RM_MOD_BUILD_1 §6: RUT_FireFrontLetterLabel/Text and
+       RUT_FurnaceHeatCharge moved to mandrake.rm.pyrelands (renamed RM_) —
+       they belong to the absorbed fire-clock/furnace mechanics, not to this
+       mod's remaining campaign content. -->
 
   <!-- DEEP_TRIBES_FIRE_RITE_1. {0} is the Tribes faction's name, read from the
        faction. Neutral in tone on purpose: this is not a threat and not a gift,
-       and the burn was going to happen either way. Gated behind the fire clock's
-       own letter switch, because it IS the fire clock's letter with people
-       attached. -->
+       and the burn was going to happen either way. Always sent when the rite
+       actually sends (PYRELANDS_RM_MOD_BUILD_1 §6: the separate fire-clock
+       letter toggle that used to gate this moved to RM_Pyrelands and no
+       longer reaches across the mod boundary — a rite arriving with people
+       attached is always worth telling the player about on its own). -->
   <RUT_FireRiteLetterLabel>The fire rite</RUT_FireRiteLetterLabel>
   <RUT_FireRiteLetterText>A file of {0} has come in off the sand with baskets, long hooks and a covered coal.\n\nThey have walked here to light the grass themselves. Scorch-fruit opens only in the flame and spoils within a day, so they will set the line, wait out the front, and work the black behind it until there is nothing left worth carrying — and then they will go home.\n\nThe burn was coming whatever they did. What is new is that it will have a name on it, and they will be standing next to it watching how you behave.</RUT_FireRiteLetterText>
-
-  <!-- FURNACEBEAST_THERMAL_CYCLE_1. Inspect-pane label for the capacitor. -->
-  <RUT_FurnaceHeatCharge>Heat charge</RUT_FurnaceHeatCharge>
 
 </LanguageData>

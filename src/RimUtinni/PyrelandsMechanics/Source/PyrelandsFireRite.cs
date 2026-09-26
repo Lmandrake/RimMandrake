@@ -32,12 +32,24 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         /// <summary>
         /// Send the rite. Returns false — and changes nothing — for every reason a
         /// rite cannot happen, so the caller can fall through to the plain front:
-        /// no Tribes in this world, the Tribes at war (then the thing that arrives
-        /// is IncidentWorker_FireRaid, not this), nowhere to walk in from, or a
-        /// group maker that produced nobody.
+        /// off, the fraction did not roll, no Tribes in this world, the Tribes at
+        /// war (then the thing that arrives is IncidentWorker_FireRaid, not this),
+        /// nowhere to walk in from, or a group maker that produced nobody.
+        ///
+        /// PYRELANDS_RM_MOD_BUILD_1 §6: called through
+        /// RimMandrake.Pyrelands.PyrelandsFireRiteHook.TrySend, a plugin hook —
+        /// RM_Pyrelands' fire clock offers every scheduled front and this method
+        /// is the one place that decides whether to take it (that gating used to
+        /// live in the caller, PyrelandsFireFront.TryRunRite, before that class
+        /// moved to the franchise-free mod).
         /// </summary>
         internal static bool TrySend(Map map, IntVec3 riteOrigin)
         {
+            if (!PyrelandsMechanicsSettings.fireRiteEnabled
+                || Rand.Value >= PyrelandsMechanicsSettings.fireRiteFraction)
+            {
+                return false;
+            }
             if (map == null || !riteOrigin.IsValid)
             {
                 return false;
@@ -62,7 +74,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
 
             for (int i = 0; i < party.Count; i++)
             {
-                IntVec3 cell = CellFinder.RandomClosewalkCellNear(entry, map, PyrelandsTuning.FireRiteSpawnSpread);
+                IntVec3 cell = CellFinder.RandomClosewalkCellNear(entry, map, RimMandrake.Pyrelands.PyrelandsTuning.FireRiteSpawnSpread);
                 GenSpawn.Spawn(party[i], cell, map);
             }
 
@@ -76,9 +88,11 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 map,
                 party);
 
-            // Gated behind the fire clock's own letter switch rather than a new
-            // one: this IS that letter's event, arriving with people attached.
-            if (PyrelandsMechanicsSettings.fireFrontLetterEnabled)
+            // Always sent when the rite actually sends — a party arriving with
+            // people attached is worth telling the player about on its own
+            // (the separate "silent fire clock" letter toggle this used to
+            // share lives on RM_Pyrelands now, on the other side of the mod
+            // boundary — see PyrelandsMechanicsMod's hook registration).
             {
                 Find.LetterStack.ReceiveLetter(
                     "RUT_FireRiteLetterLabel".Translate(),

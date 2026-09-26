@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RUT_PyrelandsIgniters_Comps.xml    PYRELANDS_MECHANICS_1 · 2026-09-11
+  RM_PyrelandsIgniters_Comps.xml    PYRELANDS_MECHANICS_1 · 2026-09-11
+  moved into mandrake.rm.pyrelands, PYRELANDS_RM_MOD_BUILD_1 §6 · 2026-09-25
   ============================================================================
   Attaches this mod's comps to the two igniter defs, which live in another mod
   (mandrake.rut.patches,
@@ -44,7 +45,7 @@
           <xpath>Defs/ThingDef[defName="RUT_FireHawk"]</xpath>
           <value>
             <comps>
-              <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FireHawkSpread">
+              <li Class="RimMandrake.Pyrelands.CompProperties_FireHawkSpread">
                 <scanRadius>18</scanRadius>
                 <spreadDistance>6</spreadDistance>
                 <startFireSize>0.1</startFireSize>
@@ -87,9 +88,9 @@
                 <heatPerSecond>18</heatPerSecond>
                 <heatPushMaxTemperature>24</heatPushMaxTemperature>
               </li>
-              <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FurnaceWarmthAura" />
-              <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FurnaceBedIgnition" />
-              <li Class="RimMandrake.Utinni.PyrelandsMechanics.CompProperties_FurnaceThermalCharge" />
+              <li Class="RimMandrake.Pyrelands.CompProperties_FurnaceWarmthAura" />
+              <li Class="RimMandrake.Pyrelands.CompProperties_FurnaceBedIgnition" />
+              <li Class="RimMandrake.Pyrelands.CompProperties_FurnaceThermalCharge" />
             </comps>
           </value>
         </li>

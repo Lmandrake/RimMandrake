@@ -3,7 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.Utinni.PyrelandsMechanics
+namespace RimMandrake.Pyrelands
 {
     /// <summary>
     /// PYRELANDS_FIRE_CADENCE_1 — the biome clock.
@@ -65,7 +65,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         /// only ever runs on a Pyrelands map, on the watch interval.</summary>
         public void Tick()
         {
-            if (!PyrelandsMechanicsSettings.fireFrontEnabled)
+            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.fireClockEnabled)
             {
                 // Off means off, but keep the clock honest: re-arm from now, so
                 // switching the mechanism back on does not fire instantly with a
@@ -100,11 +100,11 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             }
 
             int lit = TryStartFront();
-            if (lit > 0 && PyrelandsMechanicsSettings.fireFrontLetterEnabled)
+            if (lit > 0)
             {
                 Find.LetterStack.ReceiveLetter(
-                    "RUT_FireFrontLetterLabel".Translate(),
-                    "RUT_FireFrontLetterText".Translate(),
+                    "RM_FireFrontLetterLabel".Translate(),
+                    "RM_FireFrontLetterText".Translate(),
                     LetterDefOf.NegativeEvent,
                     new TargetInfo(lastOrigin, map));
             }
@@ -117,12 +117,13 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         /// </summary>
         private void Schedule(int now)
         {
-            float minDays = PyrelandsMechanicsSettings.fireFrontMinDays;
-            float maxDays = PyrelandsMechanicsSettings.fireFrontMaxDays;
-            if (maxDays < minDays)
-            {
-                maxDays = minDays;
-            }
+            // MOD_OPTIONS_RETROFIT_1 absorption: the per-number sliders that
+            // used to live on mandrake.rut.pyrelandsmechanics' settings screen
+            // were not re-exposed — fireClockEnabled is the one switch RM_
+            // Pyrelands ships for this mechanic. Values are unchanged from
+            // shipped defaults (PyrelandsTuning.FireFrontMinDays/MaxDays).
+            float minDays = PyrelandsTuning.FireFrontMinDays;
+            float maxDays = PyrelandsTuning.FireFrontMaxDays;
             nextFrontTick = now + Mathf.RoundToInt(
                 Rand.Range(minDays, maxDays) * GenDate.TicksPerDay);
         }
@@ -152,11 +153,12 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         /// </summary>
         private bool TryRunRite()
         {
-            if (!PyrelandsMechanicsSettings.fireRiteEnabled)
-            {
-                return false;
-            }
-            if (Rand.Value >= PyrelandsMechanicsSettings.fireRiteFraction)
+            // PyrelandsFireRiteHook — null on a franchise-free world (no
+            // campaign mod loaded to fill it in), which falls straight through
+            // to the plain front below. The hook implementation (Utinni's
+            // PyrelandsFireRite.TrySend, if present) does its OWN enabled/
+            // frequency gating; RM_Pyrelands does not know the Tribes exist.
+            if (PyrelandsFireRiteHook.TrySend == null)
             {
                 return false;
             }
@@ -165,7 +167,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 return false;
             }
             lastOrigin = origin;
-            return PyrelandsFireRite.TrySend(map, origin);
+            return PyrelandsFireRiteHook.TrySend(map, origin);
         }
 
         /// <summary>
@@ -191,7 +193,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             float angle = Rand.Range(0f, 360f);
             Vector3 step = Quaternion.AngleAxis(angle, Vector3.up) * Vector3.forward;
 
-            int width = PyrelandsMechanicsSettings.fireFrontWidthCells;
+            int width = PyrelandsTuning.FireFrontWidthCells;
             int half = width / 2;
             int lit = 0;
 

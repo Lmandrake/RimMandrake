@@ -1,6 +1,6 @@
 using Verse;
 
-namespace RimMandrake.Utinni.PyrelandsMechanics
+namespace RimMandrake.Pyrelands
 {
     /// <summary>
     /// PYRELANDS_MECHANICS_1, mechanism 3 — the fire-hawk's twig, as ruled in
@@ -45,7 +45,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         public CompProperties_FireHawkSpread Props => (CompProperties_FireHawkSpread)props;
 
         public bool CanSortieNow =>
-            Find.TickManager.TicksGame - lastSortieTick >= PyrelandsMechanicsSettings.fireHawkCooldownTicks;
+            Find.TickManager.TicksGame - lastSortieTick >= PyrelandsTuning.FireHawkCooldownTicks;
 
         /// <summary>Called by the job-giver the moment the job is handed out, so
         /// an aborted or failed sortie costs the same cooldown a successful one
