@@ -447,10 +447,10 @@ and the reskin is the reference image.
 Files the build touches, so the estimate is honest: kit — three new `.cs` (extension+comp,
 roost comp+props, leash JobGiver), one new MentalStateDef XML, one ThinkTreeDef insert XML,
 one small change to `RM_CompPlantAlarm` (optional scoped state + a pawn-carrying
-`TriggerAlarm(Pawn)`), one `RM_Plant_Alarming : Plant`, four settings entries; SWBestiary —
-one race XML (ThingDef + PawnKindDef, reskin); AshkarrFlora — three lines on
+`TriggerAlarm(Pawn)`), one `RM_Plant_Alarming : Plant`, four settings entries; the shrubland's `RM_` biome mod —
+one race XML (`RM_Barkwarden` ThingDef + PawnKindDef, reskin); AshkarrFlora — three lines on
 `RUT_SweetlineTree` (thingClass, roost comp, plant alarm) under `MayRequire`. Nothing in
-`RUT_AridShrubland.xml` — the kessrik is not a `wildAnimals` entry and must never become one.
+the shrubland biome def — the Bark-warden is not a `wildAnimals` entry and must never become one.
 Quicktest, minimal list + the three mods: spawn a tree, confirm 2–3 guardians within 4 cells,
 walk a colonist to 8 cells (rage), to 19 cells (recovery), cut the tree (rage at the cutter),
 save/load mid-rage, and toggle each of the four settings live.
