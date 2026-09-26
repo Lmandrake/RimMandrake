@@ -20,7 +20,13 @@ correct, not a bug in this table.
 """
 
 OLD_TO_NEW_BIOME = {
-    'AB_FeraliskInfestedJungle': 'RUT_Webwork',
+    'AB_FeraliskInfestedJungle': 'RUT_Webwork',  # NOT retargeted to RM_Webwork
+                                                  # (WEBWORK_RM_MOD_BUILD_1, 2026-09-25): unlike the
+                                                  # RM_Contagion/RM_TheSump rows below, RM_Webwork ships
+                                                  # a vanilla-only placeholder — RUT_Webwork remains the
+                                                  # only def with the real fauna cast until
+                                                  # WEBWORK_FAUNA_ROSTER_1 lands. A caller resolving this
+                                                  # old name for fauna data needs the twin, not the shell.
     'AB_GelatinousSuperorganism': 'RUT_Slime',
     'AB_MechanoidIntrusion': 'RUT_RustCathedral',
     'AB_MiasmicMangrove': 'RUT_Miasma',
