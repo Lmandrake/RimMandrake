@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.rustcathedral</packageId>
+  <name>RimMandrake: the Rust Cathedral</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>RimWorld - Odyssey</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+    </li>
+    <li>
+      <packageId>sarg.alphabiomes</packageId>
+      <displayName>Alpha Biomes</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2777849228</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.creaturebehaviors</li>
+    <li>sarg.alphabiomes</li>
+    <li>vanillaexpanded.vgeneticse</li>
+  </loadAfter>
+  <description>RUSTCATHEDRAL_RM_MOD_BUILD_1 (Phase A row 12 of
+design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).
+A flat mechanoid-garrisoned plateau of deck plate and mathematical walls at
+the foot of an eternal noon, almost lifeless, and under everything, always,
+a hum. Fully generalized: it names no other franchise or campaign. A
+separate frozen campaign world's own Rust Cathedral instance
+(RUT_RustCathedral, src/RimUtinni/UtinniPatches) is unaffected and
+unrelated; this is a new sibling biome for everyone else's worlds, not a
+rename of that one.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+ABSORBS two former standalone satellite kits that were filed at the wrong
+tier (RUST_CATHEDRAL_MECHANICS_1's own §3c): mandrake.rut.rustcathedralhum
+(the hum-mood attitude system, living bolts, coolant-eel fishing
+consequences, the deep-drill response) and mandrake.rut.rustcathedralwalls
+(the four-tier wall economy: deck plate, dead smartsteel, one sacred wall
+variant, live pattern metal). Both keep their own two DLLs, namespaces and
+settings DATA classes completely unchanged (assembly-merge trade, option
+(b): zero namespace churn, zero XML class-binding edits) — only their
+standalone Mod-derived settings wrappers are retired in favor of one screen
+here. mandrake.rut.rustcathedralroaches (the third kit, the land-cleaning
+roaches) is NOT absorbed: its cathedral roach is DUPLICATED into this mod as
+RM_CathedralRoach (own defName, own art copy, a first-ever Mod Settings
+toggle) while the original RUT_CathedralRoach stays exactly where it is,
+still serving the frozen campaign twin until Phase B; that kit's other
+creature (RUT_ScarRoach, a Scarlands sibling with no connection to this
+biome) is untouched and unaffected — left for a future Scarlands mod build
+to decide, per that item's own "do not silently absorb it" caution.
+
+Ships the biome and its own placement worker (RM_BiomeWorker_RustCathedral,
+replacing the donor AlphaBiomes.BiomeWorker_MechanoidIntrusion — a donor
+type in workerClass is a hard dependency the RimMandrake tier may not
+assume) plus its own two floor TerrainDefs (RM_RustCathedral_CrackedMetalSoil,
+RM_RustCathedral_PolymerFloor — own defNames, no donor ParentName chain).
+
+⚠️ Not texture-free: those two TerrainDefs and the biome's own world-map icon
+still point at Alpha Biomes' own pixels (no art pipeline pass has run for
+this biome's floor yet), so sarg.alphabiomes ships as a hard modDependency
+rather than an optional MayRequire — same disclosed trade RM_Miasma makes
+for its own flora textures. A future pass can generate this mod's own art
+and drop the dependency; nothing here blocks that.
+
+The absorbed kit's fishing consequences (RUT_CoolantEel, the sole entry in
+this biome's fishTypes) and wall-tier scatter (forceRockTypes plus two
+GenSteps added to the shared MapCommonBase) are now NATIVE fields/content on
+this mod's own RM_RustCathedral def, dissolved from the two self-patches the
+satellite kits used to carry onto the frozen twin (a self-patch is pointless
+once the def is owned outright). RUT_CoolantEel is Odyssey-only by
+construction (ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey"),
+so Odyssey ships as a hard dependency too — per the owner's 2026-09-25
+standing design ruling ("always assume all the DLCs"), every RimMandrake
+biome mod may assume the full expansion set is present.
+
+wildAnimals: RM_CathedralRoach 0.12 (own, cleaner), GR_Mecharat 0.5 (donor
+mech-vermin, ruled — stays inline per Q11a: not Star Wars fauna, no Utinni
+patch owed), RUT_LivingBolt 0.06 (the hum's own display organ, wired here
+for the first time — the frozen twin's own copy never wired one, so the
+kit's §3 could never spawn). Ling_Cockroach is DROPPED — the roster's own
+2026-09-07 owner addendum supersedes the frozen twin's earlier reading that
+kept it. wildPlants stays EMPTY — RULED zero (frozen sheet hard ban 7: "green
+flora count: zero"), not a gap.
+
+Mod Settings: a worldgen-rarity slider (0 = never generates); the absorbed
+Hum kit's own screen (hum-mood, commentary, goodwill drain, bolt
+dance/shed/pricing, fishing pricing, drill response — all pre-existing,
+unchanged); the absorbed Walls kit's own screen (wall tiers, sacred wall
+chance, live-pattern-metal gate — pre-existing, unchanged); and this mod's
+own new roach-cleaning toggle (the roach's cleaning behavior never had one
+before) plus a cross-biome section honestly disclosed as reserved and not
+yet wired to any mechanic.
+
+Live proof (a scratch-world quicktest with all five expansions, minimal
+list + this mod + mandrake.rm.creaturebehaviors, legacy kits DISABLED to
+avoid duplicate-defName collisions) is Desktop-only and OWED — see the
+item's own verify record. This is the first-ever live load of any of the
+six kit sections this mod carries.</description>
+</ModMetaData>

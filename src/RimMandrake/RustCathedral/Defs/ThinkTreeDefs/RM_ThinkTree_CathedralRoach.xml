@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_RM_MOD_BUILD_1 §6. A DUPLICATE of
+  src/RimUtinni/RustCathedralRoaches/Defs/ThinkTreeDefs/RUT_ThinkTree_CathedralRoach.xml,
+  renamed RUT_ThinkTree_CathedralRoach -> RM_ThinkTree_CathedralRoach to
+  match RM_CathedralRoach's own thinkTreeMain. See that file's own header
+  for the full "why a whole tree" rationale (BaseMechanoidWalker's inherited
+  Mechanoid tree has no insertTag).
+
+  ONE real difference from the original: RM_ThinkNode_EatCleanable is
+  wrapped in RM_ThinkNode_ConditionalRoachCleaningEnabled (this mod's own
+  new Mod Settings gate, RimMandrake.RustCathedral.RM_RustCathedralSettings.
+  roachCleaningEnabled) — the first toggle this behavior has ever had. The
+  frozen RUT_ twin's own tree is untouched and always on.
+-->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_CathedralRoach</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Despawned</treeDef>
+        </li>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+
+        <li Class="ThinkNode_QueuedJob" />
+
+        <li Class="RimMandrake.RustCathedral.RM_ThinkNode_ConditionalRoachCleaningEnabled">
+          <subNodes>
+            <li Class="RimMandrake.CreatureBehaviors.RM_ThinkNode_EatCleanable" />
+          </subNodes>
+        </li>
+
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Idle</tagToGive>
+          <subNodes>
+            <li Class="JobGiver_WanderAnywhere">
+              <maxDanger>Deadly</maxDanger>
+            </li>
+          </subNodes>
+        </li>
+
+        <li Class="JobGiver_IdleError" />
+
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>
