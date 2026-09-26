@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    CONTAGION_UNFINISHED_SPAWNER_1. "What the goo buds" (the_contagion.md
+    §4): AA_RedGoo — the roster's own "the body" — periodically buds a
+    short-lived RM_TheUnfinished nearby via CompSpawnerUnfinished.
+
+    Same PatchOperationConditional match/nomatch idiom as this mod's own
+    OrganGenomeComps.xml (CLAUDE.md's own standing warning: "a patch that
+    matches nothing logs nothing" — whether AA_RedGoo already carries a
+    <comps> block is UNMEASURED from this session, no live def dump; both
+    branches are safe regardless of which is true). Safe no-op if
+    sarg.alphaanimals is absent: AA_RedGoo's ThingDef then does not exist, so
+    neither xpath matches anything.
+  -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_RedGoo"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AA_RedGoo"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.Contagion.CompProperties_SpawnerUnfinished">
+          <spawnKind>RM_TheUnfinished</spawnKind>
+          <intervalDaysRange>0.6~1.4</intervalDaysRange>
+          <maxNearby>3</maxNearby>
+          <nearbyCheckRadius>20</nearbyCheckRadius>
+          <spawnCellRadius>3</spawnCellRadius>
+        </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AA_RedGoo"]</xpath>
+      <value>
+        <comps>
+          <li Class="RimMandrake.Contagion.CompProperties_SpawnerUnfinished">
+            <spawnKind>RM_TheUnfinished</spawnKind>
+            <intervalDaysRange>0.6~1.4</intervalDaysRange>
+            <maxNearby>3</maxNearby>
+            <nearbyCheckRadius>20</nearbyCheckRadius>
+            <spawnCellRadius>3</spawnCellRadius>
+          </li>
+        </comps>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>

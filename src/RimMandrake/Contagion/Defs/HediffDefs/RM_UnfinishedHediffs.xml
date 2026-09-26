@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_UNFINISHED_SPAWNER_1. the_contagion.md §4: "What the goo buds:
+    chimeras with one design finished and two abandoned — three good legs and
+    a stump, one wing, a jaw on a thing that cannot eat... Random limbs ride
+    the engine's own mechanism — Hediff_AddedPart grants with melee verbs, the
+    pattern the consumables plunder already found."
+
+    Pattern verified against the donor "More Consumables & Mutagens" mod's own
+    UrsaClaws/UrsaHorns HediffDefs (Crystal_Ursa.xml, referenced by
+    mutation_modifiers_survey.md): hediffClass Hediff_AddedPart (vanilla,
+    Verse.Hediff_AddedPart) + <addedPartProps><partEfficiency> (vanilla
+    AddedBodyPartProps) + a HediffCompProperties_VerbGiver comp for the ones
+    that fight back (vanilla Verse.HediffCompProperties_VerbGiver, the same
+    class Sanguophage fangs and gene-granted attacks use). Nothing below is an
+    invented class — every hediffClass/comp Class here is a real vanilla type,
+    confirmed via RimSage against the decompiled 1.6 source.
+
+    CompRandomizeUnfinished.cs picks 1-3 of these per spawn and applies each
+    to a random un-missing LEAF body part (never a part with children, so
+    Hediff_AddedPart's own "replace this part, mark its children missing"
+    logic never amputates anything else).
+  -->
+
+  <HediffDef Name="RM_UnfinishedLimbBase" Abstract="True">
+    <hediffClass>Hediff_AddedPart</hediffClass>
+    <isBad>false</isBad>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <defaultLabelColor>(0.72, 0.24, 0.34)</defaultLabelColor>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_UnfinishedLimbBase">
+    <defName>RM_UnfinishedClaw</defName>
+    <label>an attempted claw</label>
+    <description>One limb that finished right: a working claw, budded onto whatever part was nearest.</description>
+    <addedPartProps>
+      <partEfficiency>0.6</partEfficiency>
+    </addedPartProps>
+    <comps>
+      <li Class="HediffCompProperties_VerbGiver">
+        <verbs>
+          <li>
+            <verbClass>Verb_MeleeAttack</verbClass>
+            <defaultCooldownTime>2.0</defaultCooldownTime>
+            <meleeDamageBaseAmount>9</meleeDamageBaseAmount>
+            <meleeDamageDef>Scratch</meleeDamageDef>
+          </li>
+        </verbs>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_UnfinishedLimbBase">
+    <defName>RM_UnfinishedSpike</defName>
+    <label>a bone spike</label>
+    <description>A rigid spar of bone-analogue punched straight through the hide. It works better than it should.</description>
+    <addedPartProps>
+      <partEfficiency>0.5</partEfficiency>
+    </addedPartProps>
+    <comps>
+      <li Class="HediffCompProperties_VerbGiver">
+        <verbs>
+          <li>
+            <verbClass>Verb_MeleeAttack</verbClass>
+            <defaultCooldownTime>2.4</defaultCooldownTime>
+            <meleeDamageBaseAmount>11</meleeDamageBaseAmount>
+            <meleeDamageDef>Stab</meleeDamageDef>
+          </li>
+        </verbs>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_UnfinishedLimbBase">
+    <defName>RM_UnfinishedFang</defName>
+    <label>a misplaced fang</label>
+    <description>A single fang, budded somewhere a fang was never meant to be. It bites regardless.</description>
+    <addedPartProps>
+      <partEfficiency>0.55</partEfficiency>
+    </addedPartProps>
+    <comps>
+      <li Class="HediffCompProperties_VerbGiver">
+        <verbs>
+          <li>
+            <verbClass>Verb_MeleeAttack</verbClass>
+            <defaultCooldownTime>1.8</defaultCooldownTime>
+            <meleeDamageBaseAmount>8</meleeDamageBaseAmount>
+            <meleeDamageDef>Bite</meleeDamageDef>
+          </li>
+        </verbs>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_UnfinishedLimbBase">
+    <defName>RM_UnfinishedStump</defName>
+    <label>a stump</label>
+    <description>One of the abandoned attempts — a stump where a leg should have finished growing.</description>
+    <addedPartProps>
+      <partEfficiency>0.15</partEfficiency>
+    </addedPartProps>
+    <stages>
+      <li>
+        <statOffsets>
+          <MoveSpeed>-0.3</MoveSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_UnfinishedLimbBase">
+    <defName>RM_UnfinishedVestigialWing</defName>
+    <label>a vestigial wing</label>
+    <description>One wing, unfolded once and never used. It goes nowhere it did not already walk.</description>
+    <addedPartProps>
+      <partEfficiency>0.3</partEfficiency>
+    </addedPartProps>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_UnfinishedLimbBase">
+    <defName>RM_UnfinishedUselessJaw</defName>
+    <label>a jaw that cannot eat</label>
+    <description>A second jaw, budded shut. It moves when the rest of the body does and nothing else.</description>
+    <addedPartProps>
+      <partEfficiency>0.2</partEfficiency>
+    </addedPartProps>
+  </HediffDef>
+
+  <!-- Owner's ruling (the_contagion.md §4): "They can become dangerous —
+       most are nuisances, some roll a monster." Rare, rolled by
+       CompRandomizeUnfinished alongside the limb pool, never in place of
+       it. -->
+  <HediffDef>
+    <defName>RM_UnfinishedMonstrous</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>runaway growth</label>
+    <description>This one did not stop budding. Whatever finished here, finished big.</description>
+    <defaultLabelColor>(0.6, 0.1, 0.1)</defaultLabelColor>
+    <isBad>false</isBad>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <initialSeverity>1.0</initialSeverity>
+    <stages>
+      <li>
+        <statOffsets>
+          <MeleeDamageFactor>0.6</MeleeDamageFactor>
+          <MaxHitPoints>40</MaxHitPoints>
+          <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- The days-long lifespan mechanic: a plain vanilla severity-per-day
+       hediff ticking to a vanilla lethalSeverity (the same mechanism vanilla
+       diseases use to kill a pawn on their own schedule — Hediffs_
+       Local_Infections.xml, etc.). CompRandomizeUnfinished randomises the
+       effective remaining lifespan per individual by rolling the hediff's
+       INITIAL severity at spawn (0~0.5 of the way to lethal) rather than
+       touching this shared def's severityPerDay. Ban 3 in the_contagion.md
+       ("no finished natives beyond the ruled table... the Unfinished are
+       short-lived by law") is why tendable is false — nothing extends this. -->
+  <HediffDef>
+    <defName>RM_UnfinishedUnraveling</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>coming apart</label>
+    <description>This body was never meant to hold together for long. It is unraveling back into the goo it was budded from.</description>
+    <defaultLabelColor>(0.75, 0.15, 0.15)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <lethalSeverity>1.0</lethalSeverity>
+    <initialSeverity>0</initialSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>0.3</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>holding together</label>
+        <minSeverity>0</minSeverity>
+      </li>
+      <li>
+        <label>unraveling</label>
+        <minSeverity>0.5</minSeverity>
+      </li>
+      <li>
+        <label>coming apart</label>
+        <minSeverity>0.85</minSeverity>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

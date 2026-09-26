@@ -25,11 +25,18 @@ namespace RimMandrake.Contagion
         // option simply never appears.
         public static bool genomeOrganGrowingEnabled = true;
 
+        // CONTAGION_UNFINISHED_SPAWNER_1: master toggle for AA_RedGoo's
+        // CompSpawnerUnfinished. Off degrades gracefully — the comp's CompTick
+        // simply never spawns; any Unfinished already on the map keep living
+        // out their (short) lives normally.
+        public static bool unfinishedSpawnerEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref genomeOrganGrowingEnabled, "genomeOrganGrowingEnabled", true, true);
+            Scribe_Values.Look(ref unfinishedSpawnerEnabled, "unfinishedSpawnerEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -51,6 +58,15 @@ namespace RimMandrake.Contagion
                 + "amoeba (AA_RedGoo), which gestates a one-time batch of organs matched "
                 + "to that colonist and dies producing it. Off removes the surgery recipe "
                 + "and the injection option entirely.");
+
+            list.Gap();
+            list.CheckboxLabeled(
+                "The Unfinished spawner enabled",
+                ref unfinishedSpawnerEnabled,
+                "Lets the Contagion's red goo (AA_RedGoo) periodically bud a short-lived "
+                + "Unfinished chimera nearby — random-limb, days-long-lived, dissolving to "
+                + "goo on death. Off stops new ones from budding; any already alive keep "
+                + "living out their (short) lives normally.");
 
             list.End();
         }

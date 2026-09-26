@@ -47,11 +47,26 @@ the roster's own "the body" — and inject it (a right-click interaction,
 (kidney/liver/lung/heart) tagged with the source colonist's identity via a
 comp patched onto those four vanilla ThingDefs — the host is consumable, one
 batch per amoeba, per the owner's ruling. Gated by its own Mod Settings
-toggle, default on. The Burn/Bloom weather mechanic and the Unfinished's
-random-mutation spawner (`CONTAGION_UNFINISHED_SPAWNER_1` — referenced by
-name in earlier design prose but not a filed ledger item as of this build)
-remain unbuilt design work and land here later, at any point, with no
-dependency direction.
+toggle, default on.
+
+`CONTAGION_UNFINISHED_SPAWNER_1` (2026-09-26) added the mod's second mechanic:
+`AA_RedGoo` periodically buds a short-lived `RM_TheUnfinished` chimera nearby
+(`CompSpawnerUnfinished`, patched onto the donor the same way the genome comps
+above are). Each Unfinished rolls 1-3 random vanilla `Hediff_AddedPart` limbs
+from a small pool (claw/spike/fang/stump/vestigial wing/useless jaw — some
+armed, some not) onto random un-missing body parts, a rare (12%) "rolled a
+monster" combat buff, and a vanilla severity-per-day hediff randomised to kill
+it within a few in-game days. Death always dissolves the corpse to
+`Filth_Slime` via vanilla's own `DeathActionProperties_Vanish` — no corpse
+persists. Not part of the biome's ambient `wildAnimals` roster (it never
+breeds; it is budded), so ecosystem accounting is untouched. Gated by its own
+Mod Settings toggle, default on. Placeholder art only (a recolored vanilla
+Warg, this mod's own precedent) — `infrastructure/artpipe/done/` was checked
+first and holds no existing "Unfinished"/chimera art; bespoke art remains
+owed, queued separately.
+
+The Burn/Bloom weather mechanic remains unbuilt design work and lands here
+later, at any point, with no dependency direction.
 
 Zero Star Wars content lives in this biome's roster at all — the twin's own
 `wildAnimals` carries no `RSW_`/`SW_`/`mlie.*` row, so no Utinni patch is needed
