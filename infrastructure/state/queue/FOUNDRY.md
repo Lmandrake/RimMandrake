@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T15:28:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T15:30:27Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -116,6 +116,15 @@ target:   v1
 kind:     task
 summary:  INHABITEDAUGMENTATIONBUILD1
 prose:    infrastructure/state/items/INHABITED_AUGMENTATION_BUILD_1.md
+
+## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Full design: design/Jawa/proposals/plotmechanismswave.md (333 lines, all
+prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
 
 ## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
 state:    doing
@@ -386,6 +395,15 @@ target:   v1
 kind:     task
 summary:  WORLDMAPAUDITLIVECHECKS1 — the four audit checks only the live game can answer
 prose:    infrastructure/state/items/WORLDMAP_AUDIT_LIVE_CHECKS_1.md
+
+## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Inventory every shipped/in-progress mod under src/RimMandrake/,
+prose:    infrastructure/state/items/MOD_OPTIONS_RETROFIT_1.md
 
 ## SARLACC_HABITAT_BUILD_1 Build the accepted sarlacc design (sarlacc_native_habitat_draft.md, ACCEPTED + all forks RULED 2026-09-12): RSW-tier mod, Devourer-modeled swimmer, rooting-in-play, 2-4 deep-desert cisterns (relocate tile 2920 off the Weeping Stones oasis), breach-only kill, 7 changed-return hediffs, tribal stage labels for owner yes
 state:    doing  (BLOCKED)
@@ -1062,12 +1080,12 @@ summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.ri
 prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
 
 ## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
-state:    ready  (BLOCKED)
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  rules 5/7/8 need owner design calls (arrival-mode restrictions + recall scoring; Rumor Has It's actual API; tributedemand's dialog API) or a filed decision item, not guessable wiring -- see item file's 2026-09-13 catch-up note
+blocked:  re-confirmed 2026-09-26: rules 5/7/8 need cross-mod API reads (tributedemand/RumorHasIt/Ninefold) RimSage cannot see and/or an owner design call; Part 1 raid-redesigner needs 13-faction RUT register content (design/Fable work, not build). Seam-B architecture gap found 2026-09-10 is now resolved on paper (see note) but nothing built.
 summary:  Full design: design/Jawa/proposals/plotmechanismswave.md (333 lines, all
 prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
 
@@ -1192,7 +1210,7 @@ summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. 
 prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
 
 ## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
-state:    ready  (BLOCKED)
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
