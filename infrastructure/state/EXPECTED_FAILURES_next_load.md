@@ -1,37 +1,50 @@
-# Biome load round — decision strings, written BEFORE launch 2026-09-25 (BENCH)
+# Decision strings — ExplosiveGrowth + biome fixes live verification, 2026-09-26
 
-Batch: loadsweep BASE-9 + 15 extras (`src/RimMandrake/Utils/loadsweep/biome_round_batch.txt`)
-= 24 mods. Purpose: prove the 8 new RM_ biome mods load clean (step 5 of their build items).
-Eight new assemblies ride this load under the standing name-attribution waiver — one
-signature each, below, written before the log exists.
+Full mod list load (629 mods after this session's ModsConfig edit). Written BEFORE
+launch per rimworld-load-round §2/§3.
 
-## Per-assembly failure signatures (any hit = that mod fails, others unaffected)
-- `TypeLoadException`/`ReflectionTypeLoadException` naming `RimMandrake.TheRot`
-- … naming `RimMandrake.FeverWood`
-- … naming `RimMandrake.TerminalBiomes`
-- … naming `RimMandrake.Greentide`
-- … naming `RimMandrake.NightsideIce`
-- … naming `RimMandrake.Stillsand`
-- … naming `RimMandrake.LongShade`
-- … naming `RimMandrake.Wasteland`
+## New assembly: RimMandrake.ExplosiveGrowth.dll (mandrake.rm.explosivegrowth)
+PROVE  Player.log contains a startup line from RM ExplosiveGrowth naming how many
+       plant defs soak (roster resolution count).
+EXPECT `[RM ExplosiveGrowth]` line present, N > 0 plant defs (some donor-plant
+       roster names may not resolve — expected, not a failure, per build report).
+LIES   Silence could mean the mod didn't load (check ModsConfig activeMods has it)
+       OR that the log line was never written for this build (grep the source for
+       the exact log call before treating absence as a startup failure).
 
-## FAIL strings (whole batch)
-- `Recovered from incompatible or corrupted mods` or `Caught exception while loading play data`
-- disk activeMods collapses to 6 (recovery reset)
-- `^Config error in` naming any `RM_` def
-- `Could not resolve cross-reference` naming `RM_`
-- `Patch operation` + `failed` naming a mandrake file
+## Load order: ExplosiveGrowth before PlantGrowth
+PROVE  `mandrake.rm.explosivegrowth` (index 585) appears before `mandrake.rut.plantgrowth`
+       (index 586) in ModsConfig.xml, and PlantGrowth's own ExplosiveGrowth/ subfolder
+       (RUT_BloomBurst IncidentDef, RUT_ExplosiveGrowthRoster.xml) resolves with no
+       cross-reference errors.
+EXPECT No "Could not resolve cross-reference" for RUT_BloomBurst or the roster's
+       plant defNames.
+LIES   A patch that matches nothing logs nothing — absence of an error is not proof
+       the roster actually populated; cross-check jawa/get_defs on RUT_BloomBurst.
 
-## PASS positive (not silence)
-- `Bridge token:` present; disk_active_mods = 24
-- `jawa/get_defs` non-null for every sentinel:
-  BiomeDef: RM_TheRot · RM_FeverWood · RM_Greentide · RM_NightsideIce · RM_Stillsand ·
-  RM_LongShade · RM_Wasteland · RM_TheScald · RM_GreySea · RM_TwilightSea · RM_PropaneLake
-  ThingDef: RM_Vaunoom (VWake reconciliation) · RM_Fessk (cast wiring) · RM_Eesh (fish
-  retier) · RM_Vorrel (LongShade move) · RM_GiantLeaf (FeverWood Q13 dup)
-  TerrainDef: RM_TheRotGrass (TheRot own ground) · RM_SolidPropane (PropaneLake own terrain)
-- KNOWN-ACCEPTED, not failures: Wasteland's unguarded `VolcanoSoil`/`WastelandAsphalt`
-  terrainsByFertility resolve only because sarg.alphabiomes is in this batch — its true
-  standalone gap stays open on WASTELAND_RM_MOD_BUILD_1. Missing real art renders
-  placeholder silhouettes; pink squares on RM_DosimeterLawn/RM_VaultRoot (texPaths with no
-  PNG) are a recorded LongShade/Wasteland robustness-pass item, not a load failure.
+## Modified assembly: RimMandrake.EnvironmentalHazards.dll (Scarlands/Sump/Miasma fixes)
+PROVE  `RUT_SentinelGraveWard` GenStepDef (RUT_ScarlandsGraveWardScatter) present with
+       no config errors; RM_JobDefs_DisarmLotteryTrap / RM_WorkGiverDefs_DisarmLotteryTrap
+       load clean.
+EXPECT Zero "Config error in RUT_SentinelGraveWard" / zero errors naming
+       RimMandrake.EnvironmentalHazards.
+LIES   A GenStep with no errors can still never fire at map-gen time (wrong biome gate,
+       wrong commonality) — config-clean is not "it scattered". Needs the live Scarlands
+       map spot-check (step 5), not just log silence.
+
+## Modified assembly: RimMandrake.FloodedCanyon.dll (not enabled in ModsConfig this session)
+PROVE  N/A this load — mandrake.rm.floodedcanyon is deployed but NOT in ModsConfig
+       (confirmed absent). Its content rides no risk this load.
+EXPECT No entries at all for FloodedCanyon in the log (mod inactive).
+LIES   N/A.
+
+## Batching rationale
+Three assemblies (ExplosiveGrowth new, EnvironmentalHazards modified, PlantGrowth
+modified) ride together. Per rimworld-load-round §3 this is affordable only because
+their failure signatures are distinguishable (own log line / own defName / own
+GenStepDef), which is why each is written above before the log exists.
+
+## Baseline
+`harvest_log.py` baseline config/crossref/patch-failure counts on this same 629-mod
+stack have not been separately re-baselined for this session's additions; standing
+baseline is "zero errors naming any of our four touched mods."
