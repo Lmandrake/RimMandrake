@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_EGG_RECKONING_QUEST_1, §2d: "egg found before hatch... target
+  faction goodwill -25 and a raid-grade grudge — attempted assassination is
+  worse than abduction." Fires alongside RUT_HistoryEvent_EggAssassination
+  (the ideoligion-facing record) on the SAME QuestNode_End; this one drives
+  the faction-goodwill notification text specifically.
+-->
+<Defs>
+
+  <HistoryEventDef>
+    <defName>RUT_HistoryEvent_ReckoningAttempt</defName>
+    <label>a discovered assassination attempt</label>
+  </HistoryEventDef>
+
+</Defs>

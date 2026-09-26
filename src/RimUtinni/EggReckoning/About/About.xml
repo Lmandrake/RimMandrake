@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: The Reckoning</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.eggreckoning</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>WEBWORK_EGG_RECKONING_QUEST_1. The assassination quest family split out of
+WEBWORK_EGG_BLACKMARKET_BUILD_1, per that item's own close report: "needs a new C# plant-watcher
+verb, several unresolved numbers, and live-game verify outside its offline scope." Design:
+design/Jawa/worldbuilding/biomes/webwork_egg_blackmarket_2026-09-24.md §2 (the quest family) and
+§3 (the hatch mechanism), S5 rulings 2/3/6/7.
+
+Ships one QuestScriptDef family, "The Reckoning": a debtor's outpost with three solution paths —
+(1) pay the Cartel directly (a TradeRequest silver delivery, same machinery
+RUT_WildsteamEggBounty already uses), (2) defeat the outpost in the open (vanilla
+site.AllEnemiesDefeated), (3) plant an RM_OllathrixEgg inside the outpost undetected and let it
+hatch that night (the one genuinely new C# verb this family needed).
+
+RULINGS IMPLEMENTED, verbatim from S5:
+  2. Hatch mechanism: STAGED QUEST EVENT. RM_OllathrixEgg carries no CompHatcher and never
+     hatches anywhere outside this quest — RM_QuestPart_EggHatch spawns the one RM_Ollathrix
+     PawnKindDef directly once planted and the map reaches its next night window (23:00-02:00,
+     the design's own literal citation). No second egg def, no comp on the shared item.
+  3. What hatches: JUVENILE. The spawned spider is the SAME RM_Ollathrix kind at a fixed
+     biological age within its own lifeStageAges' AnimalJuvenile band (0.2-0.4 x 14y
+     lifeExpectancy = 2.8-5.6y; 4.0y picked, INVENTED midpoint, disclosed) — no new PawnKindDef,
+     per §0 ruling 2's one-race-one-kind law. It is spawned via the same
+     PawnGenerator.GeneratePawn + MentalStateDefOf.ManhunterPermanent pattern
+     IncidentWorker_AggressiveAnimals and Scripts_ItemPodThreat.xml's own manhunter-pack reward
+     threat already use — a real, losable hostile animal, not a scripted kill.
+  6. Total deniability CONFIRMED. An undiscovered egg-hatch kill (QuestNode_End on EggHatched)
+     carries no goodwillChangeAmount at all — the target's faction never learns anything.
+     Discovery before the hatch (EggFoundBeforeHatch) is the ONLY branch that costs goodwill,
+     and only then.
+  7. Quest-only planting stands. RM_OllathrixEgg is never given a hatch mechanism outside this
+     quest's own RM_QuestPart_EggHatch — a player cannot buy eggs and free-plant them as weapons.
+     The free-form colony-weapon version is WEBWORK_EGG_WEAPON_VERSION_1, explicitly out of
+     scope here.
+
+MECHANISM GAPS DISCLOSED (checked live against the decompiled engine via RimSage — nothing here
+is guessed): the design's own §2a hand-waves path 2 as "vanilla shuttle/caravan-delivery
+machinery" and names a bedroom-specific marked cell for the plant — neither exists as a nameable
+vanilla mechanism. No vanilla QuestNode captures "deliver a captured pawn to a settlement," and
+no SitePartDef places a single trackable, capturable NAMED individual the way DownedRefugee/
+ItemStash's own site parts do for THEIR pawns. So: the "target" is a flavor-only QuestNode_
+GeneratePawn (Villager, faction=$siteFaction) used for grammar and for goodwillChangeFactionOf,
+never placed on the map; the outpost's whole garrison (SitePartDef Outpost, requiresFaction,
+minThreatPoints 300 — genuinely "standard machinery" per the design's own words) stands in for
+"his men," and path 2's success is the real vanilla site.AllEnemiesDefeated signal (an actual
+fight, a real win condition) rather than a scripted capture. The egg-plant check is "any
+RM_OllathrixEgg lying roofed and unfogged anywhere on the site map" rather than a single marked
+bedroom cell, since no vanilla API identifies which building is "the target's bedroom" inside a
+procedurally generated Outpost. Both are disclosed simplifications, not silent inventions.
+
+INVENTED NUMBERS (same disclosure posture as RUT_WildsteamEggBounty's own header — picked
+within or near the design's own ❓ ranges, not silently guessed, all in
+RUT_Reckoning.xml's own header comment):
+  - expireDaysRange (offer window) 4~8, matching this campaign's own quest family convention.
+  - Completion timer 10-15 days (design's own ❓ range, used as given).
+  - Path 1 payoff: ~2x the base reward (design's own "roughly 2x").
+  - Path 2 goodwill penalty -8 (open, visible abduction — legal-adjacent per §2a).
+  - Path 3 post-plant discovery goodwill penalty -25 (the design doc's own ❓-25, carried
+    forward as given rather than re-invented).
+  - Post-plant per-hour discovery chance 3%.
+  - Juvenile hatch fixed biological age 4.0 years.
+  - minRefireDays 30 and rootSelectionWeight 0.15 on the natural-pool fallback route.
+  - rootMinPoints 300, matching Outpost's own minThreatPoints exactly (not arbitrary).
+
+FIRING ROUTES (skill §7): RUT_Reckoning_CartelOffer is the primary route (givenBy Traders,
+randomlySelectable false — vanilla's givenBy tag is generic to ALL traders, not filterable to
+one TraderKindDef, so "the Cartel hands you the contract" is fiction over a generic-trader-offer
+mechanism, disclosed). RUT_Reckoning_Rumor is the low-weight natural-pool fallback for colonies
+that never meet a trader, ParentName-inheriting the same root tree (skill §3: ParentName
+inherits the whole tree and text packs).
+
+OFFLINE-ONLY VERIFY: validate_quest.py clean, dotnet build clean against the real installed
+Assembly-CSharp.dll. NOT verified: whether GenHostility.AnyHostileActiveThreatToPlayer's
+"undetected" reading matches what a human would call stealthy, whether the Outpost SitePartDef
+reliably generates a roofed indoor cell the egg can be dropped in, and whether the juvenile
+spawn is tuned right in a real fight — all three need a live dev-mode "Generate quest" pass,
+which is bridge/game-up work this item's own scope note excludes (needs: offline).
+
+Depends on mandrake.rm.webwork (RM_OllathrixEgg, RM_Ollathrix) and mandrake.rut.patches
+(RUT_Jawa_HuttCartel, the FactionDef the settlement-finder node is scoped to).</description>
+
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rm.webwork</packageId>
+      <displayName>RimMandrake: Webwork</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rut.patches</packageId>
+      <displayName>RimUtinni: Patches</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.webwork</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+</ModMetaData>

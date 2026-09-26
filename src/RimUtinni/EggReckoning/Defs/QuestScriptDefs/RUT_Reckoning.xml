@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    "The Reckoning" — WEBWORK_EGG_RECKONING_QUEST_1.
+    Design: design/Jawa/worldbuilding/biomes/webwork_egg_blackmarket_2026-09-24.md
+    §2 (2a "the core quest", 2b "planting mechanics", 2d "discovery and
+    consequences") and §3 (the hatch mechanism), S5 rulings 2/3/6/7.
+
+    Full provenance for every node/field, checked live against the decompiled
+    engine via RimSage this session (search_source/get_def_details), never
+    guessed:
+      QuestScriptDef fields, QuestNode_Sequence, GetMap(canBeSpace),
+      GetSiteTile(preferCloserTiles), GetSitePartDefsByTagsAndFaction,
+      GetDefaultSitePartsParams, SubScript(Util_AdjustPointsForDistantFight,
+      Util_GenerateSite, Util_GetDefaultRewardValueFromPoints),
+      SpawnWorldObjects, GeneratePawn(kindDef/faction), Delay(isQuestTimeout),
+      Letter, Set, End(goodwillChangeAmount/goodwillChangeFactionOf/
+      goodwillChangeReason/successHistoryEvent/failedOrExpiredHistoryEvent)
+        src/RimUtinni/UtinniPatches/Defs/QuestScriptDefs/Jawa_TheClaim.xml
+        (site-generation shape) + Source/RimWorld/QuestGen/QuestNode_End.cs,
+        QuestNode_GeneratePawn.cs (read in full this session)
+      TradeRequest_RandomOfferDuration / TradeRequest_Initiate / GiveRewards
+        src/RimUtinni/WildsteamEggBounty/Defs/QuestScriptDefs/
+        RUT_WildsteamEggBounty.xml (same TradeRequestComp machinery, silver
+        instead of eggs)
+      SitePartDef Outpost (requiresFaction, minThreatPoints 300, tag Outpost)
+        RimSage get_def_details "Outpost" (SitePartDef), read in full
+      site.AllEnemiesDefeated — the real vanilla "the garrison is beaten"
+      signal Sites already fire on their own (Site.CheckAllEnemiesDefeated),
+      not invented
+        Source/RimWorld/Planet/Site.cs:498 (read in full this session)
+      PawnKindDefOf.Villager (the flavor "target" pawn — see below)
+        Source/RimWorld/PawnKindDefOf.cs
+      RM_QuestNode_GetHuttCartelSettlement / RM_QuestNode_EggPlantWatcher /
+      RM_QuestNode_EggHatch — this mod's own Source/, see each file's header.
+
+    THE THREE PATHS (§2a):
+      1. Pay it yourself.  A TradeRequest of Silver to the Cartel's own
+         settlement, ~2x the base reward (design's own "roughly 2x",
+         INVENTED exact factor within it, same disclosure posture
+         RUT_WildsteamEggBounty's own header already uses). Goodwill only —
+         no thing reward (rewardValue forced to 0 before this branch's
+         GiveRewards) — "the clean path spends the fee."
+      2. Collect in person.  Defeat the outpost's garrison in the open
+         (site.AllEnemiesDefeated — a REAL fight, the vanilla "all hostiles
+         down or fled" signal). Standard reward, and -8 goodwill against the
+         debtor's own faction (open, visible, "legal-adjacent, not
+         deniable" per §2a) — INVENTED exact amount, disclosed.
+         DISCLOSED MECHANISM GAP: the design calls this "vanilla
+         shuttle/caravan-delivery machinery," but no such "deliver a captured
+         pawn to a settlement" QuestNode exists (confirmed: no SendAway/Escort/
+         Ransom/Bounty QuestNode or QuestScriptDef matches this shape). The
+         debtor's fate (captured vs. killed in the fight) is left to the
+         player's own combat, same as any other site assault — this is a
+         real win condition, just not a literal captive-delivery mechanic.
+      3. The egg.  RM_QuestNode_EggPlantWatcher watches for an RM_OllathrixEgg
+         planted (roofed, unfogged, anywhere on the site map — see that
+         node's own header for why not a single marked cell) while the site
+         is undetected. Once planted, RM_QuestNode_EggHatch waits for the
+         next night window (23:00-02:00, the design's own literal figure) or
+         a small per-hour discovery chance (3%, INVENTED, disclosed),
+         whichever comes first. Undiscovered hatch: Success, ZERO goodwill
+         change (S5 ruling 6, total deniability). Discovered before hatch:
+         Fail, -25 goodwill (the design's own already-stated ❓-25, carried
+         forward as given). Both branches fire
+         RUT_HistoryEvent_EggAssassination regardless of outcome (§2d).
+
+    THE "TARGET": a flavor-only QuestNode_GeneratePawn (Villager, faction =
+    $siteFaction), never spawned on the map. It exists so quest text can say
+    [target_nameFull] and so QuestNode_End's goodwillChangeFactionOf — which
+    reads a Thing's .Faction, not a Faction directly (Source/RimWorld/QuestGen/
+    QuestNode_End.cs's own SlateRef<Thing> field, confirmed by reading it) —
+    has something to point at. The debtor is not a placed, trackable
+    individual; the outpost's whole garrison stands in for "his men," the
+    same disclosed simplification path 2 already carries.
+
+    Completion timer: randInt(10,15) days (the design's own ❓10-15 range,
+    used as given, not re-invented) after acceptance — Fail ("the target
+    learns and flees") if none of the three paths lands first. Offer window
+    (expireDaysRange) 4~8, this campaign's own quest-family convention.
+
+    Two concrete leaves inherit this same tree (skill §3: ParentName inherits
+    the whole root and text packs) so the family can fire both from the
+    Cartel trader (route 3, primary, per skill §7) AND, separately, as a rare
+    natural-pool fallback (route 1) for a colony that never meets the trader
+    — a single def cannot do both: vanilla's own givenBy+randomlySelectable
+    idiom (Data/Odyssey/Defs/QuestScriptDefs/Script_AlphaThrumboSighting.xml,
+    confirmed via search_source) turns OFF the natural pool.
+  -->
+
+  <QuestScriptDef Abstract="True" Name="RUT_Reckoning">
+    <expireDaysRange>4~8</expireDaysRange>
+    <defaultChallengeRating>2</defaultChallengeRating>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Reckoning of Debts</li>
+        <li>questName->A Cartel Reckoning</li>
+        <li>questName->[cartelFaction_name]'s Reckoning</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->[cartelFaction_name] controls the door off-world and the water on the way to it. [target_nameDef], of [siteFaction_name], owes them a debt and will not pay. The Cartel wants it closed — how is your business.
+\n\nThree ways to close it: hand the Cartel the silver yourself (roughly [payAmount_money]); go to [target_pronoun]'s outpost and settle it in the open, at the cost of [siteFaction_name]'s goodwill; or carry an ollathrix egg in and leave it somewhere undetected. It hatches in the night. No one need ever know how [target_nameDef] died — except you.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_AdjustPointsForDistantFight</def>
+        </li>
+
+        <li Class="QuestNode_GetMap">
+          <canBeSpace>true</canBeSpace>
+        </li>
+
+        <li Class="RimMandrake.Utinni.EggReckoning.RM_QuestNode_GetHuttCartelSettlement">
+          <maxTileDistance>80</maxTileDistance>
+        </li>
+
+        <li Class="QuestNode_GetSiteTile">
+          <storeAs>siteTile</storeAs>
+          <preferCloserTiles>true</preferCloserTiles>
+        </li>
+
+        <li Class="QuestNode_GetSitePartDefsByTagsAndFaction">
+          <storeAs>sitePartDefs</storeAs>
+          <storeFactionAs>siteFaction</storeFactionAs>
+          <sitePartsTags>
+            <li>
+              <tag>Outpost</tag>
+            </li>
+          </sitePartsTags>
+        </li>
+
+        <li Class="QuestNode_GeneratePawn">
+          <storeAs>target</storeAs>
+          <kindDef>Villager</kindDef>
+          <faction>$siteFaction</faction>
+        </li>
+
+        <li Class="QuestNode_GetDefaultSitePartsParams">
+          <tile>$siteTile</tile>
+          <faction>$siteFaction</faction>
+          <sitePartDefs>$sitePartDefs</sitePartDefs>
+          <storeSitePartsParamsAs>sitePartsParams</storeSitePartsParamsAs>
+        </li>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_GenerateSite</def>
+        </li>
+
+        <li Class="QuestNode_SpawnWorldObjects">
+          <worldObjects>$site</worldObjects>
+        </li>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_GetDefaultRewardValueFromPoints</def>
+        </li>
+
+        <li Class="QuestNode_Set">
+          <name>baseReward</name>
+          <value>$rewardValue</value>
+        </li>
+
+        <!-- ❓ design's own "roughly 2x"; INVENTED exact factor within it. -->
+        <li Class="QuestNode_Set">
+          <name>payAmount</name>
+          <value>$(round(baseReward * randFloat(1.8, 2.2)))</value>
+        </li>
+
+        <!-- ❓ design's own 10-15 day range for the completion timer, used as given. -->
+        <li Class="QuestNode_Delay">
+          <delayTicks>$(randInt(10,15)*60000)</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <outSignalComplete>ReckoningTimeout</outSignalComplete>
+        </li>
+        <li Class="QuestNode_Letter">
+          <inSignal>ReckoningTimeout</inSignal>
+          <label>Quest expired: [resolvedQuestName]</label>
+          <text>[target_nameDef] has heard enough rumours to move on. The debt stands, uncollected.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>ReckoningTimeout</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+        <!-- Path 1: pay it yourself. Goodwill only, no thing reward. -->
+        <li Class="QuestNode_TradeRequest_RandomOfferDuration">
+          <settlement>$cartelSettlement</settlement>
+          <storeAs>payTimeout</storeAs>
+          <storeEstimatedTravelTimeAs>payTravelTime</storeEstimatedTravelTimeAs>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>payThing</name>
+          <value>Silver</value>
+          <convertTo>ThingDef</convertTo>
+        </li>
+        <li Class="QuestNode_TradeRequest_Initiate">
+          <settlement>$cartelSettlement</settlement>
+          <requestedThingDef>$payThing</requestedThingDef>
+          <requestedThingCount>$payAmount</requestedThingCount>
+          <duration>$payTimeout</duration>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>rewardValue</name>
+          <value>0</value>
+        </li>
+        <li Class="QuestNode_GiveRewards">
+          <inSignal>cartelSettlement.TradeRequestFulfilled</inSignal>
+          <parms>
+            <allowGoodwill>true</allowGoodwill>
+          </parms>
+          <useDifficultyFactor>false</useDifficultyFactor>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>cartelSettlement.TradeRequestFulfilled</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+        </li>
+
+        <!-- Path 2: collect in person — a real fight, open and visible. -->
+        <li Class="QuestNode_Set">
+          <name>rewardValue</name>
+          <value>$baseReward</value>
+        </li>
+        <li Class="QuestNode_GiveRewards">
+          <inSignal>site.AllEnemiesDefeated</inSignal>
+          <parms>
+            <allowGoodwill>true</allowGoodwill>
+            <thingRewardRequired>true</thingRewardRequired>
+          </parms>
+          <useDifficultyFactor>false</useDifficultyFactor>
+        </li>
+        <!-- ❓ INVENTED goodwill penalty, disclosed. -->
+        <li Class="QuestNode_End">
+          <inSignal>site.AllEnemiesDefeated</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+          <goodwillChangeAmount>-8</goodwillChangeAmount>
+          <goodwillChangeFactionOf>$target</goodwillChangeFactionOf>
+          <goodwillChangeReason>RUT_HistoryEvent_ReckoningAbduction</goodwillChangeReason>
+        </li>
+
+        <!-- Path 3: the egg. The one C# verb. -->
+        <li Class="RimMandrake.Utinni.EggReckoning.RM_QuestNode_EggPlantWatcher">
+          <site>$site</site>
+          <inSignalEnable>site.MapGenerated</inSignalEnable>
+          <outSignalPlanted>EggPlanted</outSignalPlanted>
+          <outSignalDiscovered>EggDiscovered</outSignalDiscovered>
+        </li>
+        <li Class="QuestNode_Letter">
+          <inSignal>EggDiscovered</inSignal>
+          <label>They've seen you</label>
+          <text>Someone at [target_nameDef]'s outpost has spotted trouble. Whatever happens now, it will not be quiet.</text>
+        </li>
+
+        <li Class="RimMandrake.Utinni.EggReckoning.RM_QuestNode_EggHatch">
+          <site>$site</site>
+          <inSignalEnable>EggPlanted</inSignalEnable>
+          <outSignalHatched>EggHatched</outSignalHatched>
+          <outSignalFoundBeforeHatch>EggFoundBeforeHatch</outSignalFoundBeforeHatch>
+        </li>
+
+        <li Class="QuestNode_Set">
+          <name>rewardValue</name>
+          <value>$baseReward</value>
+        </li>
+        <li Class="QuestNode_GiveRewards">
+          <inSignal>EggHatched</inSignal>
+          <parms>
+            <allowGoodwill>true</allowGoodwill>
+            <thingRewardRequired>true</thingRewardRequired>
+          </parms>
+          <useDifficultyFactor>false</useDifficultyFactor>
+        </li>
+        <!-- S5 ruling 6: total deniability — no goodwillChangeAmount at all. -->
+        <li Class="QuestNode_End">
+          <inSignal>EggHatched</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+          <successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent>
+        </li>
+
+        <!-- ❓ design's own already-stated -25, used as given. -->
+        <li Class="QuestNode_End">
+          <inSignal>EggFoundBeforeHatch</inSignal>
+          <outcome>Fail</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+          <goodwillChangeAmount>-25</goodwillChangeAmount>
+          <goodwillChangeFactionOf>$target</goodwillChangeFactionOf>
+          <goodwillChangeReason>RUT_HistoryEvent_ReckoningAttempt</goodwillChangeReason>
+          <failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+  <!-- Route 3 (skill §7): the Cartel hands you the contract while you browse.
+       ❓ DISCLOSED: vanilla's givenBy tag is generic to ALL traders
+       (Traders/OrbitalScanner/Reading/Beggars — confirmed via search_source,
+       no per-TraderKindDef filter exists), so this is a generic-trader offer
+       with Cartel framing in the text, not a literal Cartel-only gate. -->
+  <QuestScriptDef ParentName="RUT_Reckoning">
+    <defName>RUT_Reckoning_CartelOffer</defName>
+    <givenBy>
+      <li>Traders</li>
+    </givenBy>
+    <randomlySelectable>false</randomlySelectable>
+    <rootMinPoints>300</rootMinPoints>
+  </QuestScriptDef>
+
+  <!-- Route 1 (skill §7): rare natural-pool fallback for a colony that never
+       meets the trader. rootMinPoints 300 matches Outpost's own
+       minThreatPoints exactly (RimSage-confirmed), not arbitrary.
+       ❓ minRefireDays/rootSelectionWeight INVENTED within shipped ranges
+       (0.15-2.0), disclosed. -->
+  <QuestScriptDef ParentName="RUT_Reckoning">
+    <defName>RUT_Reckoning_Rumor</defName>
+    <rootSelectionWeight>0.15</rootSelectionWeight>
+    <rootMinPoints>300</rootMinPoints>
+    <minRefireDays>30</minRefireDays>
+  </QuestScriptDef>
+
+</Defs>
