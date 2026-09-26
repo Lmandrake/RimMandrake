@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_Miasma                                      MIASMA_RM_MOD_BUILD_1 - Phase A
+    Phase A row 19 of design/RimMandrake/biome_mod_architecture.md. Parent:
+    BIOME_MOD_SPLIT_EXECUTION_1. Governed by BIOME_PAINT_ONCE_AT_THE_END_1 - this
+    def is expected to carry 0 tiles until the terminal repaint; that is not a
+    defect.
+
+    Copied from the frozen src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml
+    (kept, unchanged except a header comment, still carrying the live campaign
+    world's painted tiles). This is a NEW, franchise-free sibling for any other
+    generated RimWorld planet, not a rename of that one.
+
+    RM tier: nothing here knows what campaign or planet uses it. Fully donor-free
+    for wildlife would be nice but is NOT true today - see the wildAnimals/wildPlants
+    notes below, matching the honesty standard every sibling RM_ biome mod ships
+    (compare RM_PoisonForest's own About.xml "NOT entirely donor-free" section).
+
+    workerClass: replaces the donor AlphaBiomes.BiomeWorker_MiasmicMangrove with
+    this mod's own RM_BiomeWorker_Miasma (RM_MiasmaBiome.cs) - a donor type in
+    workerClass is a hard dependency the RimMandrake tier may not assume
+    (biome_mod_architecture.md Sec5 step 2).
+
+    wildAnimals: 11 rows ship inline -
+      - 9 non-Star-Wars donor rows (Alpha Animals / VFE Insectoids 2), each already
+        MayRequire-gated on its own donor mod, unchanged from the twin (Q9).
+      - RUT_Karrobel / RUT_Karrathil, this campaign's own invented (non-canon,
+        franchise-free) delta-loam composter and fever-swarm vector - these two
+        ThingDefs still physically live in mandrake.rut.patches (not moved this
+        pass, out of MIASMA_RM_MOD_BUILD_1 SS6's scope), so they carry a fresh
+        MayRequire="mandrake.rut.patches" here that the twin's own copy never
+        needed (same-mod, no gate required there). A future pass can port them
+        into this mod outright (they are invented names, RM tier per Q11a) and
+        drop the gate.
+    The 17 genuine Star Wars rows the twin also carries do NOT ship here - they
+    ride Utinni's WildAnimals_Miasma.xml as a PatchOperationAdd onto this def,
+    MayRequire-gated per row's real source mod, per the Q11a naming-tier ruling.
+    The 5 rows the roster itself evicted (Kreetle, Yobshrimp, RSW_Gembug,
+    AA_BloodShrimp, AA_Plasmorph - see rosters/the_miasma.json's own evictions[])
+    are dropped outright, not carried forward into either mod.
+
+    wildPlants: the three Alpha Biomes mangal rows now carry MayRequire=
+    "sarg.alphabiomes" (the twin's copy has none - 96.5% of this biome's flora
+    weight is this one donor family, a real dependency this mod is honest about
+    rather than silently assuming). RUT_Nogtyl (mandrake.rut.rotsporekit) is
+    left exactly as the twin has it - THEROT_RM_MOD_BUILD_1 owns updating that
+    MayRequire when Nogtyl's home mod is renamed, not this item.
+
+    terrainsByFertility: AB_FertileMud gains the same MayRequire="sarg.alphabiomes"
+    guard for the same reason.
+
+    biomeMapConditions / modExtensions: unchanged in shape from the twin. The
+    GameConditionDef/HediffDef/IncidentDef/WeatherDef/ThingDef/GenStepDef/
+    Patch content they reference (16 files) moved into this mod's own Defs/ and
+    Patches/ trees with their defNames UNCHANGED - nothing here needed to be
+    retargeted, since the frozen twin references the exact same defNames and
+    both mods are expected to load together going forward. The two onlyInBiomes/
+    allowedBiomes lists inside that moved content (the breath-tide surge
+    incident, the seven ForgeOnSurvival disease patches) now name BOTH
+    RUT_Miasma and RM_Miasma, so the mechanics keep firing on the live save.
+
+    texture (Biomes/AB_MiasmicMangrove) is inherited unchanged from the twin,
+    same posture as RM_PoisonForest's own donor world-map texture - not this
+    build's scope to fix.
+  -->
+
+  <BiomeDef>
+    <defName>RM_Miasma</defName>
+    <label>the Miasma</label>
+    <description>A salt-crusted, stilt-rooted mangal forest standing in brackish channels between a dying sea and the rivers that feed it, under a green-gold haze of its own breath. Walking is hard, the air hangs thick, and the water crowds with life -- because everything ends up here: the water, the sins it carries, and the life running from the salt. Threaded through the stink, improbably, beauty: rainbow-hued plants, young animals everywhere, and the stubborn sense the place is on the verge of something.</description>
+    <workerClass>RimMandrake.Miasma.RM_BiomeWorker_Miasma</workerClass>
+    <foragedFood>RawBerries</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>6.5</animalDensity>
+    <plantDensity>0.7</plantDensity>
+    <forageability>1.0</forageability>
+    <movementDifficulty>4</movementDifficulty>
+    <texture>Biomes/AB_MiasmicMangrove</texture>
+    <diseaseMtbDays>15</diseaseMtbDays>
+    <biomeMapConditions>
+      <li MayRequire="mandrake.rm.environmentalhazards">RUT_MiasmaWeatherLock</li>
+    </biomeMapConditions>
+    <modExtensions>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension">
+        <glowMultiplier>0.85</glowMultiplier>
+      </li>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GradientAxisExtension">
+        <waterBands>
+          <li>
+            <max>0.34</max>
+          </li>
+          <li MayRequire="mandrake.rm.flowworks">
+            <max>0.66</max>
+            <terrainShallow>RM_WaterBrackishShallow</terrainShallow>
+            <terrainDeep>RM_WaterBrackishDeep</terrainDeep>
+          </li>
+          <li MayRequire="mandrake.rm.flowworks">
+            <max>1</max>
+            <terrainShallow>RM_WaterBrineShallow</terrainShallow>
+            <terrainDeep>RM_WaterBrineDeep</terrainDeep>
+          </li>
+        </waterBands>
+        <landRepaintMinSalinity>0.85</landRepaintMinSalinity>
+        <landRepaintSource>
+          <li>Mud</li>
+          <li MayRequire="sarg.alphabiomes">AB_FertileMud</li>
+        </landRepaintSource>
+        <landTerrain>RUT_Jawa_SaltCrust</landTerrain>
+      </li>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GradientSurgeExtension">
+        <incidentDef>RUT_Surge</incidentDef>
+        <baseMtbDays>5</baseMtbDays>
+        <stormMtbMultiplier>0.25</stormMtbMultiplier>
+        <stormWindSpeedThreshold>1.2</stormWindSpeedThreshold>
+        <frontCellsRange>15~35</frontCellsRange>
+        <recedeDaysRange>2~4</recedeDaysRange>
+        <residualFraction>0.15</residualFraction>
+      </li>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_StrandingPoolsExtension">
+        <strandedSpawnList>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_MeeJuv</li>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_YobshrimpJuv</li>
+          <li MayRequire="mandrake.rsw.swbestiary">RSW_SiltLampreyJuv</li>
+        </strandedSpawnList>
+        <emptyWeight>40</emptyWeight>
+        <smallWeight>50</smallWeight>
+        <bigWeight>10</bigWeight>
+        <strandedCountSmall>1~2</strandedCountSmall>
+        <strandedCountBig>3~5</strandedCountBig>
+        <decayDaysRange>3~8</decayDaysRange>
+        <poolSizeThreshold>4</poolSizeThreshold>
+        <searchRadius>60</searchRadius>
+        <dryTerrain>RUT_Jawa_SaltCrust</dryTerrain>
+        <strandedDeformationHediff>RUT_StrandedDeformation</strandedDeformationHediff>
+        <strandedDeformationChance>0.25</strandedDeformationChance>
+      </li>
+    </modExtensions>
+    <diseases>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_BacterialGangrene</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_ViralAbasia</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li MayRequire="sarg.alphabiomes">
+        <diseaseInc>AB_Disease_RavagingIntestinalParasites</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Malaria</diseaseInc>
+        <commonality>160</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SleepingSickness</diseaseInc>
+        <commonality>140</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>80</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>Mud</terrain>
+        <min>-999</min>
+        <max>0.65</max>
+      </li>
+      <li>
+        <terrain MayRequire="sarg.alphabiomes">AB_FertileMud</terrain>
+        <min>0.65</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>8</Clear>
+      <Fog>5</Fog>
+      <Rain>10</Rain>
+      <DryThunderstorm>0.9</DryThunderstorm>
+      <RainyThunderstorm>5</RainyThunderstorm>
+      <FoggyRain>4</FoggyRain>
+      <SnowGentle>0</SnowGentle>
+      <SnowHard>0</SnowHard>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <RUT_Karrobel MayRequire="mandrake.rut.patches">0.6</RUT_Karrobel>  <!-- karrobel - delta-loam composter, this campaign's own invented species, still authored in mandrake.rut.patches -->
+      <RUT_Karrathil MayRequire="mandrake.rut.patches">0.9</RUT_Karrathil>  <!-- karrathil - fever-swarm vector/pollinator, same as above -->
+      <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin -->
+      <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin -->
+      <AA_Lockjaw MayRequire="sarg.alphaanimals">0.2</AA_Lockjaw>  <!-- lockjaw - channel-predator -->
+      <AA_Mantrap MayRequire="sarg.alphaanimals">0.2</AA_Mantrap>  <!-- mantrap - root-ambush -->
+      <AA_RaptorShrimp MayRequire="sarg.alphaanimals">0.2</AA_RaptorShrimp>  <!-- raptor shrimp - channel-predator -->
+      <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - composter -->
+      <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - strange -->
+      <AA_Slurrypede MayRequire="sarg.alphaanimals">0.1</AA_Slurrypede>  <!-- slurrypede - composter -->
+      <AA_Thermadon MayRequire="sarg.alphaanimals">0.1</AA_Thermadon>  <!-- thermadon - channel-predator -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_MangroveTree MayRequire="sarg.alphabiomes">25</AB_MangroveTree>  <!-- mangrove tree - tree -->
+      <AB_ParasiticMangrove MayRequire="sarg.alphabiomes">8</AB_ParasiticMangrove>  <!-- parasitic mangrove -->
+      <AB_MangrovePalm MayRequire="sarg.alphabiomes">6</AB_MangrovePalm>  <!-- mangrove palm - tree -->
+      <RUT_Nogtyl MayRequire="mandrake.rut.rotsporekit">0.4</RUT_Nogtyl>  <!-- nogtyl - cross-mod, THEROT_RM_MOD_BUILD_1 owns updating this MayRequire -->
+    </wildPlants>
+    <wildPlantRegrowDays>13</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

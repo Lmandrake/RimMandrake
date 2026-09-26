@@ -70,6 +70,13 @@
     <durationDays>0.1667~0.3333</durationDays>
     <allowedBiomes>
       <li>RUT_Miasma</li>
+      <!-- MIASMA_RM_MOD_BUILD_1: second op alongside the frozen twin above -
+           the live campaign world still carries RUT_Miasma-painted tiles
+           until the terminal paint, and this def now physically lives in
+           mandrake.rm.miasma, so both defNames must stay listed for the
+           surge to keep firing on the live save AND on a freshly generated
+           RM_Miasma tile. -->
+      <li>RM_Miasma</li>
     </allowedBiomes>
     <letterLabel>The breath-tide surges</letterLabel>
     <letterDef>NegativeEvent</letterDef>
