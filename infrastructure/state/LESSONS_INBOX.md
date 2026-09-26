@@ -90,3 +90,5 @@ LESSONS: `rimworld/execute_debug_action {"path":"Actions\T: Damage To Death","pa
 - 2026-09-25 BENCH: a prose-only harvest of 'open owner questions' re-asked 4 already-ruled questions; grep ledger shards + sibling items per question before carding (memory: verify-open-questions-against-ledger).
 SHIP_ONLY_DIVE ruling capture: mid-turn owner chat is invisible to block_forged_owner_said.py's transcript scan (verbatim quote refused, curly apostrophes and all), AND the hook matches the flag string inside --text too; record under own seat with words inline
 Screenshots of pawns moved by step_game_ticks while paused show STALE TWEEN POSITIONS — the sim moved but sprites did not; unpause ~1s (speed 1) then re-pause before shooting any moved pawn (cost 5 identical wrong shots, 2026-09-26)
+jawa/world_neighbors 'path' param is an OUTPUT FILE path, not a tile id — it wrote an 840KB neighbour dump to the game install root while reading as a query (2026-09-26)
+serve_sheet.py 'opened with explorer.exe' is not proof the owner SAW the sheet — his browser never showed it and he asked for a link; hand the tokened URL in chat as well, every time (2026-09-26)
