@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_GenStep_DeepBlackMere.xml   RM_TheSump — SUMP_TAR_HYDROLOGY_1 ruling 7
+
+  GenStepDef for RUT_GenStep_DeepBlackMere.cs (this same pass). A GenStepDef
+  on its own runs on no map; registration is the separate
+  Patches/RUT_GenStep_DeepBlackMere_Register.xml (same split
+  RUT_SumpTarBeastGenStep.xml/_Register.xml already use, read directly
+  before writing this).
+
+  order 225: after vanilla terrain generation (210/220, this mod's own
+  precedent) and well ahead of RUT_GenStep_TarBeastPlacement (780) — the
+  mere's own deep-tar cells should already exist on the map before that
+  step's ScattererValidator_TerrainDef(RM_TarDeep) goes looking for a place
+  to seat a dormant beast, so the mere itself becomes an eligible site for
+  it. INVENTED-BUILD, same as that step's own order comment: no other
+  Base_Player genStep order is named by anything this pass read.
+
+  No MayRequire on the def itself: the class self-gates on the map's biome
+  and a soft terrain lookup (RM_TarDeep may be absent), so this is always
+  safe to declare. The Register patch below gates the class REFERENCE itself
+  on mandrake.rm.thesump, matching every sibling registration in this file.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_DeepBlackMere</defName>
+    <order>225</order>
+    <genStep Class="RimMandrake.TheSump.RUT_GenStep_DeepBlackMere" />
+  </GenStepDef>
+
+</Defs>

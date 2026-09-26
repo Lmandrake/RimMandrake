@@ -180,6 +180,10 @@ namespace RimMandrake.FlowWorks
 			}
 			if (remainingVolume <= 0f)
 			{
+				// SUMP_TAR_HYDROLOGY_1 ruling 3: a release that spent its whole
+				// reservoir is the "self-limits" case the ruling names -- cool
+				// its own outer edge before it goes.
+				CoolFrontToGlass();
 				Destroy();
 				return;
 			}
@@ -188,6 +192,12 @@ namespace RimMandrake.FlowWorks
 			// scribed into every save. Every tile it already placed is already
 			// queued for removal, so an expired flood still drains correctly;
 			// nothing leaks.
+			//
+			// Deliberately NOT cooled: a release reaching this branch is
+			// provably STUCK (still had volume left, still had frontier left,
+			// and ran out the clock anyway), not a healthy release that spread
+			// itself out -- ruling 3's "self-limits" language describes the
+			// other two Destroy() paths in this method, not this one.
 			if (Find.TickManager.TicksGame > ExpiryTick)
 			{
 				Destroy();
@@ -195,8 +205,10 @@ namespace RimMandrake.FlowWorks
 			}
 			// Nowhere left to grow from at all: provably finished or provably
 			// walled in, and either way there is nothing for a later tick to do.
+			// This IS the "walls itself in" half of ruling 3's self-limiting case.
 			if (frontier.Count == 0)
 			{
+				CoolFrontToGlass();
 				Destroy();
 				return;
 			}
@@ -314,6 +326,63 @@ namespace RimMandrake.FlowWorks
 			frontier.Add(c);
 			floodedTileCount++;
 			remainingVolume -= fluidDef.volumePerTile;
+		}
+
+		/// <summary>SUMP_TAR_HYDROLOGY_1 ruling 3. Writes <see
+		/// cref="FluidDef.coolsToGlassEdge"/> onto the PERMANENT layer of
+		/// every FRONT cell this release ever placed -- a placed cell
+		/// bordering at least one cell the release never reached. Called
+		/// only from the two Tick() branches that are a genuinely
+		/// self-limiting finish (see their own comments); a no-op when the
+		/// fluid carries no glass terrain at all (every fluid but tar,
+		/// today), so this changes nothing about water, brine, propane,
+		/// chemfuel or the slimes.</summary>
+		private void CoolFrontToGlass()
+		{
+			if (fluidDef == null || fluidDef.coolsToGlassEdge == null)
+			{
+				return;
+			}
+			Map map = Map;
+			if (map == null)
+			{
+				return;
+			}
+			int cooled = 0;
+			for (int i = 0; i < placedCells.Count; i++)
+			{
+				IntVec3 c = placedCells[i];
+				if (!IsFrontCell(c))
+				{
+					continue;
+				}
+				map.terrainGrid.SetTerrain(c, fluidDef.coolsToGlassEdge);
+				cooled++;
+			}
+			if (cooled > 0)
+			{
+				Log.Message("[RimMandrake.FlowWorks] " + fluidDef.defName + " release cooled " + cooled
+					+ " front cell(s) to " + fluidDef.coolsToGlassEdge.defName + " at " + Position + ".");
+			}
+		}
+
+		/// <summary>A placed cell is a FRONT cell if any of its 4 cardinal
+		/// neighbours is not itself placed -- the release's own outer rim at
+		/// whatever moment it stopped growing, map-edge cells included (an
+		/// out-of-bounds neighbour is never in <see cref="placedLookup"/>
+		/// either, so a cell against the map edge always reads as a front
+		/// cell). An interior cell, fully surrounded by other placed cells,
+		/// is never a front cell no matter how the release ends.</summary>
+		private bool IsFrontCell(IntVec3 c)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				if (!placedLookup.Contains(c + GenAdj.CardinalDirections[i]))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

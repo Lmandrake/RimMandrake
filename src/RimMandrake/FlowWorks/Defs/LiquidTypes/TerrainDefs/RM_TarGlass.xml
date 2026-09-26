@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TarGlass.xml           hand-authored, SUMP_TAR_HYDROLOGY_1 ruling 3
+  ============================================================================
+  NOT emitted by generate_liquid_suite.py and NOT part of RM_Tar.xml
+  (Defs/LiquidTypes/TerrainDefs/RM_Tar.xml) — that file is GENERATED and
+  edited only via the LIQUID_ROWS table; this is a hand-authored companion
+  kept in its own file for exactly that reason (never merge it into the
+  generated one).
+
+  This is the PERMANENT terrain Flood_FlowWorks.CoolFrontToGlass writes onto
+  the outer rim of a tar release that finishes naturally (FluidDef.
+  coolsToGlassEdge on RM_Fluid_Tar, Defs/Canals/FluidDefs/FlowWorks_Fluids.xml)
+  — "its edges harden into walkable glass-reach terrain" (ruling 3). FlowWorks
+  ships this as its OWN generic def, tier-neutral and donor-free, so glass-
+  front cooling works the same for a standalone install as for the campaign
+  (biome_mod_architecture.md §7 Q11a's "the free mod looks the same" law,
+  generalised from naming to mechanism here). The Utinni layer already ships
+  a hand-built, lore-flavoured twin for the player-BUILT case —
+  src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_SumpWalkways.xml's own
+  RUT_Glasswalk, whose header explicitly deferred "crossing the liquid tar
+  itself" to this item — and
+  Patches/RUT_Tar_GlasswalkCooling.xml (this same pass) repoints
+  coolsToGlassEdge at that terrain instead when UtinniPatches is active, so
+  the campaign gets the bespoke art/slip mechanic and everyone else still
+  gets a real, working glass front.
+
+  Modelled directly on RUT_Glasswalk's own stats (read in full before writing
+  this) rather than invented fresh: no ParentName (a solid floor, not a water
+  terrain — IsWater must read false here or Designator_DigCanal would refuse
+  to ever dig near it and RM_MapComponent_Excavation.IsSourceCell would
+  wrongly treat cooled glass as a natural liquid source), pathCost 3 for the
+  same "13/16 ~= 81%, never full speed, ADDS to base cost so this is a
+  structural floor not a tuned average" reasoning RUT_SumpWalkways.xml's own
+  header derives from GenPath.SpeedPercentString, filthAcceptanceMask None
+  (nothing sticks to cooled glass), Flammability 0 (spent/cooled bitumen does
+  not reignite — ruling 3 again, and RUT_TarSpent's own "burnt tar is spent"
+  precedent). No costList/designationCategory: unlike RUT_Glasswalk this is
+  never player-designated, only ever written by code, so it needs no build
+  recipe.
+
+  tags carries RM_SlipperyWalkway, the SAME literal tag string
+  RUT_SumpWalkways.xml's own header names as the generic hook
+  RM_MapComponent_GlasswalkSlip (mandrake.rm.environmentalhazards) already
+  watches on ANY terrain — a string tag, not a hard reference, so a cooled
+  glass front gets the existing rare-pratfall mechanic for free when that kit
+  is active and simply does not when it is absent (no MayRequire needed on a
+  tag with no cross-def resolution at all).
+  ============================================================================
+-->
+<Defs>
+
+  <TerrainDef>
+    <defName>RM_TarGlass</defName>
+    <label>tar glass</label>
+    <description>Tar that spread fast, then cooled fast. Where a flood's own edge outran its heat it hardened into a black glassy sheet -- solid, faintly glossy, and permanent. Walkable, but glass underfoot never lets you run flat out.</description>
+    <renderPrecedence>251</renderPrecedence>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <edgeType>FadeRough</edgeType>
+    <fertility>0</fertility>
+    <layerable>true</layerable>
+    <color>(20,19,22)</color>
+    <pathCost>3</pathCost>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Walkable</li>
+    </affordances>
+    <filthAcceptanceMask>
+      <li>None</li>
+    </filthAcceptanceMask>
+    <tags>
+      <li>RM_SlipperyWalkway</li>
+    </tags>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

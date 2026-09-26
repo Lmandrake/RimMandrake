@@ -54,11 +54,20 @@ namespace RimMandrake.TheSump
         // no half-sealed state is possible.
         public static bool tarVaultEnabled = true;
 
+        // SUMP_TAR_HYDROLOGY_1 ruling 7 — RUT_GenStep_DeepBlackMere reads
+        // this static field directly at map generation, same "static field,
+        // no Mod instance needed" idiom this class already documents above.
+        // All-off degrades gracefully: without the mere, a Sump map simply
+        // keeps the biome's ordinary scattered tar pockets it already
+        // generates today, nothing else changes.
+        public static bool deepBlackMereEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref tarVaultEnabled, "tarVaultEnabled", true, true);
+            Scribe_Values.Look(ref deepBlackMereEnabled, "deepBlackMereEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -77,6 +86,13 @@ namespace RimMandrake.TheSump
             list.CheckboxLabeled("Tar vault seals contents (no rot; extraction needs solvent)", ref tarVaultEnabled,
                 "The tar vault (RUT_TarVault) freezes rot on anything sealed inside it. "
               + "Off: it behaves like an ordinary shelf, no sealing, no solvent gate.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Generate the Deep Black mere", ref deepBlackMereEnabled,
+                "A landmark-scale unbroken expanse of deep tar generates once per Sump map, well "
+              + "clear of the edge -- the biome's own \"ocean\" at map scale, and (via FlowWorks' "
+              + "natural-liquid-source rule) an effectively infinite canal source once a channel "
+              + "reaches it. Off: the map keeps only the biome's ordinary scattered tar pockets.");
             list.GapLine();
 
             list.Label("This biome's own mechanics — the poured tar moat and fuse-"

@@ -72,6 +72,12 @@
          Biomes' own AB_TarMud ("tarred mud") is adopted onto this field by
          the same conditional patch when AB is present. -->
     <recededTerrain>Mud</recededTerrain>
+    <!-- SUMP_TAR_HYDROLOGY_1 ruling 3, "flood fronts cool to glass". Our own
+         def (Defs/LiquidTypes/TerrainDefs/RM_TarGlass.xml), tier-neutral so
+         glass cooling works standalone; Patches/RUT_Tar_GlasswalkCooling.xml
+         repoints this at the campaign's own bespoke RUT_Glasswalk when
+         UtinniPatches is active. -->
+    <coolsToGlassEdge>RM_TarGlass</coolsToGlassEdge>
   </RimMandrake.FlowWorks.FluidDef>
 
   <!-- SLIME_STREAM_ROWS_1 — four canal fluids, one per colour row in

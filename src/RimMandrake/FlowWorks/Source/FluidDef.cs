@@ -83,6 +83,30 @@ namespace RimMandrake.FlowWorks
 		/// not soil: exposed lakebed should read raw (§18).</summary>
 		public TerrainDef recededTerrain;
 
+		/// <summary>SUMP_TAR_HYDROLOGY_1 ruling 3, "flood fronts cool to glass":
+		/// null (default, every fluid this row does not opt in) leaves the
+		/// existing recede-to-nothing behaviour completely unchanged. When set,
+		/// a release that finishes NATURALLY -- its reservoir runs dry, or it
+		/// walls itself in with nowhere left to spread -- writes this terrain
+		/// onto the PERMANENT layer of its own outer edge (the cells that
+		/// border ground the release never reached) before it destroys itself.
+		/// Deliberately NOT written for a release that expires stuck
+		/// (Flood_FlowWorks.ExpiryTick) -- that path is a provably-abnormal
+		/// release, never a self-limiting one, so it recedes exactly as it
+		/// always has. Written to the PERMANENT layer, not the temp one: the
+		/// still-standing temp fluid terrain on top hides it until that
+		/// terrain's own already-queued removal fires, at which point the
+		/// ground it reveals is glass rather than whatever was there before --
+		/// "every belch rewrites the map" without this class touching
+		/// TempTerrainManager's own removal queue at all. The INTERIOR of a
+		/// release (every placed cell with no un-placed cardinal neighbour) is
+		/// deliberately left alone by this mechanism -- read as "the middle
+		/// stays soft" meaning unchanged, ordinary recede behaviour, not a new
+		/// permanent-pool mechanic; an owner call for the interior to persist
+		/// as a permanent pool instead is real follow-on work, not assumed
+		/// here.</summary>
+		public TerrainDef coolsToGlassEdge;
+
 		/// <summary>The terrain that expresses a fill tier on a cell of depth
 		/// <paramref name="depth"/>. Tier 0 is dry and returns null.</summary>
 		public TerrainDef FillTerrainFor(int tier, byte depth)
@@ -163,6 +187,13 @@ namespace RimMandrake.FlowWorks
 			{
 				yield return "groundOozePerSourceCellPerDay must be >= 0 -- a negative seepage drains a "
 					+ "body that nothing is drawing from.";
+			}
+			if (coolsToGlassEdge != null && coolsToGlassEdge.temporary)
+			{
+				yield return "coolsToGlassEdge " + coolsToGlassEdge.defName + " is marked <temporary>true</temporary> "
+					+ "-- glass cooling writes to the PERMANENT terrain layer on purpose, so a temporary terrain "
+					+ "here would just be cleared by the temp-terrain manager the moment the flood's own top "
+					+ "layer recedes, and the glass front would never actually be seen.";
 			}
 		}
 	}
