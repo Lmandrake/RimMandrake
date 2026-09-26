@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_HolyFlameEvents.xml            UtinniPatches — SUMP_UTINNI_LAYER_1 §2
+
+  "The holy act" — owner: "That could be a holy act to the evil sun god."
+  Split ruled by card: flame statuary ships RM-tier secular
+  (RM_FlameStatuary, SUMP_GASLIGHT_1); the worship meaning is this Utinni
+  layer. The deity is Sh'kaar the All-Searing (design/Jawa/
+  divine_satiation_engine.md §8, "the evil sun; the Unbeatable One" — the
+  Pantheon of record, names LOCKED).
+
+  A dedicated HistoryEventDef, not a reuse of any existing vanilla event:
+  investigated first (per CLAUDE.md's "never guess a defName" and the
+  rimworld-ideoligion skill's own trap list). HistoryEventDefOf.cs (decompiled
+  Assembly-CSharp, read in full) carries no "admired art" event at all — no
+  ArtAppreciated exists in this game version, ruling that reuse out before it
+  became a false citation. HistoryEventDefOf.BuildSpecificDef exists and fires
+  on every construction job (GenConstruct.cs), but PreceptComp_
+  SelfTookMemoryThought.Notify_MemberTookAction (read in full) filters ONLY on
+  `ev.def == eventDef`, with no per-ThingDef check on the event's own
+  `Building` arg — so keying a precept off BuildSpecificDef would fire on
+  building ANYTHING, not the flame statue specifically. Hence: our own event,
+  fired only from RUT_CompUseEffect_HolyFlame.DoEffect (Source/
+  RUT_CompUseEffect_HolyFlame.cs), which only runs when a pawn actually
+  performs the "perform the sun-rite" Use interaction on a flame statue.
+
+  MayRequire="Ludeon.RimWorld.Ideology": matches every Ideology-gated vanilla
+  HistoryEventDefOf entry (all carry [MayRequireIdeology]) and this repo's own
+  RUT_FungusEating.xml precedent, even though this campaign always runs
+  Ideology.
+-->
+<Defs>
+
+  <HistoryEventDef MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RUT_PerformedHolyFlameAct</defName>
+    <label>performed the sun-rite</label>
+  </HistoryEventDef>
+
+</Defs>

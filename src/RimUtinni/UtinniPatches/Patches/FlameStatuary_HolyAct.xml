@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FlameStatuary_HolyAct.xml          UtinniPatches — SUMP_UTINNI_LAYER_1 §2
+
+  Adds the "perform the sun-rite" Use interaction onto RM_FlameStatuary
+  (EnvironmentalHazards, SUMP_GASLIGHT_1 — RM-tier, secular by ruling). That
+  def's own <comps> is fully explicit, not ParentName-inherited (its own
+  header explains why), so PatchOperationAdd onto the existing node is safe —
+  no risk of the "<comps> replacement" trap that def's own build note flags.
+
+  CompProperties_Usable is vanilla (RimWorld/CompUsable.cs, decompiled and
+  read in full): right-clicking the statue with a colonist selected offers
+  "perform the sun-rite" in the float menu (CompFloatMenuOptions — no
+  showUseGizmo needed, that flag is only for the separate ranged-targeter
+  "Use X..." gizmo mode this does not need). RUT_CompProperties_
+  HolyFlameEffect (Source/RUT_CompUseEffect_HolyFlame.cs, this mod) is the
+  actual holy-act mechanism.
+
+  Settings-gated per the standing "every mod ships superb Mod Settings" law:
+  off, RM_FlameStatuary stays exactly as SUMP_GASLIGHT_1 shipped it (a plain
+  secular art piece) — no comp added, no error, all-off degrades gracefully.
+
+  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
+  returns true on no match) — validate with
+  skills/rimworld-modding/scripts/validate_patch.py once mandrake.rm.
+  environmentalhazards + mandrake.rut.patches are both active.
+-->
+<Patch>
+
+  <Operation Class="RimMandrake.Utinni.UtinniPatches.PatchOperationSettingGate">
+    <setting>holyFlameActEnabled</setting>
+    <match Class="PatchOperationConditional" MayRequire="mandrake.rm.environmentalhazards">
+      <xpath>Defs/ThingDef[defName="RM_FlameStatuary"]/comps</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RM_FlameStatuary"]/comps</xpath>
+        <value>
+          <li Class="CompProperties_Usable">
+            <useJob>RUT_PerformHolyFlameAct</useJob>
+            <useLabel>perform the sun-rite</useLabel>
+            <useDuration>600</useDuration>
+          </li>
+          <li Class="RimMandrake.Utinni.UtinniPatches.RUT_CompProperties_HolyFlameEffect">
+            <eventDefName>RUT_PerformedHolyFlameAct</eventDefName>
+          </li>
+        </value>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>

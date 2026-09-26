@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  HolyFlame_RitualistWiring.xml      UtinniPatches — SUMP_UTINNI_LAYER_1 §2
+
+  Makes RUT_HolyFlame_Revered (PreceptDefs/RUT_HolyFlamePrecepts.xml)
+  selectable at all. RimWorld/MemeDef.cs (decompiled, read in full):
+  `requireOne` is a List<List<PreceptDef>> — an ideoligion only ever gets
+  offered a precept that appears inside SOME meme's requireOne group, there
+  is no "show every precept under this issue" fallback. Shipping the precept
+  without this patch would be silently unreachable content.
+
+  `Ritualist` (design/Jawa/worldbuilding/data/ideology_palette.md line 81:
+  impact 2, source Anomaly — MayRequire="Ludeon.RimWorld.Anomaly", NOT core
+  Ideology) is the closest-fitting existing meme: an ideoligion that already
+  cares about ritual observance is the natural home for one more ritual
+  option. This appends a NEW group (one more <li> in the outer list) holding
+  only this one precept — it does not touch or reorder Ritualist's existing
+  groups.
+
+  This makes the precept selectable by ANY ideoligion (player-authored or
+  NPC-generated) that takes the Ritualist meme — it is NOT retroactively
+  added to the campaign's own saved ideoligion ("The Salvation"). See
+  RUT_HolyFlamePrecepts.xml's own header for why that is a separate, live,
+  manual action and not this patch's scope.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Anomaly">
+    <xpath>Defs/MemeDef[defName="Ritualist"]/requireOne</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/MemeDef[defName="Ritualist"]/requireOne</xpath>
+      <value>
+        <li>
+          <li MayRequire="Ludeon.RimWorld.Ideology">RUT_HolyFlame_Revered</li>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

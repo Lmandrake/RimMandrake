@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_HolyFlameThoughts.xml          UtinniPatches — SUMP_UTINNI_LAYER_1 §2
+
+  The mood memory RUT_HolyFlame_Revered (PreceptDefs/RUT_HolyFlamePrecepts.xml)
+  grants via PreceptComp_SelfTookMemoryThought when RUT_PerformedHolyFlameAct
+  fires. Field shape copied from a real shipped Thought_Memory (not guessed):
+  vendor/mod_sources/BiomesPollutedLands/.../Thoughts_Memory.xml's
+  BMT_ObservedMaligoat (thoughtClass/durationDays/stages/label/description/
+  baseMoodEffect — the exact field set PreceptComp_SelfTookMemoryThought.cs
+  needs, confirmed by reading that comp's source).
+-->
+<Defs>
+
+  <ThoughtDef MayRequire="Ludeon.RimWorld.Ideology">
+    <defName>RUT_PerformedHolyFlameAct</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>2.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>honored Sh'kaar</label>
+        <description>I stood before the flame and gave Sh'kaar the All-Searing his due. The sun cannot be argued with, only answered.</description>
+        <baseMoodEffect>6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

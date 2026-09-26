@@ -34,6 +34,9 @@ namespace RimMandrake.Utinni.UtinniPatches
                 case "utinniWorldIconEnabled":
                     on = UtinniPatchesSettings.utinniWorldIconEnabled;
                     break;
+                case "holyFlameActEnabled":
+                    on = UtinniPatchesSettings.holyFlameActEnabled;
+                    break;
                 default:
                     // Named-switch rather than reflection on purpose: a typo in the
                     // XML must be loud, not silently default to "on".

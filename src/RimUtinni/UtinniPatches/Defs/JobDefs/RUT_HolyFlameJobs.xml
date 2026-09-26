@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_HolyFlameJobs.xml              UtinniPatches — SUMP_UTINNI_LAYER_1 §2
+
+  driverClass JobDriver_UseItem is vanilla's own generic "walk to it, wait
+  useDuration, call every CompUseEffect.DoEffect" driver (Verse.AI/
+  RimWorld/JobDriver_UseItem.cs, decompiled and read in full) — no custom
+  JobDriver written, avoiding a guessed pathing/toil implementation for a
+  mechanism vanilla already ships. CompProperties_Usable on RM_FlameStatuary
+  (Patches/FlameStatuary_HolyAct.xml) points its useJob at this def.
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RUT_PerformHolyFlameAct</defName>
+    <driverClass>JobDriver_UseItem</driverClass>
+    <reportString>performing the sun-rite at TargetA.</reportString>
+  </JobDef>
+
+</Defs>
