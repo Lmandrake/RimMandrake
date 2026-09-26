@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWoodBirds.xml                       FEVERWOOD_ALIEN_BIRD_CHORUS_1
+
+  The crown's four birds (fever_wood_fauna_roster_2026-09-23.md §5 — the
+  exact defNames/labels/silhouettes/roles below are already authored, not
+  invented here). Owner, verbatim: "Perhaps dramatic beautiful birds that
+  swoop, shrill, and warble to create the typical 'swamp cacaphony' that
+  replaces the eerie silence the webwork squares already specialize in? ...
+  And these should be alien birds, not just parrots. Very strange.
+  Membranous, hairy, or weirdly shaped feathers."
+
+  | # | defName      | role                                          |
+  | 1 | RM_Chellow   | tameable — a private chorus near the base     |
+  | 2 | RM_Murrelith | plumage worth money (CompShearable)           |
+  | 3 | RM_Thavrik   | nests worth raiding (CompProperties_EggLayer) |
+  | 4 | RM_Skellick  | thief — see RimProperty's own wild-theft patch|
+
+  🔑 The chorus/silence mechanism this item exists for is NOT a per-bird
+  SoundDef — §6c/the item's own "open" section leaves how the call registers
+  divide (swoop/shrill/warble) and how many birds voice it UNSET, and this
+  pass does not guess it. What ships instead is the mechanism the sitting
+  actually ruled: "the crown goes quiet ONLY for the water" is the Fever
+  Wood's EXISTING biome ambient soundscape (map.Biome.soundsAmbient, the
+  same ambient list RM_MapComponent_SilenceCue already hushes for the
+  Greentide's predator-hunt cue and the mirror-break event) falling silent
+  for exactly as long as RM_MapComponent_TentacleWatch's own sentinelCount
+  is up — wired in RM_CompTentacleLimb.cs via the new BeginSustainedHush/
+  EndSustainedHush entry points on RM_MapComponent_SilenceCue, closing the
+  gap FEVER_WOOD_MECHANICS_1's F2 pass and this roster's own header both
+  named ("the actual bird chorus is a separate, not-yet-built system").
+  These four birds are the CAST that makes the crown loud enough for that
+  silence to read as a event — living inside the wildAnimals band the
+  design calls "the loudest place on the planet, deliberately" — not a
+  sound-effect delivery system of their own.
+
+  Flight: standing rule, if it flies in the fiction it flies in the game.
+  All four take real Core 1.6 flight (MaxFlightTime/FlightCooldown +
+  flightStartChanceOnJobStart/canFlyIntoMap/canLeaveMapFlying), same shape
+  as RM_FleetFlier (TheForge, already shipped) and Core's own Chicken/
+  Sparrow (MaxFlightTime/FlightCooldown statBases, verified via RimSage).
+  No flyingAnimationFramePathPrefix — per the standing rule, never block
+  flight waiting on frames; these fly with no wing-beat until frames exist.
+
+  Art: this item's own step 5 (CLAUDE.md "check for existing regenerated
+  art before queuing more") found all four birds already have artpipe jobs
+  QUEUED for every facing (infrastructure/artpipe/pending/feverwood_
+  {chellow,murrelith,thavrik,skellick}_{south,east,north}.json,
+  rimflow_item_id FEVERWOOD_RM_MOD_BUILD_1) — but registry.jsonl shows every
+  attempt so far recorded "fail" and _artsrc/ is empty for all twelve. This
+  pass does NOT re-queue (already queued, already failing — a duplicate job
+  fixes nothing) and does not chase the generator; it ships the same
+  flat-colour placeholder convention this biome already uses for
+  RM_Vaulm/RM_Ollareth/RM_Drommath/RM_Sekkulaath_Juvenile (128x128, fully
+  opaque RGBA, Graphic_Multi south/east/north — the placeholder script that
+  wrote them lives at Textures/Things/Pawn/Animal/RM_FeverWoodBirds/
+  make_placeholders.py in this same commit). Real bespoke art per the
+  membranous/hairy/strange brief is owed to the standing art pipeline once
+  the generator succeeds on these prompts.
+
+  Commonalities are ENGINEERING DEFAULTS, not owner-set values — same
+  posture as the sap-sucker guild's own wildAnimals rows.
+-->
+<Defs>
+
+  <ThingDef Name="RM_FeverWoodBirdBase" ParentName="AnimalThingBase" Abstract="true">
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>2.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <gestationPeriodDays>4</gestationPeriodDays>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.03</manhunterOnTameFailChance>
+      <roamMtbDays>4</roamMtbDays>
+      <flightStartChanceOnJobStart>0.15</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <!-- ============================================================ -->
+  <!-- 1. RM_Chellow — tameable, the chorus you can keep              -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="RM_FeverWoodBirdBase">
+    <defName>RM_Chellow</defName>
+    <label>chellow</label>
+    <description>Squat and round, with no feathers on its head at all — bare wrinkled skin and a translucent throat-fan it inflates to call, veined and lit faintly from behind. Easy to win over and easy to keep, a cultivated flock of chellow makes a private chorus outside the walls: as long as they are calling, the water below is quiet.</description>
+    <statBases>
+      <MarketValue>75</MarketValue>
+      <Wildness>0.35</Wildness>
+      <MaxFlightTime>8</MaxFlightTime>
+      <FlightCooldown>6</FlightCooldown>
+    </statBases>
+    <race>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>7</lifeExpectancy>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Chellow</defName>
+    <label>chellow</label>
+    <race>RM_Chellow</race>
+    <combatPower>15</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>3~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.65</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- 2. RM_Murrelith — plumage worth money                          -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="RM_FeverWoodBirdBase">
+    <defName>RM_Murrelith</defName>
+    <label>murrelith</label>
+    <description>Long-tailed, with flat translucent ribbons trailing where vaned quills should be — they hang and twist rather than spread. Those ribbons are worth real money, and that is exactly the temptation the crown sets against itself: sell the plumage and you have sold part of your own early warning.</description>
+    <statBases>
+      <MarketValue>85</MarketValue>
+      <Wildness>0.6</Wildness>
+      <MaxFlightTime>10</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown>
+    </statBases>
+    <race>
+      <baseBodySize>0.28</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+    </race>
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RM_MurrelithPlumage</woolDef>
+        <shearIntervalDays>9</shearIntervalDays>
+        <woolAmount>6</woolAmount>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Murrelith</defName>
+    <label>murrelith</label>
+    <race>RM_Murrelith</race>
+    <combatPower>14</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>2~5</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- 3. RM_Thavrik — nests worth raiding                            -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="RM_FeverWoodBirdBase">
+    <defName>RM_Thavrik</defName>
+    <label>thavrik</label>
+    <description>Heavy-bodied and short-winged, covered in coarse hair rather than feathers everywhere but the flight surfaces — a furred thing that flies. It nests high in the crown, eggs and nest material guarded by the adults: a reason to climb, if you can get past them.</description>
+    <statBases>
+      <MarketValue>90</MarketValue>
+      <Wildness>0.55</Wildness>
+      <MaxFlightTime>6</MaxFlightTime>
+      <FlightCooldown>8</FlightCooldown>
+    </statBases>
+    <race>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <trainability>None</trainability>
+      <lifeExpectancy>8</lifeExpectancy>
+    </race>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RM_ThavrikEggUnfertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RM_ThavrikEggFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>2</eggLayIntervalDays>
+        <eggCountRange>2</eggCountRange>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Thavrik</defName>
+    <label>thavrik</label>
+    <race>RM_Thavrik</race>
+    <combatPower>18</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>2~4</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- 4. RM_Skellick — thief (theft wiring rides RimProperty's own   -->
+  <!--    Patches/AnimalTheft/SkellickWildTheft.xml, MayRequire      -->
+  <!--    mandrake.rm.property — this ThingDef never references it)  -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="RM_FeverWoodBirdBase">
+    <defName>RM_Skellick</defName>
+    <label>skellick</label>
+    <description>Small and long-limbed, its plumes crumpled and unequal, sticking out at wrong angles as if damaged on purpose — the untidiest silhouette in the crown. It has learned to slip down and take small unattended things while nobody is looking, and it is very good at not being looked at.</description>
+    <statBases>
+      <MarketValue>60</MarketValue>
+      <Wildness>0.7</Wildness>
+      <MaxFlightTime>9</MaxFlightTime>
+      <FlightCooldown>4</FlightCooldown>
+    </statBases>
+    <race>
+      <baseBodySize>0.22</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <trainability>None</trainability>
+      <lifeExpectancy>5</lifeExpectancy>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Skellick</defName>
+    <label>skellick</label>
+    <race>RM_Skellick</race>
+    <combatPower>10</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Skellick</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Skellick</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.42</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Skellick</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

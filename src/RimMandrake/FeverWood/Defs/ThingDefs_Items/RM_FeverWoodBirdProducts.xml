@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWoodBirdProducts.xml                FEVERWOOD_ALIEN_BIRD_CHORUS_1
+
+  The two harvestable products the bird roster names: RM_Murrelith's
+  plumage (a real trade good, ParentName="WoolBase" — same vanilla shape
+  Core's own WoolAlpaca uses, verified via RimSage) and RM_Thavrik's eggs
+  (ParentName="EggUnfertBase"/"EggFertBase", same shape Core's own
+  EggChickenUnfertilized/EggChickenFertilized use, verified via RimSage).
+  Neither needs new C# — both ride vanilla CompShearable/CompHatcher.
+
+  Market values are ENGINEERING DEFAULTS, not owner-set — same posture as
+  the sap-sucker guild's own gather yields. Murrelith's plumage is priced
+  above ordinary wool (the roster's own point: the temptation has to be
+  real for selling it to cost something).
+-->
+<Defs>
+
+  <ThingDef ParentName="WoolBase">
+    <defName>RM_MurrelithPlumage</defName>
+    <label>murrelith plumage</label>
+    <description>Flat, translucent ribbon-plumes sheared from a murrelith's tail rather than plucked — they keep their colour and translucency long after the bird has grown a new set. Fetches a real price at market, which is exactly the problem: a colony living off the crown's silence is one bad trade away from a smaller warning.</description>
+    <possessionCount>20</possessionCount>
+    <statBases>
+      <MarketValue>9</MarketValue>
+      <StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>4</StuffPower_Insulation_Heat>
+    </statBases>
+    <graphicData>
+      <color>(214,224,232)</color>
+    </graphicData>
+    <stuffProps>
+      <color>(200,214,224)</color>
+    </stuffProps>
+  </ThingDef>
+
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RM_ThavrikEggUnfertilized</defName>
+    <label>thavrik egg (unfert.)</label>
+    <description>An unfertilized thavrik egg, taken from a guarded nest high in the crown. Edible raw, much better cooked.</description>
+    <graphicData>
+      <color>(150,132,104)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>8</MarketValue>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="EggFertBase">
+    <defName>RM_ThavrikEggFertilized</defName>
+    <label>thavrik egg (fert.)</label>
+    <description>A fertilized thavrik egg. Left undisturbed, it hatches into a chick — taken instead, it is one less reason for the adults to still be circling.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <color>(168,148,118)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>8</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>4</hatcherDaystoHatch>
+        <hatcherPawn>RM_Thavrik</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

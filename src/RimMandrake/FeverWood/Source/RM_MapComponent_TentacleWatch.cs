@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
+using Verse.Sound;
 using RimMandrake.EnvironmentalHazards;
 
 namespace RimMandrake.FeverWood
@@ -288,11 +289,77 @@ namespace RimMandrake.FeverWood
         public void Notify_SentinelUp()
         {
             sentinelCount++;
+            if (sentinelCount == 1)
+            {
+                HushChorus();
+            }
         }
 
         public void Notify_SentinelDown()
         {
+            int previous = sentinelCount;
             sentinelCount = UnityEngine.Mathf.Max(0, sentinelCount - 1);
+            if (previous > 0 && sentinelCount == 0)
+            {
+                RestoreChorus();
+            }
+        }
+
+        /// <summary>
+        /// FEVERWOOD_ALIEN_BIRD_CHORUS_1. "The crown goes quiet ONLY for the
+        /// water" (fever_wood_deep_and_mud_2026-09-23.md §4/§6c, decision
+        /// taken by question card) — a sentinel limb surfacing IS the "the
+        /// thing below stirred" signal, so this ends the map's biome
+        /// ambient sustainers directly (the crown's birds, RM_Chellow/
+        /// RM_Murrelith/RM_Thavrik/RM_Skellick, are the cast that makes the
+        /// crown loud enough for this to read as an event — see
+        /// RM_FeverWoodBirds.xml). Same technique
+        /// RM_MapComponent_SilenceCue (CreatureBehaviors) already uses for
+        /// its own predator-hunt/mirror-break hushes — Sustainer/
+        /// SustainerManager expose no partial volume-ramp, so this ends
+        /// matching sustainers outright rather than fading them.
+        /// Deliberately duplicated here rather than referenced
+        /// cross-assembly: this class already owns sentinelCount, and this
+        /// mod's csproj had no compile-time reference to
+        /// mandrake.rm.creaturebehaviors as of this item, plus a second
+        /// live FOUNDRY window held that exact file mid-edit for unrelated
+        /// work (FEVERWOOD_SAP_SUCKER_GUILD_1/FEVERWOOD_ANT_HIVE_DUNGEON_1)
+        /// at the same time this item was built — adding a reference would
+        /// have meant committing their in-flight, unrelated changes too.
+        /// ⚠️ Known accepted overlap: if SilenceCue's own hush is
+        /// independently active on this map (e.g. a mirror-break beat)
+        /// when the sentinel retreats, RestoreChorus()'s
+        /// Notify_SwitchedMap() call can resume ambient sound slightly
+        /// early. Narrow edge case — a mirror-break hush is a short beat,
+        /// a sentinel's presence is comparatively long — same class of
+        /// "accepted honest trade" SilenceCue's own header already
+        /// documents for its own no-partial-volume-ramp limitation.
+        /// </summary>
+        private void HushChorus()
+        {
+            List<SoundDef> ambient = map.Biome?.soundsAmbient;
+            if (ambient.NullOrEmpty())
+            {
+                return;
+            }
+            List<Sustainer> all = Find.SoundRoot.sustainerManager.AllSustainers;
+            for (int i = all.Count - 1; i >= 0; i--)
+            {
+                Sustainer s = all[i];
+                if (s.info.Maker.Map == map && ambient.Contains(s.def) && !s.Ended)
+                {
+                    s.End();
+                }
+            }
+            Messages.Message("RM_FeverWood_ChorusFallsSilent".Translate(), new TargetInfo(map.Center, map), MessageTypeDefOf.ThreatBig, historical: false);
+        }
+
+        private void RestoreChorus()
+        {
+            if (Find.CurrentMap == map)
+            {
+                AmbientSoundManager.Notify_SwitchedMap();
+            }
         }
 
         public override void ExposeData()
