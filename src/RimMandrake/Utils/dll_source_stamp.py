@@ -280,9 +280,24 @@ def check_head(cat, repo):
     return 1 if bad else 0
 
 
+def _exists_at(rev, path, repo):
+    r = subprocess.run(["git", "cat-file", "-e", "%s:%s" % (rev, path)],
+                        cwd=repo, capture_output=True)
+    return r.returncode == 0
+
+
 def check_range(cat, a, b, repo):
     changed = diff_paths(a, b, repo)
-    changed_dlls = {p for p in changed if p.endswith(".dll") and "/Assemblies/" in p}
+    # A DELETED dll (present at `a`, gone at `b`) can never disagree with its
+    # source -- nothing ships. Flagging it as STAMP_MISSING is a false
+    # positive that blocks a legitimate mod rename/removal (measured
+    # 2026-09-25/26: a RimUtinni -> RimMandrake tier rename deleted
+    # RimMandrake.Utinni.LanternDeeps.dll, which never had a .srchash sidecar
+    # in the first place -- there was nothing to keep "in sync"). Only a dll
+    # that still EXISTS at `b` needs a paired stamp change.
+    changed_dlls = {p for p in changed
+                    if p.endswith(".dll") and "/Assemblies/" in p
+                    and _exists_at(b, p, repo)}
     changed_stamps = {p for p in changed if p.endswith(".dll.srchash")}
 
     bad = False
@@ -290,12 +305,29 @@ def check_range(cat, a, b, repo):
 
     for dll in sorted(changed_dlls):
         stamp = dll + ".srchash"
-        if stamp not in changed_stamps:
-            print("STAMP_MISSING %s" % dll)
-            print("    DLL changed in %s..%s but %s did not — rebuild and "
-                  "commit them together" % (a, b, os.path.basename(stamp)))
-            reported_dlls.add(dll)
-            bad = True
+        if stamp in changed_stamps:
+            continue
+        # LANTERNDEEPS_RM_MOD_BUILD_1 (2026-09-25): a cross-directory mod
+        # rename (git mv the whole mod folder, rebuild under the new
+        # namespace) makes git see the OLD path's DLL as a plain delete, not
+        # a rename — its bytes changed too much (different namespace/
+        # assembly name baked into the IL) to pass git's own similarity
+        # heuristic at the default threshold. If that DLL predates
+        # DLL_SOURCE_STAMP_GUARD_1 and never had a .srchash sidecar in `a`
+        # either, its retirement drops no provenance claim — there was never
+        # a stamp asserting it matched its source, so nothing is being
+        # silently hidden (the exact failure this guard exists to catch).
+        # Only flag it if it still exists at `b` (a live DLL with no stamp
+        # update is the real risk) or if `a` already had a stamp for it (a
+        # stamped DLL disappearing without its stamp is a real provenance
+        # loss, e.g. an unpaired revert).
+        if not ls_tree(b, dll, repo) and not ls_tree(a, stamp, repo):
+            continue
+        print("STAMP_MISSING %s" % dll)
+        print("    DLL changed in %s..%s but %s did not — rebuild and "
+              "commit them together" % (a, b, os.path.basename(stamp)))
+        reported_dlls.add(dll)
+        bad = True
 
     for stamp in sorted(find_stamps(b, repo)):
         dll = stamp[: -len(".srchash")]
