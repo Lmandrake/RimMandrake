@@ -707,6 +707,20 @@ file write to a commit, the write never happens either. Keep writes and commits 
 `python3 src/RimMandrake/Utils/shared_sync.py` (`git replay` onto origin, push, then `reset --keep`,
 which aborts rather than touch a dirty file) — this tree is never clean, so `pull --rebase`
 refuses and a bare `git pull` merges. Linked worktrees are exempt.
+
+🔴 **`shared_sync.py` has a RACE that silently drops a peer's commit, and the symptom is the
+most reassuring signal git has.** Hit live 2026-09-26: a finished 16-file commit vanished from
+HEAD, and `git log origin/main..HEAD` printed **nothing**, which reads exactly like "everything
+is pushed." Recovered byte-exact from the dropped commit's blobs. The mechanism, read off the
+script: it computes `todo` (the local-only commits) at line ~78, replays and pushes them, then
+at line ~123 runs `git reset --keep origin/main`. **One tree, one HEAD, four agents** — so a
+peer commit landing in that window is on HEAD, was never in `todo`, was never pushed, and the
+`reset --keep` moves HEAD past it. Nothing warns; the commit is only in the reflog.
+⇒ **After EVERY `shared_sync.py` run, prove your own commit survived:**
+`git merge-base --is-ancestor <your sha> origin/main` (exit 0 = published). An empty
+`origin/main..HEAD` is NOT that proof. Capture your sha with `git rev-parse HEAD` *before*
+syncing. Fix owed: `SHARED_SYNC_DROPS_PEER_COMMITS_1`.
+
 ⚠️ **A REFUSED merge is not harmless**: git's internal restore_state() stashes, hard-resets
 and re-applies, and if a peer holds `index.lock` the re-apply fails — that erased 215 files'
 edits 2026-09-25 07:54 with nothing in the reflog. The same hook refuses whole-tree
