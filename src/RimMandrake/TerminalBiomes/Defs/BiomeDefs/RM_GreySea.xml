@@ -132,13 +132,17 @@
          the node NAME as the def and the node TEXT as the commonality; an
          <li> wrapper silently discards the whole entry.
 
-         ⚠️ RM_GlassVeilKelp and RM_SaltChimneyVine are ABSENT from this list
-         DELIBERATELY. Both are terrain-gated (wildTerrainTags
-         RM_GreyBrineChannel / RM_GreyChimneySeep) and listing them here
-         without their terrain painted would put them on open sediment,
-         which contradicts both specs ("over trenches and brine rivers";
-         "grow ONLY around warm mineral seeps"). They join this list in the
-         same change that paints their terrain. -->
+         🔑 RM_GlassVeilKelp and RM_SaltChimneyVine sit at HIGH commonality
+         here and are still rare on the map, because both are terrain-gated
+         (wildTerrainTags RM_GreyBrineChannel / RM_GreyChimneySeep) and
+         those two terrains cover a few hundred cells of a floor. The
+         commonality is the weight WITHIN a cell they are allowed in, not
+         across the map. They were held out of this list until
+         GenStep_GreySeaFloorDressing existed to paint that terrain, because
+         a kelp on open sediment is not the plant the owner specified
+         ("over trenches and brine rivers"; "grow ONLY around warm mineral
+         seeps"). ⛔ Never remove their wildTerrainTags to "make them show
+         up". -->
     <plantDensity>0.14</plantDensity>
     <wildPlants>
       <RM_CubicSculpture>0.6</RM_CubicSculpture>
@@ -146,6 +150,8 @@
       <RM_MosaicFanPalm>0.4</RM_MosaicFanPalm>
       <RM_SpherePlant>0.35</RM_SpherePlant>
       <RM_BrineCrown>0.15</RM_BrineCrown>
+      <RM_GlassVeilKelp>2.0</RM_GlassVeilKelp>
+      <RM_SaltChimneyVine>2.0</RM_SaltChimneyVine>
     </wildPlants>
 
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
