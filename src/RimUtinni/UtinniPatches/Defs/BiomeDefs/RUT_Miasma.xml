@@ -2,57 +2,45 @@
 <Defs>
 
   <!--
-    RUT_Miasma                                     UtinniPatches - authored 2026-09-09
-    BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
-    the_miasma.md (FROZEN). Replaces the donor `AB_MiasmicMangrove` (Alpha Biomes).
+    RUT_Miasma - FROZEN, carrying the world until the terminal paint; content
+    lives in mandrake.rm.miasma; do not edit here.
 
-    MEASURED (sheet SS0): 93 tiles strung along the Salt Gate (the Grey Sea's
-    deltas). Elevation median 22 m, the lowest ground on the dayside; 32 river
-    tiles, 6 sea tiles; temp median 42.8 C. Rain: zero on 89 of 93 tiles — "the
-    delta itself has never once been rained on" (the donor's Rain/RainyThunderstorm
-    commonalities are kept anyway, see below, because the biome's own SS3 breath-tide
-    mechanism reads them as SEA SURGE, not sky rain).
+    MIASMA_RM_MOD_BUILD_1 (Phase A, 2026-09-25): this def is unchanged below,
+    byte-for-byte, except this header. The standalone franchise-free sibling,
+    RM_Miasma, now lives in src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml,
+    carrying the same content (its own worker class replacing the donor
+    AlphaBiomes.BiomeWorker_MiasmicMangrove, the 17 genuine Star Wars wildAnimals
+    rows routed through a Utinni patch instead of inline, and the 5 roster-evicted
+    rows dropped). The 16 mechanic def/patch files this BiomeDef's own
+    biomeMapConditions/modExtensions reference (RUT_MiasmaWeatherLock, RUT_Surge,
+    RUT_GradientSurge, RUT_CrecheMarker, RUT_MiasmaWeather, RUT_SurgeWeather,
+    RUT_MiasmaExposure, the FeverForged/HardenedImmunity/StrangeTier hediffs, the
+    two Base_Player GenStep registrations, and RUT_Miasma_ForgeOnSurvival) moved
+    with their defNames unchanged into mandrake.rm.miasma's own Defs/ and
+    Patches/ trees - this def's own references below keep resolving exactly as
+    before, now against that mod instead of against sibling files in this same
+    mod. This def is expected to carry 0 tiles until the terminal repaint
+    (BIOME_PAINT_ONCE_AT_THE_END_1) - not a defect. Do not delete this def before
+    Phase B; it carries the live campaign world's painted tiles.
 
-    animalDensity/movementDifficulty/diseaseMtbDays kept at the donor's own values:
-    sheet SS0 explicitly names all three as "kept and explained" — 6.5 is refugee
-    crowding (SS3 "the lifeboat"), 4 is the root-maze and muck, 15 is "the Working's
-    failures leaking out" (SS4b, fever-forged).
-
-    Weather: MIASMA_MECHANICS_1's M4 build pass (2026-09-13) landed the real lock —
-    biomeMapConditions below now forces RUT_MiasmaWeather permanently via
-    GameCondition.ForcedWeather(), which overrides vanilla's WeatherDecider outright.
-    The donor's own Rain/RainyThunderstorm/FoggyRain/DryThunderstorm/Fog/Clear
-    baseWeatherCommonalities entries below are now INERT — ForcedWeather() always
-    wins regardless of what WeatherDecider rolls internally — kept only because
-    removing them changes nothing observable and a biome with an empty
-    baseWeatherCommonalities list is itself a latent config-error risk. Ban 5
-    ("No rain") is now actually, mechanically true, not merely read that way.
-    Snow zeroed (42.8 C median).
-
-    diseases: the three Alpha Biomes-specific entries (BacterialGangrene/
-    ViralAbasia/RavagingIntestinalParasites) kept MayRequire-gated — these ARE
-    "the Working's failures" (SS3/SS4b), i.e. the sheet's own central mechanism, not
-    generic dressing.
-
-    wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
-    BiomeFlora_Ashkarr.xml against rosters/the_miasma.json.
-
-    MIASMA_MECHANICS_1 M4/M1 build pass (2026-09-13): biomeMapConditions +
-    modExtensions below wire the weather lock/light/exposure (M4) and the
-    fresh->brine gradient axis (M1, RM_GenStep_GradientAxis registered onto
-    Base_Player in Patches/RUT_Miasma_GradientAxis_Register.xml). Full details
-    and honest gaps: infrastructure/state/items/MIASMA_MECHANICS_1.md.
-
-    STILL NOT this pass's scope: M2 (breath-tide surge), M3 (stranding pools),
-    M5 (fever-forged boon tables), M6 (warden-mother set-piece placement); the
-    attar refinement chain; any world repaint.
-
-    MIASMA_NURSERY_KINDS_1 (2026-09-10): the nursery-band RSW_* entries below spawn
-    the *Juv defNames (SWBestiary SeaBeasts_NurseryJuveniles.xml (moved 2026-09-11: cross-mod ParentName inheritance is unsupported, defs now live beside their parents)), not the base
-    species: those are juvenile-locked (lifeStageAges dropped below AnimalAdult, so
-    LifeStageUtility caps them at Juvenile forever regardless of rolled age). The
-    Grey Sea/terminator roster keeps the un-capped base defNames for the adults.
-
+    Original authoring header (BIOME_OWNERSHIP_WAVE_1, 2026-09-09), preserved for
+    provenance: full sheet design/Jawa/worldbuilding/biomes/the_miasma.md
+    (FROZEN). Replaces the donor AB_MiasmicMangrove (Alpha Biomes). MEASURED
+    (sheet SS0): 93 tiles strung along the Salt Gate (the Grey Sea's deltas).
+    Elevation median 22 m, the lowest ground on the dayside; 32 river tiles, 6
+    sea tiles; temp median 42.8 C. Rain: zero on 89 of 93 tiles. animalDensity/
+    movementDifficulty/diseaseMtbDays kept at the donor's own values (6.5 refugee
+    crowding, 4 root-maze/muck, 15 "the Working's failures leaking out").
+    MIASMA_MECHANICS_1's M4 build pass (2026-09-13) forces RUT_MiasmaWeather
+    permanently via GameCondition.ForcedWeather(), making the kept Rain/
+    RainyThunderstorm/etc. baseWeatherCommonalities entries below INERT (kept
+    only because removing them changes nothing observable and an empty list is
+    its own config-error risk). diseases: the three Alpha Biomes-specific
+    entries are "the Working's failures" (SS3/SS4b), not generic dressing.
+    wildAnimals/wildPlants transplanted from BiomeCast_Ashkarr.xml/
+    BiomeFlora_Ashkarr.xml against rosters/the_miasma.json. MIASMA_NURSERY_
+    KINDS_1 (2026-09-10): the nursery-band RSW_* entries spawn the *Juv
+    defNames, juvenile-locked.
   -->
 
   <BiomeDef>

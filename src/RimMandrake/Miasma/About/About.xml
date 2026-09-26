@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.miasma</packageId>
+  <name>RimMandrake: the Miasma</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>sarg.alphabiomes</packageId>
+      <displayName>Alpha Biomes</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2777849228</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>sarg.alphabiomes</li>
+    <li>sarg.alphaanimals</li>
+    <li>oskarpotocki.vfe.insectoid2</li>
+    <li>mandrake.rm.environmentalhazards</li>
+    <li>mandrake.rm.flowworks</li>
+    <li>mandrake.rut.patches</li>
+    <li>mandrake.rut.rotsporekit</li>
+  </loadAfter>
+  <description>MIASMA_RM_MOD_BUILD_1 (Phase A row 19 of
+design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).
+A salt-crusted, stilt-rooted mangal forest standing in brackish channels between a
+dying sea and the rivers that feed it, under a green-gold haze of its own breath.
+Fully generalized: it names no other franchise or campaign. A separate frozen
+campaign world's own Miasma instance (RUT_Miasma, src/RimUtinni/UtinniPatches) is
+unaffected and unrelated; this is a new sibling biome for everyone else's worlds,
+not a rename of that one.
+
+RM tier: nothing here knows what campaign or planet uses it.
+
+Ships the biome and its own placement worker (RM_BiomeWorker_Miasma, replacing the
+donor AlphaBiomes.BiomeWorker_MiasmicMangrove — a donor type in workerClass is a
+hard dependency the RimMandrake tier may not assume), plus six real environmental
+mechanics whose C# already lives in the shared RimMandrake: Environmental Hazards
+Kit (mandrake.rm.environmentalhazards): a fresh-to-brine salinity gradient axis
+that repaints terrain over time; a breath-tide surge incident that shoves the
+gradient inland and lets it recede; stranding pools that leave transitional
+juvenile fauna behind when the tide pulls back; a permanent weather lock with a
+low-grade ambient exposure hediff; a small chance of a permanent "fever-forged"
+boon (toughened skin, hardened disease immunity, or five rarer strange-tier
+traits) for a pawn who survives a disease here; and warden-mother crèche
+placement with a despoiled-memory penalty if the warden dies. Ships 11 wildlife
+rows inline: two of this campaign's own invented (franchise-free) delta-loam
+composter and fever-swarm vector, and nine Alpha Animals/VFE Insectoids channel
+predators, ambushers and vermin, each individually MayRequire-gated on its own
+donor mod. A Mod Settings screen gives a worldgen-rarity master toggle
+(MOD_OPTIONS_RETROFIT_1 doctrine — default = shipped behavior, 0 = never
+generates); the six mechanics' own per-mechanic toggles live on the shared
+Environmental Hazards Kit's own settings screen, since Greentide and Sump also
+read those same switches — a second, Miasma-only copy of them here would either
+do nothing or silently diverge from what that screen already promises.
+
+⚠️ Not donor-free: 96.5% of this biome's flora weight is Alpha Biomes' own mangal
+family (AB_MangroveTree/AB_ParasiticMangrove/AB_MangrovePalm), so sarg.alphabiomes
+ships as a hard modDependency rather than an optional MayRequire — without it this
+biome has almost no flora. The two invented native creatures (RUT_Karrobel,
+RUT_Karrathil) and the cross-mod Rot flora import (RUT_Nogtyl) still physically
+live in mandrake.rut.patches/mandrake.rut.rotsporekit respectively and are wired
+here with a fresh MayRequire guard rather than ported outright — a future pass can
+bring them into this mod's own tier.
+
+NOT in this mod: the 17 genuine Star Wars wildAnimals rows (mlie.starwarsanimalcollection's
+Runyip/Shiro/Anooba/Grank/Whisperbird/Vornskyr/Zakkeg, and this campaign's own
+RSW_ ports PodWorm/CrestedDragon/MeeJuv/AaroxisDendoria/FaaJuv/LaaJuv/YobshrimpJuv/
+RustNipperJuv/SiltLampreyJuv/OpeeSeaKillerJuv) the campaign roster also ratifies
+for this biome — those ride a Utinni patch (WildAnimals_Miasma.xml) onto this
+mod's own RM_Miasma def instead, per the Q11a naming-tier ruling. 5 further
+rows the roster itself evicted (RSW_Kreetle, Yobshrimp, RSW_Gembug, AA_BloodShrimp,
+AA_Plasmorph) are dropped outright, carried into neither mod.
+
+Live proof (step 5, a scratch-world quicktest with all five expansions) is
+Desktop-only and OWED — see the item's own verify record.</description>
+</ModMetaData>
