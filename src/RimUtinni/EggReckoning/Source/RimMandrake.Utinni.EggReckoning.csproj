@@ -43,6 +43,7 @@
     <Compile Include="RM_QuestNode_EggPlantWatcher.cs" />
     <Compile Include="RM_QuestPart_EggHatch.cs" />
     <Compile Include="RM_QuestNode_EggHatch.cs" />
+    <Compile Include="EggReckoningSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

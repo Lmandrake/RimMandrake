@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <Compile Include="RM_QuestNode_GetWildsteamSettlement.cs" />
+    <Compile Include="WildsteamEggBountySettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

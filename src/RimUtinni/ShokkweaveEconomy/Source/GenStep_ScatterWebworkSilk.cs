@@ -25,6 +25,10 @@ namespace RimMandrake.Utinni.ShokkweaveEconomy
 
 		public override void Generate(Map map, GenStepParams parms)
 		{
+			if (!ShokkweaveEconomySettings.scatterEnabled)
+			{
+				return;
+			}
 			if (map.Biome == null || map.Biome.defName != WebworkBiomeDefName)
 			{
 				return;
