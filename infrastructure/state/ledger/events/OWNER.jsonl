@@ -59,3 +59,4 @@
 {"seat":"OWNER","event":"note","id":"SEA_DIVE_MAPS_BUILD_1","text":"Gear matrix §6 card (16:58): Q1 deluxe = Odyssey vacsuit, and DESIGN ASSUMES ALL DLCs (standing rule, CLAUDE.md); Q2 one RM_DiveProtection stat for all seas (card); Q3 separate RM_Apparel_Rebreather (card); Q4 Scald-only local sea gear in v1 (card). Q5 (KotOR flight suits dive or cosmetic) open.","ownerSaid":"Always assume all the dlcs.","ts":"2026-09-26T00:11:02Z"}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-09-26T00:54:25Z"}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-26T00:55:09Z"}
+{"seat":"OWNER","event":"note","id":"DEEPFIRE_PIGMENT_MOD_1","text":"Q5 ruled: GlowTank takes salt or boiling water only; may stand away from the sea if water is hauled to it. Folded into spec §2.5/§11.","ownerSaid":"It can be set up away but then you chase yo carry the water to it. Salt or boiling only.","ts":"2026-09-26T02:32:40Z"}
