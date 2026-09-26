@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_ElderTreasures.xml               TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  GREYSEA_BRINE_ELDERS_1 — the singular treasures, RM_ TIER ONLY.
+
+  Owner, verbatim (content doc §7.1): the Elders "may release singular
+  treasures accumulated over millennia, typically only one example of each
+  because duplication held no value to them". His list, verbatim:
+
+    - "a functional lightsaber sealed since the Rakatan era"          ── canon
+    - "an intact pre-Republic navigation core"                        ── canon
+    - "an unknown droid brain preserved in salt"                      ── canon
+    - "a one-of-a-kind alien weapon whose operating principle is no
+       longer understood"                                             ── ours
+    - "a sealed biological relic from an extinct species"             ── ours
+    - "some beautifully useless artifact whose significance only
+       becomes apparent much later"                                   ── ours
+
+  ============================================================================
+  THE TIER SPLIT — Q11a, and it decides three of the six out of this file
+  ============================================================================
+  Lightsaber, Rakatan era, pre-Republic, droid brain are GENUINE STAR WARS
+  CANON, so by Q11a (biome_mod_architecture.md §7) they are IP and live in
+  the RSW_/RUT_ layer, patched onto the Elder's treasure table with
+  MayRequire. ⛔ They may not be authored here under any invented rename:
+  Q11a's rule is that invented names are free, canon names are not, and
+  "a lightsaber with a different word for it" is still the canon object.
+  Those three are OWED to the Utinni patch layer.
+
+  ⚠️ And the two things Q11a's companion lesson warns about, recorded so the
+  next pass does not repeat them: an invented exotic name is NOT IP and
+  belongs in RM_ (the free mod must look the same, with canon added on top,
+  never an impoverished base); and the RM_ tier does not get a thin
+  "fallback" version of a canon item.
+
+  ============================================================================
+  🔴 ONLY TWO OF THE THREE RM_ TREASURES ARE BUILT. THE THIRD IS WITHHELD.
+  ============================================================================
+  "Some beautifully useless artifact whose significance only becomes apparent
+  much later" is NOT authored here, and that is the sheet's own instruction,
+  which says it in as many words: it "needs a plot home before it is built,
+  or it will be built as a trinket." An artifact whose whole point is a
+  later revelation is a plot hook with no owner yet. Building it now would
+  spend the hook on a 40-silver curio and make the revelation impossible.
+  ⇒ OPEN on GREYSEA_BRINE_ELDERS_1: find it a plot home, then build it.
+
+  ============================================================================
+  "ONE EXAMPLE OF EACH" IS NOT A DEF FIELD
+  ============================================================================
+  His "typically only one example of each because duplication held no value
+  to them" is a per-world uniqueness flag that has to live with the Elder's
+  persisted seen-set, which is the C# still owed (see RM_BrineElder.xml).
+  Nothing in these two defs enforces it: stackLimit 1 makes them un-stackable,
+  not unique. ⛔ Do not read a shipped def as a shipped economy — until the
+  seen-set exists, nothing stops a second one being spawned by dev mode or by
+  a future generator, and the trade that would hand them out does not exist
+  either.
+
+  PLACEHOLDER ART: the mod's own salt-crystal item placeholder, tinted. Real
+  art owed; search infrastructure/artpipe/done/ and _artsrc/ by subject first.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ==================================================================
+       "A sealed biological relic from an extinct species."
+       Kept sealed: the Grey's own law is that what the minerals take,
+       they keep, and this is that law turned into a trade good. No
+       rot comp and DeteriorationRate 0 — ban 5, the Grey's dead do not
+       rot, made a stat. Same posture RUT_SaltCameo already established.
+       ================================================================== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_ElderSealedRelic</defName>
+    <label>sealed relic</label>
+    <description>A flask of grown salt, closed all round with no seam anywhere on it, holding something that was alive. The Elder that produced it could describe the contents exactly — the proteins, the trace metals, the isotope ratios, the way the tissue gave up its water — and could not say what the animal was called, where it lived or when it stopped existing, because it has never held those as facts about anything. Whatever is in there has no living relative left on this planet. It has not decayed and it is not going to.</description>
+    <graphicData>
+      <texPath>Things/Item/RM_GreySea/RM_SaltCrystalItem</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(212,226,214)</color>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>900</MarketValue>
+      <Mass>1.2</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>12</Beauty>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>1</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <!-- ==================================================================
+       "A one-of-a-kind alien weapon whose operating principle is no
+       longer understood."
+
+       It is a real weapon, not a curio: a treasure a player cannot use
+       is not a reward. Built as a ranged weapon of no known family —
+       deliberately NOT a charge/plasma/laser reskin, because "operating
+       principle is no longer understood" is the whole of it. Stats sit
+       around the vanilla charge-rifle band so it is worth carrying
+       without rewriting the mid game.
+
+       Burst of 1, long warmup, long range, heavy hit: it reads as a
+       thing that does something once, carefully, rather than a rifle.
+       ⛔ Not craftable, not a tech tree entry, no research. There is one
+       of these and nobody knows how it works.
+       ================================================================== -->
+  <ThingDef ParentName="BaseHumanMakeableGun">
+    <defName>RM_ElderUnknownWeapon</defName>
+    <label>unattributed weapon</label>
+    <description>A shaped object about the length of a forearm, recovered sealed in salt, which discharges when held and aimed. Nobody has established what it discharges. It has no aperture, no moving part, no power cell and no heat signature; it is not warm afterward; and the wound it leaves is a clean cored hole with no burn and no fragmentation. Three separate attempts to open one have ended with the object unchanged and the tools ruined.\n\nThe Elder that gave it up described it as "a structure with an unusual energy state" and considered that a complete account.</description>
+    <techLevel>Archotech</techLevel>
+    <graphicData>
+      <texPath>Things/Item/RM_GreySea/RM_SaltCrystalItem</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(222,214,236)</color>
+      <drawSize>(1.1,1.1)</drawSize>
+    </graphicData>
+    <soundInteract>Interact_Rifle</soundInteract>
+    <statBases>
+      <WorkToMake>0</WorkToMake>
+      <Mass>3</Mass>
+      <AccuracyTouch>0.60</AccuracyTouch>
+      <AccuracyShort>0.80</AccuracyShort>
+      <AccuracyMedium>0.80</AccuracyMedium>
+      <AccuracyLong>0.72</AccuracyLong>
+      <RangedWeapon_Cooldown>2.2</RangedWeapon_Cooldown>
+      <MarketValue>2200</MarketValue>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Beauty>10</Beauty>
+    </statBases>
+    <stackLimit>1</stackLimit>
+    <destroyOnDrop>false</destroyOnDrop>
+    <smeltable>false</smeltable>
+    <burnableByRecipe>false</burnableByRecipe>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <!-- No recipeMaker: there is one of these and nobody knows how it
+         works. BaseHumanMakeableGun supplies the weapon shape; the
+         craftability it implies is removed here on purpose. -->
+    <recipeMaker Inherit="false" />
+    <weaponTags>
+      <li>RM_ElderTreasure</li>
+    </weaponTags>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_ChargeRifle</defaultProjectile>
+        <warmupTime>2.0</warmupTime>
+        <range>34</range>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>Shot_ChargeRifle</soundCast>
+        <soundCastTail>GunTail_Medium</soundCastTail>
+        <muzzleFlashScale>6</muzzleFlashScale>
+      </li>
+    </verbs>
+    <tools>
+      <li>
+        <label>grip</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+      </li>
+    </tools>
+  </ThingDef>
+
+</Defs>

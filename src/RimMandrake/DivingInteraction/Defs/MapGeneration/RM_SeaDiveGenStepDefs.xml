@@ -34,6 +34,28 @@
     <genStep Class="RimMandrake.DivingInteraction.GenStep_SeaFloorFauna" />
   </GenStepDef>
 
+  <!-- GREYSEA_FLOOR_FORMATIONS_1 etc., 2026-09-26. The Grey Sea floor's
+       terrain dressing: the deepest-pool basin and its jacket ring, the
+       Brine Elder that rises from it, a seep apron around every salt
+       chimney, and a brine channel running from each chimney downhill into
+       the basin. Read GenStep_GreySeaFloorDressing.cs's own header — it
+       explains why a Grey-specific step lives in this shared mod, and what
+       is deliberately NOT built by it.
+
+       order 880: after the formation scatter (860-876, so the chimneys it
+       reads are already placed) and BEFORE the vanilla Plants step (900),
+       because the terrain it paints is what gates the chimney vine and the
+       glass veil kelp — paint first, and vanilla grows them for free.
+
+       ⛔ Listed only on RM_SeaDiveGenerator_GreySea, and the step refuses
+       any map whose biome is not RM_GreySea. The floor terrain tag is
+       shared by all four seas, so scope cannot come from the terrain. -->
+  <GenStepDef MayRequire="mandrake.rm.terminalbiomes">
+    <defName>RM_GreySeaFloorDressing</defName>
+    <order>880</order>
+    <genStep Class="RimMandrake.DivingInteraction.GenStep_GreySeaFloorDressing" />
+  </GenStepDef>
+
   <!-- design/RimMandrake/sea_dive_maps_spec.md §2.2 (MEASURED): a sea's own
        animalDensity (0.1-0.15) is a coastal/GravTide number, far too low
        for a ~50x50 pocket map's ecosystem-weight budget — vanilla's own

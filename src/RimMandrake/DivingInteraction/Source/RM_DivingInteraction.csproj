@@ -49,6 +49,7 @@
     <Compile Include="GenStep_SeaFloorTerrain.cs" />
     <Compile Include="GenStep_SeaFloorFauna.cs" />
     <Compile Include="GenStep_PlaceSeaDiveExit.cs" />
+    <Compile Include="GenStep_GreySeaFloorDressing.cs" />
   </ItemGroup>
 
   <ItemGroup>
