@@ -242,15 +242,21 @@ namespace RimMandrake.Utinni.UtinniPatches
 				}
 			}
 
+			// Destroy the core BEFORE spawning the husk on its cell: both defs
+			// are (1,1), so GenSpawn.Spawn's default WipeMode.Vanish would
+			// otherwise silently DestroyMode.Vanish the still-spawned parent
+			// to clear space for the husk — bypassing this exact KillFinalize
+			// call below (parent.Spawned would already read false) and
+			// replacing the intended destroy mode with an unintended one.
+			if (parent.Spawned)
+			{
+				parent.Destroy(DestroyMode.KillFinalize);
+			}
+
 			if (Props.deadHuskDef != null)
 			{
 				Thing husk = ThingMaker.MakeThing(Props.deadHuskDef);
 				GenSpawn.Spawn(husk, center, map);
-			}
-
-			if (parent.Spawned)
-			{
-				parent.Destroy(DestroyMode.KillFinalize);
 			}
 		}
 
