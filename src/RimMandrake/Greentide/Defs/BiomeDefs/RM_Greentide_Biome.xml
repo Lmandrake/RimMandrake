@@ -29,9 +29,22 @@
     </modExtensions>
 
     <animalDensity>3.2</animalDensity>
-    <plantDensity>0.95</plantDensity>
+    <!-- GREENTIDE_BIOME_DENSITY_1: plantDensity and movementDifficulty tuned
+         against vanilla's own closest thematic analog, TropicalSwamp
+         ("plant-choked... difficult movement... a nightmare",
+         Defs/Core/BiomeDefs/Biomes_Warm.xml) — plantDensity 0.99,
+         movementDifficulty 4, MEASURED via RimSage this pass. This is the
+         ceiling among all vanilla BiomeDefs found (next highest plantDensity
+         0.90 on TropicalRainforest). movementDifficulty is a WORLD-TILE stat
+         only (Source/RimWorld/Planet/WorldPathGrid.cs — caravan travel speed
+         between planet tiles; consumed nowhere in Verse/AI/PathGrid.cs, the
+         in-map pathfinder), so this delivers the item's own acceptance bar
+         ("you look at the map when you land and decide to go around")
+         directly, and does NOT stack with or duplicate churnmud's in-map
+         pathCost — see the item file for the full mechanism writeup. -->
+    <plantDensity>0.99</plantDensity>
     <wildPlantRegrowDays>16</wildPlantRegrowDays>
-    <movementDifficulty>1.6</movementDifficulty>
+    <movementDifficulty>4</movementDifficulty>
     <forageability>0.8</forageability>
     <foragedFood>RawBerries</foragedFood>
     <diseaseMtbDays>45</diseaseMtbDays>

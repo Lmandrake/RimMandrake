@@ -38,11 +38,19 @@ appears that was not read from one of our own files.
 | `fishTypes` | **absent** | 10 species + rare table |
 
 🔴 **The live def carries `movementDifficulty` 1 — no penalty at all**, against the owner's ruling
-that movement is *"extremely difficult"*. The generic twin carries 1.6. This is a real contradiction
-between a ruling and the def the world runs on, and it is noted rather than fixed here: `RUT_Greentide`
-is frozen and content fixes were ruled to land in `mandrake.rm.greentide` only. ⇒ It belongs to
-`GREENTIDE_BIOME_DENSITY_1`, which already owns the movement budget, and that item does not yet
-record it.
+that movement is *"extremely difficult"*. The generic twin carried 1.6 at the time of this audit.
+`RUT_Greentide` is frozen and content fixes were ruled to land in `mandrake.rm.greentide` only.
+
+**CORRECTED, `GREENTIDE_BIOME_DENSITY_1` (closed 2026-09-26): `movementDifficulty` is a WORLD-TILE
+stat only** (`Source/RimWorld/Planet/WorldPathGrid.cs` — caravan travel speed between planet tiles),
+**not** an in-map "vegetation movement tax" — MEASURED it has zero consumers in `Verse/AI/PathGrid.cs`,
+the in-map pathfinder. It does **not** stack with churnmud's `pathCost` as this section originally
+assumed below (§3a's "two independent movement taxes"); they are unrelated axes. `RM_Greentide` is
+now tuned to `plantDensity 0.99` / `movementDifficulty 4`, matching vanilla's own `TropicalSwamp`
+("plant-choked... difficult movement... a nightmare") — its own ceiling among all vanilla BiomeDefs.
+In-map crossing difficulty is governed separately by `TerrainDef.pathCost` (churnmud, already
+shipped) and `ThingDef.pathCost` on plants (a per-cell MAX, not additive) — see that item's closed
+prose for the full mechanism.
 
 ### 1a. Plants — SUBSTANTIAL, and largely undesigned-but-scoped
 
