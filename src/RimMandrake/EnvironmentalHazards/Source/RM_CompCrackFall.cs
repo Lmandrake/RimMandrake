@@ -6,16 +6,21 @@ using Verse.Sound;
 namespace RimMandrake.EnvironmentalHazards
 {
     //   <ThingDef ParentName="TreeBase">
-    //     <defName>RUT_Placeholder_GreentideGiantTree</defName>
+    //     <defName>RM_Mirrelbole</defName>
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_CrackFall">
-    //         <mtbDaysAtFullGrowth>8</mtbDaysAtFullGrowth>
-    //         <minGrowthFraction>0.9</minGrowthFraction>
-    //         <fallDelayTicksRange>300~900</fallDelayTicksRange>
+    //         <mtbDaysAtFullGrowth>3</mtbDaysAtFullGrowth>
+    //         <minGrowthFraction>0.6</minGrowthFraction>
+    //         <fallDelayTicksRange>200~600</fallDelayTicksRange>
     //       </li>
     //     </comps>
     //   </ThingDef>
+    //
+    // GREENTIDE_JUNGLE_TREE_ROSTER_1 (2026-09-26): the mechanism-proof stub
+    // this comment used to name, RUT_Placeholder_GreentideGiantTree, is
+    // retired now that the roster's real trees ship and wire this comp for
+    // real (RM_Mirrelbole, "highest crack-fall rate on the page").
     public class CompProperties_CrackFall : CompProperties
     {
         // INVENTED (kit spec M6, feller 1: "MTB 8 days at full growth").

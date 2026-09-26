@@ -13,20 +13,25 @@ namespace RimMandrake.EnvironmentalHazards
     // throws for a tree with no extension — only the tuning changes.
     //
     //   <ThingDef ParentName="TreeBase">
-    //     <defName>RUT_Placeholder_GreentideGiantTree</defName>
+    //     <defName>RM_Greatbole</defName>
     //     ...
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_FellableTreeExtension">
     //         <isGiantClass>true</isGiantClass>
-    //         <fellLength>10</fellLength>
-    //         <fallDamageRange>70~120</fallDamageRange>
-    //         <heartRadius>1</heartRadius>
-    //         <hardwoodDropRange>2~4</hardwoodDropRange>
-    //         <greenwoodStackRange>10~25</greenwoodStackRange>
-    //         <greenwoodDropChancePerCell>0.6</greenwoodDropChancePerCell>
+    //         <fellLength>16</fellLength>
+    //         <fallDamageRange>150~260</fallDamageRange>
+    //         <heartRadius>2</heartRadius>
+    //         <hardwoodDropRange>8~14</hardwoodDropRange>
+    //         <greenwoodStackRange>30~60</greenwoodStackRange>
+    //         <greenwoodDropChancePerCell>0.8</greenwoodDropChancePerCell>
     //       </li>
     //     </modExtensions>
     //   </ThingDef>
+    //
+    // GREENTIDE_JUNGLE_TREE_ROSTER_1 (2026-09-26): the mechanism-proof stub
+    // this comment used to name, RUT_Placeholder_GreentideGiantTree, is
+    // retired now that the roster's real giant (RM_Greatbole, franchise-free
+    // RM_ tier) ships and carries this extension for real.
     public class RM_FellableTreeExtension : DefModExtension
     {
         // INVENTED (kit spec M6: "giants also drop RUT_Hardwood at the heart

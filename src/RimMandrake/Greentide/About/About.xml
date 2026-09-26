@@ -72,9 +72,28 @@ is RM_ tier, not campaign tier): RM_GreatboleFruit (the fruit), its three
 butchered products (RM_GreatboleFruitSteak, RM_RoyalRind, RM_GreatboleSeed),
 RM_Apparel_RindCoat, and RM_GreatboleGrub (the fruit's contesting purple
 grub — reuses this mod's own mandrake.rm.creaturebehaviors dependency, no
-new one added). These items exist independently of the landmark that
-currently drops them; a franchise-free source for them in THIS mod's own
-biome (a Greentide fruiting plant, not the ancient bole) is owed separately.
+new one added). These items existed independently of the landmark that
+drops them, and that gap is now closed:
+
+GREENTIDE_JUNGLE_TREE_ROSTER_1 (2026-09-26) gave this biome its own tree
+canopy — 14 invented, franchise-free RM_ jungle trees
+(RM_Greentide_TreeRoster.xml, wired directly into this BiomeDef's own
+<wildPlants>, replacing the rejected Plant_TreeOak/Plant_TreePoplar/
+Plant_Bush) plus the franchise-free signature giant, RM_Greatbole
+(RM_Greatbole.xml) — the mature, fellable life stage of the same species as
+the campaign-tier landmark, sharing its visual family and nothing else (no
+shared def, no growth path; the relationship is fiction by design). Felling
+one is the franchise-free source for the fruit economy above that this file
+used to call "owed separately." RM_Greatbole drops true hardwood
+(RM_GreatboleHardwood, a new RM_ tier resource — deliberately NOT a
+reference to the campaign's RUT_Hardwood, so this mod still depends on
+nothing Utinni-side) via the shared, def-agnostic RM_FellableTreeExtension /
+RM_TreeFallUtility mechanism in mandrake.rm.environmentalhazards (an
+optional dependency, gated per-<li> with MayRequire, not a hard mod
+dependency of this mod). The roster's seven non-tree understory plants
+(brakkel, tumbel, sarquin, phorrik, wollick, maddrick, illurin) are a
+follow-on, GREENTIDE_UNDERSTORY_PLANT_ROSTER_1 — this biome's foragedFood
+stays RawBerries until brakkel ships to replace it.
 
 Live proof is OWED at publish time — see the item's own verify record.</description>
 </ModMetaData>

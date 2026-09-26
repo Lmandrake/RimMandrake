@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Greentide_TreeRoster.xml                        GREENTIDE_JUNGLE_TREE_ROSTER_1
+
+  The fourteen invented jungle trees of
+  design/Jawa/worldbuilding/biomes/greentide_tree_roster_2026-09-22.md §3a/3b/3c
+  (rows 1-14; row 22, the fellable giant RM_Greatbole, ships in its own file,
+  RM_Greatbole.xml). Every row is franchise-free RM_ tier per the owner's
+  2026-09-22 superseding ruling ("no canon trees at all ... we're making our
+  own") and lands directly in RM_Greentide_Biome.xml's own <wildPlants> — the
+  design doc's §6a MEASURED that file has no GENERATED header and
+  biome_flora.py never names RM_Greentide, so it is hand-owned and takes the
+  roster directly (never the campaign twin, RUT_Greentide, which IS generator
+  -owned and untouched here).
+
+  Scope: this file is the TREE roster only (item title: "ten-plus jungle
+  trees ... plus the signature giant"). The design doc's seven non-tree
+  understory plants (rows 15-21: brakkel/tumbel/sarquin/phorrik/wollick/
+  maddrick/illurin) are explicitly out of this item's scope per its own spec
+  step 5 ("the non-tree donor rows are out of this item's scope") and are
+  filed as a follow-on, GREENTIDE_UNDERSTORY_PLANT_ROSTER_1.
+
+  All ParentName="TreeBase" per the design doc's own §3 header. Every field
+  not called out below is TreeBase's own default (Defs/Core/ThingDefs_Plants/
+  Plants_Bases.xml, MEASURED live via RimSage this pass): harvestedThingDef
+  WoodLog, harvestYield 25, MaxHitPoints 200, Nutrition 2.0, Mass 150,
+  visualSizeRange 1.5~2.0 — each row below overrides only what its own design
+  brief calls for. No row invents a distinct "greenwood" resource: the
+  ordinary vanilla WoodLog is the bulk-wood grade the design's "wood economy
+  has two grades" ruling calls Greenwood; only RM_Greatbole (the only tree
+  that pays TRUE hardwood by falling, per §4a) gets a dedicated hardwood
+  resource, RM_GreatboleHardwood (RM_Greentide_TreeRoster_Items.xml).
+
+  Flammability: every row is set to the "very low" neighbourhood the owner
+  ruled 2026-09-22 ("just put the flammability as very low, don't stress
+  about it") — 0.05-0.12, the same neighbourhood as RUT_SweetlineTree's own
+  0.1 under the analogous arid-shrubland ban. TreeBase's own default (0.8) is
+  explicitly wrong for this biome's hard ban on flammable living flora
+  (the_greentide.md §6 ban 3).
+
+  Fall mechanics (RimMandrake.EnvironmentalHazards, mandrake.rm.
+  environmentalhazards — NOT a hard mod dependency of this mod today, so
+  every comp/modExtension entry below carries its own MayRequire, matching
+  RUT_GreatboleCore.xml's own established pattern of gating the <li> rather
+  than the whole ThingDef): per the design doc's §4a, only RM_Veluthar (the
+  biggest ordinary fall) and RM_Mirrelbole (highest crack-fall rate) carry an
+  explicit extension/comp. "Everything else takes nothing" — RM_TreeFallUtility
+  falls back to its own conservative Default tuning for an untagged Plant, so
+  the other eleven rows are correct exactly as shipped here.
+
+  Art: three rows carry real (if under-resolved) existing art, reassigned
+  per the design doc §3f MEASURED read of infrastructure/artpipe/done/*.json
+  (each subject's own style_notes name its Source row) — RM_Veluthar
+  (jungletree_v1), RM_Ghemmel (hydenocktree_v1), RM_Nemmer (jogantree_v1),
+  copied into this mod's own Textures/ namespace (UtinniPatches/RM_Greentide
+  both ship their own Textures/ folder, so validate_patch.py's ownership
+  check requires a real file under any texPath named here — a vanilla-path
+  reuse is not an option). All three are 256x256, under the project's
+  128px/cell canvas law for their visualSizeRange (veluthar and ghemmel in
+  particular want more like 1280px/768px) — re-rendering at the correct
+  canvas is owed, tracked on the same follow-on item as the eleven rows with
+  no art at all. Nothing here is a re-purposing: every one of the three
+  subjects' own style_notes says it was generated "flavor free" as a
+  generic, non-Star-Wars jungle form precisely so an invented def could use
+  it later.
+-->
+<Defs>
+
+  <!-- ============================ 3a. Canopy — four trees ============================ -->
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Veluthar</defName>
+    <label>veluthar</label>
+    <description>A bare grey column for most of its height, then one single tier of enormous paddle leaves radiating flat from the very top like an opened umbrella — no crown mass below it at all. Deep green above, the undersides pale and permanently wet. The dominant canopy tree, and the biggest ordinary fall in the whole Greentide.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Veluthar/RM_Veluthar_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.5, 0.7, 0.4)</volume>
+        <offset>(0,0,-0.45)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>420</MaxHitPoints>
+      <Flammability>0.08</Flammability>
+      <Nutrition>2.4</Nutrition>
+      <Mass>260</Mass>
+      <BeautyOutdoors>4</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <growDays>55</growDays>
+      <harvestYield>35</harvestYield>
+      <visualSizeRange>7.5~10.0</visualSizeRange>
+      <wildClusterRadius>9</wildClusterRadius>
+      <wildClusterWeight>22</wildClusterWeight>
+    </plant>
+    <modExtensions>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_FellableTreeExtension">
+        <fellLength>10</fellLength>
+        <fallDamageRange>60~100</fallDamageRange>
+        <heartRadius>1</heartRadius>
+        <greenwoodDef>WoodLog</greenwoodDef>
+        <greenwoodStackRange>15~30</greenwoodStackRange>
+        <greenwoodDropChancePerCell>0.65</greenwoodDropChancePerCell>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Mourvel</defName>
+    <label>mourvel</label>
+    <description>The brief's "willow-like canopy" taken literally, and then further: a low wide dome whose entire outer surface is hanging cord-like leaf strands that reach the mud, so the tree is a room with walls. Bark violet-black, strands blue-green. Nothing is visible through it — the Greentide's one true concealment tree.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Mourvel/RM_Mourvel_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.45, 0.6, 0.35)</volume>
+        <offset>(0,0,-0.4)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Flammability>0.06</Flammability>
+      <Nutrition>1.8</Nutrition>
+      <Mass>200</Mass>
+      <BeautyOutdoors>2</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <growDays>45</growDays>
+      <visualSizeRange>6.0~8.0</visualSizeRange>
+      <wildClusterRadius>7</wildClusterRadius>
+      <wildClusterWeight>16</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Kaddrath</defName>
+    <label>kaddrath</label>
+    <description>Roots first, tree second: wide-splayed above-ground root buttresses taller than a pawn, with walk-through gaps between them, a trunk shorter than the root mass is wide, and a modest crown of olive leaf plates. Reads as architecture — its roots are the biome's causeways, not decoration, and its gaps are the best hiding place on the map.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Kaddrath/RM_Kaddrath_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.5, 0.55, 0.4)</volume>
+        <offset>(0,0,-0.4)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>340</MaxHitPoints>
+      <Flammability>0.07</Flammability>
+      <Nutrition>1.9</Nutrition>
+      <Mass>220</Mass>
+      <BeautyOutdoors>3</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <growDays>48</growDays>
+      <visualSizeRange>6.5~9.0</visualSizeRange>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>18</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Sarnstilt</defName>
+    <label>sarnstilt</label>
+    <description>Stands in the channel itself on a tripod of prop roots, trunk starting clear of the water, crown leaning hard out over the current and shedding huge single leaves onto it. Bark salt-crusted pale on the downstream side. River-margin only — this is the tree that makes crossing water frightening, and it falls across the channel it stands in.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Sarnstilt/RM_Sarnstilt_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.4, 0.5, 0.3)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>260</MaxHitPoints>
+      <Flammability>0.08</Flammability>
+      <Nutrition>1.6</Nutrition>
+      <Mass>170</Mass>
+      <BeautyOutdoors>2</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <!-- "River-margin only" is not mechanically enforced here — vanilla
+           wild-plant seeding has no near-river gate, and building one needs
+           a custom scatterer validator (same gap MIASMA_FLORA_ROSTER_1's own
+           RM_Quennath watch-out already recorded for an adjacency rule).
+           Owed as a follow-on, not blocking this content pass. -->
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>40</growDays>
+      <harvestYield>20</harvestYield>
+      <visualSizeRange>5.0~7.0</visualSizeRange>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <!-- ============================ 3b. Mid-storey — six trees ============================ -->
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Brunnock</defName>
+    <label>brunnock</label>
+    <description>Visibly heavy: a trunk far too thick for its height under a tight low dome of black-green leathery leaves the size of a shield, overlapping like armour plate. Short internodes, tight grain, cracked near-black bark. The toughest, slowest-growing tree on the page — bulk greenwood at the highest hit points here, deliberately scarce. It is no longer the hardwood route; that job belongs to the greatbole alone.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Brunnock/RM_Brunnock_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.4, 0.4, 0.3)</volume>
+        <offset>(0,0,-0.35)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>550</MaxHitPoints>
+      <Flammability>0.05</Flammability>
+      <Nutrition>2.2</Nutrition>
+      <Mass>300</Mass>
+      <BeautyOutdoors>1</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <growDays>140</growDays>
+      <harvestYield>30</harvestYield>
+      <visualSizeRange>4.0~6.0</visualSizeRange>
+      <wildClusterRadius>10</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Ghemmel</defName>
+    <label>ghemmel</label>
+    <description>The ordinary one, and the roster needs one: gnarled wind-bent trunk, dense rounded crown of medium dark leaves. Its distinguishing feature is not shape but blood — the bark bleeds thick red wherever it is cut or split, and in this biome it is split everywhere. The commonest mid-storey tree and the source of the biome's red dye.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ghemmel/RM_Ghemmel_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.4, 0.5, 0.3)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>260</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>1.8</Nutrition>
+      <Mass>190</Mass>
+      <BeautyOutdoors>2</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <growDays>30</growDays>
+      <visualSizeRange>4.0~6.0</visualSizeRange>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>26</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Nemmer</defName>
+    <label>nemmer</label>
+    <description>Slender pale smooth trunk, deliberately thin crown of a few long drooping fronds rather than a mass, and fruit far too large for the branch holding it, hanging low enough to take from the ground. The lightest silhouette on the page, by design. Free calories with a tax: the fruit-fall draws everything that eats fruit, and then everything that eats those.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Nemmer/RM_Nemmer_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.45, 0.25)</volume>
+        <offset>(0,0,-0.36)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>0.09</Flammability>
+      <Nutrition>1.4</Nutrition>
+      <Mass>110</Mass>
+      <BeautyOutdoors>1</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <!-- The canopy fruit-fall itself (a periodic dropped-fruit event, and
+           the row's role as RM_Skerrel's gall host per GREENTIDE_WASP_SWARM_1)
+           is a separate mechanism, not authored here — no engine access from
+           this pass to invent a new dropped-resource comp responsibly. Owed
+           to that item / a follow-on, not guessed. -->
+      <growDays>26</growDays>
+      <harvestYield>15</harvestYield>
+      <visualSizeRange>3.5~5.0</visualSizeRange>
+      <wildClusterRadius>7</wildClusterRadius>
+      <wildClusterWeight>20</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Vurmeloth</defName>
+    <label>vurmeloth</label>
+    <description>Almost suspiciously tidy — a neat narrow crown of even mid-green leaves on a straight clean bole, the one plant here that looks cultivated. Unremarkable until cut, when the heartwood is arterial crimson. Grows only in small pure stands, never mixed in: not a bulk wood, a premium timber the caravans carry out at a markup.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.45, 0.25)</volume>
+        <offset>(0,0,-0.36)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>230</MaxHitPoints>
+      <Flammability>0.07</Flammability>
+      <Nutrition>1.6</Nutrition>
+      <Mass>150</Mass>
+      <BeautyOutdoors>3</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <growDays>50</growDays>
+      <harvestYield>22</harvestYield>
+      <visualSizeRange>3.5~5.0</visualSizeRange>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>3</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Mirrelbole</defName>
+    <label>mirrelbole</label>
+    <description>Trunk visibly split down its own length by the speed it grew, the wounds glazed with amber resin that never sets in the humidity. Sheds bark plates; permanently wet-looking, the mud at its foot sticky. The sap tap of the fuel economy — and reward and hazard are the same object here: the tree you tap is the tree most likely to crack and come down on you. The highest crack-fall rate in the biome.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Mirrelbole/RM_Mirrelbole_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.28, 0.35, 0.2)</volume>
+        <offset>(0,0,-0.32)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>1.5</Nutrition>
+      <Mass>140</Mass>
+      <BeautyOutdoors>-1</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <!-- The sap TAP itself (a repeatable chemfuel-adjacent harvest while
+           the tree stays alive) is a separate mechanism from ordinary
+           felling and is not authored here — UNMEASURED whether it wants a
+           WorkGiver/comp of its own; owed as a follow-on. What ships here is
+           the fall hazard the design doc actually specifies: highest
+           crack-fall rate on the page. -->
+      <growDays>22</growDays>
+      <harvestYield>18</harvestYield>
+      <visualSizeRange>3.0~4.0</visualSizeRange>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>14</wildClusterWeight>
+    </plant>
+    <comps>
+      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.CompProperties_CrackFall">
+        <mtbDaysAtFullGrowth>3</mtbDaysAtFullGrowth>
+        <minGrowthFraction>0.6</minGrowthFraction>
+        <fallDelayTicksRange>200~600</fallDelayTicksRange>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Zhorrel</defName>
+    <label>zhorrel</label>
+    <description>No crown at all: a low crossbeam of branches with a hanging curtain of slack finger-thick tentacle-leaves, red-barked above. The tentacles are visibly not still — the tell is that they move against the wind rather than with it. The strangler: no truce, ever. Kill one and the tentacles are excellent cordage.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Zhorrel/RM_Zhorrel_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.32, 0.45, 0.25)</volume>
+        <offset>(0,0,-0.36)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>210</MaxHitPoints>
+      <Flammability>0.08</Flammability>
+      <Nutrition>1.3</Nutrition>
+      <Mass>120</Mass>
+      <BeautyOutdoors>-1</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <growDays>28</growDays>
+      <harvestYield>16</harvestYield>
+      <visualSizeRange>3.5~5.0</visualSizeRange>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <!-- ============================ 3c. Understory — four trees ============================ -->
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Quathis</defName>
+    <label>quathis</label>
+    <description>One flat vertical fan of gigantic leaves, all in a single plane from a short thick base — a wide bright blade from one side and a line from the other, the only row in the roster whose silhouette changes with facing. Bright lime, translucent at the edges. Its leaves are single-piece roofing and thatch panels, the biome's cheapest building material, and the colour relief in a dark understory.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Quathis/RM_Quathis_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.15, 0.4, 0.12)</volume>
+        <offset>(0,0,-0.3)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>1.0</Nutrition>
+      <Mass>60</Mass>
+      <BeautyOutdoors>2</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <growDays>18</growDays>
+      <harvestYield>12</harvestYield>
+      <visualSizeRange>2.5~4.0</visualSizeRange>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>20</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Thalquith</defName>
+    <label>thalquith</label>
+    <description>Aquamarine — the only non-green thing growing here. Smooth trunk with no bark texture at all, branches meeting overhead in a flat interlocking lattice rather than a crown; saplings are literal inverted cones. The lattice hums in moving air, constantly — the hum stopping is the tell. Fragile, and hard to keep alive near work.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Thalquith/RM_Thalquith_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.18, 0.4, 0.14)</volume>
+        <offset>(0,0,-0.3)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>130</MaxHitPoints>
+      <Flammability>0.12</Flammability>
+      <Nutrition>0.8</Nutrition>
+      <Mass>50</Mass>
+      <BeautyOutdoors>3</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <growDays>20</growDays>
+      <harvestYield>10</harvestYield>
+      <visualSizeRange>2.5~4.0</visualSizeRange>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>7</wildClusterWeight>
+    </plant>
+    <!-- GREENTIDE_HUMMING_GROVE_1 — the lattice's own hum. Generic, camera-
+         relative mechanism in mandrake.rm.creaturebehaviors
+         (RM_MapComponent_ProximitySoundscape); this is the content side, the
+         only wiring needed. Layers defined in
+         Defs/SoundDefs/RM_GreentideHummingGrove.xml. radius/thingsPerLayer
+         left at the extension's own tuned defaults (22 / 3). -->
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_ProximitySoundscapeExtension">
+        <groupKey>GreentideHummingGrove</groupKey>
+        <humLayers>
+          <li>RM_Hum_Thalquith_Low</li>
+          <li>RM_Hum_Thalquith_Mid</li>
+          <li>RM_Hum_Thalquith_High</li>
+        </humLayers>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Cundral</defName>
+    <label>cundral</label>
+    <description>A squat woody base almost buried under a skirt of tentacle-thick ground runners, with translucent pods hanging among them like fruit you must not pick — you can see the acid moving inside them. Left undisturbed it lets you dig its root, a real food staple; damaged, the pods go. Reward and hazard are the same object, most explicitly of anything in the biome.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Cundral/RM_Cundral_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.28, 0.28, 0.2)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Flammability>0.12</Flammability>
+      <Nutrition>0.9</Nutrition>
+      <Mass>70</Mass>
+      <BeautyOutdoors>-1</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <growDays>20</growDays>
+      <harvestYield>8</harvestYield>
+      <visualSizeRange>1.2~2.0</visualSizeRange>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>9</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Gorbeleth</defName>
+    <label>gorbeleth</label>
+    <description>A low mottled purple-brown barrel of a trunk with one upward-facing muscular throat at the top, ringed with tooth-like bracts. It twitches toward movement. Nothing else about it suggests a plant. Its toxin is worth extracting, which means going close.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.22, 0.18)</volume>
+        <offset>(0,0,-0.16)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>170</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0.7</Nutrition>
+      <Mass>90</Mass>
+      <BeautyOutdoors>-2</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <!-- Its active "twitches toward movement" ranged-toxin behaviour is a
+           real combat mechanism (nearest built pattern:
+           HediffComp_PeriodicAreaAttack, feller 2's own hook) and is not
+           invented here without engine access to prove it safe — shipping
+           as a static, toxin-yielding hazard plant now, with the active
+           attack owed as a follow-on rather than guessed. -->
+      <growDays>24</growDays>
+      <harvestYield>8</harvestYield>
+      <visualSizeRange>2.0~3.0</visualSizeRange>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>5</wildClusterWeight>
+    </plant>
+  </ThingDef>
+
+</Defs>
