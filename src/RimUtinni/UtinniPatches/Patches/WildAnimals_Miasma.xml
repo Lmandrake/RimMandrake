@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_Miasma.xml                    UtinniPatches - new file 2026-09-25
+  ============================================================================
+  MIASMA_RM_MOD_BUILD_1 (Phase A). Wires the 17 genuine Star Wars wildAnimals
+  rows the frozen RUT_Miasma.xml still carries inline onto the new standalone
+  RM_Miasma def instead, per the Q11a naming-tier ruling (invented exotic
+  names stay in the franchise-free RM_ tier; genuine canon IP routes through
+  this Utinni patch layer). Shape copied from this same folder's own
+  WildAnimals_Pyrelands.xml precedent.
+
+  Every defName and commonality weight below is copied verbatim from
+  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml's own <wildAnimals>
+  (frozen, unchanged) - not re-derived or rescaled here. Two groups, split by
+  their real source mod so each PatchOperationConditional/Add block gates on
+  the mod that actually owns the defNames it adds - a patch gated on the
+  wrong mod is a silent no-op waiting to happen.
+
+  mlie.starwarsanimalcollection (Star Wars Animal Collection (Continued)), 7
+  rows, bare defNames (that mod's own convention, not a naming defect - see
+  CLAUDE.md's "bare unprefixed defName in a design roster is the convention"
+  note):
+    Runyip      0.5   muck-forager
+    Shiro       0.4   arthropod-floor
+    Anooba      0.3   scavenger
+    Grank       0.3   channel-predator
+    Whisperbird 0.3   flier
+    Vornskyr    0.15  strange
+    Zakkeg      0.05  big-wanderer
+
+  mandrake.rsw.swbestiary (this repo's own Star Wars ports), 10 rows:
+    RSW_PodWorm          0.5   large grazer (bodySize 4, not a predator)
+    RSW_CrestedDragon    0.4   channel-predator
+    RSW_MeeJuv           0.4   nursery, juvenile-locked (MIASMA_NURSERY_KINDS_1)
+    RSW_AaroxisDendoria  0.3   strange
+    RSW_FaaJuv           0.3   nursery, juvenile-locked
+    RSW_LaaJuv           0.3   nursery, juvenile-locked
+    RSW_YobshrimpJuv     0.3   nursery, juvenile-locked
+    RSW_RustNipperJuv    0.25  nursery, juvenile-locked
+    RSW_SiltLampreyJuv   0.25  nursery, juvenile-locked
+    RSW_OpeeSeaKillerJuv 0.05  nursery-guard, juvenile-locked
+
+  LEFT OUT (roster eviction, not carried into either mod - rosters/
+  the_miasma.json's own evictions[]): RSW_Kreetle (-> AridShrubland),
+  Yobshrimp (-> RUT_TwilightSea), RSW_Gembug (-> the_lantern_deeps),
+  AA_BloodShrimp (-> AB_OcularForest), AA_Plasmorph (-> PoisonForest).
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.miasma,mlie.starwarsanimalcollection">
+    <xpath>Defs/BiomeDef[defName="RM_Miasma"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Miasma"]/wildAnimals</xpath>
+      <value>
+        <Runyip>0.5</Runyip>
+        <Shiro>0.4</Shiro>
+        <Anooba>0.3</Anooba>
+        <Grank>0.3</Grank>
+        <Whisperbird>0.3</Whisperbird>
+        <Vornskyr>0.15</Vornskyr>
+        <Zakkeg>0.05</Zakkeg>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.miasma,mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_Miasma"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_Miasma"]/wildAnimals</xpath>
+      <value>
+        <RSW_PodWorm>0.5</RSW_PodWorm>
+        <RSW_CrestedDragon>0.4</RSW_CrestedDragon>
+        <RSW_MeeJuv>0.4</RSW_MeeJuv>
+        <RSW_AaroxisDendoria>0.3</RSW_AaroxisDendoria>
+        <RSW_FaaJuv>0.3</RSW_FaaJuv>
+        <RSW_LaaJuv>0.3</RSW_LaaJuv>
+        <RSW_YobshrimpJuv>0.3</RSW_YobshrimpJuv>
+        <RSW_RustNipperJuv>0.25</RSW_RustNipperJuv>
+        <RSW_SiltLampreyJuv>0.25</RSW_SiltLampreyJuv>
+        <RSW_OpeeSeaKillerJuv>0.05</RSW_OpeeSeaKillerJuv>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
