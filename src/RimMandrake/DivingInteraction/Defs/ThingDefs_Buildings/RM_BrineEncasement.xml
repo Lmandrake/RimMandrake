@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_BrineEncasement.xml         mandrake.rm.divinginteraction · 2026-09-26
+  ============================================================================
+  GREYSEA_BRINE_POOL_DEFENCE_1 — the def a crystallised pawn becomes, and the
+  hediff that runs while it holds one.
+
+  🔴 RULED 2026-09-26 (Q1, answer (b), sheet §4d): "a crystallised pawn is
+  ENCASED AS AN OBJECT that must be mined out — not a hediff." One mechanism
+  for the living and the dead, matching the sheet's statuary and Odyssey's
+  own SolidIce_Loot shape. ⛔ The hediff below is the SMOTHERING TIMER only;
+  it is not the encasement and must never be made to do that job.
+
+  Mechanism and every design decision behind it: RM_BrineEncasement.cs and
+  MapComponent_BrineCrystallisation.cs headers. Read them before editing
+  either def here.
+
+  ============================================================================
+  THE STAT ENVELOPE IS SolidIce'S, DELIBERATELY
+  ============================================================================
+  MEASURED 2026-09-26 off Odyssey's Data/Odyssey/Defs/ThingDefs_Misc/
+  Stone_Various.xml: SolidIce is RockBase, 240 HP, "can be mined through with
+  relative ease", mineableYieldWasteable false, biomeSpecific true. That def
+  is the sheet's own named precedent for the jacket family, so the salt twin
+  carries the same numbers: a rescue is a real job, not a siege.
+
+  mineableThing RM_RawSalt with MayRequire on the biome mod: the salt is
+  mandrake.rm.terminalbiomes' item and this mod loadAfters rather than
+  depends on it. ⚠️ A yield whose ThingDef cannot resolve is a red error at
+  load, so the guard is load-bearing, not tidiness. Without the biome mod
+  present the jacket simply yields nothing, which is fine — nothing else
+  would have put one on a map either.
+
+  mineableScatterCommonality 0: this def must NEVER be picked by
+  GenStep_ScatterLumpsMineable's weighted rock choice, or mountains on
+  unrelated maps would grow pawn-holding salt.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_BrineEncasement</defName>
+    <label>crystallised figure</label>
+    <description>A standing block of salt with a shape inside it. The brine went from saturated to solid in the time it takes to draw breath, and it went solid around whatever was in the way — a person, in this case, still in the posture they were in. Nothing in there is going anywhere on its own. Cut them out of it and they may still be alive; leave them and they will be part of the statuary, which is what the Grey Sea does with everything.</description>
+    <thingClass>RimMandrake.DivingInteraction.RM_Building_BrineEncasement</thingClass>
+    <tickerType>Rare</tickerType>
+    <saveCompressible>false</saveCompressible>
+    <graphicData>
+      <color>(226,232,228)</color>
+      <colorTwo>(198,206,204)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>240</MaxHitPoints>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <building>
+      <isResourceRock>false</isResourceRock>
+      <mineableThing MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</mineableThing>
+      <mineableYield>6</mineableYield>
+      <mineableYieldWasteable>false</mineableYieldWasteable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+      <biomeSpecific>true</biomeSpecific>
+      <veinMineable>false</veinMineable>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+  <!-- The smothering timer. It exists ONLY while a jacket holds the pawn:
+       RM_Building_BrineEncasement.TickRare adds severity, nothing else
+       does, and freeing the pawn stops it advancing and lets it heal off at
+       the rate below.
+
+       lethalSeverity 1.0 against +0.004 per rare tick is a little over one
+       in-game day sealed in — wide on purpose. The pool is meant to cost a
+       rescue operation, not to delete a colonist while the player is looking
+       at another map. [INVENTED], owed a live look.
+
+       ⛔ No capMods that stop movement. Movement is not the mechanism here —
+       being an object is. Adding a Moving 0 cap would be re-implementing the
+       hediff option the owner rejected. -->
+  <HediffDef>
+    <defName>RM_Smothered</defName>
+    <label>smothering</label>
+    <description>Sealed inside solid salt with whatever air was in the space when it closed. There is no injury and nothing to treat; there is only time.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75,0.80,0.78)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <lethalSeverity>1.0</lethalSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-1.2</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>short of air</label>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.15</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>starved of air</label>
+        <minSeverity>0.45</minSeverity>
+        <painOffset>0.1</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.45</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.3</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>suffocating</label>
+        <minSeverity>0.8</minSeverity>
+        <painOffset>0.2</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.75</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.6</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>
