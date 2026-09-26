@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WildAnimals_LanternDeeps.xml              UtinniPatches — new file 2026-09-25
+  ============================================================================
+
+  Wires the 8 Star Wars residents (DEEPS_FAUNA_VERDICTS_1, owner-ruled
+  2026-09-19) into RM_LanternDeeps' wildAnimals, which the mod itself ships
+  EMPTY (LANTERNDEEPS_RM_MOD_BUILD_1: no `RUT_` twin to freeze — this is a
+  tier move of an injection layer, and every Star Wars name is IP that
+  belongs in the Utinni layer, not the RimMandrake-tier biome mod). Same shape
+  as WildAnimals_Pyrelands.xml — see that file for the fuller worked example
+  of this pattern.
+
+  SOURCE OF TRUTH: the 8 rows and their commonalities are copied verbatim from
+  LANTERNDEEPS_RM_MOD_BUILD_1's own MEASURED state section (the def's own
+  wildAnimals before this split, itself derived from DEEPS_FAUNA_VERDICTS_1;
+  see RM_LanternDeeps.xml's own header comment for that provenance). All 8
+  defs live in src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/
+  ThingDefs_Races/RSW_BiomesTeamPort_Races.xml.
+
+  allowedPackAnimals: 2 of its 4 rows (RSW_BovineBeetle, RSW_ShatterjawBeetle)
+  are the same Star Wars IP and ride a second op below; Muffalo/Alpaca stay in
+  the mod's own def.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_LanternDeeps"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_LanternDeeps"]/wildAnimals</xpath>
+      <value>
+        <RSW_BovineBeetle>0.1</RSW_BovineBeetle>
+        <RSW_Gembug>0.1</RSW_Gembug>
+        <RSW_GlowSlug>0.2</RSW_GlowSlug>
+        <RSW_Megapleura>0.1</RSW_Megapleura>
+        <RSW_ShatterjawBeetle>0.1</RSW_ShatterjawBeetle>
+        <RSW_FacetMothLarvae>0.05</RSW_FacetMothLarvae>
+        <RSW_MossBeetleLarvae>0.1</RSW_MossBeetleLarvae>
+        <RSW_BloodropMoth>0.25</RSW_BloodropMoth>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>Defs/BiomeDef[defName="RM_LanternDeeps"]/allowedPackAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RM_LanternDeeps"]/allowedPackAnimals</xpath>
+      <value>
+        <li>RSW_BovineBeetle</li>
+        <li>RSW_ShatterjawBeetle</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

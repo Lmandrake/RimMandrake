@@ -50,7 +50,9 @@ jogan, meiloorun, nysillin, tauntaun, dianoga):
    grade of another. Nothing that is also a lanternstone or crystal word.
 6. **Lowercase RimWorld labels**; defNames `RUT_` + CamelCase of the label with the
    category word attached (`RUT_VreskCap`). No `Deep` prefix any more — the texPath
-   root already scopes the mod, and `Deep` was the donor's habit.
+   root already scopes the mod, and `Deep` was the donor's habit. (`RUT_` → `RM_`
+   2026-09-25, `LANTERNDEEPS_RM_MOD_BUILD_1` — the mod's tier moved; the historical
+   names and rationale below are otherwise unchanged, unamended.)
 
 ## The names
 

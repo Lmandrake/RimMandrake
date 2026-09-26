@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAVERNS_PARITY_BUILD_1 — our own cave biome for the Lantern Deeps pocket map,
+  replacing the borrowed BMT_CrystalCaverns (caverns_replacement_scoping.md §2).
+
+  This def is reached ONLY through RM_LanternDeepGenerator.pocketMapProperties.
+  It carries no worldgen route at all: no GeologicalLandforms BiomeWorkerConfig,
+  no worldTileGraphicAtlas, no worldTileOverrides. That is deliberate and it is
+  the sheet's hard ban 1 made structural (the_lantern_deeps.md §6.1: "no worldmap
+  biome") — there is nothing here for worldgen to score, so no seed can place it.
+
+  🔴 Donor modExtensions are NOT carried across. BiomesCore.DefModExtensions.*
+  (BiomesMap isCavern/cavernShapes, DisableIncidentsExtension) and
+  GeologicalLandforms.* are donor-owned Types; a def naming a Type no loaded
+  assembly defines is DISCARDED WHOLE by the loader. Cavern shape comes from
+  RM_LanternDeepGenerator's own isUnderground/forceCaves instead, which is what
+  actually drives a pocket map.
+
+  Terrain: vanilla map-gen resolves the base floor through terrainsByFertility
+  and only through it (GenStep_Terrain); terrainPatchMakers then overlay the
+  lanternstone shelves, soil and shallow water. Same shape and same thresholds as
+  the donor, so map feel is unchanged.
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_LanternDeeps</defName>
+    <label>lantern deeps</label>
+    <description>Voids grown by slow, cold crystallisation under the thickest crust on the planet. Enclosed, warm by comparison to the surface above, and humming. The only ambient light is lanternstone — the blue native crystal that carries light — and the glow-fungi pastured beneath it. Nothing reaches this place without excellent technology, which is why the caverns are full of it.</description>
+
+    <animalDensity>2.5</animalDensity>
+    <plantDensity>2</plantDensity>
+    <wildPlantsAreCavePlants>true</wildPlantsAreCavePlants>
+    <settlementSelectionWeight>0</settlementSelectionWeight>
+    <movementDifficulty>0.5</movementDifficulty>
+    <forageability>0.5</forageability>
+    <foragedFood>RM_PufferTendrils</foragedFood>
+    <wildPlantRegrowDays>5</wildPlantRegrowDays>
+    <disableShadows>true</disableShadows>
+    <disableSkyLighting>false</disableSkyLighting>
+    <noAmbientWind>true</noAmbientWind>
+    <constantOutdoorTemperature>17</constantOutdoorTemperature>
+    <texture>World/Biomes/IceSheet</texture>
+
+    <diseaseMtbDays>60</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>50</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+
+    <terrainsByFertility>
+      <li>
+        <terrain>Gravel</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <terrainPatchMakers>
+      <li>
+        <perlinFrequency>0.1</perlinFrequency>
+        <thresholds>
+          <li>
+            <terrain>RM_LanternstoneFloor</terrain>
+            <min>0.4</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+      <li>
+        <perlinFrequency>0.035</perlinFrequency>
+        <thresholds>
+          <li>
+            <terrain>Soil</terrain>
+            <min>0.63</min>
+            <max>0.83</max>
+          </li>
+          <li>
+            <terrain>WaterShallow</terrain>
+            <min>0.83</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
+
+    <baseWeatherCommonalities>
+      <RM_DeepCalm>100</RM_DeepCalm>
+    </baseWeatherCommonalities>
+
+    <wildPlants>
+      <!-- ground cover -->
+      <RM_DeepMycelium>5.0</RM_DeepMycelium>
+      <RM_ZivvitTaper>1.0</RM_ZivvitTaper>
+
+      <!-- mid sized -->
+      <RM_QuorrFern>0.5</RM_QuorrFern>
+      <RM_OsskBramble>0.3</RM_OsskBramble>
+      <RM_BrellikBulb>0.3</RM_BrellikBulb>
+      <RM_TwitchingPuffer>0.02</RM_TwitchingPuffer>
+
+      <!-- trees -->
+      <RM_ThrakkCap>0.5</RM_ThrakkCap>
+
+      <!-- other harvestable -->
+      <RM_PrennaLace>0.02</RM_PrennaLace>
+
+      <!-- hydrophytes -->
+      <RM_VellokReed>0.05</RM_VellokReed>
+      <RM_KuvraSpout>0.2</RM_KuvraSpout>
+      <RM_NurrikGill>0.4</RM_NurrikGill>
+
+      <!-- special: the sowable lanternstone line -->
+      <RM_Lanternstone_Sowable>0.1</RM_Lanternstone_Sowable>
+    </wildPlants>
+
+    <!--
+      DEEPS_FAUNA_VERDICTS_1 (owner ruling 2026-09-19, frozen source
+      Transient/deeps_flora_fauna_review_2026-09-18.decisions.json): cut 8 kinds
+      the owner rejected outright (AaroxisDendoria + its larva, BloodropLarvae,
+      BovineBeetleLarvae, FacetMoth, MossBeetle, PodWorm, RoyalRhino — race defs
+      left alone, only the spawn entries removed). The remaining donor's 28
+      wildAnimals minus the six crystal-studded residents the sheet's hard ban 3
+      evicts (crystalope, crystalback beetle, crystal crab, crystal fairy mole,
+      mimic mantis, crystal beetle larvae) and minus the three RULED CUT
+      2026-09-11 (chem snail, cave spider, glow bat). Everything left points at
+      the RSW_* ports already shipped in SWBestiary. MEASURED 2026-09-18:
+      RSW_Shimmershell*, RSW_Xyrion and RSW_Woollybat do NOT exist in src —
+      those three donor residents are dropped, not repointed.
+    -->
+    <!-- LANTERNDEEPS_RM_MOD_BUILD_1 (2026-09-25): the 8 RSW_ residents that
+         used to live here moved to src/RimUtinni/UtinniPatches/Patches/
+         WildAnimals_LanternDeeps.xml, MayRequire="mandrake.rsw.swbestiary".
+         This RimMandrake-tier mod ships an empty wildAnimals so it stays
+         standalone-loadable with no Star Wars content wired in. -->
+    <wildAnimals>
+    </wildAnimals>
+
+    <allowedPackAnimals>
+      <li>Muffalo</li>
+      <li>Alpaca</li>
+    </allowedPackAnimals>
+
+    <extraRockTypes>
+      <li>RM_LanternstoneWall</li>
+    </extraRockTypes>
+
+    <pollutionWildAnimals/>
+  </BiomeDef>
+
+</Defs>

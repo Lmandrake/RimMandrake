@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CAVERNS_PARITY_BUILD_1 — the natural lanternstone wall, replacing the borrowed
+  BMT_NaturalCrystalWall that the biome's extraRockTypes names, plus its smoothed
+  and constructed siblings.
+
+  Parity note: mineableDropChance 0.25 and mineableScatterLumpSizeRange 12~32 are
+  the donor's numbers, kept so a Deep mines out at the same rate it always did.
+-->
+<Defs>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_LanternstoneWall</defName>
+    <label>lanternstone</label>
+    <description>A wall of natural lanternstone, lit from inside. It is quite beautiful, and it is the reason the Deeps have a name.</description>
+    <graphicData>
+      <texPath>RM_LanternDeeps/Things/Natural/Linked/lanternstone_wall_atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Beauty>1</Beauty>
+      <MaxHitPoints>200</MaxHitPoints>
+    </statBases>
+    <blockLight>true</blockLight>
+    <filthLeaving>Filth_RubbleRock</filthLeaving>
+    <building>
+      <isAirtight>true</isAirtight>
+      <isResourceRock>false</isResourceRock>
+      <isNaturalRock>true</isNaturalRock>
+      <claimable>false</claimable>
+      <naturalTerrain>RM_LanternstoneFloor</naturalTerrain>
+      <leaveTerrain>RM_LanternstoneFloor</leaveTerrain>
+      <mineableThing>RM_ChunkLanternstone</mineableThing>
+      <mineableDropChance>0.25</mineableDropChance>
+      <smoothedThing>RM_SmoothedLanternstoneWall</smoothedThing>
+      <isStuffableAirtight>false</isStuffableAirtight>
+      <biomeSpecific>true</biomeSpecific>
+      <mineableScatterLumpSizeRange>12~32</mineableScatterLumpSizeRange>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+    </building>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(119,189,239,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_SmoothedLanternstoneWall</defName>
+    <label>smoothed lanternstone</label>
+    <description>Lanternstone smoothed to a polished sheen. It is quite beautiful.</description>
+    <uiIconPath>Things/Building/Linked/WallSmooth_MenuIcon</uiIconPath>
+    <graphicData>
+      <texPath>RM_LanternDeeps/Things/Natural/Linked/smoothedlanternstone_wall_atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Beauty>2</Beauty>
+      <MarketValue>10</MarketValue>
+    </statBases>
+    <building>
+      <isAirtight>true</isAirtight>
+      <isStuffableAirtight>false</isStuffableAirtight>
+      <isNaturalRock>false</isNaturalRock>
+      <canBuildNonEdificesUnder>true</canBuildNonEdificesUnder>
+      <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
+      <naturalTerrain>RM_LanternstoneFloor</naturalTerrain>
+      <paintable>false</paintable>
+      <smoothedThing />
+    </building>
+    <saveCompressible>false</saveCompressible>
+    <repairEffect>Repair</repairEffect>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(119,189,239,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="Wall">
+    <defName>RM_BuiltLanternstoneWall</defName>
+    <label>constructed lanternstone</label>
+    <description>A wall built out of cut lanternstone. It is quite beautiful, and it does not need a lamp.</description>
+    <graphicData>
+      <texPath>RM_LanternDeeps/Things/Natural/Linked/lanternstone_wall_atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <uiIconPath>RM_LanternDeeps/Things/Natural/Linked/lanternstone_wall_icon</uiIconPath>
+    <statBases>
+      <Beauty>1</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costList>
+      <RM_Lanternstone>5</RM_Lanternstone>
+    </costList>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <uiIconPathsStuff IsNull="true" Inherit="False"/>
+    <stuffCategories IsNull="true" Inherit="False"/>
+    <costStuffCount>0</costStuffCount>
+    <useStuffTerrainAffordance>false</useStuffTerrainAffordance>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building>
+      <isAirtight>true</isAirtight>
+      <paintable>false</paintable>
+      <isStuffableAirtight>false</isStuffableAirtight>
+      <smoothedThing>RM_BuiltSmoothedLanternstoneWall</smoothedThing>
+    </building>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(119,189,239,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="Wall">
+    <defName>RM_BuiltSmoothedLanternstoneWall</defName>
+    <label>constructed smoothed lanternstone</label>
+    <description>Constructed lanternstone smoothed to a polished sheen. It can only be made by smoothing a lanternstone wall, built or natural.</description>
+    <graphicData>
+      <texPath>RM_LanternDeeps/Things/Natural/Linked/smoothedlanternstone_wall_atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Beauty>2</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costList>
+      <!-- Not buildable; this only refunds on deconstruct/destroy. -->
+      <RM_Lanternstone>5</RM_Lanternstone>
+    </costList>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <uiIconPathsStuff IsNull="true" Inherit="False"/>
+    <stuffCategories IsNull="true" Inherit="False"/>
+    <costStuffCount>0</costStuffCount>
+    <useStuffTerrainAffordance>false</useStuffTerrainAffordance>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <designationCategory Inherit="False"/>
+    <building>
+      <paintable>false</paintable>
+      <neverBuildable>true</neverBuildable>
+      <isStuffableAirtight>false</isStuffableAirtight>
+      <relatedBuildCommands>
+        <li>RM_BuiltLanternstoneWall</li>
+      </relatedBuildCommands>
+    </building>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(119,189,239,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
