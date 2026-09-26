@@ -4787,3 +4787,74 @@ carried forward from this wave. ⛔ Keep avoiding biome-specific mod folders
 `LanternDeeps`, `RustCathedral`, `WeepingStones` [new this wave —
 `STOCKED_POOL_BUILD_1` is actively landing in its `Source/`]) and
 `biome_paint_list.md` until told the concurrent biome-split build is done.
+
+## Wave 14 — 2026-09-26
+
+Fresh `list --show-untracked` survey. Considered `FeverWood/Source`'s
+Sekkulaath tentacle cluster first (`FEVERWOOD_TENTACLE_BESTIARY_1`, closed
+in the ledger at `8ffcbfb88` per the recent commit log) since the wave brief
+flagged it as a finished mechanism — but `git status` on that directory
+showed 4 UNTRACKED files right now (`RM_CompCapturedSpecimen.cs`,
+`RM_CompEscapedCaptive.cs`, `RM_CompProperties_CapturedSpecimen.cs`,
+`RM_CompProperties_EscapedCaptive.cs`, referenced live from
+`RM_Hediff_CaptivityMemory.xml` and `RM_Sekkulaath_Juvenile.xml` but absent
+from `RM_FeverWood.csproj`'s `<Compile Include>` list — so they compile into
+nothing right now) plus one MODIFIED tracked file
+(`RM_MapComponent_TentacleWatch.cs`). That is a concurrent agent mid-build on
+a captured/escaped-captive mechanic on top of the closed ledger item, not a
+finished cluster — steered clear entirely, touched nothing there. **Add
+`FeverWood` back onto the standing biome-folder exclusion list above**
+despite its own tentacle item being closed; the folder itself is still live.
+This is worth a note to whoever lands that work: the csproj is missing 4
+`<Compile Include>` lines the moment it's ready to commit.
+
+Picked instead the fully-committed, fully NEVER-ENTERED
+`src/RimMandrake/DivingInteraction/Source/` cluster (`SEA_DIVE_MAPS_BUILD_1`,
+closed at `44a44438c`, `git status` clean on the whole directory): 6 files,
+~350 lines — `RM_DivingSettings.cs`, `RM_SeaDiveHatch.cs`,
+`PlaceWorker_NeedsGravEngine.cs`, `GenStep_SeaFloorTerrain.cs`,
+`GenStep_SeaFloorFauna.cs`, `GenStep_PlaceSeaDiveExit.cs`. All 6 are listed
+in `RM_DivingInteraction.csproj`'s `<Compile Include>` (which sets
+`EnableDefaultCompileItems false`); traced each class to a live wire-in —
+`RM_SeaDiveHatch`/`PlaceWorker_NeedsGravEngine` from `RM_SeaDiveHatch.xml`,
+both GenSteps from `RM_SeaDiveGenStepDefs.xml`/`RM_SeaDiveGenerators.xml`,
+`RM_DivingSettings` from `RM_DivingInteractionMod`'s own `GetSettings<>()`
+call in the same file.
+
+Traced the mechanism as a whole: the ship-hatch `MapPortal` resolves its
+pocket-map generator per-tile from `Map.Biome` (one class serving all four
+terminal seas, not four copies); `GenStep_SeaFloorTerrain` (order 210)
+replaces vanilla's `Terrain` step outright so the floor is walkable;
+`GenStep_PlaceSeaDiveExit` (order 400) mirrors vanilla's own
+`GenStep_PlaceCaveExit` fallback-cell pattern; `GenStep_SeaFloorFauna` (order
+900, confirmed after Terrain/before RockChunks/Fog via the GenStepDefs'
+own header comment) seeds each sea's `wildAnimals` cast directly because a
+sea biome's water cells are never `Standable`, so vanilla's own ambient
+spawner never reaches them — correctly reasoned and cited as MEASURED live
+in the file's own header. Checked the fallback-cell paths in both GenSteps
+for an unhandled double-failure (mirrors vanilla's uncritical fallback
+exactly, and both maps' terrain step guarantees every cell is Standable
+first, so not a live risk); checked `GenStep_SeaFloorFauna`'s
+`countPerAnimalDensity * commonality` arithmetic against the sea biomes'
+actual `<wildAnimals>` values (`RM_TheScald`, `RM_GreySea`) — commonalities
+are un-normalized RimWorld convention (not required to sum to 1), the
+file's own comment already flags the exact total as a placeholder pending a
+live walk, and the low-commonality `Rand.Chance` fallback correctly gives
+rare species a shot instead of rounding to zero. No bug found across the
+cluster — a legitimate clean pass.
+
+All 6 files marked CLEAN (no code changes needed, so no new commit hash —
+recorded at `87f3d683e`, the tree's current HEAD).
+
+Re-measured after: `TALLY CLEAN 3167 DIRTY 156 ORPHANED 203 NEVER ENTERED
+475` (down from wave 13's 3161/157/203/480; concurrent biome-split agents
+are still moving files across buckets independent of this pass).
+
+Next wave: re-survey `list --show-untracked` fresh. ⛔ Keep avoiding
+biome-specific mod folders (same list as wave 13, **plus `FeverWood`** —
+its `Source/` has live uncommitted work right now even though its own
+ledger item is closed) and `biome_paint_list.md` until told the concurrent
+biome-split build is done. `FeverWood/Source`'s csproj-vs-XML mismatch
+(4 comp classes referenced from defs, absent from `<Compile Include>`) is
+not this loop's fix to make mid-build — flag it to whoever owns that item
+if it's still open when picked up again.

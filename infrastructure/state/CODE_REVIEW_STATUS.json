@@ -1535,6 +1535,30 @@
     "hash": "180e9128d1d9f69fa0f2b4fc57eba0155712f0fc36f90e9c953fd024b79fb1b5",
     "sha": "cc0825979"
   },
+  "src/RimMandrake/DivingInteraction/Source/GenStep_PlaceSeaDiveExit.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "219cf23f092175093f263f2dd9d7376a7442f7dcc983616f912bd76ae901a549",
+    "sha": "87f3d683e"
+  },
+  "src/RimMandrake/DivingInteraction/Source/GenStep_SeaFloorFauna.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "3846634cae9ec8a7d030fc681d87983d54fbae7350a43b097153f6e7b808d7a7",
+    "sha": "87f3d683e"
+  },
+  "src/RimMandrake/DivingInteraction/Source/GenStep_SeaFloorTerrain.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "28a8bd82ed8dcf97ed98dbe491f3dd98e902f59a5411b9e6e698aade0c2ddf90",
+    "sha": "87f3d683e"
+  },
+  "src/RimMandrake/DivingInteraction/Source/PlaceWorker_NeedsGravEngine.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "afac013b0daebb3650bf693e58217ef99d765860fdf0b1596a1d1013b30f470a",
+    "sha": "87f3d683e"
+  },
   "src/RimMandrake/DivingInteraction/Source/RM_DiveUtility.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -1548,10 +1572,10 @@
     "sha": "58720b3c2"
   },
   "src/RimMandrake/DivingInteraction/Source/RM_DivingSettings.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "c1c04212f0e9d8a89ed127da84fea21dabf91e29b5ea92b88cf61282b5237905",
-    "sha": "58720b3c2"
+    "cleanCount": 2,
+    "date": "2026-09-25",
+    "hash": "c8edfd1de7f11c65867f248f84d6bfb3a666642b1087f73f609a549bcd37b273",
+    "sha": "87f3d683e"
   },
   "src/RimMandrake/DivingInteraction/Source/RM_FloatMenuOptionProvider_Dive.cs": {
     "cleanCount": 1,
@@ -1582,6 +1606,12 @@
     "date": "2026-09-12",
     "hash": "5a764d9137a93b11453fe20b3bdfbfc665c740f2e22c8d4009180e5a24315bb0",
     "sha": "58720b3c2"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_SeaDiveHatch.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-25",
+    "hash": "847b6dfb8c5334a06a9d3703c42aefce44bfdaf25e61e778526018755960db6d",
+    "sha": "87f3d683e"
   },
   "src/RimMandrake/DivingInteraction/Source/RM_Thought_CommunedWithDeep.cs": {
     "cleanCount": 1,
