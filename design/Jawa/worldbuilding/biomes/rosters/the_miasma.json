@@ -28,7 +28,8 @@
     }
   ],
   "defNames": [
-    "RUT_Miasma"
+    "RUT_Miasma",
+    "RM_Miasma"
   ],
   "evictions": [
     {
