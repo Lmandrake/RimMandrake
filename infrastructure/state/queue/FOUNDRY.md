@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T09:11:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-26T09:37:05Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1567,16 +1567,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md
 
-## WEBWORK_EGG_BLACKMARKET_BUILD_1 Build the ruled egg black market: Cartel caravan kind + Bazaar broker channel, tradeability-All patch with leak check, The Reckoning quest family with staged juvenile hatch (S5 rulings 1-6)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WEBWORK_EGG_BLACKMARKET_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WEBWORK_EGG_BLACKMARKET_BUILD_1.md
-
 ## SUMP_TAR_HYDROLOGY_1 Sump tar hydrology on FlowWorks: belch floods with glass fronts, full canal-work, network fire with gate firebreaks, outflow seams, the Deep Black mere, living-map responders, tar rain (mod, not this scenario)
 state:    proposed
 row:      unassigned
@@ -1716,3 +1706,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  DEEPFIREPAINTSTATUSCUISINE1
 prose:    infrastructure/state/items/DEEPFIRE_PAINT_STATUS_CUISINE_1.md
+
+## WEBWORK_EGG_BROKER_CHANNEL_1 Add the egg black-market broker channel as a Bazaar tab, once Bazaar has tabs
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
+prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
+
+## WEBWORK_EGG_RECKONING_QUEST_1 The Reckoning quest family: egg-assassination quest + plant/hatch C# verb (S5 rulings 2,3,6,7)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
+prose:    infrastructure/state/items/WEBWORK_EGG_RECKONING_QUEST_1.md
