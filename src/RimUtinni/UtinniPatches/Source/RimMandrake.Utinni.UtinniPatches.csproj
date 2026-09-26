@@ -71,6 +71,13 @@
          wake trigger + crack-wax ground-drop RUT_SealedSleeper.xml's own
          header deferred. See the .cs file's own header for the mechanism. -->
     <Compile Include="RUT_CompWaterWakeTrigger.cs" />
+    <!-- GREATBOLE_HARVEST_LADDER_1 (2026-09-25): the three named threshold
+         events (Great Shaking/violent healing/catastrophe) on RUT_GreatboleCore,
+         and the Fruitfall random incident. Both need
+         RimMandrake.EnvironmentalHazards's RM_MapComponent_LivingRegrowth /
+         RM_CompLivingBoleMarker — see the assembly Reference below. -->
+    <Compile Include="RUT_CompGreatboleHarvestLadder.cs" />
+    <Compile Include="RUT_IncidentWorker_GreatboleFruitfall.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -98,6 +105,15 @@
          guaranteed to exist for anyone building from source. -->
     <Reference Include="WeatherSuiteHook">
       <HintPath>..\..\..\RimMandrake\WeatherSuite\Assemblies\WeatherSuiteHook.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- GREATBOLE_HARVEST_LADDER_1: RM_MapComponent_LivingRegrowth's small
+         read-only query API (GetRemovedFraction/GetBoleCenter/
+         GetFootprintCells/AllBoleIds) and RM_CompLivingBoleMarker.BoleId —
+         same "reference the repo-built dll directly" posture as
+         WeatherSuiteHook above. -->
+    <Reference Include="RimMandrake.EnvironmentalHazards">
+      <HintPath>..\..\..\RimMandrake\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

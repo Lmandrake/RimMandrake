@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREATBOLE_HARVEST_LADDER_1 §2c: "a field of enormous fallen trunk
+     segments that stay for good — cover, obstacle, slow harvest." Scattered
+     one-time by RUT_CompGreatboleHarvestLadder.Catastrophe; never placed by
+     map generation. Mineable (yields hardwood, slowly) rather than a plain
+     decoration, so "slow harvest" is a real mechanic and not just flavour
+     text — same mineable-building shape RUT_GreatboleHeartwood already
+     uses, but veinMineable/scatterCommonality both zero for the same
+     anti-exponential-yield reason that def's own header gives.
+
+     Placeholder art: no bespoke fallen-trunk texture exists (checked
+     infrastructure/artpipe this pass). Reuses RUT_GreatboleHeartwood's own
+     bark-edge atlas as the nearest "greatbole wood" texture already shipped
+     — a fallen segment is the same material as the standing bole. -->
+<Defs>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RUT_GreatboleTrunkSegment</defName>
+    <label>fallen trunk segment</label>
+    <description>A section of greatbole trunk the size of a house, thrown down by the catastrophe that killed it. Too dense to burn, too heavy to move — it will lie exactly here for the rest of anyone's life.</description>
+    <graphicData>
+      <texPath>Things/Building/RUT_GreatboleHeartwood/RUT_GreatboleHeartwood</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.6,1.6)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+    </statBases>
+    <mineable>true</mineable>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RUT_Hardwood</mineableThing>
+      <!-- INVENTED, deliberately slow relative to RUT_GreatboleHeartwood's
+           own mineableYield (15): "slow harvest" per the spec's own words. -->
+      <mineableYield>6</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+</Defs>

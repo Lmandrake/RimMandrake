@@ -50,6 +50,25 @@
         <regrowthThing>RUT_GreatboleHeartwood</regrowthThing>
         <sealantTerrain>RUT_ToxinSealant</sealantTerrain>
         <regrowDaysRange>3~6</regrowDaysRange>
+        <!-- GREATBOLE_HARVEST_LADDER_1 §2b, "the violent healing": past this
+             fraction of the footprint removed, healing outpaces mining —
+             "below the line you mine faster than it heals; above it, it
+             heals faster than you mine" (spec §1's organising rule). The
+             threshold itself is a Mod Settings slider
+             (UtinniPatchesSettings.greatboleHealingThreshold, default 0.60);
+             this field only supplies the speed-up multiplier once that
+             fraction is crossed. 20x is INVENTED — no number is ruled, only
+             "faster than a person can dig". -->
+        <acceleratedRegrowThreshold>0.6</acceleratedRegrowThreshold>
+        <acceleratedRegrowSpeedMultiplier>20</acceleratedRegrowSpeedMultiplier>
+      </li>
+      <li Class="RimMandrake.Utinni.UtinniPatches.RUT_CompProperties_GreatboleHarvestLadder">
+        <fruitDef>RM_GreatboleFruit</fruitDef>
+        <grubKindDef>RM_GreatboleGrub</grubKindDef>
+        <hardwoodDef>RUT_Hardwood</hardwoodDef>
+        <trunkSegmentDef>RUT_GreatboleTrunkSegment</trunkSegmentDef>
+        <deadHuskDef>RUT_GreatboleDeadHusk</deadHuskDef>
+        <wildsteamFactionDef>RUT_Jawa_WildsteamClan</wildsteamFactionDef>
       </li>
     </comps>
   </ThingDef>

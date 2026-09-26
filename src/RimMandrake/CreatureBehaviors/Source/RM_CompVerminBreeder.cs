@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Verse.AI;
@@ -27,6 +28,12 @@ namespace RimMandrake.CreatureBehaviors
 	{
 		private int nextSpawnTick = -1;
 
+		// GREATBOLE_HARVEST_LADDER_1: -1 means "not currently starved". Set
+		// the tick famine was first observed so the manhunter flip only
+		// fires after famineGraceTicks of SUSTAINED absence, not on the
+		// first empty check.
+		private int famineStartTick = -1;
+
 		private RM_CompProperties_VerminBreeder Props => (RM_CompProperties_VerminBreeder)props;
 
 		private Pawn Parent => (Pawn)parent;
@@ -51,12 +58,75 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return; // mod option: vermin breeding disabled
 			}
+
+			if (!Props.breedFoodThingDefNames.NullOrEmpty())
+			{
+				if (!FoodExistsNearby())
+				{
+					if (famineStartTick < 0)
+					{
+						famineStartTick = Find.TickManager.TicksGame;
+					}
+
+					if (Props.famineMentalState != null
+					    && Find.TickManager.TicksGame - famineStartTick >= Props.famineGraceTicks
+					    && !Parent.InMentalState
+					    && Parent.mindState?.mentalStateHandler != null)
+					{
+						Parent.mindState.mentalStateHandler.TryStartMentalState(
+							Props.famineMentalState,
+							"RM_VerminFamine".Translate(),
+							forced: true);
+					}
+
+					return; // no breeding while starved, flipped or not
+				}
+
+				famineStartTick = -1; // food is back; vanilla Manhunter recovers on its own clock
+			}
+
 			if (Find.TickManager.TicksGame < nextSpawnTick)
 			{
 				return;
 			}
 			TrySpawn();
 			CalculateNextSpawnTick();
+		}
+
+		/// <summary>
+		/// True if at least one spawned item of one of
+		/// Props.breedFoodThingDefNames exists within Props.foodSearchRadius
+		/// of this pawn. Bounded by the small number of such items a map
+		/// typically carries — never a full-map scan.
+		/// </summary>
+		private bool FoodExistsNearby()
+		{
+			Map map = parent.Map;
+			float radiusSq = Props.foodSearchRadius * Props.foodSearchRadius;
+
+			for (int d = 0; d < Props.breedFoodThingDefNames.Count; d++)
+			{
+				ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(Props.breedFoodThingDefNames[d]);
+				if (def == null)
+				{
+					continue;
+				}
+				List<Thing> things = map.listerThings.ThingsOfDef(def);
+				for (int i = 0; i < things.Count; i++)
+				{
+					Thing t = things[i];
+					if (t == null || t.Destroyed || !t.Spawned)
+					{
+						continue;
+					}
+					if ((t.Position - parent.Position).LengthHorizontalSquared <= radiusSq)
+					{
+						return true;
+					}
+				}
+			}
+
+			return false;
 		}
 
 		private void CalculateNextSpawnTick()
@@ -89,6 +159,7 @@ namespace RimMandrake.CreatureBehaviors
 		{
 			base.PostExposeData();
 			Scribe_Values.Look(ref nextSpawnTick, "nextSpawnTick", -1);
+			Scribe_Values.Look(ref famineStartTick, "famineStartTick", -1);
 		}
 	}
 }

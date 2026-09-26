@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREATBOLE_HARVEST_LADDER_1 §3, "the fruit and its three products" —
+     design/Jawa/worldbuilding/biomes/kits/greatbole_harvest_spec.md.
+
+     RM_ tier (not RUT_), per design/RimMandrake/exposure_gear_matrix_spec.md
+     row 94, which already ruled the exact names: "Royal Rind (RM_RoyalRind
+     stuff from RM_GreatboleFruit, ruled, unbuilt)". The bole that currently
+     drops this fruit (RUT_GreatboleCore/Heartwood) is campaign-tier only —
+     GREENTIDE_JUNGLE_TREE_ROSTER_1 already flagged that mismatch as "not
+     mine to decide" and it is not resolved here; this file only supplies
+     the fruit/products the gear matrix already named, at the tier the
+     matrix already ruled.
+
+     RM_Apparel_RindCoat is NOT a Stuff-selectable garment here — making
+     RM_RoyalRind a full StuffDef so any vanilla leather garment could be
+     tailored from it is a genuine engine question (does StuffPropertiesDef
+     support a statOffset the way this needs, for the Contagion/Scald/Miasma
+     clocks) that is UNMEASURED and belongs to
+     scald_steam_and_hazards_spec.md's own still-unbuilt RM_ScaldProtection
+     work, not invented here. RindCoat instead is a bespoke recipe/apparel
+     with the numbers the gear matrix already ruled
+     (ArmorRating_Heat/insulation) applied directly as statBases — real and
+     valid today, with the Contagion/Scald/Miasma custom-stat portion of
+     "protection against our own killing biomes" (spec §3b1) deferred to
+     that other spec's own StatDef work. -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GreatboleFruit</defName>
+    <label>greatbole fruit</label>
+    <description>A single fruit from a greatbole, the size of a person's torso and the deep purple of a healing bruise. It rots quickly once fallen and cannot be carried alongside anything else — one is already an armful.</description>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+    <!-- Placeholder texPath: the Pyrelands' own scorch-fruit item art is the
+         nearest "single large harvested fruit" texture already shipped in
+         this mod set. Bespoke greatbole-fruit art is owed to the pipeline —
+         checked infrastructure/artpipe this pass, no job for this subject
+         exists yet, queued or done. -->
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_FE_ScorchFruit</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(96, 40, 110)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>14</MarketValue>
+      <!-- INVENTED, deliberately heavy: spec §4c, "a fruit is huge and
+           awkward: heavy, slow, hauled one at a time, never pocketed" — mass
+           this high leaves no ordinary hauler capacity to pick up a second
+           one on the same trip. -->
+      <Mass>40</Mass>
+      <Flammability>0.6</Flammability>
+      <Nutrition>0</Nutrition>
+      <DeteriorationRate>6</DeteriorationRate>
+    </statBases>
+    <stackLimit>1</stackLimit>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <!-- INVENTED: falls off a living tree, so it starts rotting at once,
+             but §3a's "tremendous food abundance" ruling means it should
+             still comfortably reach a butcher table without refrigeration. -->
+        <daysToRotStart>4</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+      <li Class="CompProperties_Forbiddable" />
+    </comps>
+    <alwaysHaulable>true</alwaysHaulable>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GreatboleFruitSteak</defName>
+    <label>fruit steak</label>
+    <description>A thick cut of greatbole fruit flesh, rendered on a butcher table. Ridiculously satiating — expedition food from the one plant on Ash'karr rich enough to spare it.</description>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_FE_ScorchFruit</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(140, 70, 150)</color>
+    </graphicData>
+    <ingestible>
+      <foodType>Meal, Processed, VegetableOrFruit</foodType>
+      <preferability>MealSimple</preferability>
+      <baseIngestTicks>250</baseIngestTicks>
+      <ingestSound>Ingest_Vegetable</ingestSound>
+      <ingestHoldOffsetStanding>
+        <northDefault>
+          <offset>(0, 0, 0.1)</offset>
+        </northDefault>
+      </ingestHoldOffsetStanding>
+    </ingestible>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>3.6</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0.5</Flammability>
+      <!-- INVENTED, ruled only as "ridiculously satiating" — set well above
+           a vanilla meal (0.9) since abundance, not scarcity, is the
+           biome's own ruling here (GREENTIDE_RISK_REWARD_EXCHANGE_1). -->
+      <Nutrition>1.6</Nutrition>
+      <DeteriorationRate>3</DeteriorationRate>
+    </statBases>
+    <stackLimit>50</stackLimit>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_RoyalRind</defName>
+    <label>Royal Rind</label>
+    <description>Cured hide off the inside of a greatbole fruit's rind — dense, faintly warm to the touch, and prized across the whole planet. One of Ash'karr's most valuable materials, and the only local protection against the Contagion, the Scald and the Miasma that does not need an expansion to work.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather/Leather_Plain</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(110, 40, 120)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <!-- RULED: "one of the most valuable luxury materials on the planet" (spec §3b3). -->
+      <MarketValue>28</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <stackLimit>75</stackLimit>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GreatboleSeed</defName>
+    <label>greatbole seed</label>
+    <description>A single seed from a greatbole fruit. Planted beside open water it grows with startling speed into a young greatbole — and, in centuries no living thing will see out, into an ancient one again. To the Wildsteam Clan, planting one is a sacrament.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120, 60, 130)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <MarketValue>60</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <stackLimit>10</stackLimit>
+    <!-- GREATBOLE_HARVEST_LADDER_1 §3c: planting this to grow a fast
+         RM_Greatbole is DEFERRED, not built here. RM_Greatbole itself (the
+         mature fellable giant, roster row 22) is still OWED by
+         GREENTIDE_JUNGLE_TREE_ROSTER_1 — checked this pass, that def does
+         not exist anywhere in src/ yet, only a flat-color mechanism-proof
+         placeholder (RUT_Placeholder_GreentideGiantTree). Wiring this seed
+         to plant a real greatbole, including the water-adjacency growth-rate
+         override the spec's own §10 answer already proved buildable (a
+         Plant subclass overriding the virtual GrowthRate), is real content
+         work owed once that tree ships — it would either target the wrong
+         (placeholder) tree or duplicate the roster item's own job today. The
+         seed exists as a real, tradeable product of the recipe below so the
+         fruit's third product is not simply missing. -->
+  </ThingDef>
+
+  <ThingDef ParentName="ApparelMakeableBase">
+    <defName>RM_Apparel_RindCoat</defName>
+    <label>rind coat</label>
+    <description>A heavy coat cut from cured Royal Rind. It runs warm against extreme cold and shrugs off scalding heat alike — the same trick the greatbole itself uses to keep its own heartwood alive.</description>
+    <graphicData>
+      <texPath>Things/Item/Apparel/Duster/Duster</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+    </graphicData>
+    <apparel>
+      <bodyPartGroups>
+        <li>Torso</li>
+        <li>Neck</li>
+        <li>Shoulders</li>
+        <li>Arms</li>
+      </bodyPartGroups>
+      <layers>
+        <li>Shell</li>
+      </layers>
+      <tags>
+        <li>Greatbole</li>
+      </tags>
+      <wornGraphicPath>Things/Item/Apparel/Duster/Duster</wornGraphicPath>
+    </apparel>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <MarketValue>320</MarketValue>
+      <Mass>2.6</Mass>
+      <Flammability>0.4</Flammability>
+      <!-- RULED, gear matrix row 58 ("moderate"): ArmorRating_Heat 0.45.
+           RM_ScaldProtection 0.60 (the same row's other ruled figure) is
+           DEFERRED — see this file's own header; that stat does not exist
+           yet and inventing it here would be authoring a different spec's
+           whole StatDef, not this item's fruit/rind work. -->
+      <ArmorRating_Heat>0.45</ArmorRating_Heat>
+      <Insulation_Heat>35</Insulation_Heat>
+      <Insulation_Cold>35</Insulation_Cold>
+      <EquipDelay>2</EquipDelay>
+    </statBases>
+    <costList>
+      <RM_RoyalRind>60</RM_RoyalRind>
+    </costList>
+    <recipeMaker>
+      <recipeUsers>
+        <li>TableTailor</li>
+      </recipeUsers>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Tailoring</workSkill>
+      <effectWorking>Tailor</effectWorking>
+      <soundWorking>Recipe_Tailor</soundWorking>
+      <skillRequirements>
+        <Tailoring>5</Tailoring>
+      </skillRequirements>
+      <displayPriority>450</displayPriority>
+    </recipeMaker>
+  </ThingDef>
+
+</Defs>

@@ -53,6 +53,16 @@ namespace RimMandrake.CreatureBehaviors
 		public Pawn guardedYoung;
 
 		/// <summary>
+		/// GREATBOLE_HARVEST_LADDER_1's item-guard mode: the Thing being
+		/// defended (e.g. a fallen fruit) when this rage was started over a
+		/// guarded THING rather than a guarded young pawn. Exactly one of
+		/// guardedYoung/guardedThing is set by whichever mode started this
+		/// state; both null just means "no anchor recorded" (a state started
+		/// by something else).
+		/// </summary>
+		public Thing guardedThing;
+
+		/// <summary>
 		/// Once the intruder is this many cells away from the guarded young,
 		/// the giant stops caring. Set by RM_CompParentalEnrage from the
 		/// extension's triggerRadius; the fallback only matters for a state
@@ -67,6 +77,7 @@ namespace RimMandrake.CreatureBehaviors
 		{
 			base.ExposeData();
 			Scribe_References.Look(ref guardedYoung, "guardedYoung");
+			Scribe_References.Look(ref guardedThing, "guardedThing");
 			Scribe_Values.Look(ref disengageRadius, "disengageRadius", 12f);
 		}
 
@@ -93,6 +104,11 @@ namespace RimMandrake.CreatureBehaviors
 				if (guardedYoung != null)
 				{
 					return def.baseInspectLine + ": " + guardedYoung.LabelShort;
+				}
+
+				if (guardedThing != null)
+				{
+					return def.baseInspectLine + ": " + guardedThing.LabelShort;
 				}
 
 				return def.baseInspectLine;
@@ -147,9 +163,20 @@ namespace RimMandrake.CreatureBehaviors
 				return true;
 			}
 
-			// Walked away from the young again — measured from the calf, not
-			// from the giant, because the giant is the one doing the chasing.
-			Thing anchor = (guardedYoung != null && guardedYoung.Spawned) ? (Thing)guardedYoung : pawn;
+			// Item-guard mode's own version of the same rule: the fruit
+			// eaten, hauled off or destroyed ends the rage the same way a
+			// grown/killed calf does.
+			if (guardedThing != null && (guardedThing.Destroyed || !guardedThing.Spawned))
+			{
+				return true;
+			}
+
+			// Walked away from the guarded thing/young again — measured from
+			// whatever is being defended, not from the guardian, because the
+			// guardian is the one doing the chasing.
+			Thing anchor = (guardedYoung != null && guardedYoung.Spawned) ? (Thing)guardedYoung
+				: (guardedThing != null && guardedThing.Spawned) ? guardedThing
+				: pawn;
 			float radiusSq = disengageRadius * disengageRadius;
 			return (target.Position - anchor.Position).LengthHorizontalSquared > radiusSq;
 		}

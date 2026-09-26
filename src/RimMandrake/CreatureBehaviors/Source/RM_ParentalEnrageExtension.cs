@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Verse;
 
 namespace RimMandrake.CreatureBehaviors
@@ -139,5 +140,25 @@ namespace RimMandrake.CreatureBehaviors
 		/// over a merely closer adult. Distance decides among everything else.
 		/// </summary>
 		public bool preferTrueParent = true;
+
+		/// <summary>
+		/// GREATBOLE_HARVEST_LADDER_1's widening: "shipped for guarding
+		/// young; needs one axis widened to guard an item." When this list is
+		/// non-empty the extension switches modes entirely — there is no
+		/// young/adult split at all, and EVERY pawn carrying the comp is its
+		/// own guardian. Instead of scanning for an intruder near itself
+		/// (the young-pawn mode), it looks for the nearest spawned Thing
+		/// whose defName is in this list within guardianSearchRadius of
+		/// itself, then for an intruder within triggerRadius of THAT thing —
+		/// "attack anyone who comes near the fruit" (the greatbole spec's own
+		/// words for the grubs, §4a), not near the grub.
+		///
+		/// Null/empty (the default) leaves the original young-pawn mode
+		/// completely unchanged — SHRUBLAND_GIANT_ENRAGE_1's shipped
+		/// behaviour is untouched by this field's mere existence.
+		/// </summary>
+		public List<string> guardedThingDefNames;
+
+		public bool GuardsThings => !guardedThingDefNames.NullOrEmpty();
 	}
 }
