@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T04:19:17Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-27T04:23:54Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 

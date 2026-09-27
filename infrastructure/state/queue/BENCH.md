@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T04:19:17Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-27T04:23:54Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -265,7 +265,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BIOME_LOAD_PROOF_WAVE_1 Prove every biome mod loads clean standalone on a minimal list - the narrow donor-retirement sense of PROVEN, not full functionality
 state:    ready
@@ -273,7 +273,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-waiting:  needs `game-up`, game is DOWN
+waiting:  needs `game-up`, game is LOADING
 summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
 prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
 

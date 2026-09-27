@@ -1,0 +1,2243 @@
+# FOUNDRY_REBOOT_HANDOFF_202609270423 — READ FIRST on wake
+
+Follows `FOUNDRY_REBOOT_HANDOFF_202609262120`. Everything below is committed and pushed unless a
+line says otherwise. **Game and bridge state is the last section — read it
+before touching the game.**
+
+## The one thing to carry forward
+
+If the bridge/ModsConfig.xml gets swapped out from under a held `rimflow bridge take`
+mid-session, it is very likely BENCH's own worktree build agents doing their own
+quicktest/cold-load cycles, NOT the owner and not a broken lock — root-caused this
+session (three collisions, evidence and the design ask are on
+`WORKTREE_QUICKTEST_BRIDGE_GAP_1`, filed for BENCH). Don't waste another verify
+attempt fighting it; check `git worktree list` for active locked worktrees first,
+and wait for those quicktest cycles to quiet down before retrying a live check.
+
+## What the owner should see
+
+- `WORKTREE_QUICKTEST_BRIDGE_GAP_1` (filed for BENCH, `needs: owner`) — asked BENCH
+  to study the worktree/bridge-lock coordination gap properly with Fable rather than
+  patch it quickly; worth your eye since it's a process question, not just a bug.
+- `GREYSEA_ANCHOR_CREATURES_1` — a fork this session reversed an earlier FOUNDRY
+  pass's explicit decision not to build a AA_Aerofleet replacement (cross-biome/
+  duplication concerns it re-checked and judged unfounded) and built `RM_Corrik`
+  with placeholder art borrowed from `RM_Essarn`. Recorded as a ledger note, not
+  silently done — worth a second look since it overrides a prior explicit call.
+- `PROPANELAKE_ANIMALDENSITY_ZERO_1` reads CLOSED but isn't actually fixed on the
+  frozen `RUT_PropaneLake` twin (the one the live save carries) — `RM_PropaneLake`
+  got the animalDensity fix, `RUT_PropaneLake` didn't. Picking the right value is a
+  design call; filed onward as `RUT_PROPANELAKE_FROZEN_DENSITY_1`.
+- `EXPLOSIVE_PLANT_GROWTH_1`'s charge-clock fix is now LIVE-VERIFIED end to end
+  (soak → charge → top-fire → stump), but a stale deployed DLL almost produced a
+  false pass — its own self-test line was silently absent rather than failing loud.
+  Worth knowing this failure mode exists on any "did the fix actually deploy" check.
+
+## What is half-done, and where it stops
+
+<!-- Anything left mid-flight, one bullet each: `- ITEM_ID -- state; NEXT: <one imperative action>`. A pointer without a ledger item id does not survive a seat change, and a pointer without a NEXT: measured ~0% pickup. An item in `doing` with no line here is a trap for the next seat. -->
+- `DIVING_STALE_DEPLOYED_FILES_1` — code review wave 24 confirmed the retired
+  pawn-dive files are gone from `src/` and show as ORPHANED registry entries, not
+  live code; NEXT: run the code-review tool's registry `prune` (a global op, out of
+  scope for a per-file review pass) to clear the orphaned entries, then confirm the
+  deployed `DivingInteraction` mod folder no longer ships the stale files either.
+- `SEA_FISHABLES_ALIVE_IN_DEPTHS_1` — untouched this session; authoring 7+ new
+  creature ThingDef/PawnKindDef pairs cross-references `FAUNA_TOLERANCE_NORMALIZATION_1`'s
+  still-unruled tolerance law; NEXT: get that tolerance law ruled first, then build.
+- `SCARLANDS_MECHANICS_2` / `MIASMA_MECHANICS_1` / `GREENTIDE_MECHANICS_2` /
+  `SUMP_MECHANICS_1` — all build-complete/clean git status, each blocked only on a
+  live quicktest; NEXT: batch all four into ONE cold-load/quicktest session (they
+  don't need separate loads) the next time the bridge is genuinely quiet — see "the
+  one thing to carry forward" above before attempting.
+- `MOD_OPTIONS_RETROFIT_1` — 52 retrofitted mods deployed clean, 630-mod list
+  cold-loads clean, but the actual settings-screen spot-check is still unproven
+  (twice interrupted by BENCH's worktree quicktest collisions); the game process was
+  last left alive and correctly modded but sitting on an inactive Windows virtual
+  desktop. NEXT: bring RimWorld's window to the foreground (or relaunch once
+  worktree churn has quieted) and finish the settings-tab spot-check.
+- `MODCHECK_SUITE_CORRECTIONS_1` — git archaeology confirmed 5 of ~13 RED components
+  already carry real fixes; NEXT: run the item's own `verify` step (a live min16
+  re-run) rather than more archaeology.
+- `CRYPTOFORGE_HARVEST_RETIRE_1` step 1 — stale count fixed (21→22 defNames), all 22
+  confirmed to have zero existing art anywhere; NEXT: a dedicated pass writes real,
+  citation-safe art prompts for all 22 (donor-art replacements, not a tail-end task)
+  before queuing via `fill_queue.py`.
+- `DIRTY_CODE_REVIEW_STANDING_LOOP_1` — waves 22-27 landed this session (85 files
+  marked clean, 0 bugs beyond the PropaneLake density gap noted above); 52 DIRTY
+  files remain project-wide. NEXT: wave 28 on the RimStarWars SWBestiary Defs
+  cluster (SeaBeasts/AbilityDefs/DesertPort, ~10 files) or the rest of the
+  RUT_UtinniPatches BiomeDef cluster.
+- A second `artpiped.py` instance was found attached to an active terminal
+  (`pts/13`) alongside the known ambient daemon — left alone as ambiguous (likely
+  another live window's foreground job); NEXT: don't guess-kill it; whoever owns
+  that terminal should confirm/close it themselves.
+
+## Traps learned
+
+<!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives -- file it to LESSONS_INBOX.md the moment it is learned, then cite `(filed: LESSONS_INBOX)` or `(see: <item/doc>)`. Never re-explain a trap that is already recorded somewhere durable. -->
+- Worktree quicktest cycles don't take the bridge lock and will overwrite ModsConfig.xml
+  out from under a held `rimflow bridge take` (filed: LESSONS_INBOX, see:
+  WORKTREE_QUICKTEST_BRIDGE_GAP_1).
+- A stale deployed DLL fails SILENTLY on its self-test line rather than erroring —
+  don't trust "no crash" as proof a fix deployed (filed: LESSONS_INBOX).
+- A closed frozen-twin item can be true for RM_ and false for RUT_ (or vice versa) —
+  check both sides before closing (filed: LESSONS_INBOX, see:
+  RUT_PROPANELAKE_FROZEN_DENSITY_1).>
+
+## Closed since the last handoff (14)
+
+- `PROPANELAKE_ANIMALDENSITY_ZERO_1` — 3fa505fbbb110fbf9630704a3ca56c8cb461b160
+- `SHARED_SYNC_DROPS_PEER_COMMITS_1` — 2852c1ff26ab6e68aa7b1b2bb711dedd77d14d73
+- `DBH_LITE_UNDECLARED_DEPENDENCY_1` — 907589d2ef5c3ccb66d8ed4330c2341bec3be2e4
+- `TERMINAL_SEAS_FLOOR_DRESSING_1` — 5a2a7cfc5
+- `GREYSEA_BRINE_ELDERS_1` — bd47cff5c8f32cb4092880b8252c96a3e31fd33d
+- `ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1` — a1d1268f26d896a5479106e9ac36cbebc2a4fea5
+- `SUUSH_CAULDRON_DRIFTER_1` — c8440f0c6ec89fe3780d378ffa29163c5e458878
+- `TERMINALBIOMES_EH_HARD_DEP_1` — 7cac17f5e84f3ddf888881672e26721ac77e88d9
+- `ELDER_UNKNOWN_WEAPON_CONFIG_1` — 2d845c26ebf04d2a9afeec341112608e9088a4de
+- `COLLECTION_GRAPHIC_ON_FLAT_PNG_1` — bbe171ebc63fbad7da9098cf879106e52d9e6932
+- `ARTPIPE_METER_WINDOW_REMAP_1` — 526bf1b46d7646a2c067737be23a194299a943e7
+- `BIOME_CONFIG_ERROR_TRIAGE_1` — f1360c568f13bf53d7a1becc15fd6000e3b5d4ef
+- `UTINNIPATCHES_DLL_STALE_1` — 0d9c38de6
+- `ARTPIPE_WORKER_AUTH_STALENESS_1` — 53f3b683ad3892383d4b0277bd8b2c590f8a05ab
+
+## Filed and still open (13) — the next seat's queue
+
+- `SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1` — One gravship can only ever visit ONE sea floor: MapPortal caches its pocket map, so the hatch's per-tile biome resolution runs once and every later di
+- `GREYSEA_SALTDOME_SCATTER_OOB_1` — RM_SaltDomeShore fails its cluster-centre search and is followed by Got ThingsListAt out of bounds (-1000,-1000,-1000) at map-gen
+- `HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1` — Our three hazard-protection stats sit in statBases, so JobGiver_OptimizeApparel cannot see them and no pawn will ever choose a boil-suit on its own
+- `WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1` — RM_GameCondition_WetBulb is a second implementation of RM_HediffComp_EnvironmentalExposure living in the same assembly - retire it into the shared com
+- `RUT_PROPANELAKE_FROZEN_DENSITY_1` — RUT_PropaneLake still leaves animalDensity unset (frozen); sweep other biomes for the same defect
+- `SEABED_PLANET_LAYER_1` — Seabed planet layer: the sea floor as a geometric twin of the surface
+- `DIVING_STALE_DEPLOYED_FILES_1` — Retired pawn-dive files are deleted from src/ but still live in the deployed DivingInteraction mod
+- `ARTPIPE_SALVAGE_REJECTED_SIZE_MISMATCH_1` — Recover the 71 already-generated renders sitting in artpipe failed/ as size_mismatch
+- `TWILIGHT_DANGER_LIGHTWEB_1` — Twilight light-web dangers: the suulk lamp-grazer and the vaulisk counterfeit-lamp ambusher on one shared RM_JobGiver_SeekGlow brain (rulings: sun-sph
+- `TWILIGHT_PANE_STRIKE_1` — Veil-fall pane system, floor and deck: pane strikes (shadow warning ~15s, CAN kill - ruled) plus the laden deck (panes bury a parked gravship; launch 
+- `TWILIGHT_CHANNEL_CURRENT_1` — The Twilight river as ONE system (owner-ruled coupling): channel carry component + undersurge flood state + sink terminus with settings ladder + the b
+- `TWILIGHT_LIGHT_ECONOMY_1` — Build the Twilight light economy: RM_MapComponent_WellLedger (week-scale drift, rim-dimming warning, gardener-fired lid-dark), RM_CompGlowerMobile, th
+- `WORKTREE_QUICKTEST_BRIDGE_GAP_1` — Worktree build agents' quicktest/cold-load cycles don't take the rimflow bridge lock, causing repeated live-verify collisions with FOUNDRY (measured 3
+
+## Commits
+
+```
+0a49d3690 File WORKTREE_QUICKTEST_BRIDGE_GAP_1 for BENCH: worktree quicktest cycles don't take the bridge lock
+5e548648d MOD_OPTIONS_RETROFIT_1: uncontended bridge retry found a new failure mode
+cd8f34e1d Ledger sync: BENCH takes the four Twilight builds, all in doing via worktree agents
+69d610d5d Twilight design closed out: no fishing on the floor, Q1-Q19 all dispositioned
+aa0c7ccc3 Ledger: close ARTPIPE_WORKER_AUTH_STALENESS_1
+53f3b683a Artpipe: auto-resync stale worker-home auth + serialize refresh races
+d2cccffef Twilight river + light economy RULED: 5 cards answered, 2 items filed
+5b277995d Code review wave 27: RUT_UtinniPatches remaining BiomeDef cluster, 15 files, 0 bugs
+f84c4088b Ledger sync: file TWILIGHT_CHANNEL_CURRENT_1 with its design pointer
+81eed0b5d Twilight river pass: one carry system - current, undersurge, sink, bank works, travel lane
+0e5fcf330 Twilight light economy pass: well ledger, mobile constellation, tenancy, gardener event family
+0343ccd17 Twilight danger pass RULED: all 7 cards answered, doc edited to ruled state, 4 items filed
+331d031a0 MOD_OPTIONS_RETROFIT_1: live cold-load check attempted, inconclusive due to concurrent bridge interference
+40422792c GREYSEA_ANCHOR_CREATURES_1: build the AA_Aerofleet replacement (RM_Corrik)
+88edaab4e Ledger: FOUNDRY note on GREYSEA_ANCHOR_CREATURES_1 (RM_Corrik build)
+6ecf3e212 Code review wave 26: RUT_UtinniPatches BiomeDef cluster, 9 files, 0 bugs
+ef14d1f33 CRYPTOFORGE_HARVEST_RETIRE_1: fix stale defName count (21 -> 22)
+f83c5e468 Code review wave 25: About.xml metadata cluster + 4 validation.py suites + GelatinousSlime/VerminBehaviors, 14 files, 0 bugs
+7553eaee0 EXPLOSIVE_PLANT_GROWTH_1: live re-verify PASSED, charge-clock fix confirmed end to end
+e899b292e Code review wave 24: DivingInteraction/Pyrelands(RM)/PyrelandsMechanics(RUT), 22 files, 0 bugs
+... 87 more: git log --oneline 617495681..HEAD
+```
+
+## Game / bridge / tree state at wrap
+
+- running   : RUNNING   (RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.)
+- recorded  : DOWN  → corrected to LOADING, measured now
+- Bridge: FREE    since 2026-09-27T04:01:07Z
+
+Uncommitted (replace the placeholder after each line below with whose it is —
+yours, the other seat's, a subagent's):
+
+```
+M Transient/codebase_health.html   pre-existing Transient scratch/review output from earlier sessions (dated 2026-09-23..09-26 by filename); predates this window, within the ~14-day shelf life, not this window's to clean up
+ M Transient/codebase_health.json   pre-existing Transient scratch/review output from earlier sessions (dated 2026-09-23..09-26 by filename); predates this window, within the ~14-day shelf life, not this window's to clean up
+ M Transient/codebase_health_artifact.html   pre-existing Transient scratch/review output from earlier sessions (dated 2026-09-23..09-26 by filename); predates this window, within the ~14-day shelf life, not this window's to clean up
+ M Transient/project_maturity_dashboard.html   pre-existing Transient scratch/review output from earlier sessions (dated 2026-09-23..09-26 by filename); predates this window, within the ~14-day shelf life, not this window's to clean up
+ M Transient/project_maturity_dashboard.json   pre-existing Transient scratch/review output from earlier sessions (dated 2026-09-23..09-26 by filename); predates this window, within the ~14-day shelf life, not this window's to clean up
+ M deployed/config/ModsConfig.before-tier-bridge.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+ D infrastructure/artpipe/_artsrc/lockjaw_improve_a_r7/lockjaw_improve_a_r7.png   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/_artsrc/lockjaw_improve_b_r7/lockjaw_improve_b_r7.png   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/active/desertportb_feralgrazer_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/active/desertportb_feralnerf_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/active/desertportb_feralnerf_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_graniteslug_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_graniteslug_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_graniteslug_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_grank_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_grank_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_grank_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_greaterkraytdragon_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_greaterkraytdragon_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_horax_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_horax_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_horax_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_jakobeast_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_jakobeast_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_jakobeast_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_kowakianmonkeylizard_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_kowakianmonkeylizard_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_kowakianmonkeylizard_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_kraytdragon_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_kraytdragon_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_kraytdragon_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_krykna_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_krykna_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_krykna_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_mossbeetle_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_mossbeetle_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_mossbeetle_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_mossbeetlepupa_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_mossbeetlepupa_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_mossbeetlepupa_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_nerf_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_nerf_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_nerf_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_pikobis_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_pikobis_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/done/desertportb_plant_bloddle.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Brindeth_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Brommet_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Brommet_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Brommet_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Dorvel_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Dredgel_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Dredgel_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Dredgel_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Gulveth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Gulveth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Gulveth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Korveth_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Mirrelin_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Pallick_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Skarrid_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Skarrid_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Skarrid_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Skellarn_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Skellarn_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Skellarn_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Skelver_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Soffeth_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_SumpMouse_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_SumpMouse_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_SumpMouse_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_ThrummelBroodmother_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_ThrummelBroodmother_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_ThrummelBroodmother_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_ThrummelWarden_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_ThrummelWarden_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_ThrummelWarden_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Thrummel_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Thrummel_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Thrummel_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Tolleth_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RM_Velloch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Ashworm_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Ashworm_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Ashworm_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Barbthorn_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Barbthorn_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Barbthorn_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_EmberCarpet.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Scrubgrass.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Spinerat_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Spinerat_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Spinerat_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Sporemass_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Sporemass_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Sporemass_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Sporepaw_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Sporepaw_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Sporepaw_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Starvine.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Stoneback_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Stoneback_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Stoneback_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/RSW_Whirlbloom.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/bluedesert_chimeglobe.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/bluedesert_chimeglobe_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/bluedesert_dorrak_dessicated.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/bluedesert_glassfern.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/bluedesert_glassfern_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/bluedesert_glassfern_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/bluedesert_krissek_dessicated.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/bluedesert_krissek_halo_mote.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/bluedesert_palefloss.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/bluedesert_palefloss_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/bluedesert_palefloss_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/deepfire_crowncarpet_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/deepfire_crowncarpet_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/deepfire_pigmentjar_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/deepfire_pigmentjar_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_graniteslug_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_graniteslug_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_graniteslug_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_grank_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_grank_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_grank_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_greaterkraytdragon_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_greaterkraytdragon_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_greaterkraytdragon_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_horax_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_horax_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_horax_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_jakobeast_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_jakobeast_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_jakobeast_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_kowakianmonkeylizard_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_kowakianmonkeylizard_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_kowakianmonkeylizard_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_kraytdragon_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_kraytdragon_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_kraytdragon_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_krykna_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_krykna_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_krykna_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_mossbeetle_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_mossbeetle_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_mossbeetle_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_mossbeetlepupa_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_mossbeetlepupa_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_mossbeetlepupa_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_nerf_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_nerf_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_nerf_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_pikobis_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_pikobis_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_pikobis_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_plant_bloddle.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_plant_chakroot_wild.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_plant_hubbagourd_wild.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_plant_nysyllin_wild.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_porg_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_porg_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_porg_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_qormot_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_qormot_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_qormot_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_runyip_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_runyip_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_runyip_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_shaak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_shaak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_shaak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_strill_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_strill_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_strill_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_teemuss_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_teemuss_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_teemuss_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_uvak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_uvak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_uvak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_varactyl_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_varactyl_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_varactyl_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_voorpak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_voorpak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_voorpak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_vulptex_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_vulptex_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_vulptex_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_warwyrm_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_warwyrm_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_warwyrm_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_whisperbird_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_whisperbird_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_whisperbird_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_zeer_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_zeer_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/desertportb_zeer_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_brathek_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_brathek_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_brathek_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_chellow_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_chellow_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_chellow_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_drommath_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_drommath_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_drommath_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_gorrameth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_gorrameth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_gorrameth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_grolth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_grolth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_grolth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_lommerel_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_lommerel_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_lommerel_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_murrelith_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_murrelith_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_murrelith_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_nemmel_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_nemmel_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_nemmel_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_ollareth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_ollareth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_ollareth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_ammeth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_cistrel.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_claithe.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_corvath.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_halquin.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_maulith.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_nubrith.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_plennith.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_seepril.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_skethral.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_skimmel.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_sodderel.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_thulvane.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_tullick.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_varnoth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_verrow.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_plant_wanlith.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_silloch_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_silloch_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_silloch_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_skellick_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_skellick_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_skellick_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_thavrik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_thavrik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_thavrik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_vaulm_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_vaulm_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/feverwood_vaulm_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_animalpersonhood.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_blindsight.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_bloodfeeding.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_cannibal.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_collectivist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_darkness.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_femalesupremacy.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_fleshpurity.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_guilty.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_highlife.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_humanprimacy.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_individualist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_inhuman.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_loyalist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_malesupremacy.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_natureprimacy.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_nudism.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_painisvirtue.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_proselytizer.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_raider.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_rancher.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_ritualist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_shipborn.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_supremacist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_transhumanist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_treeconnection.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/glyph_tunneler.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_crossout.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_paste_flyer_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_paste_flyer_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_paste_wanted_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_paste_wanted_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_sigilframe_dripframe.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_sigilframe_halo.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_sigilframe_stencilbox.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_stencil_crown.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_stencil_fist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_stencil_gear.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_tag_a_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_tag_a_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_tag_b_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_tag_b_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_tag_c_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_tag_c_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_throwup_a_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_throwup_a_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_throwup_b_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/graffiti_throwup_b_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_aphreen.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_braskeen_closed.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_braskeen_open.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_brelloch.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_ilbareen_dead.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_ilbareen_live.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_immarel.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_ismerrow_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_ismerrow_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_ismerrow_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_ismerrow_d.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_nemreth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_nyssolet.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_ollamane.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_ommolyn.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_pallasheen.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_quennath.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_sarrash.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_thessamor.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_thrannock.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_ullavess.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_vellamine.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_velluric.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/miasma_wessaline.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_brakkel_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_brunnock_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_cundral_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_gorbeleth_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_kaddrath_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_maddrick_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_mirrelbole_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_mourvel_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_phorrik_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_quathis_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_saltcrystalitem_pile_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_saltcrystalitem_pile_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_sarnstilt_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_sarquin_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_thalquith_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_tumbel_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_vurmeloth_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_wollick_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rm_zhorrel_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rmdusthusk_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rmdusthusk_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rmdusthusk_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rmleachmoss_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rmmirrorgiant_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rmmirrorgiant_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rmmirrorgiant_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rmtitanoslime_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rmtitanoslime_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rmtitanoslime_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rmvenomvine_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_brogg_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_brogg_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_brogg_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_brullith_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_brullith_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_brullith_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_illoth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_illoth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_illoth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_skerrith_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_skerrith_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_skerrith_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_thozzik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_thozzik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_thozzik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_thozzikqueen_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_thozzikqueen_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rot_thozzikqueen_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rsw_graffiti_stencil_imperialcog.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rsw_zakkro_dessicated_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rsw_zakkro_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rsw_zakkro_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rsw_zakkro_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rsw_zakkroegg_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rswrawultracactus_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rswultracactus_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rut_grellbush.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rut_grellspine.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rut_vhessk_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rut_vhessk_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rut_vhessk_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rut_wildhealroot.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutbloomcrop_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutbrinebattery_v2_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutbrinebattery_v2_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutbrinebattery_v2_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutdarkcrust_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutdeltaloam_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutemperorvulture_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutemperorvulture_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutemperorvulture_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutfleetflier_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutfleetflier_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutfleetflier_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutfuzz_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutglower_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutglowercrust_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutkarrathil_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutkarrobel_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutmortuarycrawler_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutmortuarycrawler_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutmortuarycrawler_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutradiothermal_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutradiothermal_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutradiothermal_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutsealedsleeper_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutsealedsleeper_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutsealedsleeper_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutslimegrazer_v2_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutslimegrazer_v2_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutslimegrazer_v2_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutstaggerseed_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutstaggerseeddish_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutvwake_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutvwake_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutvwake_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutwelcomeblanket_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/rutyearningfruit_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_anchor.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_gutter.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_brennoth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_brimlock.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_dulloth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_fellome.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_grennick.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_kessaroth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_kollavane.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_norrveth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_pellareth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_ruddreth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_sellith.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_sorrivel.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_tavrosk.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_threllick.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_varrisk.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_plant_vessark.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/webwork_web.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_bladderfruit.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_bladderquill.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_burrak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_burrak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_burrak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_dewblade.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_dewgourd.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_dewgourdfruit.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_dripfringe.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_gorrask_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_gorrask_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_gorrask_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_kirruk_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_kirruk_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_kirruk_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_mirrik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_mirrik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_mirrik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_rockfinger.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_salvecomb.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_seepsalt.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_shadefern.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_sillik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_sillik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_sillik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_ssurr_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_ssurr_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_ssurr_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_steamfrond.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_tirbak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_tirbak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_tirbak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_vellak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_vellak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_vellak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_verdimoss.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_vhakk_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_vhakk_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_vhakk_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones2_weepmat.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_huldu_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_huldu_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_huldu_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_ivvol_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_ivvol_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_ivvol_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_karrek_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_karrek_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_karrek_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_loomu_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_loomu_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_loomu_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_murrin_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_murrin_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_murrin_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_skarrin_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_skarrin_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_skarrin_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_vhorrin_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_vhorrin_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_vhorrin_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_vizhik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_vizhik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ D infrastructure/artpipe/pending/weepingstones_vizhik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/registry.jsonl   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/artpipe/throughput.jsonl   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+ M infrastructure/dashboards/hub/data/artsheets.json   ambient -- auto-regenerated hub dashboard data/pages (health/maturity publisher), not hand-edited this window
+ M infrastructure/dashboards/hub/data/health.json   ambient -- auto-regenerated hub dashboard data/pages (health/maturity publisher), not hand-edited this window
+ M infrastructure/dashboards/hub/data/maturity.json   ambient -- auto-regenerated hub dashboard data/pages (health/maturity publisher), not hand-edited this window
+ M infrastructure/dashboards/hub/data/publish_ready.json   ambient -- auto-regenerated hub dashboard data/pages (health/maturity publisher), not hand-edited this window
+ M infrastructure/state/codebase_health_last.json   ambient -- auto-regenerated by code_review_status.py's health-rebuild hook, not hand-edited
+ M skills/rimworld-debug-testing/SKILL.md   pre-existing skill edit, predates this window -- skills are curated in fresh-context passes, not touched here
+ M skills/rimworld-sprite-facings/SKILL.md   pre-existing skill edit, predates this window -- skills are curated in fresh-context passes, not touched here
+ M src/RimMandrake/Greentide/Assemblies/RimMandrake.Greentide.dll   possibly a rebuilt DLL from today's GREENTIDE_MECHANICS_2 work (build-verified, left `doing` per this session's forks) -- not committed; verify against source before trusting/deploying (DLL_SOURCE_STAMP_GUARD_1)
+?? "D:\\Luke\\dev\\Rimworld\\Transient\\eg_check_state.py"   pre-existing, predates this window; not touched by it or any fork it dispatched this session
+?? deployed/config/ModsConfig.before-tier-firehawk.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-leaningscrub.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_bluedesert.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_contagion.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_feverwood.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_floodedcanyon.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_forsakencrags.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_gelatinousslime.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_greentide.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_leaningscrub.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_longshade.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_miasma.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_nightsideice.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_poisonforest.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_pyrelands.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_rustcathedral.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_stillsand.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_terminalbiomes.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_theforge.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_therot.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_thesump.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_wasteland.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_webwork.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-proof_weepingstones.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? deployed/config/ModsConfig.before-tier-weepingstones.xml   modset_builder.py backup from a per-biome quicktest/proof-tier swap (likely a BENCH worktree or code-review quicktest campaign, see WORKTREE_QUICKTEST_BRIDGE_GAP_1); not authored by this window
+?? infrastructure/artpipe/daemon_run_20260926_n8_measured.log   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Brindeth_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Brindeth_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Brommet_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Brommet_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Brommet_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Brommet_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Brommet_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Brommet_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Cravvet_v2_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Cravvet_v2_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Cravvet_v2_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Cravvet_v2_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Cravvet_v2_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Cravvet_v2_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Dorvel_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Dorvel_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Dredgel_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Dredgel_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Gulveth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Gulveth_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Gulveth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Gulveth_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Gulveth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Gulveth_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Korveth_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Korveth_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Mirrelin_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Mirrelin_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Pallick_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Pallick_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_v2_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_v2_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_v2_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_v2_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_v2_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Quarrok_v2_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Sivvern_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Sivvern_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Sivvern_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Sivvern_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Sivvern_v2_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Sivvern_v2_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Sivvern_v2_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Sivvern_v2_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Skelver_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Skelver_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Skennet_v2_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Skennet_v2_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Skennet_v2_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Skennet_v2_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Skennet_v2_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Skennet_v2_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Soffeth_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Soffeth_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Tolleth_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Tolleth_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Velloch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Velloch_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Vennick_v2_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Vennick_v2_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Vennick_v2_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Vennick_v2_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Vennick_v2_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RM_Vennick_v2_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Ashworm_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Ashworm_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Ashworm_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Ashworm_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Ashworm_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Ashworm_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Barbthorn_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Barbthorn_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Barbthorn_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Barbthorn_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Barbthorn_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Barbthorn_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_EmberCarpet.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_EmberCarpet.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Scrubgrass.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Scrubgrass.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Spinerat_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Spinerat_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Spinerat_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Spinerat_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Spinerat_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Spinerat_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporemass_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporemass_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporemass_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporemass_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporemass_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporemass_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporepaw_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporepaw_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporepaw_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporepaw_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporepaw_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Sporepaw_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Starvine.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Starvine.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Stoneback_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Stoneback_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Stoneback_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Stoneback_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Stoneback_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Stoneback_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Whirlbloom.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/RSW_Whirlbloom.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_chimeglobe.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_chimeglobe.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_chimeglobe_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_chimeglobe_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_dorrak_dessicated.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_dorrak_dessicated.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_dovvik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_dovvik_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_dovvik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_dovvik_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_dovvik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_dovvik_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_glassfern.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_glassfern.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_glassfern_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_glassfern_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_glassfern_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_glassfern_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_krissek_dessicated.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_krissek_dessicated.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_krissek_halo_mote.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_krissek_halo_mote.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_palefloss.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_palefloss.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_palefloss_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_palefloss_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_palefloss_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_palefloss_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_utikka_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_utikka_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_utikka_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_utikka_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_utikka_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_utikka_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_vrisk_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_vrisk_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_vrisk_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_vrisk_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_vrisk_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_vrisk_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_zhaaz_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_zhaaz_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_zhaaz_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_zhaaz_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_zhaaz_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/bluedesert_zhaaz_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/cauldron_suush_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/cauldron_suush_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/cauldron_suush_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/cauldron_suush_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/cauldron_suush_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/cauldron_suush_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_brossak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_brossak_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_brossak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_brossak_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_brossak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_brossak_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_larva_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_larva_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_larva_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_larva_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_larva_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_larva_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_fezzira_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghaaz_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghaaz_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghaaz_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghaaz_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghaaz_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghaaz_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghuvv_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghuvv_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghuvv_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghuvv_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghuvv_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_ghuvv_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_gollivra_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_gollivra_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_gollivra_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_gollivra_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_gollivra_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_gollivra_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_greaterbulloo_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_greaterbulloo_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_greaterbulloo_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_greaterbulloo_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_pellorax_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_pellorax_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_pellorax_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_pellorax_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_pibbo_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_pibbo_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_pibbo_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_pibbo_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_pibbo_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_pibbo_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vezzok_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vezzok_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vezzok_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vezzok_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vezzok_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vezzok_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vulloth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vulloth_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vulloth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vulloth_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vulloth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_vulloth_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_zhirrik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_zhirrik_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_zhirrik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_zhirrik_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_zhirrik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_zhirrik_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_zhool_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_zhool_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_zhool_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/contagion_zhool_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_brekkugar_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_brekkugar_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_brekkugar_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_brekkugar_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_brekkugar_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_brekkugar_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_dhukk_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_dhukk_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_dhukk_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_dhukk_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_dhukk_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_dhukk_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ghorrumak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ghorrumak_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ghorrumak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ghorrumak_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ghorrumak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ghorrumak_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_gruzz_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_gruzz_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_gruzz_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_gruzz_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_gruzz_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_gruzz_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_hulggarok_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_hulggarok_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_hulggarok_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_hulggarok_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_hulggarok_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_hulggarok_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_kessik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_kessik_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_kessik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_kessik_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_shekkur_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_shekkur_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_shekkur_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_shekkur_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_shekkur_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_shekkur_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_thrizzik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_thrizzik_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_thrizzik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_thrizzik_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ulkhorr_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ulkhorr_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ulkhorr_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ulkhorr_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ulkhorr_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_ulkhorr_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_vrakk_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_vrakk_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_vrakk_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_vrakk_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_vrakk_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_vrakk_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zekkra_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zekkra_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zekkra_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zekkra_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zekkra_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zekkra_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zhurrakor_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zhurrakor_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zhurrakor_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zhurrakor_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zhurrakor_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/crags_zhurrakor_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_crowncarpet_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_crowncarpet_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_crowncarpet_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_crowncarpet_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_crowncarpet_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_crowncarpet_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_crowncarpet_d.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_crowncarpet_d.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_pigmentjar_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_pigmentjar_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_pigmentjar_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_pigmentjar_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_pigmentjar_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_pigmentjar_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_pigmentjar_d.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/deepfire_pigmentjar_d.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_imperialtoad_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_imperialtoad_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_imperialtoad_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_imperialtoad_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_imperialtoad_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_imperialtoad_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_jellypot_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_jellypot_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_jellypot_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_jellypot_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_jellypot_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_jellypot_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_landopus_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_landopus_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_landopus_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_landopus_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_landopus_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_landopus_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_plant_chakroot_wild.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_plant_chakroot_wild.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_plant_hubbagourd_wild.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_plant_hubbagourd_wild.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_plant_nysyllin_wild.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_plant_nysyllin_wild.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_porg_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_porg_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_porg_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_porg_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_porg_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_porg_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_qormot_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_qormot_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_qormot_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_qormot_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_qormot_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_qormot_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_runyip_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_runyip_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_runyip_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_runyip_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_runyip_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_runyip_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_shaak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_shaak_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_shaak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_shaak_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_shaak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_shaak_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_strill_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_strill_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_strill_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_strill_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_strill_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_strill_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_teemuss_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_teemuss_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_teemuss_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_teemuss_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_teemuss_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_teemuss_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_uvak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_uvak_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_uvak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_uvak_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_uvak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_uvak_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_varactyl_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_varactyl_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_varactyl_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_varactyl_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_varactyl_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_varactyl_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_voorpak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_voorpak_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_voorpak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_voorpak_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_voorpak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_voorpak_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_vulptex_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_vulptex_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_vulptex_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_vulptex_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_vulptex_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_vulptex_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_warwyrm_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_warwyrm_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_warwyrm_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_warwyrm_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_warwyrm_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_warwyrm_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_whisperbird_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_whisperbird_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_whisperbird_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_whisperbird_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_whisperbird_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_whisperbird_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_zeer_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_zeer_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_zeer_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_zeer_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_zeer_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/desertportb_zeer_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_brathek_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_brathek_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_brathek_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_brathek_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_brathek_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_brathek_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_chellow_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_chellow_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_drommath_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_drommath_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_drommath_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_drommath_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_gorrameth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_gorrameth_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_gorrameth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_gorrameth_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_gorrameth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_gorrameth_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_grolth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_grolth_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_grolth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_grolth_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_grolth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_grolth_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_kurreth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_kurreth_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_kurreth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_kurreth_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_kurreth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_kurreth_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_lommerel_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_lommerel_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_lommerel_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_lommerel_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_lommerel_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_lommerel_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_murrelith_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_murrelith_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_murrelith_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_murrelith_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_murrelith_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_murrelith_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_nemmel_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_nemmel_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_nemmel_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_nemmel_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_nemmel_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_nemmel_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_ollareth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_ollareth_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_ollareth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_ollareth_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_ollareth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_ollareth_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_ammeth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_ammeth.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_cistrel.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_cistrel.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_claithe.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_claithe.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_corvath.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_corvath.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_halquin.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_halquin.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_maulith.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_maulith.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_nubrith.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_nubrith.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_ossagrel.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_ossagrel.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_plennith.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_plennith.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_seepril.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_seepril.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_skethral.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_skethral.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_skimmel.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_skimmel.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_sodderel.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_sodderel.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_thulvane.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_thulvane.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_tullick.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_tullick.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_varnoth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_varnoth.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_verrow.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_verrow.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_wanlith.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_plant_wanlith.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_silloch_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_silloch_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_silloch_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_silloch_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_silloch_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_silloch_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skellick_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skellick_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skellick_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skellick_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skellick_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skellick_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skreth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skreth_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skreth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skreth_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skreth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_skreth_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thavrik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thavrik_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thavrik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thavrik_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thavrik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thavrik_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thornbug_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thornbug_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thornbug_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thornbug_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thornbug_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_thornbug_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_vaulm_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_vaulm_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_vaulm_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_vaulm_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_vaulm_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/feverwood_vaulm_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_animalpersonhood.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_animalpersonhood.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_blindsight.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_blindsight.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_cannibal.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_cannibal.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_collectivist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_collectivist.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_darkness.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_darkness.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_fleshpurity.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_fleshpurity.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_guilty.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_guilty.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_highlife.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_highlife.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_humanprimacy.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_humanprimacy.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_inhuman.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_inhuman.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_loyalist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_loyalist.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_malesupremacy.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_malesupremacy.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_natureprimacy.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_natureprimacy.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_nudism.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_nudism.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_painisvirtue.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_painisvirtue.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_proselytizer.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_proselytizer.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_raider.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_raider.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_rancher.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_rancher.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_ritualist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_ritualist.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_shipborn.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_shipborn.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_supremacist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_supremacist.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_transhumanist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_transhumanist.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_treeconnection.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_treeconnection.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_tunneler.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/glyph_tunneler.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_crossout.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_crossout.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_paste_flyer_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_paste_flyer_p1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_paste_flyer_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_paste_flyer_p2.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_paste_wanted_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_paste_wanted_p1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_paste_wanted_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_paste_wanted_p2.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_sigilframe_dripframe.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_sigilframe_dripframe.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_sigilframe_halo.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_sigilframe_halo.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_sigilframe_stencilbox.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_sigilframe_stencilbox.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_stencil_crown.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_stencil_crown.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_stencil_fist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_stencil_fist.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_stencil_gear.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_stencil_gear.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_a_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_a_p1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_a_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_a_p2.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_b_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_b_p1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_b_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_b_p2.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_c_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_c_p1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_c_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_tag_c_p2.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_throwup_a_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_throwup_a_p1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_throwup_a_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_throwup_a_p2.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_throwup_b_p1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_throwup_b_p1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_throwup_b_p2.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/graffiti_throwup_b_p2.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_essarn_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_essarn_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_essarn_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_essarn_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_essarn_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_essarn_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_fessk_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_fessk_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_fessk_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_fessk_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_fessk_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_fessk_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_otheska_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_otheska_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_otheska_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_otheska_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_otheska_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_otheska_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_saltblade.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_saltblade.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_sorruth_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_sorruth_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_sorruth_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/greysea_sorruth_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_aphreen.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_aphreen.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_braskeen_open.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_braskeen_open.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_brelloch.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_brelloch.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ilbareen_dead.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ilbareen_dead.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ilbareen_live.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ilbareen_live.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_immarel.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_immarel.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ismerrow_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ismerrow_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ismerrow_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ismerrow_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ismerrow_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ismerrow_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ismerrow_d.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ismerrow_d.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_nemreth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_nemreth.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_nyssolet.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_nyssolet.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ollamane.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ollamane.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ommolyn.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ommolyn.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_pallasheen.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_pallasheen.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_quennath.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_quennath.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_sarrash.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_sarrash.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_thessamor.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_thessamor.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_thrannock.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_thrannock.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ullavess.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_ullavess.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_vellamine.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_vellamine.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_velluric.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_velluric.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_wessaline.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/miasma_wessaline.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_mahllik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_mahllik_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_mahllik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_mahllik_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_mahllik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_mahllik_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_zhissa_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_zhissa_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_zhissa_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_zhissa_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_zhissa_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/nightside_zhissa_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_heemin_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_heemin_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_heemin_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_heemin_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_heemin_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_heemin_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/pyrelands_barbslinger_v5_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/pyrelands_barbslinger_v5_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/pyrelands_barbslinger_v5_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/pyrelands_barbslinger_v5_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_brakkel_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_brakkel_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_brunnock_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_brunnock_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_crowncarpetfresh_icon_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_crowncarpetfresh_icon_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_crowncarpetfresh_icon_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_crowncarpetfresh_icon_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_cundral_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_cundral_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_gorbeleth_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_gorbeleth_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_kaddrath_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_kaddrath_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_maddrick_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_maddrick_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_mirrelbole_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_mirrelbole_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_mourvel_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_mourvel_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_phorrik_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_phorrik_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_quathis_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_quathis_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_saltcrystalitem_pile_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_saltcrystalitem_pile_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_saltcrystalitem_pile_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_saltcrystalitem_pile_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_sarnstilt_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_sarnstilt_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_sarquin_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_sarquin_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_thalquith_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_thalquith_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_tumbel_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_tumbel_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_vurmeloth_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_vurmeloth_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_wollick_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_wollick_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_zhorrel_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rm_zhorrel_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmdusthusk_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmdusthusk_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmleachmoss_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmleachmoss_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmtitanoslime_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmtitanoslime_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmtitanoslime_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmtitanoslime_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmtitanoslime_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmtitanoslime_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmvenomvine_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rmvenomvine_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brogg_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brogg_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brogg_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brogg_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brogg_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brogg_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brullith_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brullith_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brullith_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brullith_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brullith_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_brullith_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_illoth_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_illoth_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_illoth_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_illoth_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_illoth_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_illoth_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_skerrith_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_skerrith_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_skerrith_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_skerrith_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_skerrith_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_skerrith_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzik_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzik_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzik_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzikqueen_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzikqueen_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzikqueen_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzikqueen_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzikqueen_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rot_thozzikqueen_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_graffiti_stencil_imperialcog.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_graffiti_stencil_imperialcog.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_zakkro_dessicated_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_zakkro_dessicated_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_zakkro_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_zakkro_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_zakkro_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_zakkro_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_zakkro_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_zakkro_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_zakkroegg_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rsw_zakkroegg_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rswrawultracactus_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rswrawultracactus_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rswultracactus_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rswultracactus_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_2_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_2_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_2_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_2_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_greentideant_dessicated_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_greentideant_dessicated_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_grellbush.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_grellbush.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_grellspine.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_grellspine.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_vhessk_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_vhessk_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_vhessk_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_vhessk_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_wildhealroot.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rut_wildhealroot.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbloomcrop_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbloomcrop_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbrinebattery_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbrinebattery_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbrinebattery_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbrinebattery_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbrinebattery_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbrinebattery_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbrinebattery_v2_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbrinebattery_v2_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbrinebattery_v2_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutbrinebattery_v2_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutdarkcrust_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutdarkcrust_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutdeltaloam_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutdeltaloam_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutdosimeterlawn_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutdosimeterlawn_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutemperorvulture_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutemperorvulture_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutemperorvulture_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutemperorvulture_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutemperorvulture_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutemperorvulture_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutfleetflier_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutfleetflier_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutfleetflier_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutfleetflier_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutfleetflier_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutfleetflier_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutfuzz_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutfuzz_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutglower_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutglower_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutglowercrust_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutglowercrust_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutkarrathil_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutkarrathil_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutkarrobel_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutkarrobel_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutradiothermal_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutradiothermal_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutradiothermal_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutradiothermal_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutradiothermal_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutradiothermal_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v2_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v2_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v2_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v2_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v2_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutslimegrazer_v2_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutstaggerseed_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutstaggerseed_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutstaggerseeddish_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutstaggerseeddish_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutvaultroot_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutvaultroot_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutvwake_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutvwake_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutvwake_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutvwake_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutvwake_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutvwake_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutwelcomeblanket_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutwelcomeblanket_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutyearningfruit_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/rutyearningfruit_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_dosscatch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_dosscatch_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_dosscatch_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_dosscatch_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_dosscatch_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_dosscatch_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_eeshcatch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_eeshcatch_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_eeshcatch_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_eeshcatch_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_eeshcatch_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_eeshcatch_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_ekkelcatch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_ekkelcatch_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_ekkelcatch_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_ekkelcatch_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_ekkelcatch_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_ekkelcatch_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_karrashcatch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_karrashcatch_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_karrashcatch_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_karrashcatch_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_karrashcatch_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_karrashcatch_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_muddalcatch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_muddalcatch_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_muddalcatch_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_muddalcatch_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_muddalcatch_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_muddalcatch_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_rainbowpigment_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_rainbowpigment_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_rainbowpigment_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_rainbowpigment_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_rainbowpigment_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_rainbowpigment_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_saalcatch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_saalcatch_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_saalcatch_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_saalcatch_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_saalcatch_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_saalcatch_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_shullacatch_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_shullacatch_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_shullacatch_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_shullacatch_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_steamcatchbuilding_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_steamcatchbuilding_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_thuumcatch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_thuumcatch_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_thuumcatch_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_thuumcatch_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_thuumcatch_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_thuumcatch_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_ventbuilding_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_ventbuilding_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_ventbuilding_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_ventbuilding_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckframe_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckframe_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckframe_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckframe_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckframe_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckframe_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckhull_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckhull_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckhull_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckhull_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckhull_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wreckhull_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wrecktank_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wrecktank_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wrecktank_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wrecktank_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wrecktank_c.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald2_wrecktank_c.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald3_shullacatch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald3_shullacatch_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_bladderboilcatch_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_bladderboilcatch_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_noohm_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_noohm_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_noohm_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_noohm_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_noohm_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_noohm_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_saalcatch_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_saalcatch_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_shulla_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_shulla_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_shulla_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_shulla_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_shulla_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_shulla_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_shullacatch_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_shullacatch_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_steamcatchbuilding_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_steamcatchbuilding_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_ventbuilding_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_ventbuilding_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_wreckframe_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_wreckframe_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_wreckhull_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_wreckhull_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_wrecktank_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scald_wrecktank_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_doss_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_doss_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_doss_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_doss_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_doss_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_doss_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_eesh_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_eesh_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_eesh_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_eesh_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_eesh_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_eesh_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_ekkel_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_ekkel_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_ekkel_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_ekkel_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_ekkel_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_ekkel_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_karrash_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_karrash_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_karrash_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_karrash_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_karrash_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_karrash_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_muddal_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_muddal_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_muddal_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_muddal_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_muddal_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_muddal_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_thuum_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_thuum_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_thuum_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_thuum_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_thuum_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldfloor_thuum_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldsteam_overlay_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldsteam_overlay_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldsteam_overlay_b.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/scaldsteam_overlay_b.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_bezzul_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_bezzul_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_bezzul_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_bezzul_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_bezzul_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_bezzul_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_greateroomb_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_greateroomb_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_greateroomb_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_greateroomb_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_hennul_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_hennul_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_hennul_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_hennul_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_hennul_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_hennul_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_mubbaro_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_mubbaro_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_mubbaro_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_mubbaro_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_mubbaro_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_mubbaro_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_oomb_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_oomb_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_oomb_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_oomb_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_oomb_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_oomb_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_thummorak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_thummorak_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_thummorak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_thummorak_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_thummorak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_thummorak_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_vohhm_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_vohhm_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_vohhm_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_vohhm_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_vohhm_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_vohhm_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuppik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuppik_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuppik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuppik_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuppik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuppik_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuum_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuum_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuum_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuum_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuum_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_wuum_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_yollum_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_yollum_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_yollum_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_yollum_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_yollum_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/slime_yollum_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_loohn_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_loohn_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_loohn_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_loohn_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_saltblade.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_saltblade.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_anchor.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_anchor.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_gutter.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_gutter.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_brennoth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_brennoth.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_brimlock.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_brimlock.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_dulloth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_dulloth.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_fellome.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_fellome.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_grennick.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_grennick.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_kessaroth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_kessaroth.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_kollavane.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_kollavane.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_norrveth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_norrveth.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_pellareth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_pellareth.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_ruddreth.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_ruddreth.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_sellith.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_sellith.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_sorrivel.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_sorrivel.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_tavrosk.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_tavrosk.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_threllick.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_threllick.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_varrisk.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_varrisk.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_vessark.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_plant_vessark.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_web.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/webwork_web.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_bladderfruit.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_bladderfruit.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_bladderquill.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_bladderquill.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_burrak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_burrak_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_burrak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_burrak_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_burrak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_burrak_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_dewblade.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_dewblade.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_dewgourd.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_dewgourd.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_dewgourdfruit.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_dewgourdfruit.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_dripfringe.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_dripfringe.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_kirruk_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_kirruk_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_kirruk_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_kirruk_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_kirruk_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_kirruk_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_mirrik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_mirrik_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_rockfinger.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_rockfinger.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_salvecomb.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_salvecomb.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_seepsalt.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_seepsalt.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_shadefern.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_shadefern.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_ssurr_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_ssurr_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_ssurr_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_ssurr_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_steamfrond.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_steamfrond.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_tirbak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_tirbak_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_tirbak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_tirbak_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_vellak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_vellak_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_vellak_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_vellak_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_verdimoss.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_verdimoss.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_vhakk_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_vhakk_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_vhakk_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_vhakk_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_weepmat.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones2_weepmat.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_ivvol_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_ivvol_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_ivvol_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_ivvol_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_ivvol_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_ivvol_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_karrek_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_karrek_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_karrek_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_karrek_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_karrek_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_karrek_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_loomu_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_loomu_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_loomu_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_loomu_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_loomu_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_loomu_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_murrin_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_murrin_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_murrin_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_murrin_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_murrin_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_murrin_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_skarrin_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_skarrin_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_skarrin_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_skarrin_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_skarrin_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_skarrin_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_vhorrin_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_vhorrin_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_vhorrin_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_vhorrin_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_vhorrin_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_vhorrin_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_vizhik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_vizhik_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_vizhik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/done/weepingstones_vizhik_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Cravvet_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Cravvet_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Cravvet_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Cravvet_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Cravvet_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Cravvet_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Dredgel_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Dredgel_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Dredgel_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Dredgel_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Sivvern_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Sivvern_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Sivvern_v2_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Sivvern_v2_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skarrid_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skarrid_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skarrid_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skarrid_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skarrid_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skarrid_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skellarn_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skellarn_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skellarn_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skellarn_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skellarn_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skellarn_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skennet_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skennet_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skennet_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skennet_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skennet_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Skennet_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_SumpMouse_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_SumpMouse_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_SumpMouse_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_SumpMouse_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_SumpMouse_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_SumpMouse_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Thrummel_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Thrummel_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Thrummel_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Thrummel_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Thrummel_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/RM_Thrummel_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/contagion_greaterbulloo_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/contagion_greaterbulloo_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/contagion_pellorax_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/contagion_pellorax_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/contagion_zhool_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/contagion_zhool_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/crags_kessik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/crags_kessik_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/crags_thrizzik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/crags_thrizzik_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/desertportb_greaterkraytdragon_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/desertportb_greaterkraytdragon_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/desertportb_greaterkraytdragon_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/desertportb_greaterkraytdragon_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/desertportb_kraytdragon_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/desertportb_kraytdragon_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/desertportb_pikobis_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/desertportb_pikobis_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/feverwood_chellow_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/feverwood_chellow_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/feverwood_chellow_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/feverwood_chellow_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/feverwood_drommath_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/feverwood_drommath_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/glyph_bloodfeeding.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/glyph_bloodfeeding.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/glyph_femalesupremacy.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/glyph_femalesupremacy.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/glyph_individualist.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/glyph_individualist.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/greysea_sorruth_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/greysea_sorruth_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/miasma_braskeen_closed.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/miasma_braskeen_closed.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rmdusthusk_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rmdusthusk_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rmdusthusk_v1_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rmdusthusk_v1_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_firehawk_flying_v2_2_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_firehawk_flying_v2_2_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_body_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_body_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_body_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_body_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_body_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_body_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_carapacewall_atlas.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_carapacewall_atlas.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_carapacewall_menuicon.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_carapacewall_menuicon.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_dessicated_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_dessicated_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_dessicated_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_greentideant_dessicated_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_vhessk_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rut_vhessk_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rutbrinebattery_v2_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rutbrinebattery_v2_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rutglowercrust_v1.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/rutglowercrust_v1.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/scald2_shullacatch_a.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/scald2_shullacatch_a.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/slime_greateroomb_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/slime_greateroomb_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/twilightsea_loohn_v1_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/twilightsea_loohn_v1_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/twilightsea_moldmatroof.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/twilightsea_moldmatroof.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_mirrik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_mirrik_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_mirrik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_mirrik_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_sillik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_sillik_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_sillik_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_sillik_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_sillik_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_sillik_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_ssurr_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_ssurr_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_tirbak_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_tirbak_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_vellak_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_vellak_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_vhakk_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones2_vhakk_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones_huldu_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones_huldu_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones_huldu_north.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones_huldu_north.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones_huldu_south.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones_huldu_south.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones_vizhik_east.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/artpipe/failed/weepingstones_vizhik_east.manifest.json   ambient -- artpipe daemon (background, continuous) writing/draining its own queue; predates this window, not mid-edit by any agent
+?? infrastructure/dashboards/hub/tabs/maturity.html   ambient -- auto-regenerated hub dashboard data/pages (health/maturity publisher), not hand-edited this window
+?? infrastructure/dashboards/hub/utinni_control_room_standalone.html   ambient -- auto-regenerated hub dashboard data/pages (health/maturity publisher), not hand-edited this window
+?? infrastructure/state/cherrypicker/CherryPicker.PRESWAP.20260911_234759.xml   pre-existing state backup/rescue artifact, predates this window
+?? infrastructure/state/modlists/ModsConfig.FULL.PRECAPTURE.20260926_142047.xml   pre-existing state backup/rescue artifact, predates this window
+?? infrastructure/state/modlists/ModsConfig.pre-floodedcanyon-quicktest-20260921T104640.xml   pre-existing state backup/rescue artifact, predates this window
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_COLD_LOAD_RUN_SHEET_4_2026-09-23.xml   pre-existing state backup/rescue artifact, predates this window
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_bacta_enable_2026-09-24T133247Z.xml   pre-existing state backup/rescue artifact, predates this window
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_restoring_seashores_bacta_2026-09-25T175356.xml   pre-existing state backup/rescue artifact, predates this window
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_seashores_enable_2026-09-25T133443.xml   pre-existing state backup/rescue artifact, predates this window
+?? infrastructure/state/modlists/ModsConfig_backup_before_rustcathedral_enable_2026-09-23T211528Z.xml   pre-existing state backup/rescue artifact, predates this window
+?? infrastructure/state/rescued/LanternDeeps_RUT/Assemblies/   pre-existing state backup/rescue artifact, predates this window
+?? src/RimMandrake/Utils/firehawk_flight_probe.py   pre-existing dev-tooling script, predates this window
+```
+
