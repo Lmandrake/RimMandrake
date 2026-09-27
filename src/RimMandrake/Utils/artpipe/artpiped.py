@@ -113,6 +113,54 @@ def _baseline_for_mode(mode: str) -> float:
 # before the real limit would ever answer.
 WEEKLY_WARN, WEEKLY_REFUSE, WEEKLY_STOP = 95.0, 99.0, 99.8
 FIVE_H_DROP_N1, FIVE_H_SLEEP = 90.0, 98.0
+WEEKLY_WINDOW_MINUTES = 10080
+FIVE_H_WINDOW_MINUTES = 300
+
+
+def _select_meter_windows(meters: dict, warn=None) -> tuple:
+    """ARTPIPE_METER_WINDOW_REMAP_1: `read_meters()` labels its two slots
+    `primary_*`/`secondary_*` by POSITION in the account's own report, and
+    that position changed shape on the 2026-09-26 plan upgrade — the weekly
+    figure moved from `secondary_*` into `primary_*` and `secondary_*` went
+    null. Selecting `weekly = secondary_used_percent` unconditionally reads
+    the wrong window (or nothing) depending on which shape the account is
+    currently reporting. Select by each slot's own declared
+    `*_window_minutes` instead, so either shape parses correctly and old
+    logged records (which carry the old shape) still parse too. Returns
+    `(weekly_pct, weekly_resets_raw, five_h_pct, five_h_resets_raw)`; a
+    window that is absent, or that declares a value neither 300 nor 10080,
+    yields `None` for that bucket rather than a guess.
+
+    If NEITHER slot carries a `*_window_minutes` at all (no real
+    `read_meters()` reading has ever done this — MEASURED, all 2,388
+    `throughput.jsonl` records carry it on at least one slot — but older
+    unit-test fixtures and any future caller that hands over a bare
+    `{secondary_used_percent, primary_used_percent}` dict do), fall back to
+    the historical position convention (secondary=weekly, primary=five-hour)
+    rather than reporting both meters as unread."""
+    weekly = weekly_resets_raw = five_h = resets_raw = None
+    saw_any_window = False
+    for prefix in ("primary", "secondary"):
+        window = meters.get(f"{prefix}_window_minutes")
+        if window is None:
+            continue
+        saw_any_window = True
+        used = meters.get(f"{prefix}_used_percent")
+        resets = meters.get(f"{prefix}_resets_at")
+        if window == WEEKLY_WINDOW_MINUTES:
+            weekly, weekly_resets_raw = used, resets
+        elif window == FIVE_H_WINDOW_MINUTES:
+            five_h, resets_raw = used, resets
+        elif warn is not None:
+            warn(f"{prefix}_window_minutes is {window!r} — neither the weekly "
+                 f"({WEEKLY_WINDOW_MINUTES}) nor the five-hour ({FIVE_H_WINDOW_MINUTES}) "
+                 f"window I know how to bucket; ignoring this slot's reading")
+    if not saw_any_window:
+        weekly = meters.get("secondary_used_percent")
+        five_h = meters.get("primary_used_percent")
+        resets_raw = meters.get("primary_resets_at")
+        weekly_resets_raw = meters.get("secondary_resets_at")
+    return weekly, weekly_resets_raw, five_h, resets_raw
 
 DEFAULT_TIMEOUT_GENERATE_S = 300  # measured 2026-09-10: solo edit runs 119-130s; 3-way concurrency blew the old 150/220 ceilings
 DEFAULT_TIMEOUT_EDIT_S = 420  # measured 2026-09-10: both codexcal attempts died at ~240s under -N 3; solo is ~130s
@@ -335,10 +383,7 @@ class Detector:
         Console at all — ARTPIPE_CONSOLE_REDESIGN_1, §8 line 352."""
         if not meters or not meters.get("ok"):
             return
-        weekly = meters.get("secondary_used_percent")
-        five_h = meters.get("primary_used_percent")
-        resets_raw = meters.get("primary_resets_at")
-        weekly_resets_raw = meters.get("secondary_resets_at")
+        weekly, weekly_resets_raw, five_h, resets_raw = _select_meter_windows(meters, warn)
 
         if weekly is not None:
             self.last_weekly_pct = weekly
