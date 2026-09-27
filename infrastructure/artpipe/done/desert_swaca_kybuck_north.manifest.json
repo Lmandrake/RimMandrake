@@ -1,0 +1,61 @@
+{
+  "attempt_elapsed_s": 95.55329813000571,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "downscaled_from": "1254x1254",
+  "elapsed_s": 95.55329813000571,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desert_swaca_kybuck_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 52.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T15-02-25-01a0c0d7-86a7-7ab0-a5e9-4ffffca8c192.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 68.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1789957011,
+    "primary_used_percent": 48.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/20/rollout-2026-09-20T14-57-33-01a0c0d3-1178-7691-b7b5-f6269f5f1618.jsonl",
+    "secondary_resets_at": 1790452347,
+    "secondary_used_percent": 68.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
+    "id": "desert_swaca_kybuck_north",
+    "note": "The built-in image generator returned no image or saved artifact on both attempts, so no PNG could be copied into the working directory.",
+    "out": null,
+    "status": "fail",
+    "width": null
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "note: agent did not place the file; harvested exec-aa8ae9bc-b345-4160-b4e4-48ff292d924d.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desert_swaca_kybuck_north/desert_swaca_kybuck_north.png\n    1254x1254  rgba  531,147 bytes  (93s)\n"
+}

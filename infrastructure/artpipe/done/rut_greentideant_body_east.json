@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-25T07:25:54Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "rut_greentideant_body_east",
+  "priority": 150,
+  "prompt": "A giant jungle ant, quadrupedal insectoid raider roughly 2x the size of a human colonist, hard glossy chitinous carapace in mottled brown-grey tones, long segmented mandibles, painted in RimWorld's own painterly game art style. animal sprite, no background, no ground shadow baked in.",
+  "reference": null,
+  "rimflow_item_id": "THEY_MOD_REPLICATION_1",
+  "style_notes": "New art replacing They! (Giant Ants)' donor sprite for RUT_GreentideAnt/RUT_GreentideAntSoldier (retiring Sapiently.TheyAtomicMonsters). Not a reskin of the donor art."
+}

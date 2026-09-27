@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-18T14:13:29Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "nysyllin_v1_r2",
+  "priority": 100,
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a substantial shrub-sized clump \u2014 a rare, delicate wildflower with slender stems and small pale blossoms, in a dry, dust-brown scrubland setting. Single organism, centered, no ground shadow, no background scenery. Rare. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "ART_REGEN_FLORA_WAVE1_QUEUE_1",
+  "style_notes": "Non-SW name, general kind fixed from the defName, flavor free per 'improve' semantics. Source row: flora:arid_shrubland:Plant_Nysyllin_Wild, sizeBin medium, note: 'rare'. Full regen, outline requirement per ART_REGEN_WAVE4_SOURCE_DECISION_1. Filed under ART_REGEN_FLORA_WAVE1_QUEUE_1's final wave. RETRY r2 per ARTPIPE_FAILED_REQUEUE_1: v1 failed codex_size_mismatch (tool returned 1254x1254 against the requested 256x256, a known nondeterministic codex-tool fault, not a daemon/worker code defect -- see aa_terramorph_v1_north_r2, an identical-prompt retry that succeeded). Identical prompt/canvas."
+}

@@ -1,0 +1,61 @@
+{
+  "attempt_elapsed_s": 67.80505907500628,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "downscaled_from": "1254x1254",
+  "elapsed_s": 67.80505907500628,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "rut_greentideant_dessicated_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 23.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w9/sessions/2026/09/26/rollout-2026-09-26T14-05-49-01a0df89-df34-76b3-83b0-8bcdc6dccdca.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 22.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w9/sessions/2026/09/26/rollout-2026-09-26T14-04-39-01a0df88-ca2d-7f61-9d2f-28834086f7c7.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": null,
+    "has_alpha": true,
+    "height": 1254,
+    "id": "rut_greentideant_dessicated_east",
+    "note": "Built-in generation completed, but output is 1254\u00d71254. Read-only filesystem policy blocked shell access; resizing and copying to the requested workspace path could not be completed.",
+    "out": "C:\\Users\\Mandrake\\.codex_workers\\artpipe\\w9\\generated_images\\01a0df89-df34-76b3-83b0-8bcdc6dccdca\\exec-a683a35f-58dd-4644-959b-85b618fbcfed.png",
+    "status": "fail",
+    "width": 1254
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "ng summaries: none\nsession id: 01a0df89-df34-76b3-83b0-8bcdc6dccdca\n--------\nuser\nUse $imagegen to [artpipe job rut_greentideant_dessicated_east] A dead, dried-out husk of a giant jungle ant corpse \u2014 same insectoid quadruped, but the carapace is hollow, cracked and desiccated, drained of color, RimWorld's own painterly game art style. animal corpse sprite, no background. Canvas: exactly 512x512 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: Dessicated (dead) body graphic for RUT_GreentideAntRace's lifeStages, matching the live body's silhouette. Not a reskin of They! (Giant Ants)' donor art. Facing: east \u2014 strict side profile with the camera at the creature's own eye level, the creature's head points to the RIGHT edge of the image. NOT a top-down or overhead view: we do not look down on its back, and only the near side of the body is visible.\n\nThen copy the generated image into the current working directory as rut_greentideant_dessicated_east.png. Report the absolute path of the file you saved.\ncodex\nI\u2019m using the imagegen skill to create the transparent, east-facing corpse sprite and save it to the requested filename.\n2026-09-26T21:05:56.205633Z ERROR codex_core::tools::router: error=exec_command failed: CreateProcess { message: \"Rejected(\\\"`\\\\\\\"C:\\\\\\\\\\\\\\\\WINDOWS\\\\\\\\\\\\\\\\System32\\\\\\\\\\\\\\\\WindowsPowerShell\\\\\\\\\\\\\\\\v1.0\\\\\\\\\\\\\\\\powershell.exe\\\\\\\" -Command \\\\\\\"Get-ChildItem -Force; Get-Content C:\\\\\\\\\\\\\\\\Users\\\\\\\\\\\\\\\\Mandrake\\\\\\\\\\\\\\\\.codex_workers\\\\\\\\\\\\\\\\artpipe\\\\\\\\\\\\\\\\w9\\\\\\\\\\\\\\\\skills\\\\\\\\\\\\\\\\.system\\\\\\\\\\\\\\\\imagegen\\\\\\\\\\\\\\\\SKILL.md\\\\\\\"` rejected: blocked by policy\\\")\" }\ncodex\nThe image was generated, but this session\u2019s read-only filesystem policy blocks saving it into the workspace. The output also needs resizing to the requested 512\u00d7512 dimensions.\ncodex\n{\"id\":\"rut_greentideant_dessicated_east\",\"status\":\"fail\",\"out\":\"C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w9\\\\generated_images\\\\01a0df89-df34-76b3-83b0-8bcdc6dccdca\\\\exec-a683a35f-58dd-4644-959b-85b618fbcfed.png\",\"width\":1254,\"height\":1254,\"has_alpha\":true,\"corners_transparent\":null,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Built-in generation completed, but output is 1254\u00d71254. Read-only filesystem policy blocked shell access; resizing and copying to the requested workspace path could not be completed.\"}\ntokens used\n53,543\n\nnote: agent did not place the file; harvested exec-a683a35f-58dd-4644-959b-85b618fbcfed.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rut_greentideant_dessicated_east/rut_greentideant_dessicated_east.png\n    1254x1254  rgba  769,651 bytes  (68s)\n"
+}
