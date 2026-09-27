@@ -307,6 +307,20 @@ def check_range(cat, a, b, repo):
         stamp = dll + ".srchash"
         if stamp in changed_stamps:
             continue
+        # BIOME_CONFIG_ERROR_TRIAGE_1 (2026-09-26): a DLL can be the STALE
+        # side of the pair — source gains a file, the stamp is regenerated
+        # and committed correctly, but the DLL itself never gets rebuilt
+        # until later. Fixing that DLL in a later commit changes only the
+        # DLL's bytes (the stamp was already right and stays byte-identical
+        # across the whole range, so it never shows up in `changed_stamps`),
+        # and the naive "both must change together" proxy below flagged that
+        # AS A NEW PROBLEM even though `check_head` already proves the pair
+        # is correct at `b`. Ask the real question first — does the DLL
+        # match its stamp right now? — before falling back to the byte-diff
+        # proxy, exactly like the second loop below already does.
+        result_b = recompute_stamp(cat, b, stamp, repo)
+        if result_b.status == "MATCH":
+            continue
         # LANTERNDEEPS_RM_MOD_BUILD_1 (2026-09-25): a cross-directory mod
         # rename (git mv the whole mod folder, rebuild under the new
         # namespace) makes git see the OLD path's DLL as a plain delete, not
