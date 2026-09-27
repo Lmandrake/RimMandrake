@@ -1775,16 +1775,6 @@ thin:     no ## spec, no ## verify
 summary:  GREYSEAANCHORCREATURES1 — build the two anchors the Grey Deep is actually about, plus the Aerofleet replaceme…
 prose:    infrastructure/state/items/GREYSEA_ANCHOR_CREATURES_1.md
 
-## GREYSEA_SALTDOME_SCATTER_OOB_1 RM_SaltDomeShore fails its cluster-centre search and is followed by Got ThingsListAt out of bounds (-1000,-1000,-1000) at map-gen
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  GREYSEASALTDOMESCATTEROOB1 — RMSaltDomeShore's failed cluster-centre search reaches ThingsListAt as IntVec3.I…
-prose:    infrastructure/state/items/GREYSEA_SALTDOME_SCATTER_OOB_1.md
-
 ## SEABED_PLANET_LAYER_1 Seabed planet layer: the sea floor as a geometric twin of the surface
 state:    proposed
 row:      unassigned
