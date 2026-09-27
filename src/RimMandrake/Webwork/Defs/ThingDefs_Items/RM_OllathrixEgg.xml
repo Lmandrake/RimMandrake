@@ -48,6 +48,7 @@
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>10</stackLimit>
+    <tickerType>Normal</tickerType>
     <statBases>
       <MaxHitPoints>40</MaxHitPoints>
       <MarketValue>400</MarketValue>

@@ -135,24 +135,24 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_Bryolux>10</AB_Bryolux>  <!-- bryolux -->
-      <AB_Glowstool>3</AB_Glowstool>  <!-- glowstool -->
-      <AB_Agarilux>2</AB_Agarilux>  <!-- agarilux -->
-      <AB_GiantAgarilux>2</AB_GiantAgarilux>  <!-- giant agarilux -->
-      <AB_GlowingAgarilux>1</AB_GlowingAgarilux>  <!-- glowing agarilux -->
-      <AB_LilacBeacon>0.5</AB_LilacBeacon>  <!-- lilac beacon -->
-      <AB_WitchesOyster>0.5</AB_WitchesOyster>  <!-- witches' oyster -->
+      <AB_Bryolux MayRequire="sarg.alphabiomes">10</AB_Bryolux>  <!-- bryolux -->
+      <AB_Glowstool MayRequire="sarg.alphabiomes">3</AB_Glowstool>  <!-- glowstool -->
+      <AB_Agarilux MayRequire="sarg.alphabiomes">2</AB_Agarilux>  <!-- agarilux -->
+      <AB_GiantAgarilux MayRequire="sarg.alphabiomes">2</AB_GiantAgarilux>  <!-- giant agarilux -->
+      <AB_GlowingAgarilux MayRequire="sarg.alphabiomes">1</AB_GlowingAgarilux>  <!-- glowing agarilux -->
+      <AB_LilacBeacon MayRequire="sarg.alphabiomes">0.5</AB_LilacBeacon>  <!-- lilac beacon -->
+      <AB_WitchesOyster MayRequire="sarg.alphabiomes">0.5</AB_WitchesOyster>  <!-- witches' oyster -->
       <RM_Dewshrooms>0.5</RM_Dewshrooms>  <!-- dewshrooms -->
       <RM_FruitingBodies>0.5</RM_FruitingBodies>  <!-- mold fruiting bodies -->
       <RM_Nuitae>0.5</RM_Nuitae>  <!-- nuitae -->
       <RM_Wrinklecap>0.5</RM_Wrinklecap>  <!-- wrinklecap -->
       <RM_Arpeau>0.4</RM_Arpeau>  <!-- arpeau - tree -->
-      <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia>  <!-- recurved stropharia -->
+      <AB_RecurvedStropharia MayRequire="sarg.alphabiomes">0.3</AB_RecurvedStropharia>  <!-- recurved stropharia -->
       <RM_FlakespireFungus>0.3</RM_FlakespireFungus>  <!-- flakespire fungus - tree -->
       <RM_Pusmelon>0.3</RM_Pusmelon>  <!-- pusmelon -->
       <RM_Sagecrust>0.3</RM_Sagecrust>  <!-- sagecrust -->
-      <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza>  <!-- arbuscular mycorrhiza -->
-      <AB_SlimyPholiota>0.2</AB_SlimyPholiota>  <!-- slimy pholiota -->
+      <AB_ArbuscularMycorrhiza MayRequire="sarg.alphabiomes">0.2</AB_ArbuscularMycorrhiza>  <!-- arbuscular mycorrhiza -->
+      <AB_SlimyPholiota MayRequire="sarg.alphabiomes">0.2</AB_SlimyPholiota>  <!-- slimy pholiota -->
       <RM_BleedingTooth>0.2</RM_BleedingTooth>  <!-- bleeding tooth -->
       <RM_Brightbell>0.2</RM_Brightbell>  <!-- shinebell -->
       <RM_CrimsonCap>0.2</RM_CrimsonCap>  <!-- crimson cap -->
@@ -160,11 +160,11 @@
       <RM_Shinecap>0.2</RM_Shinecap>  <!-- shine cap - tree -->
       <RM_VioletWimple>0.2</RM_VioletWimple>  <!-- violet wimple -->
       <RM_MortalMorelPlant>0.15</RM_MortalMorelPlant>  <!-- mortal morel -->
-      <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap>  <!-- agaricus domecap -->
-      <AB_DribblingCap>0.1</AB_DribblingCap>  <!-- dribbling cap -->
+      <AB_AgaricusDomeCap MayRequire="sarg.alphabiomes">0.1</AB_AgaricusDomeCap>  <!-- agaricus domecap -->
+      <AB_DribblingCap MayRequire="sarg.alphabiomes">0.1</AB_DribblingCap>  <!-- dribbling cap -->
       <RM_Skulltop>0.1</RM_Skulltop>  <!-- skulltop - tree -->
       <RM_BlastpodShroom>0.05</RM_BlastpodShroom>  <!-- blastpod shroom - wild-only per owner ruling, no sow tags -->
-      <AB_AgariluxPrime>0.01</AB_AgariluxPrime>  <!-- Agarilux Prime -->
+      <AB_AgariluxPrime MayRequire="sarg.alphabiomes">0.01</AB_AgariluxPrime>  <!-- Agarilux Prime -->
       <!-- ROT_GUARDIAN_GROVES_1 / ROT_PALE_TREE_1: folded in as NATIVE rows
            (previously two separate patches, RotPaleTree_WildSpawn.xml and
            RotGuardianGroves_WildSpawn.xml, that existed only so another agent

@@ -69,7 +69,6 @@
       <wildOrder>1</wildOrder>
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>50</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>true</interferesWithRoof>
       <blockAdjacentSow>true</blockAdjacentSow>
     </plant>
@@ -98,7 +97,6 @@
       <wildOrder>2</wildOrder>
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>20</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -133,7 +131,6 @@
       <wildOrder>1</wildOrder>
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>15</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -164,7 +161,6 @@
       <wildOrder>1</wildOrder>
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>35</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>true</interferesWithRoof>
       <blockAdjacentSow>true</blockAdjacentSow>
     </plant>
@@ -200,7 +196,6 @@
       <wildOrder>1</wildOrder>
       <wildClusterRadius>6</wildClusterRadius>
       <wildClusterWeight>10</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -230,7 +225,6 @@
       <wildOrder>3</wildOrder>
       <wildClusterRadius>8</wildClusterRadius>
       <wildClusterWeight>60</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -258,7 +252,6 @@
       <wildOrder>2</wildOrder>
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>15</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -286,7 +279,6 @@
       <wildOrder>2</wildOrder>
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>20</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -316,7 +308,6 @@
       <wildOrder>2</wildOrder>
       <wildClusterRadius>2</wildClusterRadius>
       <wildClusterWeight>8</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -344,7 +335,6 @@
       <wildOrder>2</wildOrder>
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>10</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -372,7 +362,6 @@
       <wildOrder>2</wildOrder>
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>8</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -402,7 +391,6 @@
       <wildOrder>2</wildOrder>
       <wildClusterRadius>2</wildClusterRadius>
       <wildClusterWeight>12</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -430,7 +418,6 @@
       <wildOrder>3</wildOrder>
       <wildClusterRadius>2</wildClusterRadius>
       <wildClusterWeight>8</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -488,7 +475,6 @@
       <wildOrder>3</wildOrder>
       <wildClusterRadius>6</wildClusterRadius>
       <wildClusterWeight>25</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>
@@ -516,7 +502,6 @@
       <wildOrder>2</wildOrder>
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>15</wildClusterWeight>
-      <purpose>None</purpose>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>

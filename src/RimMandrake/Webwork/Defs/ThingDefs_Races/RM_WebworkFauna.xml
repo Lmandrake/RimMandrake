@@ -137,13 +137,13 @@
           <minAge>0.6</minAge>
         </li>
       </lifeStageAges>
-      <butcherProducts>
-        <RM_QuarrokChitin>4</RM_QuarrokChitin>
-      </butcherProducts>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
     </race>
+    <butcherProducts>
+      <RM_QuarrokChitin>4</RM_QuarrokChitin>
+    </butcherProducts>
     <modExtensions>
       <!-- WEBWORK_FAUNA_ROSTER_1: gives RM_JobGiver_ChewAnchors (shipped by
            WEBWORK_KIT_BUILD_1 with no consumer race) its first consumer. -->
@@ -338,9 +338,9 @@
           <minAge>0.3</minAge>
         </li>
       </lifeStageAges>
-      <soundMeleeHitPawn>Pawn_Melee_SmallBash_HitPawn</soundMeleeHitPawn>
-      <soundMeleeHitBuilding>Pawn_Melee_SmallBash_HitBuilding</soundMeleeHitBuilding>
-      <soundMeleeMiss>Pawn_Melee_SmallBash_Miss</soundMeleeMiss>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
     </race>
     <tradeTags>
       <li>AnimalCommon</li>
@@ -433,9 +433,9 @@
         </li>
       </lifeStageAges>
       <leatherDef>Leather_Light</leatherDef>
-      <soundMeleeHitPawn>Pawn_Melee_SmallBash_HitPawn</soundMeleeHitPawn>
-      <soundMeleeHitBuilding>Pawn_Melee_SmallBash_HitBuilding</soundMeleeHitBuilding>
-      <soundMeleeMiss>Pawn_Melee_SmallBash_Miss</soundMeleeMiss>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
     </race>
     <tradeTags>
       <li>AnimalCommon</li>
