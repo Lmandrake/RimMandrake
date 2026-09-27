@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T00:33:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T00:39:24Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1053,14 +1053,14 @@ kind:     task
 summary:  Per sea, per catch entry without a living counterpart:
 prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
 
-## ELDER_UNKNOWN_WEAPON_CONFIG_1 RM_ElderUnknownWeapon has a recipeMaker with no costList or costStuffCount, and borrows RM_SaltCrystalItem texPath as a placeholder
+## COLLECTION_GRAPHIC_ON_FLAT_PNG_1 Four defs use Graphic_StackCount or Graphic_Random over a single flat PNG so Collection cannot init fires; plus RM_Leachmoss and RM_Venomvine art is genuinely absent everywhere
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  ELDERUNKNOWNWEAPONCONFIG1 — RMElderUnknownWeapon: recipeMaker with no cost, and a borrowed placeholder texPath
-prose:    infrastructure/state/items/ELDER_UNKNOWN_WEAPON_CONFIG_1.md
+summary:  COLLECTIONGRAPHICONFLATPNG1 — Collection graphic classes over single flat PNGs, and two textures absent entir…
+prose:    infrastructure/state/items/COLLECTION_GRAPHIC_ON_FLAT_PNG_1.md
 
 ## DIVING_STALE_DEPLOYED_FILES_1 Retired pawn-dive files are deleted from src/ but still live in the deployed DivingInteraction mod
 state:    doing
@@ -1806,16 +1806,6 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  GREYSEASALTDOMESCATTEROOB1 — RMSaltDomeShore's failed cluster-centre search reaches ThingsListAt as IntVec3.I…
 prose:    infrastructure/state/items/GREYSEA_SALTDOME_SCATTER_OOB_1.md
-
-## COLLECTION_GRAPHIC_ON_FLAT_PNG_1 Four defs use Graphic_StackCount or Graphic_Random over a single flat PNG so Collection cannot init fires; plus RM_Leachmoss and RM_Venomvine art is genuinely absent everywhere
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  COLLECTIONGRAPHICONFLATPNG1 — Collection graphic classes over single flat PNGs, and two textures absent entir…
-prose:    infrastructure/state/items/COLLECTION_GRAPHIC_ON_FLAT_PNG_1.md
 
 ## HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1 Our three hazard-protection stats sit in statBases, so JobGiver_OptimizeApparel cannot see them and no pawn will ever choose a boil-suit on its own
 state:    proposed
