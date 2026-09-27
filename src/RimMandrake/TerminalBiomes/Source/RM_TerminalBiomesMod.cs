@@ -82,6 +82,15 @@ namespace RimMandrake.TerminalBiomes
         // S1b rides S1: a flash in a sky that is not the boil's breath makes no sense.
         public static bool ScaldS1bVentFlashActive => ScaldS1SteamSkyActive && scaldS1bVentFlashEnabled;
 
+        // ── Twilight Sea danger pass (TWILIGHT_DANGER_LIGHTWEB_1) ───────
+        public static bool suulkEnabled = true;
+        public static float suulkFrequencyMultiplier = 1f;
+        public static bool vauliskEnabled = true;
+
+        private static bool TwilightSeaActive => masterEnabled && twilightSeaEnabled;
+        public static bool SuulkActive => TwilightSeaActive && suulkEnabled;
+        public static bool VauliskActive => TwilightSeaActive && vauliskEnabled;
+
         // ── Cross-biome opt-in (Greentide's own shape; WORLDGEN-AFFECTING) ─
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -105,6 +114,9 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref scaldS6WreckSalvageEnabled, "scaldS6WreckSalvageEnabled", true);
             Scribe_Values.Look(ref scaldS7SteamExposureEnabled, "scaldS7SteamExposureEnabled", true);
             Scribe_Values.Look(ref scaldS1bVentFlashEnabled, "scaldS1bVentFlashEnabled", true);
+            Scribe_Values.Look(ref suulkEnabled, "suulkEnabled", true);
+            Scribe_Values.Look(ref suulkFrequencyMultiplier, "suulkFrequencyMultiplier", 1f);
+            Scribe_Values.Look(ref vauliskEnabled, "vauliskEnabled", true);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -165,6 +177,22 @@ namespace RimMandrake.TerminalBiomes
               + "nobody accumulates scald exposure and any exposure already carried heals off. "
               + "The water still burns to wade in either way — that is S8's own switch, in the "
               + "Environmental Hazards Kit's settings.");
+            list.GapLine();
+
+            list.Label("THE TWILIGHT SEA'S DANGER PASS (TWILIGHT_DANGER_LIGHTWEB_1)");
+            list.CheckboxLabeled("The suulk — lamp-grazer", ref suulkEnabled,
+                "A soft, slow drifter that arrives on a several-day cadence and feeds on the "
+              + "brightest player-owned light, dimming and eventually destroying it. Nearly "
+              + "harmless to pawns; the danger is to the light economy, not to life.");
+            if (suulkEnabled)
+            {
+                list.Label("  Arrival frequency: " + suulkFrequencyMultiplier.ToString("0.0") + "x");
+                suulkFrequencyMultiplier = list.Slider(suulkFrequencyMultiplier, 0.1f, 3f);
+            }
+            list.CheckboxLabeled("The vaulisk — counterfeit lure", ref vauliskEnabled,
+                "A rare, one-per-map ambush predator disguised as a lit lamp-bladder plant "
+              + "carrying a false, steady (never-breathing) glow. Swaps to a fightable pawn "
+              + "when approached.");
             list.GapLine();
 
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");

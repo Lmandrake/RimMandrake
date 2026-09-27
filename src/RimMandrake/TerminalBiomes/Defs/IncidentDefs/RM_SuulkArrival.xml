@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_SuulkArrival.xml                    TerminalBiomes · TWILIGHT_DANGER_LIGHTWEB_1
+  ============================================================================
+  Design doc §D2c: "arrives... on a several-day incident cadence." category
+  Misc — same reasoning RUT_WalkerSurfacing.xml already gives for this mod's
+  other biome-scoped atmosphere incident: this is a light-economy pressure,
+  not a combat threat, so it stays out of the vanilla Storyteller's
+  ThreatSmall/ThreatBig queues. allowedBiomes RM_TwilightSea covers both the
+  world-surface tile AND the sea-dive floor pocket map, which sets
+  pocketMapProperties.biome to the same defName (RM_SeaDiveGenerators.xml,
+  mandrake.rm.divinginteraction) — the same shape RUT_WalkerSurfacing already
+  relies on for RM_TheScald/RUT_TheScald.
+
+  minRefireDays 5 (INVENTED, "several-day" per the spec's own words) —
+  RM_IncidentWorker_SuulkArrival.CanFireNowSub layers the frequency-scaling
+  hook (design D2c) on top of this as an additional pass/fail roll, so the
+  EFFECTIVE cadence lengthens on a map with few player-owned glowers and
+  shortens as the light economy grows, without a second timer system.
+  baseChance 1.2 (INVENTED) — this mod's own established range for "ambient
+  atmosphere beat, no bespoke gate beyond the biome" incidents
+  (RUT_ContagionProbe 1.5, RUT_FeverWood_MirrorBreak 1.2, RUT_WalkerSurfacing
+  1.0): a grazer that costs the player a lamp sits at the higher end of that
+  range, deliberately above the walker's own "rare distant sighting."
+  ============================================================================
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RM_SuulkArrival</defName>
+    <label>suulk arrival</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.TerminalBiomes.RM_IncidentWorker_SuulkArrival</workerClass>
+    <baseChance>1.2</baseChance>
+    <minRefireDays>5</minRefireDays>
+    <allowedBiomes>
+      <li>RM_TwilightSea</li>
+    </allowedBiomes>
+  </IncidentDef>
+
+</Defs>

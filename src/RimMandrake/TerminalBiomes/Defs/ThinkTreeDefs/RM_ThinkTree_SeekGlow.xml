@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RM_ThinkTree_SeekGlow.xml          TerminalBiomes · TWILIGHT_DANGER_LIGHTWEB_1
+
+  insertTag="Animal_PreMain" is vanilla's own extension point
+  (Verse.AI.ThinkNode_SubtreesByTag — every ThinkTreeDef sharing an
+  insertTag is tried, in insertPriority order, for EVERY animal in the game
+  whose think tree includes that tag; the vanilla "Animal" tree does,
+  unconditionally). Same shape CreatureBehaviors' own
+  RM_ThinkTree_VerminBehaviors already proves safe: RM_JobGiver_SeekGlow
+  returns no job instantly for any pawn whose race lacks
+  RM_SeekGlowExtension, so this is safe to insert globally — an un-tagged
+  chicken or muffalo never sees a behavior change.
+-->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_SeekGlow</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.TerminalBiomes.RM_JobGiver_SeekGlow" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

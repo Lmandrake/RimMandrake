@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_VauliskLureOrgan.xml                TerminalBiomes · TWILIGHT_DANGER_LIGHTWEB_1
+  ============================================================================
+  design §D4b: "killed, its lure organ is a small trophy glower item — the
+  one lamp that never breathes, which the Compact will not have in their
+  houses." Dropped by RM_Comp_DropLureOrganOnDeath (attached to RM_Vaulisk's
+  race ThingDef) at the moment the animal is killed.
+
+  Deliberately carries a plain CompProperties_Glower and NO
+  RM_Comp_WarblingGlow, same reasoning as RM_VauliskLure.xml's own comps —
+  even as a trophy, it is still the one lamp in the biome that never
+  breathes, and a player who hangs it anyway should see exactly that.
+
+  PLACEHOLDER ART: reuses this mod's own RM_EeshCatch icon texPath (a small
+  resource-item silhouette already shipped and confirmed physically present
+  in this mod's Textures tree), tinted gold — no suulk/vaulisk-family art
+  exists in artpipe done/_artsrc (checked this pass). BENCH should file a
+  real regen once a review sheet exists.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_VauliskLureOrgan</defName>
+    <label>vaulisk lure organ</label>
+    <description>A fist-sized gland, still faintly gold, pulled from a dead vaulisk. It holds its light exactly as steadily dead as it did alive — no piip, no breathing pulse, nothing a Compact house would ever hang a rafter for. Some things down here keep it anyway, out where nobody has to sleep under it.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_EeshCatch/RM_EeshCatch_a</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(214,182,84)</color>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>60</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>4</Beauty>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>10</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>4</glowRadius>
+        <glowColor>(255,225,140,0)</glowColor>
+      </li>
+      <!-- Deliberately NO RM_Comp_WarblingGlow — see file header. -->
+    </comps>
+  </ThingDef>
+
+</Defs>

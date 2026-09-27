@@ -52,6 +52,15 @@
   <ItemGroup>
     <Compile Include="RM_TerminalBiomesMod.cs" />
     <Compile Include="RM_TerminalBiomesScaldKit.cs" />
+    <!-- TWILIGHT_DANGER_LIGHTWEB_1 -->
+    <Compile Include="RM_TerminalBiomesJobDefOf.cs" />
+    <Compile Include="RM_SeekGlowExtension.cs" />
+    <Compile Include="RM_JobGiver_SeekGlow.cs" />
+    <Compile Include="RM_JobDriver_FeedOnGlow.cs" />
+    <Compile Include="RM_Comp_VaeuliskLure.cs" />
+    <Compile Include="RM_Comp_DropLureOrganOnDeath.cs" />
+    <Compile Include="RM_GenStep_ScatterVauliskLure.cs" />
+    <Compile Include="RM_IncidentWorker_SuulkArrival.cs" />
   </ItemGroup>
 
   <ItemGroup>
