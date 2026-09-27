@@ -304,12 +304,118 @@ outcome… what you meet there should be something that arrived."*
 
 ## 5. Weather / terrain / mechanics feasibility
 
-*(to fill)*
+What is a WeatherDef, what is a GameCondition, what needs C#, what already ships.
+Sizes: small ≈ under 150 lines C# or none; medium ≈ one real component/patch.
+
+| mechanism | route | state / size |
+|---|---|---|
+| eternal noon — fixed hard light, no day-night | permanent `GameConditionDef` glow lock — same engine truth the Long Shade doc measured (one `SkyManager.CurSkyGlow` float per map, no directional shadow); `RUT_MiasmaWeatherLock` is the shipped permanent-lock precedent, `RM_GlowMultiplierOverrideExtension` the shipped glow override | XML + small C# |
+| solar uptime tracks the lock | ⚠ UNMEASURED — read `CompPowerPlantSolar`'s input off the decompile (§4.5) | zero or one small patch |
+| sandstorm (the one weather) | Odyssey `Sandstorm` already wired at 4 in the def; the deep desert's DESTRUCTIVE storm (*"break walls, tear roofs off, carry pawns away permanently"*, §8) is new — an escalated `WeatherDef` + a damage/displacement worker | medium C# |
+| the storm SEEDS (aerosol of sleeping organisms) | on storm end, spawn dormant dust husks / bloom triggers at low density — an incident hook on the weather | small C# |
+| dormancy (default state of the biome) | ✅ vanilla comp pair `CompProperties_CanBeDormant`/`WakeUpDormant` — SHIPPED on `RM_DustHusk` (damage-wake); vibration/water-specific waking is a known stock-class gap (`RUT_SealedSleeper`'s measured note), real future C# if wanted | done (damage-wake) |
+| drum-lure subsurface predation | ✅ SHIPPED — `RM_CompDrumLure` (creaturebehaviors), wired on drazzik | done |
+| egg-trap clutches (hatch on approach) | ✅ SHIPPED — drazzik's clutch + the `ProximityHatch` mod | done |
+| shade grid + shade-seeking AI | ✅ SHIPPED — `RM_MapComponent_ShadeGrid`, `RM_JobGiver_SeekShade`/`WanderInShadeGrid`, `RM_ShadeSeekingWanderExtension` (creaturebehaviors) | done |
+| follow a MOVING shadow (giant/commensal/caravan) | the one open C# design question, bound to be answered ONCE (`DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1`, three consumers) | medium C#, shared |
+| giant-scale bodies (bs 15–18) | ✅ SHIPPED — `RM_TitanicCreatures` tiering/footprint; ⚠ whether `RM_MirrorGiant` is wired to it is UNMEASURED | check at build |
+| moving dunes / burial / plant choke | ✅ BUILT — `mandrake.rm.movingdunes` (Werner slabs on Odyssey's `sandGrid`, `BuryThingsAt`, `RM_Dunes_BuriedCache`); 🔴 its `BiomeBindings.xml` binds vanilla `Desert`/`ExtremeDesert` only — wired to NO Ash'karr def today | bindings = XML only |
+| dig-out-buried loop | ✅ SHIPPED in Greentide (`RM_BuriedCache`, `RM_JobDriver_DigOutBuried`) — pattern to port | small |
+| emergence set pieces / bone fields | `RM_GenStep_PlacedSetPieces` + `RM_SetPieceElement*` shipped | XML + small |
+| anhydrobiotic bloom (flood → hours → dust) | `RM_IncidentWorker_BloomBurst` + `RM_BloomBurstExtension` shipped — evaluate before writing anything new | small |
+| infestation, biome-gated + planet-banned | vanilla incident machinery; a biome gate; one Utinni suppression patch | small C#/XML |
+| yardang wind-grain terrain | deep_desert "Owed": belongs in the map-modification routine — mapgen art, no new mechanic | medium, deferrable |
+| no-fire / no-rot / no-rain laws | already carried by the def (weather zeroed) and the roster purges; nothing above ignites, rots or rains | held |
+
+**Ban compliance:** nothing above keys to a clock (ban: no circadian anything — dormancy
+is event-driven by construction); nothing adds fire, water, green-in-the-open or a
+mid-band surface body; nothing adds ambient density — every marquee is a trigger, a
+transit or a dig, not a resident.
 
 ## 6. Ship contribution row
 
-*(to fill)*
+Per `BIOME_SHIP_CONTRIBUTIONS_1`'s register (recorded there by whoever executes):
+
+| biome | ship contribution | source |
+|---|---|---|
+| the Stillsand | **the biosilica lens array** — light-pipe glass ground into ship glazing/sensor lenses: the only non-volcanic optical glass on the planet, a Stillsand-only refit material (pure XML once the §3 harvest item exists) · **the egg cistern** — a hold rack keeping trap-clutch water potable for the crossing (§4.4's canteen made ship furniture) · candidate: **the solar catch-yard** — landed in the Stillsand, the ship's panels never flag (§4.5); if the solar gate measures wrong, this is the patch's shipping form: a landed-here-only power bonus that makes the emptiest biome the refuelling stop | this doc §3/§4.4/§4.5 |
 
 ## 7. Card agenda
 
-*(to fill)*
+Numbered, recommendation first, each answerable in a word. Q2–Q6 are the five
+cross-desert pairs the Long Shade agenda (its Q6/Q7/Q9) handed this sitting — aligned so
+each pair is ruled exactly once.
+
+1. **Ratify the Q11a tier move (§2b): the nine invented rows leave the Utinni patch for
+   `RM_Stillsand`** — kudda, ikee, vozzik, pikkut, vekka/shakkir, drazzik, qorrax (with
+   its ThingDef out of `Absorbed_Cephaloids_Defs.xml`), light-pipe nub, ollim (+
+   `RM_OllimWood`). *Recommendation: yes, all nine — the build item flagged three of
+   them itself, and the free tier is not "rich enough to stand alone" without them.*
+2. **Kudda's home** (dual-wired: here 0.3, Long Shade 0.2). Sibling doc recommends keep
+   both, annotated (the dual home predates the one-home law and reads deliberate — the
+   screecher precedent). *This doc AGREES — and adds the Stillsand-side reason: the
+   kudda feeds on light, and eternal noon is the richer table. Keep both, annotate.*
+3. **Kreetle and gizka** (canon grain rows wired here at 0.2/0.01 and in the Long Shade).
+   Sibling recommends one home each = the Long Shade. *This doc AGREES — cutting a 0.01
+   row costs the Stillsand nothing, and every row cut sharpens the emptiness this sheet
+   is FOR. One home each, the Long Shade.*
+4. **The truffle mole (pikkut)** ("desert & extreme desert" was a CANDIDATE set per your
+   2026-09-22 correction). Sibling recommends the Long Shade (a burrower needs something
+   buried to eat — its buried canopy). *This doc AGREES — the Stillsand's sand is
+   sterile by design; there is nothing down there for it. One home, the Long Shade.*
+5. **The cephalope (qorrax) — home AND conflict in one ruling.** `desert.json` has
+   carried both an eviction (ban 3: spd 8.8, the fastest thing in that biome) and your
+   round-2 import since 2026-09-09, and the def is wired in both deserts. Sibling
+   recommends the Stillsand as its one home. *This doc AGREES — here it is legal: the
+   dune sea bans ambush-from-cover and requires subsurface strikes, which is exactly
+   what a sand-swimmer is; read its 8.8 as under-sand transit. One home, the Stillsand,
+   with the §2c depth-arm annotation.*
+6. **The vekka label** (`RSW_SandLion`). Batch 4c Flag 1: *vekka* was coined by the
+   porting agent, never ruled, and is a canon character's given name (Vekka Lodik);
+   the offered swap is **shakkir**. *Recommendation: shakkir — but if you like vekka,
+   it stands (the flag's own terms).*
+7. **The mid-band annotation (§2c):** confirm the bimodal law's depth arm — a subsurface
+   animal of any size passes (mass OR depth), so the five mid-band burrowers/swimmers
+   are annotated in place and nothing is evicted. *Recommendation: yes, annotate.*
+8. **Two size corrections, one word each:** the **ikee** — port measures bs 0.4 against
+   the roster's approved 0.13; re-measure it back to grain (~0.15)? *Recommendation:
+   yes.* The **aurrok** (AA_SpinedGow, your round-2 import, the one unwired roster row)
+   — donor bs 2.75 is a mid-band SURFACE grazer; wire it grown to bs ≥4, or decline the
+   row? *Recommendation: grow and wire at ~0.15 commonality.*
+9. **File the sand-buster build** (your 2026-09-24 amendment — ruled, still unfiled):
+   RM_-tier castes **ruukka** (giant eruptor) + **oorrik** (grain swarm) + the mound,
+   biome-gated incident here, Utinni patch banning the incident planet-wide.
+   *Recommendation: yes — marquee rank 1 (§4.0).*
+10. **Re-file the cavern work** (deep_desert §8): the cave-beast item closed with
+    "a correctly-scoped successor exists" and none does. One item for the beast + prized
+    eggs, one for cavern authoring, per the source review's own split. *Recommendation:
+    yes, both, beast first.*
+11. **Shipping names for the built pair** (their defs say the names are unsettled; the
+    item they cite was never filed): mirror giant → **oommok**, dust husk → **siidda**
+    (both DRAFT, accent-struck). *Recommendation: ratify or reword at the sitting; the
+    four filler coins (§2d: ruukka, oorrik, eemmok, vaalok) ride the same card after the
+    checker + Wookieepedia probe runs.*
+12. **Wire the dunes engine and the harvest item:** add `RM_Stillsand` (and the frozen
+    `RUT_ExtremeDesert`, until Phase B) to `mandrake.rm.movingdunes`'s
+    `BiomeBindings.xml` — the built engine currently binds vanilla biomes only — and
+    give the light-pipe nub its biosilica harvest item if it lacks one (UNMEASURED).
+    *Recommendation: yes to both; bindings are XML only.*
+13. **Confirm the one-def union (§1a):** `RM_Stillsand` carries both sheets whole; the
+    dune-sea/deep-desert split stays closed per R22 unless you reopen it.
+    *Recommendation: confirm — one def, one mod, painted once at the end.*
+14. **The marquee ranking (§4.0):** sand busters → crossing with the giant → the buried
+    record, eggs-as-water as the cheap swap. *Recommendation: as ranked — rank 1 is the
+    thing you already ruled.*
+
+Nothing above edits the frozen sheets; where a proposal strains one (the bloom's pale
+carve-out, the depth-arm reading), the sheet's wording wins until you say otherwise.
+
+---
+
+**Corrections owed elsewhere, found in passing (reported, not executed — this doc edits
+no other file):** the two Stillsand creature-def headers cite `STILLSAND_SHIPPING_NAMES_1`
+as "filed this pass", and no such item exists in `infrastructure/state/items/` or the
+ledger shards (§7 Q11 covers the gap); `EXTREME_DESERT_CAVERN_BEAST_1` closed against
+criteria requiring a successor item that was never filed (§7 Q10); and
+`mandrake.rm.movingdunes` binds only vanilla `Desert`/`ExtremeDesert`, so the dunes
+engine is live on no Ash'karr biome (§7 Q12).
