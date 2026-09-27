@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 112.95870081800967,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 112.95870081800967,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 640,
+  "id": "graffiti_throwup_b_p2",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790460598,
+    "primary_used_percent": 76.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T10-35-04-01a0dec8-ec3c-75a1-8e0b-ccb83cc375f0.jsonl",
+    "secondary_resets_at": 1791047398,
+    "secondary_used_percent": 12.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790460598,
+    "primary_used_percent": 71.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T10-33-16-01a0dec7-4365-7861-8667-ad8337d9f296.jsonl",
+    "secondary_resets_at": 1791047398,
+    "secondary_used_percent": 11.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 640,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 640,
+    "id": "graffiti_throwup_b_p2",
+    "note": "Generated with built-in imagegen and exported at exactly 640x640 with preserved alpha and transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\graffiti_throwup_b_p2\\graffiti_throwup_b_p2.png",
+    "status": "ok",
+    "width": 640
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/graffiti_throwup_b_p2/graffiti_throwup_b_p2.png\n    640x640  rgba  374,609 bytes  (111s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 90.10129793599481,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 90.10129793599481,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rswultracactus_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 4.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T11-45-22-01a0df09-476c-7ce1-9de6-20a394beff6b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 4.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T11-43-04-01a0df07-2d03-74b2-8c2f-4efe53e06126.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rswultracactus_v1",
+    "note": "Generated with built-in imagegen, resized to exactly 256x256, and saved with transparent alpha. Final prompt normalized the supplied RimWorld sprite specification.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rswultracactus_v1\\rswultracactus_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rswultracactus_v1/rswultracactus_v1.png\n    256x256  rgba  37,056 bytes  (88s)\n"
+}

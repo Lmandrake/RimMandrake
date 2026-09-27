@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 99.96962298604194,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.96962298604194,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "contagion_gollivra_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790309002,
+    "primary_used_percent": 62.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/24/rollout-2026-09-24T16-15-31-01a0d5b3-e45e-7311-b0e4-7be33919edff.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 87.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790309002,
+    "primary_used_percent": 39.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/24/rollout-2026-09-24T16-10-05-01a0d5ae-e97f-7d60-af70-0f7afe7e3478.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 83.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "contagion_gollivra_east",
+    "note": "Generated with built-in imagegen, then resized to exactly 256\u00d7256 while preserving transparent alpha. No prompt changes.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\contagion_gollivra_east\\contagion_gollivra_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/contagion_gollivra_east/contagion_gollivra_east.png\n    256x256  rgba  67,177 bytes  (97s)\n"
+}

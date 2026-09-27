@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 107.72637154400581,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 107.72637154400581,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rutslimegrazer_v2_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 23.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/26/rollout-2026-09-26T14-04-50-01a0df88-f8c4-7d41-9092-207745f80d76.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/26/rollout-2026-09-26T14-00-59-01a0df85-7114-7043-b61c-87114787668d.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rutslimegrazer_v2_east",
+    "note": "Generated via built-in imagegen, resized to exactly 256x256, and saved with transparent alpha. All four corners are fully transparent.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutslimegrazer_v2_east\\rutslimegrazer_v2_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "mat]::Format32bppArgb); $graphics = [System.Drawing.Graphics]::FromImage($bitmap); $graphics.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $graphics.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality; $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $graphics.DrawImage($sourceImage,0,0,256,256); $graphics.Dispose(); $sourceImage.Dispose(); $bitmap.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $bitmap.Dispose(); $check = [System.Drawing.Bitmap]::new($dst); $corner = $check.GetPixel(0,0); [pscustomobject]@{path=$dst;width=$check.Width;height=$check.Height;pixel_format=$check.PixelFormat.ToString();corner_alpha=$corner.A;bytes=(Get-Item -LiteralPath $dst).Length} | ConvertTo-Json -Compress; $check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutslimegrazer_v2_east\n succeeded in 278ms:\n{\"path\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutslimegrazer_v2_east\\\\rutslimegrazer_v2_east.png\",\"width\":256,\"height\":256,\"pixel_format\":\"Format32bppArgb\",\"corner_alpha\":0,\"bytes\":52249}\n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command 'Add-Type -AssemblyName System.Drawing; $p='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutslimegrazer_v2_east\\\\rutslimegrazer_v2_east.png'; \"'$b=[System.Drawing.Bitmap]::new($p); $a=@($b.GetPixel(0,0).A,$b.GetPixel(255,0).A,$b.GetPixel(0,255).A,$b.GetPixel(255,255).A); [pscustomobject]@{exists=(Test-Path -LiteralPath $p);width=$b.Width;height=$b.Height;alphas=$a;all_transparent=(($a | Where-Object {$_ -ne 0}).Count -eq 0)} | ConvertTo-Json -Compress; $b.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutslimegrazer_v2_east\n succeeded in 234ms:\n{\"exists\":true,\"width\":256,\"height\":256,\"alphas\":[0,0,0,0],\"all_transparent\":true}\n\ncodex\n{\"id\":\"rutslimegrazer_v2_east\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutslimegrazer_v2_east\\\\rutslimegrazer_v2_east.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Generated via built-in imagegen, resized to exactly 256x256, and saved with transparent alpha. All four corners are fully transparent.\"}\ntokens used\n21,226\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rutslimegrazer_v2_east/rutslimegrazer_v2_east.png\n    256x256  rgba  52,249 bytes  (100s)\n"
+}

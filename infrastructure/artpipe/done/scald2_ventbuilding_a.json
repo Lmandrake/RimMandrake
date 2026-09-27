@@ -1,0 +1,19 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "width": 1024,
+    "height": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-25T17:23:41Z",
+  "drawsize": 4.0,
+  "facing": null,
+  "facings": [],
+  "id": "scald2_ventbuilding_a",
+  "priority": 45,
+  "prompt": "RimWorld natural building sprite, painterly vanilla-RimWorld art style, transparent background: a natural geyser-mouth vent in dark basalt rock -- a rough, cracked opening venting a soft billowing plume of white steam, mineral staining around the rim, a ground-level terrain feature seen from RimWorld's top-down/isometric game art angle. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Single centered subject, no background scenery beyond the rock itself.",
+  "reference": null,
+  "rimflow_item_id": "SCALD_ART_UPGRADE_WAVE_1",
+  "style_notes": "SCALD_ART_UPGRADE_WAVE_1 -- RUT_ScaldVent (Defs/ThingDefs_Buildings/RUT_ScaldVent.xml), lush upgrade + scatter variant of scald_ventbuilding_v1 (currently the only vent silhouette). _a and _b are two distinct rock-mouth shapes for map-gen scatter variety.",
+  "oversize_reason": "Owner 2026-09-25 (SCALD_ART_UPGRADE_WAVE_1): high-res lush restyle; 256 ceiling stood down by ART_PAINTERLY_RESTORATION_1"
+}

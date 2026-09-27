@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 94.81139871102641,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 94.81139871102641,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "weepingstones2_vellak_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 25.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w6/sessions/2026/09/26/rollout-2026-09-26T14-07-52-01a0df8b-bd97-7d41-ac02-580b7480afc9.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 24.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w6/sessions/2026/09/26/rollout-2026-09-26T14-06-16-01a0df8a-4583-7e81-bfb6-4e1b450ace25.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "weepingstones2_vellak_east",
+    "note": "Built-in imagegen used. Rendered one isolated east-facing caravan animal; road and other herd members omitted to preserve the required transparent sprite.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones2_vellak_east\\weepingstones2_vellak_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": " + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \nYou cannot call a method on a null-valued expression.\nAt line:2 char:1303\n+ ...  -f $check.Width,$check.Height,$p1.A,$p2.A); $check.Dispose(); Write- ...\n+                                                  ~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \n   \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command 'Add-Type -AssemblyName System.Drawing; $src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w6\\\\generated_images\\\\01a0df8b-bd97-7d41-ac02-580b7480afc9\\\\exec-49f58c9a-4abd-4295-8f07-1f3c49a64470.png'; \"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones2_vellak_east\\\\weepingstones2_vellak_east.png'; \"'$sourceImage = [System.Drawing.Image]::FromFile($src); $bitmap = [System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $graphics = [System.Drawing.Graphics]::FromImage($bitmap); $graphics.Clear([System.Drawing.Color]::Transparent); $graphics.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $graphics.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $graphics.DrawImage($sourceImage,0,0,256,256); $graphics.Dispose(); $sourceImage.Dispose(); $bitmap.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $bitmap.Dispose(); $check = [System.Drawing.Bitmap]::new($dst); $p1 = $check.GetPixel(0,0); $p2 = $check.GetPixel(255,255); Write-Output ('\"'{0} {1} alpha={2},{3}' -f \"'$check.Width,$check.Height,$p1.A,$p2.A); $check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones2_vellak_east\n succeeded in 270ms:\n256 256 alpha=0,0\n\ncodex\n{\"id\":\"weepingstones2_vellak_east\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones2_vellak_east\\\\weepingstones2_vellak_east.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Built-in imagegen used. Rendered one isolated east-facing caravan animal; road and other herd members omitted to preserve the required transparent sprite.\"}\ntokens used\n28,500\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/weepingstones2_vellak_east/weepingstones2_vellak_east.png\n    256x256  rgba  68,790 bytes  (95s)\n"
+}

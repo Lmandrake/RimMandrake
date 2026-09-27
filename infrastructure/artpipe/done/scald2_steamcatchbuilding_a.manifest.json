@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 82.66699949699978,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 82.66699949699978,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "scald2_steamcatchbuilding_a",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790401357,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/25/rollout-2026-09-25T17-53-24-01a0db33-dc7d-7492-94ee-07e6d8759f67.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 33.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790401357,
+    "primary_used_percent": 10.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/25/rollout-2026-09-25T17-47-43-01a0db2e-a960-7b73-b0e2-9bebbdfcc38a.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 32.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "scald2_steamcatchbuilding_a",
+    "note": "Generated via built-in imagegen and resized to exactly 512\u00d7512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scald2_steamcatchbuilding_a\\scald2_steamcatchbuilding_a.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scald2_steamcatchbuilding_a/scald2_steamcatchbuilding_a.png\n    512x512  rgba  281,910 bytes  (81s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 102.57327964599244,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 102.57327964599244,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "contagion_fezzira_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790309002,
+    "primary_used_percent": 39.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/24/rollout-2026-09-24T16-10-05-01a0d5ae-e97f-7d60-af70-0f7afe7e3478.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 83.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790309002,
+    "primary_used_percent": 14.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/24/rollout-2026-09-24T16-04-50-01a0d5aa-1b02-70d1-b882-94b00237d24d.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 80.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "contagion_fezzira_east",
+    "note": "Built-in imagegen; generated the east-facing fezzira from the supplied prompt, resized it to exactly 256\u00d7256, and preserved transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\contagion_fezzira_east\\contagion_fezzira_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/contagion_fezzira_east/contagion_fezzira_east.png\n    256x256  rgba  97,895 bytes  (101s)\n"
+}

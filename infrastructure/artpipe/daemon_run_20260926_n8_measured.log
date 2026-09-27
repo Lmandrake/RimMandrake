@@ -1,0 +1,144 @@
+[14:11:47] artpiped 1038839 — 8 workers, 20 pending, log /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/logs/artpiped_20260926_141147_1038839.log
+[14:11:52] codex sandbox ok — sandbox seed template matches the installed build (codex-command-runner-0.153.4.exe)
+● IDLE — 20 pending, nothing claimable  (0 ok, 0 failed this session)  wk —
+▶ WORKING 2/8 ░░░░░░░░░░░░  weepingstones_ivvol_north 0s, weepingstones_ivvol_south 0s  +18 pending  wk —
+▶ WORKING 4/8 ░░░░░░░░░░░░  weepingstones_ivvol_north 0s, weepingstones_ivvol_south 0s, weepingstones_karrek_east 0s, weepingstones_karrek_north 0s  +15 pending  wk —
+▶ WORKING 7/8 ░░░░░░░░░░░░  weepingstones_ivvol_north 0s, weepingstones_ivvol_south 0s, weepingstones_karrek_east 0s, weepingstones_karrek_north 0s, weepingstones_karrek_south 0s, weepingstones_loomu_east 0s, weepingstones_loomu_north 0s  +13 pending  wk —
+▶ WORKING 8/8 ░░░░░░░░░░░░  weepingstones_ivvol_north 0s, weepingstones_ivvol_south 0s, weepingstones_karrek_east 0s, weepingstones_karrek_north 0s, weepingstones_karrek_south 0s, weepingstones_loomu_east 0s, weepingstones_loomu_north 0s, weepingstones_loomu_south 0s  +12 pending  wk —
+✓  weepingstones_loomu_east                        generate/codex     89s  PASS  14:13
+▶ WORKING 8/8 ████░░░░░░░░  weepingstones_ivvol_north 92s, weepingstones_ivvol_south 92s, weepingstones_karrek_east 92s, weepingstones_karrek_north 91s, weepingstones_karrek_south 91s, weepingstones_loomu_north 91s, weepingstones_loomu_south 91s, weepingstones_murrin_east 0s  +11 pending  wk —
+✓  weepingstones_karrek_east                       generate/codex     94s  PASS  14:13
+▶ WORKING 8/8 ████░░░░░░░░  weepingstones_ivvol_north 100s, weepingstones_ivvol_south 100s, weepingstones_karrek_north 100s, weepingstones_karrek_south 99s, weepingstones_loomu_north 99s, weepingstones_loomu_south 99s, weepingstones_murrin_east 8s, weepingstones_murrin_north 0s  +10 pending  wk —
+✓  weepingstones_ivvol_north                       generate/codex     95s  PASS  14:13
+▶ WORKING 8/8 ████░░░░░░░░  weepingstones_ivvol_south 101s, weepingstones_karrek_north 101s, weepingstones_karrek_south 101s, weepingstones_loomu_north 100s, weepingstones_loomu_south 100s, weepingstones_murrin_east 9s, weepingstones_murrin_north 1s, weepingstones_murrin_south 0s  +9 pending  wk —
+✓  weepingstones_karrek_south                      generate/codex    106s  PASS  14:13
+▶ WORKING 7/8 ████░░░░░░░░  weepingstones_ivvol_south 109s, weepingstones_karrek_north 109s, weepingstones_loomu_north 108s, weepingstones_loomu_south 108s, weepingstones_murrin_east 17s, weepingstones_murrin_north 9s, weepingstones_murrin_south 7s  +9 pending  wk —
+✓  weepingstones_ivvol_south                       generate/codex    103s  PASS  14:13
+▶ WORKING 8/8 ████░░░░░░░░  weepingstones_karrek_north 109s, weepingstones_loomu_north 109s, weepingstones_loomu_south 108s, weepingstones_murrin_east 17s, weepingstones_murrin_north 9s, weepingstones_murrin_south 8s, weepingstones_skarrin_east 0s, weepingstones_skarrin_north 0s  +7 pending  wk —
+✓  weepingstones_loomu_north                       generate/codex    112s  PASS  14:13
+▶ WORKING 8/8 █████░░░░░░░  weepingstones_karrek_north 113s, weepingstones_loomu_south 112s, weepingstones_murrin_east 21s, weepingstones_murrin_north 13s, weepingstones_murrin_south 12s, weepingstones_skarrin_east 4s, weepingstones_skarrin_north 3s, weepingstones_skarrin_south 0s  +6 pending  wk —
+✓  weepingstones_loomu_south                       generate/codex    114s  PASS  14:13
+▶ WORKING 8/8 █████░░░░░░░  weepingstones_karrek_north 114s, weepingstones_murrin_east 22s, weepingstones_murrin_north 14s, weepingstones_murrin_south 13s, weepingstones_skarrin_east 5s, weepingstones_skarrin_north 5s, weepingstones_skarrin_south 1s, weepingstones_vhorrin_east 0s  +5 pending  wk —
+✓  weepingstones_karrek_north                      generate/codex    121s  PASS  14:13
+▶ WORKING 8/8 █░░░░░░░░░░░  weepingstones_murrin_east 31s, weepingstones_murrin_north 23s, weepingstones_murrin_south 22s, weepingstones_skarrin_east 14s, weepingstones_skarrin_north 14s, weepingstones_skarrin_south 10s, weepingstones_vhorrin_east 8s, weepingstones_vhorrin_north 0s  +4 pending  wk —
+✓  weepingstones_murrin_south                      generate/codex     84s  PASS  14:15
+▶ WORKING 8/8 ████░░░░░░░░  weepingstones_murrin_east 96s, weepingstones_murrin_north 88s, weepingstones_skarrin_east 78s, weepingstones_skarrin_north 78s, weepingstones_skarrin_south 75s, weepingstones_vhorrin_east 73s, weepingstones_vhorrin_north 64s, weepingstones_vhorrin_south 0s  +3 pending  wk —
+✓  weepingstones_murrin_north                      generate/codex     90s  PASS  14:15
+▶ WORKING 7/8 ████░░░░░░░░  weepingstones_murrin_east 101s, weepingstones_skarrin_east 83s, weepingstones_skarrin_north 83s, weepingstones_skarrin_south 80s, weepingstones_vhorrin_east 78s, weepingstones_vhorrin_north 69s, weepingstones_vhorrin_south 5s  +2 pending  wk —
+▶ WORKING 8/8 ████░░░░░░░░  weepingstones_murrin_east 101s, weepingstones_skarrin_east 84s, weepingstones_skarrin_north 84s, weepingstones_skarrin_south 80s, weepingstones_vhorrin_east 78s, weepingstones_vhorrin_north 70s, weepingstones_vhorrin_south 5s, weepingstones_vizhik_east 0s  +2 pending  wk —
+✓  weepingstones_skarrin_south                     generate/codex     92s  PASS  14:15
+▶ WORKING 8/8 █████░░░░░░░  weepingstones_murrin_east 113s, weepingstones_skarrin_east 96s, weepingstones_skarrin_north 96s, weepingstones_vhorrin_east 91s, weepingstones_vhorrin_north 82s, weepingstones_vhorrin_south 17s, weepingstones_vizhik_east 12s, weepingstones_vizhik_north 0s  +1 pending  wk —
+✓  weepingstones_skarrin_east                      generate/codex     96s  PASS  14:15
+▶ WORKING 8/8 █████░░░░░░░  weepingstones_murrin_east 116s, weepingstones_skarrin_north 98s, weepingstones_vhorrin_east 93s, weepingstones_vhorrin_north 84s, weepingstones_vhorrin_south 19s, weepingstones_vizhik_east 14s, weepingstones_vizhik_north 2s, weepingstones_vizhik_south 0s  +0 pending  wk —
+✓  weepingstones_vhorrin_east                      generate/codex     97s  PASS  14:15
+▶ WORKING 7/8 █████░░░░░░░  weepingstones_murrin_east 120s, weepingstones_skarrin_north 102s, weepingstones_vhorrin_north 88s, weepingstones_vhorrin_south 24s, weepingstones_vizhik_east 18s, weepingstones_vizhik_north 6s, weepingstones_vizhik_south 4s  +0 pending  wk —
+✓  weepingstones_murrin_east                       generate/codex    124s  PASS  14:15
+▶ WORKING 6/8 ████░░░░░░░░  weepingstones_skarrin_north 107s, weepingstones_vhorrin_north 93s, weepingstones_vhorrin_south 28s, weepingstones_vizhik_east 23s, weepingstones_vizhik_north 11s, weepingstones_vizhik_south 8s  +0 pending  wk —
+✓  weepingstones_vhorrin_north                     generate/codex    100s  PASS  14:15
+▶ WORKING 5/8 █████░░░░░░░  weepingstones_skarrin_north 115s, weepingstones_vhorrin_south 36s, weepingstones_vizhik_east 31s, weepingstones_vizhik_north 19s, weepingstones_vizhik_south 16s  +0 pending  wk —
+✓  weepingstones_skarrin_north                     generate/codex    131s  PASS  14:15
+▶ WORKING 4/8 ██░░░░░░░░░░  weepingstones_vhorrin_south 54s, weepingstones_vizhik_east 49s, weepingstones_vizhik_north 36s, weepingstones_vizhik_south 34s  +0 pending  wk —
+✓  weepingstones_vizhik_south                      generate/codex     84s  PASS  14:16
+▶ WORKING 3/8 ████░░░░░░░░  weepingstones_vhorrin_south 105s, weepingstones_vizhik_east 100s, weepingstones_vizhik_north 88s  +0 pending  wk —
+✗  weepingstones_vizhik_east                       generate/codex    137s  FAIL  size_mismatch  14:17
+▶ WORKING 2/8 ██████░░░░░░  weepingstones_vhorrin_south 145s, weepingstones_vizhik_north 127s  +0 pending  wk —
+✓  weepingstones_vizhik_north                      generate/codex    131s  PASS  14:17
+▶ WORKING 1/8 ██████░░░░░░  weepingstones_vhorrin_south 148s  +0 pending  wk —
+✓  weepingstones_vhorrin_south                     generate/codex    149s  PASS  14:17
+● IDLE — queue empty  (19 ok, 1 failed this session)  wk —
+● IDLE — 3 pending, nothing claimable  (19 ok, 1 failed this session)  wk —
+▶ WORKING 3/8 ░░░░░░░░░░░░  greysea_saltblade 0s, twilightsea_moldmatroof 0s, twilightsea_saltblade 0s  +0 pending  wk —
+✓  twilightsea_saltblade                           generate/codex     89s  PASS  16:57
+[16:57:43] codex: sustained slowdown (generate median 131s vs 62s baseline) → concurrency 8→4
+▶ WORKING 2/4 ████░░░░░░░░  greysea_saltblade 91s, twilightsea_moldmatroof 91s  +0 pending  wk —
+✓  greysea_saltblade                               generate/codex     94s  PASS  16:57
+▶ WORKING 1/4 ████░░░░░░░░  twilightsea_moldmatroof 93s  +0 pending  wk —
+✗  twilightsea_moldmatroof                         generate/codex    147s  FAIL  size_mismatch  16:58
+● IDLE — queue empty  (21 ok, 2 failed this session)  wk —
+● IDLE — 6 pending, nothing claimable  (21 ok, 2 failed this session)  wk —
+▶ WORKING 4/4 ░░░░░░░░░░░░  propanelake_fessu 0s, propanelake_iliss 0s, propanelake_krellik 0s, propanelake_oddu 0s  +2 pending  wk —
+✓  propanelake_oddu                                generate/codex     83s  PASS  17:19
+▶ WORKING 4/4 ███░░░░░░░░░  propanelake_fessu 82s, propanelake_iliss 82s, propanelake_krellik 82s, propanelake_oovu 0s  +1 pending  wk —
+✓  propanelake_iliss                               generate/codex     83s  PASS  17:19
+▶ WORKING 4/4 ███░░░░░░░░░  propanelake_fessu 87s, propanelake_krellik 87s, propanelake_oovu 4s, propanelake_tarnn 0s  +0 pending  wk —
+✓  propanelake_krellik                             generate/codex     86s  PASS  17:19
+✓  propanelake_fessu                               generate/codex     89s  PASS  17:19
+▶ WORKING 2/4 ░░░░░░░░░░░░  propanelake_oovu 7s, propanelake_tarnn 3s  +0 pending  wk —
+✓  propanelake_tarnn                               generate/codex     99s  PASS  17:20
+▶ WORKING 1/4 ████░░░░░░░░  propanelake_oovu 104s  +0 pending  wk —
+✓  propanelake_oovu                                generate/codex    132s  PASS  17:21
+● IDLE — queue empty  (27 ok, 2 failed this session)  wk —
+● IDLE — 1 pending, nothing claimable  (27 ok, 2 failed this session)  wk —
+▶ WORKING 1/4 ░░░░░░░░░░░░  greysea_elderunknownweapon 0s  +0 pending  wk —
+✓  greysea_elderunknownweapon                      generate/codex     92s  PASS  17:33
+● IDLE — queue empty  (28 ok, 2 failed this session)  wk —
+● IDLE — 6 pending, nothing claimable  (28 ok, 2 failed this session)  wk —
+▶ WORKING 4/4 ░░░░░░░░░░░░  deepfire_pigmentjar_c 0s, deepfire_pigmentjar_d 0s, rm_crowncarpetfresh_icon_b 0s, rm_crowncarpetfresh_icon_c 0s  +2 pending  wk —
+✓  deepfire_pigmentjar_d                           generate/codex     89s  PASS  17:47
+▶ WORKING 4/4 ████░░░░░░░░  deepfire_pigmentjar_c 89s, rm_crowncarpetfresh_icon_b 89s, rm_crowncarpetfresh_icon_c 89s, rm_saltcrystalitem_pile_b 0s  +1 pending  wk —
+✓  deepfire_pigmentjar_c                           generate/codex     96s  PASS  17:47
+▶ WORKING 4/4 ████░░░░░░░░  rm_crowncarpetfresh_icon_b 96s, rm_crowncarpetfresh_icon_c 96s, rm_saltcrystalitem_pile_b 8s, rm_saltcrystalitem_pile_c 0s  +0 pending  wk —
+✓  rm_crowncarpetfresh_icon_c                      generate/codex     97s  PASS  17:47
+▶ WORKING 3/4 ████░░░░░░░░  rm_crowncarpetfresh_icon_b 99s, rm_saltcrystalitem_pile_b 10s, rm_saltcrystalitem_pile_c 2s  +0 pending  wk —
+✓  rm_crowncarpetfresh_icon_b                      generate/codex    105s  PASS  17:47
+▶ WORKING 2/4 █░░░░░░░░░░░  rm_saltcrystalitem_pile_b 19s, rm_saltcrystalitem_pile_c 12s  +0 pending  wk —
+✓  rm_saltcrystalitem_pile_c                       generate/codex    106s  PASS  17:49
+▶ WORKING 1/4 █████░░░░░░░  rm_saltcrystalitem_pile_b 114s  +0 pending  wk —
+✓  rm_saltcrystalitem_pile_b                       generate/codex    114s  PASS  17:49
+● IDLE — queue empty  (34 ok, 2 failed this session)  wk —
+● IDLE — 2 pending, nothing claimable  (34 ok, 2 failed this session)  wk —
+● IDLE — 9 pending, nothing claimable  (34 ok, 2 failed this session)  wk —
+● IDLE — 6 pending, nothing claimable  (34 ok, 2 failed this session)  wk —
+▶ WORKING 4/4 ░░░░░░░░░░░░  desertportb_jellypot_east 0s, desertportb_jellypot_north 0s, desertportb_jellypot_south 0s, desertportb_landopus_east 0s  +2 pending  wk —
+▶ WORKING 4/4 ██░░░░░░░░░░  desertportb_jellypot_east 61s, desertportb_jellypot_north 61s, desertportb_jellypot_south 61s, desertportb_landopus_east 61s  +1 pending  wk —
+▶ WORKING 4/4 ███░░░░░░░░░  desertportb_jellypot_east 67s, desertportb_jellypot_north 67s, desertportb_jellypot_south 67s, desertportb_landopus_east 67s  +0 pending  wk —
+✓  desertportb_jellypot_north                      generate/codex     74s  PASS  18:18
+▶ WORKING 3/4 ███░░░░░░░░░  desertportb_jellypot_east 75s, desertportb_jellypot_south 75s, desertportb_landopus_east 75s  +0 pending  wk —
+✓  desertportb_jellypot_south                      generate/codex    101s  PASS  18:19
+▶ WORKING 2/4 ████░░░░░░░░  desertportb_jellypot_east 101s, desertportb_landopus_east 101s  +0 pending  wk —
+✓  desertportb_jellypot_east                       generate/codex    100s  PASS  18:19
+▶ WORKING 1/4 ████░░░░░░░░  desertportb_landopus_east 106s  +0 pending  wk —
+✓  desertportb_landopus_east                       generate/codex    127s  PASS  18:19
+● IDLE — queue empty  (38 ok, 2 failed this session)  wk —
+▶ WORKING 1/4 ░░░░░░░░░░░░  RM_Suulk_east 0s  +6 pending  wk —
+▶ WORKING 4/4 ░░░░░░░░░░░░  RM_Suulk_east 0s, RM_VauliskLure_south 0s, RM_Suulk_north 0s, RM_Suulk_south 0s  +3 pending  wk —
+✗  RM_Suulk_north                                  generate/codex      ?s  FAIL  bad_job_file  21:31
+▶ WORKING 3/4 ░░░░░░░░░░░░  RM_Suulk_east 0s, RM_VauliskLure_south 0s, RM_Suulk_south 0s  +3 pending  wk —
+✗  RM_Suulk_south                                  generate/codex      ?s  FAIL  bad_job_file  21:31
+▶ WORKING 2/4 ░░░░░░░░░░░░  RM_Suulk_east 0s, RM_VauliskLure_south 0s  +3 pending  wk —
+✗  RM_Suulk_east                                   generate/codex      ?s  FAIL  bad_job_file  21:31
+✗  RM_Vaulisk_east                                 generate/codex      ?s  FAIL  bad_job_file  21:31
+▶ WORKING 3/4 ░░░░░░░░░░░░  RM_VauliskLure_south 1s, RM_Vaulisk_north 0s, RM_Vaulisk_south 0s  +0 pending  wk —
+✗  RM_Vaulisk_north                                generate/codex      ?s  FAIL  bad_job_file  21:31
+✗  RM_Vaulisk_south                                generate/codex      ?s  FAIL  bad_job_file  21:31
+▶ WORKING 1/4 ░░░░░░░░░░░░  RM_VauliskLure_south 1s  +0 pending  wk —
+✓  RM_VauliskLure_south                            generate/codex    103s  PASS  21:33
+● IDLE — queue empty  (39 ok, 8 failed this session)  wk —
+● IDLE — 1 pending, nothing claimable  (39 ok, 8 failed this session)  wk —
+▶ WORKING 1/4 ░░░░░░░░░░░░  RM_VeilPane_south 0s  +0 pending  wk —
+✗  RM_VeilPane_south                               generate/codex      ?s  FAIL  bad_job_file  21:39
+● IDLE — queue empty  (39 ok, 9 failed this session)  wk —
+● IDLE — 2 pending, nothing claimable  (39 ok, 9 failed this session)  wk —
+● IDLE — 4 pending, nothing claimable  (39 ok, 9 failed this session)  wk —
+✗  RM_ConstellationCageSphere_south                generate/codex      ?s  FAIL  bad_job_file  21:46
+✗  RM_SunSphere_south                              generate/codex      ?s  FAIL  bad_job_file  21:46
+▶ WORKING 2/4 ░░░░░░░░░░░░  RM_HoolimbrePlant_south 0s, RM_NoothelmPlant_south 0s  +0 pending  wk —
+✓  RM_HoolimbrePlant_south                         generate/codex     93s  PASS  21:48
+▶ WORKING 1/4 ████░░░░░░░░  RM_NoothelmPlant_south 98s  +0 pending  wk —
+✓  RM_NoothelmPlant_south                          generate/codex    104s  PASS  21:48
+● IDLE — queue empty  (41 ok, 11 failed this session)  wk —
+● IDLE — 3 pending, nothing claimable  (41 ok, 11 failed this session)  wk —
+● IDLE — 9 pending, nothing claimable  (41 ok, 11 failed this session)  wk —
+● IDLE — 8 pending, nothing claimable  (41 ok, 11 failed this session)  wk —
+● IDLE — 6 pending, nothing claimable  (41 ok, 11 failed this session)  wk —
+▶ WORKING 4/4 ░░░░░░░░░░░░  RM_Suulk_v2_east 0s, RM_Suulk_v2_north 0s, RM_Suulk_v2_south 0s, RM_Vaulisk_v2_east 0s  +2 pending  wk —
+▶ WORKING 4/4 ███░░░░░░░░░  RM_Suulk_v2_east 64s, RM_Suulk_v2_north 64s, RM_Suulk_v2_south 64s, RM_Vaulisk_v2_east 64s  +1 pending  wk —
+▶ WORKING 4/4 ███░░░░░░░░░  RM_Suulk_v2_east 73s, RM_Suulk_v2_north 73s, RM_Suulk_v2_south 73s, RM_Vaulisk_v2_east 73s  +0 pending  wk —
+✓  RM_Vaulisk_v2_east                              generate/codex    103s  PASS  22:17
+▶ WORKING 3/4 ████░░░░░░░░  RM_Suulk_v2_east 111s, RM_Suulk_v2_north 111s, RM_Suulk_v2_south 111s  +0 pending  wk —
+✓  RM_Suulk_v2_east                                generate/codex    120s  PASS  22:17
+▶ WORKING 2/4 █████░░░░░░░  RM_Suulk_v2_north 123s, RM_Suulk_v2_south 123s  +0 pending  wk —
+✓  RM_Suulk_v2_north                               generate/codex    124s  PASS  22:17
+▶ WORKING 1/4 █████░░░░░░░  RM_Suulk_v2_south 124s  +0 pending  wk —
+✓  RM_Suulk_v2_south                               generate/codex    149s  PASS  22:17
+● IDLE — queue empty  (45 ok, 11 failed this session)  wk —

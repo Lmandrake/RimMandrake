@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 139.77717907101032,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 139.77717907101032,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "scaldfloor_bladderboil_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T13-33-17-01a0df6c-140d-7381-9f44-7708310cc45b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T13-28-33-01a0df67-bf32-7471-a5a5-da64bc85db5e.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "scaldfloor_bladderboil_south",
+    "note": "Generated via built-in imagegen using existing north/east and catch-art references; saved as a transparent 512\u00d7512 south-facing sprite.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_bladderboil_south\\scaldfloor_bladderboil_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \nx pixelFormat= cornerAlpha=\nYou cannot call a method on a null-valued expression.\nAt line:22 char:1\n+ $check.Dispose()\n+ ~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command 'Add-Type -AssemblyName System.Drawing\n$src='\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w0\\\\generated_images\\\\01a0df6c-140d-7381-9f44-7708310cc45b\\\\exec-d8b95a90-5882-4b39-a867-0a3182a99b1b.png'\n\"'$out='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_bladderboil_south\\\\scaldfloor_bladderboil_south.png'\n\"'$input=[System.Drawing.Image]::FromFile($src)\n$bmp=[System.Drawing.Bitmap]::new(512,512,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb)\n$g=[System.Drawing.Graphics]::FromImage($bmp)\n$g.Clear([System.Drawing.Color]::Transparent)\n$g.CompositingMode=[System.Drawing.Drawing2D.CompositingMode]::SourceCopy\n$g.CompositingQuality=[System.Drawing.Drawing2D.CompositingQuality]::HighQuality\n$g.InterpolationMode=[System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic\n$g.SmoothingMode=[System.Drawing.Drawing2D.SmoothingMode]::HighQuality\n$g.PixelOffsetMode=[System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality\n$g.DrawImage($input,0,0,512,512)\n$g.Dispose(); $input.Dispose()\n$bmp.Save($out,[System.Drawing.Imaging.ImageFormat]::Png)\n$bmp.Dispose()\n$check=[System.Drawing.Bitmap]::new($out)\n$alphas=@($check.GetPixel(0,0).A,$check.GetPixel(511,0).A,$check.GetPixel(0,511).A,$check.GetPixel(511,511).A)\n\"$($check.Width)x$($check.Height) pixelFormat=$($check.PixelFormat) cornerAlpha=$($alphas -join '\"',')\\\"\n\"'$check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_bladderboil_south\n succeeded in 243ms:\n512x512 pixelFormat=Format32bppArgb cornerAlpha=0,0,0,0\n\ncodex\n{\"id\":\"scaldfloor_bladderboil_south\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_bladderboil_south\\\\scaldfloor_bladderboil_south.png\",\"width\":512,\"height\":512,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Generated via built-in imagegen using existing north/east and catch-art references; saved as a transparent 512\u00d7512 south-facing sprite.\"}\ntokens used\n26,842\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scaldfloor_bladderboil_south/scaldfloor_bladderboil_south.png\n    512x512  rgba  274,414 bytes  (137s)\n"
+}

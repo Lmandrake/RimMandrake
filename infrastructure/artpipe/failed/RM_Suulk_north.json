@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-27T04:31:17Z",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Suulk_north",
+  "priority": 90,
+  "prompt": "RimWorld top-down game animal sprite: the suulk, a soft slow drifting fold of night-coloured tissue the size of a sheep \u2014 a ragged velvet blanket of deep blue-black membrane, edges trailing like torn cloth, almost invisible in dark water and lovely where a gold beam catches a translucent fringe. No eyes that read, no Earth animal it resembles; a grazing shadow, not a monster.",
+  "reference": null,
+  "rimflow_item_id": "TWILIGHT_DANGER_LIGHTWEB_1",
+  "style_notes": "deep blue-black velvet membrane, ragged trailing edges, one gold-lit translucent fringe as the read; painterly vanilla-RimWorld animal art style"
+}

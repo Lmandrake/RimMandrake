@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 120.49392429401632,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 120.49392429401632,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 640,
+  "id": "glyph_guilty",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790460598,
+    "primary_used_percent": 7.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T10-10-32-01a0deb2-7387-7511-bc30-f754a6c8cf71.jsonl",
+    "secondary_resets_at": 1791047398,
+    "secondary_used_percent": 1.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790460598,
+    "primary_used_percent": 1.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T10-08-20-01a0deb0-6f79-7821-b5f5-36578d850f77.jsonl",
+    "secondary_resets_at": 1791047398,
+    "secondary_used_percent": 0.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 640,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 640,
+    "id": "glyph_guilty",
+    "note": "Generated with built-in imagegen, exported at exactly 640x640, and verified RGBA with fully transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\glyph_guilty\\glyph_guilty.png",
+    "status": "ok",
+    "width": 640
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/glyph_guilty/glyph_guilty.png\n    640x640  rgba  599,290 bytes  (118s)\n"
+}

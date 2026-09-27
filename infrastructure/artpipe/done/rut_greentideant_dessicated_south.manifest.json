@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 93.08112950902432,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 93.08112950902432,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "rut_greentideant_dessicated_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 23.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/26/rollout-2026-09-26T14-06-01-01a0df8a-0e32-7f62-a54a-abdb80e33dc3.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 22.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/26/rollout-2026-09-26T14-04-39-01a0df88-cb99-7a21-9297-9b3f6df8c296.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "rut_greentideant_dessicated_south",
+    "note": "Generated via built-in imagegen, copied into the workspace, resized to exactly 512\u00d7512, and verified as 32-bit RGBA with all four corners transparent.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_greentideant_dessicated_south\\rut_greentideant_dessicated_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "xpression.\nAt line:2 char:1256\n+ ...  corner={2}\" -f $check.Width,$check.Height,$px.A); $check.Dispose() }\n+                                                        ~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$ErrorActionPreference = '\"'Stop'; Add-Type -AssemblyName System.Drawing; \"'$src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w3\\\\generated_images\\\\01a0df8a-0e32-7f62-a54a-abdb80e33dc3\\\\exec-1f89c69b-f50d-4d19-917d-17c1c01e8c56.png'; \"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rut_greentideant_dessicated_south\\\\rut_greentideant_dessicated_south.png'; \"'$im = [System.Drawing.Image]::FromFile($src); $bmp = [System.Drawing.Bitmap]::new(512,512,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $g = [System.Drawing.Graphics]::FromImage($bmp); $g.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.DrawImage($im,0,0,512,512); $g.Dispose(); $im.Dispose(); $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $bmp.Dispose(); $check = [System.Drawing.Bitmap]::FromFile($dst); $px1 = $check.GetPixel(0,0); $px2 = $check.GetPixel(511,0); $px3 = $check.GetPixel(0,511); $px4 = $check.GetPixel(511,511); Write-Output (\"{0} {1} PixelFormat={2} CornerAlpha={3},{4},{5},{6} Path={7}\" -f $check.Width,$check.Height,$check.PixelFormat,$px1.A,$px2.A,$px3.A,$px4.A,$dst); $check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_greentideant_dessicated_south\n succeeded in 264ms:\n512 512 PixelFormat=Format32bppArgb CornerAlpha=0,0,0,0 Path=D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_greentideant_dessicated_south\\rut_greentideant_dessicated_south.png\n\ncodex\n{\"id\":\"rut_greentideant_dessicated_south\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rut_greentideant_dessicated_south\\\\rut_greentideant_dessicated_south.png\",\"width\":512,\"height\":512,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated via built-in imagegen, copied into the workspace, resized to exactly 512\u00d7512, and verified as 32-bit RGBA with all four corners transparent.\"}\ntokens used\n19,045\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rut_greentideant_dessicated_south/rut_greentideant_dessicated_south.png\n    512x512  rgba  283,554 bytes  (93s)\n"
+}

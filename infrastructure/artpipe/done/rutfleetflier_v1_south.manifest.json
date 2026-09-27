@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 87.74330412101699,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 87.74330412101699,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rutfleetflier_v1_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/26/rollout-2026-09-26T13-59-03-01a0df83-ac60-78a1-af9b-414fdbdf9f53.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 20.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/26/rollout-2026-09-26T13-56-52-01a0df81-ab3d-7350-a22f-9560614d0298.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rutfleetflier_v1_south",
+    "note": "Generated via built-in imagegen and resized to exact 256x256 while preserving transparent alpha; one file-processing retry followed a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutfleetflier_v1_south\\rutfleetflier_v1_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "tegoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$src='\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w4\\\\generated_images\\\\01a0df83-ac60-78a1-af9b-414fdbdf9f53\\\\exec-a3bb92a8-a4a8-4e6f-9e28-64a40e80ed88.png'; \"'$dst='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutfleetflier_v1_south\\\\rutfleetflier_v1_south.png'; Add-Type -AssemblyName System.Drawing; \"'$im=[System.Drawing.Image]::FromFile($src); try { $fmt=[System.Drawing.Imaging.PixelFormat]::Format32bppArgb; $bmp=[System.Drawing.Bitmap]::new(256,256,$fmt); try { $bmp.SetResolution(96,96); $g=[System.Drawing.Graphics]::FromImage($bmp); try { $g.Clear([System.Drawing.Color]::Transparent); $g.CompositingMode=[System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality=[System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode=[System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.SmoothingMode=[System.Drawing.Drawing2D.SmoothingMode]::HighQuality; $g.PixelOffsetMode=[System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $g.DrawImage($im,0,0,256,256) } finally { $g.Dispose() }; $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png) } finally { $bmp.Dispose() } } finally { $im.Dispose() }; $check=[System.Drawing.Bitmap]::FromFile($dst); try { $corners=@($check.GetPixel(0,0).A,$check.GetPixel(255,0).A,$check.GetPixel(0,255).A,$check.GetPixel(255,255).A); Write-Output \"PATH=$dst\"; Write-Output \"SIZE=$($check.Width)x$($check.Height)\"; Write-Output \"PIXELFORMAT=$($check.PixelFormat)\"; Write-Output \"CORNERS=$($corners -join '\"',')\\\" } finally { \"'$check.Dispose() }' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutfleetflier_v1_south\n succeeded in 243ms:\nPATH=D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutfleetflier_v1_south\\rutfleetflier_v1_south.png\nSIZE=256x256\nPIXELFORMAT=Format32bppArgb\nCORNERS=0,0,0,0\n\ncodex\n{\"id\":\"rutfleetflier_v1_south\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutfleetflier_v1_south\\\\rutfleetflier_v1_south.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated via built-in imagegen and resized to exact 256x256 while preserving transparent alpha; one file-processing retry followed a PowerShell constructor error.\"}\ntokens used\n14,456\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rutfleetflier_v1_south/rutfleetflier_v1_south.png\n    256x256  rgba  29,366 bytes  (87s)\n"
+}

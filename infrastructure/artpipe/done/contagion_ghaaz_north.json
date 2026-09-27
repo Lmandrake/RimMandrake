@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T21:59:39Z",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "contagion_ghaaz_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: ghaaz, the Contagion's body \u2014 a creeping amorphous red-organic mass that eats the dead and buds new forms, glistening wet surface, no fixed silhouette, pooling and creeping shape, in the wet red-storm valley of the Contagion, a place still unfinished; damp organic texture, red-violet to bruise-purple palette with glistening wet highlights. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "style_notes": "defName AA_RedGoo. Batch 3c row 1. Slime law (single drawn-out syllable): the body, whatever shape it buds."
+}

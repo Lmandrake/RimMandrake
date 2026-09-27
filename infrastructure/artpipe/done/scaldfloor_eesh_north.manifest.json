@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 170.25961129300413,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 170.25961129300413,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "scaldfloor_eesh_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 13.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w7/sessions/2026/09/26/rollout-2026-09-26T13-24-57-01a0df64-718c-7c51-aa70-2d02a75687c9.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "ok": false,
+    "reason": "rollout has no token_count/rate_limits event yet",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w7/sessions/2026/09/26/rollout-2026-09-26T13-21-25-01a0df61-35ea-7660-a971-d81f8849afdc.jsonl"
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "scaldfloor_eesh_north",
+    "note": "Built-in imagegen; matched shipped Eesh catch art. Saved workspace copy; project install path was outside the writable root.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_eesh_north\\scaldfloor_eesh_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "orId : InvokeMethodOnNull\n \n\n\n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$ErrorActionPreference='\"'Stop'; Add-Type -AssemblyName System.Drawing; \"'$src='\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w7\\\\generated_images\\\\01a0df64-718c-7c51-aa70-2d02a75687c9\\\\exec-9b0382fd-2cef-44e2-b208-53f7467f81f3.png'; \"'$dst='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_eesh_north\\\\scaldfloor_eesh_north.png'; \"'$in=[System.Drawing.Bitmap]::FromFile($src); $out=[System.Drawing.Bitmap]::new(512,512,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $g=[System.Drawing.Graphics]::FromImage($out); $g.Clear([System.Drawing.Color]::Transparent); $g.CompositingMode=[System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality=[System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode=[System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.PixelOffsetMode=[System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $g.SmoothingMode=[System.Drawing.Drawing2D.SmoothingMode]::HighQuality; $rect=[System.Drawing.Rectangle]::new(0,0,512,512); $g.DrawImage($in,$rect,0,0,$in.Width,$in.Height,[System.Drawing.GraphicsUnit]::Pixel); $g.Dispose(); $in.Dispose(); $out.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $out.Dispose(); $check=[System.Drawing.Bitmap]::FromFile($dst); $alphas=@($check.GetPixel(0,0).A,$check.GetPixel(511,0).A,$check.GetPixel(0,511).A,$check.GetPixel(511,511).A); [pscustomobject]@{Path=(Resolve-Path -LiteralPath $dst).Path;Width=$check.Width;Height=$check.Height;PixelFormat=$check.PixelFormat;CornerAlphas=($alphas -join '\"',');Length=(Get-Item -LiteralPath \"'$dst).Length}; $check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_eesh_north\n succeeded in 261ms:\n\n\nPath         : D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_eesh_north\\scaldfloor_eesh_north.png\nWidth        : 512\nHeight       : 512\nPixelFormat  : Format32bppArgb\nCornerAlphas : 0,0,0,0\nLength       : 83790\n\n\n\n\ncodex\n{\"id\":\"scaldfloor_eesh_north\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_eesh_north\\\\scaldfloor_eesh_north.png\",\"width\":512,\"height\":512,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Built-in imagegen; matched shipped Eesh catch art. Saved workspace copy; project install path was outside the writable root.\"}\ntokens used\n40,916\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scaldfloor_eesh_north/scaldfloor_eesh_north.png\n    512x512  rgba  83,790 bytes  (170s)\n"
+}

@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T21:59:39Z",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "nightside_mahllik_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the mahllik, a big solitary ice-sheet herbivore, a soft lumpish resting shape that becomes a sudden powerful spring, thick insulating white-frost coat, short hidden legs, on the dead-still Nightside ice hemisphere, a chemistry set switched off under the aurora; pale frost-white to glacial-blue palette, minimal markings, hushed and still. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "style_notes": "defName RSW_CaveLemming. Batch 3b row 2. Owner asked for this rename in the roster ('ice sheet, rename'). No bs given."
+}

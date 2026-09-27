@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 79.89126417200896,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 79.89126417200896,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "weepingstones2_kirruk_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 24.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T14-06-27-01a0df8a-71c4-7180-a362-42046a53dad9.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 22.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T14-04-50-01a0df88-f646-7e72-94bb-516e4cc765eb.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "weepingstones2_kirruk_east",
+    "note": "Generated with built-in imagegen using the supplied strict east-facing side-profile sprite prompt; resized to exactly 256\u00d7256 while preserving transparency.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones2_kirruk_east\\weepingstones2_kirruk_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "QualifiedErrorId : InvokeMethodOnNull\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$ErrorActionPreference = '\"'Stop'; \"'$src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w0\\\\generated_images\\\\01a0df8a-71c4-7180-a362-42046a53dad9\\\\exec-78e42a78-23fa-487f-885e-766e90d1799f.png'; \"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones2_kirruk_east\\\\weepingstones2_kirruk_east.png'; Add-Type -AssemblyName System.Drawing; \"'$img = [System.Drawing.Image]::FromFile($src); $bmp = [System.Drawing.Bitmap]::new(256, 256, [System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $g = [System.Drawing.Graphics]::FromImage($bmp); $g.Clear([System.Drawing.Color]::Transparent); $g.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality; $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $g.DrawImage($img, 0, 0, 256, 256); $g.Dispose(); $img.Dispose(); $bmp.Save($dst, [System.Drawing.Imaging.ImageFormat]::Png); $bmp.Dispose(); $check = [System.Drawing.Bitmap]::new($dst); $corners = @($check.GetPixel(0,0).A, $check.GetPixel(255,0).A, $check.GetPixel(0,255).A, $check.GetPixel(255,255).A); [pscustomobject]@{Path=$dst; Width=$check.Width; Height=$check.Height; HasAlpha=$check.PixelFormat.ToString().Contains('\"'Argb'); CornerAlpha=(\"'$corners -join '\"','); Bytes=(Get-Item -LiteralPath \"'$dst).Length} | ConvertTo-Json -Compress; $check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones2_kirruk_east\n succeeded in 337ms:\n{\"Path\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones2_kirruk_east\\\\weepingstones2_kirruk_east.png\",\"Width\":256,\"Height\":256,\"HasAlpha\":true,\"CornerAlpha\":\"0,0,0,0\",\"Bytes\":69596}\n\ncodex\n{\"id\":\"weepingstones2_kirruk_east\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones2_kirruk_east\\\\weepingstones2_kirruk_east.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated with built-in imagegen using the supplied strict east-facing side-profile sprite prompt; resized to exactly 256\u00d7256 while preserving transparency.\"}\ntokens used\n19,617\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/weepingstones2_kirruk_east/weepingstones2_kirruk_east.png\n    256x256  rgba  69,596 bytes  (77s)\n"
+}

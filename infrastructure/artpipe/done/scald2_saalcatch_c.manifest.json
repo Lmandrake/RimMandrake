@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 128.7284863390014,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 128.7284863390014,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "scald2_saalcatch_c",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790383340,
+    "primary_used_percent": 97.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/25/rollout-2026-09-25T13-57-28-01a0da5b-dd1a-7ba3-b42b-5c8ddd5a0f3d.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 31.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790383340,
+    "primary_used_percent": 90.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/25/rollout-2026-09-25T13-51-01-01a0da55-f6a8-72e1-8236-561a297a3ec4.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 30.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "scald2_saalcatch_c",
+    "note": "Built-in imagegen; used scald2_saalcatch_a as style reference. Generated seven glowing sail-jellies in a bold-outlined market stack and resized to exactly 512x512.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scald2_saalcatch_c\\scald2_saalcatch_c.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scald2_saalcatch_c/scald2_saalcatch_c.png\n    512x512  rgba  422,939 bytes  (126s)\n"
+}

@@ -1,0 +1,54 @@
+{
+  "attempt_elapsed_s": 131.47501939497306,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 131.47501939497306,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "scaldfloor_doss_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 13.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/26/rollout-2026-09-26T13-24-57-01a0df64-721b-74d3-9e26-92fa09960bb6.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "ok": false,
+    "reason": "rollout has no token_count/rate_limits event yet",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/26/rollout-2026-09-26T13-21-16-01a0df61-1323-74a1-9879-f73c46f34788.jsonl"
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "scaldfloor_doss_north",
+    "note": "Generated with built-in imagegen using the three shipped Doss catch images as color/style references; resized to exactly 512x512 while preserving alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_doss_north\\scaldfloor_doss_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "',');Length=(Get-Item $dst).Length} | Format-List; $check.Dispose()\n+                                                          ~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w4\\\\generated_images\\\\01a0df64-721b-74d3-9e26-92fa09960bb6\\\\exec-ac4fec60-f06d-4029-bf3b-d4d440dbfceb.png'; \"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_doss_north\\\\scaldfloor_doss_north.png'; Add-Type -AssemblyName System.Drawing; \"'$im = [System.Drawing.Image]::FromFile($src); $bmp = [System.Drawing.Bitmap]::new(512,512,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $g = [System.Drawing.Graphics]::FromImage($bmp); $g.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $g.DrawImage($im,0,0,512,512); $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $g.Dispose(); $bmp.Dispose(); $im.Dispose(); $check = [System.Drawing.Bitmap]::FromFile($dst); $corners = @($check.GetPixel(0,0).A,$check.GetPixel(511,0).A,$check.GetPixel(0,511).A,$check.GetPixel(511,511).A); [pscustomobject]@{Path=$dst;Width=$check.Width;Height=$check.Height;PixelFormat=$check.PixelFormat.ToString();CornerAlpha=($corners -join '\"',');Length=(Get-Item \"'$dst).Length} | Format-List; $check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_doss_north\n succeeded in 258ms:\n\n\nPath        : D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_doss_north\\scaldfloor_doss_north.png\nWidth       : 512\nHeight      : 512\nPixelFormat : Format32bppArgb\nCornerAlpha : 0,0,0,0\nLength      : 141652\n\n\n\n\ncodex\n{\"id\":\"scaldfloor_doss_north\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_doss_north\\\\scaldfloor_doss_north.png\",\"width\":512,\"height\":512,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated with built-in imagegen using the three shipped Doss catch images as color/style references; resized to exactly 512x512 while preserving alpha.\"}\ntokens used\n19,429\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scaldfloor_doss_north/scaldfloor_doss_north.png\n    512x512  rgba  141,652 bytes  (131s)\n"
+}

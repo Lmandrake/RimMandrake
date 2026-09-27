@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 129.1709292870073,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 129.1709292870073,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "scaldfloor_thuum_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T13-35-39-01a0df6e-3fd6-7830-8f10-da56a96a4682.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T13-33-17-01a0df6c-140d-7381-9f44-7708310cc45b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "scaldfloor_thuum_east",
+    "note": "Generated from the shipped Thuum catch-art palette, resized to 512px, copied to the working directory, and installed as RM_Thuum_east.png.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_thuum_east\\scaldfloor_thuum_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "a0df6e-3fd6-7830-8f10-da56a96a4682\\\\exec-075260db-666a-4529-b98b-b2b6a672e0df.png\\\"\n\"'$output = \"D:'\"\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_thuum_east\\\\scaldfloor_thuum_east.png\\\"\n\"'$src = [System.Drawing.Image]::FromFile($source)\n$dst = [System.Drawing.Bitmap]::new(512,512,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb)\n$g = [System.Drawing.Graphics]::FromImage($dst)\n$g.Clear([System.Drawing.Color]::Transparent)\n$g.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy\n$g.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality\n$g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic\n$g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality\n$g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality\n$g.DrawImage($src,[System.Drawing.Rectangle]::new(0,0,512,512),0,0,$src.Width,$src.Height,[System.Drawing.GraphicsUnit]::Pixel)\n$g.Dispose(); $src.Dispose()\n$dst.Save($output,[System.Drawing.Imaging.ImageFormat]::Png); $dst.Dispose()\n$check = [System.Drawing.Bitmap]::FromFile($output)\n$corners = @($check.GetPixel(0,0).A,$check.GetPixel(511,0).A,$check.GetPixel(0,511).A,$check.GetPixel(511,511).A)\n\"OUTPUT=$output\"\n\"SIZE=$($check.Width)x$($check.Height) FORMAT=$($check.PixelFormat) CORNER_ALPHA=$($corners -join '\"',')\\\"\n\"'$check.Dispose()\n$install = \"D:'\"\\\\Luke\\\\dev\\\\Rimworld\\\\src\\\\RimMandrake\\\\TerminalBiomes\\\\Textures\\\\Things\\\\Pawn\\\\Animal\\\\RM_Thuum\\\\RM_Thuum_east.png\\\"\ntry { Copy-Item -LiteralPath \"'$output -Destination $install -Force; \"INSTALLED=$install\" } catch { \"INSTALL_ERROR=$($_.Exception.Message)\" }' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_thuum_east\n succeeded in 275ms:\nOUTPUT=D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_thuum_east\\scaldfloor_thuum_east.png\nSIZE=512x512 FORMAT=Format32bppArgb CORNER_ALPHA=0,0,0,0\nINSTALLED=D:\\Luke\\dev\\Rimworld\\src\\RimMandrake\\TerminalBiomes\\Textures\\Things\\Pawn\\Animal\\RM_Thuum\\RM_Thuum_east.png\n\ncodex\n{\"id\":\"scaldfloor_thuum_east\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_thuum_east\\\\scaldfloor_thuum_east.png\",\"width\":512,\"height\":512,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated from the shipped Thuum catch-art palette, resized to 512px, copied to the working directory, and installed as RM_Thuum_east.png.\"}\ntokens used\n25,323\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scaldfloor_thuum_east/scaldfloor_thuum_east.png\n    512x512  rgba  67,132 bytes  (127s)\n"
+}

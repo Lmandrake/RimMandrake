@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-27T17:05:35Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "spec_scene_kolyskadive",
+  "priority": 100,
+  "prompt": "RimWorld painterly establishing-shot render, painterly vanilla-RimWorld art style: the aging Jawa gravship Kolyska, a boxy, riveted, hand-patched hull in rusty brown with mismatched scavenged plating, descending nose-first through the surface of a dark alien sea in a churn of white foam and spray, engines glowing hot underneath against the cold water. Sunlit surface above breaking into shafts of light, murky green-black depths waiting below. Dramatic low angle, water streaming off the hull. No on-screen text, no UI elements, no logos.",
+  "reference": null,
+  "rimflow_item_id": "SPECULATIVE_ART_COMMISSION_1",
+  "style_notes": "SPECULATIVE test candidate, owner directive 2026-09-27. NOT commissioned. Ship-only sea diving is canon (owner, 2026-09-26: 'You can't dive as an individual pawn nor return as one. It's ship or nothing' \u2014 RM_SeaDiveHatch, a MapPortal buildable only aboard a gravship). Ship look sourced from design/Jawa/art/gravship_wear_pass.md ('old, rusty brown, and terrible'). No image of this exists yet (registry.jsonl: 0 hits for 'kolyska')."
+}

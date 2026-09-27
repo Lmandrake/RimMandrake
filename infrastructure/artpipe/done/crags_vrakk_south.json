@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T21:59:38Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "crags_vrakk_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the vrakk, a sleek nocturnal apex predator that throws quills from its back in a single violent volley, low-slung hunting posture, quills bristling along the spine ready to launch, lean muscular legs built for a sudden lunge, under the fogged obsidian light of the Forsaken Crags, a nocturnal highland lit by aurora, never sun; dark basalt-black to gunmetal palette, hard voiced-consonant creature, no bright accent colors. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "style_notes": "defName AA_Nightling. Batch 3a row 1. bs 1.0. Family root accent for the crags' nightling kin (kinship is written in description, not shared art)."
+}

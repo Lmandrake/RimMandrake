@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-27T04:39:34Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "RM_VeilPane_south",
+  "priority": 85,
+  "prompt": "RimWorld top-down game sprite: a fallen waveglass pane lying on dark sea-floor mud \u2014 a huge irregular sheet of living stained glass, translucent blue-green veined with gold, thick opaque ridges where it is old and thin luminous patches where it is new, one edge shattered pale. It reads as a fallen piece of sky, beautiful and heavy.",
+  "reference": null,
+  "rimflow_item_id": "TWILIGHT_PANE_STRIKE_1",
+  "style_notes": "translucent blue-green sheet veined gold, irregular shattered-pane silhouette, luminous thin patches; painterly vanilla-RimWorld art style"
+}

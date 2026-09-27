@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-24T21:59:38Z",
+  "drawsize": 2.8,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "crags_hulggarok_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the hulggarok, the crags' domesticated pack beast, sturdier and bulkier than a muffalo, broad-backed for heavy loads, no quills (it cannot throw them), calm heavy-set legs built for a long haul, under the fogged obsidian light of the Forsaken Crags, a nocturnal highland lit by aurora, never sun; dark basalt-black to gunmetal palette, hard voiced-consonant creature, no bright accent colors. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "style_notes": "defName AA_NightMule. Batch 3a row 3. bs 2.8. The tame line; softest consonants of the set."
+}

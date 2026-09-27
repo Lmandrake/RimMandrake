@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-27T17:05:35Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "spec_scene_fallline",
+  "priority": 100,
+  "prompt": "RimWorld painterly establishing-shot landscape render, painterly vanilla-RimWorld art style: the Fall Line, a great stratified escarpment where a high desert plateau breaks down toward the lowland in sheer bedded cliffs, warm sandstone browns over a cooler basement rock, a hard bright lip catching light along the exposed edge with deep shadow immediately below. A narrow pass cuts through the rock wall, a thin dirt road switchbacking down through it, sized as a natural chokepoint. Distant desert haze below, harsh clear sky above. No on-screen text, no UI elements, no logos.",
+  "reference": null,
+  "rimflow_item_id": "SPECULATIVE_ART_COMMISSION_1",
+  "style_notes": "SPECULATIVE test candidate, owner directive 2026-09-27. NOT commissioned. No dedicated visual doc exists for the Fall Line yet (FALL_LINE_MAJOR_REGION_LABEL_1 covers only its worldmap LABEL size, not its look) \u2014 this is an interpretive rendering built from its 780m 'pass' geography (ASHKARR_WORLD_DEFINITION.md) and the Cliffs/strata treatment vocabulary in landmark_art_direction.md. Flag for owner correction if the intended look differs."
+}

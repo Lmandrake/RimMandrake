@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 123.7064973799861,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 123.7064973799861,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "weepingstones_murrin_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/26/rollout-2026-09-26T14-13-26-01a0df90-d5c3-7302-a26f-f0634ad5337f.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/26/rollout-2026-09-26T14-11-56-01a0df8f-77d6-7e51-8b11-e82473f0b3f6.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "weepingstones_murrin_east",
+    "note": "Built-in imagegen; normalized prompt preserved the east-facing profile, tall comb-fin, bold keyline, muted silver-brown palette, and transparent isolation.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones_murrin_east\\weepingstones_murrin_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "goryInfo          : InvalidOperation: (:) [ForEach-Object], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull,Microsoft.PowerShell.Commands.ForEachObjectCommand\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command 'Add-Type -AssemblyName System.Drawing; $src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w5\\\\generated_images\\\\01a0df90-d5c3-7302-a26f-f0634ad5337f\\\\exec-d1498585-a904-4522-9986-6057af896390.png'; \"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones_murrin_east\\\\weepingstones_murrin_east.png'; \"'$img = [System.Drawing.Image]::FromFile($src); try { $bmp = [System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); try { $g = [System.Drawing.Graphics]::FromImage($bmp); try { $g.Clear([System.Drawing.Color]::Transparent); $g.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality; $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $g.DrawImage($img,0,0,256,256) } finally { $g.Dispose() }; $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png) } finally { $bmp.Dispose() } } finally { $img.Dispose() }; $check = [System.Drawing.Bitmap]::new($dst); try { $coords = @(@(0,0),@(255,0),@(0,255),@(255,255)); $alphas = $coords | ForEach-Object { $check.GetPixel($_[0],$_[1]).A }; $hasAlpha = $check.PixelFormat.ToString() -match '\"'Argb'; '{0}|{1}|{2}|{3}|{4}' -f \"'$dst,$check.Width,$check.Height,$hasAlpha,($alphas -join '\"',') } finally { \"'$check.Dispose() }' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones_murrin_east\n succeeded in 246ms:\nD:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones_murrin_east\\weepingstones_murrin_east.png|256|256|True|0,0,0,0\n\ncodex\n{\"id\":\"weepingstones_murrin_east\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones_murrin_east\\\\weepingstones_murrin_east.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Built-in imagegen; normalized prompt preserved the east-facing profile, tall comb-fin, bold keyline, muted silver-brown palette, and transparent isolation.\"}\ntokens used\n22,744\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/weepingstones_murrin_east/weepingstones_murrin_east.png\n    256x256  rgba  53,381 bytes  (123s)\n"
+}

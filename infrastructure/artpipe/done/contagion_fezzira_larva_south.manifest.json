@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 110.4366164880339,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 110.4366164880339,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "contagion_fezzira_larva_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790309002,
+    "primary_used_percent": 45.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/24/rollout-2026-09-24T16-11-22-01a0d5b0-179e-77e1-8175-28bfb3b46cbc.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 84.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790309002,
+    "primary_used_percent": 37.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/24/rollout-2026-09-24T16-09-49-01a0d5ae-ab8d-7130-8423-500f0d2886cc.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 83.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "contagion_fezzira_larva_south",
+    "note": "Generated with built-in imagegen using the requested production prompt, copied into the workspace, and resized to exactly 256\u00d7256 while preserving alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\contagion_fezzira_larva_south\\contagion_fezzira_larva_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/contagion_fezzira_larva_south/contagion_fezzira_larva_south.png\n    256x256  rgba  48,811 bytes  (110s)\n"
+}

@@ -1,0 +1,25 @@
+{
+  "attempt_elapsed_s": 2.9833088209852576,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 14.972166838968406,
+  "id": "RM_Dredgel_north",
+  "meter_after": {
+    "ok": false,
+    "reason": "rollout has no token_count/rate_limits event yet",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w7/sessions/2026/09/26/rollout-2026-09-26T13-21-25-01a0df61-35ea-7660-a971-d81f8849afdc.jsonl"
+  },
+  "meter_before": {
+    "ok": false,
+    "reason": "no rollout file found under this CODEX_HOME"
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "nect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Your access token could not be refreshed. Please log out and sign in again.\n2026-09-26T20:21:27.040998Z ERROR codex_login::auth::manager: Failed to refresh token: Your access token could not be refreshed. Please log out and sign in again.\nERROR: Your access token could not be refreshed. Please log out and sign in again.\n\nERROR no image produced after 3s (exit 1).\n--- last codex output ---\n20:21:26.449390Z ERROR codex_login::auth::manager: Failed to refresh token: Your access token could not be refreshed. Please log out and sign in again.\n2026-09-26T20:21:26.672966Z ERROR codex_login::auth::manager: Failed to refresh token: Your access token could not be refreshed. Please log out and sign in again.\n2026-09-26T20:21:26.698102Z ERROR codex_login::auth::manager: Failed to refresh token: Your access token could not be refreshed. Please log out and sign in again.\n2026-09-26T20:21:26.698245Z ERROR codex_login::auth::manager: Failed to refresh token: Your access token could not be refreshed. Please log out and sign in again.\n2026-09-26T20:21:26.698362Z ERROR codex_login::auth::manager: Failed to refresh token: Your access token could not be refreshed. Please log out and sign in again.\n2026-09-26T20:21:26.865886Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-26T20:21:26.866410Z ERROR codex_login::auth::manager: Failed to refresh token: Your access token could not be refreshed. Please log out and sign in again.\n2026-09-26T20:21:26.866535Z ERROR codex_login::auth::manager: Failed to refresh token: Your access token could not be refreshed. Please log out and sign in again.\n2026-09-26T20:21:26.866666Z ERROR codex_login::auth::manager: Failed to refresh token: Your access token could not be refreshed. Please log out and sign in again.\n2026-09-26T20:21:27.030263Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Your access token could not be refreshed. Please log out and sign in again.\n2026-09-26T20:21:27.040998Z ERROR codex_login::auth::manager: Failed to refresh token: Your access token could not be refreshed. Please log out and sign in again.\nERROR: Your access token could not be refreshed. Please log out and sign in again.\n\n",
+  "worker_stdout_tail": ""
+}

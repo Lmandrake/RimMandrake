@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 108.25765173402033,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 108.25765173402033,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "weepingstones2_ssurr_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 25.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T14-07-53-01a0df8b-c150-7fb1-b5b6-7d42cb2cb86e.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 24.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T14-06-27-01a0df8a-71c4-7180-a362-42046a53dad9.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "weepingstones2_ssurr_south",
+    "note": "Generated via built-in imagegen, saved as a 256\u00d7256 RGBA PNG, and verified all four corners are transparent.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones2_ssurr_south\\weepingstones2_ssurr_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "229ms:\npy : The term 'py' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the \nspelling of the name, or if a path was included, verify that the path is correct and try again.\nAt line:2 char:1\n+ py -3 -c \"from PIL import Image; s=r'C:\\Users\\Mandrake\\.codex_workers ...\n+ ~~\n    + CategoryInfo          : ObjectNotFound: (py:String) [], CommandNotFoundException\n    + FullyQualifiedErrorId : CommandNotFoundException\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$ErrorActionPreference='\"'Stop'; \"'$src='\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w0\\\\generated_images\\\\01a0df8b-c150-7fb1-b5b6-7d42cb2cb86e\\\\exec-da584440-e9dc-4103-a47e-9e7b6c649ed7.png'; \"'$dst='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones2_ssurr_south\\\\weepingstones2_ssurr_south.png'; Add-Type -AssemblyName System.Drawing; \"'$source=[System.Drawing.Image]::FromFile($src); $bmp=[System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $g=[System.Drawing.Graphics]::FromImage($bmp); $g.CompositingMode=[System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality=[System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode=[System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.DrawImage($source,0,0,256,256); $g.Dispose(); $source.Dispose(); $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $bmp.Dispose(); $check=[System.Drawing.Bitmap]::new($dst); $a=@($check.GetPixel(0,0).A,$check.GetPixel(255,0).A,$check.GetPixel(0,255).A,$check.GetPixel(255,255).A); Write-Output ('\"'{0}x{1} {2} corners={3}' -f \"'$check.Width,$check.Height,$check.PixelFormat,($a -join '\"',')); \"'$check.Dispose(); (Get-Item -LiteralPath $dst).FullName' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones2_ssurr_south\n succeeded in 249ms:\n256x256 Format32bppArgb corners=0,0,0,0\nD:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones2_ssurr_south\\weepingstones2_ssurr_south.png\n\ncodex\n{\"id\":\"weepingstones2_ssurr_south\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones2_ssurr_south\\\\weepingstones2_ssurr_south.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Generated via built-in imagegen, saved as a 256\u00d7256 RGBA PNG, and verified all four corners are transparent.\"}\ntokens used\n29,625\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/weepingstones2_ssurr_south/weepingstones2_ssurr_south.png\n    256x256  rgba  99,988 bytes  (104s)\n"
+}

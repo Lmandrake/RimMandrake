@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 98.0336977049883,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 98.0336977049883,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rutvwake_v1_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 22.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w6/sessions/2026/09/26/rollout-2026-09-26T14-04-38-01a0df88-c667-7be1-9f91-17bfcbc4f6d8.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w6/sessions/2026/09/26/rollout-2026-09-26T14-00-24-01a0df84-e86c-7d03-bb99-84d4f01ea362.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rutvwake_v1_north",
+    "note": "Generated with built-in imagegen, resized to exactly 256\u00d7256, and preserved transparent alpha. Final prompt followed the supplied north-facing sprite specification.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutvwake_v1_north\\rutvwake_v1_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "vwake_v1_north\\rutvwake_v1_north.png' because it does not \nexist.\nAt line:2 char:1131\n+ ... ormat,$corners); $check.Dispose(); Get-Item -LiteralPath $dst | Selec ...\n+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : ObjectNotFound: (D:\\Luke\\dev\\Rim...ke_v1_north.png:String) [Get-Item], ItemNotFoundExcep \n   tion\n    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetItemCommand\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w6\\\\generated_images\\\\01a0df88-c667-7be1-9f91-17bfcbc4f6d8\\\\exec-3727e8ff-6e1f-415a-9d3f-4240d4defed1.png'; \"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutvwake_v1_north\\\\rutvwake_v1_north.png'; Add-Type -AssemblyName System.Drawing; \"'$source = [System.Drawing.Image]::FromFile($src); $bitmap = [System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $graphics = [System.Drawing.Graphics]::FromImage($bitmap); $graphics.Clear([System.Drawing.Color]::Transparent); $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $graphics.DrawImage($source,0,0,256,256); $bitmap.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $graphics.Dispose(); $bitmap.Dispose(); $source.Dispose(); $check = [System.Drawing.Bitmap]::new($dst); $corners = @($check.GetPixel(0,0).A,$check.GetPixel(255,0).A,$check.GetPixel(0,255).A,$check.GetPixel(255,255).A) -join '\"','; Write-Output (\\\"{0} {1} PixelFormat={2} CornerAlpha={3}\\\" -f \"'$check.Width,$check.Height,$check.PixelFormat,$corners); $check.Dispose(); Get-Item -LiteralPath $dst | Select-Object FullName,Length | Format-List' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutvwake_v1_north\n succeeded in 235ms:\n256 256 PixelFormat=Format32bppArgb CornerAlpha=0,0,0,0\n\n\nFullName : D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutvwake_v1_north\\rutvwake_v1_north.png\nLength   : 22565\n\n\n\n\ncodex\n{\"id\":\"rutvwake_v1_north\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutvwake_v1_north\\\\rutvwake_v1_north.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Generated with built-in imagegen, resized to exactly 256\u00d7256, and preserved transparent alpha. Final prompt followed the supplied north-facing sprite specification.\"}\ntokens used\n15,739\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rutvwake_v1_north/rutvwake_v1_north.png\n    256x256  rgba  22,565 bytes  (98s)\n"
+}

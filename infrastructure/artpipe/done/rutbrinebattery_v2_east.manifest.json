@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 103.23231251299148,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 103.23231251299148,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rutbrinebattery_v2_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w7/sessions/2026/09/26/rollout-2026-09-26T13-58-37-01a0df83-47ac-7b13-ac39-e2913dc4d72c.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 20.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w7/sessions/2026/09/26/rollout-2026-09-26T13-56-51-01a0df81-a8c1-7172-98b1-fae19e17fb60.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rutbrinebattery_v2_east",
+    "note": "Generated via built-in imagegen, saved as an exact 256\u00d7256 RGBA PNG, and verified both corner pixels are transparent.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutbrinebattery_v2_east\\rutbrinebattery_v2_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "exist.\nAt line:2 char:1119\n+ ... .Dispose(); Move-Item -LiteralPath $tmp -Destination $p -Force; $chec ...\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [Move-Item], PSInvalidOperationException\n    + FullyQualifiedErrorId : InvalidOperation,Microsoft.PowerShell.Commands.MoveItemCommand\n \n1536x1024 Format=Format32bppArgb CornerAlpha=0,0\n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command 'Add-Type -AssemblyName System.Drawing; $p = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutbrinebattery_v2_east\\\\rutbrinebattery_v2_east.png'; \"'$src = [System.Drawing.Image]::FromFile($p); $bmp = [System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $g = [System.Drawing.Graphics]::FromImage($bmp); $g.Clear([System.Drawing.Color]::Transparent); $g.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality; $scale = [Math]::Min(256.0 / $src.Width, 256.0 / $src.Height); $w = [int][Math]::Round($src.Width * $scale); $h = [int][Math]::Round($src.Height * $scale); $x = [int][Math]::Floor((256 - $w) / 2); $y = [int][Math]::Floor((256 - $h) / 2); $g.DrawImage($src,$x,$y,$w,$h); $g.Dispose(); $src.Dispose(); $tmp = $p + '\"'.tmp.png'; \"'$bmp.Save($tmp,[System.Drawing.Imaging.ImageFormat]::Png); $bmp.Dispose(); Move-Item -LiteralPath $tmp -Destination $p -Force; $check = [System.Drawing.Bitmap]::new($p); $c1=$check.GetPixel(0,0); $c2=$check.GetPixel(255,255); Write-Output (('\"'{0}x{1} Format={2} CornerAlpha={3},{4}' -f \"'$check.Width,$check.Height,$check.PixelFormat,$c1.A,$c2.A)); $check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutbrinebattery_v2_east\n succeeded in 278ms:\n256x256 Format=Format32bppArgb CornerAlpha=0,0\n\ncodex\n{\"id\":\"rutbrinebattery_v2_east\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutbrinebattery_v2_east\\\\rutbrinebattery_v2_east.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Generated via built-in imagegen, saved as an exact 256\u00d7256 RGBA PNG, and verified both corner pixels are transparent.\"}\ntokens used\n40,939\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rutbrinebattery_v2_east/rutbrinebattery_v2_east.png\n    256x256  rgba  57,033 bytes  (103s)\n"
+}

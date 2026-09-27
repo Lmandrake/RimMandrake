@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-27T04:31:17Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "RM_VauliskLure_south",
+  "priority": 85,
+  "prompt": "RimWorld game plant-like sprite: the vaulisk's lure in its dormant disguise \u2014 what looks like a cultivated lamp-bladder plant, a single gold glowing sphere on a dark slender stalk with two or three drooping dark leaves, unnaturally still and symmetrical, glow steady with no pulse. Pretty, plausible, and slightly too perfect.",
+  "reference": null,
+  "rimflow_item_id": "TWILIGHT_DANGER_LIGHTWEB_1",
+  "style_notes": "single steady gold sphere on dark stalk, too-symmetrical, no piip-sparks around it; painterly vanilla-RimWorld plant art style"
+}

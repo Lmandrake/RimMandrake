@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 105.10963202296989,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 105.10963202296989,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "contagion_zhirrik_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790309002,
+    "primary_used_percent": 96.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/24/rollout-2026-09-24T16-25-09-01a0d5bc-b3e4-7042-95a8-58decbd21a6f.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 92.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790309002,
+    "primary_used_percent": 90.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/24/rollout-2026-09-24T16-22-48-01a0d5ba-8de9-7ad1-b1da-27b3deaef3fb.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 92.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "contagion_zhirrik_south",
+    "note": "Generated via built-in imagegen from the supplied front-facing RimWorld sprite prompt; resized to exactly 256x256 while preserving transparent alpha. One retry followed a PowerShell syntax error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\contagion_zhirrik_south\\contagion_zhirrik_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/contagion_zhirrik_south/contagion_zhirrik_south.png\n    256x256  rgba  57,373 bytes  (105s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 122.3061914209975,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 122.3061914209975,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rmmirrorgiant_v1_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 20.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T13-56-56-01a0df81-bbfd-77f0-9bb7-f776dea55cb4.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 20.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T13-53-48-01a0df7e-dce1-7c31-9035-8a4279c9615a.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rmmirrorgiant_v1_east",
+    "note": "Built-in imagegen; normalized supplied prompt for an east-facing RimWorld sprite, then resized to exactly 256\u00d7256 while preserving alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rmmirrorgiant_v1_east\\rmmirrorgiant_v1_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "OnNull\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$ErrorActionPreference = '\"'Stop'\nAdd-Type -AssemblyName System.Drawing\n\"'$src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w1\\\\generated_images\\\\01a0df81-bbfd-77f0-9bb7-f776dea55cb4\\\\exec-ad88a425-877a-40d4-87c1-c9d1f3f16467.png'\n\"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rmmirrorgiant_v1_east\\\\rmmirrorgiant_v1_east.png'\n\"'$inputImage = [System.Drawing.Image]::FromFile($src)\n$outputBitmap = [System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb)\n$graphics = [System.Drawing.Graphics]::FromImage($outputBitmap)\n$graphics.Clear([System.Drawing.Color]::Transparent)\n$graphics.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy\n$graphics.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality\n$graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic\n$graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality\n$graphics.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality\n$graphics.DrawImage($inputImage,0,0,256,256)\n$outputBitmap.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png)\n$graphics.Dispose(); $outputBitmap.Dispose(); $inputImage.Dispose()\n$check = [System.Drawing.Bitmap]::new($dst)\n$corners = @($check.GetPixel(0,0).A,$check.GetPixel(255,0).A,$check.GetPixel(0,255).A,$check.GetPixel(255,255).A)\n[PSCustomObject]@{Path=$dst; Width=$check.Width; Height=$check.Height; PixelFormat=$check.PixelFormat.ToString(); CornerAlpha=($corners -join '\"','); Length=(Get-Item -LiteralPath \"'$dst).Length} | Format-List\n$check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rmmirrorgiant_v1_east\n succeeded in 271ms:\n\n\nPath        : D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rmmirrorgiant_v1_east\\rmmirrorgiant_v1_east.png\nWidth       : 256\nHeight      : 256\nPixelFormat : Format32bppArgb\nCornerAlpha : 0,0,0,0\nLength      : 74553\n\n\n\n\ncodex\n{\"id\":\"rmmirrorgiant_v1_east\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rmmirrorgiant_v1_east\\\\rmmirrorgiant_v1_east.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Built-in imagegen; normalized supplied prompt for an east-facing RimWorld sprite, then resized to exactly 256\u00d7256 while preserving alpha.\"}\ntokens used\n20,869\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rmmirrorgiant_v1_east/rmmirrorgiant_v1_east.png\n    256x256  rgba  74,553 bytes  (119s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 114.37916628000676,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 114.37916628000676,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 200,
+  "id": "miasma_brelloch",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 9.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T12-40-29-01a0df3b-bcfa-7972-8c97-aa5d70d6ff20.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 9.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T12-38-44-01a0df3a-2349-79b1-a3d3-aac5ee3a4ef4.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 200,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 200,
+    "id": "miasma_brelloch",
+    "note": "Built-in imagegen used with the supplied production prompt; final sprite resized to exactly 200\u00d7200 while preserving transparent RGBA.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\miasma_brelloch\\miasma_brelloch.png",
+    "status": "ok",
+    "width": 200
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/miasma_brelloch/miasma_brelloch.png\n    200x200  rgba  58,485 bytes  (113s)\n"
+}
