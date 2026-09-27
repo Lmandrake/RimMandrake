@@ -1,28 +1,28 @@
 {
- "generatedAt": "2026-09-25T19:45:00Z",
+ "generatedAt": "2026-09-27T04:32:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 805791,
-  "sha256_12": "d519beb51d74"
+  "bytes": 902792,
+  "sha256_12": "78c0e7d0ddbf"
  },
- "head": "b71f9e97f",
+ "head": "666a4044d",
  "counts": {
-  "red": 3,
-  "blue": 1394,
-  "green": 1806,
-  "grey": 389,
+  "red": 6,
+  "blue": 1559,
+  "green": 1707,
+  "grey": 726,
   "unmeasured": 0,
-  "total": 3592
+  "total": 3998
  },
  "loc": {
-  "red": 1382,
-  "blue": 474183,
-  "green": 546338,
-  "grey": 92436,
+  "red": 2581,
+  "blue": 506427,
+  "green": 530685,
+  "grey": 133217,
   "unmeasured": 0,
-  "total": 1114339
+  "total": 1172910
  },
- "reviewEntries": 3483,
+ "reviewEntries": 3596,
  "recidivists": [
   {
    "path": "src/RimUtinni/Doctrine/About/About.xml",
@@ -30,19 +30,19 @@
    "cycles": 6
   },
   {
-   "path": "src/RimUtinni/ShipShields/About/About.xml",
-   "loc": 91,
+   "path": "src/RimMandrake/Utils/artpipe/common.py",
+   "loc": 416,
+   "cycles": 4
+  },
+  {
+   "path": "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Opee.xml",
+   "loc": 460,
    "cycles": 3
   },
   {
-   "path": "src/RimStarWars/StarWarsPatches/About/About.xml",
-   "loc": 67,
+   "path": "src/RimUtinni/ShokkweaveEconomy/About/About.xml",
+   "loc": 68,
    "cycles": 3
-  },
-  {
-   "path": "src/RimMandrake/Greentide/Defs/HediffDefs/RM_Greentide_Hediffs.xml",
-   "loc": 137,
-   "cycles": 2
   },
   {
    "path": "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/WarLabCraterMutation.cs",
@@ -60,22 +60,22 @@
    "cycles": 2
   },
   {
-   "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs",
-   "loc": 446,
+   "path": "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Sando.xml",
+   "loc": 454,
    "cycles": 1
   },
   {
-   "path": "src/RimUtinni/UtinniPatches/Patches/AncientDangerGenSteps_AmbientDoctrine.xml",
-   "loc": 371,
+   "path": "src/RimMandrake/Utils/artpipe/mock_codex_worker.py",
+   "loc": 401,
    "cycles": 1
   },
   {
-   "path": "src/RimUtinni/UtinniPatches/Patches/MechClusterBiomes_AmbientDoctrine.xml",
-   "loc": 158,
+   "path": "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colossi.xml",
+   "loc": 392,
    "cycles": 1
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 3592 files (1806 clean, 389 dirty, 0 unmeasured)."
+ "headline": "OK: measured 3998 files (1707 clean, 726 dirty, 0 unmeasured)."
 }
