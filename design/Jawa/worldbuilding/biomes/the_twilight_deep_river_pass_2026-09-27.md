@@ -363,7 +363,7 @@ tolerates you, never a vehicle system.
 | breach cascade | small | small (~100 lines: state check, spill, stake timer) | weir comp + §2's drift-eligibility |
 | stake-line as tell | no | XML | thessmoss `sowTags`/terrain bounds already in the drop |
 | cargo float (`RM_CargoFloat`) | tiny comp | tiny | item drift + weir arrest |
-| float harness (`RM_FloatHarness`) — **if Q1 rules in** | tiny | tiny (~40 lines) | carry component's cadence + arrest flags |
+| float harness (`RM_FloatHarness`) — **RULED IN (§7)** | tiny | tiny (~40 lines) | carry component's cadence + arrest flags |
 | Mod Settings panel | no | XML/settings boilerplate | standing MOD_OPTIONS pattern |
 
 **Net-new C# systems: ONE** — the carry component (everything else is a branch,
@@ -373,21 +373,26 @@ four hats. Where it lives: `mandrake.rm.terminalbiomes` (shared by every sea tha
 later wants a moving floor), with the Twilight defs in the biome's own mod per the
 split rulings.
 
-## 7. Question-card candidates — genuine owner decisions only
+## 7. Rulings — 2026-09-26 sitting, all three cards answered
 
-- **Q1 — the pawn ride (§5 rung 3).** May a colonist deliberately ride the current
-  in a float harness — one-way, weir-to-weir, forbidden in surge — or is the lane
-  freight-only (rungs 1–2)? Ban 3's mechanism is settled; this is its *spirit*.
-  Options: ride in as specced / freight-only / freight now, ride as v2.
-- **Q2 — does a weir arrest a carried PAWN?** If yes, the sink is reachable only
-  past the LAST weir and building weirs is also building safety rails (gentler, and
-  makes D7 rarer as the colony matures). If no, weirs catch things and never people,
-  and the sink stays one misstep away forever (sharper). Both are cheap; it is a
-  fairness dial that reshapes how often the ruled set piece fires, so it is his.
-- **Q3 — breach default.** Is the §4 breach (stock + stake cascade + silt reset,
-  buildings hold) the DEFAULT at default settings, or a harsher-setting behaviour
-  with the default weir merely stalling (hopper stops collecting) when untended?
-  Sets how punishing the anchor prize is at factory settings.
+Recorded on `TWILIGHT_CHANNEL_CURRENT_1`. Q3's second half is owner-TYPED
+(quote-eligible); the rest are decisions taken by question card — our wording,
+clicked, never quoted.
+
+- **Q1 — the pawn ride: IN, as specced** (card) — deliberate, one-way, weir-to-weir,
+  forbidden in surge. `RM_FloatHarness` moves from conditional to owed; failure
+  fairness (what a mid-ride surge or missed weir does) is design-to-spec inside the
+  carry component, not a new card.
+- **Q2 — weirs catch people too** (card) — the sink is reachable only past the LAST
+  weir; building weirs is also building safety rails, and the colony grows safer as
+  it matures.
+- **Q3 — breach at default, AND ported to normal rivers.** Owner typed: *"breach at
+  default, and this should be ported to normal river tiles too!"* ⇒ The §4 breach is
+  the factory-settings behaviour, and the weir / bank-works / breach system is owed
+  on ordinary SURFACE river tiles as well — filed as `SURFACE_RIVER_WEIRS_1`. The
+  carry component stays sea-floor (surface rivers are vanilla water, not the invisible
+  dense current); what ports is the works: weir, silt-trap, stake-line, hopper, and
+  the untended-weir-meets-flood breach cascade.
 
 *(Not carded: everything §2–§4 states as ruled — D6/D7 verdicts are recorded at the
 sitting and only specified here; the freight rung, which is the ruled item-drift

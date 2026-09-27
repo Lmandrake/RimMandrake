@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T03:31:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T03:38:28Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -788,3 +788,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DARKSEA_LIGHT_ATTRACTION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DARKSEA_LIGHT_ATTRACTION_1.md
+
+## SURFACE_RIVER_WEIRS_1 Port the weir / bank-works / breach system to ordinary surface river tiles (owner-typed 2026-09-26): weir, silt-trap, stake-line, hopper, and the untended-weir-meets-flood breach cascade on normal rivers
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SURFACE_RIVER_WEIRS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SURFACE_RIVER_WEIRS_1.md
