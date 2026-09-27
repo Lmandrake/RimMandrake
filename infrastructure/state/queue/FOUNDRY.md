@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T16:41:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T16:44:47Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1815,16 +1815,6 @@ kind:     bug
 thin:     no ## verify
 summary:  Three sonnet reviewers swept all 29 C files changed in the Twilight build wave
 prose:    infrastructure/state/items/TERMINALBIOMES_REVIEW_FIXES_1.md
-
-## GREYSEA_CATCH_TIER_RENAME_1 Rename the Grey Sea's seven invented-name catch items RUT_ to RM_ (Sallik, Karrud, Hessal, Oomal, Maalu, Immu, Haarn) - wrong tier, free mod's sea not fully fishable without the patch layer; decision taken by question card 2026-09-26
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREYSEA_CATCH_TIER_RENAME_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_CATCH_TIER_RENAME_1.md
 
 ## WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1 Retire RM_MoldMatRoof: the waveglass is a sky, not a floor plant - replace it with a shed panel that drifts down and is harvested
 state:    proposed
