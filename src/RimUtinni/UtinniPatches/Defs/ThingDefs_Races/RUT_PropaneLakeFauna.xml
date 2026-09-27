@@ -176,13 +176,19 @@
            ANY movement (RM_CompEffecter_HaloAlways.ShouldShowEffecter,
            BlueDesertLife.cs §4c). Reuses Krissek's own effecterDef: the VFX
            itself needs no new art, only a different trigger condition. -->
-      <li Class="CompProperties_Effecter">
+      <li Class="CompProperties_Effecter" MayRequire="mandrake.rm.bluedesert">
         <compClass>RimMandrake.BlueDesert.RM_CompEffecter_HaloAlways</compClass>
         <effecterDef>RM_KrissekHalo</effecterDef>
       </li>
     </comps>
+    <!-- MayRequire: these types live in mandrake.rm.bluedesert (moved out of
+         UtinniPatches by BLUEDESERT_RM_MOD_BUILD_1). Unguarded, a list without
+         that mod DISCARDS both creature ThingDefs, leaving RUT_VWake and
+         RUT_BurnerAscendant PawnKindDefs with no race, which kills
+         GeneticRim.Core's static ctor and with it every new game's starting
+         pawns (DEBUG_GAME_READY_WORLDUI_CRASH_1). -->
     <modExtensions>
-      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" MayRequire="mandrake.rm.bluedesert" />
     </modExtensions>
     <tradeTags>
       <li>AnimalFighter</li>
@@ -317,7 +323,7 @@
       </lifeStageAges>
     </race>
     <modExtensions>
-      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" MayRequire="mandrake.rm.bluedesert" />
     </modExtensions>
     <tradeTags>
       <li>AnimalFighter</li>
