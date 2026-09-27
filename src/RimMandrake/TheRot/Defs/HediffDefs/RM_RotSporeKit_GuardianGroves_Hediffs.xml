@@ -3,7 +3,7 @@
   <!--
     ROT_GUARDIAN_GROVES_1. RM_MatGrip — the "short immobilize hediff" the
     spec's own M6 text calls for, applied by
-    RimMandrake.CreatureBehaviors.RM_Plant_FalseFruit.PlantCollected when a
+    RimMandrake.CreatureBehaviors.RUT_Plant_FalseFruit.PlantCollected when a
     RM_FalseFruit lure is harvested/cut. HediffCompProperties_Disappears
     times it out on its own; capMods do the immobilizing (near-zero Moving,
     same mechanism vanilla traps/tentacles use). INVENTED: 6-10 seconds
