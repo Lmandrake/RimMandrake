@@ -59,12 +59,21 @@ namespace RimMandrake.Pyrelands
                 return null;
             }
 
+            // The sortie STARTS here, the moment a fire worth chasing is found —
+            // not only once a landing cell is also found. CompFireHawkSpread's own
+            // header is explicit: "charged when the sortie STARTS, not when it
+            // succeeds, so a hawk that fails to find a lawful cell still pays."
+            // Charging it only after TryFindCellBeyondTheFire also succeeds left a
+            // hawk beside a fire with no reachable/flammable cell nearby (map edge,
+            // rock, water) with NO cooldown at all — CanSortieNow stays true and it
+            // re-runs FindFireToStealFrom + the 8-bearing search every think tick,
+            // exactly the "fire timer with no cooldown" the comment warns against.
+            comp.Notify_SortieStarted();
+
             if (!TryFindCellBeyondTheFire(pawn, source, comp.Props.spreadDistance, out IntVec3 target))
             {
                 return null;
             }
-
-            comp.Notify_SortieStarted();
 
             Job job = JobMaker.MakeJob(PyrelandsMechanicsDefOf.RM_FireHawkCarryEmber, source, target);
             job.count = 1;
