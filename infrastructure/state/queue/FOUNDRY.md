@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T00:03:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T00:08:03Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1044,14 +1044,14 @@ kind:     task
 summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
 prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
 
-## ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1 Downscale the 1254x1254 worker output instead of failing size_mismatch
+## SEA_FISHABLES_ALIVE_IN_DEPTHS_1 Every fishable in EVERY sea owes a living creature swimming the floor map, not just a catch item - owner ruling 2026-09-26
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  ARTPIPEDOWNSCALEINSTEADOFREJECT1
-prose:    infrastructure/state/items/ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1.md
+summary:  Per sea, per catch entry without a living counterpart:
+prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1748,16 +1748,6 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  SUUSHCAULDRONDRIFTER1 — the Suush
 prose:    infrastructure/state/items/SUUSH_CAULDRON_DRIFTER_1.md
-
-## SEA_FISHABLES_ALIVE_IN_DEPTHS_1 Every fishable in EVERY sea owes a living creature swimming the floor map, not just a catch item - owner ruling 2026-09-26
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  Per sea, per catch entry without a living counterpart:
-prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
 
 ## BIOME_CONFIG_ERROR_TRIAGE_1 Triage the per-biome config errors the load-proof wave exposed against a zero baseline: floodedcanyon 53 distinct, webwork 30, thesump 14, contagion and therot 13 - real and attributable, not load failures
 state:    proposed
