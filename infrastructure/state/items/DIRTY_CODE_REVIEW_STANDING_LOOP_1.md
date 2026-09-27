@@ -5157,3 +5157,86 @@ consumed by this wave. ⛔ Keep avoiding biome-specific mod folders (same
 list as wave 16) plus `DivingInteraction`, `FeverWood/Source`,
 `TerminalBiomes`, anything with `BrineElder`/`GreySea` in its path, and
 `biome_paint_list.md` until told the concurrent biome-split build is done.
+
+## Wave 18 — 2026-09-26 (as FOUNDRY, EnvironmentalHazards/Source cleared)
+
+Picked up wave 17's own "Next wave" list exactly: the remaining 18
+DIRTY-since-clean files in `src/RimMandrake/EnvironmentalHazards/Source/`
+(everything after `RM_GenStep_PlacedSetPieces.cs` alphabetically). Confirmed
+`git status --porcelain` clean on `EnvironmentalHazards/Source`, `FlowWorks`,
+`Utils`, `RimUtinni/PlantGrowth/Source` and `RimUtinni/ShipShields/Source`
+first (no concurrent agent mid-edit); steered clear of the standing
+exclusion list (sea biomes, `DivingInteraction`, `FeverWood/Source`,
+`TerminalBiomes`, `BrineElder`/`GreySea` paths, `biome_paint_list.md`).
+
+Diff-scoped each of the 18 against its recorded clean-mark sha (per
+CLAUDE.md's "diff-scoped review is only valid once a file is CLEAN"):
+`RM_GradientAxisExtension.cs`, `RM_GradientAxisRepaint.cs`,
+`RM_JobGiver_ReturnToWater.cs`, `RM_MapComponent_BodySizeBarrier.cs`,
+`RM_MapComponent_GradientAxis.cs`, `RM_MapComponent_LivingRegrowth.cs`,
+`RM_MapComponent_StrandingPools.cs`, `RM_MapComponent_WaterAgitation.cs`,
+`RM_MapComponent_WaterTruce.cs`, `RM_PollinationGateExtension.cs`,
+`RM_SetPieceElement_AnchoredPawn.cs`, `RM_StrandingPoolsExtension.cs`,
+`RM_WanderingVortex.cs`, `RM_WanderingVortexExtension.cs`,
+`RUT_IncidentWorker_SteamDevil.cs`, `RUT_IncidentWorker_WalkerSurfacing.cs`,
+`RUT_MapComponent_TheTenant.cs`, `RUT_WeatherOverlay_ScaldSteam.cs`. Diffs
+covered several concurrent design passes' worth of new content: the
+`RM_MechanicGates.Enabled(def)` settings-gate additions on
+`RM_MapComponent_BodySizeBarrier` (checked the gate's own null-def handling
+in `RM_MechanicGates.cs` — `def?.GetModExtension<...>()`, safe); a full
+Scribe of `RM_MapComponent_GradientAxis`'s per-cell `salinity[]` grid via
+`MapExposeUtility.ExposeUshort` (verified the signature against the real
+decompile, `/mnt/d/Luke/dev/reference/rimworld-decompiled/Verse/
+MapExposeUtility.cs` — matches exactly, and `SalinityAt`/`SetSalinityAt`
+both self-call `EnsureGrid()` so the LoadingVars-time writer never touches a
+null array); a full rewrite of `RM_MapComponent_WaterAgitation` from a
+map-wide random-pool ripple picker to a camera-view-sampled one (owner
+walk verdict "way more ripples" — traced the `grade[]` byte grid's
+allocation-before-first-tick ordering via `FinalizeInit`→`Rebuild()`, and
+the `anyAgitated`/`Find.CurrentMap`/density-clamp early-outs — no null-deref,
+no unbounded scan, cost is a hard `SamplesPerTick=4` ceiliing regardless of
+map size); `RM_MapComponent_LivingRegrowth`'s new accelerated-regrow fields
+(`acceleratedRegrowThreshold`/`SpeedMultiplier`) threading through
+`RegisterBole`, `ComputeRemovedFraction` and the `ScanForNewCandidates`
+scheduler — confirmed still gated behind the existing `TickInterval=250`
+throttle, not a new per-tick scan; `RM_MapComponent_WaterTruce`'s own fix
+moving its `RM_WaterTruceExtension` read from the constructor to
+`FinalizeInit` (comment names the bug it fixes: `map.Biome` throws before
+`TileInfo`/`WorldGrid` resolve at ctor time on load — a real prior defect,
+already corrected by this diff, not something to fix again); the
+`RM_WanderingVortex`/`Extension` species-immunity gate now routing through
+`HazardTargeting.Affects` (verified that helper's real signature against
+`HazardTargeting.cs` — matches); and `RUT_MapComponent_TheTenant`'s
+`taughtWarning` Scribed flag plus `BeginRescueWindow`/`CleanSplashDespawn`
+extraction for `FEVERWOOD_TENTACLE_BESTIARY_1` reuse — both still called
+from the same `ExposureCheckIntervalTicks=250`-gated `ScanExposure`.
+
+**No bug found in any of the 18.** Every new per-cell or per-tick addition
+this wave traced back to an existing throttle (`TickInterval`,
+`UpdateIntervalTicks`, `RescanIntervalTicks`/camera-sample cap,
+`ExposureCheckIntervalTicks`) rather than repeating wave 17's
+`IsHashIntervalTick`-missing pattern — that class of bug did not recur here.
+All 18 marked CLEAN at `77d01ae7c`. Status commit `db6802608`, pushed.
+
+18 files reviewed this wave (all diff-scoped), 18 newly CLEAN, 0 bugs found.
+
+Re-measured after: `TALLY CLEAN 3200 DIRTY 180 ORPHANED 211 NEVER ENTERED
+667` (up from wave 17's 3182/198/211/667 — exactly this wave's 18-file net
+CLEAN gain, no concurrent drift this time).
+
+Next wave: `EnvironmentalHazards/Source` is now fully clear of the
+DIRTY-since-clean backlog wave 16 opened. Move to the scattered
+DIRTY-since-clean files wave 17 named and this wave didn't touch:
+`FlowWorks/` (mostly `.xml` FluidDef/TerrainDef files, one `.csproj`,
+`Flood_FlowWorks.cs`, `FluidDef.cs`, `RiverSteamHook.cs`,
+`generate_liquid_suite.py`), `Utils/` (`artpiped.py`, `selftest_artpipe.py`,
+`modcheck/suite.py`, `modset_builder.py`, `scald_showcase.py`,
+`selftest_sound_paths.py`, `shared_sync.py`), `RimUtinni/PlantGrowth/Source/`
+(4 files) and `RimUtinni/ShipShields/Source/` (5 files) — re-run
+`code_review_status.py list --show-untracked` first since these are
+`git status --porcelain` clean but not re-verified against the live DIRTY
+list this wave (only the EnvironmentalHazards paths were re-checked before
+touching anything). ⛔ Keep avoiding the same exclusion list: biome-specific
+mod folders, `DivingInteraction`, `FeverWood/Source`, `TerminalBiomes`,
+anything with `BrineElder`/`GreySea` in its path, and `biome_paint_list.md`
+until told the concurrent biome-split build is done.
