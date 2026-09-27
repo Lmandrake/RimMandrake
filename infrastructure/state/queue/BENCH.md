@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T06:13:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T06:26:18Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -179,6 +179,42 @@ target:   v1
 kind:     task
 summary:  (no items/TWILIGHT_BOTTOM_CAST_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TWILIGHT_BOTTOM_CAST_1.md
+
+## SCALD_UNDERWATER_FLORA_1 Scald underwater flora pass: set plantDensity and design strange small sea-plants - bacterial filament strings, sponges, soft corals, alien twists (owner-typed 2026-09-26; the Scald must not be barren)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/SCALD_UNDERWATER_FLORA_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_UNDERWATER_FLORA_1.md
+
+## GREYSEA_FLORA_PASS_1 Grey Sea underwater flora pass: cold pale register, own strange-flora roster (decision taken by question card 2026-09-26 - all sea floors get one, nothing barren, nothing shared)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/GREYSEA_FLORA_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_FLORA_PASS_1.md
+
+## TWILIGHTSEA_FLORA_PASS_1 Twilight Sea underwater flora pass: own strange-flora roster in the light-economy register (decision taken by question card 2026-09-26)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/TWILIGHTSEA_FLORA_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TWILIGHTSEA_FLORA_PASS_1.md
+
+## PROPANELAKE_FLORA_PASS_1 Propane Lake underwater flora pass: not water-chemistry at all, own strange-flora roster (decision taken by question card 2026-09-26)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/PROPANELAKE_FLORA_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PROPANELAKE_FLORA_PASS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -795,13 +831,3 @@ kind:     process
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WORKTREE_QUICKTEST_BRIDGE_GAP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WORKTREE_QUICKTEST_BRIDGE_GAP_1.md
-
-## SCALD_UNDERWATER_FLORA_1 Scald underwater flora pass: set plantDensity and design strange small sea-plants - bacterial filament strings, sponges, soft corals, alien twists (owner-typed 2026-09-26; the Scald must not be barren)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SCALD_UNDERWATER_FLORA_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SCALD_UNDERWATER_FLORA_1.md
