@@ -34,6 +34,13 @@ namespace RimMandrake.CreatureBehaviors
 		// first empty check.
 		private int famineStartTick = -1;
 
+		// Sticky result of the last (throttled) FoodExistsNearby scan — see
+		// CompTick's IsHashIntervalTick gate below. Not Scribed: it just
+		// means a freshly-loaded pawn assumes food is present for at most
+		// 250 ticks until the next real check, which is negligible against
+		// famineGraceTicks (default 30000).
+		private bool famished;
+
 		private RM_CompProperties_VerminBreeder Props => (RM_CompProperties_VerminBreeder)props;
 
 		private Pawn Parent => (Pawn)parent;
@@ -61,28 +68,46 @@ namespace RimMandrake.CreatureBehaviors
 
 			if (!Props.breedFoodThingDefNames.NullOrEmpty())
 			{
-				if (!FoodExistsNearby())
+				// FoodExistsNearby is a real listerThings.ThingsOfDef scan —
+				// cheap for one call, but this method runs every tick (not
+				// CompTickRare), so an unthrottled call here re-scans the
+				// map once per tick per breeder with this field set. Gate it
+				// on the same IsHashIntervalTick(250) convention every other
+				// per-tick scanning comp in this mod uses (RM_CompAdhesiveSlick,
+				// RM_CompDrumLure, RM_CompHeatBurstPredator); the sticky
+				// `famished` result carries the answer on the ticks in between.
+				if (parent.IsHashIntervalTick(250))
 				{
-					if (famineStartTick < 0)
+					if (!FoodExistsNearby())
 					{
-						famineStartTick = Find.TickManager.TicksGame;
-					}
+						famished = true;
+						if (famineStartTick < 0)
+						{
+							famineStartTick = Find.TickManager.TicksGame;
+						}
 
-					if (Props.famineMentalState != null
-					    && Find.TickManager.TicksGame - famineStartTick >= Props.famineGraceTicks
-					    && !Parent.InMentalState
-					    && Parent.mindState?.mentalStateHandler != null)
+						if (Props.famineMentalState != null
+						    && Find.TickManager.TicksGame - famineStartTick >= Props.famineGraceTicks
+						    && !Parent.InMentalState
+						    && Parent.mindState?.mentalStateHandler != null)
+						{
+							Parent.mindState.mentalStateHandler.TryStartMentalState(
+								Props.famineMentalState,
+								"RM_VerminFamine".Translate(),
+								forced: true);
+						}
+					}
+					else
 					{
-						Parent.mindState.mentalStateHandler.TryStartMentalState(
-							Props.famineMentalState,
-							"RM_VerminFamine".Translate(),
-							forced: true);
+						famished = false;
+						famineStartTick = -1; // food is back; vanilla Manhunter recovers on its own clock
 					}
-
-					return; // no breeding while starved, flipped or not
 				}
 
-				famineStartTick = -1; // food is back; vanilla Manhunter recovers on its own clock
+				if (famished)
+				{
+					return; // no breeding while starved, flipped or not
+				}
 			}
 
 			if (Find.TickManager.TicksGame < nextSpawnTick)
