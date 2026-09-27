@@ -1071,15 +1071,6 @@ kind:     task
 summary:  Per sea, per catch entry without a living counterpart:
 prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
 
-## DIVING_STALE_DEPLOYED_FILES_1 Retired pawn-dive files are deleted from src/ but still live in the deployed DivingInteraction mod
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     fix
-summary:  - The patch is still tagging RUTScaldWaterShallow, RUTScaldWaterMovingShallow and
-prose:    infrastructure/state/items/DIVING_STALE_DEPLOYED_FILES_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1786,26 +1777,6 @@ thin:     no ## spec, no ## verify
 summary:  GREYSEASALTDOMESCATTEROOB1 — RMSaltDomeShore's failed cluster-centre search reaches ThingsListAt as IntVec3.I…
 prose:    infrastructure/state/items/GREYSEA_SALTDOME_SCATTER_OOB_1.md
 
-## HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1 Our three hazard-protection stats sit in statBases, so JobGiver_OptimizeApparel cannot see them and no pawn will ever choose a boil-suit on its own
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1.md
-
-## WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1 RM_GameCondition_WetBulb is a second implementation of RM_HediffComp_EnvironmentalExposure living in the same assembly - retire it into the shared comp
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1.md
-
 ## LIQUID_TERRAIN_AUTHORED_TWICE_1 Boiling water, brine pool and liquid propane terrain are authored twice in two active mods with identical player labels and different burn numbers
 state:    proposed
 row:      unassigned
@@ -1815,16 +1786,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md
-
-## RUT_PROPANELAKE_FROZEN_DENSITY_1 RUT_PropaneLake still leaves animalDensity unset (frozen); sweep other biomes for the same defect
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## verify
-summary:  1. When the RUT tier is retired/repainted onto RMPropaneLake
-prose:    infrastructure/state/items/RUT_PROPANELAKE_FROZEN_DENSITY_1.md
 
 ## SEABED_PLANET_LAYER_1 Seabed planet layer: the sea floor as a geometric twin of the surface
 state:    proposed
@@ -1885,13 +1846,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md
-
-## SUMP_TARVAULT_TICKER_NEVER_1 RUT_TarVault ships with tickerType unset (defaults Never) -- CompTick never fires, whole tar-vault seal mechanism is dead code
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SUMP_TARVAULT_TICKER_NEVER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SUMP_TARVAULT_TICKER_NEVER_1.md
