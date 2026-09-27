@@ -160,8 +160,8 @@
         <RUT_Zhurr>0.6</RUT_Zhurr>
       </freshwater_Common>
       <freshwater_Uncommon>
-        <BMT_Rocktooth MayRequire="biomesteam.biomescaverns">1</BMT_Rocktooth>
-        <BMT_Boneblade MayRequire="biomesteam.biomescaverns">1</BMT_Boneblade>
+        <RSW_Rocktooth MayRequire="mandrake.rsw.swbestiary">1</RSW_Rocktooth>
+        <RSW_Boneblade MayRequire="mandrake.rsw.swbestiary">1</RSW_Boneblade>
         <RUT_Hurrok>0.8</RUT_Hurrok>
         <RUT_Vhessa>0.4</RUT_Vhessa>
       </freshwater_Uncommon>
