@@ -107,14 +107,39 @@ LIQUID_ROWS = {
         "compat_targets": ["ToxicWaterShallow", "ToxicWaterDeep"],
     },
 
-    # R-B4a's boiling-lift values, cited (not invented) — read directly from
-    # src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_ScaldWater.xml, itself
-    # sourced from design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md §R-B4a.
+    # R-B4a's boiling-lift values — REVISED per LIQUID_TERRAIN_AUTHORED_TWICE_1
+    # (closed 2026-09-27). This row used to carry R-B4a's ORIGINAL 1/300 shallow,
+    # 2/240 deep, cited from src/RimUtinni/UtinniPatches/Defs/TerrainDefs/
+    # RUT_ScaldWater.xml at the time this row was written — but that donor file
+    # was itself REVISED to 3/300 shallow, 4/240 deep on 2026-09-26 (owner ruling
+    # 9, scald_steam_and_hazards_spec.md §9: "deep water should burn harder",
+    # plus the measured fact that HediffGiver_Terrain floors burnDamage at
+    # Mathf.Max(x,3) so the old 1/2 was already silently 3/3 in play). This row
+    # was never updated to match, so FlowWorks' generic "boiling water" and the
+    # Scald's own live terrain disagreed on the one number both claimed to
+    # carry — an audit (LIQUID_TERRAIN_AUTHORED_TWICE_1) flagged it as a
+    # content fork. Owner's question card, 2026-09-26: the 3/4 values are
+    # DELIBERATE and stay; they belong in this generated suite as the named
+    # values, not as an unreconciled hand-authored divergence.
+    #
+    # This row now carries the SAME 3/300 shallow, 4/240 deep as
+    # RUT_ScaldWaterShallow/Deep. It does NOT replace or repoint
+    # RUT_ScaldWater.xml — that file's six-variant suite (it also ships
+    # Ocean/Moving variants this generator's shallow+deep-only shape does not
+    # cover, per this module's own docstring on why ocean/moving depth is
+    # explicitly out of scope) still serves RUT_TheScald AND RM_TheScald
+    # directly and stays hand-authored in the RUT layer — deleting or renaming
+    # those defNames would break both live BiomeDefs, one of which
+    # (RUT_TheScald) is a frozen save-compat twin. The fork this item closes
+    # is the NUMBER disagreement, not the file split; RM_WaterBoilingShallow/
+    # Deep has no biome consumer of its own (confirmed by search) so no
+    # repoint was needed on that side either.
+    #
     # This RM_WaterBoiling* suite is the GENERIC (non-campaign) offering —
     # the Scald keeps its own already-shipped RUT_ScaldWater* untouched
     # (§7, out of scope). No extension: native burnDamage/burnIntervalTicks
     # already carries the whole "immersion hurts more than contact" story
-    # via two different TerrainDefs (1/300 shallow vs 2/240 deep) — an
+    # via two different TerrainDefs (3/300 shallow vs 4/240 deep) — an
     # extension here would only document a neutral pH with no damage spec,
     # which is the same "empty but valid" case §3 names directly.
     "boiling": {
@@ -129,14 +154,14 @@ LIQUID_ROWS = {
         ),
         "native_overrides_shallow": {
             "canFreeze": False,
-            "burnDamage": 1,
+            "burnDamage": 3,
             "burnIntervalTicks": 300,
             "glowColor": "(2,154,229)",
             "glowRadius": 2,
             "traversedThought": "HotSpring",
         },
         "native_overrides_deep": {
-            "burnDamage": 2,
+            "burnDamage": 4,
             "burnIntervalTicks": 240,
             "glowColor": "(2,154,229)",
             "glowRadius": 2,

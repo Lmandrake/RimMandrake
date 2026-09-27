@@ -27,6 +27,17 @@
   (no donor mod dependency, no new art needed — this is ordinary vanilla
   texture reuse, not a placeholder for a missing donor asset). A dedicated
   "frozen propane crust" look is real, owed art work, not done here.
+
+  ✅ RE-CHECKED under LIQUID_TERRAIN_AUTHORED_TWICE_1 (closed 2026-09-27):
+  RM_PropaneLakeDeep/RM_SolidPropane (this file) both share the words
+  "liquid propane" with FlowWorks' RM_PropaneShallow/Deep but are not a fork
+  of the same content — RM_PropaneLake.xml uses BOTH at once, deliberately,
+  for two different depths of the same lake (this file's pair as the main
+  waterDeepTerrain/waterShallowTerrain, FlowWorks' pair as the fishable
+  <coastal> shore edge — see RM_PropaneLake.xml's own SEA_FLOOR_AND_CATCH_
+  PASS_1 comment). Neither carries a burn/damage number the other
+  contradicts, so nothing here needed folding into the generator or
+  deleting.
   ============================================================================
 -->
 <Defs>

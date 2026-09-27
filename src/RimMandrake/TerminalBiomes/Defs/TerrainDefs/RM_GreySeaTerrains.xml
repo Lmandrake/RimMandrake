@@ -20,6 +20,16 @@
   against a frozen dump and belongs to LIQUID_TYPES_MOD_1, not to this wave.
   These live in the biome's own mod and reference nothing of FlowWorks'.
 
+  ✅ RE-CHECKED under LIQUID_TERRAIN_AUTHORED_TWICE_1 (closed 2026-09-27):
+  RM_BrinePoolShallow/Deep and FlowWorks' RM_WaterBrineShallow/Deep share the
+  English words "brine pool" but are NOT the same content forked twice —
+  RM_WaterBrine* is RM_GreySea's own live shore/coastal water (RM_GreySea.xml,
+  RM_Miasma.xml, RUT_Miasma.xml all reference it directly) while these two are
+  a rarer, deliberately harsher floor grade with their own encasement hazard
+  mechanism, not wired into any biome's default water fields at all. No
+  numbers disagree because none are shared; nothing here was folded into the
+  generator and nothing needed deleting.
+
   ============================================================================
   THE SHORE: "every Grey Sea shoreline carries the crusty whiteness"
   ============================================================================

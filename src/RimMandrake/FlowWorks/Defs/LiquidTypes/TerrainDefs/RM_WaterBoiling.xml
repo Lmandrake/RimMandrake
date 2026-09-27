@@ -27,7 +27,7 @@
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <canFreeze>false</canFreeze>
-    <burnDamage>1</burnDamage>
+    <burnDamage>3</burnDamage>
     <burnIntervalTicks>300</burnIntervalTicks>
     <glowColor>(2,154,229)</glowColor>
     <glowRadius>2</glowRadius>
@@ -52,7 +52,7 @@
     <description>Kept liquid by heat rather than depth. Steam stands off the surface even in still air, and nothing wades in without paying for it.</description>
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
-    <burnDamage>2</burnDamage>
+    <burnDamage>4</burnDamage>
     <burnIntervalTicks>240</burnIntervalTicks>
     <glowColor>(2,154,229)</glowColor>
     <glowRadius>2</glowRadius>
