@@ -6195,3 +6195,75 @@ any candidate before starting — stay off `UtinniPatches/` (now also owed
 there), `TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
 `Greentide`/`Miasma`/`BlueDesert`/`DivingInteraction`/`LuminousPigment`/
 `Droidworks`.
+
+## Wave 34 (2026-09-27)
+
+Cluster: `src/RimMandrake/RustCathedral/` — the whole mod (the absorbed
+RustCathedralHum + RustCathedralWalls satellite kits plus the biome's own
+Source/Defs, `RUSTCATHEDRAL_RM_MOD_BUILD_1`). 36 files: About.xml, 20 Defs
+(BiomeDef, HediffDef, IncidentDef, 2 MapGeneration, Misc, RM_BiomeAttitudeDef,
+SoundDefs, TerrainDefs, 3 ThingDefs_Buildings, 5 ThingDefs_Items, 2
+ThingDefs_Races, 2 ThinkTreeDefs), 1 Patch, and 14 `.cs` source files across
+three separate csproj/DLLs (`RimMandrake.Utinni.RustCathedralHum`,
+`RM_RustCathedral`, `RimMandrake.Utinni.RustCathedralWalls`). Confirmed
+git-clean and outside every current exclusion before starting; all 36 files
+were DIRTY/never-entered (the mod moved here from three separate
+`src/RimUtinni/RustCathedral{Hum,Roaches,Walls}` folders, whose old paths
+show ORPHANED in the status list).
+
+Every `Class=`/`thingClass`/`hediffClass`/`compClass`/`workerClass`/
+`genStepClass`/`thinkRoot Class` attribute checked against real source, and
+every non-trivial vanilla engine call this cluster makes was cross-checked
+against the decompiled 1.6 source via RimSage rather than trusted from the
+extensive in-file commentary (which already cites line numbers and RimSage
+reads for nearly every claim): `WaterBodyTracker.Notify_Fished`/its private
+`map` field, `JobDriver_Fish.CompleteFishingToil`'s exact non-rare/
+non-negative catch path, `FishingUtility.GetNegativeFishingOutcomes`'s
+0.02/300000-tick gate (confirmed the file's own claim that the class's named
+`NegativeCatchCooldownTicks` constant is dead and the executed code uses the
+raw literal), `CompDeepScanner.ChooseLumpThingDef`, `DeepDrillUtility.
+GetNextResource`, `CompCreatesInfestations.Notify_CreatedInfestation`,
+`Pawn.Kill`'s exact despawn-before-return-completes shape (confirming the
+file's own "prefix not postfix, because MapHeld is gone by the time Kill
+returns" claim), both `Pawn_CarryTracker.TryStartCarry` overloads,
+`BiomeWorker.GetScore`/`PlanetTile.tileId`, `Rand.ChanceSeeded`, and
+`IncidentWorker_DeepDrillInfestation.CanFireNowSub`. All matched.
+
+**No functional bugs found.** Fixed 4 stale comments (commit `444e27b8c`,
+before mark-clean): `Defs/MapGeneration/RUT_CathedralWallScatter.xml`,
+`Defs/MapGeneration/RUT_CathedralSacredWallScatter.xml`,
+`Patches/RUT_CathedralWallScatter_MapGenPatch.xml` and `Defs/ThingDefs_Items/
+RUT_LivePatternMetal.xml` all said their GenStep/Harmony gate self-checks
+against `RUT_RustCathedral` (the frozen campaign twin's biome) when the
+actual C# constants all correctly gate on `RM_RustCathedral` (this mod's own
+biome) — leftover from before the Walls kit's XML comments were copied in
+from the frozen twin without updating the prose. Comment-only; the gates
+themselves were never wrong. Left two other stale "§1 (hum-mood system) does
+not exist yet" comments (`Source/Walls/GenStep_ScatterSacredWalls.cs`,
+`Defs/ThingDefs_Buildings/RUT_SacredWall_Conduit.xml`) untouched — §1
+*does* exist now (this same wave reviewed it, `RM_MapComponent_
+BiomeAttitude.cs`), but the underlying gap they describe (a sacred wall's
+`AttackedBuilding` goodwill hit never bumps §1's irritation) is still real
+and still open, tracked in `RUST_CATHEDRAL_MECHANICS_1.md` itself as a named
+§1/§2 boundary item — not this wave's to redecide or restate.
+
+No DLL rebuild needed (no `.cs` file content changed, only XML comments).
+All 36 files marked CLEAN (commit `07fe771ab`), both commits pushed.
+
+36 files reviewed this wave, 36 newly CLEAN, 0 bugs found (4 stale comments
+fixed).
+
+Next wave suggestion (not re-verified): `PoisonForest`/`Stillsand` remain
+blocked on `UtinniPatches/` (now also owed `SUMP_TARVAULT_TICKER_NEVER_1`'s
+one-line fix once it's clear to work there). `TheRot` (40 files),
+`CreatureBehaviors` (~4 remaining, per wave 32's note — re-verify), `Scarlands`
+(5), `ForsakenCrags` (4), `NightsideIce`/`ExplosiveGrowth` (3 each),
+`HostileFlora`/`GelatinousSlime`/`FlowWorks` (2 each), and the
+`Utils/artpipe/`, `bridgetools/`, `loadsweep/` Python script clusters were
+all present in the DIRTY/never-entered list and outside every current
+exclusion as of this wave. Re-run `code_review_status.py
+list --show-untracked` for a fresh dirty list and `git status --short` on
+any candidate before starting — stay off `UtinniPatches/`,
+`TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
+`Greentide`/`Miasma`/`BlueDesert`/`DivingInteraction`/`LuminousPigment`/
+`Droidworks`.
