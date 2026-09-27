@@ -2094,16 +2094,16 @@
     "sha": "d3aa7fb5d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GradientAxisExtension.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "04d83688614685243f0c1c743aca59b0a0f06a5bb9faf45b03c79e49ab3831b2",
-    "sha": "b1a2aa399"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "fa6976d73c7b3592216b58ccee816b963d681141aaf870003a55eee5682aeb0e",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GradientAxisRepaint.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "c8d85d48af398b0b355c71b5428c818724b3a784493ba4e4774954881dccdd42",
-    "sha": "3901f320b"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "72c19b66895184f15eb3416038053805b1957d9197631bf0502da8bc843f8fda",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_GradientSurgeExtension.cs": {
     "cleanCount": 1,
@@ -2220,10 +2220,10 @@
     "sha": "d3aa7fb5d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_JobGiver_ReturnToWater.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "391f852fb030b3f3eb6a09e9a35fe0f90041a2561b9c9d1db48840540b3df067",
-    "sha": "c76fc40a0"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "6ecee4b062675ffd94424bcebfef9ab65fd999d5f5663f6573feb0826a5ca693",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_LivingBoleBiomeExtension.cs": {
     "cleanCount": 1,
@@ -2262,10 +2262,10 @@
     "sha": "e1c3162cb"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_BodySizeBarrier.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-23",
-    "hash": "222fd46f79064c3d5268d85d38029ddd703514f9b51e96f45409bec68ab1def1",
-    "sha": "032543816"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "a5a65878bdd5e5328c7c91db9c5a78ec956e4deab6bdc6edc3485fdb59881382",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_CarriedFilthHediffLink.cs": {
     "cleanCount": 1,
@@ -2304,10 +2304,10 @@
     "sha": "fd960504b"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_GradientAxis.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "c46811ada2e049847e23bf331f56e97581a309c53c8cd8fd27dce5c01821b373",
-    "sha": "3901f320b"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "5601e84c048f883a79c954972ae6cbc8046cbad06cbb400e529f451ce8c3d595",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingProduce.cs": {
     "cleanCount": 1,
@@ -2316,10 +2316,10 @@
     "sha": "8aca07749"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "19ca77a4ac192498dbbee1a4edad387523d8782f3c1d6dd6ea33c8612b02e774",
-    "sha": "07118c4e6"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "f5e22bf114255feed1d1d4b1f3c651cd584baf1834537f9c39c9454b241d895b",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_RoilVortexSpawner.cs": {
     "cleanCount": 1,
@@ -2328,10 +2328,10 @@
     "sha": "d0dfad868"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_StrandingPools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "1ca1bca87aa051798b4a78c00574a24a9d195c2034f59ab62f84c888c278e25d",
-    "sha": "c76fc40a0"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "a6801371b440f813e0007a902f75f7bf0f91a09c06c4ffcb7318f3eb12a7a7a7",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_ThresholdSmokeColumn.cs": {
     "cleanCount": 1,
@@ -2352,16 +2352,16 @@
     "sha": "009b887ef"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_WaterAgitation.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-25",
-    "hash": "23798cb987ea32f8d525810ddb13cf4e17155a51c7d2a3d2d7b4db325855951f",
-    "sha": "8f48e6ea6"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "18e4a81542f5cf58a2a63894e388c171720ed452a1dc3bdb9c10bed79f4fe32e",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_WaterTruce.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "665435a69860f839fd9e2f272550913af8101ab20b0c5f9f4fe22713e978fa88",
-    "sha": "c3330da8f"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "3519b71c68deb3515da4f7801723c479de817e6035d09e6a1d64a9513cf3351c",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_MechanicGates.cs": {
     "cleanCount": 1,
@@ -2430,10 +2430,10 @@
     "sha": "f4d5c1714"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_PollinationGateExtension.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-25",
-    "hash": "7aaf6b672ad0293b7e46c1c909f4eccf4e600fdeee5afb5b38d77a8348bf0db6",
-    "sha": "8f48e6ea6"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "a9e09f33b4034eebdc5e5029c4fce203e5795138919dbc5753ae11b373a11e44",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_RecipeDef_HediffByproduct.cs": {
     "cleanCount": 1,
@@ -2472,10 +2472,10 @@
     "sha": "a90656d07"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_AnchoredPawn.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "426ab3f1813e48d6589589ecef6e6dacab23bed198355818a7f3951854c2177a",
-    "sha": "ce17e0865"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "6e98a6223ba9a1e6849c84ffb1ac5bf49e5e2f111633fa5037c54cdab7cd35c6",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_SetPieceElement_SpawnMarker.cs": {
     "cleanCount": 1,
@@ -2484,10 +2484,10 @@
     "sha": "ce17e0865"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_StrandingPoolsExtension.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "ff8351497694b423011bfe30d32ccd113f1bf753bf80fa285744110d771b09df",
-    "sha": "c76fc40a0"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "9cfc9764f7d791badb7704db09467be8698da4af028ee567e179f3f36d51e702",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_TarCoatingUtility.cs": {
     "cleanCount": 1,
@@ -2514,16 +2514,16 @@
     "sha": "3bcf80ccf"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_WanderingVortex.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "eefba3aaedcc8fce38f6ebe197b8e5dda6f7dc3589103ed69e0f2b0446c3c949",
-    "sha": "3bcf80ccf"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "1850fe86842f1ba06d2a4af81103d9910121567afd293715a19b8841438da104",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_WanderingVortexExtension.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "ab1de1fb4fe3a7baf0657514dd54802ce402ef464e6bd407b731a3bbc9ce7f1a",
-    "sha": "3bcf80ccf"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "990c79048441dc23a92d8129f7c7708a4f400ff406c73267d6d667425028b532",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RM_WarmGroundExtension.cs": {
     "cleanCount": 1,
@@ -2598,16 +2598,16 @@
     "sha": "18adda449"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_SteamDevil.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-14",
-    "hash": "93d708b5106afa5ee42175bed194ca66aea288c55834ee2a2f35809561d0ac26",
-    "sha": "3bcf80ccf"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "7b2a6b83a054e24bdfe10c4362bc12697df21f90921ef734b53bc44fc659da5e",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_WalkerSurfacing.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "4823402727a007c7cbb452e4da188640fd61ce262b73ff1ee68a14219aa05331",
-    "sha": "c1ae25eaa"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "b45437afa33c1734e28488c7eec2a52ac89fdb9b23f753f379ad2f34a13447b3",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_LordJob_SentinelDefend.cs": {
     "cleanCount": 1,
@@ -2616,10 +2616,10 @@
     "sha": "52c8c982c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_MapComponent_TheTenant.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "e190969c29ff5c8d58358f0173e952f2689a196c6ec23912a3a8b0d1a292420c",
-    "sha": "57e97535a"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "6ff33cf2d00a0e0efc821c58fffa6d6203e1e81fb054c3714942adc6ba06c954",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_Plant_FlashFlora.cs": {
     "cleanCount": 1,
@@ -2634,10 +2634,10 @@
     "sha": "d3aa7fb5d"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/RUT_WeatherOverlay_ScaldSteam.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-13",
-    "hash": "e122fe282e66f6ddc5770347ba22745f709497f6a70fc9c249fd62a60a923174",
-    "sha": "f4d5c1714"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "797b0ca3f8ac7e308262292fde70749487ed310aab117820133e3b70e482cc40",
+    "sha": "77d01ae7c"
   },
   "src/RimMandrake/EnvironmentalHazards/Source/WeatherPulseExtension.cs": {
     "cleanCount": 1,
