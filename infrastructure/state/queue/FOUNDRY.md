@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T00:08:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T00:09:15Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1878,3 +1878,13 @@ kind:     fix
 thin:     no ## criteria
 summary:  - The patch is still tagging RUTScaldWaterShallow, RUTScaldWaterMovingShallow and
 prose:    infrastructure/state/items/DIVING_STALE_DEPLOYED_FILES_1.md
+
+## ARTPIPE_SALVAGE_REJECTED_SIZE_MISMATCH_1 Recover the 71 already-generated renders sitting in artpipe failed/ as size_mismatch
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Confirm the daemon is idle (or briefly pause it) before touching failed/,
+prose:    infrastructure/state/items/ARTPIPE_SALVAGE_REJECTED_SIZE_MISMATCH_1.md
