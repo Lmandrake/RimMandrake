@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T22:07:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T22:25:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -945,6 +945,15 @@ kind:     task
 summary:  🔴 MEASURED 2026-09-23: src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUTBoughway.xml
 prose:    infrastructure/state/items/FEVERWOOD_BOUGH_SOIL_TERRAIN_1.md
 
+## DEBUG_GAME_READY_WORLDUI_CRASH_1 start_debug_game_ready leaves the game in a broken world/map-UI NullReferenceException loop at 623 mods, distinct from the closed NINEFOLD_DEBUG_GAME_READY_CRASH_1 repro
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     bug
+summary:  (no items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md
+
 ## SUMP_TAR_NASTINESS_1 Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
 state:    doing
 row:      unassigned
@@ -1614,16 +1623,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DEBUG_GAME_READY_WORLDUI_CRASH_1 start_debug_game_ready leaves the game in a broken world/map-UI NullReferenceException loop at 623 mods, distinct from the closed NINEFOLD_DEBUG_GAME_READY_CRASH_1 repro
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEBUG_GAME_READY_WORLDUI_CRASH_1.md
 
 ## MIASMA_SHIPPING_NAMES_1 Owner card: the_miasma working names (karrobel, karrathil, stranded deformation)
 state:    proposed
