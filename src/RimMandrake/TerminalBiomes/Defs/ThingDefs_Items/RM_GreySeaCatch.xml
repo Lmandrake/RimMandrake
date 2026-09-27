@@ -5,10 +5,8 @@
   terminal_seas_cast_proposal_2026-09-25.md verdict 2: the newer sea-floor-
   and-catch law wins over the old no-fish ruling for the Grey Sea — essarn
   common, sorruth uncommon become the catch. Added as two ADDITIONAL rows in
-  RM_GreySea.xml's own pre-existing fishTypes block (RUT_Sallik/Karrud/
-  Hessal/Oomal common + RUT_Maalu/Immu/Haarn uncommon, RUT_RareGreyCatches),
-  not a replacement — that block predates this proposal and is out of this
-  pass's scope; see this pass's own build report.
+  RM_GreySea.xml's own pre-existing fishTypes block, not a replacement — that
+  block predates this proposal and was out of that pass's scope.
 
   Item-only catch defs, no living pawn (same idiom as RM_Eesh/RM_Muddal
   etc. in RUT_ScaldFish.xml — essarn and sorruth's own floor-resident forms,
@@ -16,6 +14,34 @@
   Register stats follow RUT_ScaldFish.xml's own envelope, reusing textures
   already physically present via Core (ToxicMeat convention), no two rows
   sharing one.
+
+  ==========================================================================
+  GREYSEA_CATCH_TIER_RENAME_1, 2026-09-27 — sallik/karrud/hessal/oomal/
+  maalu/immu/haarn added below, moved down from RimUtinni
+  ==========================================================================
+  These seven shipped as RUT_Sallik/Karrud/Hessal/Oomal/Maalu/Immu/Haarn in
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_GreySeaFish_Items.xml,
+  MayRequire-gated on mandrake.rut.patches. Every one of those names is an
+  INVENTED exotic word, not canon IP, and per Q11a (biome_mod_architecture.md
+  §7, owner 2026-09-22) an invented name belongs free-tier — "the top mod
+  without star wars will look precisely the same as the star wars enhanced
+  one." Decision taken by question card 2026-09-26; this is the mechanical
+  execution.
+
+  defName carries a Catch suffix (RM_SallikCatch, not RM_Sallik) because
+  RM_Sallik etc. are already taken — the living floor-resident ThingDef/
+  PawnKindDef pair in RM_GreySeaFloorLife.xml — same RM_<Name> / RM_<Name>Catch
+  shape as essarn/sorruth above. Content (description, texPath, statBases,
+  comps) is unchanged from the RUT_ originals; only defName changed and the
+  MayRequire="mandrake.rut.patches" cross-mod guard is dropped, since these
+  are now inline in this mod. RM_GreySea.xml's fishTypes block and
+  RM_GreySeaFloorLife.xml's header are updated in the same pass.
+
+  ⚠️ NOT migrated here, and still RUT_-tier on purpose — out of this item's
+  named scope: RUT_SaltCameo (the rare-table prize item, stays in
+  RUT_GreySeaFish_Items.xml) and RUT_RareGreyCatches (the ThingSetMakerDef
+  that names it and RUT_Hessal — updated to point at RM_HessalCatch, but the
+  ThingSetMakerDef itself keeps its RUT_ defName).
 -->
 <Defs>
 
@@ -62,6 +88,155 @@
     <comps>
       <li Class="CompProperties_Rottable">
         <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- sallik — crustacean, common (1.2). "salt-hermit." Renamed from
+       RUT_Sallik, GREYSEA_CATCH_TIER_RENAME_1. Suffixed Catch: RM_Sallik is
+       the living floor pawn (RM_GreySeaFloorLife.xml). -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_SallikCatch</defName>
+    <label>sallik</label>
+    <description>A thumb-sized crab-thing that never grew a shell of its own: it excretes the salt it cannot keep out and wears the crust, layer on layer, until it is a walking lump of the sea's own mineral with legs underneath. Touch the water and every sallik within reach pulls its legs in and becomes a pebble. Cracked open there is very little in it, and that little is salt-sweet and good. The crusts are kept by the shore-folk, who say no two are alike.</description>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantB</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.6</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- karrud — fish, common (1.0). "crust-back." Renamed from RUT_Karrud,
+       GREYSEA_CATCH_TIER_RENAME_1. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_KarrudCatch</defName>
+    <label>karrud</label>
+    <description>A slab-flat, palm-wide fish-thing that has given up swimming for lying still. The upper face grows a plate of pillar-mineral — the sea builds on anything that holds still long enough, and the karrud holds very still — so from above it is a chip of grey stone with a mouth-slit underneath. It moves only when the brine at the bottom gets too strong even for it, sliding uphill along the pillar bases a hand's width at a time. Beneath the plate the flesh is pale and soft and tastes faintly of rock.</description>
+    <graphicData>
+      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantB</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- hessal — shellfish, common (1.0). "the sealed." Renamed from
+       RUT_Hessal, GREYSEA_CATCH_TIER_RENAME_1. Also referenced by
+       RUT_RareGreyCatches.xml's rare-catch pool (updated in the same pass). -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_HessalCatch</defName>
+    <label>hessal</label>
+    <description>A bivalve-thing whose two shells are grown from the sea's crystal rather than from anything living, so a hessal bed reads as a patch of frost on the floor. It seals itself for years at a stretch when the brine thickens and reopens when the fog-season thins it, and nobody has seen one open. Prised apart it holds a knot of grey meat that keeps for a week in its own salt and tastes of nothing but the sea. The Homestead sites on the margin live on them.</description>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.7</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- oomal — eel, common (0.6). "the pallid." Renamed from RUT_Oomal,
+       GREYSEA_CATCH_TIER_RENAME_1. Eel register verbatim, no statBases
+       override, same convention RUT_Murrol/RUT_Zhurr/RUT_Ozhu use. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_OomalCatch</defName>
+    <label>oomal</label>
+    <description>A blind, arm-long brine-eel the colour of boiled paper, so translucent the salt-crust it has swallowed shows as a grey line down the middle of it. It lives in the silt at the pillar feet and does not come up; the shore-nets take it when the bottom-brine surges. It is always sick — every oomal carries lesions where the salt has got in — and it is never fast. Shore-folk eat it and say it is better than it looks, which is not a high bar.</description>
+    <graphicData>
+      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingDef>
+
+  <!-- maalu — alien (jellyfish-analog), uncommon (1.0). "sick-bell." Renamed
+       from RUT_Maalu, GREYSEA_CATCH_TIER_RENAME_1. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_MaaluCatch</defName>
+    <label>maalu</label>
+    <description>A bell of grey jelly the size of two hands that has half turned to stone: the sea's crystal grows into it from the rim inward, and a maalu drifts with the weight of its own mineral edge pulling it down, sagging, tilting, never quite sinking. It is not luminous — nothing down here is — and it is not dangerous; it is barely alive. Netted, the crystal rim crumbles and the jelly inside is a mouthful of salt water. Some pilgrims eat it for the rim, which they say tastes of the pillars.</description>
+    <graphicData>
+      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.08</Nutrition>
+      <MarketValue>4</MarketValue>
+      <Mass>0.3</Mass>
+      <FoodPoisonChanceFixedHuman>0.05</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- immu — fish, uncommon (0.7). "the lodger." Renamed from RUT_Immu,
+       GREYSEA_CATCH_TIER_RENAME_1. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_ImmuCatch</defName>
+    <label>immu</label>
+    <description>A finger-long, soft, eyeless fish-thing that lives inside the shells of dead hessal — it never grew any armour of its own and borrows the sea's. Lift a shell and it is there, curled, and it will not leave: shore-folk carry the shell home and shake it out over the pan. It is the most timid thing in the Grey and the only one with any colour, a faint sick pink under the skin. Sweet, small, and mostly bones.</description>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>6</MarketValue>
+      <Mass>0.3</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- haarn — alien, uncommon (0.4). "the encased." Renamed from RUT_Haarn,
+       GREYSEA_CATCH_TIER_RENAME_1. -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_HaarnCatch</defName>
+    <label>haarn</label>
+    <description>Nobody agrees what a haarn is. It is a jacket of pillar-mineral the size of a helmet, closed all round, that moves — slowly, along the floor, from pillar to pillar, leaving a scrape-line in the silt like a very small version of the giant's. Cut open there is a soft thing inside with no eyes and a great many small hooks, and it dies at once in open air. It is the Grey's only true extremophile: it lives in the strongest brine at the bottom, where nothing else survives, and it has plainly been doing so for a very long time. Divers who find one do not report it, on the grounds that it seems to have been minding its own business.</description>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>8</MarketValue>
+      <Mass>0.8</Mass>
+      <Beauty>1</Beauty>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>4</daysToRotStart>
         <rotDestroys>true</rotDestroys>
       </li>
     </comps>

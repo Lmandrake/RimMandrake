@@ -8,9 +8,17 @@
   (ban 5, the_grey_deep.md).
 
   Three options: weight 4 RUT_SaltCameo x1 ("a small creature jacketed in
-  pillar-mineral, the statuary made portable"); weight 2 RUT_Hessal x4-6
+  pillar-mineral, the statuary made portable"); weight 2 RM_HessalCatch x4-6
   ("a bed of the sealed came up whole"); weight 1 Silver x5-15 ("somebody's
   ring, still in its jacket, chiselled out on the shore").
+
+  GREYSEA_CATCH_TIER_RENAME_1, 2026-09-27: the RUT_Hessal option below was
+  renamed RM_HessalCatch — invented name, wrong tier. It now lives in this
+  same file's own mod (mandrake.rm.terminalbiomes, note this ThingSetMakerDef
+  file's own path), so no MayRequire is needed on it; RUT_SaltCameo stays a
+  genuine cross-mod reference to RimUtinni and keeps its guard. This
+  ThingSetMakerDef's own RUT_ defName is out of that item's named scope and
+  is unchanged.
 -->
 <Defs>
 
@@ -37,7 +45,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li MayRequire="mandrake.rut.patches">RUT_Hessal</li>
+                  <li>RM_HessalCatch</li>
                 </thingDefs>
               </filter>
               <countRange>4~6</countRange>

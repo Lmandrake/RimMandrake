@@ -23,9 +23,18 @@ into a completeness bar on all four seas at once.
 | `RM_PropaneLake` | 9 | 6 | 3 — **and none of them can spawn**, see below |
 
 The Grey Sea already shows the intended pattern: `RM_Essarn` (floor) ↔ `RM_EssarnCatch`
-(catch), `RM_Sorruth` ↔ `RM_SorruthCatch`. Most entries have no such pair — e.g. the Grey's
-`RUT_Sallik`, `RUT_Karrud`, `RUT_Hessal`, `RUT_Oomal`, `RUT_Maalu`, `RUT_Immu`, `RUT_Haarn`
-exist only as items.
+(catch), `RM_Sorruth` ↔ `RM_SorruthCatch`. At the time this item was filed, seven more
+entries had no such pair — the Grey's `RUT_Sallik`, `RUT_Karrud`, `RUT_Hessal`, `RUT_Oomal`,
+`RUT_Maalu`, `RUT_Immu`, `RUT_Haarn` existed only as items.
+
+✅ Both halves of this gap are now closed for the Grey Sea: `RM_GreySeaFloorLife.xml`
+(2026-09-26) gave all seven a living floor counterpart (`RM_Sallik`/`RM_Karrud`/etc.), and
+`GREYSEA_CATCH_TIER_RENAME_1` (2026-09-27) renamed the catch items themselves down to
+`RM_SallikCatch`/`RM_KarrudCatch`/`RM_HessalCatch`/`RM_OomalCatch`/`RM_MaaluCatch`/
+`RM_ImmuCatch`/`RM_HaarnCatch`, matching the `RM_Essarn`↔`RM_EssarnCatch` shape. The Grey
+Sea's shortfall row in the table above is stale for unrelated reasons (its count predates
+the sessile layer and other later Grey Sea creatures) and this item stays open for
+`RM_TheScald`/`RM_TwilightSea`/`RM_PropaneLake`.
 
 ⚠️ Those seven are already written with real bodies and behaviour in their item
 descriptions — a shell-less crab wearing its own excreted salt, a flat fish that gave up
