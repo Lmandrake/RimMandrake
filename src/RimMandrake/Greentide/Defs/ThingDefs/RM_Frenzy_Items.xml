@@ -55,8 +55,18 @@
     <alwaysHaulable>true</alwaysHaulable>
     <burnableByRecipe>true</burnableByRecipe>
     <category>Item</category>
+    <!-- CompProperties_Drug is REQUIRED on any def with a non-None
+         drugCategory: DrugBase does not supply it, and
+         DrugPolicy.InitializeIfNeeded sorts every drug by
+         GetCompProperties<CompProperties_Drug>().listOrder, so without it
+         Game's constructor NREs and no new game or save load can start
+         (DEBUG_GAME_READY_WORLDUI_CRASH_1 / LOAD_GAME_READY_MAPGEN_CRASH_1).
+         Non-addictive, no overdose: the Frenzy hediff is the whole effect. -->
     <comps>
       <li Class="CompProperties_Forbiddable"></li>
+      <li Class="CompProperties_Drug">
+        <listOrder>1000</listOrder>
+      </li>
     </comps>
     <costList>
       <RM_GorbelethToxin>6</RM_GorbelethToxin>
