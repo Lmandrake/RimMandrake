@@ -31,6 +31,20 @@
       <packageId>mandrake.rm.divinginteraction</packageId>
       <displayName>RimMandrake: Diving Interaction</displayName>
     </li>
+    <li>
+      <!-- TERMINALBIOMES_EH_HARD_DEP_1, 2026-09-26: RM_TerminalBiomesMod.cs
+           does `using RimMandrake.EnvironmentalHazards;` and the .csproj
+           carries a hard <Reference Include="RimMandrake.EnvironmentalHazards">
+           HintPath, and 16 of this mod's defs carry
+           MayRequire="mandrake.rm.environmentalhazards" — a genuine hard
+           assembly reference, not a soft/optional one. It was loadAfter-only,
+           which modset_builder.close_over() does not walk, so a
+           dependency-closed mod list could omit EnvironmentalHazards entirely
+           and crash this DLL's load with a TypeLoadException. Promoted here
+           to make close_over() see it. -->
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>mandrake.rm.environmentalhazards</li>
