@@ -1,33 +1,38 @@
 {
- "generatedAt": "2026-09-27T04:32:00Z",
+ "generatedAt": "2026-09-27T15:30:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 902792,
-  "sha256_12": "78c0e7d0ddbf"
+  "bytes": 915074,
+  "sha256_12": "c697b6277564"
  },
- "head": "666a4044d",
+ "head": "a20f0ddda",
  "counts": {
-  "red": 6,
-  "blue": 1559,
-  "green": 1707,
-  "grey": 726,
+  "red": 27,
+  "blue": 1620,
+  "green": 1831,
+  "grey": 577,
   "unmeasured": 0,
-  "total": 3998
+  "total": 4055
  },
  "loc": {
-  "red": 2581,
-  "blue": 506427,
-  "green": 530685,
-  "grey": 133217,
+  "red": 6792,
+  "blue": 513412,
+  "green": 399576,
+  "grey": 259289,
   "unmeasured": 0,
-  "total": 1172910
+  "total": 1179069
  },
- "reviewEntries": 3596,
+ "reviewEntries": 3814,
  "recidivists": [
   {
    "path": "src/RimUtinni/Doctrine/About/About.xml",
    "loc": 119,
    "cycles": 6
+  },
+  {
+   "path": "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_ThoughtDef.xml",
+   "loc": 143430,
+   "cycles": 4
   },
   {
    "path": "src/RimMandrake/Utils/artpipe/common.py",
@@ -68,14 +73,9 @@
    "path": "src/RimMandrake/Utils/artpipe/mock_codex_worker.py",
    "loc": 401,
    "cycles": 1
-  },
-  {
-   "path": "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colossi.xml",
-   "loc": 392,
-   "cycles": 1
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 3998 files (1707 clean, 726 dirty, 0 unmeasured)."
+ "headline": "OK: measured 4055 files (1831 clean, 577 dirty, 0 unmeasured)."
 }
