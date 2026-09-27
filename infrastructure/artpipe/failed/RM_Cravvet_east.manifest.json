@@ -1,0 +1,26 @@
+{
+  "attempt_elapsed_s": 3.912702855974203,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 7.513551347976318,
+  "id": "RM_Cravvet_east",
+  "meter_after": {
+    "ok": false,
+    "reason": "rollout has no token_count/rate_limits event yet",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/26/rollout-2026-09-26T13-21-16-01a0df61-13b4-7583-ab9f-fd40a6454ed3.jsonl"
+  },
+  "meter_before": {
+    "ok": false,
+    "reason": "rollout has no token_count/rate_limits event yet",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/26/rollout-2026-09-26T13-16-32-01a0df5c-be6f-79a3-9db2-662de46f5ab9.jsonl"
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "21:18.796735Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Your access token could not be refreshed because your refresh token was already used. Please log out and sign in again.\nERROR: Your access token could not be refreshed because your refresh token was already used. Please log out and sign in again.\n\nERROR no image produced after 3s (exit 1).\n--- last codex output ---\n401: {\\n  \\\"error\\\": {\\n    \\\"message\\\": \\\"Your authentication token has been invalidated. Please try signing in again.\\\",\\n    \\\"type\\\": \\\"invalid_request_error\\\",\\n    \\\"code\\\": \\\"token_invalidated\\\",\\n    \\\"param\\\": null\\n  },\\n  \\\"status\\\": 401\\n}\")\n2026-09-26T20:21:16.653436Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when UnexpectedServerResponse(\"HTTP 401: {\\n  \\\"error\\\": {\\n    \\\"message\\\": \\\"Your authentication token has been invalidated. Please try signing in again.\\\",\\n    \\\"type\\\": \\\"invalid_request_error\\\",\\n    \\\"code\\\": \\\"token_invalidated\\\",\\n    \\\"param\\\": null\\n  },\\n  \\\"status\\\": 401\\n}\")\n2026-09-26T20:21:16.805088Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-26T20:21:16.970667Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-26T20:21:17.230827Z ERROR codex_login::auth::manager: Failed to refresh token: 401 Unauthorized: {\n  \"error\": {\n    \"message\": \"Your refresh token has already been used to generate a new access token. Please try signing in again.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": null,\n    \"code\": \"refresh_token_reused\"\n  }\n}\n2026-09-26T20:21:18.611966Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\n2026-09-26T20:21:18.796735Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: HTTP error: 401 Unauthorized, url: wss://chatgpt.com/backend-api/codex/responses\nERROR: Your access token could not be refreshed because your refresh token was already used. Please log out and sign in again.\nERROR: Your access token could not be refreshed because your refresh token was already used. Please log out and sign in again.\n\n",
+  "worker_stdout_tail": ""
+}

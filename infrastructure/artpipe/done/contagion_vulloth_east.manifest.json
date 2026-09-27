@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 99.71192768402398,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.71192768402398,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "contagion_vulloth_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790309002,
+    "primary_used_percent": 86.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/24/rollout-2026-09-24T16-22-12-01a0d5ba-0213-7560-bd31-8d911593e1ce.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 91.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790309002,
+    "primary_used_percent": 62.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/24/rollout-2026-09-24T16-15-31-01a0d5b3-e45e-7311-b0e4-7be33919edff.jsonl",
+    "secondary_resets_at": 1790785352,
+    "secondary_used_percent": 87.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "contagion_vulloth_east",
+    "note": "Built-in imagegen; prompt preserved the east-facing side profile, heavy black linework, wet bruise-purple slug, and transparent isolated sprite.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\contagion_vulloth_east\\contagion_vulloth_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/contagion_vulloth_east/contagion_vulloth_east.png\n    512x512  rgba  205,651 bytes  (98s)\n"
+}

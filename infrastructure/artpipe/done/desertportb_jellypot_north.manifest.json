@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 74.37923085800139,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 74.37923085800139,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desertportb_jellypot_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 28.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w7/sessions/2026/09/26/rollout-2026-09-26T18-17-27-01a0e070-3ef8-7f61-a689-879319c978a1.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 27.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w7/sessions/2026/09/26/rollout-2026-09-26T17-31-38-01a0e046-4b34-7910-ac8d-0518944cda63.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desertportb_jellypot_north",
+    "note": "Generated via built-in imagegen; resized to exactly 256x256 with alpha preserved. Second attempt used Windows imaging because ImageMagick was unavailable.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_jellypot_north\\desertportb_jellypot_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "\\\\v1.0\\\\powershell.exe\" -Command 'Add-Type -AssemblyName System.Drawing\n$src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w7\\\\generated_images\\\\01a0e070-3ef8-7f61-a689-879319c978a1\\\\exec-dcbf87bf-07ab-41cf-8ee8-096afc666cdc.png'\n\"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\desertportb_jellypot_north\\\\desertportb_jellypot_north.png'\n\"'$inputImage = [System.Drawing.Image]::FromFile($src)\n$outputImage = New-Object System.Drawing.Bitmap 256, 256, ([System.Drawing.Imaging.PixelFormat]::Format32bppArgb)\n$graphics = [System.Drawing.Graphics]::FromImage($outputImage)\n$graphics.Clear([System.Drawing.Color]::Transparent)\n$graphics.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy\n$graphics.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality\n$graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic\n$graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality\n$graphics.DrawImage($inputImage, 0, 0, 256, 256)\n$outputImage.Save($dst, [System.Drawing.Imaging.ImageFormat]::Png)\n$graphics.Dispose(); $outputImage.Dispose(); $inputImage.Dispose()\n$check = New-Object System.Drawing.Bitmap $dst\n$alphas = @($check.GetPixel(0,0).A, $check.GetPixel(255,0).A, $check.GetPixel(0,255).A, $check.GetPixel(255,255).A)\n$hasAlpha = $check.PixelFormat.ToString() -match '\"'Argb|PArgb|Alpha'\n[pscustomobject]@{Path=\"'$dst;Width=$check.Width;Height=$check.Height;PixelFormat=$check.PixelFormat.ToString();HasAlpha=$hasAlpha;CornerAlphas=($alphas -join '\"',');Bytes=(Get-Item -LiteralPath \"'$dst).Length} | ConvertTo-Json -Compress\n$check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_jellypot_north\n succeeded in 256ms:\n{\"Path\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\desertportb_jellypot_north\\\\desertportb_jellypot_north.png\",\"Width\":256,\"Height\":256,\"PixelFormat\":\"Format32bppArgb\",\"HasAlpha\":true,\"CornerAlphas\":\"0,0,0,0\",\"Bytes\":67712}\n\ncodex\n{\"id\":\"desertportb_jellypot_north\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\desertportb_jellypot_north\\\\desertportb_jellypot_north.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated via built-in imagegen; resized to exactly 256x256 with alpha preserved. Second attempt used Windows imaging because ImageMagick was unavailable.\"}\ntokens used\n17,991\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_jellypot_north/desertportb_jellypot_north.png\n    256x256  rgba  67,712 bytes  (74s)\n"
+}

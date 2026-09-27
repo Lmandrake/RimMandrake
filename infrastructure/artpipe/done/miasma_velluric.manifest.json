@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 125.66111962299328,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 125.66111962299328,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 140,
+  "id": "miasma_velluric",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 10.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T12-51-14-01a0df45-934f-74d3-8a6e-f01cc151a463.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 10.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T12-49-02-01a0df43-8fb5-70b1-a8e0-26c0fdb36594.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 140,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 140,
+    "id": "miasma_velluric",
+    "note": "Generated with the built-in image tool from the normalized sprite prompt, resized to exactly 140\u00d7140, and saved with RGBA transparency.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\miasma_velluric\\miasma_velluric.png",
+    "status": "ok",
+    "width": 140
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/miasma_velluric/miasma_velluric.png\n    140x140  rgba  18,521 bytes  (124s)\n"
+}

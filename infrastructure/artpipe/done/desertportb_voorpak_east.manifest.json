@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 81.11409658599587,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 81.11409658599587,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desertportb_voorpak_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790437399,
+    "primary_used_percent": 56.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T04-34-26-01a0dd7e-c08b-7a20-bc4e-c7396da37ef4.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 70.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790437399,
+    "primary_used_percent": 51.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T04-29-34-01a0dd7a-4ac8-7671-8578-9a9041a4c6c3.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 70.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desertportb_voorpak_east",
+    "note": "Generated via built-in imagegen, resized to exactly 256x256, and preserved transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_voorpak_east\\desertportb_voorpak_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_voorpak_east/desertportb_voorpak_east.png\n    256x256  rgba  64,622 bytes  (79s)\n"
+}

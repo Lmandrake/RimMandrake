@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 119.50912866700673,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 119.50912866700673,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "scaldfloor_ekkel_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/26/rollout-2026-09-26T13-28-25-01a0df67-9fdf-7b40-a620-b20e133df068.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 13.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/26/rollout-2026-09-26T13-24-56-01a0df64-706c-79a3-89f9-6da4f9ed1a61.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "scaldfloor_ekkel_south",
+    "note": "Generated with the built-in image tool using the three shipped Ekkel catch sprites as color/material references; resized to exact dimensions while preserving alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_ekkel_south\\scaldfloor_ekkel_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "                                                   ~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \n\ncodex\n{\"id\":\"scaldfloor_ekkel_south\",\"status\":\"fail\",\"out\":null,\"width\":null,\"height\":null,\"has_alpha\":null,\"corners_transparent\":null,\"background_used\":null,\"attempts\":null,\"note\":\"The image generated successfully; the first resize command hit a local PowerShell constructor error, so I\u2019m using the single permitted technical retry.\"}\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$src='\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w3\\\\generated_images\\\\01a0df67-9fdf-7b40-a620-b20e133df068\\\\exec-3efc544f-e35d-486b-ba1c-f1afaad597b8.png'; \"'$out='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_ekkel_south\\\\scaldfloor_ekkel_south.png'; Add-Type -AssemblyName System.Drawing; \"'$img=[System.Drawing.Image]::FromFile($src); $bmp=[System.Drawing.Bitmap]::new(512,512,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $g=[System.Drawing.Graphics]::FromImage($bmp); $g.Clear([System.Drawing.Color]::Transparent); $g.InterpolationMode=[System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.PixelOffsetMode=[System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $g.DrawImage($img,0,0,512,512); $bmp.Save($out,[System.Drawing.Imaging.ImageFormat]::Png); $g.Dispose(); $bmp.Dispose(); $img.Dispose(); $check=[System.Drawing.Bitmap]::FromFile($out); $c1=$check.GetPixel(0,0).A; $c2=$check.GetPixel(511,0).A; $c3=$check.GetPixel(0,511).A; $c4=$check.GetPixel(511,511).A; Write-Output (\"{0} {1} alpha={2} corners={3},{4},{5},{6} bytes={7}\" -f $check.Width,$check.Height,([System.Drawing.Image]::IsAlphaPixelFormat($check.PixelFormat)),$c1,$c2,$c3,$c4,(Get-Item -LiteralPath $out).Length); $check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_ekkel_south\n succeeded in 243ms:\n512 512 alpha=True corners=0,0,0,0 bytes=228559\n\ncodex\n{\"id\":\"scaldfloor_ekkel_south\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_ekkel_south\\\\scaldfloor_ekkel_south.png\",\"width\":512,\"height\":512,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated with the built-in image tool using the three shipped Ekkel catch sprites as color/material references; resized to exact dimensions while preserving alpha.\"}\ntokens used\n87,453\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scaldfloor_ekkel_south/scaldfloor_ekkel_south.png\n    512x512  rgba  228,559 bytes  (119s)\n"
+}

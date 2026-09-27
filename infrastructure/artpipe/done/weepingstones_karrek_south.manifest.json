@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 106.47172009100905,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 106.47172009100905,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "weepingstones_karrek_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/26/rollout-2026-09-26T14-11-56-01a0df8f-7795-72d2-9f7e-ca57745215ba.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 25.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w4/sessions/2026/09/26/rollout-2026-09-26T14-07-50-01a0df8b-b7e4-73b1-8175-f6a7fc3d7e3b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "weepingstones_karrek_south",
+    "note": "Generated the south-facing armored fish swarm and resized it to exactly 256\u00d7256 while preserving transparent alpha. Retried post-processing after the first image utility was unavailable.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones_karrek_south\\weepingstones_karrek_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "all a method on a null-valued expression.\nAt line:2 char:1400\n+ ... ht,$check.PixelFormat,($corners -join ',')); $check.Dispose(); Write- ...\n+                                                  ~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \nD:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones_karrek_south\\weepingstones_karrek_south.png\n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command 'Add-Type -AssemblyName System.Drawing; $src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w4\\\\generated_images\\\\01a0df8f-7795-72d2-9f7e-ca57745215ba\\\\exec-e5a9a976-f7d2-40c1-9d9e-da82f11fe917.png'; \"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones_karrek_south\\\\weepingstones_karrek_south.png'; \"'$in = [System.Drawing.Image]::FromFile($src); $pf = [System.Drawing.Imaging.PixelFormat]::Format32bppArgb; $out = [System.Drawing.Bitmap]::new(256,256,$pf); $g = [System.Drawing.Graphics]::FromImage($out); $g.Clear([System.Drawing.Color]::Transparent); $g.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.DrawImage($in,0,0,256,256); $out.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $g.Dispose(); $out.Dispose(); $in.Dispose(); $check = [System.Drawing.Bitmap]::FromFile($dst); $corners = @($check.GetPixel(0,0).A,$check.GetPixel(255,0).A,$check.GetPixel(0,255).A,$check.GetPixel(255,255).A); Write-Output (\"{0} {1} {2} corners={3}\" -f $check.Width,$check.Height,$check.PixelFormat,($corners -join '\"',')); \"'$check.Dispose(); Write-Output $dst' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones_karrek_south\n succeeded in 229ms:\n256 256 Format32bppArgb corners=0,0,0,0\nD:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones_karrek_south\\weepingstones_karrek_south.png\n\ncodex\n{\"id\":\"weepingstones_karrek_south\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones_karrek_south\\\\weepingstones_karrek_south.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated the south-facing armored fish swarm and resized it to exactly 256\u00d7256 while preserving transparent alpha. Retried post-processing after the first image utility was unavailable.\"}\ntokens used\n16,878\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/weepingstones_karrek_south/weepingstones_karrek_south.png\n    256x256  rgba  115,490 bytes  (106s)\n"
+}

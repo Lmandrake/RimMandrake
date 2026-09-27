@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 99.57015508401673,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.57015508401673,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "scaldfloor_muddal_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T13-33-17-01a0df6c-1414-7d20-9f80-1a640c801f90.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T13-28-34-01a0df67-c137-7011-874f-57d597b6996a.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "scaldfloor_muddal_east",
+    "note": "Generated the east-facing armored Muddal sprite and resized it to exactly 512x512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_muddal_east\\scaldfloor_muddal_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "peration: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$ErrorActionPreference = '\"'Stop'; \"'$src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w1\\\\generated_images\\\\01a0df6c-1414-7d20-9f80-1a640c801f90\\\\exec-2203ea62-38a0-47df-aa52-2b2cccd59600.png'; \"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_muddal_east\\\\scaldfloor_muddal_east.png'; Add-Type -AssemblyName System.Drawing; \"'$img = [System.Drawing.Image]::FromFile($src); $bmp = [System.Drawing.Bitmap]::new(512,512,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $bmp.SetResolution(96,96); $g = [System.Drawing.Graphics]::FromImage($bmp); $g.Clear([System.Drawing.Color]::Transparent); $g.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality; $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $g.DrawImage($img,0,0,512,512); $g.Dispose(); $img.Dispose(); $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $bmp.Dispose(); $check = [System.Drawing.Bitmap]::FromFile($dst); $corners = @($check.GetPixel(0,0).A,$check.GetPixel(511,0).A,$check.GetPixel(0,511).A,$check.GetPixel(511,511).A); [pscustomobject]@{Path=(Resolve-Path $dst).Path;Width=$check.Width;Height=$check.Height;PixelFormat=$check.PixelFormat.ToString();CornerAlpha=($corners -join '\"',');Length=(Get-Item \"'$dst).Length} | ConvertTo-Json -Compress; $check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_muddal_east\n succeeded in 292ms:\n{\"Path\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_muddal_east\\\\scaldfloor_muddal_east.png\",\"Width\":512,\"Height\":512,\"PixelFormat\":\"Format32bppArgb\",\"CornerAlpha\":\"0,0,0,0\",\"Length\":236831}\n\ncodex\n{\"id\":\"scaldfloor_muddal_east\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_muddal_east\\\\scaldfloor_muddal_east.png\",\"width\":512,\"height\":512,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated the east-facing armored Muddal sprite and resized it to exactly 512x512 while preserving transparent alpha.\"}\ntokens used\n16,197\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scaldfloor_muddal_east/scaldfloor_muddal_east.png\n    512x512  rgba  236,831 bytes  (96s)\n"
+}

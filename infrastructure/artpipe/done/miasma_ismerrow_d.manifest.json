@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 142.54550995401223,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 142.54550995401223,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 150,
+  "id": "miasma_ismerrow_d",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 9.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/26/rollout-2026-09-26T12-43-53-01a0df3e-d8b8-7250-8a52-728230b23b24.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 9.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/26/rollout-2026-09-26T12-41-53-01a0df3d-04b3-7441-b73c-b9b39ad9e113.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 150,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 150,
+    "id": "miasma_ismerrow_d",
+    "note": "Generated Variant D with a serrated rose-to-cream rosette, dark keyline, scorched tips, broad sickly blotches, and transparent margins.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\miasma_ismerrow_d\\miasma_ismerrow_d.png",
+    "status": "ok",
+    "width": 150
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/miasma_ismerrow_d/miasma_ismerrow_d.png\n    150x150  rgba  35,934 bytes  (141s)\n"
+}

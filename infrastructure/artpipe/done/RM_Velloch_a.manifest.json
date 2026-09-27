@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 97.50106935399526,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 97.50106935399526,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_Velloch_a",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790419380,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/25/rollout-2026-09-25T23-23-06-01a0dc61-b89e-7092-8a4b-bdf69f8b5dcb.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 53.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790419380,
+    "primary_used_percent": 39.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/25/rollout-2026-09-25T23-18-04-01a0dc5d-195e-77c0-b1aa-ba3ade074600.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 52.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_Velloch_a",
+    "note": "Generated with built-in imagegen, then resized to exactly 256\u00d7256 while preserving transparent alpha. Final prompt followed the supplied RimWorld sprite specification.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Velloch_a\\RM_Velloch_a.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Velloch_a/RM_Velloch_a.png\n    256x256  rgba  61,831 bytes  (95s)\n"
+}

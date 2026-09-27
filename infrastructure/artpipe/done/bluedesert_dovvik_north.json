@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T22:37:01Z",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "bluedesert_dovvik_north",
+  "priority": 100,
+  "prompt": "A small cautious alien creature with a long thin proboscis for siphoning volatile liquid fuel out of transparent fractal plants, compact insulated grey-white body, careful deliberate stance beside a glassy plant, cold starlit ice desert, painterly game-art style, not photorealistic.",
+  "reference": null,
+  "rimflow_item_id": "BLUEDESERT_DESIGN_SITTING_1",
+  "style_notes": "Blue Desert depth cast (card 2026-09-24); the defuser \u2014 drains plant charges before they detonate"
+}

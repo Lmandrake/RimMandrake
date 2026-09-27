@@ -1,0 +1,61 @@
+{
+  "attempt_elapsed_s": 76.31564851698931,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "downscaled_from": "1254x1254",
+  "elapsed_s": 76.31564851698931,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_VeilPane_v2_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 29.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w8/sessions/2026/09/26/rollout-2026-09-26T22-15-27-01a0e14a-2127-7ad2-926b-21b8bf9d3a6c.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 29.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w8/sessions/2026/09/26/rollout-2026-09-26T18-18-28-01a0e071-2a76-7352-8f9f-67e490cae76d.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": null,
+    "has_alpha": true,
+    "height": 1254,
+    "id": "RM_VeilPane_v2_south",
+    "note": "Built-in imagegen produced an image, but read-only workspace and blocked commands prevented resizing to 256x256 and copying to the requested destination.",
+    "out": "C:\\Users\\Mandrake\\.codex_workers\\artpipe\\w8\\generated_images\\01a0e14a-2127-7ad2-926b-21b8bf9d3a6c\\exec-055da6f0-1112-4ab0-bdaf-9d518137b83d.png",
+    "status": "fail",
+    "width": 1254
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "note: agent did not place the file; harvested exec-055da6f0-1112-4ab0-bdaf-9d518137b83d.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_VeilPane_v2_south/RM_VeilPane_v2_south.png\n    1254x1254  rgba  1,998,831 bytes  (76s)\n"
+}

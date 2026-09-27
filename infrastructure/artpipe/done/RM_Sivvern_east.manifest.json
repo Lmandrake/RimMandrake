@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 112.12754969397793,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 112.12754969397793,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_Sivvern_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 20.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w6/sessions/2026/09/26/rollout-2026-09-26T13-53-37-01a0df7e-b043-71c1-9c7f-f478a37bab5c.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w6/sessions/2026/09/26/rollout-2026-09-26T13-28-25-01a0df67-9f21-7b33-b3f4-d7ca45a7d9ef.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_Sivvern_east",
+    "note": "Generated via built-in imagegen, resized to exactly 256\u00d7256, and preserved true alpha transparency. Retry was required after the first resize command failed.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Sivvern_east\\RM_Sivvern_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "exec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command 'Add-Type -AssemblyName System.Drawing\n$src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w6\\\\generated_images\\\\01a0df7e-b043-71c1-9c7f-f478a37bab5c\\\\exec-6fe561c3-c691-4462-bede-ed960cf19dc1.png'\n\"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\RM_Sivvern_east\\\\RM_Sivvern_east.png'\n\"'$in = [System.Drawing.Image]::FromFile($src)\n$out = [System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb)\n$g = [System.Drawing.Graphics]::FromImage($out)\n$g.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy\n$g.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality\n$g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic\n$g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality\n$g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality\n$g.DrawImage($in,0,0,256,256)\n$g.Dispose(); $in.Dispose()\n$out.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $out.Dispose()\n$check = [System.Drawing.Bitmap]::new($dst)\n$alphas = @($check.GetPixel(0,0).A,$check.GetPixel(255,0).A,$check.GetPixel(0,255).A,$check.GetPixel(255,255).A)\n$hasAlpha = $check.PixelFormat.ToString() -match '\"'Argb|PArgb'\n[pscustomobject]@{Path=\"'$dst;Width=$check.Width;Height=$check.Height;PixelFormat=$check.PixelFormat.ToString();HasAlpha=$hasAlpha;CornerAlphas=($alphas -join '\"',');CornersTransparent=((\"'$alphas | Where-Object { $_ -ne 0 }).Count -eq 0);Bytes=(Get-Item -LiteralPath $dst).Length} | Format-List\n$check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Sivvern_east\n succeeded in 261ms:\n\n\nPath               : D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Sivvern_east\\RM_Sivvern_east.png\nWidth              : 256\nHeight             : 256\nPixelFormat        : Format32bppArgb\nHasAlpha           : True\nCornerAlphas       : 0,0,0,0\nCornersTransparent : True\nBytes              : 31891\n\n\n\n\ncodex\n{\"id\":\"RM_Sivvern_east\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\RM_Sivvern_east\\\\RM_Sivvern_east.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated via built-in imagegen, resized to exactly 256\u00d7256, and preserved true alpha transparency. Retry was required after the first resize command failed.\"}\ntokens used\n16,122\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Sivvern_east/RM_Sivvern_east.png\n    256x256  rgba  31,891 bytes  (112s)\n"
+}

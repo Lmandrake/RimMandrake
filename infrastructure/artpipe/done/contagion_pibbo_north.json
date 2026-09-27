@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T21:59:39Z",
+  "drawsize": 0.2,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "contagion_pibbo_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: pibbo, a small wretched failing chimera creature that needs care to survive another day, soft under-formed pinkish-red flesh, stumbling unsteady tiny limbs, a pitiable hunched posture, in the wet red-storm valley of the Contagion, a place still unfinished; damp organic texture, red-violet to bruise-purple palette with glistening wet highlights. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "style_notes": "defName GR_Fleshling. Batch 3c row 13. bs 0.2. The smallest, softest word in the valley \u2014 the player should feel sorry for it on sight."
+}

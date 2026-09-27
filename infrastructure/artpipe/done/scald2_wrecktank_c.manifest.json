@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 101.563793230991,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 101.563793230991,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "scald2_wrecktank_c",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790401357,
+    "primary_used_percent": 45.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/25/rollout-2026-09-25T18-19-20-01a0db4b-9a32-7fe2-bdf2-9c5cdb4468c5.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 38.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790401357,
+    "primary_used_percent": 39.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/25/rollout-2026-09-25T18-13-04-01a0db45-df93-7c52-b686-fb71317c76ac.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 37.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "scald2_wrecktank_c",
+    "note": "Generated with built-in imagegen from the supplied normalized prompt, then resized to exactly 512\u00d7512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scald2_wrecktank_c\\scald2_wrecktank_c.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scald2_wrecktank_c/scald2_wrecktank_c.png\n    512x512  rgba  297,061 bytes  (100s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 81.74219829299545,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 81.74219829299545,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "desertportb_zeer_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790437399,
+    "primary_used_percent": 76.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T04-53-49-01a0dd90-7d2f-70c2-879e-cfd23a6c56e0.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 73.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790437399,
+    "primary_used_percent": 71.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T04-48-49-01a0dd8b-eab4-7781-8228-b6a869d9a7b8.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 73.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "desertportb_zeer_east",
+    "note": "Generated with built-in imagegen; resized to exactly 512\u00d7512 while preserving transparent alpha. Retry used because ImageMagick was unavailable.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_zeer_east\\desertportb_zeer_east.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_zeer_east/desertportb_zeer_east.png\n    512x512  rgba  184,691 bytes  (80s)\n"
+}

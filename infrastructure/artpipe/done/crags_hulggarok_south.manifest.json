@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 93.09281061699585,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 93.09281061699585,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "crags_hulggarok_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790365320,
+    "primary_used_percent": 97.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/25/rollout-2026-09-25T08-16-18-01a0d923-81c2-7b82-b4dc-52b182d59926.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 15.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790365320,
+    "primary_used_percent": 94.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/25/rollout-2026-09-25T08-12-03-01a0d91f-9e47-7a90-bcb0-0a95a0ec9391.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 15.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "crags_hulggarok_south",
+    "note": "Built-in imagegen used with the supplied sprite prompt; output resized to exactly 512x512 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\crags_hulggarok_south\\crags_hulggarok_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/crags_hulggarok_south/crags_hulggarok_south.png\n    512x512  rgba  179,549 bytes  (91s)\n"
+}

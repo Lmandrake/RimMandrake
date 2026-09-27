@@ -1,8 +1,8 @@
 {
-  "attempt_elapsed_s": 161.74086081399582,
+  "attempt_elapsed_s": 97.0451288500044,
   "channel": "codex",
   "daemon_attempts": 1,
-  "elapsed_s": 161.74086081399582,
+  "elapsed_s": 97.0451288500044,
   "facts": "PASS",
   "facts_findings": [],
   "height": 1024,
@@ -14,23 +14,23 @@
   "meter_after": {
     "grumpy": false,
     "ok": true,
-    "primary_resets_at": 1790198552,
-    "primary_used_percent": 50.0,
+    "primary_resets_at": 1790419380,
+    "primary_used_percent": 53.0,
     "primary_window_minutes": 300,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T10-14-09-01a0cf42-b259-73d3-938c-7f4b624c3170.jsonl",
-    "secondary_resets_at": 1790785352,
-    "secondary_used_percent": 8.0,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/25/rollout-2026-09-25T23-31-46-01a0dc69-a799-7051-9e1a-6624b2012e3f.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 54.0,
     "secondary_window_minutes": 10080
   },
   "meter_before": {
     "grumpy": false,
     "ok": true,
-    "primary_resets_at": 1790198552,
-    "primary_used_percent": 44.0,
+    "primary_resets_at": 1790419380,
+    "primary_used_percent": 48.0,
     "primary_window_minutes": 300,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T10-07-25-01a0cf3c-8830-7871-854c-1caa87b349e4.jsonl",
-    "secondary_resets_at": 1790785352,
-    "secondary_used_percent": 7.0,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/25/rollout-2026-09-25T23-26-38-01a0dc64-f41c-7e32-a55f-e57114826d7c.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 54.0,
     "secondary_window_minutes": 10080
   },
   "mode": "generate",
@@ -43,18 +43,18 @@
   ],
   "width": 1024,
   "worker_self_report": {
-    "attempts": 1,
+    "attempts": 2,
     "background_used": "transparent",
     "corners_transparent": true,
     "has_alpha": true,
     "height": 1024,
     "id": "desertportb_horax_north",
-    "note": "Generated with built-in imagegen and resized from 1254px to the required 1024x1024 while preserving transparent alpha.",
+    "note": "Generated with built-in imagegen; normalized from 1254\u00d71254 to the required 1024\u00d71024 while preserving transparent RGBA.",
     "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_horax_north\\desertportb_horax_north.png",
     "status": "ok",
     "width": 1024
   },
   "worker_status": "ok",
   "worker_stderr_tail": "",
-  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_horax_north/desertportb_horax_north.png\n    1024x1024  rgba  991,749 bytes  (161s)\n"
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_horax_north/desertportb_horax_north.png\n    1024x1024  rgba  1,023,907 bytes  (95s)\n"
 }

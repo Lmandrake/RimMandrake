@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T17:12:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T18:44:56Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1854,3 +1854,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RUT_RAREGREYCATCHES_DEFNAME_COLLISION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RUT_RAREGREYCATCHES_DEFNAME_COLLISION_1.md
+
+## SELFTEST_FAILURES_TRIAGE_1 Four pre-existing selftest failures found by a full run 2026-09-27 (none caused by that day's artpipe diff): (1) block_dll_source_mismatch 5/6 - 'DLL changed without stamp' gets ALLOW not DENY, a real push-guard hole; (2) TheRot selftest_live_prep scans the absorbed RotSporeKit path, 0 defs found, vacuous-pass correctly reported as FAIL - repoint to TheRot post-df79753dc and verify RM_LivePrepExtension actually survived the absorption; (3) modcheck walklint: 3 live findings, walks asserting absence of the nonexistent mandrake.rut.lanterndeeps id - fix the identifier or delete the step; (4) selftest_one_path_seam 5/6, failing case uncaptured - rerun and read it. items_glob_live was the fifth and is already fixed (SCALD_PLANTDENSITY_UNSET_1 prose moved to closed/).
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SELFTEST_FAILURES_TRIAGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SELFTEST_FAILURES_TRIAGE_1.md

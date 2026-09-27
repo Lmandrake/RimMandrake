@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 91.3117230469943,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 91.3117230469943,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 640,
+  "id": "glyph_blindsight",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790455422,
+    "primary_used_percent": 81.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T10-04-58-01a0dead-5c70-70e3-8684-49ffd750c4d7.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 90.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790455422,
+    "primary_used_percent": 77.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T09-59-31-01a0dea8-5fb8-7711-aef2-d977a227f52b.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 89.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 640,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 640,
+    "id": "glyph_blindsight",
+    "note": "Generated via built-in imagegen, resized to exactly 640\u00d7640, and preserved native alpha with all four corners transparent.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\glyph_blindsight\\glyph_blindsight.png",
+    "status": "ok",
+    "width": 640
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/glyph_blindsight/glyph_blindsight.png\n    640x640  rgba  393,057 bytes  (89s)\n"
+}

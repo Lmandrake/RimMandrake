@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 124.36421842299751,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 124.36421842299751,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "scald2_karrashcatch_c",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790383340,
+    "primary_used_percent": 76.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/25/rollout-2026-09-25T13-37-37-01a0da49-b0c7-7251-b980-89eb5dd07365.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 27.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790383340,
+    "primary_used_percent": 70.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/25/rollout-2026-09-25T13-31-04-01a0da43-b1e1-7831-8585-62d16b534bf4.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 26.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "scald2_karrashcatch_c",
+    "note": "Generated with built-in imagegen using the A-variant as a style reference; preserved alpha and resized the project copy to exactly 512x512.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scald2_karrashcatch_c\\scald2_karrashcatch_c.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scald2_karrashcatch_c/scald2_karrashcatch_c.png\n    512x512  rgba  351,831 bytes  (123s)\n"
+}

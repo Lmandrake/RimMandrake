@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-27T00:45:59Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "deepfire_pigmentjar_d",
+  "priority": 100,
+  "prompt": "RimWorld item icon, painterly vanilla-RimWorld art style, transparent background: a small cluster of four sealed glass jars of pearl-white luminous pigment, packed together as a full market stack, faint rainbow sheen, dim inner glow visible through the glass. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Centered subject group, no background scenery, no ground shadow.",
+  "reference": null,
+  "rimflow_item_id": "COLLECTION_GRAPHIC_ON_FLAT_PNG_1",
+  "style_notes": "COLLECTION_GRAPHIC_ON_FLAT_PNG_1 -- stack-count variant for RM_Deepfire, matching the owner-KEPT deepfire_pigmentjar_b (Transient/deepfire_pigment_review.decisions.json, frozen 2026-09-26). Full-stack variant (most jars) -- intended to become RM_Deepfire_c.png once reviewed."
+}

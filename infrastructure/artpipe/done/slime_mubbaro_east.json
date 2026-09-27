@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T21:59:40Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "slime_mubbaro_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: mubbaro, a winged but flightless lizard-like creature whose pheromones ferment nearby plants, a sagging slack-postured body, drooping stubby wings, a lolling drunk-looking stance, within the translucent Slime biome, a soft-bodied world the size of a country; translucent green-to-amber gel tones, soft rounded forms, gentle inner glow. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "style_notes": "defName AA_DecayDrake. Batch 3d row 5. Also Miasma, Poison Forest \u2014 one planet-wide name. Four livers; reads sozzled."
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 95.72774466499686,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 95.72774466499686,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "weepingstones_skarrin_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T14-13-47-01a0df91-26f7-7352-8bbe-799d6a383269.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T14-12-02-01a0df8f-8ed1-7440-9ba5-7400a205720f.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "weepingstones_skarrin_east",
+    "note": "Generated an east-facing, spring-bent silver pool fish with an oversized blade-comb fin, bold dark keyline, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones_skarrin_east\\weepingstones_skarrin_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command 'Add-Type -AssemblyName System.Drawing; $dst='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones_skarrin_east\\\\weepingstones_skarrin_east.png'; \"'$srcBmp=[System.Drawing.Bitmap]::new($dst); $outBmp=[System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $g=[System.Drawing.Graphics]::FromImage($outBmp); $g.Clear([System.Drawing.Color]::Transparent); $g.InterpolationMode=[System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.DrawImage($srcBmp,0,0,256,256); $g.Dispose(); $srcBmp.Dispose(); $tmp=$dst+'\"'.tmp.png'; \"'$outBmp.Save($tmp,[System.Drawing.Imaging.ImageFormat]::Png); $outBmp.Dispose(); Move-Item -LiteralPath $tmp -Destination $dst -Force; $check=[System.Drawing.Bitmap]::new($dst); $c1=$check.GetPixel(0,0); $c2=$check.GetPixel(255,255); Write-Output ('\"'{0} {1} PixelFormat={2} CornerAlpha={3},{4}' -f \"'$check.Width,$check.Height,$check.PixelFormat,$c1.A,$c2.A); $check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones_skarrin_east\n succeeded in 256ms:\n256 256 PixelFormat=Format32bppArgb CornerAlpha=0,0\n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command 'Add-Type -AssemblyName System.Drawing; $p='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones_skarrin_east\\\\weepingstones_skarrin_east.png'; \"'$b=[System.Drawing.Bitmap]::new($p); $alphas=@($b.GetPixel(0,0).A,$b.GetPixel(255,0).A,$b.GetPixel(0,255).A,$b.GetPixel(255,255).A); $ok=($alphas | Where-Object {$_ -ne 0}).Count -eq 0; Write-Output ('\"'Exists={0} Width={1} Height={2} Alpha={3} CornersTransparent={4} Bytes={5}' -f (Test-Path -LiteralPath \"'$p),$b.Width,$b.Height,($b.PixelFormat -match '\"'Argb'),\"'$ok,(Get-Item -LiteralPath $p).Length); $b.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\weepingstones_skarrin_east\n succeeded in 219ms:\nExists=True Width=256 Height=256 Alpha=True CornersTransparent=True Bytes=63142\n\ncodex\n{\"id\":\"weepingstones_skarrin_east\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\weepingstones_skarrin_east\\\\weepingstones_skarrin_east.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Generated an east-facing, spring-bent silver pool fish with an oversized blade-comb fin, bold dark keyline, and transparent background.\"}\ntokens used\n15,954\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/weepingstones_skarrin_east/weepingstones_skarrin_east.png\n    256x256  rgba  63,142 bytes  (93s)\n"
+}

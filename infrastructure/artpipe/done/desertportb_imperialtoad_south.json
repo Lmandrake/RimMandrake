@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-27T01:17:24Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "desertportb_imperialtoad_south",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: the Star Wars canon imperial toad -- The imperial toad is native to the cave systems below deserts on the Rim. It tends to be preyed upon quite easily but many cave dwellers have taken a shine to it as a pet due to its regal posture. Single creature, centered, standing pose appropriate to its anatomy, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DESERT_FAMILY_PORT_EXECUTION_1",
+  "style_notes": ""
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 99.59402344300179,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 99.59402344300179,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 640,
+  "id": "rm_vurmeloth_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 2.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T11-23-00-01a0def4-cdb3-7dc2-a634-ef5f7b326143.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 2.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T11-21-02-01a0def3-0207-73c0-9390-740e79cf06f3.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 640,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 640,
+    "id": "rm_vurmeloth_v1",
+    "note": "Generated via built-in imagegen and resized to exactly 640\u00d7640. Transparent ARGB and all four transparent corners verified.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rm_vurmeloth_v1\\rm_vurmeloth_v1.png",
+    "status": "ok",
+    "width": 640
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rm_vurmeloth_v1/rm_vurmeloth_v1.png\n    640x640  rgba  242,559 bytes  (98s)\n"
+}

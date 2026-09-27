@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 110.03561983097461,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 110.03561983097461,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rutvwake_v1_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 23.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/26/rollout-2026-09-26T14-04-40-01a0df88-d107-78a3-a0d2-eaad62ed4f45.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/26/rollout-2026-09-26T14-00-31-01a0df85-04c8-7732-96d2-c4c9ca819ce7.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rutvwake_v1_east",
+    "note": "Generated in strict east-facing eye-level side profile per the final direction; resized to exactly 256x256 with transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutvwake_v1_east\\rutvwake_v1_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \nYou cannot call a method on a null-valued expression.\nAt line:2 char:1384\n+ ... $dst; try { $alphas = @($check.GetPixel(0,0).A,$check.GetPixel(255,0) ...\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -NoProfile -Command 'Add-Type -AssemblyName System.Drawing; $src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w5\\\\generated_images\\\\01a0df88-d107-78a3-a0d2-eaad62ed4f45\\\\exec-9a0593a0-ecc4-49bc-be0f-ae498aeef10b.png'; \"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutvwake_v1_east\\\\rutvwake_v1_east.png'; \"'$inputImage = [System.Drawing.Image]::FromFile($src); $canvas = [System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); try { $gfx = [System.Drawing.Graphics]::FromImage($canvas); try { $gfx.Clear([System.Drawing.Color]::Transparent); $gfx.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $gfx.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $gfx.DrawImage($inputImage,0,0,256,256) } finally { $gfx.Dispose() }; $canvas.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png) } finally { $canvas.Dispose(); $inputImage.Dispose() }; $check = [System.Drawing.Bitmap]::new($dst); try { $alphas = @($check.GetPixel(0,0).A,$check.GetPixel(255,0).A,$check.GetPixel(0,255).A,$check.GetPixel(255,255).A); '\"'{0}|{1}|{2}|{3}|{4}' -f \"'$check.Width,$check.Height,$check.PixelFormat,($alphas -join '\"','),(Get-Item -LiteralPath \"'$dst).FullName } finally { $check.Dispose() }' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutvwake_v1_east\n succeeded in 236ms:\n256|256|Format32bppArgb|0,0,0,0|D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutvwake_v1_east\\rutvwake_v1_east.png\n\ncodex\n{\"id\":\"rutvwake_v1_east\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutvwake_v1_east\\\\rutvwake_v1_east.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Generated in strict east-facing eye-level side profile per the final direction; resized to exactly 256x256 with transparent corners.\"}\ntokens used\n38,064\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rutvwake_v1_east/rutvwake_v1_east.png\n    256x256  rgba  14,038 bytes  (108s)\n"
+}

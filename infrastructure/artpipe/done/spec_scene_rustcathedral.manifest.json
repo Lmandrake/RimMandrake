@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 152.36571182699845,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 152.36571182699845,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "spec_scene_rustcathedral",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 30.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/27/rollout-2026-09-27T10-25-24-01a0e3e6-6c39-7493-9544-4c70d244077d.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 30.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/27/rollout-2026-09-27T10-18-04-01a0e3df-b5a6-7100-a889-69d9f0b33050.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "spec_scene_rustcathedral",
+    "note": "Generated with built-in imagegen, copied into the workspace, and normalized to exactly 1024\u00d71024 while preserving alpha and fully transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\spec_scene_rustcathedral\\spec_scene_rustcathedral.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/spec_scene_rustcathedral/spec_scene_rustcathedral.png\n    1024x1024  rgba  1,609,938 bytes  (150s)\n"
+}

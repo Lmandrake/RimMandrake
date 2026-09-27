@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-26T20:22:12Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "scaldfloor_bladderboil_east",
+  "priority": 50,
+  "prompt": "RimWorld top-down animal sprite, painterly vanilla-RimWorld art style, transparent background. Heavy clean black outline around the whole silhouette and all major internal linework, thick enough to read at standard RimWorld zoom. Single centered subject, no background scenery, no ground shadow. Subject: a leathery golden sac the size of a head, wrinkled skirt below and taut dome above, pocked with several round crater-mouths that vent steam; a gold buoy with mouths, floating. View: top-down, facing east (seen from directly above in side profile, head toward the right of the frame).",
+  "reference": null,
+  "rimflow_item_id": "SEA_FISHABLES_ALIVE_IN_DEPTHS_1",
+  "style_notes": "SEA_FISHABLES_ALIVE_IN_DEPTHS_1 (Scald portion) -- living counterpart RM_Bladderboil, Defs/ThingDefs_Races/RM_ScaldFloorFauna.xml, Graphic_Multi drawSize ~0.6. Currently a flat dark silhouette placeholder. Install to src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil_east.png. West mirrors east; three facings only. Its CATCH item art already ships as scald2_bladderboilcatch_a/b/c -- match that creature's colour and read."
+}

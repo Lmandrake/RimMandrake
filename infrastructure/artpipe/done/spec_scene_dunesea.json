@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-27T17:05:35Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "spec_scene_dunesea",
+  "priority": 100,
+  "prompt": "RimWorld painterly establishing-shot landscape render, painterly vanilla-RimWorld art style: Ash'karr's Dune Sea, a vast unbroken tract of barchan dunes seen from a low vantage near the ground, warm apricot sand with crests catching hard light and troughs holding cool blue shadow, dunes laid across the prevailing wind in long asymmetric waves. One unrelenting sun sits low and fixed near the horizon (this tidally-locked world's sun never sets), casting long fixed shadows and a hazy heat-shimmer across the emptiness. A single scoured metal wreck fragment half-buried in a dune crest for scale. Wide atmospheric depth, dust haze softening the far horizon, warm ochre sky. No on-screen text, no UI elements, no logos.",
+  "reference": null,
+  "rimflow_item_id": "SPECULATIVE_ART_COMMISSION_1",
+  "style_notes": "SPECULATIVE test candidate, owner directive 2026-09-27 (pipeline free, explore). NOT commissioned production art. Sourced from design/Jawa/worldbuilding/the_one_map.md (dune-sheet reference, 'emptiness is a texture') and landmark_art_direction.md's Dunes treatment. CORRECTED from the brief's 'twin suns' phrasing: Ash'karr is tidally locked with ONE unsetting sun (divine_satiation_engine.md, owner ruling 2026-08-30 \u2014 'the old twin suns line is dead'); rendered with one sun accordingly."
+}

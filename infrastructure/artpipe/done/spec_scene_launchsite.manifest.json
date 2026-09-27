@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 131.05207163599698,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 131.05207163599698,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "spec_scene_launchsite",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 30.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/27/rollout-2026-09-27T10-18-04-01a0e3df-b5a6-7100-a889-69d9f0b33050.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 30.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/27/rollout-2026-09-27T10-11-46-01a0e3d9-f2b7-72e1-93af-5577cd59e02d.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "spec_scene_launchsite",
+    "note": "Generated with built-in imagegen; resized to exactly 1024x1024 while preserving transparent alpha. One local resize command required correction.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\spec_scene_launchsite\\spec_scene_launchsite.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/spec_scene_launchsite/spec_scene_launchsite.png\n    1024x1024  rgba  2,288,306 bytes  (128s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 117.05847910200828,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 117.05847910200828,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "desertportb_porg_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790437399,
+    "primary_used_percent": 11.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T03-52-15-01a0dd58-1f1e-7ae2-9bf4-ced35ca9e3ce.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 63.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790437399,
+    "primary_used_percent": 5.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T03-46-36-01a0dd52-f3cf-79d1-ada9-7eaf29d5f971.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 62.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "desertportb_porg_north",
+    "note": "Generated with built-in imagegen, then resized to exactly 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\desertportb_porg_north\\desertportb_porg_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/desertportb_porg_north/desertportb_porg_north.png\n    256x256  rgba  35,519 bytes  (115s)\n"
+}

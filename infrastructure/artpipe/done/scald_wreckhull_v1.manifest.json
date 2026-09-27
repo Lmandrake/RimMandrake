@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 111.79960743300035,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 111.79960743300035,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "scald_wreckhull_v1",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790365320,
+    "primary_used_percent": 31.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/25/rollout-2026-09-25T07-50-25-01a0d90b-d035-71a3-bf80-fcb8e58216f9.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 5.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1790365320,
+    "primary_used_percent": 25.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/25/rollout-2026-09-25T07-48-41-01a0d90a-39a9-70b0-9df9-3e2e5cf455d3.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 4.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "scald_wreckhull_v1",
+    "note": "Generated with built-in imagegen using the supplied RimWorld wreck-hull brief; resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scald_wreckhull_v1\\scald_wreckhull_v1.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scald_wreckhull_v1/scald_wreckhull_v1.png\n    256x256  rgba  99,075 bytes  (110s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 96.23028521800006,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 96.23028521800006,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "crags_gruzz_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790365320,
+    "primary_used_percent": 91.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/25/rollout-2026-09-25T08-11-25-01a0d91f-0b5a-7a81-890d-98e4f88968b5.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 14.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790365320,
+    "primary_used_percent": 86.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/25/rollout-2026-09-25T08-09-34-01a0d91d-57e9-7f51-b2df-2d006992a6f4.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 13.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "crags_gruzz_north",
+    "note": "Generated via built-in imagegen from the supplied north-facing gruzz prompt. Resized to exactly 256x256; preserved transparent alpha. One retry followed a PowerShell constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\crags_gruzz_north\\crags_gruzz_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/crags_gruzz_north/crags_gruzz_north.png\n    256x256  rgba  41,376 bytes  (95s)\n"
+}

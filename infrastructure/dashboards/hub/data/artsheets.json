@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-13T08:32:24Z",
+ "generatedAt": "2026-09-26T07:40:50Z",
  "source": "design/Jawa/worldbuilding/review/*.html + *.decisions.json, hand-classified for graphics content \u2014 see excluded{} for every sheet left out and why",
  "inventoried": 19,
  "resolved": [
@@ -60,7 +60,7 @@
    "stem": "creature_register",
    "title": "Creature Register",
    "file": "design/Jawa/worldbuilding/review/creature_register.html",
-   "bytes": 2114124,
+   "bytes": 2114123,
    "total": 1165,
    "undecided": 1165,
    "published": "tabs/sheets/creature_register.html"

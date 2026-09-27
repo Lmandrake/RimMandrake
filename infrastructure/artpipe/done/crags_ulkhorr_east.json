@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T21:59:38Z",
+  "drawsize": 1.5,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "crags_ulkhorr_east",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the ulkhorr, a mechanoid-infused thunderbeast wearing a trailing halo of dark corrupted energy around its hide, heavy armoured frame fused with dull metal plating, a swallowed absence of light clinging to its outline, under the fogged obsidian light of the Forsaken Crags, a nocturnal highland lit by aurora, never sun; dark basalt-black to gunmetal palette, hard voiced-consonant creature, no bright accent colors. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "style_notes": "defName AA_Darkbeast. Batch 3a row 11. bs 1.5. NOT the canon 'Dark Beast' Wookieepedia entry \u2014 an unrelated invented creature, do not draw the canon one."
+}

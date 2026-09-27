@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 119.76041817502119,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 119.76041817502119,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rutradiothermal_v1_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T14-00-57-01a0df85-6a41-7b62-a407-1c0fa309fdf7.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 21.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T13-59-00-01a0df83-9ec4-73c1-9a55-ac62ff2d5c93.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rutradiothermal_v1_north",
+    "note": "Generated with built-in imagegen and resized to exactly 256\u00d7256; transparent alpha and all four transparent corners verified.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutradiothermal_v1_north\\rutradiothermal_v1_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "ornerAlpha=0,0\n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$ErrorActionPreference='\"'Stop'; Add-Type -AssemblyName System.Drawing; \"'$src='\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w1\\\\generated_images\\\\01a0df85-6a41-7b62-a407-1c0fa309fdf7\\\\exec-1311099b-09a8-452a-a7c9-b0b2e45dd400.png'; \"'$dst='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutradiothermal_v1_north\\\\rutradiothermal_v1_north.png'; \"'$tmp='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutradiothermal_v1_north\\\\rutradiothermal_v1_north.resize.png'; \"'$source=[System.Drawing.Bitmap]::FromFile($src); $target=[System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $g=[System.Drawing.Graphics]::FromImage($target); $g.CompositingMode=[System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality=[System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode=[System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.SmoothingMode=[System.Drawing.Drawing2D.SmoothingMode]::HighQuality; $g.PixelOffsetMode=[System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $g.Clear([System.Drawing.Color]::Transparent); $g.DrawImage($source,0,0,256,256); $g.Dispose(); $source.Dispose(); $target.Save($tmp,[System.Drawing.Imaging.ImageFormat]::Png); $target.Dispose(); Move-Item -LiteralPath $tmp -Destination $dst -Force; $check=[System.Drawing.Bitmap]::FromFile($dst); $alphas=@($check.GetPixel(0,0).A,$check.GetPixel(255,0).A,$check.GetPixel(0,255).A,$check.GetPixel(255,255).A); Write-Output \"path=$dst\"; Write-Output \"width=$($check.Width) height=$($check.Height) pixelFormat=$($check.PixelFormat) cornerAlpha=$($alphas -join '\"',')\\\"; \"'$check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutradiothermal_v1_north\n succeeded in 247ms:\npath=D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rutradiothermal_v1_north\\rutradiothermal_v1_north.png\nwidth=256 height=256 pixelFormat=Format32bppArgb cornerAlpha=0,0,0,0\n\ncodex\n{\"id\":\"rutradiothermal_v1_north\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\rutradiothermal_v1_north\\\\rutradiothermal_v1_north.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated with built-in imagegen and resized to exactly 256\u00d7256; transparent alpha and all four transparent corners verified.\"}\ntokens used\n16,483\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rutradiothermal_v1_north/rutradiothermal_v1_north.png\n    256x256  rgba  66,620 bytes  (117s)\n"
+}

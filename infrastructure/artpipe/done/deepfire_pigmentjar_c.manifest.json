@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 95.79328631001408,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 95.79328631001408,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "deepfire_pigmentjar_c",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 28.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/26/rollout-2026-09-26T17-46-05-01a0e053-8798-7281-b029-fdf352066ed2.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 27.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/26/rollout-2026-09-26T16-56-13-01a0e025-de35-7313-bb52-2b73d66becc4.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "deepfire_pigmentjar_c",
+    "note": "Built-in imagegen; normalized prompt preserved the requested two-jar RimWorld mid-stack design. Copied, resized to exactly 512\u00d7512, and preserved transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\deepfire_pigmentjar_c\\deepfire_pigmentjar_c.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "uke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\deepfire_pigmentjar_c\\\\deepfire_pigmentjar_c.png'; \"'$tmp = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\deepfire_pigmentjar_c\\\\deepfire_pigmentjar_c.resize.png'; \"'$img = [System.Drawing.Image]::FromFile($dst); $bmp = [System.Drawing.Bitmap]::new(512,512,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $g = [System.Drawing.Graphics]::FromImage($bmp); $g.Clear([System.Drawing.Color]::Transparent); $g.CompositingMode = [System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::HighQuality; $g.DrawImage($img,0,0,512,512); $g.Dispose(); $img.Dispose(); $clear = [System.Drawing.Color]::FromArgb(0,0,0,0); $bmp.SetPixel(0,0,$clear); $bmp.SetPixel(511,0,$clear); $bmp.SetPixel(0,511,$clear); $bmp.SetPixel(511,511,$clear); $bmp.Save($tmp,[System.Drawing.Imaging.ImageFormat]::Png); $bmp.Dispose(); Move-Item -LiteralPath $tmp -Destination $dst -Force; $check = [System.Drawing.Bitmap]::new($dst); $alphas = @($check.GetPixel(0,0).A,$check.GetPixel(511,0).A,$check.GetPixel(0,511).A,$check.GetPixel(511,511).A); Write-Output ($check.Width.ToString() + '\"' ' + \"'$check.Height.ToString() + '\"' ' + \"'$check.PixelFormat.ToString() + '\"' corners=' + (\"'$alphas -join '\"',')); \"'$check.Dispose(); Get-Item -LiteralPath $dst | Select-Object FullName,Length' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\deepfire_pigmentjar_c\n succeeded in 265ms:\n512 512 Format32bppArgb corners=0,0,0,0\n\nFullName                                                                                            Length\n--------                                                                                            ------\nD:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\deepfire_pigmentjar_c\\deepfire_pigmentjar_c.png 282373\n\n\n\ncodex\n{\"id\":\"deepfire_pigmentjar_c\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\deepfire_pigmentjar_c\\\\deepfire_pigmentjar_c.png\",\"width\":512,\"height\":512,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Built-in imagegen; normalized prompt preserved the requested two-jar RimWorld mid-stack design. Copied, resized to exactly 512\u00d7512, and preserved transparent alpha.\"}\ntokens used\n33,858\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/deepfire_pigmentjar_c/deepfire_pigmentjar_c.png\n    512x512  rgba  282,373 bytes  (95s)\n"
+}

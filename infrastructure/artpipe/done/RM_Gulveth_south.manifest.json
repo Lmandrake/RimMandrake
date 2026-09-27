@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 108.6577433309867,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 108.6577433309867,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_Gulveth_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 20.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/26/rollout-2026-09-26T13-53-51-01a0df7e-e7c2-7dc1-8cb1-460132d69cc0.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/26/rollout-2026-09-26T13-40-57-01a0df73-1a2e-74f0-a625-e7a118060a1c.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_Gulveth_south",
+    "note": "Generated via built-in imagegen, then resized to exactly 256\u00d7256 while preserving transparent RGBA. No prompt changes.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Gulveth_south\\RM_Gulveth_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "'D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Gulveth_south\\RM_Gulveth_south.png' because it does not exist.\nAt line:2 char:1224\n+ ... rmat,$corners)); $check.Dispose(); Get-Item -LiteralPath $dst | Selec ...\n+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : ObjectNotFound: (D:\\Luke\\dev\\Rim...lveth_south.png:String) [Get-Item], ItemNotFoundExcep \n   tion\n    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetItemCommand\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command 'Add-Type -AssemblyName System.Drawing; $src = '\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w2\\\\generated_images\\\\01a0df7e-e7c2-7dc1-8cb1-460132d69cc0\\\\exec-126e1423-3de5-45c0-9d7e-890bb453188b.png'; \"'$dst = '\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\RM_Gulveth_south\\\\RM_Gulveth_south.png'; \"'$inputImage = [System.Drawing.Image]::FromFile($src); $outputImage = [System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $graphics = [System.Drawing.Graphics]::FromImage($outputImage); $graphics.Clear([System.Drawing.Color]::Transparent); $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $graphics.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $graphics.DrawImage($inputImage,0,0,256,256); $graphics.Dispose(); $inputImage.Dispose(); $outputImage.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $outputImage.Dispose(); $check = [System.Drawing.Bitmap]::new($dst); $corners = @($check.GetPixel(0,0).A,$check.GetPixel(255,0).A,$check.GetPixel(0,255).A,$check.GetPixel(255,255).A) -join '\"','; Write-Output (('{0} {1} {2} {3}' -f \"'$check.Width,$check.Height,$check.PixelFormat,$corners)); $check.Dispose(); (Get-Item -LiteralPath $dst).FullName' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Gulveth_south\n succeeded in 246ms:\n256 256 Format32bppArgb 0,0,0,0\nD:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Gulveth_south\\RM_Gulveth_south.png\n\ncodex\n{\"id\":\"RM_Gulveth_south\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\RM_Gulveth_south\\\\RM_Gulveth_south.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated via built-in imagegen, then resized to exactly 256\u00d7256 while preserving transparent RGBA. No prompt changes.\"}\ntokens used\n19,922\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Gulveth_south/RM_Gulveth_south.png\n    256x256  rgba  71,203 bytes  (96s)\n"
+}

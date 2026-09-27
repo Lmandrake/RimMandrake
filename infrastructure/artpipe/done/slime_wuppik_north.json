@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-24T21:59:40Z",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "slime_wuppik_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: wuppik, a small harmless hopping creature that breeds without limit, a soft round fluffy body, big rear hopping legs, a silly cheerful bounce to its stance, within the translucent Slime biome, a soft-bodied world the size of a country; translucent green-to-amber gel tones, soft rounded forms, gentle inner glow. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "style_notes": "defName GR_Chickenrabbit. Batch 3d row 6. The Slime's one joke \u2014 sayable by a child."
+}

@@ -1,0 +1,19 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "width": 512,
+    "height": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-25T17:23:41Z",
+  "drawsize": 2.0,
+  "facing": null,
+  "facings": [],
+  "id": "scald2_steamcatchbuilding_a",
+  "priority": 45,
+  "prompt": "RimWorld production building sprite, painterly vanilla-RimWorld art style, transparent background: a small industrial condenser rig of pipes and a squat metal cistern tank in dull grey and warm rust-brown weathered metal tones -- NOT blue-tinted, the machine stands dry above the waterline in the open air, sun-baked and warm-toned, not cold or aquatic in colour. Its intake housing sits directly over and fully caps the vent mouth beneath it, sealing the opening completely so no steam plume is visible escaping around or behind the machine -- the vent's steam is entirely captured inside the condenser body, not venting past it. Faint condensation beads on the metal and a glass sight-tube. Seen from RimWorld's top-down/isometric game art angle. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Single centered subject, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "SCALD_ART_UPGRADE_WAVE_1",
+  "style_notes": "SCALD_ART_UPGRADE_WAVE_1 -- RUT_SteamCatch (Defs/ThingDefs_Buildings/RUT_SteamCatch.xml), redo of scald_steamcatchbuilding_v1 per two owner corrections: (1) the machine must NOT read blue-tinted -- it stands above the water, dry, not an aquatic object; (2) the vent underneath must read visibly CAPPED/sealed by the machine housing, with no steam plume showing behind or around the sprite -- the current v1 render shows the housing beside/above the vent without visually sealing it. drawSize (2,2) per the def, keyed to RUT_ScaldVent placement.",
+  "oversize_reason": "Owner 2026-09-25 (SCALD_ART_UPGRADE_WAVE_1): high-res lush restyle; 256 ceiling stood down by ART_PAINTERLY_RESTORATION_1"
+}

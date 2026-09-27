@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-27T17:05:36Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "spec_scene_rustcathedral",
+  "priority": 100,
+  "prompt": "RimWorld painterly establishing-shot render, painterly vanilla-RimWorld art style: the Rust Cathedral, a colossal ruined mechanoid intrusion structure at a desert world's blazing substellar point, jagged spires of corroded dark metal fused with scorched rock, weapon-fire scars and smoke haze, small distant silhouettes of clashing war machines caught in an endless low-grade battle around its base. Blinding white-hot direct overhead sun, heat-shimmer distorting the air. No on-screen text, no UI elements, no logos.",
+  "reference": null,
+  "rimflow_item_id": "SPECULATIVE_ART_COMMISSION_1",
+  "style_notes": "SPECULATIVE test candidate, owner directive 2026-09-27. NOT commissioned. Sourced from the_one_map.md's owner ruling table ('The Rust Cathedral \u2014 AB_MechanoidIntrusion, at the direct substellar point, continually at war. Keep it, and keep the Rust Flats beside it.'). registry.jsonl: 0 hits for 'rustcathedral'."
+}

@@ -1,0 +1,4 @@
+[11:44:29] artpiped 208762 — 3 workers, 0 pending, log /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/logs/artpiped_20260927_114429_208762.log
+[11:44:32] pruned 90 scratch dir(s) older than 14d
+[11:44:32] codex sandbox ok — sandbox seed template matches the installed build (codex-command-runner-0.153.4.exe)
+● IDLE — queue empty  (0 ok, 0 failed this session)  wk —

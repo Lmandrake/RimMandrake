@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 163.76720458100317,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 163.76720458100317,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "feverwood_plant_plennith",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790455422,
+    "primary_used_percent": 42.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T09-23-03-01a0de86-fc93-73b2-b05e-8584aef6ebf3.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 83.0,
+    "secondary_window_minutes": 10080
+  },
+  "meter_before": {
+    "grumpy": true,
+    "ok": true,
+    "primary_resets_at": 1790455422,
+    "primary_used_percent": 36.0,
+    "primary_window_minutes": 300,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/26/rollout-2026-09-26T09-18-46-01a0de83-0f8f-7070-adc3-b4f1c3af99ce.jsonl",
+    "secondary_resets_at": 1790952120,
+    "secondary_used_percent": 83.0,
+    "secondary_window_minutes": 10080
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "feverwood_plant_plennith",
+    "note": "Built-in imagegen; downscaled to exact 256x256 RGBA. Prompt preserved the top-down grey-green scale mat, heavy black linework, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\feverwood_plant_plennith\\feverwood_plant_plennith.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/feverwood_plant_plennith/feverwood_plant_plennith.png\n    256x256  rgba  110,024 bytes  (162s)\n"
+}

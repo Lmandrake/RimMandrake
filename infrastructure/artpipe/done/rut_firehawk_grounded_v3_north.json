@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-25T18:55:00Z",
+  "drawsize": 1.1,
+  "facing": "north",
+  "facings": [
+    "north",
+    "east",
+    "south"
+  ],
+  "id": "rut_firehawk_grounded_v3_north",
+  "priority": 1,
+  "prompt": "RimWorld creature sprite, side view facing east, painterly vanilla-RimWorld animal art style: a lean raptor of the standing burn, ash-grey plumage with deep ember-orange wing and tail feather accents, hooked dark beak, taloned feet, amber eye — the fire-hawk of the Pyrelands. STANDING/PERCHED GROUND POSE: BOTH wings fully folded/closed against the body, perfectly symmetric left-to-right — neither wing raised, spread, drooped or offset from the other in any way, standing alert on the ground, no flight pose, no raised wing. Single creature, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel — no backdrop, floor, shadow or gradient.",
+  "reference": null,
+  "rimflow_item_id": "FIREHAWK_FLIGHT_BEHAVIOR_1",
+  "style_notes": "REGEN v3 — owner ruling 2026-09-25, live session: the v1 grounded sprite (deployed FireHawk_north.png) has one wing extended/raised and the other folded, an asymmetric pose the owner flagged on sight (\"still uses the asymmetric wings\"). The v1 prompt literally asked for \"one wing slightly raised as if about to take flight\" — that is the root cause. This version must NOT do that: BOTH wings fully folded/closed against the body, perfectly symmetric left-to-right — neither wing raised, spread, drooped or offset from the other in any way. Per-facing framing: south = front view, eyes and face toward the viewer, breast plumage visible; north = rear view, seen from behind, no face or eyes visible, back and tail plumage toward the viewer; east = side profile view. Never a top-down rotation for north/south — they must show different surfaces of the animal (owner ruling 2026-09-15). General standing rule going forward for every RimWorld flyer's grounded/walking sprite: wings folded closed in every facing, never a raised or asymmetric wing on the ground."
+}
