@@ -25,7 +25,7 @@ Reads the XML on disk. It deliberately does NOT need the game, a def dump or
 the environmentalhazards assembly, so it runs in the ordinary parallel
 selftest sweep:
 
-    python3 src/RimUtinni/RotSporeKit/selftest_live_prep.py
+    python3 src/RimMandrake/TheRot/Tools/selftest_live_prep.py
 """
 from __future__ import annotations
 
@@ -34,7 +34,18 @@ import sys
 import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFS = os.path.join(HERE, "Defs")
+# This script lives in TheRot/Tools/; the mod's Defs/ is its sibling, one
+# level up. Was `os.path.join(HERE, "Defs")` (correct back when this lived
+# directly under RotSporeKit/), which after the move into TheRot/Tools/
+# pointed at a nonexistent TheRot/Tools/Defs/ — os.walk on a missing dir
+# yields nothing, so this scanned 0 ThingDefs and always hit the "marked==0"
+# vacuous-pass guard below, reported as a FAILURE. Several run_selftests.py
+# wave reports (COMMISSION_LEDGER_CLEANUP_1, FORCE_DISTURBANCE_REFLAVOR_1,
+# THEY_MOD_REPLICATION_1) misdiagnosed this as "TheRot's ThingDefs don't yet
+# carry RM_LivePrepExtension" — false: RM_RotSporeKit_LivePreparations.xml
+# and RM_RotSporeKit_GuardianGroves_Ingredients.xml both carry it and were
+# simply never reached.
+DEFS = os.path.join(os.path.dirname(HERE), "Defs")
 
 MARKER = "RimMandrake.EnvironmentalHazards.RM_LivePrepExtension"
 TREASURE_MARKER = "RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension"
