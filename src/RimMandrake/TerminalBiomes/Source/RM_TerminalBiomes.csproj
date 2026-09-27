@@ -75,6 +75,8 @@
     <Compile Include="RM_IncidentWorker_PaneStrike.cs" />
     <Compile Include="RM_MapComponent_VeilFall.cs" />
     <Compile Include="RM_Patch_GravEngineLaunchGate.cs" />
+    <!-- GREYSEA_SALTDOME_SCATTER_OOB_1 -->
+    <Compile Include="RM_Patch_ScatterThingsClusterCenterGuard.cs" />
     <!-- TWILIGHT_LIGHT_ECONOMY_1 -->
     <Compile Include="RM_MapComponent_WellLedger.cs" />
     <Compile Include="RM_CompGlowerMobile.cs" />
