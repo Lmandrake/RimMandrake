@@ -263,6 +263,19 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rsw.bacta"],
         "dlc": True,
     },
+    "explosivegrowth": {
+        "why": "Live-verify EXPLOSIVE_PLANT_GROWTH_1's 2026-09-26 charge-clock fix "
+               "(RM_MapComponent_ExplosiveGrowth.StepCharge: wet+growing advances, "
+               "wet+dormant HOLDS, dry decays) on a real plant -- the engine "
+               "(mandrake.rm.explosivegrowth) and its ×10 wet-ambient band "
+               "(mandrake.rut.plantgrowth) with nothing else on the map that could "
+               "explain a failure. Both packageIds are already active in the "
+               "owner's full ModsConfig but have never been live-tested on any "
+               "smaller tier -- this exists so the next re-verify (perf gate, "
+               "cut-vs-harvest, every top) doesn't cost a full-list restart either.",
+        "want": [BRIDGE, "mandrake.rm.explosivegrowth", "mandrake.rut.plantgrowth"],
+        "dlc": True,
+    },
     "fish": {
         "why": "Prove FISH_BESTIARY_BUILD_1's live fishing wiring (Scald, "
                "Wasteland brine mining, Cracked Lands, Weeping Stones, "
