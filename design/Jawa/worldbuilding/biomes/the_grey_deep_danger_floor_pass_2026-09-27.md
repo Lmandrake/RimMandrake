@@ -362,24 +362,22 @@ respect and future edits must keep respecting:
    the inside. The danger is the ship's readiness, never the crew's air.
 3. **No fuel-for-time trade.** Crust pace is time alone; the counters are chipping and
    leaving. Interior heat does nothing to it.
+4. **The giant breaks lamps.** A strong steady player light reads as a rival's
+   mate-mark; the crusted giant comes to break the light — not the ship, not the pawns.
+5. **Lit cells yield more.** The fishing/gathering bonus on lit cells is in — the bribe
+   half of the lure made mechanical; danger and reward share one dial.
+7. **The fessk watcher is in.** It stands at the edge of lamplight and watches — never
+   entering, never attacking — the layer-2 tell.
 9. **RUT_→RM_ catch rename: filed for execution now** — `GREYSEA_CATCH_TIER_RENAME_1`
    (FOUNDRY), all seven invented-name catch items.
+10. **All four description-promised behaviours build** with the fish-body wave (haarn
+    scrape-line, sallik pebble-freeze, hessal sealing, immu shell-lodging) — the
+    descriptions are the spec.
+
+BENCH engineering decision, owner may veto: (8) the suulk-named settings gate
+generalises to a per-sea light-attraction toggle when the Grey wiring lands.
 
 ## Questions for the owner — still open
 
-4. May the crusted giant read a strong steady player light as a rival's mate-mark and
-   come to break it (§2.2 layer 3) — is that use of its one-glow canon yours to keep?
-5. Should strong player light give a small fishing-yield bonus on lit cells (the bribe
-   half of the lure made mechanical), or stay flavour-only?
 6. The Scald and the Propane Lake have no ruled ship-touch voice yet (Grey crystallises,
    Twilight drops panes) — do you want to name theirs now or at their own passes?
-7. The fessk coming to stand at the edge of lamplight and watch (never entering, never
-   attacking) — in, as the layer-2 tell?
-8. The suulk-named settings gate becomes a general per-sea light-attraction toggle when
-   the Grey wiring lands — fine to generalise?
-
-
-
-10. Of the four description-promised behaviours (haarn scrape-line, sallik
-    pebble-freeze, hessal sealing, immu shell-lodging), build all, the ranked top two,
-    or none for now?
