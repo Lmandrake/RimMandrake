@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T05:27:21Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-27T05:42:38Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -217,7 +217,7 @@ summary:  Packet B1 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5.
 prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
 
 ## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1062,6 +1062,15 @@ kind:     fix
 summary:  - The patch is still tagging RUTScaldWaterShallow, RUTScaldWaterMovingShallow and
 prose:    infrastructure/state/items/DIVING_STALE_DEPLOYED_FILES_1.md
 
+## BLUEDESERT_ORPHAN_LOAD_CRASH_1 Full-list load abort reset ModsConfig to Core-only; two orphan/typo root causes found and fixed
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     bug
+summary:  (no items/BLUEDESERT_ORPHAN_LOAD_CRASH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLUEDESERT_ORPHAN_LOAD_CRASH_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1175,6 +1184,16 @@ kind:     task
 blocked:  stale premise fixed: GM_BLACKBOARD_SHADOW_M4_1/CATHEDRAL_REGARD_BLACKBOARD_1 built the external Heat/Hutt-Interest blackboard 2026-09-13+ (shadow mode, live-proven); real remaining blocker is that item's own unbuilt live-injection flip, which needs bridge access this pass did not have. See item file Correction 2026-09-26. (on GM_BLACKBOARD_SHADOW_M4_1)
 summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
 prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
+
+## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Mechanics/art fully built and live-verified since 2026-09-13 (re-confirmed 2026-09-18 and again today, no regression, git status clean). Only remaining gate is the owner's own visual sign-off on the shipped review saves (Saves/REVIEW_DroidworksG2_2026-09-13.rws) - genuinely his to look at, not FOUNDRY work. Head/face render gap is correctly its own separate item, DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1.
+summary:  Packet B9 of design/Jawa/droids/DROIDUNIFIEDFRAMEWORKDESIGN.md §5
+prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
 
 ## WAR_LAB_CRATER_HOOK_1 Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
 state:    doing  (BLOCKED)
@@ -1827,3 +1846,13 @@ kind:     task
 thin:     no ## verify
 summary:  1. Confirm the daemon is idle (or briefly pause it) before touching failed/,
 prose:    infrastructure/state/items/ARTPIPE_SALVAGE_REJECTED_SIZE_MISMATCH_1.md
+
+## UTINNIPATCHES_ORPHAN_AUDIT_1 Audit the full list of files deploy_custom_mods.py reports 'in game, not in repo' under UtinniPatches (and other mods) for stale/dangerous orphans vs. intentional residue
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/UTINNIPATCHES_ORPHAN_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/UTINNIPATCHES_ORPHAN_AUDIT_1.md

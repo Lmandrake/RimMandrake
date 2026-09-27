@@ -426,3 +426,41 @@ stays `doing`. The owner's own visual sign-off on the already-shipped review
 saves (`Saves/REVIEW_DroidworksG2_2026-09-13.rws`,
 `DROIDWORKS_G2_REVIEW_2026-09-13.rws`) is still the only thing between this
 item and close.
+
+## 2026-09-27 (FOUNDRY) — re-verified again, still nothing to build, marked blocked not doing
+
+Picked back up on a briefing repeating the same stale "G2 still ships
+placeholder art" premise this file already retracted on 2026-09-18 — same
+trap, re-confirmed false the same way: read
+`src/RimStarWars/Droidworks/Defs/Races_Primitive.xml` directly (body path
+still `DW/Primitive/G2`, header still says real art), parsed all six
+Primitive-tier XML files clean (`Defs/Races_Primitive.xml`,
+`Defs/PawnKinds_Primitive.xml`, `Defs/ThingDefs/{Parts,Modules}_Droidworks_
+Primitive.xml`, `Defs/HediffDefs/Effects_Droidworks_Primitive.xml`,
+`Defs/RecipeDefs/PartRecipes_Droidworks_Primitive.xml`), confirmed
+`RSW_DW_Race_Primitive_G2Unit`/`RSW_DW_Primitive_G2` defNames match between
+`Races_Primitive.xml` and `PawnKinds_Primitive.xml`, and confirmed
+`DroidAssembly.cs`'s `case "RSW_DW_Head_Primitive"` switch arm is still
+present. `git status --porcelain -- src/RimStarWars/Droidworks` is empty —
+nothing uncommitted, nothing drifted in the 9 days since the last check.
+
+Did not attempt a live bridge check: `rimflow bridge who` shows FOUNDRY
+already holding it this session for an unrelated full 630-mod-list relaunch
+(`BLUEDESERT_ORPHAN_LOAD_CRASH_1` verify) — not fighting that, and it
+wouldn't add anything anyway since the G2 body art and Junker/parts/modules
+mechanics are already live-verified in two savegames (2026-09-13 entries
+above).
+
+Confirmed the HEAD/face gap this file already flagged as a separate,
+unscoped task is now correctly its own item,
+`DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1` (filed 2026-09-18,
+`1d719c443`/`8d4f6fe39` — root cause identified as
+`useFactionXenotypes=false`) — not something this item owes.
+
+**This item has had no real work left since 2026-09-13.** The single
+remaining gate is the owner's own look at
+`Saves/REVIEW_DroidworksG2_2026-09-13.rws` /
+`DROIDWORKS_G2_REVIEW_2026-09-13.rws` — genuinely his, not something a
+session can manufacture or infer from absence of objection. Marked `block`
+in the ledger (was silently `doing`) so this stops surfacing as pickable
+FOUNDRY work and reads correctly as waiting on him.
