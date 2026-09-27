@@ -302,6 +302,26 @@ per-facing generation guidance above applies here too, doubled by frame count).
 Gendered species (vanilla Quail, Peafowl) add a second full set under
 `flyingAnimationFramePathPrefixFemale`.
 
+🔴 **Standing rule for every flier's flip-book, both at rest and in the air**
+(owner, verbatim, 2026-09-25 — watching FireHawk's shipped v1 art live):
+**wings move, the body does not, unless a specific creature has an explicit,
+unusual reason to counter it** (none identified yet). Two concrete failure
+modes this rule exists to stop, both hit on FireHawk's own v1 art:
+- **Grounded/walking sprite: wings fully folded closed, symmetric left-right,
+  in every facing.** FireHawk's v1 grounded prompt literally asked for "one
+  wing slightly raised as if about to take flight" — that line is the defect,
+  not a rendering bug. A standing/walking flier never shows a raised or
+  asymmetric wing; save the raised-wing pose for the flying frames only.
+- **Flying flip-book: the head, neck and torso stay pixel-stable — same
+  fixed, level position and silhouette — across every frame of the cycle;
+  only the wing pose changes frame to frame.** FireHawk's v1 flying frames let
+  the body bob up and down between frames, which reads as flicker rather than
+  flight the instant it's seen moving (a static single-frame QA pass will
+  never catch this — it only shows up animating, live). State both
+  invariants explicitly in every frame's prompt and in `style_notes`, the way
+  `../generating-rimworld-sprites/SKILL.md`'s "state the invariants every
+  iteration" rule already asks for restyles generally.
+
 **Before generating anything**, read the reference doc a fresh implementation
 pass should start from: `~/Desktop/RIMWORLD_1_6_NATIVE_ANIMAL_FLIGHT_IMPLEMENTATION.md`
 (owner, 2026-09-19) if present, or re-derive the same facts from the installed
@@ -317,4 +337,11 @@ worked-example lie above), verify all three facings resolve (a missing
 `_north_3` silently drops to the bare-path fallback — see "How sprite checks
 lie"), and verify the grounded graphic returns cleanly on landing. A screenshot
 of the animal standing still proves nothing about whether it flies; step ticks
-until it actually takes off and look then.
+until it actually takes off and look then. **Look at it animating, not just one
+frame** — a single still passes the wings-folded and body-level checks above
+by accident even when the flip-book jitters between frames; watch it cycle live
+before calling either invariant met. Spawn a batch, not one (see
+`rimworld-debug-testing`'s "single spawned pawn is not a sample" — for a flier
+specifically, `flightStartChanceOnJobStart` means a lone pawn is unlikely to
+fly at all in any given observation window; spawn ~20 faction-`none` and let the
+odds work, owner ruling 2026-09-25).

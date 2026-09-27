@@ -203,6 +203,20 @@ on each, and confirm the result is consistent across the batch** before
 reporting a mechanism as proven or broken; cross-check `jawa/list_pawns` for
 any unrelated pawn near the test site first.
 
+🔴 **A flying creature needs a BIGGER batch than most mechanisms — the RNG gate
+is per job-start, not per pawn.** `flightStartChanceOnJobStart` (typically
+~0.1–0.15) means one spawned flier only rolls the dice each time it starts a
+new job, so a single pawn watched for a few minutes can easily never take off
+— exactly what happened chasing FireHawk's flight for ~35 minutes solo
+(`FIREHAWK_FLIGHT_BEHAVIOR_1`, 2026-09-24). Owner's fix, verbatim, 2026-09-25:
+*"the way to test flyers is to spawn like 20 of them to see if any start
+flying, not just one."* **Spawn ~20** (`jawa/spawn_pawn` `count: 20`, faction
+`none`) instead of one when the test is "does this thing fly" — the odds do
+the work a long attentive watch otherwise has to. This applies whether the
+owner is watching live or not; it does not license an *unattended* flight
+hunt — `CLAUDE.md`'s "do not live-test a flyer's flight without a human
+present" stands regardless of batch size.
+
 🔴 **A state assertion and the screen can both be right, and still disagree.**
 A pit mod's `expect_pawn_despawned` PASSED — the pawn really left the map —
 while the building drew its first occupant via a custom render hook over a
