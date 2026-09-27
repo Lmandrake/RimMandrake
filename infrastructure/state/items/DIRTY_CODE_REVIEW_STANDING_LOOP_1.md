@@ -5412,3 +5412,97 @@ folders (`TerminalBiomes`, `DivingInteraction`, anything with
 `ElderUnknownWeapon` in its path), `FeverWood/Source`, and anything with
 `PoisonForest`/`Cauldron`/`Suush` in the path, until told those concurrent
 builds are done.
+
+## Wave 21 — 2026-09-26 (as FOUNDRY, FloodedCanyon/EnvironmentalHazards/Greentide small clusters)
+
+Re-ran `code_review_status.py list --show-untracked` fresh (never trusted wave
+20's list blindly) and confirmed all three named clusters still DIRTY,
+untouched by any concurrent agent. Covered all three in one pass, 13 files:
+
+- **`EnvironmentalHazards` (3):** `About/About.xml`,
+  `Languages/English/Keyed/RM_EnvironmentalHazards_Keys.xml`,
+  `Source/RM_EnvironmentalHazards.csproj` — all one clean-mark sha
+  (`06e9ecab9`). Diffs: a doc paragraph for `BIOME_ARRIVAL_NARRATION_1`, one
+  new Keyed string, and ~19 new `<Compile Include>` lines. Every newly-listed
+  `.cs` file confirmed present on disk — no phantom includes. No `.cs` file in
+  this mod was itself touched, so no DLL rebuild was owed despite the
+  `.srchash` sidecar note.
+- **`FloodedCanyon` (4 — wave 20 said 5, miscounted):** `About/About.xml`,
+  `Defs/BiomeDefs/RM_FloodedCanyon_Biome.xml`,
+  `Source/RM_FloodedCanyonMod.cs`, `Source/RM_MapComponent_CanyonFlood.cs`.
+  The real diff: the flood's soak state moved from an in-component
+  `Dictionary<IntVec3,int>` (Scribed, pruned every flood start) to handing
+  soaked cells to `mandrake.rm.explosivegrowth` via a new reflection bridge,
+  `RM_ExplosiveGrowthBridge` (untracked file, read in full) — resolves
+  `RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI:SoakCells` once, caches
+  null-safely, try/catches every call. Confirmed that API method actually
+  exists with a matching signature in `src/RimMandrake/ExplosiveGrowth/Source/
+  ExplosiveGrowthAPI.cs`. Grepped the whole mod for every removed symbol
+  (`growthMultiplier`, `SoakFactorAt`, `soakUntilTick`,
+  `RM_Patch_Plant_GrowthRate`) — zero stale references left; the old patch
+  file is correctly gone (matches the pre-existing ORPHANED entry, untouched —
+  that's a `prune` job, not a mark-clean one). Settings field removal
+  (`growthMultiplier`) is clean across `ExposeData` and the settings UI. Biome
+  label rename only, otherwise.
+- **`Greentide` (6):** `About/About.xml`,
+  `Defs/BiomeDefs/RM_Greentide_Biome.xml`,
+  `Defs/HediffDefs/RM_Greentide_Hediffs.xml`, `Source/RM_Greentide.csproj`,
+  `Source/RM_GreentideMod.cs`, `Source/RM_WeatherOverlay_GreentideRoil.cs`.
+  Three same-day items landed together: `GREENTIDE_BIOME_DENSITY_1`
+  (plantDensity 0.99/movementDifficulty 4, `RM_GreentideDensityApplier`
+  re-asserted from `WriteSettings()` — read that file to confirm it exists
+  and does what the comment claims), `GREENTIDE_JUNGLE_TREE_ROSTER_1` +
+  `GREENTIDE_UNDERSTORY_PLANT_ROSTER_1` (22 new `<wildPlants>` defNames,
+  every one cross-checked against `RM_Greentide_TreeRoster.xml` /
+  `_UnderstoryRoster.xml` / `RM_Greatbole.xml` — all resolve), and
+  `GREENTIDE_FRENZY_DISEASE_1` (new `RM_Frenzy` HediffDef stacking
+  `HediffCompProperties_SeverityPerDay` + `HediffCompProperties_TendDuration`
+  on one def — **verified via RimSage against the decompiled engine, not
+  taken on faith**: `HediffComp_SeverityModifierBase.CompPostTickInterval`
+  adds every comp's own `SeverityChangePerDay()` into one shared
+  `severityAdjustment`, so the two comps' rates are additive by design, and
+  `severityGainFactor` on the collapse stage only scales the
+  `SeverityPerDay` comp, matching the doc's own math). Also cross-checked
+  `RM_SkerrelSting`'s stated mechanism (`RM_DamageWorker_StingAccumulate`,
+  `RM_MentalState_ScopedAggression`) resolves into the already-built
+  `CreatureBehaviors` mod, not a phantom reference. The `RM_WeatherOverlay_
+  GreentideRoil.cs` diff turned out to be a **real crash fix already in the
+  dirty diff**, not something to add: the old code called
+  `MatLoader.LoadMat("Weather/GreentideRoilOverlayWorld")` — confirmed via
+  `MatLoader.cs` that it reads only Unity `Resources/`, which no mod ships
+  into, so the lookup returns null and `MaterialAllocator.Create(material)`
+  calls `new Material(null)` in a static field initializer, which throws and
+  kills the type (blacking the map). The diff swaps it to vanilla's own
+  `Weather/FogOverlayWorld`, which exists — correct fix, left as-is.
+  `StenchGrenadeBaseRadius` (3.6) confirmed to match
+  `RM_StenchGrenade_Items.xml`'s `<explosionRadius>3.6</explosionRadius>`
+  exactly, and both Frenzy consumers correctly gate on
+  `RM_GreentideSettings.frenzyEnabled`.
+- All 9 touched XML/csproj files parsed clean (`xml.etree.ElementTree`,
+  one batched Python process).
+
+**No bug found in any of the 13.** All marked CLEAN at `a24380647`. Status
+commit `f9d74c96e`, pushed as a plain fast-forward (verified with
+`git merge-base --is-ancestor` against `origin/main`).
+
+13 files reviewed this wave (all diff-scoped), 13 newly CLEAN, 0 bugs found.
+
+Re-measured after: `TALLY CLEAN 3255 DIRTY 125 ORPHANED 211` (up from wave
+20's 3242/138/211 — exactly this wave's 13-file net gain, no other churn
+observed this pass).
+
+Next wave: all three of this wave's clusters are now fully clear. Fresh
+small clusters outside the exclusion list, from this wave's fresh
+`list --show-untracked` DIRTY-file path counts: **`ShipShields`** (4 —
+already flagged as "next" back in wave 11 and apparently still untouched),
+**`Graffiti`** (6), **`WeepingStones`** (5), **`StructureInjectionsSW`** (3).
+`Pyrelands`/`PyrelandsMechanics` (10+9) are NOT on the exclusion list but are
+large enough to re-confirm with the owner/other seats before diving in — a
+sea-biome-adjacent name doesn't by itself mean it's one of the four excluded
+mods. Re-run `list --show-untracked` fresh first — several other agents are
+committing concurrently. ⛔ Keep avoiding: biome-specific sea-biome mod
+folders (`TerminalBiomes`, `DivingInteraction`, anything with
+`BrineElder`/`GreySea`/`TwilightSea`/`Scald`/`PropaneLake`/
+`ElderUnknownWeapon` in its path), `FeverWood/Source`, and anything with
+`PoisonForest`/`Cauldron`/`Suush` in the path, until told those concurrent
+builds are done.
