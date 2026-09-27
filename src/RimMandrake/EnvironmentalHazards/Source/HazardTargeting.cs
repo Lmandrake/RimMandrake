@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
@@ -70,14 +71,16 @@ namespace RimMandrake.EnvironmentalHazards
             return true;
         }
 
-        // ROT_SHEEN_WEATHER_1. Shared with RM_GameCondition_WetBulb's own
-        // SumApparelProtection (that class predates this shared home and
-        // keeps its private copy rather than being touched by this pass) —
-        // an "Apparel"-category StatDef has no vanilla auto-aggregation onto
-        // a pawn stat (ArmorUtility is the only vanilla reader, and it reads
-        // per-apparel-item, not per-pawn), so any consumer summing one across
-        // a worn outfit must do it itself. Not clamped here — callers decide
-        // their own clamp/floor (e.g. a "gear never fully immunizes" floor).
+        // ROT_SHEEN_WEATHER_1. Shared by every hazard's apparel-summed
+        // protection, including RM_GameCondition_WetBulb since
+        // WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1 retired its own private
+        // reimplementation of this loop — an "Apparel"-category StatDef has
+        // no vanilla auto-aggregation onto a pawn stat (ArmorUtility is the
+        // only vanilla reader, and it reads per-apparel-item, not per-pawn),
+        // so any consumer summing one across a worn outfit must do it itself.
+        // Not clamped here — callers decide their own clamp/floor (e.g. a
+        // "gear never fully immunizes" floor); ProtectionDriveFactor below
+        // is the shared clamp+floor/hold-threshold step most callers want.
         public static float SumApparelStat(Pawn pawn, StatDef stat)
         {
             if (stat == null || pawn?.apparel == null)
@@ -93,6 +96,31 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             return total;
+        }
+
+        // WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1. The "gear slows the clock"
+        // shape both RM_HediffComp_EnvironmentalExposure and
+        // RM_GameCondition_WetBulb apply to a summed protection stat,
+        // unified into one formula instead of two near-identical
+        // reimplementations. Two curve shapes, selected by which parameter
+        // the caller sets (the other stays at its neutral default so a
+        // caller keeps its exact pre-dedup numbers):
+        //   holdThreshold > 0   -> a hold-threshold curve: driveFactor hits
+        //                          0 at protection == holdThreshold (RM_GameCondition_WetBulb's
+        //                          own shape, minDriveFactor left at 0f).
+        //   holdThreshold <= 0  -> a floor curve: driveFactor never drops
+        //                          below minDriveFactor regardless of
+        //                          protection (RM_HediffComp_EnvironmentalExposure's
+        //                          own shape, holdThreshold left at 0f).
+        public static float ProtectionDriveFactor(float totalProtection, float minDriveFactor, float holdThreshold)
+        {
+            float protection = Mathf.Clamp01(totalProtection);
+            if (holdThreshold > 0f)
+            {
+                return Mathf.Max(0f, 1f - protection / holdThreshold);
+            }
+
+            return Mathf.Max(minDriveFactor, 1f - protection);
         }
     }
 }

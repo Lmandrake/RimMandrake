@@ -128,13 +128,17 @@ namespace RimMandrake.EnvironmentalHazards
                     continue; // gate 2: a dried room stops the clock entirely
                 }
 
-                float protection = SumApparelProtection(pawn, ext.protectionStat);
+                float protection = HazardTargeting.SumApparelStat(pawn, ext.protectionStat);
 
                 // gate 1: severity gain x (1 - protection), realized as a
                 // hold-threshold curve — see RM_WetBulbExtension.protectionHoldThreshold.
-                float driveFactor = ext.protectionHoldThreshold > 0f
-                    ? Mathf.Max(0f, 1f - protection / ext.protectionHoldThreshold)
-                    : Mathf.Max(0f, 1f - protection);
+                // WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1: this was a private
+                // reimplementation of RM_HediffComp_EnvironmentalExposure's
+                // own protection-to-driveFactor shape; both now call the one
+                // shared formula in HazardTargeting.ProtectionDriveFactor
+                // (minDriveFactor left at 0f, which this condition has no
+                // field for and never used).
+                float driveFactor = HazardTargeting.ProtectionDriveFactor(protection, 0f, ext.protectionHoldThreshold);
 
                 if (driveFactor <= 0f)
                 {
@@ -150,28 +154,6 @@ namespace RimMandrake.EnvironmentalHazards
 
                 HealthUtility.AdjustSeverity(pawn, ext.hediffDef, gain);
             }
-        }
-
-        // "New StatDef summed from apparel" (kit spec, M1) — an
-        // "Apparel"-category StatDef has no vanilla auto-aggregation onto a
-        // pawn stat (ArmorUtility is the only vanilla consumer of that
-        // category, and it reads per-apparel-item, not per-pawn), so this
-        // condition does the summing itself.
-        private static float SumApparelProtection(Pawn pawn, StatDef stat)
-        {
-            if (stat == null || pawn?.apparel == null)
-            {
-                return 0f;
-            }
-
-            List<Apparel> worn = pawn.apparel.WornApparel;
-            float total = 0f;
-            for (int i = 0; i < worn.Count; i++)
-            {
-                total += worn[i].GetStatValue(stat);
-            }
-
-            return Mathf.Clamp01(total);
         }
 
         public override void ExposeData()
