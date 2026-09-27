@@ -11,7 +11,7 @@ Owner, by question card 2026-09-26 (recorded on `SCALD_UNDERWATER_FLORA_1`'s rul
 *"strange little underwater 'plants' like strings and filaments of bacterial colonies,
 sponges, soft corals, all with alien twists; it should not be barren"* — and the Twilight's
 is commissioned in the Twilight's OWN register: **the light economy**. Here light is
-currency, tenancy and danger (`the_twilight_deep_light_economy_pass_2026-09-27.md`), so the
+livelihood, weather and danger (`the_twilight_deep_light_economy_pass_2026-09-27.md`), so the
 native strange flora are the ones that **make, hold, steal or spend light**.
 
 This roster is deliberately NOT the content drop's fourteen seaweed analogs
@@ -28,8 +28,8 @@ Scald commission's categories, run through the Twilight's physics.
   clinging layer, the colour grammar (gold = home and harvest, blue-white = moving, green =
   growing), the channel mechanism, the bioluminescence rules (§6).
 - `the_twilight_deep_light_economy_pass_2026-09-27.md` — the well-ledger (wells live 5–9
-  days), warning stages, the constellation cap, the sun-sphere arc, leases and charts, and
-  the 🔴 glow-grid-only engine trap (§1.4).
+  days), warning stages, the constellation cap, the sun-sphere arc, and the 🔴
+  glow-grid-only engine trap (§1.4).
 - `the_twilight_deep_danger_pass_2026-09-27.md` — the lightweb: the suulk grazes the
   brightest player-owned glower; the vaulisk counterfeits a gold lamp, one per map, tell
   always readable (no breathing pulse, no piip, dead ring); lid-dark; the sink.
@@ -46,7 +46,8 @@ Scald commission's categories, run through the Twilight's physics.
   yet — they do not, as of this reading; the names are nonetheless established).
 - `Defs/ThingDefs_Buildings/RM_TwilightSkylight.xml` (`RM_Skylight`, glowRadius **6.0**,
   gold `(255,214,130)`) · `RM_TwilightLightEconomyItems.xml` (`RM_LampBladder` glow 2.5,
-  `RM_NoothelmBulb`, `RM_TetherChain`, `RM_SkylightRight`, `RM_WellChart`) ·
+  `RM_NoothelmBulb`, `RM_TetherChain` — the paper items that shipped beside them are
+  removed under the 2026-09-27 ruling, `TWILIGHT_TENANCY_PAPER_REMOVAL_1`) ·
   `RM_VauliskLure.xml` + `RM_TwilightScatterVauliskLure.xml` (the liar and its scatter) ·
   `RM_SuulkArrival.xml` (the grazer's incident).
 
@@ -80,8 +81,8 @@ Four grounds, already distinct in the built and ruled systems:
    and vaulisk's country; the standing threat surface.
 3. **Channel banks** — `RM_BankSilt`, the current-fed silt strip between the stake-line and
    the bed. The richest ground; refreshed by the undersurge.
-4. **Bottom-house adjacency** — the Compact's lamp-lit yards, stakes and buoy-rings: ground
-   that is lit *permanently*, by tenants rather than by the sky. Flora here are planted
+4. **Bottom-house adjacency** — the Compact's lamp-lit yards and stake-lines: ground
+   that is lit *permanently*, by neighbours rather than by the sky. Flora here are planted
    practice, not wilderness (Route B dressing near the Inhabited houses).
 
 The channel **bed** (`RM_ChannelBed`) stays bare by design — it is the current's, and ban 3
@@ -98,8 +99,8 @@ checkable: *tax* (tithemoss), *bank* (gloamurn), *refuse* (murkspindle), *mint* 
 and noothelm *sell* light (the harvest lamps), the salt blade abstains — so nothing below
 is a harvestable lamp; that register is taken.
 
-Every glow entry states what it does to the **suulk/vaulisk lightweb** and to **well
-tenancy**, per the commission. All names invented, franchise-free `RM_` tier (Q11a), all
+Every glow entry states what it does to the **suulk/vaulisk lightweb** and to the
+**well cycle**, per the commission. All names invented, franchise-free `RM_` tier (Q11a), all
 ten grepped FREE. Coverage of the commissioned categories: bacterial strings/filaments ×4
 (tithemoss, murkspindle, weircomb, gleamfloss), sponges ×2 (gloamurn, glimmerhusk), soft
 corals ×2 (tollhorn, hushcoral), plus one runner (farwick) and one turf (almslight).
@@ -111,24 +112,25 @@ lights — a wild hoolimbre rope, a noothelm bulb, an aluun-hung stem — drinki
 the glow straight out of the symbionts and wearing a faint rim of the stolen colour. A
 tithed lamp is a dimmer lamp; a heavily tithed one is a lamp in name only. The Compact
 weed their stakes every morning the way surface people sweep a doorstep, and a stake gone
-furry is the chart-readable sign of an abandoned claim. Everything in this sea pays for
+furry is the readable sign of an abandoned stake. Everything in this sea pays for
 light one way or another; tithemoss is the tax collector, and it has never once been
 thanked.
 
 - **Twist:** a parasite in a currency economy is a tax — it steals light without ever
   making any.
 - **Lightweb:** a tithed lamp reads one radius step dimmer, so the suulk — which beelines
-  for the *brightest* player-owned glower — passes it over: the poor colonist's suulk
-  insurance, paid for in light. And tithemoss **will not take on the vaulisk's lure**
+  for the *brightest* glower — passes it over: half of why wild lamp-stands survive the
+  grazer at all. (RULED 2026-09-27: it never takes on the player's own clipped lamps —
+  wild and Compact hosts only.) And tithemoss **will not take on the vaulisk's lure**
   (the false gold is a predator's organ, sealed; there is nothing alive in it to drink
   from) — a fourth tell, slower than the piip-check: a "hoolimbre" that has stood a week
   bare of moss is not a hoolimbre.
-- **Tenancy:** the Compact's weeding is visible daily work (the same register as buoy
-  re-placement); moss-furred stakes mark lapsed claims on any chart.
+- **Wells:** the Compact's weeding is visible daily work; a moss-furred stake is a
+  lapsed stake, readable at a glance.
 - **Art:** a mangy fringe on the host's silhouette, grey-green, rim-lit in the host's own
   colour; drawSize small, drawn as an attachment overlay. No glow of its own beyond the rim.
 - **Harvest:** none — a weeding job (cut, no yield). growDays 3; placement by host
-  adjacency (Route B), never freestanding.
+  adjacency (Route B), never freestanding, wild and Compact hosts only (ruled).
 
 ### 2. RM_Gloamurn — the afterglow sponge · *bank*
 
@@ -146,9 +148,9 @@ Deepwater call that ground *the afterglow*, and they walk it without lamps.
   own decoy field, and the reason a wild suulk survives between player visits at all.
   Honest breathing glow (it carries the pulse), so it also shrinks the vaulisk's dark —
   the liar does not sit in the afterglow.
-- **Tenancy:** the week after a well dies, its ground still has value — see the owner
-  question on **afterglow rights** (a closing well's cheap second lease, the one paper the
-  well-keeper sells *after* refusing to sell the waning well itself).
+- **Wells:** the week after a well dies, its ground still has value — and it is free
+  ground like everything else in the sea (ruled): the afterglow is the poor diver's
+  window, no paper on it and none anywhere.
 - **Art:** a squat urn, translucent grey-green when charging, honey-gold and inner-lit
   when spending; drawSize ~0.9; glow radius 2.5 gold, breathing, **only while discharging**.
 - **Harvest:** a charged urn squeezes to **1× `RM_LampBladder`** (the existing item — the
@@ -175,7 +177,7 @@ about that ground.
   gold against spindle-black, where it is most beautiful (siting input for
   `RM_TwilightScatterVauliskLure`: weight lure placement toward spindle stands — one more
   way the tell is taught: gold standing in the spindles gets checked first).
-- **Tenancy:** the anti-chart — spindles mark ground the well-ledger has not visited in a
+- **Wells:** the anti-chart — spindles mark ground the well-ledger has not visited in a
   long time, i.e. ground where a well is *due*; the Compact's pilots read spindle-kill
   (a browning stand) as the cheapest forecast of an opening.
 - **Art:** thin black verticals in loose sheaves, matte, faint blue-white beads where the
@@ -184,8 +186,8 @@ about that ground.
 - **Harvest:** none — dressing and danger-map. growDays 6, commonality 0.6 (Route A, the
   dark floor's staple).
 - **Engine honesty:** vanilla has `growMinGlow` and no growMax — "dies in light" needs a
-  one-line comp (wilt above a glow threshold) or stays placement-plus-prose. Owner
-  question below; the comp is tiny and shared with nothing.
+  one-line comp (wilt above a glow threshold). **RULED 2026-09-27: the comp SHIPS**; it
+  is tiny and shared with nothing.
 
 ### 4. RM_Weircomb — the current combs · *mint*
 
@@ -201,7 +203,7 @@ weircomb mints its glow from motion, and the river has never once stopped paying
 - **Lightweb:** blue-white is *moving* in the colour grammar, and the vaulisk speaks only
   gold — combs cannot be counterfeited, so bank-light is the one light a diver never has
   to check. Too dim and too fixed ever to be the suulk's brightest target.
-- **Tenancy:** none — bank wealth is the ruled counterweight to well tenancy, and the
+- **Wells:** none — bank wealth is the ruled counterweight to the well chase, and the
   combs mark it: where the weirs glow brightest, the silt is richest. Their pre-surge
   blaze joins the sennefan snap and the vanishing murrol as the undersurge's tells (danger
   pass D6), and it is the one tell readable from across the map.
@@ -227,15 +229,16 @@ coral — and she buys cores dearly, and has never once sold one.
   and the only witness of the sky's history that predates the Compact.
 - **Lightweb:** no glow; deliberately inert to the suulk and the vaulisk both. Every
   roster needs one instrument that the web cannot touch, or the web has no baseline.
-- **Tenancy:** the estate secret. Thick-banded tollhorn ground is ground where wells
+- **Wells:** the recurrence secret. Thick-banded tollhorn ground is ground where wells
   RECUR — the one fact about the drift that is knowledge rather than forecast, which is
   exactly why the well-keeper hoards cores: a player who learns to read tollhorn is
   reading the Compact's real ledger over their shoulder.
 - **Art:** a cluster of blunt horns, dusty rose-grey, band-lines faintly gold on the
   weathered flanks; drawSize 1.2; no glow.
 - **Harvest:** slow, high-work — **1× tollhorn core**, a high-value trade good (Beauty on
-  the item; the Compact pay best). Whether a carried core also steadies a `RM_WellChart`'s
-  forecast is an owner question below. growDays 20 (an old thing, like the Scald's
+  the item; the Compact pay best). RULED 2026-09-27: the core carries no mechanic beyond
+  being a trade good — its meaning to the well-keeper lives in the description
+  only. growDays 20 (an old thing, like the Scald's
   thurlsponge), Route B: seeded by the dressing genstep on well-recurrence ground (the
   skylight-site clusters the generator already knows).
 
@@ -245,7 +248,7 @@ A soft coral of small gold polyps that do not make their own case: they *answer*
 few cells of any honest living light, the colony entrains — its faint glow breathing in
 time with the lamp it hears — and beside a light with no pulse it goes silent and dark. A
 ring of hushed coral around a gold lamp is the oldest alarm in the sea. The Compact plant
-hushcoral around every claim-buoy, and their children learn the proverb in its long form:
+hushcoral around every stake they walk out, and their children learn the proverb in its long form:
 *a lamp with no piip around it is not a lamp; a lamp the coral will not answer is a trap.*
 
 - **Twist:** light as speech — it neither mints nor spends, it *replies*, and its silence
@@ -255,7 +258,7 @@ hushcoral around every claim-buoy, and their children learn the proverb in its l
   the monster's tell), so hushcoral beside it never entrains. Radius 1 and never the
   brightest thing anywhere — deliberately below the suulk's notice, because a tell the
   grazer could eat is not a tell.
-- **Tenancy:** buoy-rings are Compact practice (Route B dressing at their claims and
+- **Wells:** stake-rings are Compact practice (Route B dressing at their stakes and
   yards); a player can transplant a ring around their own constellation — the cheap,
   living vaulisk alarm that costs no chain and no research.
 - **Art:** low cushions of small polyps, dusty gold over grey-green, drawn mid-pulse;
@@ -270,10 +273,10 @@ The golden shafts are not empty light: they are inhabited. Gleamfloss is a bacte
 so fine it has no purchase on the floor at all — it lives suspended IN a skylight's
 column, a slow drifting haze of gold-lit filament that is half the reason the shafts read
 as *literal golden shafts* from the floor. The pallu eat it, which is why the pallu stack
-in the wells, which is why the well-keeper counts pallu to price a lease: the whole
-pricing chain stands on this floss. When a well closes, the floss starves and settles —
+in the wells, which is why the well-keeper counts pallu to read a well's remaining days:
+her whole craft stands on this floss. When a well closes, the floss starves and settles —
 a gold dust-fall the Deepwater call **gilt** — and for a few days the dead well's floor
-is worth sweeping.
+glitters with it.
 
 - **Twist:** it lives in a place made of light — no floor, no root, no body to point at;
   the only flora whose habitat is the currency itself.
@@ -281,16 +284,16 @@ is worth sweeping.
   it — **a gold glow with no shimmer standing over it is a lie**, a tell readable from
   farther away than the piip-check. Floss density is why the shafts are where the shoals
   are: niim hunt the pallu that eat the floss; the columns' whole food chain starts here.
-- **Tenancy:** floss thickness IS the sky-read at floor level — young wells thin, mid-life
+- **Wells:** floss thickness IS the sky-read at floor level — young wells thin, mid-life
   wells dense, waning wells shedding gilt early. The free forecast the light-economy pass
   promised (§1.2's sky-read) gets its floor-level instrument.
 - **Art:** the column form is art on the `RM_Skylight` thing (a drifting haze layer in the
   shaft render, when the shaft-of-light art lands — the content drop's one flagged
   art-engineering question, unchanged by this pass); the floor form is a low gold shimmer
   plant on shaft cells, drawSize 0.5, no glower of its own (the skylight's 6.0 covers it).
-- **Harvest:** the settled **gilt** — a few days' window after a closure, sweepable for a
-  small yield of gold pigment: the third ink beside vaal-green and lamp-black, the gold
-  the Compact's charts are veined with. New tiny item (`RM_Gilt`), owner question below.
+- **Harvest:** none — RULED 2026-09-27: no `RM_Gilt` item. The settled gilt stays
+  description: the gold the Compact's own charts are veined with is their inkmakers'
+  business and the biome's lore, never a yield.
   growDays 2 (it must bloom inside a well's 5–9 day life); Route B: shaft cells only,
   seeded and killed by the well-ledger.
 
@@ -312,7 +315,7 @@ three colours, and every one of them is quoted.
   make one steady false gold hard to pick out (second siting input for the lure scatter,
   beside the murkspindle stands). The one honest breaker of the colour grammar — its
   lights are all three colours because none of them is its own.
-- **Tenancy:** none; the dark between is nobody's lease.
+- **Wells:** none; the dark between is nobody's ground.
 - **Art:** a squat charcoal barrel flecked with dozens of tiny mixed-colour points, a few
   visibly brighter (fresh); drawSize 1.1; glow radius 1.5, mixed/dappled, breathing
   unevenly (it is many small lights, not one).
@@ -336,9 +339,8 @@ Deepwater child knows what it is instead.
   source: the runners are the grazer's roads, and a colony between a shaft and its lamps
   should know it. Bud-death is common knowledge, so a "bud" still glowing after its well's
   death is the liar's second-favourite costume — and the tell is already taught.
-- **Tenancy:** micro-tenancy without paper — a bud lights one workbench, one snare-line,
-  one doorstep, lease-free. The well-keeper does not sell farwick light and will not
-  discuss it; the runners give away in ones what she leases in wholes.
+- **Wells:** a bud lights one workbench, one snare-line, one doorstep — the sea giving
+  away in ones what the sky spends in wholes, free like every other light here.
 - **Art:** a hair-thin glassy line drawn across the floor cells it crosses, near-invisible
   except where a shaft catches it, ending in one small gold bead; drawSize of the bud 0.5;
   glow radius 1.5 gold at the bud only, alive only while the home well stands.
@@ -363,9 +365,8 @@ children are raised on the whole economy's gentlest rule: *walk on the alms.*
   dark and the vaulisk avoids it (the drag into the dark needs dark to drag into) —
   alms verges are the safe roads, which is why the Compact plant them as streets. Radius-1
   diffuse carpet: nothing for the suulk to graze.
-- **Tenancy:** its edge is the honest survey line — where the alms stop, the lease's real
-  value stops, whatever the paper says. (The well-keeper prices by pallu; smart players
-  price by alms.)
+- **Wells:** its edge is the honest survey line — where the alms stop, a light's real
+  reach stops, whatever the radius number says.
 - **Art:** a felted turf, grey-green with a soft under-lit warmth, brightest at the centre
   of its patch; drawSize 1.0 carpet; glow radius 1, a warm neutral (it gives back whatever
   colour it was given — near a well, faint gold; by a lamp-row, the lamp's cast).
@@ -378,7 +379,9 @@ children are raised on the whole economy's gentlest rule: *walk on the alms.*
 
 ### The density
 
-**Proposed `plantDensity`: 0.2 → 0.35.** Calibration across the four seas and vanilla:
+**RULED 2026-09-27: lusher — up to 0.5.** The pass proposed 0.35; the owner ruled the
+floor lusher than that, with 0.5 the ceiling — build at the lush end of the roster's
+working range. Calibration across the four seas and vanilla:
 desert 0.05, arid shrubland ~0.17, temperate forest 0.6; the Propane Lake proposes 0.18,
 the Grey 0.22, the Scald 0.30. The Twilight is the sheet's *"abundance as the rule"* sea —
 crowded, for once, by ruling — so it takes the top of the ladder: unmistakably the richest
@@ -423,20 +426,20 @@ cannot express).** Four species plus one ring:
 - **RM_Tollhorn** — seeded on well-recurrence ground (the skylight-site clusters the
   generator already knows).
 - **RM_Gleamfloss** — shaft cells only, seeded and killed by the well-ledger (growDays 2
-  inside the 5–9 day life); the sweepable gilt window follows each closure.
+  inside the 5–9 day life); the gilt-fall after each closure is dressing and lore, no yield.
 - **RM_Farwick** — seeded at shaft rims, drawn outward along a straight 4–8 cell run.
-- **RM_Hushcoral rings** — placed at Compact claims and yards, in addition to its
+- **RM_Hushcoral rings** — placed at Compact stakes and yards, in addition to its
   Route A row.
 
 **Route C — runtime comps, all tiny, all named in the entries, all glow-grid only per
 the §1.4 trap:** gloamurn's charge/discharge glower, hushcoral's entrained pulse (a
 sibling of `RM_Comp_WarblingGlow`, same verified `ForceRegister` API), and murkspindle's
-wilt-above-glow (owner question below; placement-plus-prose is the fallback). Nothing
+wilt-above-glow (RULED 2026-09-27: ships). Nothing
 here touches the sky, and nothing adds a second clock — every ledger-driven placement is
 a call into `RM_MapComponent_WellLedger`.
 
 **What changes in `RM_TwilightSea.xml`, summarized:** one field (`plantDensity` 0.2 →
-0.35, pending the density question) and six `wildPlants` rows beside the kept three.
+up to 0.5, RULED lusher) and six `wildPlants` rows beside the kept three.
 New defs live beside the shipped `RM_TwilightSeaFlora.xml`; Route B placements extend
 the dressing genstep the skylight generator already runs.
 
@@ -465,25 +468,26 @@ every wire below runs to something already shipped or already ruled:
   correct.
 - **Niim and noolim, split by light (ruled), get their food chain.** Gleamfloss is why
   the pallu stack in the shafts; pallu are why the niim — the lit shoal — hunt there;
-  pallu counts are how the well-keeper prices a lease. The whole pricing chain bottoms
-  out on floss. The noolim, the dark shoal, works glimmerhusk and murkspindle country;
+  pallu counts are how the well-keeper reads a well's remaining days. Her whole craft
+  bottoms out on floss. The noolim, the dark shoal, works glimmerhusk and murkspindle country;
   and the loohn's hunting dark shrinks wherever **almslight** runs — alms verges as
   safe roads is the Compact's own street plan, made of turf.
 - **The banks graze.** Weircomb's strained catch feeds the weloon and lunoowa in the
   comb rows; almslight is grazing ground for the built detritivores, and the content
   drop's nuudal works both when it ships. The pre-surge comb-blaze joins the danger
   pass's undersurge tells, readable from across the map.
-- **Well tenancy gets its instruments, one per stage of a well's life.** Opening due:
+- **The well cycle gets its instruments, one per stage of a well's life.** Opening due:
   murkspindle browning. Standing: gleamfloss thickness as the free floor-level
-  sky-read. Waning: floss shedding gilt early. Closed: gloamurn's afterglow (value
-  after death — owner question), farwick bud-death as the fastest messenger, and the
-  gilt window worth sweeping. Recurrence: **tollhorn** cores, the Compact's real
-  ledger. And always: the almslight edge as the honest survey line under any lease's
-  paper. All of it rides `RM_MapComponent_WellLedger`'s one clock — no plant here has
+  sky-read. Waning: floss shedding gilt early. Closed: gloamurn's afterglow on free
+  ground, farwick bud-death as the fastest messenger, and the gilt-fall glittering on
+  the dead floor. Recurrence: **tollhorn** cores, the Compact's real
+  ledger. And always: the almslight edge as the honest survey line of every light's
+  real reach. All of it rides `RM_MapComponent_WellLedger`'s one clock — no plant here has
   a timer of its own (§1.1's law, held).
 - **The Compact's practice stays visible daily work:** weeding tithed stakes, walking
-  hushcoral buoy-rings out to claims, seeding alms streets, buying tollhorn cores
-  dearly and never selling one. Tenancy as labour, never menus.
+  hushcoral rings out to their stakes, seeding alms streets, buying tollhorn cores
+  dearly and never selling one. Keeping as labour and lore — their fiction, their
+  hands, never a player system.
 - **The web keeps its baseline.** Tollhorn neither makes, spends, answers nor steals
   light — deliberately inert to suulk and vaulisk both, the one instrument the web
   cannot touch.
@@ -494,11 +498,11 @@ every wire below runs to something already shipped or already ruled:
   permanent because a plant loved it (ban 5 — gloamurn, gleamfloss and farwick are
   all built on wells dying).
 
-## Ruled
+## Cuts the pass made on itself
 
-Nothing in this pass has been carded yet. This section records the cuts the pass made
-on itself under standing rulings — the Scald precedent (*"No, this is silly. No cold."*
-— a twist borrowed from another biome's register dies) applied before asking:
+This section records the cuts the pass made on itself under standing rulings — the
+Scald precedent (*"No, this is silly. No cold."* — a twist borrowed from another
+biome's register dies) applied before asking:
 
 1. **A prism plant — CUT.** The first draft's *carry* verb was a crystal refractor
    angling shaft-gold into the dark. Mineral flora is the Grey's entire register (the
@@ -520,7 +524,7 @@ on itself under standing rulings — the Scald precedent (*"No, this is silly. N
    items — gloamurn squeezes to `RM_LampBladder`, farwick's bud picks as
    `RM_NoothelmBulb` — wild routes to the same goods, no new lamp SKU.
 5. **A wild sun-sphere ancestor — CUT.** A free-growing ollumin patch on the floor.
-   Stage 3's whole cost is the arc — techprints, research, a seed that is the sea's;
+   Stage 3's whole cost is the arc — the research, a seed that is the sea's;
    a wild sun-strength plant collapses independence into foraging.
 6. **A roof-tending plant — CUT.** Moss that patches waveglass tears or props a
    skylight from below. Ban 2: the roof and the gardener are one system, nothing else
@@ -530,31 +534,25 @@ on itself under standing rulings — the Scald precedent (*"No, this is silly. N
    chase is the PLAYER'S verb — the light economy's whole first act — and a plant that
    chases for free deletes the arc; the moving-light slot is the waelune's besides.
 
-## Questions for the owner
+## Ruled — 2026-09-27 sitting
 
-1. **plantDensity 0.2 → 0.35 — accept, or name a different number?** The single knob;
-   the roster works unchanged from 0.25 (sparser) to 0.5 (lush). The fourteen canopy
-   seaweeds (content doc §3) will share this budget when they land, and that sitting
-   may revise it upward.
-2. **Murkspindle's dies-in-light: ship the one-line wilt-above-glow comp, or
-   placement-plus-prose only?** Vanilla has `growMinGlow` and no maximum. The comp is
-   tiny and shared with nothing; the prose-only fallback keeps the plant but loses the
-   spindle-kill forecast (a browning stand as the cheapest read of a well due to open).
-3. **Afterglow rights (gloamurn): when a well closes, does the well-keeper sell a
-   cheap second lease on the charged-urn ground** — the one paper she sells *after*
-   refusing to sell the waning well itself — **or is the afterglow free ground?**
-   Either fits her: the lease prices the week after a death; free ground makes it the
-   poor diver's window.
-4. **Tollhorn cores: trade good only, or does a carried core also steady an
-   `RM_WellChart`** (slower aging, less forecast noise)? Steadying makes the coral a
-   real instrument and slightly undercuts her chart monopoly — which may be exactly
-   the point, or exactly wrong.
-5. **RM_Gilt: a new tiny pigment item** — the third ink beside vaal-green and
-   lamp-black, the gold the Compact's charts are veined with — **or fold the settled
-   floss into an existing yield?** The new item is one def and pays the chart fiction;
-   folding is cheaper and loses it.
-6. **Does tithemoss colonize the player's own clipped lamps, or only wild and Compact
-   stakes?** Colonizing gives the player the dimming-as-suulk-insurance trade and a
-   weeding chore — which brushes the no-feed-chores refusal (light pass §2.2-4);
-   weeding is optional where feeding was not, but it is still a chore. Wild-and-Compact
-   only is the safe default and what the numbers above assume.
+All six questions this pass carried were answered at the sitting; none stands open.
+The governing rulings, owner typed: **"The Compact does NOT sell light, that's not a
+mechanic we accepted. Remove."** and, on this roster, **"Keep the plants and the lore
+of their commerce relationship, no player mechanic."** The whole paper layer is out
+(leases, charts, buoys, poaching standing — light pass "Ruled 2026-09-27" block;
+removal filed as `TWILIGHT_TENANCY_PAPER_REMOVAL_1`); wells are free ground.
+
+1. **plantDensity: lusher, up to 0.5.** The 0.35 proposal was the floor of his answer,
+   not the ceiling — build at the lush end. The canopy seaweeds' sitting may still
+   revise upward, never down.
+2. **Murkspindle's wilt-above-glow comp SHIPS.** Spindle-kill (a browning stand) stays
+   the cheapest forecast of a well due to open.
+3. **Afterglow rights — VOIDED by rulings 1–2 above.** There are no leases anywhere;
+   a closed well's charged-urn ground is free ground, the poor diver's window.
+4. **Tollhorn cores: no chart-steadying mechanic.** The core is a plain trade good;
+   its meaning to the well-keeper is lore and trade curiosity in the description only.
+5. **RM_Gilt: NO new item.** The settled gilt stays description; the gold veining in
+   the Compact's own charts is their lore, not a pigment SKU.
+6. **Tithemoss does NOT colonize the player's clipped lamps** — wild and Compact
+   stakes only, as the roster's numbers already assumed.
