@@ -833,6 +833,60 @@
     "hash": "a338027d77616b6401f3bf4d672acd8272e7d48dcfdb4ab7946a31be9478dd46",
     "sha": "7553eaee0"
   },
+  "src/RimMandrake/BlueDesert/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "e87d8fda2dba0cdd9b365a38c3ff8b9b544cfb24a43de33455f9126341713f70",
+    "sha": "051b2fd0c"
+  },
+  "src/RimMandrake/BlueDesert/Defs/BiomeDefs/RM_BlueDesert.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "919233a8f68dd9f8474940af32487ef824515bbd359b82698c1e0d58c9f67bb6",
+    "sha": "051b2fd0c"
+  },
+  "src/RimMandrake/BlueDesert/Defs/EffecterDefs/RM_KrissekHalo.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "e2fa30b209e29ba817ac0340edd681d01c3df72a5d081df091d4e4fca1663087",
+    "sha": "051b2fd0c"
+  },
+  "src/RimMandrake/BlueDesert/Defs/HediffDefs/RM_BlueDesertCharges.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "06fb8b3dc346204563646cff8ac3f9ddd739776dd1a67a0560ae582f8d9544fd",
+    "sha": "051b2fd0c"
+  },
+  "src/RimMandrake/BlueDesert/Defs/ThingDefs_Items/RM_ColdWax.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "042ef2968dc9143c1e25154ea12253d2667ea37df85a18b6bc8ee327450c579f",
+    "sha": "051b2fd0c"
+  },
+  "src/RimMandrake/BlueDesert/Defs/ThingDefs_Plants/RM_BlueDesertFlora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "f18390d9e89e8ad615ea37e3aa65471f1f7b1fee8d9dec615319026af624cdb8",
+    "sha": "051b2fd0c"
+  },
+  "src/RimMandrake/BlueDesert/Defs/ThingDefs_Races/RM_BlueDesertFauna.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "44de72a6a7827443d20e77b1ff8541f4949b464aaddca7bb7651ad73c8c07983",
+    "sha": "d1b9478bf"
+  },
+  "src/RimMandrake/BlueDesert/Source/BlueDesertLife.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "dacc2175ff05918268ec858df38145494fc8e1040031b5723a8615ed20c446da",
+    "sha": "d1b9478bf"
+  },
+  "src/RimMandrake/BlueDesert/Source/RM_BlueDesertMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "743b8b5e8ffa1cf7e5618d49aa90385da1c31acfe3a77270e4d87c9d15035270",
+    "sha": "d1b9478bf"
+  },
   "src/RimMandrake/CreatureBehaviors/About/About.xml": {
     "cleanCount": 4,
     "date": "2026-09-24",
@@ -6346,6 +6400,66 @@
     "date": "2026-09-17",
     "hash": "4dfd09d78badd3294eab3fb9346e6318335cbe15c5d221916ab0945ae6accba8",
     "sha": "0aa131589"
+  },
+  "src/RimMandrake/TheForge/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a081253aad7b7794f66cd6747110773e73921c02ae7a39356359ac2f21b52ea9",
+    "sha": "d1b9478bf"
+  },
+  "src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "0fe9de2cce9f4a3ca7bc0d7b2e887c5d05f2f697be0b16c4171938b994d82a64",
+    "sha": "d1b9478bf"
+  },
+  "src/RimMandrake/TheForge/Defs/GameConditionDefs/RM_ForgePulse.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "806bf4d0eda7c84ba4694cb796c8f6f218ccaa69fd32d857c9deac6005b5eb8b",
+    "sha": "d1b9478bf"
+  },
+  "src/RimMandrake/TheForge/Defs/ThingDefs_Plants/RM_TheForge_Flora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c7513da3b636172047762ac58cedfa9361f9d7ee3bf6a73445ce09a1d1999305",
+    "sha": "d1b9478bf"
+  },
+  "src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_FleetFlier.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "056883e70e9c65f94a85db92f5416951e58c964aab3bc5501be4b8db326d285e",
+    "sha": "d1b9478bf"
+  },
+  "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_BoilingRain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "dfeb001b87ef683635ad7ad0e46e45dbfbcbbbe7804aaf0b266da7dbc33e2266",
+    "sha": "d1b9478bf"
+  },
+  "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_ForgeStill.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "d716087ff5d99dd115fcfac2482c7847c916253e589903770716f2803ffb3a82",
+    "sha": "d1b9478bf"
+  },
+  "src/RimMandrake/TheForge/Defs/WeatherDefs/RM_RedFog.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b9069426f96bca3936beb0e078d88904dd2a23f851f7cda965898f87ca281067",
+    "sha": "d1b9478bf"
+  },
+  "src/RimMandrake/TheForge/Source/RM_BiomeWorker_TheForge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "705856665f8fc57b6b2c154ac942334fbf6dc100fc831c56240c9114b3e4f9ff",
+    "sha": "d1b9478bf"
+  },
+  "src/RimMandrake/TheForge/Source/RM_TheForgeMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "9ad52748d7171dabfc8f4c7512883c5cdd2401d45743e14c1dbea6051c8f1806",
+    "sha": "d1b9478bf"
   },
   "src/RimMandrake/TitanicCreatures/About/About.xml": {
     "cleanCount": 1,
@@ -21597,6 +21711,12 @@
     "hash": "17ffac9b0839544489e42f580ea7cba299efaa831a1e36f6232f0d5e5d35d3e5",
     "sha": "7c80850cb"
   },
+  "src/RimUtinni/UtinniPatches/Patches/WildAnimals_BlueDesert.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "bc8ac095cead2b7e32b9d60fc97876e45b5d05e1908e629cef9f334dacf0dbbb",
+    "sha": "d1b9478bf"
+  },
   "src/RimUtinni/UtinniPatches/Patches/WildAnimals_CrackedLands.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -21614,6 +21734,12 @@
     "date": "2026-09-24",
     "hash": "51b9e31d1126a97867c2b598dc228a5980cf0a0de9650bafbf7b5bd82a3c0781",
     "sha": "17c7dab1a"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheForge.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "6dbf5a74cdb50ffef94edf8a60a64cd4b3721cf846eb58b7c5a08a13c07054ea",
+    "sha": "d1b9478bf"
   },
   "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Webwork.xml": {
     "cleanCount": 1,
