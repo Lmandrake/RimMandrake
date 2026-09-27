@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_WaveglassShard.xml                  TerminalBiomes · TWILIGHT_PANE_STRIKE_1
+  ============================================================================
+  danger pass D1(b)/D8(c): "yielding the harvestable pane material." The
+  resource RM_VeilPane's <costList> pays out on deconstruct — see that
+  file's header. A plain stackable ResourcesRaw item, same shape as vanilla
+  Steel (ParentName="ResourceBase") minus stuffProps: nothing rules this as
+  a construction material yet, so it ships as a sellable/craftable raw
+  resource only, not Stuff. Widening it to Stuff (a real building material)
+  is future scope, not this item's.
+
+  PLACEHOLDER ART: Things/Item/Resource/Steel (vanilla, confirmed present),
+  tinted waveglass blue-green — same reuse-and-recolor convention as this
+  mod's other new defs this commit.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_WaveglassShard</defName>
+    <label>waveglass shard</label>
+    <description>A broken piece of the lid, dense and faintly luminous, cool to the touch even fresh from a fall. It holds light the way the whole sky does, in miniature.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Steel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,215,198)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Beauty>3</Beauty>
+      <MarketValue>2.6</MarketValue>
+      <Mass>0.3</Mass>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

@@ -45,8 +45,20 @@
       <packageId>mandrake.rm.environmentalhazards</packageId>
       <displayName>RimMandrake: Environmental Hazards</displayName>
     </li>
+    <li>
+      <!-- TWILIGHT_PANE_STRIKE_1, 2026-09-27: RM_Patch_GravEngineLaunchGate.cs
+           uses HarmonyLib ([HarmonyPatch]/new Harmony(...).PatchAll(...) in
+           RM_TerminalBiomesMod's constructor) — a genuine hard dependency,
+           not the loadAfter-only kind. Missing it throws a TypeLoadException
+           on this DLL's load, same reasoning as the environmentalhazards
+           entry directly above. -->
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>mandrake.rm.environmentalhazards</li>
     <li>mandrake.rm.divinginteraction</li>
     <li>mandrake.rm.flowworks</li>
@@ -68,8 +80,12 @@ RM tier: nothing here knows what campaign or planet uses it.
   2. The Propane Lake — a black mirror of liquid fuel ringed by a frozen
      crust, carrying its own catch table and two RimMandrake-authored
      terrains (no donor dependency).
-  3. The Twilight Sea — a hypersaline terminal sea, moldy shore to shore,
-     with a real fishing table (the under-roof shoal economy).
+  3. The Twilight Sea — a hypersaline terminal sea lidded shore to shore by
+     the waveglass, a living stained-glass ceiling that sheds panes down onto
+     the floor (a harvestable strike event, TWILIGHT_PANE_STRIKE_1) and, while
+     a gravship sits there, onto its own deck as well — cleared by an ordinary
+     deconstruct job before launch. Ships a real fishing table (the under-roof
+     shoal economy).
   4. The Grey Sea — hypersaline, salt-encrusted, shrinking, with its own
      fishing table.
 

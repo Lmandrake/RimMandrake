@@ -10,14 +10,23 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony. The kit classes the Scald's content names
+    TWILIGHT_PANE_STRIKE_1, 2026-09-27: this assembly now references
+    0Harmony.dll for exactly ONE patch (RM_Patch_GravEngineLaunchGate.cs,
+    Building_GravEngine.CanLaunch — D8's never-a-stranding launch gate; see
+    that file's own header for why a Harmony postfix is the correct choke
+    point). The line that used to read "No Harmony" here is corrected, not
+    superseded-in-place, per this repo's own "inaccurate material is
+    deleted" rule. Every OTHER class in this assembly is still plain
+    XML-wired. The kit classes the Scald's content names
     (RM_GenStep_PlacedSetPieces, CompProperties_ResourceCondenser,
     RM_GameCondition_WeatherPulse, RUT_IncidentWorker_WalkerSurfacing ...)
     live in mandrake.rm.environmentalhazards, reached via loadAfter. This
     assembly holds Mod + ModSettings, the settings-gate registration into
-    that assembly's RM_MechanicGates, and two thin vanilla subclasses
+    that assembly's RM_MechanicGates, two thin vanilla subclasses
     (RM_TerminalBiomesScaldKit.cs) for the pieces whose engine class was
-    vanilla.
+    vanilla, and the Twilight Sea's pane-strike kit (RM_VeilFallDefOf.cs,
+    RM_IncidentWorker_PaneStrike.cs, RM_MapComponent_VeilFall.cs,
+    RM_Patch_GravEngineLaunchGate.cs).
 
     References RimMandrake.EnvironmentalHazards.dll (Private=false: never
     copied here). That mod is loadAfter, not a hard dependency, so every
@@ -61,11 +70,20 @@
     <Compile Include="RM_Comp_DropLureOrganOnDeath.cs" />
     <Compile Include="RM_GenStep_ScatterVauliskLure.cs" />
     <Compile Include="RM_IncidentWorker_SuulkArrival.cs" />
+    <!-- TWILIGHT_PANE_STRIKE_1 -->
+    <Compile Include="RM_VeilFallDefOf.cs" />
+    <Compile Include="RM_IncidentWorker_PaneStrike.cs" />
+    <Compile Include="RM_MapComponent_VeilFall.cs" />
+    <Compile Include="RM_Patch_GravEngineLaunchGate.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
@@ -82,6 +100,10 @@
     </Reference>
     <Reference Include="RimMandrake.EnvironmentalHazards">
       <HintPath>..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
