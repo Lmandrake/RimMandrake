@@ -465,3 +465,5 @@
 {"seat":"BENCH","event":"file","id":"LONGSHADE_DESIGN_SITTING_1","title":"Long Shade design sitting: bedazzle pass to full-mod status - RM_ cast partition, marquee rewards, card agenda; feeds LONGSHADE_RM_MOD_BUILD_1","kind":"design","target":"v1","spec":"infrastructure/state/items/LONGSHADE_DESIGN_SITTING_1.md","for":"BENCH","ts":"2026-09-27T22:39:49Z"}
 {"seat":"BENCH","event":"claim","id":"LONGSHADE_DESIGN_SITTING_1","ts":"2026-09-27T22:39:50Z"}
 {"seat":"BENCH","event":"start","id":"LONGSHADE_DESIGN_SITTING_1","ts":"2026-09-27T22:39:52Z"}
+{"seat":"BENCH","event":"note","id":"LONGSHADE_DESIGN_SITTING_1","text":"Design pass landed: design/Jawa/worldbuilding/biomes/long_shade_bedazzle_2026-09-27.md - 7 sections, 12-question card agenda (tier moves, 5 DRAFT hole-fillers, cephalope conflict, dual-desert multi-homing, ultracactus canon check). Awaiting the owner sitting; graded by BENCH: mod-build STATE claims verified on disk.","ts":"2026-09-27T23:05:17Z"}
+{"seat":"BENCH","event":"needs","id":"LONGSHADE_DESIGN_SITTING_1","to":"owner","ts":"2026-09-27T23:05:18Z"}

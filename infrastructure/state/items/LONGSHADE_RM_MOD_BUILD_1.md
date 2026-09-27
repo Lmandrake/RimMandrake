@@ -5,17 +5,22 @@
 Phase A row 2 of `design/RimMandrake/biome_mod_architecture.md`. Parent:
 `BIOME_MOD_SPLIT_EXECUTION_1`. Governed by `BIOME_PAINT_ONCE_AT_THE_END_1`.
 
-## 🔑 STATE — MEASURED 2026-09-23, from scratch (no `RM_` twin, no folder exists)
+## 🔑 STATE — RE-MEASURED 2026-09-27 (the 2026-09-23 "from scratch" table was stale; a 2026-09-25 FOUNDRY ledger note said so but never corrected this prose)
 
 | step | state |
 |---|---|
-| 1 scaffold | ⛔ OWED — `src/RimMandrake/` has no `LongShade`/`Desert` folder (MEASURED `ls`); confirmed by `Transient/biome_standalone_status_2026-09-23.md:40` (MISSING) |
-| 2 copy content | ⛔ OWED — BiomeDef, terrain/weather/disease tables, 53 fauna + 9 flora rows all live only in `RUT_Desert.xml` (305 lines) |
-| 3 freeze twin | ⛔ OWED — `RUT_Desert.xml` header (lines 1-102) is the authoring note, no freeze banner |
-| 4 retarget | ⛔ OWED but SMALL — every live reference sampled is comment/doc-only (item 7) |
-| 5 prove it loads | ⛔ Desktop-only, blocked on 1-4 |
-| 6 commit/push | owed with step 5 |
+| 1 scaffold | ✅ DONE — `src/RimMandrake/LongShade/About/About.xml` (`mandrake.rm.longshade`) + built `RimMandrake.LongShade.dll` (MEASURED `ls` 2026-09-27; scaffold commit `160068e20`) |
+| 2 copy content | ✅ DONE — full Defs tree (BiomeDefs/HediffDefs/RecipeDefs/ThingDefs_Items/ThingDefs_Plants/ThoughtDefs); `WildAnimals_LongShade.xml` in UtinniPatches routes the RSW_ fauna/flora rows (commit `45e023f52`) |
+| 3 freeze twin | ✅ DONE — `RUT_Desert.xml` header carries the 🔴 FROZEN 2026-09-24 banner naming this item and `mandrake.rm.longshade` |
+| 4 retarget | ✅ DONE with the freeze (`45e023f52`) |
+| 5 prove it loads | ⛔ OWED — Desktop-only, now unblocked |
+| 6 commit/push | ✅ committed/pushed (`45e023f52`, `160068e20`); step 5's proof commit still owed |
 | paint-list append | ✅ present — `infrastructure/state/facts/biome_paint_list.md:28`, row `RUT_Desert / the Desert / ... / PAINT` |
+
+**Design input:** `LONGSHADE_DESIGN_SITTING_1` + its proposal
+`design/Jawa/worldbuilding/biomes/long_shade_bedazzle_2026-09-27.md` (12-question
+card agenda, awaiting the owner). Content work beyond Phase A (invented RM_ cast,
+forage item, marquee mechanics) waits on those rulings.
 
 ### 2. The def today
 
@@ -146,8 +151,10 @@ SHIPPED (§2d shared libraries, cite not rebuild): shade grid
 `RM_ShadeSeekingWanderExtension`, in `mandrake.rm.creaturebehaviors`); contact venom
 (`CompContactVenom`/`MapComponent_ContactVenom` + Leachmoss spawn gate, in
 `mandrake.rm.environmentalhazards`). Unbuilt (`desert.md:372-383` `## Owed`): glitter-birds
-(shadow commensals), sand filter-feeding C# for the shade-whale, burst-predator statFactor
-polish, world-feature authoring for the wide gaps, `WORLDMAP_DESERT_BAND_REPAIR_1` (only
+(shadow commensals), burst-predator statFactor polish, world-feature authoring for the
+wide gaps, *(the shade-whale's sand filter-feeding is SHIPPED — `RM_FilterFeedExtension`
+in `mandrake.rm.creaturebehaviors`, wired on `RSW_ShadeWhale.xml`; this line used to
+list it as unbuilt, which was stale)* `WORLDMAP_DESERT_BAND_REPAIR_1` (only
 ~51% of the def sits in its own arc 60-88 band). **None block Phase A steps 1-6** — the
 sheet's own §10 says the def/roster can land first.
 
