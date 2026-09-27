@@ -25,6 +25,7 @@ Exit codes: 0 ok, 1 generation failed, 2 environment not usable.
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import os
 import re
@@ -33,6 +34,7 @@ import struct
 import subprocess
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 # Codex streams agent output; a cold start plus a high-quality render has been
@@ -362,6 +364,112 @@ def seed_codex_home(base: Path, home: Path) -> Path:
               f"Capture the result as the template afterwards so this never "
               f"happens again for a new home.", file=sys.stderr)
     return home
+
+
+# ARTPIPE_WORKER_AUTH_STALENESS_1 (2026-09-26): raising -N from 3 to 8 produced
+# 5 instant, identical "refresh token already used" failures. Root cause,
+# decoded worker-by-worker: each leased CODEX_HOME holds its OWN copy of
+# auth.json, ChatGPT refresh tokens are single-use and rotate, and codex
+# attempts a refresh once `last_refresh` is roughly a day old even when the
+# access token itself is still valid — so several homes sharing one refresh-
+# token lineage race the moment more than one of them is old enough to try.
+# Exactly 3 homes held a still-live token; exactly 3 of 8 jobs succeeded. The
+# manual fix (re-seed every home from whichever held the freshest token) is
+# what these two functions automate, at daemon start (resync_stale_worker_homes)
+# and — the recurrence half, see artpiped.RunCtx.stale_refresh_guard — whenever
+# a home's own last_refresh ages back into "might try to refresh" territory
+# mid-run.
+STALE_REFRESH_THRESHOLD_S = 12 * 3600  # owner's item text: "older than ~12h"
+
+
+def _decode_jwt_claims(token: str) -> dict:
+    """The unverified payload of a JWT access token — read-only introspection
+    of fields (`exp`, the ChatGPT plan type) that Codex itself already trusts;
+    this never authenticates anything, only decides which auth.json is
+    fresher. Returns {} for anything that doesn't parse as a 3-part JWT."""
+    parts = token.split(".")
+    if len(parts) != 3:
+        return {}
+    padded = parts[1] + "=" * (-len(parts[1]) % 4)
+    try:
+        return json.loads(base64.urlsafe_b64decode(padded))
+    except (ValueError, TypeError):
+        return {}
+
+
+def read_auth_freshness(home: Path) -> dict | None:
+    """`last_refresh`/`exp`/`plan_type`/`refresh_token` for `home`'s
+    auth.json, or None if it has none or it's unreadable. The one place that
+    decodes these fields, so the diagnostic and the fix agree on what "fresh"
+    means (MEASURED 2026-09-26's manual investigation and this function read
+    the identical `last_refresh` top-level field and `exp`/`chatgpt_plan_type`
+    claims under `tokens.access_token`)."""
+    try:
+        data = json.loads((home / "auth.json").read_text())
+    except (OSError, ValueError):
+        return None
+    last_refresh = None
+    raw = data.get("last_refresh")
+    if isinstance(raw, str):
+        try:
+            last_refresh = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        except ValueError:
+            last_refresh = None
+    tokens = data.get("tokens") or {}
+    claims = _decode_jwt_claims(tokens.get("access_token") or "")
+    auth_claims = claims.get("https://api.openai.com/auth") or {}
+    return {
+        "home": home,
+        "last_refresh": last_refresh,
+        "exp": claims.get("exp"),
+        "plan_type": auth_claims.get("chatgpt_plan_type"),
+        "refresh_token": tokens.get("refresh_token"),
+    }
+
+
+def resync_stale_worker_homes(codex_home_root: Path,
+                               stale_after_s: float = STALE_REFRESH_THRESHOLD_S) -> list[str]:
+    """Re-seed every already-provisioned `w*` worker home's `auth.json` from
+    whichever one is genuinely freshest, so a home that has been sitting idle
+    (or was seeded from a since-superseded lineage) never independently
+    attempts its own refresh — the FIRST-USE half of ARTPIPE_WORKER_AUTH_STALENESS_1,
+    meant to run ONCE at daemon startup, same placement as
+    codex_sandbox_preflight, before any lease is used.
+
+    "Freshest wins", never "the base wins": MEASURED 2026-09-26, the base
+    `~/.codex/auth.json` itself held an EXPIRED token while several worker
+    homes, refreshed independently by earlier runs, were still live. A
+    worker home earns trust by being newer, not by being the base.
+
+    A home counts as behind the freshest if its own `last_refresh` is more
+    than `stale_after_s` older, OR it carries a different refresh-token
+    lineage entirely (a stale/dead seed, or one seeded before the last
+    resync) — either way, letting it run unrefreshed risks the exact
+    "already used" race this item exists to prevent. Returns the names of
+    the homes actually re-seeded, so the daemon can log it.
+    """
+    if not codex_home_root.is_dir():
+        return []
+    candidates = []
+    for home in sorted(codex_home_root.glob("w*")):
+        if not home.is_dir():
+            continue
+        info = read_auth_freshness(home)
+        if info is not None and info["last_refresh"] is not None:
+            candidates.append(info)
+    if len(candidates) < 2:
+        return []  # nothing to resync FROM, or nothing else to resync
+    freshest = max(candidates, key=lambda c: c["last_refresh"])
+    resynced = []
+    for info in candidates:
+        if info["home"] == freshest["home"]:
+            continue
+        behind_s = (freshest["last_refresh"] - info["last_refresh"]).total_seconds()
+        different_lineage = info["refresh_token"] != freshest["refresh_token"]
+        if behind_s > stale_after_s or different_lineage:
+            shutil.copy2(freshest["home"] / "auth.json", info["home"] / "auth.json")
+            resynced.append(info["home"].name)
+    return resynced
 
 
 def child_env(home: Path) -> dict[str, str]:

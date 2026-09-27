@@ -61,6 +61,7 @@ import sys
 import threading
 import time
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -1278,6 +1279,30 @@ class RunCtx:
         self._codex_homes: list[Path | None] = [None] * workers_count
         self.lease_handles: list = []  # closed by main() at shutdown
         self._lease_lock = threading.Lock()
+        # ARTPIPE_WORKER_AUTH_STALENESS_1's recurrence guard: resync_stale_worker_homes
+        # (called once in main(), before any lease is used) only prevents the
+        # failure AT STARTUP. Every home it resynced now shares the identical
+        # refresh-token lineage, so as the run goes on they age together —
+        # once one is old enough that codex might attempt a refresh, EVERY
+        # sibling home is too, and letting two such jobs run concurrently is
+        # exactly the "first wins, second gets 'already used'" race this item
+        # exists to prevent. This lock serializes any job whose home's own
+        # last_refresh has aged past the stale threshold; see
+        # stale_refresh_guard below.
+        self._stale_refresh_lock = threading.Lock()
+
+    def stale_refresh_guard(self, codex_home: Path) -> "_StaleRefreshGuard":
+        """Use as `with ctx.stale_refresh_guard(codex_home): ...` around the
+        one codex subprocess invocation for a job. A home whose auth.json
+        looks due for a refresh (last_refresh older than
+        codex_image.STALE_REFRESH_THRESHOLD_S) is serialized against every
+        OTHER such home via `_stale_refresh_lock` — a home that's still
+        fresh never blocks on it at all. If the guarded job's own refresh
+        actually fires (its last_refresh advances), every sibling home is
+        re-synced from it before the lock releases, so the NEXT stale job
+        picks up the already-refreshed token instead of racing its own
+        refresh attempt against a now-dead lineage."""
+        return _StaleRefreshGuard(self, codex_home)
 
     def codex_home_for_slot(self, slot: int) -> Path:
         """Acquire (once) and cache the leased codex_home for this slot.
@@ -1304,6 +1329,52 @@ class RunCtx:
                 if home is not None:
                     return home
             return None
+
+
+def _codex_home_is_refresh_due(codex_home: Path) -> tuple[bool, "datetime | None"]:
+    """(is it old enough that codex might attempt a refresh, its current
+    last_refresh) — a home with no readable auth.json yet (never leased a
+    job, or seeded but not yet used) is never "due", it simply has nothing
+    to be stale about yet."""
+    info = codex_image.read_auth_freshness(codex_home)
+    if info is None or info["last_refresh"] is None:
+        return False, None
+    age_s = (datetime.now(timezone.utc) - info["last_refresh"]).total_seconds()
+    return age_s > codex_image.STALE_REFRESH_THRESHOLD_S, info["last_refresh"]
+
+
+class _StaleRefreshGuard:
+    """See RunCtx.stale_refresh_guard's docstring for the mechanism. Cheap
+    when the home is fresh (one auth.json read, no lock taken); serializes
+    with every other stale-guarded job when it isn't."""
+
+    def __init__(self, ctx: "RunCtx", codex_home: Path):
+        self.ctx = ctx
+        self.codex_home = codex_home
+        self.held = False
+        self.before_last_refresh: "datetime | None" = None
+
+    def __enter__(self) -> "_StaleRefreshGuard":
+        due, last_refresh = _codex_home_is_refresh_due(self.codex_home)
+        self.before_last_refresh = last_refresh
+        if due:
+            self.ctx._stale_refresh_lock.acquire()
+            self.held = True
+        return self
+
+    def __exit__(self, exc_type, exc, tb) -> bool:
+        if self.held:
+            try:
+                _, after_last_refresh = _codex_home_is_refresh_due(self.codex_home)
+                if after_last_refresh is not None and after_last_refresh != self.before_last_refresh:
+                    # This job's own use just rotated the lineage's token —
+                    # propagate it to every sibling home BEFORE the next
+                    # stale-guarded job (waiting on this same lock) can try
+                    # its own, now-doomed refresh against the old one.
+                    common.resync_stale_worker_homes(self.ctx.codex_home_root)
+            finally:
+                self.ctx._stale_refresh_lock.release()
+        return False  # never swallow an exception from the guarded block
 
 
 # Downscale-legibility direction baked into EVERY in-game (transparent-bg)
@@ -1889,48 +1960,52 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
         timed_out = False
         elapsed_total = 0.0
         last_attempt_elapsed = 0.0
-        while True:
-            attempts += 1
-            # A stale PNG/manifest at these exact paths, left by a PREVIOUS
-            # attempt (this retry, or a requeue after a fix), must never be
-            # mistaken for THIS attempt's output.
-            for stale in (out_png, last_msg_path):
-                try:
-                    stale.unlink()
-                except FileNotFoundError:
-                    pass
-            code, out, err, elapsed, timed_out = run_worker(
-                ctx.worker_script, subcmd, prompt, out_png, codex_home, timeout,
-                ctx.manifest_schema, last_msg_path, reference, job.get("model"),
-                ctx.reasoning_effort, ctx.verbose)
-            elapsed_total += elapsed
-            last_attempt_elapsed = elapsed  # PER-ATTEMPT, not summed — see note_wall_clock's
-                                             # own docstring for why a retry-summed total
-                                             # would report double a normal request's real cost.
-            combined = (out or "") + (err or "")
-            # Read the -o last-message note BEFORE deciding whether to
-            # retry — a throttle visible ONLY there (clean stdout/stderr,
-            # a schema-valid "refused" manifest whose note names
-            # TooManyRequests) must never be retried against an already-
-            # throttled account. Retry decisions used to look only at
-            # stdout+stderr, checked again (identically) below AFTER the
-            # loop for the final row-1 verdict — this is that same check,
-            # done early enough to matter for the retry itself.
-            attempt_note = ""
-            if last_msg_path.is_file():
-                try:
-                    attempt_report = json.loads(last_msg_path.read_text())
-                    if isinstance(attempt_report, dict):
-                        attempt_note = str(attempt_report.get("note") or "")
-                except (OSError, ValueError):
-                    pass
-            combined_with_note = combined + " " + attempt_note
-            failed = (code != 0) or timed_out
-            rate_limited_now = failed and _looks_rate_limited(combined_with_note, prompt)
-            if not failed or rate_limited_now or attempts >= MAX_CODEX_ATTEMPTS:
-                break
-            # Retryable: a genuine tool error or timeout, NOT a throttle
-            # refusal — row 1 spec allows exactly one retry.
+        # ARTPIPE_WORKER_AUTH_STALENESS_1: serialize against any other slot
+        # whose home is ALSO due for a refresh right now — cheap (one
+        # auth.json read, no lock) when this home is fresh.
+        with ctx.stale_refresh_guard(codex_home):
+            while True:
+                attempts += 1
+                # A stale PNG/manifest at these exact paths, left by a PREVIOUS
+                # attempt (this retry, or a requeue after a fix), must never be
+                # mistaken for THIS attempt's output.
+                for stale in (out_png, last_msg_path):
+                    try:
+                        stale.unlink()
+                    except FileNotFoundError:
+                        pass
+                code, out, err, elapsed, timed_out = run_worker(
+                    ctx.worker_script, subcmd, prompt, out_png, codex_home, timeout,
+                    ctx.manifest_schema, last_msg_path, reference, job.get("model"),
+                    ctx.reasoning_effort, ctx.verbose)
+                elapsed_total += elapsed
+                last_attempt_elapsed = elapsed  # PER-ATTEMPT, not summed — see note_wall_clock's
+                                                 # own docstring for why a retry-summed total
+                                                 # would report double a normal request's real cost.
+                combined = (out or "") + (err or "")
+                # Read the -o last-message note BEFORE deciding whether to
+                # retry — a throttle visible ONLY there (clean stdout/stderr,
+                # a schema-valid "refused" manifest whose note names
+                # TooManyRequests) must never be retried against an already-
+                # throttled account. Retry decisions used to look only at
+                # stdout+stderr, checked again (identically) below AFTER the
+                # loop for the final row-1 verdict — this is that same check,
+                # done early enough to matter for the retry itself.
+                attempt_note = ""
+                if last_msg_path.is_file():
+                    try:
+                        attempt_report = json.loads(last_msg_path.read_text())
+                        if isinstance(attempt_report, dict):
+                            attempt_note = str(attempt_report.get("note") or "")
+                    except (OSError, ValueError):
+                        pass
+                combined_with_note = combined + " " + attempt_note
+                failed = (code != 0) or timed_out
+                rate_limited_now = failed and _looks_rate_limited(combined_with_note, prompt)
+                if not failed or rate_limited_now or attempts >= MAX_CODEX_ATTEMPTS:
+                    break
+                # Retryable: a genuine tool error or timeout, NOT a throttle
+                # refusal — row 1 spec allows exactly one retry.
     finally:
         # Acquisition-to-release is ALL inside this try — a mkdir/read
         # failure, a malformed job, or any other exception in between still
@@ -2727,6 +2802,23 @@ def main(argv=None) -> int:
     else:
         console_obj.warn(f"codex channel disabled for this run — {codex_sandbox_msg}")
         console_obj.mark_codex_channel_disabled()
+
+    # ARTPIPE_WORKER_AUTH_STALENESS_1: resync every already-provisioned
+    # worker home's auth.json to whichever is genuinely freshest, BEFORE any
+    # lease is used — same "once at startup" placement as the sandbox
+    # preflight just above, same reason: letting each of N workers
+    # independently discover a stale/dead refresh-token lineage on its own
+    # first job is how "3 succeeded, 5 identical failures" happened
+    # (MEASURED 2026-09-26). A gemini-only run, or a codex_home_root with
+    # fewer than 2 already-provisioned homes, is a no-op. Skipped when the
+    # codex channel is already disabled above — nothing will lease these
+    # homes this run anyway.
+    if codex_sandbox_ok:
+        resynced_homes = common.resync_stale_worker_homes(args.codex_home_root)
+        if resynced_homes:
+            console_obj.info(
+                f"resynced {len(resynced_homes)} stale worker auth.json "
+                f"({', '.join(resynced_homes)}) from the freshest live token")
 
     # codex_home leases are NOT acquired here — RunCtx acquires each slot's
     # lease lazily, on that slot's first CODEX job (see codex_home_for_slot).
