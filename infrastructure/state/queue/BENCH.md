@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T07:25:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T15:27:29Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -20,7 +20,7 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-summary:  (no items/GREYSEA_FLOOR_PASS_1.md yet — write one when you have something to say)
+summary:  GREYSEAFLOORPASS1 — the whole Grey Sea floor pass
 prose:    infrastructure/state/items/GREYSEA_FLOOR_PASS_1.md
 
 # IN PROGRESS
