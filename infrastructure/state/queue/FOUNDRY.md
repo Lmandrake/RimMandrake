@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T23:09:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T23:30:21Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1963,3 +1963,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CHILLAURORASURGE1 — aurora surge storms: floor weather you can harvest
 prose:    infrastructure/state/items/CHILL_AURORA_SURGE_1.md
+
+## DEEP_SAND_WALKABLE_TERRAIN_1 Deep sand: walkable-very-slow, a whole terrain type (some Long Shade, much Stillsand) - owner ruling 2026-09-27 supersedes the impassable spec
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## criteria
+summary:  1. RMDeepSand becomes passable at a punishing pathCost ("just very slowly" —
+prose:    infrastructure/state/items/DEEP_SAND_WALKABLE_TERRAIN_1.md
