@@ -64,12 +64,12 @@
   cucumber+squid uncommons — defs in this folder's sibling
   RUT_CrackedLandsFish_Items.xml) are added into the SAME two bucket
   PatchOperationReplace values below, alongside the already-shipped
-  RSW_DuneCrawler/BMT_Rocktooth/BMT_Boneblade — a full replace of the whole
+  RSW_DuneCrawler/RSW_Rocktooth/RSW_Boneblade — a full replace of the whole
   bucket dictionary each time (PatchOperationReplace on a Dictionary field
   fully overwrites it), so the new species are folded into the existing
-  values rather than appended by a second operation. The BMT pair stays
-  PERMANENT per this morning's ratification (§2B's own note) — no
-  retirement logic added. A third operation appends the §2B.rare addition
+  values rather than appended by a second operation. The rocktooth/boneblade pair
+  stays in the roster permanently (§2B's own note); since BMT_FAUNA_ABSORPTION_1
+  they are our own RSW_ ports in SWBestiary, not the biomesteam donor's. A third operation appends the §2B.rare addition
   (RUT_Vhessa x2-3 stack, weight 1) to RSW_RareSandCatches' own options list
   via PatchOperationAdd, keeping that ThingSetMakerDef itself (owned by
   SWBestiary, a different mod) unedited — this mod patches it instead of
@@ -100,8 +100,8 @@
             <RUT_Zhurr>0.6</RUT_Zhurr>
           </freshwater_Common>
           <freshwater_Uncommon>
-            <BMT_Rocktooth MayRequire="biomesteam.biomescaverns">1</BMT_Rocktooth>
-            <BMT_Boneblade MayRequire="biomesteam.biomescaverns">1</BMT_Boneblade>
+            <RSW_Rocktooth MayRequire="mandrake.rsw.swbestiary">1</RSW_Rocktooth>
+            <RSW_Boneblade MayRequire="mandrake.rsw.swbestiary">1</RSW_Boneblade>
             <RUT_Hurrok>0.8</RUT_Hurrok>
             <RUT_Vhessa>0.4</RUT_Vhessa>
           </freshwater_Uncommon>

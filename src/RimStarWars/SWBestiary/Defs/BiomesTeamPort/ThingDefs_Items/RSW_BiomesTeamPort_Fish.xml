@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+BMT_FAUNA_ABSORPTION_1 — the two Biomes! Caverns catch items the Cracked Lands
+fishes (RUT_CrackedLands fishTypes/freshwater_Uncommon, mirrored onto
+RM_FloodedCanyon by SandFishing_CrackedLands.xml). Ported so that biome keeps
+both species when biomesteam.biomescaverns retires.
+
+Source: biomesteam.biomescaverns 1.6/DLC/Odyssey/Defs/BMT_Items_Resource_Fish.xml,
+BMT_Rocktooth and BMT_Boneblade, copied verbatim bar the BMT_ -> RSW_ rename.
+Both are plain vanilla FishBase children — no donor C#, nothing stripped.
+Textures copied from the donor's Textures/BMT_Caverns/Things/Item/Fish/... and
+repathed under swanimals/BiomesTeam/ (same convention as the other 68 ports).
+-->
+<Defs>
+
+  <ThingDef ParentName="FishBase">
+    <defName>RSW_Rocktooth</defName>
+    <label>rocktooth</label>
+    <description>Raw rocktooth.</description>
+    <graphicData>
+      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Fish/Small/Rocktooth</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.01</Mass>
+      <Nutrition>0.01</Nutrition>
+      <MarketValue>0.22</MarketValue>
+    </statBases>
+    <ingestible>
+      <specialThoughtDirect>AteRawFood</specialThoughtDirect>
+    </ingestible>
+    <uiIconForStackCount>1</uiIconForStackCount>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase">
+    <defName>RSW_Boneblade</defName>
+    <label>boneblade</label>
+    <description>Raw boneblade.</description>
+    <graphicData>
+      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Fish/Large/Boneblade</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.25</Mass>
+      <Nutrition>0.25</Nutrition>
+      <MarketValue>5.5</MarketValue>
+    </statBases>
+    <ingestible>
+      <specialThoughtDirect>AteRawFood</specialThoughtDirect>
+    </ingestible>
+    <uiIconForStackCount>1</uiIconForStackCount>
+  </ThingDef>
+
+</Defs>
