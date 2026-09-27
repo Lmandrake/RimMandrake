@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T00:28:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T00:33:23Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1053,14 +1053,23 @@ kind:     task
 summary:  Per sea, per catch entry without a living counterpart:
 prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
 
-## TERMINALBIOMES_EH_HARD_DEP_1 TerminalBiomes hard-references the EnvironmentalHazards assembly but declares it only as loadAfter, so proof_terminalbiomes builds a list that cannot load its DLL
+## ELDER_UNKNOWN_WEAPON_CONFIG_1 RM_ElderUnknownWeapon has a recipeMaker with no costList or costStuffCount, and borrows RM_SaltCrystalItem texPath as a placeholder
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  1. Move mandrake.rm.environmentalhazards into TerminalBiomes' <modDependencies.
-prose:    infrastructure/state/items/TERMINALBIOMES_EH_HARD_DEP_1.md
+summary:  ELDERUNKNOWNWEAPONCONFIG1 — RMElderUnknownWeapon: recipeMaker with no cost, and a borrowed placeholder texPath
+prose:    infrastructure/state/items/ELDER_UNKNOWN_WEAPON_CONFIG_1.md
+
+## DIVING_STALE_DEPLOYED_FILES_1 Retired pawn-dive files are deleted from src/ but still live in the deployed DivingInteraction mod
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     fix
+summary:  - The patch is still tagging RUTScaldWaterShallow, RUTScaldWaterMovingShallow and
+prose:    infrastructure/state/items/DIVING_STALE_DEPLOYED_FILES_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1808,16 +1817,6 @@ thin:     no ## spec, no ## verify
 summary:  COLLECTIONGRAPHICONFLATPNG1 — Collection graphic classes over single flat PNGs, and two textures absent entir…
 prose:    infrastructure/state/items/COLLECTION_GRAPHIC_ON_FLAT_PNG_1.md
 
-## ELDER_UNKNOWN_WEAPON_CONFIG_1 RM_ElderUnknownWeapon has a recipeMaker with no costList or costStuffCount, and borrows RM_SaltCrystalItem texPath as a placeholder
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  ELDERUNKNOWNWEAPONCONFIG1 — RMElderUnknownWeapon: recipeMaker with no cost, and a borrowed placeholder texPath
-prose:    infrastructure/state/items/ELDER_UNKNOWN_WEAPON_CONFIG_1.md
-
 ## HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1 Our three hazard-protection stats sit in statBases, so JobGiver_OptimizeApparel cannot see them and no pawn will ever choose a boil-suit on its own
 state:    proposed
 row:      unassigned
@@ -1857,16 +1856,6 @@ kind:     build
 thin:     no ## criteria
 summary:  Phase 1 — the layer, offline-provable, no content:
 prose:    infrastructure/state/items/SEABED_PLANET_LAYER_1.md
-
-## DIVING_STALE_DEPLOYED_FILES_1 Retired pawn-dive files are deleted from src/ but still live in the deployed DivingInteraction mod
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     fix
-thin:     no ## criteria
-summary:  - The patch is still tagging RUTScaldWaterShallow, RUTScaldWaterMovingShallow and
-prose:    infrastructure/state/items/DIVING_STALE_DEPLOYED_FILES_1.md
 
 ## ARTPIPE_SALVAGE_REJECTED_SIZE_MISMATCH_1 Recover the 71 already-generated renders sitting in artpipe failed/ as size_mismatch
 state:    proposed

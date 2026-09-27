@@ -780,3 +780,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"TERMINALBIOMES_EH_HARD_DEP_1","ts":"2026-09-27T00:28:52Z"}
 {"seat":"FOUNDRY","event":"note","id":"SUUSH_CAULDRON_DRIFTER_1","text":"Correction: the close event above recorded sha c8440f0c6 (HEAD taken before the actual code commit landed -- rimflow close ordering mistake, caught per using-rimflow skill's own warning). The real commit implementing this item is 1c793711d67c5c7f5033cf17caa157a613138410 (RM_PoisonForestFauna.xml, RM_PoisonForest.xml wildAnimals wiring, RM_Suush art deploy, item prose).","ts":"2026-09-27T00:28:53Z"}
 {"seat":"FOUNDRY","event":"start","id":"TERMINALBIOMES_EH_HARD_DEP_1","ts":"2026-09-27T00:28:53Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ELDER_UNKNOWN_WEAPON_CONFIG_1","ts":"2026-09-27T00:30:12Z"}
+{"seat":"FOUNDRY","event":"start","id":"ELDER_UNKNOWN_WEAPON_CONFIG_1","ts":"2026-09-27T00:30:14Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DIVING_STALE_DEPLOYED_FILES_1","ts":"2026-09-27T00:30:46Z"}
+{"seat":"FOUNDRY","event":"start","id":"DIVING_STALE_DEPLOYED_FILES_1","ts":"2026-09-27T00:30:51Z"}
+{"seat":"FOUNDRY","event":"close","id":"TERMINALBIOMES_EH_HARD_DEP_1","sha":"7cac17f5e84f3ddf888881672e26721ac77e88d9","reason":"TerminalBiomes' EnvironmentalHazards dep moved loadAfter->modDependencies (only defect found); swept all 21 BIOME_PROOF_MODS mods' csproj RimMandrake.* refs vs About.xml modDependencies -- FeverWood/FloodedCanyon/LeaningScrub already correct, RustCathedral's Hum/Walls refs are same-mod internal assemblies not cross-mod deps, no other mod references a RimMandrake.* assembly. Verified via modset_builder.close_over() against repo About.xml: mandrake.rm.environmentalhazards now closes into proof_terminalbiomes with no hand-editing.","ts":"2026-09-27T00:33:23Z"}
