@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T21:07:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T21:28:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1934,3 +1934,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CHILLVWAKEWIRINGVERIFY1 — is V-Wake's pump agitation actually wired?
 prose:    infrastructure/state/items/CHILL_VWAKE_WIRING_VERIFY_1.md
+
+## CHILL_RIME_TERRACES_1 Floor terrain: sparkling ice bedrock + Krellik rime-terrace districts
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLRIMETERRACES1 — floor terrain: sparkling ice bedrock + rime terrace districts
+prose:    infrastructure/state/items/CHILL_RIME_TERRACES_1.md
+
+## CHILL_THERMAL_FOOTPRINTS_1 Thermal footprints: warmth writes refrozen glossy trails the defense can read
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLTHERMALFOOTPRINTS1 — warmth writes on the ice
+prose:    infrastructure/state/items/CHILL_THERMAL_FOOTPRINTS_1.md
+
+## CHILL_AURORA_SURGE_1 Aurora surge storms: harvestable floor weather with shock risk
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLAURORASURGE1 — aurora surge storms: floor weather you can harvest
+prose:    infrastructure/state/items/CHILL_AURORA_SURGE_1.md
