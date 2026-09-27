@@ -58,9 +58,17 @@ namespace RimMandrake.LuminousPigment
             return baseString;
         }
 
-        protected override void Tick()
+        // 🔴 Must be TickRare, not Tick: RM_GlowTank.xml declares
+        // <tickerType>Rare</tickerType>, and the engine only calls a Thing's
+        // Tick() when its tickerType is Normal (every other Tick()-overriding
+        // building in this codebase pairs it with tickerType Normal --
+        // RSW_BactaTank's own comment: "demands tickerType Normal for
+        // per-tick consumption"; FlowWorks' Pit_Cell/Pit_OpenPits the same).
+        // A plain override void Tick() here would simply never run, and the
+        // blackout-kills-crop mechanism below would be dead code.
+        public override void TickRare()
         {
-            base.Tick();
+            base.TickRare();
 
             if (powerComp == null) return;
             if (powerComp.PowerOn)
@@ -69,7 +77,7 @@ namespace RimMandrake.LuminousPigment
                 return;
             }
 
-            unpoweredTicks++;
+            unpoweredTicks += GenTicks.TickRareInterval;
             int graceTicks = (int)(LuminousPigmentSettings.tankPowerGraceHours * 2500f); // 2500 ticks/hour
             if (graceTicks <= 0) return; // grace disabled by settings (0h) never kills.
             if (unpoweredTicks < graceTicks) return;
