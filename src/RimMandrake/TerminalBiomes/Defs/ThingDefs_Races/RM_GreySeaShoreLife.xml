@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GreySeaShoreLife.xml                TerminalBiomes — authored 2026-09-26
+  ==========================================================================
+  GREYSEA_ANCHOR_CREATURES_1, ruling 2: AA_Aerofleet is CUT from the Grey Sea
+  (already applied in RM_GreySea.xml/RUT_GreySea.xml's own commit) and
+  replaced by a new creature of ours, never by re-using a neighbour's — per
+  the standing biome-specific fauna law. RM_TwilightSea and RM_TheForge keep
+  casting AA_Aerofleet deliberately; this cut and its replacement are scoped
+  to the Grey Sea only.
+
+  The donor's own role (terminal_seas_cast_proposal_2026-09-25.md /
+  fauna list): "shore/shadow-lane drifter", bs 0.2, spd 2.84, non-predator,
+  ranges rather than being endemic. RM_Corrik keeps that role and role text
+  only — none of AA_Aerofleet's own numbers, art or lineage carry over.
+
+  Deliberately NOT built as a flier: the donor's own float mechanism
+  (CompProperties_VaporDrifter, see RUT_VaporDrifter_AerofleetWiring.xml's
+  header) is ground-hazard immunity for the Forge's volcanic floor, not true
+  engine flight, and nothing in the sheet's "drifter" language puts this
+  species airborne — it rides the shore current, it does not fly. So the
+  "if it flies in the fiction, it flies in the game" standing rule does not
+  fire here; this is a surface/near-surface glider, built plain.
+
+  No `*Catch` counterpart: it is a shore-lane ranger, not a floor resident of
+  the Grey Deep proper (the roster's own note: "the Grey DEEP's three-
+  resident cap governs the bottom, which this row never touches"), and
+  matches RM_Otheska/RM_Fessk/RM_Reefback in the same file group, none of
+  which are caught either. Mechanically plain per the Grey Sea's own
+  established convention (RM_GreySeaFauna.xml): no C#, no comps beyond the
+  vanilla animal shape; placeholder Graphic_Single art, real art owed and
+  filed through the normal artpipe search-before-queue path.
+
+  PLACEHOLDER ART: Textures/Things/Pawn/Animal/RM_Corrik/RM_Corrik.png is a
+  byte-identical copy of RM_Essarn's own placeholder silhouette (searched
+  infrastructure/artpipe/done/, _artsrc/ and registry.jsonl for "corrik"
+  first — nothing exists, this is a brand-new defName). This is a stand-in
+  only, so the def never renders magenta while a real artpipe job is filed;
+  it is not this creature's real, final art.
+-->
+<Defs>
+
+  <!-- =================================================================
+       RM_Corrik — the shore-lane glider. Solitary, non-schooling (ban 2),
+       ranges the shadow lanes between rock cuts rather than holding a
+       territory the way the Deep's endemics do.
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Corrik</defName>
+    <label>corrik</label>
+    <description>A squat, translucent bladder of a thing that rides the shore current through the shadow lanes between rock cuts, never straying out over open water and never seen in company with another. It has no bite worth the name and nothing worth hunting it for; it is simply always somewhere along the shoreline, drifting.</description>
+    <statBases>
+      <MoveSpeed>2.8</MoveSpeed>
+      <MarketValue>5</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>bump</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1.5</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeExpectancy>6</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Corrik</defName>
+    <label>corrik</label>
+    <race>RM_Corrik</race>
+    <combatPower>5</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Corrik/RM_Corrik</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Corrik/RM_Corrik</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Corrik/RM_Corrik</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

@@ -111,6 +111,11 @@
       <RM_Maalu>0.3</RM_Maalu>
       <RM_Immu>0.3</RM_Immu>
       <RM_Haarn>0.08</RM_Haarn>
+      <!-- GREYSEA_ANCHOR_CREATURES_1, ruling 2: the AA_Aerofleet replacement,
+           at the same commonality the cut donor drifter held. Solitary,
+           non-schooling (ban 2); no *Catch counterpart, see
+           RM_GreySeaShoreLife.xml's own header. -->
+      <RM_Corrik>0.05</RM_Corrik>
     </wildAnimals>
     <animalDensity>0.1</animalDensity>
     <coastalWildAnimals />
