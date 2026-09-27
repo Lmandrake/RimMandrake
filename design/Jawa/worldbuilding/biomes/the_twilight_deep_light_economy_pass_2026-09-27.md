@@ -388,17 +388,17 @@ cadence (week/slow/frozen-for-sandbox) · chain availability scarce/standard/ple
 constellation suulk-pressure scaling on/off · cages passable-beneath on/off · living
 decor needs-light off/on · sun-sphere grace period · charts age on/off.
 
-## 8. Question-card candidates — genuine owner decisions only
+## 8. Rulings — 2026-09-26 sitting, both cards answered
 
-1. **Niim/noolim** (content Q3, still live): two silver shoals split by light — niim
-   the lit shoal of the shafts, noolim the dark shoal of the between — or fold to one?
-   Two defs exist today with overlapping prose; someone must pick before the fish-body
-   wave ships.
-2. **The constellation number**: he set the constraint (a handful, not twenty); the
-   design caps by chain supply at **~6 reachable, ~10 late-game ceiling**. Is 6 the
-   right handful, and should the late research raise the ceiling at all, or is the
-   sphere meant to be the only way past it? One number, but it is THE number the
-   binding constraint hangs on, and he flagged it himself.
+Both decisions taken by question card (our wording, clicked, never quoted);
+recorded on `TWILIGHTSEA_FLOOR_PASS_1`.
+
+1. **Niim/noolim: TWO, split by light** — niim the lit shoal of the shafts, noolim
+   the dark shoal of the between. The overlapping prose in the two live defs gets
+   disentangled before the fish-body wave ships, and the lit shoal is
+   `RM_CompGlowerMobile`'s showcase (§3.2).
+2. **The constellation number: six reachable, ten late-game**, with the sun-sphere
+   as the real way past the cap — the design's numbers confirmed as ruled.
 
 Nothing else in this territory needs his word: Q7's Grade-B mockup is a joint session
 (not a card), and Q8/Q13/Q14/Q15/Q16/Q19 are dispositioned in §6 under rulings he has
