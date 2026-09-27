@@ -160,7 +160,7 @@
       <MarketValue>140</MarketValue>
     </statBases>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_GatherableCalmGated" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableCalmGated" MayRequire="mandrake.rm.environmentalhazards">
         <gatherDef>RM_ThornbugNectar</gatherDef>
       </li>
     </comps>
@@ -338,7 +338,7 @@
            calmFloor/fearRadius keep the shared class's own already-ruled
            defaults (card 3, ~40 cells); only gatherDef/amount/interval are
            set per-species here. -->
-      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_GatherableCalmGated" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableCalmGated" MayRequire="mandrake.rm.environmentalhazards">
         <gatherDef>RM_DrommathSap</gatherDef>
         <gatherAmount>10</gatherAmount>
         <gatherIntervalDays>3</gatherIntervalDays>
