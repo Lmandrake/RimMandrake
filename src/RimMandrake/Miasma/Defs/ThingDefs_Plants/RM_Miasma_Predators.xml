@@ -7,17 +7,22 @@
   visibly predatory. Owner ruling: they take the arthropod-floor scuttlers,
   never a colonist and never a tame animal.
 
-  🔴 No carnivory C# is built in this pass. The prey (the four scuttler defs,
-  RM_Karravel/RM_Karrobel/RM_Karrimeth/RM_Karrolun) do not exist yet — they
-  are MIASMA_FAUNA_FLOOR_ROSTER_1's own scope, still open at authoring time —
-  and the roster item's own text calls "whether a plant can consume a small
-  wild animal at all" an engine question needing a Desktop pass, precedent
-  RM_CompVerminBreeder + RM_MapComponent_VerminPopulation
-  (src/RimMandrake/CreatureBehaviors/Source/). Wiring real predation onto
-  these five is follow-on work once the scuttler roster lands, not invented
-  here against a prey list that doesn't exist. Each row's description still
-  carries its written "visible consequence" (too-clear water, scuttler-free
-  mud, closed blades) as the target for that future pass and for art.
+  MIASMA_SCUTTLER_PREDATION_1 (this pass): real carnivory C# now wired via
+  RM_CompPlantPredator/RM_CompProperties_PlantPredator
+  (src/RimMandrake/Miasma/Source/), self-contained in this assembly — no
+  compile-time reference to RimMandrake.CreatureBehaviors needed, since prey
+  is matched by a plain defName whitelist (RM_Karravel/RUT_Karrobel/
+  RM_Karrimeth/RM_Karrolun), same idiom RM_CompVerminBreeder's
+  breedFoodThingDefNames already uses. Desktop check (RimSage against
+  decompiled 1.6 source) confirmed the engine question this file used to
+  flag as UNMEASURABLE: Plant never overrides Tick(), only TickLong(), and
+  ThingWithComps.TickLong() does call CompTickLong() on every comp — so a
+  plant CAN carry a ticking predator comp with no manual interval throttle
+  needed. Restricted to wild (unfactioned) pawns of exactly the four named
+  defNames — never a colonist or tame animal, per the ruling below. Tell:
+  a floating mote at the kill site ("<plant> feeds"), real for all five now;
+  each plant's own unique visual tell (cloudy vessel, closed blades,
+  scuttler-free mud) stays a future ART/graphic-state pass, not built here.
 -->
 <Defs>
 
@@ -45,6 +50,17 @@
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>25</wildClusterWeight>
     </plant>
+    <comps>
+      <li Class="RimMandrake.Miasma.RM_CompProperties_PlantPredator">
+        <preyDefNames>
+          <li>RM_Karravel</li>
+          <li>RUT_Karrobel</li>
+          <li>RM_Karrimeth</li>
+          <li>RM_Karrolun</li>
+        </preyDefNames>
+        <huntRadius>2</huntRadius>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -71,6 +87,17 @@
       <wildClusterRadius>6</wildClusterRadius>
       <wildClusterWeight>15</wildClusterWeight>
     </plant>
+    <comps>
+      <li Class="RimMandrake.Miasma.RM_CompProperties_PlantPredator">
+        <preyDefNames>
+          <li>RM_Karravel</li>
+          <li>RUT_Karrobel</li>
+          <li>RM_Karrimeth</li>
+          <li>RM_Karrolun</li>
+        </preyDefNames>
+        <huntRadius>1.5</huntRadius>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -97,6 +124,17 @@
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>10</wildClusterWeight>
     </plant>
+    <comps>
+      <li Class="RimMandrake.Miasma.RM_CompProperties_PlantPredator">
+        <preyDefNames>
+          <li>RM_Karravel</li>
+          <li>RUT_Karrobel</li>
+          <li>RM_Karrimeth</li>
+          <li>RM_Karrolun</li>
+        </preyDefNames>
+        <huntRadius>2</huntRadius>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -129,6 +167,17 @@
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>10</wildClusterWeight>
     </plant>
+    <comps>
+      <li Class="RimMandrake.Miasma.RM_CompProperties_PlantPredator">
+        <preyDefNames>
+          <li>RM_Karravel</li>
+          <li>RUT_Karrobel</li>
+          <li>RM_Karrimeth</li>
+          <li>RM_Karrolun</li>
+        </preyDefNames>
+        <huntRadius>1.5</huntRadius>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -159,6 +208,17 @@
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>10</wildClusterWeight>
     </plant>
+    <comps>
+      <li Class="RimMandrake.Miasma.RM_CompProperties_PlantPredator">
+        <preyDefNames>
+          <li>RM_Karravel</li>
+          <li>RUT_Karrobel</li>
+          <li>RM_Karrimeth</li>
+          <li>RM_Karrolun</li>
+        </preyDefNames>
+        <huntRadius>2</huntRadius>
+      </li>
+    </comps>
   </ThingDef>
 
 </Defs>
