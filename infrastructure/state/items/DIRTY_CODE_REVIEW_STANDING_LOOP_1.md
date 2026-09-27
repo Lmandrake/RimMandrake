@@ -6115,3 +6115,83 @@ current exclusion as of this wave — any is a ready pick. Re-run
 `UtinniPatches/`, `TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
 `Greentide`/`Miasma`/`BlueDesert`/`DivingInteraction`/`LuminousPigment`/
 `Droidworks`.
+
+## Wave 33 (2026-09-26)
+
+Cluster: `src/RimMandrake/TheSump/` (the whole mod, `THESUMP_RM_MOD_BUILD_1`
+/ `SUMP_TAR_VAULT_1` / `SUMP_TAR_HYDROLOGY_1` / `SUMP_FAUNA_ROSTER_1` /
+`SUMP_FLORA_ROSTER_1`) — 29 files: About.xml, 20 Defs (BiomeDef, GameCondition,
+Incident, LotteryTable, 2 MapGeneration, Terrain, 3 ThingDefs_Buildings, 3
+ThingDefs_Items, 1 ThingDefs_Misc, 2 ThingDefs_Plants, ThingDefs_Races,
+ThinkTree, Weather), 1 Language file, 4 Patches, and all 4 `.cs` source files.
+Confirmed git-clean and outside every current exclusion before starting.
+Reviewed as one unit, same posture as Wave 31/32's whole-mod passes.
+
+Every `Class=`/`thingClass`/`hediffClass`/`compClass`/`workerClass`/`genStep
+Class`/`conditionClass` attribute checked against real source: this mod's own
+`RimMandrake.TheSump.*` types (`RM_BiomeWorker_TheSump`, `RM_TheSumpSettings`/
+`RM_TheSumpMod`, `CompProperties_TarVaultSeal`/`RM_Comp_TarVaultSeal`,
+`RUT_GenStep_DeepBlackMere`) all resolve by exact name, and every cross-mod
+reference into the shared `mandrake.rm.environmentalhazards` assembly
+(`CompProperties_FilthTrail`, `CompProperties_WorkedLottery`,
+`GameCondition_EnvironmentalWeather`, `EnvironmentalWeatherExtension`,
+`RM_LotteryTableDef`, `RM_GenStep_PlacedSetPieces`,
+`RM_SetPieceElement_SpawnMarker`, `RM_CompBeastWakeRelay`,
+`CompProperties_FloodIgniter`, `RM_DreadAvoidWanderExtension`,
+`RUT_IncidentWorker_TarPitBelch`, `BiomeGlowMultiplierExtension`,
+`RM_CarriedFilthHediffExtension`, `RM_BiomeArrivalLetterExtension`) was
+grepped against that assembly's own `Source/` and confirmed present by exact
+class name — none of tonight's crash-bug shape here. The `.csproj`
+(`EnableDefaultCompileItems false`) lists all 4 `.cs` files correctly, no
+orphaned source.
+
+**1 real bug found and fixed** (in-cluster half), a second (out-of-cluster
+half) flagged rather than fixed: `RM_Comp_TarVaultSeal.CompTick()` — the
+whole tar-vault seal/rot-freeze/solvent-extraction mechanism — is only ever
+invoked on a Building_Storage-derived ThingDef, and the sole such def
+(`RUT_TarVault.xml`, `ParentName="StorageShelfBase"`) never sets
+`tickerType`. Checked the WHOLE parent chain against the live install via
+RimSage (`get_def_details` on vanilla `Shelf`'s own merged def, plus
+`StorageShelfBase`/`ShelfBase`/`FurnitureBase`/`BuildingBase` read directly
+from `Data/Core`): none of them set `tickerType` either. `ThingDef.tickerType`
+(`Source/Verse/ThingDef.cs`) has no field initializer, so it defaults to
+`TickerType.Never` (enum value 0, `Source/Verse/TickerType.cs`), and
+`TickManager.TickListFor` (`Source/Verse/TickManager.cs:308-313`) returns
+`null` for `TickerType.Never` — the Thing is registered on no tick list at
+all, so `Tick()`/`CompTick()` never fires, ever. Same defect FAMILY as Wave
+31's `Building_GlowTank` bug (a comp whose method never runs because of the
+parent's ticker configuration), one link further up the chain: not a
+Tick/TickRare mismatch but no ticking at all. `RUT_TarVault.xml` lives under
+`src/RimUtinni/UtinniPatches/`, this wave's explicit exclusion zone (concurrent
+biome defName rename + savegame-fix pass), so the def itself was NOT edited.
+Instead: (1) added a `ConfigErrors` check to
+`CompProperties_TarVaultSeal.ConfigErrors` (in-cluster) that yields a
+dev-mode error naming the fix whenever a def carries this comp with
+`tickerType == TickerType.Never` — the same defensive pattern vanilla itself
+uses for this exact trap (`CompProperties_SelfhealHitpoints.cs`,
+`CompProperties_FacilityInUse.cs`); (2) filed
+`SUMP_TARVAULT_TICKER_NEVER_1` (FOUNDRY) naming the one-line fix owed on
+`RUT_TarVault.xml` (`<tickerType>Normal</tickerType>`) for whoever next has
+UtinniPatches open. Verified by a clean `dotnet build` of
+`RM_TheSump.csproj`, DLL + `.srchash` rebuilt and committed together.
+Commit `a4269f23f` (fix), `746a3ffdc` (ledger: file+note), `9b08bd710`
+(status file).
+
+All 29 files marked CLEAN, all commits pushed and confirmed on `origin/main`
+(`git merge-base --is-ancestor <sha> origin/main`, since this shared tree's
+`git status --branch` briefly showed a stale "ahead 1" mid-push from
+concurrent activity — the commit was already published; re-verify by
+ancestor check, not by re-reading `git status`, when that happens).
+
+29 files reviewed this wave, 29 newly CLEAN, 1 bug found and fixed
+(in-cluster), 1 related bug flagged and filed (out-of-cluster, excluded
+directory).
+
+Next wave suggestion (not re-verified): `PoisonForest`/`Stillsand` remain
+blocked on `UtinniPatches/`. Re-run `code_review_status.py
+list --show-untracked` for a fresh dirty list and `git status --short` on
+any candidate before starting — stay off `UtinniPatches/` (now also owed
+`SUMP_TARVAULT_TICKER_NEVER_1`'s one-line fix once it's clear to work
+there), `TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
+`Greentide`/`Miasma`/`BlueDesert`/`DivingInteraction`/`LuminousPigment`/
+`Droidworks`.
