@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T01:55:35Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-27T02:01:14Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1827,13 +1827,3 @@ kind:     task
 thin:     no ## verify
 summary:  1. Confirm the daemon is idle (or briefly pause it) before touching failed/,
 prose:    infrastructure/state/items/ARTPIPE_SALVAGE_REJECTED_SIZE_MISMATCH_1.md
-
-## UTINNIPATCHES_DLL_STALE_1 RimMandrake.Utinni.UtinniPatches.dll is stale against RUT_CompGreatboleHarvestLadder.cs (dll_source_stamp.py check: MISMATCH, pre-existing, unrelated to BIOME_CONFIG_ERROR_TRIAGE_1) - rebuild and commit DLL+srchash together
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/UTINNIPATCHES_DLL_STALE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/UTINNIPATCHES_DLL_STALE_1.md
