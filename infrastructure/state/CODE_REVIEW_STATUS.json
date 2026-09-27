@@ -8446,10 +8446,10 @@
     "sha": "aaab8b466"
   },
   "src/RimMandrake/WeepingStones/Defs/JobDefs/RM_StockedPoolJobs.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "edd78d3d365aae98c94dc3b2209eb60290d193d4c55ac95a71b6db3e4474cec3",
-    "sha": "b4a1f8f14"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "95612a076208f22a46b4192d0ec8310e891a600851e387cedbf55269c967f7ae",
+    "sha": "727a4a6c9"
   },
   "src/RimMandrake/WeepingStones/Defs/RecipeDefs/RM_StockedPoolRecipes.xml": {
     "cleanCount": 1,
@@ -8530,10 +8530,10 @@
     "sha": "aaab8b466"
   },
   "src/RimMandrake/WeepingStones/Defs/WorkGiverDefs/RM_StockedPoolWorkGivers.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "d575a41d9bfd14ed817b4131f067aa6dc912d3ca835a284c9de0921cc4bf0a03",
-    "sha": "b4a1f8f14"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "2a2992a2610c7e165041d7ca75588fb82f6ba864ade91099990acbef25a8d42b",
+    "sha": "727a4a6c9"
   },
   "src/RimMandrake/WeepingStones/Patches/RM_PoolPenZoneOrdersPatch.xml": {
     "cleanCount": 1,
@@ -8559,11 +8559,23 @@
     "hash": "0ad26d7e943d2b6eb871924e09f7bc75d7d6e5343bae40174af3beacbf597df7",
     "sha": "b4a1f8f14"
   },
+  "src/RimMandrake/WeepingStones/Source/RM_JobDriver_CullVhorrin.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "d2fe306b0004876664f0918bdf8fc6ce7984ad68f1e2000ef03f5fe19465ba49",
+    "sha": "727a4a6c9"
+  },
   "src/RimMandrake/WeepingStones/Source/RM_JobDriver_FeedPoolPen.cs": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "be906bdc2d8f2b82ea71741738ca507c152c2f4b752501acda0a60aad8fdacae",
     "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_JobDriver_HarvestPoolPen.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "8a09229f947d713d15f289bde3a6d9beab08c3fea314c60d7f514dd4df52ee5d",
+    "sha": "727a4a6c9"
   },
   "src/RimMandrake/WeepingStones/Source/RM_JobDriver_NetPoolBreeder.cs": {
     "cleanCount": 1,
@@ -8578,10 +8590,10 @@
     "sha": "b4a1f8f14"
   },
   "src/RimMandrake/WeepingStones/Source/RM_MapComponent_PoolStock.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "5dc845b637e7bddb1b00a5c18180950eed5143be0bb77983f2856be0f0a8f160",
-    "sha": "b4a1f8f14"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "998dee84c07984c2805e7f57d716ce21ef74ce74c6f79f4b3f9fd4c43f7d1bfb",
+    "sha": "727a4a6c9"
   },
   "src/RimMandrake/WeepingStones/Source/RM_PoolBody.cs": {
     "cleanCount": 1,
@@ -8596,16 +8608,16 @@
     "sha": "b4a1f8f14"
   },
   "src/RimMandrake/WeepingStones/Source/RM_PoolStockDefOf.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "ec167b7d68bbc6ac9edf2b7c98f45b2e042c5af797ae363ca93afbc74e1b5d88",
-    "sha": "b4a1f8f14"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "7dda85ccb5981e2211512277a2bfd38523396d7c5e15d5ac44d1a41bad34a709",
+    "sha": "727a4a6c9"
   },
   "src/RimMandrake/WeepingStones/Source/RM_WeepingStonesSettings.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "218ff0f248ce8547c85dab454aeac453da139b9d775791971c7e302002a65143",
-    "sha": "b4a1f8f14"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "2190b33ee611fe4aeee5cde0b7d88aaae5d010616bcc66aef7cff5ddd8be6b04",
+    "sha": "727a4a6c9"
   },
   "src/RimMandrake/WeepingStones/Source/RM_WorkGiver_CullVhorrin.cs": {
     "cleanCount": 1,
@@ -8618,6 +8630,12 @@
     "date": "2026-09-24",
     "hash": "1aa02e76ab479ca1c2d66f6e0a978cd7b7cf2b10c45b0910c41c1d9b6e1be9d2",
     "sha": "b4a1f8f14"
+  },
+  "src/RimMandrake/WeepingStones/Source/RM_WorkGiver_HarvestPoolPen.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "670cddc1974c15371666d65a3ad2b4d5a2949cbcf3c270d4364dd9c32be8263e",
+    "sha": "727a4a6c9"
   },
   "src/RimMandrake/WeepingStones/Source/RM_WorkGiver_NetPoolBreeder.cs": {
     "cleanCount": 1,
@@ -20572,10 +20590,10 @@
     "sha": "4de0abdce"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WeepingStonesFish_Items.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "198b72b791cf6fb5ba32a13c309e0fe3e7bcbbf73618f82d409d54085802d193",
-    "sha": "aaab8b466"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "86553b6a3d2067cbb239005a3a436767d4bc8c7f0db3bd75fffa42485abe4cd5",
+    "sha": "727a4a6c9"
   },
   "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WickStem.xml": {
     "cleanCount": 1,

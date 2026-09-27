@@ -5506,3 +5506,43 @@ folders (`TerminalBiomes`, `DivingInteraction`, anything with
 `ElderUnknownWeapon` in its path), `FeverWood/Source`, and anything with
 `PoisonForest`/`Cauldron`/`Suush` in the path, until told those concurrent
 builds are done.
+
+## Wave 22 — 2026-09-26 (FOUNDRY fork, BELT mode)
+
+Re-ran `list --show-untracked` fresh first — wave 21's own "next wave" candidates
+(ShipShields/Graffiti/WeepingStones/StructureInjectionsSW) were mostly already
+CLEAN from concurrent work since wave 21 landed; only WeepingStones still had a
+live DIRTY cluster. Reviewed all 9 remaining WeepingStones-cluster files in one
+pass (5 diff-scoped, previously CLEAN and re-dirtied by wave-4 HARVEST/CULL
+additions; 3 never-entered; 1 cross-mod `RUT_` sibling):
+
+`RM_StockedPoolJobs.xml`, `RM_StockedPoolWorkGivers.xml`,
+`RM_MapComponent_PoolStock.cs`, `RM_PoolStockDefOf.cs`,
+`RM_WeepingStonesSettings.cs`, `RM_JobDriver_CullVhorrin.cs` (never entered),
+`RM_JobDriver_HarvestPoolPen.cs` (never entered),
+`RM_WorkGiver_HarvestPoolPen.cs` (never entered), and
+`src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_WeepingStonesFish_Items.xml`.
+
+Confirmed reachable via `RM_WeepingStones.csproj` `<Compile Include>` entries.
+Cross-checked the HARVEST driver's `kindDefName + "Meat"` lookup against
+`RM_StockedPoolMeats.xml` — all 8 species (`RM_MurrinMeat`/`SkarrinMeat`/
+`KarrekMeat`/`VizhikMeat`/`VhorrinMeat`/`LoomuMeat`/`HulduMeat`/`IvvolMeat`)
+resolve. Cross-checked `HarvestableDefNames`/`PoolFaunaDefNames`/vhorrin-exclusion
+sets against each other and against the JobDef/WorkGiverDef `driverClass`/
+`giverClass` strings — all match real class names in the right namespace. The
+`RUT_WeepingStonesFish_Items.xml` DIRTY flag was a prior wave's own
+`STACKCOUNT_FILEPATH_REDX_SWEEP_1` fix (`RUT_SeepStone`'s `graphicClass` →
+`Graphic_Single`, matching the RM_ sibling table) — already correct, no new
+issue.
+
+No bugs found in any of the 9. All marked CLEAN at `727a4a6c9`.
+
+9 files reviewed this wave, 9 newly CLEAN, 0 bugs found.
+
+Next wave: `ShipShields` (4 DIRTY: `About.xml`, `RUT_ShieldGenerator_Research.xml`,
+`RUT_ShieldGenerator.xml`, `RUT_ShieldModules.xml`), `Graffiti`'s 6 DIRTY
+`vandal_*.png` textures (art files — probably a `mark-clean` refresh once
+confirmed unchanged in substance, not a code review target) plus
+`SacredGraffiti/Defs/SacredMarks.xml`, and `StructureInjectionsSW`'s 3 DIRTY
+(`About.xml`, `TileMutatorDefs_Batch2.xml`, `validation.py`). Re-run
+`list --show-untracked` fresh first — still several concurrent agents.
