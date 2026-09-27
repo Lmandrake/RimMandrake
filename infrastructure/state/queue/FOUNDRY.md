@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T05:42:38Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-27T06:07:26Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1068,7 +1068,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     bug
-summary:  (no items/BLUEDESERT_ORPHAN_LOAD_CRASH_1.md yet — write one when you have something to say)
+summary:  BLUEDESERTORPHANLOADCRASH1 — full-list load aborted, RimWorld reset ModsConfig to Core-only
 prose:    infrastructure/state/items/BLUEDESERT_ORPHAN_LOAD_CRASH_1.md
 
 # BLOCKED — something is WRONG and someone must act
@@ -1817,6 +1817,16 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1.md
 
+## LIQUID_TERRAIN_AUTHORED_TWICE_1 Boiling water, brine pool and liquid propane terrain are authored twice in two active mods with identical player labels and different burn numbers
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md
+
 ## RUT_PROPANELAKE_FROZEN_DENSITY_1 RUT_PropaneLake still leaves animalDensity unset (frozen); sweep other biomes for the same defect
 state:    proposed
 row:      unassigned
@@ -1856,3 +1866,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/UTINNIPATCHES_ORPHAN_AUDIT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/UTINNIPATCHES_ORPHAN_AUDIT_1.md
+
+## TERMINALBIOMES_REVIEW_FIXES_1 TerminalBiomes 29-file review fix wave: 2 dead tickerType mechanisms (vaulisk lure never springs, mobile glower never runs), 6 more BUGs, 6 RISKs, 4 NITs - findings are sonnet evidence, verify each
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## verify
+summary:  Three sonnet reviewers swept all 29 C files changed in the Twilight build wave
+prose:    infrastructure/state/items/TERMINALBIOMES_REVIEW_FIXES_1.md

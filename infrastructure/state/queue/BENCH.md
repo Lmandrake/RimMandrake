@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T05:42:38Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-27T06:07:26Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -153,6 +153,33 @@ kind:     design
 summary:  Work per sea, in this order — cheapest and most decisive first.
 prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
 
+## GREYSEA_SHIP_CRYSTALLISATION_1 Grey Sea claims a parked hull: crystallising encasement, doors frozen shut (owner-typed 2026-09-26) - design lands with the Grey's own danger/floor pass
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/GREYSEA_SHIP_CRYSTALLISATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_SHIP_CRYSTALLISATION_1.md
+
+## DARKSEA_LIGHT_ATTRACTION_1 Light-attraction danger belongs to the dark-floored seas: player light draws prey, predators follow - redirected from the Twilight by owner ruling; design at the Grey and Scald danger passes on RM_JobGiver_SeekGlow
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DARKSEA_LIGHT_ATTRACTION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DARKSEA_LIGHT_ATTRACTION_1.md
+
+## TWILIGHT_BOTTOM_CAST_1 The Deepwater bottom cast: 6-8 named residents of the lit bottom-houses (per-tile world objects), roles from the content doc section 9.3 as the starting sheet - ruled yes-to-all-three 2026-09-26
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  (no items/TWILIGHT_BOTTOM_CAST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TWILIGHT_BOTTOM_CAST_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -229,7 +256,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BIOME_LOAD_PROOF_WAVE_1 Prove every biome mod loads clean standalone on a minimal list - the narrow donor-retirement sense of PROVEN, not full functionality
 state:    ready
@@ -237,7 +264,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-waiting:  needs `game-up`, game is LOADING
+waiting:  needs `game-up`, game is DOWN
 summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
 prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
 
@@ -749,46 +776,6 @@ thin:     no ## spec, no ## verify
 summary:  DROIDMASSPRODUCTIONQUESTCHAIN1 — the tech one faction has and cannot use, and another needs and cannot get
 prose:    infrastructure/state/items/DROID_MASS_PRODUCTION_QUEST_CHAIN_1.md
 
-## SCALD_PLANTDENSITY_UNSET_1 RM_TheScald leaves plantDensity unset (0f) so its one wildPlants row can never spawn - crowncarpet has a GenStep route, so this needs a ruling not an edit
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  SCALDPLANTDENSITYUNSET1 — RMTheScald leaves plantDensity unset, so its one wildPlants row can never spawn
-prose:    infrastructure/state/items/SCALD_PLANTDENSITY_UNSET_1.md
-
-## LIQUID_TERRAIN_AUTHORED_TWICE_1 Boiling water, brine pool and liquid propane terrain are authored twice in two active mods with identical player labels and different burn numbers
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md
-
-## GREYSEA_SHIP_CRYSTALLISATION_1 Grey Sea claims a parked hull: crystallising encasement, doors frozen shut (owner-typed 2026-09-26) - design lands with the Grey's own danger/floor pass
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GREYSEA_SHIP_CRYSTALLISATION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_SHIP_CRYSTALLISATION_1.md
-
-## DARKSEA_LIGHT_ATTRACTION_1 Light-attraction danger belongs to the dark-floored seas: player light draws prey, predators follow - redirected from the Twilight by owner ruling; design at the Grey and Scald danger passes on RM_JobGiver_SeekGlow
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DARKSEA_LIGHT_ATTRACTION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DARKSEA_LIGHT_ATTRACTION_1.md
-
 ## SURFACE_RIVER_WEIRS_1 Port the weir / bank-works / breach system to ordinary surface river tiles (owner-typed 2026-09-26): weir, silt-trap, stake-line, hopper, and the untended-weir-meets-flood breach cascade on normal rivers
 state:    proposed
 row:      unassigned
@@ -799,16 +786,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SURFACE_RIVER_WEIRS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SURFACE_RIVER_WEIRS_1.md
 
-## TWILIGHT_BOTTOM_CAST_1 The Deepwater bottom cast: 6-8 named residents of the lit bottom-houses (per-tile world objects), roles from the content doc section 9.3 as the starting sheet - ruled yes-to-all-three 2026-09-26
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TWILIGHT_BOTTOM_CAST_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TWILIGHT_BOTTOM_CAST_1.md
-
 ## WORKTREE_QUICKTEST_BRIDGE_GAP_1 Worktree build agents' quicktest/cold-load cycles don't take the rimflow bridge lock, causing repeated live-verify collisions with FOUNDRY (measured 3x in one session, 2026-09-27) — study with Fable and design the real fix
 state:    proposed
 row:      unassigned
@@ -818,3 +795,13 @@ kind:     process
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WORKTREE_QUICKTEST_BRIDGE_GAP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WORKTREE_QUICKTEST_BRIDGE_GAP_1.md
+
+## SCALD_UNDERWATER_FLORA_1 Scald underwater flora pass: set plantDensity and design strange small sea-plants - bacterial filament strings, sponges, soft corals, alien twists (owner-typed 2026-09-26; the Scald must not be barren)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SCALD_UNDERWATER_FLORA_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_UNDERWATER_FLORA_1.md
