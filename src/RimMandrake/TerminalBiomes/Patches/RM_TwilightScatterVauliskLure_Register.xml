@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TwilightScatterVauliskLure_Register.xml   TerminalBiomes · TWILIGHT_DANGER_LIGHTWEB_1
+  ============================================================================
+  RM_TwilightScatterVauliskLure.xml declares the GenStepDef; a GenStepDef on
+  its own runs on NO map. This adds it to RM_SeaDiveGenerator_TwilightSea's
+  own <genSteps> list — a def owned by mandrake.rm.divinginteraction
+  (src/RimMandrake/DivingInteraction/Defs/MapGeneration/
+  RM_SeaDiveGenerators.xml), reached here only via PatchOperation, never by
+  editing that mod's own file (HARD RULE: no edits outside
+  src/RimMandrake/TerminalBiomes/).
+
+  Same three-file shape and the same PatchOperationConditional-wrapped
+  discipline as this mod's own RM_GreySeaShoreScatter_Register.xml: if
+  DivingInteraction is absent or ever renames that generator, this becomes a
+  silent no-op rather than a red error.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="RM_SeaDiveGenerator_TwilightSea"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="RM_SeaDiveGenerator_TwilightSea"]/genSteps</xpath>
+      <value>
+        <li>RM_TwilightScatterVauliskLure</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RM_JobDefs_SeekGlow.xml            TerminalBiomes · TWILIGHT_DANGER_LIGHTWEB_1
+
+  Driven by RM_JobDriver_FeedOnGlow, requested by RM_JobGiver_SeekGlow
+  whenever a pawn's race carries RM_SeekGlowExtension (the suulk, currently
+  the only carrier).
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_FeedOnGlow</defName>
+    <driverClass>RimMandrake.TerminalBiomes.RM_JobDriver_FeedOnGlow</driverClass>
+    <reportString>feeding on TargetA's light.</reportString>
+  </JobDef>
+
+</Defs>

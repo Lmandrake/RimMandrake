@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_TwilightDangerLightweb.xml          TerminalBiomes · TWILIGHT_DANGER_LIGHTWEB_1
+
+  Translate keys for the suulk (RM_JobDriver_FeedOnGlow.cs,
+  RM_IncidentWorker_SuulkArrival.cs) and the vaulisk
+  (RM_Comp_VaeuliskLure.cs). Vocabulary per the ruled danger pass: waveglass /
+  the lid / veil-fall — never mat or mold.
+-->
+<LanguageData>
+
+  <RM_SuulkFeedingStarted>A suulk has settled against {0}, feeding — its glow is dimming.</RM_SuulkFeedingStarted>
+  <RM_SuulkFedOutLabel>Light fed out</RM_SuulkFedOutLabel>
+  <RM_SuulkFedOutText>The suulk has fed {0} down to nothing. The light is gone.</RM_SuulkFedOutText>
+
+  <RM_SuulkArrivalLabel>Suulk sighted</RM_SuulkArrivalLabel>
+  <RM_SuulkArrivalText>Something soft and dark drifts in from beyond the beams, working its way toward the brightest light your colony carries. It means no harm to anyone standing — only to what they are standing under.</RM_SuulkArrivalText>
+
+  <RM_VauliskRevealed>The lamp was never a lamp. A vaulisk strikes — no piip, no breathing pulse, and now no disguise.</RM_VauliskRevealed>
+
+</LanguageData>

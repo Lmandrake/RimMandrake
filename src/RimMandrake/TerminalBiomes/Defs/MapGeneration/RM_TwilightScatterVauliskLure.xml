@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TwilightScatterVauliskLure.xml      TerminalBiomes · TWILIGHT_DANGER_LIGHTWEB_1
+  ============================================================================
+  design §D4e / ruling C3: "ONE PER MAP AT MOST." RM_GenStep_ScatterVauliskLure
+  (TerminalBiomes/Source/) rolls a single spawnChance and places at most one
+  RM_VauliskLure — never vanilla GenStep_ScatterThings, whose
+  countPer10kCellsRange cannot guarantee an exact cap.
+
+  Registered only into RM_SeaDiveGenerator_TwilightSea's own <genSteps> list
+  (Patches/RM_TwilightScatterVauliskLure_Register.xml) — same "the generator
+  list is the only scope that is actually [this sea]" reasoning
+  RM_GreySeaFloorScatter.xml's own header already gives, never a
+  terrain-tag-scoped global registration (RM_SeaFloorGround is shared by all
+  four sea floors).
+
+  order 878: after RM_PlaceSeaDiveExit (400) has reserved the exit, and
+  before the vanilla Plants step (900) so a plant-shaped disguise never lands
+  under real flora placed on top of it. No terrain dependency: the class
+  itself checks Standable/Fogged, needing no terrainValidationAllowed list.
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_TwilightScatterVauliskLure</defName>
+    <order>878</order>
+    <genStep Class="RimMandrake.TerminalBiomes.RM_GenStep_ScatterVauliskLure">
+      <spawnChance>0.35</spawnChance>
+      <thingDefName>RM_VauliskLure</thingDefName>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

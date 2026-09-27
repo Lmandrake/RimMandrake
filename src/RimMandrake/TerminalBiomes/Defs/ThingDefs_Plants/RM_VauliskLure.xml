@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_VauliskLure.xml                     TerminalBiomes · TWILIGHT_DANGER_LIGHTWEB_1
+  ============================================================================
+  design §D4a/§D4c: "spawns rarely, in the dark between shafts, disguised as
+  a lit lamp-bladder plant." This IS the disguise — a plant carrying a
+  steady CompGlower and RM_Comp_VaeuliskLure (TerminalBiomes/Source/), never
+  RM_Comp_WarblingGlow. That absence is the tell, read structurally: every
+  living lamp in this biome breathes (RM_Comp_WarblingGlow's own pulse), and
+  this one deliberately never will.
+
+  Placed at map generation, at most once per map, by
+  RM_GenStep_ScatterVauliskLure (Defs/MapGeneration/
+  RM_TwilightScatterVauliskLure.xml) — never via <wildPlants>, which has no
+  way to cap a roster row at "at most one."
+
+  PLACEHOLDER ART: reuses RM_MoldMatRoof's own texPath
+  (Things/Plant/Echeveria/EcheveriaA, confirmed physically present — see
+  RM_TwilightSeaFlora.xml's own header), distinguished by colour alone. This
+  mod already establishes that convention for two Twilight plants sharing
+  one texPath (RM_SaltBladeTwilight/its Grey cousin); no suulk/vaulisk-family
+  art exists in artpipe done/_artsrc (checked this pass) so BENCH should file
+  a real regen once a review sheet exists.
+
+  no thessmoss ring (design §D4b): no thessmoss ThingDef exists anywhere in
+  this repo (checked this pass) for a reveal to kill a ring of — OWED, not
+  built, flagged rather than silently dropped.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_VauliskLure</defName>
+    <label>lit lamp-bladder</label>
+    <description>A hoolimbre bladder, or so it reads at range: a swollen gold shape holding steady light in the dark between two skylight shafts. Look longer and the wrongness surfaces — the glow never dims, never brightens, never breathes the way every real lamp in this sea breathes. No piip sparks around it. It is not a plant at all.</description>
+    <statBases>
+      <Flammability>0.4</Flammability>
+      <Nutrition>0</Nutrition>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Beauty>3</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(214,182,84)</color>
+      <colorTwo>(158,124,42)</colorTwo>
+      <drawSize>(1.1,1.1)</drawSize>
+      <shaderType>CutoutComplex</shaderType>
+    </graphicData>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>-20</minGrowthTemperature>
+      <maxGrowthTemperature>55</maxGrowthTemperature>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <interferesWithRoof>false</interferesWithRoof>
+      <topWindExposure>0</topWindExposure>
+      <purpose>Misc</purpose>
+      <allowAutoCut>false</allowAutoCut>
+      <!-- Never grows or spreads on its own — RM_GenStep_ScatterVauliskLure
+           places the single instance directly; wildOrder/wildClusterWeight
+           are irrelevant with no <wildPlants> row anywhere, kept unset. -->
+      <!-- No harvestWork/harvestYield/harvestedThingDef: PlantProperties.
+           Harvestable is a derived read-only property, so simply naming none
+           of those fields is how a plant def stays non-harvestable — never a
+           settable <harvestable> field. -->
+      <growDays>1</growDays>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>7</glowRadius>
+        <glowColor>(255,225,140,0)</glowColor>
+      </li>
+      <!-- Deliberately NO RM_Comp_WarblingGlow here — the steady, unbreathing
+           glow IS the tell (design §D4b). -->
+      <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_VaeuliskLure">
+        <revealRadius>1.9</revealRadius>
+        <checkIntervalTicks>30</checkIntervalTicks>
+        <revealPawnKindDefName>RM_Vaulisk</revealPawnKindDefName>
+        <dragCells>2</dragCells>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

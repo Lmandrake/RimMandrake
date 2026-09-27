@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TwilightSeaDangers.xml              TerminalBiomes · TWILIGHT_DANGER_LIGHTWEB_1
+  ============================================================================
+  design/Jawa/worldbuilding/biomes/the_twilight_deep_danger_pass_2026-09-27.md
+  §D2 (the suulk) and §D4 (the vaulisk) — RULED, all seven cards answered.
+  Both invented names (`RM_` tier per Q11a), collision-checked against
+  src/ and design/ at the sitting (2026-09-27, spec §1).
+
+  PLACEHOLDER ART: no suulk/vaulisk art exists anywhere in
+  infrastructure/artpipe/done or _artsrc (checked this pass, both by name and
+  by grep across manifests — zero hits). Both PawnKindDefs below point at
+  EXISTING vanilla RimWorld body textures, tinted to this biome's palette,
+  rather than a new PNG this pass did not generate — BENCH should file the
+  real art jobs (fill_queue.py) once a review sheet exists to judge them
+  against. See this file's own graphicData comments for which vanilla
+  texture each borrows and why.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ======================================================================
+       THE SUULK — the lamp-grazer (design §D2). Soft, slow, night-coloured;
+       nearly harmless to pawns; dims and destroys the brightest light it
+       can reach (RM_SeekGlowExtension + RM_JobGiver_SeekGlow/
+       RM_JobDriver_FeedOnGlow, TerminalBiomes/Source/).
+       ====================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Suulk</defName>
+    <label>suulk</label>
+    <description>A drifting fold of dark tissue, soft-bodied and nearly weightless in the water, almost invisible until a beam catches it and it goes briefly, quietly lovely. It feeds on luminous symbionts wherever it finds them — hoolimbre bladders, waelune, and, since the Compact and now the ship arrived, whatever cultivated light a hand has planted. Wild, the sea shrugs off what it takes; the colonies it grazes are older than its appetite. It wants nothing to do with anything that walks. It wants the light.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <MarketValue>40</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <!-- "A shove, a slime" (design §D2b) — nearly harmless to pawns on
+           purpose; this is not the biome's predator. -->
+      <li>
+        <label>shove</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>1.1</baseBodySize>
+      <baseHealthScale>1.1</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>25</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+    <modExtensions>
+      <li Class="RimMandrake.TerminalBiomes.RM_SeekGlowExtension">
+        <seekChancePerCheck>0.06</seekChancePerCheck>
+        <minGlowRadiusToTarget>1.5</minGlowRadiusToTarget>
+        <ticksBetweenFeeds>180</ticksBetweenFeeds>
+        <glowRadiusLossPerFeed>0.15</glowRadiusLossPerFeed>
+        <destroyBelowRadius>0.3</destroyBelowRadius>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Suulk</defName>
+    <label>suulk</label>
+    <race>RM_Suulk</race>
+    <combatPower>25</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <!-- PLACEHOLDER: vanilla Cobra's directional set, tinted near-black —
+         "night-coloured... almost invisible until a beam catches it." Cobra
+         gives a genuine north/east/south/west set (Graphic_Multi) rather
+         than a single flat silhouette, which reads better for something
+         meant to drift and turn. Real art owed (see file header). -->
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+          <color>(28,30,38)</color>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.15</drawSize>
+          <color>(28,30,38)</color>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+          <color>(28,30,38)</color>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ======================================================================
+       THE VAULISK — counterfeit gold (design §D4). Spawns disguised as a
+       dormant lamp-bladder plant (RM_VauliskLure.xml carries the disguise
+       comp); reveals to this pawn on proximity/harvest-job start
+       (RM_Comp_VaeuliskLure, TerminalBiomes/Source/). ONE PER MAP AT MOST
+       (ruled, C3) — enforced by RM_GenStep_ScatterVauliskLure placing at
+       most one lure per map generation, never by a spawn-time check on the
+       pawn itself.
+       ====================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vaulisk</defName>
+    <label>vaulisk</label>
+    <description>The Twilight's one liar. Every other light down here tells the truth — gold is home and harvest, blue-white is moving, green is growing — and the vaulisk is the single counterfeiter that whole grammar has to teach against. It hangs a false gold bladder, steady and never breathing, and waits in the dark between the shafts for something to mistake it for a lamp. What comes for the light gets the ambush instead: a fast strike out of the disguise, then a fight, in the dark, on its ground. Every Compact child learns the tell before they learn to swim a net: a lamp with no piip around it is not a lamp.</description>
+    <statBases>
+      <MoveSpeed>4.4</MoveSpeed>
+      <MarketValue>320</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.97</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>strike</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>1.4</baseBodySize>
+      <baseHealthScale>1.2</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>1.6</maxPreyBodySize>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1.0</manhunterOnTameFailChance>
+      <disableMating>true</disableMating>
+      <lifeExpectancy>20</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <comps>
+      <!-- design §D4b: "killed, its lure organ is a small trophy glower
+           item... the one lamp that never breathes." -->
+      <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_DropLureOrganOnDeath">
+        <dropThingDefName>RM_VauliskLureOrgan</dropThingDefName>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vaulisk</defName>
+    <label>vaulisk</label>
+    <race>RM_Vaulisk</race>
+    <combatPower>90</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <!-- Never spawned directly by the wild-animal spawner (ecoSystemWeight
+         0, and carries no wildAnimals row in RM_TwilightSea.xml on purpose)
+         — the only spawn route is RM_Comp_VaeuliskLure's reveal. -->
+    <!-- PLACEHOLDER: vanilla Megaspider's directional set, tinted toward
+         this biome's gold/black — a genuine ambush-predator silhouette
+         rather than the soft suulk's, so the two never read as the same
+         creature mid-reveal. Real art owed (see file header). -->
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megaspider/Megaspider</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+          <color>(58,46,18)</color>
+          <colorTwo>(212,178,74)</colorTwo>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
