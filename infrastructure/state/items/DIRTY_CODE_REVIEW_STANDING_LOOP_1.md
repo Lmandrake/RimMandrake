@@ -5597,3 +5597,64 @@ and `Pyrelands` (About.xml, BiomeDef, GenStepDefs, `Quickgrass.xml`,
 `FireEcologyHook.cs`/`.csproj`, `PlantGrowthStages.cs`, `RM_PyrelandsDensityEnforcer.cs`,
 `RM_PyrelandsMod.cs` — a large single-mod cluster, ~10 files). Re-run
 `list --show-untracked` fresh first — still several concurrent agents.
+
+## Wave 24 — 2026-09-26 (FOUNDRY, BELT mode)
+
+Re-ran `list --show-untracked` fresh first. Wave 23's two suggested clusters
+(DivingInteraction, Pyrelands) were both already fully resolved by concurrent
+work — every file in each was either already CLEAN or ORPHANED, none DIRTY.
+Instead picked the never-entered `src/RimMandrake/Wasteland` biome-mod
+cluster (11 files, confirmed DIRTY/never-entered via `check` and confirmed no
+concurrent uncommitted edits via `git status --porcelain`):
+
+`About/About.xml`, `Defs/BiomeDefs/RM_Wasteland_Biome.xml`,
+`Defs/HediffDefs/RM_BrineShock.xml`,
+`Defs/MapGeneration/RM_WastelandBrine_Scatter.xml`,
+`Defs/TerrainDefs/RM_WastelandBrine_Terrains.xml`,
+`Defs/ThingDefs_Buildings/RM_WastelandBrine_Deposits.xml`,
+`Defs/ThingDefs_Items/RM_WastelandBrine_Items.xml`,
+`Defs/ThingDefs_Plants/RM_WastelandFlora.xml`,
+`Patches/RM_WastelandBrine_ScatterRegister.xml`,
+`Source/RM_BiomeWorker_Wasteland.cs`, `Source/RM_WastelandMod.cs`.
+
+This mod is `WASTELAND_RM_MOD_BUILD_1` — a franchise-free RM-tier sibling of
+the frozen campaign's `RUT_Wasteland`, mostly renamed copies (`RUT_`→`RM_`)
+of already-shipped Utinni content. Cross-checked: `RM_Drazz`'s raw-ingest
+outcome doer resolves to `RM_BrineShock`; all three `RM_BrineDeposit_*`
+buildings' `mineableThing` resolve to `RM_Tekk`/`RM_Drazz`/`RM_BrinePlate`;
+the three brine-scatter `GenStepDef`s' `thingDef` targets resolve and their
+`terrainValidationAllowed` tag (`RM_WastelandBrineShallow`) matches the tag
+carried by both the biome's shallow AND moving-shallow water terrains (a
+straight, unmodified copy of the donor's own tag-based pattern, not a new
+risk); `RM_WastelandBiomeRanges` `ModExtension` is correctly declared on the
+BiomeDef and consumed by `RM_BiomeWorker_Wasteland.GetScore`; the mod's
+`.csproj` has `EnableDefaultCompileItems=false` and explicitly lists both
+`.cs` files. Gaps the files' own headers already flag honestly as REMAINS
+(unwired settings toggles, two donor textures not yet re-pointed, donor
+terrain defNames with unverified `MayRequire`) are pre-existing and
+documented, not new bugs.
+
+No bugs found in any of the 11. All marked CLEAN at `d6e05eb2d` (recorded
+timestamp; actual review this session). Status commit `a62a486b0`, pushed.
+
+11 files reviewed this wave, 11 newly CLEAN, 0 bugs found.
+
+Re-measured after: `TALLY CLEAN 3341 DIRTY 55 ORPHANED 211 NEVER ENTERED 713`
+(NEVER ENTERED down exactly 11 from this wave's own count; DIRTY ticked up
+3 net from concurrent agents re-dirtying previously-clean files elsewhere —
+expected churn, not this wave's doing).
+
+Next wave: re-run `list --show-untracked` fresh first — heavy concurrent
+activity this session. By-mod tallies of the current never-entered/dirty
+backlog (folder-name grep, not verified per-file): `TerminalBiomes` (123,
+**stay off** — sea-biome exclusion list), `UtinniPatches` (84, cross-cutting
+patches — likely to collide with whichever biome is being actively built,
+review in small same-topic sub-clusters only), `FeverWood` (56, **stay off**
+— `FeverWood/Source` explicitly excluded, confirm the rest before touching),
+`TheRot` (40), `LanternDeeps` (40, sea-biome-adjacent name — confirm before
+diving in), `RustCathedral` (38), `LuminousPigment` (33), `TheSump` (29),
+`Miasma` (29), `Contagion` (28), `Greentide` (22), `Webwork` (21, single
+never-entered mod cluster, no obvious exclusion-list overlap — good
+candidate), `EnvironmentalHazards` (16). None of these counts are
+per-file-verified; re-check DIRTY/never-entered status and `git status`
+before claiming any of them, several concurrent agents are active.
