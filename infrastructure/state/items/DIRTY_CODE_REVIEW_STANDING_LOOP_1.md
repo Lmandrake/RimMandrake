@@ -5240,3 +5240,72 @@ touching anything). ⛔ Keep avoiding the same exclusion list: biome-specific
 mod folders, `DivingInteraction`, `FeverWood/Source`, `TerminalBiomes`,
 anything with `BrineElder`/`GreySea` in its path, and `biome_paint_list.md`
 until told the concurrent biome-split build is done.
+
+## Wave 19 — 2026-09-26 (as FOUNDRY, Utils/PlantGrowth/ShipShields clusters)
+
+Re-ran `code_review_status.py list --show-untracked` fresh per wave 18's own
+instruction rather than trusting its list blindly — confirmed `git status
+--porcelain` clean on all four target areas (only an unrelated untracked
+`Utils/firehawk_flight_probe.py` sitting there, another agent's WIP, left
+alone). Picked 16 of the ~39 DIRTY files wave 18 named, leaving FlowWorks'
+larger XML FluidDef/TerrainDef cluster (~20 files, mostly stat-value tweaks)
+for a future wave:
+
+- **Utils cluster (7):** `artpipe/artpiped.py`, `artpipe/selftest_artpipe.py`,
+  `modcheck/suite.py`, `modset_builder.py`, `scald_showcase.py`,
+  `selftest_sound_paths.py`, `shared_sync.py`.
+- **`RimUtinni/PlantGrowth/Source` (4):** `Patch_Plant_GrowthRate.cs`,
+  `PlantGrowthConfig.cs`, `PlantGrowthMod.cs`, `PlantGrowthSettingsDef.cs`.
+- **`RimUtinni/ShipShields/Source` (5):** `ShieldFieldMode.cs`,
+  `ShieldHazardExposureTracker.cs`, `ShieldHazardUtility.cs`,
+  `ShieldLandingAdvisory.cs`, `ShipShieldsSettings.cs`.
+
+Diff-scoped each against its recorded clean-mark sha. `artpiped.py` carried
+the wave's one genuinely large diff (~900 lines: `ARTPIPE_CONSOLE_REDESIGN_1`
+wiring a new `console.py` presentation layer through `note_meters`/
+`finalize_job`/`main`, `ARTPIPE_QUOTA_RESET_WEDGE_1`'s
+`weekly_resets_at`/`_weekly_window_should_have_reset()` self-heal for the
+weekly-quota admission wedge, and `ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1`'s
+`_downscale_oversized_png` replacing an outright reject for an oversized-
+but-same-aspect render). Traced the wedge's admission-burst question
+specifically — `_weekly_window_should_have_reset()` can unblock more than
+"one job" within a single `while len(futures) < args.workers` claiming pass
+before the first job's completion refreshes `note_meters()` — and confirmed
+this mirrors the *already-accepted* row-3 `sleep_until` pattern exactly (same
+"blocked until a remembered deadline passes, then unblocked in a burst up to
+`args.workers` until the next real reading" shape), so not a new bug, just
+an existing accepted design repeated. Verified `IsHazardShielded`/
+`IsModeReadyAndPowered` in `ShieldHazardUtility.cs` are generic over
+`ShieldFieldMode` (no switch to update for the new `Cryo` case) before
+trusting the Ship Shields diff's cryo-envelope wiring. Ran the full
+`selftest_artpipe.py` suite live (not just read the diff) — **every check
+passed**, including the two new `test_oversized_*` and the new
+`test_detector_weekly_resets_at_self_heals_the_wedge` cases — confirming the
+three artpiped.py mechanisms above actually work end to end, not just read
+plausibly.
+
+**No bug found in any of the 16.** All marked CLEAN at `971950fec`. Status
+commit `c8440f0c6`, pushed.
+
+16 files reviewed this wave (all diff-scoped), 16 newly CLEAN, 0 bugs found.
+
+Re-measured after: `TALLY CLEAN 3216 DIRTY 164 ORPHANED 211 NEVER ENTERED
+668` (up from wave 18's 3200/180/211/667 — exactly this wave's 16-file net
+CLEAN gain; NEVER ENTERED ticked up by 1 from a concurrent agent's new
+`console.py`/`selftest_console.py` pair, out of this wave's scope).
+
+Next wave: the remaining DIRTY-since-clean backlog in `FlowWorks/` —
+~20 XML FluidDef/TerrainDef files under `Defs/LiquidTypes/TerrainDefs/`
+(`RM_AcidWater.xml`, `RM_Ammonia.xml`, `RM_Coolant.xml`, `RM_FuelSap.xml`,
+`RM_Ichor.xml`, `RM_Ooze.xml`, `RM_Propane.xml`, `RM_ReactionLiquor.xml`,
+`RM_SlimeGreen/Red/White/Yellow.xml`, `RM_Tar.xml`,
+`RM_WaterBoiling/Brackish/Brine/Frigid/Mineral/Poisoned.xml`), plus
+`FlowWorks_Fluids.xml`, `RM_LiquidBodyRegistry.xml`,
+`RM_LiquidBottles.xml`, `Flood_FlowWorks.cs`, `FluidDef.cs`,
+`RiverSteamHook.cs` and `generate_liquid_suite.py` — re-run
+`code_review_status.py list --show-untracked` first since only the four
+wave-19 target areas were re-checked against `git status --porcelain` this
+wave. ⛔ Keep avoiding the same exclusion list: biome-specific mod folders,
+`DivingInteraction`, `FeverWood/Source`, `TerminalBiomes`, anything with
+`BrineElder`/`GreySea` in its path, and `biome_paint_list.md` until told the
+concurrent biome-split build is done.
