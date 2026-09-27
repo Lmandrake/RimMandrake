@@ -587,3 +587,41 @@ filter-feeding C# unbuilt" line is stale against the shipped `RM_FilterFeedExten
 wiring; and `rosters/desert.json` still carries the unwired `AA_SandLion` import, the
 missing Stoneback/TruffleMole rows its own item flagged, and the live cephalope
 evict-vs-import conflict (Q7).
+
+## Rulings — the 2026-09-27 sitting (all 12 questions ruled, same day)
+
+Rounds: three question cards plus the owner's typed chat rulings. Card clicks are
+"decision taken by question card"; quoted lines are his typed words. This section is
+authoritative over §7's recommendations where they differ.
+
+1. **Q1 tier move — RATIFIED, all 14 rows** move to `RM_LongShade`; labels unchanged
+   until the batch-4c naming sitting.
+2. **Q2 ultracactus — OURS.** Owner, typed: *"The ultracactus is not canon, I made
+   it."* → `RM_Ultracactus`, anchors the free tier.
+3. **Q3 forage — follows Q2**: the ultracactus pad is the standalone `foragedFood`.
+4. **Q4 fillers — not carded.** Owner, typed: *"Fill gaps in the animal and plant
+   roster creatively and show me what you make for review."* The five DRAFT fillers
+   (sollak, gennok, tebbra, dakkra, pirrik) go to art and return as a review sheet.
+5. **Q5 whale name — GLOOMCAST** (owner typed his own coinage into the card; it
+   stands as ruled and supersedes the *thommak* draft).
+6. **Q6 multi-homing — ruled per row**: *kreetle* ONE home, the **Stillsand** (this
+   doc's recommendation reversed); *kudda* ONE home, the **Long Shade**; *truffle
+   mole (pikkut)* the **Long Shade**; *gizka* needed no card — ruled 2026-09-14
+   (Pyrelands + Stillsand), so the Long Shade row is cut under the existing ruling.
+7. **Q7 cephalope — renamed QORRAX (ratified), our own recreated art owed**, and its
+   identity is the deadly sand-swimmer of the sand-swimmers mod. Owner, typed, on the
+   terrain: *"Deep sand pools are NOT unwalkable, just very slowly. And they should be
+   an entire terrain type, not just small pools. Some in the Long Shade, Muchly in the
+   Stillsand."* → `DEEP_SAND_WALKABLE_TERRAIN_1` (FOUNDRY) carries the def change;
+   qorrax reads as terrain-bound across both deserts (BENCH's reading, recorded on the
+   sitting item).
+8. **Q8 mounts — Dewback IN** (herd/mount, slowed under the pursuit ban, predator
+   flag measured first); **Blurrg OUT** (keeps a home for the Leaning Scrub sitting).
+9. **Q9 — the sand-lion import row is DEAD**; its label question stays with the
+   Stillsand sitting.
+10. **Q10 — the dew-line fringe is BOUND to the ultracactus ceiling**: pale, rim-only,
+    never green in quantity.
+11. **Q11 — marquee build order AS RANKED**: shade-harbour escalation → smoke
+    calendar → dew line.
+12. **Q12 — the wide gaps are named at the repaint window**, with the owner, not
+    before.
