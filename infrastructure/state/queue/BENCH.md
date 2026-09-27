@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T02:58:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T03:15:09Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -768,3 +768,23 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md
+
+## GREYSEA_SHIP_CRYSTALLISATION_1 Grey Sea claims a parked hull: crystallising encasement, doors frozen shut (owner-typed 2026-09-26) - design lands with the Grey's own danger/floor pass
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREYSEA_SHIP_CRYSTALLISATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_SHIP_CRYSTALLISATION_1.md
+
+## DARKSEA_LIGHT_ATTRACTION_1 Light-attraction danger belongs to the dark-floored seas: player light draws prey, predators follow - redirected from the Twilight by owner ruling; design at the Grey and Scald danger passes on RM_JobGiver_SeekGlow
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DARKSEA_LIGHT_ATTRACTION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DARKSEA_LIGHT_ATTRACTION_1.md

@@ -1,7 +1,8 @@
 # The Twilight Deep — danger pass (2026-09-27 sitting)
 
-> STATUS: complete design drop, 2026-09-27. Nothing here is filed work or an amendment
-> to the frozen sheet; BENCH files items and cards with the owner.
+> STATUS: RULED at the bench, 2026-09-26/27 — all seven cards answered, two of them
+> redirected by owner-typed lines; §5 records the verdicts and this file is edited to
+> the ruled state. Still not filed work or a frozen-sheet amendment.
 
 Companion to `the_twilight_deep.md` (frozen sheet, waveglass amendment 2026-09-26) and
 `the_twilight_deep_content_2026-09-26.md` (content drop). This file answers the owner's
@@ -35,7 +36,7 @@ Three consequences that shape every entry below:
    the Grey with better lighting; here they are the same population.
 2. **Light is the currency, so light is the lever.** The player's whole economy down
    here is chasing, farming and carrying light (content drop §6.4). Danger that taxes,
-   attracts to, or extinguishes light bites the player where they actually live.
+   grazes, or extinguishes light bites the player where they actually live.
 3. **The dark between the beams is the standing threat surface.** The sheet gave the
    dark to the predator (§5: *"the dark between is the predator's"*). This pass takes
    that line as load-bearing: the dark is not empty map, it is the place several of
@@ -46,7 +47,9 @@ Three consequences that shape every entry below:
 
 ## 1. Danger roster
 
-Nine entries. All names invented (`RM_` tier per Q11a); *suulk*, *vaulisk*, *undersurge*,
+Eight entries — D3, the lamp-lure, was CUT at the sitting (light-as-lure belongs to the
+dark-floored Grey and Scald, not the lighted Twilight; the ruling is in its slot and §5).
+All names invented (`RM_` tier per Q11a); *suulk*, *vaulisk*, *undersurge*,
 *gloamline* and *murrowisp* were collision-checked against `src/` and `design/` 2026-09-27
 (one hit was a base64 substring in a review sheet's embedded PNG, not a name) — re-check
 any renamed form before authoring, per the content drop's own convention. Every entry
@@ -109,12 +112,14 @@ inspect string says why).
 **(c) Engine.** One race + a **light-targeting JobGiver** (new C#, small): find highest
 `glowRadius` thing owned by player, path, channel "feed" job that decrements the glow
 (the breathing-radius ticker from content drop §6.2 already makes radius writable). The
-same targeting brain is D3's and D4's — **build it once as `RM_JobGiver_SeekGlow`,
-shared** — this is the pass's one deliberate C# consolidation.
+same targeting brain is D4's lure-in-reverse — **build it once as `RM_JobGiver_SeekGlow`,
+shared** — and it is the natural base for the light-attraction the owner redirected to
+the Grey and the Scald (§5, C2).
 
 **(d) Interactions.** Eats cultivated lights (noothelm, hoolimbre strings, waelune kept
 as pets — a real loss the children's animal makes cruel in exactly the right way);
-whether it can attack the **sun-sphere** — the endgame light — is an owner call (card C4).
+and it grazes the **sun-sphere** too, slowly and loudly — RULED (§5, C4): the dearest
+lamp needs a guard, not an exemption.
 Ignores the skylights (it cannot graze the sky) and the Compact's lamps (their stakes are
 suulk-scarred and tended — texture, and ban 4 kept: the Compact never suffers for the
 player's sake). During lid-dark (D9) suulk activity doubles: the dark brings the grazers.
@@ -122,39 +127,17 @@ player's sake). During lid-dark (D9) suulk activity doubles: the dark brings the
 **(e) BENCH position.** The signature danger of the set — it attacks the thing this
 biome made the player love — and cheap once `RM_JobGiver_SeekGlow` exists. Build second.
 
-### D3 — The drawn dark: light calls the sea
+### D3 — CUT: light does not call the sea here
 
-**(a) Fiction.** Every lit thing in the Twilight is a statement, and the sea answers.
-Shoals shelter in light; grazers follow shoals; and the loohn follows all of it. A lamp
-in the dark between the beams is not a wall against the sea — it is an invitation with
-the door held open. The Compact builds its lamplight in tight rings for a reason no one
-wrote down, because down here nobody needed to.
-
-**(b) In play.** A standing pressure, not an incident: player glowers exert a slow
-attraction on wild fauna — niim and noolim drift toward lit cells during dark weathers,
-nuudal graze toward the farm's edge, and **predators follow the prey into the lamplight**.
-A generous chained lamp field slowly becomes the busiest place on the map: pretty (the
-postcard is your own base, ringed in silver shoal-flash), abundant (fishing INSIDE your
-perimeter picks up), and then the loohn is standing in your kelp plot at 2am. Decisions
-forced: how much light to show, where — the light budget stops being purely economic and
-becomes a threat-surface dial. A tight ring is safe and poor; a sprawling chain is rich
-and open. This is the Twilight's replacement for a raid clock, built entirely from ban 4's
-constraint that no faction may ever be the threat.
-
-**(c) Engine.** A `MapComponent` (new C#, small-medium): periodic scan, wild-fauna wander
-bias toward high-glow cells during dark states, predator target-selection preferring lit
-zones when prey density there is high. Reuses `RM_JobGiver_SeekGlow`'s glow query.
-No new defs beyond tuning fields; a Mod Setting (attraction strength / off).
-
-**(d) Interactions.** Couples the light economy to the predator for free; makes D9's
-blackout an event (every fish in the map converges on the only lights left — yours);
-makes the whale sequence's frenzied-loohn hour genuinely dangerous at home rather than
-only in the wilds; and gives the decoy-lamp answer to D2 a second, sharper edge — the
-decoy that distracts the suulk is also chumming the water.
-
-**(e) BENCH position.** Yes — this is the axis the brief hinted at (the light IS the
-threat vector), it needs no new species, and it converts existing beauty into standing
-tension. The single highest leverage entry here.
+The drawn-dark proposal (player lamps attract prey, predators follow the prey into the
+lamplight) was put to the owner and cut for the Twilight. Owner, typed, 2026-09-26:
+*"Actually attacking light makes more sense in the Grey and Scald (dark on the bottom)
+than it does on the beautiful lighted Twilight floor with lots of lighted everything."*
+⇒ On a floor already full of living light, one more lamp is no signal; light-as-lure is
+a **dark-floor** mechanic. Redirected, not dead: the Grey and the Scald get the
+attraction mechanism when their danger passes come up, and `RM_JobGiver_SeekGlow`
+(D2/D4) is its natural shared base. The Twilight's standing pressures are the famine
+(D5), the grazer (D2) and the liar (D4) instead.
 
 ### D4 — The vaulisk: counterfeit gold
 
@@ -166,8 +149,7 @@ has exactly one counterfeiter, and every Compact child is taught the tell before
 are taught to swim a net: *a lamp with no piip around it is not a lamp.*
 
 **(b) In play.** Spawns rarely, in the dark between shafts, disguised as a lit
-lamp-bladder plant. Wild fauna are drawn to it (D3's mechanism working for the enemy —
-the lure feeds itself). A pawn sent to harvest "that hoolimbre we didn't plant" gets an
+lamp-bladder plant. Small wild fauna drift to its glow (the lure feeds itself). A pawn sent to harvest "that hoolimbre we didn't plant" gets an
 ambush: fast strike, drag two cells toward the dark, then it must be fought or driven
 off — dangerous to one pawn, not a base threat. The tell is real and learnable: no piip
 sparks, no breathing pulse (its glow is steady; every living lamp in the biome
@@ -181,15 +163,15 @@ dormant thing carrying the false glower; swaps to pawn on proximity/harvest-job 
 The reveal-swap is the one novel mechanism; the lure reuses `RM_JobGiver_SeekGlow`'s
 attraction in reverse (a glow that pulls). Trophy item is XML.
 
-**(d) Interactions.** Teaches D2/D3's systems by inverting them; the breathing-glow
+**(d) Interactions.** Teaches D2's system by inverting it; the breathing-glow
 ticker (already owed) becomes diegetic information; gives the dark between the beams a
 second resident beside the loohn so "the dark is the predator's" scales past one
 species; and during lid-dark (D9) a floor full of scattered lights is suddenly a floor
 where any of them might be lying.
 
-**(e) BENCH position.** Keep, one per map at most — the biome earns one liar exactly
-because everything else is honest, and it must never become common enough to make the
-colour grammar untrustworthy. Card C3 asks the owner.
+**(e) RULED (§5, C3).** In — one per map at most, the tell always readable: the biome
+earns one liar exactly because everything else is honest, and it must never become
+common enough to make the colour grammar untrustworthy.
 
 ### D5 — The light famine: the beams walk away
 
@@ -203,11 +185,11 @@ empty. Ban 5 was always a danger ruling wearing a real-estate hat.
 a player's ground is a slow, fully legible catastrophe: the rim dims over a day or two
 (the pale new-growth ring above thickens — a sky-read), the pallu thin out, the kelp
 stand starts dying, the fishing water fades, and then the cells go dark — and dark
-cells are D3's hunting ground and D2/D4's habitat. The early game is CHASING the light
+cells are the loohn's ground and D2/D4's habitat. The early game is CHASING the light
 (the brief's own line): pack the field, move the chained cages, follow the gold. The
 mid-game answer is the bank works (immobile, current-fed, light-independent wealth) and
-the late-game answer is growing your own (sun-spheres) — at which point D2 and D3
-re-price that answer. The famine is never a raid and never sudden; it is rent.
+the late-game answer is growing your own (sun-spheres) — at which point D2
+re-prices that answer. The famine is never a raid and never sudden; it is rent.
 
 **(c) Engine.** Extends the already-owed skylight-drift `MapComponent` (content drop
 §6.3): shorten the timer to ~a week, add the rim-dimming warning stage and a letter.
@@ -216,7 +198,7 @@ unlit cells, so closure hands territory to it mechanically, not just in prose.
 Everything else is already owed by the content drop.
 
 **(d) Interactions.** Prices the skylight-rights economy (a right expires with the
-shaft — ruled); feeds D1 (panes shed at closing wells); creates D3's dark frontier;
+shaft — ruled); feeds D1 (panes shed at closing wells); hands the loohn its dark frontier;
 makes the chained/walkable cage fields the designed answer (mobile farming exists
 BECAUSE the light moves); and the gardener event (whale sequence) firing a drift is the
 one place a danger has a face.
@@ -273,8 +255,8 @@ the map from home.
 the sink, a pawn takes **`RM_Hediff_Sunk`** — downed-adjacent: consciousness and moving
 crushed, a slow severity ramp (silt, cold, exhaustion), death in a day or two if
 unrecovered. The rescue is the set piece the mechanism was always pointing at: an
-expedition into the biome's worst ground — the dark between (D3/D4's habitat), possibly
-during the surge that caused it (D6), carrying lights that call the sea (D3). Getting
+expedition into the biome's worst ground — the dark between (the loohn's and D4's
+habitat), possibly during the surge that caused it (D6), into the liar's country. Getting
 your colonist back is a story every single time, and the Mod Setting ladder makes it
 harsher for those who want it: default *recoverable*; harsher *recoverable-but-injured*
 (permanent lung/frostbite-analog scarring); harshest *lost* (the pawn is gone, a
@@ -291,50 +273,53 @@ far from the wells — high ground gets the light, low ground gets the river); t
 wreck and the Compact's ford-stones both read as the sink's history; and the net-widow's
 whole characterisation is this mechanism with a face.
 
-**(e) BENCH position.** **Recoverable by default, harsher Mod Settings** — the standing
-BENCH position, restated as the formal answer to the river-sink card; the Grey's
-encasement precedent (recoverable, dangerous object-state) is the owner's demonstrated
-posture and this matches it.
+**(e) RULED (§5, C1).** Recoverable by default, with the harsher Mod Setting ladder —
+the Grey's encasement precedent (recoverable, dangerous object-state) matched.
 
-### D8 — The green welcome: the sea loves your ship
+### D8 — The laden deck: the sky lands on your ship
 
-**(a) Fiction.** Nothing down here is dead ground, including the hull. Park the
-gravship on the floor and the Twilight starts moving in: vaalstone sheen on the plates,
-aluun windows lighting along the keel, piip in the intake shrouds, skirroth cord across
-the hatch hinges. It is the most beautiful thing that can happen to a spacecraft, and
-the Compact's word for a long-parked hull — *green-welcomed* — is a compliment and a
-warning in one mouth. The ship is the only way back. The sea knows where the door is.
+**RULED at the sitting — ship danger is IN, and the owner replaced the slow-fouling
+draft with a sharper mechanism.** Owner, typed, 2026-09-26: *"Yes. The grey sea should
+crystallize the hull, freeze doors shut. twilight drops sky panes on the ship that need
+to be cleared off."* ⇒ Each sea claims a parked hull in its own register: the Grey
+encases (crystallising hull, doors frozen shut — owed to the Grey's pass), and the
+Twilight **buries the deck in veil-fall**.
 
-**(b) In play.** A slow fouling clock while the ship sits on the floor: a severity that
-climbs over many days, fully visible as art stages on the hull (the spectacle IS the
-gauge). Consequences by stage: cosmetic → the ship itself becomes a D3 attractor (its
-lit growth calls the sea to your own airlock) → at high fouling, **launch requires a
-scrape** first: a work-heavy cleaning job (yields vaalstone pigment, aluun panes, a few
-ulloo — the sea pays you back for evicting it). ⛔ Never a stranding: fouling DELAYS
-departure behind a job the colony can always do; it never disables the engine, never
-compounds with damage, never fires during an emergency launch already in progress. The
-high-stakes ship axis is used as the brief allows — carefully — as a tax on
-overstaying, not a trap.
+**(a) Fiction.** The ship sits under a shedding sky. Panes settle on the hull the way
+they settle on the floor — and a deck under veil-fall is the most beautiful thing that
+can happen to a spacecraft, translucent blue-green sheets catching the beams, right up
+until the day you need to leave. The ship is the only way back. The sky knows where it
+is parked.
 
-**(c) Engine.** A `MapComponent` or comp on the grav-engine's map presence (new C#,
-small-medium): a severity float, art overlay stages on hull things (route UNMEASURED —
-overlay vs swapped graphics; read the engine before authoring), a launch-gate check at
-high severity, and the scrape job. Mod Settings: fouling on/off, rate.
+**(b) In play.** While the ship sits on the floor, veil-fall accumulates on it — D1's
+pane events and the ordinary shed land on the hull's footprint as visible pane things;
+the spectacle IS the gauge. **Launch requires a cleared deck**: a clearing job per pane,
+each yielding the harvestable pane material (the sea pays you for evicting it). ⛔ Never
+a stranding: panes DELAY departure behind a job the colony can always do; they never
+disable the engine and never fire during an emergency launch already in progress — the
+never-strand guarantee stays a binding bar on the item.
 
-**(d) Interactions.** Makes ship-only access cut both ways without ever threatening the
-ONLY-way-back rule's spirit; couples to D3 (a fouled ship glows); the Compact's
-bottom-houses show hulls kept scraped (texture that teaches the mechanic before it
-bites); and the picked wreck acquires a second reading — that is what the sea does with
-a ship nobody scraped, generations on.
+**(c) Engine.** Simpler than the fouling draft: no severity float, no hull-art staging.
+Panes are things landing on ship-footprint cells (D1's skyfaller, unmodified); a
+launch-gate check counts panes on the footprint; the clearing job is near-vanilla
+(haul/deconstruct-shaped). Mod Settings: accumulation rate, off.
 
-**(e) BENCH position.** Yes, with the never-strand guarantee written into the item as a
-binding bar — this is the entry most likely to be over-built into a trap, and the
-guarantee is what keeps it inside the owner's "carefully."
+**(d) Interactions.** Rides D1 wholesale — floor and deck are ONE pane system; a long
+stay reads on the hull at a glance; heavy shed before lid-dark (D9) loads the deck at
+the worst time; the picked wreck acquires its second reading — a ship nobody cleared,
+generations on; and the Grey's crystallisation twin makes ship-claiming a cross-sea
+grammar: every sea touches your ship in its own voice.
+
+**(e) BENCH position.** Better than the draft in every direction: cheaper (a launch
+gate inside D1's system, no new comp), prettier, and coupled to work already owed.
 
 ### D9 — Lid-dark: the day the sky goes out
 
-**(a) Fiction.** Sometimes the waveglass thickens — a bloom above it, a silt tide, the
-lid healing itself after a heavy shed — and for a day the gold does not come down. No
+**RULED (§5, C7): lid-dark has no timer — it falls when the gardener's passes align.**
+
+**(a) Fiction.** The sky goes out because something vast is overhead: the gardener
+working a long seam of the lid, the waveglass thickening behind it after a heavy shed
+— and for a day the gold does not come down. No
 beams. No moving patches. The whole sea runs on its own small lights, which is the
 Twilight remembering what every other biome on this planet already knows about the
 dark. The Compact bars no doors and lights every lamp, and the children are kept in.
@@ -342,20 +327,22 @@ dark. The Compact bars no doors and lights every lamp, and the children are kept
 **(b) In play.** A rare weather (the content drop's lighting-only set, one step past
 `RM_TwilightOvercast`): every skylight at ~0 for ~a day. Fishing in the shafts stops
 (the water is dark), kelp pauses, and the map's entire economy of visibility inverts
-onto the player's handful of lamps — which, per D3, now concentrate every living thing
-on the map, while D2's grazers and D4's liar work a floor where scattered gold lights
-can no longer be assumed honest. Not damaging in itself; it is the amplifier weather
+onto the player's handful of lamps, while D2's grazers and D4's liar work a floor where
+scattered gold lights can no longer be assumed honest. Not damaging in itself; it is the amplifier weather
 that makes the biome's whole danger grammar play at once. The morning after, the beams
 return — moved (a drift check fires), because the lid healed differently than it was.
 
-**(c) Engine.** One `WeatherDef` + the skylight ticker already reading current weather
-(content drop §7.1 built exactly this hook for `RM_TwilightSilt`). The drift-on-exit is
-one call into D5's component. **No new C#.**
+**(c) Engine.** One `WeatherDef`, triggered from the gardener-passes incident (a
+fraction of passes escalate to lid-dark — ruled cadence, no commonality-table timer) +
+the skylight ticker already reading current weather (content drop §7.1 built exactly
+this hook for `RM_TwilightSilt`). The drift-on-exit is one call into D5's component.
+**No new C#.**
 
-**(d) Interactions.** The showcase of the set: D2 doubled, D3 at maximum, D4 at its most
-credible, D5 advanced a step at dawn — and the beauty holds, because a floor lit only
-by living light is the content drop's §6.1 rule made total. Whale-shadow beat 2 was the
-one-hour preview; lid-dark is the feature.
+**(d) Interactions.** The showcase of the set: D2 doubled, D4 at its most credible, D5
+advanced a step at dawn — and the beauty holds, because a floor lit only by living
+light is the content drop's §6.1 rule made total. It now deepens the gardener event
+instead of running beside it: the whale-shadow hour is the preview, lid-dark is the
+feature, and both wear the same face.
 
 **(e) BENCH position.** Ship it with the weather set — it is nearly free and it is the
 single best demonstration that the Twilight's danger comes through its beauty.
@@ -368,13 +355,13 @@ see nothing double-spends:
 | existing system | which dangers touch it | how |
 |---|---|---|
 | **skylight drift (~a week)** | D1, D5, D9 | closing wells shed panes; drift IS the famine; lid-dark fires a drift at dawn |
-| **chained cage fields / walkable lights** | D2, D3, D5 | grazers eat them; light draws the sea to them; mobility is the designed answer to the famine |
-| **cultivated light (noothelm / hoolimbre / sun-sphere)** | D2, D3, D4 | the suulk's meadow; the attraction source; the thing the vaulisk counterfeits |
+| **chained cage fields / walkable lights** | D2, D5 | grazers eat them; mobility is the designed answer to the famine |
+| **cultivated light (noothelm / hoolimbre / sun-sphere)** | D2, D4 | the suulk's meadow; the thing the vaulisk counterfeits |
 | **bank works + river current (ONE piece, ruled)** | D6, D7 | the surge brings the river to the immobile prize; the sink is where a mistake on the bank ends |
-| **veil-fall / shed panes** | D1, D6, D9 | the pane event is a strike; litter accelerating on the bed is the surge's tell; heavy shed precedes lid-dark |
-| **the clinging layer** | D4, D8 | no-piip-around-it is the vaulisk's tell; the layer is what colonises the hull |
-| **whale sequence (frenzy hour)** | D3, D5 | frenzied loohn + drawn-to-light prey = the frenzy reaches the base; gardener passes can fire a drift |
-| **the loohn (the ONE existing predator)** | D3, D5, D7, D9 | never buffed, never multiplied — every entry makes the EXISTING predator matter more by handing it dark ground and drawn prey |
+| **veil-fall / shed panes** | D1, D6, D8, D9 | the pane event is a strike; litter accelerating on the bed is the surge's tell; panes bury the parked deck; heavy shed precedes lid-dark |
+| **the clinging layer** | D4 | no-piip-around-it is the vaulisk's tell |
+| **whale sequence (frenzy hour)** | D5, D9 | gardener passes can fire a drift, and lid-dark itself fires from the passes (ruled) |
+| **the loohn (the ONE existing predator)** | D5, D7, D9 | never buffed, never multiplied — every entry makes the EXISTING predator matter more by handing it dark ground |
 | **ship-only access (RM_SeaDiveHatch)** | D8 | the only entry allowed to touch the ship, behind a never-strand bar |
 | **Compact houses / cast** | D2, D4, D6 | decoy stakes, the taught tell, the surge warning — the Compact is the danger's TEACHER, never its source (ban 4 intact) |
 
@@ -389,8 +376,7 @@ waveglass — every danger arrives FROM the sky or the floor, never at it.
 Discharged inside D7: the sink is designed as a **recoverable "sunk" state at the
 channel's low basin** — a dark-country rescue set piece rather than a coin-flip death —
 with a three-step Mod Setting ladder (recoverable / recoverable-with-scarring / lost).
-That is the standing BENCH position restated with the mechanism attached; card **C1**
-below puts it to the owner as the danger question it always was. Everything D7 needs
+RULED at the sitting (§5, C1): recoverable default, with the ladder. Everything D7 needs
 lands inside `TWILIGHT_CHANNEL_CURRENT_1`'s existing scope (the carry always needed an
 end state; this is the end state).
 
@@ -399,54 +385,45 @@ end state; this is the end state).
 | danger | new C# | size | shared with |
 |---|---|---|---|
 | D1 pane strike | skyfaller subclass only if stock can't carry the footprint | tiny–none | whale-rain beat 4 art language |
-| D2 suulk | **`RM_JobGiver_SeekGlow`** (find/path/feed on brightest glower) | small | D3, D4 — build once |
-| D3 drawn dark | attraction `MapComponent` (wander bias + predator preference) | small–medium | reuses D2's glow query |
+| D2 suulk | **`RM_JobGiver_SeekGlow`** (find/path/feed on brightest glower) | small | D4 — build once; the Grey/Scald attraction later |
+| D3 (cut) | — the attraction mechanism is redirected to the Grey and Scald | — | future Grey/Scald danger passes |
 | D4 vaulisk | disguise→pawn reveal swap | small | trophy item is XML |
 | D5 light famine | predator dark-gating comp; drift re-parameterised to ~a week | small | drift component already owed (§6.3) |
 | D6 undersurge | none beyond the owed current component — a condition-driven multiplier on it | — | `TWILIGHT_CHANNEL_CURRENT_1` |
 | D7 sink | `RM_Hediff_Sunk` + carry-terminus in the current component | small | same item |
-| D8 green welcome | fouling severity + launch gate + scrape job; hull art staging route UNMEASURED | small–medium | — |
+| D8 laden deck | launch-gate pane count + clearing job; panes ride D1's skyfaller | tiny–small | D1 — one pane system |
 | D9 lid-dark | none (1 WeatherDef + existing hooks) | — | weather set (§7.1) |
 
-Net-new C# systems: **three** (`RM_JobGiver_SeekGlow`+attraction, the vaulisk reveal,
-the ship fouling comp); everything else rides components the content drop already owes.
-Suggested items: `TWILIGHT_DANGER_LIGHTWEB_1` (D2+D3+D4 — one glow-brain, three faces),
-`TWILIGHT_PANE_STRIKE_1` (D1), `TWILIGHT_SHIP_FOULING_1` (D8), with D5/D6/D7/D9 folded
-as bars into `TWILIGHT_FLOOR_LIGHTING_1`, `TWILIGHT_CHANNEL_CURRENT_1` and the weather
-step respectively. BENCH files with the owner, not this pass.
+Net-new C# systems: **two** (`RM_JobGiver_SeekGlow`, the vaulisk reveal); the deck's
+launch gate is a check inside D1's pane system, and everything else rides components
+the content drop already owes. Items filed from the sitting:
+`TWILIGHT_DANGER_LIGHTWEB_1` (D2+D4 — one glow-brain, two faces),
+`TWILIGHT_PANE_STRIKE_1` (D1+D8 — floor and deck are one pane system), and
+`GREYSEA_SHIP_CRYSTALLISATION_1` (the Grey's half of the typed C5 ruling); D5/D6/D7/D9
+fold as bars into the light-economy, channel-current and weather work already owed.
 
-## 5. Question-card candidates
+## 5. Rulings — 2026-09-26 sitting, all seven cards answered
 
-Genuine owner decisions only — no procedure, and nothing already ruled. Each with the
-BENCH position it would carry.
+Recorded on `TWILIGHTSEA_FLOOR_PASS_1`. C2 and C5 are owner-TYPED (quote-eligible);
+the other five are decisions taken by question card — our wording, clicked, never to
+be passed as `--owner-said`.
 
-- **C1 — The sink's outcome.** When the river carries a colonist all the way down: a
-  recoverable *sunk* state at the basin (a rescue story), with harsher Mod Settings up
-  to *lost*? **Position:** recoverable default, the ladder for players who want the
-  river to keep what it takes.
-- **C2 — May the player's light call the sea?** D3 makes every lamp a lure as well as a
-  tool — light becomes a threat-surface dial, and a big bright base is a busy one.
-  Keep, soften (prey only, predators never follow), or cut? **Position:** keep whole —
-  it is the biome's raid-clock replacement and it never fires a raid.
-- **C3 — One liar in an honest sea.** The vaulisk counterfeits the gold lamp — the one
-  break in the light-colour grammar, rare, with a learnable tell. In, or is the grammar
-  sacred? **Position:** in, at most one per map, tell always readable.
-- **C4 — What may the suulk eat?** Wild lights and cheap cultivated lights only, or the
-  sun-sphere too (the endgame light, dear to build)? **Position:** sun-sphere yes but
-  slowly and loudly — the dearest lamp should need a guard, not be exempt.
-- **C5 — May danger touch the ship at all?** D8 taxes an overstaying hull with a
-  scrape-before-launch job under a hard never-strand guarantee. In, or is the ship
-  sacrosanct? **Position:** in, with the guarantee as a binding bar on the item.
-- **C6 — How hard does the pane land?** Can a pane strike kill outright (crush kill on
-  a pawn in the footprint), or injure-and-pin only? The shadow gives ~15 seconds of
-  warning either way. **Position:** it can kill — the warning is real, the sky is
-  allowed one honest lethal thing, and everything else in this roster wounds first.
-- **C7 — Lid-dark cadence.** Roughly how often does the sky go out — seasons apart
-  (an event you remember) or weekly-ish (a rhythm you plan around)? **Position:**
-  seasons apart; it amplifies every other danger, so scarcity is what keeps it a
-  spectacle instead of a grind.
+- **C1 — the sink:** recoverable default, with the harsher Mod Setting ladder (card).
+- **C2 — light calling the sea: CUT for the Twilight.** Owner typed: *"Actually
+  attacking light makes more sense in the Grey and Scald (dark on the bottom) than it
+  does on the beautiful lighted Twilight floor with lots of lighted everything."*
+  The attraction mechanic is redirected to the dark-floored seas (D3's slot records it).
+- **C3 — the liar:** in — one vaulisk per map at most, the tell always readable (card).
+- **C4 — the suulk's diet:** the sun-sphere too, slowly and loudly (card).
+- **C5 — the ship: danger touches it, redesigned.** Owner typed: *"Yes. The grey sea
+  should crystallize the hull, freeze doors shut. twilight drops sky panes on the ship
+  that need to be cleared off."* ⇒ D8 is the laden deck; the Grey's pass owes hull
+  crystallisation and frozen doors (`GREYSEA_SHIP_CRYSTALLISATION_1`).
+- **C6 — the pane:** it can kill outright; the ~15 s shadow warning is the fairness (card).
+- **C7 — lid-dark:** tied to the gardener — no timer; the sky goes out because
+  something vast is overhead (card).
 
 ---
 
-*BENCH files items and cards with the owner; nothing above is filed work, and nothing
-above amends the frozen sheet until a sitting says so.*
+*Nothing above amends the frozen sheet until its sitting; the sheet's danger register
+(§9's "motion means life") gets the one-line addendum there, on his word.*
