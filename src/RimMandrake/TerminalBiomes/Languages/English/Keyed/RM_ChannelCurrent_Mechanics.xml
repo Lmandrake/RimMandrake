@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ChannelCurrent_Mechanics.xml        TerminalBiomes · TWILIGHT_CHANNEL_CURRENT_1
+
+  Translate keys for RM_MapComponent_ChannelCurrent.cs,
+  RM_Building_BankWeir.cs, RM_Thing_CargoFloat.cs.
+-->
+<LanguageData>
+
+  <RM_ChannelFirstEntry>The ground is moving under {0}.</RM_ChannelFirstEntry>
+
+  <RM_ChannelSunkMessage>{0} has gone under in the Twilight Sea's current.</RM_ChannelSunkMessage>
+  <RM_ChannelSunkLostLabel>{0} lost to the current</RM_ChannelSunkLostLabel>
+  <RM_ChannelSunkLostText>The current took {0} down to the sink and did not give them back. The river keeps what it wants.</RM_ChannelSunkLostText>
+
+  <RM_ChannelWeirBreach>{0} has breached — untended, and the undersurge found it.</RM_ChannelWeirBreach>
+
+  <RM_CargoFloatLoadLaunch>Load and launch downstream</RM_CargoFloatLoadLaunch>
+  <RM_CargoFloatLoadLaunchDesc>Load every loose haulable thing on this float's own cell and set it drifting down the channel. It rides the current whole; a weir arrests it intact, and even the sink cannot spoil what it carries.</RM_CargoFloatLoadLaunchDesc>
+  <RM_CargoFloatEmpty>Nothing loose here to load.</RM_CargoFloatEmpty>
+  <RM_CargoFloatArrived>A cargo float has come to rest at {0}.</RM_CargoFloatArrived>
+
+</LanguageData>

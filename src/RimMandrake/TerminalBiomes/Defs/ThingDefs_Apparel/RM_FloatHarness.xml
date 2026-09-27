@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_FloatHarness.xml                    TerminalBiomes · TWILIGHT_CHANNEL_CURRENT_1
+  ============================================================================
+  §5 rung 3 / §7 Q1 — RULED IN: "deliberate, one-way, weir-to-weir, forbidden
+  in surge." Worn, a pawn's carried speed is capped at MARGIN cadence even
+  in the CENTRE lane (RM_MapComponent_ChannelCurrent.CadenceFor reads
+  RM_Apparel_FloatHarness.IsWorn directly) — "you ride high." Its
+  CanEnterCurrent gate (RM_Apparel_FloatHarness.cs) is the choke point any
+  future deliberate-entry job must call; forbidding entry during an
+  undersurge is enforced there, not by the carry component itself (the
+  component still carries a harnessed pawn who was already mid-ride when a
+  surge starts — only STARTING a ride is gated).
+
+  Placeholder art: reuses the same vanilla Duster texPath RM_ScaldGear.xml
+  already ships successfully in this mod (see that file's own header for
+  why a proven texPath beats a guessed one).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ApparelMakeableBase">
+    <defName>RM_FloatHarness</defName>
+    <label>float harness</label>
+    <description>Hoolimbre bladders strapped into a net-cord vest — not for swimming, for riding. Step into the channel wearing one and you pack like cargo: capped to a margin's pace even in the centre, and caught at the next weir like anything else the river delivers. Take it off in a surge, or the ride is exactly as stupid as it sounds.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/Duster/Duster</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Neolithic</techLevel>
+    <costStuffCount>25</costStuffCount>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <tradeability>Sellable</tradeability>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <WorkToMake>2600</WorkToMake>
+      <Mass>1.8</Mass>
+      <StuffEffectMultiplierArmor>0.2</StuffEffectMultiplierArmor>
+      <EquipDelay>1.5</EquipDelay>
+    </statBases>
+    <thingCategories>
+      <li>ApparelMisc</li>
+    </thingCategories>
+    <apparel>
+      <bodyPartGroups>
+        <li>Torso</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Duster/Duster</wornGraphicPath>
+      <layers>
+        <li>Middle</li>
+      </layers>
+      <tags>
+        <li>Tribal</li>
+      </tags>
+      <canBeDesiredForIdeo>false</canBeDesiredForIdeo>
+      <defaultOutfitTags>
+        <li>Worker</li>
+      </defaultOutfitTags>
+    </apparel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>ElectricTailoringBench</li>
+        <li>HandTailoringBench</li>
+        <li>CraftingSpot</li>
+      </recipeUsers>
+      <displayPriority>205</displayPriority>
+    </recipeMaker>
+    <tradeTags>
+      <li>BasicClothing</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

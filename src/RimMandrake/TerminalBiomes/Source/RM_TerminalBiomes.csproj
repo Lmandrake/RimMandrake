@@ -83,6 +83,16 @@
     <Compile Include="RM_Comp_SkylightRight.cs" />
     <Compile Include="RM_Comp_WellChart.cs" />
     <Compile Include="RM_Comp_ClaimBuoy.cs" />
+    <!-- TWILIGHT_CHANNEL_CURRENT_1 -->
+    <Compile Include="RM_MapComponent_ChannelCurrent.cs" />
+    <Compile Include="RM_TerminalBiomesDefOf.cs" />
+    <Compile Include="RM_HediffComp_Sunk.cs" />
+    <Compile Include="RM_GameCondition_Undersurge.cs" />
+    <Compile Include="RM_Apparel_FloatHarness.cs" />
+    <Compile Include="RM_Building_BankWeir.cs" />
+    <Compile Include="RM_Building_SiltTrap.cs" />
+    <Compile Include="RM_Thing_CargoFloat.cs" />
+    <Compile Include="RM_GenStep_TwilightChannels.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GameCondition_Undersurge.xml        TerminalBiomes · TWILIGHT_CHANNEL_CURRENT_1
+  ============================================================================
+  §2 — "not a separate system... a parameter storm on §1.3." All the actual
+  behaviour (cadence, width-out, the grab) lives on
+  RM_MapComponent_ChannelCurrent, read via its SurgeActive flag; this def
+  only carries the label/description and the C# hook that flips it. Fired
+  by RM_MapComponent_ChannelCurrent's own MTB roll (its
+  TickUndersurgeRoll — kept off the GameCondition itself for the same
+  reason RM_MapComponent_GradientAxis's surge roll lives on ITS component:
+  something that outlives any one condition instance has to own the
+  schedule), gated by the "undersurge frequency" Mod Setting.
+
+  No IncidentDef targets this GameConditionDef at all — deliberately, same
+  posture as RUT_Surge.xml's own gradient surge in EnvironmentalHazards:
+  this mechanism owns its entire schedule in code
+  (RM_MapComponent_ChannelCurrent.TickUndersurgeRoll) and never wants the
+  vanilla storyteller rolling it independently.
+  ============================================================================
+-->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RM_GameCondition_Undersurge</defName>
+    <label>undersurge</label>
+    <description>The Twilight Sea's floor current runs deep and fast. The channels have widened onto the banks, and everything the river usually leaves alone is, for now, within its reach.</description>
+    <conditionClass>RimMandrake.TerminalBiomes.RM_GameCondition_Undersurge</conditionClass>
+    <letterText>The current has widened onto the banks — the sennefan have all snapped to alignment, and the murrol are already gone upstream.</letterText>
+    <letterLabel>Undersurge</letterLabel>
+    <letterDef>NeutralEvent</letterDef>
+    <displayOrder>10</displayOrder>
+  </GameConditionDef>
+
+</Defs>
