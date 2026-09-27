@@ -158,19 +158,34 @@ dependents sweep over every active mod's v1.6 load folders found no other active
 depending on it (About.xml) and no ungated def reference to its 212 defs in any active
 mod or in `src/` (every hit is a comment, a `MayRequire`, or a conditional-guarded op).
 
-**BLOCKER — the save, not the mod stack.** `CANONICAL_ASHKARR_START_2026-09-12.rws`
-lists `biomescore` in its modIds and holds BiomesCore apparel as real Things:
-`BMT_HermeticArmor` x3 / `BMT_HermeticHelmet` x1 (one worn by an AncientSoldier,
-`Faction_15`) plus `BMT_HermeticSuitHediff` x4 — the exact
-`lumi.doorsexpanded` 2026-09-09 incident shape (load refused `missing_mods`, force-load
-killed the process). Retiring biomescore now breaks the working save until
-`WORLD_REMAKE_FINAL_STEP_1`; that trade is the owner's.
+**biomescore RETIRED 2026-09-27 (owner: "try to fix the savegame then retire the retirable"),
+commit `51ede08fe`.**
 
-**Until these three are resolved, do not flip `ModsConfig.xml`** — matching
-this project's own `bbf66830` precedent ("ModsConfig deliberately UNTOUCHED
-— unticking is the owner's action"), and this item's brief said the same.
-The mechanical def-port itself is complete and clean; only the retirement
-half is blocked.
+- **Save scrubbed first, offline.** Backup:
+  `CANONICAL_ASHKARR_START_2026-09-12.rws.bak-pre-biomescore-retire-20260927T055758Z` (sha256
+  identical to the pre-edit save). Script `Transient/canonical_save_biomescore_scrub_2026-09-27.py`
+  (binary mode, line surgery, never in place). Removed: the `biomesteam.biomescore` row from all
+  three `<meta>` lists (positional, 617 → 616); the two map components
+  `BiomesCore.SpecialTerrainList` / `BiomesCore.Locations.LocationGrid`; the 3 `BMT_HermeticArmor`
+  + 1 `BMT_HermeticHelmet` Things (worn, world pawns) and the 4 `BMT_HermeticSuitHediff` hediffs
+  that reference them; one `VAE_Footwear_Shoes` made of `BMT_Sharkskin` (never ported); plus every
+  name-only reference to biomescore's 213 defNames — 37 `priceHistoryRecorders` key/value pairs
+  (removed positionally, asserted aligned), 109 flat filter entries, 9 Work Tab
+  `BC_HarvestAnimalProduct` rows, 2 auto-slaughter configs, 1 NPC contract, 2 tale `<app>` fields.
+  Three worn apparel items had their `<stuff>` repointed to the identical ported material
+  (`RSW_FragileChitin`, `RSW_WeakChitin`, `RSW_BiomesCore_CrabShell`). 543 lines / 16,937 bytes,
+  CRLF preserved (0 bare LF), whole-file ElementTree parse OK. Re-census over all 213 donor
+  defNames + `BiomesCore.*` classes: **0** (was 145 rows); controls `>Steel<` 917 and `>Human<` 864
+  unchanged. Terrain grid (savemap, 629-mod dump) holds no donor terrain.
+- **ModsConfig**: live 630 → **629**, FULL.LATEST recaptured (`modlist_swap.py --capture-full`),
+  pre-edit copy `infrastructure/state/modlists/ModsConfig.PRESWAP.20260926_230202_pre_biomescore_retire.xml`.
+  `retired_mods.json` lists it; the three `Biomes! Core` FindMod blocks (Armour_Leather,
+  MegafaunaYield, PawnFlavorPhase2_ThoughtDef) deleted and deployed; `selftest_retired_mods` 0 failures.
+  FlowWorks' `MayRequire="biomesteam.biomescore"` affordance rows stay by design (they degrade to absent).
+- **OWED: live verification** — load the canonical save on the full 629 list, expect
+  `compatible`/0 missing mods and no `Could not load reference` for any BMT_/BiomesCore name.
+  Blocked by `BLUEDESERT_ORPHAN_LOAD_CRASH_1` (full-list cold load currently resets ModsConfig).
+  Do this once that item closes, then close this one.
 
 ---
 
