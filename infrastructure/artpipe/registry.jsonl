@@ -8148,3 +8148,23 @@
 {"by": "artpiped", "event": "validated", "job_id": "spec_ui_podcrash_icon", "target": "spec_ui_podcrash_icon", "ts": 1790531063.8094647, "verdict": "pass"}
 {"by": "artpiped", "elapsed_s": 95.11981438499788, "event": "generated", "job_id": "spec_ui_shipbreak_icon", "target": "spec_ui_shipbreak_icon", "ts": 1790531161.437624}
 {"by": "artpiped", "event": "validated", "job_id": "spec_ui_shipbreak_icon", "target": "spec_ui_shipbreak_icon", "ts": 1790531161.4595141, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "CHILL_FLORA_BUILD_1", "target": "chill_plant_slackwax", "ts": 1790546778.728585}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "chill_plant_slackwax", "notes": "", "target": "chill_plant_slackwax", "ts": 1790546778.7513773}
+{"by": "fill_queue", "event": "registered", "source": "CHILL_FLORA_BUILD_1", "target": "chill_plant_ghostpane", "ts": 1790546778.7684205}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "chill_plant_ghostpane", "notes": "", "target": "chill_plant_ghostpane", "ts": 1790546778.7888525}
+{"by": "fill_queue", "event": "registered", "source": "CHILL_FLORA_BUILD_1", "target": "chill_plant_eldspar", "ts": 1790546778.8056443}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "chill_plant_eldspar", "notes": "", "target": "chill_plant_eldspar", "ts": 1790546778.8265522}
+{"by": "fill_queue", "event": "registered", "source": "CHILL_FLORA_BUILD_1", "target": "chill_plant_tarspool", "ts": 1790546778.8430898}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "chill_plant_tarspool", "notes": "", "target": "chill_plant_tarspool", "ts": 1790546778.865888}
+{"by": "fill_queue", "event": "registered", "source": "CHILL_FLORA_BUILD_1", "target": "chill_plant_keelgrass", "ts": 1790546778.8834405}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "chill_plant_keelgrass", "notes": "", "target": "chill_plant_keelgrass", "ts": 1790546778.903938}
+{"by": "fill_queue", "event": "registered", "source": "CHILL_FLORA_BUILD_1", "target": "chill_plant_stonewater", "ts": 1790546778.9199615}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "chill_plant_stonewater", "notes": "", "target": "chill_plant_stonewater", "ts": 1790546778.9395552}
+{"by": "fill_queue", "event": "registered", "source": "CHILL_FLORA_BUILD_1", "target": "chill_plant_fuselight", "ts": 1790546778.957111}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "chill_plant_fuselight", "notes": "", "target": "chill_plant_fuselight", "ts": 1790546778.9779658}
+{"by": "fill_queue", "event": "registered", "source": "CHILL_FLORA_BUILD_1", "target": "chill_plant_skyharp", "ts": 1790546778.9941206}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "chill_plant_skyharp", "notes": "", "target": "chill_plant_skyharp", "ts": 1790546779.0150023}
+{"by": "fill_queue", "event": "registered", "source": "CHILL_FLORA_BUILD_1", "target": "chill_plant_stillbloom", "ts": 1790546779.0309381}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "chill_plant_stillbloom", "notes": "", "target": "chill_plant_stillbloom", "ts": 1790546779.0500672}
+{"by": "fill_queue", "event": "registered", "source": "CHILL_FLORA_BUILD_1", "target": "chill_plant_pitchpearl", "ts": 1790546779.066768}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "chill_plant_pitchpearl", "notes": "", "target": "chill_plant_pitchpearl", "ts": 1790546779.0862963}
