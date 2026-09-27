@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T19:30:02Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-27T21:06:52Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -22,6 +22,15 @@ target:   v1
 kind:     task
 summary:  GREYSEAFLOORPASS1 — the whole Grey Sea floor pass
 prose:    infrastructure/state/items/GREYSEA_FLOOR_PASS_1.md
+
+## BIOME_LOAD_PROOF_WAVE_1 Prove every biome mod loads clean standalone on a minimal list - the narrow donor-retirement sense of PROVEN, not full functionality
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
+prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
 
 # IN PROGRESS
 
@@ -301,17 +310,7 @@ prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## BIOME_LOAD_PROOF_WAVE_1 Prove every biome mod loads clean standalone on a minimal list - the narrow donor-retirement sense of PROVEN, not full functionality
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-waiting:  needs `game-up`, game is DOWN
-summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
-prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -840,3 +839,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SPECULATIVE_ART_COMMISSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SPECULATIVE_ART_COMMISSION_1.md
+
+## CHILL_WARLAB_ROUTES_1 War-lab access spec: three blast tiers + two drill routes, factions and aftermaths
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLWARLABROUTES1 — the ways into the ancient war lab (design spec owed)
+prose:    infrastructure/state/items/CHILL_WARLAB_ROUTES_1.md

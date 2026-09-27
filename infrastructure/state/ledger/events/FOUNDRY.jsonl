@@ -925,3 +925,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"GREYSEA_SALTDOME_SCATTER_OOB_1","ts":"2026-09-27T16:21:05Z"}
 {"seat":"FOUNDRY","event":"start","id":"GREYSEA_SALTDOME_SCATTER_OOB_1","ts":"2026-09-27T16:21:08Z"}
 {"seat":"FOUNDRY","event":"close","id":"GREYSEA_SALTDOME_SCATTER_OOB_1","sha":"ff27cd5bdbd4d8b9a989decc2e9a17a0ea68e2fd","reason":"Harmony patch (RM_Patch_ScatterThingsClusterCenterGuard) forces GenStep_ScatterThings.TryFindScatterCell's safe non-cluster branch whenever a fresh cluster centre is needed, bailing on a genuine search failure instead of feeding IntVec3.Invalid to CellFinder.RandomClosewalkCellNear. Built and confirmed compiling; DLL+srchash rebuilt.","ts":"2026-09-27T16:45:27Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-27T21:03:37Z"}
