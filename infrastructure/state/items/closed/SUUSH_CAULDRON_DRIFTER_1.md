@@ -96,9 +96,67 @@ with its reason — the read depends on filament detail that dies at 256. West m
 ✅ Checked first: **zero** existing Suush art anywhere in `infrastructure/artpipe/`.
 
 ## criteria
-- [ ] Floating mechanism resolved — ours if it exists, donor only with a reason.
-- [ ] Atmosphere-feeding expressed, not plant grazing.
-- [ ] Detonation trigger ruled: damage vs death, deliberately, and written down.
-- [ ] Docile and genuinely tamable, verified against the engine not assumed.
-- [ ] Cast into the Cauldron's roster; solitary vs group decided.
-- [ ] Art wired when the three facings land.
+- [x] Floating mechanism resolved — ours if it exists, donor only with a reason.
+- [x] Atmosphere-feeding expressed, not plant grazing.
+- [x] Detonation trigger ruled: damage vs death, deliberately, and written down.
+- [x] Docile and genuinely tamable, verified against the engine not assumed.
+- [x] Cast into the Cauldron's roster; solitary vs group decided.
+- [x] Art wired when the three facings land.
+
+## build resolution — FOUNDRY, 2026-09-26
+
+Built, not just designed. `src/RimMandrake/PoisonForest/Defs/ThingDefs_Races/
+RM_PoisonForestFauna.xml` (new file, full header comment carries every
+citation below) + one line added to `RM_PoisonForest.xml`'s `<wildAnimals>`.
+
+- **Floating: CORE 1.6's own flight system, not VEF's `CompProperties_Floating`
+  and not new C#.** `MaxFlightTime` 600 / `FlightCooldown` 1 /
+  `flightStartChanceOnJobStart` 1.0 / `canFlyIntoMap` true — the exact fields
+  CLAUDE.md's flight section documents, MEASURED against
+  `RimWorld/Pawn_FlightTracker.cs` this pass (`Notify_JobStarted` rolls flight
+  at every job start; `MaxFlightTicks` from the stat governs how long before a
+  forced landing). Reads as continuously airborne at normal play timescales
+  without touching render code. `body: Bird` — reused rather than invented,
+  because it is the exact body vanilla's own Chicken/Duck/Goose/Sparrow already
+  prove compatible with these same flight fields (the Anomaly `Nociosphere`
+  body was considered and rejected: built for a `doesntMove=true` stationary
+  entity, risking the "Moving" capacity outright).
+- **Feeds on atmosphere: `foodType: None`**, not `VegetarianRoughAnimal`.
+  `RaceProperties.EatsFood => foodType != FoodTypeFlags.None` (MEASURED) — no
+  Food need at all, no foraging, no colonist ever feeds it. Existing vanilla
+  pattern, no new mechanic invented.
+- **Detonation: damage-triggered, not death-triggered — "shot", per the
+  owner's own word.** Vanilla core `CompProperties_Explosive` (no new C#),
+  `startWickOnDamageTaken: [Bullet, Bomb]` — ranged/explosive damage starts the
+  fuse immediately, before it is anywhere near dead. `explodeOnKilled: true` as
+  a backstop so however it actually dies, it goes up regardless.
+  `postExplosionGasType: ToxGas` ties the blast back to the fiction (it is
+  full of the same chemistry it feeds on). Judgment call, not an owner ruling:
+  reversible without ceremony.
+- **Tameable: verified against `TameUtility.CanTame` and
+  `Pawn_TrainingTracker.CanAssignToTrain`, both MEASURED this pass.** Taming
+  gates on `Wildness < 1` + `Animal` + faction null, NOT on `trainability` —
+  so `trainability: None` (matching the Aerofleet) does not block taming, only
+  trick training. `Wildness` statBase 0.5.
+- **Docile: `predator: false`, `manhunterOnDamageChance: 0`,
+  `manhunterOnTameFailChance: 0`, no `<tools>` at all** — it cannot attack even
+  if it wanted to.
+- **Cast: solitary** (`wildGroupSize: 1`, `herdAnimal: false`) at commonality
+  0.2 in `RM_PoisonForest.xml`'s inline `<wildAnimals>` (RM tier, no
+  `MayRequire`, no Utinni patch layer — Q11a, invented names). This build's own
+  call, not an owner ruling.
+- **Art: already generated and VALIDATED (pass) before this build started**
+  (`infrastructure/artpipe/done/cauldron_suush_{north,east,south}.json` +
+  `.manifest.json`, `registry.jsonl` `validated`/`pass` events, timestamped
+  2026-09-26T17:35Z, priority 20) — verified myself, not taken on trust.
+  Deployed unchanged to
+  `src/RimMandrake/PoisonForest/Textures/Things/Pawn/Animal/RM_Suush/
+  RM_Suush_{north,east,south}.png`, wired via `Graphic_Multi` (west mirrors
+  east). No second art job filed.
+- **Not done / left for a later pass:** no dessicated-corpse graphic (omitted,
+  same as this biome's other single-facing natives); no bespoke butcher
+  product (MeatAmount/LeatherAmount 0, matching the Blue Desert native
+  convention); the frozen campaign twin `RUT_PoisonForest` was NOT touched —
+  this creature lives only in the standalone `RM_PoisonForest` mod, per the
+  item's own "Home biome: RM_PoisonForest" framing; wiring it into the frozen
+  campaign world too is a separate future call if the owner wants it there.
