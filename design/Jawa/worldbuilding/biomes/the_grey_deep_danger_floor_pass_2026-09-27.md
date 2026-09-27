@@ -354,15 +354,19 @@ respect and future edits must keep respecting:
    (layer 1), fessk (layer 2), reefback (layer 3). One XML block each once the two
    §2.1 deltas exist.
 
-## Questions for the owner
+## Ruled — decisions taken by question card, 2026-09-26
 
-1. Hull crust chips off as the same salt-crystal item the floor jacket yields (the sea
-   pays you, D8's bribe grammar) — or should hull-chipped salt be worthless so parking
-   is never farmed?
-2. Doors salt shut from the outside and always force open from the inside (never a
-   tomb) — is that the right teeth, or do you want interior-trapping at some stage?
-3. Should interior heat slow hull crystallisation (temperature as the softener, matching
-   the pit ruling), giving a fuel-for-time trade?
+1. **Hull salt: the sea pays you.** Chipped crust yields the same salt-crystal item as
+   the floor jacket, in small amounts — D8's bribe grammar stands.
+2. **Never a tomb.** Doors salt shut from the outside only and always force open from
+   the inside. The danger is the ship's readiness, never the crew's air.
+3. **No fuel-for-time trade.** Crust pace is time alone; the counters are chipping and
+   leaving. Interior heat does nothing to it.
+9. **RUT_→RM_ catch rename: filed for execution now** — `GREYSEA_CATCH_TIER_RENAME_1`
+   (FOUNDRY), all seven invented-name catch items.
+
+## Questions for the owner — still open
+
 4. May the crusted giant read a strong steady player light as a rival's mate-mark and
    come to break it (§2.2 layer 3) — is that use of its one-glow canon yours to keep?
 5. Should strong player light give a small fishing-yield bonus on lit cells (the bribe
@@ -373,9 +377,9 @@ respect and future edits must keep respecting:
    attacking) — in, as the layer-2 tell?
 8. The suulk-named settings gate becomes a general per-sea light-attraction toggle when
    the Grey wiring lands — fine to generalise?
-9. The RUT_→RM_ migration of the seven catch items (invented names, wrong tier, free
-   mod's sea not fully fishable without the patch layer) — may that cross-mod rename be
-   filed for execution now?
+
+
+
 10. Of the four description-promised behaviours (haarn scrape-line, sallik
     pebble-freeze, hessal sealing, immu shell-lodging), build all, the ranked top two,
     or none for now?
