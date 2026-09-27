@@ -89,6 +89,7 @@
     </graphicData>
     <size>(2,1)</size>
     <rotatable>false</rotatable>
+    <tickerType>Normal</tickerType>
     <costStuffCount>16</costStuffCount>
     <costList>
       <RUT_Bitumen>10</RUT_Bitumen>
