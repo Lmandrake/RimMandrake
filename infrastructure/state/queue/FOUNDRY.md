@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T03:38:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T03:39:46Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1747,16 +1747,6 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  GREYSEAANCHORCREATURES1 — build the two anchors the Grey Deep is actually about, plus the Aerofleet replaceme…
 prose:    infrastructure/state/items/GREYSEA_ANCHOR_CREATURES_1.md
-
-## ARTPIPE_WORKER_AUTH_STALENESS_1 Stale worker-home auth.json capped real artpipe concurrency at 3 via refresh-token races
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  ARTPIPEWORKERAUTHSTALENESS1
-prose:    infrastructure/state/items/ARTPIPE_WORKER_AUTH_STALENESS_1.md
 
 ## SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1 One gravship can only ever visit ONE sea floor: MapPortal caches its pocket map, so the hatch's per-tile biome resolution runs once and every later dive re-enters the first sea
 state:    proposed
