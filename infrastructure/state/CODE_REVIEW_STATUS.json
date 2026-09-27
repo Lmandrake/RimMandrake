@@ -4583,6 +4583,54 @@
     "hash": "796094ca113297c1d87763e9ea4396946723a533da14ba6fb286670864450df1",
     "sha": "d28bf3edf"
   },
+  "src/RimMandrake/LeaningScrub/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "575587017c1e3b5bffaf53854daa1def8051771ce85eb06cf21f2e4e8591637b",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "1115b4bc5e7c75c2c58634e1efc440793b6d1030d71adb89d082601bbd2323ee",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SweetlineTree_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "068db9e9d5951ded3f35b6d03e6601ff28392f7aa8c5f7ab0377f00908a5fa7b",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_Fuzz.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "5bd247be66bba0cea5b3448599cfc901a8cc6c5d84acd71641109b2b61486ed0",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVanillaReplacements.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a7ca7c5419a2d94141548bccc8a3979b62085a78cc4b838d71b8159c17f38b61",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "745fc59794c729778ea03641abc1a5a08d868c1244c3b5ea422bd77c1aadb827",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LeaningScrub/Patches/BetterTrees_SweetlineTree_Immunity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "70d6ab15be3887303ff7968b6a207b951701a3beb49b08c743f4982352df41d8",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "8ea240950aa9041a3307919b70a92fe2b70c686e254b9c21e0baf91544a64d2f",
+    "sha": "782bd9ac6"
+  },
   "src/RimMandrake/LoadTracer/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-17",
@@ -4612,6 +4660,54 @@
     "date": "2026-09-17",
     "hash": "e2d74b62feb6d3ecb68d64388a359326e07cf77ebe7852d17286625d15f4ca71",
     "sha": "57d78d214"
+  },
+  "src/RimMandrake/LongShade/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "67338729b7ef2de2fc84cd8e4d475967dffeabae62cbe760e0664f92afe4bfa2",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "aa51393e849a1d20371f9ec3cd3f85029a60e46e78f16f4ff72587a71097bf83",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LongShade/Defs/HediffDefs/RM_Vorrel_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "e180f5c8cf77697fbd4e76be56dd8e2d6fb9772b4765567c84d95615e5445896",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LongShade/Defs/RecipeDefs/RM_Vorrel_Recipes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "7263c6cbf85d0e55faef39d9c6d4ef20e0af76885560658dd68f13ec3007902e",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LongShade/Defs/ThingDefs_Items/RM_Vorrel_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "49cd1ccffb57490f6c3212cdbd629316fe8743a3e6653d41b9515a038280d344",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_Vorrel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c7eaf6d2c1f99d5617482b04287505accf1a4e09be50ce1563b6c1e901eaadae",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LongShade/Defs/ThoughtDefs/RM_Vorrel_Thoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "483c2b4c197bb432eb8a24e1d4e692189c1ea5c68fcbe615601a18a49e6da18c",
+    "sha": "782bd9ac6"
+  },
+  "src/RimMandrake/LongShade/Source/RM_LongShadeMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "0c08542dcb72e5b32dae754d83d8db31f2ef1f2bf0d77dc792992c2a1e141d11",
+    "sha": "782bd9ac6"
   },
   "src/RimMandrake/LoreStages/About/About.xml": {
     "cleanCount": 1,
@@ -21728,6 +21824,18 @@
     "date": "2026-09-24",
     "hash": "210c85ca2c4773e3fe2b169868c706ce7a1c57b538b87c6a15e181171a8d5df9",
     "sha": "8b0b715b5"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/WildAnimals_LeaningScrub.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "4880f91f8732c334a1c591985c8c54972b76efebc09607b51e14e1ed1a9792e0",
+    "sha": "782bd9ac6"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/WildAnimals_LongShade.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "7890183ef150ef0767cf4248f76757382c8db1a994b3c916f73c18beb35963e9",
+    "sha": "782bd9ac6"
   },
   "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml": {
     "cleanCount": 3,
