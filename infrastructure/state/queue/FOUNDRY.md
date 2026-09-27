@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T04:50:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T05:12:09Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1536,6 +1536,16 @@ blocked:  Offline half done (d45ff841e): repo backup proven byte-exact in git hi
 summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
 prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
 
+## BIOME_DEFNAME_MIGRATION_WAVE_1 Three biomes renamed 2026-09-26 carry defNames that no longer match their labels: RM_NightsideIce/RM_PoisonForest/RM_Wasteland move to Sleeping Ice, Cauldron, Wastes per the Pyrelands precedent
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Live tile count UNMEASURED: RimWorldWin64 (PID 40272) up since 20:32 but RimBridge never opened a server - Player.log (36.6k lines, 22:10) has only mod-constructor STARTUP_TIMING lines, no 'Bridge token:'/port line, so rimbridge_client refuses (no token); 306 'Could not execute post-long-event action: Sequence contains no elements' errors in the load. No defName moved. Also note: the RUT_ twins (RUT_NightsideIce/PoisonForest/Wasteland) are the planet-painted defs (frozen CSV record carries them on thousands of rows - a RECORD, not a live measurement), so renaming the RUT_ side is the stranding risk; the item text owes only RM_ names while the brief also moved RUT_ - scope needs confirming. Sweep surface measured: ~60 src/ files incl. C# literals in RM_BiomeWorker_Wasteland.cs, RM_WastelandMod.cs, StructureInjectionsRUTSettings.cs, WarLabCraterMutation.cs. Unblock: a game load whose bridge answers jawa/world_stats.
+summary:  Per biome, following 84d42c63b:
+prose:    infrastructure/state/items/BIOME_DEFNAME_MIGRATION_WAVE_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1727,16 +1737,6 @@ kind:     followup
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  WARDENMOTHERTRAINABLEGATE1 — hard-exclude Rescue/general Haul from a self-tamed warden young's training tab
 prose:    infrastructure/state/items/WARDEN_MOTHER_TRAINABLE_GATE_1.md
-
-## BIOME_DEFNAME_MIGRATION_WAVE_1 Three biomes renamed 2026-09-26 carry defNames that no longer match their labels: RM_NightsideIce/RM_PoisonForest/RM_Wasteland move to Sleeping Ice, Cauldron, Wastes per the Pyrelands precedent
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  Per biome, following 84d42c63b:
-prose:    infrastructure/state/items/BIOME_DEFNAME_MIGRATION_WAVE_1.md
 
 ## GREYSEA_ANCHOR_CREATURES_1 Grey Deep's two unbuilt anchors (pillar-mason, ossuary shrimp) plus the AA_Aerofleet replacement - the sheet's whole image rests on creatures that have no defs
 state:    proposed
