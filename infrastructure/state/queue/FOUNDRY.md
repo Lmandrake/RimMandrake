@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T00:20:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T00:26:43Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1043,15 +1043,6 @@ target:   v1
 kind:     task
 summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
 prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
-
-## SUUSH_CAULDRON_DRIFTER_1 The Suush: a docile tamable floating sphere with gathering tentacles that feeds on the Cauldron's roiling chemistry and detonates when shot
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  SUUSHCAULDRONDRIFTER1 — the Suush
-prose:    infrastructure/state/items/SUUSH_CAULDRON_DRIFTER_1.md
 
 ## SEA_FISHABLES_ALIVE_IN_DEPTHS_1 Every fishable in EVERY sea owes a living creature swimming the floor map, not just a catch item - owner ruling 2026-09-26
 state:    doing
