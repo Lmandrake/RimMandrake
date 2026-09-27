@@ -376,3 +376,11 @@
 {"seat":"BENCH","event":"file","id":"TWILIGHT_BOTTOM_CAST_1","title":"The Deepwater bottom cast: 6-8 named residents of the lit bottom-houses (per-tile world objects), roles from the content doc section 9.3 as the starting sheet - ruled yes-to-all-three 2026-09-26","kind":"task","target":"v1","caused_by":"TWILIGHTSEA_FLOOR_PASS_1","for":"BENCH","ts":"2026-09-27T03:43:45Z"}
 {"seat":"BENCH","event":"note","id":"TWILIGHT_BOTTOM_CAST_1","text":"Decision taken by question card 2026-09-26 on TWILIGHTSEA_FLOOR_PASS_1. Design source: the_twilight_deep_content_2026-09-26.md section 9. Prose pass with the owner - design/ is his pen; ban 4 absolute (the Compact never hostile), the cast are teachers of the biome's mechanisms (weir form, stake-lines, the vaulisk tell, lease practice).","ts":"2026-09-27T03:43:48Z"}
 {"seat":"BENCH","event":"needs","id":"TWILIGHT_BOTTOM_CAST_1","to":"owner","ts":"2026-09-27T03:44:06Z"}
+{"seat":"BENCH","event":"reassign","id":"TWILIGHT_DANGER_LIGHTWEB_1","to":"BENCH","ts":"2026-09-27T03:47:47Z"}
+{"seat":"BENCH","event":"start","id":"TWILIGHT_DANGER_LIGHTWEB_1","ts":"2026-09-27T03:47:49Z"}
+{"seat":"BENCH","event":"reassign","id":"TWILIGHT_PANE_STRIKE_1","to":"BENCH","ts":"2026-09-27T03:47:52Z"}
+{"seat":"BENCH","event":"start","id":"TWILIGHT_PANE_STRIKE_1","ts":"2026-09-27T03:47:56Z"}
+{"seat":"BENCH","event":"reassign","id":"TWILIGHT_CHANNEL_CURRENT_1","to":"BENCH","ts":"2026-09-27T03:47:59Z"}
+{"seat":"BENCH","event":"start","id":"TWILIGHT_CHANNEL_CURRENT_1","ts":"2026-09-27T03:48:03Z"}
+{"seat":"BENCH","event":"reassign","id":"TWILIGHT_LIGHT_ECONOMY_1","to":"BENCH","ts":"2026-09-27T03:48:07Z"}
+{"seat":"BENCH","event":"start","id":"TWILIGHT_LIGHT_ECONOMY_1","ts":"2026-09-27T03:48:12Z"}

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T03:44:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T03:48:12Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1817,43 +1817,3 @@ kind:     task
 thin:     no ## verify
 summary:  1. Confirm the daemon is idle (or briefly pause it) before touching failed/,
 prose:    infrastructure/state/items/ARTPIPE_SALVAGE_REJECTED_SIZE_MISMATCH_1.md
-
-## TWILIGHT_DANGER_LIGHTWEB_1 Twilight light-web dangers: the suulk lamp-grazer and the vaulisk counterfeit-lamp ambusher on one shared RM_JobGiver_SeekGlow brain (rulings: sun-sphere grazeable slowly+loudly; one vaulisk per map, tell always readable)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TWILIGHT_DANGER_LIGHTWEB_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TWILIGHT_DANGER_LIGHTWEB_1.md
-
-## TWILIGHT_PANE_STRIKE_1 Veil-fall pane system, floor and deck: pane strikes (shadow warning ~15s, CAN kill - ruled) plus the laden deck (panes bury a parked gravship; launch needs a cleared deck; never-strand is a binding bar)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TWILIGHT_PANE_STRIKE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TWILIGHT_PANE_STRIKE_1.md
-
-## TWILIGHT_CHANNEL_CURRENT_1 The Twilight river as ONE system (owner-ruled coupling): channel carry component + undersurge flood state + sink terminus with settings ladder + the bank works (weir, silt-trap, stake-line) and its breach cascade
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TWILIGHT_CHANNEL_CURRENT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TWILIGHT_CHANNEL_CURRENT_1.md
-
-## TWILIGHT_LIGHT_ECONOMY_1 Build the Twilight light economy: RM_MapComponent_WellLedger (week-scale drift, rim-dimming warning, gardener-fired lid-dark), RM_CompGlowerMobile, the mobile constellation (chains ~6/~10, minify moves), tenancy paper layer
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TWILIGHT_LIGHT_ECONOMY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TWILIGHT_LIGHT_ECONOMY_1.md
