@@ -17361,6 +17361,48 @@
     "hash": "fad81ab1c65cacedf9d8bbd209824161ff18cbe38d3409aa03777b46af67d501",
     "sha": "9c1bce648"
   },
+  "src/RimUtinni/GreentideRaidAnt/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "10dacc018fcd8ad6a3b6afc701fddbb3c6f9ad23160c2171239c9355e44f6523",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/GreentideRaidAnt/Defs/FactionDefs/RUT_Faction_GreentideAnt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "72911c1a90d616d5750dc3d3266517a3ec9e89f21b77775284699f1de6095aa6",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/GreentideRaidAnt/Defs/ThingDefs_Buildings/RUT_Building_GreentideAntCarapaceWall.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b0a65866d3573fb56d955e036cb9421f9fcc8f3fbb31e18b202c40cf97ac848e",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/GreentideRaidAnt/Defs/ThingDefs_Items/RUT_Item_GreentideAntCarapace.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "906f189f4ce5b6f644b6749549024b3443840086a25088fafdc97a54cb633654",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/GreentideRaidAnt/Defs/ThingDefs_Races/RUT_PawnKinds_GreentideAnt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "be63fb3e83e40f86b89e9b27e73115a6d4d9d6f6b01459cdeeb8315ebed488e3",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/GreentideRaidAnt/Defs/ThingDefs_Races/RUT_Race_GreentideAnt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c86088f322df90945525800bf7931b626fd818da85d41d0c192364aa2374a78e",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/GreentideRaidAnt/Defs/ThinkTreeDefs/RUT_ThinkTree_GreentideAnt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "87c09f5d641a5de4bb0bf64cb4bcebb97124f54412249bd5e6bdab7e81da68a9",
+    "sha": "d2cc05027"
+  },
   "src/RimUtinni/GritheArtOverride/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -18338,6 +18380,48 @@
     "date": "2026-09-24",
     "hash": "f4e963f7a809eebe369205d4f5c32422ef17b097e6a50c58e4d479b2692c42c2",
     "sha": "1fc63ee14"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b2da98301ea2beb0aeb871c043b87bb25eb87754371ecc4767a54e296718d0cc",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Defs/HediffDefs/RUT_PropaneAgitation.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "e423afb1102c64954914874a9fe19041ea6bf82132264a4f2098a2e086fe6288",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Defs/IncidentDefs/RUT_SaturationHeistRaid.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c5c9427a518cb1ba644791c92dd43d9dafa88807519b631e8570fcbc8a8fd1d1",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Defs/ThingDefs_Buildings/RUT_GasVent.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "57f5b4cbc01a9515290ebd332666dd2cbe43df1139e34f0fc60423c98f4682d2",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Defs/ThingDefs_Buildings/RUT_PipeInfrastructure.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "1bfaa93ef004ffcf473a98b1c57f8d76649923c9ecbe18ee9cc1121d921bc52b",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Languages/English/Keyed/PropaneLakeMechanics.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "583dfb26772ae53f63f372832de5c10e34d437feadb389ca9e22268b971c2a5b",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/PropaneLakeMechanics/Patches/RUT_VWake_AddAgitationComp.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "15d914e8d98b143e4ff3de95e74e8de1729d8c5d2599cdeb4187a4d33b88040b",
+    "sha": "d2cc05027"
   },
   "src/RimUtinni/PropaneLakeMechanics/Source/CompGasVent.cs": {
     "cleanCount": 1,
@@ -19569,6 +19653,12 @@
     "hash": "cf430d30d1186b7221bce47000d0842037a43f2319550b5b893170c201bf2b01",
     "sha": "d1c393c02"
   },
+  "src/RimUtinni/ShokkweaveEconomy/Defs/TraderKindDefs/RUT_HuttCartel_EggMarket.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c91bdae1c97e0c34c8a24d63d402e09bbe497a3f3731abd04b312125ec9d41f9",
+    "sha": "d2cc05027"
+  },
   "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveButcherYield.xml": {
     "cleanCount": 1,
     "date": "2026-09-11",
@@ -19580,6 +19670,12 @@
     "date": "2026-09-24",
     "hash": "ef66aa9adef0db8727f7ef560172b5b3ed7ebc92a6c7206a15457ed19e568828",
     "sha": "33550ddc7"
+  },
+  "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveEggBlackMarket.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "43cf7b14345d1c0443f00a71045312865e70a35c7eade8397d0eda301d598f3c",
+    "sha": "d2cc05027"
   },
   "src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveHarvestScatter_MapGenPatch.xml": {
     "cleanCount": 1,
@@ -22178,6 +22274,18 @@
     "date": "2026-09-24",
     "hash": "db618cec3690bcaa734f15402d3d9daad9895a26105119ee593b70369841aae8",
     "sha": "9c1bce648"
+  },
+  "src/RimUtinni/WildsteamEggBounty/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c4616c39d2be5f54492fd91654ed44a8d8d1dbc7dc9e0813033644f74d1ceda1",
+    "sha": "d2cc05027"
+  },
+  "src/RimUtinni/WildsteamEggBounty/Defs/QuestScriptDefs/RUT_WildsteamEggBounty.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b5b02d520be5f934d6d98d5a89cde401ba951aa9ed6f0c872cb005da2a358cf3",
+    "sha": "d2cc05027"
   },
   "src/RimUtinni/WildsteamEggBounty/Source/RM_QuestNode_GetWildsteamSettlement.cs": {
     "cleanCount": 1,
