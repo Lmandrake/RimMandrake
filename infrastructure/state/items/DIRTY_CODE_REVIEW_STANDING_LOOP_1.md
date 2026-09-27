@@ -5922,3 +5922,75 @@ before picking them up. Otherwise pick a similarly-sized fresh cluster outside
 `UtinniPatches/`, `TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
 `Greentide`/`Miasma`/`BlueDesert`/`Droidworks/`; re-verify collision status with
 `git status --short` first, since concurrent-agent activity shifts by the hour.
+
+## Wave 30 (2026-09-26)
+
+Cluster: `RimMandrake/DivingInteraction/` — the ship-only sea-dive mechanism
+(SEA_DIVE_MAPS_BUILD_1 / GREYSEA_BRINE_POOL_DEFENCE_1 / _BRINE_ELDERS_1 / the
+seabed PlanetLayerDef). 14 files, all UNTRACKED/never-entered; confirmed
+git-clean and outside every current exclusion before starting (this mod's
+`About.xml` and six `.cs` files — `GenStep_PlaceSeaDiveExit`,
+`GenStep_SeaFloorFauna`, `GenStep_SeaFloorTerrain`,
+`PlaceWorker_NeedsGravEngine`, `RM_DivingSettings`, `RM_SeaDiveHatch` — were
+already CLEAN from an earlier sitting and not re-reviewed):
+
+- `Defs/{MapGeneration/RM_SeaDiveGenStepDefs.xml, MapGeneration/
+  RM_SeaDiveGenerators.xml, PlanetLayerDefs/RM_SeabedLayer.xml,
+  TerrainDefs/RM_SeaFloorGround.xml, ThingDefs_Buildings/{RM_BrineEncasement,
+  RM_SeaDiveHatch}.xml}`
+- `Source/{Dialog_OfferToElder, GenStep_GreySeaFloorDressing,
+  MapComponent_BrineCrystallisation, RM_BrineEncasement,
+  RM_Building_BrineElder, RM_ElderTradeUtility, RM_GameComponent_BrineElders,
+  RM_SeabedLayer}.cs`
+
+Per this window's `Class=` crash-bug alert, every `thingClass`/`hediffClass`/
+`setupStep Class`/`worldGenStep Class`/`genStep Class` in this cluster was
+checked against real `.cs` source: `RimMandrake.DivingInteraction.
+RM_SeaDiveHatch`, `RM_Building_BrineEncasement`, `HediffWithComps` (vanilla),
+`GameSetupStep_SeabedLayer`, `WorldGenStep_SeabedLayer` all resolve. The one
+cross-mod reference this cluster's C# makes — `RM_BrineElder`'s ThingDef
+living in `TerminalBiomes/Defs/ThingDefs_Buildings/RM_BrineElder.xml`
+(excluded mod, read-only check) — was also verified: its `thingClass` is
+`RimMandrake.DivingInteraction.RM_Building_BrineElder`, matches, and that
+mod's own `About.xml` already documents the load-order dependency. Same for
+`RM_BrineJacket` (`TerminalBiomes/RM_GreySeaFormations.xml`) and the two
+`RM_ElderSealedRelic`/`RM_ElderUnknownWeapon` treasure ThingDefs
+(`TerminalBiomes/RM_ElderTreasures.xml`) that `RM_ElderTradeUtility.cs`
+references by name — all resolve.
+
+RimSage was reachable this session (Windows Desktop) and used to verify two
+of this cluster's own "MEASURED" claims rather than trust them blind:
+`PlanetLayer`'s private `subdivisions` field really exists (the reflection
+read in `RM_SeabedLayerUtility.SubdivisionsOf` would otherwise throw at
+worldgen), and `TerrainDef.IsWater => HasTag("Water")` — which is what
+surfaced the one real bug below.
+
+**1 real bug found and fixed**, in `RM_ElderTradeUtility.FindDeliveryCell`:
+the method's own doc comment promises "never returns a cell underwater", but
+its final fallback returned `elder.Position` unconditionally — and the Elder
+is always spawned inside the deep-pool basin
+(`GenStep_GreySeaFloorDressing.PlaceElder`), which is always
+`RM_BrinePoolDeep`, a `Water`-tagged terrain (confirmed via RimSage). Since
+the pool margin (radius 8.6) plus a scattered jacket ring can fill the whole
+12-tile `DissolveSearchRadius` the loop searches before falling back, a real
+play session could hit this: the traded item is destroyed unconditionally
+earlier in `Offer()`, so the reward would silently sink with no way to
+recover it. Fixed by widening the fallback to
+`CellFinder.TryFindRandomCellNear` at a larger radius (40) before giving up,
+still filtered for dry/standable. Commit `7980f4e17`.
+
+All 14 files marked CLEAN at that commit, status file committed and pushed
+separately (git shows no other work in progress under this directory before
+or after).
+
+14 files reviewed this wave, 14 newly CLEAN, 1 bug found and fixed.
+
+Next wave suggestion (not re-verified): `PoisonForest`/`Stillsand` remain
+blocked on `UtinniPatches/`. `RimMandrake/EnvironmentalHazards/` (16 files,
+About.xml + Defs + 3 Source `.cs`) and `RimMandrake/LuminousPigment/` (33
+files — split across two waves if taken) were both confirmed git-clean and
+outside every exclusion as of this wave; either is a ready next pick. Stay
+off `UtinniPatches/`, `TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
+`Greentide`/`Miasma`/`BlueDesert`/`Droidworks/`; re-verify collision status
+with `git status --short` first regardless, since concurrent-agent activity
+shifts by the hour.
