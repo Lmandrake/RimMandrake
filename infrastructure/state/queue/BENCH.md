@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T21:28:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T21:37:24Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -233,15 +233,6 @@ target:   v1
 kind:     task
 summary:  (no items/PROPANELAKE_FLORA_PASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PROPANELAKE_FLORA_PASS_1.md
-
-## CHILL_WARLAB_ROUTES_1 War-lab access spec: three blast tiers + two drill routes, factions and aftermaths
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  CHILLWARLABROUTES1 — the ways into the ancient war lab (design spec owed)
-prose:    infrastructure/state/items/CHILL_WARLAB_ROUTES_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
