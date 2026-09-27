@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T05:12:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T05:21:18Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -379,7 +379,7 @@ summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. 
 prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
 
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1235,6 +1235,16 @@ kind:     task
 blocked:  Offline half DONE (Law 5 + MEASURED census, 196/297 violate). Blocked on the post-restore live harvest for confirmation + plots, and the injection-layer card.
 summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
 prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
+
+## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  All three gates clear and the Rocktooth/Boneblade fish are ported (9cfdb672c, deployed). biomescaverns + biomespollutedlands are ALREADY inactive in the live 630-mod list; only biomesteam.biomescore remains, and no active mod or src/ file hard-depends on it. OWNER CALL: CANONICAL_ASHKARR_START_2026-09-12.rws lists biomescore in modIds and holds BiomesCore Things (BMT_HermeticArmor x3, BMT_HermeticHelmet x1, BMT_HermeticSuitHediff x4; one worn by an AncientSoldier) - the lumi.doorsexpanded incident shape. Unticking biomescore now breaks the working save until WORLD_REMAKE_FINAL_STEP_1. Retire now (save breaks) or defer biomescore's unticking to the remake?
+summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
+prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
 
 ## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
 state:    doing  (BLOCKED)
