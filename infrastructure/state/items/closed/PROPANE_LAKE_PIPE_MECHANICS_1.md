@@ -3,9 +3,9 @@
 ## what
 
 `design/Jawa/proposals/propane_gas_deep_design.md` §9, "Build ladder — RULED
-(owner, 2026-09-01): six rows v1, two cut." Four of the six rows are still
-entirely unbuilt (checked this pass — zero hits anywhere in the repo for
-`CompPipeNetwork`, `CompPipeRupture`, `RUT_GasVent`, `GasSaturationTracker`):
+(owner, 2026-09-01): six rows v1, two cut." Four of the six rows were still
+entirely unbuilt at filing time (zero hits then for `CompPipeNetwork`,
+`CompPipeRupture`, `RUT_GasVent`, `GasSaturationTracker`):
 
 1. `RUT_GasVent` (§3): self-igniting puffs, no depletion until actively
    pumped; pump-removal triggers a violent map-wide flammable release that
@@ -38,7 +38,10 @@ system, a heist encounter) — see `COMMISSION_LEDGER_CLEANUP_1`'s own
 
 ## work owed (not done by this item's filing)
 
-Nothing built yet. A build pass needs to: read `propane_gas_deep_design.md`
+BUILT — all four rows now exist as `src/RimUtinni/PropaneLakeMechanics/`
+(`CompGasVent`, `CompPipeNetwork`/`CompPipeRupture`/`CompPipeValve`/`CompPipePump`,
+`MapComponent_GasSaturationTracker`, `IncidentWorker_SaturationHeistRaid`,
+`CompVWakeAgitation`). The pass was to: read `propane_gas_deep_design.md`
 §3-§5 and §9 in full (the ruled model is spelled out there, not re-derived
 here); author `RUT_GasVent` (ThingDef + ignition/depletion comp);
 `GasSaturationTracker` (a MapComponent, transient vs. perpetual per §5);
