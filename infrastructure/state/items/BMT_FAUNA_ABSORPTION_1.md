@@ -136,31 +136,35 @@ column repointed to `RimMandrake: SW — Bestiary`, reason field annotated).
    defName, regenerating it would silently **delete** a live hard-spawn-gate
    temperature safety net rather than no-op. Not fixed, not touched — flagged
    separately at `infrastructure/state/items/closed/ANIMAL_TOLERANCES_JOIN_BROKEN_1.md`.
-2. **7 defNames are live and marked "keep"/"import" in hand-authored biome
-   files but are NOT in the ruled 68** — `BMT_ChemSnail` (kept at BOTH
-   `the_cracked_lands` AND `the_rot`, contradicting this item's own read of
-   `biome_findings.md` as an "OUT" ruling — the_rot's "departure" list may
-   only mean departs-from-the_rot, not cut-from-the-game, and the
-   cracked_lands copy was never touched by the round-2 review at all),
-   `BMT_CaveSpider`, `BMT_GiantSlug`, `BMT_GiantSnail`, `BMT_Pillbug`
-   (all "departures" from `the_rot` per `biome_findings.md` but still live
-   with `MayRequire` gates on the donor — the live wiring in `RUT_TheRot.xml`
-   predates the round-2 review and was never updated to match it),
-   `BMT_GlowBat` (biome_findings.md: "flier extracted" from `the_rot` — a
-   different subsystem, possibly still needing a home). Left untouched
-   (still gated on the retiring donor — will silently stop spawning, not
-   error) rather than guessed into the port. **Needs an owner/BENCH call**:
-   either these are genuinely cut (fine, the entries can be deleted) or the
-   round-2 census undersold them and they need adding to the port.
-3. **Two mechanisms this port cannot carry over at all**:
-   `RUT_RotSporeKit_SporeCloud.xml`'s `conditionClass
-   MayRequire="biomesteam.biomescaverns">BiomesCaverns.GameCondition_SporeCloud`
-   reuses the donor's own **compiled C#** GameCondition (no data-only
-   substitute; needs a real replacement class or the mechanism is lost with
-   the donor) — and `SandFishing_CrackedLands.xml`'s `BMT_Rocktooth`/
-   `BMT_Boneblade` freshwater_Uncommon catch items, which are fish LOOT
-   ITEMS never covered by the fauna census at all (`decisions_propagated.json`
-   is fauna-only).
+2. **GATE (2) DONE — the 7 CUT stragglers have no live biome rows left.** Re-measured
+   2026-09-26: no `BMT_ChemSnail/CaveSpider/GiantSlug/GiantSnail/Pillbug/GlowBat` row in
+   any biome XML under `src/` (RUT_TheRot included); the only remaining mentions are
+   comments, census CSVs under `design/`, and `PatchOperationConditional`-guarded
+   `MegafaunaYield.xml` ops that no-op without the donor.
+3. **GATE (3) DONE — `ROT_SPORECLOUD_PORT_1` closed at `f4d8dbf2b`**: `RUT_SporeCloud` runs
+   on our own `GameCondition_EnvironmentalWeather`, live-proven by BENCH's Battery F
+   2026-09-18 (unroofed pawns gain `RUT_SporesBuildup`, roofed and mechanoids do not).
+   The Cracked Lands fish pair (`BMT_Rocktooth`/`BMT_Boneblade`, the last biomesteam refs
+   in any `fishTypes`) is ported as `RSW_Rocktooth`/`RSW_Boneblade` at `9cfdb672c`
+   (`RSW_BiomesTeamPort_Fish.xml`, art under `swanimals/BiomesTeam/`), deployed, and
+   `RUT_CrackedLands` + the `RM_FloodedCanyon` mirror repointed.
+
+## Retirement state, 2026-09-26 — two of three donors are already OFF the live list
+
+`biomesteam.biomescaverns` (cut by `CAVERNS_PARITY_BUILD_1`) and
+`biomesteam.biomespollutedlands` are inactive in the live 630-mod `ModsConfig.xml` and in
+`ModsConfig.FULL.LATEST.xml`. Only **`biomesteam.biomescore`** remains active. A
+dependents sweep over every active mod's v1.6 load folders found no other active mod
+depending on it (About.xml) and no ungated def reference to its 212 defs in any active
+mod or in `src/` (every hit is a comment, a `MayRequire`, or a conditional-guarded op).
+
+**BLOCKER — the save, not the mod stack.** `CANONICAL_ASHKARR_START_2026-09-12.rws`
+lists `biomescore` in its modIds and holds BiomesCore apparel as real Things:
+`BMT_HermeticArmor` x3 / `BMT_HermeticHelmet` x1 (one worn by an AncientSoldier,
+`Faction_15`) plus `BMT_HermeticSuitHediff` x4 — the exact
+`lumi.doorsexpanded` 2026-09-09 incident shape (load refused `missing_mods`, force-load
+killed the process). Retiring biomescore now breaks the working save until
+`WORLD_REMAKE_FINAL_STEP_1`; that trade is the owner's.
 
 **Until these three are resolved, do not flip `ModsConfig.xml`** — matching
 this project's own `bbf66830` precedent ("ModsConfig deliberately UNTOUCHED
