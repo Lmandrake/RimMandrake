@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T07:19:24Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-27T07:25:37Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -855,6 +855,15 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
+## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
+prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
+
 ## WORLD_LABEL_SIZE_HIERARCHY_1 All 71 world features sit at the maxDrawSizeInTiles floor - owner ruled size the whole planet
 state:    doing
 row:      unassigned
@@ -1476,6 +1485,16 @@ blocked:  spec explicitly forbids starting solo: needs owner-sat plan/ordering f
 summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
 prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
 
+## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+blocked:  shared shade-follow mechanism (tracked shadow-caster comp vs ShadeAt+proximity heuristic, per EXTREME_DESERT_GIANT_COMMENSALS_1) is genuinely unbuilt in C# -- prior note claiming it shipped was false, corrected this pass. Needs that mechanism built once (shared with any future giant-commensal consumer) before a glitter-bird PawnKindDef can actually follow RSW_ShadeWhale's shadow.
+summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
+prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
+
 ## HOSTILE_MOBILE_PLANTS_1 Hostile mobile plants as animals - a new creature class
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1567,16 +1586,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec
-summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
-prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
 
 ## DEBUG_GAME_READY_WORLDUI_CRASH_1 start_debug_game_ready leaves the game in a broken world/map-UI NullReferenceException loop at 623 mods, distinct from the closed NINEFOLD_DEBUG_GAME_READY_CRASH_1 repro
 state:    proposed
