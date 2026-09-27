@@ -5776,3 +5776,55 @@ no-exclusion-overlap cluster from wave 25's own list. `PropaneLakeMechanics`(7)+
 Stay off `TerminalBiomes`/`FeverWood`/`LanternDeeps` (sea-biome exclusions) and
 `Greentide`/`Miasma`/`UtinniPatches/Defs/BiomeDefs` (other FOUNDRY agents
 mid-edit, confirmed still true via this wave's `git status`).
+
+## Wave 27 — 2026-09-26
+
+Fresh `list --show-untracked` + `git status` re-verified the LongShade(8)+LeaningScrub(8)
+cluster from wave 26's suggestion was still untouched by any other agent, then extended
+it with the two campaign-side patches that wire the Star Wars fauna cast onto those same
+two biomes: `WildAnimals_LongShade.xml` and `WildAnimals_LeaningScrub.xml` (both
+UNTRACKED/never-entered, same as the 16 biome-mod files). 18 files reviewed total:
+
+- `LeaningScrub/{About/About.xml, Defs/BiomeDefs/RM_LeaningScrub_Biome.xml,
+  Defs/ThingDefs_Items/RM_SweetlineTree_Items.xml, Defs/ThingDefs_Plants/{RM_Fuzz,
+  RM_LeaningScrubVanillaReplacements,RM_SweetlineTree}.xml,
+  Patches/BetterTrees_SweetlineTree_Immunity.xml, Source/RM_LeaningScrubMod.cs}`
+- `LongShade/{About/About.xml, Defs/BiomeDefs/RM_LongShade.xml,
+  Defs/HediffDefs/RM_Vorrel_Hediffs.xml, Defs/RecipeDefs/RM_Vorrel_Recipes.xml,
+  Defs/ThingDefs_Items/RM_Vorrel_Items.xml, Defs/ThingDefs_Plants/RM_Vorrel.xml,
+  Defs/ThoughtDefs/RM_Vorrel_Thoughts.xml, Source/RM_LongShadeMod.cs}`
+- `RimUtinni/UtinniPatches/Patches/WildAnimals_{LongShade,LeaningScrub}.xml`
+
+Given the FeverWood class-name-typo bug this window found earlier tonight, every
+`Class="RimMandrake...."` XML attribute in this cluster was checked against its
+`.cs` source: `RM_HediffCompProperties_ShadeStagger`/`RM_HediffComp_ShadeStagger`
+(RimMandrake.CreatureBehaviors) and `CompContactVenom`
+(RimMandrake.EnvironmentalHazards) all resolve correctly, and `RM_LeaningScrubMod.cs`'s
+`RM_MechanicGates.Register` gate key (`leaningscrub.venomvinePassability`) matches the
+`RM_MechanicGateExtension` carried on `RM_VenomvineThicket` (`RM_Venomvine.xml`) —
+wired correctly end to end. Both `.csproj` files' `EnableDefaultCompileItems=false`
+compile lists match the single `.cs` file each mod actually ships.
+
+Every `RSW_` defName in both `WildAnimals_<Biome>.xml` patches' Add-value blocks was
+checked against `src/RimStarWars/`: all 51 rows in `WildAnimals_LongShade.xml` and all
+40 rows in `WildAnimals_LeaningScrub.xml` resolve to real defs — none are stale donor
+bare-names. The files' own MEASURED claims (51 rows summing to 15.1; 40 rows, no
+duplicates) were independently re-derived via `xml.etree` and matched exactly.
+
+**1 real bug found and fixed**: `RM_LongShadeMod.cs`'s settings-screen comment named
+a nonexistent field `staggerEnabled` on `RM_CreatureBehaviorsSettings` — the real field
+(confirmed in `RM_CreatureBehaviorsMod.cs`) is `shadeStaggerEnabled`. Fixed at `782bd9ac6`.
+
+All 18 files marked CLEAN at `598e1495b` (status file), pushed. Both commits pushed
+individually (source fix, then status file) — a peer's concurrent commit briefly held
+`.git/index.lock` twice during this wave; waited for it to release rather than force
+anything, per the shared-tree git rules.
+
+18 files reviewed this wave, 18 newly CLEAN, 1 bug found and fixed.
+
+Next wave suggestion (not re-verified — check fresh first, per this loop's own standing
+rule): `PropaneLakeMechanics`(7)+`PoisonForest`(7)+`Stillsand`(5), carried over from wave
+26's other candidate, still untouched by this wave. Stay off
+`TerminalBiomes`/`FeverWood`/`LanternDeeps` (sea-biome exclusions) and
+`Greentide`/`Miasma`/`BlueDesert`/`UtinniPatches/` directories still showing
+concurrent-agent activity in `git status` as of this wave.
