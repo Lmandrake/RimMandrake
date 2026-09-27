@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T00:43:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T01:15:56Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1052,15 +1052,6 @@ target:   v1
 kind:     task
 summary:  Per sea, per catch entry without a living counterpart:
 prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
-
-## COLLECTION_GRAPHIC_ON_FLAT_PNG_1 Four defs use Graphic_StackCount or Graphic_Random over a single flat PNG so Collection cannot init fires; plus RM_Leachmoss and RM_Venomvine art is genuinely absent everywhere
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  COLLECTIONGRAPHICONFLATPNG1 — Collection graphic classes over single flat PNGs, and two textures absent entir…
-prose:    infrastructure/state/items/COLLECTION_GRAPHIC_ON_FLAT_PNG_1.md
 
 ## DIVING_STALE_DEPLOYED_FILES_1 Retired pawn-dive files are deleted from src/ but still live in the deployed DivingInteraction mod
 state:    doing
