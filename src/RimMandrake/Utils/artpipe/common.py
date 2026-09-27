@@ -140,6 +140,30 @@ def cells_from_register_note(note: str) -> float | None:
     return float(m.group(1)) if m else None
 
 
+def thumbnail_pixel_distance(a: Path, b: Path, size: int = 32) -> float:
+    """Cheap near-duplicate check: downsample both images to a `size`x`size`
+    RGBA thumbnail and return the mean per-pixel Euclidean distance across
+    R, G, B, A. Two genuinely different renders (different pose/silhouette)
+    land far apart; a "derived" facing that is really just its master again
+    (a side-profile clone wearing a rotated-view prompt) lands very close to
+    0 — ARTPIPE_FACING_COHERENCE_1 §2's hard duplicate gate for a derived job
+    (`artpiped.py`'s `_check_size_and_validate`) is built on this.
+
+    Deliberately NOT the same test as a sha256 byte-identical check
+    (`facing_set_audit.py`'s own duplicate detector, which only ever catches
+    an EXACT copy): a regenerated image is essentially never byte-identical
+    even when it reproduces the same picture, so catching a near-duplicate
+    needs real pixel comparison, not a hash.
+    """
+    from PIL import Image
+    ia = Image.open(a).convert("RGBA").resize((size, size))
+    ib = Image.open(b).convert("RGBA").resize((size, size))
+    total = 0.0
+    for (r1, g1, b1, al1), (r2, g2, b2, al2) in zip(ia.getdata(), ib.getdata()):
+        total += ((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2 + (al1 - al2) ** 2) ** 0.5
+    return total / (size * size)
+
+
 def _import_codex_image():
     """The one place this module reaches into codex_image.py — shared by
     `_default_codex_home_root()` and `codex_sandbox_preflight()` so both use
@@ -278,6 +302,26 @@ def load_job(path: Path) -> dict:
     ref = job.get("reference")
     if ref is not None and (not isinstance(ref, str) or not ref):
         raise JobError(f"{path}: 'reference' must be a non-empty string path or null")
+
+    # ARTPIPE_FACING_COHERENCE_1 §2: `derive_from` names a SIBLING job id
+    # (the accepted east master) this facing is derived from — a different
+    # contract from `reference` (an existing SHIPPED sprite being reskinned).
+    # A job carrying both is refused rather than guessing which one wins:
+    # reskin-validate (armed by `reference`) checks same-POSE pixel fidelity,
+    # which a genuinely correct rotated derivation will structurally fail
+    # (recon §4), so the two flows must never overlap on one job.
+    derive_from = job.get("derive_from")
+    if derive_from is not None:
+        if not isinstance(derive_from, str) or not derive_from:
+            raise JobError(f"{path}: 'derive_from' must be a non-empty string or absent")
+        if derive_from == job["id"]:
+            raise JobError(f"{path}: 'derive_from' names this job's own id "
+                            f"({derive_from!r}) — a job cannot derive from itself")
+        if ref is not None:
+            raise JobError(f"{path}: job carries both 'derive_from' and 'reference' — "
+                            f"the reskin flow (reference) and the facing-derivation flow "
+                            f"(derive_from) are different contracts and never both apply "
+                            f"to one job")
 
     _refuse_contradicted_facing(path, job)
 

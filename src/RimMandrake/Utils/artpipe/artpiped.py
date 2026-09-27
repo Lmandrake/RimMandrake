@@ -914,14 +914,47 @@ def _mode_of(path: Path) -> str:
     else "generate" — read straight off the job file the same defensive
     way `_channel_of` does, so `console.job_started` can be told a job's
     mode right after claim_next() returns, without process_job having to
-    report it back first."""
+    report it back first.
+
+    ARTPIPE_FACING_COHERENCE_1 §2: a `derive_from` job is ALSO an "edit" —
+    it attaches its master PNG to the codex call exactly like `reference`
+    does (see process_codex_job's `attach_image`)."""
     try:
-        return "edit" if json.loads(path.read_text()).get("reference") else "generate"
+        j = json.loads(path.read_text())
+        return "edit" if (j.get("reference") or j.get("derive_from")) else "generate"
     except (OSError, ValueError, TypeError):
         return "generate"
 
 
-def claim_next(pending_dir: Path, active_dir: Path, channel_blocked=None) -> Path | None:
+def _derive_from_of(path: Path) -> str | None:
+    """Read-only, defensive-by-construction the same way `_channel_of` is —
+    used by `claim_next` to decide whether a pending job must be HELD
+    (ARTPIPE_FACING_COHERENCE_1 §2), before `common.load_job`'s real
+    validation ever runs on it."""
+    try:
+        v = json.loads(path.read_text()).get("derive_from")
+        return v if isinstance(v, str) and v else None
+    except (OSError, ValueError, TypeError):
+        return None
+
+
+def _derive_master_resolved(derive_from: str, done_dir: Path, failed_dir: Path,
+                             artsrc_dir: Path) -> bool:
+    """True once the master job named by `derive_from` has a VERDICT —
+    either a done manifest with its PNG actually on disk, or a failed
+    manifest (in which case the derived job is claimed normally and
+    `process_job` routes it straight to failed/, naming the master).
+    `claim_next` holds a derived job in pending/ for as long as this is
+    False — the master is still pending/active, no verdict exists yet."""
+    if (done_dir / f"{derive_from}.manifest.json").is_file() and \
+            (artsrc_dir / derive_from / f"{derive_from}.png").is_file():
+        return True
+    return (failed_dir / f"{derive_from}.manifest.json").is_file()
+
+
+def claim_next(pending_dir: Path, active_dir: Path, channel_blocked=None,
+                done_dir: Path | None = None, failed_dir: Path | None = None,
+                artsrc_dir: Path | None = None) -> Path | None:
     """Atomic claim = rename pending/<id>.json -> active/<id>.json.
 
     `os.rename` removing the SOURCE is the atomic event: if another daemon
@@ -949,14 +982,27 @@ def claim_next(pending_dir: Path, active_dir: Path, channel_blocked=None) -> Pat
        Treating a stat that can't see what we just renamed as a lost race —
        the same as a FileNotFoundError on the rename itself — is the best
        mitigation available from user space; it is a mitigation, not a proof.
+
+    `done_dir`/`failed_dir`/`artsrc_dir`, if all three are given
+    (ARTPIPE_FACING_COHERENCE_1 §2): a candidate carrying `derive_from` is
+    HELD — skipped, left sitting in pending/, never renamed to active/ —
+    until its master job has a verdict (`_derive_master_resolved`). Any one
+    of the three left None (the default) disables this check entirely, so
+    every existing caller that never heard of `derive_from` is unaffected.
     """
     try:
         candidates = sorted(pending_dir.glob("*.json"), key=lambda p: (_priority_of(p), p.name))
     except OSError:
         return None
+    derive_check = done_dir is not None and failed_dir is not None and artsrc_dir is not None
     for src in candidates:
         if channel_blocked is not None and channel_blocked(_channel_of(src)):
             continue
+        if derive_check:
+            derive_from = _derive_from_of(src)
+            if derive_from and not _derive_master_resolved(derive_from, done_dir,
+                                                            failed_dir, artsrc_dir):
+                continue  # HELD — the master hasn't finished yet
         dest = active_dir / src.name
         if dest.exists():
             continue  # a stray same-named file already claimed — never clobber it
@@ -1242,12 +1288,20 @@ class RunCtx:
     def __init__(self, worker_script, validator_script, manifest_schema,
                  artsrc_dir, active_dir, codex_home_root, workers_count,
                  timeout_generate, timeout_edit, reasoning_effort, verbose, slots,
-                 gemini_worker_script, gemini_timeout, throughput_log=None):
+                 gemini_worker_script, gemini_timeout, throughput_log=None,
+                 done_dir=None, failed_dir=None):
         self.worker_script = worker_script
         self.validator_script = validator_script
         self.manifest_schema = manifest_schema
         self.artsrc_dir = artsrc_dir
         self.active_dir = active_dir
+        # ARTPIPE_FACING_COHERENCE_1 §2: process_job needs these to resolve a
+        # `derive_from` job's master (done manifest+PNG, or a failed
+        # manifest) — None is tolerated (a caller that never heard of
+        # `derive_from`, e.g. an older/minimal test ctx) and simply means no
+        # job it processes will ever carry that field.
+        self.done_dir = done_dir
+        self.failed_dir = failed_dir
         self.codex_home_root = codex_home_root
         self.timeout_generate = timeout_generate
         self.timeout_edit = timeout_edit
@@ -1736,7 +1790,8 @@ def _downscale_oversized_png(out_png: Path, sw: int, sh: int, tw: int, th: int) 
 
 
 def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
-                              validator_script: Path) -> dict:
+                              validator_script: Path,
+                              derive_master_png: Path | None = None) -> dict:
     """Common tail for BOTH channels once a real image file exists: read its
     ACTUAL dimensions — the image tool is KNOWN to ignore requested size
     (design addendum §2.3; this is the NORMAL case, not an edge case) — and
@@ -1745,6 +1800,13 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
     reference-less job (which the validator skips entirely) can no longer
     accept ANY returned image as "ok" just because there was nothing to
     reject it.
+
+    `derive_master_png`, if given (ARTPIPE_FACING_COHERENCE_1 §2), is the
+    accepted master image a `derive_from` job was generated against. It
+    plays NO part in `reference`-driven reskin-validate above (`reference`
+    is None for a derive_from job — see process_job/process_codex_job) —
+    only in the HARD near-duplicate gate at the very end of this function,
+    which fires after every other gate has already passed.
 
     ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1: an oversized-but-same-aspect
     return is not treated as a failed generation — it is downscaled to the
@@ -1931,14 +1993,81 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
     result.update(status="ok", worker_status="ok",
                    validator=("PASS" if verdict == "pass" else "skipped"),
                    note="validated" if verdict == "pass" else "no reference to validate against")
+
+    # ARTPIPE_FACING_COHERENCE_1 §2's HARD gate, derived jobs only: is the
+    # generated facing essentially the master again — a side-profile clone
+    # wearing a rotated-view prompt, not a genuine new pose? Runs LAST,
+    # after every other gate has already passed, so a job that would fail
+    # on size/alpha/legibility/facts grounds fails with THAT reason, not
+    # this one. The measured distance is recorded on the manifest
+    # regardless of verdict (spec: "either way").
+    if derive_master_png is not None:
+        try:
+            distance = common.thumbnail_pixel_distance(out_png, derive_master_png)
+        except Exception as exc:                                  # noqa: BLE001
+            result.update(status="failed", worker_status="derivation_duplicate_check_error",
+                           note=(f"could not measure near-duplicate distance vs the master "
+                                 f"{derive_master_png}: {type(exc).__name__}: {exc}")[:300])
+            return result
+        result["derive_from_distance"] = distance
+        if distance < DERIVE_DUPLICATE_DISTANCE_THRESHOLD:
+            result.update(status="failed", worker_status="derivation_duplicate_of_master",
+                           note=(f"generated image is a near-duplicate of its master "
+                                 f"{derive_master_png} (pixel distance {distance:.2f} < "
+                                 f"{DERIVE_DUPLICATE_DISTANCE_THRESHOLD}) — reads as a "
+                                 f"side-profile clone, not a rotated view")[:300])
+            return result
+        # Advisory only, never a gate (spec: "never a gate") — palette
+        # distance vs the master, reusing facing_set_audit.py's own metric
+        # rather than a second, subtly different implementation of it.
+        result["derive_from_palette_distance"] = _advisory_palette_distance(out_png,
+                                                                             derive_master_png)
+
     return result
 
 
-def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: RunCtx) -> dict:
+# ARTPIPE_FACING_COHERENCE_1 §2's hard duplicate-gate threshold — conservative
+# by design ("only fires on near-identical images"): a genuinely different
+# rotated view lands far above this; only a side-profile clone wearing a
+# rotated-view prompt lands under it. Same distance metric as
+# common.thumbnail_pixel_distance's own docstring.
+DERIVE_DUPLICATE_DISTANCE_THRESHOLD = 4.0
+
+
+def _advisory_palette_distance(candidate: Path, master_png: Path) -> float | None:
+    """Mean-RGB palette distance vs a derivation's master — ADVISORY ONLY,
+    never a gate (ARTPIPE_FACING_COHERENCE_1 §2). Reuses
+    `facing_set_audit.py`'s own `measure()` so this is the SAME metric a
+    human running that tool by hand would see, not a second, subtly
+    different implementation of "palette distance". Returns None if the
+    metric could not be computed — never fabricated."""
+    try:
+        import facing_set_audit  # same directory — see artpiped.py's own sys.path.insert
+        a = facing_set_audit.measure(candidate)
+        b = facing_set_audit.measure(master_png)
+        return sum((x - y) ** 2 for x, y in zip(a["mean_rgb"], b["mean_rgb"])) ** 0.5
+    except Exception:                                              # noqa: BLE001
+        return None
+
+
+def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: RunCtx,
+                       derive_master_png: Path | None = None) -> dict:
     """Runs in a worker thread. Returns a result dict; touches no shared
     detector/file-move state — the caller does that after collecting the
-    future, so nothing here needs a lock."""
-    is_edit = bool(reference)
+    future, so nothing here needs a lock.
+
+    `derive_master_png` (ARTPIPE_FACING_COHERENCE_1 §2), when given, is the
+    accepted master PNG for a job carrying `derive_from` — attached to the
+    codex call exactly like `reference` (same `-i` mechanism, same edit-mode
+    timeout baseline) via `attach_image` below, but `reference` itself stays
+    whatever the job actually carries (None for a derive_from job — see
+    common.load_job, which refuses a job carrying both) and is what still
+    gets passed to `_check_size_and_validate` for reskin-validate: reskin-
+    validate's same-pose bbox/aspect/origin checks would false-reject a
+    correctly rotated view (recon §4), so a derive_from job must never
+    trigger it."""
+    attach_image = reference or derive_master_png
+    is_edit = bool(attach_image)
     subcmd = "edit" if is_edit else "generate"
     timeout = ctx.timeout_edit if is_edit else ctx.timeout_generate
     last_msg_path = ctx.active_dir / f"{job_id}.worker_last_message.json"
@@ -1976,7 +2105,7 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
                         pass
                 code, out, err, elapsed, timed_out = run_worker(
                     ctx.worker_script, subcmd, prompt, out_png, codex_home, timeout,
-                    ctx.manifest_schema, last_msg_path, reference, job.get("model"),
+                    ctx.manifest_schema, last_msg_path, attach_image, job.get("model"),
                     ctx.reasoning_effort, ctx.verbose)
                 elapsed_total += elapsed
                 last_attempt_elapsed = elapsed  # PER-ATTEMPT, not summed — see note_wall_clock's
@@ -2097,10 +2226,12 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
                                 "no-op (row 5): fails the request, not the account")
         return result
 
-    return _check_size_and_validate(result, job, reference, out_png, ctx.validator_script)
+    return _check_size_and_validate(result, job, reference, out_png, ctx.validator_script,
+                                     derive_master_png=derive_master_png)
 
 
-def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: RunCtx) -> dict:
+def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: RunCtx,
+                        derive_master_png: Path | None = None) -> dict:
     """Never touches ctx.slots or a codex_home — the codex grumpiness
     detector does not gate this channel at all (spec); admission is via
     GeminiBudget in the main loop instead."""
@@ -2110,6 +2241,10 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
     except FileNotFoundError:
         pass
 
+    # See process_codex_job's identical `attach_image` — `reference` itself
+    # stays None for a derive_from job and is what still reaches
+    # `_check_size_and_validate` below for (skipped) reskin-validate.
+    attach_image = reference or derive_master_png
     model = job.get("model") or DEFAULT_GEMINI_MODEL
 
     # Written BEFORE the subprocess spawns, deliberately — this is the
@@ -2125,7 +2260,7 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
         _write_gemini_billing_intent(ctx.throughput_log, job_id)
 
     code, out, err, elapsed, timed_out = run_gemini_worker(
-        ctx.gemini_worker_script, prompt, out_png, reference, model, ctx.gemini_timeout,
+        ctx.gemini_worker_script, prompt, out_png, attach_image, model, ctx.gemini_timeout,
         canvas=job.get("canvas"),
         cutout=(job.get("background", "transparent") == "transparent"),
         script_source=getattr(ctx, "gemini_worker_source", None))
@@ -2179,7 +2314,8 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
         # it to console.note() — never written into the manifest itself.
         result["_console_note"] = unrecognised_model_note
 
-    return _check_size_and_validate(result, job, reference, out_png, ctx.validator_script)
+    return _check_size_and_validate(result, job, reference, out_png, ctx.validator_script,
+                                     derive_master_png=derive_master_png)
 
 
 def process_job(job_path: Path, ctx: RunCtx) -> dict:
@@ -2217,12 +2353,37 @@ def process_job(job_path: Path, ctx: RunCtx) -> dict:
     job_id = job["id"]
     channel = job.get("channel") or "codex"
     reference = job.get("reference")
+    derive_from = job.get("derive_from")
+    derive_master_png = None
+    if derive_from:
+        # ARTPIPE_FACING_COHERENCE_1 §2. claim_next() already held this job
+        # in pending/ until the master resolved, so in normal operation one
+        # of the two branches below always fires; this is the defensive
+        # fallback for a job that somehow reached process_job anyway (a
+        # hand-claimed fixture, a future caller bypassing claim_next) —
+        # never generate a "derivation" with nothing to derive from.
+        failed_manifest = (ctx.failed_dir / f"{derive_from}.manifest.json"
+                           if ctx.failed_dir is not None else None)
+        if failed_manifest is not None and failed_manifest.is_file():
+            return {"id": job_id, "channel": channel, "status": "failed", "cost_usd": 0.0,
+                    "worker_status": "master_failed", "validator": "not_run",
+                    "note": f"master {derive_from} failed; derivation impossible"}
+        master_png = ctx.artsrc_dir / derive_from / f"{derive_from}.png"
+        done_manifest = (ctx.done_dir / f"{derive_from}.manifest.json"
+                         if ctx.done_dir is not None else None)
+        if not (master_png.is_file() and done_manifest is not None and done_manifest.is_file()):
+            return {"id": job_id, "channel": channel, "status": "failed", "cost_usd": 0.0,
+                    "worker_status": "master_unresolved", "validator": "not_run",
+                    "note": f"master {derive_from} has no done manifest+PNG yet — this "
+                            f"job should never have been claimed before its master"}
+        derive_master_png = master_png
+
     job_scratch = ctx.artsrc_dir / job_id  # a REAL per-job scratch dir — see build_job_prompt()
     out_png = job_scratch / f"{job_id}.png"
 
     if channel == "gemini":
         try:
-            return process_gemini_job(job, job_id, reference, out_png, ctx)
+            return process_gemini_job(job, job_id, reference, out_png, ctx, derive_master_png)
         except Exception as exc:
             return {"id": job_id, "channel": "gemini", "status": "failed", "cost_usd": 0.0,
                     "worker_status": "daemon_error", "validator": "not_run",
@@ -2235,7 +2396,7 @@ def process_job(job_path: Path, ctx: RunCtx) -> dict:
                 "worker_status": "bad_job_file", "validator": "not_run",
                 "note": f"unknown channel {channel!r} — only 'codex' or 'gemini'"}
     try:
-        return process_codex_job(job, job_id, reference, out_png, ctx)
+        return process_codex_job(job, job_id, reference, out_png, ctx, derive_master_png)
     except Exception as exc:
         return {"id": job_id, "channel": "codex", "status": "failed",
                 "worker_status": "daemon_error", "validator": "not_run",
@@ -2828,7 +2989,8 @@ def main(argv=None) -> int:
                  args.artsrc_dir, args.active_dir, args.codex_home_root, args.workers,
                  args.timeout_generate, args.timeout_edit, args.reasoning_effort,
                  args.verbose, slots, args.gemini_worker_script, args.gemini_timeout,
-                 throughput_log=args.throughput_log)
+                 throughput_log=args.throughput_log,
+                 done_dir=args.done_dir, failed_dir=args.failed_dir)
     detector = Detector()
     stop_event = threading.Event()
     render_stop = threading.Event()
@@ -2874,7 +3036,9 @@ def main(argv=None) -> int:
                                     or _in_flight >= _cap)
 
                         job_path = claim_next(args.pending_dir, args.active_dir,
-                                              channel_blocked=_claim_blocked)
+                                              channel_blocked=_claim_blocked,
+                                              done_dir=args.done_dir, failed_dir=args.failed_dir,
+                                              artsrc_dir=args.artsrc_dir)
                         if job_path is None:
                             break
                         ch = _channel_of(job_path)

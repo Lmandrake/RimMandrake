@@ -29,6 +29,13 @@ CSV columns (JSON: same keys; `facings` may be a JSON list there):
                        Every row otherwise gets --channel's value
                        (default "codex"); see GEMINI_WORKER_BACKEND_1.
 
+ARTPIPE_FACING_COHERENCE_1 §2 — DEFAULT ON, `--no-derive-facings` to disable:
+a row whose `facings` include "east" files east as the fresh-generated
+MASTER; its north/south jobs (if also requested) carry `derive_from:
+"<id>_east"` and get derivation language prepended to their own prompt,
+instead of being independent fresh prompts. A row that already names its
+own `reference` is never also given `derive_from` — see common.load_job.
+
 Refuses a duplicate job id — checked against pending/active/done/failed all
 at once, so an id already claimed, finished or failed is exactly as
 protected as one still waiting. The write itself goes to a tmp file first,
@@ -57,6 +64,26 @@ import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.js
 
 REQUIRED_ROW_FIELDS = ("id", "rimflow_item_id", "prompt", "canvas_w", "canvas_h")
 
+# ARTPIPE_FACING_COHERENCE_1 §2: north/south are derivations of the accepted
+# east master, not fresh prompts — "same individual, same palette, same
+# keyline weight, same painterly style, same scale, rotated to the view
+# described below." Prepended to a derived job's own prompt; the per-facing
+# view direction itself still comes from artpiped.build_job_prompt()'s
+# existing stamp, unchanged.
+DERIVE_PROMPT_PREFIX = (
+    "Derive this facing from the attached accepted master render of the SAME "
+    "creature: same individual, same palette, same keyline weight, same "
+    "painterly style, same scale — rotated to the view described below. Do "
+    "not restyle. "
+)
+
+# Only these two facings derive from the master — the brief and the owner's
+# ruling name north/south specifically (the east job IS the master); a row
+# that also asks for "west" gets an independent, freshly-prompted west job,
+# same as today.
+_DERIVED_FACINGS = ("north", "south")
+_MASTER_FACING = "east"
+
 
 class DuplicateJobId(ValueError):
     pass
@@ -83,7 +110,8 @@ def load_rows(path: Path) -> list[dict]:
         return list(csv.DictReader(fh))
 
 
-def row_to_jobs(row: dict, default_channel: str = "codex") -> list[dict]:
+def row_to_jobs(row: dict, default_channel: str = "codex",
+                 derive_facings: bool = True) -> list[dict]:
     missing = [f for f in REQUIRED_ROW_FIELDS if not row.get(f)]
     if missing:
         raise ValueError(f"row {row.get('id', '?')!r} missing {missing}")
@@ -148,10 +176,23 @@ def row_to_jobs(row: dict, default_channel: str = "codex") -> list[dict]:
     # same as an absent one instead of crashing the whole file.
     priority = int(row.get("priority") or 100)
 
+    # ARTPIPE_FACING_COHERENCE_1 §2: a multi-facing row with an "east" facing
+    # gets east as the fresh-generated MASTER; north/south (if also
+    # requested) are filed as DERIVATIONS of it (`derive_from`) rather than
+    # independent prompts — the mechanism the owner ruled and
+    # `rimworld-sprite-facings/SKILL.md` already documents as owed. A row
+    # with no "east" facing (or `--no-derive-facings`) files every facing
+    # exactly as before, reference-less and independent.
+    # A row that already names its own `reference` (a reskin) never also
+    # gets `derive_from` stamped on top of it — common.load_job refuses a
+    # job carrying both (they are different contracts; see its docstring).
+    master_facing_present = derive_facings and _MASTER_FACING in facings and not reference
+    master_job_id = f"{base_id}_{_MASTER_FACING}" if master_facing_present else None
+
     jobs = []
     for facing in (facings or [None]):
         job_id = f"{base_id}_{facing}" if facing else base_id
-        jobs.append({
+        job = {
             "id": job_id,
             "rimflow_item_id": row["rimflow_item_id"],
             "reference": reference,
@@ -165,7 +206,11 @@ def row_to_jobs(row: dict, default_channel: str = "codex") -> list[dict]:
             "facing": facing,
             "facings": facings,
             "created": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        })
+        }
+        if master_facing_present and facing in _DERIVED_FACINGS:
+            job["derive_from"] = master_job_id
+            job["prompt"] = DERIVE_PROMPT_PREFIX + job["prompt"]
+        jobs.append(job)
     return jobs
 
 
@@ -235,6 +280,14 @@ def main(argv=None) -> int:
     ap.add_argument("--channel", choices=("codex", "gemini"), default="codex",
                      help="default channel for every row in this file — a row's own "
                           "'channel' column/field, if present, overrides this")
+    ap.add_argument("--derive-facings", dest="derive_facings", action="store_true",
+                     default=True,
+                     help="(default) north/south facings derive from the accepted "
+                          "east master (ARTPIPE_FACING_COHERENCE_1 §2) instead of "
+                          "being prompted independently")
+    ap.add_argument("--no-derive-facings", dest="derive_facings", action="store_false",
+                     help="file every facing independently, reference-less — today's "
+                          "pre-§2 behavior")
     ap.add_argument("--dry-run", action="store_true",
                      help="print what would be filed, write nothing")
     args = ap.parse_args(argv)
@@ -255,7 +308,8 @@ def main(argv=None) -> int:
     filed, duplicates, errors = 0, [], []
     for row in rows:
         try:
-            jobs = row_to_jobs(row, default_channel=args.channel)
+            jobs = row_to_jobs(row, default_channel=args.channel,
+                                derive_facings=args.derive_facings)
         except ValueError as exc:
             errors.append(str(exc))
             continue
