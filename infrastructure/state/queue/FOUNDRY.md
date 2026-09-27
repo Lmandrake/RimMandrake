@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T00:28:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T00:28:53Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1053,6 +1053,15 @@ kind:     task
 summary:  Per sea, per catch entry without a living counterpart:
 prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
 
+## TERMINALBIOMES_EH_HARD_DEP_1 TerminalBiomes hard-references the EnvironmentalHazards assembly but declares it only as loadAfter, so proof_terminalbiomes builds a list that cannot load its DLL
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Move mandrake.rm.environmentalhazards into TerminalBiomes' <modDependencies.
+prose:    infrastructure/state/items/TERMINALBIOMES_EH_HARD_DEP_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1778,16 +1787,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md
-
-## TERMINALBIOMES_EH_HARD_DEP_1 TerminalBiomes hard-references the EnvironmentalHazards assembly but declares it only as loadAfter, so proof_terminalbiomes builds a list that cannot load its DLL
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Move mandrake.rm.environmentalhazards into TerminalBiomes' <modDependencies.
-prose:    infrastructure/state/items/TERMINALBIOMES_EH_HARD_DEP_1.md
 
 ## GREYSEA_SALTDOME_SCATTER_OOB_1 RM_SaltDomeShore fails its cluster-centre search and is followed by Got ThingsListAt out of bounds (-1000,-1000,-1000) at map-gen
 state:    proposed
