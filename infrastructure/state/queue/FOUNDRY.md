@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T15:27:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T15:32:39Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1806,16 +1806,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md
-
-## RUT_PROPANELAKE_FROZEN_DENSITY_1 RUT_PropaneLake still leaves animalDensity unset (frozen); sweep other biomes for the same defect
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## verify
-summary:  1. When the RUT tier is retired/repainted onto RMPropaneLake
-prose:    infrastructure/state/items/RUT_PROPANELAKE_FROZEN_DENSITY_1.md
 
 ## SEABED_PLANET_LAYER_1 Seabed planet layer: the sea floor as a geometric twin of the surface
 state:    proposed
