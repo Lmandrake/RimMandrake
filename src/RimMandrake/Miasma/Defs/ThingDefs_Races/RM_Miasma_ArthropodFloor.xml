@@ -58,12 +58,9 @@
   own or attempt to fix).
 
   Predation onto these three (and onto RUT_Karrobel) by the five
-  RM_Miasma_Predators.xml plants is NOT built here — that plant file's own
-  header already defers it as a genuine engine question ("can a plant
-  consume a small wild animal at all, and can it be restricted to one
-  species") UNMEASURABLE on the Mac, and this pass does not reason it out
-  from a doc either. The prey now exists; the predation comp is follow-on,
-  Desktop-gated work.
+  RM_Miasma_Predators.xml plants shipped MIASMA_SCUTTLER_PREDATION_1
+  (RM_CompPlantPredator, src/RimMandrake/Miasma/Source/) — see that plant
+  file's own header for the mechanism.
 -->
 <Defs>
 

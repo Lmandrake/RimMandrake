@@ -48,6 +48,8 @@
     <Compile Include="RM_MiasmaBiome.cs" />
     <Compile Include="RM_WardenMotherSuccession.cs" />
     <Compile Include="RM_Patch_WardenYoungTrainableGate.cs" />
+    <Compile Include="RM_CompProperties_PlantPredator.cs" />
+    <Compile Include="RM_CompPlantPredator.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
