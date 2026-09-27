@@ -1,0 +1,2245 @@
+# BENCH_REBOOT_HANDOFF_202609270451 — READ FIRST on wake
+
+Follows `BENCH_REBOOT_HANDOFF_202609261917`. Everything below is committed and pushed unless a
+line says otherwise. **Game and bridge state is the last section — read it
+before touching the game.**
+
+## The one thing to carry forward
+
+<!-- The single most important thing learned. Not a list — the thing that would cost the next seat hours if it had to rediscover it. If nothing qualifies, write 'nothing this wave' and mean it. -->
+**Four concurrent build agents CAN ship into one mod's csproj/Mod.cs/DLL — private
+worktrees, keep-both-sides on every Compile/settings conflict, rebuild the DLL after EVERY
+rebase, push HEAD:main — but the brief must FORBID backgrounding explicitly or they
+deadlock.** Three of four stalled waiting on a backgrounded selftest run; a one-line
+SendMessage nudge ("run it foreground now, re-running is safe") recovered each in minutes.
+The rebuild-after-rebase rule is a real catcher, not ceremony: one naive 3-way merge
+dropped a closing brace and only the rebuild caught it. (All four lessons filed:
+LESSONS_INBOX.)
+
+## What the owner should see
+
+<!-- Findings that need HIS eye or HIS decision: a number nobody ruled on, a mod that vanished from his list, a change he can veto. Say what you shipped deliberately with a flag raised. Empty is a legitimate answer. -->
+1. 🔴 **TerminalBiomes is now Harmony-dependent** — the laden-deck launch gate is a
+   postfix on `Building_GravEngine.CanLaunch` (downgrade-only, never-strand reasoning in
+   the file header, no emergency-launch bypass exists to circumvent). First Harmony in
+   this mod; he can veto the approach before it calcifies.
+2. **The Twilight build wave is UNTESTED live.** All four builds compiled clean and
+   passed selftests, but no load-round has run: channel continuity, weir arrest and the
+   launch gate have never been seen by the game. Deliberate — build-only briefs, bridge
+   untouched.
+3. **One scoped-down beat he may want back:** the vaulisk's "drag two cells" relocates
+   the vaulisk itself toward the dark rather than force-moving the discovering pawn (the
+   builder avoided an untested forced-move on pawn state). Fine v1; his call whether the
+   pawn-drag returns.
+4. **12 art jobs queued** (suulk, vaulisk, lure, veil pane, sun-sphere, noothelm,
+   hoolimbre, sphere cage) — the artpipe daemon must be running on the Desktop for them
+   to render; placeholders are tinted vanilla art until then.
+
+## What is half-done, and where it stops
+
+<!-- Anything left mid-flight, one bullet each: `- ITEM_ID -- state; NEXT: <one imperative action>`. A pointer without a ledger item id does not survive a seat change, and a pointer without a NEXT: measured ~0% pickup. An item in `doing` with no line here is a trap for the next seat. -->
+- `TWILIGHTSEA_FLOOR_PASS_1` — parent; design ruled END TO END (Q1–Q19 + all 15 sitting
+  cards), four child builds landed and closed (map on the parent's last note).
+  NEXT: run a minimal-list load-round proving TerminalBiomes loads clean with the channel
+  genstep and launch gate (rimworld-load-round; the modset tiers exist).
+- Channel terrain + natives — unbuilt by design (hooks ready, GetNamedSilentFail degrades).
+  NEXT: build `RM_ChannelBed`/`RM_BankSilt`/`RM_FordStones` terrain and the murrol/waelune
+  races per content drop §8.2.
+- Gardener event family + lid-dark — unbuilt; WellLedger exposes
+  `NotifyGardenerPassAdvance`/`NotifyLidDarkEnded`/`SetLidDarkDimming`.
+  NEXT: build the lid-dark WeatherDef fired from gardener passes (glow-grid dimming ONLY,
+  never a sky GameCondition — kelp would grow in the black).
+- Code review — every new TerminalBiomes file is DIRTY by definition.
+  NEXT: full-file reviews then mark-clean, starting with `RM_MapComponent_ChannelCurrent.cs`
+  and the Harmony launch gate.
+- `SEA_FISHABLES_ALIVE_IN_DEPTHS_1` — unstarted; niim/noolim now ruled TWO.
+  NEXT: author the Grey Sea's 7 catch-only species as floor animals; disentangle
+  niim/noolim's overlapping def prose before the fish-body wave.
+- `TWILIGHT_BOTTOM_CAST_1` — needs owner. NEXT: prose sitting with him (6–8 residents).
+- `SURFACE_RIVER_WEIRS_1` — filed from his typed ruling. NEXT: check FlowWorks for overlap
+  before designing (it owns liquid movement).
+- `GREYSEA_SHIP_CRYSTALLISATION_1` / `DARKSEA_LIGHT_ATTRACTION_1` — filed, design owed at
+  the Grey/Scald passes. NEXT: nothing until those sittings; do not design early.
+- Three locked agent worktrees under `.claude/worktrees/` (all work pushed).
+  NEXT: `git worktree remove --force` each once the harness releases its locks.
+
+## Traps learned
+
+<!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives -- file it to LESSONS_INBOX.md the moment it is learned, then cite `(filed: LESSONS_INBOX)` or `(see: <item/doc>)`. Never re-explain a trap that is already recorded somewhere durable. -->
+- Build-agent briefs without an explicit no-backgrounding line deadlock on backgrounded selftests; SendMessage nudge recovers (filed: LESSONS_INBOX)
+- `rimflow file` creates NO items/<ID>.md — staging the imagined path kills the commit; the event lives in the seat shard (filed: LESSONS_INBOX)
+- A 3-way C# merge dropped a closing brace in a worktree rebase; only rebuild-after-rebase caught it (filed: LESSONS_INBOX)
+- The forged-quote guard fires on the literal owner-said flag spelling inside prose — reword, don't weaken the hook (see: CLAUDE.md, using-rimflow)
+- BENCH `claim` of a FOUNDRY item is refused; `reassign --to BENCH` is the verb (see: rimflow-cli-quirks memory)
+
+## Closed since the last handoff (4)
+
+- `TWILIGHT_DANGER_LIGHTWEB_1` — d16a7c1ce
+- `TWILIGHT_PANE_STRIKE_1` — a6dc009b9
+- `TWILIGHT_LIGHT_ECONOMY_1` — 2cd74d35e
+- `TWILIGHT_CHANNEL_CURRENT_1` — a7bcd4326
+
+## Filed and still open (13) — the next seat's queue
+
+- `SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1` — One gravship can only ever visit ONE sea floor: MapPortal caches its pocket map, so the hatch's per-tile biome resolution runs once and every later di
+- `SCALD_PLANTDENSITY_UNSET_1` — RM_TheScald leaves plantDensity unset (0f) so its one wildPlants row can never spawn - crowncarpet has a GenStep route, so this needs a ruling not an 
+- `GREYSEA_SALTDOME_SCATTER_OOB_1` — RM_SaltDomeShore fails its cluster-centre search and is followed by Got ThingsListAt out of bounds (-1000,-1000,-1000) at map-gen
+- `HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1` — Our three hazard-protection stats sit in statBases, so JobGiver_OptimizeApparel cannot see them and no pawn will ever choose a boil-suit on its own
+- `WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1` — RM_GameCondition_WetBulb is a second implementation of RM_HediffComp_EnvironmentalExposure living in the same assembly - retire it into the shared com
+- `LIQUID_TERRAIN_AUTHORED_TWICE_1` — Boiling water, brine pool and liquid propane terrain are authored twice in two active mods with identical player labels and different burn numbers
+- `SEABED_PLANET_LAYER_1` — Seabed planet layer: the sea floor as a geometric twin of the surface
+- `DIVING_STALE_DEPLOYED_FILES_1` — Retired pawn-dive files are deleted from src/ but still live in the deployed DivingInteraction mod
+- `GREYSEA_SHIP_CRYSTALLISATION_1` — Grey Sea claims a parked hull: crystallising encasement, doors frozen shut (owner-typed 2026-09-26) - design lands with the Grey's own danger/floor pa
+- `DARKSEA_LIGHT_ATTRACTION_1` — Light-attraction danger belongs to the dark-floored seas: player light draws prey, predators follow - redirected from the Twilight by owner ruling; de
+- `SURFACE_RIVER_WEIRS_1` — Port the weir / bank-works / breach system to ordinary surface river tiles (owner-typed 2026-09-26): weir, silt-trap, stake-line, hopper, and the unte
+- `TWILIGHT_BOTTOM_CAST_1` — The Deepwater bottom cast: 6-8 named residents of the lit bottom-houses (per-tile world objects), roles from the content doc section 9.3 as the starti
+- `WORKTREE_QUICKTEST_BRIDGE_GAP_1` — Worktree build agents' quicktest/cold-load cycles don't take the rimflow bridge lock, causing repeated live-verify collisions with FOUNDRY (measured 3
+
+## Commits
+
+```
+35ba04f15 Ledger sync: close TWILIGHT_CHANNEL_CURRENT_1 at a7bcd4326; build-wave map on the parent
+a7bcd4326 Build TWILIGHT_CHANNEL_CURRENT_1: Twilight Sea channel current, undersurge, sink, bank works
+78505cc6d Close TWILIGHT_LIGHT_ECONOMY_1 at 2cd74d35e; queue sun-sphere/noothelm/hoolimbre/cage art
+2cd74d35e TWILIGHT_LIGHT_ECONOMY_1: build the well-ledger, mobile constellation, sun-sphere and tenancy layer
+da65b7570 Close TWILIGHT_PANE_STRIKE_1 at a6dc009b9; queue RM_VeilPane art
+ca5cd192f chore: health dashboard auto-regen (code_review_status.py side effect)
+a6dc009b9 TerminalBiomes: Twilight Sea pane strike + laden deck (TWILIGHT_PANE_STRIKE_1)
+3570a1a28 Close TWILIGHT_DANGER_LIGHTWEB_1 at d16a7c1ce; queue suulk/vaulisk/lure art (7 jobs)
+faba57a84 FOUNDRY handoff 202609270423: full-belt wave summary, worktree/bridge-lock gap, 3 lessons
+d16a7c1ce TWILIGHT_DANGER_LIGHTWEB_1: rebuild TerminalBiomes DLL after rebase
+f077b1396 TWILIGHT_DANGER_LIGHTWEB_1: suulk lamp-grazer + vaulisk counterfeit lure
+0a49d3690 File WORKTREE_QUICKTEST_BRIDGE_GAP_1 for BENCH: worktree quicktest cycles don't take the bridge lock
+5e548648d MOD_OPTIONS_RETROFIT_1: uncontended bridge retry found a new failure mode
+cd8f34e1d Ledger sync: BENCH takes the four Twilight builds, all in doing via worktree agents
+69d610d5d Twilight design closed out: no fishing on the floor, Q1-Q19 all dispositioned
+aa0c7ccc3 Ledger: close ARTPIPE_WORKER_AUTH_STALENESS_1
+53f3b683a Artpipe: auto-resync stale worker-home auth + serialize refresh races
+d2cccffef Twilight river + light economy RULED: 5 cards answered, 2 items filed
+5b277995d Code review wave 27: RUT_UtinniPatches remaining BiomeDef cluster, 15 files, 0 bugs
+f84c4088b Ledger sync: file TWILIGHT_CHANNEL_CURRENT_1 with its design pointer
+... 141 more: git log --oneline 7c3e79e35..HEAD
+```
+
+## Game / bridge / tree state at wrap
+
+- running   : RUNNING   (RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.)
+- recorded  : LOADING
+- Bridge: FREE    since 2026-09-27T04:01:07Z
+
+Uncommitted (replace the placeholder after each line below with whose it is —
+yours, the other seat's, a subagent's):
+
+```
+M Transient/codebase_health.html   auto-generated by the health publisher
+ M Transient/codebase_health.json   auto-generated by the health publisher
+ M Transient/codebase_health_artifact.html   auto-generated by the health publisher
+ M Transient/project_maturity_dashboard.html   auto-generated by the maturity dashboard
+ M Transient/project_maturity_dashboard.json   auto-generated by the maturity dashboard
+ M deployed/config/ModsConfig.before-tier-bridge.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+ D infrastructure/artpipe/_artsrc/lockjaw_improve_a_r7/lockjaw_improve_a_r7.png   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/_artsrc/lockjaw_improve_b_r7/lockjaw_improve_b_r7.png   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/active/desertportb_feralgrazer_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/active/desertportb_feralnerf_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/active/desertportb_feralnerf_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_graniteslug_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_graniteslug_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_graniteslug_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_grank_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_grank_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_grank_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_greaterkraytdragon_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_greaterkraytdragon_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_horax_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_horax_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_horax_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_jakobeast_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_jakobeast_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_jakobeast_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_kowakianmonkeylizard_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_kowakianmonkeylizard_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_kowakianmonkeylizard_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_kraytdragon_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_kraytdragon_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_kraytdragon_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_krykna_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_krykna_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_krykna_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_mossbeetle_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_mossbeetle_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_mossbeetle_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_mossbeetlepupa_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_mossbeetlepupa_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_mossbeetlepupa_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_nerf_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_nerf_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_nerf_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_pikobis_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_pikobis_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/done/desertportb_plant_bloddle.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Brindeth_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Brommet_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Brommet_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Brommet_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Dorvel_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Dredgel_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Dredgel_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Dredgel_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Gulveth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Gulveth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Gulveth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Korveth_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Mirrelin_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Pallick_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Skarrid_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Skarrid_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Skarrid_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Skellarn_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Skellarn_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Skellarn_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Skelver_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Soffeth_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_SumpMouse_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_SumpMouse_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_SumpMouse_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_ThrummelBroodmother_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_ThrummelBroodmother_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_ThrummelBroodmother_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_ThrummelWarden_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_ThrummelWarden_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_ThrummelWarden_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Thrummel_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Thrummel_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Thrummel_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Tolleth_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RM_Velloch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Ashworm_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Ashworm_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Ashworm_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Barbthorn_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Barbthorn_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Barbthorn_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_EmberCarpet.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Scrubgrass.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Spinerat_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Spinerat_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Spinerat_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Sporemass_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Sporemass_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Sporemass_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Sporepaw_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Sporepaw_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Sporepaw_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Starvine.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Stoneback_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Stoneback_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Stoneback_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/RSW_Whirlbloom.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/bluedesert_chimeglobe.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/bluedesert_chimeglobe_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/bluedesert_dorrak_dessicated.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/bluedesert_glassfern.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/bluedesert_glassfern_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/bluedesert_glassfern_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/bluedesert_krissek_dessicated.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/bluedesert_krissek_halo_mote.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/bluedesert_palefloss.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/bluedesert_palefloss_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/bluedesert_palefloss_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/deepfire_crowncarpet_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/deepfire_crowncarpet_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/deepfire_pigmentjar_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/deepfire_pigmentjar_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_graniteslug_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_graniteslug_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_graniteslug_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_grank_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_grank_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_grank_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_greaterkraytdragon_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_greaterkraytdragon_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_greaterkraytdragon_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_horax_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_horax_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_horax_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_jakobeast_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_jakobeast_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_jakobeast_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_kowakianmonkeylizard_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_kowakianmonkeylizard_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_kowakianmonkeylizard_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_kraytdragon_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_kraytdragon_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_kraytdragon_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_krykna_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_krykna_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_krykna_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_mossbeetle_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_mossbeetle_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_mossbeetle_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_mossbeetlepupa_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_mossbeetlepupa_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_mossbeetlepupa_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_nerf_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_nerf_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_nerf_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_pikobis_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_pikobis_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_pikobis_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_plant_bloddle.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_plant_chakroot_wild.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_plant_hubbagourd_wild.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_plant_nysyllin_wild.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_porg_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_porg_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_porg_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_qormot_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_qormot_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_qormot_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_runyip_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_runyip_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_runyip_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_shaak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_shaak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_shaak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_strill_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_strill_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_strill_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_teemuss_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_teemuss_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_teemuss_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_uvak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_uvak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_uvak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_varactyl_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_varactyl_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_varactyl_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_voorpak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_voorpak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_voorpak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_vulptex_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_vulptex_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_vulptex_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_warwyrm_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_warwyrm_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_warwyrm_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_whisperbird_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_whisperbird_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_whisperbird_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_zeer_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_zeer_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/desertportb_zeer_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_brathek_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_brathek_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_brathek_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_chellow_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_chellow_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_chellow_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_drommath_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_drommath_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_drommath_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_gorrameth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_gorrameth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_gorrameth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_grolth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_grolth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_grolth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_lommerel_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_lommerel_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_lommerel_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_murrelith_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_murrelith_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_murrelith_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_nemmel_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_nemmel_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_nemmel_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_ollareth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_ollareth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_ollareth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_ammeth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_cistrel.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_claithe.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_corvath.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_halquin.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_maulith.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_nubrith.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_plennith.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_seepril.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_skethral.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_skimmel.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_sodderel.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_thulvane.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_tullick.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_varnoth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_verrow.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_plant_wanlith.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_silloch_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_silloch_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_silloch_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_skellick_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_skellick_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_skellick_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_thavrik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_thavrik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_thavrik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_vaulm_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_vaulm_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/feverwood_vaulm_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_animalpersonhood.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_blindsight.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_bloodfeeding.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_cannibal.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_collectivist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_darkness.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_femalesupremacy.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_fleshpurity.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_guilty.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_highlife.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_humanprimacy.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_individualist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_inhuman.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_loyalist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_malesupremacy.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_natureprimacy.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_nudism.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_painisvirtue.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_proselytizer.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_raider.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_rancher.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_ritualist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_shipborn.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_supremacist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_transhumanist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_treeconnection.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/glyph_tunneler.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_crossout.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_paste_flyer_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_paste_flyer_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_paste_wanted_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_paste_wanted_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_sigilframe_dripframe.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_sigilframe_halo.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_sigilframe_stencilbox.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_stencil_crown.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_stencil_fist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_stencil_gear.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_tag_a_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_tag_a_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_tag_b_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_tag_b_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_tag_c_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_tag_c_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_throwup_a_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_throwup_a_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_throwup_b_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/graffiti_throwup_b_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_aphreen.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_braskeen_closed.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_braskeen_open.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_brelloch.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_ilbareen_dead.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_ilbareen_live.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_immarel.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_ismerrow_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_ismerrow_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_ismerrow_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_ismerrow_d.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_nemreth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_nyssolet.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_ollamane.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_ommolyn.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_pallasheen.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_quennath.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_sarrash.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_thessamor.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_thrannock.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_ullavess.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_vellamine.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_velluric.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/miasma_wessaline.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_brakkel_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_brunnock_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_cundral_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_gorbeleth_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_kaddrath_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_maddrick_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_mirrelbole_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_mourvel_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_phorrik_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_quathis_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_saltcrystalitem_pile_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_saltcrystalitem_pile_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_sarnstilt_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_sarquin_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_thalquith_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_tumbel_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_vurmeloth_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_wollick_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rm_zhorrel_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rmdusthusk_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rmdusthusk_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rmdusthusk_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rmleachmoss_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rmmirrorgiant_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rmmirrorgiant_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rmmirrorgiant_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rmtitanoslime_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rmtitanoslime_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rmtitanoslime_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rmvenomvine_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_brogg_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_brogg_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_brogg_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_brullith_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_brullith_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_brullith_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_illoth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_illoth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_illoth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_skerrith_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_skerrith_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_skerrith_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_thozzik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_thozzik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_thozzik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_thozzikqueen_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_thozzikqueen_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rot_thozzikqueen_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rsw_graffiti_stencil_imperialcog.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rsw_zakkro_dessicated_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rsw_zakkro_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rsw_zakkro_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rsw_zakkro_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rsw_zakkroegg_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rswrawultracactus_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rswultracactus_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rut_grellbush.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rut_grellspine.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rut_vhessk_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rut_vhessk_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rut_vhessk_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rut_wildhealroot.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutbloomcrop_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutbrinebattery_v2_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutbrinebattery_v2_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutbrinebattery_v2_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutdarkcrust_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutdeltaloam_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutemperorvulture_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutemperorvulture_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutemperorvulture_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutfleetflier_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutfleetflier_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutfleetflier_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutfuzz_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutglower_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutglowercrust_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutkarrathil_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutkarrobel_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutmortuarycrawler_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutmortuarycrawler_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutmortuarycrawler_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutradiothermal_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutradiothermal_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutradiothermal_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutsealedsleeper_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutsealedsleeper_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutsealedsleeper_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutslimegrazer_v2_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutslimegrazer_v2_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutslimegrazer_v2_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutstaggerseed_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutstaggerseeddish_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutvwake_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutvwake_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutvwake_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutwelcomeblanket_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/rutyearningfruit_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_anchor.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_gutter.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_brennoth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_brimlock.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_dulloth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_fellome.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_grennick.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_kessaroth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_kollavane.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_norrveth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_pellareth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_ruddreth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_sellith.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_sorrivel.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_tavrosk.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_threllick.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_varrisk.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_plant_vessark.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/webwork_web.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_bladderfruit.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_bladderquill.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_burrak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_burrak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_burrak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_dewblade.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_dewgourd.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_dewgourdfruit.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_dripfringe.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_gorrask_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_gorrask_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_gorrask_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_kirruk_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_kirruk_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_kirruk_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_mirrik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_mirrik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_mirrik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_rockfinger.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_salvecomb.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_seepsalt.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_shadefern.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_sillik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_sillik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_sillik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_ssurr_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_ssurr_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_ssurr_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_steamfrond.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_tirbak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_tirbak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_tirbak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_vellak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_vellak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_vellak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_verdimoss.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_vhakk_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_vhakk_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_vhakk_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones2_weepmat.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_huldu_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_huldu_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_huldu_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_ivvol_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_ivvol_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_ivvol_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_karrek_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_karrek_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_karrek_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_loomu_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_loomu_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_loomu_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_murrin_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_murrin_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_murrin_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_skarrin_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_skarrin_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_skarrin_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_vhorrin_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_vhorrin_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_vhorrin_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_vizhik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_vizhik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ D infrastructure/artpipe/pending/weepingstones_vizhik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/registry.jsonl   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/artpipe/throughput.jsonl   artpipe daemon churn - runs continuously, never commit mid-flight
+ M infrastructure/dashboards/hub/data/artsheets.json   auto-generated dashboard data
+ M infrastructure/dashboards/hub/data/health.json   auto-generated dashboard data
+ M infrastructure/dashboards/hub/data/maturity.json   auto-generated dashboard data
+ M infrastructure/dashboards/hub/data/publish_ready.json   auto-generated dashboard data
+ M infrastructure/state/codebase_health_last.json   auto-generated by the health publisher
+ M skills/rimworld-debug-testing/SKILL.md   FOUNDRY - its full-belt wave (its handoff: faba57a84)
+ M skills/rimworld-sprite-facings/SKILL.md   FOUNDRY - its full-belt wave (its handoff: faba57a84)
+ M src/RimMandrake/Greentide/Assemblies/RimMandrake.Greentide.dll   FOUNDRY - its full-belt wave (its handoff: faba57a84)
+?? "D:\\Luke\\dev\\Rimworld\\Transient\\eg_check_state.py"   a peer window stray - the literal D:\\ filename says python.exe wrote it to the wrong cwd
+?? deployed/config/ModsConfig.before-tier-firehawk.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-leaningscrub.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_bluedesert.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_contagion.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_feverwood.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_floodedcanyon.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_forsakencrags.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_gelatinousslime.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_greentide.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_leaningscrub.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_longshade.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_miasma.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_nightsideice.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_poisonforest.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_pyrelands.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_rustcathedral.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_stillsand.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_terminalbiomes.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_theforge.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_therot.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_thesump.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_wasteland.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_webwork.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-proof_weepingstones.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? deployed/config/ModsConfig.before-tier-weepingstones.xml   modset_builder archives from tier swaps and the load-proof wave - several sessions, harmless
+?? infrastructure/artpipe/daemon_run_20260926_n8_measured.log   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Brindeth_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Brindeth_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Brommet_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Brommet_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Brommet_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Brommet_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Brommet_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Brommet_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Cravvet_v2_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Cravvet_v2_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Cravvet_v2_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Cravvet_v2_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Cravvet_v2_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Cravvet_v2_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Dorvel_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Dorvel_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Dredgel_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Dredgel_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Gulveth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Gulveth_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Gulveth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Gulveth_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Gulveth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Gulveth_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_HoolimbrePlant_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_HoolimbrePlant_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Korveth_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Korveth_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Mirrelin_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Mirrelin_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_NoothelmPlant_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_NoothelmPlant_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Pallick_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Pallick_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_v2_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_v2_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_v2_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_v2_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_v2_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Quarrok_v2_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Sivvern_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Sivvern_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Sivvern_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Sivvern_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Sivvern_v2_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Sivvern_v2_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Sivvern_v2_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Sivvern_v2_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Skelver_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Skelver_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Skennet_v2_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Skennet_v2_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Skennet_v2_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Skennet_v2_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Skennet_v2_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Skennet_v2_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Soffeth_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Soffeth_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Tolleth_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Tolleth_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_VauliskLure_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_VauliskLure_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Velloch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Velloch_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Vennick_v2_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Vennick_v2_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Vennick_v2_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Vennick_v2_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Vennick_v2_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RM_Vennick_v2_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Ashworm_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Ashworm_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Ashworm_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Ashworm_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Ashworm_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Ashworm_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Barbthorn_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Barbthorn_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Barbthorn_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Barbthorn_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Barbthorn_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Barbthorn_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_EmberCarpet.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_EmberCarpet.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Scrubgrass.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Scrubgrass.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Spinerat_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Spinerat_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Spinerat_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Spinerat_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Spinerat_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Spinerat_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporemass_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporemass_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporemass_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporemass_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporemass_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporemass_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporepaw_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporepaw_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporepaw_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporepaw_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporepaw_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Sporepaw_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Starvine.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Starvine.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Stoneback_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Stoneback_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Stoneback_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Stoneback_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Stoneback_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Stoneback_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Whirlbloom.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/RSW_Whirlbloom.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_chimeglobe.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_chimeglobe.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_chimeglobe_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_chimeglobe_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_dorrak_dessicated.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_dorrak_dessicated.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_dovvik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_dovvik_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_dovvik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_dovvik_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_dovvik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_dovvik_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_glassfern.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_glassfern.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_glassfern_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_glassfern_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_glassfern_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_glassfern_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_krissek_dessicated.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_krissek_dessicated.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_krissek_halo_mote.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_krissek_halo_mote.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_palefloss.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_palefloss.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_palefloss_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_palefloss_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_palefloss_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_palefloss_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_utikka_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_utikka_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_utikka_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_utikka_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_utikka_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_utikka_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_vrisk_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_vrisk_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_vrisk_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_vrisk_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_vrisk_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_vrisk_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_zhaaz_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_zhaaz_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_zhaaz_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_zhaaz_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_zhaaz_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/bluedesert_zhaaz_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/cauldron_suush_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/cauldron_suush_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/cauldron_suush_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/cauldron_suush_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/cauldron_suush_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/cauldron_suush_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_blisteredbulloo_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_brossak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_brossak_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_brossak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_brossak_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_brossak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_brossak_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_larva_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_larva_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_larva_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_larva_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_larva_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_larva_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_fezzira_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghaaz_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghaaz_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghaaz_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghaaz_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghaaz_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghaaz_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghuvv_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghuvv_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghuvv_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghuvv_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghuvv_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_ghuvv_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_gollivra_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_gollivra_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_gollivra_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_gollivra_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_gollivra_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_gollivra_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_greaterbulloo_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_greaterbulloo_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_greaterbulloo_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_greaterbulloo_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_pellorax_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_pellorax_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_pellorax_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_pellorax_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_pibbo_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_pibbo_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_pibbo_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_pibbo_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_pibbo_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_pibbo_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vezzok_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vezzok_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vezzok_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vezzok_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vezzok_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vezzok_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vulloth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vulloth_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vulloth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vulloth_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vulloth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_vulloth_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_zhirrik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_zhirrik_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_zhirrik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_zhirrik_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_zhirrik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_zhirrik_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_zhool_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_zhool_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_zhool_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/contagion_zhool_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_brekkugar_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_brekkugar_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_brekkugar_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_brekkugar_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_brekkugar_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_brekkugar_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_dhukk_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_dhukk_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_dhukk_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_dhukk_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_dhukk_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_dhukk_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ghorrumak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ghorrumak_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ghorrumak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ghorrumak_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ghorrumak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ghorrumak_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_gruzz_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_gruzz_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_gruzz_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_gruzz_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_gruzz_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_gruzz_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_hulggarok_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_hulggarok_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_hulggarok_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_hulggarok_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_hulggarok_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_hulggarok_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_kessik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_kessik_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_kessik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_kessik_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_shekkur_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_shekkur_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_shekkur_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_shekkur_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_shekkur_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_shekkur_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_thrizzik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_thrizzik_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_thrizzik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_thrizzik_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ulkhorr_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ulkhorr_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ulkhorr_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ulkhorr_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ulkhorr_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_ulkhorr_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_vrakk_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_vrakk_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_vrakk_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_vrakk_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_vrakk_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_vrakk_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zekkra_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zekkra_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zekkra_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zekkra_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zekkra_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zekkra_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zhurrakor_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zhurrakor_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zhurrakor_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zhurrakor_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zhurrakor_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/crags_zhurrakor_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_crowncarpet_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_crowncarpet_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_crowncarpet_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_crowncarpet_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_crowncarpet_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_crowncarpet_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_crowncarpet_d.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_crowncarpet_d.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_pigmentjar_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_pigmentjar_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_pigmentjar_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_pigmentjar_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_pigmentjar_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_pigmentjar_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_pigmentjar_d.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/deepfire_pigmentjar_d.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_imperialtoad_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_imperialtoad_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_imperialtoad_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_imperialtoad_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_imperialtoad_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_imperialtoad_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_jellypot_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_jellypot_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_jellypot_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_jellypot_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_jellypot_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_jellypot_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_landopus_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_landopus_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_landopus_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_landopus_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_landopus_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_landopus_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_plant_chakroot_wild.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_plant_chakroot_wild.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_plant_hubbagourd_wild.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_plant_hubbagourd_wild.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_plant_nysyllin_wild.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_plant_nysyllin_wild.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_porg_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_porg_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_porg_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_porg_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_porg_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_porg_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_qormot_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_qormot_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_qormot_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_qormot_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_qormot_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_qormot_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_runyip_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_runyip_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_runyip_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_runyip_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_runyip_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_runyip_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_shaak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_shaak_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_shaak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_shaak_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_shaak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_shaak_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_strill_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_strill_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_strill_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_strill_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_strill_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_strill_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_teemuss_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_teemuss_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_teemuss_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_teemuss_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_teemuss_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_teemuss_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_uvak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_uvak_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_uvak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_uvak_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_uvak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_uvak_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_varactyl_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_varactyl_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_varactyl_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_varactyl_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_varactyl_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_varactyl_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_voorpak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_voorpak_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_voorpak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_voorpak_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_voorpak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_voorpak_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_vulptex_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_vulptex_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_vulptex_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_vulptex_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_vulptex_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_vulptex_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_warwyrm_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_warwyrm_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_warwyrm_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_warwyrm_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_warwyrm_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_warwyrm_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_whisperbird_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_whisperbird_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_whisperbird_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_whisperbird_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_whisperbird_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_whisperbird_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_zeer_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_zeer_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_zeer_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_zeer_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_zeer_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/desertportb_zeer_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_brathek_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_brathek_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_brathek_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_brathek_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_brathek_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_brathek_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_chellow_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_chellow_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_drommath_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_drommath_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_drommath_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_drommath_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_gorrameth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_gorrameth_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_gorrameth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_gorrameth_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_gorrameth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_gorrameth_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_grolth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_grolth_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_grolth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_grolth_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_grolth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_grolth_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_kurreth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_kurreth_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_kurreth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_kurreth_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_kurreth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_kurreth_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_lommerel_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_lommerel_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_lommerel_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_lommerel_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_lommerel_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_lommerel_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_murrelith_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_murrelith_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_murrelith_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_murrelith_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_murrelith_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_murrelith_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_nemmel_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_nemmel_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_nemmel_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_nemmel_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_nemmel_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_nemmel_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_ollareth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_ollareth_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_ollareth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_ollareth_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_ollareth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_ollareth_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_ammeth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_ammeth.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_cistrel.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_cistrel.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_claithe.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_claithe.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_corvath.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_corvath.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_halquin.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_halquin.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_maulith.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_maulith.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_nubrith.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_nubrith.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_ossagrel.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_ossagrel.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_plennith.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_plennith.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_seepril.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_seepril.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_skethral.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_skethral.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_skimmel.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_skimmel.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_sodderel.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_sodderel.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_thulvane.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_thulvane.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_tullick.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_tullick.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_varnoth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_varnoth.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_verrow.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_verrow.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_wanlith.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_plant_wanlith.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_silloch_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_silloch_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_silloch_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_silloch_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_silloch_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_silloch_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skellick_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skellick_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skellick_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skellick_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skellick_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skellick_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skreth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skreth_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skreth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skreth_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skreth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_skreth_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thavrik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thavrik_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thavrik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thavrik_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thavrik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thavrik_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thornbug_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thornbug_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thornbug_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thornbug_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thornbug_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_thornbug_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_vaulm_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_vaulm_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_vaulm_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_vaulm_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_vaulm_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/feverwood_vaulm_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_animalpersonhood.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_animalpersonhood.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_blindsight.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_blindsight.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_cannibal.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_cannibal.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_collectivist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_collectivist.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_darkness.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_darkness.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_fleshpurity.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_fleshpurity.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_guilty.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_guilty.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_highlife.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_highlife.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_humanprimacy.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_humanprimacy.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_inhuman.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_inhuman.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_loyalist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_loyalist.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_malesupremacy.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_malesupremacy.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_natureprimacy.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_natureprimacy.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_nudism.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_nudism.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_painisvirtue.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_painisvirtue.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_proselytizer.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_proselytizer.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_raider.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_raider.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_rancher.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_rancher.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_ritualist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_ritualist.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_shipborn.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_shipborn.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_supremacist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_supremacist.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_transhumanist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_transhumanist.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_treeconnection.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_treeconnection.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_tunneler.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/glyph_tunneler.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_crossout.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_crossout.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_paste_flyer_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_paste_flyer_p1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_paste_flyer_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_paste_flyer_p2.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_paste_wanted_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_paste_wanted_p1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_paste_wanted_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_paste_wanted_p2.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_sigilframe_dripframe.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_sigilframe_dripframe.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_sigilframe_halo.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_sigilframe_halo.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_sigilframe_stencilbox.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_sigilframe_stencilbox.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_stencil_crown.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_stencil_crown.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_stencil_fist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_stencil_fist.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_stencil_gear.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_stencil_gear.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_a_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_a_p1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_a_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_a_p2.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_b_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_b_p1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_b_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_b_p2.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_c_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_c_p1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_c_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_tag_c_p2.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_throwup_a_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_throwup_a_p1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_throwup_a_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_throwup_a_p2.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_throwup_b_p1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_throwup_b_p1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_throwup_b_p2.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/graffiti_throwup_b_p2.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_essarn_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_essarn_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_essarn_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_essarn_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_essarn_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_essarn_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_fessk_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_fessk_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_fessk_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_fessk_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_fessk_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_fessk_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_otheska_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_otheska_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_otheska_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_otheska_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_otheska_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_otheska_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_saltblade.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_saltblade.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_sorruth_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_sorruth_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_sorruth_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/greysea_sorruth_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_aphreen.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_aphreen.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_braskeen_open.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_braskeen_open.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_brelloch.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_brelloch.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ilbareen_dead.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ilbareen_dead.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ilbareen_live.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ilbareen_live.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_immarel.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_immarel.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ismerrow_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ismerrow_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ismerrow_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ismerrow_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ismerrow_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ismerrow_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ismerrow_d.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ismerrow_d.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_nemreth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_nemreth.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_nyssolet.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_nyssolet.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ollamane.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ollamane.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ommolyn.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ommolyn.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_pallasheen.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_pallasheen.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_quennath.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_quennath.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_sarrash.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_sarrash.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_thessamor.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_thessamor.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_thrannock.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_thrannock.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ullavess.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_ullavess.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_vellamine.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_vellamine.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_velluric.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_velluric.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_wessaline.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/miasma_wessaline.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_mahllik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_mahllik_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_mahllik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_mahllik_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_mahllik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_mahllik_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_zhissa_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_zhissa_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_zhissa_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_zhissa_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_zhissa_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/nightside_zhissa_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_heemin_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_heemin_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_heemin_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_heemin_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_heemin_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_heemin_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_hoolen_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_oovanam_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/propanelake_vaunoom_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/pyrelands_barbslinger_v5_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/pyrelands_barbslinger_v5_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/pyrelands_barbslinger_v5_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/pyrelands_barbslinger_v5_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_brakkel_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_brakkel_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_brunnock_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_brunnock_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_crowncarpetfresh_icon_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_crowncarpetfresh_icon_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_crowncarpetfresh_icon_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_crowncarpetfresh_icon_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_cundral_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_cundral_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_gorbeleth_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_gorbeleth_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_kaddrath_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_kaddrath_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_maddrick_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_maddrick_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_mirrelbole_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_mirrelbole_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_mourvel_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_mourvel_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_phorrik_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_phorrik_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_quathis_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_quathis_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_saltcrystalitem_pile_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_saltcrystalitem_pile_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_saltcrystalitem_pile_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_saltcrystalitem_pile_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_sarnstilt_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_sarnstilt_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_sarquin_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_sarquin_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_thalquith_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_thalquith_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_tumbel_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_tumbel_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_vurmeloth_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_vurmeloth_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_wollick_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_wollick_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_zhorrel_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rm_zhorrel_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmdusthusk_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmdusthusk_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmleachmoss_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmleachmoss_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmmirrorgiant_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmtitanoslime_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmtitanoslime_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmtitanoslime_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmtitanoslime_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmtitanoslime_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmtitanoslime_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmvenomvine_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rmvenomvine_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brogg_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brogg_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brogg_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brogg_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brogg_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brogg_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brullith_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brullith_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brullith_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brullith_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brullith_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_brullith_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_illoth_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_illoth_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_illoth_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_illoth_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_illoth_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_illoth_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_skerrith_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_skerrith_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_skerrith_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_skerrith_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_skerrith_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_skerrith_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzik_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzik_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzik_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzikqueen_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzikqueen_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzikqueen_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzikqueen_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzikqueen_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rot_thozzikqueen_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_graffiti_stencil_imperialcog.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_graffiti_stencil_imperialcog.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_zakkro_dessicated_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_zakkro_dessicated_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_zakkro_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_zakkro_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_zakkro_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_zakkro_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_zakkro_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_zakkro_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_zakkroegg_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rsw_zakkroegg_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rswrawultracactus_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rswrawultracactus_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rswultracactus_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rswultracactus_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_2_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_2_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_2_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_2_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_3_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_4_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_flying_v2_5_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_firehawk_grounded_v3_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_greentideant_dessicated_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_greentideant_dessicated_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_grellbush.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_grellbush.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_grellspine.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_grellspine.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_vhessk_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_vhessk_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_vhessk_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_vhessk_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_wildhealroot.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rut_wildhealroot.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbloomcrop_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbloomcrop_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbrinebattery_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbrinebattery_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbrinebattery_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbrinebattery_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbrinebattery_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbrinebattery_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbrinebattery_v2_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbrinebattery_v2_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbrinebattery_v2_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutbrinebattery_v2_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutdarkcrust_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutdarkcrust_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutdeltaloam_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutdeltaloam_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutdosimeterlawn_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutdosimeterlawn_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutemperorvulture_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutemperorvulture_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutemperorvulture_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutemperorvulture_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutemperorvulture_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutemperorvulture_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutfleetflier_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutfleetflier_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutfleetflier_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutfleetflier_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutfleetflier_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutfleetflier_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutfuzz_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutfuzz_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutglower_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutglower_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutglowercrust_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutglowercrust_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutkarrathil_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutkarrathil_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutkarrobel_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutkarrobel_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutmortuarycrawler_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutradiothermal_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutradiothermal_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutradiothermal_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutradiothermal_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutradiothermal_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutradiothermal_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutsealedsleeper_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v2_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v2_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v2_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v2_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v2_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutslimegrazer_v2_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutstaggerseed_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutstaggerseed_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutstaggerseeddish_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutstaggerseeddish_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutvaultroot_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutvaultroot_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutvwake_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutvwake_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutvwake_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutvwake_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutvwake_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutvwake_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutwelcomeblanket_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutwelcomeblanket_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutyearningfruit_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/rutyearningfruit_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_bladderboilcatch_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_dosscatch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_dosscatch_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_dosscatch_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_dosscatch_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_dosscatch_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_dosscatch_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_eeshcatch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_eeshcatch_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_eeshcatch_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_eeshcatch_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_eeshcatch_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_eeshcatch_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_ekkelcatch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_ekkelcatch_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_ekkelcatch_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_ekkelcatch_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_ekkelcatch_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_ekkelcatch_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_karrashcatch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_karrashcatch_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_karrashcatch_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_karrashcatch_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_karrashcatch_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_karrashcatch_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_muddalcatch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_muddalcatch_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_muddalcatch_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_muddalcatch_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_muddalcatch_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_muddalcatch_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_rainbowpigment_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_rainbowpigment_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_rainbowpigment_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_rainbowpigment_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_rainbowpigment_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_rainbowpigment_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_saalcatch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_saalcatch_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_saalcatch_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_saalcatch_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_saalcatch_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_saalcatch_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_shullacatch_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_shullacatch_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_shullacatch_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_shullacatch_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_steamcatchbuilding_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_steamcatchbuilding_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_thuumcatch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_thuumcatch_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_thuumcatch_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_thuumcatch_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_thuumcatch_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_thuumcatch_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_ventbuilding_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_ventbuilding_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_ventbuilding_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_ventbuilding_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckframe_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckframe_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckframe_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckframe_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckframe_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckframe_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckhull_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckhull_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckhull_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckhull_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckhull_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wreckhull_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wrecktank_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wrecktank_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wrecktank_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wrecktank_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wrecktank_c.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald2_wrecktank_c.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald3_shullacatch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald3_shullacatch_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_bladderboilcatch_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_bladderboilcatch_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_noohm_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_noohm_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_noohm_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_noohm_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_noohm_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_noohm_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_saalcatch_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_saalcatch_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_shulla_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_shulla_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_shulla_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_shulla_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_shulla_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_shulla_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_shullacatch_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_shullacatch_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_steamcatchbuilding_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_steamcatchbuilding_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_ventbuilding_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_ventbuilding_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_wreckframe_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_wreckframe_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_wreckhull_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_wreckhull_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_wrecktank_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scald_wrecktank_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_bladderboil_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_doss_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_doss_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_doss_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_doss_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_doss_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_doss_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_eesh_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_eesh_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_eesh_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_eesh_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_eesh_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_eesh_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_ekkel_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_ekkel_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_ekkel_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_ekkel_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_ekkel_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_ekkel_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_karrash_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_karrash_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_karrash_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_karrash_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_karrash_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_karrash_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_muddal_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_muddal_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_muddal_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_muddal_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_muddal_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_muddal_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_thuum_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_thuum_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_thuum_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_thuum_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_thuum_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldfloor_thuum_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldsteam_overlay_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldsteam_overlay_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldsteam_overlay_b.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/scaldsteam_overlay_b.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_bezzul_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_bezzul_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_bezzul_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_bezzul_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_bezzul_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_bezzul_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_greateroomb_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_greateroomb_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_greateroomb_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_greateroomb_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_hennul_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_hennul_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_hennul_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_hennul_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_hennul_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_hennul_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_mubbaro_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_mubbaro_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_mubbaro_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_mubbaro_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_mubbaro_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_mubbaro_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_oomb_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_oomb_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_oomb_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_oomb_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_oomb_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_oomb_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_thummorak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_thummorak_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_thummorak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_thummorak_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_thummorak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_thummorak_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_vohhm_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_vohhm_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_vohhm_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_vohhm_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_vohhm_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_vohhm_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuppik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuppik_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuppik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuppik_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuppik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuppik_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuum_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuum_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuum_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuum_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuum_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_wuum_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_yollum_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_yollum_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_yollum_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_yollum_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_yollum_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/slime_yollum_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_loohn_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_loohn_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_loohn_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_loohn_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_lunoowa_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_noolim_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_saltblade.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_saltblade.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/twilightsea_weloon_v1_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_anchor.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_anchor.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_gutter.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_gutter.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_brennoth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_brennoth.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_brimlock.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_brimlock.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_dulloth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_dulloth.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_fellome.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_fellome.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_grennick.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_grennick.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_kessaroth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_kessaroth.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_kollavane.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_kollavane.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_norrveth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_norrveth.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_pellareth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_pellareth.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_ruddreth.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_ruddreth.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_sellith.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_sellith.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_sorrivel.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_sorrivel.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_tavrosk.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_tavrosk.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_threllick.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_threllick.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_varrisk.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_varrisk.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_vessark.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_plant_vessark.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_web.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/webwork_web.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_bladderfruit.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_bladderfruit.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_bladderquill.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_bladderquill.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_burrak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_burrak_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_burrak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_burrak_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_burrak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_burrak_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_dewblade.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_dewblade.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_dewgourd.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_dewgourd.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_dewgourdfruit.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_dewgourdfruit.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_dripfringe.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_dripfringe.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_kirruk_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_kirruk_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_kirruk_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_kirruk_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_kirruk_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_kirruk_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_mirrik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_mirrik_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_rockfinger.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_rockfinger.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_salvecomb.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_salvecomb.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_seepsalt.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_seepsalt.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_shadefern.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_shadefern.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_ssurr_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_ssurr_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_ssurr_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_ssurr_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_steamfrond.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_steamfrond.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_tirbak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_tirbak_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_tirbak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_tirbak_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_vellak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_vellak_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_vellak_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_vellak_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_verdimoss.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_verdimoss.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_vhakk_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_vhakk_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_vhakk_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_vhakk_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_weepmat.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones2_weepmat.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_ivvol_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_ivvol_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_ivvol_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_ivvol_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_ivvol_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_ivvol_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_karrek_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_karrek_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_karrek_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_karrek_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_karrek_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_karrek_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_loomu_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_loomu_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_loomu_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_loomu_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_loomu_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_loomu_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_murrin_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_murrin_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_murrin_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_murrin_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_murrin_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_murrin_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_skarrin_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_skarrin_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_skarrin_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_skarrin_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_skarrin_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_skarrin_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_vhorrin_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_vhorrin_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_vhorrin_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_vhorrin_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_vhorrin_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_vhorrin_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_vizhik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_vizhik_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_vizhik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/done/weepingstones_vizhik_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ConstellationCageSphere_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ConstellationCageSphere_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Cravvet_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Cravvet_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Cravvet_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Cravvet_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Cravvet_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Cravvet_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Dredgel_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Dredgel_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Dredgel_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Dredgel_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Sivvern_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Sivvern_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Sivvern_v2_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Sivvern_v2_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skarrid_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skarrid_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skarrid_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skarrid_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skarrid_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skarrid_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skellarn_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skellarn_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skellarn_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skellarn_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skellarn_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skellarn_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skennet_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skennet_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skennet_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skennet_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skennet_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Skennet_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_SumpMouse_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_SumpMouse_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_SumpMouse_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_SumpMouse_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_SumpMouse_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_SumpMouse_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_SunSphere_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_SunSphere_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Suulk_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Suulk_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Suulk_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Suulk_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Suulk_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Suulk_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelBroodmother_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_ThrummelWarden_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Thrummel_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Thrummel_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Thrummel_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Thrummel_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Thrummel_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Thrummel_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Vaulisk_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Vaulisk_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Vaulisk_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Vaulisk_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Vaulisk_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_Vaulisk_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_VeilPane_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/RM_VeilPane_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/contagion_greaterbulloo_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/contagion_greaterbulloo_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/contagion_pellorax_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/contagion_pellorax_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/contagion_zhool_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/contagion_zhool_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/crags_kessik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/crags_kessik_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/crags_thrizzik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/crags_thrizzik_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/desertportb_greaterkraytdragon_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/desertportb_greaterkraytdragon_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/desertportb_greaterkraytdragon_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/desertportb_greaterkraytdragon_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/desertportb_kraytdragon_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/desertportb_kraytdragon_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/desertportb_pikobis_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/desertportb_pikobis_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/feverwood_chellow_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/feverwood_chellow_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/feverwood_chellow_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/feverwood_chellow_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/feverwood_drommath_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/feverwood_drommath_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/glyph_bloodfeeding.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/glyph_bloodfeeding.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/glyph_femalesupremacy.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/glyph_femalesupremacy.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/glyph_individualist.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/glyph_individualist.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/greysea_sorruth_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/greysea_sorruth_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/miasma_braskeen_closed.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/miasma_braskeen_closed.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rmdusthusk_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rmdusthusk_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rmdusthusk_v1_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rmdusthusk_v1_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_firehawk_flying_v2_2_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_firehawk_flying_v2_2_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_body_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_body_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_body_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_body_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_body_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_body_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_carapacewall_atlas.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_carapacewall_atlas.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_carapacewall_menuicon.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_carapacewall_menuicon.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_dessicated_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_dessicated_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_dessicated_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_greentideant_dessicated_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_vhessk_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rut_vhessk_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rutbrinebattery_v2_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rutbrinebattery_v2_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rutglowercrust_v1.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/rutglowercrust_v1.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/scald2_shullacatch_a.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/scald2_shullacatch_a.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/slime_greateroomb_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/slime_greateroomb_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/twilightsea_loohn_v1_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/twilightsea_loohn_v1_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/twilightsea_moldmatroof.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/twilightsea_moldmatroof.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_gorrask_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_mirrik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_mirrik_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_mirrik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_mirrik_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_sillik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_sillik_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_sillik_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_sillik_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_sillik_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_sillik_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_ssurr_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_ssurr_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_tirbak_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_tirbak_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_vellak_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_vellak_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_vhakk_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones2_vhakk_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones_huldu_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones_huldu_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones_huldu_north.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones_huldu_north.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones_huldu_south.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones_huldu_south.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones_vizhik_east.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/artpipe/failed/weepingstones_vizhik_east.manifest.json   artpipe daemon churn - runs continuously, never commit mid-flight
+?? infrastructure/dashboards/hub/tabs/maturity.html   auto-generated dashboard data
+?? infrastructure/dashboards/hub/utinni_control_room_standalone.html   auto-generated dashboard data
+?? infrastructure/state/cherrypicker/CherryPicker.PRESWAP.20260911_234759.xml   a peer window or tool, 2026-09-11 stale snapshot
+?? infrastructure/state/modlists/ModsConfig.FULL.PRECAPTURE.20260926_142047.xml   mod-list snapshots - several seats, prior sessions
+?? infrastructure/state/modlists/ModsConfig.pre-floodedcanyon-quicktest-20260921T104640.xml   mod-list snapshots - several seats, prior sessions
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_COLD_LOAD_RUN_SHEET_4_2026-09-23.xml   mod-list snapshots - several seats, prior sessions
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_bacta_enable_2026-09-24T133247Z.xml   mod-list snapshots - several seats, prior sessions
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_restoring_seashores_bacta_2026-09-25T175356.xml   mod-list snapshots - several seats, prior sessions
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_seashores_enable_2026-09-25T133443.xml   mod-list snapshots - several seats, prior sessions
+?? infrastructure/state/modlists/ModsConfig_backup_before_rustcathedral_enable_2026-09-23T211528Z.xml   mod-list snapshots - several seats, prior sessions
+?? infrastructure/state/rescued/LanternDeeps_RUT/Assemblies/   LANTERNDEEPS_TIER_COLLISION_1 rescue material - KEEP, only copy outside the game folder
+?? src/RimMandrake/Utils/firehawk_flight_probe.py   FOUNDRY - its full-belt wave (its handoff: faba57a84)
+```
+
