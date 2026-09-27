@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T04:00:31Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-27T04:19:17Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -844,3 +844,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TWILIGHT_BOTTOM_CAST_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TWILIGHT_BOTTOM_CAST_1.md
+
+## WORKTREE_QUICKTEST_BRIDGE_GAP_1 Worktree build agents' quicktest/cold-load cycles don't take the rimflow bridge lock, causing repeated live-verify collisions with FOUNDRY (measured 3x in one session, 2026-09-27) — study with Fable and design the real fix
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     process
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WORKTREE_QUICKTEST_BRIDGE_GAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WORKTREE_QUICKTEST_BRIDGE_GAP_1.md
