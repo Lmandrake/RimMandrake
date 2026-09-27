@@ -19690,16 +19690,16 @@
     "sha": "9e603bde2"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Contagion.xml": {
-    "cleanCount": 4,
-    "date": "2026-09-24",
-    "hash": "e06d675b0d978ad71e71c2ec4185bc2cd51e32e88b7c49a466239b56752cb25c",
-    "sha": "7bfbaa5e7"
+    "cleanCount": 5,
+    "date": "2026-09-26",
+    "hash": "3984ce8590bf4baadf85fef86057c64f6e34c3c490ff486e51b35d08e774a864",
+    "sha": "ef14d1f33"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml": {
-    "cleanCount": 5,
-    "date": "2026-09-24",
-    "hash": "d46be22feebbb258b421d485d9967e5f687f6a43d3bb17f32074364d9022ff73",
-    "sha": "7bfbaa5e7"
+    "cleanCount": 6,
+    "date": "2026-09-26",
+    "hash": "a32fcc07c83c7617f535794a64beebb2b7918ae696d1c804766f82b64f8816f4",
+    "sha": "ef14d1f33"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml": {
     "cleanCount": 4,
@@ -19714,10 +19714,10 @@
     "sha": "06e9ecab9"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml": {
-    "cleanCount": 7,
-    "date": "2026-09-24",
-    "hash": "aa417f8ad02ae456d8fdef3ac78af2363b3a6e08ea0e7b0e964ba3856c759945",
-    "sha": "e05f7e0f8"
+    "cleanCount": 8,
+    "date": "2026-09-26",
+    "hash": "8e3ed129310b7eca9be9799c76920dcfb9bd4174fce095e532e0631f4f4b1d22",
+    "sha": "ef14d1f33"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml": {
     "cleanCount": 2,
@@ -19738,16 +19738,16 @@
     "sha": "28026b29c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-24",
-    "hash": "ff91ce70026062f32a0b9577c5e6b88849149e1fa51938b6dade26d9a95eef58",
-    "sha": "9e603bde2"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "4e950058c5bb81cee76f9b20bb658275ed79f7e1ed2091c376d776bbe5129e80",
+    "sha": "ef14d1f33"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml": {
-    "cleanCount": 7,
-    "date": "2026-09-24",
-    "hash": "7fab76779bf6fd397fe7a5b2e5b8dca6ddf770a63d06c38a982c0d947311d64b",
-    "sha": "7bfbaa5e7"
+    "cleanCount": 8,
+    "date": "2026-09-26",
+    "hash": "b8890061820697ab6c37965b7327e74a32e2784cbd8ba6a55427cb843b1b5ea6",
+    "sha": "ef14d1f33"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml": {
     "cleanCount": 4,
@@ -19774,22 +19774,22 @@
     "sha": "28026b29c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml": {
-    "cleanCount": 5,
-    "date": "2026-09-24",
-    "hash": "137d82144b055b3a0b145a0b6dbebdfd442eeccd310712c1fd9aae2a265bb192",
-    "sha": "7bfbaa5e7"
+    "cleanCount": 6,
+    "date": "2026-09-26",
+    "hash": "f3cf5a5f5f6451f813771139d09557c40b05dab7343f986760b76f95e25837ec",
+    "sha": "ef14d1f33"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-24",
-    "hash": "2100d4e9c8d9b09c0b77c40cc113d4e747445c94f4a3e94d054876fd20022b4f",
-    "sha": "7bfbaa5e7"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "026fd7c375c36fc11dd32c0c94ec233fb5fa4591f70a89746f55cf6c557f77c4",
+    "sha": "ef14d1f33"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-24",
-    "hash": "367e79d3471e7d98724ebe01c879427585cf428360354edb4327337d770a08db",
-    "sha": "9d2e88945"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "419f7112cf3d566f0b90fb8098d8cbc2ee2cd5946bff2817c9dd5f4040faefaf",
+    "sha": "ef14d1f33"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml": {
     "cleanCount": 4,
@@ -19798,10 +19798,10 @@
     "sha": "28026b29c"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml": {
-    "cleanCount": 6,
-    "date": "2026-09-24",
-    "hash": "7d982beb3bf21c203db5c0958f073e5109a1441cb1cc4db6957e5d0357556891",
-    "sha": "9e603bde2"
+    "cleanCount": 7,
+    "date": "2026-09-26",
+    "hash": "bba179060949da30dde8b63586d1df6ed289c6b524eb7c651ea121a0eada1503",
+    "sha": "ef14d1f33"
   },
   "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheScald.xml": {
     "cleanCount": 4,
