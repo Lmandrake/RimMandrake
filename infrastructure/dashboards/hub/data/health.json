@@ -1,28 +1,28 @@
 {
- "generatedAt": "2026-09-27T15:30:00Z",
+ "generatedAt": "2026-09-27T16:42:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 915074,
-  "sha256_12": "c697b6277564"
+  "bytes": 915830,
+  "sha256_12": "7cfd50886bcf"
  },
- "head": "a20f0ddda",
+ "head": "c778f8944",
  "counts": {
-  "red": 27,
-  "blue": 1620,
-  "green": 1831,
-  "grey": 577,
+  "red": 22,
+  "blue": 1626,
+  "green": 1849,
+  "grey": 559,
   "unmeasured": 0,
-  "total": 4055
+  "total": 4056
  },
  "loc": {
-  "red": 6792,
-  "blue": 513412,
-  "green": 399576,
-  "grey": 259289,
+  "red": 4145,
+  "blue": 515679,
+  "green": 401954,
+  "grey": 257565,
   "unmeasured": 0,
-  "total": 1179069
+  "total": 1179343
  },
- "reviewEntries": 3814,
+ "reviewEntries": 3852,
  "recidivists": [
   {
    "path": "src/RimUtinni/Doctrine/About/About.xml",
@@ -65,17 +65,17 @@
    "cycles": 2
   },
   {
-   "path": "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Sando.xml",
-   "loc": 454,
-   "cycles": 1
+   "path": "src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_WaterBoiling.xml",
+   "loc": 69,
+   "cycles": 2
   },
   {
-   "path": "src/RimMandrake/Utils/artpipe/mock_codex_worker.py",
-   "loc": 401,
+   "path": "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Sando.xml",
+   "loc": 454,
    "cycles": 1
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 4055 files (1831 clean, 577 dirty, 0 unmeasured)."
+ "headline": "OK: measured 4056 files (1849 clean, 559 dirty, 0 unmeasured)."
 }
