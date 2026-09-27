@@ -103,8 +103,12 @@ The two direct requests this document answers:
 
 > "Now, we need some really great unique contents here to keep up with the Scald and Grey. What could be down here? I'm thinking it will be in the plants and animals that are present more than minerals."
 
+*[Editorial, 2026-09-26: the "mold mats" in the quote above are the ceiling organism — kept
+by ruling and named by him the same day: it is **the waveglass** (§2.1).]*
+
 **BENCH NOTE — the eleven instructions inside the paragraph, so nothing gets lost.** (1)
-skylights are *literal golden shafts* reaching the floor; (2) the mold mat is in doubt;
+skylights are *literal golden shafts* reaching the floor; (2) the ceiling organism is in
+doubt (ruled: kept, as the waveglass — §2.1);
 (3) kelp analogs and many seaweeds, *wild and alien-looking*; (4) *lustrous green and
 blue-green*, *"It's a pretty ocean"*; (5) creatures carry *luminous balls, bladders, or
 patches*; the place is *dim but well populated by local illumination* plus the *moving
@@ -120,6 +124,9 @@ have *inhabited-injected … houses … of the appropriate races*.
 
 > "I don't know what the "mold mats" are and I'm not sure we need them."
 
+*[Editorial, 2026-09-26: his "mold mats" = the ceiling organism of the frozen sheet; ruled kept
+and, later the same day, named **the waveglass** — see §2.1.]*
+
 > "The underwater rivers are just channel-patterns in the terrain, like riverbeds on the surface."
 
 Both sentences were put to him at the bench the same day and **both were ruled — decision
@@ -127,50 +134,38 @@ taken by question card, 2026-09-26.** ⚠️ A question-card ruling is OUR sente
 clicked, not text he typed; nothing in this section is an owner quote, and nothing here
 may be passed as `--owner-said`. The two rulings, as recorded:
 
-### 2.1 RULED: the mat-roof STAYS — reskinned, not cut
+### 2.1 RULED: the ceiling STAYS — it is THE WAVEGLASS
 
 The ceiling mechanism is kept exactly as the frozen sheet has it: skylights remain holes
-in it and so keep their source, their drift and their years-scale expiry (ban 5); the
-ceiling gardens keep something to hang from; the gardener keeps its job (ban 2); all six
-hard bans hold; the sheet's §0 physics (the roof blocks the drying wind, which is why the
-Twilight outlives the Grey) stands. **What goes is the word "mold."** The roof is a
-**living canopy in lustrous blue-green**, to match *"It's a pretty ocean."*
+in it and so keep their source, their drift and their expiry (ban 5); the ceiling gardens
+keep something to hang from; the gardener keeps its job (ban 2); all six hard bans hold;
+the sheet's §0 physics (the roof blocks the drying wind, which is why the Twilight outlives
+the Grey) stands. **What went was the word "mold."** The roof is living glass in lustrous
+blue-green, to match *"It's a pretty ocean."*
 
-**BENCH NOTE — the canopy, named and drawn (proposal, part of this deliverable):**
+**The name is his.** BENCH proposed *oolune*; the owner typed, 2026-09-26 (recorded on
+`TWILIGHTSEA_FLOOR_PASS_1`): *"love what you made but just call it waveglass"*. ⇒ **The
+waveglass.** The description below stands as agreed; only the word changed.
 
-**The oolune** (`RM_` when it is ever a def; today it is fiction and a ceiling render).
-One organism, shore to shore, the same single monoculture the sheet always said it was —
-but seen from below it is not a mold mat, it is a **living stained-glass ceiling**: a
-translucent blue-green sheet, veined gold where the sunset light strikes it, thick and
-opaque where it is old and thin and luminous where it is new. Its underside is fringed
-with the ceiling gardens; its skylights are holes rimmed in bright pale new growth, the
-way a wound in kelp is rimmed pale. Its Compact name is *the lid*. What it sheds is not
-mold dust but **oolune-fall** — translucent flakes and torn sheets that drift down through
-the shafts catching gold, the same detritus rain the sheet has always had, now pretty.
-The word the shipped prose should reach for is *veil*, never *mat* or *mold*: the veil
-above, veil-fall below, a veil-fragment torn loose.
+**The waveglass.** One organism, shore to shore, the same single monoculture the sheet always
+said it was — and seen from far below it is a **living stained-glass ceiling**: a translucent
+blue-green sheet, veined gold where the sunset light strikes it, thick and opaque where it
+is old and thin and luminous where it is new. Its underside is fringed with the ceiling
+gardens; its skylights are holes rimmed in bright pale new growth, the way a wound in kelp
+is rimmed pale. The Deepwater call it *the lid*. What it sheds is **veil-fall** — whole
+panes that let go and turn slowly down through the shafts catching gold, to settle on the
+floor where the weloon eat them and the lunoowa pretend to be them. It is far overhead: a
+sky, not a surface anyone works. What reaches the floor from it is light, shed panes and
+falling things. The word the shipped prose reaches for is *veil*, never *mat* or *mold*.
 
-**Consequential rewording now OWED — named here as work, not done here** (none of it is
-mechanism, all of it should come out *better*, not merely different):
-
-- `RM_TwilightSea`'s shipped description — *"moldy from shore to shore with one mat
-  organism that has never had to share it"* — and `terminator_sea.md`'s *"the moldy
-  one"*: the same sentence with the oolune in it, and the lid seen from above as a
-  blue-green sheen on the water instead of a scum.
-- The four built creature descriptions written against the mat: `RM_Weloon` (*"mat-fall —
-  dead mat tissue raining slowly off the Twilight Sea's roof"* → veil-fall); `RM_Lunoowa`
-  (*"indistinguishable from a torn piece of the Twilight Sea's roof-mat"* → a torn
-  veil-fragment, translucent, which makes the mimic *better*: a drifting pane of light
-  that turns out to have filaments); `RM_Noolim` (*"beneath the Twilight Sea's mat-roof"*);
-  `RM_Loohn` (*"where the mat-roof's dapple breaks the murk"* → the lid's dapple).
-- The two catch items that repeat them: `RM_NoolimCatch`, `RM_WeloonCatch`.
-- Four more catch descriptions that name the mat or its gardens without the word "mold" —
-  `RM_Hollu` (*"forms on the underside of the mat"*), `RM_Oobo`, `RM_Nuudal`, `RM_Pallu` —
-  read correctly already and need at most the word swapped.
-- The frozen sheet's own mat language in §0, §1, §3, §4 and §6 — at his sitting, under the
-  additive rule (the ruling changes a *skin*, not a ruling).
-- The roster's `new_defs` row *"the mold-mat roof organism (Twilight monoculture,
-  shore-to-shore)"* — same organism, new name.
+**Consequential rewording — DONE 2026-09-26** (`Transient/waveglass_rename_2026-09-26.md`
+holds the pass): `RM_TwilightSea`'s description, the four built creatures (`RM_Noolim`,
+`RM_Loohn`, `RM_Weloon`, `RM_Lunoowa`), the twelve catch items, the frozen sheet's §0/§1/§3/
+§4/§6/§8/§9 under the additive rule, `terminator_sea.md`, and the roster's `new_defs` row.
+⚠️ The floor **plant** `RM_MoldMatRoof` was left as found: the owner ruled the same day that
+the organism is not a plant on the floor at all but *"a big panel that occasionally floats
+down and can be harvested"* — an event plus an item — so that def is being retired and
+redesigned, not renamed.
 
 ### 2.2 RULED: the underwater rivers STILL CARRY YOU — ban 3 stays live as a real mechanism
 
@@ -245,7 +240,7 @@ this document does not pretend otherwise. What is owed, honestly:
   stake-line and the bed. The richest ground is one careless step from the current, which
   is the sheet's *"the banks are the wealth"* with the danger live, as ruled.
 
-Everything below is written for the ruled world: the oolune stands, the channels carry.
+Everything below is written for the ruled world: the waveglass stands, the channels carry.
 
 ## 3. The seaweed analogs — fourteen, proposed
 
@@ -349,14 +344,14 @@ water). Beauty plant (`purpose Beauty`). Host of the skerrin (§4). **Roof-indep
 ### 3.6 Ummarel — the sky-raft `RM_Ummarel`
 
 **Look.** A free-floating weed that forms **buoyant blue-green rafts** hanging *just
-under the lid*, drifting in the water between the oolune and the floor, so that from
+under the lid*, drifting in the water between the waveglass and the floor, so that from
 below a raft is a darker shape crossing a shaft. It is the *"moving patches"* of his
 light made of a plant: a raft passing under a skylight sweeps a shadow across the floor.
 **On the floor map** it appears as **sunk rafts** — waterlogged tangles that have lost
 their buoyancy and settled, harvestable for raft-fibre (cordage and, dried, a poor fuel)
 and thick with clinging things. **Engine:** the floating form is not a floor def; it is
 one of the shadow-passing events (§7.2, the small sibling of the whale's shadow).
-**Relation to the ruled canopy:** the oolune is the roof; ummarel drifts *under* it and
+**Relation to the ruled canopy:** the waveglass is the roof; ummarel drifts *under* it and
 never replaces it — it is the sheet's *"instruments moored to the ceiling"* made of
 weed, the thing the Compact tethers buoys to.
 
@@ -389,7 +384,7 @@ veil-fall lies thickest — under the busiest skylights and on the channel banks
 sheet's *"the richest ground in the sea is the mud under a busy skylight"* made visible:
 where the lace is, the ground is rich. **Use.** Harvest gives **murrgrave** (raw food,
 the floor's mushroom analog, filling and plain). Home of the kiruun (§4), which light it.
-**Ruled canopy:** the veil-fall it needs is the oolune's, so its map on the floor is the
+**Ruled canopy:** the veil-fall it needs is the waveglass's, so its map on the floor is the
 map of the lid's gardens above — a diver reading murrgrave is reading the ceiling.
 
 ### 3.10 Vaalstone — glass-crust `RM_Vaalstone`
@@ -622,7 +617,7 @@ tall golden column reaching down — is a separate render: a `Graphic` on the sk
 thing drawn at a high altitude layer with a long translucent gold texture (the vanilla
 shaft-of-light idiom is a mote/overlay; the exact drawing route is UNMEASURED and is the
 one art-engineering question in this drop, worth a mockup before a def). The fiction, by
-the ruling in §2.1: a hole in the oolune, rimmed pale with new growth. **Drift** (sheet
+the ruling in §2.1: a hole in the waveglass, rimmed pale with new growth. **Drift** (sheet
 §3, ban 5): a `MapComponent` that, on a years-scale timer, despawns one skylight and
 spawns another elsewhere — the kelp under the old one dies over a season, the Compact's
 claim-buoy there expires (§8.1), and the *charts age*. Mat-stays makes this the
@@ -705,7 +700,7 @@ over the lid, tending it. Two grades, build the first now:
 - **Grade A — the darkening (buildable from vanilla today).** An `IncidentDef`
   `RM_GardenerPasses`: the whole floor dims over ~10 seconds (7.2's mechanism at full
   strength, hold ~1500 ticks), the sheet's *"far slow calls through the roof"* play as a
-  `SoundDef`, a letter says the gardener is overhead. Then — **because the mat stays by
+  `SoundDef`, a letter says the gardener is overhead. Then — **because the waveglass stays by
   ruling, the gardener's passing does something:** on a fraction of passes, **a skylight
   moves** (§6.3's drift fires now rather than on its timer — the gardener *opened a well*
   or *let one close*). A diver who sees the shadow and then sees a shaft go dark has
@@ -969,7 +964,7 @@ are recorded where they land.
 
 | item | sheet hook | why it is additive |
 |---|---|---|
-| the oolune (§2.1) | §0 *"the mat-roof is the mechanism"*, §1, §3, §4 | **RULED 2026-09-26 (card):** the roof stays, reskinned; every mechanism the sheet hangs on it is untouched; the word changes |
+| the waveglass (§2.1) | §0 *"the waveglass is the mechanism"*, §1, §3, §4 | **RULED 2026-09-26 (card, then the name typed):** the roof stays, reskinned; every mechanism the sheet hangs on it is untouched; the word changes |
 | fourteen seaweeds (§3) | §4 *"the kelp forests — real plant life … food, fiber, and the wet lattice-timber"*; §7 kelp agriculture | the sheet named kelp and promised three products; this supplies fourteen forms and the three products by name. Nothing here touches a ban: ban 6 holds (all invented), and the surface bans on lush/open-close flora are scoped away from the floor by the sheet itself |
 | the clinging layer (§4) | §4 *"the abundance around them — the roster pass populates generously here"* and *"yes, and another"* | the sheet's one explicit license to be generous |
 | fish bodies for ten catches (§5) | §4 the shoals, the river-fauna; §7 fishing | the standing every-fishable-lives rule, applied |
@@ -984,10 +979,9 @@ are recorded where they land.
 
 ### 10.2 FLAGGED — needs his word; BENCH position given, not taken
 
-1. **The oolune's name and look** (§2.1). The ruling reskinned the roof and made a good
-   name part of this deliverable; *oolune / the lid / veil-fall* is BENCH's proposal.
-   **Position:** keep it unless he has a better word; the ~11 description rewrites wait on
-   the name being his.
+1. **The waveglass's name and look** (§2.1) — **RULED 2026-09-26, owner typed:** *"love what
+   you made but just call it waveglass"*. The look stands as drawn; *the lid / veil-fall*
+   stand; the description rewrites are done (§2.1).
 2. **The sink's consequence** (§2.2 item 3). Ban 3 says *"sinking with it"*; the ruling
    says the current carries a pawn. What happens at the end — a recoverable *sunk* state
    on the bank, or a lost colonist? **Position:** recoverable and dangerous, the Grey's
@@ -1028,7 +1022,7 @@ are recorded where they land.
     eight, §9.3) or the Hold's people descending (position: no — the Hold is a surface
     seat and its cast has surface hooks).
 11. **Ban 2's object under the reskin** — *"no roof without the gardener"* stands by the
-    ruling; but the gardener's job is now to tend the *oolune*, and §7.3 Grade A makes
+    ruling; but the gardener's job is now to tend the *waveglass*, and §7.3 Grade A makes
     the gardener *move skylights*. Is that too much agency for a placid animal?
     **Position:** it is exactly the sheet's *"keeping skylights open"*; keep it.
 
@@ -1039,8 +1033,9 @@ not touch it. It is stale against this drop and against the live def in four pla
 `"flora": []` is now false (fourteen forms are proposed and the sheet's kelp was always
 commissioned); the `new_defs` row *"the Twilight Deep set, DEFERRED to diving mods"* has
 expired — the diving mod shipped (`RM_SeaDiveHatch`, the generators) and the Grey has
-already been dressed under the same expiry; the `new_defs` row *"the mold-mat roof
-organism"* takes the ruled reskin; and the `fauna` list still carries nine `RSW_`/donor
+already been dressed under the same expiry; the `new_defs` row now reads *"the waveglass
+(Twilight monoculture, shore-to-shore)"* (renamed 2026-09-26 under the ruling, its
+`kind: plant` now stale against the shed-panel redesign); and the `fauna` list still carries nine `RSW_`/donor
 imports (`RSW_Laa`, `RSW_OpeeSeaKiller`, `Yobshrimp`, `AA_ColossalAerofleet`, three
 tumorfish stages, `RSW_AbyssalColo`, `RSW_CrimsonOpee`, `RSW_Starmaw`, `RSW_StormSando`,
 `StoneCrab`) that are **not on the live def** (MEASURED: 6 `wildAnimals`) — the
@@ -1052,8 +1047,8 @@ document's to fix; a sheet edit on his word.
 Each with a BENCH position so a sitting can say yes or no. None blocks the smallest
 steps in §12. Numbering continues §10.2's flags where a flag is also a question.
 
-- **Q1 — The oolune.** Keep the name and the *veil / lid / veil-fall* vocabulary?
-  (§2.1.) **Position:** yes; then the rewrites are one pass.
+- **Q1 — The waveglass.** ✅ RULED 2026-09-26 (owner typed *"love what you made but just
+  call it waveglass"*); *veil / lid / veil-fall* stand; the rewrites landed as one pass (§2.1).
 - **Q2 — The sink.** Recoverable *sunk* state on the bank, or a lost colonist? (§2.2.)
   **Position:** recoverable, with a harsher Mod Setting.
 - **Q3 — Niim and noolim.** Two shoals split by light, or one? (§10.2-4.) **Position:**

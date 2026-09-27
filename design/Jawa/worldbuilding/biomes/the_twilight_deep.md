@@ -5,6 +5,17 @@
 > unfreeze path is an owner ruling at a sitting, recorded on the item that
 > changes it; contradiction cards from the freeze review amend under this rule.
 
+> 🔑 **Amended 2026-09-26 — the ceiling is THE WAVEGLASS.** Owner ruling at the Twilight
+> sitting, recorded on `TWILIGHTSEA_FLOOR_PASS_1` (typed, verbatim: *"love what you made but
+> just call it waveglass"*). The organism this sheet called the *mold-mat / mat-roof* is the
+> **waveglass**: one organism shore to shore, seen from far below as a living stained-glass
+> ceiling — translucent blue-green, veined gold where the sunset strikes it, thick and opaque
+> where it is old, thin and luminous where it is new, its skylights rimmed pale the way a
+> wound in kelp is rimmed pale. The Deepwater call it *the lid*; what it sheds is *veil-fall*
+> — whole panes that let go and settle to the floor. It is far overhead, a sky and not a
+> surface: what reaches the floor from it is light, shed panes and falling things. **Every
+> ruling below is unchanged** — the skylights are still its holes, the gardener still tends
+> it, all six hard bans hold; only the language changed, in §0, §1, §3, §4, §6, §8, §9.
 
 _Owner + BENCH, 2026-09-07, one round and ratified ("Let's show what we can do.
 Write it up!"). Defines **the bottom of the Twilight Sea** — the underwater
@@ -18,14 +29,14 @@ Deepwater Compact has been living all along.**_
 
 🔴 **The solitary law's boundary, written**: `terminator_sea.md`'s bans (no
 schools, sparse roster, monoculture) govern the SURFACE and SHORE, where they
-stay absolutely true. **The mat is a roof**, and beneath it the exception
+stay absolutely true. **The waveglass is a roof**, and beneath it the exception
 lives — this sheet owns the below, and neither world leaks into the other
 (scoping line added to the base sheet this pass).
 
 ## 0. Position and the physics of the exception
 
-Beneath the Twilight Sea (θ≈91, bearing 170 — the moldy one, shrinking
-*slower*). The mat-roof is the mechanism of everything: it blocks the drying
+Beneath the Twilight Sea (θ≈91, bearing 170 — the lidded one, shrinking
+*slower*). The waveglass is the mechanism of everything: it blocks the drying
 wind (WHY the Twilight outlives the Grey — canon's "same road, more slowly,"
 now explained), damps the salinity the wind would concentrate, and shelters
 water at the planet's one mild temperature — where base canon already says
@@ -34,10 +45,11 @@ the roof, it runs riot.
 
 ## 1. What it is
 
-A vast, dim, living cavern the size of a sea: the mold-mat overhead as a
-permanent ceiling, pierced by **skylights** — holes where the grazing amber
-light stands in visible golden columns in green water. Kelp forests tower
-under the light-wells. The ceiling itself is a hanging garden. Silver crowds
+A vast, dim, living cavern the size of a sea: the waveglass far overhead as a
+permanent ceiling — living stained glass, blue-green veined gold — pierced by
+**skylights**: holes where the grazing amber light stands in visible golden
+columns in green water. Kelp forests tower under the light-wells. The
+ceiling's underside is a hanging garden. Silver crowds
 work the columns, something fast hunts the dark between them, an enormous
 placid gardener tends the roof — and along the bottom run **rivers that look
 dry**: mud-bedded channels where heavier water flows invisibly, carving banks
@@ -53,12 +65,13 @@ marine ecosystem in the world, in one lidded bowl, at permanent sunset.
 
 ## 3. Driving forces
 
-- **The roof economy**: the mat shelters, the mat rains detritus, the mat
-  meters the light. Everything below is downstream of the ceiling.
-- ⭐ **The skylights**: the mat is patchy, and its holes are the biome's
-  real estate — golden wells the kelp reaches for and the crowds contest;
-  the mat's slow life opens and closes them over years, so the bright
-  places *migrate* and charts age.
+- **The roof economy**: the waveglass shelters, the waveglass sheds its
+  panes, the waveglass meters the light. Everything below is downstream of
+  the ceiling.
+- ⭐ **The skylights**: the waveglass is patchy, and its holes are the
+  biome's real estate — golden wells the kelp reaches for and the crowds
+  contest; the lid's slow life opens and closes them over years, so the
+  bright places *migrate* and charts age.
 - ⭐ **The underwater rivers** (owner): denser water sinking along the
   bottom in flowing channels — **they look like dry riverbeds of mud**,
   banked and braided, their water invisible against the water above. They
@@ -75,8 +88,8 @@ marine ecosystem in the world, in one lidded bowl, at permanent sunset.
 - **The kelp forests** — real plant life (owner): towering seaweed under
   the skylights, the planet's only true marine flora; food, fiber, and the
   wet lattice-timber.
-- **The ceiling gardens** — the mat's underside encrusted shore to shore:
-  an inverted reef of filter-feeders and grazers working the roof,
+- **The ceiling gardens** — the waveglass's underside encrusted shore to
+  shore: an inverted reef of filter-feeders and grazers working the lid,
   dripping the detritus rain that feeds the floor.
 - **The shoals** — schools, finally and only here: silver crowds in the
   light columns (the surface ban broken below the roof, by ruling, with
@@ -86,7 +99,7 @@ marine ecosystem in the world, in one lidded bowl, at permanent sunset.
 - **The gardener** — the Twilight's endemic giant, placid where the Grey's
   is cross, and now given its work: it **tends the roof** — grazing the
   ceiling gardens back, keeping skylights open, patching tears with its
-  own secretions. The mat and the giant are one system, ages old. Killing
+  own secretions. The waveglass and the giant are one system, ages old. Killing
   the last gardener kills the roof, and the roof is the biome — the base
   sheet's endemic stakes at ecosystem scale.
 - **One true predator** — fast and almost nostalgically ordinary, hunting
@@ -112,13 +125,13 @@ marine ecosystem in the world, in one lidded bowl, at permanent sunset.
 1. 🔴 **No crowding above the roof** — the surface/shore biome keeps every
    `terminator_sea.md` ban; nothing schools, herds, or thickens up there.
 2. 🔴 **No roof without the gardener** — no story, def, or event removes
-   the giant and leaves the mat standing; they are one system.
+   the giant and leaves the waveglass standing; they are one system.
 3. 🔴 **No swimmable river** — entering a bottom channel means sinking
    with it; harvest and travel happen on the banks.
 4. 🔴 **No Compact hostility canon** — the Deepwater do not raid (standing
    faction doctrine) and their Deep holdings never become a war camp.
 5. 🔴 **No skylight permanence** — every light-well is temporary on a
-   years scale; no fixed sacred/owned skylight outlives the mat's drift.
+   years scale; no fixed sacred/owned skylight outlives the lid's drift.
 6. 🔴 **No vanilla-Earth organisms by name or read** (standard; ordinary
    in *shape* is this biome's register, never nameable).
 
@@ -156,7 +169,7 @@ to trade or keep.)
   not v1 work that is late.
 - Also below: gardener-tending stations (theirs and the giant's,
   intertwined), skylight claim-buoys, the wrecks of the impatient, and the
-  charts that age as the mat drifts.
+  charts that age as the waveglass drifts.
 
 ## 9. Artistic theme
 
@@ -165,12 +178,14 @@ to trade or keep.)
 - **Light:** the two warm sources — amber skylight columns standing in dim
   green, and the Compact's lamps strung low along the banks; darkness
   between, busy and alive.
-- **Palette:** deep greens and kelp bronze, mat-pale ceiling, mud browns
-  in the dry-looking rivers, silver shoal-flash, lamp gold.
+- **Palette:** deep greens and kelp bronze, the waveglass overhead in
+  blue-green veined gold, mud browns in the dry-looking rivers, silver
+  shoal-flash, lamp gold.
 - **Silhouette language:** vertical kelp towers under round wells; the
   braided river-beds' horizontals; the gardener's vast gentle bulk at the
   ceiling; low domed dwellings with lit doorways.
-- **Motion:** constant and easy — shoal-swirl, detritus rain, current-ride;
+- **Motion:** constant and easy — shoal-swirl, detritus rain, a pane of
+  veil-fall turning slowly down through a shaft, current-ride;
   the biome is the planet's one place where motion means life, not threat.
 - **Sound:** the rich water-noise the whole planet lacks — click, chirr,
   shoal-hiss, the gardener's far slow calls through the roof, and small
@@ -188,9 +203,9 @@ to trade or keep.)
 - 🔵 **v2**: the full Compact underwater settlement (plan of record,
   owner).
 - **Roster** — the generous pass: this biome alone populates richly;
-  gardener ↔ mat pairing; the predator; bank-fauna.
+  gardener ↔ waveglass pairing; the predator; bank-fauna.
 - **Canon sitting (Wednesday)** — the Compact's ark-keeper reveal into
-  their faction dossier; the mat-roof mechanism into `terminator_sea.md`'s
+  their faction dossier; the waveglass mechanism into `terminator_sea.md`'s
   canon (scoping line added this pass); the skylight/roof physics into
   the hydrology doc.
 - **Cross-flow ledger**: `the_grey_deep.md` (the sister underworld — the
