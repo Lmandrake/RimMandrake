@@ -456,12 +456,134 @@ by standing in the right place. The most Long Shade sentence in the document.
 
 ## 5. Weather / terrain / mechanics feasibility
 
-*(to fill)*
+What is a WeatherDef, what is a GameCondition, what needs C#, what already ships.
+Sizes: small ≈ under 150 lines C# or none; medium ≈ one real component/patch.
+
+| mechanism | route | state / size |
+|---|---|---|
+| smoke-haze weather | `WeatherDef`, pure XML — Pyrelands `AshFall`/`Cinderfall`/`BlackRain` are the shipped in-house shapes | XML only |
+| haze dims the sun | `GameConditionDef` carrying `RM_GlowMultiplierOverrideExtension` — **shipped** (environmentalhazards, built for Breaklight; `BiomeGlowPatches` applies it) | XML only |
+| haze mechanically extends shade | ⚠️ `RM_MapComponent_ShadeGrid` has **no global multiplier input today** (its ShadeAt is roofed-or-falloff-from-casters, MEASURED from the Oasis Maker's copied algorithm) — needs one hook | small C# |
+| ash-pulse growth surge | `GameConditionDef` with a plant-growth factor — ⚠️ **UNMEASURED which vanilla virtual carries it** (read Volcanic Winter's decompile on the Desktop before pricing) | small C#, one UNMEASURED gate |
+| ash locks the sand (burrow shutdown) | map-component flag the burrower comps consult; `RM_MapComponent_TerrainMire` (Greentide) is the terrain-state precedent | medium C# |
+| dung-seeded growth after a megafauna passes | ✅ **BUILT** — `RM_CompDungSeeder` (arrive → fertilise within radius → seed young plants and at chance young creatures), wired on `RSW_ShadeWhale` | done |
+| burst-then-recover predation | ✅ **BUILT** — `RM_CompHeatBurstPredator` + `RM_HeatDrivenBurst` hediffs, wired on `RSW_WraidAlpha` | done |
+| shade-seeking AI | ✅ **BUILT** — `RM_MapComponent_ShadeGrid` + `RM_JobGiver_WanderInShadeGrid` + `RM_ShadeSeekingWanderExtension` + `RM_ThinkTree_ShadeSeekingWander` | done |
+| sand filter-feeding megafauna | ✅ **BUILT** — `RM_FilterFeedExtension` + `RM_JobGiver_FilterFeedTerrain`/`RM_JobDriver_FilterFeedTerrain` (the item's "C#-owed" line predates this) | done |
+| heat-load stagger / shade-driven severity | ✅ **BUILT** — `RM_HediffComp_ShadeStagger`, `RM_HediffComp_ShadeDrivenSeverity` | done |
+| sand burrowing (visual) | already solved in pure XML via the donor's `CompProperties_GraphicByTerrain` pattern (sheet §10) | XML only |
+| permanent low sun / no day-night | 🔴 engine truth (sheet §10, MEASURED from decompile 2026-09-05): outdoor light is ONE float per map (`SkyManager.CurSkyGlow`) and outdoor temperature is one Room — **true directional shadow cannot be rendered**. The playable form: a permanent `GameConditionDef` overriding `SkyTarget` colour/glow to fixed golden-hour (vanilla `GameCondition_Aurora` is the override shape; `RUT_MiasmaWeatherLock` is our shipped permanent-lock precedent), with the shade GRID as the mechanical truth and art carrying the raking-light read | XML + small C#; the rendered-vs-mechanical divergence the sheet warns about (§10 ⚠️) is accepted and stated, not solved |
+| patch-and-gap mapgen | `GenStep` (§4.5) — `RM_GenStep_RootCauseways` is the in-house genstep precedent | medium C# |
+| dew-line growth gate | small comp/PlaceWorker reading the grid boundary (§3) | small C# |
+| harbour scorer + arrival ladder | §4.1 — scorer MapComponent + 3–4 IncidentDef workers | small–medium C# |
+
+**No day/night-keyed content anywhere above** (ban 1): the smoke calendar keys to event
+arrival, activity keys to the shade map, and nothing reads the clock. **No rain** (ban 2):
+the def already zeroes Rain/RainyThunderstorm/Snow — untouched. **No local fire** (ban 5):
+smoke and ash ARRIVE as weather; nothing above ignites a tile here.
 
 ## 6. Ship contribution row
 
-*(to fill)*
+Per `BIOME_SHIP_CONTRIBUTIONS_1`'s register (the running list in that item; recorded
+there by whoever executes, not by this doc):
+
+| biome | ship contribution | source |
+|---|---|---|
+| the Long Shade | **the shade awning** — an extendable gravship module that, landed, projects real shade (a grid-visible shade-caster): the ship becomes the best harbour on the route *on purpose*, and §4.1's reliable game walks to the ramp — the only biome gift that is a hunting method · **pavement-stone flooring** — wind-stripped desert pavement cut into a clean flat ship floor (§7 "desert pavement stone", pure XML) · candidate: **the vorrel galley** — a live-prep galley cabinet stocking the prepared cycle-seed dish (§4.6), the euphoric delicacy served aboard | this doc §4.1/§4.6; awning = one shade-caster building def + gravship placement, small |
 
 ## 7. Card agenda
 
-*(to fill)*
+Every open ruling as a numbered question, recommendation first, answerable in a word.
+
+1. **Ratify the Q12 tier move: the 14 invented-name rows of §2b leave the Utinni patch
+   for `RM_LongShade`** (bokka, ossik, kudda, thurra, vosska, khorrak, ommok, ulgga,
+   pommik/jellypot, pikkut/truffle mole, hakkro/great devourer, dobbak/groundrunner,
+   vukkoroth/fleshbeast, shade whale), defNames renamed `RM_`, labels unchanged until
+   the batch-4c naming rulings land (those five DRAFT names are that doc's sitting,
+   not this one's). *Recommendation: yes, all 14 — Q12 says this sitting is exactly
+   where this happens, and Q11a's "rich enough to stand alone" bar is unreachable
+   without them.*
+2. **The ultracactus: canon or ours?** A Wookieepedia search for "ultracactus" hits the
+   TROS Visual Dictionary page, so the word may be genuine canon despite the sheet's
+   "the owner's own name" line. *Recommendation: pull that page's text at the sitting;
+   if the word is not actually in it, move the plant to `RM_Ultracactus` and let it
+   anchor the free tier. If it IS canon, it stays Utinni and Q3's forage item is
+   invented instead.* Same verdict wanted for `RSW_SurraGrass` (UNCERTAIN — one
+   sourcebook search hit) and `RSW_DommoTree` / `RSW_VellaraBloom` (0 hits, invented;
+   vellara carries the rule-8 offer: rename or keep the donor's coinage).
+3. **The free tier's forage hole:** standalone, `RM_LongShade`'s `foragedFood` resolves
+   unset (the RSW item is MayRequire-guarded) and forageability 0.25 is inert — the
+   exact defect `DESERT_FORAGEDFOOD_INERT_1` fixed on the donor def, reintroduced one
+   tier down. *Recommendation: an `RM_` pad/fruit item as foragedFood (ultracactus pad
+   if Q2 frees it), pure XML.*
+4. **The five invented hole-fillers (§2c): sollak, gennok, tebbra, dakkra, pirrik —
+   ratify, strike, or reword.** All DRAFT, all checker-clean and probe-clean; pirrik
+   carries a fuzzy Wookieepedia near-miss (*Pirrip*) flagged for taste. *Recommendation:
+   ratify all five; they are the free tier's herds, pack stock, burst predator and the
+   sheet's own owed glitter-birds.* Sub-question: does the ambush-flier band (Shyrack's)
+   also need a free-tier bearer, or is that hole acceptable? *Recommendation: acceptable
+   — pirrik fills the sky visually and the band is one canon row deep.*
+5. **The shade whale's label** is an English compound ("shade whale") of the kind rule 9
+   strikes elsewhere. *Recommendation: coin it — offer **thommak** (DRAFT, checker- and
+   probe-clean); "shade whale" survives fine in the description.*
+6. **Multi-homing, judged at this sitting per the standing law — five rows are wired in
+   BOTH deserts** (MEASURED: `RUT_ExtremeDesert.xml` carries Kudda 0.3, Kreetle 0.2,
+   Gizka 0.01, TruffleMole 0.5; plus JOE_Cephalope 0.5 in both defs):
+   - *kudda* — the roster's own law field says "dual home with ExtremeDesert" from its
+     2026-09-09 authoring. *Recommendation: keep both, annotated in place (the screecher
+     precedent) — the dual home predates the one-home law and reads deliberate.* His
+     call.
+   - *kreetle, gizka* — canon grain-scale, tiny weights in the Stillsand (0.2/0.01).
+     *Recommendation: one home each — here (the Stillsand's own register is "almost
+     nothing lives"); cutting a 0.01 row costs the Stillsand nothing.*
+   - *truffle mole (pikkut)* — the owner's note "desert & extreme desert" is a CANDIDATE
+     set under his own 2026-09-22 correction ("I meant pick one arid home").
+     *Recommendation: the Long Shade — soft sand plus an actual food web; a burrower
+     needs something buried to eat, which is this biome's buried canopy, not the
+     Stillsand's empty dune.*
+   - *cephalope (qorrax)* — "anywhere there is deep hot sand" is likewise a candidate
+     set. *Recommendation: the Stillsand — see Q7.*
+7. **The cephalope CONFLICT, standing in `desert.json` since 2026-09-09:** the roster's
+   eviction list bans it under ban 3 (predator, spd 8.8 MEASURED — a pursuit predator by
+   the sheet's own proxy, the fastest thing in the biome) while the fauna list imports
+   it at 0.5 on your round-2 note. Both entries are live; the def is wired here AND in
+   the Stillsand. *Recommendation: resolve by the one-home law and the ban together —
+   its home is the Stillsand (where ban 3 does not run), and the Long Shade keeps ippok
+   (landopus) as its water-defender native. If it stays here instead, it needs the
+   wraid treatment (owner-slowed below 4.5).*
+8. **The two CONFLICT icons the 2026-09-09 proxy held for you:** *Dewback* (evicted on a
+   predator flag + spd 4.7 — the roster itself suspects "flag noise"; it reads as an
+   omnivore mount) and *Blurrg* (same shape, spd 5.0). *Recommendation: Dewback IN as a
+   herd/mount row with the wraid treatment (slowed ≤4.4, predator flag corrected if
+   noise — measure the def first); Blurrg OUT of this biome — its read is scrubland,
+   and admitting it here forecloses a better home at that biome's own sitting.*
+9. **The dead roster row:** `AA_SandLion` (0.5) was never wired here; the ported
+   `RSW_SandLion` lives in the Stillsand (its interim subsurface striker, one home).
+   *Recommendation: confirm the Long Shade row is dead so `desert.json` stops carrying
+   it as an open import.* (Its *vekka* label flag is the Stillsand sitting's question,
+   not ours.)
+10. **The dew line vs ban 8 (no lush):** the halo must stay a faint one-cell fringe —
+    pale, rim-only, never green in quantity, exactly the ultracactus ceiling.
+    *Recommendation: confirm that ceiling as the dewfringe's binding art/def
+    constraint.* (Stated so a later pass cannot inflate it; same shape as the Twilight
+    doc's §5.5 guard.)
+11. **The marquee ranking (§4.0):** harbour → smoke calendar → dew line, middens as the
+    cheap swap. *Recommendation: as ranked — the harbour is the sheet's own declared
+    consequence and most of its engine is already shipped.*
+12. **The named wide gaps** (§4.5, and the sheet's own "Owed" list) need a worldmap
+    authoring sitting with you present (standing rule: canonical worldmap docs are
+    never touched solo). *Recommendation: schedule it as part of this biome's Phase B
+    window, not before — the names should land with the repaint, once.*
+
+Nothing above edits the frozen sheet; where a proposal strains it (Q10's ban-8 fringe),
+the sheet's wording wins until you say otherwise.
+
+---
+
+**Corrections owed elsewhere, found in passing (reported, not executed — this doc edits
+no other file):** `LONGSHADE_RM_MOD_BUILD_1`'s STATE table still reads steps 1–3 as OWED
+against a mod that now exists with a built DLL and a frozen twin; its §8 "sand
+filter-feeding C# unbuilt" line is stale against the shipped `RM_FilterFeedExtension`
+wiring; and `rosters/desert.json` still carries the unwired `AA_SandLion` import, the
+missing Stoneback/TruffleMole rows its own item flagged, and the live cephalope
+evict-vs-import conflict (Q7).
