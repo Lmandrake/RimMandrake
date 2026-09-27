@@ -42,6 +42,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import common  # noqa: E402
 import artpiped  # noqa: E402
+import fill_queue  # noqa: E402 — row_to_jobs() unit tests (ARTPIPE_FACING_COHERENCE_1 §2)
 import mock_codex_worker  # noqa: E402 — reused directly for write_rollout() in a couple of tests
 
 REPO_ROOT = HERE.parents[3]
@@ -756,6 +757,276 @@ def test_load_job_refuses_a_facing_job_whose_prompt_contradicts_the_stamp():
            (q.failed / "contradicted.json").is_file())
         ok("facing-gate e2e: a healthy job alongside it still completes",
            (q.done / "healthy_after_contradiction.json").is_file())
+
+
+def test_load_job_accepts_and_validates_derive_from():
+    """ARTPIPE_FACING_COHERENCE_1 §2's job-schema half: `derive_from` names
+    a SIBLING job id (the accepted master), a different contract from
+    `reference` (an existing shipped sprite being reskinned) — the two must
+    never both apply to one job."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+
+        good = q.pending / "derived_north.json"
+        common.atomic_write_json(good, {
+            "id": "derived_north", "rimflow_item_id": "SELFTEST_ARTPIPE",
+            "canvas": {"width": 256, "height": 256}, "facing": "north",
+            "derive_from": "derived_east",
+            "prompt": "Rear view, seen from behind, no face or eyes visible: a six-legged beast.",
+        })
+        try:
+            job = common.load_job(good)
+            ok("load_job: accepts a valid derive_from", job.get("derive_from") == "derived_east")
+        except common.JobError as exc:
+            ok("load_job: accepts a valid derive_from", False, str(exc))
+
+        both = q.pending / "derived_both.json"
+        common.atomic_write_json(both, {
+            "id": "derived_both", "rimflow_item_id": "SELFTEST_ARTPIPE",
+            "canvas": {"width": 256, "height": 256},
+            "derive_from": "derived_east", "reference": str(q.reference),
+            "prompt": "a six-legged beast",
+        })
+        try:
+            common.load_job(both)
+            ok("load_job: refuses derive_from together with reference", False,
+               "load_job did not raise")
+        except common.JobError as exc:
+            ok("load_job: refuses derive_from together with reference", True)
+            ok("load_job: names both fields in the refusal",
+               "derive_from" in str(exc) and "reference" in str(exc), str(exc))
+
+        selfref = q.pending / "derived_self.json"
+        common.atomic_write_json(selfref, {
+            "id": "derived_self", "rimflow_item_id": "SELFTEST_ARTPIPE",
+            "canvas": {"width": 256, "height": 256},
+            "derive_from": "derived_self",
+            "prompt": "a six-legged beast",
+        })
+        try:
+            common.load_job(selfref)
+            ok("load_job: refuses derive_from naming the job's own id", False,
+               "load_job did not raise")
+        except common.JobError as exc:
+            ok("load_job: refuses derive_from naming the job's own id", True)
+            ok("load_job: names the id in the refusal", "derived_self" in str(exc), str(exc))
+
+
+def test_claim_next_holds_derived_job_until_master_resolves():
+    """ARTPIPE_FACING_COHERENCE_1 §2's scheduling half: a pending job
+    carrying `derive_from` must sit UNTOUCHED in pending/ until its master
+    has a done manifest AND a real PNG on disk — neither alone is enough."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        derived = q.pending / "holdbeast_north.json"
+        common.atomic_write_json(derived, {
+            "id": "holdbeast_north", "rimflow_item_id": "SELFTEST_ARTPIPE",
+            "reference": None, "derive_from": "holdbeast_east",
+            "canvas": {"width": 64, "height": 64},
+            "prompt": "a six-legged beast, rear view",
+            "style_notes": "", "priority": 100, "background": "transparent",
+            "channel": "codex", "facing": "north", "facings": ["north", "south", "east"],
+        })
+
+        held = artpiped.claim_next(q.pending, q.active,
+                                   done_dir=q.done, failed_dir=q.failed, artsrc_dir=q.artsrc)
+        ok("claim_next: a derive_from job is HELD while its master has no verdict at all",
+           held is None and derived.is_file())
+
+        # A done manifest ALONE (no PNG yet — e.g. a crash between the two
+        # writes) must still hold it.
+        common.atomic_write_json(q.done / "holdbeast_east.manifest.json", {"status": "ok"})
+        still_held = artpiped.claim_next(q.pending, q.active,
+                                         done_dir=q.done, failed_dir=q.failed, artsrc_dir=q.artsrc)
+        ok("claim_next: a done manifest with NO master PNG yet still holds the derived job",
+           still_held is None and derived.is_file())
+
+        (q.artsrc / "holdbeast_east").mkdir(parents=True)
+        make_reference(q.artsrc / "holdbeast_east" / "holdbeast_east.png")
+        released = artpiped.claim_next(q.pending, q.active,
+                                       done_dir=q.done, failed_dir=q.failed, artsrc_dir=q.artsrc)
+        ok("claim_next: released once the master's done manifest AND PNG both exist",
+           released is not None and released.name == "holdbeast_north.json"
+           and (q.active / "holdbeast_north.json").is_file())
+
+
+def test_claim_next_releases_derived_job_when_master_failed():
+    """A HELD derived job is also released — never stuck forever — once the
+    master's OWN failed/ manifest exists; claim_next's job is only to stop
+    holding it, not to decide the derived job's own verdict (process_job
+    does that — see test_derived_job_routes_to_failed_naming_the_master)."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        derived = q.pending / "failbeast_south.json"
+        common.atomic_write_json(derived, {
+            "id": "failbeast_south", "rimflow_item_id": "SELFTEST_ARTPIPE",
+            "reference": None, "derive_from": "failbeast_east",
+            "canvas": {"width": 64, "height": 64},
+            "prompt": "a six-legged beast, front view",
+            "style_notes": "", "priority": 100, "background": "transparent",
+            "channel": "codex", "facing": "south", "facings": ["north", "south", "east"],
+        })
+        held = artpiped.claim_next(q.pending, q.active,
+                                   done_dir=q.done, failed_dir=q.failed, artsrc_dir=q.artsrc)
+        ok("claim_next: held while the master has no verdict at all", held is None)
+
+        common.atomic_write_json(q.failed / "failbeast_east.manifest.json",
+                                 {"status": "failed", "worker_status": "worker_error"})
+        released = artpiped.claim_next(q.pending, q.active,
+                                       done_dir=q.done, failed_dir=q.failed, artsrc_dir=q.artsrc)
+        ok("claim_next: released once the master's failed/ manifest exists",
+           released is not None and released.name == "failbeast_south.json")
+
+
+def test_derived_job_routes_to_failed_naming_the_master():
+    """End to end: a derived job claimed while its master's failed/ manifest
+    already exists must land in failed/ with a manifest whose note names
+    the failed master (so requeue tooling can see it) — never generating
+    anything, never touching codex at all."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        common.atomic_write_json(q.failed / "duddedbeast_east.manifest.json",
+                                 {"status": "failed", "worker_status": "worker_error"})
+        derived = q.pending / "duddedbeast_north.json"
+        common.atomic_write_json(derived, {
+            "id": "duddedbeast_north", "rimflow_item_id": "SELFTEST_ARTPIPE",
+            "reference": None, "derive_from": "duddedbeast_east",
+            "canvas": {"width": 64, "height": 64},
+            "prompt": "a six-legged beast, rear view",
+            "style_notes": "", "priority": 100, "background": "transparent",
+            "channel": "codex", "facing": "north", "facings": ["north", "south", "east"],
+        })
+        proc = q.run({}, "--once", "--workers", "1")
+        ok("derived-master-failed e2e: daemon exits 0", proc.returncode == 0, proc.stderr)
+        ok("derived-master-failed e2e: the derived job lands in failed/, never done/",
+           (q.failed / "duddedbeast_north.json").is_file()
+           and not (q.done / "duddedbeast_north.json").is_file())
+        manifest_path = q.failed / "duddedbeast_north.manifest.json"
+        ok("derived-master-failed e2e: a manifest exists", manifest_path.is_file())
+        if manifest_path.is_file():
+            manifest = json.loads(manifest_path.read_text())
+            ok("derived-master-failed e2e: the manifest names the failed master",
+               manifest.get("worker_status") == "master_failed"
+               and "duddedbeast_east" in manifest.get("note", ""), manifest)
+
+
+def test_derived_job_attaches_master_and_skips_reskin_validate_end_to_end():
+    """ARTPIPE_FACING_COHERENCE_1 §2, end to end through the real (mocked)
+    daemon: a derived job's codex call attaches the MASTER image (an 'edit'
+    with no reference on the job), reskin-validate is never invoked for it
+    (validator reads "skipped" — no reference to trigger it), and the
+    measured near-duplicate distance vs the master lands on the manifest."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        master_scratch = q.artsrc / "duplobeast_east"
+        master_scratch.mkdir(parents=True)
+        make_reference(master_scratch / "duplobeast_east.png")
+        common.atomic_write_json(q.done / "duplobeast_east.manifest.json", {"status": "ok"})
+
+        derived = q.pending / "duplobeast_north.json"
+        common.atomic_write_json(derived, {
+            "id": "duplobeast_north", "rimflow_item_id": "SELFTEST_ARTPIPE",
+            "reference": None, "derive_from": "duplobeast_east",
+            "canvas": {"width": 64, "height": 64},
+            "prompt": "a six-legged beast, rear view",
+            "style_notes": "", "priority": 100, "background": "transparent",
+            "channel": "codex", "facing": "north", "facings": ["north", "south", "east"],
+        })
+
+        proc = q.run({}, "--once", "--workers", "1")
+        ok("derived e2e: daemon exits 0", proc.returncode == 0, proc.stderr)
+        manifest_path = q.done / "duplobeast_north.manifest.json"
+        ok("derived e2e: the derived job completes (a mutated master is not a duplicate)",
+           manifest_path.is_file(),
+           [p.name for p in q.done.glob("*")] + [p.name for p in q.failed.glob("*")])
+        if manifest_path.is_file():
+            manifest = json.loads(manifest_path.read_text())
+            ok("derived e2e: reskin-validate was never invoked (no reference on this job)",
+               manifest.get("validator") == "skipped", manifest.get("validator"))
+            ok("derived e2e: the mode was 'edit' — the master WAS attached to the codex call",
+               manifest.get("mode") == "edit", manifest.get("mode"))
+            ok("derived e2e: the near-duplicate distance vs the master was recorded",
+               isinstance(manifest.get("derive_from_distance"), (int, float)), manifest)
+
+
+def test_derivation_duplicate_gate_fails_exact_copy_passes_different_image():
+    """ARTPIPE_FACING_COHERENCE_1 §2's hard duplicate gate, tested directly
+    against `_check_size_and_validate`: a derived job's candidate that is
+    really just its master again (a side-profile clone) must FAIL naming
+    it; a genuinely different image must PASS — the measured distance is
+    recorded on the manifest either way."""
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        master = tdp / "master.png"
+        make_reference(master, w=64, h=64)
+
+        clone = tdp / "clone.png"
+        shutil.copy2(master, clone)
+        job = {"canvas": {"width": 64, "height": 64}, "background": "transparent"}
+        res_dup = artpiped._check_size_and_validate({}, job, None, clone, common.DEFAULT_VALIDATOR,
+                                                     derive_master_png=master)
+        ok("derivation gate: an exact copy of the master FAILS as a duplicate",
+           res_dup.get("status") == "failed"
+           and res_dup.get("worker_status") == "derivation_duplicate_of_master", res_dup)
+        ok("derivation gate: the measured distance is recorded even on failure",
+           res_dup.get("derive_from_distance") == 0.0, res_dup)
+
+        from PIL import Image as _Img
+        different = tdp / "different.png"
+        _Img.new("RGBA", (64, 64), (20, 40, 220, 255)).save(different)
+        res_ok = artpiped._check_size_and_validate({}, job, None, different, common.DEFAULT_VALIDATOR,
+                                                    derive_master_png=master)
+        ok("derivation gate: a clearly different image PASSES the duplicate gate",
+           res_ok.get("status") == "ok", res_ok)
+        ok("derivation gate: the measured distance on the pass is above the threshold",
+           isinstance(res_ok.get("derive_from_distance"), float)
+           and res_ok["derive_from_distance"] > artpiped.DERIVE_DUPLICATE_DISTANCE_THRESHOLD,
+           res_ok)
+        ok("derivation gate: the advisory palette distance vs the master is recorded too",
+           "derive_from_palette_distance" in res_ok, res_ok)
+
+
+def test_fill_queue_derives_north_south_from_east_master():
+    """ARTPIPE_FACING_COHERENCE_1 §2's fill_queue half: a multi-facing row
+    with an 'east' facing gets east as the fresh master; north/south carry
+    `derive_from` pointing at it and gain the derivation prompt language;
+    east itself never does. --no-derive-facings restores today's behavior."""
+    row = {"id": "trioed", "rimflow_item_id": "SELFTEST_ARTPIPE",
+           "prompt": "a six-legged desert beast", "canvas_w": 256, "canvas_h": 256,
+           "facings": ["north", "south", "east"]}
+
+    jobs = fill_queue.row_to_jobs(row)
+    by_facing = {j["facing"]: j for j in jobs}
+    ok("fill_queue derive: east carries no derive_from (it is the master)",
+       "derive_from" not in by_facing["east"], by_facing["east"])
+    ok("fill_queue derive: north derives from the east job id",
+       by_facing["north"].get("derive_from") == "trioed_east", by_facing["north"])
+    ok("fill_queue derive: south derives from the east job id",
+       by_facing["south"].get("derive_from") == "trioed_east", by_facing["south"])
+    ok("fill_queue derive: north's prompt gains the derivation language",
+       by_facing["north"]["prompt"].startswith(fill_queue.DERIVE_PROMPT_PREFIX)
+       and row["prompt"] in by_facing["north"]["prompt"], by_facing["north"]["prompt"])
+    ok("fill_queue derive: east's prompt is untouched",
+       by_facing["east"]["prompt"] == row["prompt"], by_facing["east"]["prompt"])
+
+    jobs_off = fill_queue.row_to_jobs(row, derive_facings=False)
+    ok("fill_queue derive: --no-derive-facings omits derive_from entirely",
+       all("derive_from" not in j for j in jobs_off), jobs_off)
+
+    # Every job produced this way must actually pass common.load_job — the
+    # real chokepoint every route goes through, not just row_to_jobs' own
+    # idea of a well-formed job.
+    for j in jobs:
+        p = Path(tempfile.mkstemp(suffix=".json")[1])
+        try:
+            p.write_text(json.dumps(j))
+            p = p.rename(p.with_name(f"{j['id']}.json"))
+            common.load_job(p)
+            ok(f"fill_queue derive: {j['id']} passes common.load_job", True)
+        except common.JobError as exc:
+            ok(f"fill_queue derive: {j['id']} passes common.load_job", False, str(exc))
+        finally:
+            p.unlink(missing_ok=True)
 
 
 # --------------------------------------------------------------------------
@@ -3295,6 +3566,13 @@ def main() -> int:
         test_fill_queue_refuses_duplicate_id,
         test_load_job_validates_value_shapes_not_just_key_presence,
         test_load_job_refuses_a_facing_job_whose_prompt_contradicts_the_stamp,
+        test_load_job_accepts_and_validates_derive_from,
+        test_claim_next_holds_derived_job_until_master_resolves,
+        test_claim_next_releases_derived_job_when_master_failed,
+        test_derived_job_routes_to_failed_naming_the_master,
+        test_derived_job_attaches_master_and_skips_reskin_validate_end_to_end,
+        test_derivation_duplicate_gate_fails_exact_copy_passes_different_image,
+        test_fill_queue_derives_north_south_from_east_master,
         test_detector_meter_thresholds,
         test_meters_flow_end_to_end_through_codex_grumpiness,
         test_meter_after_never_reads_a_previous_jobs_rollout,
