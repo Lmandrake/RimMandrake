@@ -1,12 +1,15 @@
-# The Propane Lake — underwater flora design pass (2026-09-27)
+# The Chill (ex-Propane Lake) — underwater flora design pass (2026-09-27)
 
-Item: `PROPANELAKE_FLORA_PASS_1`. Design prose only — nothing here is built.
+Item: `PROPANELAKE_FLORA_PASS_1`; the build rides `CHILL_FLORA_BUILD_1`. Design prose
+only — nothing here is built. **The biome is the Chill** (owner, sitting of 2026-09-27:
+*"Let's call it the Chill"*). defNames below are written as they stand today; the RM
+tier is being renamed wholesale to `RM_TheChill*` under `CHILL_RENAME_FULL_1`.
 
 ## Commission
 
 Owner, by question card 2026-09-26 (the Scald flora pass's ruled question 1): **every sea
 floor gets its own strange-flora design pass, each in its own register, nothing shared** —
-and he specifically flagged the Propane Lake's register as **not water-chemistry at all**.
+and he specifically flagged the Chill's register as **not water-chemistry at all**.
 This is a cryogenic liquid-propane sea. Whatever grows here is not plant biochemistry as
 Earth knows it: solvent chemistry in liquid hydrocarbon, around −80 °C, anoxic, and
 flammable the moment it meets air. That inversion is the register; every twist below is
@@ -113,7 +116,8 @@ is fool enough to bring it near flame.
 - **Art:** broad slow ribbons, ivory-amber, faint internal cloudiness like candle wax
   held to light; drawSize 1.2–1.5; no glow.
 - **Harvest:** cut wax, usable as a WoodLog-register material (the biome's only
-  "timber") — and deliberately NOT chemfuel (see the non-harvest section).
+  "timber") — and the offcuts render as **hydrocarbon flesh** at the harvest bench,
+  the first rung of the ruled fuel chain (see the fuel-chain section).
 - **Numbers:** growDays 10, commonality 0.9 — the common carpet-layer.
 
 ### 2. RM_Ghostpane — frozen-gas membrane, shallow floor and crust edge
@@ -157,11 +161,14 @@ ends and its fauna begins.
   refracting through the tips; drawSize 1.4 at max growth; faint refracted glint, no
   emitted glow.
 - **Harvest:** destroying one yields a single flawless spar (a high-Beauty keepsake
-  item, market value modest) — and the description should say plainly what the harvest
-  costs: the regrow is measured in lifetimes. growDays must be the engine's practical
-  ceiling (see numbers).
-- **Numbers:** growDays 60 (the engine's believable maximum stand-in for "decades" —
-  an owner question flags the exact number), commonality 0.25, deep floor only.
+  item, market value modest) — and its smoke-grey heart yields **AuroraGlass**: the
+  planet's prettiest treasure lives inside the oldest living thing. (By card, sitting
+  of 2026-09-27: AuroraGlass moves into the garden — it comes OFF the RM-tier
+  rare-catch fishing table, and it also appears as a rare vein find on the war-lab
+  drill shafts, item `CHILL_WARLAB_ROUTES_1`.) The description should say plainly what
+  the harvest costs: the regrow is measured in lifetimes.
+- **Numbers:** growDays 60 — RULED (the owner declined never-regrows; the regrowing
+  stand-in for "decades" stands) — commonality 0.25, deep floor only.
 
 ### 4. RM_Tarspool — living chromatogram, deep floor
 
@@ -179,9 +186,12 @@ reconnection storms have been rich, and the oddu-fishing will be good.
   analysis.
 - **Art:** squat banded spindle, black base through amber to violet crown — the banding
   IS the mechanism made visible; drawSize 1.0; no glow.
-- **Harvest:** scraping the crown yields 2× the rime-nodule euphoric register's raw
-  material (the violet fraction is the same family of compound the nodule sacs hold —
-  owner question on whether it is the same item).
+- **Harvest:** scraping the crown yields the rime-nodule euphoric's raw material —
+  **the same item**, ruled (Q4, by question card, sitting of 2026-09-27): the violet
+  fraction IS the compound the nodule sacs hold, and the floor is wired into the
+  economy the nodule already established ashore. The heavy black tars at the base —
+  the fraction the spool itself never spends — render as **hydrocarbon flesh** at the
+  harvest bench (see the fuel-chain section).
 - **Numbers:** growDays 8, commonality 0.6, deep floor where the snow settles.
 
 ### 5. RM_Keelgrass — ceiling-rooted fringe, shallow floor under the crust edge
@@ -220,9 +230,11 @@ and what the frost-plated krellik cannot crack, it leaves alone.
 - **Twist:** water-as-mineral — its skeleton is ice because ice is the local granite.
 - **Art:** white coral-like branching bone under a dark oily felt, unmistakably skeletal;
   drawSize 1.2–1.5; no glow — the whitest thing on a black floor.
-- **Harvest:** chipping a brake yields its bones — water ice, the only water source on
-  the lake floor. Whether that is a real item (DBH-register water, a cooking input) or
-  pure description is an owner question; it must never be fuel.
+- **Harvest:** chipping a brake yields its bones — water ice, a real harvest item and
+  a generic cooking and hydration input, the only water source on the lake floor.
+  RULED (Q3, owner typed: *"Cooking + real water source w/ power"*): a powered
+  extractor placed on a brake is also a genuine water source — melting the local
+  granite costs watts, so even drinking here feeds the thermal economy. Never fuel.
 - **Numbers:** growDays 20, commonality 0.4, deep floor.
 
 ### 7. RM_Fuselight — peroxide lamp, deep floor
@@ -246,8 +258,12 @@ air, is a device; no one who harvests one does it twice.
 - **Art:** dark slender stalk, crown of 5–7 pale ampoules, one picked out mid-flash in
   actinic blue-white; drawSize 1.0; a real but tiny glow (radius 2, the floor's only
   light between auroras).
-- **Harvest:** technically yes, lethally priced — see the non-harvest section. No yield
-  worth a def; attempting it should read as a mistake, not an economy.
+- **Harvest:** technically yes, lethally priced. No yield worth a def; attempting it
+  should read as a mistake, not an economy. RULED (Q5, sitting of 2026-09-27): the
+  explosion is **real** — small radius, one comp — not reputation. Fire is otherwise
+  totally banned on the Chill floor (no oxygen — owner physics ruling); the fuselight's
+  peroxide is self-oxidizing, which makes it the only thing at the bottom of the world
+  that truly burns.
 - **Numbers:** growDays 15, commonality 0.3, deep floor, biased toward where the
   currents cross (the iliss's own ground — see ecology).
 
@@ -285,6 +301,14 @@ harvested, collected, carried or kept; it can only be *found blooming*, which th
 scrapers say is the lake deciding whether you were quiet enough to deserve it. The
 stillest hollows of the deep floor, on the stillest nights, bloom by the dozen.
 
+And heat, which un-happens most of this biome, makes stillbloom happen: **warm bloom,
+both edges** (ruled by card, sitting of 2026-09-27). Around a heat plume the stillbloom
+and its kin flower in the plume's *outer ring* — warmth driving the dissolved chemistry
+out of solution faster than stillness ever could — while the innermost cells boil bare,
+too hot for anything to hold together. A parked ship therefore wears a halo of bloom
+around a ring of harm: the prettiest thing a crew will see down here is the ring their
+own engines painted, and the bare scald inside it is the same signature.
+
 - **Twist:** solution-phase life — dissolved as its default state; solidity is a mood
   the sea has to be calm enough to permit.
 - **Art:** a pale many-petaled bloom, half-transparent, clearly mid-precipitation —
@@ -303,53 +327,53 @@ it up in glossy black beads that hang off its branches in clusters, each pearl a
 season's worth of the sky's darkest manufacture, smoothed and sealed. The beads are the
 floor's staple forage — the krellik crack them, the oovanam dredge the fallen ones out
 of the dust, and half of what a dredge-line hauls up in the catch came fattened on
-pitchpearl windfall. To a colony they are a modest, oily animal feed and nothing more;
-the pearls burn, of course — everything here burns — but wet with propane they are more
-danger than fuel, and dried they are worth less than the drying.
+pitchpearl windfall. To a colony they are a modest, oily animal feed — until the colony
+owns a refinery, at which point the same sealed black beads are also the tidiest
+package of hydrocarbon flesh on the floor.
 
 - **Twist:** condensation — it ripens the snowfall's dregs into the floor's one fruit.
 - **Art:** low dark wiry shrub hung with clusters of glossy black beads catching aurora
   light in points; drawSize 0.9; no glow.
 - **Harvest:** pitch pearls — a low-nutrition raw food eaten mainly by animals (kibble
-  input register); deliberately NOT a chemfuel yield.
+  input register) — and the beads render as **hydrocarbon flesh** at the harvest
+  bench: sealed, portable, exactly what the refinery chain wants (see the fuel-chain
+  section).
 - **Numbers:** growDays 9, commonality 0.7, shallow and deep floor both — the roster's
   one two-terrain plant, because the fall it farms lands everywhere.
 
-## What is deliberately NOT harvestable — the lake is never a free fuel farm
+## The fuel chain — hydrocarbon flesh, and the refinery that gates it
 
-The frozen sheet already prices the fuel economy (§7): **fuel by the pipe-length, a
-single vast deposit, refueled in place, priced entirely in cold survival.** Flora must
-not undercut that pricing, so this pass adopts one hard internal law:
+Ruled at the sitting of 2026-09-27, owner verbatim: *"it's ok to harvest them for fuel.
+This is very late gme"* — and, on the shape: *"Just have it result at the harvest bench
+(hydrocarbon flesh) that can then be converted at the refinery."*
 
-**No plant in this roster yields chemfuel. Zero. Not reduced yield, not high-work yield —
-none.** The pipes are the fuel economy, ruled; a chemfuel-bearing plant, however costed,
-turns the floor into a second fuel route and erodes the ruling by degrees. Everything
-here is flammable — that is the register — but *flammable* is written as danger
-(flammability on the def, fire behaviour in air), never as harvest.
+So the lake's fatty flora feed one chain, in two steps. Harvesting the fat-bearing
+plants yields a single raw item, **hydrocarbon flesh** — the wax, tar and pitch of the
+floor's living chemistry, cut and stacked, inert on its own — and a **refinery**
+converts hydrocarbon flesh to chemfuel. The gate is the refinery itself and its
+research: this is very-late-game economy, reached only by a colony that already flies a
+gravship to the floor and back, and until that bench exists the flesh is just the
+strangest meat in the larder. The pipes remain the campaign's founding fuel story; the
+flora are its endgame supplement, priced in ship time, harvest work and refinery watts.
 
-What each plant refuses to pay, by mechanism rather than by fiat:
+Who feeds the chain, in character:
 
-- **Slackwax** yields a wood-register material, and its whole point is that the wax is
-  worth more set than burned — furniture, not fuel. Its flammability is a hazard stat.
-- **Ghostpane** cannot be harvested at all: the harvesting temperature is the destroying
-  temperature. Structural, not a rule.
-- **Eldspar**'s single spar prices centuries against one Beauty item — a harvest that is
-  legible as vandalism.
-- **Fuselight** is harvestable in the sense that a landmine is portable. No yield def;
-  the attempt is the lesson. (If the build wants teeth: a small explosion on harvest/
-  death in an oxygenated context is fictionally exact, and is flagged as an owner
-  question rather than assumed.)
-- **Stillbloom** is the constitutive refusal: disturbance IS dissolution, so the act of
-  reaching for it deletes it. The lake's statement plant: some of what grows here is
-  not for you.
-- **Pitchpearl**, the one real forage, pays in low-grade animal food — its beads burn,
-  but wet with propane they are more danger than fuel and dried they are worth less
-  than the drying. The description says this outright so no player files the bug.
+- **Slackwax** — the timber stays the point: the wax is worth more set than burned,
+  and the WoodLog-register material is the harvest. The offcuts and trimmings render
+  as hydrocarbon flesh; a slackwax bed is furniture first and fuel from its scraps.
+- **Tarspool** — the violet crown scrape stays the euphoric (the rime-nodule item,
+  Q4). The heavy black tars at the base — the fraction the spool sorts and never
+  spends — are the purest hydrocarbon flesh on the floor.
+- **Pitchpearl** — the beads are dual-register: low-grade animal forage in the pen,
+  hydrocarbon flesh at the bench. A shrub that ripens the snowfall's dregs into sealed
+  black beads was always going to be the fuel farmer's crop.
 
-What IS harvestable, and cheap to police: slackwax timber, tarspool's euphoric-register
-crown scrape, stonewater's ice (pending the owner's answer on whether water is an item
-here at all), eldspar's one spar, pitchpearl feed. All of it is priced in ship time on a
-floor that is reached only by gravship — the access cost the sheet already established.
+And what still yields nothing, by mechanism rather than by rule: **ghostpane** cannot
+be harvested at all (the harvesting temperature is the destroying temperature),
+**stillbloom** dissolves at the touch (some of what grows here is not for you),
+**keelgrass** and **skyharp** are shelter and pasture, **eldspar** pays in one spar and
+its AuroraGlass heart, **stonewater** pays in water and only water, and **fuselight**
+pays in a small real explosion (Q5). The chain runs on the fat plants alone.
 
 ## plantDensity and the unset-field trap — the exact fields the build must set
 
@@ -361,12 +385,13 @@ same dead letter. This pass therefore states its numbers and names every field:
 
 **In `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_PropaneLake.xml`:**
 
-1. `<plantDensity>0.18</plantDensity>` — explicit, never omitted. Calibration: vanilla
-   desert 0.05, arid shrubland ~0.17, the Scald pass proposes 0.30. The Propane Lake is
-   the sparsest of the four seas by ruling-in-effect (`animalDensity` 0.08 was chosen
-   "a hair below the Grey Sea's 0.1... matching the fiction"); 0.18 keeps the same
-   relative position — alive, unmistakably, but a floor whose register is stillness and
-   black mirror, not meadow. The single knob if the first live look reads wrong.
+1. `<plantDensity>0.18</plantDensity>` — explicit, never omitted, and **RULED** (Q1,
+   accepted at the earlier sitting of 2026-09-27). Calibration: vanilla desert 0.05,
+   arid shrubland ~0.17, the Scald pass proposes 0.30. The Chill is the sparsest of
+   the four seas by ruling-in-effect (`animalDensity` 0.08 was chosen "a hair below
+   the Grey Sea's 0.1... matching the fiction"); 0.18 keeps the same relative
+   position — alive, unmistakably, but a floor whose register is stillness and black
+   mirror, not meadow. The single knob if the first live look reads wrong.
 2. The `<wildPlants>` block — **shorthand form, `<DefName>commonality</DefName>`, never
    `<li>` wrappers** (the same custom-loader trap as `wildAnimals`; an `<li>` here
    silently discards the row):
@@ -431,11 +456,13 @@ ones:
   microscopic spall an **eldspar**'s growing edges shed, and cracked **pitchpearl**
   windfall. The krellik's own nightly-regrown crystal plates are built from eldspar
   spall — the garden is the crab's quarry.
-- **The tarnn dispute, sharpened.** The tarnn is "a colony, not a creature — or a
-  creature that grew like a colony," and it grows in and among the **eldspar** gardens.
-  Which lattices are garden and which are animal is the lake floor's standing argument;
-  this pass deliberately does not settle it — flora def and fauna def, side by side,
-  disagreeing. That is the biome's joke about its own admission test and it should stay.
+- **The tarnn dispute, sharpened — and RULED unsettled** (Q7, sitting of 2026-09-27).
+  The tarnn is "a colony, not a creature — or a creature that grew like a colony," and
+  it grows in and among the **eldspar** gardens. Which lattices are garden and which
+  are animal is the lake floor's standing argument, and the two defs' disagreement is
+  **canon, kept on purpose** — flora def and fauna def, side by side, contradicting
+  each other. That is the biome's joke about its own admission test. **Do not fix it**:
+  no future consistency pass, census or review sheet reconciles these two descriptions.
 - **The snow column feeds in order.** The **oovu** bells catch the fall at the surface;
   what they miss, the **fessu** grow their plates from mid-water; what reaches the floor,
   the **tarspool** resolves and the **pitchpearl** ripens; what even they leave, the
@@ -459,14 +486,20 @@ ones:
   fattens the krellik and oovanam the dredge-lines haul; skyharp pasture underwrites
   the heemin shoals. A fishery with a floor under it instead of a roster suspended in
   nothing.
-- **The stillbloom stands alone**, wired to nothing — deliberately. In an ecology where
-  every other plant is a rung, the lake keeps one thing that is only itself.
+- **The stillbloom stands alone**, wired to nothing living — deliberately. In an
+  ecology where every other plant is a rung, the lake keeps one thing that is only
+  itself. Its one wire runs to the visitors: a parked ship's heat plume blooms the
+  outer ring and boils the inner one bare, so the colony's own presence is written on
+  the floor as a halo of flowers around a ring of harm.
 
-Nothing in the roster adds a predator, touches the fuel economy, ignites anything
-(hard ban 4 audited: the fuselight's flash is a contained chemical mechanism inside
-sealed ampoules under an anoxic sea, not an ignition of the lake, and no plant provides
-a spark source in air), darkens the sky (ban 3), carries kyber (ban 2), or is an icy
-dayside analog (ban 1 — every twist is solvent chemistry no dayside plant shares).
+Nothing in the roster adds a predator, ignites anything (hard ban 4 audited: the
+fuselight's flash — and its ruled small real explosion in air — is a contained
+chemical mechanism inside sealed ampoules, its own hoarded oxidizer, never a fiat
+ignition of the lake; fire remains impossible everywhere else on the floor, because
+nothing else down here has oxygen), darkens the sky (ban 3), carries kyber (ban 2), or
+is an icy dayside analog (ban 1 — every twist is solvent chemistry no dayside plant
+shares). The fuel chain touches the fuel economy on the owner's own ruling and on his
+terms: hydrocarbon flesh, refinery-gated, very late game.
 Nothing survives transport dayside in spirit (R-H10): slackwax sets, ghostpane
 sublimes, stillbloom dissolves, fuselight detonates — the roster enforces
 untransportability by chemistry.
@@ -492,25 +525,46 @@ glossy black, and the only new light source is the fuselight's flash — one tin
 blue-white point, which is the Burners' flame-blue register deliberately quoted at
 candle scale. Nothing competes with the aurora, which stays the biome's protagonist.
 
-## Questions for the owner
+**The floor's light is layered** (ruled by card, sitting of 2026-09-27): a **drowned
+aurora** above — dim shifting curtains falling through the clear liquid, rising and
+dying with the aurora weather overhead, so the whole floor breathes with the sky it
+cannot see — over the **constant bioluminescent points** below: the fuselight's tiny
+glow and the ghostpane's aurora-caught edges, fixed stars under a moving sky. That is
+the register every render answers to, in the owner's own words: the bottom of the
+world is *"eerily beautiful, alien and strange and mildly wonderful"* —
+*"delicate, entrancing, precious"* — *"totally unlike the dayside."*
 
-1. **plantDensity 0.18 — accept, or name a different number?** It keeps the Propane
-   Lake the sparsest sea floor (matching your animalDensity 0.08 read of the fiction);
-   the roster works unchanged anywhere from 0.10 (austere) to 0.30 (Scald parity).
-2. **No chemfuel from any plant — confirm the hard law?** The pipes are the fuel
-   economy by your 2026-09-02 ruling; this pass reads that as "flora never yields
-   chemfuel, flammability is written only as danger." Confirm, or name an exception.
-3. **Stonewater's ice: a real harvest item or pure description?** It is the only water
-   on the lake floor. Options: a DBH-register water item, a generic cooking-input item,
-   or nothing (description only). It must never be fuel either way.
-4. **Tarspool's violet crown scrape: the same raw material as the rime-nodule euphoric,
-   or its own lesser item?** Same-item wires the floor into an economy you already
-   ruled; own-item keeps the nodule unique ashore.
-5. **Fuselight teeth: should harvesting/killing one in air actually explode (small
-   radius), or is the lethal reputation description-only?** Fictionally exact either
-   way; the explosion is one comp if you want it real.
-6. **Eldspar growDays: 60 is the engine-practical stand-in for "a finger a decade."
-   Accept, or should destroying one simply not regrow within a playthrough** (growDays
-   at the engine ceiling, effectively once-per-map)?
-7. **The tarnn/eldspar boundary dispute stays unsettled on purpose** — fauna def and
-   flora def disagreeing about where the line is. Keep, or rule it one way?
+## Rulings (sittings of 2026-09-27)
+
+All seven questions this pass raised are ruled, plus four rulings the pass did not ask
+for. The build rides `CHILL_FLORA_BUILD_1`.
+
+1. **plantDensity 0.18 — ACCEPTED** (earlier sitting, decision taken by question card).
+2. **The no-chemfuel hard law — REVERSED.** Owner typed, verbatim: *"it's ok to
+   harvest them for fuel. This is very late gme"* and, on shape: *"Just have it result
+   at the harvest bench (hydrocarbon flesh) that can then be converted at the
+   refinery."* The fuel-chain section above is the ruled design.
+3. **Stonewater — RULED.** Owner typed: *"Cooking + real water source w/ power"*. The
+   ice is a real harvest item (generic cooking/hydration input) and a powered
+   extractor on a brake is a genuine water source; melting costs watts. Never fuel.
+4. **Tarspool crown scrape — RULED same-item** as the rime-nodule euphoric (earlier
+   sitting, decision taken by question card).
+5. **Fuselight — RULED real explosion**, small radius, one comp — and fire is
+   otherwise totally banned on the Chill floor (no oxygen — owner physics ruling); the
+   fuselight's self-oxidizing peroxide is the only true fire at the bottom of the world.
+6. **Eldspar — RULED growDays 60** (the regrowing stand-in; never-regrows declined).
+7. **Tarnn/eldspar boundary — RULED kept unsettled on purpose.** The two defs'
+   disagreement is canon; do not fix it.
+
+And from the same sittings:
+
+- **The biome is renamed the Chill** (owner typed: *"Let's call it the Chill"*); the
+  RM tier renames wholesale to `RM_TheChill*` under `CHILL_RENAME_FULL_1`.
+- **AuroraGlass moves into the garden** (decision taken by question card): eldspar
+  hearts yield it, it comes off the RM-tier rare-catch fishing table, and it appears
+  as a rare vein find on the war-lab drill shafts (`CHILL_WARLAB_ROUTES_1`).
+- **Warm bloom, both edges** (decision taken by question card): stillbloom and kin
+  flower in a heat plume's outer ring while the innermost cells boil bare.
+- **Layered floor light** (decision taken by question card): drowned aurora curtains
+  over constant bioluminescent points — the art-direction paragraph above carries the
+  owner's typed aesthetic brief verbatim.
