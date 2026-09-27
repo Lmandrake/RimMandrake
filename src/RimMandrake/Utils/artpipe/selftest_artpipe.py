@@ -1060,6 +1060,72 @@ def test_reference_less_job_size_mismatch_is_caught():
                m.get("width") == 32 and m.get("height") == 32, str(m))
 
 
+def test_oversized_same_aspect_is_downscaled_and_kept():
+    """ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1: an oversized-but-same-aspect
+    render (the image tool's real failure mode — returning its own native
+    size for a job that asked for something smaller, same aspect ratio) is
+    downscaled to the job's canvas and KEPT, not discarded. This is the bug
+    the item was filed against: a real, paid-for render used to be thrown
+    away for being the wrong size alone."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "oversizedsameaspect"
+        make_job(q.pending, job_id, None)  # default canvas 64x64, no reference
+        proc = q.run({job_id: "oversized_same_aspect"}, "--once", "--workers", "1")
+        ok("oversize-downscale: daemon exits 0", proc.returncode == 0, proc.stderr)
+        ok("oversize-downscale: the job is KEPT (done/), not discarded",
+           (q.done / f"{job_id}.json").is_file(),
+           "expected done/, found in failed/ instead" if (q.failed / f"{job_id}.json").is_file()
+           else "not in done/ or failed/")
+        manifest = q.done / f"{job_id}.manifest.json"
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("oversize-downscale: status is ok", m.get("status") == "ok", str(m))
+            ok("oversize-downscale: width/height recorded at the JOB's canvas, not the source",
+               m.get("width") == 64 and m.get("height") == 64, str(m))
+            ok("oversize-downscale: manifest records what it was downscaled from",
+               m.get("downscaled_from") == "128x128", str(m))
+        out_png = q.artsrc / job_id / f"{job_id}.png"
+        if out_png.is_file():
+            w, h, _ = pnglib.read_png(str(out_png))
+            ok("oversize-downscale: the file AT out_png's path is now the target size",
+               (w, h) == (64, 64), f"{w}x{h}")
+        preserved = q.artsrc / job_id / f"{job_id}_source_128x128.png"
+        ok("oversize-downscale: the oversized ORIGINAL is preserved alongside, never lost",
+           preserved.is_file())
+        if preserved.is_file():
+            w, h, _ = pnglib.read_png(str(preserved))
+            ok("oversize-downscale: the preserved original is really the full 128x128 render",
+               (w, h) == (128, 128), f"{w}x{h}")
+
+
+def test_oversized_wrong_aspect_still_rejected():
+    """The downscale fix is narrow: an oversized render whose aspect ratio
+    does not match the job's canvas is NOT auto-cropped or squashed — that
+    would risk distorting the subject with no human looking. It still fails
+    exactly as a size_mismatch always did."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        job_id = "oversizedwrongaspect"
+        make_job(q.pending, job_id, None)
+        proc = q.run({job_id: "oversized_wrong_aspect"}, "--once", "--workers", "1")
+        ok("oversize-wrong-aspect: daemon exits 0", proc.returncode == 0, proc.stderr)
+        ok("oversize-wrong-aspect: still refused, not silently squashed to fit",
+           (q.failed / f"{job_id}.json").is_file())
+        manifest = q.failed / f"{job_id}.manifest.json"
+        if manifest.is_file():
+            m = json.loads(manifest.read_text())
+            ok("oversize-wrong-aspect: worker_status is size_mismatch",
+               m.get("worker_status") == "size_mismatch", str(m))
+            ok("oversize-wrong-aspect: real source dimensions recorded, not the canvas",
+               m.get("width") == 128 and m.get("height") == 96, str(m))
+        out_png = q.artsrc / job_id / f"{job_id}.png"
+        if out_png.is_file():
+            w, h, _ = pnglib.read_png(str(out_png))
+            ok("oversize-wrong-aspect: the file on disk was never overwritten/resized",
+               (w, h) == (128, 96), f"{w}x{h}")
+
+
 def test_reference_less_job_correct_size_still_passes():
     with tempfile.TemporaryDirectory() as td:
         q = Queue(Path(td))
@@ -3026,6 +3092,8 @@ def main() -> int:
         test_codex_sandbox_preflight_mismatch_blocks_codex_not_gemini,
         test_codex_sandbox_preflight_missing_bin_refuses_not_passes,
         test_reference_less_job_size_mismatch_is_caught,
+        test_oversized_same_aspect_is_downscaled_and_kept,
+        test_oversized_wrong_aspect_still_rejected,
         test_reference_less_job_correct_size_still_passes,
         test_worker_self_report_folded_into_manifest_and_detects_row1,
         test_detector_deescalates_after_fresh_healthy_reading,
