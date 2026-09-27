@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_CargoFloat.xml                      TerminalBiomes · TWILIGHT_CHANNEL_CURRENT_1
+  ============================================================================
+  §5 rung 2. "Load it on the bank, push it in (a job), it rides the item
+  drift whole and the weir arrests it intact." See RM_Thing_CargoFloat.cs's
+  own header for the build-time simplification: loading/launching ships as
+  a Gizmo on the float itself rather than a new WorkGiver/JobDriver.
+
+  Category Item (not Building) is load-bearing: RM_MapComponent_
+  ChannelCurrent.IsExempt skips every Building outright ("buildings never
+  drift"), and this Thing needs to drift like any other dropped haulable
+  once launched.
+
+  Placeholder art: reuses this mod's own already-committed item texture
+  (RM_SeaCatchItem), same posture as RM_BankWorks.xml's own header.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CargoFloat</defName>
+    <label>cargo float</label>
+    <description>A lattice-timber frame lashed to hoolimbre bladders — load it with whatever needs to go downstream, push it into the channel, and the current does the carrying. A weir catches it intact; even the sink cannot spoil what it holds.</description>
+    <thingClass>RimMandrake.TerminalBiomes.RM_Thing_CargoFloat</thingClass>
+    <category>Item</category>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <graphicData>
+      <texPath>Things/Item/RM_GreySea/RM_SeaCatchItem</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.1</drawSize>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Mass>12</Mass>
+      <MarketValue>40</MarketValue>
+      <Flammability>0.6</Flammability>
+      <WorkToMake>1800</WorkToMake>
+    </statBases>
+    <costList>
+      <WoodLog>40</WoodLog>
+      <Leather_Plain>10</Leather_Plain>
+    </costList>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <recipeMaker>
+      <recipeUsers>
+        <li>CraftingSpot</li>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <displayPriority>200</displayPriority>
+    </recipeMaker>
+    <tradeTags>
+      <li>UtilityMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

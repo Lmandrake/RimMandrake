@@ -129,6 +129,21 @@ namespace RimMandrake.TerminalBiomes
         // it can never itself cause a stranding.
         public static bool TwilightDeckAccumulationActive => TwilightActive && twilightDeckAccumulationEnabled;
 
+        // ── TWILIGHT_CHANNEL_CURRENT_1 (§1.6, the owed set) ─────────────
+        public static bool channelCurrentEnabled = true;
+        public static float channelCurrentStrength = 1f;
+        public static RM_SinkOutcome channelSinkOutcome = RM_SinkOutcome.Recoverable;
+        public static bool channelFirstEntryWarning = true;
+        public static RM_UndersurgeFrequency undersurgeFrequency = RM_UndersurgeFrequency.Rare;
+
+        // Effective state: on only while the mod, the Twilight Sea, and the
+        // current's own toggle are all on. §1.6 "all-off degrades
+        // gracefully: the bed becomes ordinary slow terrain... nothing
+        // errors" — everything in RM_MapComponent_ChannelCurrent reads this,
+        // never the raw field.
+        public static bool ChannelCurrentActive => masterEnabled && twilightSeaEnabled && channelCurrentEnabled;
+        public static RM_SinkOutcome SinkOutcome => channelSinkOutcome;
+
         // ── Cross-biome opt-in (Greentide's own shape; WORLDGEN-AFFECTING) ─
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -175,6 +190,11 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref twilightPaneStrikeFrequency, "twilightPaneStrikeFrequency", 1.0f);
             Scribe_Values.Look(ref twilightDeckAccumulationEnabled, "twilightDeckAccumulationEnabled", true);
             Scribe_Values.Look(ref twilightDeckAccumulationRate, "twilightDeckAccumulationRate", 1.0f);
+            Scribe_Values.Look(ref channelCurrentEnabled, "channelCurrentEnabled", true);
+            Scribe_Values.Look(ref channelCurrentStrength, "channelCurrentStrength", 1f);
+            Scribe_Values.Look(ref channelSinkOutcome, "channelSinkOutcome", RM_SinkOutcome.Recoverable);
+            Scribe_Values.Look(ref channelFirstEntryWarning, "channelFirstEntryWarning", true);
+            Scribe_Values.Look(ref undersurgeFrequency, "undersurgeFrequency", RM_UndersurgeFrequency.Rare);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -319,6 +339,49 @@ namespace RimMandrake.TerminalBiomes
             twilightSunSphereGraceDays = list.Slider(twilightSunSphereGraceDays, 0.5f, 10f);
             list.CheckboxLabeled("Charts age", ref twilightChartsAgeEnabled,
                 "Off: a well-chart's forecast never marks itself stale.");
+            list.GapLine();
+
+            list.Label("THE TWILIGHT SEA'S CHANNEL CURRENT (TWILIGHT_CHANNEL_CURRENT_1)");
+            list.CheckboxLabeled("Channel current", ref channelCurrentEnabled,
+                "The dense floor current that carries a pawn or a dropped item along the "
+              + "Twilight Sea's channels, the undersurge that widens it, and the bank works "
+              + "(weir, silt-trap, stake-line) built into it. Off: the bed becomes ordinary "
+              + "slow terrain, a weir catches nothing but its edge still gathers, and nothing "
+              + "errors.");
+            if (channelCurrentEnabled)
+            {
+                list.Label("  Current strength: " + channelCurrentStrength.ToString("0.0") + "x");
+                channelCurrentStrength = list.Slider(channelCurrentStrength, 0.25f, 3f);
+                list.CheckboxLabeled("  First-entry warning", ref channelFirstEntryWarning,
+                    "A one-time message and mood-free alert the first time each colonist steps "
+                  + "onto the bed.");
+                list.Label("  Sink outcome (§3's ruled ladder):");
+                if (list.RadioButton("    Recoverable (default)", channelSinkOutcome == RM_SinkOutcome.Recoverable, 0f))
+                {
+                    channelSinkOutcome = RM_SinkOutcome.Recoverable;
+                }
+                if (list.RadioButton("    Recoverable, but injured (permanent scar)", channelSinkOutcome == RM_SinkOutcome.RecoverableInjured, 0f))
+                {
+                    channelSinkOutcome = RM_SinkOutcome.RecoverableInjured;
+                }
+                if (list.RadioButton("    Lost (gone at arrival, no corpse)", channelSinkOutcome == RM_SinkOutcome.Lost, 0f))
+                {
+                    channelSinkOutcome = RM_SinkOutcome.Lost;
+                }
+                list.Label("  Undersurge frequency:");
+                if (list.RadioButton("    Off", undersurgeFrequency == RM_UndersurgeFrequency.Off, 0f))
+                {
+                    undersurgeFrequency = RM_UndersurgeFrequency.Off;
+                }
+                if (list.RadioButton("    Rare (default)", undersurgeFrequency == RM_UndersurgeFrequency.Rare, 0f))
+                {
+                    undersurgeFrequency = RM_UndersurgeFrequency.Rare;
+                }
+                if (list.RadioButton("    Common", undersurgeFrequency == RM_UndersurgeFrequency.Common, 0f))
+                {
+                    undersurgeFrequency = RM_UndersurgeFrequency.Common;
+                }
+            }
             list.GapLine();
 
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");

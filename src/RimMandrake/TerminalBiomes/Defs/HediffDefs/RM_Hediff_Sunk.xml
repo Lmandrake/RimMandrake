@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_Hediff_Sunk.xml                     TerminalBiomes · TWILIGHT_CHANNEL_CURRENT_1
+  ============================================================================
+  §3, ruled at the sitting (C1): "recoverable by default, with the harsher
+  Mod Setting ladder." Applied by RM_MapComponent_ChannelCurrent.ArriveAtSink
+  to any pawn carried the whole way to the basin. Consciousness/Moving
+  crushed via plain vanilla capMods (no C# needed for that half); the
+  severity ramp and the rescue/indoors pause are RM_HediffComp_Sunk (that
+  class's own header explains the rescue test and why death needs no C#:
+  <lethalSeverity> alone is vanilla's own "reaches max severity, pawn dies"
+  mechanism, same shape as Malaria/Plague).
+
+  RM_Hediff_SunkScar is the "recoverable-but-injured" ladder rung's
+  permanent mark, added by RM_HediffComp_Sunk.ApplyScar at rescue — never at
+  arrival, and never for the plain "recoverable" setting.
+  ============================================================================
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_Hediff_Sunk</defName>
+    <label>sunk</label>
+    <description>Carried under by the Twilight Sea's own current, silted and cold, further from air with every passing hour. It heals off fast once someone gets you back under a roof — and kills in a day or two if nobody does.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.6, 0.75)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <maxSeverity>1.0</maxSeverity>
+    <lethalSeverity>1.0</lethalSeverity>
+    <comps>
+      <li Class="RimMandrake.TerminalBiomes.RM_HediffCompProperties_Sunk" />
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0.0</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.25</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.3</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.5</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.55</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.7</offset>
+          </li>
+        </capMods>
+        <vomitMtbDays>2</vomitMtbDays>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_Hediff_SunkScar</defName>
+    <label>river-scarred</label>
+    <description>A permanent stiffness the current left behind — never quite the same after going under and coming back. Not disabling, never healing, and never fatal.</description>
+    <hediffClass>Hediff</hediffClass>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <maxSeverity>1.0</maxSeverity>
+    <initialSeverity>1.0</initialSeverity>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.08</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

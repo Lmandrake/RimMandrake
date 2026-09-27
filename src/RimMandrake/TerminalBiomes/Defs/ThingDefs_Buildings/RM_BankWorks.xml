@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_BankWorks.xml                       TerminalBiomes · TWILIGHT_CHANNEL_CURRENT_1
+  ============================================================================
+  §4 — the bank works: "the skylights are rent; the river is a deed." Three
+  buildable defs, all `RM_`-tier per Q11a (invented names, no franchise IP).
+
+  MAINTENANCE MECHANISM (read this before touching HP/repairable on any of
+  the three): RM_Building_BankWeir.cs / RM_Building_SiltTrap.cs's own
+  headers explain the build-time simplification — "tend the weir" and
+  "re-drive stakes" both ride vanilla hauling (arrested things are ordinary
+  spawned Things once caught) and vanilla WorkGiver_Repair (HitPoints below
+  max, <repairable>true</repairable>) rather than new jobs. Nothing here
+  needs a bill, a WorkGiver or a JobDriver of its own.
+
+  PLACEHOLDER ART — every texPath below is a vanilla-or-this-mod path
+  already committed and referenced successfully elsewhere in this exact mod
+  (RM_GreySeaFormations.xml's own header explains why: a texPath that only
+  exists packed inside resources.assets reads as MISSING to
+  validate_patch.py, so only proven loose-file paths are safe to reuse).
+  Real art is owed and queued to the artpipe, not built here.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- =================================================================
+       RM_BankStake — §1.4(b)/§4. The stake-line: both the farm boundary
+       and the safety tell. Lamp-lit (a small CompGlower), spaced ~8
+       cells by RM_GenStep_TwilightChannels along the outer band edge.
+       Cheap and low-HP on purpose — it is meant to be the first thing a
+       breach cascade snaps (§4, "an HP cascade on a timer").
+       ================================================================= -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_BankStake</defName>
+    <label>bank stake</label>
+    <description>A lamp-topped post the Compact drives into the bank at the reach of the flood, not the edge of the calm — "the Compact set them for the flood, not the fair day." Everything inside the line is farm; everything past it answers to the river.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Natural/RUT_ScaldVent</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(0.6, 0.6)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.15</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <WorkToBuild>500</WorkToBuild>
+      <Flammability>0.6</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>10</WoodLog>
+    </costList>
+    <building>
+      <repairable>true</repairable>
+    </building>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>4</glowRadius>
+        <glowColor>(220, 235, 200, 0)</glowColor>
+      </li>
+    </comps>
+    <designationCategory>Structure</designationCategory>
+    <constructEffect>ConstructWood</constructEffect>
+  </ThingDef>
+
+  <!-- =================================================================
+       RM_BankWeir — §4.1. Arrests drift on its own cell (Q2: weirs catch
+       people too), builds the gathering ground the sessile layer crowds
+       onto. "Tend the weir" = vanilla hauling of whatever it caught.
+       ================================================================= -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_BankWeir</defName>
+    <label>bank weir</label>
+    <description>Lattice-timber and net-cord staked across the margin, built to catch what the current delivers rather than fight it — veil-fall flakes, drifted cargo, the odd murrol slow enough to pick up by hand. An untended weir caught by an undersurge breaches: everything it holds rides the current on to the sink, and the stake-line downstream starts to go with it.</description>
+    <thingClass>RimMandrake.TerminalBiomes.RM_Building_BankWeir</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/RUT_SteamCatch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.4, 1.4)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>2600</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>60</WoodLog>
+      <Cloth>20</Cloth>
+    </costList>
+    <building>
+      <repairable>true</repairable>
+    </building>
+    <comps>
+      <li Class="RimMandrake.TerminalBiomes.CompProperties_ChannelArrester" />
+    </comps>
+    <designationCategory>Structure</designationCategory>
+    <constructEffect>ConstructWood</constructEffect>
+  </ThingDef>
+
+  <!-- =================================================================
+       RM_SiltTrap — §4.2. Behind the weir; over days it richens adjacent
+       RM_BankSilt into RM_BankSilt_Rich (terrain defs owed by content
+       drop §8.2 — this building's own C# tolerates their absence, see
+       RM_Building_SiltTrap.cs). "Dredge" = vanilla repair, same shape as
+       the weir's own maintenance.
+       ================================================================= -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SiltTrap</defName>
+    <label>silt-trap</label>
+    <description>A timber baffle set behind a weir to slow the margin water and let its silt settle instead of washing on to the sink. The sown bank around a mature trap is the richest farm on the whole seabed — until an undersurge finds a clogged one and washes the bonus back out.</description>
+    <thingClass>RimMandrake.TerminalBiomes.RM_Building_SiltTrap</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_SaltChimney</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.2, 1.2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.35</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <WorkToBuild>2200</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>50</WoodLog>
+    </costList>
+    <building>
+      <repairable>true</repairable>
+    </building>
+    <designationCategory>Structure</designationCategory>
+    <constructEffect>ConstructWood</constructEffect>
+  </ThingDef>
+
+</Defs>

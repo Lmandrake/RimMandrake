@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TwilightChannels.xml                TerminalBiomes · TWILIGHT_CHANNEL_CURRENT_1
+  ============================================================================
+  Carrier GenStepDef for RM_GenStep_TwilightChannels.cs. A GenStepDef on its
+  own runs on no map — Patches/RM_GenStep_TwilightChannels_Register.xml
+  lists it on RM_SeaDiveGenerator_TwilightSea (mandrake.rm.divinginteraction,
+  already a hard dependency of this mod — see About.xml).
+
+  order 895: after RM_SeaFloorTerrain(210)/RM_PlaceSeaDiveExit(400) (so the
+  hatch already stands and this step can keep clear of its footprint, per
+  the content drop's own "the ship never lands astride a channel"), and
+  before Animals/RM_SeaFloorFauna/Plants (900) — paint first, exactly the
+  order GenStep_GreySeaFloorDressing already established in this mod for
+  "paint the terrain, then let the later steps seed onto it".
+  ============================================================================
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.divinginteraction">
+    <defName>RM_GenStep_TwilightChannels</defName>
+    <order>895</order>
+    <genStep Class="RimMandrake.TerminalBiomes.RM_GenStep_TwilightChannels" />
+  </GenStepDef>
+
+</Defs>

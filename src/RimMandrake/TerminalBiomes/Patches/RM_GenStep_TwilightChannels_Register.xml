@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GenStep_TwilightChannels_Register.xml   TerminalBiomes · TWILIGHT_CHANNEL_CURRENT_1
+  ============================================================================
+  Registers RM_GenStep_TwilightChannels onto RM_SeaDiveGenerator_TwilightSea,
+  a MapGeneratorDef owned by mandrake.rm.divinginteraction — a HARD
+  dependency of this mod (About.xml), never edited directly per this item's
+  own build scope (BUILD touches src/RimMandrake/TerminalBiomes/ only). Same
+  three-file shape RM_GreySeaShoreScatter_Register.xml already uses in this
+  exact mod for the identical cross-mod problem: read that file's header for
+  the Core citation this pattern is itself cribbed from.
+
+  Conditional test xpath is IDENTICAL to the inner Add's xpath (this mod's
+  own discipline, same file): if DivingInteraction ever renames that
+  generator or restructures the node, this becomes a silent no-op rather
+  than a red error — appropriate here since the generator not existing
+  yet/being renamed means "channels do not generate on the Twilight Sea's
+  floor", never a reason to crash map gen.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="RM_SeaDiveGenerator_TwilightSea"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="RM_SeaDiveGenerator_TwilightSea"]/genSteps</xpath>
+      <value>
+        <li>RM_GenStep_TwilightChannels</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
