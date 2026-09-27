@@ -96,8 +96,15 @@ namespace RimMandrake.Miasma
             // non-SurfaceTile (should not occur for a player-reachable
             // world tile, but the cast is defensive) scores as if riverless
             // rather than throwing.
+            // 🔴 Read the raw potentialRivers field, NEVER the Rivers getter:
+            // SurfaceTile.Rivers dereferences PrimaryBiome.allowRivers, and
+            // GetScore runs from WorldGenStep_Terrain.BiomeFrom BEFORE the
+            // tile's biome is assigned, so the getter NREs on the first tile.
+            // That aborted terrain generation, left the layer's tile list
+            // empty, and cascaded into the WorldPathGrid out-of-range crash
+            // that broke every quicktest world (DEBUG_GAME_READY_WORLDUI_CRASH_1).
             SurfaceTile surfaceTile = tile as SurfaceTile;
-            if (surfaceTile == null || surfaceTile.Rivers == null || surfaceTile.Rivers.Count == 0)
+            if (surfaceTile == null || surfaceTile.potentialRivers == null || surfaceTile.potentialRivers.Count == 0)
             {
                 return 0f;
             }
