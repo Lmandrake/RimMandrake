@@ -1071,15 +1071,6 @@ kind:     task
 summary:  Per sea, per catch entry without a living counterpart:
 prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
 
-## DIVING_STALE_DEPLOYED_FILES_1 Retired pawn-dive files are deleted from src/ but still live in the deployed DivingInteraction mod
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     fix
-summary:  - The patch is still tagging RUTScaldWaterShallow, RUTScaldWaterMovingShallow and
-prose:    infrastructure/state/items/DIVING_STALE_DEPLOYED_FILES_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
