@@ -33,8 +33,13 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.thesump">
-    <xpath>Defs/ThingDef[defName="RUT_ThrummelSeepwax"]</xpath>
+  <!-- Gated on the donor def itself, NOT on MayRequire: vanilla ignores
+       MayRequire on a top-level <Operation> (ModContentPack.LoadPatches never
+       reads it), so a MayRequire gate applied this patch with TheSump absent,
+       left RM_Seepwax a null costList ref, and NRE'd RecipeDefGenerator —
+       which reset ModsConfig.xml to Core-only (BLUEDESERT_ORPHAN_LOAD_CRASH_1). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs[ThingDef/defName="RM_Seepwax"]/ThingDef[defName="RUT_ThrummelSeepwax"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationAdd">
