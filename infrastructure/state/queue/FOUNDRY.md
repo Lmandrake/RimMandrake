@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T19:30:02Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-27T21:06:52Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1854,3 +1854,93 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SELFTEST_FAILURES_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SELFTEST_FAILURES_TRIAGE_1.md
+
+## CHILL_RENAME_FULL_1 Full RM-tier rename: the Propane Lake becomes the Chill
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLRENAMEFULL1 — full RM-tier rename: the Propane Lake becomes the Chill
+prose:    infrastructure/state/items/CHILL_RENAME_FULL_1.md
+
+## CHILL_THERMAL_ENGINE_1 Chill seabed: brutal uniform cooling load + boil-shroud flecks around warm hulls
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLTHERMALENGINE1 — brutal cooling load + the boil shroud
+prose:    infrastructure/state/items/CHILL_THERMAL_ENGINE_1.md
+
+## CHILL_FIRE_BAN_1 Total fire ban on the Chill floor; fire returns only with pumped air; Fuselight exempt
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLFIREBAN1 — fire is impossible at the bottom of the Chill
+prose:    infrastructure/state/items/CHILL_FIRE_BAN_1.md
+
+## CHILL_HEATED_SUIT_1 Heated EVA suit, one charge clock, empty = fast hypothermia
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLHEATEDSUIT1 — the heated suit, one charge clock
+prose:    infrastructure/state/items/CHILL_HEATED_SUIT_1.md
+
+## CHILL_GARDEN_DEFENSE_1 Garden immune system: Iliss arcs warn, Tarnn colonies wake — hard skirmish, overcomable
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLGARDENDEFENSE1 — the garden's tiered immune system
+prose:    infrastructure/state/items/CHILL_GARDEN_DEFENSE_1.md
+
+## CHILL_FLOOR_LIGHT_1 Layered floor light: drowned aurora tied to weather over bioluminescent points
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLFLOORLIGHT1 — drowned aurora over bioluminescent points
+prose:    infrastructure/state/items/CHILL_FLOOR_LIGHT_1.md
+
+## CHILL_FLORA_BUILD_1 Build the ten Chill plants per revised flora doc + hydrocarbon flesh fuel chain
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLFLORABUILD1 — build the ten plants, as ruled
+prose:    infrastructure/state/items/CHILL_FLORA_BUILD_1.md
+
+## CHILL_WORLD_CRATER_1 Crater BiomeDef + live world-tile swap when the sarlacc route fires (feasibility first)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLWORLDCRATER1 — the live world-tile crater
+prose:    infrastructure/state/items/CHILL_WORLD_CRATER_1.md
+
+## CHILL_VWAKE_WIRING_VERIFY_1 Verify V-Wake pump-agitation is wired end to end; retire the manhunter stand-in
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLVWAKEWIRINGVERIFY1 — is V-Wake's pump agitation actually wired?
+prose:    infrastructure/state/items/CHILL_VWAKE_WIRING_VERIFY_1.md
