@@ -910,3 +910,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"GREYSEA_CATCH_TIER_RENAME_1","ts":"2026-09-27T16:23:56Z"}
 {"seat":"FOUNDRY","event":"start","id":"GREYSEA_CATCH_TIER_RENAME_1","ts":"2026-09-27T16:23:57Z"}
 {"seat":"FOUNDRY","event":"close","id":"GREYSEA_CATCH_TIER_RENAME_1","sha":"27859b6eeea120f52464bf4b0fd1c49cda1e60b5","reason":"Seven catch items renamed RUT_->RM_ (RM_SallikCatch etc.), moved into RM_GreySeaCatch.xml, wired into RM_GreySea fishTypes with no MayRequire. RUT_ originals kept in place unrenamed because RUT_GreySea.xml is explicitly frozen byte-for-byte and still resolves against them by name; RUT_RareGreyCatches/RUT_SaltCameo out of scope. Stale tier-migration prose corrected across 6 docs/defs.","ts":"2026-09-27T16:44:47Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-27T15:14:32Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-27T15:15:55Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ARTPIPE_SALVAGE_REJECTED_SIZE_MISMATCH_1","ts":"2026-09-27T15:29:35Z"}
