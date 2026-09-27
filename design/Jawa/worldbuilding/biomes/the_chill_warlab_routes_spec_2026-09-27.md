@@ -289,10 +289,17 @@ the world if the player's secret gets away from them. Ruled by the owner, typed
 2026-09-27, quoted in full in the rulings block below; the shape it commands:
 
 **Trigger.** The Empire *learns the place exists.* That is the whole fuse.
-Secrecy is therefore a real currency across this entire spec — every dive
-logged near their orbital eyes, every faction contract signed, every rumor down
-the waste-roads is a way the fuse can be lit (how they find out is left as a
-design hook for the quest build; no new mechanism is invented here).
+Secrecy is therefore a real currency across this entire spec — and the owner
+ruled (typed, 2026-09-27) that the fuse is lit by **plot points, not just
+player behavior**, naming two paths. *Path A:* Helix, turning from their
+Rakatan allies, are taken out by the Rust Cathedral — which reveals the
+Cathedral is more than it seems; the players then receive a transmission
+asking them to reveal what they know: a deliberate opportunity to expose the
+ancient secrets to the Empire. *Path B:* the Empire, escalating too far too
+fast while the players ignore events, starts opening the Vaults themselves —
+after many threats that this is possible — leading eventually to the War Lab.
+Leaks land as **discrete, named events**, and counterplay runs upstream only:
+a leak can be prevented, never undone (both by card, same sitting).
 
 **What happens.** The occupier does what occupiers do: they bomb their way in —
 procedural, unhurried, with ordnance that asks nobody's permission and brings
@@ -402,8 +409,10 @@ items named.)
    strings live.
 3. **The glass scar** (Route 3). A zone-scale pane of refrozen melt — sterile,
    flat, faintly beautiful in the wrong way, a dead mirror inside the living
-   black one. Nothing regrows on it, ever; the wildPlants of the burn zone are
-   gone as terrain truth, not as a setback. The lake survives by arithmetic.
+   black one. Nothing regrows on it, ever — RULED: bomb scars are sterile
+   forever, the garden never reclaims them (decision taken by question card
+   2026-09-27); the wildPlants of the burn zone are gone as terrain truth,
+   not as a setback. The lake survives by arithmetic.
    Campaign state: a Helix retrieval share has left the lab, Helix instruments
    remain politely bolted near the scar, and the Rust Cathedral knows.
 4. **The drill scar** (Route 4). A thin permanent hairline through the garden's
