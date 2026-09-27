@@ -5033,6 +5033,192 @@
     "hash": "3f8026da76ac48c7cfef023dda49573a861369fc219b9053687b98f581343d86",
     "sha": "eb1f92993"
   },
+  "src/RimMandrake/LuminousPigment/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c8d431a5041330c76e2641ea6e609adb227d7d65f78ce3685cbdfe5b3ff2ef1e",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/GenStepDefs/RM_GenStep_ShoreMats.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "f71a75fb6f22d87fe36daa950ee7cc84ea6d41446f719cc49ee7adbdd0d16d54",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/HediffDefs/RM_DeepfireGlowHediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "69e612b836f616b7c090f3a3d0a6efc2d67a187ed986ed9b20e7cb81b2a52bca",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/RecipeDefs/RM_RecipeDeepfireMeals.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "7d0aa31c410d91e2cabc1f5f8baf6ed9e0cd6c0cb92c5f5dda64afa3c72f1cf2",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/RecipeDefs/RM_RefineDeepfire.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "989f94768332c8d12e6abad4f304247440b73f8c9883ab8d3c391e9b8e551429",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/ResearchProjectDefs/RM_DeepfireRefining.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "1ed4ef4cdb842035d25f3901b62a8f7f16bd64356860aaca6806e8e8d75ac773",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/ThingDefs_Buildings/RM_DeepfirePress.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "2a883c6b7383710e87be92373878bf2d51ac9a81fe9cfe39108925daf8ea788f",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/ThingDefs_Items/RM_CrowncarpetFresh.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "eb82eedd7a1c770bec4b93d85aa7dba2377b93b7fbd133f9497a32c4698cadef",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/ThingDefs_Items/RM_Deepfire.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "af258fb63fbc5e1f6e9dd2a7068a913e5bf3621dbfa9336f215efd73e812981c",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/ThingDefs_Items/RM_MealDeepfire.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "3ca54bf51f6be0aaa4fdedb9ebeae500d60ad331af30de33d6433212c23ce86e",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/ThingDefs_Plants/RM_Crowncarpet.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b92b824eb29b14d0ee8f41bccbc40042a829dbf62141872fc79dd19681918847",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/ThoughtDefs/RM_DeepfireHediffThoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "9db8ba492268c94dafc33834307afc22bb1a60e7b71d32036132fb64f8aba03c",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Defs/ThoughtDefs/RM_SumptuaryThoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "925dd909ac3d88c19acdae2b07cecb5bb267b70839b932514b7eea1a85412c96",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Patches/CrowncarpetBedTag.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "25a97d817c4f9f73af8100b666ee75159bb7c58fa13f9e99981f377a36795a32",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Patches/DeepfireMealsOnStoves.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "5ed04d880b80d5079ffcb6adfbf7ce5f1a529cbb0f65e81b8130c1d6809f9c5a",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/CompMatDiscovery.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "478949375aee8267eb1f40f2bee4f1dffe0898783b19875c337ccee36dc97e17",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/CompMatVitality.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "42496ec950f3e464333ba0114f91e77235a131294752099a9adc854a5b072fa7",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/CompSkillSteeredOutcome.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "1d24b219d8a1d9d7f5542d8b63727199665a414c2330c0b953c7eef06aa0305b",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/DeepfireFamilies.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "26b8fdcbf76f94ddf49aa7dfacfee5797c442ad62a07d2999a603d1778deeb75",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/DeepfireGodExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "144521cee079189fb2963b4c1826988bd4759477ad5571fc67e11670fd9396af",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/GameComponent_Deepfire.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "565f7507b4bba614cdd0354999993f26c7f28d15f1962b0974883bebb1a86894",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/GenRecipePatch.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "56b713be1b11c57ff1a23c9f08f1afb4373266c6e6d8364a84a91113185467e3",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/GenStep_ShoreMats.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "96dc442340894ca111fba28285b2d175f6fec7f1f0d01d9dda0fc8da31e74ce4",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/HarmonyPatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "be4c369652ccaa707df1e19606820bcc73b5dd34bc4f1eed3330b89754b46c4e",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/HediffComp_DeepfireGlow.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b4421e4d3aa4ac9f8c8d3b5e9316209e683f401e70854bf5460f8033fceb6e2a",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/IngestionOutcomeDoer_SteeredFamily.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "87e03a9f2837abb1f11f9b95ecb889d0cc9d8c495f6c5c81f6bf6ca8ee16c5e3",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/LuminousPigmentMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "0ce0e31f8b32394030cc77fbb9d768c850ad40e1d4cc64c49b0116b0e5e86291",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/NinefoldDeltaBridge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "d688f9d15f01e3d7d30a98100a6dca218fd5a5cc272cdb02b3d885a4cf279c43",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/SteeredFamilyExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "7522d26e81975876d31b38d394524e01db008cc3dc6d9dc5e03d9a54d4b672db",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/SumptuaryEngine.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c4510770585665f2bee29627336ce954e46f59feb0b038b64203c456f56854ff",
+    "sha": "51ede08fe"
+  },
+  "src/RimMandrake/LuminousPigment/Source/ThoughtWorkers_Sumptuary.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "dc0ae97d6af324fc8a0bdc9e55d27e85d7b24c954da492862c6e3af128ccf8e4",
+    "sha": "51ede08fe"
+  },
   "src/RimMandrake/MandrakePatches/About/About.xml": {
     "cleanCount": 5,
     "date": "2026-09-18",
