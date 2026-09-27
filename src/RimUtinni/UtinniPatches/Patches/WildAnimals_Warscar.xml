@@ -94,7 +94,14 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.warscar">
+  <!-- PATCH_MAYREQUIRE_GUARD_INERT_1: the MayRequire above is ignored by
+       vanilla on a top-level <Operation> and was dropped rather than fixed.
+       RUT_ScarRoach/RUT_MortuaryCrawler are RimUtinni's own, always-present
+       creatures (no separate donor mod to gate on), so the only real
+       requirement is "does RM_Warscar exist" - and the outer <xpath> below
+       already tests exactly that (RM_Warscar is mandrake.rm.warscar's own
+       def), so with that mod absent this Add already no-ops safely. -->
+  <Operation Class="PatchOperationConditional">
     <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>

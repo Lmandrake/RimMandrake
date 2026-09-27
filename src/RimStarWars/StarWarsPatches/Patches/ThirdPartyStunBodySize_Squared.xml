@@ -28,12 +28,22 @@
      tested, ordinary Burn injury on a Rat). See OTHER_STUN_WEAPONS_SURVEY_1.md's table for
      the full per-weapon read.
 
-     MayRequire guy762.MM.KotORCore (this mod's own packageId, read from its About.xml) - the
-     whole file is a no-op, not an error, if that mod is inactive.
+     Gated on guy762.MM.KotORCore ("Star Wars KotOR Resources and Materials",
+     workshop 3254370945) - the whole file is a no-op, not an error, if that
+     mod is inactive.
+
+     PATCH_MAYREQUIRE_GUARD_INERT_1: MayRequire on a top-level <Operation> is
+     ignored by vanilla, so the line above was aspirational, not enforced.
+     This mod is NOT in the canonical mod list (MEASURED against the live
+     ModsConfig.xml, 2026-09-27), so it can genuinely be absent - re-gated on
+     a real PatchOperationFindMod, matching Armoury's own Armour_Ratings.xml
+     idiom for the same donor mod.
 -->
 <Patch>
 
-  <Operation Class="PatchOperationSequence" MayRequire="guy762.MM.KotORCore">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Star Wars KotOR Resources and Materials</li></mods>
+    <match Class="PatchOperationSequence">
     <operations>
 
       <li Class="PatchOperationAdd">
@@ -53,6 +63,7 @@
       </li>
 
     </operations>
+    </match>
   </Operation>
 
 </Patch>
