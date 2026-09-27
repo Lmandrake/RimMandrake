@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-26T23:59:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T00:03:15Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1043,15 +1043,6 @@ target:   v1
 kind:     task
 summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
 prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
-
-## GREYSEA_BRINE_ELDERS_1 The Brine Elders: colossal branching salt-crystal organisms with area discharges, geological memory, a novelty-only trade economy and one-of-each millennial treasures
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/GREYSEA_BRINE_ELDERS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GREYSEA_BRINE_ELDERS_1.md
 
 ## ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1 Downscale the 1254x1254 worker output instead of failing size_mismatch
 state:    doing
