@@ -6051,3 +6051,67 @@ re-pick it). Re-run `code_review_status.py list --show-untracked` for a fresh
 dirty list and `git status --short` on any candidate before starting — stay
 off `UtinniPatches/`, `TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
 `Greentide`/`Miasma`/`BlueDesert`/`Droidworks/`.
+
+## Wave 32 (2026-09-26)
+
+Cluster: `src/RimMandrake/Pyrelands/` — the fire-hawk/furnace-beast mechanics kit
+(`PYRELANDS_MECHANICS_1`, `FURNACEBEAST_THERMAL_CYCLE_1`,
+`FURNACEBEAST_WORLD_MIGRATION_1`, `PYRELANDS_FIRE_CADENCE_1`). 23 files: 5 Defs
+(HediffDef, JobDef, 2 ThinkTreeDefs, WorldObjectDef), 1 Keyed language file, 1
+Patch, and 16 `.cs` source files. Confirmed git-clean and outside every current
+exclusion before starting; the mod's `About.xml`, `BiomeDef`, `GenStepDef`,
+`TerrainDef`s, item/plant/weather Defs, textures and four other `.cs` files
+(`FireEcologyHook`, `PlantGrowthStages`, `RM_PyrelandsDensityEnforcer`,
+`RM_PyrelandsMod`, `WildPlantAllowlist`) were already CLEAN from an earlier
+sitting and not re-reviewed.
+
+Every `Class=`/`driverClass`/`worldObjectClass`/`compClass`/`hediffClass`/
+`thinkRoot Class` attribute checked against real `.cs` source:
+`RimMandrake.Pyrelands.{JobDriver_RUT_FireHawkCarryEmber, JobGiver_RUT_
+FireHawkCarryEmber, JobGiver_RUT_FurnaceThermalCycle, WorldObject_RM_
+FurnaceHerd, CompProperties_FireHawkSpread, CompProperties_
+FurnaceWarmthAura, CompProperties_FurnaceBedIgnition, CompProperties_
+FurnaceThermalCharge}` all resolve by exact name; vanilla
+`HediffCompProperties_Disappears`/`CompProperties_HeatPusher`/
+`ThinkNode_Tagger`/`ThinkNode_SubtreesByTag` also checked. All three
+`PyrelandsMechanicsDefOf` DefOf fields (`RM_FireHawkCarryEmber`,
+`RM_FurnaceWarmth`, `RM_FurnaceHerd`) match their XML defNames exactly. The
+two `WorldComponent`s in this cluster's dependency chain
+(`WorldComponent_RM_FurnaceHerdSeeder`, cross-checked against this repo's
+three other live `WorldComponent` subclasses) rely on the same
+auto-instantiation vanilla gives every `MapComponent`/`WorldComponent`
+subtype — no registration site needed, consistent with the existing
+precedents.
+
+**1 real bug found and fixed**, in `JobGiver_RUT_FireHawkCarryEmber.
+TryGiveJob`: `CompFireHawkSpread`'s own doc comment states the cooldown "is
+charged when the sortie STARTS, not when it succeeds, so a hawk that fails to
+find a lawful cell still pays" — but the code called
+`comp.Notify_SortieStarted()` only *after* `TryFindCellBeyondTheFire` (an
+8-bearing random search for a landing cell) also succeeded. A fire-hawk
+standing beside a fire with no reachable/flammable landing cell nearby (map
+edge, rock, water) therefore paid no cooldown at all: `CanSortieNow` stayed
+true and the think-node re-ran the full fire scan plus the 8-bearing search
+every think tick indefinitely, exactly the "igniter with no cooldown" failure
+mode the comment warns against. Fixed by moving `Notify_SortieStarted()` to
+fire as soon as a source fire is found, before the landing-cell search, so a
+failed landing search now pays the same cooldown a successful sortie does.
+Verified by a clean `dotnet build` of `FireEcologyHook.csproj`, DLL +
+`.srchash` rebuilt and committed together. Commit `b16769f98` (fix).
+
+All 23 files marked CLEAN, status file committed separately (`244678670`),
+both pushed.
+
+23 files reviewed this wave, 23 newly CLEAN, 1 bug found and fixed.
+
+Next wave suggestion (not re-verified): `PoisonForest`/`Stillsand` remain
+blocked on `UtinniPatches/`. `TheRot` (40 files), `RustCathedral` (38),
+`TheSump` (29), `CreatureBehaviors` (7), `Scarlands` (5), `ForsakenCrags` (4),
+`NightsideIce`/`ExplosiveGrowth` (3 each), `HostileFlora`/`GelatinousSlime`/
+`FlowWorks` (2 each) were all present in the DIRTY list and outside every
+current exclusion as of this wave — any is a ready pick. Re-run
+`code_review_status.py list --show-untracked` for a fresh dirty list and
+`git status --short` on any candidate before starting; stay off
+`UtinniPatches/`, `TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
+`Greentide`/`Miasma`/`BlueDesert`/`DivingInteraction`/`LuminousPigment`/
+`Droidworks`.
