@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_VeilFallPaneStrike.xml              TerminalBiomes · TWILIGHT_PANE_STRIKE_1
+  ============================================================================
+  danger pass D1 — "Veil-fall pane strike: the sky sheds." §5 C6 (ruled):
+  "it can kill outright; the ~15 s shadow warning is the fairness."
+
+  Same shape as this mod's other biome-scoped atmosphere-and-danger
+  incidents (RUT_WalkerSurfacing.xml, RUT_SteamDevilAppears.xml — read
+  before writing this file): category Misc (keeps it out of the vanilla
+  Storyteller's ThreatSmall/ThreatBig queues — this is the sea's own
+  standing hazard, not a raid-shaped threat) + targetTags Map_PlayerHome
+  (fires on the sea-floor pocket map exactly like those two already do) +
+  allowedBiomes restricting it to RM_TwilightSea.
+
+  baseChance/minRefireDays INVENTED, same "MTB-ish ~once per N days" idiom
+  those two files' own headers explain — D1(a)'s own words, "once in a
+  while," land between SteamDevil's baseChance 2/minRefireDays 5 (routine
+  spectacle) and WalkerSurfacing's baseChance 1/minRefireDays 14 (rare
+  sighting): this can kill, so it sits at the rarer end.
+
+  workerClass RM_IncidentWorker_PaneStrike (this mod's own Source/, not the
+  shared EnvironmentalHazards assembly — Twilight-only content).
+  ============================================================================
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RM_VeilFallPaneStrike</defName>
+    <label>waveglass pane strike</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.TerminalBiomes.RM_IncidentWorker_PaneStrike</workerClass>
+    <baseChance>1.2</baseChance>
+    <minRefireDays>9</minRefireDays>
+    <allowedBiomes>
+      <li>RM_TwilightSea</li>
+    </allowedBiomes>
+  </IncidentDef>
+
+</Defs>

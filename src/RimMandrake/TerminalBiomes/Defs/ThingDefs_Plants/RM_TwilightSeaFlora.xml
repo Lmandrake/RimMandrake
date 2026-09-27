@@ -14,41 +14,27 @@
   header already documented for the Grey.
 
   ============================================================================
-  THE MAT-ROOF, AUTHORED HONESTLY AND SCOPED NARROWLY
+  THE MAT-ROOF IS RETIRED — TWILIGHT_PANE_STRIKE_1, 2026-09-27
   ============================================================================
-  🔴 HIS/THE SHEET'S TEXT — the_twilight_deep.md §0/§1, terminator_sea.md §4:
-      "A vast, dim, living cavern the size of a sea: the mold-mat overhead as
-       a permanent ceiling, pierced by skylights … The mat-roof is the
-       mechanism of everything: it blocks the drying wind … damps the
-       salinity … and shelters water." "moldy from shore to shore with one
-       mat organism that has never had to share it" (RM_TwilightSea.xml's own
-       description). "a single mat/film organism per sea" (terminator_sea.md
-       roster consequences).
+  `RM_MoldMatRoof`, the ThingDef this file used to ship here, is DELETED, not
+  renamed. It was a floor-anchored PLANT def (growDays 26, a recoloured
+  Echeveria placeholder) standing in for the ceiling organism — see this
+  mod's git history for the def this section describes; that plant no longer
+  exists anywhere in this repo. Owner ruling, the same day the waveglass was
+  named (`the_twilight_deep_content_2026-09-26.md` §2.1): the organism is not
+  a plant on the floor at all but *"a big panel that occasionally floats down
+  and can be harvested"* — an event plus an item, not flora. Its successor is
+  `RM_VeilFallIncoming` (the falling-pane skyfaller) and `RM_VeilPane` (the
+  landed harvestable building), both in
+  `Defs/ThingDefs_Misc/RM_VeilFallIncoming.xml` and
+  `Defs/ThingDefs_Buildings/RM_VeilPane.xml`. `RM_TwilightSea.xml`'s
+  `<wildPlants>` no longer carries a mat-roof row of any name — removed in
+  the same commit.
 
-  🔑 MECHANICALLY THE MAT IS A CEILING, NOT FLOOR DRESSING — and the full
-  ceiling system (skylights as golden light-wells, the kelp forest that
-  reaches for them, ceiling-garden encrusters) is the_twilight_deep.md's own
-  explicit DEFERRAL to the diving mods' later content pass (roster json
-  new_defs: "the Twilight Deep set, DEFERRED to diving mods") and now overlaps
-  SEABED_PLANET_LAYER_1's later phases (phase 3 "the floor as a habitable
-  place", phase 4 "biomes and content per sea"). Building a real roof/
-  skylight system here would be re-doing that deferred work out of order and
-  inventing mechanism the owner never asked this item to build.
-
-  ⇒ SCOPED TO: give the organism a real def, matching exactly how the Grey's
-  pillar-mason was resolved (GREYSEA_ANCHOR_CREATURES_1: the mason is the
-  crystal-binding film, RM_SaltPillar is its visible WORK — no PawnKindDef).
-  RM_MoldMatRoof is that same shape: the mat itself, made real as the
-  dominant floor-anchored growth of the one organism the whole sea is built
-  from, at the highest commonality on this floor (the "shore to shore"
-  monoculture is HERE, in the number, exactly how GREYSEA_SESSILE_LAYER_1's
-  header put "abundant" into commonality rather than group size). It is what
-  RM_Weloon's "mat-fall" rains off, what RM_Lunoowa mimics, and what RM_Noolim
-  schools beneath — every one of those descriptions stops being flavor text
-  about nothing, same as the four Grey descriptions the pillar settled.
-  ⛔ The skylight/light-well/kelp-forest richness stays owed to the deferred
-  Twilight Deep pass — do not build it here, and do not read this def as
-  having closed that door.
+  The ceiling-organism-as-mechanism idea this section used to argue for
+  (skylights, kelp reaching for them, a light economy) is unaffected by this
+  retirement and ships as the danger pass's D5 (the light famine) and the
+  content drop's §6 light economy — that work was never this def's to carry.
 
   ============================================================================
   THE BLADE — TWILIGHT VARIANT
@@ -109,38 +95,6 @@
       <topWindExposure>0.05</topWindExposure>
       <purpose>Misc</purpose>
       <allowAutoCut>false</allowAutoCut>
-    </plant>
-  </ThingDef>
-
-  <!-- ==================================================================
-       THE MOLD-MAT-ROOF — the Twilight's monoculture made real.
-       Dominant by commonality, not by group size (this sea's own bans
-       hold: RM_Noolim alone carries herdAnimal, nothing else schools).
-       ================================================================== -->
-  <ThingDef ParentName="RM_TwilightFloorFloraBase">
-    <defName>RM_MoldMatRoof</defName>
-    <label>mold-mat roof</label>
-    <description>The one organism this whole sea belongs to: a living mat that has never had to share a floor or a ceiling with anything else in a geological age. What anchors down here is the same tissue that hangs overhead for a hundred kilometres in every direction — mould-pale where it is thin, near-black where it has thickened for a century undisturbed, felted and slow and completely unhurried. Everything else in the Twilight Sea lives off it one way or another: the mat-fall raining from above, the shade it keeps, the shape it gives things to hide inside.</description>
-    <statBases>
-      <MaxHitPoints>260</MaxHitPoints>
-      <Beauty>2</Beauty>
-    </statBases>
-    <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
-      <color>(74,84,66)</color>
-      <colorTwo>(46,52,44)</colorTwo>
-      <drawSize>(2.2,2.2)</drawSize>
-    </graphicData>
-    <plant>
-      <growDays>26</growDays>
-      <harvestWork>240</harvestWork>
-      <maxMeshCount>2</maxMeshCount>
-      <visualSizeRange>1.4~2.2</visualSizeRange>
-      <!-- Dominant: "shore to shore," never contested. -->
-      <wildClusterRadius>6</wildClusterRadius>
-      <wildClusterWeight>26</wildClusterWeight>
-      <wildOrder>1</wildOrder>
     </plant>
   </ThingDef>
 

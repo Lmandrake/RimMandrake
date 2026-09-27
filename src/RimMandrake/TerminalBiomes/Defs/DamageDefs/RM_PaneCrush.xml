@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_PaneCrush.xml                       TerminalBiomes · TWILIGHT_PANE_STRIKE_1
+  ============================================================================
+  the_twilight_deep_danger_pass_2026-09-27.md D1(b): "Anything in the
+  footprint when it lands takes crush damage — pawns, animals, plants,
+  lamps, buildings." C6 (§5): "it can kill outright; the ~15 s shadow
+  warning is the fairness."
+
+  A dedicated DamageDef rather than reusing vanilla `Crush` (roof collapse)
+  or `Bomb` (meteorite): `Crush` ships with no `defaultDamage` set (-1,
+  RimSage-verified against Verse/DamageDef.cs — Skyfaller.Impact() reads
+  `explosionDamage.defaultDamage * explosionDamageFactor` directly, so an
+  unset -1 there would make the strike deal negative/zero damage), and
+  `Bomb` is `isExplosive` with fire/heat side effects wrong for a falling
+  glass pane. This def borrows Crush's shape (armorCategory Blunt, hediff
+  Crush, "crushed to death") with a real defaultDamage sized near Bomb's
+  own 50, and is NOT isExplosive — no ignition, no heat pulse, a silent
+  blunt impact.
+  ============================================================================
+-->
+<Defs>
+
+  <DamageDef>
+    <defName>RM_PaneCrush</defName>
+    <label>pane strike</label>
+    <description>A crushing blow from a falling sheet of waveglass — dense, sudden, and heavier than it looks translucent.</description>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <hediff>Crush</hediff>
+    <hediffSolid>Crack</hediffSolid>
+    <armorCategory>Blunt</armorCategory>
+    <externalViolence>true</externalViolence>
+    <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>
+    <isExplosive>false</isExplosive>
+    <impactSoundType>Blunt</impactSoundType>
+    <defaultDamage>55</defaultDamage>
+    <defaultArmorPenetration>0.15</defaultArmorPenetration>
+    <overkillPctToDestroyPart>0.4~1.0</overkillPctToDestroyPart>
+    <deathMessage>{0} has been crushed under a falling pane.</deathMessage>
+  </DamageDef>
+
+</Defs>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_VeilFall_Mechanics.xml              TerminalBiomes · TWILIGHT_PANE_STRIKE_1
+
+  Translate keys for RM_IncidentWorker_PaneStrike.cs (D1, the floor strike)
+  and RM_MapComponent_VeilFall.cs (D8, the laden deck).
+-->
+<LanguageData>
+
+  <RM_VeilFallPaneStrikeLabel>Waveglass pane falling</RM_VeilFallPaneStrikeLabel>
+  <RM_VeilFallPaneStrikeText>A shadow is spreading on the floor below the lid — something enormous has let go and is turning slowly down through the shafts. Anything still standing in the dark patch when it lands will be crushed. It will take about fifteen seconds to arrive.</RM_VeilFallPaneStrikeText>
+
+  <RM_VeilFallDeckLabel>Waveglass pane falling — on the ship</RM_VeilFallDeckLabel>
+  <RM_VeilFallDeckText>A shadow is spreading across the hull — a shed pane is coming down onto the ship itself. Anything standing on the deck under it when it lands will be crushed. It will take about fifteen seconds to arrive, and it will need clearing before the ship can launch.</RM_VeilFallDeckText>
+
+  <RM_GravEngineCannotLaunchVeilFall>Deck is buried in veil-fall — clear the fallen panes before launching</RM_GravEngineCannotLaunchVeilFall>
+
+</LanguageData>

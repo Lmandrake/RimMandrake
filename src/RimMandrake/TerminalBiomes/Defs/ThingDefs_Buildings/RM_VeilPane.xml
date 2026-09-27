@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_VeilPane.xml                        TerminalBiomes · TWILIGHT_PANE_STRIKE_1
+  ============================================================================
+  danger pass D1(b)/(c): "the landed pane is the reward: RM_VeilPane, a large
+  harvestable thing (the ruled event + item)"; "a building-like thing with a
+  work-to-harvest." D8(c): "each yielding the harvestable pane material (the
+  sea pays you for evicting it) ... the clearing job is near-vanilla (haul/
+  deconstruct-shaped)."
+
+  CRIBBED FROM `ShipChunkBase` (Core Buildings_Exotic.xml), the SAME vanilla
+  idiom RUT_ScaldWreckHull/Tank/Frame already crib in this same mod
+  (RUT_ScaldWrecks.xml — read in full before writing this file): a static,
+  non-buildable, non-claimable, always-deconstructible salvage building.
+  "Haul/deconstruct-shaped" IS ShipChunk's own shape — Designator_Deconstruct
+  -> DestroyMode.Deconstruct -> GenLeaving reads costList * resourcesFraction
+  WhenDeconstructed, zero new C#.
+
+  size (3,3), matching RM_VeilFallIncoming's own <size> — both
+  CellFinderLoose.TryFindSkyfallerCell (the falling pane's landing-cell
+  search) and RM_MapComponent_VeilFall's deck footprint check
+  (RM_MapComponent_VeilFall.cs) key off the SAME footprint, so the two must
+  never drift apart.
+
+  resourcesFractionWhenDeconstructed 1.0 (not ShipChunk's implicit 0.5, not
+  the Scald wrecks' 0.75-for-corrosion): "the sea pays you for evicting it"
+  reads as full value, and nothing about a just-landed pane is degraded —
+  unlike a wreck that has sat cooking in the shallows.
+
+  PLACEHOLDER ART: Things/Building/Exotic/ShipChunk (vanilla, confirmed
+  present), tinted waveglass blue-green — same convention as
+  RM_VeilFallIncoming.xml's own header. Positive Beauty (translucent glass
+  underfoot), unlike ShipChunk's own -20: D8(a) calls a deck under this "the
+  most beautiful thing that can happen to a spacecraft."
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="ShipChunkBase">
+    <defName>RM_VeilPane</defName>
+    <label>fallen waveglass pane</label>
+    <description>A whole sheet of the lid, come down entire and settled on the floor — still catching whatever light reaches this deep, still faintly warm from the fall. It will not move again on its own, and it is worth going to: harvest it before something else does.</description>
+    <graphicData>
+      <texPath>Things/Building/Exotic/ShipChunk</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(3,3)</drawSize>
+      <color>(150,215,198,220)</color>
+      <damageData>
+        <rect>(0.1,0.1,2.8,2.8)</rect>
+      </damageData>
+      <shadowData>
+        <volume>(2.0,0.4,2.0)</volume>
+      </shadowData>
+    </graphicData>
+    <size>(3,3)</size>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>6</Beauty>
+      <WorkToBuild>12000</WorkToBuild>
+    </statBases>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <resourcesFractionWhenDeconstructed>1.0</resourcesFractionWhenDeconstructed>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <costList Inherit="False">
+      <RM_WaveglassShard>8</RM_WaveglassShard>
+    </costList>
+    <killedLeavings Inherit="False">
+      <RM_WaveglassShard>3</RM_WaveglassShard>
+    </killedLeavings>
+    <comps>
+      <li Class="CompProperties_InspectString">
+        <inspectString>Deconstruct for waveglass shard.</inspectString>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

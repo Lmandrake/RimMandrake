@@ -3,11 +3,19 @@ using RimMandrake.EnvironmentalHazards;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using HarmonyLib;
 
 namespace RimMandrake.TerminalBiomes
 {
     // ════════════════════════════════════════════════════════════════════
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for Terminal Biomes.
+    //
+    // TWILIGHT_PANE_STRIKE_1, 2026-09-27: this mod now carries ONE Harmony
+    // patch (RM_Patch_GravEngineLaunchGate.cs, PatchAll'd from this class's
+    // constructor below) — the RM_TerminalBiomes.csproj header's older "No
+    // Harmony" line is corrected in the same commit. Every other class in
+    // this assembly is still plain XML-wired (thingClass/placeWorkers/
+    // GenStep Class=); this is the first and only reflection-based hook.
     //
     // TERMINALBIOMES_RM_MOD_BUILD_1 §11 step 1: five toggles (master + one
     // per biome, all default ON), plus one sub-toggle per Scald mechanic the
@@ -91,6 +99,36 @@ namespace RimMandrake.TerminalBiomes
         public static bool SuulkActive => TwilightSeaActive && suulkEnabled;
         public static bool VauliskActive => TwilightSeaActive && vauliskEnabled;
 
+        // ── Twilight Sea kit (TWILIGHT_PANE_STRIKE_1, D1+D8: "floor and
+        // deck are ONE pane system") ─────────────────────────────────────
+        // Item 5's ask: "pane strikes on/off + frequency, deck accumulation
+        // rate + off." Frequency/rate are multipliers on the two
+        // MapComponent tickers' own base chance (RM_MapComponent_VeilFall.cs)
+        // and, for the strike, on nothing else — the IncidentDef's own
+        // baseChance/minRefireDays are Storyteller-side and not user-tunable
+        // by this mod's own convention (no other incident here exposes one).
+        public static bool twilightPaneStrikeEnabled = true;
+        public static float twilightPaneStrikeFrequency = 1.0f;
+        public static bool twilightDeckAccumulationEnabled = true;
+        public static float twilightDeckAccumulationRate = 1.0f;
+
+        private static bool TwilightActive => masterEnabled && twilightSeaEnabled;
+        // Gates BOTH the floor strike IncidentDef (RM_IncidentWorker_
+        // PaneStrike) and the ordinary shed cadence (RM_MapComponent_
+        // VeilFall's TrySpawnLightShed) -- D1's own text treats "most
+        // veil-fall is flakes and litter" and "once in a while ... a whole
+        // pane" as ONE cadence, never two switches.
+        public static bool TwilightPaneStrikeActive => TwilightActive && twilightPaneStrikeEnabled;
+        // Gates D8's deck accumulation ticker AND the launch-gate postfix
+        // (RM_Patch_GravEngineLaunchGate) together -- degrades gracefully
+        // per MOD_OPTIONS_RETROFIT_1: off means new panes stop landing on a
+        // ship's deck AND the launch-gate postfix stops checking for them,
+        // so any pane already sitting on a deck from before the flip is
+        // left in place (cosmetic only, still clearable by hand) but can
+        // never block a launch. Off can only ever REMOVE a constraint, so
+        // it can never itself cause a stranding.
+        public static bool TwilightDeckAccumulationActive => TwilightActive && twilightDeckAccumulationEnabled;
+
         // ── Cross-biome opt-in (Greentide's own shape; WORLDGEN-AFFECTING) ─
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -117,6 +155,10 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref suulkEnabled, "suulkEnabled", true);
             Scribe_Values.Look(ref suulkFrequencyMultiplier, "suulkFrequencyMultiplier", 1f);
             Scribe_Values.Look(ref vauliskEnabled, "vauliskEnabled", true);
+            Scribe_Values.Look(ref twilightPaneStrikeEnabled, "twilightPaneStrikeEnabled", true);
+            Scribe_Values.Look(ref twilightPaneStrikeFrequency, "twilightPaneStrikeFrequency", 1.0f);
+            Scribe_Values.Look(ref twilightDeckAccumulationEnabled, "twilightDeckAccumulationEnabled", true);
+            Scribe_Values.Look(ref twilightDeckAccumulationRate, "twilightDeckAccumulationRate", 1.0f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -195,6 +237,33 @@ namespace RimMandrake.TerminalBiomes
               + "when approached.");
             list.GapLine();
 
+            list.Label("THE TWILIGHT SEA'S KIT");
+            list.Label("TWILIGHT_PANE_STRIKE_1: the waveglass lid sheds panes onto the floor and, "
+                       + "while a gravship sits there, onto its own deck — one pane system.");
+            list.CheckboxLabeled("Pane strikes", ref twilightPaneStrikeEnabled,
+                "Both the ordinary background shed (harmless veil-fall litter) and the rare "
+              + "whole-pane strike, which CAN kill a pawn caught in its ~15-second shadow "
+              + "warning. Off: neither fires; any pane already on the ground stays and is "
+              + "still harvestable.");
+            if (twilightPaneStrikeEnabled)
+            {
+                list.Label("  Frequency: " + twilightPaneStrikeFrequency.ToString("0.0") + "x");
+                twilightPaneStrikeFrequency = list.Slider(twilightPaneStrikeFrequency, 0.25f, 3f);
+            }
+            list.CheckboxLabeled("Deck accumulation", ref twilightDeckAccumulationEnabled,
+                "While a gravship sits on the Twilight floor, panes can also land on its own "
+              + "hull footprint and must be cleared (deconstructed, same as any salvage) before "
+              + "it can launch. This only ever DELAYS a launch behind a job the colony can "
+              + "always do — never disables the engine. Off: no new panes land on a deck, and "
+              + "the launch check stops looking for them; any pane already there stays but no "
+              + "longer blocks anything.");
+            if (twilightDeckAccumulationEnabled)
+            {
+                list.Label("  Rate: " + twilightDeckAccumulationRate.ToString("0.0") + "x");
+                twilightDeckAccumulationRate = list.Slider(twilightDeckAccumulationRate, 0f, 3f);
+            }
+            list.GapLine();
+
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");
             list.Label("Reserved for a future pass that lets a Scald mechanic generate on "
               + "a non-Scald biome's map. Inert until that pass exists; the fields persist "
@@ -230,6 +299,14 @@ namespace RimMandrake.TerminalBiomes
             {
                 RegisterMechanicGates();
             }
+            // TWILIGHT_PANE_STRIKE_1, D8's launch gate
+            // (RM_Patch_GravEngineLaunchGate.cs). Building_GravEngine is a
+            // plain Assembly-CSharp type present whether or not Odyssey is
+            // active (Ninefold's own Patch_GravshipLaunched.cs header, this
+            // same repo, verifies this against the decompiled source) — the
+            // patch target always resolves, and the postfix itself is a
+            // no-op on any map with no RM_VeilPane things on it.
+            new Harmony("mandrake.rm.terminalbiomes").PatchAll(typeof(RM_TerminalBiomesMod).Assembly);
         }
 
         // Kept in its own non-inlined method so the JIT only resolves the

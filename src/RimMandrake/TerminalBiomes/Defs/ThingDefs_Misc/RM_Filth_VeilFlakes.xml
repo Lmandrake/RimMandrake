@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_Filth_VeilFlakes.xml                TerminalBiomes · TWILIGHT_PANE_STRIKE_1
+  ============================================================================
+  danger pass D1(a): "Most veil-fall is flakes and litter." The ordinary,
+  harmless shed cadence RM_MapComponent_VeilFall.cs scatters at low
+  frequency and low severity, distinct from the rare whole-pane strike
+  (RM_VeilFallIncoming/RM_VeilPane, this same commit). ParentName="BaseFilth"
+  — same vanilla shape as Filth_Ash. Short disappearsInDays: this is ambient
+  dressing, not a buildup mechanic to manage.
+
+  PLACEHOLDER ART: Things/Filth/Ash (vanilla, confirmed present), tinted
+  waveglass blue-green.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_VeilFlakes</defName>
+    <label>veil-fall flakes</label>
+    <description>Small broken flecks of the lid, settled where they fell — pretty, weightless-looking, and constant. The sea sheds a little of itself every day.</description>
+    <altitudeLayer>Filth</altitudeLayer>
+    <category>Filth</category>
+    <drawerType>MapMeshOnly</drawerType>
+    <filth>
+      <cleaningSound>Interact_CleanFilth</cleaningSound>
+      <ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat>
+      <disappearsInDays>2~4</disappearsInDays>
+      <cleaningWorkToReduceThickness>40</cleaningWorkToReduceThickness>
+      <canFilthAttach>true</canFilthAttach>
+    </filth>
+    <graphicData>
+      <graphicClass>Graphic_Cluster</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/Ash</texPath>
+      <color>(150,215,198,220)</color>
+      <drawSize>3</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>1</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <thingClass>Filth</thingClass>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_VeilFallIncoming.xml                TerminalBiomes · TWILIGHT_PANE_STRIKE_1
+  ============================================================================
+  danger pass D1(c): "An IncidentDef + the vanilla skyfaller shape (meteorite
+  idiom: descent graphic, shadow, impact damage ... No new C# beyond the
+  skyfaller subclass if the stock one can't carry the size." MEASURED against
+  the decompiled engine (RimSage) before authoring: stock Skyfaller needs NO
+  subclass at all here —
+
+    * `CellFinderLoose.TryFindSkyfallerCell` (Verse/CellFinderLoose.cs)
+      already validates a skyfaller's FULL footprint via `GenAdj.OccupiedRect
+      (x, Rot4.North, skyfaller.size)`, not a single cell — so a room-sized
+      <size> on THIS def is all "the outsize footprint" needs.
+    * `Skyfaller.Impact()` (Verse/RimWorld/Skyfaller.cs) already runs
+      `GenExplosion.DoExplosion` over `<explosionRadius>` with
+      `<explosionDamage>` when it lands, and already spawns
+      `<spawnThing>` at the impact cell afterward — the crush-damage-then-
+      leaves-a-harvestable-thing shape D1/D8 want, verbatim, with zero new
+      C#. The one caller-side thing vanilla does NOT do for us: its default
+      cell-finder call sites (e.g. IncidentWorker_MeteoriteImpact) pass
+      avoidColonistsIfExplosive=true, which would steer this away from
+      colonists — the opposite of C6's ruling ("it can kill outright").
+      RM_IncidentWorker_PaneStrike.cs calls TryFindSkyfallerCell directly
+      with that flag OFF.
+
+  ticksToImpactRange 900~900 is C6's own number: "the ~15 s shadow warning
+  is the fairness" (900 ticks = 15s at the standard 60 ticks/sec).
+
+  size (3,3): "a sheet of living glass the size of a room" (D1a). The SAME
+  def is used for D8's laden-deck accumulation (RM_MapComponent_VeilFall) —
+  "panes are things landing on ship-footprint cells (D1's skyfaller,
+  unmodified)" (D8c) — so this file is shared by both, unmodified, exactly
+  as ruled.
+
+  explosionDamage RM_PaneCrush (this mod, same commit — see its own header
+  for why not vanilla Crush/Bomb). damageSpawnedThings false: the landed
+  RM_VeilPane itself must survive its own arrival to be harvestable.
+
+  PLACEHOLDER ART: Things/Skyfaller/Meteorite (vanilla, confirmed present),
+  tinted waveglass blue-green via <color> — same "reuse + recolor" placeholder
+  convention RM_TwilightSeaFlora.xml's header already used for the mat-roof
+  and blade. Real art queued via artpipe when the biome's art pass reaches it;
+  not spent here.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>RM_VeilFallIncoming</defName>
+    <label>waveglass pane (falling)</label>
+    <graphicData>
+      <texPath>Things/Skyfaller/Meteorite</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(7,7)</drawSize>
+      <color>(150,215,198,235)</color>
+    </graphicData>
+    <size>(3,3)</size>
+    <skyfaller>
+      <shadowSize>(3.2,3.2)</shadowSize>
+      <ticksToImpactRange>900~900</ticksToImpactRange>
+      <explosionRadius>2.2</explosionRadius>
+      <explosionDamage>RM_PaneCrush</explosionDamage>
+      <explosionDamageFactor>1.0</explosionDamageFactor>
+      <damageSpawnedThings>false</damageSpawnedThings>
+      <spawnThing>RM_VeilPane</spawnThing>
+      <rotateGraphicTowardsDirection>false</rotateGraphicTowardsDirection>
+      <speed>0.5</speed>
+      <motesPerCell>2</motesPerCell>
+    </skyfaller>
+    <thingClass>Skyfaller</thingClass>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>
