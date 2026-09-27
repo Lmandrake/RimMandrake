@@ -71,7 +71,7 @@
   <BiomeDef>
     <defName>RUT_TwilightSea</defName>
     <label>the Twilight Sea</label>
-    <description>A hypersaline terminal sea on the terminator band, moldy from shore to shore with one mat organism that has never had to share it. It has no outflow and it is shrinking — the stranded shoreline terraces mark where it used to reach.</description>
+    <description>A hypersaline terminal sea on the terminator band, lidded from shore to shore by one organism that has never had to share it: the waveglass, a blue-green sheen on the water from above and a ceiling of living stained glass from far beneath. It has no outflow and it is shrinking — the stranded shoreline terraces mark where it used to reach.</description>
     <workerClass>BiomeWorker_Ocean</workerClass>
     <isWaterBiome>true</isWaterBiome>
     <canBuildBase>false</canBuildBase>

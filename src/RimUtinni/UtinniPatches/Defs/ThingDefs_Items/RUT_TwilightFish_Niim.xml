@@ -60,7 +60,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Niim</defName>
     <label>niim</label>
-    <description>The silver of the Twilight — the shoal fish, the ordinary fish, the fish that behaves like a fish, and the only one on the planet that does. Blue-white, hand-long, a dot-line of cold light along the flank, it schools in the light columns under the roof in crowds that make the column flash when they turn. The Compact's whole under-roof economy is a net dropped into a niim column. Hunted by the kellu in the dark between columns and by one fast ordinary thing nobody has a good name for. Tastes like fish. That is the point of it.</description>
+    <description>The silver of the Twilight — the shoal fish, the ordinary fish, the fish that behaves like a fish, and the only one on the planet that does. Blue-white, hand-long, a dot-line of cold light along the flank, it schools in the light columns under the waveglass in crowds that make the column flash when they turn. The Compact's whole under-lid economy is a net dropped into a niim column. Hunted by the kellu in the dark between columns and by one fast ordinary thing nobody has a good name for. Tastes like fish. That is the point of it.</description>
     <graphicData>
       <texPath>swplants/Bloddle/BloddleA</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -71,7 +71,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Pallu</defName>
     <label>pallu</label>
-    <description>A saucer-sized floater that lives only in the light columns, holding a green symbiont mat on its upper skin to the skylight like a face turned to the sun. A bright column is crowded with them, stacked in the water at every depth the light reaches, and a column the gardener lets close goes dark and the pallu sink out of it in a slow rain. The Compact counts them to price a skylight. Thin, green, slightly sweet.</description>
+    <description>A saucer-sized floater that lives only in the light columns, holding a green symbiont film on its upper skin to the skylight like a face turned to the sun. A bright column is crowded with them, stacked in the water at every depth the light reaches, and a column the gardener lets close goes dark and the pallu sink out of it in a slow rain. The Compact counts them to price a skylight. Thin, green, slightly sweet.</description>
     <graphicData>
       <texPath>Things/Plant/AloeVera/AloeVeraB</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -179,7 +179,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Hollu</defName>
     <label>hollu</label>
-    <description>A bell that forms on the underside of the mat, in the ceiling gardens, and lets go — falling slowly through the whole column, pulsing, stinging what it passes, to lie on the floor and be eaten by nuudal. A big garden sheds them all night. Divers learn the fall pattern of their skylight the way farmers learn rain. Netted mid-fall it is a sting and a bell of salt water; cooked, it is a delicacy in exactly one dock.</description>
+    <description>A bell that forms on the underside of the waveglass, up in the ceiling gardens, and lets go — falling slowly down the whole height of the column, pulsing, stinging what it passes, to lie on the floor and be eaten by nuudal. A big garden sheds them all night. Divers learn the fall pattern of their skylight the way farmers learn rain. Netted mid-fall it is a sting and a bell of salt water; cooked, it is a delicacy in exactly one dock.</description>
     <graphicData>
       <texPath>Things/Plant/JadePlant/JadePlantB</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -202,7 +202,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Oobo</defName>
     <label>oobo</label>
-    <description>Lives in the ceiling gardens, hanging from the roof among the filter-feeders, and hunts by letting go — a soft, wide-armed drop through the dark onto whatever is below, and a slow climb back up a kelp stem. The gardener tolerates it; the oobo groom the roof-underside as they go. Divers hate it with the specific hatred of people who have had one land on them. Very good eating.</description>
+    <description>Lives in the ceiling gardens, hanging from the underside of the waveglass among the filter-feeders, and hunts by letting go — a soft, wide-armed drop through the whole dark height of the water onto whatever is below, and a long slow climb back up a kelp stem. The gardener tolerates it; the oobo groom the lid's underside as they go. Divers hate it with the specific hatred of people who have had one land on them. Very good eating.</description>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaB</texPath>
       <graphicClass>Graphic_Single</graphicClass>
