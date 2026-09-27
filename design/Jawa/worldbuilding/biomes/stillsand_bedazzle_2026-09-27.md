@@ -148,11 +148,159 @@ siidda — one biome, said once into silence.
 
 ## 3. Flora
 
-*(to fill)*
+The signature flora is further along than most docs record — both invented plants are
+BUILT with real deployed art (`EXTREME_DESERT_SIGNATURE_FLORA_1`, art 2026-09-24), and
+the ollim's material already ships its ruled stat signature:
+
+| plant | state | tier | what remains |
+|---|---|---|---|
+| **the ollim** (deep_desert §4b's shade tree) | ✅ BUILT (`RSW_Ollim`, real art) — and **`RSW_OllimWood` ships the ruled signature, MEASURED from its def this pass**: `StuffPower_Armor_Sharp` 0.15 against vanilla WoodLog's 0.54, heat axis inverted to near-immune, calibrated against measured vanilla values per its own header. The sheet's "armour that laughs at fire and folds to a hammer" is shipped, not owed | ⚠ Q11a move → `RM_Ollim` / `RM_OllimWood` (§7 Q1) | its CONTEXT: the sheet says the tree grows *among the bones of vast creatures, nursing the buried moisture* — a bone-field set piece (§4.6), and its shade is *rented* — tenants pay in waste and water (an ecology hook; `RM_TenantTruceExtension` is the shipped in-house truce shape to evaluate first, grep before inventing) |
+| **the light-pipe nub** (dune_sea §4 — the visible biome) | ✅ BUILT (`RSW_LightPipeNub`, real art) | ⚠ Q11a move → `RM_LightPipeNub` | the harvest: dune_sea §7 names **optical-grade biosilica** ("real lenses, harvested by the handful, the only non-volcanic natural glass on the planet") — whether the def yields a distinct biosilica item is UNMEASURED this pass; if not, one harvest item + 1–2 recipes is pure XML (§7 Q12 confirms the item) |
+| **the bloddle** | ✅ wired, eye-test MEASURED (0 green pixels on all three variants) | canon — stays Utinni forever | nothing |
+
+**One NEW flora behaviour, sheet-owed, no new plant:** the **anhydrobiotic bloom**
+(deep_desert §4: *"when a rare flood reaches this far the ground blooms within hours and
+is dead again within days"*). This is an event, not a roster row — a short-lived bloom
+flora family spawned by a trigger and self-terminating on the sheet's own clock.
+`RM_IncidentWorker_BloomBurst` + `RM_BloomBurstExtension` already ship in-house — the
+mechanism exists to evaluate before writing anything (§5). The bloom is the one legal
+exception to "nothing green": the sheet's own hours-to-days carve-out, and its art stays
+pale, not lush.
+
+⛔ Deliberately NOT proposed: any ambient scrub, any dead-wood scatter (deep_desert §8:
+there is NO fuel here — imported fuel is the tribes' treasure, and `TreeDead` was purged
+from the roster on exactly this law), any third signature plant. Two plants and a scatter
+of glass IS the flora of this biome at full strength.
 
 ## 4. The marquee
 
-*(to fill)*
+In the sheets' own register — giants-or-grains, the crossing as the experience, the sand
+busters, buried archaeology, eggs-as-water — ranked, each with what it reuses and what it
+costs. The Stillsand's engine luck is unusually good: **three of its five marquee ideas
+have their expensive half already shipped in-house.**
+
+### 4.0 If we only build three
+
+| rank | idea | one line | why it is in the three |
+|---|---|---|---|
+| **1** | **§4.1 The sand busters** | The planet's only infestation biome: the ground you camped on erupts. | The only marquee already **owner-ruled** (dune_sea amendment, 2026-09-24) and still unfiled/unbuilt — making the ruled thing real outranks new ideas. Mechanics are vanilla's own (hive eruption, escalating waves); the work is bodies-to-sheet-law + biome gating + the Utinni planet-wide ban. |
+| **2** | **§4.2 Crossing with the giant** | Following a walking mountain is how you cross the dune sea — its shadow is the only road. | The sheet's own ⭐ gameplay sentence. The C# keystone (follow-a-moving-shadow) is already bound to be answered ONCE for three consumers by the live commensal item; the caravan payoff lands on top of that single answer. |
+| **3** | **§4.3 The buried record** | Anything the sand has taken comes back intact — the dayside's salvage game is pristine-and-buried. | Cheapest: the engines exist TWICE — `mandrake.rm.movingdunes` ships burial caches with a `BuryThingsAt` API, and Greentide ships the `RM_BuriedCache`/`DigOutBuried` dig loop. Wiring, loot tables and set pieces, almost no new C#. |
+
+**If a slot must be cheaper, swap §4.4 eggs-as-water in for §4.2** — its trap half is
+already shipped and its item half is pure XML.
+
+### 4.1 The sand busters — the eruption you triggered
+
+**Pitch.** The dune sea looks the same whether it is empty or loaded, and the player is
+the detonator (§4). Vanilla's infestation event has its ONE planetary home here — banned
+everywhere else by the Utinni scenario layer (ruled split: the biome mod owns the castes
+and the biome-gated incident; UtinniPatches owns the planet-wide ban).
+
+**What the player does.** Camps, builds, mines, drills — and learns that activity on dry
+sand is a wager. An eruption (ruukka bursting from under the colony, oorrik waves after
+it) is the biome's only mass threat, and the surface heals to blank sand afterward: an
+eruption scar is the only mark it leaves. **What they get:** the emptiness made
+load-bearing — dread with nothing visible to dread — plus the busters' own carcass
+economy (giant chitin-plate in the sheet's mirror/ceramic palette). **What it costs:**
+the trio's bodies must be rebuilt to sheet law — giant or grain, sun-axis polarised, no
+nameable insect/spider silhouette (a nameable giant is this sheet's worst offence) — so
+this is mostly an art-and-def bill, not code. **Engine surface:** vanilla infestation
+mechanics reused; a biome gate on the incident; one Utinni patch suppressing it
+planet-wide. **Cost:** small C#/XML + the real art bill for two castes and a mound.
+
+### 4.2 Crossing with the giant — the moving shade is the road
+
+**Pitch.** *"Following a giant is how you cross the dune sea. A caravan that stays in
+the shade of a walking mountain travels; a caravan that does not, does not"* (§4 ⭐).
+
+**What the player does.** Finds the region's oommok (mirror giant — already built, bs 18,
+wired at 0.0005) and falls in on its shade side. Map-scale v1: pawns adjacent to the
+giant's shaded flank read as sheltered (heat-load paused), the eemmok commensals boil
+around their feet, and the giant's route — not the player's — decides where the crossing
+goes. Its underside is *"wetter, cooler and busier than the entire landscape it
+crosses"*: the one moving foraging ground in the biome. **What they get:** the only safe
+transit of the deep dune, at the pace of a shadow on a sundial — slower, safer, and
+going where the mountain is going. **What it costs:** tempo (the giant does not hurry
+and does not detour) and proximity (everything else that needs shade is under there with
+you). **Engine surface:** the shade-follow C# question — a per-host tracked shadow-caster
+or `ShadeAt` + heuristic — is `DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1`'s bound design
+question, answered once for commensals + glitter-birds + this; the caravan payoff v1 is
+map-scale only (the Long Shade's §4.7 priced the same split honestly: world-scale escort
+is large, defer it). **Reuses:** `RM_MapComponent_ShadeGrid`,
+`RM_ShadeSeekingWanderExtension`, `RM_TitanicCreatures` (footprint plumbing for bs-18
+bodies — whether `RM_MirrorGiant` carries a `RM_TitanicExtension` is UNMEASURED, check
+at build). **Cost:** the one shared C# answer + small wiring; art already owed elsewhere.
+
+### 4.3 The buried record — pristine archaeology, sorted by the wind
+
+**Pitch.** *"Anything buried is perfectly preserved"* (dune_sea §5); *"everything that
+ever died out here is still here, intact and mummified"* (deep_desert §7). The dayside's
+salvage prize is sealed, dry and uncorroded — the exact opposite game to the poison
+forest's corroded standing ruins, and the most Jawa content this biome can carry.
+
+**What the player does.** Reads the sand. Structures walk themselves out of the ground
+over centuries (§8) — a hull emerging from a dune face, bright and half-in — and the
+dunes' own migration uncovers and swallows finds on a real clock. Digs mummified fields,
+buried caches, the wreck the last storm exposed. **What they get:** the scavenger
+livelihood on the biome's own physics: steady, locatable, pristine — sealed containers,
+intact machines, ancient corpses with gear. **What it costs:** everything is out on open
+sand — no cover, full sightlines, and vibration is the dinner bell for everything
+subsurface (digging is drumming; §4.1 and the strikers both key on exactly what
+excavation does). **Engine surface:** `mandrake.rm.movingdunes` is BUILT and ships
+`RM_Dunes_BuriedCache` + a `BuryThingsAt` API + plant choke — ⚠ but its
+`BiomeBindings.xml` targets only vanilla `Desert`/`ExtremeDesert`, so the engine is
+**wired to no Ash'karr biome at all today** (§7 Q12); Greentide separately ships the
+`RM_BuriedCache`/`RM_JobDriver_DigOutBuried` dig loop as the worked pattern. What's new:
+loot tables in this biome's register, a genstep scattering emergence set pieces
+(`RM_GenStep_PlacedSetPieces` is the shipped shape), the ollim bone-field set piece
+(§3). **Cost:** small — bindings, XML, set pieces; the engines exist twice over.
+
+### 4.4 Eggs-as-water — the canteen and the trap
+
+**Pitch.** *"A large egg is portable water in a rigid shell… not food, drink you can
+carry"* — and *"some eggs are birth traps"* (deep_desert §4).
+
+**What the player does.** Raids clutches to provision the crossing — a real hydration
+item with mass, the biome's only portable water source — knowing some clutches are
+armed: approached, they hatch violently, and the newborn tries to drink the intruder.
+**What they get:** the crossing's water math made playable (caravan range = eggs
+carried), plus the sheet's cruellest bargain (the richest clutch is the likeliest trap).
+**What it costs:** every clutch raid is a wager, and the mother's economics (water
+invested in a weapon) mean trap density rises exactly where water is scarcest. **Engine
+surface:** the trap half is SHIPPED — drazzik's egg-trap clutch
+(`DRUM_LURE_PREDATOR_BUILD_1`) and the `ProximityHatch` mod (`RM_ProximityHatchMod`,
+hatch-on-approach) both exist; the canteen half is one ingestible item family + FlowWorks
+hookup if bottled. **Cost:** near zero C#; XML + item art.
+
+### 4.5 The solar offer — infinite power, infinite logistics
+
+**Pitch.** *"Solar power at 100% uptime, forever… infinite power in exchange for
+infinite logistics"* (dune_sea §7 ⭐) — the single strongest reason to plant anything
+here, and the biome's whole colony fantasy: a power station in the middle of nothing.
+
+**What the player does.** Builds the panel farm nowhere else on the planet can host, and
+pays for it in everything else: no water, no soil, no fuel, no cover, every input
+imported across the crossing (§4.2's road), every vibration a dinner bell. **What they
+get:** the campaign's energy anchor — power-hungry industry (and the gravship's
+appetite) sited here on purpose. **What it costs:** the logistics ARE the gameplay; the
+colony is a supply problem with a generator attached. **Engine surface:** ⚠ one
+UNMEASURED gate — vanilla `CompPowerPlantSolar` reads the map's sky/daylight state, and
+this biome's eternal noon will ship as a permanent GameCondition glow lock (§5); whether
+solar output tracks that override or the raw day-night clock must be read from the
+decompile before this is promised. If it tracks: zero build. If not: one small Harmony
+patch. **Cost:** near zero to small.
+
+### 4.6 What is deliberately NOT marquee here
+
+The **sarlacc** is its own accepted, owner-ruled build (`SARLACC_HABITAT_BUILD_1`,
+RSW-tier mod, design accepted whole 2026-09-12) — cited as this biome's dungeon anchor,
+not re-designed or re-ranked here. The **green line** is the painting pass's drama, not
+mod content. **Cavern authoring** is real and owed (deep_desert §8 calls it "the real
+ecosystems") but is its own substantial work by the sheet's own note — §7 Q10 re-files
+it rather than folding it in. And no idea above adds ambient life to the surface: the
+`EXTREME_DESERT_UNRULED_VERMIN_1` ruling stands — *"that emptiness is the intended
+outcome… what you meet there should be something that arrived."*
 
 ## 5. Weather / terrain / mechanics feasibility
 
