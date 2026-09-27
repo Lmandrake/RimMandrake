@@ -349,7 +349,9 @@ This is very late gme"* — and, on the shape: *"Just have it result at the harv
 
 So the lake's fatty flora feed one chain, in two steps. Harvesting the fat-bearing
 plants yields a single raw item, **hydrocarbon flesh** — the wax, tar and pitch of the
-floor's living chemistry, cut and stacked, inert on its own — and a **refinery**
+floor's living chemistry, cut and stacked, inert on its own. It is **industrial only**:
+not food for pawn or animal, never a famine plan — a refinery input, full stop
+(decision taken by question card 2026-09-27). And a **refinery**
 converts hydrocarbon flesh to chemfuel. The gate is the refinery itself and its
 research: this is very-late-game economy, reached only by a colony that already flies a
 gravship to the floor and back, and until that bench exists the flesh is just the
@@ -505,6 +507,11 @@ sublimes, stillbloom dissolves, fuselight detonates — the roster enforces
 untransportability by chemistry.
 
 ## Art direction summary table
+
+**Floor palette RULED (decision taken by question card 2026-09-27): violet-teal
+dusk** — aurora greens and bioluminescent points on near-black; the drowned-aurora
+light of CHILL_FLOOR_LIGHT_1 is the scene's key light. Every per-plant palette below
+reads against that ground. A speculative art batch was queued the same sitting.
 
 | plant | silhouette | palette | glow | drawSize |
 |---|---|---|---|---|

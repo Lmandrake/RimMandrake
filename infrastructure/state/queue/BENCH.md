@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T21:37:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T22:04:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -839,3 +839,23 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SPECULATIVE_ART_COMMISSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SPECULATIVE_ART_COMMISSION_1.md
+
+## CHILL_SURFACE_SITTING_1 The Chill surface: its own full biome pass sitting (Burner guardian place, shore ecology)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CHILLSURFACESITTING1 — the Chill's surface gets its own full biome pass
+prose:    infrastructure/state/items/CHILL_SURFACE_SITTING_1.md
+
+## EMPIRE_ESCALATION_LADDER_1 Empire escalation ladder: evadable probes first, new raid kinds per rung, until you move
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  EMPIREESCALATIONLADDER1 — how Imperial pressure actually climbs
+prose:    infrastructure/state/items/EMPIRE_ESCALATION_LADDER_1.md

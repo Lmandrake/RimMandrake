@@ -19,6 +19,8 @@ PROPANELAKE_FLORA_PASS_1; build from the revised doc, not the original.**
   converted at the refinery."* ⇒ harvesting the fatty flora yields a raw item
   (**hydrocarbon flesh**) that a refinery recipe converts to chemfuel. The
   doc's "never a free fuel farm" hard-law section is overruled and comes out.
+  **Hydrocarbon flesh is INDUSTRIAL ONLY** — not food for pawn or animal, a
+  refinery input full stop (card, 2026-09-27, second round).
 - **Stonewater**: owner typed *"Cooking + real water source w/ power"* — the
   ice is a real cooking/hydration input AND a powered extractor on stonewater
   brakes acts as a genuine water source. Melting costs watts: even drinking
