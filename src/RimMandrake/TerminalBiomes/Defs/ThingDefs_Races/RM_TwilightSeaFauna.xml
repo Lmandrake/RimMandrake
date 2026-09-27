@@ -5,7 +5,7 @@
   TERMINALBIOMES_RM_MOD_BUILD_1 wiring pass: the four floor-resident species
   `terminal_seas_cast_proposal_2026-09-25.md` names for the Twilight Sea
   (noolim, loohn, weloon, lunoowa) — all APPROVED, owner sitting 2026-09-25,
-  verdict 1. Schooling is legal here only beneath the mat-roof (owner ruling
+  verdict 1. Schooling is legal here only beneath the waveglass (owner ruling
   2026-09-10), so noolim alone carries herdAnimal — every other resident of
   this sea, per the frozen sheet, is solitary.
 
@@ -20,13 +20,13 @@
 
   <!-- =================================================================
        RM_Noolim — the silver-shoal analog. The one place schooling is
-       legal on this sea: beneath the mat-roof. Catchable, common.
+       legal on this sea: beneath the waveglass. Catchable, common.
        ================================================================= -->
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Noolim</defName>
     <label>noolim</label>
-    <description>A darting cloud of dull silver slivers, working the water beneath the Twilight Sea's mat-roof — the one place on this sea schooling is legal at all, where the roof's shade takes the murk to green. Seen as a shoal, never as an individual.</description>
+    <description>A darting cloud of dull silver slivers, working the water far beneath the Twilight Sea's waveglass — the one place on this sea where schooling is legal at all, where the lid's shade turns the murk green and the light comes down in gold. Seen as a shoal, never as an individual.</description>
     <statBases>
       <MoveSpeed>4.0</MoveSpeed>
       <MarketValue>6</MarketValue>
@@ -116,7 +116,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Loohn</defName>
     <label>loohn</label>
-    <description>A long, dark body mottled for roof-shadow camouflage, hanging patient where the mat-roof's dapple breaks the murk — the Twilight Sea's one true predator, its only saturated colour a single mate-mark. It waits far more than it hunts, and when it moves nothing beneath the roof is safe.</description>
+    <description>A long, dark body mottled to match the dapple the waveglass throws down from far overhead, hanging patient where that light breaks the murk — the Twilight Sea's one true predator, its only saturated colour a single mate-mark. It waits far more than it hunts, and when it moves nothing beneath the lid is safe.</description>
     <statBases>
       <MoveSpeed>5.0</MoveSpeed>
       <MarketValue>180</MarketValue>
@@ -213,14 +213,15 @@
   </PawnKindDef>
 
   <!-- =================================================================
-       RM_Weloon — soft-shelled floor crustacean, picking the mat-fall.
-       Catchable, uncommon.
+       RM_Weloon — soft-shelled floor crustacean, picking at the veil-fall
+       (shed panes of waveglass come to rest on the floor). Catchable,
+       uncommon.
        ================================================================= -->
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Weloon</defName>
     <label>weloon</label>
-    <description>A rounded, felt-textured, mold-green shell picking through the mat-fall — dead mat tissue raining slowly off the Twilight Sea's roof — moving slowly among the drifts it feeds on. Soft-shelled and unhurried.</description>
+    <description>A rounded, felt-textured shell the colour of old waveglass, working the edge of a shed pane where it came to rest on the floor — the veil-fall, panels let go by the lid far overhead and settled here for anything patient enough to eat glass. Soft-shelled, and in no more hurry than the fall it lives on.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>9</MarketValue>
@@ -301,13 +302,14 @@
   </PawnKindDef>
 
   <!-- =================================================================
-       RM_Lunoowa — mat-fragment mimic. Not caught.
+       RM_Lunoowa — shed-pane mimic (a veil-fall panel that turns out to
+       have filaments). Not caught.
        ================================================================= -->
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Lunoowa</defName>
     <label>lunoowa</label>
-    <description>A ragged, mat-coloured sheet trailing filaments, indistinguishable from a torn piece of the Twilight Sea's roof-mat until it moves. A drifting detritivore that gives itself away only by shifting silhouette.</description>
+    <description>A ragged, translucent sheet trailing filaments — to every eye a shed pane of waveglass settling down out of the dark, blue-green and gold-veined, until it moves. A drifting detritivore that gives itself away only by its silhouette shifting against the light.</description>
     <statBases>
       <MoveSpeed>1.2</MoveSpeed>
       <MarketValue>7</MarketValue>
