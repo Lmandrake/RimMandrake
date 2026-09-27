@@ -1049,32 +1049,35 @@ steps in §12. Numbering continues §10.2's flags where a flag is also a questio
 
 - **Q1 — The waveglass.** ✅ RULED 2026-09-26 (owner typed *"love what you made but just
   call it waveglass"*); *veil / lid / veil-fall* stand; the rewrites landed as one pass (§2.1).
-- **Q2 — The sink.** Recoverable *sunk* state on the bank, or a lost colonist? (§2.2.)
-  **Position:** recoverable, with a harsher Mod Setting.
-- **Q3 — Niim and noolim.** Two shoals split by light, or one? (§10.2-4.) **Position:**
-  two, split by light.
-- **Q4 — Unlimited fishing.** In practice, or literally? (§5.) **Position:** in practice,
-  literal behind a setting.
-- **Q5 — Fourteen seaweeds.** Keep, cut, rename — he asked for twelve; fourteen are
-  offered so two can go. **Position:** if two go, the ummarel (its floor form is thin)
-  and the ghallowyn (fold its timber into the oruvell).
-- **Q6 — The clinging layer at six species.** Too many for the roster's taste, or the
-  right *"a lot"*? **Position:** six; they are tiny and half of them are invisible until
-  they move.
-- **Q7 — The whale's shadow.** Grade A (whole-map dimming, vanilla comp) now and Grade B
-  (the moving shadow, art + C#) after a mockup with him watching? (§7.3.) **Position:**
-  yes, in that order.
-- **Q8 — Skylight rights.** A goodwill sanction only (never a raid, ban 4) and an item
-  that expires with the shaft? (§8.1.) **Position:** yes.
-- **Q9 — The shafts as water.** Fishing only in the lit columns? (§5.) **Position:** yes
-  — *"nets in the light columns."*
-- **Q10 — The houses.** Per-tile world objects, new bottom cast of 6–8, §9.3's roles as a
-  starting sheet for his prose? (§9.) **Position:** yes to all three.
-- **Q11 — Waelune: plant or creature?** (§3.7.) **Position:** creature.
-- **Q12 — Mod Settings.** The set proposed: current on/off + strength + sink outcome +
-  first-entry warning; creature bioluminescence on/hosts-only/off; skylight drift
-  on/off; whale-shadow event on/off; unlimited fishing (practice/literal); Deepwater
-  houses on/off; clinging-layer density. **Position:** all seven, defaults = shipped.
+- **Q2 — The sink.** ✅ RULED 2026-09-26 (card, danger pass C1): recoverable *sunk*
+  state by default, harsher Mod Setting ladder up to lost.
+- **Q3 — Niim and noolim.** ✅ RULED 2026-09-26 (card): TWO, split by light — niim the
+  lit shoal of the shafts, noolim the dark shoal of the between; disentangle their
+  overlapping prose before the fish-body wave ships.
+- **Q4 — Unlimited fishing.** ✅ MOOT 2026-09-26, owner typed: *"you don't fish at the
+  bottom of the ocean, I had meant the shoreline fishing."* Fishing is the SHORELINE's
+  verb (the surface biome's catch, per the standing floor-and-catch ruling); the floor
+  has no fishing at all — its fish are hunted and its beds gathered.
+- **Q5 — Fourteen seaweeds.** ✅ RULED 2026-09-26 (ledger, gating rows): KEEP ALL
+  FOURTEEN — twelve was a floor, not a ceiling.
+- **Q6 — The clinging layer at six species.** ✅ RULED 2026-09-26 (card): six stands —
+  tiny, half invisible until they move, abundance is the license.
+- **Q7 — The whale's shadow.** ✅ Settled in substance: the five-beat sequence ships
+  (second drop supersedes plain Grade A); Grade B's moving-shadow art stays gated on a
+  mockup with him watching — a joint session, not a card.
+- **Q8 — Skylight rights.** ✅ Designed under the week-drift ruling (light economy pass
+  §4): short-term leases, first-refusal renewal, goodwill/access sanction ladder,
+  never force.
+- **Q9 — The shafts as water.** ✅ MOOT with Q4 (same typed correction): no nets on the
+  floor. The shafts' value is light — farming, the well economy, the living abundance
+  hunted and gathered there — not a fishing zone.
+- **Q10 — The houses.** ✅ RULED 2026-09-26 (card): yes to all three — per-tile world
+  objects, a new bottom cast of 6–8, §9.3's roles as the starting sheet for his prose.
+- **Q11 — Waelune: plant or creature?** Position taken (BENCH, reversible at the sheet
+  sitting): creature — the danger pass already treats it as a kept pet (D2).
+- **Q12 — Mod Settings.** Position taken (BENCH, standing MOD_OPTIONS pattern): the
+  proposed set ships with defaults = shipped behaviour; "unlimited fishing" drops out
+  of the panel (moot with Q4 — fishing is the shore's, not this map's).
 
 ## 12. Build-order suggestion, smallest first
 

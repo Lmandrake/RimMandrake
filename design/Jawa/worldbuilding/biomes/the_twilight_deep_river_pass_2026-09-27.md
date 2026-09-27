@@ -154,7 +154,7 @@ No per-thing drift state exists to lose: **position IS the state.**
 Current **on/off** · current **strength** (cadence multiplier, MARGIN and CENTRE
 scale together) · **sink outcome ladder** (§3, ruled) · first-entry warning on/off ·
 undersurge frequency (off / rare / common). All-off degrades gracefully: the bed
-becomes ordinary slow terrain, the weir still catches nothing but still fishes (§4),
+becomes ordinary slow terrain, the weir catches nothing but its edge still gathers (§4),
 the biome loses its teeth and nothing errors.
 
 ## 2. The undersurge — the current's flood state (danger pass D6, folded in)
@@ -239,9 +239,11 @@ position is the value, which is why the works cannot move):
    delivers into an inner hopper: veil-fall flakes and the odd whole pane (harvest
    material), drifted items (yours back, or a surprise), waelune fetched up lit, the
    murrol that ride in slow enough to pick up by hand. **Job: tend the weir** (empty
-   the hopper — hauling-shaped, constant). A fishing zone on the weir's water-edge
-   cells is the biome's second-richest fishing after the wells (bedazzle §3.5,
-   kept). The Compact's own weirs pre-exist on one eddy — the player learns the form
+   the hopper — hauling-shaped, constant). The weir's water-edge cells are the
+   biome's second-richest gathering ground after the wells — the sessile layer
+   crowds onto what the current delivers, picked by hand (⛔ not a fishing zone:
+   owner-typed 2026-09-26, *"you don't fish at the bottom of the ocean"* — fishing
+   is the SHORELINE'S verb; the floor's fish are hunted and its beds are gathered). The Compact's own weirs pre-exist on one eddy — the player learns the form
    by looking, never by being told (their practice: *drop the bundle in upstream,
    collect it at the weir*).
 2. **The silt-trap — `RM_SiltTrap`** (buildable behind the weir). Slows the margin
@@ -262,7 +264,7 @@ position is the value, which is why the works cannot move):
    the first domino below).
 
 **Yields, summed:** continuous current-fed harvest (pane material, flakes, hand-picked
-murrol, returned drift), the second-best fishing, the best farm, and — because none of
+murrol, returned drift), the second-best gathering ground, the best farm, and — because none of
 it needs a skylight — **the only wealth on the floor that ignores D5 entirely.**
 Maintenance-hungry by design: tend, dredge, re-drive — three standing jobs, so the
 works hold pawns the way the light-chase holds pawns, and a colony that builds them
@@ -359,7 +361,7 @@ tolerates you, never a vehicle system.
 | litter-drift effecter (the tell) | no | XML + mote | vanilla effecter system; reads the flow grid |
 | undersurge (`RM_GameCondition_Undersurge`) | no new system | tiny (multiplier + band read + one PawnFlyer yank + animal sweep) | §1.3's component; GravTide's `BandAt`/`TsunamiFlight` shapes |
 | sink basin + `RM_Hediff_Sunk` + ladder | yes, small | small (hediff comp + terminus branch in the component) | ruled D7; vanilla rescue |
-| bank works (`RM_BankWeir`, `RM_SiltTrap`) | small | small (arrest hook is a component check; hopper + dredge comps) | §1.3; vanilla fishing zones; terrain-swap fertility idiom |
+| bank works (`RM_BankWeir`, `RM_SiltTrap`) | small | small (arrest hook is a component check; hopper + dredge comps) | §1.3; hand-gathering on delivered stock; terrain-swap fertility idiom |
 | breach cascade | small | small (~100 lines: state check, spill, stake timer) | weir comp + §2's drift-eligibility |
 | stake-line as tell | no | XML | thessmoss `sowTags`/terrain bounds already in the drop |
 | cargo float (`RM_CargoFloat`) | tiny comp | tiny | item drift + weir arrest |
