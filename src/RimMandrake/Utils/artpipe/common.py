@@ -172,6 +172,26 @@ def _default_codex_home_root() -> Path:
     return REPO_ROOT.parent / "artpipe_codex_workers"
 
 
+def read_auth_freshness(home: Path) -> dict | None:
+    """Thin wrapper — see codex_image.read_auth_freshness."""
+    return _import_codex_image().read_auth_freshness(home)
+
+
+def stale_refresh_threshold_s() -> float:
+    """Thin wrapper — see codex_image.STALE_REFRESH_THRESHOLD_S."""
+    return _import_codex_image().STALE_REFRESH_THRESHOLD_S
+
+
+def resync_stale_worker_homes(codex_home_root: Path, stale_after_s: float | None = None) -> list[str]:
+    """Thin wrapper — see codex_image.resync_stale_worker_homes for the real
+    logic (ARTPIPE_WORKER_AUTH_STALENESS_1). Kept here so artpiped.py only
+    ever imports `common`, the same pattern as codex_sandbox_preflight below."""
+    codex_image = _import_codex_image()
+    if stale_after_s is None:
+        return codex_image.resync_stale_worker_homes(codex_home_root)
+    return codex_image.resync_stale_worker_homes(codex_home_root, stale_after_s=stale_after_s)
+
+
 def codex_sandbox_preflight(base: Path | None = None) -> tuple[bool, str]:
     """Run ONCE at daemon startup, before ANY worker home is leased
     (CODEX_UAC_STORM_1, 2026-09-09) — the same check

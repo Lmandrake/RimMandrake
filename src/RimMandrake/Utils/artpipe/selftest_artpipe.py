@@ -24,6 +24,7 @@ bug visible at all.
 """
 from __future__ import annotations
 
+import base64
 import json
 import os
 import queue
@@ -32,7 +33,9 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -3092,6 +3095,182 @@ def test_detector_selects_meter_by_declared_window_not_position():
        d_bad.last_weekly_pct is None and d_bad.last_five_h_pct is None)
 
 
+# --------------------------------------------------------------------------
+# ARTPIPE_WORKER_AUTH_STALENESS_1: worker-home auth resync + refresh-race guard
+# --------------------------------------------------------------------------
+
+def _fake_access_token(exp: int, plan_type: str = "plus") -> str:
+    """A syntactically-real (unsigned) JWT — enough for
+    codex_image._decode_jwt_claims to decode, never enough to authenticate
+    anything."""
+    def b64(obj: dict) -> str:
+        return base64.urlsafe_b64encode(json.dumps(obj).encode()).rstrip(b"=").decode()
+    header = b64({"alg": "none", "typ": "JWT"})
+    payload = b64({"exp": exp, "https://api.openai.com/auth":
+                   {"chatgpt_plan_type": plan_type}})
+    return f"{header}.{payload}.sig"
+
+
+def write_auth_json(home: Path, last_refresh: datetime, refresh_token: str,
+                     plan_type: str = "plus") -> None:
+    home.mkdir(parents=True, exist_ok=True)
+    exp = int((last_refresh + timedelta(days=30)).timestamp())
+    (home / "auth.json").write_text(json.dumps({
+        "auth_mode": "chatgpt", "OPENAI_API_KEY": None,
+        "last_refresh": last_refresh.isoformat(),
+        "tokens": {"id_token": "id.tok.en", "access_token": _fake_access_token(exp, plan_type),
+                    "refresh_token": refresh_token, "account_id": "acct-1"},
+    }))
+
+
+def test_read_auth_freshness_decodes_last_refresh_and_jwt_claims():
+    """The one place this decodes last_refresh/exp/plan_type/refresh_token
+    must read back exactly what was written — the diagnostic and the fix
+    have to agree on what "fresh" means."""
+    with tempfile.TemporaryDirectory() as td:
+        home = Path(td) / "w0"
+        now = datetime.now(timezone.utc).replace(microsecond=123000)
+        write_auth_json(home, now, "rt-alpha", plan_type="prolite")
+        info = common.read_auth_freshness(home)
+        ok("auth-freshness: last_refresh round-trips", info["last_refresh"] == now,
+           (info["last_refresh"], now))
+        ok("auth-freshness: refresh_token round-trips", info["refresh_token"] == "rt-alpha")
+        ok("auth-freshness: plan_type decoded from the JWT claim", info["plan_type"] == "prolite")
+        ok("auth-freshness: exp decoded from the JWT claim", isinstance(info["exp"], int))
+
+    with tempfile.TemporaryDirectory() as td:
+        ok("auth-freshness: a home with no auth.json at all reads as None",
+           common.read_auth_freshness(Path(td) / "nohome") is None)
+
+
+def test_resync_stale_worker_homes_updates_only_the_stale_ones():
+    """MEASURED 2026-09-26: 3 fresh homes, 5 stale ones sharing dead/behind
+    lineages. resync_stale_worker_homes must re-seed every home that is
+    EITHER behind the freshest by more than the threshold OR on a different
+    refresh-token lineage entirely — and touch nothing else."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        now = datetime.now(timezone.utc)
+        write_auth_json(root / "w0", now, "rt-fresh")                              # freshest
+        write_auth_json(root / "w1", now - timedelta(hours=20), "rt-dead")         # old AND different lineage
+        write_auth_json(root / "w2", now - timedelta(hours=1), "rt-other")         # fresh by age, different lineage
+        write_auth_json(root / "w3", now - timedelta(hours=1), "rt-fresh")         # fresh, SAME lineage — untouched
+
+        resynced = common.resync_stale_worker_homes(root, stale_after_s=12 * 3600)
+
+        ok("resync: reports exactly the two homes that needed it",
+           set(resynced) == {"w1", "w2"}, resynced)
+        w1_after = common.read_auth_freshness(root / "w1")
+        w2_after = common.read_auth_freshness(root / "w2")
+        w3_after = common.read_auth_freshness(root / "w3")
+        ok("resync: w1 (old + dead lineage) now carries the freshest's refresh_token",
+           w1_after["refresh_token"] == "rt-fresh")
+        ok("resync: w1 now carries the freshest's last_refresh too (a real file copy)",
+           w1_after["last_refresh"] == now)
+        ok("resync: w2 (fresh-by-age but different lineage) was ALSO resynced",
+           w2_after["refresh_token"] == "rt-fresh")
+        ok("resync: w3 (already on the freshest's own lineage) was left untouched",
+           w3_after["refresh_token"] == "rt-fresh"
+           and w3_after["last_refresh"] == now - timedelta(hours=1))
+
+
+def test_resync_stale_worker_homes_noop_with_fewer_than_two_homes():
+    """Nothing to resync FROM (or TO) — must not raise, must not invent
+    a home, must return an empty list."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        ok("resync: an empty/nonexistent root is a no-op",
+           common.resync_stale_worker_homes(root) == [])
+        write_auth_json(root / "w0", datetime.now(timezone.utc), "rt-solo")
+        ok("resync: exactly one provisioned home is a no-op (nothing to resync FROM)",
+           common.resync_stale_worker_homes(root) == [])
+
+
+def _minimal_ctx(codex_home_root: Path) -> "artpiped.RunCtx":
+    return artpiped.RunCtx(
+        worker_script=MOCK_WORKER, validator_script=VALIDATOR,
+        manifest_schema=SCHEMA, artsrc_dir=codex_home_root, active_dir=codex_home_root,
+        codex_home_root=codex_home_root, workers_count=1,
+        timeout_generate=60, timeout_edit=60, reasoning_effort="low",
+        verbose=False, slots=queue.Queue(), gemini_worker_script=MOCK_GEMINI_WORKER,
+        gemini_timeout=60, throughput_log=codex_home_root / "throughput.jsonl")
+
+
+def test_stale_refresh_guard_fresh_home_never_takes_the_lock():
+    """A home whose last_refresh is recent must cost nothing — no lock
+    contention for the common case where nothing is near a refresh."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        write_auth_json(root / "w0", datetime.now(timezone.utc), "rt-fresh")
+        ctx = _minimal_ctx(root)
+        with ctx.stale_refresh_guard(root / "w0") as guard:
+            ok("stale-guard: a fresh home never takes the lock", guard.held is False)
+            ok("stale-guard: the lock is genuinely free while a fresh guard is open",
+               ctx._stale_refresh_lock.acquire(blocking=False))
+            ctx._stale_refresh_lock.release()
+        ok("stale-guard: lock still free after exit", not ctx._stale_refresh_lock.locked())
+
+
+def test_stale_refresh_guard_propagates_refresh_to_sibling_stale_homes():
+    """The recurrence half of ARTPIPE_WORKER_AUTH_STALENESS_1: once a
+    guarded job's own use of a due-for-refresh home actually rotates its
+    token, every sibling home sharing that (now-dead) lineage must be
+    re-synced BEFORE the lock releases — so the next stale job never
+    attempts its own, now-doomed refresh against the old token."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        stale_at = datetime.now(timezone.utc) - timedelta(hours=20)
+        write_auth_json(root / "w0", stale_at, "rt-old")
+        write_auth_json(root / "w1", stale_at, "rt-old")  # same dead lineage
+        ctx = _minimal_ctx(root)
+
+        with ctx.stale_refresh_guard(root / "w0") as guard:
+            ok("stale-guard: a home due for refresh DOES take the lock", guard.held is True)
+            ok("stale-guard: the lock is genuinely held for a due-for-refresh home",
+               not ctx._stale_refresh_lock.acquire(blocking=False))
+            # Simulate codex itself refreshing w0's token mid-job.
+            write_auth_json(root / "w0", datetime.now(timezone.utc), "rt-new")
+
+        ok("stale-guard: lock released on exit", not ctx._stale_refresh_lock.locked())
+        w1_after = common.read_auth_freshness(root / "w1")
+        ok("stale-guard: the sibling stale home was re-synced to the new token before release",
+           w1_after["refresh_token"] == "rt-new", w1_after)
+
+
+def test_stale_refresh_guard_serializes_two_due_for_refresh_homes():
+    """Real concurrency, not just logical correctness: two homes both due
+    for refresh must never run their guarded section at the same time —
+    the exact race that produced 5 identical 'refresh token already used'
+    failures in one real run."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        stale_at = datetime.now(timezone.utc) - timedelta(hours=20)
+        write_auth_json(root / "w0", stale_at, "rt-shared")
+        write_auth_json(root / "w1", stale_at, "rt-shared")
+        ctx = _minimal_ctx(root)
+
+        timeline = {}
+
+        def hold(name, home_name, hold_s):
+            with ctx.stale_refresh_guard(root / home_name):
+                timeline[f"{name}_enter"] = time.monotonic()
+                time.sleep(hold_s)
+                timeline[f"{name}_exit"] = time.monotonic()
+
+        ta = threading.Thread(target=hold, args=("a", "w0", 0.3))
+        ta.start()
+        time.sleep(0.05)  # let thread a genuinely enter first
+        tb = threading.Thread(target=hold, args=("b", "w1", 0.0))
+        tb.start()
+        ta.join(timeout=5)
+        tb.join(timeout=5)
+
+        ok("stale-guard: both guarded sections ran", {"a_enter", "a_exit", "b_enter", "b_exit"} <= timeline.keys(),
+           timeline)
+        ok("stale-guard: the second home's critical section never overlapped the first's",
+           timeline["b_enter"] >= timeline["a_exit"], timeline)
+
+
 def main() -> int:
     # Gate off by default for every in-process test — synthetic fixtures are
     # not art. The legibility test opts back in around its own calls.
@@ -3193,6 +3372,12 @@ def main() -> int:
         test_gemini_budget_backs_off_after_quota_error_and_recovers,
         test_gemini_quota_error_backs_off_and_blocks_next_gemini_job_end_to_end,
         test_detector_selects_meter_by_declared_window_not_position,
+        test_read_auth_freshness_decodes_last_refresh_and_jwt_claims,
+        test_resync_stale_worker_homes_updates_only_the_stale_ones,
+        test_resync_stale_worker_homes_noop_with_fewer_than_two_homes,
+        test_stale_refresh_guard_fresh_home_never_takes_the_lock,
+        test_stale_refresh_guard_propagates_refresh_to_sibling_stale_homes,
+        test_stale_refresh_guard_serializes_two_due_for_refresh_homes,
     ):
         print(f"--- {fn.__name__} ---")
         try:
