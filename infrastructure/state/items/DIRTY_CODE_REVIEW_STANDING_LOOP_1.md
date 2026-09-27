@@ -5046,3 +5046,114 @@ and `RimUtinni/PlantGrowth/Source/` files — these were CLEAN once, so a
 diff-scoped review (not full-file) is valid per CLAUDE.md's own rule, and is
 likely a faster way to burn down debt than another full NEVER-ENTERED
 cluster.
+
+## Wave 17 — 2026-09-26 (as FOUNDRY, diff-scoped debt burn-down)
+
+Followed wave 16's own recommendation: instead of another NEVER-ENTERED
+sweep, targeted files that are DIRTY-since-a-prior-clean-mark — CLEAN once,
+edited since — using `git diff <recorded-sha> -- <path>` to scope each
+review to only what changed since the last mark-clean, per CLAUDE.md's own
+"diff-scoped review is only valid once a file is CLEAN" rule. Confirmed
+`git status --porcelain` clean on both target directories before touching
+anything (no concurrent agent mid-edit); steered clear of every folder on
+the standing exclusion list (unchanged from wave 16).
+
+**Batch A** — `src/RimMandrake/CreatureBehaviors/Source/` (10 files, all
+DIRTY-since-clean per `list --show-untracked`): `RM_CompParentalEnrage.cs`,
+`RM_CompProperties_VerminBreeder.cs`, `RM_CompReactionSource.cs`,
+`RM_CompVerminBreeder.cs`, `RM_CreatureBehaviorsMod.cs`,
+`RM_JobGiver_ChewAnchors.cs`, `RM_MapComponent_SenseWeb.cs`,
+`RM_MentalState_ParentalEnrage.cs`, `RM_ParentalEnrageExtension.cs`,
+`RM_ReactionEvent.cs`. Diffs covered GREATBOLE_HARVEST_LADDER_1's
+item-guard mode for `RM_CompParentalEnrage` (a whole parallel
+guard-a-Thing-instead-of-a-pawn path plus its famine/food-search additions
+to `RM_CompVerminBreeder`), REACTION_MECHANISM_GENERALISE_1 step 2's
+propagation re-entry guard on `RM_CompReactionSource`/`RM_ReactionEvent`,
+`WEBWORK_FAUNA_ROSTER_1`'s consumer-race gate on the shared
+`Animal_PreWander` ThinkTree splice, `WEBWORK_SOUNDSCAPE_1`'s sound cue, and
+seven new `RM_CreatureBehaviorsMod` settings dials (#29-35).
+
+Found **one real bug**, in `RM_CompVerminBreeder.cs`: the new
+`breedFoodThingDefNames` famine check called `FoodExistsNearby()` (a real
+`listerThings.ThingsOfDef` scan per food def) unconditionally inside
+`CompTick()`, which fires every tick — unlike the sibling
+`RM_CompParentalEnrage` (which rides `CompTickRare`, 250 ticks, specifically
+to avoid this), every vermin pawn with that field set would re-scan the map
+once per tick. This codebase's own established convention
+(`RM_CompAdhesiveSlick`, `RM_CompDrumLure`, `RM_CompHeatBurstPredator`, all
+in the same folder) gates exactly this class of scan behind
+`parent.IsHashIntervalTick(N)`. Fixed by gating the food/famine check behind
+`IsHashIntervalTick(250)` with a sticky `famished` field carrying the result
+between checks (not Scribed — worst case is a freshly-loaded pawn assuming
+food is present for ≤250 ticks, negligible against the 30000-tick
+`famineGraceTicks` default). Committed at `4ecfb8b87` +
+`a015ca48b` (DLL rebuild, `DLL_SOURCE_STAMP_GUARD_1` required it). The other
+9 files traced clean — no bug.
+
+All 10 marked CLEAN at `a015ca48b`, status commit `229da1ef3`, pushed.
+
+**Batch B** — `src/RimMandrake/EnvironmentalHazards/Source/` (10 files, of
+the ~28 DIRTY-since-clean in that folder — picked the first 10 alphabetical
+by `.cs` file, leaving the rest for a future wave):
+`GameCondition_EnvironmentalWeather.cs`, `RM_CompCrackFall.cs`,
+`RM_CompDryFieldEmitter.cs`, `RM_CompLivingBoleMarker.cs`,
+`RM_CompResourceCondenser.cs`, `RM_CompTerritorialAnchor.cs`,
+`RM_EnvironmentalHazardsMod.cs`, `RM_FellableTreeExtension.cs`,
+`RM_GameCondition_WeatherPulse.cs`, `RM_GenStep_PlacedSetPieces.cs`. Traced
+the new `RM_MechanicGates.Enabled(def)` settings-gate additions across four
+of these (verified each gate placement doesn't skip a needed cleanup —
+`RM_GameCondition_WeatherPulse` correctly calls `EndBurst()` before bailing
+on an in-flight burst), the reflection-bridged plant-suppression write in
+`RM_CompDryFieldEmitter.SuppressPlantGrowth` (checked the
+`ExplosiveGrowthAPI.Suppress(map, cell, radius, ticks)` signature and its
+`RM_MapComponent_ExplosiveGrowth.Suppress` implementation by hand — `radius:
+0` per-cell is correct since the caller already iterates the whole arc
+cell-by-cell, and the facing/arc-cosine math is byte-for-byte the same
+shape as the file's own `RepelAnimals`), the two new
+`acceleratedRegrowThreshold`/`acceleratedRegrowSpeedMultiplier` fields
+`RM_CompLivingBoleMarker` now threads through to
+`RM_MapComponent_LivingRegrowth.RegisterBole` (checked the callee's
+parameter list matches positionally — it does, both are trailing optional
+params), and `RM_CompTerritorialAnchor`'s new tolerance
+set/water-lock wander constraint (`RM_CompWaterLocked.IsWaterCell` is
+bounds-safe, checked). `RM_EnvironmentalHazardsMod.cs`'s diff was 10 new
+Mod Settings dials (#49-56) plus the scroll-view height bump — every
+checkbox/slider pair matches a declared field and a symmetric
+`Scribe_Values.Look` default. No bug found in any of the 10; all marked
+CLEAN at `a1d1268f2` (HEAD had advanced under a concurrent agent's unrelated
+push, `ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1` — confirmed via `git show
+--stat` that it touched none of these paths before trusting the mark).
+Status commit `7c04b2210`, pushed.
+
+20 files reviewed this wave (all diff-scoped), 20 newly CLEAN, 1 real bug
+found and fixed.
+
+Re-measured after: `TALLY CLEAN 3182 DIRTY 198 ORPHANED 211 NEVER ENTERED
+667` (up from wave 16's 3163/217/211/663 — this wave accounts for 19 of the
+net CLEAN gain; concurrent agents continue to move files across buckets
+independent of this pass).
+
+Next wave: `src/RimMandrake/EnvironmentalHazards/Source/` still has ~18
+more DIRTY-since-clean `.cs` files this wave didn't reach (everything after
+`RM_GenStep_PlacedSetPieces.cs` alphabetically — `RM_GradientAxisExtension.cs`,
+`RM_GradientAxisRepaint.cs`, `RM_JobGiver_ReturnToWater.cs`,
+`RM_MapComponent_BodySizeBarrier.cs`, `RM_MapComponent_GradientAxis.cs`,
+`RM_MapComponent_LivingRegrowth.cs`, `RM_MapComponent_StrandingPools.cs`,
+`RM_MapComponent_WaterAgitation.cs`, `RM_MapComponent_WaterTruce.cs`,
+`RM_PollinationGateExtension.cs`, `RM_SetPieceElement_AnchoredPawn.cs`,
+`RM_StrandingPoolsExtension.cs`, `RM_WanderingVortex.cs`,
+`RM_WanderingVortexExtension.cs`, `RUT_IncidentWorker_SteamDevil.cs`,
+`RUT_IncidentWorker_WalkerSurfacing.cs`, `RUT_MapComponent_TheTenant.cs`,
+`RUT_WeatherOverlay_ScaldSteam.cs` — same diff-scoped approach applies,
+same exclusion list). After that, the still-untouched scattered
+DIRTY-since-clean files in `FlowWorks/` (mostly `.xml` FluidDef/TerrainDef
+files, one `.csproj`, `Flood_FlowWorks.cs`, `FluidDef.cs`,
+`RiverSteamHook.cs`, `generate_liquid_suite.py`), `Utils/` (`artpiped.py`,
+`selftest_artpipe.py`, `modcheck/suite.py`, `modset_builder.py`,
+`scald_showcase.py`, `selftest_sound_paths.py`, `shared_sync.py`),
+`RimUtinni/PlantGrowth/Source/` (4 files) and `RimUtinni/ShipShields/Source/`
+(5 files) are all still fresh candidates — none carried forward or
+consumed by this wave. ⛔ Keep avoiding biome-specific mod folders (same
+list as wave 16) plus `DivingInteraction`, `FeverWood/Source`,
+`TerminalBiomes`, anything with `BrineElder`/`GreySea` in its path, and
+`biome_paint_list.md` until told the concurrent biome-split build is done.
