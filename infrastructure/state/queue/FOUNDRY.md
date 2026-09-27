@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T15:57:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T16:12:30Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1796,16 +1796,6 @@ kind:     build
 thin:     no ## criteria
 summary:  Phase 1 — the layer, offline-provable, no content:
 prose:    infrastructure/state/items/SEABED_PLANET_LAYER_1.md
-
-## ARTPIPE_SALVAGE_REJECTED_SIZE_MISMATCH_1 Recover the 71 already-generated renders sitting in artpipe failed/ as size_mismatch
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Confirm the daemon is idle (or briefly pause it) before touching failed/,
-prose:    infrastructure/state/items/ARTPIPE_SALVAGE_REJECTED_SIZE_MISMATCH_1.md
 
 ## UTINNIPATCHES_ORPHAN_AUDIT_1 Audit the full list of files deploy_custom_mods.py reports 'in game, not in repo' under UtinniPatches (and other mods) for stale/dangerous orphans vs. intentional residue
 state:    proposed
