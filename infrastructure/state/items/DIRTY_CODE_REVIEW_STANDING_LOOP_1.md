@@ -5546,3 +5546,54 @@ confirmed unchanged in substance, not a code review target) plus
 `SacredGraffiti/Defs/SacredMarks.xml`, and `StructureInjectionsSW`'s 3 DIRTY
 (`About.xml`, `TileMutatorDefs_Batch2.xml`, `validation.py`). Re-run
 `list --show-untracked` fresh first — still several concurrent agents.
+
+## Wave 23 — 2026-09-26 (FOUNDRY fork, BELT mode)
+
+Re-ran `list --show-untracked` fresh first, as instructed. All three wave-22
+candidate clusters were still live (nothing had been re-cleaned by a
+concurrent pass since wave 22 landed a few minutes earlier). Reviewed all 16:
+
+- **ShipShields (4)**: `About.xml`, `Defs/ResearchProjectDefs/RUT_ShieldGenerator_Research.xml`,
+  `Defs/ThingDefs_Buildings/RUT_ShieldGenerator.xml`, `Defs/ThingDefs_Items/RUT_ShieldModules.xml`.
+  Cross-checked comp classes (`CompProperties_ShieldGenerator`/`_ShieldThermalVeil`/
+  `_ShieldParticulateScreen`/`_ShieldCryoEnvelope`/`_ShieldModuleSwitch` — all already
+  CLEAN from an earlier wave) all exist and resolve; `moduleMappings`' three
+  `moduleDef` values match the three `RUT_ShieldModule_*` defNames in
+  `RUT_ShieldModules.xml`; `ShieldFieldMode` enum (Bubble/Thermal/Particulate/Cryo)
+  matches the XML modes; `ShieldBelt` research prereq is a real vanilla def per the
+  file's own comment.
+- **Graffiti/SacredGraffiti (9)**: 6 `vandal_*.png` textures (all 640×640 RGBA,
+  matching `RM_Graffiti_Vandal`'s own `Graphic_Random` canvas convention —
+  confirmed against the sibling `RM_Graffiti_Scratches` folder's documented
+  640×640 standard) plus `SacredMarks.xml`, `StyleCategoryDefs_Salvation.xml`,
+  `ThoughtDefs_SacredMarks.xml`. `SacredMarks.xml`'s own in-file comment records
+  a prior pass's `Sacred`→`Devotional` category-string fix — verified the enum
+  (`GraffitiCategory.cs`) really does say `Devotional` now, not `Sacred`; genuine
+  fix, already correct. Its `texPath` (`Things/Filth/SacredMark/SacredMark_Ishko`)
+  first looked like a dangling reference (no such folder under Graffiti's own
+  Textures/) until confirmed it resolves inside **SacredGraffiti's own** Textures
+  tree (`SacredGraffiti/Textures/Things/Filth/SacredMark/SacredMark_Ishko.png`) —
+  the ThingDef lives in that mod, not Graffiti, so this is correct, not a bug.
+  `RM_Graffiti_Scratches` (referenced by the style def) and
+  `ThoughtWorker_ViewedGraffitiMark` (referenced by the thought def) both exist.
+  The two seam-test def files were already committed at `dc8dde59c` (an earlier,
+  unrelated attempt to re-add them as if git-untracked found nothing to
+  commit — they were only "untracked" in `CODE_REVIEW_STATUS.json`'s own sense,
+  never reviewed, not git-new).
+- **StructureInjectionsSW (3)**: `About.xml`, `Defs/TileMutatorDefs_Batch2.xml`,
+  `validation.py`. The three new `TileMutatorDef`s' `extraGenSteps` all match real
+  `GenStepDef`s in `GenStepDefs_Batch2.xml` (already CLEAN); `MayRequire="Ludeon.RimWorld.Odyssey"`
+  sits only on the `TileMutatorDef`s (the type itself is Odyssey-only) and correctly
+  not on the plain-Core `GenStepDef`s — intentional, not an omission.
+  `validation.py`'s `DEF_PAIRS`/`TEMPLATE_CHECKS` line up with both XML files.
+
+No bugs found in any of the 16. All marked CLEAN at `9961e6d6a`.
+
+16 files reviewed this wave, 16 newly CLEAN, 0 bugs found.
+
+Next wave: 109 files still DIRTY per a fresh `list --show-untracked`. Reasonable
+next clusters: `DivingInteraction` (About.xml, Keyed strings, `RM_DivingSettings.cs`)
+and `Pyrelands` (About.xml, BiomeDef, GenStepDefs, `Quickgrass.xml`,
+`FireEcologyHook.cs`/`.csproj`, `PlantGrowthStages.cs`, `RM_PyrelandsDensityEnforcer.cs`,
+`RM_PyrelandsMod.cs` — a large single-mod cluster, ~10 files). Re-run
+`list --show-untracked` fresh first — still several concurrent agents.

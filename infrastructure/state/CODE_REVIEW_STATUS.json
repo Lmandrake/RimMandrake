@@ -3996,40 +3996,40 @@
     "sha": "fc53980eb"
   },
   "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_0.png": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "48f13def743d32f0c4b6b8cf41fb695348853061d3eead87fe58f022cfe88a82",
-    "sha": "5a1f89a6"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "1a588a15cc1a275f112f91f8287656ed9f86597191323cd0573aae91a74a63fc",
+    "sha": "9961e6d6a"
   },
   "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_1.png": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "cfc1395f273e092001a5f4dbeea19d9fbc3891fcb291c77677a8c02b68f13c7a",
-    "sha": "5a1f89a6"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "a1a5a1b885ca0c92ecce187c4ac8b9286db0fe14c7e0080bf7e2dbcc35c5e269",
+    "sha": "9961e6d6a"
   },
   "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_2.png": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "8b6b22325d3bf6e67683d51123a49264dda6fc85f9f390d22f1f2adfd4053776",
-    "sha": "5a1f89a6"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "941de08351b1882c7ba00e96fa55d070ca32372eaff4fa244401722aa834b577",
+    "sha": "9961e6d6a"
   },
   "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_3.png": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "aa2037ae899b27bb2be0f94f03d62dee4bd4bffe4806cfffab0d5731d07a5044",
-    "sha": "5a1f89a6"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "071fa0e44f89734c233cf79e511307d422a1c7a81aed5496233bc1fa856b359d",
+    "sha": "9961e6d6a"
   },
   "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_4.png": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "ef72288a4d66895ba107c1b9672b7d9aa729c13da8d086e19665660969a6f2fb",
-    "sha": "5a1f89a6"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "50a85636d888fd0815c1e5b79084eca9948081bdbb7dd68c2e57ddf1fae58f30",
+    "sha": "9961e6d6a"
   },
   "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_5.png": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "326151f46d9d554bc1b8d56149013c909ce06d91cda005846bb963c57b2794dd",
-    "sha": "5a1f89a6"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "3b0fb28fe519d8cd2d8c9f1dcd6621e032c5bb97b7c869319ce7d1f687d75db8",
+    "sha": "9961e6d6a"
   },
   "src/RimMandrake/Graffiti/validation.py": {
     "cleanCount": 1,
@@ -6024,10 +6024,22 @@
     "sha": "629956d2"
   },
   "src/RimMandrake/SacredGraffiti/Defs/SacredMarks.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "5e33ce56800b7162e5eb67fe28390e1694a79fc877f5850298b0c7b723960bce",
+    "sha": "9961e6d6a"
+  },
+  "src/RimMandrake/SacredGraffiti/Defs/StyleCategoryDefs_Salvation.xml": {
     "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "520c91c4e7e93fb933f36bc2abe5b3b227c598e2f6712910cfe5b662c57df8eb",
-    "sha": "629956d2"
+    "date": "2026-09-26",
+    "hash": "7fb9e4b8d1eb40d7fb2e41549065d240dd250c6216f976a9fe9184a51c340f58",
+    "sha": "9961e6d6a"
+  },
+  "src/RimMandrake/SacredGraffiti/Defs/ThoughtDefs_SacredMarks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "9d32064ffbdc3673134e8c22dce22ba509fec826946b6f6986ad27059de6e791",
+    "sha": "9961e6d6a"
   },
   "src/RimMandrake/SacredGraffiti/LICENSE": {
     "cleanCount": 1,
@@ -15544,10 +15556,10 @@
     "sha": "d28bf3edf"
   },
   "src/RimStarWars/StructureInjectionsSW/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-24",
-    "hash": "094f89166aeec9e42b7b4b2776cbab4652d89ff162a4f98374f0128b3325b2dc",
-    "sha": "f869774f1"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "ef196ca12cacd03c3364a609fdcc6ebfe24dc4bd6145bdc8b5e58275d432aca5",
+    "sha": "9961e6d6a"
   },
   "src/RimStarWars/StructureInjectionsSW/Defs/BeastLairs/ThingDefs_Buildings/RSW_BeastLairs_Buildings.xml": {
     "cleanCount": 1,
@@ -15640,10 +15652,10 @@
     "sha": "32a8f920c"
   },
   "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_Batch2.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "2f52350345cf43da5b3460cfa422d4095a0ccc94ca243369b48efc450c08b137",
-    "sha": "629956d2"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "4bf0d60ac3dbcc08b33b90faa3c42dcd10bb985146e1f239f432b98f85ecf31d",
+    "sha": "9961e6d6a"
   },
   "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_Batch4.xml": {
     "cleanCount": 1,
@@ -15730,10 +15742,10 @@
     "sha": "32a8f920c"
   },
   "src/RimStarWars/StructureInjectionsSW/validation.py": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "6c364014261de77257c21fca0f0614f568462f9b784583f3897299f0255903b7",
-    "sha": "78a84be85"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "9bcc17f1f8ba4b377d73341e0db2d5117cdaadc34b215008579bb1f803ac29c4",
+    "sha": "9961e6d6a"
   },
   "src/RimStarWars/TrophyCraft/About/About.xml": {
     "cleanCount": 1,
@@ -18844,28 +18856,28 @@
     "sha": "d28bf3edf"
   },
   "src/RimUtinni/ShipShields/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-18",
-    "hash": "6caf1a1850d1f07a87b0f36c37f0a871c8251a51e9c752300170888e4b3f5071",
-    "sha": "e5ba0316d"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "f8e4c58d5d13083578ee9dd3e616e7f436659a1f74ccd0c08754f6fda3a0eaf9",
+    "sha": "9961e6d6a"
   },
   "src/RimUtinni/ShipShields/Defs/ResearchProjectDefs/RUT_ShieldGenerator_Research.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "085527d699e5adf68506b60318f29d9cc0d6bf30cd8649815c4b4f0bef2ee5dc",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "00e6d0701de65f00dd215727b7ffea23795d4f5abc4072bcc714f83b32ad1c2b",
+    "sha": "9961e6d6a"
   },
   "src/RimUtinni/ShipShields/Defs/ThingDefs_Buildings/RUT_ShieldGenerator.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-18",
-    "hash": "fa7290e4d50424bd6f20884cdb86f8295e683e85251e63834840d9c4498f1e05",
-    "sha": "e5ba0316d"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "6fb2ada0f4158fbfe02ff1cd9c40913c26ed868bdd888630a223061bb0cec150",
+    "sha": "9961e6d6a"
   },
   "src/RimUtinni/ShipShields/Defs/ThingDefs_Items/RUT_ShieldModules.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-09",
-    "hash": "dab4c7cc13b4f2cf269e51d34681f7f7976d67d2ac79d5928d30fd4bec38294e",
-    "sha": "bb73b6bd"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "dc041889f5e9e26f5c2a4823eefed41799d5bb709a6e21aceab1dda00da2836f",
+    "sha": "9961e6d6a"
   },
   "src/RimUtinni/ShipShields/Source/CompProperties_ShieldCryoEnvelope.cs": {
     "cleanCount": 1,
