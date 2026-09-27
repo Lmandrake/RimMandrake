@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TwilightLightEconomyResearch.xml   TerminalBiomes · TWILIGHT_LIGHT_ECONOMY_1
+  ============================================================================
+  Two research gates. §3.3: the sun-sphere is "2 Compact techprints + the
+  research + a wild seed" — techprintCount 2 here, techprints themselves
+  sold by the Compact (a future trader item, out of this build's scope).
+  §2.2-1: the tether-chain is "uncraftable until the late techprint
+  research" — RM_TwilightChainCraft gates RM_TetherChain's own recipeMaker
+  (RM_TwilightLightEconomyItems.xml) and, once done, raises the reachable
+  constellation size toward the ruled ceiling of ~10 (§2.2-1, §8.2) by
+  letting the player craft chains instead of only buying them one at a time.
+
+  Costs/tech levels are INVENTED (no ruling gives exact figures) — Spacer,
+  since the chain and the sphere are both explicitly "late-game."
+  ============================================================================
+-->
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>RM_TwilightSunSphereResearch</defName>
+    <label>cultured sunlight</label>
+    <description>Culturing the ollumin in a sealed vessel until it makes its own light — a colony that finishes this never has to lease a well again.</description>
+    <baseCost>3000</baseCost>
+    <techLevel>Spacer</techLevel>
+    <techprintCount>2</techprintCount>
+    <techprintCommonality>0.6</techprintCommonality>
+    <prerequisites>
+      <li>Hydroponics</li>
+    </prerequisites>
+    <researchViewX>9.00</researchViewX>
+    <researchViewY>4.00</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RM_TwilightChainCraft</defName>
+    <label>tether-chain fabrication</label>
+    <description>Working out the Compact's own alloy-and-bladder chain well enough to build one instead of always buying it one or two at a time.</description>
+    <baseCost>2200</baseCost>
+    <techLevel>Spacer</techLevel>
+    <prerequisites>
+      <li>Machining</li>
+    </prerequisites>
+    <researchViewX>9.00</researchViewX>
+    <researchViewY>4.80</researchViewY>
+  </ResearchProjectDef>
+
+</Defs>

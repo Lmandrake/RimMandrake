@@ -69,6 +69,11 @@
     <plantDensity>0.2</plantDensity>
     <wildPlants>
       <RM_SaltBladeTwilight>0.03</RM_SaltBladeTwilight>
+      <!-- TWILIGHT_LIGHT_ECONOMY_1 §3.1: the two cultivated-light inputs,
+           findable wild before a player ever builds a cage grower for them
+           (RM_TwilightLightPlants.xml). -->
+      <RM_HoolimbrePlant>0.15</RM_HoolimbrePlant>
+      <RM_NoothelmPlant>0.05</RM_NoothelmPlant>
     </wildPlants>
 
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>

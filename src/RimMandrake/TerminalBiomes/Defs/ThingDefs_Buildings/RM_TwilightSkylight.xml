@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TwilightSkylight.xml               TerminalBiomes · TWILIGHT_LIGHT_ECONOMY_1
+  ============================================================================
+  §1.1's own thing: the visible gold column a skylight well IS. Spawned,
+  moved (by opening a new one and closing the old — RM_MapComponent_WellLedger
+  never relocates one instance) and tuned entirely from C#: the ledger drives
+  CompGlower.GlowRadius/GlowColor directly through stages (opening/standing/
+  waning), and RM_Comp_WarblingGlow (mandrake.rm.environmentalhazards, a hard
+  dependency of this mod already) gives it the "breathing pulse" every living
+  lamp in this economy shares (§3.2) — the vaulisk's tell is simply lacking
+  this comp, built elsewhere.
+
+  Not a building the player can select and lean on: Standable + fillPercent 0
+  so it never blocks a cell, destroyable false + useHitPoints false because
+  nothing a colonist does removes a hole in the ceiling, and the ledger alone
+  owns its lifecycle (spawn on well-open, Destroy on well-close).
+
+  PLACEHOLDER ART: Things/Mote/BeamGlow (vanilla; the exact texPath string of
+  a real, currently-shipping vanilla Fleck, RimSage-confirmed against
+  Defs/Biotech/Effects/Fleck_Visual.xml — packed in an AssetBundle, so
+  validate_patch.py's filesystem scan can only WARN, never confirm), tinted
+  gold and drawn oversized — a vertical light-beam texture is the closest
+  vanilla asset to "a column of light fading in from above." Real art is
+  owed alongside the rest of this biome's pass.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RM_Skylight</defName>
+    <label>skylight well</label>
+    <description>A shaft of gold light falling from a thinned place in the waveglass overhead — one of a handful the sea ever has open at once, and never for long. Kelp reaches for it, pallu gather under it, and the Compact prices whatever grows in its cells.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <drawerType>RealtimeOnly</drawerType>
+    <graphicData>
+      <texPath>Things/Mote/BeamGlow</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>MoteGlow</shaderType>
+      <drawSize>(6,6)</drawSize>
+      <color>(255,214,130,110)</color>
+    </graphicData>
+    <size>(1,1)</size>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <coversFloor>false</coversFloor>
+    <blockLight>false</blockLight>
+    <blockWind>false</blockWind>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <saveCompressible>false</saveCompressible>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>6</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>6.0</glowRadius>
+        <glowColor>(255,214,130,0)</glowColor>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_WarblingGlow">
+        <hueRangeDegrees>10</hueRangeDegrees>
+        <valuePulseFraction>0.08</valuePulseFraction>
+        <radiusPulseFraction>0.06</radiusPulseFraction>
+        <primaryPeriodTicks>340</primaryPeriodTicks>
+        <secondaryPeriodTicks>221</secondaryPeriodTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

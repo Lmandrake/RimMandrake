@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TwilightLightEconomyItems.xml      TerminalBiomes · TWILIGHT_LIGHT_ECONOMY_1
+  ============================================================================
+  The light economy's five moveable/tradeable items:
+
+  RM_TetherChain   — §2.2-1's hard cap. Buildable only after
+                      RM_TwilightChainCraft (late research); before that it
+                      exists only as trader stock — the Compact-side trading
+                      wiring (which trader stocks it, restock rate) rides
+                      TWILIGHT_DEEPWATER_HOUSES_1's bottom-house cast, which
+                      does not exist in this codebase yet, so this item ships
+                      tradeable but is not yet assigned to a specific
+                      TraderKindDef anywhere.
+  RM_LampBladder   — §3.1 stage 1: the hoolimbre harvest, a loose glowing
+                      item that rots in ~6 days. Also the stage-2 hoolimbre
+                      lamp's own build material (RM_TwilightConstellation.xml)
+                      — same organism, used fresh or fixed.
+  RM_NoothelmBulb  — the noothelm harvest, the stage-2 noothelm lamp's build
+                      material. Does not rot on its own (it is not lit or
+                      used until clipped to a chain, unlike the bladder).
+  RM_SkylightRight — §4.2's expiring lease paper (RM_Comp_SkylightRight).
+  RM_WellChart     — §4.4's aging forecast paper (RM_Comp_WellChart).
+
+  PLACEHOLDER ART: RM_LampBladder/RM_NoothelmBulb reuse Things/Mote/BeamGlow
+  (small, tinted) — both are "a piece of living light you can hold." The
+  chain and the two papers reuse this mod's own existing item icons
+  (RM_ElderUnknownWeapon / RM_SeaCatchItem, Textures/Things/Item/RM_GreySea/
+  — real, confirmed-present files, distinguished by <color> alone), since no
+  chain/link or paper art exists anywhere in this repo yet.
+  validate_patch.py, pointed at the real 629-mod install and Data folders,
+  confirms RM_ElderUnknownWeapon/RM_SeaCatchItem as real local files;
+  Things/Mote/BeamGlow is vanilla, packed in an AssetBundle and so
+  unverifiable by that scanner either way (WARN, not ERROR — same as every
+  other vanilla-texture reuse in this pass).
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ================================================================
+       THE TETHER CHAIN — the hard cap on the mobile constellation.
+       ================================================================ -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_TetherChain</defName>
+    <label>tether-chain</label>
+    <description>An alloy-and-bladder chain, the Compact's own showcase work: light enough to haul one-handed, strong enough to hold a cage or a lamp against the current. Nothing in the constellation moves without one clipped to it, and the Compact sells them one or two at a time.</description>
+    <graphicData>
+      <texPath>Things/Item/RM_GreySea/RM_ElderUnknownWeapon</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(70,74,80)</color>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>140</MarketValue>
+      <Mass>1.5</Mass>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeTags>
+      <li>RM_TwilightLightEconomy</li>
+    </tradeTags>
+    <recipeMaker>
+      <researchPrerequisite>RM_TwilightChainCraft</researchPrerequisite>
+      <workAmount>1600</workAmount>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <ingredients>
+        <li>
+          <filter>
+            <thingDefs>
+              <li>Steel</li>
+            </thingDefs>
+          </filter>
+          <count>20</count>
+        </li>
+        <li>
+          <filter>
+            <thingDefs>
+              <li>ComponentIndustrial</li>
+            </thingDefs>
+          </filter>
+          <count>1</count>
+        </li>
+      </ingredients>
+      <fixedIngredientFilter>
+        <thingDefs>
+          <li>Steel</li>
+          <li>ComponentIndustrial</li>
+        </thingDefs>
+      </fixedIngredientFilter>
+      <displayPriority>230</displayPriority>
+    </recipeMaker>
+  </ThingDef>
+
+  <!-- ================================================================
+       THE BLADDER — §3.1 stage 1, "the torch you chase the light with."
+       CompGlower on a loose item: it lights wherever it's SET DOWN, not
+       while carried in inventory or equipped — the engine has no
+       equipped-light hook without Harmony (none in this assembly), and
+       this is the closest honest approximation to "pick it, day one."
+       ================================================================ -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_LampBladder</defName>
+    <label>lamp bladder</label>
+    <description>A fist-sized bladder pulled whole off a hoolimbre stand, still glowing the same soft green it glowed on the plant. It doesn't need clipping to anything or fed anything — set it down and it lights the ground around it until it rots, a few days on, or until you fix it properly to a chain instead.</description>
+    <graphicData>
+      <texPath>Things/Mote/BeamGlow</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <shaderType>MoteGlow</shaderType>
+      <drawSize>0.6</drawSize>
+      <color>(170,225,180,220)</color>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>4</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+    <tickerType>Normal</tickerType>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>6</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>2.5</glowRadius>
+        <glowColor>(170,225,180,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ================================================================
+       THE NOOTHELM BULB — the noothelm lamp's build material.
+       ================================================================ -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_NoothelmBulb</defName>
+    <label>noothelm bulb</label>
+    <description>A sealed golden bulb harvested off a noothelm stand. Unlit and inert until it is clipped whole to a tether-chain, at which point it wakes and never needs anything again.</description>
+    <graphicData>
+      <texPath>Things/Mote/BeamGlow</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.6</drawSize>
+      <color>(255,220,150,255)</color>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>6</MarketValue>
+      <Mass>0.3</Mass>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- ================================================================
+       THE PAPERS — §4.2/§4.4. Both hold their real state in a comp; the
+       def itself is just a plain, non-stacking flavour item.
+       ================================================================ -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SkylightRight</defName>
+    <label>skylight right</label>
+    <description>Lamp-black on vaal-green vellum: the Compact's own written claim to sow, hunt, gather or anchor inside one named well's cells. It is only ever worth as much as that well has left, and it dies with the well, not on a calendar.</description>
+    <graphicData>
+      <texPath>Things/Item/RM_GreySea/RM_SeaCatchItem</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(40,40,44)</color>
+      <colorTwo>(60,110,80)</colorTwo>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <MarketValue>0</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_SkylightRight" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_WellChart</defName>
+    <label>well chart</label>
+    <description>The well-keeper's own forecast, drawn fresh at the moment of sale: which well closes next, and where the next is likely to open. Accurate for about a week — after that it is a picture of a sea that no longer exists.</description>
+    <graphicData>
+      <texPath>Things/Item/RM_GreySea/RM_SeaCatchItem</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(40,40,44)</color>
+      <colorTwo>(200,180,90)</colorTwo>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <MarketValue>0</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_WellChart" />
+    </comps>
+  </ThingDef>
+
+</Defs>
