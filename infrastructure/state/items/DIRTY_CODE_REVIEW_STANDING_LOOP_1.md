@@ -5871,3 +5871,54 @@ Next wave suggestion (not re-verified): `PropaneLakeMechanics`(7)+`PoisonForest`
 concurrent waves 27 and 28. Stay off `TerminalBiomes`/`FeverWood`/`LanternDeeps` and
 `Greentide`/`Miasma`/`BlueDesert`/`UtinniPatches/`/`Droidworks/`.
 concurrent-agent activity in `git status` as of this wave.
+
+## Wave 29 (2026-09-26)
+
+`PoisonForest` was skipped this wave too — its content lives entirely under
+`RimUtinni/UtinniPatches/` (`WildAnimals_PoisonForest.xml`,
+`RUT_PoisonForestPrizedMeats.xml`, `RUT_PoisonForestMeatThoughts.xml`,
+`PoisonForest_ToxicPrizedMeat.xml`), which is one of tonight's excluded
+directories wholesale (other agents active there, and it collides with the
+in-flight `BIOME_DEFNAME_MIGRATION_WAVE_1` rename). `Stillsand` is the same —
+its only dirty file is `UtinniPatches/Patches/WildAnimals_Stillsand.xml`.
+
+Reviewed instead, all outside `UtinniPatches/`: **PropaneLakeMechanics** (7:
+About.xml + 2 Def files + 2 ThingDef-building files + 1 Languages/Keyed file +
+1 Patch), **GreentideRaidAnt** (7: About.xml + FactionDef + Building + Item +
+2 Race defs + ThinkTree), **ShokkweaveEconomy** (2: TraderKindDef + Patch) and
+**WildsteamEggBounty** (2: About.xml + QuestScriptDef) — 18 files total, a
+fresh cluster of similar size to the suggested one, confirmed dirty and
+collision-free via `git status --short` before starting.
+
+**0 real bugs found.** Every `Class=`/`workerClass=`/`compClass=` attribute
+checked against real C# source: `CompProperties_GasVent/PipeNetwork/
+PipeRupture/PipeValve/PipePump/VWakeAgitation` and
+`IncidentWorker_SaturationHeistRaid` (PropaneLakeMechanics) all exist in
+`RimMandrake.Utinni.PropaneLakeMechanics` with matching `compClass` wiring and
+are already CLEAN as C# (found via `check`, not re-reviewed);
+`RM_DirectedAssaultExtension`/`RM_JobGiver_DirectedAssault` (GreentideRaidAnt's
+ThinkTree/modExtension) exist in `RimMandrake.CreatureBehaviors` and are listed
+in that mod's `Compile Include`; `RM_QuestNode_GetWildsteamSettlement`
+(WildsteamEggBounty) exists in `RimMandrake.Utinni.WildsteamEggBounty`, is
+csproj-included, and its slate writes (`settlement`/`faction`) match what the
+quest's `faction.BecameHostileToPlayer` wiring and `$settlement` references
+downstream expect — verified against the sibling
+`RUT_FungalSoilTradeRequest.xml` it was explicitly modeled on. Cross-def
+references also resolved for real: `RUT_Jawa_HuttCartel`/`RUT_Jawa_WildsteamClan`
+FactionDefs, `RM_OllathrixEgg` ThingDef (now landed, with the exact
+`tradeability`/`thingCategories`/`tradeTags` shape `ShokkweaveEggBlackMarket.xml`'s
+patch expects — its previously-documented "matches nothing yet" no-op no longer
+applies), and `ToxicBite` as an established vanilla DamageDef already used
+elsewhere in the repo.
+
+All 18 files marked CLEAN, one commit (`7a559e0b2`, status file only — no source
+changes needed), pushed.
+
+18 files reviewed this wave, 18 newly CLEAN, 0 bugs found.
+
+Next wave suggestion (not re-verified): `PoisonForest` and `Stillsand` remain
+blocked on `UtinniPatches/` being off-limits tonight — re-check that exclusion
+before picking them up. Otherwise pick a similarly-sized fresh cluster outside
+`UtinniPatches/`, `TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
+`Greentide`/`Miasma`/`BlueDesert`/`Droidworks/`; re-verify collision status with
+`git status --short` first, since concurrent-agent activity shifts by the hour.
