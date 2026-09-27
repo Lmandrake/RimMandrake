@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T16:54:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T17:12:46Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1835,3 +1835,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md
+
+## RUT_RAREGREYCATCHES_DEFNAME_COLLISION_1 Same defName RUT_RareGreyCatches (ThingSetMakerDef) exists in two separate mods
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RUT_RAREGREYCATCHES_DEFNAME_COLLISION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RUT_RAREGREYCATCHES_DEFNAME_COLLISION_1.md
