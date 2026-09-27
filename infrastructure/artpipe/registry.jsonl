@@ -7794,3 +7794,7 @@
 {"by": "artpiped", "event": "validated", "job_id": "propanelake_tarnn", "target": "propanelake_tarnn", "ts": 1790468456.218885, "verdict": "pass"}
 {"by": "artpiped", "elapsed_s": 132.1276369469997, "event": "generated", "job_id": "propanelake_oovu", "target": "propanelake_oovu", "ts": 1790468489.7056906}
 {"by": "artpiped", "event": "validated", "job_id": "propanelake_oovu", "target": "propanelake_oovu", "ts": 1790468489.7295308, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "ELDER_UNKNOWN_WEAPON_CONFIG_1", "target": "greysea_elderunknownweapon", "ts": 1790469096.7885423}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "greysea_elderunknownweapon", "notes": "", "target": "greysea_elderunknownweapon", "ts": 1790469096.8080542}
+{"by": "artpiped", "elapsed_s": 92.34007379200193, "event": "generated", "job_id": "greysea_elderunknownweapon", "target": "greysea_elderunknownweapon", "ts": 1790469189.9294677}
+{"by": "artpiped", "event": "validated", "job_id": "greysea_elderunknownweapon", "target": "greysea_elderunknownweapon", "ts": 1790469189.95658, "verdict": "pass"}
