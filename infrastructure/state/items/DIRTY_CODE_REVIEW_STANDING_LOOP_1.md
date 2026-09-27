@@ -5309,3 +5309,106 @@ wave. ⛔ Keep avoiding the same exclusion list: biome-specific mod folders,
 `DivingInteraction`, `FeverWood/Source`, `TerminalBiomes`, anything with
 `BrineElder`/`GreySea` in its path, and `biome_paint_list.md` until told the
 concurrent biome-split build is done.
+
+## Wave 20 — 2026-09-26 (as FOUNDRY, FlowWorks LiquidTypes/TerrainDefs cluster)
+
+Re-ran `code_review_status.py list --show-untracked` and `git status
+--porcelain -- src/RimMandrake/FlowWorks` fresh rather than trusting wave
+19's list blindly — tree was clean, all 25 files wave 19 named for this
+wave confirmed still DIRTY, none touched by another agent since. Picked up
+the whole "next wave" cluster wave 19 named:
+
+- **`Defs/LiquidTypes/TerrainDefs` (19):** `RM_AcidWater.xml`,
+  `RM_Ammonia.xml`, `RM_Coolant.xml`, `RM_FuelSap.xml`, `RM_Ichor.xml`,
+  `RM_Ooze.xml`, `RM_Propane.xml`, `RM_ReactionLiquor.xml`,
+  `RM_SlimeGreen/Red/White/Yellow.xml`, `RM_Tar.xml`,
+  `RM_WaterBoiling/Brackish/Brine/Frigid/Mineral/Poisoned.xml`.
+- **Other Defs (3):** `FlowWorks_Fluids.xml`, `RM_LiquidBodyRegistry.xml`,
+  `RM_LiquidBottles.xml`.
+- **Source/Tools (3):** `Flood_FlowWorks.cs`, `FluidDef.cs`,
+  `Source/ManyWaters/RiverSteamHook.cs`, plus **Tools/**
+  `generate_liquid_suite.py` (4 total, one miscounted above — 25 files in
+  all).
+
+Diff-scoped each against its recorded clean-mark sha (7 distinct shas,
+batched into 7 `git diff` calls instead of 25). Findings:
+
+- The 19 TerrainDef XML files' diffs were all one mechanical shape:
+  `FLOWWORKS_DONOR_AFFORDANCE_GAP_1` adding `MayRequire="biomesteam.
+  biomescore"` / `MayRequire="toastyman.moreritualseats"` to the two
+  donor-owned affordance `<li>`s so the mod stays standalone without those
+  donors. Traced this to its actual source of truth,
+  `generate_liquid_suite.py`'s new `DONOR_AFFORDANCE_MAYREQUIRE` table and
+  `build_terrain_xml`'s gating — the generator diff matches the XML diffs
+  exactly, so this isn't 19 hand-edits that could have drifted from each
+  other.
+- `RM_LiquidBodyRegistry.xml`: added the RM-tier twin biome entries
+  (`RM_TheScald`, `RM_TwilightSea`, `RM_GreySea`, `RM_PropaneLake`)
+  alongside the existing `RUT_` ones per `TERMINALBIOMES_RM_MOD_BUILD_1`
+  step 4 — FlowWorks' own registry referencing those biome defNames is not
+  the same as editing the sea-biome mods themselves, so this stayed inside
+  the wave's scope despite the exclusion list.
+- `FlowWorks_Fluids.xml` + `FluidDef.cs` + `Flood_FlowWorks.cs`:
+  `SUMP_TAR_HYDROLOGY_1` ruling 3 ("flood fronts cool to glass") —
+  `coolsToGlassEdge` is a new nullable `TerrainDef` field with a
+  `ConfigErrors` check against `temporary` terrain, and
+  `Flood_FlowWorks.CoolFrontToGlass()`/`IsFrontCell()` fire only from the
+  two `Tick()` `Destroy()` branches that are genuinely self-limiting
+  (volume exhausted, frontier empty) — the stuck/expired branch is
+  deliberately left uncooled, and the comments say why. Read the full
+  method around both call sites to confirm `CoolFrontToGlass()` always
+  runs before `Destroy()` clears `placedCells`/`placedLookup` (it does —
+  those are only cleared in `SpawnSetup` on respawn, never in `Destroy`
+  itself). Verified `FleckCreationData.exactScale`/`instanceColor`/
+  `rotationRate` are real fields via `mcp__rimsage__read_csharp_symbol`
+  before trusting the doc comments' engine claims.
+- `RiverSteamHook.cs`: the bigger diff (154 lines) reworks a single
+  per-map "Steam" puff into per-vent "SmokeGrowing" ribbon flecks
+  (`RIVER_STEAM_ANIMATION_1`, owner's live-look revision 2026-09-25).
+  Verified `SmokeGrowing` FleckDef exists (`Defs/Core/Effects/
+  Fleck_Visual.xml`) via `mcp__rimsage__search_source`, and traced the
+  reschedule logic per vent index to confirm a fogged vent still
+  reschedules (matches the old single-vent behaviour) and
+  `nextPuffTick`/`vents` arrays are sized and staggered consistently — no
+  off-by-one against the vent-stride loop.
+- `RM_LiquidBottles.xml` + `generate_liquid_suite.py`'s
+  `build_bottle_thingdefs`: prose-only correction (tank filling now ships
+  as `RM_LiquidTank`/`Building_LiquidTank`, so the "no tank exists" line
+  was stale and removed — the still-NOT-built revertsTo/rotsTo note is
+  unchanged).
+- All 22 touched XML files parse clean (`xml.etree.ElementTree`, batched
+  one Python process rather than per-file).
+
+**No bug found in any of the 25.** All marked CLEAN at `7cac17f5e`. Status
+commit `89cc2b51b`, pushed (plain fast-forward, no `shared_sync.py`
+needed).
+
+25 files reviewed this wave (all diff-scoped), 25 newly CLEAN, 0 bugs found.
+
+Re-measured after: `TALLY CLEAN 3242 DIRTY 138 ORPHANED 211 NEVER ENTERED
+669` (up from wave 19's 3216/164(ish)/211/668 — this wave's 25-file net
+CLEAN gain, plus a handful of concurrent agents' own marks/untracked
+churn in the DIRTY/ORPHANED/NEVER-ENTERED counts that this wave didn't
+touch).
+
+Next wave: FlowWorks' own `Defs/LiquidTypes` cluster is now fully clear.
+Fresh small clusters outside the exclusion list, from this wave's
+`list --show-untracked`: **`FloodedCanyon`** (5: `About/About.xml`,
+`Defs/BiomeDefs/RM_FloodedCanyon_Biome.xml`,
+`Source/RM_FloodedCanyonMod.cs`,
+`Source/RM_MapComponent_CanyonFlood.cs` — a fourth file rolled into the
+same clean-mark sha), **`EnvironmentalHazards`** (3: `About/About.xml`,
+`Languages/English/Keyed/RM_EnvironmentalHazards_Keys.xml`,
+`Source/RM_EnvironmentalHazards.csproj` — note this mod HAS a `.srchash`
+sidecar, so a `.cs` fix here needs a DLL rebuild + sidecar commit
+together), or **`Greentide`** (6: `About/About.xml`,
+`Defs/BiomeDefs/RM_Greentide_Biome.xml`,
+`Defs/HediffDefs/RM_Greentide_Hediffs.xml`, `Source/RM_Greentide.csproj`,
+`Source/RM_GreentideMod.cs`, `Source/RM_WeatherOverlay_GreentideRoil.cs`).
+Re-run `list --show-untracked` fresh first — several other agents are
+committing concurrently. ⛔ Keep avoiding: biome-specific sea-biome mod
+folders (`TerminalBiomes`, `DivingInteraction`, anything with
+`BrineElder`/`GreySea`/`TwilightSea`/`Scald`/`PropaneLake`/
+`ElderUnknownWeapon` in its path), `FeverWood/Source`, and anything with
+`PoisonForest`/`Cauldron`/`Suush` in the path, until told those concurrent
+builds are done.
