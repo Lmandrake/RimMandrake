@@ -22,8 +22,8 @@
   what a bench recipe on top of "a hard black nodule of concentrated
   bitumen" (RM_KorvethPitch's own description) already reads as.
 
-  PatchOperationConditional (silent no-op if RM_TheSump is ever absent,
-  matching WildAnimals_Sump.xml's own idiom) wrapping a
+  PatchOperationConditional gated on RM_KorvethPitch existing (a real no-op
+  when RM_TheSump is absent) wrapping a
   PatchOperationSequence — one Add for recipeMaker+costList onto the
   ThingDef itself, a second Add for WorkToMake onto its existing
   <statBases> (RUT_Bitumen.xml's own file is left untouched; this is an
@@ -43,8 +43,13 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.thesump">
-    <xpath>Defs/ThingDef[defName="RUT_Bitumen"]</xpath>
+  <!-- Gated on the donor def itself, NOT on MayRequire: vanilla ignores
+       MayRequire on a top-level <Operation> (ModContentPack.LoadPatches never
+       reads it), so a MayRequire gate applied this patch with TheSump absent,
+       left RM_KorvethPitch a null costList ref, and NRE'd RecipeDefGenerator —
+       which reset ModsConfig.xml to Core-only (BLUEDESERT_ORPHAN_LOAD_CRASH_1). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs[ThingDef/defName="RM_KorvethPitch"]/ThingDef[defName="RUT_Bitumen"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationAdd">
