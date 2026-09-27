@@ -1044,10 +1044,10 @@
     "sha": "d0f90a884"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompParentalEnrage.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-23",
-    "hash": "b596d229f7efdc21ffd5957c383243f9714989d5a03c9a1b410909908228fe21",
-    "sha": "81f3fa561"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "afb5979fdcf73e94b8c0229630097e4c9aee72468a42dfdd104cbb2bc7f77cc5",
+    "sha": "a015ca48b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompPlantAlarm.cs": {
     "cleanCount": 1,
@@ -1140,10 +1140,10 @@
     "sha": "fc438d857"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProperties_VerminBreeder.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "d5c4672f24db1dd7ec730a74cbccd2a2938825ea4cf966ac5ac01236e3210f2a",
-    "sha": "31e9db1cd"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "c082a801f4c995f49c832b28875f11b8980f5873b8f0547e46827674bd0770cb",
+    "sha": "a015ca48b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompProximityPsychicStun.cs": {
     "cleanCount": 1,
@@ -1152,10 +1152,10 @@
     "sha": "d2c598667"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompReactionSource.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-25",
-    "hash": "9525bd1e4cf74daf8b0dcc65b57c93c261f02da40600800bb951a5bc92f5dc1f",
-    "sha": "042d41c8f"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "a672d2e51ae21445f53de46dd1cbf4b457097c4a63cc5ba81003399d67041a85",
+    "sha": "a015ca48b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompSenseWebNode.cs": {
     "cleanCount": 1,
@@ -1176,10 +1176,10 @@
     "sha": "fc438d857"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompVerminBreeder.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "8169cbfbc6a2aa9099e22e674d4da0334f1ab30e7416374baf411c27ec832bc4",
-    "sha": "20ce46f24"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "5bf4dd0f93b937e643e44d47ea4b820039c55b5bab277064e19d1bfad1234a12",
+    "sha": "a015ca48b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CompWoundLink.cs": {
     "cleanCount": 1,
@@ -1188,10 +1188,10 @@
     "sha": "e1c3162cb"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs": {
-    "cleanCount": 5,
-    "date": "2026-09-24",
-    "hash": "28cd4cc56189aca7ac4379054cc209bc43a0051b5a9c25e9bac2ff22cee6d606",
-    "sha": "e05f7e0f8"
+    "cleanCount": 6,
+    "date": "2026-09-26",
+    "hash": "7a1deda3b10cadd7ec187f214fa4c02c742a433d1cd7e43066281352036e6550",
+    "sha": "a015ca48b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_DamageWorker_StingAccumulate.cs": {
     "cleanCount": 1,
@@ -1338,10 +1338,10 @@
     "sha": "0600bd884"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_ChewAnchors.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "23cd3f7965bbf1a9f2bf3d285840ab8084d9179b5ed7ce696a3e569f263ba828",
-    "sha": "7f2ff5541"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "9269f2e71ea9d8aa9ec665746151cbf3ad6661eb50c0223d410f9e5966ca7e5d",
+    "sha": "a015ca48b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_DirectedAssault.cs": {
     "cleanCount": 1,
@@ -1392,10 +1392,10 @@
     "sha": "39ad7169b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SenseWeb.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "1eff87c2394cb70c864740c73c0497e4d6fc658e62a8bdc3eed13416c7c345a7",
-    "sha": "d8a0b9b7d"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "e2935cf918a837f023f6f4aa0fff70431528ba891af225c05ed06838b3d59902",
+    "sha": "a015ca48b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs": {
     "cleanCount": 1,
@@ -1416,10 +1416,10 @@
     "sha": "31e9db1cd"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_MentalState_ParentalEnrage.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-23",
-    "hash": "b4e262432ebd858a9b9120c24920041f0bad6992cc0080ec167dfce0236eae54",
-    "sha": "81f3fa561"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "16452a351837b60c2d27bcaca5f40e9e6e675e733ae06bb411be7f1327fcd2c7",
+    "sha": "a015ca48b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_MentalState_ScopedAggression.cs": {
     "cleanCount": 1,
@@ -1428,10 +1428,10 @@
     "sha": "042d41c8f"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_ParentalEnrageExtension.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-23",
-    "hash": "4e1ad24616a4e17e7f7a950389847ef799143b0aa4a1aadcb72d05a025467844",
-    "sha": "81f3fa561"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "f62a3ede51256f3e334ce37c31de82048a943e4b3c023bb8d3bd765fbfcddeb9",
+    "sha": "a015ca48b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_ProximitySoundscapeExtension.cs": {
     "cleanCount": 1,
@@ -1440,10 +1440,10 @@
     "sha": "39ad7169b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_ReactionEvent.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-25",
-    "hash": "815b5b73ec283ba6a0c0637e82775b71d1eafe0296a6deb7937cbb2ccc88c132",
-    "sha": "042d41c8f"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "7f504cd1ccc39a30253dcc036e32e597548d2d43de1f989635827aac5fc61602",
+    "sha": "a015ca48b"
   },
   "src/RimMandrake/CreatureBehaviors/Source/RM_ReactionPropagationRule.cs": {
     "cleanCount": 1,
