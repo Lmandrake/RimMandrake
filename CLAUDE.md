@@ -414,6 +414,23 @@ MEASURED about the live world — the live system is the only instrument for "ri
 
 - **A patch that matches nothing logs nothing.** `PatchOperationConditional` and
   `PatchOperationFindMod` both return true on no match.
+- 🔴 **`MayRequire` on a top-level `<Operation>` node is IGNORED by the decompiled
+  1.6 engine — it does nothing.** Two patches (`RUT_Bitumen_KorvethSource.xml`,
+  `RUT_ThrummelSeepwax_RosterSource.xml`, added `6714ad67c`) each carried
+  `<Operation MayRequire="mandrake.rm.thesump">` to guard a recipe that pays with a
+  TheSump-only item — TheSump is not in the canonical 630-mod list, so the intent
+  was "skip this patch when TheSump is absent." The guard is silently inert: both
+  applied anyway, the ingredient resolved null, and `RecipeDefGenerator.SetIngredients`
+  NREd → RimWorld's own corrupted-mods recovery **reset `ModsConfig.xml` to
+  Core-only**, live-hit twice in one night (2026-09-27) before this was found. Same
+  failure shape as `MODCHECK_DONOR_ENVIRONMENTS_1`'s Armoury/ModularWeapons2 case.
+  ⇒ **`MayRequire` only works on the elements it's documented for** (a `<li>` inside
+  a list, a `ModExtension`, a `ThingDef`'s own attribute) — never assume it gates a
+  whole `<Operation>` block; guard with `PatchOperationFindMod`/`Conditional` instead,
+  or (the fix actually applied) test that the referenced def actually exists before
+  applying. **74 more `<Operation MayRequire=…>` guards found sweep-wide and are
+  UNVERIFIED** — any one that pulls in a genuinely absent mod's item can trigger the
+  same reset. Sweep: `PATCH_MAYREQUIRE_GUARD_INERT_1`.
 - **Dumps and harvests decay** (owner, 2026-08-27): trust one only after its
   fingerprint matches the live mod set; the frozen `official` dump is the sole
   design target (`GAME_STATE_WORKFLOW.md`).
