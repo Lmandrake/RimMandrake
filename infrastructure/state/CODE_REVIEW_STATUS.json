@@ -7361,6 +7361,246 @@
     "hash": "9ad52748d7171dabfc8f4c7512883c5cdd2401d45743e14c1dbea6051c8f1806",
     "sha": "d1b9478bf"
   },
+  "src/RimMandrake/TheRot/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "52ca86c8f37e9edf888e3a62ef89494af7e1485a9da517179e45f9b8a785bf64",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/BiomeDefs/RM_TheRot_Biome.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "5fbf9b6e3f63422656ac6943fa634999d15815f4e5a08b637054b349f7ac43fe",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/DamageDefs/RM_RotSporeKit_DamageDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "c449293f256cc784da8003a6048f476a9aab4b33cfabbbecb945f559935830bc",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/Drugs/RM_RotSporeKit_Drugs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "52cd8b7de012d020886d125d6df7adf782fc9ff9d2f1f1a71966f3e11d36c584",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/GameConditionDefs/RM_RotSporeKit_SporeCloud.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "48209653e8917660d3e51467b62677a58dece352d3105fb6445fbf4fc3b0fb31",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/GameConditionDefs/RM_SheenExposureLock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "4a9da29f7ee4d45f523fcf0585a25341fb6299253378975bb865130e8466343e",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/GeneDefs/RM_RotSporeKit_Furnaceblood.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "457658c930ca189e807462178922d317536643916a6152702995c8aa6bb876cc",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/HediffDefs/RM_RotSporeKit_GuardianGroves_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "2e4e4a100ce27fb6c07cdac96bedbdb714fc141082cec50df175c92355702731",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/HediffDefs/RM_RotSporeKit_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "4f98f045050cf2c382f7406f9dc741cd28a321ed76951e8b168be2d273932c0e",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/HediffDefs/RM_RotSporeKit_LivePrepHediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "f40039e83a83f7e956ad6b52ca4a7ac51d9446f1b88d89f230c2084bf9511431",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/HediffDefs/RM_RotSporeKit_SheenHediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "791462ade098b03380919c66bfd7ba1be446fc1c0118cdb6b3aca7d132d282f5",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/Misc/RM_RotSporeKit_TreasureConscience.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "1d76655ff0981a5ab854492c44a3909b71cf1c8082a39817409f729b3cab371a",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/PlantBases/RM_RotSporeKit_PlantBases.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "5d47aeaf2185b0740a8f07072a7b5358b873443214e089406b289fff0222d440",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/RecipeDefs/RM_RotSporeKit_LivePrepRecipes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "44a22f1bb097a15e08a913ea2cc85a044ef1e37ca9cb6cd760c3b189e553b203",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/RecipeDefs/RM_RotSporeKit_Recipes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "932a7e8ab472cbe24a8a4b7a980b2db322d081288c96e601a823913e53c9f235",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ResearchDefs/RM_RotSporeKit_Research.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "5cd26f5c05481a096b11e12da141b2e95ec9460369da7d4f50d1c27af58fbbad",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/StatDefs/RM_SheenProtection.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "bd848ca90be188f787c3b9a318b3313e928b0c7b70e370629a1b16f2c19d8059",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/StuffCategoryDefs/RM_RotSporeKit_StuffCategories.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "395605cb8ea1d3330702c8161669d70849d4cf71795670f914993693f5477705",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/TerrainDefs/RM_RotSporeKit_Terrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "28acf2670ea6131033a6fbe40a712c13aeeed63f04cdb650396fd9f8234994a9",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/TerrainDefs/RM_TheRot_GroundTerrains.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "fa217f051552c8154ebea297e019f9c1d6bd36f2df7e21aedac59a8341f3f25c",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Apparel/RM_RotSporeKit_ChitinSpiderHelmet.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "a7dfe090b1c7124ec94e9945a48a6b27f040432e959fc8c0e17b68ab8cfdfa69",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Buildings/RM_RotSporeKit_BrewingVessel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "1142e538ab050567e330e3f4ce01214239b1175500c1528e2787329f4c96db1f",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Buildings/RM_RotSporeKit_Buildings.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "7db4d36216b3c68c55adf952af7fb2fddf1b5a7b0652071ca954708ab7d429f9",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Buildings/RM_RotSporeKit_GrownFurnace.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "937f74465c19f35d9db305296d6583f71e5f72e59f18ffca24c1d52f59f95de0",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Items/RM_RotSporeKit_FurnaceCap.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "f517ba0f52f1bda3af8eb169d50d1bffcb7a82e484ec97e7adbe2411c87df98f",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Items/RM_RotSporeKit_GuardianGroves_Ingredients.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "041b42d6a32fc5916dabb9bc5632ea649b5dbe11fc3aeaddb868dbc46048a82f",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Items/RM_RotSporeKit_LivePreparations.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "32ebf1295af742503c5c75fd851a4029774c69cdaea5b74db74a3efa31fec95f",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Items/RM_RotSporeKit_Resources.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "64c6eaf241c60aa0d00a2a0135786e0b72e538eec8ef694955192afc38d2a913",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_PaleTree.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "ccd1c3903d261483fcec0fef2e3cf3176754e779bf6b3e9146a4273d78e9e6dd",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_Flora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "24407a0ac77e73f412c4f9bbcf49b8a11d9d5dffd07a1d04982674c70b9222b4",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_FurnaceCap.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "b660c2a3a15978a5b43ba733ae18ddad11bcc0bb642a07b4ed749cffc030a363",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_GuardianGroves.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "73a3ce786e5741f6a5d9c43e0b41b3da5850702378df3c481441cd36ec0739a7",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThingDefs_Weapons/RM_RotSporeKit_ThrumbungusShroom.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "f3e29911320ea687da78fb440ae29da37480dcf9a381a25a88d264f74cce8f33",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/ThoughtDefs/RM_RotSporeKit_LivePrepThoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "da31ef93ec8d16d748af5a7b8ff154bab67d785a2134c4f2e56fe820e1e75bf9",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Defs/WeatherDefs/RM_RotSporeKit_SheenWeathers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "d19a8eb6dbf1082ae7c09299bedce55aacddf78970c05f27078b7784081aa7f1",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Patches/RotSpecies_NamesAndSizes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "6a517390a20dad373fb3b27f92d0c9ff37c06ed3875172a6f17cadbcf481a7b5",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Source/RM_BiomeWorker_TheRot.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "bbbbca35a26827deaa1860818c06e0bc03554f9caea8696f2b5c9bbea8e8d1dc",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Source/RM_TheRotMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "fbefdb7ad6284b0e345451c4a71bda8e2a651fd5d57da492690f0230707cd70e",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Tools/build_review_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "49fb63eb8a3c7492b828831a62307fe45b7047b2307ec9144aab273ee2865a35",
+    "sha": "0b905640a"
+  },
+  "src/RimMandrake/TheRot/Tools/selftest_live_prep.py": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "ba4362077eb3b26b285b45f0b272b41a98ab5856af231c3251d3d9739d919c01",
+    "sha": "0b905640a"
+  },
   "src/RimMandrake/TheSump/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-26",
