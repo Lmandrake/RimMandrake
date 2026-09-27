@@ -54,6 +54,18 @@ Behaviors:
     wrong_size    writes a valid-looking 32x32 PNG regardless of the job's
                   real canvas — proves the daemon's own size check fires
                   even with no reference to make validate_sprite.py catch it.
+    oversized_same_aspect
+                  writes a 2x-oversized PNG at exactly double the job's
+                  canvas in both dimensions (same aspect ratio) — the real
+                  shape of the image tool's native-1254x1254-vs-a-square-
+                  canvas failure (ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1);
+                  proves the daemon downscales and KEEPS this rather than
+                  discarding a real, paid-for render.
+    oversized_wrong_aspect
+                  writes an oversized PNG whose aspect ratio does NOT match
+                  the job's canvas — proves the daemon still refuses this
+                  one: a plain resize would distort the subject, so it is
+                  not "merely the wrong size" and the gate still fires.
     fail_then_ok  fails (tool_error-style) on its FIRST invocation for a
                   given job id, succeeds normally on the second — proves
                   the daemon's one-retry (row 1 spec: one retry max, never
@@ -310,6 +322,21 @@ def main(argv=None) -> int:
         w, h = 32, 32
         pnglib.write_rgba(str(out), w, h, bytes(4 * w * h))
         write_manifest("ok", "mock: wrong size on purpose", width=w, height=h,
+                        has_alpha=True, corners_transparent=True,
+                        background_used="transparent")
+        print(f"OK {out}")
+        return 0
+
+    if behavior in ("oversized_same_aspect", "oversized_wrong_aspect"):
+        # 64x64 is job_dict()'s default canvas; every test using this
+        # behavior relies on that default rather than reading the real job
+        # file (this mock is deliberately dumb — see the module docstring).
+        if behavior == "oversized_same_aspect":
+            w, h = 128, 128  # 2x, same 1:1 aspect as the 64x64 canvas
+        else:
+            w, h = 128, 96   # oversized but 4:3, not the canvas's 1:1
+        pnglib.write_rgba(str(out), w, h, bytes(4 * w * h))
+        write_manifest("ok", f"mock: oversized {w}x{h} on purpose", width=w, height=h,
                         has_alpha=True, corners_transparent=True,
                         background_used="transparent")
         print(f"OK {out}")

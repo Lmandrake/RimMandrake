@@ -1577,6 +1577,48 @@ def run_legibility_gate(candidate: Path, timeout: float = LEGIBILITY_TIMEOUT_S,
         f"art_legibility.py exited {proc.returncode} — not its documented 0/1/3"]
 
 
+# ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1: how far the source's aspect ratio may
+# differ from the job's requested aspect before a downscale would visibly
+# distort the subject rather than merely shrink it. MEASURED 2026-09-26
+# (Transient/artpipe_concurrency_measurement_2026-09-26.md): every observed
+# `size_mismatch` was the image tool returning its own native 1254x1254 for a
+# job that asked for a square canvas (256x256/512x512) — aspect 1.0 vs 1.0,
+# an exact match. This tolerance is deliberately tight: it exists only to
+# absorb float rounding, not to license squashing a rectangular canvas into a
+# square one or vice versa. A genuine aspect mismatch still fails — that is
+# the gate doing its job on a result that is not "merely the wrong size".
+ARTPIPE_ASPECT_TOLERANCE = 0.02
+
+
+def _downscale_oversized_png(out_png: Path, sw: int, sh: int, tw: int, th: int) -> None:
+    """Shrink an oversized-but-same-aspect render down to the job's exact
+    canvas, in place at `out_png` — the path every downstream consumer
+    (the validator, the legibility gate, `finalize_job`) already expects to
+    read the final art from.
+
+    The oversized original is real, paid-for art (the weekly image-gen quota
+    was already spent producing it) and is never simply overwritten and
+    lost: it is copied aside first, once, as `<id>_source_<W>x<H>.png` next
+    to it in the same `_artsrc/<id>/` scratch dir — "generated art is not
+    disposable" applies just as much to the source of a downscale as to any
+    other render.
+
+    BOX/area-average with premultiplied alpha (`pnglib.resize_rgba`), never
+    LANCZOS — the generating-rimworld-sprites skill's size-trap note measured
+    LANCZOS amplifying sub-visible alpha dust into ringing on exactly this
+    kind of cutout art; BOX is the one resampler that left a file no worse
+    than it found it.
+    """
+    sys.path.insert(0, str(common.REPO_ROOT / "skills" / "generating-images" / "scripts"))
+    import pnglib  # noqa: E402 — see generating-images/scripts/pnglib.py
+    _, _, rgba = pnglib.read_png(out_png)
+    resized = pnglib.resize_rgba(sw, sh, rgba, tw, th)
+    preserved = out_png.with_name(f"{out_png.stem}_source_{sw}x{sh}.png")
+    if not preserved.is_file():
+        shutil.copy2(out_png, preserved)
+    pnglib.write_rgba(out_png, tw, th, resized)
+
+
 def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
                               validator_script: Path) -> dict:
     """Common tail for BOTH channels once a real image file exists: read its
@@ -1586,7 +1628,17 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
     checked and reported BEFORE the validator runs at all, so a
     reference-less job (which the validator skips entirely) can no longer
     accept ANY returned image as "ok" just because there was nothing to
-    reject it."""
+    reject it.
+
+    ARTPIPE_DOWNSCALE_INSTEAD_OF_REJECT_1: an oversized-but-same-aspect
+    return is not treated as a failed generation — it is downscaled to the
+    requested canvas in place and processing continues, rather than
+    discarding a real render and the quota spent on it. The gate remains the
+    backstop for everything else: a return SMALLER than requested in either
+    dimension (never upscale-mangle), or one whose aspect ratio genuinely
+    differs (a plain resize would distort the subject; that needs a human
+    crop decision, not an automatic one) still fails exactly as before.
+    """
     try:
         info = codex_image.png_info(out_png)
     except (ValueError, OSError) as exc:
@@ -1597,12 +1649,35 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
     result["height"] = info["height"]
 
     canvas = job["canvas"]
-    if (info["width"], info["height"]) != (canvas["width"], canvas["height"]):
-        result.update(status="failed", worker_status="size_mismatch", validator="not_run",
-                       note=f"returned {info['width']}x{info['height']}, job asked for "
-                            f"{canvas['width']}x{canvas['height']} — the image tool is known "
-                            f"to ignore requested size; never a silent ok, reference or not")
-        return result
+    tw, th = canvas["width"], canvas["height"]
+    if (info["width"], info["height"]) != (tw, th):
+        sw, sh = info["width"], info["height"]
+        if sw < tw or sh < th:
+            result.update(status="failed", worker_status="size_mismatch", validator="not_run",
+                           note=f"returned {sw}x{sh}, job asked for {tw}x{th} — smaller than "
+                                f"requested in at least one dimension, so no safe downscale "
+                                f"exists (never upscale-mangle); the image tool is known to "
+                                f"ignore requested size")
+            return result
+        src_aspect = sw / sh
+        tgt_aspect = tw / th
+        if abs(src_aspect - tgt_aspect) / tgt_aspect > ARTPIPE_ASPECT_TOLERANCE:
+            result.update(status="failed", worker_status="size_mismatch", validator="not_run",
+                           note=f"returned {sw}x{sh}, job asked for {tw}x{th} — oversized but a "
+                                f"different aspect ratio ({src_aspect:.3f} vs {tgt_aspect:.3f}), "
+                                f"so a plain downscale would distort the subject; needs a human "
+                                f"crop decision, not an automatic fix")
+            return result
+        try:
+            _downscale_oversized_png(out_png, sw, sh, tw, th)
+        except Exception as exc:                                  # noqa: BLE001
+            result.update(status="failed", worker_status="size_mismatch", validator="not_run",
+                           note=f"returned {sw}x{sh}, job asked for {tw}x{th} — oversized, "
+                                f"same-aspect render, but the downscale itself failed: "
+                                f"{type(exc).__name__}: {exc}")
+            return result
+        result["width"], result["height"] = tw, th
+        result["downscaled_from"] = f"{sw}x{sh}"
 
     verdict, findings = run_validator(validator_script, reference, out_png)
     result["validator_findings"] = findings
