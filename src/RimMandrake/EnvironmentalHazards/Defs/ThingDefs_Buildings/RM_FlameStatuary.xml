@@ -75,6 +75,17 @@
     <passability>PassThroughOnly</passability>
     <pathCost>50</pathCost>
     <useHitPoints>true</useHitPoints>
+    <!-- BuildingBase never sets tickerType (confirmed against
+         Data/Core/Defs/ThingDefs_Buildings/Buildings_Base.xml and
+         Buildings_Art.xml — ArtBuildingBase/SculptureBase/SculptureGrand
+         none of them set it either), so without this the default
+         TickerType.Never means TickManager never calls Tick() and
+         RM_Comp_WarblingGlow.CompTick() — the whole "flames issue from the
+         statue, quality scales the fire show" mechanism — never runs.
+         RM_ConstellationLampBase (TerminalBiomes/RM_TwilightConstellation.xml)
+         carries the same RM_CompProperties_WarblingGlow comp and sets
+         Normal for exactly this reason; matched here. -->
+    <tickerType>Normal</tickerType>
     <rotatable>false</rotatable>
     <noRightClickDraftAttack>true</noRightClickDraftAttack>
     <fillPercent>0.5</fillPercent>
