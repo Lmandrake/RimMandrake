@@ -27,10 +27,16 @@
   RSW_TrophyCraft_ObserverBraveFang or its modExtension is ever renamed. A
   patch that matches nothing logs nothing either way, so this degrades
   silently rather than red on any future rename.
+
+  PATCH_MAYREQUIRE_GUARD_INERT_1: the MayRequire this Operation carried is
+  ignored by vanilla on a top-level <Operation> and was dropped rather than
+  fixed - no re-gating needed. The outer <xpath> below already targets
+  RSW_TrophyCraft_ObserverBraveFang, a def mandrake.rsw.trophycraft owns, so
+  with that mod absent the test matches nothing and this Add never runs.
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.trophycraft">
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThoughtDef[defName="RSW_TrophyCraft_ObserverBraveFang"]/modExtensions/li/factionDefNames</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/ThoughtDef[defName="RSW_TrophyCraft_ObserverBraveFang"]/modExtensions/li/factionDefNames</xpath>

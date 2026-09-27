@@ -70,8 +70,17 @@
        own genSteps list. Wire it back in from Utinni — the def itself is
        always inert without lee.theforce.lightsaber (every entry inside it
        carries its own MayRequire), so this add is unconditional on that mod,
-       only conditional on RM_LanternDeeps existing at all. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.lanterndeeps">
+       only conditional on RM_LanternDeeps existing at all.
+
+       PATCH_MAYREQUIRE_GUARD_INERT_1: the MayRequire this Operation used to
+       carry is ignored by vanilla on a top-level <Operation> and was dropped
+       rather than fixed — no re-gating needed. The outer <xpath> below IS
+       the real guard: it targets RM_LanternDeepGenerator itself, a def
+       mandrake.rm.lanterndeeps ("Lantern Deeps") owns, so with that mod
+       absent the test matches nothing, no <nomatch> is given, and the
+       PatchOperationAdd never runs — a genuine no-op, not a null cross-ref
+       injection into always-present content. -->
+  <Operation Class="PatchOperationConditional">
     <xpath>Defs/MapGeneratorDef[defName="RM_LanternDeepGenerator"]/genSteps</xpath>
     <match Class="PatchOperationAdd">
       <xpath>Defs/MapGeneratorDef[defName="RM_LanternDeepGenerator"]/genSteps</xpath>

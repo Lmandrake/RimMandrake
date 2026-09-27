@@ -60,7 +60,15 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.miasma,mandrake.rsw.swbestiary">
+  <!-- PATCH_MAYREQUIRE_GUARD_INERT_1: the comma MayRequire above is ignored
+       by vanilla on a top-level <Operation> and was dropped rather than
+       fixed. Real coverage: the outer <xpath> below targets RM_Miasma
+       itself, a def mandrake.rm.miasma owns, so with that mod absent the
+       test matches nothing and this Add never runs. mandrake.rsw.swbestiary
+       (owner of several of the species named below) is CONFIRMED active in
+       the canonical/live mod list (MEASURED against ModsConfig.xml,
+       2026-09-27) - a hard dependency for now, not re-verified per-species. -->
+  <Operation Class="PatchOperationConditional">
     <xpath>Defs/BiomeDef[defName="RM_Miasma"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Miasma"]/wildAnimals</xpath>

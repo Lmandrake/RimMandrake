@@ -68,36 +68,54 @@
      alongside it rather than replacing the list.
   ============================================================================
 -->
+<!-- PATCH_MAYREQUIRE_GUARD_INERT_1: MayRequire on a top-level <Operation> is
+     ignored by vanilla (ModContentPack.LoadPatches never reads it), so the
+     three per-Operation guards below were unenforced no-ops. The third
+     Operation adds RUT_Caravan_HuttCartel_EggMarket (a TraderKindDef that
+     stocks RM_OllathrixEgg) onto RUT_Jawa_HuttCartel — a def we always own —
+     so with mandrake.rm.webwork inactive it would have wired a real trader
+     kind onto a cross-reference to a def that does not exist, the same
+     failure shape as BLUEDESERT_ORPHAN_LOAD_CRASH_1. Re-gated on a single
+     real PatchOperationFindMod wrapping all three. -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.webwork">
-    <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/tradeability</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/tradeability</xpath>
-      <value>
-        <tradeability>All</tradeability>
-      </value>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: Webwork</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/tradeability</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/tradeability</xpath>
+            <value>
+              <tradeability>All</tradeability>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]</xpath>
+            <value>
+              <tradeability>All</tradeability>
+            </value>
+          </nomatch>
+        </li>
+
+        <!-- The leak fix: pull RM_OllathrixEgg out of the ResourcesRaw
+             category route (see the header note above) once it goes
+             tradeability All. -->
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/thingCategories/li[text()="ResourcesRaw"]</xpath>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/FactionDef[defName="RUT_Jawa_HuttCartel"]/caravanTraderKinds</xpath>
+          <value>
+            <li>RUT_Caravan_HuttCartel_EggMarket</li>
+          </value>
+        </li>
+
+      </operations>
     </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]</xpath>
-      <value>
-        <tradeability>All</tradeability>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <!-- The leak fix: pull RM_OllathrixEgg out of the ResourcesRaw category
-       route (see the header note above) once it goes tradeability All.
-       Campaign-only, guarded on the same mod. -->
-  <Operation Class="PatchOperationRemove" MayRequire="mandrake.rm.webwork">
-    <xpath>Defs/ThingDef[defName="RM_OllathrixEgg"]/thingCategories/li[text()="ResourcesRaw"]</xpath>
-  </Operation>
-
-  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rm.webwork">
-    <xpath>Defs/FactionDef[defName="RUT_Jawa_HuttCartel"]/caravanTraderKinds</xpath>
-    <value>
-      <li>RUT_Caravan_HuttCartel_EggMarket</li>
-    </value>
   </Operation>
 
 </Patch>
