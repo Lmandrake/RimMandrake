@@ -35,6 +35,7 @@ namespace RimMandrake.DivingInteraction
         private const int StaleValueFloor = 1;
         private const float UniqueTreasureChance = 0.35f; // on a novel trade only
         private const float DissolveSearchRadius = 12f;
+        private const int WideDeliverySearchRadius = 40; // fallback scan if nothing dry stands within DissolveSearchRadius
 
         // Candidate pool for "one of each, per world". RM_ tier only —
         // Q11a routes the three canon treasures (lightsaber, pre-Republic
@@ -218,6 +219,22 @@ namespace RimMandrake.DivingInteraction
                     continue;
                 }
                 return c;
+            }
+
+            // BUG FIXED 2026-09-26: the Elder itself is spawned inside the deep-pool
+            // basin (GenStep_GreySeaFloorDressing.PlaceElder), which is guaranteed
+            // RM_BrinePoolDeep — Water terrain (TerrainDef.IsWater => HasTag("Water")).
+            // A pool basin plus its margin (radius 8.6) can fill the whole
+            // DissolveSearchRadius (12) when jackets/formations pack the ring, so the
+            // loop above can come up empty even though the doc comment above promises
+            // "never returns a cell underwater". Falling straight back to
+            // elder.Position used to violate that promise on exactly the maps where it
+            // matters most, silently sinking the player's payout. Widen the search
+            // before giving up.
+            if (CellFinder.TryFindRandomCellNear(elder.Position, map, WideDeliverySearchRadius,
+                c => c.InBounds(map) && !c.GetTerrain(map).IsWater && c.Standable(map), out IntVec3 wide))
+            {
+                return wide;
             }
             return elder.Position;
         }
