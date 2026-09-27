@@ -1530,10 +1530,10 @@
     "sha": "39ad7169b"
   },
   "src/RimMandrake/DivingInteraction/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "532f33541734a8d983da5cc1159d93c3f23ca7333ff73f42920ed764c86077d1",
-    "sha": "d8a0b9b7d"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "98352ab68979bf138ad8c291edc092e7e6bd40901693eaac00fe9b02b0d92357",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/DivingInteraction/Defs/JobDefs/RM_DivingJobDefs.xml": {
     "cleanCount": 1,
@@ -1554,10 +1554,10 @@
     "sha": "d8a0b9b7d"
   },
   "src/RimMandrake/DivingInteraction/Languages/English/Keyed/RM_DivingInteraction_Keys.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-12",
-    "hash": "d2e18516e2c2d307d276a88118807c05f5ee2868be3ec7f74fb27876fb605143",
-    "sha": "d8a0b9b7d"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "7dd551fdea2fe0dfe7d9ffc5ad764185a6862ee5b5c804ecf31c25a81595f623",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/DivingInteraction/Patches/RM_ScaldDiveEligibleTerrain.xml": {
     "cleanCount": 1,
@@ -1602,10 +1602,10 @@
     "sha": "58720b3c2"
   },
   "src/RimMandrake/DivingInteraction/Source/RM_DivingSettings.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-25",
-    "hash": "c8edfd1de7f11c65867f248f84d6bfb3a666642b1087f73f609a549bcd37b273",
-    "sha": "87f3d683e"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "c312abd75714d6b4a0841a1c007c4aba5933558901d077089001e2c4d138b158",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/DivingInteraction/Source/RM_FloatMenuOptionProvider_Dive.cs": {
     "cleanCount": 1,
@@ -5196,22 +5196,22 @@
     "sha": "57d78d214"
   },
   "src/RimMandrake/Pyrelands/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-24",
-    "hash": "f13ea8095c9ce6595118cc02db12e38e179374f29c002deda4076301af84531f",
-    "sha": "f869774f1"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "15b68d66e933d39b25dfc94eb79cbab16a28994942c8d7df73c296c1d785c93b",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml": {
-    "cleanCount": 6,
-    "date": "2026-09-24",
-    "hash": "9220c5a9726bce880eac108eed56051af35d9af1993e68ab3e2cf8a4a6e848ca",
-    "sha": "4a023191b"
+    "cleanCount": 7,
+    "date": "2026-09-26",
+    "hash": "a0ff80caddfc989f631f1dd5a6fb11e17046165c83949c6068698a4368460845",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/Pyrelands/Defs/GenStepDefs/PyrelandsGenSteps.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "2b201050a5142e00e9d1563479f6f8109947e4e2a9e7bb324c4acf1047135f3d",
-    "sha": "cc0825979"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "1f2b302b8d93b0dd120ef7d2d95ae6906e92445c53f008aa2e309ddbc4aac265",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshLadder.xml": {
     "cleanCount": 2,
@@ -5250,10 +5250,10 @@
     "sha": "c0b15fdbc"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/Quickgrass.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-19",
-    "hash": "f931549229b5a9f542a6897d17df2d35578b8d04bc2402167f203fa6e3cc92cd",
-    "sha": "fc438d857"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "551b073e14940bd3d8a6971cd20b25fe30721f4e68a1b91cc347c91b79a97369",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/Pyrelands/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml": {
     "cleanCount": 2,
@@ -5292,40 +5292,40 @@
     "sha": "90940c68"
   },
   "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs": {
-    "cleanCount": 4,
-    "date": "2026-09-24",
-    "hash": "36c57a67ec5d4e09e8af8404afe95609cd5bd179593bb9d7e491c712bde06888",
-    "sha": "4a023191b"
+    "cleanCount": 5,
+    "date": "2026-09-26",
+    "hash": "79f20772ed60a78e353df97db7c57b256329aceb968f789a772b704aad2da33c",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/Pyrelands/Source/FireEcologyHook.csproj": {
-    "cleanCount": 4,
-    "date": "2026-09-19",
-    "hash": "8a3a26f8e13b1bc3b3760cb9718bc65e60d7ab58921c735c503adb7e49e4b261",
-    "sha": "fc438d857"
+    "cleanCount": 5,
+    "date": "2026-09-26",
+    "hash": "84df1d60d54201ca6a5e0fb382b9af0733ece5b0cce2937c2919d2692bd9faf1",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/Pyrelands/Source/PlantGrowthStages.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "6f423da0db5a1d7b3de766f48bdf0fa9b00d2981654fb1b140f49c09c3b93cc7",
-    "sha": "203bf0861"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "63b6de2bf4c7db947a3f0f50f8fb1d33c61f5d510c655ed5cc72dcfbd1bda0e5",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/Pyrelands/Source/RM_PyrelandsDensityEnforcer.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "f7903dc52b32b49ddeee8a4ff8061227f26dd82567d219f0f2dc18f6f2f00495",
-    "sha": "203bf0861"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "076e42dfc7c576776982ad33e7e10f35e3ac41b1edccdf936c1bfab46f5744a2",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-19",
-    "hash": "abaff192f5c777dd1b7c6f6212ec329d458ab51683028b681bde8abfdadf7f23",
-    "sha": "fc438d857"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "2b16182dcf5030a2673236acf6d505e590597b3607abfe033ad068306170521f",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/Pyrelands/Source/WildPlantAllowlist.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-24",
-    "hash": "89403050a884c1724ee6d1e4fa6a9e46ac3888e62e8d9a47b73dc4942ba2ece6",
-    "sha": "4a023191b"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "48d98129fac3699953194a4fbc905f4753a4da6f70fdd2c680d2a5419a640a96",
+    "sha": "b4fc03515"
   },
   "src/RimMandrake/Pyrelands/validation.py": {
     "cleanCount": 1,
@@ -17860,10 +17860,10 @@
     "sha": "c06d4b891"
   },
   "src/RimUtinni/PyrelandsMechanics/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-17",
-    "hash": "c984e96d582d26d0076ff00be208c97185e751fdfbe65b05023d9b9667b36983",
-    "sha": "40c4d4fed"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "34c2f42f16f4468a9ec3d156b79c80619e748c5e2bb1a07195fbda4e1d17d608",
+    "sha": "0d9c38de6"
   },
   "src/RimUtinni/PyrelandsMechanics/Defs/DutyDefs/RUT_PyrelandsDuties.xml": {
     "cleanCount": 1,
@@ -17902,10 +17902,10 @@
     "sha": "cc0825979"
   },
   "src/RimUtinni/PyrelandsMechanics/Languages/English/Keyed/PyrelandsMechanics.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "485d59a65ad7c4147be06bb98a6ae438408a561e4125f8cb8e4ef4563ac14820",
-    "sha": "d966fa898"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "583f90255b82683a212649256f81b9f14128328a1688dbcbbc583ec60bf638c6",
+    "sha": "0d9c38de6"
   },
   "src/RimUtinni/PyrelandsMechanics/Patches/RUT_PyrelandsIgniters_Comps.xml": {
     "cleanCount": 2,
@@ -17944,16 +17944,16 @@
     "sha": "d966fa898"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FireRaid.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "614de6205cdad708cb709a5a912aa09c86901a2c27fc942bf11f6d87215bbd4a",
-    "sha": "2679d79d8"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "df28f2ac7c2c5ffd04c08c0d1334e8fc6a21086a3ae5d29a5f2e50832f62cc51",
+    "sha": "0d9c38de6"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/IncidentWorker_FlameHarvest.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-11",
-    "hash": "3dfb67b4374cdf22daaf08ac4c9c1e1c51aa3ee207b42a7351cb3db07c581848",
-    "sha": "2679d79d8"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "817aaffe7e99614684f959e5695af0b2b2ba99904435a41fd6e889b965a1ff7b",
+    "sha": "0d9c38de6"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/JobDriver_RUT_FireHawkCarryEmber.cs": {
     "cleanCount": 1,
@@ -17974,16 +17974,16 @@
     "sha": "69d246198"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/JobGiver_RUT_HarvestScorchFruit.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "c6806221b12012c0b8f28c2fd72d4d91af775350928094c84e9d68688993f4c6",
-    "sha": "9b64f4fde"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "6fa6b10bb77e9be61939a9a3b53036b1891fd36159ae4901928b56e595be4a96",
+    "sha": "0d9c38de6"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/LordJob_RUT_FireRite.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "fb3c4d6e678f75109b5d1fe7babab6739210856d67216fe3d481b8f5206de290",
-    "sha": "16a03960e"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "fdf74f04730a3fe4340dbd5d4891eb57f472fb312389a4aec78455664225cebe",
+    "sha": "0d9c38de6"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/MapComponent_BurnLine.cs": {
     "cleanCount": 3,
@@ -18010,22 +18010,22 @@
     "sha": "a7b96f8d7"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsFireRite.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "df4c193b6aa2df6eba66ca019f1ef5b61048cb32e64862043b253dd3f238a75c",
-    "sha": "69d246198"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "c495d95b437dceb162d412371854395a315ac81378c836655ea3688177e51c32",
+    "sha": "0d9c38de6"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsMechanicsDefOf.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-17",
-    "hash": "b6bbbe96b16c26b1eddcd5cf3f9eea8c49fd807ecef6a033be2de4ef5846c64e",
-    "sha": "d966fa898"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "c9fef74f9f43aa9a3c362dd3fc33bdf23705f09493649b530c4f788dd208e0af",
+    "sha": "0d9c38de6"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsMechanicsMod.cs": {
-    "cleanCount": 3,
-    "date": "2026-09-20",
-    "hash": "b4c54aafd8762627061bc07b3b8e4bf75c1af9485eb6266deac2ac7c11108351",
-    "sha": "1135036ce"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "6fb2fe70e252caf53bdd9b29672abeed0b94bf46074ad297c98d461cbd9d582a",
+    "sha": "0d9c38de6"
   },
   "src/RimUtinni/PyrelandsMechanics/Source/PyrelandsTuning.cs": {
     "cleanCount": 3,
