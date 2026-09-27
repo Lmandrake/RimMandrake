@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 82.80077666600118,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 82.80077666600118,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "propanelake_iliss",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 27.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T17-17-55-01a0e039-bc71-70d1-a48e-9b31634891b3.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 27.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/26/rollout-2026-09-26T14-15-25-01a0df92-a7bd-7e31-a434-94421c12b7ec.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "propanelake_iliss",
+    "note": "Generated with built-in imagegen, then resized to exactly 256\u00d7256 while preserving transparent alpha. A PowerShell bitmap-constructor error required one retry.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\propanelake_iliss\\propanelake_iliss.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "yInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$src='\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w1\\\\generated_images\\\\01a0e039-bc71-70d1-a48e-9b31634891b3\\\\exec-f5051f43-ee4b-4a14-873a-78bea821dbe1.png'; \"'$dst='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\propanelake_iliss\\\\propanelake_iliss.png'; Add-Type -AssemblyName System.Drawing; \"'$img=[System.Drawing.Image]::FromFile($src); try { $bmp=[System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); try { $g=[System.Drawing.Graphics]::FromImage($bmp); try { $g.Clear([System.Drawing.Color]::Transparent); $g.CompositingMode=[System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $g.CompositingQuality=[System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $g.InterpolationMode=[System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $g.SmoothingMode=[System.Drawing.Drawing2D.SmoothingMode]::HighQuality; $g.PixelOffsetMode=[System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality; $g.DrawImage($img,0,0,256,256) } finally { $g.Dispose() }; $bmp.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png) } finally { $bmp.Dispose() } } finally { $img.Dispose() }; $check=[System.Drawing.Bitmap]::new($dst); try { $alphas=@($check.GetPixel(0,0).A,$check.GetPixel(255,0).A,$check.GetPixel(0,255).A,$check.GetPixel(255,255).A); [pscustomobject]@{Path=$dst;Width=$check.Width;Height=$check.Height;PixelFormat=$check.PixelFormat.ToString();CornerAlphas=($alphas -join '\"',');Bytes=(Get-Item -LiteralPath \"'$dst).Length} | ConvertTo-Json -Compress } finally { $check.Dispose() }' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\propanelake_iliss\n succeeded in 254ms:\n{\"Path\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\propanelake_iliss\\\\propanelake_iliss.png\",\"Width\":256,\"Height\":256,\"PixelFormat\":\"Format32bppArgb\",\"CornerAlphas\":\"0,0,0,0\",\"Bytes\":19996}\n\ncodex\n{\"id\":\"propanelake_iliss\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\propanelake_iliss\\\\propanelake_iliss.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated with built-in imagegen, then resized to exactly 256\u00d7256 while preserving transparent alpha. A PowerShell bitmap-constructor error required one retry.\"}\ntokens used\n26,446\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/propanelake_iliss/propanelake_iliss.png\n    256x256  rgba  19,996 bytes  (80s)\n"
+}
