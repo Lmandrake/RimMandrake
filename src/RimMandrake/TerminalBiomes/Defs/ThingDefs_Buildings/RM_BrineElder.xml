@@ -22,38 +22,50 @@
   Placement is one per Grey Sea tile's deepest pool
   (GenStep_GreySeaFloorDressing, mandrake.rm.divinginteraction).
 
-  🔴 NOT BUILT, AND DELIBERATELY NOT FAKED — all four need C#, and all four
-  are still open on GREYSEA_BRINE_ELDERS_1:
-    1. THE DISCHARGE. "Blinding area-wide discharges powerful enough to stun
-       living creatures, disable droids, collapse shields, and cripple nearby
-       ships." RULED 2026-09-26 (Q7): BOTH a defence when its pool is
-       disturbed AND a rare unprompted event, with a VISIBLE CHARGE BUILD-UP
-       on the limbs as the tell. ("Cripple nearby ships" is filed as its own
-       engine check, Q8, and blocks none of the other three.)
-    2. THE NOVELTY TRADE. "Each Elder keeps a set of what it has seen; the
-       first specimen of a category it has not seen is worth a great deal;
-       every later one is worth almost nothing." Not a TraderKindDef —
-       nothing in vanilla trades on novelty. The seen-set must persist PER
-       ELDER, and RULED 2026-09-26 (Q10) there is ONE PER GREY SEA TILE, so
-       the Grey's tiles are a distributed market and "travel to another Grey
-       tile" is a real reason to move. Valuation ignores market value and
-       tech level entirely: "technology fascinates them but is conceptually
-       opaque."
-    3. DISSOLVING ITS POOL. "Dissolving entire blocks of crystallized
-       seafloor to uncover ancient mummified bodies, wreckage, or artifacts,
-       or violently ejecting long-entombed objects upward from the brine as
-       part of an exchange." In engine terms: remove RM_BrineJacket cells, or
-       spawn a thing on the pool shore. Trivial once the trade exists.
-    4. THE RESONANT STORAGE CRYSTAL. "Growing a resonant storage crystal
-       that passively increases the effective capacity or charge retention of
-       all nearby batteries." MEASURED: no such comp exists anywhere in src/.
-       ⛔ It is NOT shipped as a def here on purpose — a building with no comp
-       is a decoration that lies about what it does, which is worse than
-       nothing. It ships with its comp or not at all.
-       (⚠️ RUT_BrineBattery is an ANIMAL and unrelated beyond the pun.)
+  🔴 UPDATE 2026-09-26 (same day, second FOUNDRY pass): THREE of the four
+  owed mechanisms are now BUILT, in mandrake.rm.divinginteraction —
+  RM_Building_BrineElder, RM_GameComponent_BrineElders,
+  RM_ElderTradeUtility, Dialog_OfferToElder, RM_MapComponent_ElderDisturbance:
+    1. THE DISCHARGE — BUILT. RM_Building_BrineElder ticks a visible charge
+       (a spark tell past half charge) toward a rare unprompted EMP burst,
+       and discharges immediately (any charge level) when disturbed — direct
+       damage, or a pawn mining an RM_BrineJacket near its pool. One
+       GenExplosion.DoExplosion(DamageDefOf.EMP) IS "stun living creatures,
+       disable droids, collapse shields" — the exact vanilla EMP-grenade
+       mechanism, MEASURED against StunHandler and CompShield's own EMP
+       branch. "Cripple nearby ships" (Q8) is UNMEASURED and NOT attempted —
+       filed as its own engine check, blocking none of the other three.
+    2. THE NOVELTY TRADE — BUILT. RM_GameComponent_BrineElders persists a
+       seen-set keyed by WORLD TILE (never by Map — a pocket floor map is
+       culled once nothing keeps it home, so tile-keyed GameComponent state
+       is the only thing that survives), and a separate per-world
+       "one-of-each" flag for the RM_ singular treasures. Dialog_OfferToElder
+       (opened from this building's own gizmo) is the trade surface — not a
+       TraderKindDef. Valuation ignores market value and tech level for
+       ACCEPTANCE (only whether the tile has seen this specimen's kind
+       before); MarketValue only scales the payout size.
+    3. DISSOLVING ITS POOL — BUILT, folded into the trade's reward delivery
+       (RM_ElderTradeUtility.Offer): a successful trade destroys (never
+       mines) one nearby RM_BrineJacket and spawns the payout in its place,
+       or ejects the payout onto the pool's own margin if no jacket stands
+       nearby — "ejecting long-entombed objects upward from the brine as
+       part of an exchange", literally.
+    4. THE RESONANT STORAGE CRYSTAL — STILL WITHHELD ON PURPOSE. "Growing a
+       resonant storage crystal that passively increases the effective
+       capacity or charge retention of all nearby batteries." MEASURED: no
+       such comp exists anywhere in src/. ⛔ Not shipped as a def — a
+       building with no comp is a decoration that lies about what it does.
+       It ships with its comp or not at all. (⚠️ RUT_BrineBattery is an
+       ANIMAL and unrelated beyond the pun.)
 
-  ⇒ What a player meets today is an ancient thing that stands in its pool and
-  cannot be talked to. That is an honest partial, not a finished Elder.
+  Also still open, unchanged from the first pass: the "beautifully useless
+  artifact" (needs a plot home first, per the sheet's own instruction — see
+  RM_ElderTreasures.xml), the three canon treasures (owed to the Utinni patch
+  layer per Q11a, not authored here), and offering a LIVE PAWN as a specimen
+  (the sheet's "a colonist of a new xenotype is an offering" — a one-way,
+  permanent removal of a colonist is not something to wire behind a single
+  dialog click without its own explicit owner sign-off; Dialog_OfferToElder's
+  header names this as a deliberate scope cut, not an oversight).
 
   ============================================================================
   WHY A SECOND COLOSSAL ORGANISM DOES NOT BREAK "ONE ENDEMIC GIANT LINEAGE"
@@ -109,7 +121,7 @@
     <defName>RM_BrineElder</defName>
     <label>brine elder</label>
     <description>A branching organism of grown salt, rising out of the deepest pool on this floor as a trunk wider than a house before it divides and divides again into faceted limbs that climb away upward into the lighter water. It is alive. Its body is a lattice of ordered ions, and it holds a charge off the brine that sustains it the way a battery holds one — you can feel the water go tight around it before anything happens.\n\nIt cannot leave. The ultra-brine is both where it lives and what it eats, and it has been in this basin since before anything now walking the planet existed. It remembers the arrival of the ones who remade this world, and it remembers it as a change in the chemistry: what went into the water, what stopped coming out of it, what precipitated afterward. It does not know their name and would not find the question interesting.\n\nWhat it wants is novelty. Show it something it has never encountered — a creature, a corpse, a tissue, a mineral, a material it cannot place — and it will pay extraordinarily, once. Show it the same thing again and it has already taken that chemistry into itself, and you have brought it nothing.</description>
-    <thingClass>Building</thingClass>
+    <thingClass>RimMandrake.DivingInteraction.RM_Building_BrineElder</thingClass>
     <graphicData>
       <texPath>Things/Building/Natural/RM_SaltChimney</texPath>
       <graphicClass>Graphic_Single</graphicClass>

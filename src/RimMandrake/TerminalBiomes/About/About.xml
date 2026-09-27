@@ -19,6 +19,18 @@
       <packageId>mandrake.rm.luminouspigment</packageId>
       <displayName>RimMandrake: Luminous Pigment</displayName>
     </li>
+    <li>
+      <!-- GREYSEA_BRINE_ELDERS_1, 2026-09-26: RM_BrineElder's thingClass is
+           now RimMandrake.DivingInteraction.RM_Building_BrineElder (the
+           discharge/trade C#), promoting this from loadAfter-only to a hard
+           dependency — without the assembly loaded, that ThingDef's
+           thingClass cannot resolve. It was already the ONLY mod that ever
+           places an Elder at all (GenStep_GreySeaFloorDressing), so this
+           mod never in practice ran without it; this just makes the
+           dependency honest instead of implicit. -->
+      <packageId>mandrake.rm.divinginteraction</packageId>
+      <displayName>RimMandrake: Diving Interaction</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>mandrake.rm.environmentalhazards</li>

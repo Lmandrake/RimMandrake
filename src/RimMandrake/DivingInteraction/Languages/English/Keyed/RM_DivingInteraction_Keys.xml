@@ -9,4 +9,21 @@
   <RM_SeaDiveNotAtSea>this hatch is not currently over open water</RM_SeaDiveNotAtSea>
   <RM_SeaDiveHatchNeedsGravEngine>needs a working grav engine somewhere on this ship</RM_SeaDiveHatchNeedsGravEngine>
 
+  <!-- GREYSEA_BRINE_ELDERS_1 — the discharge and the trade. -->
+  <RM_ElderDischargeUnprompted>{0} suddenly releases a blinding discharge across the pool. Anything nearby is stunned, and any active shield has collapsed.</RM_ElderDischargeUnprompted>
+  <RM_ElderDischargeDisturbed>Disturbed, {0} discharges! Anything nearby is stunned, and any active shield has collapsed.</RM_ElderDischargeDisturbed>
+  <RM_ElderChargeInspect>Charge: {0}% (watch for crackling light along its limbs)</RM_ElderChargeInspect>
+  <RM_OfferToElderLabel>Offer to the Elder</RM_OfferToElderLabel>
+  <RM_OfferToElderDesc>Offer a specimen — a corpse, mineral, or unfamiliar material — to this Elder. It values novelty above all: the first of a kind it has ever seen here is worth a great deal; anything it has already catalogued is worth almost nothing.</RM_OfferToElderDesc>
+  <RM_OfferToElderTitle>Negotiate with the Brine Elder</RM_OfferToElderTitle>
+  <RM_OfferToElderInstructions>It reports what has changed in the water, never who brought it. Select something to offer — this Elder remembers everything it has ever been shown, but only at this pool.</RM_OfferToElderInstructions>
+  <RM_OfferToElderNoneEligible>Nothing nearby to offer.</RM_OfferToElderNoneEligible>
+  <RM_ElderNovel>never seen here</RM_ElderNovel>
+  <RM_ElderStale>already catalogued</RM_ElderStale>
+  <RM_ElderOfferConfirmNovel>Offer {0} to the Elder? It has never seen this kind of thing at this pool — it should pay dearly for it. This consumes the item entirely.</RM_ElderOfferConfirmNovel>
+  <RM_ElderOfferConfirmStale>Offer {0} to the Elder? It has already catalogued this kind of thing here and will pay almost nothing. This consumes the item entirely.</RM_ElderOfferConfirmStale>
+  <RM_ElderOfferResultTreasure>The pool dissolves around a jacketed shape. The Elder has given up {0} — one of a kind, and this was its only one.</RM_ElderOfferResultTreasure>
+  <RM_ElderOfferResultNovel>The pool dissolves around a buried shape: {0} silver rises to the shore. This is the only time this kind of thing will pay so well, here.</RM_ElderOfferResultNovel>
+  <RM_ElderOfferResultStale>The Elder has already catalogued this. A token {0} silver surfaces — the chemistry held nothing new for it.</RM_ElderOfferResultStale>
+
 </LanguageData>

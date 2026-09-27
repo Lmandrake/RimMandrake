@@ -41,12 +41,28 @@ namespace RimMandrake.DivingInteraction
         // mechanic off never strands a pawn inside one.
         public static bool greyPoolDefenceEnabled = true;
 
+        // GREYSEA_BRINE_ELDERS_1, 2026-09-26. The Brine Elder's blinding EMP
+        // discharge — both the rare unprompted event and the defensive
+        // reaction to disturbance (RM_Building_BrineElder). Its own toggle
+        // because, like the pool defence above, it can stun a colonist (and
+        // any mech) with no warning beyond the charge tell. Off: the Elder
+        // never discharges; the trade below is unaffected.
+        public static bool greyElderDischargeEnabled = true;
+
+        // The novelty trade (Dialog_OfferToElder / RM_ElderTradeUtility).
+        // Off: the Elder's gizmo disappears and nothing can be offered —
+        // the seen-set already recorded stays recorded (it costs nothing to
+        // leave it), so re-enabling later never un-values anything.
+        public static bool greyElderTradeEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
             Scribe_Values.Look(ref requireGravEngine, "requireGravEngine", true);
             Scribe_Values.Look(ref greyPoolDefenceEnabled, "greyPoolDefenceEnabled", true);
+            Scribe_Values.Look(ref greyElderDischargeEnabled, "greyElderDischargeEnabled", true);
+            Scribe_Values.Look(ref greyElderTradeEnabled, "greyElderTradeEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -74,6 +90,22 @@ namespace RimMandrake.DivingInteraction
                   + "before they smother. Off: the pools are merely slow water. Jackets already "
                   + "on a saved map keep working either way, so switching this off never leaves "
                   + "anyone sealed in.");
+
+                list.Gap();
+                list.CheckboxLabeled("Grey Sea: Brine Elders can discharge", ref greyElderDischargeEnabled,
+                    "Shipped default: ON. Each Grey Sea floor's Brine Elder builds a visible charge "
+                  + "and, once full, releases a blinding EMP burst on its own — or immediately if "
+                  + "its pool is disturbed (attacked, or a nearby jacket mined). Stuns anyone "
+                  + "nearby and breaks active shields. Off: the Elder never discharges; the trade "
+                  + "below is unaffected either way.");
+
+                list.Gap();
+                list.CheckboxLabeled("Grey Sea: Brine Elders trade on novelty", ref greyElderTradeEnabled,
+                    "Shipped default: ON. Offer a specimen and the Elder pays well for the first "
+                  + "of its kind it has ever seen at THIS pool, and almost nothing for a repeat — "
+                  + "every Grey Sea tile keeps its own memory, so travelling to another tile finds "
+                  + "a market that has never seen your find. Off: the Elder's trade gizmo "
+                  + "disappears; nothing already recorded is lost.");
             }
 
             list.End();

@@ -59,14 +59,15 @@ namespace RimMandrake.DivingInteraction
     // shared by all four sea floors, so nothing in the terrain can tell the
     // Grey apart from the Scald.
     //
-    // 🔴 WHAT IS STILL NOT BUILT, so nobody reads a carved pool as a finished
-    // mechanism: touching the pool does NOTHING yet. The crystallisation
-    // defence — RULED (Q1b) a crystallised pawn is ENCASED AS AN OBJECT that
-    // must be mined out, not given a hediff — is GREYSEA_BRINE_POOL_DEFENCE_1
-    // and needs its own C#. Same for the chimney plume's shorter-range
-    // version of it (Q2), and for everything the Elder does (its discharge,
-    // its persisted per-tile seen-set, its novelty trade). This step builds
-    // the PLACE. The mechanisms are owed.
+    // UPDATE 2026-09-26: the mechanisms this comment once called "owed" are
+    // now built. MapComponent_BrineCrystallisation covers the pool/plume
+    // defence (GREYSEA_BRINE_POOL_DEFENCE_1, Q1b/Q2); RM_Building_BrineElder
+    // + RM_MapComponent_ElderDisturbance cover the Elder's discharge;
+    // RM_GameComponent_BrineElders + RM_ElderTradeUtility +
+    // Dialog_OfferToElder cover its persisted per-tile seen-set and novelty
+    // trade (all GREYSEA_BRINE_ELDERS_1). This step still only builds the
+    // PLACE — it places the Elder and carves its pool, and nothing here
+    // needs to change for any of the above.
     // ════════════════════════════════════════════════════════════════════
     public class GenStep_GreySeaFloorDressing : GenStep
     {
