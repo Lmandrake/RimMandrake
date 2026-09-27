@@ -346,6 +346,15 @@ namespace RimMandrake.EnvironmentalHazards
     //      grid it writes into (EXPLOSIVE_PLANT_GROWTH_1) doesn't exist yet,
     //      so this toggle has nothing visible to gate today; it ships now so
     //      no later pass has to retrofit MOD_OPTIONS_RETROFIT_1 onto it.
+    //  57. hazardApparelAIAwarenessEnabled — RM_Patch_HazardApparelScoring
+    //      (HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1). Off: JobGiver_
+    //      OptimizeApparel scores a boil-suit/wet-bulb/Sheen garment exactly
+    //      as vanilla would (i.e. blind to those three stats again) — no
+    //      pawn will pick one up unprompted. On (default): the AI's own
+    //      apparel score gains each stat's value, the same weight class as
+    //      ArmorRating, so it starts choosing hazard gear on its own. Never
+    //      changes what the gear actually does once worn — only whether the
+    //      AI notices it is worth wearing.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -415,6 +424,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool sentinelGraveWardsEnabled = true;
         public static bool gradientSurgeEnabled = true;
         public static bool grazingSuppressionHookEnabled = true;
+        public static bool hazardApparelAIAwarenessEnabled = true;
 
         public override void ExposeData()
         {
@@ -479,6 +489,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref sentinelGraveWardsEnabled, "sentinelGraveWardsEnabled", true);
             Scribe_Values.Look(ref gradientSurgeEnabled, "gradientSurgeEnabled", true);
             Scribe_Values.Look(ref grazingSuppressionHookEnabled, "grazingSuppressionHookEnabled", true);
+            Scribe_Values.Look(ref hazardApparelAIAwarenessEnabled, "hazardApparelAIAwarenessEnabled", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -501,7 +512,8 @@ namespace RimMandrake.EnvironmentalHazards
             // Bumped 4800->4860 for setting #55 (gradientSurgeEnabled).
             // Bumped 4860->4920 for setting #56 (grazingSuppressionHookEnabled).
             // Bumped 4920->4990 for setting #51a (waterAgitationDensity slider).
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 4990f);
+            // Bumped 4990->5050 for setting #57 (hazardApparelAIAwarenessEnabled).
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 5050f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -683,6 +695,10 @@ namespace RimMandrake.EnvironmentalHazards
                 "A plant-eating pawn's bite stops being recorded as encroachment suppression. Has no "
               + "visible effect yet on any install — the hook is armed but the suppression system it "
               + "feeds hasn't shipped.");
+            list.CheckboxLabeled("Hazard apparel AI awareness", ref hazardApparelAIAwarenessEnabled,
+                "Colonists stop factoring scald-steam/wet-bulb/Sheen protection into their own apparel "
+              + "choice, so nobody picks up a boil-suit unprompted — you're back to a manual outfit "
+              + "policy for hazard gear. The gear's actual protection is unaffected either way.");
             list.GapLine();
 
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
