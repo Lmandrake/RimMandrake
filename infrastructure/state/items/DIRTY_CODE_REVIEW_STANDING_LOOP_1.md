@@ -5994,3 +5994,60 @@ off `UtinniPatches/`, `TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
 `Greentide`/`Miasma`/`BlueDesert`/`Droidworks/`; re-verify collision status
 with `git status --short` first regardless, since concurrent-agent activity
 shifts by the hour.
+
+## Wave 31 (2026-09-26)
+
+Cluster: `src/RimMandrake/LuminousPigment/` (the whole mod, `DEEPFIRE_PIGMENT_MOD_1`
+/ `DEEPFIRE_PAINT_STATUS_CUISINE_1`) — 33 files: About.xml, 15 Defs (GenStepDef,
+HediffDefs' 14 glow families, 2 RecipeDefs, ResearchProjectDef, 2 ThingDefs_Buildings,
+3 ThingDefs_Items, 2 ThingDefs_Plants, 2 ThoughtDefs), 2 Patches, and all 17 `.cs`
+source files. Confirmed git-clean and outside every current exclusion before
+starting (`EnvironmentalHazards`, wave 30's suggestion, turned out to be already
+fully CLEAN from an earlier sitting — not re-reviewed; `LuminousPigment` was
+picked instead as the larger fresh cluster). Reviewed as one unit rather than
+split, since it is a single coherent mod already fully wired end to end.
+
+Every `Class=`/`thingClass`/`hediffClass`/`compClass`/`workerClass`/`genStep
+Class` attribute checked against real `.cs` source: all `RimMandrake.
+LuminousPigment.*` types (`GenStep_ShoreMats`, `CompProperties_MatDiscovery`/
+`CompProperties_MatVitality`/`CompProperties_SkillSteeredOutcome`, `Building_
+GlowTank`, `HediffCompProperties_DeepfireGlow`, `SteeredFamilyExtension`,
+`IngestionOutcomeDoer_SteeredFamily`, four `ThoughtWorker_*` classes) resolve
+by exact name, and every cross-mod/vanilla reference used (`Neutroamine`,
+`Chemfuel`, `BenchBase`, `BuildingBase`, `PlantBaseNonEdible`, `ResourceBase`,
+`MealFineBase`, `CookMealFineBase`, `ElectricStove`/`FueledStove`'s `<recipes>`
+wiring, `WaterOceanShallow`'s `<tags>`) checked against the def dump / RimSage.
+The soft-dependency reflection bridges to Ninefold and the not-yet-shipped
+`MapComponent_DeepfireLights` (piece 1, painting, correctly deferred) both
+resolve-by-name-and-warn-on-shape-mismatch rather than hard-reference, so
+absence is a genuine no-op, not a silent defect.
+
+**1 real bug found and fixed**, in `Building_GlowTank.cs`: `RM_GlowTank.xml`
+declares `<tickerType>Rare</tickerType>`, but the class overrode `Tick()`, not
+`TickRare()`. The engine only calls a Thing's `Tick()` when its `tickerType`
+is `Normal` — confirmed against every other `Tick()`-overriding building in
+this codebase, all of which pair it with `tickerType>Normal` (`RSW_BactaTank`'s
+own comment: *"demands tickerType Normal for per-tick consumption"*; FlowWorks'
+`Pit_Cell`/`Pit_OpenPits` carry the same pairing with an explicit 🔴 comment).
+So the GlowTank's blackout-kills-crop mechanism (kill the seed culture and any
+crop after `tankPowerGraceHours` without power — a deliberate ruling, "a
+blackout costs a mat, not just a crop") was dead code that could never run.
+Fixed to `public override void TickRare()` (matching the base class's public
+access, caught immediately by the compiler) incrementing `unpoweredTicks` by
+`GenTicks.TickRareInterval`, mirroring the same-mod `CompMatVitality.cs`'s own
+idiom. Verified by a clean `dotnet build` of `RM_LuminousPigment.csproj`
+(`/mnt/c/Users/Mandrake/.dotnet/dotnet.exe build 'D:\...\RM_LuminousPigment.csproj'
+-c Release`), DLL + `.srchash` rebuilt and committed together. Commit
+`581c9c8f6` (fix), `eda3b7515` (status file).
+
+All 33 files marked CLEAN, both commits pushed (already on `origin/main` at
+push time — no rejection).
+
+33 files reviewed this wave, 33 newly CLEAN, 1 bug found and fixed.
+
+Next wave suggestion (not re-verified): `PoisonForest`/`Stillsand` remain
+blocked on `UtinniPatches/`. `EnvironmentalHazards` is now fully CLEAN (do not
+re-pick it). Re-run `code_review_status.py list --show-untracked` for a fresh
+dirty list and `git status --short` on any candidate before starting — stay
+off `UtinniPatches/`, `TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
+`Greentide`/`Miasma`/`BlueDesert`/`Droidworks/`.
