@@ -5658,3 +5658,83 @@ never-entered mod cluster, no obvious exclusion-list overlap — good
 candidate), `EnvironmentalHazards` (16). None of these counts are
 per-file-verified; re-check DIRTY/never-entered status and `git status`
 before claiming any of them, several concurrent agents are active.
+
+## Wave 25 — 2026-09-26 (FOUNDRY, BELT mode)
+
+Re-ran `list --show-untracked` fresh first, then `check` on wave 24's suggested
+`Webwork` cluster and `git status --porcelain` on every path — all confirmed
+DIRTY/never-entered, no concurrent uncommitted edits from other agents.
+Reviewed all 24 files (folder-name grep in wave 24 undercounted at ~21; the 3
+`RimUtinni/UtinniPatches` cross-mod files were missed by that estimate):
+
+`src/RimMandrake/Webwork/About/About.xml`,
+`Defs/BiomeDefs/RM_Webwork_Biome.xml`,
+`Defs/DamageDefs/RM_Webwork_DamageDefs.xml`,
+`Defs/HediffDefs/RM_Webwork_HediffDefs.xml`,
+`Defs/MapGeneration/RM_WebworkNestScatter.xml`,
+`Defs/SoundDefs/RM_WebworkSoundscape.xml`,
+`Defs/ThingDefs/RM_Webwork_SpitWeapon.xml`,
+`Defs/ThingDefs_Buildings/RM_Webwork_Nest.xml`,
+`Defs/ThingDefs_Items/RM_OllathrixEgg.xml`,
+`Defs/ThingDefs_Plants/RM_WebworkFlora.xml`,
+`Defs/ThingDefs_Races/RM_Ollathrix.xml`,
+`Defs/ThingDefs_Races/RM_WebworkFauna.xml`,
+`Patches/RM_WebworkNestScatter_MapGenPatch.xml`,
+`Source/RM_BiomeWorker_Webwork.cs`, `Source/RM_CompEggClutchRelay.cs`,
+`Source/RM_CompEmergentSpawnOnDestroy.cs`, `Source/RM_GenStep_WebworkNest.cs`,
+`Source/RM_WebworkMod.cs`, `art/Fauna/gen_ollathrix_placeholder.py`,
+`art/Fauna/gen_webwork_fauna_placeholder.py`,
+`art/Items/gen_webwork_nest_placeholder.py`; plus
+`src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_WebworkSlick.xml`,
+`Patches/WildAnimals_Webwork.xml`, `Patches/WildPlants_Webwork.xml`,
+`art/Structures/gen_webwork_structures_placeholder.py`.
+
+**1 real bug found and fixed**: `RM_Quarrok`'s `<butcherProducts>` in
+`RM_WebworkFauna.xml` named `RM_QuarrokChitin`, but no ThingDef of that name
+existed anywhere in the repo (confirmed by grep — it appeared nowhere else)
+— a dangling cross-reference that would fail to resolve at load, the same
+failure class CLAUDE.md's savegame section describes. Every sibling mod in
+this repo mints its own per-species `RM_<Name>Chitin` item
+(`RM_ThrummelChitin`/`RM_DredgelChitin`/`RM_SkellarnChitin`, TheSump's
+`RM_SumpFaunaItems.xml`) rather than sharing one, so this was a straight
+omission, not a naming mismatch. Fixed by adding `RM_QuarrokChitin`
+(`ParentName="ResourceBase"`, ResourcesRaw, vanilla `Leather` texture
+reused as placeholder) following that exact convention. Fix committed and
+pushed at `11b9659d5`.
+
+Everything else cross-checked clean: the `.csproj`'s `EnableDefaultCompileItems=false`
+lists all 5 new `.cs` files; every placeholder-art script's output path
+matches its def's `texPath` exactly, and all the PNGs it should have
+produced are present on disk; `RM_CompAdhesiveSlick`/`RM_ChewAnchorsConsumerExtension`/
+`RM_JobGiver_ChewAnchors` (cross-mod `CreatureBehaviors` references) all
+resolve to real classes; the settings fields `RM_GenStep_WebworkNest.cs` and
+`RM_CompEggClutchRelay.cs`/`RM_CompEmergentSpawnOnDestroy.cs` read off
+`RM_WebworkSettings` all exist and are Scribed; `RM_Gun_LoomSpit`/
+`RM_Bullet_LoomSpit`/`RM_Damage_LoomSpit` chain resolves; the Utinni
+`WildAnimals_Webwork.xml`'s emptied `<Patch></Patch>` is a deliberate,
+well-documented disposition (the 4 donor Star Wars rows were RULED CUT),
+not dead/broken content.
+
+All 24 marked CLEAN at `11b9659d5` (the fix commit). Status commit
+`f998cfecd`, pushed.
+
+24 files reviewed this wave, 24 newly CLEAN, 1 bug found and fixed.
+
+Re-measured after: `TALLY CLEAN 3366 DIRTY 55 ORPHANED 211 NEVER ENTERED 689`.
+
+Next wave: re-run `list --show-untracked` fresh first — concurrent agents
+still active. By-mod tallies of the current backlog (folder-name grep, not
+per-file-verified): `TerminalBiomes` (123, **stay off** — sea-biome
+exclusion), `UtinniPatches` (80, cross-cutting — small same-topic
+sub-clusters only), `FeverWood` (56, **stay off**), `TheRot` (40),
+`LanternDeeps` (40, **confirm before diving in** — sea-biome-adjacent name),
+`RustCathedral` (38), `LuminousPigment` (33), `TheSump` (29), `Miasma` (29),
+`Contagion` (28), `Pyrelands` (23), `Greentide` (22, **stay off** — other
+FOUNDRY agents mid-edit there per this wave's own brief), `EnvironmentalHazards`
+(16), `DivingInteraction` (14). Below that: `TheForge` (10) + `BlueDesert` (9)
+combine to a clean ~19-file, two-mod cluster with no exclusion overlap and no
+concurrent `git status` activity as of this wave — good next candidate. Also
+worth a look: `LongShade`(8)+`LeaningScrub`(8), or `PropaneLakeMechanics`(7)+
+`PoisonForest`(7)+`Stillsand`(5). None of these counts are per-file-verified;
+re-check DIRTY/never-entered status and `git status` before claiming any of
+them.
