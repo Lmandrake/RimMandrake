@@ -6701,6 +6701,234 @@
     "hash": "e82e5cc598dafa6de709ce55f22461864e1d09c13396d99d3fcec3a3d16d865e",
     "sha": "7553eaee0"
   },
+  "src/RimMandrake/RustCathedral/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "0221a1ef06b9a29871aff1dde9045bfc756dc848ba7a32c1754609c3c03f18b7",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/BiomeDefs/RM_RustCathedral_Biome.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "8dfc94fa2d2401e3112b4d27d5f1f89160bb86c869792932464eeff4a166c0b1",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/HediffDefs/RUT_CoolantLoad.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "153ff95aa1ba505e0c65efc1f9fa38cb26d508f989867394dc1fea7846c306f4",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/IncidentDefs/RUT_DeepDrillCathedralResponse.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "e6b7cf725d02df65859d4aa5d6450d44ce47a3af204acee48eb7bc3ff19416d4",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/MapGeneration/RUT_CathedralSacredWallScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "f10a7fa1f0312d8e4565e6dacc175f96ccded50d6a37b9f7b03c5972575d3490",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/MapGeneration/RUT_CathedralWallScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "22f0101d92084a9b65fae05fb31f7abf54bf270352b00914a00b81a1057be6ee",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/Misc/RUT_NegativeFishingOutcomes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "c1c5de686e84833a75c638fc00710e788ac17eeff62294935cb69dc8f6e197b4",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/RM_BiomeAttitudeDefs/RUT_RustCathedralAttitude.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "f353665b816a2297ea1884022b1ff0873eae7d7751f5999eab9a18425cca411e",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/SoundDefs/RUT_HumLayers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "1fe10a85935639fcf2bae0a8a87037fd826437b3410f5a75d2c40ebc2a46a19d",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/TerrainDefs/RM_RustCathedral_Terrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "b8d55d3ae99b3207cd3864a15a446ef7d00ab80d60364e2d320c465862afaadc",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThingDefs_Buildings/RUT_CathedralDeckPlate.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "e63b26e79b800ef0933f6c6d74cc12fcf0dbfe4c7639643adcb8f12198f580be",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThingDefs_Buildings/RUT_MineableDeadSmartsteel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "6c9f3c310b66e0ce871f6e5d99b4907fc4ada8b011bbf47dc2e9fe2330e4fcc3",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThingDefs_Buildings/RUT_SacredWall_Conduit.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "c430cc7f508ee31c9e1a1997924edc7637e6208a92be7eb13afb8b16ac422e11",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThingDefs_Items/RM_CathedralRoachShell.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "d614fe1e717dafa8b6c06ff0cd47085eed4eb3ba730d43d5d7a6468d9ee6f9f5",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThingDefs_Items/RUT_BoltShedCuriosity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "400f6297dda109225a7ba45105b2a57bd6c57eaf1c57f07bca20f2e13dbc204c",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThingDefs_Items/RUT_CoolantEel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "f0a914bfc6e4e838bd61db022d7beae65ec97df54ea12a7ddc7a43a841dd6791",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThingDefs_Items/RUT_DeadSmartsteel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "3083be4a82ceed3badc0e39d143e93d5ed20fa28aa824a24d5d12386e59cf337",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThingDefs_Items/RUT_LivePatternMetal.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "fbaed4897ce916ec568e203188e4de5b10782720480756640b6cb0c793940201",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThingDefs_Races/RM_CathedralRoach.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "e8a680796b0d51ed581aeb1b28420091107ab89a6eba3728c8a5c2c661ba6001",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThingDefs_Races/RUT_LivingBolt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "aa08f6474c99a074c4ef2369b8c1de2763c0c7f89e7190f1b49d305aa1944834",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThinkTreeDefs/RM_ThinkTree_CathedralRoach.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "cb7e612c079058c8b8c427be4f77a166bc1df0f91909df75ba7157d850b04299",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Defs/ThinkTreeDefs/RUT_ThinkTree_LivingBolt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "85f2e61f97aaf2de06254e994cafa864237552257fe6dde18046871d23914c96",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Patches/RUT_CathedralWallScatter_MapGenPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "036504dfaced53b71c227d6eed90f8d137615327eb461b6f3998596d536a2f8f",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Hum/HarmonyPatch_WatchedBolts.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "c50292965b0d7d3197bb285854fca42df4632cd58eef189499bf1d8a987ed49c",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Hum/RM_BiomeAttitudeDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "37c2d6d65cea02fd30405f613513f54174375f790cdcc559e66894418664e544",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Hum/RM_CathedralFishing.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "6c213512d9a4236441e515b7d5fc227cf9eab7c38e3992420244e9f290c213ac",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Hum/RM_JobGiver_ResonantDance.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "be84d181e11134605f06168fad03edc3315c63f5e3cebc257bcebc96f2ed32f9",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Hum/RM_MapComponent_BiomeAttitude.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "6deea05627cb8b1c3c04f1b319369eec5ed3a25060aeabb528330287de040937",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Hum/RM_ThinkNode_ConditionalAttitudeBand.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "e5204943d36db1e0e764d6c19143ad258ca35e708a42ea95bfd17fb2737d78fb",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Hum/RUT_IncidentWorker_CathedralResponse.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "4d2921e5d1beac80a69772e924e9e8da4476c1ed02148c6037046002654ab4e0",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Hum/RustCathedralHumSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "0c63e8e72fbb038da368b146b87b13995d3f1f3474487f116d5f6b63eb6eeac5",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/RustCathedral/RM_BiomeWorker_RustCathedral.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "5fa0bf68f9801a017099653c179b91807d440ac4310ef341f73ba8d18172d752",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/RustCathedral/RM_RustCathedralMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "01313c4f1ea06a817ab31067afae6cde86fb7ab1f8bcd2bd576589d8ce849566",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/RustCathedral/RM_ThinkNode_ConditionalRoachCleaningEnabled.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "1f35b6262b6e28ddf728913321749004474dd34f64f35ba7ecad02912036bd60",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Walls/GenStep_ScatterCathedralWallTiers.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "9b2e57d0a5bd25bd3cd7329a68e59183e5ca569d804948352436326aa7f882c8",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Walls/GenStep_ScatterSacredWalls.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "fc048e635744a51c57511a12b64b9af5c0c1424ddb11f31957d4e67e435298dd",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Walls/HarmonyPatch_GateLivePatternMetal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "ab299303ffc8a7da9d16f6a3f17fc3085ad41c4f669361aa4a82b9c425716dc1",
+    "sha": "444e27b8c"
+  },
+  "src/RimMandrake/RustCathedral/Source/Walls/RustCathedralWallsSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "2a50ea4ba7c637968e7e6d9f61200b42a5318fbdc4aa982165ac359a8d20d518",
+    "sha": "444e27b8c"
+  },
   "src/RimMandrake/RustChrome/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-17",
