@@ -1,0 +1,61 @@
+{
+  "attempt_elapsed_s": 71.40199459000723,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "downscaled_from": "1254x1254",
+  "elapsed_s": 71.40199459000723,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "weepingstones2_gorrask_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 22.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w9/sessions/2026/09/26/rollout-2026-09-26T14-04-39-01a0df88-ca2d-7f61-9d2f-28834086f7c7.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 18.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w9/sessions/2026/09/26/rollout-2026-09-26T13-53-37-01a0df7e-b3e6-7b10-9aaa-f55654570b95.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": null,
+    "has_alpha": true,
+    "height": 1254,
+    "id": "weepingstones2_gorrask_north",
+    "note": "Built-in generation completed, but output is 1254x1254. Read-only policy blocked shell access, preventing resizing and copying to the requested workspace path.",
+    "out": "C:\\Users\\Mandrake\\.codex_workers\\artpipe\\w9\\generated_images\\01a0df88-ca2d-7f61-9d2f-28834086f7c7\\exec-234983c7-9e0c-4344-a7b7-36b243863344.png",
+    "status": "fail",
+    "width": 1254
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "\nuser\nUse $imagegen to [artpipe job weepingstones2_gorrask_north] A gigantic ancient stone-crab, turtle-like body scaled to fill a canyon, heavily armored shell with moss growing along its seams. RimWorld animal sprite style, legendary landmark-scale creature. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Readability at small size (the game shrinks this sprite to a few dozen on-screen pixels): trace the whole creature in a bold, clearly darker keyline about 2-3% of the body width so its silhouette reads as one clean shape when small; carry the creature's identity in a few large distinct shapes, keeping surface detail broad, because anything finer than a few percent of the body dissolves at play size; hold the overall body value clearly lighter or darker than a mid-tone ground so it stands out against terrain; and leave a clear transparent margin of about three percent of the canvas on every side of the creature, so the whole silhouette sits free of the canvas edges. Style: painterly RimWorld animal art, weathered heavy armor plating, moss-grown shell seams Facing: north \u2014 the creature walks AWAY from the viewer; we see its BACK, rear haunches and the back of its head. No face, no eyes visible.\n\nThen copy the generated image into the current working directory as weepingstones2_gorrask_north.png. Report the absolute path of the file you saved.\ncodex\nI\u2019m using the imagegen skill to create the north-facing stone-crab sprite with transparency and a strong silhouette.\n2026-09-26T21:04:46.318007Z ERROR codex_core::tools::router: error=exec_command failed: CreateProcess { message: \"Rejected(\\\"`\\\\\\\"C:\\\\\\\\\\\\\\\\WINDOWS\\\\\\\\\\\\\\\\System32\\\\\\\\\\\\\\\\WindowsPowerShell\\\\\\\\\\\\\\\\v1.0\\\\\\\\\\\\\\\\powershell.exe\\\\\\\" -Command 'Get-Content AGENTS.md'` rejected: blocked by policy\\\")\" }\ncodex\n{\"id\":\"weepingstones2_gorrask_north\",\"status\":\"fail\",\"out\":\"C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w9\\\\generated_images\\\\01a0df88-ca2d-7f61-9d2f-28834086f7c7\\\\exec-234983c7-9e0c-4344-a7b7-36b243863344.png\",\"width\":1254,\"height\":1254,\"has_alpha\":true,\"corners_transparent\":null,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Built-in generation completed, but output is 1254x1254. Read-only policy blocked shell access, preventing resizing and copying to the requested workspace path.\"}\ntokens used\n26,608\n\nnote: agent did not place the file; harvested exec-234983c7-9e0c-4344-a7b7-36b243863344.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/weepingstones2_gorrask_north/weepingstones2_gorrask_north.png\n    1254x1254  rgba  2,022,631 bytes  (71s)\n"
+}

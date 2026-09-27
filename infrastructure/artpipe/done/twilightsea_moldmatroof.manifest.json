@@ -1,0 +1,61 @@
+{
+  "attempt_elapsed_s": 147.22530272998847,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "downscaled_from": "1254x1254",
+  "elapsed_s": 147.22530272998847,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "twilightsea_moldmatroof",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 27.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/26/rollout-2026-09-26T16-56-13-01a0e025-de35-7313-bb52-2b73d66becc4.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 26.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w5/sessions/2026/09/26/rollout-2026-09-26T14-13-26-01a0df90-d5c3-7302-a26f-f0634ad5337f.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
+    "id": "twilightsea_moldmatroof",
+    "note": "Built-in image generation completed twice but returned no image artifact or output path, so no PNG could be copied or verified.",
+    "out": null,
+    "status": "fail",
+    "width": null
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "358-473d-\n                9b46-cb7b2cc23603.png\nLength        : 463904\nLastWriteTime : 9/18/2026 8:41:43 PM\n\nFullName      : C:\\Users\\Mandrake\\.codex\\generated_images\\01a0b661-2ac6-7572-9346-b4571c2fe90e\\exec-b4e52710-0d3d-42b3-\n                9a16-5b5d2235f07c.png\nLength        : 1114725\nLastWriteTime : 9/18/2026 2:17:31 PM\n\nFullName      : C:\\Users\\Mandrake\\.codex\\generated_images\\01a0b65f-d416-7791-8d10-05e6003faa18\\exec-51fb0b4e-21a5-4572-\n                9e4d-94347d6b9f32.png\nLength        : 630963\nLastWriteTime : 9/18/2026 2:16:16 PM\n\nFullName      : C:\\Users\\Mandrake\\.codex\\generated_images\\01a0b65e-4d7c-7191-a2fa-dfcf44b6669f\\exec-63c97b20-5583-4586-\n                aadc-1c7566e70d6c.png\nLength        : 1135084\nLastWriteTime : 9/18/2026 2:15:03 PM\n\nFullName      : C:\\Users\\Mandrake\\.codex\\generated_images\\01a0b65e-4d7c-7191-a2fa-dfcf44b6669f\\exec-2eafbaf7-cc44-44c0-\n                b7a9-3a57abf88a69.png\nLength        : 706179\nLastWriteTime : 9/18/2026 2:14:31 PM\n\nFullName      : C:\\Users\\Mandrake\\.codex\\generated_images\\01a0b65d-952f-7cb2-afca-701f2c16a7e1\\exec-02394f24-5ed7-4aad-\n                bff6-b8f677ecbf70.png\nLength        : 1152317\nLastWriteTime : 9/18/2026 2:13:31 PM\n\nFullName      : C:\\Users\\Mandrake\\.codex\\generated_images\\01a0b623-7dff-7c50-bc39-f461fa65652b\\exec-678a1f7e-864a-42d1-\n                8bc3-350e71d4e219.png\nLength        : 3213511\nLastWriteTime : 9/18/2026 1:10:05 PM\n\nFullName      : C:\\Users\\Mandrake\\.codex\\generated_images\\01a0b622-a5e4-7e23-aba0-79ae7b7c6dab\\exec-425964ab-5059-4c4d-\n                b0d9-82cf27071cb2.png\nLength        : 3506956\nLastWriteTime : 9/18/2026 1:09:13 PM\n\n\n\n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command \"Get-ChildItem -Path 'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\twilightsea_moldmatroof' -Filter *.png -Recurse -File -ErrorAction SilentlyContinue | Select-Object FullName,Length,LastWriteTime | Format-List\" in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\twilightsea_moldmatroof\n succeeded in 196ms:\ncodex\n{\"id\":\"twilightsea_moldmatroof\",\"status\":\"fail\",\"out\":null,\"width\":null,\"height\":null,\"has_alpha\":null,\"corners_transparent\":null,\"background_used\":null,\"attempts\":2,\"note\":\"Built-in image generation completed twice but returned no image artifact or output path, so no PNG could be copied or verified.\"}\ntokens used\n21,629\n\nnote: agent did not place the file; harvested exec-99b48edb-768a-4acd-8997-9c40dd0245fd.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/twilightsea_moldmatroof/twilightsea_moldmatroof.png\n    1254x1254  rgba  2,322,466 bytes  (147s)\n"
+}

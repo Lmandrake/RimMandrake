@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-19T05:32:59Z",
+  "drawsize": 2.75,
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "orray_v3_south",
+  "priority": 1,
+  "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: the Star Wars canon Orray, a lean low-slung Geonosian desert reptile built like a long slender alligator standing on upright legs. Sandy tan-brown to olive-grey hide, mottled, wrinkled and tuberculate, leathery and pebbled rather than hard-scaled, with a paler throat and belly. A long alligator-like snout, small eyes set high on the head, four lean legs with real elbow and knee anatomy ending in broad clawed toes, and a long thick tapering tail. Painterly rendering of the wrinkled hide folds at the neck and joints. PROPORTIONS, seen head-on: this animal is long and narrow rather than broad. Its chest is shallow and slim, only a little wider than its own skull; its shoulders sit close under the spine; its legs are slender and tucked close beneath the body; so the whole head-on silhouette is a tall narrow shape roughly half as wide as it is tall, with the long body receding away from the viewer in perspective behind the chest and the tapering tail visible beyond it. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Leave a clear transparent margin on every side of the creature.",
+  "reference": null,
+  "rimflow_item_id": "ORRAY_FACING_HEIGHT_REGRESSION_1",
+  "style_notes": "Regenerating ONLY the south facing to match two already-approved facings of the SAME individual animal (owner ruling 2026-09-18, verbatim: 'New Orray art is vastly better than old. North and east are good. South needs regen it is fat somehow.'). Match the approved east and north sprites exactly in creature identity, palette and rendering: a lean armoured crocodilian in warm sandy tan-brown and olive-grey, pebbled tuberculate hide with darker mottling along the back, pale cream underside, dark brown claws, soft painterly shading with a heavy black keyline. The rejected version of this facing drew a barrel-chested bloated hippo-like torso that reads as a much heavier animal than the side profile shows; the side profile shows a slim-bodied, low, long reptile, and this head-on view must agree with it."
+}

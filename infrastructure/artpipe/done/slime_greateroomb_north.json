@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-24T21:59:40Z",
+  "drawsize": 2.5,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "slime_greateroomb_north",
+  "priority": 100,
+  "prompt": "RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: a greater oomb, the largest size of the spiked translucent amoeba that eats trash and splits when engorged, a swollen blunt lobed body studded with soft spikes, amber-green translucence, noticeably bigger and heavier than an ordinary oomb, within the translucent Slime biome, a soft-bodied world the size of a country; translucent green-to-amber gel tones, soft rounded forms, gentle inner glow. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "DONOR_DEFS_PORT_TO_OURS_1",
+  "style_notes": "defName AA_AcanthamoebaGiganteaHuge. Batch 3d row 2 (Huge size). Sibling job to slime_oomb, own art per the krayt-dragon size-variant precedent in done/. drawsize 2.5 is an ESTIMATE for scale, not a measured bs. (AA_AcanthamoebaGiganteaSmall/'lesser oomb' lives in the Scarlands, out of this batch's scope \u2014 not queued here.)"
+}

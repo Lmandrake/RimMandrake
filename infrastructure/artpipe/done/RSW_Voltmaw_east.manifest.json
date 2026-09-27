@@ -1,8 +1,9 @@
 {
-  "attempt_elapsed_s": 115.42222511500586,
+  "attempt_elapsed_s": 121.15248145197984,
   "channel": "codex",
   "daemon_attempts": 1,
-  "elapsed_s": 115.42222511500586,
+  "downscaled_from": "1254x1254",
+  "elapsed_s": 121.15248145197984,
   "facts": "PASS",
   "facts_findings": [],
   "height": 1024,
@@ -12,25 +13,25 @@
     "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
   ],
   "meter_after": {
-    "grumpy": true,
+    "grumpy": false,
     "ok": true,
-    "primary_resets_at": 1790216577,
-    "primary_used_percent": 82.0,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 58.0,
     "primary_window_minutes": 300,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T15-59-23-01a0d07e-c319-7fa2-b69e-0ee535746e0a.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T20-20-21-01a0d16d-aeda-75e0-aa73-26080aa9cf4d.jsonl",
     "secondary_resets_at": 1790785352,
-    "secondary_used_percent": 28.0,
+    "secondary_used_percent": 40.0,
     "secondary_window_minutes": 10080
   },
   "meter_before": {
     "grumpy": false,
     "ok": true,
-    "primary_resets_at": 1790216577,
-    "primary_used_percent": 77.0,
+    "primary_resets_at": 1790234599,
+    "primary_used_percent": 52.0,
     "primary_window_minutes": 300,
-    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/23/rollout-2026-09-23T15-51-59-01a0d077-faf1-7123-bf8c-c25f1901c328.jsonl",
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/23/rollout-2026-09-23T20-14-19-01a0d168-2a2c-7841-9765-90eb0d48e01a.jsonl",
     "secondary_resets_at": 1790785352,
-    "secondary_used_percent": 27.0,
+    "secondary_used_percent": 39.0,
     "secondary_window_minutes": 10080
   },
   "mode": "generate",
@@ -43,18 +44,18 @@
   ],
   "width": 1024,
   "worker_self_report": {
-    "attempts": 1,
-    "background_used": "transparent",
-    "corners_transparent": true,
-    "has_alpha": true,
-    "height": 1024,
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
     "id": "RSW_Voltmaw_east",
-    "note": "Generated with built-in imagegen, copied into the workspace, and resized from the tool's 1254px output to the required 1024x1024 while preserving transparency.",
-    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RSW_Voltmaw_east\\RSW_Voltmaw_east.png",
-    "status": "ok",
-    "width": 1024
+    "note": "The built-in image generator returned no image artifact on either permitted attempt, so no PNG could be copied or verified.",
+    "out": null,
+    "status": "fail",
+    "width": null
   },
   "worker_status": "ok",
-  "worker_stderr_tail": "",
-  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_Voltmaw_east/RSW_Voltmaw_east.png\n    1024x1024  rgba  1,141,508 bytes  (114s)\n"
+  "worker_stderr_tail": "note: agent did not place the file; harvested exec-615fa486-089f-4731-8279-4d85e90ca83d.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_Voltmaw_east/RSW_Voltmaw_east.png\n    1254x1254  rgba  1,232,011 bytes  (118s)\n"
 }
