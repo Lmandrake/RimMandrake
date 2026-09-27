@@ -8379,6 +8379,72 @@
     "hash": "fb17d208536c63d48ed1b5d90ab678fe01d653e6f97959ca555b324f3d3265d3",
     "sha": "21970f0cd"
   },
+  "src/RimMandrake/Wasteland/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "9d4d1f71b9a0261724d1a4f0faeeecfd0039b2f88c6439f7106e3747129414d2",
+    "sha": "d6e05eb2d"
+  },
+  "src/RimMandrake/Wasteland/Defs/BiomeDefs/RM_Wasteland_Biome.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "553a5520acaf6407ed223008ef1e9f108519297f09452ea35d70c3d6374d689f",
+    "sha": "d6e05eb2d"
+  },
+  "src/RimMandrake/Wasteland/Defs/HediffDefs/RM_BrineShock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "be53ef33e3c2d4ed9fd361ea5957105bfc2b517657e30b89ec5d966700b5e072",
+    "sha": "d6e05eb2d"
+  },
+  "src/RimMandrake/Wasteland/Defs/MapGeneration/RM_WastelandBrine_Scatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "6a111d6f060eb79f58147b2551d8f98fcfefcdc43b309430f24a4328f3452938",
+    "sha": "d6e05eb2d"
+  },
+  "src/RimMandrake/Wasteland/Defs/TerrainDefs/RM_WastelandBrine_Terrains.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "7e0dbcc949d30a2ae5d65af95154709aa57c978e61e489883550a91a280716ed",
+    "sha": "d6e05eb2d"
+  },
+  "src/RimMandrake/Wasteland/Defs/ThingDefs_Buildings/RM_WastelandBrine_Deposits.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "f3816b548e0b06581674843908462641310406d2a0060e4196a84cad75472a7a",
+    "sha": "d6e05eb2d"
+  },
+  "src/RimMandrake/Wasteland/Defs/ThingDefs_Items/RM_WastelandBrine_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "3426d372f6baad7eee70e17d849ee009d45b2c8d35bfeee2c2c9240a23a1e5cb",
+    "sha": "d6e05eb2d"
+  },
+  "src/RimMandrake/Wasteland/Defs/ThingDefs_Plants/RM_WastelandFlora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "0dcd374152287c0f39375ff1997e951fe54b9ea4cdb35c28e6d95947f7357918",
+    "sha": "d6e05eb2d"
+  },
+  "src/RimMandrake/Wasteland/Patches/RM_WastelandBrine_ScatterRegister.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "5cc392b8139431d25c5f4eb8dba9eebce6923d96f858d5170b200ce15c971f00",
+    "sha": "d6e05eb2d"
+  },
+  "src/RimMandrake/Wasteland/Source/RM_BiomeWorker_Wasteland.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "e63c36428f125bb8787055ae9bee75b453d823c98f2122c90587f9e3712b9d8b",
+    "sha": "d6e05eb2d"
+  },
+  "src/RimMandrake/Wasteland/Source/RM_WastelandMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "624ce0a6ac02cfb14bf342e133a2722c5691a756901c7391f2955a5dedda473c",
+    "sha": "d6e05eb2d"
+  },
   "src/RimMandrake/WeatherSuite/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-24",
