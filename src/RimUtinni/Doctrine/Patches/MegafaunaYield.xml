@@ -2473,38 +2473,6 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Biomes! Core</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- BMT_Maxolotl MeatAmount: bodySize 2.40, base 336, yields 806 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="BMT_Maxolotl"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="BMT_Maxolotl"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>336</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="BMT_Maxolotl"]/statBases</xpath>
-            <value><MeatAmount>336</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- BMT_Maxolotl BoneAmount: bodySize 2.40, base 120, yields 288 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="BMT_Maxolotl"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="BMT_Maxolotl"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>120</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="BMT_Maxolotl"]/statBases</xpath>
-            <value><BoneAmount>120</BoneAmount></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>Biomes! Polluted Lands</li></mods>
     <match Class="PatchOperationSequence">
       <operations>

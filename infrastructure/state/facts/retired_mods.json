@@ -59,6 +59,13 @@
       "retiredOn": "2026-09-18",
       "commit": "59944939f",
       "why": "RESEARCH_TRIO_RETIRE_1 fallout: hard modDependencies on als.gravtech.bc (see that entry), cosmetic-only retexture with no content of its own, retired in the same change as its dependency rather than left with a broken hard dependency"
+    },
+    {
+      "packageId": "biomesteam.biomescore",
+      "modNames": ["Biomes! Core"],
+      "retiredOn": "2026-09-27",
+      "item": "BMT_FAUNA_ABSORPTION_1",
+      "why": "owner 2026-09-27: 'try to fix the savegame then retire the retirable'. No active mod or src/ file hard-depends on it; the canonical save was scrubbed of its content first (Transient/canonical_save_biomescore_scrub_2026-09-27.py)"
     }
   ]
 }
