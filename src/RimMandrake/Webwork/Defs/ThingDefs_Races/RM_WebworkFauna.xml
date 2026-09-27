@@ -154,6 +154,35 @@
     </tradeTags>
   </ThingDef>
 
+  <!-- CODE REVIEW FIX (wave 25): RM_Quarrok's butcherProducts named
+       RM_QuarrokChitin but no such ThingDef existed anywhere in the repo —
+       a dangling cross-reference that would fail to resolve at load. Added
+       here following the sibling-mod convention (RM_ThrummelChitin/
+       RM_DredgelChitin/RM_SkellarnChitin, src/RimMandrake/TheSump/Defs/
+       ThingDefs_Items/RM_SumpFaunaItems.xml): ParentName="ResourceBase",
+       ResourcesRaw, vanilla Leather texture reused as a placeholder. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_QuarrokChitin</defName>
+    <label>quarrok chitin</label>
+    <description>Dull bronze-black plate cracked off a quarrok's slab back, still dusted with silk lint. Tough enough to be worth cutting free.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(58, 46, 30)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>1.6</MarketValue>
+      <Mass>0.1</Mass>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <stackLimit>150</stackLimit>
+  </ThingDef>
+
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Quarrok</defName>
     <label>quarrok</label>
