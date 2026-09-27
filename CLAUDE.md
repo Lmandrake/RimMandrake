@@ -742,6 +742,9 @@ edits 2026-09-25 07:54 with nothing in the reflog. The same hook refuses whole-t
 (`DLL_SOURCE_STAMP_GUARD_1`, `src/Directory.Build.targets` + `src/RimMandrake/Utils/dll_source_stamp.py`) —
 after any merge touching a mod's `Source/`, rebuild in the merge worktree; never pick a
 side's DLL. Enforced on `git push` by `.claude/hooks/block_dll_source_mismatch.py`.
+Proven four-wide 2026-09-27: concurrent worktree builds into ONE mod's csproj/Mod.cs/DLL
+merge clean when every csproj/settings conflict keeps BOTH sides' lines and the DLL is
+rebuilt after each rebase — the rebuild is the catcher (it found a merge-dropped brace).
 
 🔴 **A subagent that runs `git reset --hard HEAD` destroys THIS window's staged work** — one
 tree, one index. It ate 3 staged files 2026-09-18. Recovery: `git add` writes blobs before any
