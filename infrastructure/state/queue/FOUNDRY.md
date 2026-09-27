@@ -1080,6 +1080,15 @@ kind:     bug
 summary:  (no items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md
 
+## LIQUID_TERRAIN_AUTHORED_TWICE_1 Boiling water, brine pool and liquid propane terrain are authored twice in two active mods with identical player labels and different burn numbers
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1785,16 +1794,6 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  GREYSEASALTDOMESCATTEROOB1 — RMSaltDomeShore's failed cluster-centre search reaches ThingsListAt as IntVec3.I…
 prose:    infrastructure/state/items/GREYSEA_SALTDOME_SCATTER_OOB_1.md
-
-## LIQUID_TERRAIN_AUTHORED_TWICE_1 Boiling water, brine pool and liquid propane terrain are authored twice in two active mods with identical player labels and different burn numbers
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LIQUID_TERRAIN_AUTHORED_TWICE_1.md
 
 ## SEABED_PLANET_LAYER_1 Seabed planet layer: the sea floor as a geometric twin of the surface
 state:    proposed
