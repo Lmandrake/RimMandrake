@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_SunSphere.xml                      TerminalBiomes · TWILIGHT_LIGHT_ECONOMY_1
+  ============================================================================
+  §3.1/§3.3: the independence arc's centrepiece. Fed on any raw floor food
+  (CompRefuelable #2, category FoodRaw), needs one wild seed to start
+  (CompRefuelable #1, RM_Pallu or RM_LampBladder — "the sea's, free"),
+  never explodes, dims to a seedable husk past its grace period. Growth IS
+  brightness — RM_Building_SunSphere.cs reads the two comps by ORDER (seed
+  first, food second), since two CompRefuelable siblings share no distinct
+  subtype; that order is the contract between this file and that class —
+  do not reorder the <comps> block below without updating it there too.
+
+  Gated behind 2 techprints + RM_TwilightSunSphereResearch + the wild seed
+  (§3.3, §4.5: "gated on good standing," which the Compact dialog that
+  sells the techprints — not built here — is responsible for checking via
+  RM_MapComponent_WellLedger.TechprintsAvailable).
+
+  PLACEHOLDER ART: RM_GlowTank's own texture again (a third sibling in the
+  "glass vessel that cultures something" family, tinted sun-gold this time).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SunSphere</defName>
+    <label>sun-sphere</label>
+    <description>A sealed glass vessel culturing the ollumin — a light-making growth that, given a floor's worth of scraps to eat, slowly becomes its own small sun. Seeded dark, it cultures dim for days, and once mature it lights and grows crops around it without a well or a lease anywhere near it. It never explodes; starved long enough, it just dims to a husk you can reseed.</description>
+    <thingClass>RimMandrake.TerminalBiomes.RM_Building_SunSphere</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <tickerType>Normal</tickerType>
+    <graphicData>
+      <texPath>Things/Building/Production/RM_GlowTank</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.4,2.4)</drawSize>
+      <color>(255,225,140)</color>
+    </graphicData>
+    <size>(2,2)</size>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>5200</WorkToBuild>
+      <Flammability>0.1</Flammability>
+      <Beauty>6</Beauty>
+      <MarketValue>800</MarketValue>
+    </statBases>
+    <costList>
+      <Steel>80</Steel>
+      <Plasteel>30</Plasteel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>RM_TwilightSunSphereResearch</li>
+    </researchPrerequisites>
+    <designationCategory>Production</designationCategory>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <building>
+      <isEdifice>true</isEdifice>
+    </building>
+    <comps>
+      <!-- #1: the seed (order contract with RM_Building_SunSphere.cs). -->
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>0</fuelConsumptionRate>
+        <fuelCapacity>1</fuelCapacity>
+        <fuelFilter>
+          <thingDefs>
+            <li>RM_Pallu</li>
+            <li>RM_LampBladder</li>
+          </thingDefs>
+        </fuelFilter>
+        <initialFuelPercent>0</initialFuelPercent>
+        <showAllowAutoRefuelToggle>false</showAllowAutoRefuelToggle>
+        <targetFuelLevelConfigurable>false</targetFuelLevelConfigurable>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <destroyOnNoFuel>false</destroyOnNoFuel>
+      </li>
+      <!-- #2: the ongoing feed, any raw floor food. -->
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>4</fuelConsumptionRate>
+        <fuelCapacity>20</fuelCapacity>
+        <fuelFilter>
+          <categories>
+            <li>FoodRaw</li>
+          </categories>
+        </fuelFilter>
+        <initialFuelPercent>0</initialFuelPercent>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <consumeFuelOnlyWhenUsed>false</consumeFuelOnlyWhenUsed>
+        <destroyOnNoFuel>false</destroyOnNoFuel>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>6.0</glowRadius>
+        <glowColor>(255,225,140,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

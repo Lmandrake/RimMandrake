@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TwilightLightPlants.xml            TerminalBiomes · TWILIGHT_LIGHT_ECONOMY_1
+  ============================================================================
+  §3.1's two living light sources, as floor-grown organisms: "grow or harvest
+  the plant + one chain." Shares RM_TwilightFloorFloraBase (this mod,
+  RM_TwilightSeaFlora.xml) — same glow-gate-free, ignore-fertility shape
+  already established for this floor. Added to RM_TwilightSea's own
+  <wildPlants> in the same commit (small commonality: these are a
+  cultivated-light INPUT, not part of the mat-roof's "shore to shore"
+  monoculture) so both can be found wild before a player ever builds a
+  RM_ConstellationCage grower for them.
+
+  PLACEHOLDER ART: the same two confirmed-present textures
+  RM_TwilightSeaFlora.xml already uses (EcheveriaA, SnakePlantA), reused here
+  and distinguished purely by <color>/<colorTwo> — exactly the convention
+  that file's own header recommends for a sea with no unique art yet.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_NoothelmPlant</defName>
+    <label>noothelm</label>
+    <description>A squat, sealed stand that grows a single golden bulb at its crown — inert until harvested and clipped to a chain, at which point the bulb wakes and never needs anything again. Rarer and slower than the hoolimbre it's usually found beside.</description>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Beauty>3</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(220,190,110)</color>
+      <colorTwo>(180,150,80)</colorTwo>
+      <drawSize>(1.2,1.2)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>14</growDays>
+      <harvestWork>400</harvestWork>
+      <harvestYield>1</harvestYield>
+      <harvestedThingDef>RM_NoothelmBulb</harvestedThingDef>
+      <harvestFailable>false</harvestFailable>
+      <harvestMinGrowth>0.6</harvestMinGrowth>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.8~1.2</visualSizeRange>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>0.4</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_HoolimbrePlant</defName>
+    <label>hoolimbre</label>
+    <description>A loose stand of pale-green bladders on short stalks, each one a soft living lamp the moment it's pulled. Common wherever the mat-roof is thin enough to let a little real light through — the cheapest, fastest light this sea grows.</description>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Beauty>3</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(170,225,180)</color>
+      <colorTwo>(120,190,150)</colorTwo>
+      <drawSize>(1.1,1.1)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>8</growDays>
+      <harvestWork>240</harvestWork>
+      <harvestYield>2</harvestYield>
+      <harvestedThingDef>RM_LampBladder</harvestedThingDef>
+      <harvestFailable>false</harvestFailable>
+      <harvestMinGrowth>0.5</harvestMinGrowth>
+      <maxMeshCount>2</maxMeshCount>
+      <visualSizeRange>0.7~1.1</visualSizeRange>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>1.2</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+    </plant>
+  </ThingDef>
+
+</Defs>

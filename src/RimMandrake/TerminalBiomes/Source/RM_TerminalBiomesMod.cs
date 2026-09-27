@@ -135,6 +135,22 @@ namespace RimMandrake.TerminalBiomes
         public static string crossBiomeBiomeList = "";
         public static float crossBiomeCoverage = 1f;
 
+        // ── TWILIGHT_LIGHT_ECONOMY_1: the Twilight Sea's light layer ─────
+        // (well-ledger drift, mobile constellation, sun-sphere, tenancy).
+        // Mod Settings owed list per that item's §7. twilightChainAvailability:
+        // 0 = scarce, 1 = standard, 2 = plentiful. twilightDriftCadence:
+        // 0 = frozen (sandbox), 1 = week (shipped), 2 = slow.
+        public static bool twilightWellDriftEnabled = true;
+        public static int twilightDriftCadence = 1;
+        public static int twilightChainAvailability = 1;
+        public static bool twilightSuulkPressureScalingEnabled = true;
+        public static bool twilightCagesPassableBeneath = true;
+        public static bool twilightLivingDecorNeedsLight = false;
+        public static float twilightSunSphereGraceDays = 3f;
+        public static bool twilightChartsAgeEnabled = true;
+
+        public static bool TwilightWellDriftActive => masterEnabled && twilightSeaEnabled && twilightWellDriftEnabled;
+
         private string biomeListBuffer;
 
         public override void ExposeData()
@@ -163,6 +179,14 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
+            Scribe_Values.Look(ref twilightWellDriftEnabled, "twilightWellDriftEnabled", true);
+            Scribe_Values.Look(ref twilightDriftCadence, "twilightDriftCadence", 1);
+            Scribe_Values.Look(ref twilightChainAvailability, "twilightChainAvailability", 1);
+            Scribe_Values.Look(ref twilightSuulkPressureScalingEnabled, "twilightSuulkPressureScalingEnabled", true);
+            Scribe_Values.Look(ref twilightCagesPassableBeneath, "twilightCagesPassableBeneath", true);
+            Scribe_Values.Look(ref twilightLivingDecorNeedsLight, "twilightLivingDecorNeedsLight", false);
+            Scribe_Values.Look(ref twilightSunSphereGraceDays, "twilightSunSphereGraceDays", 3f);
+            Scribe_Values.Look(ref twilightChartsAgeEnabled, "twilightChartsAgeEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -264,6 +288,39 @@ namespace RimMandrake.TerminalBiomes
             }
             list.GapLine();
 
+            list.Label("THE TWILIGHT SEA'S LIGHT ECONOMY");
+            list.CheckboxLabeled("Skylight drift", ref twilightWellDriftEnabled,
+                "Skylights age, warn, close and reopen elsewhere on the sea floor. Off: "
+              + "whatever wells exist stay as they are, no ledger clock runs.");
+            if (twilightWellDriftEnabled)
+            {
+                list.Label("  Cadence: " + (twilightDriftCadence == 0 ? "frozen (sandbox)" : twilightDriftCadence == 1 ? "week (shipped)" : "slow"));
+                if (list.RadioButton("  Frozen — sandbox, wells never age", twilightDriftCadence == 0)) twilightDriftCadence = 0;
+                if (list.RadioButton("  Week — the shipped pace", twilightDriftCadence == 1)) twilightDriftCadence = 1;
+                if (list.RadioButton("  Slow — roughly double the week", twilightDriftCadence == 2)) twilightDriftCadence = 2;
+            }
+            list.Label("Tether-chain availability (how many mobile cages/lamps the Compact "
+              + "restocks toward):");
+            if (list.RadioButton("  Scarce", twilightChainAvailability == 0)) twilightChainAvailability = 0;
+            if (list.RadioButton("  Standard", twilightChainAvailability == 1)) twilightChainAvailability = 1;
+            if (list.RadioButton("  Plentiful", twilightChainAvailability == 2)) twilightChainAvailability = 2;
+            list.CheckboxLabeled("Suulk pressure scales with constellation size", ref twilightSuulkPressureScalingEnabled,
+                "Carrying more mobile lamps/cages than the ruled handful shortens the suulk's "
+              + "grazing cadence. No effect until the suulk incident (a separate item) ships — "
+              + "persisted so a save carries a chosen value forward.");
+            list.CheckboxLabeled("Cages passable beneath", ref twilightCagesPassableBeneath,
+                "The floating farm doesn't use up surface space because it floats above you. "
+              + "Off: a cage occupies its cells like a normal building. Takes effect after mod "
+              + "settings apply, at the next map/region rebuild.");
+            list.CheckboxLabeled("Living decor needs light", ref twilightLivingDecorNeedsLight,
+                "Off (default): sealed living clips (noothelm bulb, hoolimbre string) never die "
+              + "from neglect. On: the stricter behaviour — they need light to keep living.");
+            list.Label("Sun-sphere grace period before it dims to a husk: " + twilightSunSphereGraceDays.ToString("0.#") + " days");
+            twilightSunSphereGraceDays = list.Slider(twilightSunSphereGraceDays, 0.5f, 10f);
+            list.CheckboxLabeled("Charts age", ref twilightChartsAgeEnabled,
+                "Off: a well-chart's forecast never marks itself stale.");
+            list.GapLine();
+
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");
             list.Label("Reserved for a future pass that lets a Scald mechanic generate on "
               + "a non-Scald biome's map. Inert until that pass exists; the fields persist "
@@ -331,6 +388,44 @@ namespace RimMandrake.TerminalBiomes
         public override void DoSettingsWindowContents(Rect inRect)
         {
             settings.DoWindowContents(inRect);
+            RM_TwilightPassabilityApplier.Apply();
+        }
+    }
+
+    // TWILIGHT_LIGHT_ECONOMY_1: "cages passable-beneath" (Mod Settings).
+    // No Harmony in this assembly, so the only vanilla lever for a
+    // building's own collision is ThingDef.passability itself — a shared,
+    // def-level field, not a per-instance override. [StaticConstructorOnStartup]
+    // guarantees this runs after every def is loaded and resolved (Mod
+    // constructors, where settings are READ from disk via GetSettings, run
+    // earlier still — before defs load — so by the time this fires the
+    // setting's saved value is already in RM_TerminalBiomesSettings's
+    // static fields). Re-applied on every settings-window frame too, so
+    // flipping the checkbox takes effect at the next pathfinder/region
+    // rebuild rather than needing a restart.
+    [StaticConstructorOnStartup]
+    public static class RM_TwilightPassabilityApplier
+    {
+        private static readonly string[] CageDefNames = { "RM_ConstellationCageSphere", "RM_ConstellationCageCube" };
+
+        static RM_TwilightPassabilityApplier()
+        {
+            Apply();
+        }
+
+        public static void Apply()
+        {
+            Traversability value = RM_TerminalBiomesSettings.twilightCagesPassableBeneath
+                ? Traversability.PassThroughOnly
+                : Traversability.Impassable;
+            foreach (string defName in CageDefNames)
+            {
+                ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
+                if (def != null)
+                {
+                    def.passability = value;
+                }
+            }
         }
     }
 }
