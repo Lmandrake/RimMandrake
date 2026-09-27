@@ -6267,3 +6267,107 @@ any candidate before starting — stay off `UtinniPatches/`,
 `TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
 `Greentide`/`Miasma`/`BlueDesert`/`DivingInteraction`/`LuminousPigment`/
 `Droidworks`.
+
+## Wave 35 (2026-09-27)
+
+Cluster: `src/RimMandrake/TheRot/` — the whole mod (RM_-tier standalone
+absorption of `mandrake.rut.rotsporekit` + `RUT_TheRot`'s BiomeDef,
+`THEROT_RM_MOD_BUILD_1`), per wave 34's suggestion. 40 files: `About.xml`,
+34 Defs XML (BiomeDef, DamageDefs, Drugs, 2 GameConditionDefs, GeneDefs, 4
+HediffDefs, Misc, PlantBases, 2 RecipeDefs, ResearchDefs, StatDefs,
+StuffCategoryDefs, 2 TerrainDefs, ThingDefs_Apparel, 3 ThingDefs_Buildings,
+4 ThingDefs_Items, 4 ThingDefs_Plants, ThingDefs_Weapons, ThoughtDefs,
+WeatherDefs), 1 Patch, 2 `.cs` source files, and 2 `Tools/` `.py` scripts.
+Confirmed git-clean and outside every current exclusion before starting;
+all 40 were DIRTY/never-entered.
+
+Every `Class=`/`thingClass`/`hediffClass`/`compClass`/`workerClass`/
+`modExtensions Class` attribute cross-checked by grepping the real C#
+source it names (this mod's own `RimMandrake.TheRot.*` and cross-mod
+references into `mandrake.rm.environmentalhazards`/`mandrake.rm.
+creaturebehaviors`), every def cross-reference (`harvestedThingDef`,
+`costList`, `hediffDef`, `researchPrerequisite`, `carrierHediffs`, etc.)
+traced to its actual defName inside the cluster, and every size/name
+value the mod's own `Patches/RotSpecies_NamesAndSizes.xml` applies
+cross-checked against the two independent sources its own header cites
+(`design/Jawa/worldbuilding/biomes/rot_flora_fauna_names.md`'s rulings
+table and `rot_regen_briefs.json`'s generated art prompts) — and, for the
+four flora rows, against the live donor `Plants_MycoticJungle.xml` to
+recompute a correct min:max ratio.
+
+**6 real bugs found and fixed**, all pushed:
+
+1. `Tools/selftest_live_prep.py` — `DEFS = os.path.join(HERE, "Defs")`
+   pointed at `TheRot/Tools/Defs` (nonexistent; a stale relative path from
+   before this script moved out of `RotSporeKit/` into `TheRot/Tools/`).
+   `os.walk` on a missing dir silently yields nothing, so the linter always
+   scanned **0** ThingDefs and hit its own "marked==0 is a vacuous pass,
+   which is a failure" guard — it has been failing on every run since the
+   move, for the wrong reason. **At least four separate wave/build reports**
+   (`COMMISSION_LEDGER_CLEANUP_1`, `FORCE_DISTURBANCE_REFLAVOR_1`,
+   `THEY_MOD_REPLICATION_1`, and the closed `GOO_BOOM_COMMISSION_1`/
+   `MIASMA_KARRATHIL_POLLINATION_GATE_1`) recorded this as PRE-EXISTING and
+   attributed it to "TheRot's ThingDefs don't yet carry
+   `RM_LivePrepExtension`" — false: two defs already carried it and the
+   linter simply never reached the directory. Fixed the path
+   (`os.path.join(os.path.dirname(HERE), "Defs")`); now scans 69 ThingDefs,
+   11 tagged live-prep, PASSES for real. (Left those four wave-log entries
+   as historical record of what was believed at the time rather than
+   rewriting past sessions' narration — the fix and the corrected diagnosis
+   are recorded here and in the fix commit instead.)
+2-5. `Patches/RotSpecies_NamesAndSizes.xml` — four flora
+   `PatchOperationReplace` values didn't match the ruled width the SAME
+   operation's own comment header names, and both design docs above
+   corroborate the comments: `AB_AgaricusDomeCap` ruled 7 (left at the
+   donor's own unchanged 1.5~2), `AB_ArbuscularMycorrhiza` ruled 9 (was
+   4.57~8), `AB_DribblingCap` ruled 12 (was 6.3~9), `AB_WitchesOyster`
+   ruled 6 (was 1.5~3). Recomputed each min from the live donor's own
+   min:max ratio (verified against the installed AlphaBiomes
+   `Plants_MycoticJungle.xml`) scaled to the ruled max, per the same
+   ratio-preservation method the file's header already documents.
+6. Same file — `AA_MycoidColossus` (vorrugath) `drawSize` set to 12
+   against a ruled 15 (comment said "15 wide"; both
+   `rot_flora_fauna_names.md` row 43 and `rot_regen_briefs.json`'s art
+   prompt say fifteen). Fixed to 15.
+
+One comment-only fix (no functional effect, not counted above):
+`HediffDefs/RM_RotSporeKit_GuardianGroves_Hediffs.xml` named
+`RimMandrake.CreatureBehaviors.RM_Plant_FalseFruit` where the real class
+(confirmed in `RUT_Plant_FalseFruit.cs` and the plant's own `thingClass`)
+is `RUT_Plant_FalseFruit`.
+
+Everything else in the cluster resolved clean: every cross-mod class
+existed, every def cross-reference resolved inside the cluster, the
+`.csproj`'s two `<Compile Include>` lines matched its two `.cs` files, and
+`Tools/build_review_sheet.py` (a large one-off dated review-sheet
+generator, still runnable, has freeze protection against overwriting a
+completed owner review) had no functional issues.
+
+Committed and pushed in two commits: `a7f6fbe84` (6 fixes) and
+`cbf31e61d` (status file, 40 newly CLEAN). A concurrent peer's health-
+dashboard rebuild had touched 5 derived `Transient`/`infrastructure`
+artifacts mid-wave; committed them once (`2d2049e07`, absorbed by the
+rebase) rather than fight the regenerator, and `git rebase --skip`ped a
+second, conflicting regeneration of those same derived files rather than
+hand-merge generated JSON — confirmed published via
+`git merge-base --is-ancestor cbf31e61d origin/main`.
+
+40 files reviewed this wave, 40 newly CLEAN, 6 bugs found and fixed (1
+silent-failure linter bug plus 5 owner-ruled-size mismatches), 1 stale
+comment fixed.
+
+Next wave suggestion (not re-verified): `CreatureBehaviors` (~4 remaining,
+per wave 32's note — re-verify), `Scarlands` (5), `ForsakenCrags` (4),
+`NightsideIce`/`ExplosiveGrowth` (3 each), `HostileFlora`/
+`GelatinousSlime`/`FlowWorks` (2 each), and the `Utils/artpipe/`,
+`bridgetools/`, `loadsweep/` Python script clusters were all present in
+the DIRTY/never-entered list and outside every current exclusion as of
+this wave (re-verify — several waves have now cited this same list
+without re-measuring). `PoisonForest`/`Stillsand` remain blocked on
+`UtinniPatches/` (now also owed `SUMP_TARVAULT_TICKER_NEVER_1`'s one-line
+fix once it's clear to work there). Re-run `code_review_status.py
+list --show-untracked` for a fresh dirty list and `git status --short` on
+any candidate before starting — stay off `UtinniPatches/`,
+`TerminalBiomes`/`FeverWood`/`LanternDeeps`, and
+`Greentide`/`Miasma`/`BlueDesert`/`DivingInteraction`/`LuminousPigment`/
+`Droidworks`.
