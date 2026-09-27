@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T23:46:33Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-27T23:51:10Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -877,3 +877,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  EMPIREESCALATIONLADDER1 — how Imperial pressure actually climbs
 prose:    infrastructure/state/items/EMPIRE_ESCALATION_LADDER_1.md
+
+## BLUEDESERT_MOD_DEPENDENCY_DECISION_1 Should mandrake.rm.bluedesert join the full mod list? RUT_BurnerAscendant's deathAction still names a BlueDesert type and can't be MayRequire-guarded
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BLUEDESERT_MOD_DEPENDENCY_DECISION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLUEDESERT_MOD_DEPENDENCY_DECISION_1.md
