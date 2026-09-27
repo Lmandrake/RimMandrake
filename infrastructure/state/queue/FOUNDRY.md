@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T15:32:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T15:45:30Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1786,16 +1786,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1.md
-
-## WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1 RM_GameCondition_WetBulb is a second implementation of RM_HediffComp_EnvironmentalExposure living in the same assembly - retire it into the shared comp
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1.md
 
 ## LIQUID_TERRAIN_AUTHORED_TWICE_1 Boiling water, brine pool and liquid propane terrain are authored twice in two active mods with identical player labels and different burn numbers
 state:    proposed
