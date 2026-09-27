@@ -420,3 +420,4 @@
 {"seat":"BENCH","event":"start","id":"TWILIGHTSEA_FLORA_PASS_1","ts":"2026-09-27T06:26:16Z"}
 {"seat":"BENCH","event":"claim","id":"PROPANELAKE_FLORA_PASS_1","ts":"2026-09-27T06:26:17Z"}
 {"seat":"BENCH","event":"start","id":"PROPANELAKE_FLORA_PASS_1","ts":"2026-09-27T06:26:18Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-27T07:18:18Z"}

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T06:26:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T07:19:24Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -379,7 +379,7 @@ summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. 
 prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
 
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1062,15 +1062,6 @@ kind:     fix
 summary:  - The patch is still tagging RUTScaldWaterShallow, RUTScaldWaterMovingShallow and
 prose:    infrastructure/state/items/DIVING_STALE_DEPLOYED_FILES_1.md
 
-## BLUEDESERT_ORPHAN_LOAD_CRASH_1 Full-list load abort reset ModsConfig to Core-only; two orphan/typo root causes found and fixed
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-summary:  BLUEDESERTORPHANLOADCRASH1 — full-list load aborted, RimWorld reset ModsConfig to Core-only
-prose:    infrastructure/state/items/BLUEDESERT_ORPHAN_LOAD_CRASH_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1254,16 +1245,6 @@ kind:     task
 blocked:  Offline half DONE (Law 5 + MEASURED census, 196/297 violate). Blocked on the post-restore live harvest for confirmation + plots, and the injection-layer card.
 summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
 prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
-
-## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-blocked:  live verify of scrubbed save + biomescore retirement owed; full-list cold load blocked by that crash (on BLUEDESERT_ORPHAN_LOAD_CRASH_1)
-summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
-prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
 
 ## MOD_OPTIONS_RETROFIT_1 Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
 state:    doing  (BLOCKED)
@@ -1896,3 +1877,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md
+
+## SUMP_TARVAULT_TICKER_NEVER_1 RUT_TarVault ships with tickerType unset (defaults Never) -- CompTick never fires, whole tar-vault seal mechanism is dead code
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SUMP_TARVAULT_TICKER_NEVER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUMP_TARVAULT_TICKER_NEVER_1.md
+
+## PATCH_MAYREQUIRE_GUARD_INERT_1 74 top-level <Operation MayRequire=...> guards in src/ are ignored by vanilla (LoadPatches never reads it); audit each for refs to absent-mod defs and re-gate on xpath/FindMod
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  MEASURED from the decompiled engine (2026-09-27): ModContentPack.LoadPatches
+prose:    infrastructure/state/items/PATCH_MAYREQUIRE_GUARD_INERT_1.md
