@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T01:15:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T01:19:28Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1757,16 +1757,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BIOME_CONFIG_ERROR_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_CONFIG_ERROR_TRIAGE_1.md
-
-## ARTPIPE_METER_WINDOW_REMAP_1 Detector.note_meters reads the wrong meter window since the plan upgrade — weekly backstop is dead
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  ARTPIPEMETERWINDOWREMAP1
-prose:    infrastructure/state/items/ARTPIPE_METER_WINDOW_REMAP_1.md
 
 ## ARTPIPE_WORKER_AUTH_STALENESS_1 Stale worker-home auth.json capped real artpipe concurrency at 3 via refresh-token races
 state:    proposed
