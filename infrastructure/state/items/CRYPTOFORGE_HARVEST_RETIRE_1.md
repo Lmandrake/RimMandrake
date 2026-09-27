@@ -1,9 +1,10 @@
 ## spec
 Owner-said: "Retire-after-harvest." Harvest then retire VQE Cryptoforge:
 (1) reproduce the SALVAGE_PALETTE-cited props (the original filing said 18;
-verified 2026-09-26 at **21** unique defNames tagged "Vanilla Quests
-Expanded - Cryptoforge" in `SALVAGE_PALETTE.md`, each needing its own
-sprite — see the item's own note below) as owned RUT_/RSW_
+a 2026-09-26 pass said 21; **re-verified 2026-09-26 (later same day) at
+22** unique defNames tagged "Vanilla Quests Expanded - Cryptoforge" in
+`SALVAGE_PALETTE.md`, each needing its own sprite — see the item's own
+note below) as owned RUT_/RSW_
 ThingDefs with OWNED art (citation swap — Workshop art is not ours to
 ship); (2) copy the 38 KCSG StructureLayoutDef XMLs into design/ as
 authoring reference, strip to owned symbols before any shipping use; (3)
@@ -54,22 +55,40 @@ step 4's resave must also confirm no VQE_ entry survives in `futureQuests`.
   "VQE_IceCrawler\|VQE_Megamidge" src/` returns nothing — the only live
   reference was the `MegafaunaYield.xml` patch this item's own step 3
   already deleted this session. Nothing left to do here.
-- **Step 1 (owned-art props) — corrected count and a false hypothesis
-  removed, still not started.** `grep` of `SALVAGE_PALETTE.md` for rows
-  tagged exactly "Vanilla Quests Expanded - Cryptoforge" gives **21** unique
-  defNames (not 18, not 22 — both prior guesses were off). The previous
-  session's guess that airlock/turret state-variant pairs "almost certainly"
-  share one piece of art is **checked and FALSE**: the donor's own
-  `Buildings_Structure.xml` gives `VQE_AncientAirlock` a distinct
+- **Step 1 (owned-art props) — count corrected AGAIN, still not started.**
+  A same-day-earlier pass counted **21** via a looser grep and missed
+  `VQE_AncientBlackBox_Off` (a distinct defName in the cost table, line
+  406, separate from the base `VQE_AncientBlackBox` at line 81 — a real
+  22nd row, not a duplicate). Precise re-extraction
+  (`grep -oP '^\s*\|\s*`\K[^`]+(?=`\s*\|\s*Vanilla Quests Expanded -
+  Cryptoforge)'`, deduped, every hit's source line individually checked —
+  no false matches, no duplicates) gives **22** unique defNames, each
+  appearing exactly once in `SALVAGE_PALETTE.md`. Full list: `VQE_Ancient{
+  Airlock, Airlock_Large, BlackBox, BlackBox_Off, FloorHeater, Landmine,
+  ShieldedTurret, ShipLandingBeacon, SpacerAutocannon, TransmitterBeacon,
+  WargamingTable}`, `VQE_Blueprints­Bench`, `VQE_Busted{ShieldedTurret,
+  SpacerAutocannon}`, `VQE_CryptoAncientTerminal{,Bank}`,
+  `VQE_ForcedAncientAirlock{,_Large}`, `VQE_FrozenEmptyCryptosleepPod`,
+  `VQE_Jammed­AncientAirlock{,_Large}`, `VQE_RuinedHospitalBed`. The
+  previous session's guess that airlock/turret state-variant pairs "almost
+  certainly" share one piece of art is **checked and FALSE**: the donor's
+  own `Buildings_Structure.xml` gives `VQE_AncientAirlock` a distinct
   `AncientAirlock_Top` texture, `VQE_JammedAncientAirlock` its own
   `AncientAirlock_Locked`, and the `_Large` variants their own
   `LargeAncientAirlock_*` set — every state is genuinely separate art, not a
-  shared asset with a tint. So this is honestly **21 separate sprites**,
+  shared asset with a tint. So this is honestly **22 separate sprites**,
   each needing the full `generating-rimworld-sprites` workflow — a
-  dedicated art pass, not a tail-end task, exactly the prior session's
-  judgment (still correct, now on firmer evidence). Not attempted this
-  session either, for the same reason: rushing 21 pieces risks shipping
-  placeholder-quality art against the project's own standard.
+  dedicated art pass, not a tail-end task (still correct, now on firmer
+  evidence). **Confirmed 2026-09-26: none of the 22 defNames exist anywhere
+  in the art pipeline yet** — zero hits in `registry.jsonl`, `done/`,
+  `_artsrc/`, or any `Transient/*.decisions.json` — so nothing here would
+  be duplicated by queuing, but writing 22 real, non-generic, citation-safe
+  prompts (this is a Workshop-art citation swap — the donor's own textures
+  must not be used as reference) is real design-adjacent work in its own
+  right. Not attempted this session either, for the same reason as before:
+  rushing 22 pieces risks shipping placeholder-quality art against the
+  project's own standard, and a single quick pass is the wrong shape for
+  writing 22 distinct visual briefs well.
 - **Step 4 (ModsConfig removal, cold-load check, canonical resave)** needs a
   real restart, which this session is explicitly not authorized to run
   (offline authoring only). Unaffected by anything above; still owed
