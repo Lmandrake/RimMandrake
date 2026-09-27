@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T04:23:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T04:30:21Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -152,15 +152,6 @@ target:   v1
 kind:     design
 summary:  Work per sea, in this order — cheapest and most decisive first.
 prose:    infrastructure/state/items/SEA_FLOOR_AND_CATCH_PASS_1.md
-
-## TWILIGHT_DANGER_LIGHTWEB_1 Twilight light-web dangers: the suulk lamp-grazer and the vaulisk counterfeit-lamp ambusher on one shared RM_JobGiver_SeekGlow brain (rulings: sun-sphere grazeable slowly+loudly; one vaulisk per map, tell always readable)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/TWILIGHT_DANGER_LIGHTWEB_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TWILIGHT_DANGER_LIGHTWEB_1.md
 
 ## TWILIGHT_PANE_STRIKE_1 Veil-fall pane system, floor and deck: pane strikes (shadow warning ~15s, CAN kill - ruled) plus the laden deck (panes bury a parked gravship; launch needs a cleared deck; never-strand is a binding bar)
 state:    doing
