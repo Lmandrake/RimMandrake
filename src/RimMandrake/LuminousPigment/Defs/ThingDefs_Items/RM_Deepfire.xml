@@ -19,6 +19,21 @@
   spec §9 (three existing unruled `_artsrc/scald2_rainbowpigment_*` jar
   renders are candidates, per CLAUDE.md's "check for existing regenerated
   art" rule — not wired here because the owner has not picked one).
+
+  RESOLVED 2026-09-26 (COLLECTION_GRAPHIC_ON_FLAT_PNG_1 + the
+  deepfire_pigment_review sheet, `Transient/deepfire_pigment_review.decisions.json`,
+  frozen 2026-09-26): owner ruled `deepfire_pigmentjar_b` KEEP ("This is what
+  it should look like, along with the multiples for stacking as you
+  indicated above") and `_a` + all three `scald2_rainbowpigment_*` CUT.
+  `deepfire_pigmentjar_b.png` is now wired as `RM_Deepfire_a.png`, replacing
+  the old procedural placeholder entirely. Separately: `Graphic_StackCount`
+  reads texPath as a FOLDER (Verse/Graphic_Collection.cs), not a file stem —
+  the bare placeholder PNG that used to sit directly at this path was
+  invisible to it ("Collection cannot init"), which is the defect this pass
+  actually fixes; the art upgrade rides along. More stacking variants
+  (owner's "multiples") are queued via fill_queue.py, matching
+  pigmentjar_b's ruled style, to land as `_b`/`_c` once rendered and
+  reviewed.
   ============================================================================
 -->
 <Defs>

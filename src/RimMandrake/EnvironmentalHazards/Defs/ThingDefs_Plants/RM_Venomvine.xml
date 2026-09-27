@@ -48,8 +48,15 @@
   under ART_REGEN_FLORA_WAVE1_QUEUE_1 — ripthorn_v1, tropicalchokevine_v1,
   firevine*, brambles_v1, twistingthorn*, crystaltipbrambles_* — and none of
   them is ours or this plant. Job rmvenomvine_v1 filed this pass; the texPath
-  below is where that render lands and validate_patch.py flagging it as
-  pending is expected until the artpipe daemon finishes it.
+  below is where that render lands.
+
+  LANDED 2026-09-26 (COLLECTION_GRAPHIC_ON_FLAT_PNG_1): rmvenomvine_v1
+  (facts PASS) was never wired; this texPath had NO file at all, firing
+  "Collection cannot init: No textures found" for both this def AND
+  RM_VenomvineThicket below (same texPath, on purpose — see that def's own
+  header). Wired as `RM_Venomvine/RM_Venomvine_a.png` — `Graphic_Random`
+  reads texPath as a FOLDER (Verse/Graphic_Collection.cs), so the render
+  had to land inside a folder of this name, not beside it.
 -->
 <Defs>
 

@@ -52,6 +52,21 @@
   the checker about a path neither of us can prove from here, the placeholder
   is a file we actually ship. Real icons are still owed; search
   infrastructure/artpipe/done/ and _artsrc/ by subject first.
+
+  FIXED 2026-09-26 (COLLECTION_GRAPHIC_ON_FLAT_PNG_1): `Graphic_StackCount`
+  reads texPath as a FOLDER (Verse/Graphic_Collection.cs —
+  `ContentFinder<Texture2D>.GetAllInFolder`), not a file stem — the bare
+  `RM_SaltCrystalItem.png` living directly at this path was invisible to it,
+  firing "Collection cannot init: No textures found" for all 5 concrete defs
+  above (RM_RawSalt + the 4 crystal salts; `RM_CrystalSaltBase` is abstract
+  and never resolves a graphic itself). Relocated the SAME placeholder pixels
+  into `RM_SaltCrystalItem/RM_SaltCrystalItem_a.png` — no visual change, just
+  correctly wired. Searched infrastructure/artpipe/done/+_artsrc/ for
+  salt/crystal/mineral subjects per CLAUDE.md first: only hit is
+  `greysea_saltblade` (TERMINAL_SEAS_FLOOR_DRESSING_1), a floor-dressing
+  PLANT sprite, not this item — not reused. A real growing-pile variant set
+  (honoring "so a stack reads as a pile" above) is queued via fill_queue.py
+  for a future `_b`/`_c`.
   ============================================================================
 -->
 <Defs>

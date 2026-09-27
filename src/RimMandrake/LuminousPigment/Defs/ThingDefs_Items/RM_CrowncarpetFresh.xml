@@ -8,6 +8,17 @@
   inverse of vanilla rot, which slows in the cold) — CompMatVitality
   (Source/CompMatVitality.cs) implements both clocks and swaps the stack for
   RM_CrowncarpetDead when either fires. No CompRottable: this is not rot.
+
+  COLLECTION_GRAPHIC_ON_FLAT_PNG_1 (2026-09-26): `Graphic_StackCount`/
+  `Graphic_Random` reads texPath as a FOLDER (Verse/Graphic_Collection.cs —
+  `ContentFinder<Texture2D>.GetAllInFolder(req.path)`), not a file stem. The
+  bare `RM_CrowncarpetFresh.png` sitting AT this path was invisible to it —
+  "Collection cannot init: No textures found" fired every load despite the
+  file being present. Fixed by relocating that same placeholder art into
+  `RM_CrowncarpetFresh/RM_CrowncarpetFresh_a.png` (one variant so far — same
+  pixels, just correctly wired). Real multi-variant stack art (a fuller pile
+  as the stack grows) is still owed; queued via fill_queue.py this pass
+  (see close note) rather than shipped now.
   ============================================================================
 -->
 <Defs>
@@ -42,9 +53,18 @@
     <defName>RM_CrowncarpetDead</defName>
     <label>dead crowncarpet</label>
     <description>A grey, slumped sheet of crowncarpet that died before it reached the press. Worthless as pigment; it exists so a colonist can see what happened to a stack rather than watching it vanish.</description>
+    <!-- COLLECTION_GRAPHIC_ON_FLAT_PNG_1 (2026-09-26): was Graphic_StackCount
+         over a bare flat PNG — StackCount reads texPath as a FOLDER
+         (Verse/Graphic_Collection.cs), so the file was silently invisible to
+         it ("Collection cannot init: No textures found"). Dropped to
+         Graphic_Single on judgment: this is a worthless dead-end byproduct
+         whose whole job is "show the colonist the stack died" — there is no
+         growing-pile story to tell as the stack count changes, unlike the
+         fresh/valuable resources this fix also touches. No file move
+         needed; Graphic_Single reads the exact file path, not a folder. -->
     <graphicData>
       <texPath>Things/Item/Resource/RM_Deepfire/RM_CrowncarpetDead</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>25</stackLimit>
     <statBases>
