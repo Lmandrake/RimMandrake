@@ -48,8 +48,16 @@
   exist (grimmoss_v1, rut_palemoss_v1, rot_palemoss_v2) and all three are
   other rosters' plants (Greentide/Rot family), already named as such in the
   design doc's own art note. Job rmleachmoss_v1 filed this pass; texPath
-  below is where that render lands, pending the daemon. No harvested item:
-  the design specifies no harvest product.
+  below is where that render lands. No harvested item: the design specifies
+  no harvest product.
+
+  LANDED 2026-09-26 (COLLECTION_GRAPHIC_ON_FLAT_PNG_1): rmleachmoss_v1
+  (facts PASS, no reference to check against — a plant sprite, not a
+  reskin) was never wired; this texPath had NO file at all, firing
+  "Collection cannot init: No textures found" every load. Wired as
+  `RM_Leachmoss/RM_Leachmoss_a.png` — `Graphic_Random` reads texPath as a
+  FOLDER (Verse/Graphic_Collection.cs), so the render had to land inside a
+  folder of this name, not beside it.
 -->
 <Defs>
 
