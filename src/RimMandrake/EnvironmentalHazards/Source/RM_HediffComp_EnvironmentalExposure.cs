@@ -160,11 +160,16 @@ namespace RimMandrake.EnvironmentalHazards
             // ROT_SHEEN_WEATHER_1: gear-slows-the-clock (card 5). Miasma sets
             // no protectionStat, so protection stays 0 and driveFactor stays
             // 1 — unchanged behaviour for the existing consumer.
+            // WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1: the floor curve
+            // (holdThreshold left at 0f) is HazardTargeting.ProtectionDriveFactor's
+            // shared home for this formula — RM_GameCondition_WetBulb calls
+            // the same method with its own hold-threshold curve instead of
+            // reimplementing this shape.
             float driveFactor = 1f;
             if (props.protectionStat != null)
             {
                 float protection = HazardTargeting.SumApparelStat(pawn, props.protectionStat);
-                driveFactor = Mathf.Max(props.minDriveFactor, 1f - Mathf.Clamp01(protection));
+                driveFactor = HazardTargeting.ProtectionDriveFactor(protection, props.minDriveFactor, 0f);
             }
 
             return props.severityPerDayExposed * mult * driveFactor;
