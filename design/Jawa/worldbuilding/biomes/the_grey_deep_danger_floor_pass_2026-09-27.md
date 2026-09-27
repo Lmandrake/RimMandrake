@@ -324,15 +324,15 @@ respect and future edits must keep respecting:
 
 ### 3.3 The genuine remainder — what this slice still owes
 
-1. **The catch-side tier migration (owed, recorded, not this pass's to execute).** The
-   floor residents are `RM_`; their catch items are still `RUT_Sallik` etc.,
-   MayRequire-gated in the Utinni layer — yet every name is an invented word, so per
-   Q11a they belong in `RM_`. `RM_GreySeaFloorLife.xml`'s header records the owed
-   cross-mod rename (incl. `RUT_RareGreyCatches`/`RUT_SaltCameo`). Until it lands, a
-   player without `mandrake.rut.patches` gets the animals but not the catch — the free
-   mod's sea is alive but not fully fishable, which is against the Q11a "looks
-   precisely the same" bar. This is the slice's one real defect. ⛔ Never "fix" it by
-   making the floor animals RUT_.
+1. **✅ The catch-side tier migration — DONE, `GREYSEA_CATCH_TIER_RENAME_1` (2026-09-27,
+   same day).** The seven catch items (`RUT_Sallik`/`Karrud`/`Hessal`/`Oomal`/`Maalu`/
+   `Immu`/`Haarn`) are renamed `RM_SallikCatch`/`RM_KarrudCatch`/`RM_HessalCatch`/
+   `RM_OomalCatch`/`RM_MaaluCatch`/`RM_ImmuCatch`/`RM_HaarnCatch` and moved into
+   `RM_GreySeaCatch.xml` — every name is an invented word, so per Q11a they belong in
+   `RM_`, matching the floor residents. The free mod's Grey Sea is now fully fishable on
+   its own. `RUT_RareGreyCatches` (updated to reference `RM_HessalCatch`) and
+   `RUT_SaltCameo` (unchanged) were out of that item's named scope and remain a separate,
+   still-owed migration.
 2. **Behaviour flourishes the descriptions promise (small, optional, ranked).** The
    defs are honest without these; each would make one sentence of item text playable:
    - *Sallik pebble-freeze* — on threat proximity, hold still (a freeze-in-place

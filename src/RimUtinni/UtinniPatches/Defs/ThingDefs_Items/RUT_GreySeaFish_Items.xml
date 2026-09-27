@@ -23,6 +23,29 @@
   texPath below reuses a non-fish sprite already physically present in this
   mod's own Textures/, following the SandSwimmer/niim convention, distinct
   within this table. Real icons are OWED art work, not done here.
+
+  ============================================================================
+  🔴 KEPT HERE ON PURPOSE — GREYSEA_CATCH_TIER_RENAME_1, 2026-09-27
+  ============================================================================
+  These seven are invented names, not canon IP, so per Q11a
+  (biome_mod_architecture.md §7) they belong RM_-tier — and they now also
+  ship as RM_SallikCatch/RM_KarrudCatch/RM_HessalCatch/RM_OomalCatch/
+  RM_MaaluCatch/RM_ImmuCatch/RM_HaarnCatch in
+  src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Items/RM_GreySeaCatch.xml,
+  wired into RM_GreySea's live fishTypes with no MayRequire — the free mod's
+  Grey Sea is fully fishable on its own.
+
+  The RUT_ originals below are NOT deleted, because two things in this same
+  mod still resolve against them by name and cannot be edited:
+  src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_GreySea.xml is explicitly
+  FROZEN ("stays as it is, byte-for-byte... deleting it before then destroys
+  the save" — its own header, 2026-09-25) and its fishTypes still name
+  RUT_Sallik/Karrud/Hessal/Oomal/Maalu/Immu/Haarn; and this mod's own
+  RUT_RareGreyCatches.xml (a separate copy from the TerminalBiomes one)
+  still names RUT_Hessal. Deleting these ThingDefs would leave both of those
+  with unresolvable cross-references. They retire together at the Phase B
+  planet repaint, when RUT_GreySea is replaced by RM_GreySea wholesale —
+  not before.
 -->
 <Defs>
 

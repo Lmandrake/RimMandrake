@@ -29,27 +29,27 @@
   check the item text before "fixing" it.
 
   ============================================================================
-  🔴 TIER: THESE ARE RM_, THE CATCH ITEMS ARE RUT_ — deliberate, and OWED
+  ✅ TIER: BOTH SIDES ARE NOW RM_ — GREYSEA_CATCH_TIER_RENAME_1, 2026-09-27
   ============================================================================
-  The seven catch items ship as RUT_Sallik etc. in the Utinni patch layer,
+  The seven catch items shipped as RUT_Sallik etc. in the Utinni patch layer,
   MayRequire-gated on mandrake.rut.patches. Every one of those names is an
   INVENTED exotic word, not canon IP — and Q11a (biome_mod_architecture.md
   §7, owner 2026-09-22) rules that invented names are free-tier and belong in
   RM_: "the top mod without star wars will look precisely the same as the
   star wars enhanced one."
 
-  So the living counterparts are authored RM_ and cast INLINE on RM_GreySea
-  with no MayRequire, because the free mod's floor has to stand alone. The
-  CATCH side is the half still in the wrong tier.
+  The living counterparts below were already authored RM_ and cast INLINE on
+  RM_GreySea with no MayRequire. The catch side has now caught up:
+  RUT_Sallik/Karrud/Hessal/Oomal/Maalu/Immu/Haarn are renamed
+  RM_SallikCatch/RM_KarrudCatch/RM_HessalCatch/RM_OomalCatch/RM_MaaluCatch/
+  RM_ImmuCatch/RM_HaarnCatch, moved into this same mod's RM_GreySeaCatch.xml,
+  so the pairing now reads RM_Sallik (floor) <-> RM_SallikCatch (catch),
+  matching the RM_Essarn <-> RM_EssarnCatch shape. The free mod's Grey Sea
+  is fully fishable on its own.
 
-  ⚠️ OWED, NOT DONE HERE: migrating RUT_Sallik/Karrud/Hessal/Oomal/Maalu/
-  Immu/Haarn (and RUT_RareGreyCatches, RUT_SaltCameo) down to RM_ in this
-  mod, which is a cross-mod rename touching RimUtinni and is not this wave's
-  to make unilaterally. Until then the pairing reads RM_Sallik (floor) <->
-  RUT_Sallik (catch) rather than the RM_Essarn <-> RM_EssarnCatch shape, and
-  a player without mandrake.rut.patches gets the animals but not the catch.
-  ⛔ Do not "fix" this by making the floor animals RUT_ — that would leave
-  the free mod's sea floor with five residents and is backwards.
+  RUT_RareGreyCatches (updated to reference RM_HessalCatch) and RUT_SaltCameo
+  (unchanged) were out of that item's named scope and still carry their
+  RUT_ defNames — a separate migration, not this one.
 
   ============================================================================
   EVERY ONE IS SOLITARY

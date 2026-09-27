@@ -15,8 +15,9 @@
   🔴 THE PILLARS EXISTED IN NO DEF OF ANY KIND until this file. Four shipped
   descriptions already name them — RM_Sorruth ("grazes the film off the Grey
   Sea's pillar-mason columns"), RUT_SaltCameo ("jacketed in pillar-mineral"),
-  RUT_Karrud ("a plate of pillar-mineral"), RUT_Haarn ("a jacket of
-  pillar-mineral … from pillar to pillar"). Those four stop lying here.
+  RM_KarrudCatch ("a plate of pillar-mineral", renamed from RUT_Karrud by
+  GREYSEA_CATCH_TIER_RENAME_1), RM_HaarnCatch ("a jacket of pillar-mineral …
+  from pillar to pillar", renamed from RUT_Haarn). Those four stop lying here.
 
   ============================================================================
   WHY THESE ARE MINEABLE ROCK AND NOT DECORATIVE BUILDINGS

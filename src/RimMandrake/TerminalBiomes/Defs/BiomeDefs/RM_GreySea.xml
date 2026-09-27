@@ -100,10 +100,10 @@
            counterparts of the seven catch-only rows in <fishTypes> below,
            authored from those items' own existing descriptions rather than
            invented fresh. Defs: RM_GreySeaFloorLife.xml.
-           ⚠️ The catch items they pair with are RUT_-tier and MayRequire-
-           gated; these are RM_ and inline, so the free mod's floor stands
-           alone. The tier mismatch on the CATCH side is recorded as owed
-           in RM_GreySeaFloorLife.xml's header. -->
+           ✅ GREYSEA_CATCH_TIER_RENAME_1, 2026-09-27: the seven catch items
+           below are now RM_*Catch, inline, no MayRequire — the tier mismatch
+           this comment used to describe is closed. RM_GreySeaFloorLife.xml's
+           header has the same correction. -->
       <RM_Sallik>0.5</RM_Sallik>
       <RM_Karrud>0.45</RM_Karrud>
       <RM_Hessal>0.55</RM_Hessal>
@@ -195,10 +195,10 @@
     <maxFishPopulation>120</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <saltwater_Common>
-        <RUT_Sallik MayRequire="mandrake.rut.patches">1.2</RUT_Sallik>
-        <RUT_Karrud MayRequire="mandrake.rut.patches">1</RUT_Karrud>
-        <RUT_Hessal MayRequire="mandrake.rut.patches">1</RUT_Hessal>
-        <RUT_Oomal MayRequire="mandrake.rut.patches">0.6</RUT_Oomal>
+        <RM_SallikCatch>1.2</RM_SallikCatch>
+        <RM_KarrudCatch>1</RM_KarrudCatch>
+        <RM_HessalCatch>1</RM_HessalCatch>
+        <RM_OomalCatch>0.6</RM_OomalCatch>
         <RM_EssarnCatch>1</RM_EssarnCatch>
         <!-- GREYSEA_SESSILE_LAYER_1: the sessile layer is catchable, so
              each of the three owes a row here beside its floor resident
@@ -210,9 +210,9 @@
         <RM_GruskCatch>0.9</RM_GruskCatch>
       </saltwater_Common>
       <saltwater_Uncommon>
-        <RUT_Maalu MayRequire="mandrake.rut.patches">1</RUT_Maalu>
-        <RUT_Immu MayRequire="mandrake.rut.patches">0.7</RUT_Immu>
-        <RUT_Haarn MayRequire="mandrake.rut.patches">0.4</RUT_Haarn>
+        <RM_MaaluCatch>1</RM_MaaluCatch>
+        <RM_ImmuCatch>0.7</RM_ImmuCatch>
+        <RM_HaarnCatch>0.4</RM_HaarnCatch>
         <RM_SorruthCatch>0.5</RM_SorruthCatch>
       </saltwater_Uncommon>
       <rareCatchesSetMaker>RUT_RareGreyCatches</rareCatchesSetMaker>
