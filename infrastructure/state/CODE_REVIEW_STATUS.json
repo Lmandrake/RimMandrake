@@ -828,10 +828,10 @@
     "sha": "5ed4b469"
   },
   "src/RimMandrake/Aftermath/validation.py": {
-    "cleanCount": 1,
-    "date": "2026-09-24",
-    "hash": "1b05cfd9bbb30f2ff43f5269e8481d55f4e3301fd8c72531d8dc68facc665cfc",
-    "sha": "3e547d539"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "a338027d77616b6401f3bf4d672acd8272e7d48dcfdb4ab7946a31be9478dd46",
+    "sha": "7553eaee0"
   },
   "src/RimMandrake/CreatureBehaviors/About/About.xml": {
     "cleanCount": 4,
@@ -918,10 +918,10 @@
     "sha": "c3330da8f"
   },
   "src/RimMandrake/CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_VerminBehaviors.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-24",
-    "hash": "40858245a09dcde7cb849cfc3ec8859412c8b0317b9484d4dc234818e67131c0",
-    "sha": "067849df3"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "dba85f3915431a748f84d1acb203c7fe0238ab71b376c092726fa3033b2b50a5",
+    "sha": "7553eaee0"
   },
   "src/RimMandrake/CreatureBehaviors/Defs/ThoughtDefs/RM_TameSoothe_Thoughts.xml": {
     "cleanCount": 1,
@@ -3582,10 +3582,10 @@
     "sha": "f869774f1"
   },
   "src/RimMandrake/GelatinousSlime/Defs/BiomeDefs/GelatinousSlime.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-23",
-    "hash": "86393ced6fd84db70ec6ecb288f886688a7a5dfe23fe1d8d83320a547be6038d",
-    "sha": "f34c32a99"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "288b6f7cae36df5d2b849ee645102b9bed171d7e5321e1ec2626a21d37c43956",
+    "sha": "7553eaee0"
   },
   "src/RimMandrake/GelatinousSlime/Defs/BodyDefs/AmorphousBody.xml": {
     "cleanCount": 1,
@@ -3786,10 +3786,10 @@
     "sha": "f34c32a99"
   },
   "src/RimMandrake/GelatinousSlime/Source/SlimeVisitors.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-11",
-    "hash": "043b636fd1defcb472353de6db46fbf3a97458e8a08e9ff2cf16137dacb18a64",
-    "sha": "3505dc594"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "d4edc34f7f78889780d5db569bfbaecfa87303cd00cbbcc522a45635c2e04b59",
+    "sha": "7553eaee0"
   },
   "src/RimMandrake/GelatinousSlime/Source/Slimification.cs": {
     "cleanCount": 1,
@@ -5970,10 +5970,10 @@
     "sha": "dad4e548"
   },
   "src/RimMandrake/RimProperty/validation.py": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "176d8172e5a558afdd183fb19300239fd3fc6a93054616d2fc49e6cb67bb2b78",
-    "sha": "616570761"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "e82e5cc598dafa6de709ce55f22461864e1d09c13396d99d3fcec3a3d16d865e",
+    "sha": "7553eaee0"
   },
   "src/RimMandrake/RustChrome/About/About.xml": {
     "cleanCount": 2,
@@ -6222,10 +6222,10 @@
     "sha": "57d78d214"
   },
   "src/RimMandrake/StructureInjections/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-24",
-    "hash": "2dfe981d7bb666adaeeefb18eeff68cceff39415f5dd3efe00905b07e64199bf",
-    "sha": "f869774f1"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "2a208a674ba7307c0a3841508c1564b108c631132f7733f9b5720b6886efeacb",
+    "sha": "7553eaee0"
   },
   "src/RimMandrake/StructureInjections/Defs/GenStepDefs_Batch1.xml": {
     "cleanCount": 1,
@@ -6294,10 +6294,10 @@
     "sha": "b88a6f90"
   },
   "src/RimMandrake/StructureInjections/validation.py": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "648b3ec8ece0f8aea81bbec141e54c2446184f12205a4cecaca96e2350e90252",
-    "sha": "d28bf3edf"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "14921a032345afc0dd9ae3909c28c89c7b67f0d4381bfe1e4ae223197c5f48a1",
+    "sha": "7553eaee0"
   },
   "src/RimMandrake/TheBazaar/About/About.xml": {
     "cleanCount": 1,
@@ -11734,10 +11734,10 @@
     "sha": "c4858101e"
   },
   "src/RimStarWars/Cuisine/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-24",
-    "hash": "eb38e2a2f67d5fb26ea7e58993e147edeb564ba973df63b4e0a8c228f83269c6",
-    "sha": "f869774f1"
+    "cleanCount": 3,
+    "date": "2026-09-26",
+    "hash": "1abe65bf4e7b6ae8417987fca8bc516d8add5d02f510dbc795501a695bc8c1df",
+    "sha": "7553eaee0"
   },
   "src/RimStarWars/Cuisine/Defs/RecipeDefs_Cuisine.xml": {
     "cleanCount": 1,
@@ -13780,10 +13780,10 @@
     "sha": "9c1bce648"
   },
   "src/RimStarWars/SWBestiary/About/About.xml": {
-    "cleanCount": 7,
-    "date": "2026-09-24",
-    "hash": "ba8e8f8c1b29e03dd1aafaa5addfbe09805abd7297429e73720ee098cefdded7",
-    "sha": "f869774f1"
+    "cleanCount": 8,
+    "date": "2026-09-26",
+    "hash": "a859f80f7626f0cfc8e693b03876db6ccb9d5d6a6b95efcc101ac0bfb68b166e",
+    "sha": "7553eaee0"
   },
   "src/RimStarWars/SWBestiary/Defs/AbilityDefs/RSW_MlieWaveB_Abilities.xml": {
     "cleanCount": 1,
@@ -15196,10 +15196,10 @@
     "sha": "c4858101e"
   },
   "src/RimStarWars/StarWarsPatches/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-24",
-    "hash": "19c88711dd46aa96ee3d99e129d7561b1fccb00f69a65603e89cd1929b4d7a9b",
-    "sha": "f869774f1"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "313ecd846b531f9e86bb1b76e78b230344191a91d5044704e421e1423acddb59",
+    "sha": "7553eaee0"
   },
   "src/RimStarWars/StarWarsPatches/Defs/Absorbed_LumiDoorsExpanded/Absorbed_Lumi_BlastDoors_ResearchProjects.xml": {
     "cleanCount": 2,
@@ -16138,10 +16138,10 @@
     "sha": "d28bf3edf"
   },
   "src/RimUtinni/AshkarrFlora/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-24",
-    "hash": "4117dfac0f9576dcb8301f9c987e84f6cee5dc9e412a79cf9af33d1f2f0d72a3",
-    "sha": "f869774f1"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "9e5abdb135000db8ff559257964a302e3647296d3e55fbbe0cc0a0e88fa07fb8",
+    "sha": "7553eaee0"
   },
   "src/RimUtinni/AshkarrFlora/Defs/HediffDefs/RUT_Staggerseed_Hediffs.xml": {
     "cleanCount": 1,
@@ -18112,10 +18112,10 @@
     "sha": "14cf4186"
   },
   "src/RimUtinni/ResearchRetag/validation.py": {
-    "cleanCount": 1,
-    "date": "2026-09-17",
-    "hash": "51faf47fecc3a942fbfe3640d3087b7d83e1410e183fa3f9b4f06a89ccf5e26e",
-    "sha": "d28bf3edf"
+    "cleanCount": 2,
+    "date": "2026-09-26",
+    "hash": "12894ba5302b48b086ea19e9711b6679694bb1974e5c94fa546d92c54742b97b",
+    "sha": "7553eaee0"
   },
   "src/RimUtinni/RestrainingBolts/About/About.xml": {
     "cleanCount": 1,
@@ -19078,10 +19078,10 @@
     "sha": "9c1bce648"
   },
   "src/RimUtinni/StructureInjectionsRUT/About/About.xml": {
-    "cleanCount": 3,
-    "date": "2026-09-24",
-    "hash": "f7d23b8a62077e34d7226e989d1c20f243c81757451c025b448d8e556ea22dae",
-    "sha": "f869774f1"
+    "cleanCount": 4,
+    "date": "2026-09-26",
+    "hash": "49bee9a2e7c3379c42374da5241d398f349aeef30b4bc361520f8df867860c22",
+    "sha": "7553eaee0"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/Ashfall/StructureLayoutDefs_Ashfall.xml": {
     "cleanCount": 1,
@@ -19648,10 +19648,10 @@
     "sha": "9c1bce648"
   },
   "src/RimUtinni/UtinniPatches/About/About.xml": {
-    "cleanCount": 10,
-    "date": "2026-09-24",
-    "hash": "009cc7f2f4153f902c04a837c340d1ff414a0b99433fc744827e7ad3a28a6686",
-    "sha": "f869774f1"
+    "cleanCount": 11,
+    "date": "2026-09-26",
+    "hash": "cf349ca02ae8d2ad598ddcf7a2097af224905094d56944379ff65b26818c3542",
+    "sha": "7553eaee0"
   },
   "src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml": {
     "cleanCount": 1,
