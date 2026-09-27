@@ -49,7 +49,8 @@ marks it; nothing below is XML.
 
 ## The door
 
-What four routes end at and one route erases: the lab's entrance, on the deep floor
+What four player routes end at, one route erases, and the sixth breaks open
+unasked: the lab's entrance, on the deep floor
 over the Impact Site, under the island crag (tile 5873 — the lab's access standing
 above the fuel, ruled a place, not an accident).
 
@@ -71,13 +72,15 @@ in whether someone might one day need the wound open again. The accretion is not
 lock and not a guardian. It is healing. Every route below is a way of tearing it.
 
 Beneath the accretion, the lab itself: shielding intact, amazingly (frozen sheet
-§8), and the door it protects still LOCKED — by the frozen gate ruling
-(amendment 2026-09-12), the **Rakatan command codes held in the Spire are the only
-way through the shielding**, on every route. This spec reads all five routes as
-solving the *ground* — the lake, the crust, and centuries of accretion between the
-player and the door — never the door itself. The war lab remains a two-key dungeon:
-a route opens the ground; the Spire's codes open the door. (See Contradictions for
-the one ambiguity in this reading.)
+§8), and the door it protects still LOCKED. Ruled (owner, typed 2026-09-27):
+*"Nothing the player does bypasses the door, but the Empire fallback does."* So
+every route the player can choose — all five below, violent and peaceful alike —
+solves only the *ground*: the lake, the crust, and centuries of accretion between
+the player and the door. The Rakatan command codes held in the Spire remain the
+only way through the shielding, and the war lab remains a two-key dungeon: a
+route opens the ground; the Spire's codes open the door. The single exception is
+the sixth route, the one nobody chooses (Route 6), which ends with the door
+broken open by other hands entirely.
 
 What the player sees before choosing, then, is exactly what the owner built the
 floor to make them see: the oldest living structure on Ash'karr, delicate,
@@ -121,7 +124,8 @@ per the no-accidents law) and get the ship out. What follows is
 `CHILL_WORLD_CRATER_1`'s build: the guts detonate WITH the lake — the reacting
 mass supplies what the sea never had, and the sea supplies everything else — and
 the Chill's world tiles swap in-save to the crater biome. Everyone on the planet
-notices. The fiction owes the player one clean sentence beforehand, in whatever
+notices. Even this does not break the door: the lab lies ripped open to the sky
+with its shielding holding, and the Spire's codes are still the second key. The fiction owes the player one clean sentence beforehand, in whatever
 mouth delivers it: *this is the only route you cannot take back, and the only one
 that kills the garden without ever waking it.*
 
@@ -132,9 +136,10 @@ the lake, produced from some reserve the Cathedral has never admitted having.
 Proposed def: **RUT_LucentCharge**. It does not explode in any chemistry the
 colony can parse — no oxidizer, no fuel, nothing the fire ban even has an opinion
 about; Rakatan exotica, the same lineage as the shielding it is tuned to stop
-short of. One clean wound, exactly at the door, exactly as deep as the accretion:
-the garden loses a circle the width of the entrance hill's crown and nothing
-else. The lake never knows it happened.
+short of. One clean wound, exactly at the door, exactly as deep as the accretion
+and not one molecule deeper — the shielding stands, the door stays shut, and the
+Spire's codes are still owed: the garden loses a circle the width of the entrance
+hill's crown and nothing else. The lake never knows it happened.
 
 **What the intelligence wants.** The Cathedral is a slumbering Rakatan mind that
 survives by looking dull, hates the Helix from the moment they side with the
@@ -188,10 +193,19 @@ first key anyone has had in centuries, and the Helix know it before the player
 does. So the offer arrives unbidden, immaculate, and expensive in the only
 direction that matters: the charge is sold at obscene-wealth prices (they can
 afford to charge; the player can be made to afford to pay), **plus a retrieval
-share** — Helix specialists ride down after the burn and take their pick of the
-containment archive. Not everything; a share. Their contracts are precise,
-honored to the letter, and drafted by people who have been buying unread
-antiquities at a premium for years.
+share** — Helix specialists ride down after the burn, wait politely on the
+player's key at the door, and take their pick of the containment archive when
+it opens. Not everything; a share — **and the share includes the living**
+(decision taken by question card 2026-09-27). The contract names it in the flat
+language of inventory: *viable specimens*. A live Assailant, crated and quiet
+under Helix escort, leaves the lab, leaves the floor, and leaves the campaign's
+sight — the Overdrive handed the one thing ten thousand years of containment
+existed to withhold. This is the route's real price and the spec says so
+plainly: it is a **late-game loose thread, deliberately left hanging** —
+something alive is out there in Helix hands, and the story is not required to
+let the player forget it. Their contracts are precise, honored to the letter,
+and drafted by people who have been buying unread antiquities at a premium for
+years.
 
 **Trigger and placement.** Unlike Route 1, the Gasp must be *placed* — the zone
 has to cover the entrance hill, so the carry crosses the garden to the door with
@@ -264,7 +278,44 @@ end. Two strings, both very Deepwater:
 problem, owe nothing* — front-loaded cost, ongoing breakdowns, no strings. The
 Deepwater route is *hire the professionals, spread the cost, gain a permanent
 partner with a claim* — gated on clean hands, smoother in the doing, and never
-entirely yours afterward. Same hole; opposite relationships to it.
+entirely yours afterward. Same hole; opposite relationships to it. And both
+shafts end where every player route ends: at the door, which still answers only
+to the Spire's codes.
+
+## Route 6 — the Empire fallback (unchosen; most violent)
+
+The route nobody buys, nobody places and nobody arms — the one that happens *to*
+the world if the player's secret gets away from them. Ruled by the owner, typed
+2026-09-27, quoted in full in the rulings block below; the shape it commands:
+
+**Trigger.** The Empire *learns the place exists.* That is the whole fuse.
+Secrecy is therefore a real currency across this entire spec — every dive
+logged near their orbital eyes, every faction contract signed, every rumor down
+the waste-roads is a way the fuse can be lit (how they find out is left as a
+design hook for the quest build; no new mechanism is invented here).
+
+**What happens.** The occupier does what occupiers do: they bomb their way in —
+procedural, unhurried, with ordnance that asks nobody's permission and brings
+its own everything, the no-accidents law untouched because nothing about an
+orbital bombardment is an accident. The garden dies ugly under a power that
+never even noticed it was there. And then the Empire meets what is inside — and
+is **overrun**. The containment archive answers ten thousand years of patience
+with the first thing through its broken door, and it is not the player.
+
+**What it leaves.** The lab stands **exposed for the player to walk into without
+action** — the one and only path past the door: not a route the player takes but
+a wound the player inherits, shielding breached by Imperial ordnance and
+Imperial dead, the two-key rule bypassed by the only hands the ruling permits to
+bypass it. And the Empire is **maximally escalated against the player** — the
+permanent enemy at its permanent worst, because whatever came out of that lab,
+the Empire's account says the player's ship led them to it.
+
+**What it is for.** This is the frozen sheet's guaranteed ending, kept: the
+crater sitting's *"if they fail to do so, there may be automated ways for it to
+occur too... no one will miss it"* is satisfied by this route — the ending the
+world supplies when the player declines to choose one, most violent of all six,
+and the only one that costs the player nothing at the door and everything
+everywhere else.
 
 ## Price and provider match brutality — the ladder
 
@@ -281,6 +332,10 @@ leave you owing or owning relationships.
 | 3 · Long Gasp | Ascendant Helix | obscene, and paid in full | complicity: a retrieval share of the Assailant archive walks out in Helix hands, and the Cathedral's hatred follows you |
 | 4 · the Chewer | Junkers | heavy, up front | weeks of labor, breakdowns, Iliss arcs, a thin scar — and nothing owed after |
 | 5 · the Stillbore | Deepwater | moderate, on schedule | clean hands required, and a permanent Deepwater claim on the floor's water ice |
+
+Route 6 sits off the ladder — no provider, no price, no transaction. It is what
+the ladder costs when the player buys nothing and keeps the secret badly: paid
+entirely in the garden, the Empire's maximal enmity, and whatever got out.
 
 ## Defense response per route
 
@@ -311,6 +366,10 @@ first, then Tarnn, both overcomable by ruling. What each route meets:
   the shaft itself — stinging, eerie, survivable, never escalating. **No Tarnn
   wake** on either shaft, by card ruling: trying harder is not free, but it is
   never punished at scale.
+- **Route 6 (Empire fallback): the garden's tiers are beside the point.** No
+  Iliss arc troubles an orbital bombardment and no Tarnn skirmish slows it; the
+  defense that finally matters is the lab's own contents, and it is the Empire
+  that meets them. The garden's immune system dies with the garden, unconsulted.
 
 Calibration inherited whole from the defense item: *"shocking when it can
 actually defend itself but quite overcomable"* — a prepared expedition beats
@@ -318,7 +377,7 @@ either tier without a wipe, on every route where a tier fires at all.
 
 ## Aftermath states
 
-Five endings for the floor; each is a permanent state of THE map, never a
+Six endings for the floor; each is a permanent state of THE map, never a
 regeneration. (Seabed-layer caveat from the flora pass carries: floor maps
 re-roll between dives today; the scars below are authored as terrain/biome
 truth so they persist through that, and the crater is world-tile truth.
@@ -359,9 +418,16 @@ items named.)
    headworks, Deepwater surveyors booked onto the colony's dive schedule,
    Deepwater claim-markers on the stonewater fields. The gentlest aftermath and
    the only one that adds a permanent second flag to the bottom of the world.
+6. **The broken door** (Route 6). Imperial ordnance craters where the entrance
+   hill stood, Imperial wreckage and Imperial dead strewn through galleries that
+   held for ten thousand years, and the lab open to anyone brave enough to step
+   over what stopped the occupier — no codes needed, because the codes were for
+   a door that no longer exists. Campaign state: the Empire at maximal
+   escalation against the player, and the containment record ending mid-line.
 
-Across all five: the door itself, once reached, still wants the Spire's codes.
-No aftermath state includes an open lab.
+Across the five player routes: the door itself, once reached, still wants the
+Spire's codes — nothing the player does bypasses it. Only Route 6's aftermath
+includes an open lab, and it is open because someone else died opening it.
 
 ## Quest shape
 
@@ -408,8 +474,12 @@ player can bore the patient way down, stand in the garden at the door, and
 *still* choose to buy a bomb; the choice the floor was built to pose stays live
 until a blast tier actually fires. Any blast forecloses the other blasts
 (there is nothing left to blast surgically after a crater, and no lake left to
-save after the guts). The two-key rule shapes every route's back half: reaching
-the door is this spec; opening it is the Spire's codes and `ANCIENT_WAR_LAB_1`.
+save after the guts). And over all of it hangs Route 6: the choice stays the
+player's only for as long as the secret does — the Empire learning of the place
+takes the decision out of everyone's hands at once. The two-key rule shapes
+every player route's back half: reaching the door is this spec; opening it is
+the Spire's codes and `ANCIENT_WAR_LAB_1` — unless the Empire has already
+opened it the expensive way.
 
 ## Contradictions with the frozen origin sheet
 
@@ -418,15 +488,14 @@ add detail, never change rulings — the newer owner rulings below therefore
 supersede where they collide, and the collisions are recorded here rather than
 papered over):
 
-1. **"The ending is guaranteed" vs "the choice is the point."** The sheet's §8
-   amendment (plot sitting, 2026-09-12) has the crater as THE ending — multiple
-   player triggers, *"automated ways for it to occur"* if the player never fires
-   one, a cut-scene no one will miss, *"guaranteed to happen and guaranteed to
-   be seen."* The 2026-09-27 rulings make the crater ONE tier of a five-route
-   choice, with the entire floor aesthetic built so the player *feels the choice
-   to blow it up or not* — and an automated fallback that fires regardless would
-   delete that choice. The newer ruling wins as far as it reaches; whether the
-   automated fallback survives at all is genuinely open (Open questions, Q1).
+1. **"The ending is guaranteed" — reconciled, not contradicted.** The sheet's §8
+   amendment (plot sitting, 2026-09-12) has the ending as guaranteed — *"automated
+   ways for it to occur"* if the player never fires one, a cut-scene no one will
+   miss. The 2026-09-27 rulings resolve this cleanly: the automated way survives,
+   reshaped into **Route 6, the Empire fallback** — the ending the world supplies
+   when the player declines to choose one, arriving through the occupier rather
+   than through a timer. The player's choice among the five stays whole; the
+   sheet's guarantee stays kept; both rulings stand.
 2. **"Ignition from anything extremely hot" vs "destruction can never happen by
    accident."** The sheet (§8 and hard ban 4's framing) treats spacecraft
    interaction or any hot source as a live crater trigger. The fire-ban physics
@@ -436,12 +505,13 @@ papered over):
    where the atmosphere is — but the crater-as-accident is dead, and this spec
    treats hard ban 4 as satisfied by construction: every trigger below is a
    deliberate, chemical-or-archotech, hand-carried source.
-3. **Not a contradiction, held deliberately:** the two-key gate (crater opens the
-   ground, Spire codes open the door) is frozen amendment text, and the owner's
-   route paragraph says the archotech bomb is provided *"to blast into the
-   place"* — readable as breaching the shielding itself. This spec keeps the
-   frozen gate: all five routes open the ground only. If "into the place" meant
-   through the door, that is Q2.
+3. **The two-key gate — RULED, and it holds.** The frozen amendment's gate
+   (a route opens the ground, the Spire's codes open the door) stands for every
+   route the player can choose, by the owner's own sentence: *"Nothing the
+   player does bypasses the door, but the Empire fallback does."* The route
+   paragraph's "blast into the place" means the ground, on every player route;
+   the one breach of the shielding in the design is Route 6's, made by Imperial
+   ordnance and paid for by the Empire on the spot.
 
 Nothing else collided: the ten hard bans are untouched (no kyber, no visibility
 penalty, no rain, no tanker economy, no roads in the Umbra, no icy analogs, the
@@ -449,27 +519,24 @@ war-legacy split holds — the lab's contents stay study subjects on every route
 and no route puts weapon-fauna in the biome), and the island, the pipes, the tap
 and the Slurrypede are all left exactly where the sheet put them.
 
-## Open questions for the owner
+## Rulings (2026-09-27, post-spec sitting)
 
-Three, and only where the record genuinely runs out:
+The spec's three open questions were put to the owner and all three are ruled;
+nothing about the routes is open.
 
-1. **Does the automated crater fallback survive the routes ruling?** The
-   2026-09-12 plot amendment guarantees the ending (*"if they fail to do so,
-   there may be automated ways for it to occur too"*); the 2026-09-27 rulings
-   build the whole floor around the player feeling free NOT to fire it. Is the
-   crater now strictly player-fired, or does some late automated trigger remain
-   — and if it remains, does it wait on the player having seen the garden first?
-2. **Do the blast routes touch the door itself?** Your route paragraph has the
-   archotech bomb *"blast into the place"*; the frozen gate ruling keeps the
-   shielding locked behind the Spire's Rakatan codes on every path. This spec
-   assumes all five routes open only the GROUND and the two-key rule stands —
-   confirm, or the Lucent Charge becomes a shielding-breacher and the two-key
-   dungeon loses a key.
-3. **May the Helix retrieval share include a living specimen?** Route 3's string
-   is a share of the containment archive. Residue and dead material is one
-   campaign; a live Assailant walking out under Helix escort is the Overdrive
-   handed its missing piece, and probably a plot trigger in its own right.
-   Where is the line on what their contract may name?
+1. **The fallback survives, as Route 6.** Owner typed, verbatim: *"If the
+   Empire finds out about the place, they bomb their way into it and then get
+   overrun, exposing the War Lab for player entrance without action. Most
+   violent and escalates the Empire maximally against the player too."* The
+   Empire-fallback route section above is that ruling, specced.
+2. **The door holds against everything the player does.** Owner typed,
+   verbatim: *"Nothing the player does bypasses the door, but the Empire
+   fallback does."* Two-key rule intact on all five player routes; Route 6 is
+   the sole bypass.
+3. **The Helix share includes living specimens** — decision taken by question
+   card 2026-09-27 (yes, living included). The Long Gasp's contract may name
+   viable specimens, and the departure of a live Assailant in Helix hands is a
+   deliberate late-game loose thread.
 
 ---
 
