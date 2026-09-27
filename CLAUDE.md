@@ -227,24 +227,19 @@ MEASURED about the live world — the live system is the only instrument for "ri
   two subagents disagree on a number, measure it yourself before it becomes a fact.
 
 ### Tools with surprising side effects
-- 🔴 **`rimworld/start_debug_game_ready` (and `rimworld/start_debug_game`) is BROKEN on ANY mod
-  list — measured 2026-09-27, reproduced 3x, including on a bare 9-mod list (Harmony + Core +
-  all 5 DLC + `brrainz.rimbridgeserver` + one content mod, no interaction with the content mod
-  at all).** Real cause, read straight from `Player.log`: `Verse.Root_Play.SetupForQuickTestPlay()`
-  throws `System.ArgumentOutOfRangeException` deep in
-  `WorldPathGrid.RecalculateAllLayersPathCosts` (via `WorldGrid.get_Item`) during
-  `World.FinalizeInit`, for every `WorldFeatureDef` in turn, then again as an uncaught async
-  exception — so `Current.Game.World` never gets assigned and the game sits at the main menu
-  forever (`hasCurrentGame: false`, `programState: "Entry"`). This is vanilla engine code, not
-  RimBridge's own — RimBridge only invokes the vanilla debug entry point
-  (`RimBridgeServer.LifecycleCapabilityModule.StartDebugGameCore`). Supersedes the earlier
-  `DEBUG_GAME_READY_WORLDUI_CRASH_1` theory that this needed "high mod count" — it does not.
-  ⚠️ **Whether a NORMAL new-game world generation (real planetCoverage, not quicktest-scale)
-  hits the same bug is UNMEASURED** — not tested, since that would risk a real world-gen run;
-  the existing canonical save loads fine because loading never calls `GenerateWorld` at all.
-  Until this is fixed or Harmony-patched around, no `prove_*.py` script or skill workflow that
-  opens with this call can work — use `rimworld/load_game_ready` against an existing compatible
-  save instead, if one exists for the mod list in question (item: `DEBUG_GAME_READY_WORLDUI_CRASH_1`).
+- 🔴 **When a new game or world won't start, read the FIRST exception in `Player.log`, not the
+  loudest.** `rimworld/start_debug_game_ready` and `load_game_ready` both work (VERIFIED on the
+  full 629-mod list, 2026-09-27). They were "broken on any mod list" for a while, but every
+  visible symptom was a cascade from one of three bugs in our own content, and none was in the
+  engine. (1) A `BiomeWorker.GetScore` called `SurfaceTile.Rivers`, which NREs because the
+  biome isn't assigned yet during `WorldGenStep_Terrain`. Terrain gen died on tile 0, and the
+  loud `WorldPathGrid`/`WorldGrid.get_Item` out-of-range spam came after it. Read the raw
+  `potentialRivers` instead. (2) A drug (non-`None` `drugCategory`) with no
+  `CompProperties_Drug` NREs `DrugPolicy.InitializeIfNeeded` inside `Game`'s constructor.
+  `DrugBase` does not supply that comp. (3) A creature ThingDef naming a type from an
+  inactive mod gets discarded, and the raceless PawnKindDef it leaves behind kills
+  `GeneticRim.Core`'s cctor, which stops starting-pawn generation
+  (`DEBUG_GAME_READY_WORLDUI_CRASH_1`). Harness: `src/RimMandrake/bridgetools/prove_quicktest_world.py`.
 - 🔴 **A `PreToolUse` hook added to `.claude/settings.json` mid-session does not fire** — not for this window's Bash calls and not for its subagents' — until a new session starts; a hook already present at session start does fire for subagents. Test a new hook in a fresh window, never by exercising it in the one that added it.
 
 - 🔴 **A backgrounded `Agent` dies at 600 s of silence and leaves NOTHING on disk.** Three died
