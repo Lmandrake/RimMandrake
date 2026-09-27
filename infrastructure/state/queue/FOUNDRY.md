@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T16:12:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T16:38:24Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1071,6 +1071,15 @@ kind:     task
 summary:  Per sea, per catch entry without a living counterpart:
 prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
 
+## SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1 One gravship can only ever visit ONE sea floor: MapPortal caches its pocket map, so the hatch's per-tile biome resolution runs once and every later dive re-enters the first sea
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1575,6 +1584,16 @@ blocked:  Live tile count UNMEASURED: RimWorldWin64 (PID 40272) up since 20:32 b
 summary:  Per biome, following 84d42c63b:
 prose:    infrastructure/state/items/BIOME_DEFNAME_MIGRATION_WAVE_1.md
 
+## SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1 One gravship can only ever visit ONE sea floor: MapPortal caches its pocket map, so the hatch's per-tile biome resolution runs once and every later dive re-enters the first sea
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  Owner already ruled (BENCH note 2026-09-26T23:24:03Z on this item) that this caching defect is fixed by replacing pocket maps with a seabed PlanetLayer, not by patching MapPortal caching in RM_SeaDiveHatch. Blocked on SEABED_PLANET_LAYER_1 landing and DivingInteraction's role being settled, per that note. (on SEABED_PLANET_LAYER_1)
+summary:  (no items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1756,16 +1775,6 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  GREYSEAANCHORCREATURES1 — build the two anchors the Grey Deep is actually about, plus the Aerofleet replaceme…
 prose:    infrastructure/state/items/GREYSEA_ANCHOR_CREATURES_1.md
-
-## SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1 One gravship can only ever visit ONE sea floor: MapPortal caches its pocket map, so the hatch's per-tile biome resolution runs once and every later dive re-enters the first sea
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md
 
 ## GREYSEA_SALTDOME_SCATTER_OOB_1 RM_SaltDomeShore fails its cluster-centre search and is followed by Got ThingsListAt out of bounds (-1000,-1000,-1000) at map-gen
 state:    proposed
