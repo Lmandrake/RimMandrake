@@ -184,7 +184,7 @@ empty. Ban 5 was always a danger ruling wearing a real-estate hat.
 **(b) In play.** The standing clock every other danger stands on. A shaft closing over
 a player's ground is a slow, fully legible catastrophe: the rim dims over a day or two
 (the pale new-growth ring above thickens — a sky-read), the pallu thin out, the kelp
-stand starts dying, the fishing water fades, and then the cells go dark — and dark
+stand starts dying, the well's abundance drains away, and then the cells go dark — and dark
 cells are the loohn's ground and D2/D4's habitat. The early game is CHASING the light
 (the brief's own line): pack the field, move the chained cages, follow the gold. The
 mid-game answer is the bank works (immobile, current-fed, light-independent wealth) and
@@ -325,8 +325,8 @@ Twilight remembering what every other biome on this planet already knows about t
 dark. The Compact bars no doors and lights every lamp, and the children are kept in.
 
 **(b) In play.** A rare weather (the content drop's lighting-only set, one step past
-`RM_TwilightOvercast`): every skylight at ~0 for ~a day. Fishing in the shafts stops
-(the water is dark), kelp pauses, and the map's entire economy of visibility inverts
+`RM_TwilightOvercast`): every skylight at ~0 for ~a day. The shafts' abundance
+scatters (the water is dark), kelp pauses, and the map's entire economy of visibility inverts
 onto the player's handful of lamps, while D2's grazers and D4's liar work a floor where
 scattered gold lights can no longer be assumed honest. Not damaging in itself; it is the amplifier weather
 that makes the biome's whole danger grammar play at once. The morning after, the beams

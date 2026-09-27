@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T03:39:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T03:44:06Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -798,3 +798,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SURFACE_RIVER_WEIRS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SURFACE_RIVER_WEIRS_1.md
+
+## TWILIGHT_BOTTOM_CAST_1 The Deepwater bottom cast: 6-8 named residents of the lit bottom-houses (per-tile world objects), roles from the content doc section 9.3 as the starting sheet - ruled yes-to-all-three 2026-09-26
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TWILIGHT_BOTTOM_CAST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TWILIGHT_BOTTOM_CAST_1.md

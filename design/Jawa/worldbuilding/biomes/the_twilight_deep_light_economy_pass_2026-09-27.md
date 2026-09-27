@@ -59,7 +59,7 @@ dressing genstep's siting rules). So the map always has light — just never whe
 1. **The sky-read** (free, always): the waning rim and the stepping radius, above. A
    player who looks up gets ~1.5 days of warning for nothing.
 2. **The stake in the ground** (positional): a letter fires ONLY when a waning well
-   contains something the player owns — a sown plot, a fishing zone, a buoy, a leased
+   contains something the player owns — a sown plot, a buoy, a leased
    right. *"The well over {ground} is closing."* No spam for wells the player never
    touched.
 3. **The chart** (bought or earned, §4.4): the well-keeper's forecast names the NEXT
@@ -181,7 +181,7 @@ and one mechanism that lets any of them (and anything else that moves) carry its
 |---|---|---|---|---|---|---|
 | **1 — the bladder** | `RM_LampBladder` (hoolimbre harvest) | radius 2–3, rots in ~6 days | pick it, day one | none — it dies instead | none worth naming | landing week: the torch you chase the light with |
 | **2 — the clipped lamp** | noothelm bulb / hoolimbre string on a tether-chain (mobile, §2) | radius 3–5, permanent | grow or harvest the plant + **one chain** (Compact trade) | none — sealed living clip (§2.2-4) | the **suulk** grazes it; the **vaulisk** counterfeits it; a pane can crush it | the chase economy: lamps walked well to well |
-| **3 — the sun-sphere** | `RM_SunSphere` culturing the ollumin | **sun-strength**, radius ~6 — grows crops without any well | 2 Compact techprints + the research + a wild seed (a pallu or a bladder — the sea's, free) | **fed**: any raw floor food, days of grace when starved, dims to a seedable husk, never explodes | the suulk grazes it too, *slowly and loudly* (RULED C4) — the dearest lamp needs a guard, not an exemption; starvation if the fishery fails | independence: farm anywhere, lease nothing |
+| **3 — the sun-sphere** | `RM_SunSphere` culturing the ollumin | **sun-strength**, radius ~6 — grows crops without any well | 2 Compact techprints + the research + a wild seed (a pallu or a bladder — the sea's, free) | **fed**: any raw floor food, days of grace when starved, dims to a seedable husk, never explodes | the suulk grazes it too, *slowly and loudly* (RULED C4) — the dearest lamp needs a guard, not an exemption; starvation if the floor larder fails | independence: farm anywhere, lease nothing |
 
 The stages don't obsolete each other: bladders stay the expedition light, clipped lamps
 stay the constellation's working gold, and the sphere is the one sun. The Compact sells
@@ -250,7 +250,7 @@ teachable), but unprotected: it buys no forecast, no renewal priority, no goodwi
 ### 4.2 The lease — what the player actually buys
 
 **`RM_SkylightRight`**: a paper (lamp-black on vaal-green vellum) keyed to ONE well's
-ledger id. It grants sow/fish/anchor inside that well's cells, and it **expires when
+ledger id. It grants sow/hunt/gather/anchor inside that well's cells, and it **expires when
 the well closes — not on a calendar.** So its price IS a forecast:
 
 - **Priced by the pallu count × the well-keeper's read of its remaining days.** A young
@@ -268,7 +268,7 @@ the well closes — not on a calendar.** So its price IS a forecast:
 
 ### 4.3 The sanction ladder — ban 4, never strained
 
-Poaching (sowing, fishing, or anchoring a cage/lamp in a Compact-claimed well without
+Poaching (sowing, hunting, or anchoring a cage/lamp in a Compact-claimed well without
 a right) is sanctioned by **goodwill and access, never force**:
 
 1. first offence: a goodwill hit and a message — the warden notes it in the ledger;
@@ -338,7 +338,7 @@ lid-dark/C1–C7) before treating any as open:
 | **Q13** | cage chained down to a floor anchor vs hung from a surface float | **discharged by the mobility ruling.** A cage that is unclipped, walked and re-anchored anywhere (including over the bed) requires the floor anchor; a surface-float hang cannot be walked and reaches through the waveglass fiction besides (the lid is a sky; nothing of ours touches it). Anchor it is |
 | **Q14** | walking under a cage | **already-ruled in substance.** His own sentence is the ruling: *"the floating farming doesn't use up surface space because it floats above you."* Passable-beneath ships; the occupy-cells variant stays as the Mod Setting the content doc already proposed. No card |
 | **Q15** | living decor neglect | **designed-here, low stakes.** Never dies by default (*"easily"* is his word); the stricter "needs light" behaviour ships as an off-by-default Mod Setting. Reversible in one sitting if he ever cares; not worth a card now |
-| **Q16** | sun-sphere fed vs powered | **designed-here** (§3.1): fed, on any raw floor food. Three rulings lean on it — the suulk grazes it *as a living lamp* (C4), the independence arc needs it off the power grid, and the fishery-feeds-the-light loop is the biome's economy closing. Powered would break all three. No card |
+| **Q16** | sun-sphere fed vs powered | **designed-here** (§3.1): fed, on any raw floor food. Three rulings lean on it — the suulk grazes it *as a living lamp* (C4), the independence arc needs it off the power grid, and the floor-larder-feeds-the-light loop is the biome's economy closing. Powered would break all three. No card |
 | **Q19** | techprints: Compact-only sellers, sphere at 2 | **designed-here** (§3.3, §4.5): yes — the arc *is* "independence is earned through the Compact", his own framing of the trade. Gated on good standing per §4.5. No card |
 
 (Q2/C1 the sink, Q1 the waveglass, C2–C7 — all already ruled; listed in the header.
