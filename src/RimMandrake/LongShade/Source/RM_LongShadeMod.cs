@@ -17,7 +17,7 @@ namespace RimMandrake.LongShade
     // (CompContactVenom, read by RM_Venomvine) — are owned, toggled and
     // globally gated by mandrake.rm.creaturebehaviors' own
     // RM_CreatureBehaviorsSettings (shadeGridEnabled / shadeSeekingWanderEnabled
-    // / staggerEnabled) and mandrake.rm.environmentalhazards' own
+    // / shadeStaggerEnabled) and mandrake.rm.environmentalhazards' own
     // RM_EnvironmentalHazardsSettings, per biome_mod_architecture.md §6b-3:
     // "the Utinni layer gets no settings of its own for biomes... a kit
     // mechanic somewhere other than its home biome is a shipped DEFAULT... not
