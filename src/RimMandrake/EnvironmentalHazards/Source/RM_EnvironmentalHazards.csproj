@@ -204,6 +204,7 @@
     <Compile Include="RM_Patch_GravshipArrivalLetter.cs" />
     <Compile Include="RM_Patch_GrazingSuppressionHook.cs" />
     <Compile Include="RM_ExplosiveGrowthSuppressionBridge.cs" />
+    <Compile Include="RM_Patch_HazardApparelScoring.cs" />
   </ItemGroup>
 
   <ItemGroup>
