@@ -97,6 +97,13 @@ MEASURED about the live world — the live system is the only instrument for "ri
   not a decompiler** — `About.xml`'s "vanilla ignition already works on any flammable
   terrain", and `Flood.noPossibleCell` being private with no accessor. Do not launder
   those into measurements.
+- 🔴 **`Plant` never overrides `Tick()` — only `TickLong()`.** A `ThingComp` attached to a
+  `PlantBase`-derived def (via `<comps>`) must override `CompTickLong()`, never `CompTick()`,
+  or it will likely never fire at all: `ThingWithComps.TickLong()` is what loops
+  `comps[i].CompTickLong()`, and nothing schedules the Normal ticker for a plant. This also
+  means the engine's own Long-ticker cadence already throttles the comp — do not add a manual
+  `IsHashIntervalTick` gate on top of it (RimSage-confirmed against decompiled 1.6 source,
+  2026-09-27, building `RM_CompPlantPredator`/`MIASMA_SCUTTLER_PREDATION_1`).
 - ✅ **CANON research DOES work from the Mac, and directly.** Wookieepedia's
   `action=parse&page=<X>&format=json&prop=wikitext` API answers unauthenticated over plain
   `curl` with **no size cap** (MEASURED 2026-09-23: 13 dianoga pages pulled clean). ⇒ Prefer it
@@ -220,6 +227,24 @@ MEASURED about the live world — the live system is the only instrument for "ri
   two subagents disagree on a number, measure it yourself before it becomes a fact.
 
 ### Tools with surprising side effects
+- 🔴 **`rimworld/start_debug_game_ready` (and `rimworld/start_debug_game`) is BROKEN on ANY mod
+  list — measured 2026-09-27, reproduced 3x, including on a bare 9-mod list (Harmony + Core +
+  all 5 DLC + `brrainz.rimbridgeserver` + one content mod, no interaction with the content mod
+  at all).** Real cause, read straight from `Player.log`: `Verse.Root_Play.SetupForQuickTestPlay()`
+  throws `System.ArgumentOutOfRangeException` deep in
+  `WorldPathGrid.RecalculateAllLayersPathCosts` (via `WorldGrid.get_Item`) during
+  `World.FinalizeInit`, for every `WorldFeatureDef` in turn, then again as an uncaught async
+  exception — so `Current.Game.World` never gets assigned and the game sits at the main menu
+  forever (`hasCurrentGame: false`, `programState: "Entry"`). This is vanilla engine code, not
+  RimBridge's own — RimBridge only invokes the vanilla debug entry point
+  (`RimBridgeServer.LifecycleCapabilityModule.StartDebugGameCore`). Supersedes the earlier
+  `DEBUG_GAME_READY_WORLDUI_CRASH_1` theory that this needed "high mod count" — it does not.
+  ⚠️ **Whether a NORMAL new-game world generation (real planetCoverage, not quicktest-scale)
+  hits the same bug is UNMEASURED** — not tested, since that would risk a real world-gen run;
+  the existing canonical save loads fine because loading never calls `GenerateWorld` at all.
+  Until this is fixed or Harmony-patched around, no `prove_*.py` script or skill workflow that
+  opens with this call can work — use `rimworld/load_game_ready` against an existing compatible
+  save instead, if one exists for the mod list in question (item: `DEBUG_GAME_READY_WORLDUI_CRASH_1`).
 - 🔴 **A `PreToolUse` hook added to `.claude/settings.json` mid-session does not fire** — not for this window's Bash calls and not for its subagents' — until a new session starts; a hook already present at session start does fire for subagents. Test a new hook in a fresh window, never by exercising it in the one that added it.
 
 - 🔴 **A backgrounded `Agent` dies at 600 s of silence and leaves NOTHING on disk.** Three died
