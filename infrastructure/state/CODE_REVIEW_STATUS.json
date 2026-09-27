@@ -8511,6 +8511,132 @@
     "hash": "6e6a91e344279a99ff1b8fe5a239c3202970003a2f50e060c4a2aa6d82a164ed",
     "sha": "db60da8bc"
   },
+  "src/RimMandrake/Webwork/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "3d7db59f998d40c1bfa20227919cc09d37407b57e01320ff9211ca61e24e2378",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Defs/BiomeDefs/RM_Webwork_Biome.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "d3ac3f8f928f070a7f3d7b7f0ff7589f851c6de95e8527518246fc325aeee6ed",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Defs/DamageDefs/RM_Webwork_DamageDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "ecc7f0ceed391e53ba55202c35388ab85311e53a4a2540c96866ce6fb7b5bf59",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Defs/HediffDefs/RM_Webwork_HediffDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "2ad22f2ebbe4454eb8c1b6f8dfae308ab353d0e4a947b7155d8e49e7f37f2bb0",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Defs/MapGeneration/RM_WebworkNestScatter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "ee80bd512aed78e67e7d585483e65a0c3d640758da988fd23446dcbde226c0f5",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Defs/SoundDefs/RM_WebworkSoundscape.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "1529e10df6b5e8e549ba6e2f84ad411d69d80fd962f4a75f31e339479df55788",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Defs/ThingDefs/RM_Webwork_SpitWeapon.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "d62846e5bb570310eeafbaf7d3922c6defde56f0b8050de55e06954be02bacc6",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Defs/ThingDefs_Buildings/RM_Webwork_Nest.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "bad51ddda5b415ef95ee1d3d303c6eb1fac41a1bc13a4d259f9819169830e16c",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Defs/ThingDefs_Items/RM_OllathrixEgg.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a1063197fe1b21b66906c7061505f3d58f09c80a2d6263290a82c380be35f8f4",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Defs/ThingDefs_Plants/RM_WebworkFlora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "0ac6b60316070e7f7258b862fe028091c045afa80ce5ecf9b2e4d364985ebb7b",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Defs/ThingDefs_Races/RM_Ollathrix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "149745ae72c090a8a8acc041925517e5e69e5dc6fdb21b131d6cabb621e6e6e4",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Defs/ThingDefs_Races/RM_WebworkFauna.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c4b2815347e438c8cbaf50500788003478ee16cfd9b741498ff2e16a84977eff",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Patches/RM_WebworkNestScatter_MapGenPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "502f978323f209beabe65ed09169f6dd148c37604584afaec43747fc3088aa8c",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Source/RM_BiomeWorker_Webwork.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "7fad53b8bb3ae6c67b6ed3ded3cdecdacf0257f422f5dd25700ded6f5d515ca1",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Source/RM_CompEggClutchRelay.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "66688b78acd23b49e4cbfd12c3d80812118642c92e7fb5ab93ade7b37f7bc9ab",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Source/RM_CompEmergentSpawnOnDestroy.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "69109c64694ea0f815f1de27548b4372ee733a2eda3af2840ee7a8135c06954b",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Source/RM_GenStep_WebworkNest.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "07c859b2c5c34ced928764c0b8b9107efc41414a05c893d25f62d65a863844a4",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/Source/RM_WebworkMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c7e19691285a1fa7669c32b1b8a9e8304ba1f386cd424bdb6345f767103bffa7",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/art/Fauna/gen_ollathrix_placeholder.py": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b2375767de924d46581893e783b45de715ea9517d1784fe9029790c863d0bb0f",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/art/Fauna/gen_webwork_fauna_placeholder.py": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "048ff760761b4292b8d20fc5ef985bf703288b07e5f569628129153e72b4b1e0",
+    "sha": "11b9659d5"
+  },
+  "src/RimMandrake/Webwork/art/Items/gen_webwork_nest_placeholder.py": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "f7f4c0508152623e4cbb58037845b15cdccdf0301407c942afec12ba15e1db0d",
+    "sha": "11b9659d5"
+  },
   "src/RimMandrake/WeepingStones/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-24",
@@ -20127,6 +20253,12 @@
     "hash": "0939b45597c7b6fad66a35a9433cd2f8f905a4427bee5237eecda4d92a0c028d",
     "sha": "9c035dc7c"
   },
+  "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_WebworkSlick.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "4f74719c3b18fa23f38b65792189a5786b9f4b0e8f1295e43aa6fe8cbcb399d3",
+    "sha": "11b9659d5"
+  },
   "src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_WetBulbOverwhelm.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
@@ -21483,11 +21615,23 @@
     "hash": "51b9e31d1126a97867c2b598dc228a5980cf0a0de9650bafbf7b5bd82a3c0781",
     "sha": "17c7dab1a"
   },
+  "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Webwork.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "fbb2734739cd605fafc763549587e1c74950e9b6daf2f640e40f532ad0960c91",
+    "sha": "11b9659d5"
+  },
   "src/RimUtinni/UtinniPatches/Patches/WildAnimals_WeepingStones.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
     "hash": "87941b15c6c9a9e84e4c072d0533780fe5dc718df4bc8deeae5cd11af395dae5",
     "sha": "9335f6bc2"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/WildPlants_Webwork.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b64cca1f27a89c83519e553bc03e483c86507497c01e3572537be3d2c1e6b5a0",
+    "sha": "11b9659d5"
   },
   "src/RimUtinni/UtinniPatches/Patches/WreckVerminNest_ShipChunk.xml": {
     "cleanCount": 3,
@@ -21584,6 +21728,12 @@
     "date": "2026-09-12",
     "hash": "b57597465f751a859c09999687879934a9b5f6d2743c31a333abca435ecd3168",
     "sha": "d8a0b9b7d"
+  },
+  "src/RimUtinni/UtinniPatches/art/Structures/gen_webwork_structures_placeholder.py": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b970be47f460e051f3166494c33ec1cd5929d33e0db558128f3bd745dcb17d6f",
+    "sha": "11b9659d5"
   },
   "src/RimUtinni/UtinniPatches/build_desert_review_sheet.py": {
     "cleanCount": 1,
