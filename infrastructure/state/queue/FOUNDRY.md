@@ -1053,6 +1053,15 @@ kind:     task
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
 
+## GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1 Make a Plant actually block line of sight (Harmony/comp), the owner's sight-blocking ruling has no def-only answer
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     engine
+summary:  1. Choose the mechanism — most likely a Harmony patch on GenGrid.CanBeSeenOver(IntVec3, Map)
+prose:    infrastructure/state/items/GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1.md
+
 ## LANTERNDEEPS_TIER_COLLISION_1 Live mandrake.rut.lanterndeeps exists ONLY in the game folder with no repo copy, and the RM successor deploys to the same folder name - deploying it would delete a mod the canonical save references
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1746,16 +1755,6 @@ thin:     spec, verify and criteria all present
 summary:  1. Design the creature concept as a card set first, per this project's standing practice for a new
 prose:    infrastructure/state/items/GREENTIDE_CANOPY_SWARM_1.md
 
-## GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1 Make a Plant actually block line of sight (Harmony/comp), the owner's sight-blocking ruling has no def-only answer
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     engine
-thin:     spec, verify and criteria all present
-summary:  1. Choose the mechanism — most likely a Harmony patch on GenGrid.CanBeSeenOver(IntVec3, Map)
-prose:    infrastructure/state/items/GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1.md
-
 ## WARDEN_MOTHER_TRAINABLE_GATE_1 Hard-exclude Rescue/general Haul from a self-tamed warden young's training tab
 state:    proposed
 row:      unassigned
@@ -1835,6 +1834,16 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md
+
+## LOAD_GAME_READY_MAPGEN_CRASH_1 rimworld/load_game_ready also hits the SetupForQuickTestPlay map-gen crash on the full 629-mod list
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     engine
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  LOADGAMEREADYMAPGENCRASH1 — rimworld/loadgameready also hits the map-gen crash
+prose:    infrastructure/state/items/LOAD_GAME_READY_MAPGEN_CRASH_1.md
 
 ## RUT_RAREGREYCATCHES_DEFNAME_COLLISION_1 Same defName RUT_RareGreyCatches (ThingSetMakerDef) exists in two separate mods
 state:    proposed
