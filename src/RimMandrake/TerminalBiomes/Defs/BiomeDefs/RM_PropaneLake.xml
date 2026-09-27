@@ -68,6 +68,21 @@
       <RM_Heemin>0.7</RM_Heemin>
       <RM_Oovanam>0.3</RM_Oovanam>
       <RM_Hoolen>0.4</RM_Hoolen>
+      <!-- SEA_FISHABLES_ALIVE_IN_DEPTHS_1, 2026-09-26. The six remaining
+           catch-only rows in <fishTypes> below (RUT_Fessu, RUT_Krellik,
+           RUT_Oddu, RUT_Oovu, RUT_Iliss, RUT_Tarnn) now have living
+           counterparts, authored from those items' own descriptions.
+           RUT_Zhiil already pairs with RM_Vaunoom above (life-stage
+           carve-out: the catch is the young, RM_Vaunoom is the adult).
+           Defs: RM_PropaneLakeFloorLife.xml.
+           ⚠️ Shorthand form only — an <li> wrapper here silently discards
+           the whole entry (BiomeAnimalRecord's custom loader). -->
+      <RM_Fessu>0.55</RM_Fessu>
+      <RM_Krellik>0.5</RM_Krellik>
+      <RM_Oddu>0.45</RM_Oddu>
+      <RM_Oovu>0.4</RM_Oovu>
+      <RM_Iliss>0.3</RM_Iliss>
+      <RM_Tarnn>0.2</RM_Tarnn>
     </wildAnimals>
     <!-- PROPANELAKE_ANIMALDENSITY_ZERO_1, 2026-09-26 — animalDensity was UNSET (engine
          default 0f), so WildAnimalSpawner.DesiredTotalAnimalWeight was 0 and the six

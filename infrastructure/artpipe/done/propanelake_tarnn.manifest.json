@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 98.54856411600485,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 98.54856411600485,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "propanelake_tarnn",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 27.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/26/rollout-2026-09-26T17-19-17-01a0e03a-fdfa-76c2-81c1-951ca33df864.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 27.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w3/sessions/2026/09/26/rollout-2026-09-26T16-56-14-01a0e025-e411-7e81-9bbc-aaeb45ebb7a6.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "propanelake_tarnn",
+    "note": "Generated via built-in imagegen and resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\propanelake_tarnn\\propanelake_tarnn.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \n  alpha=False corners=,\nYou cannot call a method on a null-valued expression.\nAt line:2 char:1214\n+ ... ht,($check.PixelFormat -match 'Argb'),$c1.A,$c2.A)); $check.Dispose()\n+                                                          ~~~~~~~~~~~~~~~~\n    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException\n    + FullyQualifiedErrorId : InvokeMethodOnNull\n \n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command '$ErrorActionPreference='\"'Stop'; \"'$src='\"'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w3\\\\generated_images\\\\01a0e03a-fdfa-76c2-81c1-951ca33df864\\\\exec-2cf3c3aa-8f00-4a77-835c-f659f0f43150.png'; \"'$dst='\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\propanelake_tarnn\\\\propanelake_tarnn.png'; Add-Type -AssemblyName System.Drawing; \"'$inputImage=[System.Drawing.Image]::FromFile($src); $outputImage=[System.Drawing.Bitmap]::new(256,256,[System.Drawing.Imaging.PixelFormat]::Format32bppArgb); $graphics=[System.Drawing.Graphics]::FromImage($outputImage); $graphics.CompositingMode=[System.Drawing.Drawing2D.CompositingMode]::SourceCopy; $graphics.CompositingQuality=[System.Drawing.Drawing2D.CompositingQuality]::HighQuality; $graphics.InterpolationMode=[System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $graphics.DrawImage($inputImage,0,0,256,256); $graphics.Dispose(); $inputImage.Dispose(); $outputImage.Save($dst,[System.Drawing.Imaging.ImageFormat]::Png); $outputImage.Dispose(); $check=[System.Drawing.Bitmap]::FromFile($dst); $a1=$check.GetPixel(0,0).A; $a2=$check.GetPixel(255,0).A; $a3=$check.GetPixel(0,255).A; $a4=$check.GetPixel(255,255).A; Write-Output (('\"'{0} {1} {2} corners={3},{4},{5},{6}' -f \"'$check.Width,$check.Height,$check.PixelFormat,$a1,$a2,$a3,$a4)); $check.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\propanelake_tarnn\n succeeded in 217ms:\n256 256 Format32bppArgb corners=0,0,0,0\n\ncodex\n{\"id\":\"propanelake_tarnn\",\"status\":\"ok\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\propanelake_tarnn\\\\propanelake_tarnn.png\",\"width\":256,\"height\":256,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":2,\"note\":\"Generated via built-in imagegen and resized to exactly 256\u00d7256 while preserving transparent alpha.\"}\ntokens used\n31,653\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/propanelake_tarnn/propanelake_tarnn.png\n    256x256  rgba  101,983 bytes  (98s)\n"
+}

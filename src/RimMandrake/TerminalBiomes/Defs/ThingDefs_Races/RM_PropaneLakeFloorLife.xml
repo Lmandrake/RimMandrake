@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_PropaneLakeFloorLife.xml            TerminalBiomes · authored 2026-09-26
+  ============================================================================
+  SEA_FISHABLES_ALIVE_IN_DEPTHS_1 — the PROPANE LAKE portion.
+
+  Owner, at the bench 2026-09-26, typed:
+      "All the fishables should also be alive and moving around in the depths
+       (this is true for ALL seas)."
+
+  ⇒ A catch item with nothing swimming is HALF a species. The Propane Lake's
+  own PROPANELAKE_ANIMALDENSITY_ZERO_1 blocker (animalDensity left at 0f) is
+  now CLOSED — RM_PropaneLake.xml sets animalDensity 0.08 — so this pass is
+  no longer authoring dead content.
+
+  Of the Propane Lake's nine fishTypes rows, RM_HeeminCatch/RM_OovanamCatch
+  already pair with RM_Heemin/RM_Oovanam (RM_PropaneLakeFauna.xml), and
+  RUT_Zhiil already pairs with RM_Vaunoom — the catch item's own comment
+  says outright: "the young of the V-wake exotic — the catch is the young,
+  the owed V-wake adult PawnKindDef is the floor pairing, per the owner's
+  life-stage carve-out" — that IS a living counterpart (a life-stage pair),
+  already built, nothing to add. The remaining SIX catch-only rows
+  (RUT_Fessu, RUT_Krellik, RUT_Oddu, RUT_Oovu, RUT_Iliss, RUT_Tarnn) get
+  bodies here.
+
+  ============================================================================
+  🔑 AUTHORED FROM THE CATCH ITEMS' OWN DESCRIPTIONS, NOT INVENTED
+  ============================================================================
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_PropaneLakeCatch_Items.xml
+  already describes every one of these six in full: a paper-thin crystal
+  fish that "feeds by growing," a frost-plated crab that molts nightly, a
+  sessile jelly-sac shellfish kin to the shore's rime nodule, a harmless
+  floating frost-bell, a conductive wire-thin eel that feeds on ground
+  current, and an ambiguous branching crystal colony "half frozen
+  hydrocarbon and half something alive." Every body size, speed, diet and
+  behaviour flag below is read off those sentences. ⛔ Nothing here was made
+  up; if a number looks odd, check the item text before "fixing" it.
+
+  ============================================================================
+  🔴 TIER: THESE ARE RM_, THE CATCH ITEMS ARE RUT_ — same shape as the Grey
+  ============================================================================
+  All six catch items ship as RUT_Fessu etc. in the Utinni patch layer,
+  MayRequire-gated on mandrake.rut.patches. Every name is an INVENTED exotic
+  word, not canon IP, so Q11a (biome_mod_architecture.md §7) routes the
+  living counterparts to RM_ and inline on RM_PropaneLake with no
+  MayRequire — the free mod's floor has to stand alone. The CATCH side is
+  the half still in the wrong tier, same as RM_GreySeaFloorLife.xml's own
+  header records for the Grey — OWED, not this wave's to fix.
+
+  ============================================================================
+  NO WILD PLANTS ON THIS BIOME — every species is OmnivoreAnimal
+  ============================================================================
+  RM_PropaneLake carries no <wildPlants> and no <plantDensity> at all (it
+  defaults to 0f — the same silent-kill trap CLAUDE.md documents for other
+  biomes). A VegetarianAnimal here would starve outright. Every race below
+  is OmnivoreAnimal, matching RM_Heemin/RM_Oovanam/RM_Hoolen's own choice.
+
+  ============================================================================
+  THE HARD BANS (the_propane_lakes.md §6), checked one by one
+  ============================================================================
+  Ban 1 (no icy dayside analogs): every species below is invented fresh from
+        its own catch description, not a reskinned dayside animal.
+  Ban 2 (no kyber): RM_Tarnn is a branching crystal colony and is written,
+        like its catch item, to explicitly NOT be kyber or lightsaber-
+        adjacent — no such property on this def, ever.
+  Ban 3 (no visibility penalty as the standing state): none of these six
+        emit fog, darkness or an aim penalty.
+  Ban 4 (no ignition without a hot source or spark): none of these six
+        ignites anything; Flammability is an ITEM-side stat (the catch
+        defs), not carried onto the living race.
+  Ban 6 (no transportable natives, R-H10): trainability None throughout,
+        same as every other Propane Lake resident.
+
+  PLACEHOLDER ART: flat silhouette PNGs at Things/Pawn/Animal/<defName>/,
+  256x256 RGBA, Graphic_Single — same posture the Propane's existing three
+  residents already use. Checked infrastructure/artpipe/done/ and _artsrc/
+  first (MEASURED 2026-09-26): no existing render for fessu/krellik/oddu/
+  oovu/iliss/tarnn under any spelling. Real art queued to artpipe this pass.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ==================================================================
+       RM_FESSU — "the flake." A hand-wide, paper-thin crystal-and-flesh
+       fish that FEEDS BY GROWING: each night's fuel-snow adds a rim, so
+       an old fessu is a plate. Drifts edge-on where the snow falls
+       thickest. Fragile, slow, and everywhere the fall is heaviest.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Fessu</defName>
+    <label>fessu</label>
+    <description>A hand-wide, paper-thin fish-thing that is more crystal than flesh: a translucent lattice of frozen hydrocarbon grown around a thread of something alive, flat as a snowflake, drifting edge-on through the fuel where the nightly snow falls thickest. It feeds by growing — each night's fall adds a rim to it, so an old fessu is a plate. It has nowhere to be in a hurry and nothing that wants to eat it badly enough to make it try.</description>
+    <statBases>
+      <MoveSpeed>1.0</MoveSpeed>
+      <MarketValue>6</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>edge</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.06</baseBodySize>
+      <baseHealthScale>0.2</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <lifeExpectancy>10</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Fessu</defName>
+    <label>fessu</label>
+    <race>RM_Fessu</race>
+    <combatPower>4</combatPower>
+    <wildGroupSize>2~5</wildGroupSize>
+    <ecoSystemWeight>0.25</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Fessu/RM_Fessu</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Fessu/RM_Fessu</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Fessu/RM_Fessu</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================================================================
+       RM_KRELLIK — "rime-crab." Plated in hydrocarbon frost, shed and
+       regrown nightly, so a krellik is always half new. Picks at the
+       crystal flora's fallen fragments at the lake's edge and floor.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Krellik</defName>
+    <label>krellik</label>
+    <description>A crab-thing plated in hydrocarbon frost, each plate a clear crystal grown from the fuel snow and shed and regrown nightly, so a krellik is always half new. It walks the solid propane at the lake's edge and the floor beneath, picking at the crystal flora's fallen fragments. Cracked, its plates ring like glass.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <MarketValue>8</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.55</Wildness>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+    </statBases>
+    <tools>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.22</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <lifeExpectancy>10</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.45</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Krellik</defName>
+    <label>krellik</label>
+    <race>RM_Krellik</race>
+    <combatPower>10</combatPower>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>0.25</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Krellik/RM_Krellik</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Krellik/RM_Krellik</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.42</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Krellik/RM_Krellik</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================================================================
+       RM_ODDU — "the sac." Sessile shellfish kin to the shore's rime
+       nodule: a fist-sized shell that draws propane out of its
+       surroundings into a jelly sac. Sits in the fuel; does not travel.
+       Same sessile shape as the Grey Sea's RM_Hessal.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Oddu</defName>
+    <label>oddu</label>
+    <description>Kin to the rime nodule and the reason anyone fishes this shore: a fist-sized shell-thing that sits in the fuel and draws propane out of its surroundings into a sac of clear jelly. The shell is frost-white and closes when the aurora fades. It has never once been seen to move.</description>
+    <statBases>
+      <MoveSpeed>0.3</MoveSpeed>
+      <MarketValue>9</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.3</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>shell</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.55</baseHealthScale>
+      <baseHungerRate>0.08</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>30</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.2</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Oddu</defName>
+    <label>oddu</label>
+    <race>RM_Oddu</race>
+    <combatPower>4</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Oddu/RM_Oddu</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Oddu/RM_Oddu</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Oddu/RM_Oddu</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================================================================
+       RM_OOVU — "frost-bell." A harmless bell of frozen hydrocarbon
+       jelly riding the fuel's surface, catching the nightly snow. No
+       sting; "almost nothing." Faintly green under the aurora.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Oovu</defName>
+    <label>oovu</label>
+    <description>A bell of frozen hydrocarbon jelly that rides at the surface of the fuel where the snow lands, catching it — a floating cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing.</description>
+    <statBases>
+      <MoveSpeed>0.8</MoveSpeed>
+      <MarketValue>3</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>bump</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.08</baseBodySize>
+      <baseHealthScale>0.2</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <lifeExpectancy>4</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.35</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Oovu</defName>
+    <label>oovu</label>
+    <race>RM_Oovu</race>
+    <combatPower>3</combatPower>
+    <wildGroupSize>2~4</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Oovu/RM_Oovu</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Oovu/RM_Oovu</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Oovu/RM_Oovu</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================================================================
+       RM_ILISS — "wire-eel." A wire-thin eel with a spine of conductive
+       mineral that the auroral ground currents run through — lives
+       along the bed where the electrojet's currents cross, feeding on
+       the charge (or on what the charge kills). Bites with a shock.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Iliss</defName>
+    <label>iliss</label>
+    <description>A wire-thin eel the length of a forearm, black, with a spine of conductive mineral that the auroral ground currents run through — it lives along the bed of the lake where the electrojet's currents cross, and on a reconnection night the whole floor of a bay hums with them. It hunts nothing; it feeds on the charge, or on what the charge kills. It bites with a shock that has knocked grown scrapers down.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <MarketValue>10</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <lifeExpectancy>8</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.45</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Iliss</defName>
+    <label>iliss</label>
+    <race>RM_Iliss</race>
+    <combatPower>14</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Iliss/RM_Iliss</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Iliss/RM_Iliss</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.42</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Iliss/RM_Iliss</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ==================================================================
+       RM_TARNN — "the lattice." A colony, not a creature — or a
+       creature that grew like a colony: a branching lattice of clear
+       crystal the size of a bucket, half frozen hydrocarbon and half
+       something alive threaded through it, growing a hand's width every
+       night from the fuel snow and fracturing back when the aurora is
+       weak. Sessile, like RM_Oddu. 🔴 NOT kyber (ban 2) — no
+       lightsaber-adjacent property, ever, matching its catch item's own
+       explicit disclaimer.
+       ================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Tarnn</defName>
+    <label>tarnn</label>
+    <description>A colony, not a creature — or a creature that grew like a colony. A branching lattice of clear crystal the size of a bucket, half of it frozen hydrocarbon and half of it something alive threaded through the crystal, growing a hand's width every night from the fuel snow and fracturing back when the aurora is weak. Nobody has decided which side of the line it stands on. It has never been seen to move as a whole, only to grow and to break.</description>
+    <statBases>
+      <MoveSpeed>0.3</MoveSpeed>
+      <MarketValue>12</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.2</Wildness>
+      <Beauty>2</Beauty>
+    </statBases>
+    <tools>
+      <li>
+        <label>lattice edge</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>3.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHealthScale>0.7</baseHealthScale>
+      <baseHungerRate>0.05</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>25</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.5</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Tarnn</defName>
+    <label>tarnn</label>
+    <race>RM_Tarnn</race>
+    <combatPower>6</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Tarnn/RM_Tarnn</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Tarnn/RM_Tarnn</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Tarnn/RM_Tarnn</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.65</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
