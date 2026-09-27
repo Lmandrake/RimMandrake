@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T04:39:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T04:46:22Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -161,15 +161,6 @@ target:   v1
 kind:     task
 summary:  (no items/TWILIGHT_CHANNEL_CURRENT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TWILIGHT_CHANNEL_CURRENT_1.md
-
-## TWILIGHT_LIGHT_ECONOMY_1 Build the Twilight light economy: RM_MapComponent_WellLedger (week-scale drift, rim-dimming warning, gardener-fired lid-dark), RM_CompGlowerMobile, the mobile constellation (chains ~6/~10, minify moves), tenancy paper layer
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/TWILIGHT_LIGHT_ECONOMY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TWILIGHT_LIGHT_ECONOMY_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
