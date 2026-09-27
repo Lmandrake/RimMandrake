@@ -421,3 +421,6 @@
 {"seat":"BENCH","event":"claim","id":"PROPANELAKE_FLORA_PASS_1","ts":"2026-09-27T06:26:17Z"}
 {"seat":"BENCH","event":"start","id":"PROPANELAKE_FLORA_PASS_1","ts":"2026-09-27T06:26:18Z"}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-27T07:18:18Z"}
+{"seat":"BENCH","event":"note","id":"TWILIGHTSEA_FLORA_PASS_1","text":"Design doc landed: the_twilight_deep_flora_pass_2026-09-27.md (560 lines; tail sections completed after session kill). plantDensity 0.2-0.35 proposed, 6 questions for the owner - ready for sitting.","ts":"2026-09-27T07:25:35Z"}
+{"seat":"BENCH","event":"note","id":"PROPANELAKE_FLORA_PASS_1","text":"Design doc landed: the_propane_lake_flora_pass_2026-09-27.md (516 lines, recovered uncommitted after session kill). 7 questions for the owner - ready for sitting.","ts":"2026-09-27T07:25:36Z"}
+{"seat":"BENCH","event":"note","id":"GREYSEA_FLORA_PASS_1","text":"Design doc landed at 5852b9c80: the_grey_deep_flora_pass_2026-09-27.md, plantDensity 0.14-0.22 proposed - ready for sitting.","ts":"2026-09-27T07:25:37Z"}
