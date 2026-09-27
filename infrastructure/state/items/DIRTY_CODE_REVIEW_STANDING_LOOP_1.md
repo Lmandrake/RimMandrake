@@ -5827,4 +5827,47 @@ rule): `PropaneLakeMechanics`(7)+`PoisonForest`(7)+`Stillsand`(5), carried over 
 26's other candidate, still untouched by this wave. Stay off
 `TerminalBiomes`/`FeverWood`/`LanternDeeps` (sea-biome exclusions) and
 `Greentide`/`Miasma`/`BlueDesert`/`UtinniPatches/` directories still showing
+
+## Wave 28 — 2026-09-26 (FOUNDRY, concurrent with wave 27 on LongShade/LeaningScrub)
+
+Took a different cluster to avoid colliding with the agent on LongShade/LeaningScrub:
+`RimMandrake/Contagion/` (28 files, all UNTRACKED/never-entered) — About.xml, the
+BiomeDef, 3 HediffDefs (amoeba gestation + 6 Unfinished limb hediffs), the inject
+JobDef, 2 RecipeDefs, 3 ThingDefs (genome sample, grown leg/arm, the Unfinished
+chimera), a ThoughtDef, 3 Patches (organ comps, organ install workerClass swap,
+RedGoo spawner comp), and 14 Source `.cs` files implementing the mod's two mechanics
+(genome-sample extraction/injection/organ-growing, and the Unfinished spawner).
+
+Given tonight's `Class="RimMandrake...."` crash bug, every XML `Class=`/`hediffClass=`/
+`driverClass=`/`workerClass=` attribute in this cluster was checked against its `.cs`
+source: `CompProperties_GenomeSample`, `CompProperties_GenomeMatched`,
+`CompProperties_RandomizeUnfinished`, `CompProperties_SpawnerUnfinished`,
+`RM_BiomeWorker_Contagion`, `Hediff_AmoebaGestation`, `JobDriver_RM_InjectGenomeSample`,
+`Recipe_ExtractGenomeSample` and `Recipe_InstallGrownBodyPart` all resolve correctly —
+no naming mismatches. Also verified via RimSage against the live def dump/decompiled
+source: `QuadrupedAnimalWithPawsAndTail` body carries the `FrontLeftPaw` group the
+Unfinished's tool references; `ResourceBase`/`AnimalThingBase`/`AnimalKindBase`/
+`BodyPartNaturalBase`/`SurgeryInstallBodyPartNaturalBase` all exist with those exact
+names; and `InstallNaturalKidney`'s raw RecipeDef carries no explicit `<workerClass>`
+of its own (confirmed inherited from the abstract parent), so
+`OrganInstallGenomeMatch.xml`'s `PatchOperationConditional` `<nomatch>` branch is the
+one that actually fires, as its own header comment claims.
+
+**0 real bugs found.** The mechanism (genome sample -> amoeba gestation hediff ->
+organ/limb batch on death, plus the separate goo-budded Unfinished chimera spawner)
+reads correctly end to end: settings gates checked at both the float-menu option and
+the recipe's `ApplyOnPawn`, Scribe data on every ThingComp/Hediff that needs to survive
+a save, and the install-match bonus reads `CompGenomeMatched` off the ingredient
+Thing *before* `base.ApplyOnPawn` destroys it (documented and correct — `Destroy()`
+does not clear ThingComp field data on an already-referenced object).
+
+All 28 files marked CLEAN, pushed with the status-file commit. No source changes, so
+only one commit (the status file).
+
+28 files reviewed this wave, 28 newly CLEAN, 0 bugs found.
+
+Next wave suggestion (not re-verified): `PropaneLakeMechanics`(7)+`PoisonForest`(7)+
+`Stillsand`(5) is still the standing carry-over from wave 26, still untouched by both
+concurrent waves 27 and 28. Stay off `TerminalBiomes`/`FeverWood`/`LanternDeeps` and
+`Greentide`/`Miasma`/`BlueDesert`/`UtinniPatches/`/`Droidworks/`.
 concurrent-agent activity in `git status` as of this wave.

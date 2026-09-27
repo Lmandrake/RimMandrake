@@ -887,6 +887,174 @@
     "hash": "743b8b5e8ffa1cf7e5618d49aa90385da1c31acfe3a77270e4d87c9d15035270",
     "sha": "d1b9478bf"
   },
+  "src/RimMandrake/Contagion/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "bfd9e8d945085f9f3ef6cdcf5412887dc55c4aea387f33f2cc28819d1bdac9d1",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "d5b2c2fa9a1949b7ebc13173618a52b7e807eaf486830f6db9b20cc889d395d5",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Defs/HediffDefs/RM_AmoebaGestation.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "6e19d80f567732ea5d2f14ae9aef40fac39d8a063e07536a650f7bfe6a57fee3",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Defs/HediffDefs/RM_UnfinishedHediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "12ead4ce23b70450c373acc6879fd0e59ae14f159920d8529578abba6004989f",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Defs/JobDefs/RM_InjectGenomeSample.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "64e89af5b8cc2b2630f2ae94b8e7b36fd6ed06cef34fc29a457d8839a729dc9d",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Defs/RecipeDefs/RM_ExtractGenomeSample.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "73e39564ccd1acdca226b268f13cd14db0aa2094d9c2701cb66ca54bb554d257",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Defs/RecipeDefs/RM_InstallGrownLimbs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "4917d4f11af6074fbf859d9a3d9170afebf05dfc468006a799224d1516c0f2c1",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Defs/ThingDefs/RM_GenomeSample.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "b359f99b21d166c003aa8d00194b21eedbc2227e5cb2405433aa11d57a551a9b",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Defs/ThingDefs/RM_GrownLimbs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "2b1dd9398bacf2712bc8f83ba950d84344cf4bbe380bf3e14dda6217f4062784",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Defs/ThingDefs/RM_TheUnfinished.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "505d4778d6f1f3f22c658d2dfc2125c320d4acdd563dd2c8ff4a393c4e0f2331",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Defs/ThoughtDefs/RM_GenomeMatchThoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c75226cd12a9e74d0fcfbc724af06b3046a737d079a540f666017090f5fa8d50",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Patches/OrganGenomeComps.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "1d27372e4aeb0021eff9379212b36399cfa722ae628e6282cb9196dcd4815bbd",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Patches/OrganInstallGenomeMatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a3b8eea86b586c0af5e165ed0cce2863ef8d3f494aae26316c6be7b5b4d8f55f",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Patches/RedGooSpawnsUnfinished.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "f2a65f561673f3013bfebfad09c969adc800b9155090f1d292c08809e9d48832",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Source/AmoebaHostUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "4bf0cae617edb2f5878d76f48d53566213c945d7923263c9c320db7a326d5441",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Source/CompGenomeMatched.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "ba2f47bc1524ee2f22f2bd1885e6ec2907de363892eda96634eadf9ba4c66862",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Source/CompGenomeSample.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "18226520eac8dab1811c30654291c38238b7c5fe5b9d70aa97e842d94fb101b0",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Source/CompRandomizeUnfinished.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a95bcaf91500abb820406840b56559fd031fd2680dcf43aa8afcf80013f81ca4",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Source/CompSpawnerUnfinished.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "97fc790db4fa4d4c8dacb935787011b11d125e75f7379583812cd6ed167500c6",
+    "sha": "598e1495b"
+  },
+  "src/RimMandrake/Contagion/Source/FloatMenuOptionProvider_InjectGenomeSample.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "4d98d534508c173ad127157a0bc74d1287eb7136b59d41825fb14057e566ec66",
+    "sha": "1994433c9"
+  },
+  "src/RimMandrake/Contagion/Source/GenomeMatchBonusUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "dd4a7496e0d7f6612b5127725a6e369f142dfeb83de314d74416e84181adf6e2",
+    "sha": "1994433c9"
+  },
+  "src/RimMandrake/Contagion/Source/Hediff_AmoebaGestation.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "9eb1d58eeeb591fce5eb1d47bbc833e0f4628d66872b2c64f10b55617f70f15e",
+    "sha": "1994433c9"
+  },
+  "src/RimMandrake/Contagion/Source/JobDriver_RM_InjectGenomeSample.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "1dd1fe88f7be148846d542680ad749e1148dfca2e2e9a2e5b22130a513ce8b4c",
+    "sha": "1994433c9"
+  },
+  "src/RimMandrake/Contagion/Source/RM_ContagionBiome.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "21c1de3eb3c4a1454ec8c3bc876c3ae2a5380745d0d195889e3b7949a47ac6a4",
+    "sha": "1994433c9"
+  },
+  "src/RimMandrake/Contagion/Source/RM_ContagionDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c05ea6dff12405d0d99560774fd730b681989040efdb841f31d322f101447084",
+    "sha": "1994433c9"
+  },
+  "src/RimMandrake/Contagion/Source/RM_ContagionMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "4818ea08903ad49c28fad28a19f10e4b0b276637b0ce18cd2adec27b1c191aed",
+    "sha": "1994433c9"
+  },
+  "src/RimMandrake/Contagion/Source/Recipe_ExtractGenomeSample.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "2f811e781cc55751036d4065c306ff4ddb89d71b29c5dd3a9cb1f481853c808e",
+    "sha": "1994433c9"
+  },
+  "src/RimMandrake/Contagion/Source/Recipe_InstallGrownBodyPart.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "45a12991d3e5eb62793d01acf7147e24986ba46c7e2e9afa91ef9d13187e81b7",
+    "sha": "1994433c9"
+  },
   "src/RimMandrake/CreatureBehaviors/About/About.xml": {
     "cleanCount": 4,
     "date": "2026-09-24",
