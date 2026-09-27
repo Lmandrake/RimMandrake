@@ -5738,3 +5738,41 @@ worth a look: `LongShade`(8)+`LeaningScrub`(8), or `PropaneLakeMechanics`(7)+
 `PoisonForest`(7)+`Stillsand`(5). None of these counts are per-file-verified;
 re-check DIRTY/never-entered status and `git status` before claiming any of
 them.
+
+## Wave 26 (2026-09-26)
+
+Re-verified fresh via `list --show-untracked` + `git status`: `TheForge` (10
+files) and `BlueDesert` (9 files) were both still never-entered and untouched
+by any concurrent agent, plus their two Utinni `WildAnimals_*.xml` wiring
+patches (21 files total) — took the whole suggested cluster.
+
+Full-file review of all 21 found **no bugs**. Everything cross-checked clean:
+both `.csproj`'s `EnableDefaultCompileItems=false` compile lists match the
+`.cs` files present; every `Class="RimMandrake...."` XML reference resolves to
+a real type; `RSW_LavaFlea`/`RSW_Beldon`/`RSW_Maguana` (cast by
+`WildAnimals_TheForge.xml`) all exist under `mandrake.rsw.swbestiary`;
+`RimMandrake.EnvironmentalHazards.*` classes referenced by `RM_ForgePulse.xml`
+and `RM_FleetFlier.xml` all exist under the declared hard `modDependency`
+`mandrake.rm.environmentalhazards`; `RM_FleetFlier`'s flight fields
+(`MaxFlightTime`/`FlightCooldown`/`canFlyIntoMap`/`canLeaveMapFlying`) are
+correctly paired per the "if it flies in the fiction" rule; both mods'
+`RM_HydrocarbonNativeExtension`/`RM_TheForgeBiomeRanges` mod-extension wiring
+matches their `BiomeWorker`/comp readers.
+
+All 21 marked CLEAN at commit `ae8f53bff` (status file), pushed.
+
+21 files reviewed this wave, 21 newly CLEAN, 0 bugs found.
+
+Re-measured after (actual `list --show-untracked` run, not arithmetic):
+`TALLY CLEAN 3385  DIRTY 57  ORPHANED 211  NEVER ENTERED 673` — DIRTY and NEVER
+ENTERED both moved up net despite this wave's 21 new CLEANs, meaning other
+concurrent FOUNDRY agents are dirtying/adding files faster than this wave
+cleaned them. Re-run `list --show-untracked` fresh for the next wave regardless.
+
+Next wave suggestion (not re-verified — check fresh first, per this loop's own
+standing rule): `LongShade`(8)+`LeaningScrub`(8) is the next clean, small,
+no-exclusion-overlap cluster from wave 25's own list. `PropaneLakeMechanics`(7)+
+`PoisonForest`(7)+`Stillsand`(5) is the other candidate already on record.
+Stay off `TerminalBiomes`/`FeverWood`/`LanternDeeps` (sea-biome exclusions) and
+`Greentide`/`Miasma`/`UtinniPatches/Defs/BiomeDefs` (other FOUNDRY agents
+mid-edit, confirmed still true via this wave's `git status`).
