@@ -6,6 +6,16 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
   <description>SHIP_VERMIN_MOD_1 (owner ruling, 2026-09-11, on the Scarlands and
 Webwork kit-placement cards): a small shared engine assembly for generic
 JobGiver/MapComponent creature-AI classes that more than one future mod needs,
@@ -116,5 +126,12 @@ RimWorld.AlertsReadout's ctor because the abstract RM_Alert_VerminPopulationBase
 became a reflection "leaf" with no concrete subclass loaded — fixed by
 RM_Alert_VerminPopulation_Inert, an always-inactive sealed subclass that keeps
 the base permanently non-leaf. See that class's header for the full root
-cause.</description>
+cause.
+
+Sight blockers (GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1): any ThingDef carrying
+RM_CompProperties_SightBlocker (a tall plant, once grown past its minGrowth)
+blocks a pawn's SIGHT — targeting, ranged shots, witnessing, noticing — through
+a small Harmony postfix on GenSight.LineOfSight that only acts inside a
+whitelist of "a pawn is looking" call sites. Fire, explosions, pathing and the
+player's camera are untouched. This is the one Harmony dependency in the kit.</description>
 </ModMetaData>

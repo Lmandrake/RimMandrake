@@ -89,3 +89,50 @@ over or past them," met mechanically rather than only in the description text.
   general lesson, verify via a deterministic state read (can pawn A's LOS-check function see pawn
   B?) rather than a visual screenshot hunt. A human-judged "does the jungle read as hidden" pass is
   separate and belongs with the owner or a `rimworld-live-review` session.
+
+## built — mechanism and the step-2 decisions (FOUNDRY, 2026-09-26)
+
+**Where:** `mandrake.rm.creaturebehaviors` (the shared kit Greentide already depends on, home of
+`RM_CompPlantAlarm`), which now takes a Harmony dependency. `RM_CompProperties_SightBlocker`
+(`minGrowth`, default 0.5; non-plants always count) + `RM_CompSightBlocker` register cells into
+`RM_MapComponent_SightBlockGrid` (a `byte[]` per-cell count, updated on spawn / despawn /
+`CompTickLong` growth crossing). `RM_SightBlockPatches` postfixes **both real
+`GenSight.LineOfSight` overloads**, replaying vanilla's exact cell walk against that grid. All
+seven understory rows opt in.
+
+**Why not a postfix on `CanBeSeenOverFast` (spec step 1's guess):** it is a tiny static the JIT
+may inline into `GenSight` (patch silently never runs); `GenExplosion`, `Verb_ShootBeam`, the
+Burner ability and `ExitMapGrid` read it too (bushes would stop blasts and beams); and it cannot
+tell the line's endpoints, so a pawn standing IN a thicket cell would go blind and invisible.
+
+**Scope — the postfix only acts while a "pawn is looking" call site is on the stack** (a
+`[ThreadStatic]` depth counter raised by prefix/finalizer pairs). Every other `LineOfSight`
+caller — fire spread, the explosion cell set, short circuits, facility linking, foam turrets,
+spawn-cell finders, GenSteps, social-chat range — stays byte-for-byte vanilla.
+
+Decisions (step 2):
+- **Ranged combat: BLOCKED by default.** In RimWorld, sight *is* the shooting LOS — blocking
+  "view" alone would change almost nothing a player could notice, so the ruling only means
+  something if you cannot target what the thicket hides. Hooked: `Verb.CanHitCellFromCellIgnoringRange`
+  (every shot, AI or player-ordered), `AttackTargetFinder.CanSee`, `ShootLeanUtility.CellCanSeeCell`.
+  Setting "Also blocks ranged fire" turns only this group off. Shooters never *lean* around a
+  plant as if it were a wall corner (lean reads `CanBeSeenOver` directly, untouched).
+  Perception group (always on with the mechanism): `PawnLocalAwareness.AnimalAwareOf`,
+  `ThoughtUtility.Witnessed`, `PawnObserver.PossibleToObserve`, `FleeUtility.ShouldFleeFrom`.
+- **Pathing: UNAFFECTED.** Nothing changes passability or pathCost; `AvoidGrid` reads the
+  `Building` overload of `CanBeSeenOver`, never this grid. The plants stay walkable at their
+  own pathCost 42.
+- **Player camera: UNAFFECTED.** RimWorld has no LOS-driven rendering; `FogGrid` unfogs by
+  region flood, not `LineOfSight`. The player always sees every pawn on unfogged ground.
+- **Endpoints:** the viewer's own cell and the target's cell never count — a pawn standing in
+  one thicket cell is seen, and sees out; what hides it is thicket *between*.
+
+**Settings** (Creature Behaviors): master on/off, "also blocks ranged fire", and thicket depth
+1–4 plants needed to hide something (the "how much of the map is unreadable" number).
+
+**Verification instrument:** dev menu RimMandrake > "Sight-block probe" — a deterministic state
+read: stages two colonists 6 cells apart, asks the real engine functions (CanSee, a revolver's
+`CanHitTarget`, `Witnessed`, `CellCanSeeCell`) with and without a mature blocker between, asserts
+plain `LineOfSight`, the explosion cell set and walkability are unchanged, exercises growth
+threshold, endpoints and all three settings, cleans up, and logs `PASS n/n`. "Sight-block
+stress" times 20,000 `LineOfSight` calls in and out of a sight scope on the current map.

@@ -276,6 +276,12 @@ namespace RimMandrake.CreatureBehaviors
         public static float reactionSourceBudgetMultiplier = 1f;
         public static bool adhesiveSlickEnabled = true;
         public static float adhesiveSlickSeverityMultiplier = 1f;
+        // GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1 (RM_SightBlockPatches). Defaults =
+        // shipped behaviour: a grown blocker plant hides what is behind it from
+        // sight AND from ranged fire, one plant deep.
+        public static bool sightBlockEnabled = true;
+        public static bool sightBlockRangedFire = true;
+        public static int sightBlockCellsNeeded = 1;
 
         public override void ExposeData()
         {
@@ -333,6 +339,9 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref reactionSourceBudgetMultiplier, "reactionSourceBudgetMultiplier", 1f);
             Scribe_Values.Look(ref adhesiveSlickEnabled, "adhesiveSlickEnabled", true);
             Scribe_Values.Look(ref adhesiveSlickSeverityMultiplier, "adhesiveSlickSeverityMultiplier", 1f);
+            Scribe_Values.Look(ref sightBlockEnabled, "sightBlockEnabled", true);
+            Scribe_Values.Look(ref sightBlockRangedFire, "sightBlockRangedFire", true);
+            Scribe_Values.Look(ref sightBlockCellsNeeded, "sightBlockCellsNeeded", 1);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -543,6 +552,25 @@ namespace RimMandrake.CreatureBehaviors
               + "already caught still decays and still tends normally, it just never tops back up.");
             list.Label("Adhesive slick strength: " + adhesiveSlickSeverityMultiplier.ToString("0.00") + "x");
             adhesiveSlickSeverityMultiplier = list.Slider(adhesiveSlickSeverityMultiplier, 0f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Sight-blocking plants", ref sightBlockEnabled,
+                "On: a plant tagged as a sight blocker (the Greentide's brakkel, tumbel and the rest of "
+              + "its understory), once grown, stops pawns seeing past it — they cannot target, witness "
+              + "or notice what is on the other side. Pathing, fire, explosions and YOUR view of the map "
+              + "are never affected. Off: those plants are ordinary cover again.");
+            if (sightBlockEnabled)
+            {
+                list.CheckboxLabeled("  Also blocks ranged fire", ref sightBlockRangedFire,
+                    "On: nobody can shoot at what the thicket hides (fights in dense jungle become close-"
+                  + "quarters). Off: guns and turrets see through it; it still hides things from "
+                  + "witnessing and from animals noticing you.");
+                list.Label("  Thicket depth needed to hide something: " + sightBlockCellsNeeded
+                    + (sightBlockCellsNeeded == 1 ? " plant" : " plants")
+                    + " (higher = more of the jungle stays readable)");
+                sightBlockCellsNeeded = Mathf.RoundToInt(list.Slider(sightBlockCellsNeeded, 1f, 4f));
+                if (sightBlockCellsNeeded < 1) { sightBlockCellsNeeded = 1; }
+            }
 
             list.End();
         }
