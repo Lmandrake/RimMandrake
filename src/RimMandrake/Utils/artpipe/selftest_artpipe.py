@@ -3056,6 +3056,42 @@ def test_flora_never_gated_or_stroked_by_creature_model():
             os.environ["ARTPIPE_LEGIBILITY_MODEL"] = saved_model
 
 
+def test_detector_selects_meter_by_declared_window_not_position():
+    """ARTPIPE_METER_WINDOW_REMAP_1: the account's rate-limit report changed
+    shape on 2026-09-26 — the weekly figure moved from the `secondary_*`
+    slot into `primary_*` and `secondary_*` went null. Selecting by field
+    NAME (old code: `weekly = secondary_used_percent`) reads the wrong
+    window under the new shape; selecting by each slot's own declared
+    `*_window_minutes` must get both the old and the new shape right."""
+    old_shape_weekly = artpiped.WEEKLY_STOP + 0.1
+    d_old = artpiped.Detector()
+    d_old.note_meters({"ok": True, "primary_used_percent": 10.0, "primary_window_minutes": 300,
+                        "secondary_used_percent": old_shape_weekly, "secondary_window_minutes": 10080})
+    ok("meter-window (old shape): weekly comes from secondary_*, still triggers stop_all",
+       d_old.stop_all and d_old.last_weekly_pct == old_shape_weekly)
+    ok("meter-window (old shape): five-hour comes from primary_*, no N=1 drop",
+       d_old.n_override is None)
+
+    new_shape_weekly = artpiped.WEEKLY_STOP + 0.1
+    d_new = artpiped.Detector()
+    d_new.note_meters({"ok": True, "primary_used_percent": new_shape_weekly, "primary_window_minutes": 10080,
+                        "secondary_used_percent": None, "secondary_window_minutes": None})
+    ok("meter-window (new shape): weekly now arrives in primary_* and is still recognized as weekly",
+       d_new.stop_all and d_new.last_weekly_pct == new_shape_weekly)
+    ok("meter-window (new shape): no secondary window at all does not fabricate a five-hour reading",
+       d_new.last_five_h_pct is None and d_new.n_override is None)
+
+    warned = []
+    d_bad = artpiped.Detector()
+    d_bad.note_meters({"ok": True, "primary_used_percent": 5.0, "primary_window_minutes": 1440,
+                        "secondary_used_percent": None, "secondary_window_minutes": None},
+                       warn=warned.append)
+    ok("meter-window: an unrecognized window value is disclosed via warn(), never guessed into a bucket",
+       len(warned) == 1 and "1440" in warned[0])
+    ok("meter-window: an unrecognized window leaves both buckets unread rather than picking one",
+       d_bad.last_weekly_pct is None and d_bad.last_five_h_pct is None)
+
+
 def main() -> int:
     # Gate off by default for every in-process test — synthetic fixtures are
     # not art. The legibility test opts back in around its own calls.
@@ -3156,6 +3192,7 @@ def main() -> int:
         test_process_gemini_job_marks_quota_error_worker_status_end_to_end,
         test_gemini_budget_backs_off_after_quota_error_and_recovers,
         test_gemini_quota_error_backs_off_and_blocks_next_gemini_job_end_to_end,
+        test_detector_selects_meter_by_declared_window_not_position,
     ):
         print(f"--- {fn.__name__} ---")
         try:
