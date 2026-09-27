@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T16:44:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T16:54:04Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -89,6 +89,15 @@ target:   v1
 kind:     design
 summary:  CAMPAIGNSTORYSITTING1 — the formal campaign-story pass
 prose:    infrastructure/state/items/CAMPAIGN_STORY_SITTING_1.md
+
+## ARTPIPE_FACING_COHERENCE_1 Facing sets are three independent side-profiles: no view direction in north/south prompts, no cross-facing consistency chain - north shows a face, turning flips art styles (owner eyes, first walk 2026-09-14)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. The hook lives in the regeneration pass itself (fillqueue.py /
+prose:    infrastructure/state/items/ARTPIPE_FACING_COHERENCE_1.md
 
 ## ART_PAINTERLY_RESTORATION_1 MAJOR RULING 2026-09-14: painterly style restored (Ronto exemplar), cartoonish pipeline stood down, legibility gate demoted to advisory, cartoonish-era art all re-ruled
 state:    doing
@@ -321,16 +330,6 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  the goal (owner, 2026-09-10)
 prose:    infrastructure/state/items/CANON_DRAIN_1.md
-
-## ARTPIPE_FACING_COHERENCE_1 Facing sets are three independent side-profiles: no view direction in north/south prompts, no cross-facing consistency chain - north shows a face, turning flips art styles (owner eyes, first walk 2026-09-14)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## criteria
-summary:  1. The hook lives in the regeneration pass itself (fillqueue.py /
-prose:    infrastructure/state/items/ARTPIPE_FACING_COHERENCE_1.md
 
 ## ECOSYSTEM_PYRAMID_LAW_1 Food-pyramid law: small critters outnumber large in every biome roster
 state:    proposed
@@ -831,3 +830,13 @@ kind:     process
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WORKTREE_QUICKTEST_BRIDGE_GAP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WORKTREE_QUICKTEST_BRIDGE_GAP_1.md
+
+## SPECULATIVE_ART_COMMISSION_1 Speculative art commission 2026-09-27 (owner directive, free pipeline)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SPECULATIVE_ART_COMMISSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SPECULATIVE_ART_COMMISSION_1.md
