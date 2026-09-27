@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T06:13:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T06:21:24Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1261,7 +1261,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  All three gates clear and the Rocktooth/Boneblade fish are ported (9cfdb672c, deployed). biomescaverns + biomespollutedlands are ALREADY inactive in the live 630-mod list; only biomesteam.biomescore remains, and no active mod or src/ file hard-depends on it. OWNER CALL: CANONICAL_ASHKARR_START_2026-09-12.rws lists biomescore in modIds and holds BiomesCore Things (BMT_HermeticArmor x3, BMT_HermeticHelmet x1, BMT_HermeticSuitHediff x4; one worn by an AncientSoldier) - the lumi.doorsexpanded incident shape. Unticking biomescore now breaks the working save until WORLD_REMAKE_FINAL_STEP_1. Retire now (save breaks) or defer biomescore's unticking to the remake?
+blocked:  live verify of scrubbed save + biomescore retirement owed; full-list cold load blocked by that crash (on BLUEDESERT_ORPHAN_LOAD_CRASH_1)
 summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
 prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
 
@@ -1886,3 +1886,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GREYSEA_CATCH_TIER_RENAME_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GREYSEA_CATCH_TIER_RENAME_1.md
+
+## WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1 Retire RM_MoldMatRoof: the waveglass is a sky, not a floor plant - replace it with a shed panel that drifts down and is harvested
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md
