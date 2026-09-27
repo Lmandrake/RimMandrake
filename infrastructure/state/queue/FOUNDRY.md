@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T01:19:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T01:34:30Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1053,6 +1053,15 @@ kind:     task
 summary:  Per sea, per catch entry without a living counterpart:
 prose:    infrastructure/state/items/SEA_FISHABLES_ALIVE_IN_DEPTHS_1.md
 
+## BIOME_CONFIG_ERROR_TRIAGE_1 Triage the per-biome config errors the load-proof wave exposed against a zero baseline: floodedcanyon 53 distinct, webwork 30, thesump 14, contagion and therot 13 - real and attributable, not load failures
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/BIOME_CONFIG_ERROR_TRIAGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_CONFIG_ERROR_TRIAGE_1.md
+
 ## DIVING_STALE_DEPLOYED_FILES_1 Retired pawn-dive files are deleted from src/ but still live in the deployed DivingInteraction mod
 state:    doing
 row:      unassigned
@@ -1747,16 +1756,6 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  GREYSEAANCHORCREATURES1 — build the two anchors the Grey Deep is actually about, plus the Aerofleet replaceme…
 prose:    infrastructure/state/items/GREYSEA_ANCHOR_CREATURES_1.md
-
-## BIOME_CONFIG_ERROR_TRIAGE_1 Triage the per-biome config errors the load-proof wave exposed against a zero baseline: floodedcanyon 53 distinct, webwork 30, thesump 14, contagion and therot 13 - real and attributable, not load failures
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BIOME_CONFIG_ERROR_TRIAGE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_CONFIG_ERROR_TRIAGE_1.md
 
 ## ARTPIPE_WORKER_AUTH_STALENESS_1 Stale worker-home auth.json capped real artpipe concurrency at 3 via refresh-token races
 state:    proposed
