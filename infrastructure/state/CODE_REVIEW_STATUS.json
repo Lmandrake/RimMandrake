@@ -1763,6 +1763,42 @@
     "hash": "76f38fa906558f39e8722cba56c90d7a9cbccdb17aac126d23b732aa23be9dc2",
     "sha": "d8a0b9b7d"
   },
+  "src/RimMandrake/DivingInteraction/Defs/MapGeneration/RM_SeaDiveGenStepDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c76c079b45643a2f350a50d7888880909b509bda50d07a967ae5f08d34a5f01e",
+    "sha": "7980f4e17"
+  },
+  "src/RimMandrake/DivingInteraction/Defs/MapGeneration/RM_SeaDiveGenerators.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "9b274a348f20c313daf723fddb2377ea2492abe22879a3539bd67bcf136a5744",
+    "sha": "7980f4e17"
+  },
+  "src/RimMandrake/DivingInteraction/Defs/PlanetLayerDefs/RM_SeabedLayer.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c9f776595b1bf71e67d1abca64270979296a086fa92bfd6ba36b9fa445c7eed5",
+    "sha": "7980f4e17"
+  },
+  "src/RimMandrake/DivingInteraction/Defs/TerrainDefs/RM_SeaFloorGround.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "0c478ffb75b143018c892a99ac0944f99665354af70ee8a88f539c43e5d6215b",
+    "sha": "7980f4e17"
+  },
+  "src/RimMandrake/DivingInteraction/Defs/ThingDefs_Buildings/RM_BrineEncasement.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "ef3faa2d9b0791a0eebb4260e8ab1bbb81e738dba00d071591e1844bfd3681c9",
+    "sha": "7980f4e17"
+  },
+  "src/RimMandrake/DivingInteraction/Defs/ThingDefs_Buildings/RM_SeaDiveHatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "09d6e8f38b3c353e7d2a627cd5d80363fa070ec6328c88a81c879a5c697a265c",
+    "sha": "7980f4e17"
+  },
   "src/RimMandrake/DivingInteraction/Defs/ThingDefs_Items/RM_ScaldWalkerChitin.xml": {
     "cleanCount": 1,
     "date": "2026-09-12",
@@ -1787,6 +1823,18 @@
     "hash": "180e9128d1d9f69fa0f2b4fc57eba0155712f0fc36f90e9c953fd024b79fb1b5",
     "sha": "cc0825979"
   },
+  "src/RimMandrake/DivingInteraction/Source/Dialog_OfferToElder.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "1efd56d08f6f41071a75a4fc692430ac3a9a03bf952b7cae0d59ffab31066960",
+    "sha": "7980f4e17"
+  },
+  "src/RimMandrake/DivingInteraction/Source/GenStep_GreySeaFloorDressing.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "3e72882dcbe77b11bec4f40e60454d85183661d6242b8f40eede8f30a4d7faaa",
+    "sha": "7980f4e17"
+  },
   "src/RimMandrake/DivingInteraction/Source/GenStep_PlaceSeaDiveExit.cs": {
     "cleanCount": 1,
     "date": "2026-09-25",
@@ -1805,11 +1853,29 @@
     "hash": "28a8bd82ed8dcf97ed98dbe491f3dd98e902f59a5411b9e6e698aade0c2ddf90",
     "sha": "87f3d683e"
   },
+  "src/RimMandrake/DivingInteraction/Source/MapComponent_BrineCrystallisation.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "ac3b93d3e2dfe135dc8d4762912407f487db38c2f68d34843949ccd02947858c",
+    "sha": "7980f4e17"
+  },
   "src/RimMandrake/DivingInteraction/Source/PlaceWorker_NeedsGravEngine.cs": {
     "cleanCount": 1,
     "date": "2026-09-25",
     "hash": "afac013b0daebb3650bf693e58217ef99d765860fdf0b1596a1d1013b30f470a",
     "sha": "87f3d683e"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_BrineEncasement.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "4d1ce25f9086e51a8f18f2971cecb966b359ddb31d0b1ec79f60adafee55aad1",
+    "sha": "7980f4e17"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_Building_BrineElder.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "d54f0acaa5dba62c09350ff7eda0436f319d8eb0e16dfb497023bc7c91d0a4fd",
+    "sha": "7980f4e17"
   },
   "src/RimMandrake/DivingInteraction/Source/RM_DiveUtility.cs": {
     "cleanCount": 1,
@@ -1829,11 +1895,23 @@
     "hash": "c312abd75714d6b4a0841a1c007c4aba5933558901d077089001e2c4d138b158",
     "sha": "b4fc03515"
   },
+  "src/RimMandrake/DivingInteraction/Source/RM_ElderTradeUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "d515d0e3b3ece7624a18e6fa485e80e8f39b01e347bac474637f35542fce70da",
+    "sha": "7980f4e17"
+  },
   "src/RimMandrake/DivingInteraction/Source/RM_FloatMenuOptionProvider_Dive.cs": {
     "cleanCount": 1,
     "date": "2026-09-12",
     "hash": "50f37d2384345f2fbf6c75bd46189d40c43be65f4e2bae5f2039a5865fe2b928",
     "sha": "58720b3c2"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_GameComponent_BrineElders.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "87bf2d14ec725813f3f1bebab792e10b734ce3439ae04fee248efdedc23fd29a",
+    "sha": "7980f4e17"
   },
   "src/RimMandrake/DivingInteraction/Source/RM_JobDriver_DiveBase.cs": {
     "cleanCount": 1,
@@ -1864,6 +1942,12 @@
     "date": "2026-09-25",
     "hash": "847b6dfb8c5334a06a9d3703c42aefce44bfdaf25e61e778526018755960db6d",
     "sha": "87f3d683e"
+  },
+  "src/RimMandrake/DivingInteraction/Source/RM_SeabedLayer.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "0da6d0ad94f2b2bfc22940c59f2baff341c95a08415cfdca75e325e106e5e4b3",
+    "sha": "7980f4e17"
   },
   "src/RimMandrake/DivingInteraction/Source/RM_Thought_CommunedWithDeep.cs": {
     "cleanCount": 1,
