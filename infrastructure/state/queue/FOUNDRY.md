@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T23:30:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T23:46:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1973,3 +1973,13 @@ kind:     build
 thin:     no ## criteria
 summary:  1. RMDeepSand becomes passable at a punishing pathCost ("just very slowly" —
 prose:    infrastructure/state/items/DEEP_SAND_WALKABLE_TERRAIN_1.md
+
+## LONGSHADE_RULED_CONTENT_1 Build the Long Shade content ruled 2026-09-27: 14-row tier move + Gloomcast, RM_Ultracactus + pad forage, roster cuts, Dewback in slowed, dewfringe - fillers/qorrax defs gated on owner review
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  LONGSHADERULEDCONTENT1 — build the Long Shade content the 2026-09-27 sitting ruled
+prose:    infrastructure/state/items/LONGSHADE_RULED_CONTENT_1.md
