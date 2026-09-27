@@ -86,7 +86,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Ollathrix</defName>
     <label>ollathrix</label>
-    <labelPlural>ollathrix</labelPlural>
+    <receivesSignals>true</receivesSignals>
     <description>A spider the size of an elephant, weight for weight closer to a horse — mostly a mass of nimble, sharp legs under a low, wide, bone-white body. Its abdomen carries no mark of any kind, faintly translucent, the darker gut showing through the empty silk-cream chitin. It does not seem to see you; a raised ring of small, colourless eyes reads blind, and it hunts by feel alone, through the web that reaches every part of the thicket it owns. Those who enter the Webwork frequently discover a shadow, seconds before it lands on them, and know nothing more.</description>
     <statBases>
       <MoveSpeed>3.4</MoveSpeed>
