@@ -38,13 +38,10 @@ namespace RimMandrake.Miasma
 
         // Water-scoped enforcement cadence once self-tamed. §6a: "Guard...
         // Release/Attack in water, and Haul-from-water-only... not Rescue
-        // and not general Haul." This comp cannot grey the two excluded
-        // TrainableDefs out of the training UI itself without a Harmony
-        // patch on an engine method this pass could not verify offline
-        // (RimSage is unreachable from this machine, CLAUDE.md) — the
-        // backstop below (interrupt any job the moment she's found off
-        // water) is what ships now; hard-excluding Rescue/Haul from the
-        // training tab is filed as WARDEN_MOTHER_TRAINABLE_GATE_1.
+        // and not general Haul." Rescue/Haul are hidden from the training
+        // tab by RM_Patch_WardenYoungTrainableGate.cs; the backstop below
+        // (interrupt any job the moment she's found off water) still guards
+        // every other trained job.
         public int waterCheckIntervalTicks = 60;
 
         public RM_HediffCompProperties_SelfTameOnRecord()

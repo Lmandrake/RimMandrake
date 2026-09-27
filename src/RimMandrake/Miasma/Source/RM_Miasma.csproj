@@ -5,11 +5,11 @@
     src/RimMandrake/PoisonForest/Source/RM_PoisonForest.csproj — copy that
     header if this one goes stale.
 
-    NO HARMONY REFERENCE, DELIBERATELY. The only hooks this assembly's own
-    two classes use are vanilla extension points (BiomeWorker, ModSettings).
-    Nothing here patches an engine method, so nothing here breaks on a game
-    update that renames one. About.xml carries no brrainz.harmony dependency
-    either. (The six real mechanics this biome ships all live in the SHARED
+    Harmony IS referenced, for ONE patch only:
+    RM_Patch_WardenYoungTrainableGate.cs (WARDEN_MOTHER_TRAINABLE_GATE_1),
+    postfixes on Pawn_TrainingTracker.CanAssignToTrain/HasLearned — there is
+    no XML lever for per-pawn TrainableDef exclusion. Everything else here is a
+    plain extension point. (The six real mechanics this biome ships all live in the SHARED
     mandrake.rm.environmentalhazards assembly, which brings its own Harmony
     dependency separately — this mod only needs loadAfter on it, not a
     second Harmony reference.)
@@ -47,7 +47,12 @@
     <Compile Include="RM_MiasmaMod.cs" />
     <Compile Include="RM_MiasmaBiome.cs" />
     <Compile Include="RM_WardenMotherSuccession.cs" />
+    <Compile Include="RM_Patch_WardenYoungTrainableGate.cs" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
@@ -56,6 +61,10 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine">
