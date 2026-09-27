@@ -7133,6 +7133,180 @@
     "hash": "9ad52748d7171dabfc8f4c7512883c5cdd2401d45743e14c1dbea6051c8f1806",
     "sha": "d1b9478bf"
   },
+  "src/RimMandrake/TheSump/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "bda5f26eee643d832a3b1ab23245862e503564031e8d7bc1e9eda07ca77e5922",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "41ad97cbc97acd81e35d34de1fa6c9e5aa612e1c266cdb7a039a2d69cf84f0f6",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/GameConditionDefs/RUT_SumpDuskLock.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a6cedf63992708ca5916c275f30107633ed300fe0898a465336027c0c063be8e",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/IncidentDefs/RUT_TarPitBelch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "6a3a24e90f62859cf6a910338153a5aacd00c29bbe1622a9ca32ff8f01eae1ca",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/LotteryTableDefs/RUT_DigStratumTable.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "67d8862573ac7c4fa0de4c87986279911734fb14f26f639e03948f7f6a7a0ad5",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/MapGeneration/RUT_GenStep_DeepBlackMere.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "e08744790b30a6b4f4b6396ddae21baaee6aa19ff1853c0fcf78fd6c9947317e",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "763ed4f262dbf9a04ef8351fc489fb0f29702afbd217e196fbb9526b0cc8295f",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/TerrainDefs/RUT_TarMoat.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "20900ef4e58ef0d8dc50b56c624bbb994d6e34992ce87a1d02e4e5a2c1edd3a2",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "11e967a166985ac443f7979b2ea644b214f79a84123ce288c001d7f5be02de7c",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RUT_DigShaft.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "ad44c489168aecf84564b620de15c8452e700779fcefaf446294f333eeed93e4",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "4414d771c7a0ce5a3b34e1e9e5f9e1a6826363100bf61ae11d971daaed996c72",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_SumpFaunaItems.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "e6c795f5cc9e195a58b14d74e3a7e1761fe669f74f0761f97b46d2cf83400ca6",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "6a5789bbe6f62aa360e03b72788617fe233ce4f53a44ec01493435ee0c267887",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/ThingDefs_Items/RUT_WickStem.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "35cb60514b893aacb350496c46b7b84dfc09b6501fcb458b81f4a7bdbad4a098",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "dc6b850a8fb9fbd770979b5c9c8354d79e3934993297aa123832729953284fe2",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a1a09e9e43c2babf0e750231e9c359a3abd3800b349f93aa8090122706034c03",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RUT_Plant_Wick.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "d5884d53d65e4814a8ae27f07064ee808f3d24cc933f9e185d340e0715d5203c",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "46d8e8b61967722bbffb942c7205f682f9f00f1bcaadacdef3cd83627d632dc5",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/ThinkTreeDefs/RUT_ThinkTree_SumpMouseWander.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "4e25575f63523dcbd1fed42b1bdefa769d69b4abd16ff5808d901c3dbee0930a",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Defs/WeatherDefs/RUT_SumpWeather.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "3843fd17f41034f75a866cbb6d8893d5ad6dd3319e132aa26bdc64efd9ab0078",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Languages/English/Keyed/RUT_TarPitBelch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a716e3f7187712c898cb4545acbc8931488b855221bc084fc94fb895ac6f33a1",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Patches/RUT_BeastBulge_DreadRegistration.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "55f1d2df91fa274a881d77269741bd742da3d8e309f0b80754bc9ac769c81b4f",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Patches/RUT_GenStep_DeepBlackMere_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "7ec8fc4485a95c35dfbd0be6ca4fce39cf06d6b9e0ca9ab4143802710ebd15b6",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Patches/RUT_SumpDuskLock_BiomeWiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "a9ffafbd5a46bd267079dc7bc599d46ef6aaa3f983ea8acb7f8d7b925b900961",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Patches/RUT_SumpTarBeastGenStep_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "50d6c02236e742d002b9913216afbb819778b3b48bea4fcc806dba5329ab1df9",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Source/RM_Comp_TarVaultSeal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c2a094027f0b10a0e57fe748aa247e1fb3c91f9b67c13429857c3daf6d14f280",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Source/RM_TheSumpBiome.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "9d17f6661944cde9400dda048ca5a39da285989e3d4b447c264caa90c4728d19",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Source/RM_TheSumpMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "423b676d5c275f159770a7c92bdee9b92aa451abeb044379fea847495685c341",
+    "sha": "beffb49a0"
+  },
+  "src/RimMandrake/TheSump/Source/RUT_GenStep_DeepBlackMere.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-26",
+    "hash": "c047b1406c3b628c19786e6e404f2c739da9d0c62221e4ac90f025ccf7a40935",
+    "sha": "beffb49a0"
+  },
   "src/RimMandrake/TitanicCreatures/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-09",
