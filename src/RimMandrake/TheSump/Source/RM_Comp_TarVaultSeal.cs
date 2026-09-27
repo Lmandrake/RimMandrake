@@ -69,6 +69,26 @@ namespace RimMandrake.TheSump
                            + ", whose thingClass is not Building_Storage (or a subclass) — this comp reads "
                            + "slotGroup.HeldThings and would do nothing.";
             }
+
+            // MEASURED this pass against the live 1.6 decompile: ThingDef.tickerType
+            // has no field initializer (defaults to TickerType.Never, enum value 0),
+            // and TickManager.TickListFor returns null for TickerType.Never — the
+            // Thing is registered on no tick list at all, so Tick()/CompTick() never
+            // fires. StorageShelfBase (and its own parents ShelfBase/FurnitureBase/
+            // BuildingBase) set no tickerType anywhere in the chain, so any ThingDef
+            // built on it (e.g. RUT_TarVault) that does not explicitly override
+            // <tickerType>Normal</tickerType> silently ships this comp's whole
+            // seal/rot-freeze/solvent-extraction mechanism as dead code — the same
+            // "CompTick never called" trap RM_LuminousPigment's Building_GlowTank hit
+            // last wave, one step earlier in the chain. Same defensive pattern
+            // vanilla itself uses for this exact trap (CompProperties_
+            // SelfhealHitpoints.cs, CompProperties_FacilityInUse.cs).
+            if (parentDef.tickerType == TickerType.Never)
+            {
+                yield return "CompProperties_TarVaultSeal is on " + parentDef.defName
+                           + ", whose tickerType is Never — CompTick() (and therefore this comp's "
+                           + "entire seal/scan mechanism) will never run. Set <tickerType>Normal</tickerType>.";
+            }
         }
     }
 
