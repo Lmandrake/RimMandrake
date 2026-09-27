@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T15:09:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-27T15:27:29Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1885,16 +1885,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md
-
-## SUMP_TARVAULT_TICKER_NEVER_1 RUT_TarVault ships with tickerType unset (defaults Never) -- CompTick never fires, whole tar-vault seal mechanism is dead code
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SUMP_TARVAULT_TICKER_NEVER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SUMP_TARVAULT_TICKER_NEVER_1.md
 
 ## PATCH_MAYREQUIRE_GUARD_INERT_1 74 top-level <Operation MayRequire=...> guards in src/ are ignored by vanilla (LoadPatches never reads it); audit each for refs to absent-mod defs and re-gate on xpath/FindMod
 state:    proposed
