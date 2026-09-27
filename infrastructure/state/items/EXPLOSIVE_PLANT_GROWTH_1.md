@@ -85,9 +85,41 @@ foot, plant survives, no spectacle.
   charge. Re-run on a map where plants grow (temperate/wet biome, daytime temp in
   range, fertile soil) — Soak 5x5 here → wait > 250 ticks → Report should show
   `charging > 0` and climb; ~60 passes (6 h) to the top at defaults, or use
-  "Charge all charging plants to 0.9". **Live re-verify is OWED** — the bridge was
-  held by BENCH (Scald round) when the fix landed; it was not taken.
-- Also still owed from that load: the ×10 wet-ambient band (needs a wet-biome map).
+  "Charge all charging plants to 0.9".
+
+## Live re-verify — 2026-09-27 (FOUNDRY, solo `explosivegrowth` tier, 10 mods)
+
+**PASSED, end to end.** First launch attempt hit a real deploy gap, not a code
+defect: `deploy_custom_mods.py --mod ExplosiveGrowth` showed the game copy's
+`.dll` DRIFTED from the repo build — the charge-clock fix and its self-test had
+never been deployed, so the first load's own startup self-test line was silently
+absent (not FAIL — *missing entirely*, because the deployed assembly predated
+`RM_ChargeSelfTest`). Deployed (`--apply`), relaunched: self-test now prints
+**`charge clock self-test PASS (dormant holds, growing tops in ~60 passes, dry
+relaxes)`** at startup, every time.
+
+Live sequence on a fresh quicktest map (Clear weather, Soil terrain, real
+growing conditions — confirmed by pre-existing wild `Plant_Grass` already
+grown): planted a mature `Plant_TreeOak` at (100,100,growth=1.0), `Actions\T:
+Soak 5x5 here` at that cell (soaked 25 cells), stepped 500 ticks →
+`Report state`: **`charging=9`** (was reliably 0 before the fix, the exact bug
+this pass re-verifies), `matureDormant(GrowthRate 0)=0`. Forced to 0.9 via
+`Charge all charging plants to 0.9`, stepped 2100 more ticks → `charging` count
+dropped **9→3** as tops fired, and the test oak's own cell now holds a
+`SmashedStump` + `Filth_Water`/`Filth_LooseGround` — CHURN's real output, not a
+log line taken on faith. **The charge clock does not just hold and not zero
+itself (the original bug) — it climbs, reaches the top, and fires a real Churn
+event on a real plant.**
+
+Mod list restored to the verified 630-mod full set (confirmed by XML parse
+before and after), bridge released.
+
+**Not re-verified this pass, still owed**: the ×10 wet-ambient band (needs a
+wet-biome map specifically, this quicktest's biome wasn't checked for it); the
+perf gate; cut-vs-harvest; salted ground; Fever Wood's inside-the-giant
+presentation; roster micro-questions; bespoke sounds. See `## Owed` below —
+**this item stays `doing`**, the live-verify gate on the charge-clock fix itself
+is the only thing this pass closes.
 
 ## Owed
 
