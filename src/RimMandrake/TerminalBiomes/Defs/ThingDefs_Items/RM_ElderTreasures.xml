@@ -50,13 +50,15 @@
   "ONE EXAMPLE OF EACH" IS NOT A DEF FIELD
   ============================================================================
   His "typically only one example of each because duplication held no value
-  to them" is a per-world uniqueness flag that has to live with the Elder's
-  persisted seen-set, which is the C# still owed (see RM_BrineElder.xml).
-  Nothing in these two defs enforces it: stackLimit 1 makes them un-stackable,
-  not unique. ⛔ Do not read a shipped def as a shipped economy — until the
-  seen-set exists, nothing stops a second one being spawned by dev mode or by
-  a future generator, and the trade that would hand them out does not exist
-  either.
+  to them" is a per-world uniqueness flag. 🔴 UPDATE 2026-09-26: this is now
+  ENFORCED — RM_GameComponent_BrineElders.TryClaimUniqueTreasure(defName)
+  (mandrake.rm.divinginteraction) is the one gate that ever hands either of
+  these two defs out, called only from RM_ElderTradeUtility.Offer on a
+  successful novelty trade. Nothing in the defs themselves enforces it
+  (stackLimit 1 still only makes them un-stackable, not unique) — dev-mode
+  spawning still bypasses the flag entirely, same as it bypasses every other
+  "one of a kind" rule in this game. The trade UI is Dialog_OfferToElder,
+  reached from RM_BrineElder's own gizmo.
 
   PLACEHOLDER ART: the mod's own salt-crystal item placeholder, tinted. Real
   art owed; search infrastructure/artpipe/done/ and _artsrc/ by subject first.

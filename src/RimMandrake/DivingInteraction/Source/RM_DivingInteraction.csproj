@@ -53,6 +53,10 @@
     <Compile Include="RM_BrineEncasement.cs" />
     <Compile Include="MapComponent_BrineCrystallisation.cs" />
     <Compile Include="RM_SeabedLayer.cs" />
+    <Compile Include="RM_Building_BrineElder.cs" />
+    <Compile Include="RM_GameComponent_BrineElders.cs" />
+    <Compile Include="RM_ElderTradeUtility.cs" />
+    <Compile Include="Dialog_OfferToElder.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -70,6 +74,17 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- GREYSEA_BRINE_ELDERS_1: Dialog_OfferToElder is the first UI class
+         in this assembly (GUI.color, TextAnchor) — the two IMGUI modules
+         below were never needed before it. -->
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
