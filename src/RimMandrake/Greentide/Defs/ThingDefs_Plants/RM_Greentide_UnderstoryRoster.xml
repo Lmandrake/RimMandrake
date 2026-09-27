@@ -11,40 +11,24 @@
   section ("These are Plant defs, not trees") — never TreeBase.
 
   ============================================================================
-  SIGHT-BLOCKING — MEASURED 2026-09-26 against the decompiled 1.6 source via
-  RimSage, resolving this item's own "confirm before authoring, do not guess"
-  gate. The answer is negative, and it is load-bearing:
+  SIGHT-BLOCKING — all seven rows carry RM_CompProperties_SightBlocker
+  (mandrake.rm.creaturebehaviors, GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1), and
+  that comp — not fillPercent — is what meets the owner's 2026-09-22 ruling
+  that a colonist "cannot see over or past them."
 
-  🔴 A Plant ThingDef CANNOT block line of sight in vanilla RimWorld, at ANY
-  fillPercent. GenSight.LineOfSight walks cells via IntVec3.CanBeSeenOverFast
-  (Source/Verse/GenSight.cs), which reads ONLY c.GetEdifice(map)
-  (Source/Verse/GridsUtility.cs:443 -> map.edificeGrid[c]) and asks whether
-  that Building's own Fillage is Full (Source/Verse/GenGrid.cs:237,
-  CanBeSeenOver(this Building b)). The edifice grid is populated exclusively
-  by things whose def.IsEdifice() is true, which itself requires
-  `category == ThingCategory.Building` (Source/Verse/EdificeUtility.cs) — a
-  Plant's category is always Plant, so it can never occupy the edifice grid
-  and is structurally invisible to this check, regardless of fillPercent.
-  fillPercent on a Plant is NOT inert, though — it still feeds
-  CoverGrid.Register (Source/Verse/CoverGrid.cs, any Thing with
-  Fillage != None registers) so it grants real ranged-combat cover via
-  CoverUtility.BaseBlockChance, and at fillPercent > 0.99 it would flip
-  FogGrid's Notify_Unfogged spread behaviour (Source/Verse/FogGrid.cs) — but
-  neither of those is "a colonist cannot see over or past it," which is
-  what the owner's ruling asked for.
+  Why a comp is needed at all (MEASURED 2026-09-26 against the decompiled 1.6
+  source via RimSage): a Plant can never block line of sight in vanilla, at
+  ANY fillPercent. GenSight.LineOfSight asks IntVec3.CanBeSeenOverFast, which
+  reads only the edifice grid, and only category Building ever occupies it.
+  RM_SightBlockPatches postfixes GenSight.LineOfSight against a per-cell grid
+  the comp keeps (a plant counts once Growth >= minGrowth 0.5), and only while
+  a pawn is LOOKING — targeting, ranged shots, witnessing, an animal noticing.
+  Fire, explosions, pathing and the player's camera are untouched; the item
+  file records those decisions. Mod Settings > Creature Behaviors has the
+  switches (on/off, ranged fire, thicket depth).
 
-  ⇒ fillPercent below is still set deliberately per row (proportionate to
-  each row's described bulk, so ranged cover and general "this is a solid
-  obstruction" read are real) but IT DOES NOT SHIP THE RULING. The actual
-  mechanism — the ONE thing this item's own doc flagged as blocking and
-  which this pass has now proven cannot be a def-only answer — is owed new
-  C# (a Harmony patch on GenSight/CanBeSeenOver, or an equivalent comp, that
-  also consults a tagged non-edifice Plant occupying a cell) and is filed as
-  a follow-on, GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1, rather than guessed or
-  faked here. Building it responsibly needs its own side-effect pass
-  (shooting, pathing, the player's own visibility of colonists) exactly as
-  the item's own Watch-out already named — that is real engineering, not
-  content authoring, and does not belong in this pass.
+  fillPercent below is still set per row, proportionate to each row's bulk:
+  it feeds CoverGrid, so these plants also give real partial ranged cover.
   ============================================================================
 
   Density calibration — GREENTIDE_BIOME_DENSITY_1's own closed note, applied
@@ -129,6 +113,11 @@
       <wildClusterWeight>200</wildClusterWeight>
       <wildOrder>1</wildOrder>
     </plant>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SightBlocker">
+        <minGrowth>0.5</minGrowth>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -173,6 +162,11 @@
       <wildClusterWeight>200</wildClusterWeight>
       <wildOrder>1</wildOrder>
     </plant>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SightBlocker">
+        <minGrowth>0.5</minGrowth>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -218,6 +212,11 @@
       <wildClusterWeight>200</wildClusterWeight>
       <wildOrder>1</wildOrder>
     </plant>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SightBlocker">
+        <minGrowth>0.5</minGrowth>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -263,6 +262,11 @@
       <wildClusterWeight>200</wildClusterWeight>
       <wildOrder>1</wildOrder>
     </plant>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SightBlocker">
+        <minGrowth>0.5</minGrowth>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -302,6 +306,11 @@
       <wildClusterWeight>200</wildClusterWeight>
       <wildOrder>1</wildOrder>
     </plant>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SightBlocker">
+        <minGrowth>0.5</minGrowth>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -341,6 +350,11 @@
       <wildClusterWeight>200</wildClusterWeight>
       <wildOrder>1</wildOrder>
     </plant>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SightBlocker">
+        <minGrowth>0.5</minGrowth>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -389,6 +403,9 @@
       <li Class="CompProperties_Glower">
         <glowRadius>7</glowRadius>
         <glowColor>(70,190,150,0)</glowColor>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SightBlocker">
+        <minGrowth>0.5</minGrowth>
       </li>
     </comps>
   </ThingDef>

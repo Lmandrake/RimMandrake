@@ -10,8 +10,11 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony: every class here is a plain engine extension point (ThingComp,
-    MapComponent, ThinkNode_JobGiver, JobDriver, Alert, DefModExtension).
+    Harmony IS referenced (GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1): making a
+    non-edifice Thing block pawn sight has no def or comp route in 1.6 -
+    GenSight.LineOfSight reads only the edifice grid - so RM_SightBlockPatches
+    postfixes it. Every other class here is a plain engine extension point
+    (ThingComp, MapComponent, ThinkNode_JobGiver, JobDriver, Alert, DefModExtension).
   -->
 
   <PropertyGroup>
@@ -137,7 +140,15 @@
     <Compile Include="RM_DamageWorker_StingAccumulate.cs" />
     <Compile Include="RM_CompProperties_AdhesiveSlick.cs" />
     <Compile Include="RM_CompAdhesiveSlick.cs" />
+    <Compile Include="RM_CompSightBlocker.cs" />
+    <Compile Include="RM_MapComponent_SightBlockGrid.cs" />
+    <Compile Include="RM_SightBlockPatches.cs" />
+    <Compile Include="RM_SightBlockProbe.cs" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
@@ -154,6 +165,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
