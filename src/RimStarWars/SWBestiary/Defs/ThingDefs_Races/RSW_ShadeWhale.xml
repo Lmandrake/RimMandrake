@@ -206,6 +206,16 @@
         <maxWildlifeBodySize>0.6</maxWildlifeBodySize>
         <seededWildlifeAgeYears>0.4</seededWildlifeAgeYears>
       </li>
+      <!-- DESERT_GLITTER_BIRDS_COMMENSALS_1. Marks this def as a legitimate
+           shadow-follow host — RM_JobGiver_FollowShadowCaster scans the map
+           for the nearest spawned pawn carrying this comp. Generic mechanism,
+           RimMandrake.CreatureBehaviors; see that assembly's own header for
+           why a tracked comp was chosen over widening RM_MapComponent_
+           ShadeGrid's CastsShade to cover pawns. commensalFollowRadius 4 —
+           a bodySize-16 megafauna's own shadow footprint is generous. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadowCaster">
+        <commensalFollowRadius>4</commensalFollowRadius>
+      </li>
     </comps>
     <race>
       <body>RSW_Horax</body>

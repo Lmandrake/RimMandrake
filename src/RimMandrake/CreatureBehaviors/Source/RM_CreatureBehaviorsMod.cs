@@ -220,6 +220,11 @@ namespace RimMandrake.CreatureBehaviors
     //      stage thresholds, decay rate or tend rate, which stay whatever
     //      RUT_Webwork_Slick says); a structure also carrying CompFlickable
     //      is the player's own on/off command regardless of this setting.
+    //  36. shadowFollowEnabled — RM_JobGiver_FollowShadowCaster
+    //      (DESERT_GLITTER_BIRDS_COMMENSALS_1). Off: a shadow-follower-
+    //      tagged commensal stops tracking the nearest shadow-caster host
+    //      and falls through to ordinary vanilla wander — it never seeks
+    //      the host out, but nothing stops it standing near one by chance.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -282,6 +287,7 @@ namespace RimMandrake.CreatureBehaviors
         public static bool sightBlockEnabled = true;
         public static bool sightBlockRangedFire = true;
         public static int sightBlockCellsNeeded = 1;
+        public static bool shadowFollowEnabled = true;
 
         public override void ExposeData()
         {
@@ -342,6 +348,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sightBlockEnabled, "sightBlockEnabled", true);
             Scribe_Values.Look(ref sightBlockRangedFire, "sightBlockRangedFire", true);
             Scribe_Values.Look(ref sightBlockCellsNeeded, "sightBlockCellsNeeded", 1);
+            Scribe_Values.Look(ref shadowFollowEnabled, "shadowFollowEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -571,6 +578,12 @@ namespace RimMandrake.CreatureBehaviors
                 sightBlockCellsNeeded = Mathf.RoundToInt(list.Slider(sightBlockCellsNeeded, 1f, 4f));
                 if (sightBlockCellsNeeded < 1) { sightBlockCellsNeeded = 1; }
             }
+            list.GapLine();
+
+            list.CheckboxLabeled("Shadow-following commensals", ref shadowFollowEnabled,
+                "On: a tagged small commensal actively tracks and follows the nearest large "
+              + "shadow-casting host creature, staying in its moving shadow. Off: it stops seeking "
+              + "one out and just wanders normally — nothing stops it standing near a host by chance.");
 
             list.End();
         }

@@ -24,6 +24,10 @@
   file as written). RUT_Desert.xml stays at 53 rows / 15.1+1.0 (its own two
   native rows, 0.5 each, included) by design (frozen). Any doc still quoting 53
   rows for RM_LongShade's own wildAnimals node is reading the twin, not this mod.
+  ⚠️ 2026-09-27 (DESERT_GLITTER_BIRDS_COMMENSALS_1): a 52nd row, RSW_GlitterBird
+  at 0.2, was added below — new content, not present in the frozen RUT_Desert.xml
+  twin at all (the whale's shadow commensal did not exist when that twin froze).
+  The 51/15.1 figures above describe the original transplant only.
 
   Unlike WildAnimals_Greentide.xml, there is NO PatchOperationReplace here:
   RM_LongShade does not ship a Core-only placeholder roster to swap out — its two
@@ -123,6 +127,13 @@
         <RSW_Ulgga>0.015</RSW_Ulgga>
         <RSW_Horax>0.01</RSW_Horax>
         <RSW_ShadeWhale>0.015</RSW_ShadeWhale>
+        <!-- DESERT_GLITTER_BIRDS_COMMENSALS_1: the whale's shadow commensal.
+             Higher than its host's own 0.015 — several birds per whale is the
+             point — but still low; without a live whale nearby it just
+             wanders like any other small flier (RM_JobGiver_
+             FollowShadowCaster degrades to vanilla wander when no host is
+             found on the map). -->
+        <RSW_GlitterBird>0.2</RSW_GlitterBird>
         <RSW_Bokka>0.5</RSW_Bokka>
         <RSW_TruffleMole>0.5</RSW_TruffleMole>
         <RSW_GreatDevourer>0.5</RSW_GreatDevourer>
