@@ -1054,3 +1054,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"CHILL_VWAKE_WIRING_VERIFY_1","ts":"2026-09-28T09:55:46Z"}
 {"seat":"FOUNDRY","event":"start","id":"CHILL_VWAKE_WIRING_VERIFY_1","ts":"2026-09-28T09:55:48Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_VWAKE_WIRING_VERIFY_1","sha":"5c82fe04a","ts":"2026-09-28T10:00:38Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_FLOOR_LIGHT_1","ts":"2026-09-28T10:01:46Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_FLOOR_LIGHT_1","ts":"2026-09-28T10:01:48Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-28T10:02:32Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_FLOOR_LIGHT_1","sha":"917dadfac","ts":"2026-09-28T10:16:21Z"}
