@@ -70,7 +70,7 @@ colonist, never a tame animal), and four muck-and-silt plants naming the delta's
 own goods (delta salt, delta silt). sarg.alphabiomes is therefore no longer a hard
 modDependency — its only remaining role is the MayRequire-gated AB_FertileMud row
 in terrainsByFertility, an optional richer terrain when that mod happens to be
-present. The two invented native creatures (RUT_Karrobel, RUT_Karrathil) and the
+present. The two invented native creatures (RUT_Karrobel, RUT_FeverSwarm) and the
 cross-mod Rot flora import (RUT_Nogtyl) still physically live in
 mandrake.rut.patches/mandrake.rut.rotsporekit respectively and are wired here with
 a fresh MayRequire guard rather than ported outright — a future pass can bring

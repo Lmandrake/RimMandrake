@@ -43,7 +43,7 @@ namespace RimMandrake.EnvironmentalHazards
     // for on a short live test.
     //
     //   <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension">
-    //     <pollinatorRace>RUT_Karrathil</pollinatorRace>
+    //     <pollinatorRace>RUT_FeverSwarm</pollinatorRace>
     //   </li>
     //
     // Content decision (the item's own words: "not pre-judged here"): wired
