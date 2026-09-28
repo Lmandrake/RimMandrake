@@ -143,6 +143,16 @@ is named in the Contagion batch below (*ghaaz*, slime law), where it is the body
 
 ## Batch 3c — the Contagion (`the_contagion.json`, 16 rows)
 
+> 🔴 **SUPERSEDED FOR THE CONTAGION — owner ruling 2026-09-27 (typed, recorded on
+> `CONTAGION_BEDAZZLE_SITTING_1`):** *"Nothing here should have Star Wars names... they
+> should be bizarre one or two-word descriptions of the strangeness of the thing.
+> Eyegore. Fleshsop. Bloody Mess."* The drafted labels below (ghaaz, zhool, bulloo,
+> vezzok, …) are NOT used for the Contagion cast; the biome's register is English
+> grotesque description. The ruled replacement map lives in
+> `contagion_grotesque_cast_2026-09-27.md`. This table stays as the record of the
+> accent work and for names shared with OTHER biomes (vulloth outside the Contagion,
+> ikee in the deserts, chittik in the Rot) — those biomes are unaffected.
+
 *A red valley under a storm that never stops, where the clear sky is the thing to fear.*
 Everything here is wet, warm and unfinished; the sheet's §4 table already gives each beast a
 job (the body, the eyes, the sower, the leaker, the drinker, the undertaker, the thieves,
