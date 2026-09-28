@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RM_PropaneLakeFloorLife.xml            TerminalBiomes · authored 2026-09-26
+  RM_TheChillFloorLife.xml            TerminalBiomes · authored 2026-09-26
   ============================================================================
-  SEA_FISHABLES_ALIVE_IN_DEPTHS_1 — the PROPANE LAKE portion.
+  SEA_FISHABLES_ALIVE_IN_DEPTHS_1 — the CHILL portion.
 
   Owner, at the bench 2026-09-26, typed:
       "All the fishables should also be alive and moving around in the depths
        (this is true for ALL seas)."
 
-  ⇒ A catch item with nothing swimming is HALF a species. The Propane Lake's
+  ⇒ A catch item with nothing swimming is HALF a species. The Chill's
   own PROPANELAKE_ANIMALDENSITY_ZERO_1 blocker (animalDensity left at 0f) is
-  now CLOSED — RM_PropaneLake.xml sets animalDensity 0.08 — so this pass is
+  now CLOSED — RM_TheChill.xml sets animalDensity 0.08 — so this pass is
   no longer authoring dead content.
 
-  Of the Propane Lake's nine fishTypes rows, RM_HeeminCatch/RM_OovanamCatch
-  already pair with RM_Heemin/RM_Oovanam (RM_PropaneLakeFauna.xml), and
+  Of the Chill's nine fishTypes rows, RM_HeeminCatch/RM_OovanamCatch
+  already pair with RM_Heemin/RM_Oovanam (RM_TheChillFauna.xml), and
   RUT_Zhiil already pairs with RM_Vaunoom — the catch item's own comment
   says outright: "the young of the V-wake exotic — the catch is the young,
   the owed V-wake adult PawnKindDef is the floor pairing, per the owner's
@@ -43,7 +43,7 @@
   All six catch items ship as RUT_Fessu etc. in the Utinni patch layer,
   MayRequire-gated on mandrake.rut.patches. Every name is an INVENTED exotic
   word, not canon IP, so Q11a (biome_mod_architecture.md §7) routes the
-  living counterparts to RM_ and inline on RM_PropaneLake with no
+  living counterparts to RM_ and inline on RM_TheChill with no
   MayRequire — the free mod's floor has to stand alone. The CATCH side is
   the half still in the wrong tier, same as RM_GreySeaFloorLife.xml's own
   header records for the Grey — OWED, not this wave's to fix.
@@ -51,7 +51,7 @@
   ============================================================================
   NO WILD PLANTS ON THIS BIOME — every species is OmnivoreAnimal
   ============================================================================
-  RM_PropaneLake carries no <wildPlants> and no <plantDensity> at all (it
+  RM_TheChill carries no <wildPlants> and no <plantDensity> at all (it
   defaults to 0f — the same silent-kill trap CLAUDE.md documents for other
   biomes). A VegetarianAnimal here would starve outright. Every race below
   is OmnivoreAnimal, matching RM_Heemin/RM_Oovanam/RM_Hoolen's own choice.
@@ -70,7 +70,7 @@
         ignites anything; Flammability is an ITEM-side stat (the catch
         defs), not carried onto the living race.
   Ban 6 (no transportable natives, R-H10): trainability None throughout,
-        same as every other Propane Lake resident.
+        same as every other Chill resident.
 
   PLACEHOLDER ART: flat silhouette PNGs at Things/Pawn/Animal/<defName>/,
   256x256 RGBA, Graphic_Single — same posture the Propane's existing three

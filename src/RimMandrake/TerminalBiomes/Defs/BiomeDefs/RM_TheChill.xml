@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RM_PropaneLake.xml                     TerminalBiomes · moved 2026-09-25
+  RM_TheChill.xml                     TerminalBiomes · moved 2026-09-25
   ============================================================================
   TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Content copied as-is from
   src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PropaneLake.xml (now frozen,
@@ -10,8 +10,8 @@
   🔴 ONE substantive change: `waterDeepTerrain`/`waterShallowTerrain`/
   `terrainsByFertility` are repointed off the donor Alpha Biomes terrains
   (`AB_PropaneLake`/`AB_SolidPropane`, neither defined anywhere under src/)
-  onto this mod's own `RM_PropaneLakeDeep`/`RM_SolidPropane`
-  (Defs/TerrainDefs/RM_PropaneLakeTerrains.xml, this pass) — a donor
+  onto this mod's own `RM_TheChillDeep`/`RM_SolidPropane`
+  (Defs/TerrainDefs/RM_TheChillTerrains.xml, this pass) — a donor
   TerrainDef in these fields is exactly the hard dependency the RimMandrake
   tier may not assume (item §2/§5 step 2). No other field changes: no
   wildAnimals row here is `RSW_`/`SW_` (AA_AuroraSylph/AA_Skyeel are Alpha
@@ -28,8 +28,8 @@
 <Defs>
 
   <BiomeDef>
-    <defName>RM_PropaneLake</defName>
-    <label>the Propane Lake</label>
+    <defName>RM_TheChill</defName>
+    <label>the Chill</label>
     <description>A black mirror of liquid fuel under the brightest sky on the planet, ringed by a crust of the same compound frozen solid. The cold here is total, and the stillness is older than anyone's records.</description>
     <workerClass>BiomeWorker_Ocean</workerClass>
     <isWaterBiome>true</isWaterBiome>
@@ -40,7 +40,7 @@
     <texture>World/Biomes/Jawa_SickWater</texture>
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
-    <waterDeepTerrain>RM_PropaneLakeDeep</waterDeepTerrain>
+    <waterDeepTerrain>RM_TheChillDeep</waterDeepTerrain>
     <waterShallowTerrain>RM_SolidPropane</waterShallowTerrain>
 
     <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the shore terrains are FlowWorks' own
@@ -57,7 +57,7 @@
          TERMINALBIOMES_RM_MOD_BUILD_1 / terminal_seas_cast_proposal_2026-09-25.md
          verdict 1 + verdict 4: heemin/oovanam (lake) + hoolen (the SURFACE
          face — no shelf biome, so it lives here too) from
-         RM_PropaneLakeFauna.xml. RM_Vaunoom (name ruled at the 2026-09-25
+         RM_TheChillFauna.xml. RM_Vaunoom (name ruled at the 2026-09-25
          sitting) is the Q13 duplicate of the campaign RUT_VWake
          (COMMISSION_LEDGER_CLEANUP_1), which stays Utinni-side until
          Phase B because the frozen twin references it. -->
@@ -74,7 +74,7 @@
            counterparts, authored from those items' own descriptions.
            RUT_Zhiil already pairs with RM_Vaunoom above (life-stage
            carve-out: the catch is the young, RM_Vaunoom is the adult).
-           Defs: RM_PropaneLakeFloorLife.xml.
+           Defs: RM_TheChillFloorLife.xml.
            ⚠️ Shorthand form only — an <li> wrapper here silently discards
            the whole entry (BiomeAnimalRecord's custom loader). -->
       <RM_Fessu>0.55</RM_Fessu>
@@ -100,15 +100,15 @@
     </baseWeatherCommonalities>
     <terrainsByFertility>
       <li>
-        <terrain>RM_PropaneLakeDeep</terrain>
+        <terrain>RM_TheChillDeep</terrain>
         <min>-999</min>
         <max>999</max>
       </li>
     </terrainsByFertility>
 
-    <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Propane Lake's catch table.
+    <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Chill's catch table.
          terminal_seas_cast_proposal_2026-09-25.md verdict 3: heemin/oovanam
-         ADDED here (see RM_PropaneLakeCatch.xml's own header). -->
+         ADDED here (see RM_TheChillCatch.xml's own header). -->
     <maxFishPopulation>60</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <saltwater_Common>

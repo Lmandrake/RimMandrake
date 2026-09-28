@@ -23,7 +23,7 @@ Crags) are out of scope and untouched.
 | `RM_TheRot` | the Rot | STAY | — (owner's pick) |
 | `RM_GreySea` | the Grey Sea | STAY | — (world-map name) |
 | `RM_TwilightSea` | the Twilight Sea | STAY | — (world-map name) |
-| `RM_PropaneLake` | the Propane Lake | STAY | — (owner, typed: *"the propane lake"*) |
+| `RM_TheChill` | the Chill | RENAMED 2026-09-27 | **the Chill** (owner, typed: *"Let's call it the Chill."* — `CHILL_RENAME_FULL_1`) |
 
 Honest framing: only **two** of the twelve are genuinely open naming questions — the Nightside Ice (its own
 sheet says *"name owed"*) and the Poison Forest (its own sheet says the name was never a mechanism). The
@@ -181,13 +181,9 @@ block). *Slough* and *Scour* are existing world-map region names, noted in their
   ordinary sea"*). The two sea names are a deliberate pair (grey/salt vs twilight/mould) and are used across
   at least six sheets. Nothing to propose.
 
-## RM_PropaneLake
+## RM_TheChill
 
-- **Current label:** `the Propane Lake` · **Verdict: STAY**
-- The owner named it himself, typed verbatim at the terminal-seas sitting
-  (`terminal_seas_cast_proposal_2026-09-25.md` §4): *"There is body of liquid called **the propane lake**.
-  Then there was an alpha biome called propane lakes that we are redoing… No change. Just confusing
-  words."* The sheet (`the_propane_lakes.md`) gives the surrounding land the region name **Umbra** — *"the
-  antistellar cap it holds, **Umbra**"*, *"Umbra — the propane sea"* — which is the evocative name if one is
-  ever wanted for the *land* def, but the 57-tile water body is *the propane lake* by his own words. Nothing
-  to propose.
+- **Label:** `the Chill` · **Verdict: RENAMED 2026-09-27** — owner, typed: *"And it needs a new name. Let's
+  call it the Chill."* Scope (full RM-tier rename, defNames and terrains) by question card the same sitting;
+  executed as `CHILL_RENAME_FULL_1`. The substance is still propane — only the place is named the Chill.
+  The frozen campaign twin keeps its defName `RUT_PropaneLake` (it carries live tiles) until the terminal repaint.

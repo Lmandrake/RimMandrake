@@ -36,7 +36,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     ///   • <see cref="biomes"/> — BiomeDef defNames. This is how Ash'karr's
     ///     four authored bodies are tagged, because the frozen world ALREADY
     ///     encodes which body is which in the biome field (LIQUID_BIOMES_MAP_1
-    ///     gave the Scald, the Twilight Sea, the Grey Sea and the Propane Lake
+    ///     gave the Scald, the Twilight Sea, the Grey Sea and the Chill
     ///     their own BiomeDefs, which is the whole reason that item exists).
     ///   • <see cref="tiles"/> — explicit tile ids, for a body that is a
     ///     SUBSET of a biome. Empty on every shipped row; the escape hatch.

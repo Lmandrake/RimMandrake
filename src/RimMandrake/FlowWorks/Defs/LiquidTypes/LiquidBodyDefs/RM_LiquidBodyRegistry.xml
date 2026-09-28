@@ -89,12 +89,12 @@
        this body the repaint does real work whenever the lake generates from
        vanilla water rather than from the donor patchmakers. -->
   <RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
-    <defName>RM_Body_PropaneLake</defName>
-    <label>the Propane Lake</label>
+    <defName>RM_Body_TheChill</defName>
+    <label>the Chill</label>
     <liquid>RM_Liquid_Propane</liquid>
     <biomes>
       <li>RUT_PropaneLake</li>
-      <li>RM_PropaneLake</li>
+      <li>RM_TheChill</li>
     </biomes>
   </RimMandrake.FlowWorks.LiquidTypes.RM_LiquidBodyDef>
 

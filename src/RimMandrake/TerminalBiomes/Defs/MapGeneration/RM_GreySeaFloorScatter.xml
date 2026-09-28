@@ -17,7 +17,7 @@
   mandrake.rm.divinginteraction) — because the terrain tag that would
   otherwise scope them, RM_SeaFloorGround, is the ONE shared floor terrain of
   all four sea-dive pocket maps. A tag-scoped registration would grow salt
-  pillars on the Scald's floor and the Propane Lake's. The generator list is
+  pillars on the Scald's floor and the Chill's. The generator list is
   the only scope that is actually the Grey.
 
   terrainValidationAllowed still names RM_SeaFloorGround, as a second belt:

@@ -60,7 +60,7 @@
       <!-- TERMINALBIOMES_LIQUID_RETARGET_1, 2026-09-28: RM_GreySea.xml's
            default sea water already points straight at FlowWorks'
            RM_WaterBrineDeep/RM_WaterBrineShallow (MayRequire-guarded), and
-           RM_PropaneLake.xml's <coastal> shore edge already points straight
+           RM_TheChill.xml's <coastal> shore edge already points straight
            at FlowWorks' RM_PropaneDeep/RM_PropaneShallow (unguarded) — a
            genuine hard defName reference, same reasoning as the
            environmentalhazards/divinginteraction entries above, not the
@@ -91,7 +91,7 @@ RM tier: nothing here knows what campaign or planet uses it.
      wandering steam devils, drifting sail/walker set-pieces, and salvageable
      wrecks in the burning shallows. Its own fishing table (the margin
      harvest) ships with it.
-  2. The Propane Lake — a black mirror of liquid fuel ringed by a frozen
+  2. The Chill — a black mirror of liquid fuel ringed by a frozen
      crust, carrying its own catch table and two RimMandrake-authored
      terrains (no donor dependency).
   3. The Twilight Sea — a hypersaline terminal sea lidded shore to shore by
@@ -109,7 +109,7 @@ campaign's world until that world's own planet is repainted — this mod's
 own defs are what any OTHER planet's generation actually uses.
 
 NOT in this mod (scoped out by the calling item, not deferred sub rosa): new
-wildAnimals/fishTypes rosters for the Propane Lake / Twilight Sea / Grey Sea
+wildAnimals/fishTypes rosters for the Chill / Twilight Sea / Grey Sea
 beyond what already existed on their donor defs — whether `wildAnimals` even
 spawns on an impassable water biome is an untested engine question, and the
 terminal-seas cast has not had its owner sitting yet. The Star Wars creatures

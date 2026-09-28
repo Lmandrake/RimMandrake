@@ -78,7 +78,7 @@
           <li>RUT_TheScald</li>
           <!-- TERMINALBIOMES_RM_MOD_BUILD_1 step 4 (§7b): second entries for
                the RimMandrake-tier twins. -->
-          <li>RM_PropaneLake</li>
+          <li>RM_TheChill</li>
           <li>RM_TheScald</li>
           <li MayRequire="Ludeon.RimWorld.Odyssey">Scarlands</li>
           <li MayRequire="Ludeon.RimWorld.Odyssey">LavaField</li>
@@ -91,7 +91,7 @@
       <value>
         <li>RUT_PropaneLake</li>
         <li>RUT_TheScald</li>
-        <li>RM_PropaneLake</li>
+        <li>RM_TheChill</li>
         <li>RM_TheScald</li>
         <li MayRequire="Ludeon.RimWorld.Odyssey">Scarlands</li>
         <li MayRequire="Ludeon.RimWorld.Odyssey">LavaField</li>

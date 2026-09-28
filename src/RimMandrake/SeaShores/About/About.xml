@@ -21,7 +21,7 @@ This mod makes a sea opt in with one modExtension on its BiomeDef:
 and then, for every land tile bordering it:
 
   1. `IsCoastal` becomes true (Harmony postfix on `World.CoastDirectionAt`, seeded exactly the vanilla way).
-  2. Worldgen attaches `RM_SeaCoast` instead of vanilla `Coast` (prefix on `WorldGenStep_Mutators.TryAddMutator`), so the shore is laid with the SEA's own deep/shallow terrain and the land biome's beach — scalding shallows for the Scald, solid propane for the Propane Lake.
+  2. Worldgen attaches `RM_SeaCoast` instead of vanilla `Coast` (prefix on `WorldGenStep_Mutators.TryAddMutator`), so the shore is laid with the SEA's own deep/shallow terrain and the land biome's beach — scalding shallows for the Scald, solid propane for the Chill.
   3. A frozen, hand-authored planet is healed on load: tile mutators are Scribed, so a world that was painted before this mod existed never re-runs worldgen. A WorldComponent adds `RM_SeaCoast` to every qualifying tile that carries no Coast-category mutator yet. Idempotent, and settings-gated as world-affecting.
   4. Fishing on that shore pulls the SEA's catch table, not the land biome's (postfix on `WaterBody.SetFishTypes` keyed by the water body's terrain, plus a transpiler swapping the rare-catch table lookup).
 

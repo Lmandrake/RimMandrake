@@ -81,7 +81,7 @@ namespace RimMandrake.LanternDeeps
             "RUT_NightsideIce",
             "RM_NightsideIce",
             "RUT_PropaneLake",
-            "RM_PropaneLake",
+            "RM_TheChill",
         };
 
         public static List<string> entranceBiomes = new List<string>(UtinniDefaultEntranceBiomes);
