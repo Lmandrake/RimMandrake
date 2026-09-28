@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T01:57:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T02:14:37Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1 grain-scale commensal fauna riding RM_MirrorGiant's shade
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
+prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
 
 # IN PROGRESS
 
@@ -855,15 +864,6 @@ kind:     build
 summary:  COMMISSIONLEDGERCLEANUP1 — 85 genuinely-owed new-art/def commissions from the 118-row ledger
 prose:    infrastructure/state/items/COMMISSION_LEDGER_CLEANUP_1.md
 
-## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
-prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
-
 ## WORLD_LABEL_SIZE_HIERARCHY_1 All 71 world features sit at the maxDrawSizeInTiles floor - owner ruled size the whole planet
 state:    doing
 row:      unassigned
@@ -1494,16 +1494,6 @@ blocked:  spec explicitly forbids starting solo: needs owner-sat plan/ordering f
 summary:  ⛔ Do not start porting 300 defs. This needs a plan and an owner sitting on
 prose:    infrastructure/state/items/DONOR_DEFS_PORT_TO_OURS_1.md
 
-## DESERT_GLITTER_BIRDS_COMMENSALS_1 desert megafauna's glitter-bird shadow commensals
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-blocked:  shared shade-follow mechanism (tracked shadow-caster comp vs ShadeAt+proximity heuristic, per EXTREME_DESERT_GIANT_COMMENSALS_1) is genuinely unbuilt in C# -- prior note claiming it shipped was false, corrected this pass. Needs that mechanism built once (shared with any future giant-commensal consumer) before a glitter-bird PawnKindDef can actually follow RSW_ShadeWhale's shadow.
-summary:  DESERTGLITTERBIRDSCOMMENSALS1 — desert megafauna's glitter-bird shadow commensals
-prose:    infrastructure/state/items/DESERT_GLITTER_BIRDS_COMMENSALS_1.md
-
 ## HOSTILE_MOBILE_PLANTS_1 Hostile mobile plants as animals - a new creature class
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1543,16 +1533,6 @@ kind:     build
 blocked:  Blocked on FALL_LINE_ARRIVAL_MECHANISM_1's Band B flee/lurker think-tree insert, which has not landed (still unclaimed, 0 code); duplicating it here is explicitly not preferred per this item's own spec. Capture-to-slave hook confirmed (GenGuest.TryEnslavePrisoner) and recorded on the item for whoever resumes. (on FALL_LINE_ARRIVAL_MECHANISM_1)
 summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
 prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
-
-## DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1 grain-scale commensal fauna riding RM_MirrorGiant's shade
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-blocked:  same shared shade-follow mechanism as DESERT_GLITTER_BIRDS_COMMENSALS_1, which is itself BLOCKED on that mechanism being unbuilt in C#. Dispatching a subagent to build it via DESERT_GLITTER_BIRDS_COMMENSALS_1 now; this item follows as the third consumer once that lands, per its own 'do not re-derive' instruction.
-summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
-prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
 
 ## REGROWTH_RECOLOR_MINEABLES_NRE_1 Every full-list save load logs 'Exception from long event: NullReferenceException at ReGrowthCore.Map_FinalizeInit_Patch RecolorMineables' (09-24 and 09-25 logs, 1x per load). Donor mod; likely a mineable def of ours with null/unexpected color/stuff. Find which def trips it; confirm whether the rest of ReGrowth's map-init processing is skipped.
 state:    doing  (BLOCKED)
