@@ -55,14 +55,14 @@
       <displayName>RimWorld</displayName>
     </li>
     <li>
-      <packageId>mandrake.rm.webwork</packageId>
-      <displayName>RimMandrake: Webwork</displayName>
+      <packageId>mandrake.rm.biomes</packageId>
+      <displayName>RimMandrake: Baroque Biomes</displayName>
     </li>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Mlie.StarWarsAnimalCollection</li>
     <li>mandrake.rut.patches</li>
-    <li>mandrake.rm.webwork</li>
+    <li>mandrake.rm.biomes</li>
   </loadAfter>
 </ModMetaData>

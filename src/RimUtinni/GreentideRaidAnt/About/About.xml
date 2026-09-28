@@ -8,13 +8,13 @@
   </supportedVersions>
   <modDependencies>
     <li>
-      <packageId>mandrake.rm.creaturebehaviors</packageId>
-      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <packageId>mandrake.rm.biomes</packageId>
+      <displayName>RimMandrake: Baroque Biomes</displayName>
       <steamWorkshopUrl />
     </li>
   </modDependencies>
   <loadAfter>
-    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.biomes</li>
   </loadAfter>
   <description>THEY_MOD_REPLICATION_1. Replicates They! (Giant Ants)
 (Sapiently.TheyAtomicMonsters, workshop id 3620253282) in our own tier and

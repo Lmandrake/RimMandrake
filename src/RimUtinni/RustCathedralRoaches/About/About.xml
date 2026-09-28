@@ -84,8 +84,8 @@ the Cathedral itself (an earlier reading, predating this addendum's
 organic/synthetic biome split).</description>
   <modDependencies>
     <li>
-      <packageId>mandrake.rm.creaturebehaviors</packageId>
-      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <packageId>mandrake.rm.biomes</packageId>
+      <displayName>RimMandrake: Baroque Biomes</displayName>
     </li>
   </modDependencies>
   <loadAfter>
@@ -98,6 +98,6 @@ organic/synthetic biome split).</description>
          any of its content anywhere in this mod's Defs. Nothing here depends on the
          patch layer; the entry was boilerplate, not backed by a real dependency. -->
     <li>Ludeon.RimWorld</li>
-    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.biomes</li>
   </loadAfter>
 </ModMetaData>
