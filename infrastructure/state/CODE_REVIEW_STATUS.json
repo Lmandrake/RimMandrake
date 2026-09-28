@@ -7253,6 +7253,120 @@
     "hash": "14921a032345afc0dd9ae3909c28c89c7b67f0d4381bfe1e4ae223197c5f48a1",
     "sha": "7553eaee0"
   },
+  "src/RimMandrake/TerminalBiomes/Source/RM_Apparel_FloatHarness.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "7017554543d1e880b5b307ac949da90555395cc7eae5d7ef1ee6102cf02f5c8f",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_Building_SiltTrap.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "fc75a8c11fd44d11afcf08944296852dc3831002c1c209eaaf05016adedec588",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_Building_SunSphere.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "376d15c2256a83e6c01ecda0f10f117a70fc1e2a62c26f5481353ca9f966c734",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_CompGlowerMobile.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "bfb7562821ed033da41b9752f0877f208ccd08aae44f9caba7757f9cf2ea9635",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_Comp_DropLureOrganOnDeath.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "38299cda83f173d0a5c067b00a3d8cba72b8e13c12b1fe4e2583edd2011c5938",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_Comp_SkylightRight.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "094b3678b923b086922e4f6de1a16530ac4484c23b4a286157b4217a5eeb295f",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_GameCondition_Undersurge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "ea00ed78d996c6b11d39bc4565e73b6dfe33ef6a87fadc7df1ecfb7f05b2595c",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_GenStep_ScatterVauliskLure.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "4ccdfe5ebfaf4162493c25c32d9a84b276ef4110aee6c22db3441f5a2cbf37a2",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_HediffComp_Sunk.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "9595cdf60fd92c9138b6ead86b338938570f57893e5250b92b34942ff7955998",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_IncidentWorker_PaneStrike.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "085d7ab9e4028258a5fbd16945012d17fe0a28e7320ae8ffd5e638692500d537",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_IncidentWorker_SuulkArrival.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "7ee2fda5606dd3fd9cef31c6172223237dc57bc03f77cc2a176d2450a092a54a",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_JobDriver_FeedOnGlow.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "7e54d17a05e7b5c4d00ed4f486be8a9bc9ad978261b8ec3ae267c506de963e2f",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_JobGiver_SeekGlow.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "445129dd07c10bf3468f1ff94daad2b4513a006d46f1220b9a91d7a97ffd77ac",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_MapComponent_VeilFall.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "43bd7c32e68b2fbced96767b8195e49a46318c3ff8210b8e7b3bc315c63676ea",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_Patch_GravEngineLaunchGate.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "a3b2a143012a6bf28da4bbd9011c7c5d20f725dcd6a4b2ccec992b569129f8f8",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_SeekGlowExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "e4f7a9fefbdf96584b48810e8839d1be22252d9ec5ec03c1ebeff152be7ac882",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "8d06054a5132e2f05bbd171129c27ea118c64e42f18949c53fc1c3c71d1c0664",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesJobDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "074cc3097e73a6b374b5c847ea7d95edab01790891b1bbe0f53dc4327d14f7d5",
+    "sha": "35010446a"
+  },
+  "src/RimMandrake/TerminalBiomes/Source/RM_VeilFallDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-27",
+    "hash": "b22015f3a895002de2b0c49b4b7118ce02beeef9cd6ed7179f49d464d3a8bed2",
+    "sha": "35010446a"
+  },
   "src/RimMandrake/TheBazaar/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-24",
