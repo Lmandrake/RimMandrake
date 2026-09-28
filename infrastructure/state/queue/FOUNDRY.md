@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T04:09:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T04:24:52Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1071,6 +1071,15 @@ kind:     bug
 summary:  (no items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md
 
+## TWILIGHT_TENANCY_PAPER_REMOVAL_1 Remove the Twilight tenancy paper layer from shipped code: delete RM_SkylightRight, RM_WellChart, RM_ClaimBuoy, the poaching-standing tracker and chart-forecast API from RM_MapComponent_WellLedger (built at 2cd74d35e); wells become free ground; RM_Building_SunSphere loses the Compact techprint cost (research + wild seed only). Owner typed 2026-09-27: 'The Compact does NOT sell light, that's not a mechanic we accepted. Remove.' Ruled physics stay: drift stages, warning stages, mobile constellation, cages, chains, sun-sphere.
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md
+
 ## TWILIGHT_REVIEW_FIXES_1 Fix the 14 Twilight-wave code-review findings: 4 ship-blockers (plant CompTick lure, Never-ticker cargo float, undersurge on every biome, unstandable drift targets) + 10 smaller
 state:    doing
 row:      unassigned
@@ -1735,16 +1744,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md
-
-## TWILIGHT_TENANCY_PAPER_REMOVAL_1 Remove the Twilight tenancy paper layer from shipped code: delete RM_SkylightRight, RM_WellChart, RM_ClaimBuoy, the poaching-standing tracker and chart-forecast API from RM_MapComponent_WellLedger (built at 2cd74d35e); wells become free ground; RM_Building_SunSphere loses the Compact techprint cost (research + wild seed only). Owner typed 2026-09-27: 'The Compact does NOT sell light, that's not a mechanic we accepted. Remove.' Ruled physics stay: drift stages, warning stages, mobile constellation, cages, chains, sun-sphere.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md
 
 ## RUT_RAREGREYCATCHES_DEFNAME_COLLISION_1 Same defName RUT_RareGreyCatches (ThingSetMakerDef) exists in two separate mods
 state:    proposed
