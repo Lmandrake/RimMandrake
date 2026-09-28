@@ -22,8 +22,11 @@ over merging at the repaint window. Authority: §7 Q17 of
 - Kills on landing: the cross-mod class-reference failure class
   (BLUEDESERT_JOIN_FULL_LIST_1 becomes moot once bluedesert's content is inside
   the one mod — keep the interim list-add only if the merge takes longer than
-  the next cold-load cycle) and the double-authored liquid terrain
-  (`LIQUID_TERRAIN_AUTHORED_TWICE_1` resolves by unification, one def survives).
+  the next cold-load cycle). ⚠️ The double-authored liquid terrain
+  (`LIQUID_TERRAIN_AUTHORED_TWICE_1`) does NOT resolve by unification: measured
+  2026-09-27 (spec §4), the two authors are FlowWorks and TerminalBiomes under
+  DIFFERENT defNames, and FlowWorks is OUT of the merge — it needs the ownership
+  ruling in the spec's card Q7.
 
 ## Sub-decisions the spec pass must put to the owner (card agenda)
 
