@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-27T23:51:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T00:30:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1026,15 +1026,6 @@ kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
 
-## MIASMA_SCUTTLER_PREDATION_1 Wire the five carnivorous plants to actually eat the arthropod-floor scuttlers
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     build
-summary:  MIASMASCUTTLERPREDATION1 — wire the five carnivorous plants to actually eat the arthropod floor
-prose:    infrastructure/state/items/MIASMA_SCUTTLER_PREDATION_1.md
-
 ## FEVERWOOD_TWO_FRONT_LURE_TUNING_1 Two-front lure numbers, prey-quality gate, and a free-tier second raider
 state:    doing
 row:      unassigned
@@ -1052,15 +1043,6 @@ target:   v1
 kind:     task
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
-
-## GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1 Make a Plant actually block line of sight (Harmony/comp), the owner's sight-blocking ruling has no def-only answer
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     engine
-summary:  1. Choose the mechanism — most likely a Harmony patch on GenGrid.CanBeSeenOver(IntVec3, Map)
-prose:    infrastructure/state/items/GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1.md
 
 ## LANTERNDEEPS_TIER_COLLISION_1 Live mandrake.rut.lanterndeeps exists ONLY in the game folder with no repo copy, and the RM successor deploys to the same folder name - deploying it would delete a mod the canonical save references
 state:    doing  (BLOCKED)
