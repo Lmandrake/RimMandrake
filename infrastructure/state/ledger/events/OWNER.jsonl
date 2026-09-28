@@ -109,3 +109,10 @@
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-09-28T16:39:09Z"}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-28T16:56:16Z"}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-09-28T16:56:20Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-09-28T17:00:43Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ts":"2026-09-28T17:00:47Z"}
+{"seat":"OWNER","event":"game","state":"DEPLOYING","ranBy":"FOUNDRY","ts":"2026-09-28T17:00:54Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ts":"2026-09-28T17:00:56Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ts":"2026-09-28T17:01:01Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-09-28T17:18:19Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ts":"2026-09-28T17:18:26Z"}

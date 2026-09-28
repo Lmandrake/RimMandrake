@@ -1078,3 +1078,8 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"BAROQUE_BIOMES_WAVE2_FOLD_1: compose+deploy the on-list fold, single ModsConfig swap, cold-load prove","ts":"2026-09-28T16:36:11Z"}
 {"seat":"FOUNDRY","event":"close","id":"BAROQUE_BIOMES_WAVE2_FOLD_1","sha":"c3a1e3fd1ca0caaf0fc830be68791fae051521b3","ts":"2026-09-28T16:57:30Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-28T16:57:31Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"BAROQUE_BIOMES_WAVE3_RETARGET_1: final cold-load prove with UtinniPatches deployed","ts":"2026-09-28T17:00:42Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BAROQUE_BIOMES_WAVE3_RETARGET_1","ts":"2026-09-28T17:18:30Z"}
+{"seat":"FOUNDRY","event":"start","id":"BAROQUE_BIOMES_WAVE3_RETARGET_1","ts":"2026-09-28T17:18:33Z"}
+{"seat":"FOUNDRY","event":"close","id":"BAROQUE_BIOMES_WAVE3_RETARGET_1","sha":"d202a4f6b4dbd54c45cd82ab28ba33d2bff554fe","ts":"2026-09-28T17:18:36Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-28T17:18:40Z"}

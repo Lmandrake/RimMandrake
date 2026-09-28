@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T16:57:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T17:18:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1863,16 +1863,6 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  WASTELANDMECHANICSBUILD1 — the Middenshell, the processor comps, storms and the dose layer
 prose:    infrastructure/state/items/WASTELAND_MECHANICS_BUILD_1.md
-
-## BAROQUE_BIOMES_WAVE3_RETARGET_1 Baroque Biomes Wave 3 (spec section 6): re-run section 4 sweeps 3-4 across the RimUtinni layer once folded biomes are live - retarget every UtinniPatches PatchOperationFindMod naming a folded mod's old standalone name, and every MayRequire naming a folded packageId; confirm the RimUtinni layer's own loadAfter names mandrake.rm.biomes. This is the retarget work the original WAVE1 filing bundled in by title but the ruled spec scopes to wave 3, after wave 2's on-list fold - split out here so wave 1 stayed a clean single ADD.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BAROQUE_BIOMES_WAVE3_RETARGET_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BAROQUE_BIOMES_WAVE3_RETARGET_1.md
 
 ## BLUEDESERT_RULED_CONTENT_1 Build the Blue Desert ruled cast: depth cast (zhaaz/vrisk/dovvik/utikka) + bedazzle four (Vhaulk/Murrek/Ossivel/Virr) + RM_BlueIce + water-plant cut + roster rewiring
 state:    proposed
