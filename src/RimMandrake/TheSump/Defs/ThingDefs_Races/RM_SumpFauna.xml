@@ -381,13 +381,13 @@
           <minAge>0.3</minAge>
         </li>
       </lifeStageAges>
-      <butcherProducts>
-        <RM_ThrummelChitin>2</RM_ThrummelChitin>
-      </butcherProducts>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
     </race>
+    <butcherProducts>
+      <RM_ThrummelChitin>2</RM_ThrummelChitin>
+    </butcherProducts>
     <tradeTags>
       <li>AnimalCommon</li>
     </tradeTags>
@@ -473,13 +473,13 @@
           <minAge>0.35</minAge>
         </li>
       </lifeStageAges>
-      <butcherProducts>
-        <RM_ThrummelChitin>4</RM_ThrummelChitin>
-      </butcherProducts>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
     </race>
+    <butcherProducts>
+      <RM_ThrummelChitin>4</RM_ThrummelChitin>
+    </butcherProducts>
     <tradeTags>
       <li>AnimalFighter</li>
     </tradeTags>
@@ -563,14 +563,14 @@
           <minAge>0.8</minAge>
         </li>
       </lifeStageAges>
-      <butcherProducts>
-        <RM_ThrummelChitin>10</RM_ThrummelChitin>
-        <RM_Seepwax>6</RM_Seepwax>
-      </butcherProducts>
       <soundMeleeHitPawn>Pawn_Melee_MediumBash_HitPawn</soundMeleeHitPawn>
       <soundMeleeHitBuilding>Pawn_Melee_MediumBash_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_MediumBash_Miss</soundMeleeMiss>
     </race>
+    <butcherProducts>
+      <RM_ThrummelChitin>10</RM_ThrummelChitin>
+      <RM_Seepwax>6</RM_Seepwax>
+    </butcherProducts>
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>
@@ -764,13 +764,13 @@
           <minAge>0.4</minAge>
         </li>
       </lifeStageAges>
-      <butcherProducts>
-        <RM_DredgelChitin>3</RM_DredgelChitin>
-      </butcherProducts>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
     </race>
+    <butcherProducts>
+      <RM_DredgelChitin>3</RM_DredgelChitin>
+    </butcherProducts>
     <tradeTags>
       <li>AnimalCommon</li>
     </tradeTags>
@@ -984,9 +984,6 @@
           <minAge>0.4</minAge>
         </li>
       </lifeStageAges>
-      <butcherProducts>
-        <RM_SkellarnChitin>3</RM_SkellarnChitin>
-      </butcherProducts>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
@@ -999,6 +996,9 @@
            ring's brindeth scrub (one-home note, roster doc) — no
            migration mechanism claimed. -->
     </race>
+    <butcherProducts>
+      <RM_SkellarnChitin>3</RM_SkellarnChitin>
+    </butcherProducts>
     <tradeTags>
       <li>AnimalExotic</li>
     </tradeTags>
