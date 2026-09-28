@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T15:49:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T15:52:02Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -40,6 +40,15 @@ target:   v1
 kind:     design
 summary:  BAROQUEBEDAZZLEPROGRAM1 — the bedazzle program: eleven biomes raised to the Baroque bar
 prose:    infrastructure/state/items/BAROQUE_BEDAZZLE_PROGRAM_1.md
+
+## BLUEDESERT_BEDAZZLE_SITTING_1 Blue Desert bedazzle sitting - program row 3: score against the nine-mark bar, fill gaps, four-turn volley, ticket + commission
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/BLUEDESERT_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLUEDESERT_BEDAZZLE_SITTING_1.md
 
 # IN PROGRESS
 
