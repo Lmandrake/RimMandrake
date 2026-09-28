@@ -75,6 +75,21 @@ namespace RimMandrake.DivingInteraction
         // either way, on or off.
         public static bool chillFireBanEnabled = true;
 
+        // CHILL_THERMAL_ENGINE_1, 2026-09-27/28. The boil shroud: liquid-
+        // adjacent bubble/boil flecks near a warm hull and a smaller shimmer
+        // around any warm thing (pawn, powered device) standing outdoors on
+        // the Chill seabed. Purely cosmetic — see
+        // RM_MapComponent_ChillBoilShroud.cs — so its own toggle exists only
+        // because every mechanic in this kit gets one per
+        // MOD_OPTIONS_RETROFIT_1; off changes nothing mechanical either way.
+        // The cryogenic ambient temperature itself (the actual cooling
+        // load) is NOT gated by a toggle here — it rides masterEnabled/
+        // requireGravEngine like the rest of the map's identity, because it
+        // is vanilla's own MapTemperature/Room machinery reading a
+        // MapGeneratorDef field, not a mechanic this mod can switch off
+        // without switching off the whole pocket map.
+        public static bool chillBoilShroudEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -85,6 +100,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref greyElderDischargeEnabled, "greyElderDischargeEnabled", true);
             Scribe_Values.Look(ref greyElderTradeEnabled, "greyElderTradeEnabled", true);
             Scribe_Values.Look(ref chillFireBanEnabled, "chillFireBanEnabled", true);
+            Scribe_Values.Look(ref chillBoilShroudEnabled, "chillBoilShroudEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -145,6 +161,14 @@ namespace RimMandrake.DivingInteraction
                   + "plant that carries its own oxidizer (built under a separate item) is exempt. "
                   + "Off: fire behaves normally down there, for testing or a different ruleset. "
                   + "Every other map is unaffected either way.");
+
+                list.Gap();
+                list.CheckboxLabeled("The Chill: boil shroud visuals", ref chillBoilShroudEnabled,
+                    "Shipped default: ON. Purely cosmetic. Liquid near any heated room's walls "
+                  + "bubbles as the warm hull boils the cryogenic lake beside it, and a smaller "
+                  + "shimmer follows any live colonist or powered device standing outdoors down "
+                  + "there. Off: no flecks, nothing mechanical changes — the cold and the room "
+                  + "freezing it fights are unaffected either way.");
             }
 
             list.End();

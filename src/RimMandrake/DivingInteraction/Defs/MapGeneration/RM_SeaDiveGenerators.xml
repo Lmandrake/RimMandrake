@@ -152,7 +152,26 @@
            SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1. -->
       <destroyOnParentMapAbandoned>false</destroyOnParentMapAbandoned>
       <biome>RM_TheChill</biome>
-      <temperature>-55</temperature>
+      <!-- CHILL_THERMAL_ENGINE_1, 2026-09-28. This is no longer the
+           placeholder the file header above describes — it IS the ambient
+           severity, MEASURED off the decompiled engine:
+           Verse.MapTemperature.OutdoorTemp returns exactly this field for
+           any pocket map (no seasonal drift, no tile lookup), and
+           Room.TempTracker.EqualizeTemperature() pulls every unheated or
+           underheated room toward it every 120 ticks — that IS "an
+           underpowered ship freezes room by room" (the owner's ruling),
+           already wired by vanilla, no new C# needed for it. -55 read as
+           ordinary hard-biome cold (vanilla Ice Sheet already reaches -50 to
+           -70 in a Cold Snap); -110 reads as genuinely cryogenic — well
+           past anything a normal biome ever produces, permanently (not
+           event-gated the way vanilla's worst cold is), forcing the
+           "extensive ship heating" the ruling asked for. Uniform by
+           construction: this is a single float, not a falloff or a zone —
+           the card ruling against a graduated/zoned design is enforced by
+           the engine's own OutdoorTemp getter having nothing to graduate.
+           Readable by other code (CHILL_HEATED_SUIT_1 etc.):
+           RM_ChillFireGate.ChillSeabedAmbientC(map). -->
+      <temperature>-110</temperature>
       <canBeCleaned>true</canBeCleaned>
       <tileMutators>
         <li>RM_SeaFloorHabitat</li>
