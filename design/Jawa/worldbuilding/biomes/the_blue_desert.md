@@ -18,7 +18,36 @@ ground for the dissolved `HorrorWastes` (`HORRORWASTES_BIOME_DISSOLVE_1`). The g
 itself stays *clean* — the horror emerges from beauty and emptiness, never from a
 landscape that already looks like horror.
 
-## 0. The measurements everything rests on
+⭐ **AMENDMENT 2026-09-28 (owner, `BLUEDESERT_BEDAZZLE_SITTING_1` — the bedazzle
+sitting; four-turn volley, final ruling owner-typed: full accept of the whole
+slate. Review + slate detail: `bluedesert_bedazzle_review_2026-09-28.md`):**
+(1) **New natives admitted** (names ruled, styled for variance): the **Vhaulk** —
+the biome's colossus, a house-sized sealed cistern of pentane sludge, neutral and
+slow; **Murrek** — the drift ambusher, buried and re-armed by every ice-sand
+storm; **Ossivel** — the choir, vent-throated packs singing at the ablation line,
+silent when something big moves; flora **Virr** — the whistle-reed whose fields
+sound in wind, pitch rising as the charge ripens.
+(2) **Vhaulk detonation is TRIGGER-GATED**: it explodes only when it dies of
+heat-family damage (lightning's strike damage is Flame, so lightning comes free)
+— and **ion is the trap: any EMP hit against a living vhaulk detonates it
+immediately.** Stunning it is one of the worst things you can do. A kinetic/cold
+kill leaves the cistern intact — the richest harvest, earned the hard way.
+(3) **The three donor water-plants are CUT** (`AB_ToxiGrass`, `AB_CrystalHorn`,
+`PoisonPlantTallGrass` off this biome's rows; CrystalHorn keeps its Propane
+Lakes home) — hard ban 1 stands with no grandfather clause.
+(4) **Mark 9 (the gods) is BIOME-LOCAL LORE** — no campaign ideoligion defs, no
+precepts, no rituals. The Rakatan Warnings/script/tableaus carry the layer: the
+discovery ladder's final tier IS the reading (and the warnings include *do not
+still the mountain*).
+(5) **Tameability relaxed** — the all-untameable stance is no longer a wall; the
+tamed dovvik minesweeper is approved.
+(6) **The whole mechanics slate ships**: the Warnings study ladder (ending in
+cold-cutting + the reading), blue-ice quarrying with the thaw-roll
+push-your-luck loop, the vhaulk decisions, the three ruled weathers, the
+soundscape (incl. the pre-detonation crack cue), the Cold Hold + drift burial of
+a landed gravship, murrek drift re-seeding, the dovvik safe-path economy, and
+ablation-line salvage incidents. Build: `BLUEDESERT_RULED_CONTENT_1` +
+`BLUEDESERT_MECHANICS_BUILD_1`.
 
 MEASURED off `world/ASHKARR_WORLDMAP_tiles.csv`: `BiomeGRimond` holds **1,029 tiles** at
 arc 118→149 (p10/median/p90 124.6/134.7/143.2 — sun 35°–53° below the horizon, median
