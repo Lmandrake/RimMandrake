@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SandBusterMound.xml                  RimMandrake — SANDBUSTER_CASTES_BUILD_1
+
+  The mound — vanilla Hive's re-skinned equivalent, and the eruption marker
+  that precedes it. Both ThingDefs ParentName off vanilla Core's own
+  Hive/TunnelHiveSpawner so every field neither one overrides (graphicData
+  base, fillPercent, blockWind, altitudeLayer, passability, pathCost,
+  drawerType, groundSpawner effecter hooks, etc.) is inherited unchanged —
+  RimWorld's own def-XML inheritance replaces a whole re-declared node
+  (comps, statBases, etc.), it does not deep-merge it, so re-declaring
+  <comps> below fully replaces the inherited vanilla insect trio with our own.
+
+  RM_SandBusterMound keeps only the comps that carry the actual re-skinned
+  MECHANISM (dormancy/wake, the caste spawner, self-healing, reproduction
+  into more mounds) and drops vanilla Hive's InsectJelly/GlowPod/
+  HeatPusher/SpawnerFilth/Maintainable comps outright — those are vanilla
+  insect-hive flavor (jelly harvesting, heat pushing, slime filth) with no
+  ruling asking for them here, and the item's own scope line ("do not add
+  anything beyond the two ruled castes + mound + incident") argues for
+  fewer comps, not more. thingClass stays RimWorld.Hive unchanged: that
+  class is fully data-driven off GetComp<CompSpawnerPawn>()/
+  GetComp<CompCanBeDormant>() etc., nothing on it hardcodes a defName, so a
+  new ThingDef pointed at it needs no subclass.
+
+  RM_SandBusterTunnel is the ONE thing in this build that needed real C#:
+  vanilla TunnelHiveSpawner.Spawn() hardcodes ThingMaker.MakeThing(
+  ThingDefOf.Hive) with no def-level hook to redirect it. thingClass here is
+  RimMandrake.Stillsand.RM_SandBusterTunnelSpawner (Source/
+  RM_SandBusterTunnelSpawner.cs), which overrides Spawn() to make an
+  RM_SandBusterMound instead — see that file's header for the full
+  before/after account of what needed C# and what didn't.
+
+  Neither def is wired into RM_Stillsand_Biome.xml or any wildAnimals list —
+  both are purely incident-spawned, by
+  RM_IncidentWorker_SandBusterEruption (RM_SandBusterEruption.xml).
+-->
+<Defs>
+
+  <ThingDef ParentName="Hive">
+    <defName>RM_SandBusterMound</defName>
+    <label>sand buster mound</label>
+    <description>A dome of fused, sun-baked grit standing where a ruukka's brood has taken hold below — the one part of the whole nest that was ever meant to be seen. Everything living under it stays under the sand until something crosses too close; then the surface simply opens.</description>
+    <graphicData>
+      <!-- art pending — SANDBUSTER_CASTES_BUILD_1, pending/RM_SandBusterMound_
+           south.json filed (infrastructure/artpipe/art_lists/
+           sandbuster_castes.csv). Placeholder reuses vanilla Hive's own
+           texPath until a real render lands, same "loud placeholder" posture
+           this mod's other unrendered content uses. -->
+      <texPath>Things/Building/Natural/Hive</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>2.0</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>160</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+        <canWakeUpFogged>false</canWakeUpFogged>
+      </li>
+      <li Class="CompProperties_WakeUpDormant"></li>
+      <li Class="CompProperties_SpawnerPawn">
+        <spawnablePawnKinds>
+          <li>RM_Ruukka</li>
+          <li>RM_Oorrik</li>
+        </spawnablePawnKinds>
+        <lordJob>LordJob_DefendAndExpandHive</lordJob>
+        <spawnSound>Hive_Spawn</spawnSound>
+        <initialPawnsPoints>200</initialPawnsPoints>
+        <maxSpawnedPawnsPoints>500</maxSpawnedPawnsPoints>
+        <lordJoinRadius>10</lordJoinRadius>
+      </li>
+      <li Class="CompProperties_SelfhealHitpoints">
+        <ticksPerHeal>6000</ticksPerHeal>
+      </li>
+      <li Class="CompProperties_SpawnerHives"></li>
+    </comps>
+    <killedLeavings />
+  </ThingDef>
+
+  <ThingDef ParentName="TunnelHiveSpawner">
+    <defName>RM_SandBusterTunnel</defName>
+    <label>disturbed sand</label>
+    <thingClass>RimMandrake.Stillsand.RM_SandBusterTunnelSpawner</thingClass>
+  </ThingDef>
+
+</Defs>

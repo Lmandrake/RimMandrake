@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SandBusterEruption.xml               RimMandrake — SANDBUSTER_CASTES_BUILD_1
+
+  The eruption incident. Field-for-field a copy of vanilla Core's own
+  IncidentDef defName="Infestation" (RimSage-read against the live def dump,
+  2026-09-27), except:
+
+    - workerClass points at RM_IncidentWorker_SandBusterEruption (Source/
+      RM_IncidentWorker_SandBusterEruption.cs) instead of
+      RimWorld.IncidentWorker_Infestation, so the mound/pawn-kind spawn
+      targets our own defs instead of vanilla's Hive/Megaspider trio.
+    - letterLabel/letterText/description are re-worded for the sand-buster
+      fiction; the letter/category/points-scaling SHAPE is unchanged.
+    - <allowedBiomes><li>RM_Stillsand</li></allowedBiomes> is added. This is
+      the ENTIRE mechanism that confines the incident to the Dune Sea — it
+      is a plain IncidentDef field, checked engine-side in
+      IncidentWorker.CanFireNow (RimWorld/IncidentWorker.cs, RimSage-read:
+      "if (!def.allowedBiomes.NullOrEmpty()) { ... if
+      (!def.allowedBiomes.Contains(primaryBiome)) return false; }") before
+      CanFireNowSub ever runs. No C# biome check exists or is needed for
+      this half of the gating.
+
+  The OTHER half — banning vanilla's own Infestation everywhere, Stillsand
+  included, so the Dune Sea gets THIS incident and nowhere gets both — is
+  owned by UtinniPatches (src/RimUtinni/UtinniPatches/Patches/
+  Infestation_PlanetwideBan.xml), not this file. See that patch's own header
+  for why a flat baseChance=0 was chosen over an allowedBiomes/
+  disallowedBiomes pair on the vanilla def.
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RM_SandBusterEruption</defName>
+    <label>sand buster eruption</label>
+    <workerClass>RimMandrake.Stillsand.RM_IncidentWorker_SandBusterEruption</workerClass>
+    <category>ThreatBig</category>
+    <letterDef>ThreatBig</letterDef>
+    <letterLabel>Sand Buster Eruption</letterLabel>
+    <letterText>The sand near your colony is moving. Something is tunneling toward you and will break through in seconds, leaving a mound behind it.\n\nThe mound will keep spawning sand busters, and more mounds, over time.\n\nDestroy the mounds to stop the brood spreading. The busters will defend them.</letterText>
+    <!-- Confines this incident to the Dune Sea — see this file's header. -->
+    <allowedBiomes>
+      <li>RM_Stillsand</li>
+    </allowedBiomes>
+    <baseChance>2.7</baseChance>
+    <minRefireDays>20</minRefireDays>
+    <minThreatPoints>400</minThreatPoints>
+    <pointsScaleable>true</pointsScaleable>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+  </IncidentDef>
+
+</Defs>

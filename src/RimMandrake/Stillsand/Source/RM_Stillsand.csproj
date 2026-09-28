@@ -43,6 +43,10 @@
 
   <ItemGroup>
     <Compile Include="RM_StillsandMod.cs" />
+    <!-- SANDBUSTER_CASTES_BUILD_1 -->
+    <Compile Include="RM_StillsandDefOf.cs" />
+    <Compile Include="RM_SandBusterTunnelSpawner.cs" />
+    <Compile Include="RM_IncidentWorker_SandBusterEruption.cs" />
   </ItemGroup>
 
   <ItemGroup>

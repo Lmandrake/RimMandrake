@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T07:08:54Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "RM_SandBusterMound_south",
+  "priority": 70,
+  "prompt": "RimWorld game building sprite: the sand buster mound, a low dome of fused, sun-baked grit and hardened sand standing where a brood has taken hold below the surface \u2014 irregular natural-growth silhouette, ochre and rust-tan, a few dark cracked fissures where things have broken out. Reads as an emerged burrow mouth, not a built structure and not an insect hive (no hexagonal cells, no wax/resin sheen, no visible insect architecture).",
+  "reference": null,
+  "rimflow_item_id": "SANDBUSTER_CASTES_BUILD_1",
+  "style_notes": "fused sand-and-grit dome, irregular natural mound silhouette, dark eruption fissures; NOT a vanilla insect hive reskin \u2014 no honeycomb texture, no resin sheen; eternal noon: hard white overhead light, hard black shadow, ochre/rust-tan palette; painterly vanilla-RimWorld natural-building art style"
+}
