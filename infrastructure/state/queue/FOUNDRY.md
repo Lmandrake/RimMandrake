@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T19:11:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T20:21:51Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1855,3 +1855,23 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  BLUEDESERTMECHANICSBUILD1 — the Warnings, blue-ice quarrying, the vhaulk trap, weathers, sound, Cold Hold
 prose:    infrastructure/state/items/BLUEDESERT_MECHANICS_BUILD_1.md
+
+## BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1 Live-verify a Baroque Biomes toggle actually stops worldgen placement, not just that the startup gate wires cleanly: flip one biome off in Mod Settings, generate a new world, confirm its BiomeDef never places a tile, flip back on. RM_BiomesGate's startup log (roster mapped, gate applied) is proven; an actual OFF-and-regenerate cycle is not.
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1.md
+
+## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  CRACKEDLANDSFULLRENAME1 — FloodedCanyon → CrackedLands, everywhere
+prose:    infrastructure/state/items/CRACKEDLANDS_FULL_RENAME_1.md
