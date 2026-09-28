@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Drazzik.xml                          RimMandrake — STILLSAND_RULED_CONTENT_1
+
+  Q1 tier move (2026-09-27 sitting, RATIFIED): the drazzik (+ its egg-trap clutch +
+  its hatchling) leaves the Utinni patch (RSW_Drazzik.xml/RSW_Nizzek.xml, both
+  unchanged and still wired into the frozen RUT_ExtremeDesert.xml twin) for a native,
+  franchise-free copy here — invented content, the biome's own drum-lure archetype,
+  no Star Wars IP (Q11a).
+
+  Q7 depth-arm ruling: bs 2.2 sits inside R22's banned 0.3-3.0 mid-band, but the
+  drazzik is a subsurface vibration-lure ambush predator ("lies still beneath the
+  sand for hours... by the time it surfaces, the strike is already decided") —
+  defended by depth, not size. Annotated in place per the screecher precedent;
+  nothing evicted (§7 Q7, ratified).
+
+  MECHANIC 1 (the lure) and MECHANIC 2 (the egg-trap clutch) are read verbatim from
+  DRUM_LURE_PREDATOR_BUILD_1's own RSW_Drazzik.xml — see that file's header for the
+  full design account. Both comp/hediff dependencies are RimMandrake.CreatureBehaviors
+  (RM_CompProperties_DrumLure, RM_DrumLureLured/RM_DrumLureSubmersion hediffs) — a
+  RimMandrake-tier assembly already, not Star-Wars-tier, so no gating is needed; this
+  mod's own RM_MirrorGiant already carries an unguarded RimMandrake.CreatureBehaviors
+  comp (RM_CompProperties_ShadowCaster), so the dependency is real either way —
+  declared explicitly in About.xml alongside this file (previously undeclared,
+  corrected here per "correctness outranks seat ownership").
+
+  The egg's ProximityHatch comp stays MayRequire="mandrake.rm.proximityhatch"-gated,
+  same as the original.
+
+  RM_Nizzek (the newborn) moves alongside its parent — it only ever exists via
+  hatching (ecoSystemWeight 0, canArriveManhunter false, never wired into any
+  biome's wildAnimals), so it has no independent tier question: it goes wherever
+  RM_Drazzik's egg does.
+
+  ART: no render exists for "drazzik"/"nizzek" (checked artpipe done/_artsrc/
+  registry.jsonl — none found, matching the original RSW_ files' own note).
+  texPath points at each def's own future folder, art pending.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Drazzik</defName>
+    <label>drazzik</label>
+    <description>A pale, patient thing that lies still beneath the sand for hours, humming a false vibration through the ground that sounds exactly like something fat and wounded. Whatever comes to investigate walks the rest of the way in on its own. By the time the drazzik surfaces, the strike is already decided — the appraisal happened while it was still hidden.</description>
+    <statBases>
+      <MoveSpeed>5.5</MoveSpeed>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <MarketValue>700</MarketValue>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>28</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>28</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>19</power>
+        <cooldownTime>1.85</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>22</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>1.75</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <!-- MECHANIC 2: the egg-trap clutch. -->
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RM_DrazzikEggUnfertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RM_DrazzikEggFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>20</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+      <!-- MECHANIC 1: the vibration lure. RimMandrake.CreatureBehaviors — already a
+           hard dependency of this mod (RM_MirrorGiant's ShadowCaster), unguarded. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_DrumLure">
+        <luredHediff>RM_DrumLureLured</luredHediff>
+        <submersionHediff>RM_DrumLureSubmersion</submersionHediff>
+        <lureRadiusCells>18</lureRadiusCells>
+        <ambushRangeCells>1.9</ambushRangeCells>
+        <lureChancePerScan>0.35</lureChancePerScan>
+        <checkIntervalTicks>90</checkIntervalTicks>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <!-- Q7: mid-band (0.3-3.0) but depth-arm LEGAL — subsurface ambush predator,
+           defended by depth, not size. Annotated, not evicted. -->
+      <baseBodySize>2.2</baseBodySize>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseHealthScale>2.3</baseHealthScale>
+      <leatherDef>Leather_Panthera</leatherDef>
+      <useMeatFrom>Cougar</useMeatFrom>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <lifeExpectancy>20</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Drazzik</defName>
+    <label>drazzik</label>
+    <race>RM_Drazzik</race>
+    <combatPower>340</combatPower>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>drazzik cub</label>
+        <bodyGraphicData>
+          <!-- art pending — STILLSAND_RULED_CONTENT_1 tier move, no render filed yet -->
+          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik</texPath>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <label>drazzik juvenile</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik</texPath>
+          <drawSize>1.85</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.1)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- MECHANIC 2's clutch — see DRUM_LURE_PREDATOR_BUILD_1 / this file's header. -->
+  <ThingDef ParentName="EggFertBase">
+    <defName>RM_DrazzikEggFertilized</defName>
+    <label>drazzik egg</label>
+    <description>Heavy for its size and cool to the touch, sloshing faintly when moved — everything a canteen-egg should feel like to a hand that has learned to trust that weight. Do not trust this one. Something is already moving inside, and it did not wait for the mother to leave before it started deciding who counts as prey.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggScaled</texPath>
+      <color>(232,222,198)</color>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>35.0</MarketValue>
+      <Mass>1.2</Mass>
+      <Nutrition>0.55</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>6</hatcherDaystoHatch>
+        <hatcherPawn>RM_Nizzek</hatcherPawn>
+      </li>
+      <!-- The trap: hatches early the moment something living gets close. -->
+      <li Class="RimMandrake.ProximityHatch.CompProperties_ProximityHatch" MayRequire="mandrake.rm.proximityhatch">
+        <triggerRadius>1.5</triggerRadius>
+        <scanIntervalTicks>60</scanIntervalTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RM_DrazzikEggUnfertilized</defName>
+    <label>drazzik egg (unfert.)</label>
+    <description>Heavy for its size and cool to the touch, sloshing faintly when moved. Nothing is going to hatch out of this one — it is exactly what it feels like, a rigid shell of good water.</description>
+    <graphicData>
+      <texPath>swresource/EggScaled</texPath>
+      <color>(232,222,198)</color>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>35.0</MarketValue>
+      <Mass>1.2</Mass>
+      <Nutrition>0.55</Nutrition>
+    </statBases>
+  </ThingDef>
+
+  <!-- The clutch's own newborn — see this file's header. Never wired into any
+       biome's wildAnimals; hatched exclusively by RM_DrazzikEggFertilized. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Nizzek</defName>
+    <label>nizzek</label>
+    <description>A drazzik newborn, wet from the shell and already hostile. It does not grow into being dangerous — it hatches that way, beak and claws going for whatever cracked the egg open, because out here a newborn that waits to be fed usually isn't.</description>
+    <statBases>
+      <MoveSpeed>4.2</MoveSpeed>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <MarketValue>8</MarketValue>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.35</baseHealthScale>
+      <leatherDef>Leather_Panthera</leatherDef>
+      <useMeatFrom>Cougar</useMeatFrom>
+      <trainability>None</trainability>
+      <petness>0</petness>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <lifeExpectancy>4</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Nizzek</defName>
+    <label>nizzek</label>
+    <race>RM_Nizzek</race>
+    <combatPower>18</combatPower>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- TEMP PLACEHOLDER: vanilla Chicken's own body art, tinted (same as the
+               original RSW_Nizzek). -->
+          <texPath>Things/Pawn/Animal/Chicken/Chicken</texPath>
+          <color>(222,214,196)</color>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

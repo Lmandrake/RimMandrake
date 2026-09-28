@@ -39,13 +39,27 @@
   MEASURED, not raced: the propagation commit's own diff touched only design
   docs and the roster JSON, never this XML.
 
-  11 wildAnimals rows, all mandrake.rsw.swbestiary (our own RSW_ ports).
-  RSW_Kreetle STAYS (Q6: "kreetle ONE home, the Stillsand" — this doc's own
-  §7 recommendation to cut it was reversed by the card):
-    RSW_Kreetle 0.2, RSW_WarWyrm 0.2, RSW_KraytDragon 0.15, RSW_Ikee 0.15,
+  🔴 STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting, Q1 RATIFIED) further cut
+  RSW_Ikee, RSW_Vozzik, RSW_SandLion (vekka) and RSW_Drazzik from the Add
+  block below, and RSW_LightPipeNub/RSW_Ollim from the wildPlants block —
+  all four are invented content (Q11a), tier-moved to native RM_-tier copies
+  authored directly in RM_Stillsand_Biome.xml's own wildAnimals/wildPlants
+  (RM_Ikee, RM_Vozzik, RM_Vekka, RM_Drazzik, RM_LightPipeNub, RM_Ollim/
+  RM_OllimWood — see that file's own header). The RSW_ source defs below are
+  UNCHANGED and still live: RUT_ExtremeDesert.xml (the frozen twin, R22,
+  untouched by this item) keeps its own original wiring of all six by name,
+  so nothing on the currently-running world changes. Only this patch file's
+  own Add block — which targets RM_Stillsand, the free tier — drops the six
+  rows that RM_Stillsand now carries natively instead.
+
+  7 wildAnimals rows remain, all mandrake.rsw.swbestiary (our own RSW_
+  ports) — every one of them genuinely canon (§2a) or explicitly deferred
+  (qorrax, owner art-review pending). RSW_Kreetle STAYS (Q6: "kreetle ONE
+  home, the Stillsand" — this doc's own §7 recommendation to cut it was
+  reversed by the card):
+    RSW_Kreetle 0.2, RSW_WarWyrm 0.2, RSW_KraytDragon 0.15,
     RSW_GraniteSlug 0.1, RSW_Scurrier 0.1, RSW_Gizka 0.01,
-    RSW_GreaterKraytDragon 0.001, RSW_Vozzik 0.0005, RSW_SandLion 0.5,
-    RSW_Drazzik 0.05
+    RSW_GreaterKraytDragon 0.001
 
   1 wildAnimals row with no MayRequire — JOE_Cephalope 0.5. Flagged, not an
   RSW_/SW_/RUT_ name, but its ThingDef/PawnKindDef live in THIS SAME MOD
@@ -58,15 +72,11 @@
   keeping RM_Stillsand safe standalone. No MayRequire guard needed — this
   patch file only ever loads alongside its own target def.
 
-  3 wildPlants rows, all mandrake.rsw.swbestiary:
+  1 wildPlants row remains, mandrake.rsw.swbestiary:
     RSW_Plant_Bloddle 0.05 (genuine SW canon — Tatooine bloddle, SWAC donor)
-    RSW_LightPipeNub 0.1, RSW_Ollim 0.01 — the biome's OWN invented signature
-    flora (EXTREME_DESERT_SIGNATURE_FLORA_1), not genuine Star Wars canon.
-    STILLSAND_RM_MOD_BUILD_1 flags these as strong candidates to move to the
-    RimMandrake tier (renamed off RSW_) per Q11a's "invented content is
-    RimMandrake-tier, prefix notwithstanding" — flagged, not decided here.
-    Left at their current location (RSW_, mandrake.rsw.swbestiary) and
-    routed the same way as the genuine-canon row above, pending that call.
+    RSW_LightPipeNub/RSW_Ollim (the biome's own invented signature flora,
+    EXTREME_DESERT_SIGNATURE_FLORA_1) moved RM_-tier per Q11a — see the
+    STILLSAND_RULED_CONTENT_1 note above; this file no longer wires them.
 
   5 allowedPackAnimals rows, all mandrake.rsw.swbestiary:
     RSW_Bantha, RSW_Ronto, RSW_Eopie, RSW_Jamel, RSW_Falumpaset
@@ -89,14 +99,10 @@
         <RSW_Kreetle>0.2</RSW_Kreetle>
         <RSW_WarWyrm>0.2</RSW_WarWyrm>
         <RSW_KraytDragon>0.15</RSW_KraytDragon>
-        <RSW_Ikee>0.15</RSW_Ikee>
         <RSW_GraniteSlug>0.1</RSW_GraniteSlug>
         <RSW_Scurrier>0.1</RSW_Scurrier>
         <RSW_Gizka>0.01</RSW_Gizka>
         <RSW_GreaterKraytDragon>0.001</RSW_GreaterKraytDragon>
-        <RSW_Vozzik>0.0005</RSW_Vozzik>
-        <RSW_SandLion>0.5</RSW_SandLion>
-        <RSW_Drazzik>0.05</RSW_Drazzik>
       </value>
     </match>
   </Operation>
@@ -118,8 +124,6 @@
       <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildPlants</xpath>
       <value>
         <RSW_Plant_Bloddle>0.05</RSW_Plant_Bloddle>
-        <RSW_LightPipeNub>0.1</RSW_LightPipeNub>
-        <RSW_Ollim>0.01</RSW_Ollim>
       </value>
     </match>
   </Operation>

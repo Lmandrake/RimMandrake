@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Aurrok.xml                           RimMandrake — STILLSAND_RULED_CONTENT_1
+
+  §7 Q8 / Rulings Q8 (2026-09-27 sitting, RATIFIED): the roster's one confirmed
+  unwired row, AA_SpinedGow (owner round-2 import, "the heat-drinking plated
+  grazer"). GROWN to giant (bs >=4, ruled donor's 2.75 was a mid-band SURFACE
+  grazer, illegal on both arms of the bimodal law) and wired rare at ~0.15
+  commonality. Ruled name: aurrok (batch 4d, checker/Wookieepedia-probe-clean per
+  Q11).
+
+  Ported from Alpha Animals (`sarg.alphaanimals`, workshop 1541721856,
+  1.6/Defs/ThingDefs_Races/Races_SpinedGow.xml, defName AA_SpinedGow). Body already
+  vanilla Core QuadrupedAnimalWithHooves, no substitution needed. Dropped, per the
+  standing port rule (donor-framework comps come out, stats/body/form stay):
+  VEF.AnimalBehaviours.AnimalStatExtension (info-card flavor only, not a dependency
+  of this mod). milkDef AA_GowMilk (unported donor def) substituted with vanilla
+  Milk, matching this batch's own RSW_Thurra precedent for an unported donor milk
+  product. useMeatFrom/leatherDef (Cow/Leather_Heavy) already vanilla, unchanged.
+
+  bs GROWN 2.75 -> 4.0 per the ruling; every other stat scaled up lightly to match
+  (health/hunger/market value) rather than left at the small-grazer's own numbers,
+  since "a small walking mountain" (§7 Q8) is a materially bigger, tougher animal,
+  not a re-labelled cow.
+
+  ART: no render exists for "aurrok"/"spined gow" tied to this biome (checked
+  artpipe done/_artsrc/registry.jsonl this pass — none found). Donor's own texture
+  used as a loud TEMP PLACEHOLDER, matching this codebase's standing port
+  convention, until a real render lands.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Aurrok</defName>
+    <label>aurrok</label>
+    <description>A heavy-bodied grazer, plated along its spine with a sail of thick, dark tissue that stands upright and soaks heat off the open sand like a solar collector. Bred small on other worlds, the ones that survive out here have grown into something closer to a walking mountain — slow, placid, and durable enough that nothing on the dayside bothers hunting it twice.</description>
+    <statBases>
+      <MoveSpeed>3.4</MoveSpeed>
+      <MarketValue>900</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>999</ComfyTemperatureMax>
+      <Flammability>0</Flammability>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Milk</milkDef>
+        <milkIntervalDays>3</milkIntervalDays>
+        <milkAmount>18</milkAmount>
+      </li>
+    </comps>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <body>QuadrupedAnimalWithHooves</body>
+      <!-- §7 Q8: GROWN from the donor's 2.75 (mid-band, illegal as a SURFACE
+           grazer) to giant scale, ~4.0 - "a small walking mountain". -->
+      <baseBodySize>4.0</baseBodySize>
+      <baseHealthScale>3.2</baseHealthScale>
+      <baseHungerRate>0.6</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <roamMtbDays>3</roamMtbDays>
+      <useMeatFrom>Cow</useMeatFrom>
+      <trainability>None</trainability>
+      <packAnimal>true</packAnimal>
+      <lifeExpectancy>24</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+          <soundWounded>Pawn_Muffalo_Wounded</soundWounded>
+          <soundDeath>Pawn_Muffalo_Death</soundDeath>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
+          <soundAngry>Pawn_Muffalo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Aurrok</defName>
+    <label>aurrok</label>
+    <race>RM_Aurrok</race>
+    <combatPower>160</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>
+      <min>2</min>
+      <max>5</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>aurrok calf</label>
+        <labelPlural>aurrok calves</labelPlural>
+        <bodyGraphicData>
+          <!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land. -->
+          <texPath>Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowBaby</texPath>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowMale</texPath>
+          <drawSize>3.2</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowFemale</texPath>
+          <drawSize>2.9</drawSize>
+        </femaleGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowMale</texPath>
+          <drawSize>4.3</drawSize>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowFemale</texPath>
+          <drawSize>3.9</drawSize>
+        </femaleGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
