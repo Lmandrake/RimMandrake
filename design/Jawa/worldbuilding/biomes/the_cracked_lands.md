@@ -18,7 +18,49 @@ right next to the razor's edge of barren nothingness in the open sun.**_
 now reads ExtremeDesert 47° → **Cracked Lands 21°** → Desert 14° → Shrubland 9° →
 Wasteland −10°.
 
-## 0. The measurements everything rests on
+⭐ **AMENDMENT 2026-09-28 (owner, `FLOODEDCANYON_BEDAZZLE_SITTING_1` — the bedazzle
+sitting; four-turn volley, final word owner-typed. Review + rulings:
+`floodedcanyon_bedazzle_review_2026-09-28.md`; cast detail:
+`cracked_lands_bedazzle_cast_2026-09-28.md`):**
+(1) **Full rename ruled** — FloodedCanyon → CrackedLands everywhere (defs, docs,
+code, file names): `CRACKEDLANDS_FULL_RENAME_1`, gated on the savegame shortHash
+check.
+(2) **New natives admitted**: the **Muttavaq** — a second giant, the Sealed
+band's extreme: sleeps for years under a clay pan players read as terrain; the
+flood wakes it; awake it dredges the wet floor like a walking weir. The
+**Uttaqar** — the roster's rock troll finally ported as OURS, the crag-walls
+giant (two giants ruled OK: troll under the walls, muttavaq under the pans).
+**Irqit** — the mudflat breeder, a sudden carpet at every recede, dead by the
+dry. **Tarruq** — the voice: long calls down the crack network that go silent
+when the cracks begin to fill, the warning before the chimes. Flora **Veqma** —
+dowsing plant, tip blushing green as the water table nears.
+(3) **Roster law applied**: all vanilla terrestrial life OFF the RM_ roster (as
+usual); the invented cast migrates to RM_ defs (Q11a — the free mod looks the
+same as the campaign one); **eopie and common beasts have ONE native biome and
+TRAVEL** — off this roster, arriving with merchants/caravans instead; the three
+flier-commuters (CanCell/convor/woolamander) STAY as guests and migrants (the
+flight carve-out); Sealed Sleeper + Emperor Vulture get their missing RM_-patch
+rows. The plant-form "mantrap" relabels to **Fang Leaf**.
+(4) **THE SWALE ruled** — the seep canal: a FlowWorks canal variant intentionally
+graded and perforated so carried water seeps into surrounding soil, climbing its
+fertility. A NORMAL FlowWorks buildable — but **Utinni-locked until discovered
+in this biome** (the discoverable technology, mark 2, shaped for transient
+gravship players: the technique travels with the ship).
+(5) **Canyon-wall FOSSILS ruled** — the deepest cut on the planet exposes a time
+column: fossil-bearing strata in the walls, fresh seams after every flood,
+an item family up to deep-stratum uniques, mounted-display furniture. The deep
+strata hold pan-giants (biome-local lore line; mark 9 stays lore, no ideoligion
+defs).
+(6) **Ship chime REJECTED** — chimes work by being strung on lines up the
+canyons, not magic; no ship-mounted chime, ever. **No wax tank** (FlowWorks has
+no water-loss model for it to fix — measured). Instead: **crack-wax makes
+SEALED UNDERWATER SUITS** for exploration — water/underwater TERRAIN survival
+apparel only; sea floors stay ship-only (the `WARCASKET_SUIT_CLASS_1`
+reconciliation), and the ship's take (mark 6) is fossil cargo + the carried
+Swale technique.
+(7) Batch-4h renames stay DRAFT — current names ship.
+Build: `CRACKEDLANDS_RULED_CONTENT_1` + `CRACKEDLANDS_MECHANICS_BUILD_1` +
+`CRACKEDLANDS_FULL_RENAME_1`.
 
 MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
 plans): **985 tiles**, dayside, arc 17→116 (median 69 — the sun **21° above the

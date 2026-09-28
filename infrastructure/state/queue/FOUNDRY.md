@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T20:21:51Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-28T21:11:49Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1875,3 +1875,23 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CRACKEDLANDSFULLRENAME1 — FloodedCanyon → CrackedLands, everywhere
 prose:    infrastructure/state/items/CRACKEDLANDS_FULL_RENAME_1.md
+
+## CRACKEDLANDS_RULED_CONTENT_1 Build the Cracked Lands ruled content: roster surgery (vanilla zoo out, RM_ migration, eopie to merchants), five new natives (Muttavaq/Uttaqar/Irqit/Tarruq/Veqma), fossil defs, the wax underwater suit, Fang Leaf relabel
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  CRACKEDLANDSRULEDCONTENT1 — roster surgery, five new natives, fossils, the wax suit
+prose:    infrastructure/state/items/CRACKEDLANDS_RULED_CONTENT_1.md
+
+## CRACKEDLANDS_MECHANICS_BUILD_1 Build the Cracked Lands mechanics: the Swale (FlowWorks-normal, Utinni-locked biome discovery), survey+cistern loop, wall fossils + flood re-cut, giant behaviors, chime soundscape, Peakstorm Light, salvage strikes, ledges/toll gate, bloom market
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  CRACKEDLANDSMECHANICSBUILD1 — the Swale, surveys, fossils-in-the-walls, the giants' behaviors, the soundscape
+prose:    infrastructure/state/items/CRACKEDLANDS_MECHANICS_BUILD_1.md
