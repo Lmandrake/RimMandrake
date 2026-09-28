@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T04:37:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T04:42:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -31,6 +31,15 @@ target:   v1
 kind:     task
 summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
 prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
+
+## BAROQUE_BEDAZZLE_PROGRAM_1 The bedazzle program: eleven biomes raised to the Baroque bar in ruled order (Contagion first, Black Crags last), four-movement ritual, nine-mark bar as the design gate; all other biomes grandfathered subject to the gate
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+summary:  BAROQUEBEDAZZLEPROGRAM1 — the bedazzle program: eleven biomes raised to the Baroque bar
+prose:    infrastructure/state/items/BAROQUE_BEDAZZLE_PROGRAM_1.md
 
 # IN PROGRESS
 
