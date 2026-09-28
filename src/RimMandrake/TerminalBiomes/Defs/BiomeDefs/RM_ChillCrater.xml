@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_ChillCrater.xml                  TerminalBiomes · CHILL_WORLD_CRATER_1
+  ============================================================================
+  The Chill's aftermath biome. When the lake is detonated (Route 1 of
+  design/Jawa/worldbuilding/biomes/the_chill_warlab_routes_spec_2026-09-27.md),
+  the Chill's world tiles are swapped IN-SAVE to this def, so the planet shows
+  the wound from orbit for good.
+
+  🔑 ZERO TILES IS THE EXPECTED STATE. Only the in-game event places this biome.
+  Nothing paints it and worldgen never picks it, so a tile count of 0 is correct
+  and is not a finding.
+
+  WHY THESE FLAGS (each one checked against the decompiled 1.6 engine):
+  - generatesNaturally=false: WorldGenStep_Terrain.BiomeFrom tests
+    `implemented && generatesNaturally` BEFORE it touches Worker, so this def is
+    never scored or chosen. implemented stays true, because
+    TileFinder.IsValidTileForNewSettlement and other code treat an unimplemented
+    biome as missing. workerClass is still given (BiomeWorker_Ocean, the same one
+    the Chill uses): vanilla never calls it, but a null workerClass would throw
+    for any mod that loops over biomes and calls Worker.
+  - These flags copy the Chill on purpose, so the swap changes the look and the
+    life and nothing else. allowRoads=true / allowRivers=false:
+    SurfaceTile.Roads/Rivers only show links the biome allows, so matching flags
+    mean the swap cannot make a stored link appear or vanish. They also keep
+    DrawMaterial on the WorldTerrain shader (turning both off switches it to
+    WorldIce). impassable=true / canBuildBase=false keep world pathing,
+    reachability and settle rules the same. isBackgroundBiome=true keeps
+    neighbouring coastal landmarks rotating the same way
+    (LandmarkDef.IsValidRotatableNeighbour).
+  - isWaterBiome=false: this is glass, not sea. Vanilla never reads the flag,
+    but GravTide's landing gate and RM_SeaDiveHatch (which keys on a
+    sea-biome list) do, so a cratered tile has no dive and no sea landing.
+    The tiles keep elevation <= 0 (a sunken basin), so SurfaceTile.WaterCovered
+    stays true, and a map ever generated here gets no rock and no elevation
+    relief (GenStep_RocksFromGrid / GenStep_ElevationFertility): flat glass.
+  - fishTypes is EMPTY BUT PRESENT, and that is load-bearing. On a live map,
+    Map.Biome reads the tile's biome directly (Map.cs: Biome => TileInfo.PrimaryBiome).
+    FishingUtility.GetCatchesFor dereferences Map.Biome.fishTypes with no null
+    check, and a WaterBody keeps the fish list it rolled at generation. So if the
+    swap ever lands under a live surface map, a null fishTypes would NRE on the
+    next fishing job.
+  - No wildAnimals, no wildPlants, animalDensity/plantDensity 0: nothing lives
+    here. baseWeatherCommonalities is non-empty so WeatherDecider has something
+    to pick (an empty list logs "All weather commonalities were zero").
+
+  World texture World/Biomes/RM_ChillCrater is a procedural PLACEHOLDER
+  (fractured black glass, mean RGB ~39,42,53), made to differ from the Chill's
+  Jawa_SickWater (~59,71,69). It is not commissioned art.
+  ============================================================================
+-->
+<Defs>
+
+  <BiomeDef>
+    <defName>RM_ChillCrater</defName>
+    <label>the Chill crater</label>
+    <description>A basin of black glass where a lake of liquid fuel used to be. It went up all at once, and everything that lived on the floor went with it. The melt refroze into one cracked pane. Nothing grows here and nothing comes back.</description>
+    <workerClass>BiomeWorker_Ocean</workerClass>
+    <implemented>true</implemented>
+    <generatesNaturally>false</generatesNaturally>
+    <canAutoChoose>false</canAutoChoose>
+    <isWaterBiome>false</isWaterBiome>
+    <isBackgroundBiome>true</isBackgroundBiome>
+    <impassable>true</impassable>
+    <canBuildBase>false</canBuildBase>
+    <allowRoads>true</allowRoads>
+    <allowRivers>false</allowRivers>
+    <allowFarmingCamps>false</allowFarmingCamps>
+    <allowPollution>false</allowPollution>
+    <hasVirtualPlants>false</hasVirtualPlants>
+    <isExtremeBiome>true</isExtremeBiome>
+    <texture>World/Biomes/RM_ChillCrater</texture>
+    <settlementSelectionWeight>0</settlementSelectionWeight>
+    <campSelectionWeight>0</campSelectionWeight>
+
+    <animalDensity>0</animalDensity>
+    <plantDensity>0</plantDensity>
+    <forageability>0</forageability>
+    <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
+
+    <baseWeatherCommonalities>
+      <Clear>16</Clear>
+      <Fog>4</Fog>
+    </baseWeatherCommonalities>
+
+    <terrainsByFertility>
+      <li>
+        <terrain>RM_ChillCraterGlass</terrain>
+        <min>-999</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+
+    <!-- Empty, but it must exist. See the header: a null fishTypes NREs
+         FishingUtility.GetCatchesFor if the swap lands under a live map. -->
+    <maxFishPopulation>0</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <saltwater_Common />
+    </fishTypes>
+  </BiomeDef>
+
+</Defs>
