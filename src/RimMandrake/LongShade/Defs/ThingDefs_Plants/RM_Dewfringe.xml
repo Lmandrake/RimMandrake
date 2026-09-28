@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Dewfringe.xml                          LONGSHADE_RULED_CONTENT_1, Q6
+
+  New shade-boundary rim plant. long_shade_bedazzle_2026-09-27.md §3: "a thin
+  pale band-plant that grows ONLY on shade-boundary cells — the rim, not the
+  area. Harvest: a small water/plant-matter yield, the densest growth in the
+  biome, and the visible 'faint living halo' every patch should wear." Q10
+  ruling: bound to the ultracactus's own hard ceiling — pale, rim-only, never
+  green in quantity, reflected here in colour (a pale silvery-sage, not a
+  green), a low fillPercent/visualSize, and a MODEST wildClusterWeight (this
+  is a fringe, not a carpet — a plant that only ever grows on the boundary
+  ring is already self-limiting to a small fraction of the map).
+
+  Growth gate: RM_Patch_DewfringeWildSpawnGate.cs, mirroring RM_Leachmoss's
+  own spawn-gate pattern (Harmony postfix on WildPlantSpawner.
+  CalculatePlantsWhichCanGrowAt — the environmentalhazards mod's own header
+  explains why that is the one call site covering both map-gen seeding and
+  regrowth) but per-CELL rather than a global on/off: it reads
+  RM_MapComponent_ShadeGrid.ShadeAt(c) and removes RM_Dewfringe from the
+  candidate list unless the cell sits in the shade grid's falloff band — not
+  full sun (0f), not full shade (1f, roofed or the caster's own cell), which
+  by construction only exists on the ring around a shade-caster. fertilityMin
+  is left permissive (Sand-compatible, same envelope as the ultracactus) so
+  the C# gate is what actually confines it to the rim, not the terrain table.
+
+  Harvest: a small water/plant-matter yield per §3 — RM_DewfringeSprig, a
+  minor ingestible/craft-input item, not a full food crop (the halo is meant
+  to be gathered in passing, not farmed in bulk — consistent with the ban-8
+  ceiling).
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Dewfringe</defName>
+    <label>dewfringe</label>
+    <description>A low, sparse fringe of pale filaments beaded with dew, growing only where a shadow's edge meets open ground. It never spreads past that line — a stand of dewfringe is how you can see where the shade actually ends, a faint living halo ringing every patch in the Long Shade. Too pale and too thin to ever read as lush, but it is the densest growth this biome has.</description>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0.05</Nutrition>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <!-- Art job filed 2026-09-27, landed and PASSED (infrastructure/artpipe/
+           done/RM_Dewfringe.json). Graphic_Random reads texPath as a folder
+           (RM_Leachmoss precedent) — the render landed inside one. -->
+      <texPath>Things/Plant/RM_Dewfringe</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(196,201,184)</color>
+      <!-- pale silvery-sage, never green in quantity — Q10's ceiling, the same
+           bound the ultracactus's pale green already respects one shade darker -->
+    </graphicData>
+    <selectable>true</selectable>
+    <fillPercent>0.08</fillPercent>
+    <pathCost>0</pathCost>
+    <ingestible />
+    <plant>
+      <!-- Permissive fertility (matches the ultracactus's Sand-compatible
+           envelope) — the C# gate above is what actually confines this to
+           the rim, not this table. wildClusterWeight kept modest: even
+           without the gate this should never want to be the dominant plant. -->
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.1</fertilitySensitivity>
+      <growDays>2</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>8</maxMeshCount>
+      <visualSizeRange>0.25~0.45</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_DewfringeSprig</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <harvestWork>80</harvestWork>
+      <harvestMinGrowth>0.4</harvestMinGrowth>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>3</wildClusterWeight>
+      <wildOrder>1.5</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Dewfringe sprig — the small harvest, water/plant-matter ============== -->
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_DewfringeSprig</defName>
+    <label>dewfringe sprig</label>
+    <description>A handful of dew-beaded fringe, cut from the rim of a shadow. Barely a mouthful of plant matter and the water it carries — nobody farms this, but everybody passing a shade line stops to gather it.</description>
+    <possessionCount>15</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Plant/RM_DewfringeSprig</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>0.8</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <tasteThought>AteRawFood</tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>10</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

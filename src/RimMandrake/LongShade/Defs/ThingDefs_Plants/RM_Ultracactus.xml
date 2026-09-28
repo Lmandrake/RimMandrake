@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Ultracactus.xml                        LONGSHADE_RULED_CONTENT_1, Q2
+
+  Moved from src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_Ultracactus.xml,
+  renamed RSW_Ultracactus -> RM_Ultracactus / RSW_RawUltracactus ->
+  RM_RawUltracactus. Q2 ruling (owner, typed): "The ultracactus is not canon,
+  I made it." — so it anchors the free tier instead of staying Utinni. Pure
+  XML, no C#, no cross-mod references of any kind in the original; the move
+  is a straight rename, byte-identical otherwise.
+
+  Art: rswultracactus_v1 and rswrawultracactus_v1 both landed and PASSED
+  (infrastructure/artpipe/done/, 2026-09-25) after the "no render found"
+  state this file's header used to describe — real renders copied in at
+  Textures/Things/Plant/RM_Ultracactus/RM_Ultracactus_a.png (Graphic_Random
+  reads texPath as a folder, same convention RM_Leachmoss's own header
+  documents) and Textures/Things/Item/Plant/RM_RawUltracactus.png.
+
+  ⚠️ specialThoughtAsIngredient AteUltracactus below is a PRE-EXISTING
+  dangling reference carried over unchanged from the RSW_ original — no
+  ThoughtDef of that name exists anywhere in this repo. Not introduced or
+  fixed by this move; flagged, not this item's scope.
+-->
+<Defs>
+
+  <!-- ============== Ultracactus — the open ground's buried canopy ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Ultracactus</defName>
+    <label>ultracactus</label>
+    <description>A broad, flat pad of pale green flesh that keeps almost all of itself under the sand, presenting only a thin rind flush with the ground to take the raking light. Walk across a stand of them and you would register nothing — there is no canopy to see, no shade to stand in, nothing standing proud enough to cast one. It holds the open ground by tolerance rather than strength, ringing every shaded patch just beyond the reach of the thornier things that would otherwise crowd it out, and thinning into the bare pavement past that.</description>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0.15</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <!-- No existing render found (checked 2026-09-20, at the RSW_ tier).
+           texPath carried over unchanged. -->
+      <texPath>Things/Plant/RM_Ultracactus</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(176,196,158)</color>
+      <!-- pale green, per desert.md §4b -->
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>4</pathCost>
+    <ingestible />
+    <plant>
+      <!-- Item-specified: fertilityMin 0.05, so it takes Sand. Flush with the sand and
+           near-zero footprint — but harvestable and clustered more widely, since §7
+           makes it the open ground's general food source rather than a single-tile
+           curiosity. -->
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>6</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>10</maxMeshCount>
+      <visualSizeRange>0.35~0.65</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_RawUltracactus</harvestedThingDef>
+      <harvestYield>4</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestMinGrowth>0.5</harvestMinGrowth>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <wildEqualLocalDistribution>true</wildEqualLocalDistribution>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Raw ultracactus — the harvested item ============== -->
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_RawUltracactus</defName>
+    <label>ultracactus pulp</label>
+    <description>Pale, faintly sweet pulp cut from an ultracactus pad. It bruises fast once out of the ground, but nothing else grows this reliably on open sand nobody else can use.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Plant/RM_RawUltracactus</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.6</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <tasteThought>AteRawFood</tasteThought>
+      <specialThoughtAsIngredient>AteUltracactus</specialThoughtAsIngredient>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>20</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

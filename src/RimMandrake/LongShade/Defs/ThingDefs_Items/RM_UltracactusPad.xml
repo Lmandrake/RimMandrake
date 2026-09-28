@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_UltracactusPad.xml                     LONGSHADE_RULED_CONTENT_1, Q3
+
+  Closes the standalone-inert-forage hole DESERT_FORAGEDFOOD_INERT_1 found
+  and fixed one tier down: RUT_Desert.xml set forageability 0.25 with no
+  foragedFood, and MEASURED (engine) GetForagedFoodCountPerInterval returns 0
+  whenever foragedFood is unset regardless of the forageability value — the
+  mechanic silently does nothing. That item's fix was pointing foragedFood at
+  an already-wired harvest item (RSW_RawHubbaGourd); this item is the same
+  fix at the RM tier, mirrored: RM_LongShade's own foragedFood is wired below
+  to a real, standalone RM-tier ingestible.
+
+  A distinct item from RM_RawUltracactus (the growing plant's own tended
+  harvest, ThingDefs_Plants/RM_Ultracactus.xml) rather than the same def —
+  the art job (rimflow RM_UltracactusPad, LONGSHADE_DESIGN_SITTING_1, landed
+  2026-09-27, infrastructure/artpipe/_artsrc/RM_UltracactusPad/
+  RM_UltracactusPad.png, verdict PASS) was filed and rendered against this
+  exact name, and the two read as different moments of the same plant: the
+  pulp is what a colonist deliberately harvests and preps; the pad is what a
+  caravan forages off open ground in passing, uncut, still in its rind — the
+  art brief's own "one cleanly cut edge showing moist pale flesh inside...
+  lying flat" reads as a whole pad rather than processed pulp.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_UltracactusPad</defName>
+    <label>ultracactus pad</label>
+    <description>A whole pad cut from an ultracactus, still in its waxy dust-coated rind. Caravans passing through the Long Shade forage these straight off open ground nothing else can use — pale, faintly sweet flesh under a tough skin built to hold what little water it has.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Plant/RM_UltracactusPad</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.4</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <tasteThought>AteRawFood</tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>15</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

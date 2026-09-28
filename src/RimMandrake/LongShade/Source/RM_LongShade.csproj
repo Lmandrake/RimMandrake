@@ -10,9 +10,13 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony, no donor workerClass (RM_LongShade's workerClass is vanilla
+    No donor workerClass (RM_LongShade's workerClass is vanilla
     RimWorld.BiomeWorker_Desert, unchanged — item's own MEASURED STATE
-    section 2). The only class here is the Mod Settings screen.
+    section 2). Harmony IS now referenced, added LONGSHADE_RULED_CONTENT_1
+    Q6 — the dewfringe's shade-boundary spawn gate has no XML hook
+    (WildPlantSpawner.CalculatePlantsWhichCanGrowAt is C#-only, same reason
+    mandrake.rm.environmentalhazards' RM_Patch_LeachmossWildSpawnGate needs
+    it), the one patch in this mod.
   -->
 
   <PropertyGroup>
@@ -38,8 +42,19 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="RM_LongShadeMod.cs" />
+    <!-- LONGSHADE_RULED_CONTENT_1 Q6 — the dewfringe's shade-boundary spawn
+         gate. Needs Harmony (WildPlantSpawner.CalculatePlantsWhichCanGrowAt
+         has no XML hook, same reason RM_Patch_LeachmossWildSpawnGate needs
+         it) and RimMandrake.CreatureBehaviors (RM_MapComponent_ShadeGrid).
+         Build CreatureBehaviors FIRST:
+           "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\CreatureBehaviors\Source\RM_CreatureBehaviors.csproj -c Release -->
+    <Compile Include="RM_Patch_DewfringeWildSpawnGate.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,6 +72,14 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

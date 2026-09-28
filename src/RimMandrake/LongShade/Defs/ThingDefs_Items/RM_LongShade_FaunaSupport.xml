@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LongShade_FaunaSupport.xml             LONGSHADE_RULED_CONTENT_1, Q1
+
+  Satellite item defs owed exclusively by one of the 13 fauna in
+  RM_LongShade_Fauna.xml (verified each is used by no other def anywhere in
+  src/RimStarWars before moving it — a shared material stayed behind instead,
+  see below): the bokka's and ossik's own eggs, the ulgga's own eggs, the
+  great devourer's own eggs, and the ulgga's own black-chitin leather.
+
+  The kudda's leatherDef/specificMeatDef (RM_CactusHide/RM_CactusMeat) are
+  duplicated here rather than reusing the SW-tier RSW_CactusHide/RSW_CactusMeat
+  they were ported with — those two materials are ALSO used by RSW_Chikka and
+  RSW_Skorra, two SW-tier creatures that are not part of this ruling and stay
+  in the Utinni layer, so sharing them would give this free mod's kudda a
+  cross-mod material reference. Same stats/texPath as the SW-tier originals.
+-->
+<Defs>
+
+  <ThingDef ParentName="EggFertBase">
+    <defName>RM_EggBokkaFertilized</defName>
+    <label>bokka egg (fert.)</label>
+    <description>A fertilized bokka egg. If all goes well, it should hatch into a baby bokka. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AnimalProductRaw/EggRound</texPath>
+      <color>(230,212,193)</color>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>45</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>3.5</hatcherDaystoHatch>
+        <hatcherPawn>RM_Bokka</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+
+
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RM_EggBokkaUnfertilized</defName>
+    <label>bokka egg (unfert.)</label>
+    <description>An unfertilized bokka egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AnimalProductRaw/EggRound</texPath>
+      <color>(220,202,183)</color>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>20.0</MarketValue>
+    </statBases>
+  </ThingDef>
+
+
+	<ThingDef ParentName="EggFertBase">
+		<defName>RM_EggOssikFertilized</defName>
+		<label>ossik egg (fert.)</label>
+		<description>Fertilized ossik egg. If all goes well, it should hatch into a baby ossik.</description>
+		<graphicData>
+			<color>(125,138,97)</color>
+			<drawSize>1.2</drawSize>
+		</graphicData>
+		<statBases>
+			<MarketValue>19.0</MarketValue>
+		</statBases>
+		<comps>
+			<li Class="CompProperties_Hatcher">
+				<hatcherDaystoHatch>7</hatcherDaystoHatch>
+				<hatcherPawn>RM_Ossik</hatcherPawn>
+			</li>
+		</comps>
+	</ThingDef>
+
+
+	<ThingDef ParentName="EggUnfertBase">
+		<defName>RM_EggOssikUnfertilized</defName>
+		<label>ossik egg (unfert.)</label>
+		<description>Unfertilized ossik egg. Edible raw, much better cooked.</description>
+		<graphicData>
+			<color>(125,138,97)</color>
+			<drawSize>1.2</drawSize>
+		</graphicData>
+		<statBases>
+			<MarketValue>15.0</MarketValue>
+		</statBases>
+	</ThingDef>
+
+
+	<ThingDef ParentName="EggFertBase">
+		<defName>RM_EggTuskcoilFertilized</defName>
+		<label>ulgga egg (fert.)</label>
+		<description>Fertilized ulgga egg. If all goes well, it should hatch into a ulgga.</description>
+		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
+			<color>(126,113,117)</color>
+		</graphicData>
+		<tradeability>None</tradeability>
+		<statBases>
+			<MarketValue>9.0</MarketValue>
+		</statBases>
+		<comps>
+			<li Class="CompProperties_Hatcher">
+				<hatcherDaystoHatch>45</hatcherDaystoHatch>
+				<hatcherPawn>RM_Ulgga</hatcherPawn>
+			</li>
+		</comps>
+	</ThingDef>
+
+
+	<ThingDef ParentName="EggUnfertBase">
+		<defName>RM_EggTuskcoilUnfertilized</defName>
+		<label>ulgga egg (unfert.)</label>
+		<description>Unfertilized ulgga egg. Edible raw, much better cooked.</description>
+		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
+			<color>(126,113,117)</color>
+		</graphicData>
+		<tradeability>Sellable</tradeability>
+		<statBases>
+			<MarketValue>9.0</MarketValue>
+		</statBases>
+	</ThingDef>
+
+
+	<ThingDef ParentName="EggFertBase">
+		<defName>RM_EggGreatDevourerFertilized</defName>
+		<label>great devourer egg (fert.)</label>
+		<description>Fertilized great devourer egg. It can be eaten raw, but it's much, much better cooked. Actually, it's a worm egg, it is disgusting either way... If all goes well, it should hatch into a great devourer.</description>
+		<tradeability>None</tradeability>
+		<statBases>
+			<MarketValue>9.0</MarketValue>
+		</statBases>
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
+			<color>(163,81,36)</color>
+		</graphicData>
+		<comps>
+			<li Class="CompProperties_Hatcher">
+				<hatcherDaystoHatch>8</hatcherDaystoHatch>
+				<hatcherPawn>RM_GreatDevourer</hatcherPawn>
+			</li>
+		</comps>
+	</ThingDef>
+
+
+	<ThingDef ParentName="EggUnfertBase">
+		<defName>RM_EggGreatDevourerUnfertilized</defName>
+		<label>great devourer egg (unfert.)</label>
+		<description>Unfertilized great devourer egg. It can be eaten raw, but it's much, much better cooked. Actually, it's a worm egg, it is disgusting either way...</description>
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
+			<color>(163,81,36)</color>
+		</graphicData>
+		<tradeability>Sellable</tradeability>
+		<statBases>
+			<MarketValue>9.0</MarketValue>
+		</statBases>
+	</ThingDef>
+
+
+	<ThingDef ParentName="LeatherBase">
+		<defName>RM_CactusHide</defName>
+		<label>sentient plant skin</label>
+		<description>Part animal hide, part living plant tissue. Traps cold water inside, acting as a good thermal insulator in hot climates.</description>
+		<graphicData>
+			<color>(162,175,90)</color>
+		</graphicData>
+		<statBases>
+			<MarketValue>3.8</MarketValue>
+			<StuffPower_Armor_Sharp>1</StuffPower_Armor_Sharp>
+			<StuffPower_Insulation_Cold>0</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>45</StuffPower_Insulation_Heat>
+		</statBases>
+		<stuffProps>
+			<color>(162,175,90)</color>
+			<commonality>0.001</commonality>
+			<statFactors>
+				<MaxHitPoints>1.5</MaxHitPoints>
+				<Beauty>1.3</Beauty>
+			</statFactors>
+		</stuffProps>
+	</ThingDef>
+
+
+	<ThingDef ParentName="PlantFoodRawBase">
+		<defName>RM_CactusMeat</defName>
+		<label>plant meat</label>
+		<description>A strange meat, part vegetable, part animal, harvested from cactus-hybrid creatures.</description>
+		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_Cactipine_Meat</texPath>
+		</graphicData>
+		<statBases>
+			<MarketValue>1.1</MarketValue>
+		</statBases>
+		<ingestible>
+			<foodType>VegetableOrFruit</foodType>
+		</ingestible>
+		<comps>
+			<li Class="CompProperties_Rottable">
+				<daysToRotStart>30</daysToRotStart>
+				<rotDestroys>true</rotDestroys>
+			</li>
+		</comps>
+	</ThingDef>
+
+
+	<ThingDef ParentName="LeatherBase">
+		<defName>RM_BlackChitin</defName>
+		<label>black insect chitin</label>
+		<description>Hard overlapping scales of insectoid chitin. Exceptionally durable in combat, but a poor defense against weather.</description>
+		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
+		<graphicData>
+			<texPath>Things/Item/Resource/AA_Chitin</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+			<color>(66,57,60)</color>
+		</graphicData>
+		<statBases>
+			<MarketValue>4.2</MarketValue>
+			<StuffPower_Armor_Sharp>1.75</StuffPower_Armor_Sharp>
+			<StuffPower_Armor_Blunt>0.54</StuffPower_Armor_Blunt>
+			<StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+		</statBases>
+		<stuffProps>
+			<color>(26,12,16)</color>
+			<commonality>0.001</commonality>
+			<statFactors>
+				<MaxHitPoints>1.5</MaxHitPoints>
+				<Beauty>1.7</Beauty>
+			</statFactors>
+		</stuffProps>
+	</ThingDef>
+
+
+	<!-- Gloomcast's own leather and meat — duplicated off RSW_Leather_Horax /
+	     RSW_Saurian_Meat (ThingDefs_Items/RSW_MlieWaveC_Resources.xml,
+	     RSW_MlieWaveB_Resources.xml), same stats and texPath, because those two
+	     originals are also used by ~18 other SW-tier creatures (Dewback, Wraid,
+	     Hssiss, Massiff, Boma, ...) that stay in the Utinni layer. -->
+	<ThingDef ParentName="LeatherBase">
+		<defName>RM_GloomcastHide</defName>
+		<label>gloomcast hide</label>
+		<description>Tanned, dried gloomcast hide. Strong, durable and pricey.</description>
+		<graphicData>
+			<texPath>swresource/Leather_Heavy</texPath>
+			<color>(0,76,156)</color>
+		</graphicData>
+		<statBases>
+			<MarketValue>15.0</MarketValue>
+			<StuffPower_Armor_Sharp>2.2</StuffPower_Armor_Sharp>
+			<StuffPower_Armor_Blunt>2.4</StuffPower_Armor_Blunt>
+			<StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
+			<StuffPower_Insulation_Heat>20</StuffPower_Insulation_Heat>
+		</statBases>
+		<stuffProps>
+			<color>(0,76,156)</color>
+			<commonality>0.025</commonality>
+			<statFactors>
+				<MaxHitPoints>1.0</MaxHitPoints>
+			</statFactors>
+		</stuffProps>
+	</ThingDef>
+
+	<!-- LIVE-CHECKED (validate_patch.py against the 630-mod load set): vanilla
+	     ships no abstract "MeatBase" at all — RimWorld generates most raw
+	     meats procedurally off race.meatDef. RSW_Saurian_Meat's own parent,
+	     RSW_SWanimals_RawMeatBase, is itself just OrganicProductBase (real
+	     vanilla abstract) plus the standard raw-meat shape; inlined here
+	     directly rather than duplicating a second abstract for one def. -->
+	<ThingDef ParentName="OrganicProductBase">
+		<defName>RM_GloomcastMeat</defName>
+		<label>gloomcast meat</label>
+		<description>A piece of meat from a gloomcast.</description>
+		<thingClass>ThingWithComps</thingClass>
+		<graphicData>
+			<texPath>swresource/Meat_Saurian</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+		</graphicData>
+		<socialPropernessMatters>true</socialPropernessMatters>
+		<statBases>
+			<MarketValue>2.0</MarketValue>
+			<Nutrition>0.1</Nutrition>
+			<Flammability>0.5</Flammability>
+			<Mass>0.03</Mass>
+			<FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+		</statBases>
+		<ingestible>
+			<foodType>Meat</foodType>
+			<preferability>DesperateOnly</preferability>
+			<ingestEffect>EatMeat</ingestEffect>
+			<ingestSound>RawMeat_Eat</ingestSound>
+		</ingestible>
+		<thingCategories>
+			<li>MeatRaw</li>
+		</thingCategories>
+		<comps>
+			<li Class="CompProperties_Rottable">
+				<daysToRotStart>2</daysToRotStart>
+				<rotDestroys>True</rotDestroys>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<!-- Gloomcast's own dung/leavings filth — moved from RSW_Filth_WhaleDung
+	     (ThingDefs_Misc/RSW_Filth_WhaleDung.xml), exclusive to this creature,
+	     def and PNG both. FILTH_ON_NATURAL_TERRAIN_NOOP_1's finding still
+	     applies unchanged: [Unnatural] placementMask, not Core's
+	     Filth_AnimalFilth's [Terrain]-only mask, is what actually shows up on
+	     Sand/SoftSand (NaturalTerrainBase's own filthAcceptanceMask). -->
+	<ThingDef ParentName="BaseFilth">
+		<defName>RM_Filth_Gloomcast</defName>
+		<label>gloomcast dung</label>
+		<description>A massive deposit left by a gloomcast — the megafauna's own fertiliser, and the visible mark of where it stopped.</description>
+		<graphicData>
+			<texPath>Things/Filth/RM_WhaleDung</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<color>(97,65,48,97)</color>
+		</graphicData>
+		<filth>
+			<placementMask>
+				<li>Unnatural</li>
+			</placementMask>
+			<rainWashes>true</rainWashes>
+			<disappearsInDays>45~50</disappearsInDays>
+			<cleaningWorkToReduceThickness>35</cleaningWorkToReduceThickness>
+			<canFilthAttach>true</canFilthAttach>
+		</filth>
+	</ThingDef>
+
+</Defs>
