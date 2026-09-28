@@ -49,6 +49,13 @@ namespace RimMandrake.DivingInteraction
     // each tier also carries its own real-time cooldown so a single burst of
     // offenses cannot double-fire in the same moment.
     //
+    // CHILL_THERMAL_FOOTPRINTS_1, 2026-09-28: every threshold comparison
+    // below goes through AdjustedThreshold(), which discounts the base
+    // threshold by up to TrailThresholdDiscount at a cell RM_MapComponent_
+    // ChillFootprints reports as heavily trailed — "a second visit finds
+    // the first visit waiting." Additive only: a pristine cell (density 0)
+    // gets the exact same threshold as before this item existed.
+    //
     // WHY ElectricalBurn (RimWorld/DamageDefOf.cs, [MayRequireAnomaly] —
     // fine, CLAUDE.md: "assume all the DLCs") is the arc's damage type:
     // MEASURED off the decompiled engine (RimSage) — it is ParentName="Flame"
@@ -111,6 +118,18 @@ namespace RimMandrake.DivingInteraction
         private const float Tier2Threshold = 16f; // "sustained" — roughly 4 kills/heat-hits, or a large mixed pattern
         private const float AgitationTier1Threshold = 4f; // own pool, same feel as a real first offense
 
+        // CHILL_THERMAL_FOOTPRINTS_1, 2026-09-28. "A second visit finds the
+        // first visit waiting" — a cell heavily marked by
+        // RM_MapComponent_ChillFootprints (thermal footprints, trail
+        // density 0..1) reads as more "known/disturbed," so all three
+        // thresholds below are discounted proportionally to the trail
+        // density AT THE OFFENSE CELL, up to this fraction at full
+        // saturation (density 1). Density 0 (pristine ground, or the
+        // footprint mechanism toggled off / map not Chill seabed) leaves
+        // every threshold exactly as it was — purely additive, no existing
+        // tuning changes for untouched ground.
+        private const float TrailThresholdDiscount = 0.35f;
+
         private const int Tier1CooldownTicks = 2500; // ~42s real time at 1x — a recurring sting, not a one-shot
         private const int Tier2CooldownTicks = 60000; // 1 in-game day — a real incident, never spammable
         private const int AgitationCooldownTicks = 2500; // drilling "harasses" repeatedly, same cadence as the Iliss sting
@@ -168,7 +187,7 @@ namespace RimMandrake.DivingInteraction
             offenseScore += WeightFor(kind);
             int now = Find.TickManager.TicksGame;
 
-            if (offenseScore >= Tier2Threshold && now >= tier2CooldownUntilTick)
+            if (offenseScore >= AdjustedThreshold(Tier2Threshold, cell) && now >= tier2CooldownUntilTick)
             {
                 FireTier2Wake(cell);
                 tier2CooldownUntilTick = now + Tier2CooldownTicks;
@@ -176,7 +195,7 @@ namespace RimMandrake.DivingInteraction
                 offenseScore = 0f;
                 return;
             }
-            if (offenseScore >= Tier1Threshold && now >= tier1CooldownUntilTick)
+            if (offenseScore >= AdjustedThreshold(Tier1Threshold, cell) && now >= tier1CooldownUntilTick)
             {
                 FireTier1Arc(cell, offender);
                 tier1CooldownUntilTick = now + Tier1CooldownTicks;
@@ -206,12 +225,23 @@ namespace RimMandrake.DivingInteraction
             }
             agitationScore += DrillAgitationWeight;
             int now = Find.TickManager.TicksGame;
-            if (agitationScore >= AgitationTier1Threshold && now >= agitationCooldownUntilTick)
+            if (agitationScore >= AdjustedThreshold(AgitationTier1Threshold, cell) && now >= agitationCooldownUntilTick)
             {
                 FireTier1Arc(cell, operatorPawn);
                 agitationCooldownUntilTick = now + AgitationCooldownTicks;
                 agitationScore = 0f;
             }
+        }
+
+        // CHILL_THERMAL_FOOTPRINTS_1's read hook: RM_MapComponent_
+        // ChillFootprints.TrailDensityAt returns 0 whenever it has nothing
+        // to say (off map, toggled off, no filth here yet), so this is
+        // safe to call unconditionally and never needs its own Active
+        // gate beyond the null-conditional lookup itself.
+        private float AdjustedThreshold(float baseThreshold, IntVec3 cell)
+        {
+            float density = map.GetComponent<RM_MapComponent_ChillFootprints>()?.TrailDensityAt(cell) ?? 0f;
+            return baseThreshold * (1f - TrailThresholdDiscount * density);
         }
 
         private static float WeightFor(RM_GardenOffenseKind kind)

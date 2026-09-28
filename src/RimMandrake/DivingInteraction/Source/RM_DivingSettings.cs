@@ -110,6 +110,20 @@ namespace RimMandrake.DivingInteraction
         // identical to an ordinary sessile floor-life creature.
         public static bool chillGardenDefenseEnabled = true;
 
+        // CHILL_THERMAL_FOOTPRINTS_1, 2026-09-28. "Everything warm marks
+        // the Chill's ice floor" — a walking pawn's melt-prints and a
+        // parked powered device's polished shadow, both a permanent-ish
+        // RM_Filth_ChillFrostGlaze deposit
+        // (RM_MapComponent_ChillFootprints.cs). Own toggle per MOD_
+        // OPTIONS_RETROFIT_1: off means nothing new is ever deposited and
+        // RM_MapComponent_ChillFootprints.TrailDensityAt always reads 0
+        // (so CHILL_GARDEN_DEFENSE_1's trail-density threshold discount
+        // simply never applies) — frost glaze already on a saved map
+        // stays exactly as visible and cleanable as any other filth
+        // either way, so toggling this off never erases history, only
+        // stops writing more of it.
+        public static bool chillThermalFootprintsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -123,6 +137,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref chillBoilShroudEnabled, "chillBoilShroudEnabled", true);
             Scribe_Values.Look(ref chillHeatedSuitEnabled, "chillHeatedSuitEnabled", true);
             Scribe_Values.Look(ref chillGardenDefenseEnabled, "chillGardenDefenseEnabled", true);
+            Scribe_Values.Look(ref chillThermalFootprintsEnabled, "chillThermalFootprintsEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -208,6 +223,16 @@ namespace RimMandrake.DivingInteraction
                   + "destruction wakes a bounded group of dormant Tarnn into one hard, winnable fight "
                   + "— never a raid, never repeating. Off: the floor garden never fights back; floor "
                   + "life is simply passive wildlife.");
+
+                list.Gap();
+                list.CheckboxLabeled("The Chill: thermal footprints", ref chillThermalFootprintsEnabled,
+                    "Shipped default: ON. Everything warm marks the seabed's ice: a walking colonist "
+                  + "leaves a thin trail of refrozen glossy melt-prints, and a parked powered device "
+                  + "saturates a denser \"polished shadow\" under itself. Permanent-ish — it does not "
+                  + "melt back on its own, only ordinary filth-cleaning removes it. A heavily-trailed "
+                  + "site also makes the garden's own defenses escalate faster on a return visit. Off: "
+                  + "nothing new is deposited and that escalation bonus never applies; frost glaze "
+                  + "already on a saved map is unaffected either way.");
             }
 
             list.End();

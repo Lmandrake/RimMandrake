@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CHILL_THERMAL_FOOTPRINTS_1 — the one FilthDef RM_MapComponent_ChillFootprints
+  deposits under a warm mover on the Chill's seabed pocket map. See that
+  file's own class-header comment for the full persistence and terrain-
+  acceptance reasoning (why no filthAcceptanceMask patch is needed here,
+  and why omitting disappearsInDays makes this "permanent-ish").
+
+  PLACEHOLDER ART: reuses vanilla's own Filth_Water texture
+  (Things/Filth/PoolSoft) retinted pale icy-blue — same posture as
+  RM_SeaFloorGround's own header ("reusing vanilla's own Sand texture as
+  sediment... Real seafloor-silt art is owed alongside the per-sea
+  dressing pass"). A dedicated "refrozen glossy print" texture is owed
+  the same way, not this item's job to author.
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_ChillFrostGlaze</defName>
+    <label>frost glaze</label>
+    <description>A refrozen, glassy sheen in the ice — the ghost of something warm that stood or walked here. It will not melt again on its own.</description>
+    <graphicData>
+      <texPath>Things/Filth/PoolSoft</texPath>
+      <color>(215, 236, 248, 210)</color>
+      <drawSize>2</drawSize>
+    </graphicData>
+    <filth>
+      <!-- No <disappearsInDays> — FilthProperties defaults it to
+           FloatRange.Zero, which makes Filth.disappearAfterTicks 0 on
+           spawn, which SteadyEnvironmentEffects' own `!= 0` guard reads
+           as "never auto-disappears." Deliberate: this is the whole
+           mechanism behind "permanent-ish." -->
+      <cleaningWorkToReduceThickness>40</cleaningWorkToReduceThickness>
+      <!-- false: this is a floor record of THIS pocket map, not something
+           a colonist's boots should go tracking into the surface colony
+           through the dive hatch. -->
+      <canFilthAttach>false</canFilthAttach>
+      <allowsFire>false</allowsFire>
+      <cleaningSound>Interact_CleanFilth_Fluid</cleaningSound>
+      <!-- placementMask left at its FilthProperties default (Unnatural),
+           which is exactly what RM_SeaFloorGround's inherited
+           filthAcceptanceMask ([Unnatural], from NaturalTerrainBase)
+           accepts with no patch — verified against the decompiled engine,
+           see RM_MapComponent_ChillFootprints.cs. -->
+    </filth>
+  </ThingDef>
+
+</Defs>
