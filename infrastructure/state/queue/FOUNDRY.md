@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T08:36:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T09:15:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1793,16 +1793,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CHILLFLOORLIGHT1 — drowned aurora over bioluminescent points
 prose:    infrastructure/state/items/CHILL_FLOOR_LIGHT_1.md
-
-## CHILL_FLORA_BUILD_1 Build the ten Chill plants per revised flora doc + hydrocarbon flesh fuel chain
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  CHILLFLORABUILD1 — build the ten plants, as ruled
-prose:    infrastructure/state/items/CHILL_FLORA_BUILD_1.md
 
 ## CHILL_WORLD_CRATER_1 Crater BiomeDef + live world-tile swap when the sarlacc route fires (feasibility first)
 state:    proposed

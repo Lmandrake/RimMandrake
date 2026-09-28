@@ -1034,3 +1034,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"CHILL_GARDEN_DEFENSE_1","ts":"2026-09-28T08:22:25Z"}
 {"seat":"FOUNDRY","event":"start","id":"CHILL_GARDEN_DEFENSE_1","ts":"2026-09-28T08:22:26Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_GARDEN_DEFENSE_1","sha":"0c11dd089","ts":"2026-09-28T08:36:16Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_FLORA_BUILD_1","ts":"2026-09-28T08:37:37Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_FLORA_BUILD_1","ts":"2026-09-28T08:37:38Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_FLORA_BUILD_1","sha":"3815690b5","ts":"2026-09-28T09:15:47Z"}
