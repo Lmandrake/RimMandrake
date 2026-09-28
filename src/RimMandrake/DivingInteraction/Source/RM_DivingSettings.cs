@@ -1,3 +1,4 @@
+using HarmonyLib;
 using UnityEngine;
 using Verse;
 
@@ -64,6 +65,16 @@ namespace RimMandrake.DivingInteraction
         // leave it), so re-enabling later never un-values anything.
         public static bool greyElderTradeEnabled = true;
 
+        // CHILL_FIRE_BAN_1, 2026-09-27. "There's no oxygen down in the sea
+        // floor so it's not explosive" — no flame works on the Chill
+        // seabed pocket map (fire spawns, campfires/torches, fuel-burning
+        // heat) unless a future mechanism marks a zone oxygenated, or the
+        // igniting Thing carries its own oxidizer (Fuselight). Own toggle:
+        // off restores plain vanilla fire behaviour on that one map, for
+        // testing or a different ruleset — every other map is unaffected
+        // either way, on or off.
+        public static bool chillFireBanEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -73,6 +84,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref greyPoolSentinelEnabled, "greyPoolSentinelEnabled", true);
             Scribe_Values.Look(ref greyElderDischargeEnabled, "greyElderDischargeEnabled", true);
             Scribe_Values.Look(ref greyElderTradeEnabled, "greyElderTradeEnabled", true);
+            Scribe_Values.Look(ref chillFireBanEnabled, "chillFireBanEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -123,6 +135,16 @@ namespace RimMandrake.DivingInteraction
                   + "every Grey Sea tile keeps its own memory, so travelling to another tile finds "
                   + "a market that has never seen your find. Off: the Elder's trade gizmo "
                   + "disappears; nothing already recorded is lost.");
+
+                list.Gap();
+                list.CheckboxLabeled("The Chill: no fire on the seabed", ref chillFireBanEnabled,
+                    "Shipped default: ON. \"There's no oxygen down in the sea floor so it's not "
+                  + "explosive\" — on the Chill's seabed pocket map, campfires and torches never "
+                  + "light (or go dark if already burning), fuel-burning heat stops working, and "
+                  + "molotovs/incendiaries splash inert. Heat there is electric-only. A creature or "
+                  + "plant that carries its own oxidizer (built under a separate item) is exempt. "
+                  + "Off: fire behaves normally down there, for testing or a different ruleset. "
+                  + "Every other map is unaffected either way.");
             }
 
             list.End();
@@ -136,6 +158,12 @@ namespace RimMandrake.DivingInteraction
         public RM_DivingInteractionMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_DivingSettings>();
+            // CHILL_FIRE_BAN_1: the first Harmony patches this assembly has
+            // ever needed (Patch_ChillFireBan.cs) — every other mechanism
+            // here rides a vanilla extension point (ThingComp/MapComponent/
+            // GenStep) and needs no patch, same rule PropaneLakeMechanics'
+            // own csproj documents for its one Harmony patch.
+            new Harmony("mandrake.rm.divinginteraction").PatchAll();
         }
 
         public override string SettingsCategory()
