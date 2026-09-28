@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T21:17:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T21:20:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
+prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
 
 # IN PROGRESS
 
@@ -377,15 +386,6 @@ target:   v1
 kind:     task
 summary:  1. New law (Law 5?): temperature tolerance covers the domain, widely. Each
 prose:    infrastructure/state/items/FAUNA_TOLERANCE_NORMALIZATION_1.md
-
-## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
-prose:    infrastructure/state/items/BMT_FAUNA_ABSORPTION_1.md
 
 ## WORLDMAP_AUDIT_LIVE_CHECKS_1 Four worldmap audit checks needing the live game — batch into next game-up window
 state:    doing
