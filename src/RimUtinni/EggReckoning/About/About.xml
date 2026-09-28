@@ -91,8 +91,8 @@ Depends on mandrake.rm.webwork (RM_OllathrixEgg, RM_Ollathrix) and mandrake.rut.
       <displayName>RimWorld</displayName>
     </li>
     <li>
-      <packageId>mandrake.rm.webwork</packageId>
-      <displayName>RimMandrake: Webwork</displayName>
+      <packageId>mandrake.rm.biomes</packageId>
+      <displayName>RimMandrake: Baroque Biomes</displayName>
     </li>
     <li>
       <packageId>mandrake.rut.patches</packageId>
@@ -102,7 +102,7 @@ Depends on mandrake.rm.webwork (RM_OllathrixEgg, RM_Ollathrix) and mandrake.rut.
 
   <loadAfter>
     <li>Ludeon.RimWorld</li>
-    <li>mandrake.rm.webwork</li>
+    <li>mandrake.rm.biomes</li>
     <li>mandrake.rut.patches</li>
   </loadAfter>
 </ModMetaData>

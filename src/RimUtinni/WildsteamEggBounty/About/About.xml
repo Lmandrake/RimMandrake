@@ -43,8 +43,8 @@ item this mod's quest also prices against, but neither item's build touches the 
       <displayName>RimWorld</displayName>
     </li>
     <li>
-      <packageId>mandrake.rm.webwork</packageId>
-      <displayName>RimMandrake: Webwork</displayName>
+      <packageId>mandrake.rm.biomes</packageId>
+      <displayName>RimMandrake: Baroque Biomes</displayName>
     </li>
     <li>
       <packageId>mandrake.rut.patches</packageId>
@@ -54,7 +54,7 @@ item this mod's quest also prices against, but neither item's build touches the 
 
   <loadAfter>
     <li>Ludeon.RimWorld</li>
-    <li>mandrake.rm.webwork</li>
+    <li>mandrake.rm.biomes</li>
     <li>mandrake.rut.patches</li>
   </loadAfter>
 </ModMetaData>
