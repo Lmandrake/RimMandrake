@@ -700,6 +700,9 @@ duplicate-then-diverge for content shared between biomes (now same-mod, still se
 defs). Non-biome mods (FlowWorks, Graffiti, Oracle, TheBazaar, …) stay independent.
 Execution and the open sub-decisions (final name, exact mod roster, folder/packaging
 strategy, assembly count, modcheck/deploy re-keying): `BIOME_MOD_UNIFICATION_1`.
+🔴 **Executed 2026-09-28** — all 29 entries live inside `mandrake.rm.biomes` on the
+owner's list, 3 clean cold loads. Closing record:
+`design/RimMandrake/biome_mod_unification_spec.md`'s own "EXECUTED" section.
 
 ### Nothing is open
 
