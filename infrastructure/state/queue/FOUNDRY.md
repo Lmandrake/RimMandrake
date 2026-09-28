@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T00:30:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T01:48:55Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -999,6 +999,15 @@ kind:     task
 summary:  1. Re-author the whole surface in our tier (race, 2 pawnkinds, hidden raid
 prose:    infrastructure/state/items/THEY_MOD_REPLICATION_1.md
 
+## MIASMA_SHIPPING_NAMES_1 Owner card: the_miasma working names (karrobel, karrathil, stranded deformation)
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+summary:  MIASMASHIPPINGNAMES1 — owner card: themiasma working names
+prose:    infrastructure/state/items/MIASMA_SHIPPING_NAMES_1.md
+
 ## FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 Feral-race crash-survivor pawnkind + permanent mental-scar hediff + capture-to-slave wiring
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1596,26 +1605,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## MIASMA_SHIPPING_NAMES_1 Owner card: the_miasma working names (karrobel, karrathil, stranded deformation)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     decision
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  MIASMASHIPPINGNAMES1 — owner card: themiasma working names
-prose:    infrastructure/state/items/MIASMA_SHIPPING_NAMES_1.md
-
-## PYRELANDS_BURROWER_GRAZER_1 Author a dedicated burrower-grazer creature for the Pyrelands' 'three families' fire-web (owner-ruled, all-ruled §4) -- new C# burrow-on-fire behavior, no clean donor body
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     build
-thin:     no ## spec, no ## criteria
-summary:  PYRELANDSBURROWERGRAZER1 — dedicated burrower-grazer for the Pyrelands' fire-web
-prose:    infrastructure/state/items/PYRELANDS_BURROWER_GRAZER_1.md
 
 ## DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1 grain-scale commensal fauna riding RM_MirrorGiant's shade
 state:    proposed
