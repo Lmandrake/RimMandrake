@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T05:20:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T05:21:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1944,3 +1944,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TERMINALBIOMES_LIQUID_RETARGET_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TERMINALBIOMES_LIQUID_RETARGET_1.md
+
+## BAROQUE_BIOMES_WAVE1_JOIN_1 Baroque Biomes Wave 1: unified mod joins the owner's full list (one ADD, no removals); retarget RimUtinni FindMod/MayRequire naming folded packageIds; delete Wave 0's stale standalone folders
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BAROQUE_BIOMES_WAVE1_JOIN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BAROQUE_BIOMES_WAVE1_JOIN_1.md
+
+## RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1 RustCathedral's Mod calls GetSettings<T>() three times on one Mod instance (Hum/Walls settings read null) — pre-existing, found live in Baroque Biomes wave-0 load-prove, unrelated to the merge
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1.md
