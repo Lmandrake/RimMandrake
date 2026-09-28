@@ -102,8 +102,12 @@ namespace RimMandrake.Utinni.PropaneLakeMechanics
 		}
 
 		/// <summary>Any pump in the same network as `member` is currently
-		/// running — used by CompVWakeAgitation ("agitated by pumping"),
-		/// independent of valve state.</summary>
+		/// running, independent of valve state. CHILL_VWAKE_WIRING_VERIFY_1:
+		/// CompVWakeAgitation does NOT call this — "loud pumping" is audible
+		/// proximity, not network topology, so it scans RUT_PipePump things
+		/// directly within a flat radius instead (correct: a pump could be in
+		/// range but on a disconnected network, or in-network but far away and
+		/// inaudible). This method is currently unreferenced.</summary>
 		public bool IsNetworkPumping(CompPipeNetwork member)
 		{
 			List<CompPipeNetwork> group = GroupOf(member);
