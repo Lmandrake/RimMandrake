@@ -1,6 +1,15 @@
 #!/bin/bash
 # biome_load_proof.sh — BIOME_LOAD_PROOF_WAVE_1
 #
+# ⛔ RETIRED 2026-09-28 (BAROQUE_BIOMES_WAVE2_FOLD_1). Every biome this script
+# targets is now folded into mandrake.rm.biomes; deploy_custom_mods.py
+# refuses to deploy a folded mod standalone (points at --compose biomes
+# instead) and modset_builder.py's proof_<biome> tiers this script calls are
+# deleted. BIOME_LOAD_PROOF_WAVE_1 is dropped — superseded by the unification
+# waves' own load-proving, which covers every one of these biomes together
+# (see design/RimMandrake/biome_mod_unification_spec.md's "EXECUTED" section).
+# Left in place as a record of the method, not something to run again.
+#
 # Proves each biome mod loads CLEAN, ALONE, on a dependency-complete minimal list.
 # That is the owner's deliberately narrow sense of PROVEN (2026-09-26): "PROVEN
 # doesn't mean fully functional, it means PROVEN for donor retirement purposes."

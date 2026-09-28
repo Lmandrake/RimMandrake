@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T17:19:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T19:03:49Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,15 +22,6 @@ target:   v1
 kind:     task
 summary:  GREYSEAFLOORPASS1 — the whole Grey Sea floor pass
 prose:    infrastructure/state/items/GREYSEA_FLOOR_PASS_1.md
-
-## BIOME_LOAD_PROOF_WAVE_1 Prove every biome mod loads clean standalone on a minimal list - the narrow donor-retirement sense of PROVEN, not full functionality
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
-prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
 
 ## BAROQUE_BEDAZZLE_PROGRAM_1 The bedazzle program: eleven biomes raised to the Baroque bar in ruled order (Contagion first, Black Crags last), four-movement ritual, nine-mark bar as the design gate; all other biomes grandfathered subject to the gate
 state:    ready
@@ -49,6 +40,15 @@ target:   v1
 kind:     task
 summary:  (no items/BLUEDESERT_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BLUEDESERT_BEDAZZLE_SITTING_1.md
+
+## FLOODEDCANYON_BEDAZZLE_SITTING_1 Flooded Canyon bedazzle sitting - program row 4: score against the nine-mark bar, fill flora/fauna, four-turn volley, ticket + commission (hard-deps FlowWorks; biome mods already unified)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/FLOODEDCANYON_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOODEDCANYON_BEDAZZLE_SITTING_1.md
 
 # IN PROGRESS
 
