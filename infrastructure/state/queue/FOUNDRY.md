@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T09:40:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T09:55:03Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1794,16 +1794,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  CHILLFLOORLIGHT1 — drowned aurora over bioluminescent points
 prose:    infrastructure/state/items/CHILL_FLOOR_LIGHT_1.md
 
-## CHILL_WORLD_CRATER_1 Crater BiomeDef + live world-tile swap when the sarlacc route fires (feasibility first)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  CHILLWORLDCRATER1 — the live world-tile crater
-prose:    infrastructure/state/items/CHILL_WORLD_CRATER_1.md
-
 ## CHILL_VWAKE_WIRING_VERIFY_1 Verify V-Wake pump-agitation is wired end to end; retire the manhunter stand-in
 state:    proposed
 row:      unassigned
@@ -1863,3 +1853,23 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CONTAGIONMECHANICSBUILD1 — the Burn/Bloom engine and the four ruled mechanisms
 prose:    infrastructure/state/items/CONTAGION_MECHANICS_BUILD_1.md
+
+## WARLAB_CRATER_ACCIDENTAL_TRIGGER_1 RUT_WarLabReactorCore's CompIgniteCraterOnDestroy fires the planet-wide Chill crater swap on ANY destruction of that core, not only deliberate Route-1 arming -- accidental-detonation risk once the war lab is reachable; needs the Route-1 arming design first
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md
+
+## JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1 jawa/map_info's tool description claims map and tile biome 'diverge after a live world_tile_set' -- false per vanilla source (Map.Biome reads the tile directly, they cannot diverge for a non-pocket map); needs a DLL rebuild + its own commit
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1.md
