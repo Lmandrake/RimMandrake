@@ -29,7 +29,7 @@
   a fourth silently outside it.
 
   Bodies reuse the two shapes this campaign's karr- clade already
-  established (RUT_Karrobel.xml/RUT_Karrathil.xml): BeetleLike for a small
+  established (RUT_Karrobel.xml/RUT_FeverSwarm.xml): BeetleLike for a small
   ambient scuttler, BeetleLikeWithClaw where the roster calls for a bigger,
   gripping/blade-bearing animal. No new BodyDef — none of the three
   silhouettes (disc, mass-of-small, big-and-long-limbed) needs a bespoke
@@ -38,7 +38,7 @@
 
   🔑 Two of these three "must not be briefed as hero sprites" (roster §7):
   RM_Karravel has to read as a carpet and RM_Karrimeth only ever as a mass.
-  No new C# for that — same idiom already used for RUT_Karrathil's swarm
+  No new C# for that — same idiom already used for RUT_FeverSwarm's swarm
   ("a HIGH wildGroupSize on an otherwise ordinary small-insect PawnKindDef...
   no new C# needed for reads as a haze in numbers"): both get deliberately
   high, INVENTED wildGroupSize instead of a bespoke rendering mechanism.
@@ -47,12 +47,12 @@
   {done,pending,active,failed}, _artsrc, registry.jsonl by all three names
   and by "scuttler"/"carpet"/"mass" first, clean. Flat-color placeholders
   shipped this pass (south-facing only, matching the RUT_Karrobel/
-  RUT_Karrathil precedent of a single low ground pose for a "mostly seen as
+  RUT_FeverSwarm precedent of a single low ground pose for a "mostly seen as
   a mass/carpet/half-buried" creature) so the mod loads clean; no fresh
   fill_queue.py job filed this pass — a hero-sprite brief would deliver the
   wrong thing for two of the three per the caution above, and the third
   (Karrolun) is ordinary but not urgent enough on its own to file solo. Real
-  art is follow-on work, same posture RUT_Karrobel/RUT_Karrathil are
+  art is follow-on work, same posture RUT_Karrobel/RUT_FeverSwarm are
   already sitting in (their own jobs FAILED and are unconsumed in
   infrastructure/artpipe/pending — a pre-existing gap this item does not
   own or attempt to fix).
@@ -283,7 +283,7 @@
     <label>karrimeth</label>
     <race>RM_Karrimeth</race>
     <combatPower>2</combatPower>
-    <!-- INVENTED, same idiom RUT_Karrathil's swarm already uses: "only ever
+    <!-- INVENTED, same idiom RUT_FeverSwarm's swarm already uses: "only ever
          a moving mass" is delivered by a very high wildGroupSize on an
          ordinary PawnKindDef, not new C#. -->
     <wildGroupSize>40~90</wildGroupSize>

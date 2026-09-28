@@ -233,7 +233,7 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <RUT_Karrobel MayRequire="mandrake.rut.patches">0.6</RUT_Karrobel>  <!-- karrobel - delta-loam composter, this campaign's own invented species, still authored in mandrake.rut.patches -->
-      <RUT_Karrathil MayRequire="mandrake.rut.patches">0.9</RUT_Karrathil>  <!-- karrathil - fever-swarm vector/pollinator, same as above -->
+      <RUT_FeverSwarm MayRequire="mandrake.rut.patches">0.9</RUT_FeverSwarm>  <!-- fever swarm (renamed from karrathil, MIASMA_SHIPPING_NAMES_1) - vector/pollinator, same as above -->
       <!-- SEA_BEASTS_TIER_RULING_1 (2026-09-25): two of the Miasma nursery's seven
            juveniles whose parents are INVENTED sea beasts, not genuine Star Wars IP
            (verified via Wookieepedia's search API: no canon hit for either name) —
