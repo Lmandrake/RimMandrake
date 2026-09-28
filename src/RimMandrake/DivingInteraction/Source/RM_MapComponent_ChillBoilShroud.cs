@@ -24,8 +24,10 @@ namespace RimMandrake.DivingInteraction
     //
     // ⚠️ WHY "LIQUID-TERRAIN CELLS" READS AS "ANY OUTDOOR FLOOR CELL" HERE,
     // NOT A LITERAL WATER TERRAIN. GenStep_SeaFloorTerrain paints the WHOLE
-    // pocket-map floor as the walkable RM_SeaFloorGround, never the
-    // biome's own water terrain — its own header explains why: the real
+    // pocket-map floor as walkable ground — RM_ChillIceBedrock on the
+    // Chill specifically since CHILL_RIME_TERRACES_1 (2026-09-28), the
+    // shared RM_SeaFloorGround elsewhere — never the biome's own water
+    // terrain — its own header explains why: the real
     // waterDeepTerrain is Impassable, "correct for the SURFACE tile, wrong
     // for a floor pocket map a weighted-belt diver is meant to walk." A
     // diver down here is fictionally standing on the BOTTOM of the lake,

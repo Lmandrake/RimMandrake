@@ -47,14 +47,19 @@ namespace RimMandrake.DivingInteraction
     // patch, so it was checked here rather than copied blind):
     // FilthMaker.TerrainAcceptsFilth requires
     // (terrain.filthAcceptanceMask & (filthDef.filth.placementMask |
-    // additionalFlags)) == that same mask. RM_SeaFloorGround inherits
-    // NaturalTerrainBase's filthAcceptanceMask, which is exactly
+    // additionalFlags)) == that same mask. This map's own floor terrain —
+    // RM_ChillIceBedrock since CHILL_RIME_TERRACES_1 (2026-09-28; was the
+    // shared RM_SeaFloorGround before) — inherits NaturalTerrainBase's
+    // filthAcceptanceMask unchanged, which is exactly
     // [Unnatural]; FilthProperties.placementMask defaults to exactly
     // FilthSourceFlags.Unnatural and RM_Filth_ChillFrostGlaze
     // (Defs/ThingDefs_Misc/RM_ChillFootprintFilth.xml) does not override
     // it. Unnatural & Unnatural == Unnatural ⇒ every deposit call below
     // (which passes no additionalFlags) succeeds on this terrain today,
-    // with no filthAcceptanceMask patch needed.
+    // with no filthAcceptanceMask patch needed. RM_ChillRimeTerrace (the
+    // rime-terrace districts CHILL_RIME_TERRACES_1 paints over patches of
+    // this same floor) is the same NaturalTerrainBase-inherited mask too,
+    // unoverridden — footprints deposit on both without distinction.
     //
     // WHY "PERMANENT-ISH": RM_Filth_ChillFrostGlaze sets no
     // <disappearsInDays>, so FilthProperties.disappearsInDays defaults to

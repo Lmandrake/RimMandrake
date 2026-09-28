@@ -34,6 +34,17 @@
     <genStep Class="RimMandrake.DivingInteraction.GenStep_SeaFloorFauna" />
   </GenStepDef>
 
+  <!-- CHILL_RIME_TERRACES_1, 2026-09-28. order 920: after RM_SeaFloorFauna
+       (900, so live RM_Krellik pawns exist to seed districts from) and
+       before RockChunks(970)/Fog(1500). Listed only on
+       RM_SeaDiveGenerator_TheChill and refuses any other map itself — see
+       GenStep_ChillRimeTerraces.cs's own header. -->
+  <GenStepDef>
+    <defName>RM_ChillRimeTerraces</defName>
+    <order>920</order>
+    <genStep Class="RimMandrake.DivingInteraction.GenStep_ChillRimeTerraces" />
+  </GenStepDef>
+
   <!-- GREYSEA_FLOOR_FORMATIONS_1 etc., 2026-09-26. The Grey Sea floor's
        terrain dressing: the deepest-pool basin and its jacket ring, the
        Brine Elder that rises from it, a seep apron around every salt

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CHILL_RIME_TERRACES_1 — the Chill seabed's own two floor terrains.
+  Replaces the shared RM_SeaFloorGround (RM_SeaFloorGround.xml, sediment)
+  for the Chill's pocket map ONLY — every other sea-dive floor (Scald, Grey
+  Sea, Twilight Sea) is untouched; see GenStep_SeaFloorTerrain.cs's own
+  header for the branch.
+
+  Owner, typed verbatim, 2026-09-27: the floor beneath is "solid ice
+  sparkling with strange interaction with hydrocarbon life." At the Chill's
+  -110C ambient (CHILL_THERMAL_ENGINE_1), water ice is harder than most
+  rock, so the BASE terrain (RM_ChillIceBedrock) is bedrock-hard, not a
+  soft/slow surface — pathCost matches the sibling RM_SeaFloorGround's own
+  6 (a flat, easy floor), not a punishing one.
+
+  On top of it: rime terraces (RM_ChillRimeTerrace), the one terrain
+  character adopted at the same sitting — "the Krellik shed their
+  hydrocarbon frost plates nightly and have for ten thousand years, so
+  whole districts of the floor are stepped pale dunes of shed rime. Soft
+  going (movement penalty), glittering loose; snowdrifts made of molted
+  armor." Painted as coherent districts by GenStep_ChillRimeTerraces.cs,
+  never scattered per-tile.
+
+  PATHCOST REASONING (rime terrace, 40): compared against this codebase's
+  and vanilla's own terrain family —
+    RM_SeaFloorGround (sediment, this mod's own baseline flat floor): 6
+    SoilRich / Ice (vanilla, ordinary walkable ground): 2 / 14
+    Marsh (vanilla, a real "wade through it" tax): 30
+    RM_DeepSand (this session, DEEP_SAND_WALKABLE_TERRAIN_1, "sinks...
+      slowly and completely," walkable but genuinely punishing): 300
+  Rime terrace is loose drift snow you sink an inch into with every step —
+  worse than Marsh's mud-wade, but a small fraction of Deep Sand's
+  sinking-and-fighting (these are stepped dunes of shed armor plate, not a
+  medium that swallows you). 40 reads as a real, felt slowdown — about 1.3x
+  Marsh — while staying nowhere near Deep Sand's territory, matching the
+  item's own instruction ("gentler than 300... a real but not punishing
+  slowdown").
+
+  ART — PLACEHOLDER, same posture as every other sea-dive floor terrain
+  this session (RM_SeaFloorGround/Sand, RM_DeepSand/SoftSand): checked
+  infrastructure/artpipe/{done,pending}/registry.jsonl first — no existing
+  ice-bedrock or rime-terrace terrain art (MEASURED 2026-09-28, no hit on
+  any spelling). RM_ChillIceBedrock reuses vanilla's own literal
+  Terrain/Surfaces/Ice (an honest placeholder — it IS ice). RM_ChillRimeTerrace
+  reuses vanilla Terrain/Surfaces/Gravel for its mottled, non-smooth read —
+  deliberately NOT the same texture as the base so the district reads as a
+  visually distinct feature per the item's own deliverable 2. Real "pale
+  stepped drifts of shed frost plate" art is owed alongside it, not this
+  pass's to generate.
+
+  Neither def overrides filthAcceptanceMask — both inherit
+  NaturalTerrainBase's [Unnatural] mask unchanged, so
+  RM_MapComponent_ChillFootprints (CHILL_THERMAL_FOOTPRINTS_1) keeps
+  depositing RM_Filth_ChillFrostGlaze on both the base ice and the rime
+  terraces with no patch needed — same reasoning that file's own header
+  already worked out for RM_SeaFloorGround.
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_ChillIceBedrock</defName>
+    <label>ice bedrock</label>
+    <description>Water ice, and at these temperatures water ice is harder than most rock. The floor of the Chill is a single sheet of it, sparkling faintly under the aurora, veined here and there with something that reacts to the frozen hydrocarbon above it in ways nobody down here has explained yet.</description>
+    <texturePath>Terrain/Surfaces/Ice</texturePath>
+    <!-- PLACEHOLDER ART — see header. -->
+    <isPaintable>false</isPaintable>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>350</renderPrecedence>
+    <pathCost>6</pathCost>
+    <!-- Matches sibling RM_SeaFloorGround exactly — bedrock, not a soft
+         surface; see header for the comparison table. -->
+    <statBases>
+      <Beauty>1</Beauty>
+      <BeautyOutdoors>1</BeautyOutdoors>
+      <Cleanliness>1</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+    </affordances>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <tags>
+      <li>RM_ChillIceBedrock</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_ChillRimeTerrace</defName>
+    <label>rime terrace</label>
+    <description>A stepped dune of shed hydrocarbon frost, glittering and loose underfoot -- the Krellik have been molting their plates here every night for ten thousand years, and the drift is deep enough now to slow a walking stride. It is snow made of shed armor.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <!-- PLACEHOLDER ART — see header. -->
+    <isPaintable>false</isPaintable>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>353</renderPrecedence>
+    <pathCost>40</pathCost>
+    <!-- See header for the full comparison table this is tuned against. -->
+    <statBases>
+      <Beauty>2</Beauty>
+      <BeautyOutdoors>2</BeautyOutdoors>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+    </affordances>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+    <tags>
+      <li>RM_ChillRimeTerrace</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>
