@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T15:59:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T16:07:26Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1793,16 +1793,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SELFTEST_FAILURES_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SELFTEST_FAILURES_TRIAGE_1.md
 
-## RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1 RustCathedral's Mod calls GetSettings<T>() three times on one Mod instance (Hum/Walls settings read null) — pre-existing, found live in Baroque Biomes wave-0 load-prove, unrelated to the merge
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1.md
-
 ## CONTAGION_RULED_CONTENT_1 Build the Contagion grotesque cast: 35 RM_ defs replacing the donor roster outright (no patches), 8 new species, 4 real flyers, Wombpod wired to the built genome loop - cast bible is the authority
 state:    proposed
 row:      unassigned
@@ -1882,3 +1872,23 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  WASTELANDMECHANICSBUILD1 — the Middenshell, the processor comps, storms and the dose layer
 prose:    infrastructure/state/items/WASTELAND_MECHANICS_BUILD_1.md
+
+## BAROQUE_BIOMES_WAVE2_FOLD_1 Baroque Biomes Wave 2 (spec section 6): fold the 12 on-list biome/kit mods (FeverWood, GelatinousSlime, Greentide, LongShade, NightsideIce, Pyrelands, Stillsand, TerminalBiomes, TheRot, Wasteland, SeaShores, DivingInteraction) into the compose manifest at compose_wave 2, then a SINGLE ModsConfig swap that removes those 12 packageIds in the same write the new compose deploys - never split across two swaps or the game logs missing-mod noise. Cold-load prove + spot-check per-biome def counts equal to pre-merge (measured, not assumed).
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BAROQUE_BIOMES_WAVE2_FOLD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BAROQUE_BIOMES_WAVE2_FOLD_1.md
+
+## BAROQUE_BIOMES_WAVE3_RETARGET_1 Baroque Biomes Wave 3 (spec section 6): re-run section 4 sweeps 3-4 across the RimUtinni layer once folded biomes are live - retarget every UtinniPatches PatchOperationFindMod naming a folded mod's old standalone name, and every MayRequire naming a folded packageId; confirm the RimUtinni layer's own loadAfter names mandrake.rm.biomes. This is the retarget work the original WAVE1 filing bundled in by title but the ruled spec scopes to wave 3, after wave 2's on-list fold - split out here so wave 1 stayed a clean single ADD.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BAROQUE_BIOMES_WAVE3_RETARGET_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BAROQUE_BIOMES_WAVE3_RETARGET_1.md
