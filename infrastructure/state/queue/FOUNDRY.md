@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T04:03:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T04:05:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1561,7 +1561,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  Live tile count UNMEASURED: RimWorldWin64 (PID 40272) up since 20:32 but RimBridge never opened a server - Player.log (36.6k lines, 22:10) has only mod-constructor STARTUP_TIMING lines, no 'Bridge token:'/port line, so rimbridge_client refuses (no token); 306 'Could not execute post-long-event action: Sequence contains no elements' errors in the load. No defName moved. Also note: the RUT_ twins (RUT_NightsideIce/PoisonForest/Wasteland) are the planet-painted defs (frozen CSV record carries them on thousands of rows - a RECORD, not a live measurement), so renaming the RUT_ side is the stranding risk; the item text owes only RM_ names while the brief also moved RUT_ - scope needs confirming. Sweep surface measured: ~60 src/ files incl. C# literals in RM_BiomeWorker_Wasteland.cs, RM_WastelandMod.cs, StructureInjectionsRUTSettings.cs, WarLabCraterMutation.cs. Unblock: a game load whose bridge answers jawa/world_stats.
+blocked:  Re-verified 2026-09-28 on a fresh 630-mod bridge-ready load: still cannot get live tile counts, but the reason changed. get_game_info returns no_game (main menu, nothing loaded), and load_game_ready on the canonical save refuses with save.missing_mods (vanillaquestsexpanded.cryptoforge + mandrake.rut.lanterndeeps both retired from ModsConfig this session, save's own mod list not yet updated). This is now the SAME owner-resave gate blocking LANTERNDEEPS_TIER_COLLISION_1 step 7 and CRYPTOFORGE_HARVEST_RETIRE_1 step 4 -- both those items' cold-load PASS criteria are already verified clean. Unblock: owner authorizes the canonical resave; a world_stats query on the reloaded save then answers this item's live-tile question in the same load. (on LANTERNDEEPS_TIER_COLLISION_1)
 summary:  Per biome, following 84d42c63b:
 prose:    infrastructure/state/items/BIOME_DEFNAME_MIGRATION_WAVE_1.md
 
