@@ -129,7 +129,7 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | sheet | biome def | status |
 |---|---|---|
 | `poison_forest.md` | `PoisonForest` | ✅ done |
-| `dune_sea.md` | `ExtremeDesert` (Dune Sea) | ✅ done |
+| `dune_sea.md` | `ExtremeDesert` → `RM_Stillsand` — the Dune Sea is a REGION within the Stillsand, not a biome (owner, typed, 2026-09-27, `STILLSAND_DESIGN_SITTING_1` Q13) | ✅ done |
 | `terminator_sea.md` | Twilight Sea + Grey Sea (`RUT_TwilightSea`/`RUT_GreySea`, `LIQUID_BIOMES_MAP_1`) | ✅ sheet done for these two; ⚠️ **this row previously said "the three seas" — the Scald is the third and has NO biome sheet** (checked 2026-09-06, `LIQUID_BIOMES_MAP_1_RECONCILIATION.md` §2); `terminator_sea.md` uses the Scald only as a comparison foil, it does not define it |
 | `nightside_ice.md` | `RUT_NightsideIce` (own def, inherits vanilla `IceSheet`; 802 tiles MEASURED — the deep-night highland) — FROZEN 2026-09-24, carries the world until Phase B's repaint; content now lives in the standalone `mandrake.rm.nightsideice` mod's own `RM_NightsideIce` (`NIGHTSIDEICE_RM_MOD_BUILD_1`) | ✅ first pass 2026-09-05; **second pass 2026-09-06** — dirty ice, the thaw pulse, tunnelers, the six reconciliations; first-pass ecology unchanged |
 | `fall_line.md` | **injection layer** over `ExtremeDesert` | ✅ done — no new BiomeDef |

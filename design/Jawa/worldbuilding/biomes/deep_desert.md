@@ -5,6 +5,13 @@
 > unfreeze path is an owner ruling at a sitting, recorded on the item that
 > changes it; contradiction cards from the freeze review amend under this rule.
 
+> 🔑 **The one biome def is `RM_Stillsand`** — one mod carrying this sheet and
+> `dune_sea.md` in union (R22, confirmed by owner card 2026-09-27,
+> `STILLSAND_DESIGN_SITTING_1` Q13). The Dune Sea is a **region** label, not a
+> biome (owner, typed, same sitting: *"Dune Sea is a region, not a biome. Be
+> careful!"*); the deep desert likewise names far-ring ground within the
+> Stillsand, not a def of its own.
+
 
 _Owner + BENCH, 2026-09-05, in conversation. Canon anchor: `hydrology_and_fire_ecology.md`
 R-H6d, which names the deep desert **the dayside terminus** and the exact conjugate of the
@@ -264,7 +271,10 @@ ruin, or something older.
   a **dungeon-like module**. Deliberately not defined in this sheet.
 - The silverbole's final name is **ollim** (owner ruling, 2026-09-20,
   `EXTREME_DESERT_SIGNATURE_FLORA_1`; passes `check_pseudo_sw_name.py`).
-- Cavern authoring is a substantial piece of work in its own right.
+- Cavern authoring is a substantial piece of work in its own right. **RULED 2026-09-27
+  (`STILLSAND_DESIGN_SITTING_1` Q10): re-file both halves** — the cave-beast + prized
+  eggs is re-filed as `DESERT_CAVERN_BEAST_EGGS_1`; the cavern-authoring item itself is
+  still owed its filing.
 - Wind-grain / yardang generation in the map-modification routine.
 - ⚠️ **The §0 per-region table is stale against V23.** `biome_sheet_stats.py` measures
   per biome-def, not per-region, and per its current `ExtremeDesert` membership Cracklands

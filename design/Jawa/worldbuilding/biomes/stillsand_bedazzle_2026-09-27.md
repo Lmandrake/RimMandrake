@@ -1,6 +1,6 @@
 # The Stillsand — bedazzle to full-mod status (proposal, 2026-09-27)
 
-**Intent:** prepare an owner sitting that takes `RM_Stillsand` (mod `mandrake.rm.stillsand`, campaign label "the Dune Sea" as a Utinni patch) from a built-but-thin biome to a full marquee mod. This document rules nothing; every decision lands as a card question in §7.
+**Intent:** prepare an owner sitting that takes `RM_Stillsand` (mod `mandrake.rm.stillsand`; the Dune Sea is a REGION within it, not a biome or a biome label — Q13 ruling, see the Rulings section) from a built-but-thin biome to a full marquee mod. This document rules nothing; every decision lands as a card question in §7.
 
 _DESIGN pass, 2026-09-27 (`STILLSAND_DESIGN_SITTING_1`), written against the two frozen
 sheets `dune_sea.md` + `deep_desert.md` (amendments add detail, never change a ruling),
@@ -47,10 +47,12 @@ pass (§2) confirms row 1 as one standalone mod; the roster is one merged file
 - **What binds def-wide:** both ban lists (no night, no fire ecology, no rot, no green,
   no medium bodies, no lush, no mineralized shine, subsurface-strike-only predation);
   the merged roster; the weather block (Clear 95 / Sandstorm 4 / everything wet zeroed).
-- **What is a label-layer distinction, not a def split:** "the Dune Sea" is the campaign
-  label, carried by Utinni patches (`BiomeNames_Ashkarr.xml` /
-  `BiomeDescriptions_Ashkarr.xml`); "the Stillsand" is the shipped RM_ label. Same tiles,
-  same content.
+- **What is a label-layer distinction, not a def split:** ⚠️ corrected by the sitting's
+  Q13 ruling (owner, typed: *"Dune Sea is a region, not a biome. Be careful!"*) — "the
+  Dune Sea" is a **REGION** label within the Stillsand, same law as Umbra, and may not be
+  the biome's campaign-facing name. The Utinni label patches (`BiomeNames_Ashkarr.xml` /
+  `BiomeDescriptions_Ashkarr.xml`) must not rename the biome "the Dune Sea"; "the
+  Stillsand" is the biome's name in both tiers. Same tiles, same content.
 - **What genuinely differs between the sheets and cannot be expressed by one def:** the
   dune sea's content is θ 0–40 material (light-pipes, the corrugation, the sand busters);
   the deep desert's is far-ring material (the ollim, sandstorm destruction, caverns,

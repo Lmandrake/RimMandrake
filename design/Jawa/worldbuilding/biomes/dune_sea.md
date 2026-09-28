@@ -1,9 +1,16 @@
-# The Dune Sea — biome definition sheet
+# The Dune Sea — definition sheet (a REGION of the Stillsand)
 
 > 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
 > sheet are frozen: **amendments add detail; they never change a ruling.** The
 > unfreeze path is an owner ruling at a sitting, recorded on the item that
 > changes it; contradiction cards from the freeze review amend under this rule.
+
+> 🔴 **The Dune Sea is a REGION, not a biome** — owner, typed, 2026-09-28
+> (`STILLSAND_DESIGN_SITTING_1`): *"Dune Sea is a region, not a biome. Be
+> careful!"* Same law as Umbra. The one biome def is **`RM_Stillsand`** (one
+> mod, carrying this sheet and `deep_desert.md` in union per R22, confirmed at
+> the same sitting); this sheet describes the dune-sea region's character
+> within it. No doc may treat the Dune Sea as a biome.
 
 
 _First pass, 2026-09-05, to the grammar in `README_BIOME_GRAMMAR.md`._
@@ -193,6 +200,11 @@ owns a shadow instead.**
 - ⛔ **No standing water, no ice, no fog, no rain, no potable source.**
 - ⛔ **No fire.** There is no fuel; a wildfire in the dune sea is a rendering error.
 - ⛔ **No medium-sized fauna.** Body sizes are giant or grain-scale, nothing between.
+  *(Depth arm annotated by owner card 2026-09-27, `STILLSAND_DESIGN_SITTING_1` Q7 —
+  added detail, the ruling stands: the ban's object is the mid-sized SURFACE body.
+  §4's own two-armed law — mass or depth — means a SUBSURFACE animal of any size
+  passes; the wired mid-band burrowers/swimmers are annotated in place, nothing
+  evicted.)*
 - ⛔ **No ambush-from-cover predators and no cover.** Subsurface strikes only.
 - ⛔ **No lush flora anywhere in the tract, and no gradient toward it.** 🔴 Dayside
   lush is confined to the river and coast LINES (owner's three-part lush rule, §2):
@@ -313,6 +325,41 @@ incident planet-wide, and only the Dune Sea carries it.
   blood or vibration." The surface stays empty — *emptiness is a texture* is
   preserved because the threat is below it, and an eruption scar is the only
   mark it leaves.
-- Split of the work: the Dune Sea biome mod owns the sand-buster castes and
+- Split of the work: the Stillsand biome mod owns the sand-buster castes and
   the biome-gated incident; **UtinniPatches owns the planet-wide ban** of
-  the vanilla infestation incident.
+  the vanilla infestation incident. *(Build filed at the 2026-09-27 sitting,
+  Q9 — castes drafted **ruukka** (giant eruptor) + **oorrik** (grain swarm),
+  marquee rank 1.)*
+
+---
+
+## Amendment — the 2026-09-27 Stillsand sitting (`STILLSAND_DESIGN_SITTING_1`)
+
+Adds detail under the freeze; no ruling above changes. All fourteen agenda questions of
+`stillsand_bedazzle_2026-09-27.md` resolved the same sitting — that doc's Rulings section
+is the full record. What lands on this sheet:
+
+- **The Dune Sea is a REGION label** (owner, typed — see the header block) and the
+  one-def union is CONFIRMED: `RM_Stillsand`, one mod, both sheets whole, painted once
+  at the end. The dune-sea/deep-desert split stays closed per R22.
+- **The depth arm of §4's bimodal law is annotated** (Q7 — see ban list): subsurface
+  passes at any size; nothing evicted.
+- **Sizes** (Q8): the ikee is SHRUNK back to grain (~0.15, the roster's approved figure —
+  its port had quietly tripled it); the spined-gow is GROWN to giant (bs ≥4) and wired
+  rare (~0.15 commonality).
+- **Cross-desert homes, ruled at the paired Long Shade cards**: kudda and truffle mole
+  CUT here (one home each, the Long Shade); kreetle STAYS here (one home); gizka STAYS
+  (Pyrelands + Stillsand per the 2026-09-14 ruling); the qorrax stays, terrain-bound to
+  the deep-sand walkable terrain and weighted here (*"Muchly in the Stillsand"* —
+  `DEEP_SAND_WALKABLE_TERRAIN_1`).
+- **Names**: *vekka* KEPT (his call; the shakkir swap is dead); **oommok** (mirror
+  giant) and **siidda** (dust husk) RATIFIED.
+- **The dunes engine binds here** (Q12): `RM_Stillsand` (and the frozen `RUT_ExtremeDesert`
+  twin until Phase B) join `mandrake.rm.movingdunes`' `BiomeBindings.xml`; the light-pipe
+  nub's biosilica harvest item is checked at build.
+- **Roster fill-out commissioned** — owner, typed: *"but we need to fill out that
+  roster. That's silly. More!"* Six DRAFT species (soorrak, gaanok, liikka, duumma,
+  veessa, loomma) and three flora (hourbloom, kneel ollim, glasscrust) are designed in
+  `stillsand_roster_fillout_2026-09-27.md`, at art, returning as his review sheet.
+- **Marquee build order AS RANKED** (Q14): sand busters → the crossing with the giant →
+  the buried record; eggs-as-water the cheap swap.

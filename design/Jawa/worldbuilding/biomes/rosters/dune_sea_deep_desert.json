@@ -33,6 +33,7 @@
     }
   ],
   "defNames": [
+    "RM_Stillsand",
     "RUT_ExtremeDesert"
   ],
   "evictions": [
@@ -565,6 +566,16 @@
       "def": "RSW_Stoneback",
       "disposition": "never-belonged-here",
       "reason": "STONEBACK_DEFNAME_COLLISION_1: BENCH added a bokka row here 2026-09-22 reading his \"desert, extreme desert, or other hot arid day-side\" as a list of homes. It is not. owner 2026-09-22, correcting BENCH: \"I meant pick one arid home.\" The arid biomes he listed were the CANDIDATE set, not an assignment — a shared habitat class is NOT an in-game reason to multi-home an animal (BIOME_SPECIFIC_FAUNA_LAW_1). The bokka's one home is the Long Shade (RUT_Desert 0.5). Row removed the same day; the korrum wiring that was here (0.025) was removed too — its one home is the Scarlands."
+    },
+    {
+      "def": "RSW_Kudda",
+      "disposition": "move:LongShade",
+      "reason": "RULED 2026-09-27 (Long Shade sitting card, Q6/Q2): ONE home, the Long Shade — the Stillsand row (0.3, port of AA_Needleroll) cut; both bedazzle docs' keep-both recommendation overridden"
+    },
+    {
+      "def": "RSW_TruffleMole",
+      "disposition": "move:LongShade",
+      "reason": "RULED 2026-09-27 (Long Shade sitting card, Q6/Q4): ONE home, the Long Shade — 'desert & extreme desert' was a CANDIDATE set per the owner's 2026-09-22 correction; the Stillsand's sterile sand has nothing buried for a burrower to eat"
     }
   ],
   "fauna": [
@@ -579,30 +590,23 @@
     {
       "action": "adjust-keep",
       "band": "grain-scale",
-      "commonality": 0.3,
-      "def": "AA_Needleroll",
-      "law": "passes R22: bs 0.15 (MEASURED); non-pursuit; feeds on light — fits eternal-noon energy surplus (dune sea §2); trimmed 0.75→0.3 for sparseness target"
-    },
-    {
-      "action": "adjust-keep",
-      "band": "grain-scale",
       "commonality": 0.15,
-      "def": "AA_Eyeling",
-      "law": "passes R22: bs 0.13 (MEASURED); subsurface-plausible micro-fauna (prep §1.2); trimmed 0.25→0.15 for sparseness"
+      "def": "RSW_Ikee",
+      "law": "the ikee (port of AA_Eyeling); subsurface-plausible micro-fauna (prep §1.2). RULED 2026-09-27 (STILLSAND_DESIGN_SITTING_1 Q8): SHRUNK back to grain ~0.15 bodySize — the port had quietly tripled the roster's approved 0.13; ->RM_Ikee with the Q1 tier move"
     },
     {
       "action": "keep",
       "band": "grain-scale",
       "commonality": 0.2,
       "def": "Kreetle",
-      "law": "passes R22: bs 0.2 (MEASURED); SW desert beetle (prep §1.2)"
+      "law": "passes R22: bs 0.2 (MEASURED); SW desert beetle (prep §1.2). RULED 2026-09-27 (Long Shade sitting card, Q6): ONE home, the Stillsand — the Long Shade row cut"
     },
     {
       "action": "keep",
       "band": "grain-scale",
       "commonality": 0.01,
       "def": "Gizka",
-      "law": "passes R22: bs 0.18 (MEASURED); SW icon (KOTOR), carve-out (dune sea ban list: icons protected)"
+      "law": "passes R22: bs 0.18 (MEASURED); SW icon (KOTOR), carve-out (dune sea ban list: icons protected). STAYS: homes are Pyrelands + Stillsand (ruled 2026-09-14, reaffirmed at the 2026-09-27 sittings; the Long Shade row cut)"
     },
     {
       "action": "adjust-keep",
@@ -645,8 +649,29 @@
       "action": "keep",
       "band": "giant",
       "commonality": 0.0005,
-      "def": "AA_TetraSlug",
-      "law": "passes R22: bs 5.0, spd 0.6 (MEASURED); barely-moving alien giant (prep §1.2)"
+      "def": "RSW_Vozzik",
+      "law": "the vozzik (port of AA_TetraSlug): bs 5.0, spd 0.6 (MEASURED); barely-moving alien giant (prep §1.2); ->RM_Vozzik with the Q1 tier move (2026-09-27)"
+    },
+    {
+      "action": "keep",
+      "band": "giant",
+      "commonality": 0.0005,
+      "def": "RM_MirrorGiant",
+      "law": "the OOMMOK — shipping name RATIFIED 2026-09-27 (STILLSAND_DESIGN_SITTING_1 Q11; checker 6/6, Wookieepedia 0 hits, live probe). The mirror-plated sun-axis giant of dune_sea §4, built inline on RM_Stillsand; bs 18.0 (MEASURED, bedazzle §2d); carries the only moving shadow — the crossing's road (§4.2)"
+    },
+    {
+      "action": "keep",
+      "band": "grain-scale",
+      "commonality": 0.15,
+      "def": "RM_DustHusk",
+      "law": "the SIIDDA — shipping name RATIFIED 2026-09-27 (Q11). Dormant anhydrobiotic grain fauna built inline on RM_Stillsand (vanilla CompCanBeDormant damage-wake, MEASURED); bs 0.15"
+    },
+    {
+      "action": "keep",
+      "band": "subsurface (depth arm)",
+      "commonality": 0.05,
+      "def": "RSW_Drazzik",
+      "law": "the drazzik — the sheet's own drum-lure archetype (RM_CompDrumLure shipped, DRUM_LURE_PREDATOR_BUILD_1) + its egg-trap clutch; bs 2.2, mid-band LEGAL by the depth arm (owner card 2026-09-27 Q7: subsurface passes at any size — annotated in place, the screecher precedent); ->RM_Drazzik with the Q1 tier move"
     },
     {
       "action": "import",
@@ -658,28 +683,24 @@
     },
     {
       "action": "import",
-      "band": "plated-grazer",
+      "band": "giant plated-grazer",
       "commonality": 0.15,
       "def": "AA_SpinedGow",
-      "law": "owner review 2026-09 (round2 move mapping): extreme desert"
+      "law": "owner review 2026-09 (round2 move mapping): extreme desert. RULED 2026-09-27 (STILLSAND_DESIGN_SITTING_1 Q8): GROWN to giant (bs >=4 — the donor's 2.75 is a mid-band SURFACE body, illegal on both arms) and wired rare (~0.15); draft name aurrok (batch 4d) rides its build"
     },
     {
       "action": "import",
+      "band": "subsurface (depth arm)",
       "commonality": 0.5,
-      "def": "AA_SandLion",
-      "law": "owner review 2026-09 (round2 move mapping): Sand burrower swimmer deserts"
+      "def": "RSW_SandLion",
+      "law": "owner review 2026-09 (round2 move mapping): sand burrower swimmer — ONE home, the Stillsand. Label VEKKA KEPT by the owner 2026-09-27 (STILLSAND_DESIGN_SITTING_1 Q6, his call on the flag's own terms; the shakkir swap is dead). bs 2.0, mid-band legal by the depth arm (Q7 annotation); ->RM_Vekka with the Q1 tier move"
     },
     {
       "action": "import",
-      "commonality": 0.5,
-      "def": "RSW_TruffleMole",
-      "law": "owner review 2026-09 (round2 move mapping): sand burrower, desert & extreme desert, 0.4 cells; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_TruffleMole to the already-ported, already-wired RSW_ name (RUT_ExtremeDesert)"
-    },
-    {
-      "action": "import",
+      "band": "subsurface (depth arm)",
       "commonality": 0.5,
       "def": "JOE_Cephalope",
-      "law": "owner review 2026-09 (round2 move mapping): sand burrower & swimmer, absorb & retire mod, anywhere there is deep hot sand"
+      "law": "the QORRAX (name RATIFIED 2026-09-27 at the Long Shade cards; our own recreated art owed). Deadly sand-swimmer TERRAIN-BOUND to the deep-sand walkable terrain and WEIGHTED HERE (owner, typed: 'Some in the Long Shade, Muchly in the Stillsand' - DEEP_SAND_WALKABLE_TERRAIN_1); bs 1.2, mid-band legal by the depth arm (Q7); ->RM_Qorrax, with its ThingDef moved out of Utinni-tier Absorbed_Cephaloids_Defs.xml (Q1)"
     }
   ],
   "fish": {
@@ -690,7 +711,7 @@
     {
       "commonality": 0.1,
       "def": "RSW_LightPipeNub",
-      "law": "EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20) — dune_sea.md SS4: the dune sea's whole visible flora."
+      "law": "EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20) — dune_sea.md SS4: the region's whole visible flora. ->RM_LightPipeNub with the Q1 tier move (2026-09-27); biosilica harvest item checked at build (Q12)."
     },
     {
       "commonality": 0.05,
@@ -700,7 +721,7 @@
     {
       "commonality": 0.01,
       "def": "RSW_Ollim",
-      "law": "EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20) — deep_desert.md SS4b's shade tree, sparse per the sheets' own \"if the roster looks healthy, it is wrong\" ruling."
+      "law": "EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20) — deep_desert.md SS4b's shade tree, sparse per the sheets' own \"if the roster looks healthy, it is wrong\" ruling. ->RM_Ollim / RM_OllimWood with the Q1 tier move (2026-09-27)."
     }
   ],
   "flora_purged": [
@@ -773,7 +794,7 @@
       "from_sheet": "dune_sea §4/§Roster",
       "kind": "creature",
       "mechanic_load": "none blocking",
-      "name": "mirror-plated sun-axis asymmetric giant"
+      "name": "mirror-plated sun-axis asymmetric giant — BUILT (RM_MirrorGiant, inline); shipping name OOMMOK ratified 2026-09-27 (Q11); see the fauna row"
     },
     {
       "from_sheet": "dune_sea §4",
@@ -809,7 +830,19 @@
       "kind": "creature-family",
       "name": "the sand busters (vanilla infestation trio rebuilt)",
       "from_sheet": "dune_sea.md amendment 2026-09-24 (owner-ruled at NIGHTSIDE_ICE_DESIGN_SITTING_1)",
-      "mechanic_load": "vanilla infestation mechanics, ONE planetary home: hive eruption from dry sand, incident biome-gated here and BANNED planet-wide by the Utinni scenario layer; bodies rebuilt to sheet law — giant or grain-scale only, sun-axis polarised, no nameable insect/spider silhouette; owner: sand BUSTERS, they erupt, they do not swim"
+      "mechanic_load": "vanilla infestation mechanics, ONE planetary home: hive eruption from dry sand, incident biome-gated here and BANNED planet-wide by the Utinni scenario layer; bodies rebuilt to sheet law — giant or grain-scale only, sun-axis polarised, no nameable insect/spider silhouette; owner: sand BUSTERS, they erupt, they do not swim. Build FILED 2026-09-27 (Q9, SANDBUSTER_CASTES_BUILD_1): castes ruukka (giant eruptor) + oorrik (grain swarm), the mound a structure"
+    },
+    {
+      "from_sheet": "stillsand_roster_fillout_2026-09-27.md — the 2026-09-27 fill-out commission (owner, typed: 'but we need to fill out that roster. That's silly. More!')",
+      "kind": "creature",
+      "mechanic_load": "reuses shipped comps only (core flight; RM_FilterFeed*; RM_CompFluidSacs; vanilla corpse diet; RM_CompDungSeeder + shade stack)",
+      "name": "six DRAFT fill-out species pending the owner's review sheet: RM_Soorrak (giant flier, eggs-as-canteens), RM_Gaanok (attritional follower), RM_Liikka (grain light-eater), RM_Duumma (depth-arm water-cask that drums dry), RM_Veessa (miller of the mummified fields), RM_Loomma (the ollim's rent-paying tenant) — names checker- and probe-clean, art queued 2026-09-27"
+    },
+    {
+      "from_sheet": "stillsand_roster_fillout_2026-09-27.md §3 (same commission)",
+      "kind": "plant",
+      "mechanic_load": "hourbloom rides the shipped RM_IncidentWorker_BloomBurst; the other two are pure XML",
+      "name": "three DRAFT fill-out flora pending the owner's review sheet: hourbloom (the anhydrobiotic bloom's plant defs — the sheets' own hours-to-days carve-out), kneel ollim (the ollim's second growth form, same RM_OllimWood), glasscrust (the grain fauna's graze base, biosilica grit)"
     }
   ],
   "sheet": "dune_sea + deep_desert",
