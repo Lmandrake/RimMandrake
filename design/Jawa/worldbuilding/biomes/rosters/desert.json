@@ -1314,6 +1314,13 @@
       "field": "moveSpeed",
       "from": 4.5,
       "to": 4.4
+    },
+    {
+      "authority": "LONGSHADE_DESIGN_SITTING_1 Q8 (owner, 2026-09-27): Dewback IN as herd/mount, slowed under the pursuit ban, same treatment as the wraid",
+      "def": "RSW_Dewback",
+      "field": "moveSpeed",
+      "from": 4.7,
+      "to": 4.4
     }
   ],
   "tiles": 3932

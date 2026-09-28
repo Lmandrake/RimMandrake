@@ -14,7 +14,7 @@
              number moves. The roster row carries the full argument; the
              comment on each operation carries its head.
 
-  5 adjustment(s) across 5 def(s).
+  6 adjustment(s) across 6 def(s).
 
   ⚠️ Match-only conditionals, no <nomatch>. Beldon carries race.predator=true
   in the live dump but has no <predator> node in its own mod XML - another
@@ -40,6 +40,16 @@
     <xpath>/Defs/ThingDef[defName="Gutkurr"]/statBases/MoveSpeed</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="Gutkurr"]/statBases/MoveSpeed</xpath>
+      <value><MoveSpeed>4.4</MoveSpeed></value>
+    </match>
+  </Operation>
+
+  <!-- RSW_Dewback.moveSpeed: 4.7 -> 4.4   (desert.json)
+       LONGSHADE_DESIGN_SITTING_1 Q8 (owner, 2026-09-27): Dewback IN as herd/mount, slowed under the pursuit ban, same treatment as the wraid -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Dewback"]/statBases/MoveSpeed</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RSW_Dewback"]/statBases/MoveSpeed</xpath>
       <value><MoveSpeed>4.4</MoveSpeed></value>
     </match>
   </Operation>
