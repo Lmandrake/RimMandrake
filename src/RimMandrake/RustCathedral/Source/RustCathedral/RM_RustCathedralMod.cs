@@ -62,6 +62,29 @@ namespace RimMandrake.RustCathedral
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
+
+            // RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1: Verse.Mod caches ONE
+            // ModSettings instance per Mod object (keyed by nothing — a second
+            // GetSettings<T>() call for a different T just logs an error and
+            // returns null). RM_RustCathedralMod's constructor used to call
+            // GetSettings<>() three times for three different types, so
+            // humSettings/wallsSettings were always null and their fields never
+            // persisted. Fix: this is the ONLY ModSettings this mod registers;
+            // the absorbed kits' static fields are scribed here directly.
+            Scribe_Values.Look(ref RustCathedralHumSettings.humMechanicEnabled, "hum_humMechanicEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.commentaryEnabled, "hum_commentaryEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.goodwillDrainEnabled, "hum_goodwillDrainEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.irritationDecayRateMultiplier, "hum_irritationDecayRateMultiplier", 1f);
+            Scribe_Values.Look(ref RustCathedralHumSettings.boltDanceEnabled, "hum_boltDanceEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.boltShedEnabled, "hum_boltShedEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.boltWatchedPricingEnabled, "hum_boltWatchedPricingEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.fishingPricingEnabled, "hum_fishingPricingEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.drillResponseEnabled, "hum_drillResponseEnabled", true);
+
+            Scribe_Values.Look(ref RustCathedralWallsSettings.wallTiersEnabled, "walls_wallTiersEnabled", true);
+            Scribe_Values.Look(ref RustCathedralWallsSettings.sacredWallsEnabled, "walls_sacredWallsEnabled", true);
+            Scribe_Values.Look(ref RustCathedralWallsSettings.sacredWallChanceMultiplier, "walls_sacredWallChanceMultiplier", 1f);
+            Scribe_Values.Look(ref RustCathedralWallsSettings.livePatternMetalGateEnabled, "walls_livePatternMetalGateEnabled", true);
         }
 
     }
@@ -72,20 +95,19 @@ namespace RimMandrake.RustCathedral
 
         // Absorbed kits' settings DATA classes (all-static fields, unchanged
         // from their satellite-mod days) still need ONE instance each to call
-        // the non-static DoWindowContents() on and to trigger GetSettings<T>'s
-        // Scribe load exactly once. Kept as plain instance fields here rather
-        // than reviving the two retired `Mod`-derived wrapper classes.
-        private readonly RustCathedralHumSettings humSettings;
-        private readonly RustCathedralWallsSettings wallsSettings;
+        // the non-static DoWindowContents() on. RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1:
+        // Verse.Mod tracks only ONE ModSettings instance per Mod object, so a
+        // second/third GetSettings<T>() call here for a different T returned
+        // null instead of loading anything — plain `new` is correct: these
+        // instances exist only to host the DoWindowContents() method, their
+        // static fields are scribed by RM_RustCathedralSettings.ExposeData()
+        // above, not by these instances' own (never-invoked-by-Scribe) ExposeData().
+        private readonly RustCathedralHumSettings humSettings = new RustCathedralHumSettings();
+        private readonly RustCathedralWallsSettings wallsSettings = new RustCathedralWallsSettings();
 
         public RM_RustCathedralMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_RustCathedralSettings>();
-            // Absorbed kits' settings DATA classes still persist under THIS
-            // mod's settings file — one Mod instance may call GetSettings<T>
-            // for as many ModSettings subtypes as it owns.
-            humSettings = GetSettings<RustCathedralHumSettings>();
-            wallsSettings = GetSettings<RustCathedralWallsSettings>();
         }
 
         public override string SettingsCategory()
