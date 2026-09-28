@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ChillCraterTerrains.xml          TerminalBiomes · CHILL_WORLD_CRATER_1
+  The floor of RM_ChillCrater (Defs/BiomeDefs/RM_ChillCrater.xml): the lake's
+  melt, refrozen into one sterile pane. The crater's only terrainsByFertility
+  row, so a map ever generated on a cratered tile is glass edge to edge.
+  Texture is vanilla Ice, tinted — placeholder until art is commissioned.
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_ChillCraterGlass</defName>
+    <label>crater glass</label>
+    <description>Where the Chill was. The detonation flash-burned everything that lived on the floor and the melt refroze into one black pane of glass — fused, faintly translucent, cracked in long pale seams, and dead all the way down.</description>
+    <texturePath>Terrain/Surfaces/Ice</texturePath>
+    <color>(34,37,48)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>352</renderPrecedence>
+    <fertility>0</fertility>
+    <natural>true</natural>
+    <canEverTerraform>false</canEverTerraform>
+    <pathCost>10</pathCost>
+    <affordances>
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+    </affordances>
+    <filthAcceptanceMask>
+      <li>Unnatural</li>
+    </filthAcceptanceMask>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Flammability>0</Flammability>
+    </statBases>
+  </TerrainDef>
+
+</Defs>
