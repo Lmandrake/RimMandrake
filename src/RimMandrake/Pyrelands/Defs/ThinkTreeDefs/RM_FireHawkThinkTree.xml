@@ -27,8 +27,13 @@
        and no C#.
 
        insertPriority 55: above RimProperty's theft nodes (50) so a hawk that is
-       both a thief and an igniter reaches for the fire first. Nothing else in
-       this repo inserts at this tag.
+       both a thief and an igniter reaches for the fire first. (Correction:
+       this used to say "nothing else in this repo inserts at this tag" — false
+       even when written, and more so now; CreatureBehaviors' RM_ThinkTree_
+       ShadowFollow and this same mod's RM_FurnaceBeastThinkTree/
+       RM_BurrowOnFireThinkTree all insert at Animal_PreWander too. Multiple
+       ThinkTreeDefs sharing one insertTag is supported and ordinary —
+       insertPriority is exactly the field that arbitrates it.)
   ======================================================================== -->
   <ThinkTreeDef>
     <defName>RM_FireHawk_CarryEmber</defName>

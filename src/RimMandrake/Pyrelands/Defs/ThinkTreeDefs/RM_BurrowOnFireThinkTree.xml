@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       PYRELANDS_DEDICATED_GRAZER_1 — how a burrower gets to decide.
+
+       Same supported modder hook the fire-hawk and furnace-beast use, and
+       for the same reasons: Core's Defs/ThinkTreeDefs/Animal.xml carries
+       <li Class="ThinkNode_SubtreesByTag"><insertTag>Animal_PreWander</insertTag></li>,
+       and a ThinkTreeDef declaring that insertTag is spliced in there. No
+       MayRequire: Animal_PreWander is Core.
+
+       🔑 UNLIKE the fire-hawk/furnace-beast trees, this one carries NO
+       species gate at the C# level either — RM_JobGiver_BurrowOnFire's own
+       null-modExtension check IS the gate (RM_BurrowOnFireExtension, opt-in
+       per race), the same shape CreatureBehaviors' RM_ThinkTree_ShadowFollow
+       already uses for the shade-follow mechanism. That is deliberate: a
+       second dedicated burrower the biome wants later needs only the
+       extension in its own ThingDef, no new ThinkTreeDef and no new C#.
+
+       insertPriority 56: just above the fire-hawk's 55 and the furnace-
+       beast's 54 — going to ground ahead of the fire is safety-critical for
+       whatever species carries the extension, so it should preempt an
+       igniter's own opportunistic behaviour rather than contend with it for
+       a number. In practice the three never compete for the same pawn: each
+       gate (comp, comp, modExtension) is species-exclusive.
+  ======================================================================== -->
+  <ThinkTreeDef>
+    <defName>RM_BurrowOnFire</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>56</insertPriority>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.Pyrelands.RM_JobGiver_BurrowOnFire" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

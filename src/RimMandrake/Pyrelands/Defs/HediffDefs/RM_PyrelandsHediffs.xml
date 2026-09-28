@@ -58,4 +58,46 @@
     </comps>
   </HediffDef>
 
+  <!-- ========================================================================
+       PYRELANDS_DEDICATED_GRAZER_1 — the burrow state itself.
+       Applied by RM_JobDriver_Burrow for as long as an extension-carrying
+       pawn is sheltering from a nearby fire front; removed by the same
+       driver's AddFinishAction on every exit path (safe emergence, the
+       safety-cap timeout, or the job being interrupted).
+
+       TWO STAT OFFSETS, same idiom RUT_FurnaceBeast's permanent statBases
+       use for total fire immunity (ArmorRating_Heat, Flammability), applied
+       here only WHILE burrowed rather than always:
+         ArmorRating_Heat +4.0   comfortably past the point the vanilla armor
+                                  formula treats as near-total mitigation —
+                                  "the fire pass[es] over" it (the_pyrelands.md
+                                  §4), not merely resists it. [INVENTED]
+         Flammability     -1.0   zeroes the default 1.0 base outright, so a
+                                  burrowed pawn standing in a burning cell
+                                  cannot itself catch alight.
+
+       isBad false: this is the mechanism working as intended, not an
+       affliction — the player should read it as "sheltering", not "hurt".
+  ======================================================================== -->
+  <HediffDef>
+    <defName>RM_Burrowed</defName>
+    <label>burrowed</label>
+    <description>Gone to ground, sheltering from a fire front passing overhead. Nearly immune to heat and flame while it holds; the animal cannot do anything else until it surfaces.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <everCurableByItem>false</everCurableByItem>
+    <maxSeverity>1</maxSeverity>
+    <initialSeverity>1</initialSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <stages>
+      <li>
+        <statOffsets>
+          <ArmorRating_Heat>4.0</ArmorRating_Heat>
+          <Flammability>-1.0</Flammability>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
 </Defs>

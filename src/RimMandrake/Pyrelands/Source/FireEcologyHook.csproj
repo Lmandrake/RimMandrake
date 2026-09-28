@@ -71,6 +71,10 @@
     <Compile Include="WorldObject_RM_FurnaceHerd.cs" />
     <Compile Include="WorldComponent_RM_FurnaceHerdSeeder.cs" />
     <Compile Include="Patch_FurnaceHerdMapRemoval.cs" />
+    <!-- PYRELANDS_DEDICATED_GRAZER_1 — burrow-on-fire, generic and opt-in. -->
+    <Compile Include="RM_BurrowOnFireExtension.cs" />
+    <Compile Include="RM_JobGiver_BurrowOnFire.cs" />
+    <Compile Include="RM_JobDriver_Burrow.cs" />
   </ItemGroup>
 
   <ItemGroup>

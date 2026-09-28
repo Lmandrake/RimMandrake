@@ -94,6 +94,13 @@ namespace RimMandrake.Pyrelands
         public static bool furnaceWorldMigrationEnabled = true;
         public static int furnaceHerdCount = PyrelandsTuning.WorldHerdDefaultCount;
 
+        // PYRELANDS_DEDICATED_GRAZER_1 — generic, opt-in via
+        // RM_BurrowOnFireExtension; RUT_Ashwallow is the first consumer. Off:
+        // an extension-carrying race stands its ground like any other animal
+        // and takes ordinary fire damage — the mechanic simply stops firing,
+        // nothing about the def breaks.
+        public static bool burrowOnFireEnabled = true;
+
         // Cross-biome opt-in — lets the ash-accumulation mechanic (4) run on
         // a NON-Pyrelands biome's map without importing the whole biome.
         // WORLDGEN-AFFECTING: applies once, right after a map generates; an
@@ -137,6 +144,7 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
+            Scribe_Values.Look(ref burrowOnFireEnabled, "burrowOnFireEnabled", true);
         }
 
         /// <summary>True if the cross-biome ash-accumulation opt-in currently
@@ -291,6 +299,14 @@ namespace RimMandrake.Pyrelands
                 list.Label("Herds seeded at world start: " + furnaceHerdCount);
                 furnaceHerdCount = (int)list.Slider(furnaceHerdCount, 0f, 8f);
             }
+            list.GapLine();
+
+            list.Label("Burrowers");
+            list.CheckboxLabeled("Extension-carrying races burrow ahead of the fire", ref burrowOnFireEnabled,
+                "A race carrying RM_BurrowOnFireExtension (RUT_Ashwallow ships with it) goes to "
+              + "ground and shelters near-immune to heat while a fire front is close, then "
+              + "surfaces once it clears. Off: those races stand their ground like any other "
+              + "animal and take ordinary fire damage — nothing about the def breaks.");
             list.GapLine();
 
             list.Label("Cross-biome ash accumulation (WORLDGEN-AFFECTING — new maps only)");
