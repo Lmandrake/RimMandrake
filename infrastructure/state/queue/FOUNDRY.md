@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T02:58:30Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-28T03:19:51Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1687,16 +1687,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  WARDENMOTHERTRAINABLEGATE1 — hard-exclude Rescue/general Haul from a self-tamed warden young's training tab
 prose:    infrastructure/state/items/WARDEN_MOTHER_TRAINABLE_GATE_1.md
 
-## GREYSEA_ANCHOR_CREATURES_1 Grey Deep's two unbuilt anchors (pillar-mason, ossuary shrimp) plus the AA_Aerofleet replacement - the sheet's whole image rests on creatures that have no defs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  GREYSEAANCHORCREATURES1 — build the two anchors the Grey Deep is actually about, plus the Aerofleet replaceme…
-prose:    infrastructure/state/items/GREYSEA_ANCHOR_CREATURES_1.md
-
 ## SEABED_PLANET_LAYER_1 Seabed planet layer: the sea floor as a geometric twin of the surface
 state:    proposed
 row:      unassigned
@@ -1976,3 +1966,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  what
 prose:    infrastructure/state/items/FEVERWOOD_PLANT_DANGLING_REFS_1.md
+
+## GREYSEA_RULED_CONTENT_1 Build the Grey Sea content ruled 2026-09-27: ten understorey flora at 0.22, catch rebalanced rare, crust clock + weather/berth multipliers, deterministic giant, Elder motion-only tell; pool sentinel blocked on BENCH design
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
+prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md

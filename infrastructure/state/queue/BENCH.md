@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T02:58:30Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-28T03:19:51Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -886,3 +886,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  EMPIREESCALATIONLADDER1 — how Imperial pressure actually climbs
 prose:    infrastructure/state/items/EMPIRE_ESCALATION_LADDER_1.md
+
+## GREYSEA_USELESS_ARTIFACT_PLOT_1 The Elders' sixth treasure - 'a beautifully useless artifact whose significance only becomes apparent much later' - is a PLOT HOOK: build the item only when a plot pass names its significance (ruled by card 2026-09-27, Q15); Elder ships with five treasures until then
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GREYSEA_USELESS_ARTIFACT_PLOT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GREYSEA_USELESS_ARTIFACT_PLOT_1.md
