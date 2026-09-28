@@ -41,6 +41,15 @@ namespace RimMandrake.DivingInteraction
         // mechanic off never strands a pawn inside one.
         public static bool greyPoolDefenceEnabled = true;
 
+        // GREYSEA_RULED_CONTENT_1, Q13 (question card 2026-09-27). The
+        // orruhmu (RM_Orruhmu / RM_CompPoolSentinelSquirt): a pool-shore
+        // sentinel that squirts and encases the nearest of 2+ crowding
+        // intruders, the third trigger on the same consequence as the pool/
+        // chimney defence above. Own toggle for the same reason: it can take
+        // a colonist out of the player's hands with no fight. Default ON.
+        // Off: the orruhmu never squirts — it is just a strange dome.
+        public static bool greyPoolSentinelEnabled = true;
+
         // GREYSEA_BRINE_ELDERS_1, 2026-09-26. The Brine Elder's blinding EMP
         // discharge — both the rare unprompted event and the defensive
         // reaction to disturbance (RM_Building_BrineElder). Its own toggle
@@ -61,6 +70,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
             Scribe_Values.Look(ref requireGravEngine, "requireGravEngine", true);
             Scribe_Values.Look(ref greyPoolDefenceEnabled, "greyPoolDefenceEnabled", true);
+            Scribe_Values.Look(ref greyPoolSentinelEnabled, "greyPoolSentinelEnabled", true);
             Scribe_Values.Look(ref greyElderDischargeEnabled, "greyElderDischargeEnabled", true);
             Scribe_Values.Look(ref greyElderTradeEnabled, "greyElderTradeEnabled", true);
         }
@@ -90,6 +100,13 @@ namespace RimMandrake.DivingInteraction
                   + "before they smother. Off: the pools are merely slow water. Jackets already "
                   + "on a saved map keep working either way, so switching this off never leaves "
                   + "anyone sealed in.");
+
+                list.Gap();
+                list.CheckboxLabeled("Grey Sea: orruhmu pool sentinels squirt intruders", ref greyPoolSentinelEnabled,
+                    "Shipped default: ON. An orruhmu (a salt-dome-mimic creature stationed on brine "
+                  + "pool shores) swells as a warning, then squirts and encases the nearest colonist "
+                  + "if 2 or more crowd within 5 cells — a lone worker is always safe. Off: orruhmu "
+                  + "never squirt; they remain harmless, mineral-mimicking dressing.");
 
                 list.Gap();
                 list.CheckboxLabeled("Grey Sea: Brine Elders can discharge", ref greyElderDischargeEnabled,

@@ -3,6 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.Sound;
 
 namespace RimMandrake.DivingInteraction
 {
@@ -123,6 +124,17 @@ namespace RimMandrake.DivingInteraction
             Notify_Disturbed();
         }
 
+        // GREYSEA_RULED_CONTENT_1, Q14 (question card 2026-09-27): "motion,
+        // crackle and sound only — light exists only at the discharge
+        // instant." ThrowFireGlow used to run here as a placeholder light so
+        // the crackle read without art — that is exactly the ban-4 violation
+        // Q14 rules against during the BUILD-UP tell; it is removed. The
+        // ElectricalSpark fleck alone stays: shaderType MoteGlow is a brief
+        // additive sprite glint on the spark mote itself (RimSage-confirmed,
+        // 2026-09-27), not a light source that lights the surrounding cells,
+        // so it reads as motion/crackle rather than glow. The actual flash
+        // is EMP's own vanilla explosion VFX in Discharge() below, which
+        // fires only at the discharge instant — unchanged, and correct.
         private void ThrowChargeSpark()
         {
             if (base.Map == null)
@@ -135,8 +147,13 @@ namespace RimMandrake.DivingInteraction
                 return;
             }
             IntVec3 cell = this.OccupiedRect().RandomCell;
-            FleckMaker.ThrowFireGlow(cell.ToVector3Shifted(), base.Map, 0.6f); // cheap ambient light-catch so the crackle reads even without a texture change
             FleckMaker.Static(cell.ToVector3Shifted(), base.Map, spark, Rand.Range(1.2f, 2.2f));
+
+            // The audible charge-whine half of the tell (Q14): escalates
+            // naturally because SparkChanceAtFullCharge already rises with
+            // charge, so more crackles-with-sound fire as the discharge nears.
+            SoundDef whine = DefDatabase<SoundDef>.GetNamedSilentFail("Zap_Quiet");
+            whine?.PlayOneShot(SoundInfo.InMap(new TargetInfo(cell, base.Map)));
         }
 
         private void Discharge(bool unprompted)
@@ -155,6 +172,11 @@ namespace RimMandrake.DivingInteraction
                 new TargetInfo(base.Position, base.Map),
                 MessageTypeDefOf.ThreatBig,
                 historical: false);
+
+            // Q14's third tell element: a screen-shake cue at the discharge
+            // instant only (never during build-up). Cheap and camera-only —
+            // no light, nothing added to the ban-4 surface.
+            Find.CameraDriver?.shaker?.DoShake(1f);
 
             // One EMP burst = stun (living + mechanoid, via StunHandler) +
             // shield collapse (CompShield's own EMP branch) in one vanilla

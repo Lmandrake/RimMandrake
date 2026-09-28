@@ -118,7 +118,7 @@ namespace RimMandrake.DivingInteraction
                     continue;
                 }
 
-                Encase(p, jacketDef);
+                BrineEncasementUtility.TryEncase(p, map);
             }
             tmpPawns.Clear();
         }
@@ -135,34 +135,8 @@ namespace RimMandrake.DivingInteraction
             return false;
         }
 
-        private void Encase(Pawn p, ThingDef jacketDef)
-        {
-            IntVec3 cell = p.Position;
-            bool wasPlayers = p.Faction != null && p.Faction.IsPlayer;
-            string label = p.LabelShortCap;
-
-            // Clear the cell first: a jacket is an Impassable edifice and
-            // cannot share a cell with a pillar or a dome that scattered here.
-            cell.GetEdifice(map)?.Destroy();
-
-            RM_Building_BrineEncasement jacket =
-                (RM_Building_BrineEncasement)ThingMaker.MakeThing(jacketDef);
-
-            if (!jacket.TryEncase(p))
-            {
-                // Never spawned, so there is nothing to Destroy — dropping
-                // the reference is the correct cleanup for an unspawned Thing.
-                return;
-            }
-            GenSpawn.Spawn(jacket, cell, map);
-
-            if (wasPlayers)
-            {
-                Messages.Message(
-                    label + " touched the brine and the salt closed over them. "
-                    + "Mine the jacket out before they smother.",
-                    jacket, MessageTypeDefOf.ThreatBig, false);
-            }
-        }
+        // GREYSEA_RULED_CONTENT_1: the encasement call itself moved to
+        // BrineEncasementUtility.TryEncase, shared with
+        // RM_CompPoolSentinelSquirt's third trigger — see that file's header.
     }
 }
