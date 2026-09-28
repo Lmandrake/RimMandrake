@@ -12,11 +12,15 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony: every class here is a plain ModSettings/Mod, a
-    MapPortal/PlaceWorker/GenStep subclass wired by defName from XML
-    (thingClass, placeWorkers, genStep Class=) — no reflection
-    auto-discovery is relied on any more (the old float-menu provider that
-    needed FloatMenuMakerMap.Init() reflection is gone).
+    CHILL_FIRE_BAN_1 added the first Harmony this assembly has ever needed
+    (Patch_ChillFireBan.cs) — every other class here is still a plain
+    ModSettings/Mod, a MapPortal/PlaceWorker/GenStep/MapComponent subclass
+    wired by defName from XML (thingClass, placeWorkers, genStep Class=)
+    or auto-instantiated by the engine, no patch needed. 0Harmony is
+    <Private>false</Private>: the game and brrainz.harmony supply it at
+    runtime, it must never be copied into ..\Assemblies\. Same
+    HarmonyDll condition shape as
+    src/RimUtinni/PropaneLakeMechanics/Source/RimMandrake.Utinni.PropaneLakeMechanics.csproj.
   -->
 
   <PropertyGroup>
@@ -42,6 +46,10 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="RM_DivingSettings.cs" />
     <Compile Include="RM_SeaDiveHatch.cs" />
@@ -59,6 +67,9 @@
     <Compile Include="RM_ElderTradeUtility.cs" />
     <Compile Include="Dialog_OfferToElder.cs" />
     <Compile Include="RM_CompPoolSentinelSquirt.cs" />
+    <Compile Include="RM_ChillFireGate.cs" />
+    <Compile Include="RM_MapComponent_ChillOxygenation.cs" />
+    <Compile Include="Patch_ChillFireBan.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -68,6 +79,10 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine">
