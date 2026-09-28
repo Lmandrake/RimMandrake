@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TheChillFlora.xml                    CHILL_FLORA_BUILD_1
+  ============================================================================
+  The Chill's ten sea-floor flora, per
+  design/Jawa/worldbuilding/biomes/the_propane_lake_flora_pass_2026-09-27.md
+  (the REVISED doc, post-2026-09-27-sitting rulings — built from that file,
+  not from the item's own ruling-summary bullets). Slackwax, Ghostpane,
+  Eldspar, Tarspool, Keelgrass, Stonewater, Fuselight, Skyharp, Stillbloom,
+  Pitchpearl.
+
+  Every plant here is `completelyIgnoreFertility` + `wildTerrainTags`
+  (RM_TheChillBed = deep floor, RM_TheChillShelf = shallow floor), the same
+  water-flora shape the doc names (RM_Crowncarpet/Scald convention) — fertility
+  on a liquid-propane cell is not a number the engine will read.
+
+  🔴 TEMPERATURE BAND, not a per-plant guess: the Chill seabed pocket map's
+  ambient is -110 C (RM_SeaDiveGenerators.xml's pocketMapProperties.temperature,
+  read live via RM_ChillFireGate.ChillSeabedAmbientC) and
+  RM_MapComponent_ChillBoilShroud already treats -20 C as "genuinely warmed"
+  (its own HullWarmThresholdC). Every plant below reuses that SAME -20 C
+  ceiling as maxGrowthTemperature (minGrowthTemperature -273, i.e. no cold
+  floor) — one number, already established by the sibling item, instead of a
+  second invented threshold that could drift from it. A plant standing in
+  undisturbed -110 C ambient is comfortably inside that range; a cell warmed
+  past a ship's hull or a working pawn's own heat (ChillBoilShroud's grade-1/
+  grade-2 cells) kills it back, matching "nothing survives the crossing
+  dayside" and the fiction's own "boils bare" language for anything that
+  strays into real warmth.
+
+  RM_ChillStillbloom is the ruled exception (Q6, "warm bloom, both edges")
+  — see its own def comment.
+
+  No new GenStep: per the doc's own "no GenStep route needed" section, the
+  whole roster carries by `wildPlants` alone (RM_TheChill.xml, this pass).
+
+  Art: all ten already had SPECULATIVE-batch, artpipe-validated single
+  sprites sitting in infrastructure/artpipe/_artsrc/chill_plant_<name>/ before
+  this build ran (art-leads-defs ruling, 2026-09-27) — copied into this mod's
+  own Textures/Things/Plant/RM_<Name>/ this pass, texPaths below point at the
+  real files, no placeholders. drawSize values are the exact numbers already
+  recorded on each art job's own spec (matches the doc's art-direction table).
+  ============================================================================
+-->
+<Defs>
+
+  <!-- 1. RM_Slackwax — wax kelp, shallow floor. Phase inversion: alive as a
+       liquid-phase wax, its corpse a building material shaped by its life.
+       Primary harvest is the WoodLog-register timber (harvestTag "Wood", the
+       biome's only timber, furniture-grade — see RM_SlackwaxTimber). The
+       "offcuts render as hydrocarbon flesh" is a SEPARATE bench recipe on
+       that timber (RM_TheChillFuelChain.xml), not a second harvestedThingDef
+       — vanilla plants carry exactly one. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Slackwax</defName>
+    <label>slackwax</label>
+    <description>A kelp whose flesh is paraffin — rock on any dayside shelf, but down here, part-dissolved in the cold fuel, as supple as anything that ever waved in a sea. Slackwax stands in slow ribbons off the shallow floor, thickening and thinning with every current that ever crossed it. Hauled into air it does not die so much as set: rigid in seconds, stone-hard in a minute, holding whatever curve it drowned in. The scrapers' shacks along the crust are furnished with it — chairs, hafts, window-lattices, all of it furniture that was briefly an organism, and all of it burning like a torch near flame.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Slackwax/RM_Slackwax</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.35</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>8</pathCost>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_TheChillShelf</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-273</minGrowthTemperature>
+      <maxGrowthTemperature>-20</maxGrowthTemperature>
+      <!-- "No sun has ever reached this floor and none ever will" (doc,
+           Skyharp's own description) — growMinGlow/growOptimalGlow 0,
+           matching RM_GreyCrystalFloraBase's own established idiom for
+           this campaign's other lightless sea floor ("blind murk",
+           RM_GreySeaUnderstorey.xml). PlantBaseNonEdible's inherited
+           default (0.51/1.0, i.e. "needs real daylight") would otherwise
+           leave this whole roster unable to regrow after harvest or death
+           on a map with no sun and only occasional aurora/Fuselight light —
+           the same class of silent dead-content bug as the unset
+           plantDensity/animalDensity traps this file's own header warns
+           about. -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <harvestTag>Wood</harvestTag>
+      <harvestedThingDef>RM_SlackwaxTimber</harvestedThingDef>
+      <harvestYield>8</harvestYield>
+      <harvestWork>200</harvestWork>
+      <growDays>10</growDays>
+      <visualSizeRange>0.7~1.1</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <!-- 2. RM_Ghostpane — frozen-gas membrane, shallow floor / crust edge.
+       Sublimation: it can vanish but it cannot wilt. Structurally
+       unharvestable (harvestYield unset -> 0 -> PlantProperties.Harvestable
+       false) — "anything warm enough to hold it is warm enough to erase
+       it," per the doc. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Ghostpane</defName>
+    <label>ghostpane</label>
+    <description>A colony that builds in a material no dayside chemistry can keep: panes of frozen gas laid down molecule by molecule into sheets a hand wide and a hair thick, joined at angles like a shattered window reassembled by something that never saw the original. Warmed even slightly the panes do not melt; they sublime, un-existing edge-inward with a hiss and a shiver of fumes. The hoolen lick the crust-edge panes for the frost that condenses on them, and the panes grow back by morning.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ghostpane/RM_Ghostpane</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>4</pathCost>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>2</Beauty>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_TheChillShelf</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-273</minGrowthTemperature>
+      <maxGrowthTemperature>-20</maxGrowthTemperature>
+      <!-- "No sun has ever reached this floor and none ever will" (doc,
+           Skyharp's own description) — growMinGlow/growOptimalGlow 0,
+           matching RM_GreyCrystalFloraBase's own established idiom for
+           this campaign's other lightless sea floor ("blind murk",
+           RM_GreySeaUnderstorey.xml). PlantBaseNonEdible's inherited
+           default (0.51/1.0, i.e. "needs real daylight") would otherwise
+           leave this whole roster unable to regrow after harvest or death
+           on a map with no sun and only occasional aurora/Fuselight light —
+           the same class of silent dead-content bug as the unset
+           plantDensity/animalDensity traps this file's own header warns
+           about. -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <harvestFailable>false</harvestFailable>
+      <growDays>3</growDays>
+      <visualSizeRange>0.6~1.0</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <!-- 3. RM_Eldspar — slow crystal garden, deep floor. Patience: growth on
+       a timescale that makes it the floor's monument, not its vegetation.
+       RULED growDays 60 (Q6/ruling 6, the regrowing stand-in; never-regrows
+       declined). AuroraGlass moves into the garden (ruling 7) — harvest
+       yields the EXISTING RUT_AuroraGlass ThingDef directly (no new duplicate
+       def), MayRequire-guarded the same way RM_TheChill.xml's own fishTypes
+       already reference the Utinni tier. The tarnn/eldspar boundary dispute
+       (RM_Tarnn, RM_TheChillFloorLife.xml) is left EXACTLY as unsettled as
+       the doc leaves it — ruling 9, do not touch RM_Tarnn. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Eldspar</defName>
+    <label>eldspar</label>
+    <description>A crystal garden on the deep floor that grows a finger's width in a decade, in the one place on the planet still enough to permit it. Each spar is optically perfect, grown molecule by molecule from the stillest solution in the world, and a mature garden — chest-high, centuries deep — is the oldest living structure anyone on Ash'karr can visit. The krellik pick at its base for the microscopic spall its growing edges shed, and the tarnn colonies grow in and among the gardens so thoroughly nobody has settled which lattices are eldspar and which are tarnn. Destroying a spar costs a lifetime's growth; its smoke-grey heart is aurora glass.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Eldspar/RM_Eldspar</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.4</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>6</Beauty>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_TheChillBed</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-273</minGrowthTemperature>
+      <maxGrowthTemperature>-20</maxGrowthTemperature>
+      <!-- "No sun has ever reached this floor and none ever will" (doc,
+           Skyharp's own description) — growMinGlow/growOptimalGlow 0,
+           matching RM_GreyCrystalFloraBase's own established idiom for
+           this campaign's other lightless sea floor ("blind murk",
+           RM_GreySeaUnderstorey.xml). PlantBaseNonEdible's inherited
+           default (0.51/1.0, i.e. "needs real daylight") would otherwise
+           leave this whole roster unable to regrow after harvest or death
+           on a map with no sun and only occasional aurora/Fuselight light —
+           the same class of silent dead-content bug as the unset
+           plantDensity/animalDensity traps this file's own header warns
+           about. -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <harvestTag>Standard</harvestTag>
+      <!-- Same ThingDef the RM-tier rare-catch table used to list (removed
+           this pass, ruling 7) — MayRequire mirrors that table's own guard. -->
+      <harvestedThingDef MayRequire="mandrake.rut.patches">RUT_AuroraGlass</harvestedThingDef>
+      <harvestYield>1</harvestYield>
+      <harvestWork>600</harvestWork>
+      <growDays>60</growDays>
+      <visualSizeRange>0.8~1.2</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <!-- 4. RM_Tarspool — living chromatogram, deep floor. Fractionation: it
+       resolves the snowfall rather than eating it, and wears the analysis.
+       Single harvestedThingDef is the whole harvested stalk (RM_TarspoolStalk,
+       an intermediate) — the crown-scrape euphoric (ruling 8, same raw
+       material as the rime-nodule euphoric) and the base tars (hydrocarbon
+       flesh) are BOTH products of one "resolve the stalk" bench recipe
+       (RM_TheChillFuelChain.xml), matching the doc's "one plant, two
+       fractions" language without inventing a second harvestedThingDef
+       field the engine doesn't support. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Tarspool</defName>
+    <label>tarspool</label>
+    <description>A squat spindle wound in pale absorbent floss that wicks the settled fuel-snow slush up its length, sorting it as it climbs: heavy black tars barely leave the base, ambers ride to mid-height, and the lightest violet organics reach the crown, so every tarspool wears its diet as bands of colour in strict molecular order. Scrapers read tarspool bands the way farmers read clouds: a broad violet crown means the reconnection storms have been rich, and the oddu-fishing will be good.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Tarspool/RM_Tarspool</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>6</pathCost>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_TheChillBed</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-273</minGrowthTemperature>
+      <maxGrowthTemperature>-20</maxGrowthTemperature>
+      <!-- "No sun has ever reached this floor and none ever will" (doc,
+           Skyharp's own description) — growMinGlow/growOptimalGlow 0,
+           matching RM_GreyCrystalFloraBase's own established idiom for
+           this campaign's other lightless sea floor ("blind murk",
+           RM_GreySeaUnderstorey.xml). PlantBaseNonEdible's inherited
+           default (0.51/1.0, i.e. "needs real daylight") would otherwise
+           leave this whole roster unable to regrow after harvest or death
+           on a map with no sun and only occasional aurora/Fuselight light —
+           the same class of silent dead-content bug as the unset
+           plantDensity/animalDensity traps this file's own header warns
+           about. -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_TarspoolStalk</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <harvestWork>250</harvestWork>
+      <growDays>8</growDays>
+      <visualSizeRange>0.8~1.1</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <!-- 5. RM_Keelgrass — ceiling-rooted fringe, shallow floor at the crust
+       edge. Inversion of down: the crust is its ground and the floor is
+       its sky. No harvest — shelter and hazard-dressing, per the doc. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Keelgrass</defName>
+    <label>keelgrass</label>
+    <description>Down is negotiable in a sea lighter than everything that falls into it. Keelgrass roots in the underside of the frozen crust and grows downward into the black, long blades hanging keel-wise into the liquid, combing the top layer where the heemin swim. Heemin shoal into keelgrass fringes when a vaunoom's wake crosses the mirror above — the one shelter in the top layer — and the crews who lower ships through the crust learn to cut their entry hole clear of the fringes, because a curtain of keelgrass across a descending hull reads, for one bad moment, exactly like something reaching up.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Keelgrass/RM_Keelgrass</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.3</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>6</pathCost>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_TheChillShelf</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-273</minGrowthTemperature>
+      <maxGrowthTemperature>-20</maxGrowthTemperature>
+      <!-- "No sun has ever reached this floor and none ever will" (doc,
+           Skyharp's own description) — growMinGlow/growOptimalGlow 0,
+           matching RM_GreyCrystalFloraBase's own established idiom for
+           this campaign's other lightless sea floor ("blind murk",
+           RM_GreySeaUnderstorey.xml). PlantBaseNonEdible's inherited
+           default (0.51/1.0, i.e. "needs real daylight") would otherwise
+           leave this whole roster unable to regrow after harvest or death
+           on a map with no sun and only occasional aurora/Fuselight light —
+           the same class of silent dead-content bug as the unset
+           plantDensity/animalDensity traps this file's own header warns
+           about. -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <harvestFailable>false</harvestFailable>
+      <growDays>7</growDays>
+      <visualSizeRange>0.8~1.2</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <!-- 6. RM_Stonewater — ice-boned brake, deep floor. Water-as-mineral: its
+       skeleton is ice because ice is the local granite. RULED (Q3): the ice
+       is a real harvest item, a generic cooking/hydration input
+       (RM_StonewaterIce) — AND a powered extractor placed on a brake
+       (RM_ChillStonewaterExtractor, RM_TheChillFuelChain.xml) melts it into
+       RM_MeltedWater, a genuine water source. Never fuel. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Stonewater</defName>
+    <label>stonewater</label>
+    <description>In this register water is not the medium of life; it is the hardest mineral the biome owns. The stonewater brake mines it — scavenging trace ice from the snow and dust, molecule by molecule, into a skeleton: white branching bones of pure water ice, granite-hard at −80°, dressed in a thin living felt of wax chemistry that does the actual living. It is the inversion that names the biome's whole chemistry, standing in plain sight: a plant whose stone is water, in a sea whose water is fuel. Old brakes are the deep floor's reefs — the iliss thread their bones, and what the frost-plated krellik cannot crack, it leaves alone.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Stonewater/RM_Stonewater</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.35</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_TheChillBed</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-273</minGrowthTemperature>
+      <maxGrowthTemperature>-20</maxGrowthTemperature>
+      <!-- "No sun has ever reached this floor and none ever will" (doc,
+           Skyharp's own description) — growMinGlow/growOptimalGlow 0,
+           matching RM_GreyCrystalFloraBase's own established idiom for
+           this campaign's other lightless sea floor ("blind murk",
+           RM_GreySeaUnderstorey.xml). PlantBaseNonEdible's inherited
+           default (0.51/1.0, i.e. "needs real daylight") would otherwise
+           leave this whole roster unable to regrow after harvest or death
+           on a map with no sun and only occasional aurora/Fuselight light —
+           the same class of silent dead-content bug as the unset
+           plantDensity/animalDensity traps this file's own header warns
+           about. -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_StonewaterIce</harvestedThingDef>
+      <harvestYield>6</harvestYield>
+      <harvestWork>300</harvestWork>
+      <growDays>20</growDays>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <!-- 7. RM_Fuselight — peroxide lamp, deep floor. Hoarded fire: it farms
+       the aurora's radiolysis for the biome's one native oxidizer and
+       spends it in controlled cold flashes. RULED (Q5): the explosion is
+       REAL, small radius, one comp — vanilla CompProperties_Explosive
+       covers it outright (RM_ColdWax precedent, BlueDesert). "No yield worth
+       a def" (doc, verbatim) — harvestYield left unset (0), so
+       PlantProperties.Harvestable is false: there is nothing to collect,
+       only a plant that can kill the pawn who tries to cut it down.
+
+       Trigger: ordinary damage (a cutting/attack job), not a temperature
+       trigger — deliberately NOT wired to Blue Desert's
+       RM_CompRuinedDetonator (that class lives in a different mod's
+       assembly; reusing it here would be a cross-mod C# dependency this
+       build doesn't need). startWickHitPointsPercent is high so any real
+       damage taken while cutting starts the wick almost immediately,
+       independently matching "attempting it should read as a mistake."
+
+       🔴 tickerType Normal, overriding PlantBaseNonEdible's inherited Long
+       — TRACED, not assumed. CompProperties_Explosive.ConfigErrors demands
+       Normal ("CompExplosive requires Normal ticker type"), and it is not
+       cosmetic: Verse.TickManager.TickListFor dispatches a Thing into
+       EXACTLY ONE of tickListNormal/Rare/Long by its own tickerType alone,
+       so a Long-ticker Thing never receives a Tick() call at all — only
+       TickLong() — and CompExplosive's wick countdown lives in CompTick(),
+       which CompExplosive never overrides as CompTickLong(). On the
+       inherited Long ticker, StartWick() would still fire (damage events
+       are synchronous, not tick-driven) but wickTicksLeft would never
+       decrement and Detonate() would never be called — a wick that starts
+       and then simply never finishes. Accepted tradeoff, recorded per
+       FOUNDRY's "specs state outcomes": Plant.TickLong() is also what runs
+       growth-stage advancement and the temperature/rot dying check (Verse/
+       RimWorld/Plant.cs), so Fuselight on Normal ticker never grows past
+       its wildPlants spawn stage and never dies back from the universal
+       -20 C ceiling the way its nine siblings do. Acceptable for a
+       commonality-0.3, harvestYield-0 hazard plant whose entire point is
+       the explosion, not a farmable growth cycle.
+
+       CHILL_FIRE_BAN_1 interaction, TRACED not assumed: GenExplosion.DoExplosion
+       resolves its `instigator` to the exploding Thing itself
+       (CompExplosive.Detonate(): `instigator ?? parent`), and Explosion.cs's
+       own fire-spawn call (`FireUtility.TryStartFireIn(c, map, size,
+       instigator, ...)`) passes that same instigator through as the
+       `relevantThing` RM_ChillFireGate.IsIgnitionAllowed checks via
+       IsSelfOxidizing(relevantThing) — so a Fuselight explosion's own fire
+       reads Fuselight itself as instigator and correctly finds the
+       RM_SelfOxidizingExtension tag below, independent of which cell it
+       ignites in. Verified against decompiled 1.6 source
+       (Verse/GenExplosion.cs, RimWorld/CompExplosive.cs, Verse/Explosion.cs),
+       not assumed from the extension's own doc comment alone. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Fuselight</defName>
+    <label>fuselight</label>
+    <description>The only fire in the fireproof sea, and it grows on a stalk. The aurora's particle rain, working for centuries on the floor's trace ice, manufactures peroxides — the rarest substance in the biome, the only oxidizer for a thousand kilometres — and the fuselight hoards them: a dark stalk crowned with a row of small sealed ampoules, each holding a bead of oxidizer beside a bead of fuel, and a membrane between them the plant opens on purpose, one flash at a time. Every scraper is told the same thing before their first dive: the pretty one is a grenade. A fuselight brought up soaked in propane, warming, its ampoules unclenching in air, is a device; no one who harvests one does it twice.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Fuselight/RM_Fuselight</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>6</pathCost>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>1.2</explosiveRadius>
+        <explosiveDamageType>Flame</explosiveDamageType>
+        <startWickOnDamageTaken>
+          <li>Cut</li>
+          <li>Blunt</li>
+          <li>Flame</li>
+        </startWickOnDamageTaken>
+        <startWickHitPointsPercent>0.9</startWickHitPointsPercent>
+        <wickTicks>30~60</wickTicks>
+        <chanceToStartFire>0.5</chanceToStartFire>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>2</glowRadius>
+        <glowColor>(120,200,255,0)</glowColor>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.DivingInteraction.RM_SelfOxidizingExtension" />
+    </modExtensions>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_TheChillBed</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-273</minGrowthTemperature>
+      <maxGrowthTemperature>-20</maxGrowthTemperature>
+      <!-- "No sun has ever reached this floor and none ever will" (doc,
+           Skyharp's own description) — growMinGlow/growOptimalGlow 0,
+           matching RM_GreyCrystalFloraBase's own established idiom for
+           this campaign's other lightless sea floor ("blind murk",
+           RM_GreySeaUnderstorey.xml). PlantBaseNonEdible's inherited
+           default (0.51/1.0, i.e. "needs real daylight") would otherwise
+           leave this whole roster unable to regrow after harvest or death
+           on a map with no sun and only occasional aurora/Fuselight light —
+           the same class of silent dead-content bug as the unset
+           plantDensity/animalDensity traps this file's own header warns
+           about. -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <growDays>15</growDays>
+      <visualSizeRange>0.8~1.1</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>3</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <!-- 8. RM_Skyharp — aurora-resonance filaments, shallow floor. Resonance:
+       an antenna farm pretending to be a plant, the base of the floor's
+       energy economy. No harvest — pasture layer. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Skyharp</defName>
+    <label>skyharp</label>
+    <description>No sun has ever reached this floor and none ever will; the only light income is the aurora, and the skyharp is strung for it. A fan of vertical filaments rises off the shallow floor like the instrument it is named for, each string a different length and a different chemistry, each tuned — genuinely, physically tuned — to one of the aurora's emission lines: the long strings drink the green, the short ones the violet, and a skyharp under a full reconnection storm lights up string by string as the sky runs through its registers. It is photosynthesis rebuilt for a black sky by way of an antenna array.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Skyharp/RM_Skyharp</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>6</pathCost>
+    <statBases>
+      <MaxHitPoints>35</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_TheChillShelf</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-273</minGrowthTemperature>
+      <maxGrowthTemperature>-20</maxGrowthTemperature>
+      <!-- "No sun has ever reached this floor and none ever will" (doc,
+           Skyharp's own description) — growMinGlow/growOptimalGlow 0,
+           matching RM_GreyCrystalFloraBase's own established idiom for
+           this campaign's other lightless sea floor ("blind murk",
+           RM_GreySeaUnderstorey.xml). PlantBaseNonEdible's inherited
+           default (0.51/1.0, i.e. "needs real daylight") would otherwise
+           leave this whole roster unable to regrow after harvest or death
+           on a map with no sun and only occasional aurora/Fuselight light —
+           the same class of silent dead-content bug as the unset
+           plantDensity/animalDensity traps this file's own header warns
+           about. -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <harvestFailable>false</harvestFailable>
+      <growDays>6</growDays>
+      <visualSizeRange>0.7~1.1</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <!-- 9. RM_ChillStillbloom — solution-phase flower, deep floor. 🔴 defName
+       is RM_ChillStillbloom, NOT the bare RM_Stillbloom the doc's own
+       collision check claimed was free ("All ten defNames collision-checked
+       against src/ and design/... every one FREE") — MEASURED false this
+       pass: src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Plants/
+       RM_GreySeaUnderstorey.xml already defines defName RM_Stillbloom (a
+       different plant, the Grey Sea's own bone-white pool-surface bloom).
+       A duplicate defName discards one of the two defs entirely
+       (load-order dependent, silent). Renamed the defName only — label
+       stays "stillbloom" (flavour text, no collision risk; two biomes are
+       allowed to have visually/thematically similar blooms under the same
+       common name). Correction also owed to the design doc's own false
+       "every one FREE" claim (correctness outranks seat ownership).
+
+       Solution-phase life: dissolved as its default state. RULED (Q6, "warm
+       bloom, both edges"): flowers in a heat plume's outer ring while the
+       innermost cells boil bare. Implemented via vanilla
+       min/maxGrowthTemperature ALONE, no new MapComponent — the same
+       physical mechanism RM_MapComponent_ChillBoilShroud grades cells by
+       (proximity to a heat source -> local cell temperature), just read
+       through the engine's own plant-temperature gate instead of a second
+       hand-rolled grid: minGrowthTemperature -70 (needs real warmth above
+       the -110 dark, so it will NOT spawn in undisturbed ambient — the
+       doc's "stillest hollows... bloom by the dozen" line is read as
+       flavour for the outer-ring microclimate, not a literal
+       zero-heat-source requirement) and maxGrowthTemperature -20 (the SAME
+       ceiling every other Chill plant uses, so it dies back in the
+       identical zone ChillBoilShroud already marks "hull-warm"/grade 2).
+       The band between is the bloom ring. Constitutively unharvestable,
+       per the doc. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_ChillStillbloom</defName>
+    <label>stillbloom</label>
+    <description>Mostly, a stillbloom is not a thing; it is a region. Its whole chemistry rides dissolved in the fuel, held together by nothing but cold and perfect stillness, and only where the sea is coldest and quietest does it precipitate: over hours, a pale flower crystallizing out of clear liquid, petal by petal, out of nothing at all. Any disturbance and it un-happens, redissolving in seconds. Around a parked ship's heat it flowers in a ring around the warmth — the innermost cells too hot for anything to hold together, the ring just beyond it blooming by the dozen. It cannot be harvested, collected, carried or kept; it can only be found blooming.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Stillbloom/RM_Stillbloom</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <statBases>
+      <MaxHitPoints>15</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>5</Beauty>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_TheChillBed</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-70</minGrowthTemperature>
+      <maxGrowthTemperature>-20</maxGrowthTemperature>
+      <!-- "No sun has ever reached this floor and none ever will" (doc,
+           Skyharp's own description) — growMinGlow/growOptimalGlow 0,
+           matching RM_GreyCrystalFloraBase's own established idiom for
+           this campaign's other lightless sea floor ("blind murk",
+           RM_GreySeaUnderstorey.xml). PlantBaseNonEdible's inherited
+           default (0.51/1.0, i.e. "needs real daylight") would otherwise
+           leave this whole roster unable to regrow after harvest or death
+           on a map with no sun and only occasional aurora/Fuselight light —
+           the same class of silent dead-content bug as the unset
+           plantDensity/animalDensity traps this file's own header warns
+           about. -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <harvestFailable>false</harvestFailable>
+      <growDays>2</growDays>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>3</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <!-- 10. RM_Pitchpearl — tar-fruit shrub, shallow AND deep floor (the
+       roster's one two-terrain plant, per the doc). Condensation: it ripens
+       the snowfall's dregs into the floor's one fruit. Primary harvest is
+       RM_PitchpearlBeads (animal-feed/kibble register, dual-purpose — see
+       that item and the fuel-chain recipe that renders it to hydrocarbon
+       flesh). -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Pitchpearl</defName>
+    <label>pitchpearl</label>
+    <description>The snow's heaviest fractions have one farmer. The pitchpearl is a low, wiry shrub that gathers them and ripens them: rolling the tar slowly around a grit of ice the way an oyster coats an irritant, laying it up in glossy black beads that hang off its branches in clusters, each pearl a season's worth of the sky's darkest manufacture, smoothed and sealed. The beads are the floor's staple forage — the krellik crack them, the oovanam dredge the fallen ones out of the dust — until a colony owns a refinery, at which point the same sealed black beads are the tidiest package of hydrocarbon flesh on the floor.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Pitchpearl/RM_Pitchpearl</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>6</pathCost>
+    <statBases>
+      <MaxHitPoints>45</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <wildTerrainTags>
+        <li>RM_TheChillBed</li>
+        <li>RM_TheChillShelf</li>
+      </wildTerrainTags>
+      <minGrowthTemperature>-273</minGrowthTemperature>
+      <maxGrowthTemperature>-20</maxGrowthTemperature>
+      <!-- "No sun has ever reached this floor and none ever will" (doc,
+           Skyharp's own description) — growMinGlow/growOptimalGlow 0,
+           matching RM_GreyCrystalFloraBase's own established idiom for
+           this campaign's other lightless sea floor ("blind murk",
+           RM_GreySeaUnderstorey.xml). PlantBaseNonEdible's inherited
+           default (0.51/1.0, i.e. "needs real daylight") would otherwise
+           leave this whole roster unable to regrow after harvest or death
+           on a map with no sun and only occasional aurora/Fuselight light —
+           the same class of silent dead-content bug as the unset
+           plantDensity/animalDensity traps this file's own header warns
+           about. -->
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_PitchpearlBeads</harvestedThingDef>
+      <harvestYield>5</harvestYield>
+      <harvestWork>180</harvestWork>
+      <growDays>9</growDays>
+      <visualSizeRange>0.7~1.0</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+</Defs>

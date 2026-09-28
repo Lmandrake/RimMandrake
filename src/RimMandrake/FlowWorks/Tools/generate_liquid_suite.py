@@ -245,6 +245,14 @@ LIQUID_ROWS = {
     # "no spontaneous vanilla spread" baseline RUT_ScaldWater/RM_AcidWater
     # already rely on) so LiquidIgnitionMapComponent's trigger-gated ignition
     # is the ONLY ignition route, never vanilla's own TrySpread.
+    # 🔴 CHILL_FLORA_BUILD_1, 2026-09-28: the GENERATED RM_Propane.xml carries
+    # a MANUAL post-generation patch (RM_TheChillBed on Deep's <tags>,
+    # RM_TheChillShelf on Shallow's) that this table does NOT reproduce — no
+    # per-row extra-tags field exists yet (generate()'s extra_tags=["Water"]
+    # is hardcoded uniform across every LIQUID_ROWS entry). Regenerating this
+    # row from a re-frozen dump DROPS those two tags silently and the whole
+    # Chill flora roster (RM_TheChillFlora.xml) stops spawning — carry them
+    # forward by hand, or add the per-row field properly, before regenerating.
     "propane": {
         "defnamePrefix": "RM_Propane",
         "file_name": "RM_Propane.xml",

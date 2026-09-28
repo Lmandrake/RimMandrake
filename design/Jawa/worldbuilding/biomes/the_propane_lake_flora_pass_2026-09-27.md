@@ -26,18 +26,18 @@ biome's chemistry.
 - `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` — the frozen definition sheet
   (Umbra, the aurora and electrojet, fuel snow, the ten hard bans, the war lab, the donor
   crystal flora, the rime nodule).
-- `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_PropaneLake.xml` — the live RM-tier
+- `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml` — the live RM-tier
   BiomeDef: 10-row `wildAnimals` (incl. the six 2026-09-26 floor residents), `fishTypes`,
   `animalDensity` 0.08 (set 2026-09-26 under `PROPANELAKE_ANIMALDENSITY_ZERO_1`), and —
   the gap this pass fills — **no `plantDensity`, no `wildPlants` at all**.
-- `src/RimMandrake/TerminalBiomes/Defs/TerrainDefs/RM_PropaneLakeTerrains.xml` —
-  `RM_PropaneLakeDeep` (the liquid, impassable) and `RM_SolidPropane` (the standable
+- `src/RimMandrake/TerminalBiomes/Defs/TerrainDefs/RM_TheChillTerrains.xml` —
+  `RM_TheChillDeep` (the liquid, impassable) and `RM_SolidPropane` (the standable
   crust); both currently carry only the `Water` terrain tag.
-- `src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Items/RM_PropaneLakeCatch.xml` — the
+- `src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Items/RM_TheChillCatch.xml` — the
   heemin/oovanam catch items; plus the biome def's RUT catch rows (fessu, krellik, oddu,
   oovu, iliss, tarnn, zhiil).
-- `src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_PropaneLakeFloorLife.xml` and
-  `RM_PropaneLakeFauna.xml` — the living cast's descriptions (the crystal-plate fessu,
+- `src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_TheChillFloorLife.xml` and
+  `RM_TheChillFauna.xml` — the living cast's descriptions (the crystal-plate fessu,
   the frost-plated krellik "picking at the crystal flora's fallen fragments", the sessile
   propane-drawing oddu, the snow-catching oovu, the current-fed iliss, the half-crystal
   tarnn colony; heemin, oovanam, hoolen, vaunoom). The ecology section wires every plant
@@ -96,7 +96,11 @@ None overlaps the Scald's ten tricks, and nothing here could live one day in hot
 
 All names are invented and franchise-free (`RM_` tier, per Q11a). All ten defNames
 collision-checked against `src/` and `design/` (recursive grep, 2026-09-27): every one
-FREE.
+FREE. **Correction, CHILL_FLORA_BUILD_1 (2026-09-28):** `RM_Stillbloom` was NOT free —
+`src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Plants/RM_GreySeaUnderstorey.xml` already
+defines that defName for the Grey Sea's own bone-white pool-surface bloom. The build
+ships this biome's plant as `RM_ChillStillbloom` (label unchanged, "stillbloom") —
+read that defName wherever this doc's own prose below says `RM_Stillbloom`.
 
 ### 1. RM_Slackwax — wax kelp, shallow floor
 
@@ -385,7 +389,7 @@ unset, defaulted to `0f`, and a six-animal roster was dead content that could ne
 spawn. `plantDensity` defaults the same way, and `wildPlants` rows without it are the
 same dead letter. This pass therefore states its numbers and names every field:
 
-**In `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_PropaneLake.xml`:**
+**In `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml`:**
 
 1. `<plantDensity>0.18</plantDensity>` — explicit, never omitted, and **RULED** (Q1,
    accepted at the earlier sitting of 2026-09-27). Calibration: vanilla desert 0.05,
@@ -408,13 +412,13 @@ relevant terrain carries only `Water`/`dbh_water`):**
 
 4. In `src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Propane.xml` — the
    dive-layer terrains the gravship floor map actually uses (they are what
-   `RM_PropaneLake.xml`'s `RM_SeaShoreExtension` names as `deepTerrain`/
-   `shallowTerrain`): add `<li>RM_PropaneLakeBed</li>` to `RM_PropaneDeep`'s `<tags>`
-   and `<li>RM_PropaneLakeShelf</li>` to `RM_PropaneShallow`'s `<tags>`.
+   `RM_TheChill.xml`'s `RM_SeaShoreExtension` names as `deepTerrain`/
+   `shallowTerrain`): add `<li>RM_TheChillBed</li>` to `RM_PropaneDeep`'s `<tags>`
+   and `<li>RM_TheChillShelf</li>` to `RM_PropaneShallow`'s `<tags>`.
    - Deep-floor flora (`RM_Eldspar`, `RM_Tarspool`, `RM_Stonewater`, `RM_Fuselight`,
-     `RM_Stillbloom`) tag `RM_PropaneLakeBed`.
+     `RM_Stillbloom`) tag `RM_TheChillBed`.
    - Shallow flora (`RM_Slackwax`, `RM_Skyharp`, `RM_Ghostpane`, `RM_Keelgrass`) tag
-     `RM_PropaneLakeShelf`.
+     `RM_TheChillShelf`.
    - `RM_Pitchpearl` tags both.
 5. Every plant def follows the established water-flora shape
    (`RM_Crowncarpet`/Scald convention): `completelyIgnoreFertility` true +

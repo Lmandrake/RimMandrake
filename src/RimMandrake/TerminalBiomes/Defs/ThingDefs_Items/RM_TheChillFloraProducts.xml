@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TheChillFloraProducts.xml            CHILL_FLORA_BUILD_1
+  ============================================================================
+  Harvest/byproduct ThingDefs for RM_TheChillFlora.xml's ten plants, plus the
+  ruled fuel-chain items. Recipes that convert between these live in
+  RM_TheChillFuelChain.xml (same pass).
+
+  🔴 RM_RimeNoduleEuphoric — NOT an existing def. `grep`-ed the whole repo
+  (src/, design/) before writing this: "rime nodule"/"rime-nodule euphoric"
+  appears only as PROSE in the_propane_lakes.md §0/§4/§7 (the frozen
+  definition sheet describing donor crystal flora that was never built) and
+  as a flavour reference inside RUT_Oddu's/RM_Oddu's own descriptions ("kin
+  to the rime nodule") — no ThingDef of that name, or any drug ThingDef
+  answering to it, exists anywhere under src/. Ruling 8 ("Tarspool crown
+  scrape = the SAME raw material as the rime-nodule euphoric... find whatever
+  item already exists") therefore has no existing target to point at. This
+  file BUILDS that shared item (RM_RimeNoduleEuphoric) so Tarspool's crown
+  fraction and any future shore rime-nodule content are the same ThingDef by
+  construction, satisfying the ruling's substance — assumption recorded per
+  FOUNDRY's "specs state outcomes" rule, flagged for whoever next touches the
+  shore crystal-flora content (donor crystal horn/crystal flower/frost leaf +
+  rime nodule are still entirely unbuilt).
+
+  🔴 DrugCategory/CompProperties_Drug trap (CLAUDE.md "Config errors are
+  invisible to validate_patch"): RM_RimeNoduleEuphoric carries a non-None
+  drugCategory, so it MUST carry CompProperties_Drug or DrugPolicy.InitializeIfNeeded
+  NREs in Game's own constructor and kills the whole load — it does, below.
+  addictiveness 0 (mild, non-addictive per the doc) means `chemical` is
+  legally left null (CompProperties_Drug.ConfigErrors only requires it when
+  Addictive is true).
+
+  RM_HydrocarbonFlesh carries NO <ingestible> block at all — INDUSTRIAL ONLY,
+  ruling 2, "not food for pawn or animal, a refinery input, full stop." No
+  ingestible block means it cannot be eaten, fed, or picked up by any food
+  job; this is the enforcement mechanism, not a comment.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- Slackwax's primary harvest — a WoodLog-register timber. 🔴
+       ParentName="WoodLog" is INVALID: vanilla's own WoodLog ThingDef
+       carries no Name attribute (verified: grep of Core's
+       Items_Resource_Stuff.xml, live-checked with validate_patch.py's own
+       defs check, which DISCARDS the whole def on an unresolvable ParentName), so
+       nothing can inherit from it by name. Parented on ResourceVerbBase
+       instead (WoodLog's own ParentName) with WoodLog's stuffProps/
+       statBases shape copied in by hand — same full stuff/build register
+       (buildable furniture, a real Woody stuff category) the doc's
+       "usable as a WoodLog-register material" instruction asks for,
+       without a broken inheritance link. Its offcuts convert to
+       hydrocarbon flesh at the refinery (RM_TheChillFuelChain.xml), not a
+       second harvestedThingDef. -->
+  <ThingDef ParentName="ResourceVerbBase">
+    <defName>RM_SlackwaxTimber</defName>
+    <label>slackwax timber</label>
+    <description>Cut slackwax, set stone-hard the instant it left the fuel. It holds whatever shape it drowned in — chairs, hafts, window-lattices are all cut straight from a bed of it — and it burns like a torch if brought anywhere near flame.</description>
+    <!-- Placeholder art: reuses this mod's own Slackwax plant sprite (no
+         dedicated timber icon exists yet) — own-mod texPath, per
+         validate_patch.py's own texPath rule (a cross-mod Things/ path
+         cannot be told apart from a typo and renders pink if the other mod
+         is absent). Real timber art is owed, same shape as
+         RM_Crowncarpet's own placeholder note. -->
+    <graphicData>
+      <texPath>Things/Plant/RM_Slackwax/RM_Slackwax</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <equippedAngleOffset>-20</equippedAngleOffset>
+    <soundInteract>Wood_Drop</soundInteract>
+    <soundDrop>Wood_Drop</soundDrop>
+    <statBases>
+      <MarketValue>1.8</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>0.4</Mass>
+      <Flammability>1.5</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <StuffPower_Armor_Sharp>0.54</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.54</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>0.40</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>8</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>4</StuffPower_Insulation_Heat>
+      <SharpDamageMultiplier>0.40</SharpDamageMultiplier>
+      <BluntDamageMultiplier>0.9</BluntDamageMultiplier>
+    </statBases>
+    <burnableByRecipe>true</burnableByRecipe>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <stuffProps>
+      <stuffAdjective>waxen</stuffAdjective>
+      <categories>
+        <li>Woody</li>
+      </categories>
+      <commonality>0.4</commonality>
+      <color>(214,178,104)</color>
+      <constructEffect>ConstructWood</constructEffect>
+      <appearance>Planks</appearance>
+      <soundImpactBullet>BulletImpact_Wood</soundImpactBullet>
+      <soundMeleeHitSharp>MeleeHit_Wood</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Wood</soundMeleeHitBlunt>
+      <soundImpactMelee>Pawn_Melee_Punch_HitBuilding_Wood</soundImpactMelee>
+      <statFactors>
+        <MaxHitPoints>0.65</MaxHitPoints>
+        <Beauty>1.2</Beauty>
+        <Flammability>1.3</Flammability>
+        <WorkToMake>0.7</WorkToMake>
+        <WorkToBuild>0.7</WorkToBuild>
+        <DoorOpenSpeed>1.2</DoorOpenSpeed>
+      </statFactors>
+      <canSuggestUseDefaultStuff>false</canSuggestUseDefaultStuff>
+    </stuffProps>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- Tarspool's primary harvest — the whole banded stalk, unresolved. A
+       single bench recipe ("resolve the tarspool stalk",
+       RM_TheChillFuelChain.xml) splits it into its two ruled fractions: the
+       crown (RM_RimeNoduleEuphoric, ruling 8) and the base tars
+       (RM_HydrocarbonFlesh, fuel-chain section). Not itself consumable. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_TarspoolStalk</defName>
+    <label>tarspool stalk</label>
+    <description>A whole tarspool, cut and unresolved: black base, amber middle, violet crown, still banded in the order the sky laid it down. Wicking floss holds the fractions apart until something takes it apart on purpose.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Tarspool/RM_Tarspool</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.7</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Mass>0.5</Mass>
+      <Flammability>1.0</Flammability>
+      <MarketValue>4</MarketValue>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>50</stackLimit>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>15</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- The shared euphoric — Tarspool's crown scrape AND (per ruling 8) the
+       shore's own future rime-nodule content, the SAME ThingDef. See this
+       file's header for why it had to be built rather than found. -->
+  <ThingDef ParentName="DrugBase">
+    <defName>RM_RimeNoduleEuphoric</defName>
+    <label>rime-nodule euphoric</label>
+    <description>A bead of clear jelly drawn out of the fuel itself — propane extracted from its surroundings and left to sit until it is, eaten, a very mild euphoric. Cold enough to burn the tongue coming up, and about the closest thing the nightside offers to a good evening. Tarspool crowns yield the same compound the shore's own rime nodules do; nobody scraping a tarspool crown or cracking a nodule thinks of themselves as doing something different.</description>
+    <tradeability>Sellable</tradeability>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <tickerType>Rare</tickerType>
+    <!-- Placeholder art: reuses this mod's own Tarspool plant sprite
+         (thematically the item's own crown scrape) — own-mod texPath, see
+         RM_SlackwaxTimber's comment above for why. -->
+    <graphicData>
+      <texPath>Things/Plant/RM_Tarspool/RM_Tarspool</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Mass>0.05</Mass>
+      <Flammability>0.5</Flammability>
+      <MarketValue>10</MarketValue>
+      <DeteriorationRate>3</DeteriorationRate>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <techLevel>Neolithic</techLevel>
+    <ingestible>
+      <baseIngestTicks>80</baseIngestTicks>
+      <chairSearchRadius>4</chairSearchRadius>
+      <preferability>DesperateOnly</preferability>
+      <foodType>Fluid</foodType>
+      <joyKind>Chemical</joyKind>
+      <joy>0.30</joy>
+      <nurseable>true</nurseable>
+      <drugCategory>Social</drugCategory>
+      <canAutoSelectAsFoodForCaravan>false</canAutoSelectAsFoodForCaravan>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>10</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+      <li Class="CompProperties_Drug">
+        <!-- addictiveness 0 -> Addictive false -> chemical legally null
+             (CompProperties_Drug.ConfigErrors), matching "a very mild
+             euphoric" — no ChemicalDef invented for it. -->
+        <addictiveness>0</addictiveness>
+        <needLevelOffset>0.3</needLevelOffset>
+        <listOrder>32</listOrder>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Pitchpearl's primary harvest — dual-register: low-grade animal feed
+       (kibble input) as-is, or rendered to hydrocarbon flesh at the
+       refinery once a colony has one (fuel-chain section). Distinct
+       defName from the plant (RM_Pitchpearl is the shrub). -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_PitchpearlBeads</defName>
+    <label>pitchpearl beads</label>
+    <description>Glossy black beads, each one a season's worth of the sky's darkest manufacture, rolled and sealed around a grit of ice. Low-grade forage — animals take them readily, pawns only when nothing better is left — and, sealed and portable as they are, exactly what a refinery wants once a colony has one.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Pitchpearl/RM_Pitchpearl</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.6</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Mass>0.05</Mass>
+      <Flammability>1.0</Flammability>
+      <MarketValue>2</MarketValue>
+      <Nutrition>0.05</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+    <ingestible>
+      <preferability>RawBad</preferability>
+      <foodType>Plant</foodType>
+      <nutritionInterval>0.9</nutritionInterval>
+      <canAutoSelectAsFoodForCaravan>true</canAutoSelectAsFoodForCaravan>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>10</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Stonewater's primary harvest — real water ice, a generic cooking and
+       hydration input, ruled (Q3). Never fuel: no Flammability worth the
+       name, no place in the fuel chain below. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_StonewaterIce</defName>
+    <label>stonewater ice</label>
+    <description>Chipped bone-white ice from a stonewater brake — the hardest mineral this biome owns, granite at −80°. Usable straight from the chip pile for cooking or drinking, cold enough to ache; melted properly it is the only real water the lake floor has.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Stonewater/RM_Stonewater</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.55</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>0.4</Mass>
+      <Flammability>0</Flammability>
+      <MarketValue>1</MarketValue>
+      <Nutrition>0.02</Nutrition>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <ingestible>
+      <preferability>RawBad</preferability>
+      <foodType>Fluid</foodType>
+      <nutritionInterval>0.9</nutritionInterval>
+      <canAutoSelectAsFoodForCaravan>true</canAutoSelectAsFoodForCaravan>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>20</daysToRotStart>
+        <rotDestroys>false</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- The powered extractor's product (RM_ChillStonewaterExtractor,
+       RM_TheChillFuelChain.xml) — melting stonewater ice under power is the
+       "genuine water source," per ruling 3: real hydration, better than the
+       raw chip, and it cost watts to make. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_MeltedWater</defName>
+    <label>melted water</label>
+    <description>Real liquid water, melted out of a stonewater brake by a powered extractor. The lake floor's only genuine water source — every litre of it cost watts, so even a cup of this is drawn straight from the thermal economy.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Stonewater/RM_Stonewater</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>0.3</Mass>
+      <Flammability>0</Flammability>
+      <MarketValue>1.5</MarketValue>
+      <Nutrition>0.04</Nutrition>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>Fluid</foodType>
+      <nutritionInterval>0.9</nutritionInterval>
+      <canAutoSelectAsFoodForCaravan>true</canAutoSelectAsFoodForCaravan>
+    </ingestible>
+  </ThingDef>
+
+  <!-- The fuel-chain's raw item, ruled (Q2). INDUSTRIAL ONLY — no
+       <ingestible> block anywhere on this def, by construction: it cannot
+       be eaten by a pawn or fed to an animal because there is no ingestion
+       route registered for it at all. A refinery input, full stop. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_HydrocarbonFlesh</defName>
+    <label>hydrocarbon flesh</label>
+    <description>Cut wax, spent tar, ripened pitch — the fatty offcuts of the Chill floor's own flora, stacked and inert. Not food, for pawn or animal, on any read of it: a refinery input, full stop, and the fuel chain's very-late-game supplement to the pipes the colony already runs from its ship.</description>
+    <!-- Placeholder art: reuses this mod's own Pitchpearl plant sprite (the
+         chain's other major contributor) — own-mod texPath, see
+         RM_SlackwaxTimber's comment above for why. -->
+    <graphicData>
+      <texPath>Things/Plant/RM_Pitchpearl/RM_Pitchpearl</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.4</Mass>
+      <Flammability>1.5</Flammability>
+      <MarketValue>3</MarketValue>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>75</stackLimit>
+  </ThingDef>
+
+</Defs>
