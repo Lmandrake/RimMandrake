@@ -1031,3 +1031,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"CHILL_HEATED_SUIT_1","ts":"2026-09-28T08:06:49Z"}
 {"seat":"FOUNDRY","event":"start","id":"CHILL_HEATED_SUIT_1","ts":"2026-09-28T08:06:50Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_HEATED_SUIT_1","sha":"5eaa306e4","ts":"2026-09-28T08:21:01Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_GARDEN_DEFENSE_1","ts":"2026-09-28T08:22:25Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_GARDEN_DEFENSE_1","ts":"2026-09-28T08:22:26Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_GARDEN_DEFENSE_1","sha":"0c11dd089","ts":"2026-09-28T08:36:16Z"}

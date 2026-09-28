@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T08:21:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T08:36:16Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1783,16 +1783,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SELFTEST_FAILURES_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SELFTEST_FAILURES_TRIAGE_1.md
-
-## CHILL_GARDEN_DEFENSE_1 Garden immune system: Iliss arcs warn, Tarnn colonies wake — hard skirmish, overcomable
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  CHILLGARDENDEFENSE1 — the garden's tiered immune system
-prose:    infrastructure/state/items/CHILL_GARDEN_DEFENSE_1.md
 
 ## CHILL_FLOOR_LIGHT_1 Layered floor light: drowned aurora tied to weather over bioluminescent points
 state:    proposed
