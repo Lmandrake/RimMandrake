@@ -1061,3 +1061,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"CHILL_AURORA_SURGE_1","ts":"2026-09-28T10:17:21Z"}
 {"seat":"FOUNDRY","event":"start","id":"CHILL_AURORA_SURGE_1","ts":"2026-09-28T10:17:22Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_AURORA_SURGE_1","sha":"d2ab077fa","ts":"2026-09-28T10:33:21Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-28T15:47:20Z"}
+{"seat":"FOUNDRY","event":"file","id":"PIT_RENAME_STENCHLANDS_1","title":"Rename The Pit biome to The Stenchlands (owner request, this session) - no biome is currently labeled/defName'd 'Pit' (measured: grepped every BiomeDef label under RM_/RUT_, no hit), so first confirm which biome the owner means, then rename label+defName per the Cauldron/Black Crags renaming precedent (live-tile check before any defName change, since Ash'karr references BiomeDefs by shortHash)","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-28T15:49:27Z"}
+{"seat":"FOUNDRY","event":"close","id":"STRANDED_DEFORMATION_DEFNAME_CLASH_1","sha":"504ff915e","ts":"2026-09-28T15:52:02Z"}
