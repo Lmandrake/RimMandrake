@@ -11,7 +11,14 @@
   gating geyser count by a per-tile world-position density field, reusing
   mandrake.rm.weathersuite's arc-from-substellar-point formula — hence the
   new hard dependency on that mod (and loadAfter mandrake.rut.weathersuite
-  for the actual Ash'karr PlanetGeometryDef data).</description>
+  for the actual Ash'karr PlanetGeometryDef data).
+
+  SANDBUSTER_CASTES_BUILD_1 (2026-09-27/28): Patches/Infestation_PlanetwideBan.xml
+  zeroes vanilla Core's own Infestation IncidentDef's baseChance planet-wide, per
+  dune_sea.md's ruled amendment ("the event is banned everywhere else on the
+  planet"). The Dune Sea's own replacement incident (RM_SandBusterEruption) lives
+  in mandrake.rm.stillsand instead and confines itself there via its own
+  allowedBiomes field -- no C# in this mod for any of it.</description>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
