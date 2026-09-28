@@ -66,6 +66,13 @@
       "retiredOn": "2026-09-27",
       "item": "BMT_FAUNA_ABSORPTION_1",
       "why": "owner 2026-09-27: 'try to fix the savegame then retire the retirable'. No active mod or src/ file hard-depends on it; the canonical save was scrubbed of its content first (Transient/canonical_save_biomescore_scrub_2026-09-27.py)"
+    },
+    {
+      "packageId": "Sapiently.TheyAtomicMonsters",
+      "modNames": ["They! (Giant Ants)"],
+      "retiredOn": "2026-09-28",
+      "item": "THEY_MOD_REPLICATION_1",
+      "why": "owner 2026-09-24: queued for replacement and retirement. Its whole surface (race, 2 pawnkinds, hidden raid faction, carapace stuff+wall, the one custom C# JobGiver) was re-authored native into mandrake.rut.greentideraidant + mandrake.rm.creaturebehaviors' RM_JobGiver_DirectedAssault, live-verified 2026-09-28 (defs resolve 7/7, carapace item + wall spawn and are real map presences, 12/12 spawned hostile RUT_GreentideAntSoldier pawns marched ~26 tiles toward the colony under step_game_ticks). No live save-embedded reference (canonical save checked directly, only catalog-list hits). Live ModsConfig + FULL.LATEST both now carry mandrake.rut.greentideraidant in its place, donor absent. Naming (a coined pseudo-Star-Wars label replacing the donor's plain-English 'giant ant') and the wall's real art remain owed, tracked separately (NONCANON_BEAST_RENAME_1; artpipe jobs already filed) and do not block this retirement"
     }
   ]
 }
