@@ -5,6 +5,47 @@ mods merge NOW into ONE player-facing mod, working name `RimMandrake.Biomes`,
 packageId `mandrake.rm.biomes`, per-biome toggles in Mod Settings (AlphaBiomes shape).
 Item: `infrastructure/state/items/BIOME_MOD_UNIFICATION_1.md`. Spec written 2026-09-27.
 
+## 🔴 EXECUTED — all 3 waves closed 2026-09-28
+
+`BAROQUE_BIOMES_WAVE1_JOIN_1` → `WAVE2_FOLD_1` → `WAVE3_RETARGET_1`, all closed,
+FOUNDRY. **All 29 entries (§8's final roster) live inside `mandrake.rm.biomes` on
+the owner's live list** — nothing left to fold. Live list 631 → 614 mods (one
+ADD in wave 1, 17 packageIds retired in wave 2's single swap). Three clean cold
+loads (Bridge token present, zero recovery/abort each time).
+
+This section is the closing record §6's own plan asked for; §1–§8 below are
+otherwise the plan AS WRITTEN 2026-09-27 and are left unedited (history, not
+current-state prose) except where a stale defName reference was itself wrong
+(the `RM_PropaneLake` → `RM_TheChill` rename, corrected separately).
+
+- **Verify (item's own bar), both closed:** def-count match — 1,317 defs across
+  the 29 src/ source folders vs 1,283 deployed, gap is exactly the 34 defs in
+  TheSump's 9 pre-existing `DEPLOY_HOLD.txt` holds (no art yet), not a compose
+  loss. Toggle-gating — `RM_BiomesGate`'s own startup log (`Player.log`) is the
+  proof: `roster 29 entries ... 30 BiomeDef(s) mapped` with zero `NOT LOADED`,
+  `worldgen gate applied (startup): all biomes on`. Wave 0's own header already
+  scoped what a toggle gates *today* (worldgen placement only; the deeper
+  per-mechanic gate is `RM_BiomesMod.cs`'s own documented "DEFERRED (spec §5 arm
+  2)" — wired biome by biome, not by this item).
+- **Fixed on the way, not pre-planned here:** `RUT_StrandedDeformation` defName
+  clash between Miasma and the campaign patch layer (owner ruled via question
+  card: kept Miasma's version); one dead orphaned def
+  (`TerminalBiomes/Defs/ThingSetMakerDefs/RUT_RareGreyCatches.xml`, superseded
+  by `RM_GreySeaRareCatch.xml` months ago and never deleted); ~270
+  `MayRequire`/`PatchOperationFindMod` references across 168 files that named a
+  now-folded packageId or mod display name (§4's own sweep undercounted this at
+  design time because it only walked the RM-tier candidate set, not
+  `RimUtinni/UtinniPatches`); one C# `ModsConfig.IsActive` guard in
+  `RM_TerminalBiomesMod.cs` with the same failure shape, not caught by the XML
+  sweep; RustCathedral's `GetSettings<T>()` double-read bug (three calls on one
+  `Mod` instance — `Verse.Mod` tracks only one settings type per instance);
+  `UtinniPatches/About.xml`'s own `loadAfter` still named 10 now-folded ids
+  individually, consolidated to one `mandrake.rm.biomes` entry.
+- **Left alone, on purpose:** two pre-existing defName collisions
+  (`RUT_LampBlack`, `RUT_RarePropaneCatches`) are deliberately-deferred "Phase
+  B" TerminalBiomes/UtinniPatches twins per their own file comments — already
+  colliding today independent of this merge, not created or worsened by it.
+
 ## 1. Roster — every folder under src/RimMandrake/, IN / OUT / UNSURE
 
 Classified from each About.xml `<name>` + `<description>` (read 2026-09-27, all 63
@@ -222,7 +263,7 @@ overlapping) and then over ALL src/RimMandrake mods:
 
 - **Duplicate concrete defNames: 0.** 1,193 defs in the candidate set; widened to all
   60 mods: 1,833 defs, still 0 cross-mod collisions. (Sanity probes found
-  `RM_Greatbole`→Greentide, `RM_PropaneLake`→TerminalBiomes, so the sweep can see.)
+  `RM_Greatbole`→Greentide, `RM_TheChill`→TerminalBiomes, so the sweep can see.)
 - **Duplicate abstract `Name=` bases: 0** (30 abstracts in the candidate set).
   ParentName resolution is global, so this needed checking even with unique defNames.
 - **Duplicate texture relative paths: 0** (516 under the candidate set's Textures/).
@@ -232,7 +273,7 @@ overlapping) and then over ALL src/RimMandrake mods:
 - **`LIQUID_TERRAIN_AUTHORED_TWICE_1` is NOT a defName collision and unification
   alone does NOT resolve it.** The double-authoring is FlowWorks
   (`RM_WaterBoiling*`, `RM_WaterBrine*`, `RM_Propane{Deep,Shallow}`) vs
-  TerminalBiomes (`RM_Brine*`, `RM_PropaneLakeDeep`, `RM_SolidPropane`) — same
+  TerminalBiomes (`RM_Brine*`, `RM_TheChillDeep`, `RM_SolidPropane`) — same
   substances, DIFFERENT defNames, and FlowWorks is OUT of the merge. Resolving it
   is a cross-mod ownership ruling (card Q7), executed as: pick the surviving
   family per substance, retarget references, and delete the loser only when
