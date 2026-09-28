@@ -76,6 +76,7 @@
     <Compile Include="RM_MapComponent_ChillGardenDefense.cs" />
     <Compile Include="RM_CompTarnnRoused.cs" />
     <Compile Include="Patch_ChillGardenDefense.cs" />
+    <Compile Include="RM_MapComponent_ChillFootprints.cs" />
   </ItemGroup>
 
   <ItemGroup>
