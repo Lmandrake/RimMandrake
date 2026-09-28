@@ -216,24 +216,25 @@ tell. *Engine:* `IncidentDef` + map-edge-biased placement; the freeze-dried corp
 vanilla corpse gen frozen. *Trade-off:* overlaps the quarry/debris injections — sequence
 after A/B so the two don't double-author "the fallen."
 
-## 5. Open questions for the owner
+## 5. Open questions — RULED at volley turn 2 (owner typed, 2026-09-28; on the sitting's ledger)
 
-Only genuine rulings — everything else above is either already ruled or is volley material.
+1. **The three donor water-plants: CUT.** The ban stands — no water plants make sense
+   here. `AB_ToxiGrass`, `AB_CrystalHorn`, `PoisonPlantTallGrass` come off the Blue
+   Desert rows (`AB_CrystalHorn` keeps its Propane Lakes home).
+2. **Admissions: ALL FOUR join the roster** — subject to (2a) below.
+   2a. **Name-style ruling:** the four names badly need varied style, away from
+   just two syllables — restyled set proposed at turn 3.
+3. **Mark 9: BIOME-LOCAL LORE.** No campaign ideoligion defs — no precepts, no
+   rituals. The Warnings/script/tableaus carry the gods layer as prose and content.
+   Candidate H's precept shape is dead; candidate A carries marks 2+9 together.
+4. **Tameability: relaxed.** The owner does not mind tameable creatures; the tamed
+   dovvik minesweeper (candidate I) is approved.
 
-1. **The three donor water-plants** (`AB_ToxiGrass`, `AB_CrystalHorn`, `PoisonPlantTallGrass`)
-   sit inside the sheet's hard ban 1 ("no water-based plants"). Two files and two closed
-   items have deferred this to you by name. Rule it at this sitting: keep them (the ban
-   reads as "no *new* water life" and your 2026-09-20 review moves stand), or cut them from
-   the Blue Desert rows (`AB_CrystalHorn` keeps its Propane Lakes home either way).
-2. **Admissions from §3** — vhaulk / murrek / sivvet / virrell: which of the four proposed
-   fills join the roster? (The 2026-09-24 depth cast of zhaaz/vrisk/dovvik/utikka is
-   already ruled and is not re-asked.)
-3. **Mark 9's shape** — does the Blue Desert's gods-relationship live in the campaign
-   ideoligion (precept + ritual, candidate H) or stay biome-local lore (script, warnings,
-   tableaus)? This decides whether it's Ideology defs or prose.
-4. **Tameability line** — the built cast is all-untameable by design; candidate I's tamed
-   dovvik minesweeper breaks that stance deliberately. Yes to the one exception, or keep
-   the wall clean?
+**Plus a candidate-C refinement (ruled same turn): vhaulk detonation is
+TRIGGER-GATED.** It explodes only when it dies from heat, ion or lightning damage —
+and **ion is the trap: stunning it is one of the worst things you can do.** A plain
+kinetic/cold kill leaves the cistern intact (the richest harvest, earned the hard
+way).
 
 ---
 
