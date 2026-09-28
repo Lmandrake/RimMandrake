@@ -34,11 +34,16 @@ until the owner walks the floor live.
    light only (never a torch), only after hours of steady burn, telegraphed by
    the watcher at the rim + fresh scrape-sign; dowsing the lamps always
    resets. It breaks the lamp — never the ship, never the pawns (ruled prior).
-9. **Pool sentinel (Q13): ONE new solitary species**, haunts pool shores,
-   squirts the crystallising protein shower when crowded. 🔴 BLOCKED on BENCH
-   supplying the creature design (name per invented-exotic convention, prose,
-   stats, art brief) — do not invent it here; a design pass delivers it onto
-   this item.
+9. **Pool sentinel (Q13): the ORRUHMU (`RM_Orruhmu`) — design DELIVERED,
+   unblocked.** Full design:
+   `design/Jawa/worldbuilding/biomes/grey_deep_pool_sentinel_2026-09-27.md`
+   (name owner-ruled 2026-09-27; salt-dome-mimic bellows, deterministic
+   2+-pawns-in-5-cells trigger, one visible swell tell then encases the
+   nearest intruder, 6h spent cooldown; REUSES DivingInteraction's
+   `RM_Building_BrineEncasement.TryEncase()`/`RM_BrineEncasement`/`RM_Smothered`
+   — the only new C# is the trigger comp, and DivingInteraction's csproj
+   needs its `<Compile Include>` line). Art: 3 jobs queued 2026-09-27
+   (`greysea_pool_sentinel.csv`).
 10. **Elder discharge tell (Q14): motion, crackle and sound only** — arcing
     limb animation, charge-whine, screen-shake; light exists only at the
     discharge instant. Ban 4 (no glow but the giant's mark) keeps its record.

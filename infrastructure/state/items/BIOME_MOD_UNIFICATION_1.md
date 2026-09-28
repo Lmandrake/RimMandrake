@@ -28,7 +28,15 @@ over merging at the repaint window. Authority: §7 Q17 of
   DIFFERENT defNames, and FlowWorks is OUT of the merge — it needs the ownership
   ruling in the spec's card Q7.
 
-## Sub-decisions the spec pass must put to the owner (card agenda)
+## Sub-decisions — ALL RULED 2026-09-27 by question card
+
+The spec's §8 carries the full rulings block: the mod is **"RimMandrake: Baroque
+Biomes"** (`mandrake.rm.biomes`), two Workshop pages in principle, CB + EH fold IN,
+LanternDeeps + MovingDunes IN / the five mechanic mods OUT (29 IN total), per-biome
+DLLs, compose at deploy time, FlowWorks owns liquid terrain (retarget now, delete at
+the remake), migration in waves. Execution: `BAROQUE_BIOMES_COMPOSE_1` +
+`TERMINALBIOMES_LIQUID_RETARGET_1`. The original agenda below is the record of what
+was asked:
 
 1. Final mod name + whether the Workshop page is one mod or one mod + the
    campaign scenario mod.
