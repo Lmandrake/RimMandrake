@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T10:33:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T15:49:27Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1843,3 +1843,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1.md
+
+## WARCASKET_SUIT_CLASS_1 Warcaskets as a cross-cutting suit class (ruled 2026-09-28): extreme-temp + vacuum + toxin rated, the alternative to space suits; very slow, bulky, compound-threat failure rolls ('a primitive tank around a person'); ocean access = surviving water/brine TERRAIN only, sea floors stay ship-only; Junker sarcophagi variants carry the Wasteland salvage loop
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WARCASKET_SUIT_CLASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WARCASKET_SUIT_CLASS_1.md
+
+## PIT_RENAME_STENCHLANDS_1 Rename The Pit biome to The Stenchlands (owner request, this session) - no biome is currently labeled/defName'd 'Pit' (measured: grepped every BiomeDef label under RM_/RUT_, no hit), so first confirm which biome the owner means, then rename label+defName per the Cauldron/Black Crags renaming precedent (live-tile check before any defName change, since Ash'karr references BiomeDefs by shortHash)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PIT_RENAME_STENCHLANDS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PIT_RENAME_STENCHLANDS_1.md
