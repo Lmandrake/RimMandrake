@@ -106,6 +106,10 @@
     <Compile Include="RM_HediffComp_ShadeDrivenSeverity.cs" />
     <Compile Include="RM_CompProperties_HeatBurstPredator.cs" />
     <Compile Include="RM_CompHeatBurstPredator.cs" />
+    <Compile Include="RM_CompProperties_ShadowCaster.cs" />
+    <Compile Include="RM_Comp_ShadowCaster.cs" />
+    <Compile Include="RM_ShadowFollowerExtension.cs" />
+    <Compile Include="RM_JobGiver_FollowShadowCaster.cs" />
     <Compile Include="RM_CompProperties_DrumLure.cs" />
     <Compile Include="RM_CompDrumLure.cs" />
     <Compile Include="RM_HediffCompProperties_ShadeStagger.cs" />

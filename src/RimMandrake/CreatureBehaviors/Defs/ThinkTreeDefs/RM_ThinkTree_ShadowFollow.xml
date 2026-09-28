@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- DESERT_GLITTER_BIRDS_COMMENSALS_1. Same insertTag as
+     RM_ThinkTree_ShadeSeekingWander (Animal_PreWander, vanilla's own
+     Verse.AI.ThinkNode_SubtreesByTag extension point, immediately before
+     Core's tame/wild wander branches) but a SEPARATE ThinkTreeDef and a
+     SEPARATE mechanism: this steers a tagged commensal toward a specific
+     host's live position (RM_JobGiver_FollowShadowCaster), not toward any
+     shaded cell. A pawn returns no job here unless its def carries
+     RM_ShadowFollowerExtension, so this is safe to insert globally the same
+     way the shade-seeking-wander tree already is. -->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_ShadowFollow</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_FollowShadowCaster" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

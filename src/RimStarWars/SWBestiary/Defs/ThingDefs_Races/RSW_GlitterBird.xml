@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DESERT_GLITTER_BIRDS_COMMENSALS_1 — the desert's glitter-bird shadow
+  commensal. desert.md §4c/§10: "tiny glittering bird-like creatures that
+  live their entire lives in one animal's shadow, never touching open
+  ground" — a commensal of the desert's own megafauna, `RSW_ShadeWhale`.
+
+  BODY/ART DONOR, and the double-booking check that came first, same
+  precedent as RSW_ScrapNestBird (which reskinned the same donor for the
+  Arid Shrubland). Reskinned from `RSW_Whisperbird` — already-ported,
+  "ours"-status flier in this same RSW mod, complete 4-frame directional
+  flying flip-book (`swanimals/Whisperbird/Whisperbird_Flying_*`), shared
+  `RSW_FlyingAvian` BodyDef. `design/Jawa/fauna/cast_assignment.csv` assigns
+  the species `Whisperbird` to RUT_AridShrubland/RUT_FeverWood/
+  RUT_Greentide/RUT_Miasma only, never Desert/Long Shade — so this def does
+  not double-book that species there either; it is a third reuse of the
+  body/art ASSET (new defName, new retint, zero new PNGs), exactly the
+  RSW_ShadeWhale/RSW_Horax and RSW_ScrapNestBird/RSW_Whisperbird precedent.
+
+  FLIGHT: per "if it flies in the fiction, it flies in the game" and because
+  the donor already carries the stat + the flip-book frames, kept verbatim
+  from RSW_ScrapNestBird's own flight block — a bird-analog that "never
+  touches open ground" reads as airborne, not merely ground-shy.
+
+  SHADOW-FOLLOW MECHANISM: RM_ShadowFollowerExtension
+  (RimMandrake.CreatureBehaviors, DESERT_GLITTER_BIRDS_COMMENSALS_1) — this
+  def names no host by defName; it follows whatever spawned pawn on the map
+  carries RM_CompProperties_ShadowCaster, which RSW_ShadeWhale.xml now does.
+  searchRadius 60: the whale is solitary (wildAnimals commonality 0.015,
+  "the only one that exists") and can be far across a big map, so the
+  follower needs real range to find it at all. See
+  RM_JobGiver_FollowShadowCaster.cs for the full mechanism writeup and why a
+  tracked comp was chosen over widening RM_MapComponent_ShadeGrid.
+
+  Working name only, same status as "shade whale" and "staggerseed" in
+  desert.md's own Owed section — "glitter-bird" is descriptive, not an
+  owner-given name; no shipping-names item exists yet for the desert's own
+  roster (unlike ARIDSHRUBLAND_SHIPPING_NAMES_1), so this is not folded into
+  one here.
+-->
+<Defs>
+
+<!-- ThingDef -->
+<ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_GlitterBird</defName>
+    <label>glitter-bird</label>
+    <description>A palm-sized flier with plumage that throws back what little light reaches the shade it lives in — a scatter of colour with no source of its own. It is born, feeds, breeds and dies inside the moving shadow of a single shade whale, never landing on open sand: leaving the shadow even for a moment, in this light, is not a risk this bird is built to survive. When its whale dies, so, eventually, does it.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>4</FilthRate>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.4</Wildness>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>7</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggGlitterBirdUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggGlitterBirdFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>6</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>2~3</eggCountRange>
+      </li>
+    </comps>
+    <modExtensions>
+      <!-- DESERT_GLITTER_BIRDS_COMMENSALS_1's shade-follow mechanism — see
+           this file's own header. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadowFollowerExtension">
+        <searchRadius>60</searchRadius>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_FlyingAvian</body>
+      <herdAnimal>false</herdAnimal> <!-- bound to one host, not a flock -->
+      <baseBodySize>0.35</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.8</baseHealthScale>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Bird</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <petness>0.15</petness>
+      <roamMtbDays>5</roamMtbDays>
+      <trainability>None</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nuzzleMtbHours>-1</nuzzleMtbHours>
+      <flightStartChanceOnJobStart>0.08</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.8</leaveMapOnFleeChance>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <!-- Donor metadata only — RM_LongShade's own wildAnimals reaches this
+           def through UtinniPatches/Patches/WildAnimals_LongShade.xml, not
+           through this field (same pattern as RSW_ShadeWhale's own
+           wildBiomes entry). -->
+      <wildBiomes>
+        <Desert>0.2</Desert>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Chick_Call</soundWounded>
+          <soundDeath>Pawn_Chick_Call</soundDeath>
+          <soundCall>Pawn_Chick_Call</soundCall>
+          <soundAngry>Pawn_Chick_Call</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>RSW_Pawn_Whisperbird_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Whisperbird_Death</soundDeath>
+          <soundCall>RSW_Pawn_Whisperbird_Call</soundCall>
+          <soundAngry>RSW_Pawn_Whisperbird_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+<!-- PawnKindDef -->
+<PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_GlitterBird</defName>
+    <label>glitter-bird</label>
+    <labelPlural>glitter-birds</labelPlural>
+    <race>RSW_GlitterBird</race>
+    <combatPower>50</combatPower>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <wildGroupSize>1~2</wildGroupSize>
+    <flyingAnimationFramePathPrefix>swanimals/Whisperbird/Whisperbird_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>8</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <!-- TRUE, unlike the donor: otherwise the retint below is dropped in flight. -->
+    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <label>glitter-bird chick</label>
+        <labelPlural>glitter-bird chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <!-- bright shifting iridescent gold/pale-blue: reflected borrowed light, reskin over the shared Whisperbird art, zero new PNGs -->
+          <color>(226, 214, 150)</color>
+          <drawSize>0.42</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird_Dessicated</texPath>
+          <drawSize>0.42</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <color>(226, 214, 150)</color>
+          <drawSize>0.85</drawSize>
+          <shadowData>
+            <volume>(0.18, 0.18, 0.18)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird_Dessicated</texPath>
+          <drawSize>0.85</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird</texPath>
+          <color>(226, 214, 150)</color>
+          <drawSize>0.95</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.25, 0.25)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Whisperbird/Whisperbird_Dessicated</texPath>
+          <drawSize>0.95</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+<!--
+  Eggs. Copied field-for-field from RSW_EggWhisperbird*/RSW_EggScrapNestBird*
+  (same already-extracted shared texture, no new PNG); separate defs rather
+  than a reuse of another species' so the label does not read wrong.
+-->
+<ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggGlitterBirdFertilized</defName>
+    <label>glitter-bird egg (fert.)</label>
+    <description>A fertilized glitter-bird egg. If all goes well, it should hatch into a chick. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSpeckled</texPath>
+      <drawSize>0.5</drawSize>
+      <color>(226, 214, 150)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>20</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>6</hatcherDaystoHatch>
+        <hatcherPawn>RSW_GlitterBird</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+
+<ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggGlitterBirdUnFertilized</defName>
+    <label>glitter-bird egg (unfert.)</label>
+    <description>An unfertilized glitter-bird egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSpeckled</texPath>
+      <drawSize>0.5</drawSize>
+      <color>(226, 214, 150)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>20</MarketValue>
+    </statBases>
+  </ThingDef>
+
+</Defs>
