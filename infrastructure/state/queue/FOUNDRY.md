@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T01:48:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T01:55:53Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1544,6 +1544,16 @@ blocked:  Blocked on FALL_LINE_ARRIVAL_MECHANISM_1's Band B flee/lurker think-tr
 summary:  FALLLINEFERALSURVIVORPAWNKIND1 — feral-race crash-survivor pawnkind, permanent mental-scar hediff, capture-to…
 prose:    infrastructure/state/items/FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1.md
 
+## DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1 grain-scale commensal fauna riding RM_MirrorGiant's shade
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+blocked:  same shared shade-follow mechanism as DESERT_GLITTER_BIRDS_COMMENSALS_1, which is itself BLOCKED on that mechanism being unbuilt in C#. Dispatching a subagent to build it via DESERT_GLITTER_BIRDS_COMMENSALS_1 now; this item follows as the third consumer once that lands, per its own 'do not re-derive' instruction.
+summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
+prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
+
 ## REGROWTH_RECOLOR_MINEABLES_NRE_1 Every full-list save load logs 'Exception from long event: NullReferenceException at ReGrowthCore.Map_FinalizeInit_Patch RecolorMineables' (09-24 and 09-25 logs, 1x per load). Donor mod; likely a mineable def of ours with null/unexpected color/stuff. Find which def trips it; confirm whether the rest of ReGrowth's map-init processing is skipped.
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1605,16 +1615,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1 grain-scale commensal fauna riding RM_MirrorGiant's shade
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec
-summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
-prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
 
 ## FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 The eye set-piece's frequency and the poison/radioactive suppression route
 state:    proposed
@@ -1935,3 +1935,43 @@ kind:     build
 thin:     no ## spec
 summary:  LONGSHADERULEDCONTENT1 — build the Long Shade content the 2026-09-27 sitting ruled
 prose:    infrastructure/state/items/LONGSHADE_RULED_CONTENT_1.md
+
+## STILLSAND_RULED_CONTENT_1 Build the Stillsand content ruled 2026-09-27: nine-row tier move, oommok/siidda names, vekka kept, size fixes, dunes-engine wiring - fill-out/qorrax defs gated on owner review
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec
+summary:  STILLSANDRULEDCONTENT1 — build the Stillsand content the 2026-09-27 sitting ruled
+prose:    infrastructure/state/items/STILLSAND_RULED_CONTENT_1.md
+
+## SANDBUSTER_CASTES_BUILD_1 Sand busters: ruukka eruptor + oorrik swarm + mound + biome-gated eruption incident - the ruled 2026-09-24 amendment finally filed, Stillsand marquee rank 1
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## criteria
+summary:  - RM-tier castes: ruukka (RMRuukka, the giant eruptor) + oorrik
+prose:    infrastructure/state/items/SANDBUSTER_CASTES_BUILD_1.md
+
+## DESERT_CAVERN_BEAST_EGGS_1 Deep-desert cave-beast + prized eggs-as-water: the successor EXTREME_DESERT_CAVERN_BEAST_1's closure promised and never filed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  DESERTCAVERNBEASTEGGS1 — the deep-desert cave-beast + prized eggs (re-filed)
+prose:    infrastructure/state/items/DESERT_CAVERN_BEAST_EGGS_1.md
+
+## PYRELANDS_DEDICATED_GRAZER_1 Author a dedicated pure-grazer burrower for the Pyrelands' 'burrowers' family, distinct from Orray
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_DEDICATED_GRAZER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_DEDICATED_GRAZER_1.md
