@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T10:16:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T10:33:21Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1783,16 +1783,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SELFTEST_FAILURES_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SELFTEST_FAILURES_TRIAGE_1.md
-
-## CHILL_AURORA_SURGE_1 Aurora surge storms: harvestable floor weather with shock risk
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  CHILLAURORASURGE1 — aurora surge storms: floor weather you can harvest
-prose:    infrastructure/state/items/CHILL_AURORA_SURGE_1.md
 
 ## BAROQUE_BIOMES_WAVE1_JOIN_1 Baroque Biomes Wave 1: unified mod joins the owner's full list (one ADD, no removals); retarget RimUtinni FindMod/MayRequire naming folded packageIds; delete Wave 0's stale standalone folders
 state:    proposed
