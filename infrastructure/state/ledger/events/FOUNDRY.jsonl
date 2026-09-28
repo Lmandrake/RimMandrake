@@ -1014,3 +1014,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"SANDBUSTER_CASTES_BUILD_1","ts":"2026-09-28T06:56:50Z"}
 {"seat":"FOUNDRY","event":"start","id":"SANDBUSTER_CASTES_BUILD_1","ts":"2026-09-28T06:56:51Z"}
 {"seat":"FOUNDRY","event":"close","id":"SANDBUSTER_CASTES_BUILD_1","sha":"0c6e84064","ts":"2026-09-28T07:11:59Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DESERT_CAVERN_BEAST_EGGS_1","ts":"2026-09-28T07:14:08Z"}
+{"seat":"FOUNDRY","event":"start","id":"DESERT_CAVERN_BEAST_EGGS_1","ts":"2026-09-28T07:14:09Z"}
+{"seat":"FOUNDRY","event":"close","id":"DESERT_CAVERN_BEAST_EGGS_1","sha":"dac89fd18","ts":"2026-09-28T07:24:48Z"}

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T07:11:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T07:24:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1903,16 +1903,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CHILLAURORASURGE1 — aurora surge storms: floor weather you can harvest
 prose:    infrastructure/state/items/CHILL_AURORA_SURGE_1.md
-
-## DESERT_CAVERN_BEAST_EGGS_1 Deep-desert cave-beast + prized eggs-as-water: the successor EXTREME_DESERT_CAVERN_BEAST_1's closure promised and never filed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## criteria
-summary:  DESERTCAVERNBEASTEGGS1 — the deep-desert cave-beast + prized eggs (re-filed)
-prose:    infrastructure/state/items/DESERT_CAVERN_BEAST_EGGS_1.md
 
 ## BAROQUE_BIOMES_WAVE1_JOIN_1 Baroque Biomes Wave 1: unified mod joins the owner's full list (one ADD, no removals); retarget RimUtinni FindMod/MayRequire naming folded packageIds; delete Wave 0's stale standalone folders
 state:    proposed
