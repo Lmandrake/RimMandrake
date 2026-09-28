@@ -20,7 +20,10 @@ art as it is ruled kept.
    dropped, vanilla def untouched).
 2. **New species**: Sloghog, Sootgrazer, Smolderback (stats/diet per bible §3 —
    their comps are `WASTELAND_MECHANICS_BUILD_1`'s; defs land here with the comp
-   hookup points stubbed to whatever that item ships).
+   hookup points stubbed to whatever that item ships) + the **Grimewing** (bible
+   §9, ruled in by card 2026-09-28): a REAL flyer — MaxFlightTime/FlightCooldown
+   + race flight fields, Locust shape, never blocked on animation frames;
+   roster row 0.15.
 3. **Flora ports** (`Defs/ThingDefs_Plants/RM_WastelandFlora.xml`): Scumgrass,
    Tall Scumgrass, Pusberry, Boilbulb, Wartshrub + the NEW Cinderfelt (def only;
    its storm-germination wiring is the mechanics item's — ship the 0.02
