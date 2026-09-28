@@ -1017,3 +1017,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"DESERT_CAVERN_BEAST_EGGS_1","ts":"2026-09-28T07:14:08Z"}
 {"seat":"FOUNDRY","event":"start","id":"DESERT_CAVERN_BEAST_EGGS_1","ts":"2026-09-28T07:14:09Z"}
 {"seat":"FOUNDRY","event":"close","id":"DESERT_CAVERN_BEAST_EGGS_1","sha":"dac89fd18","ts":"2026-09-28T07:24:48Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_RENAME_FULL_1","ts":"2026-09-28T07:26:05Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_RENAME_FULL_1","ts":"2026-09-28T07:26:06Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"CHILL_RENAME_FULL_1 live-tile check","ts":"2026-09-28T07:28:22Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-28T07:31:37Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_RENAME_FULL_1","sha":"a2184ac5c","ts":"2026-09-28T07:43:37Z"}
