@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T06:15:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T06:30:29Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1080,6 +1080,15 @@ kind:     task
 summary:  (no items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md
 
+## STILLSAND_RULED_CONTENT_1 Build the Stillsand content ruled 2026-09-27: nine-row tier move, oommok/siidda names, vekka kept, size fixes, dunes-engine wiring - fill-out/qorrax defs gated on owner review
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  STILLSANDRULEDCONTENT1 — build the Stillsand content the 2026-09-27 sitting ruled
+prose:    infrastructure/state/items/STILLSAND_RULED_CONTENT_1.md
+
 ## TWILIGHT_REVIEW_FIXES_1 Fix the 14 Twilight-wave code-review findings: 4 ship-blockers (plant CompTick lure, Never-ticker cargo float, undersurge on every biome, unstandable drift targets) + 10 smaller
 state:    doing
 row:      unassigned
@@ -1885,16 +1894,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  CHILLAURORASURGE1 — aurora surge storms: floor weather you can harvest
 prose:    infrastructure/state/items/CHILL_AURORA_SURGE_1.md
 
-## STILLSAND_RULED_CONTENT_1 Build the Stillsand content ruled 2026-09-27: nine-row tier move, oommok/siidda names, vekka kept, size fixes, dunes-engine wiring - fill-out/qorrax defs gated on owner review
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec
-summary:  STILLSANDRULEDCONTENT1 — build the Stillsand content the 2026-09-27 sitting ruled
-prose:    infrastructure/state/items/STILLSAND_RULED_CONTENT_1.md
-
 ## SANDBUSTER_CASTES_BUILD_1 Sand busters: ruukka eruptor + oorrik swarm + mound + biome-gated eruption incident - the ruled 2026-09-24 amendment finally filed, Stillsand marquee rank 1
 state:    proposed
 row:      unassigned
@@ -1944,3 +1943,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1.md
+
+## CONTAGION_RULED_CONTENT_1 Build the Contagion grotesque cast: 35 RM_ defs replacing the donor roster outright (no patches), 8 new species, 4 real flyers, Wombpod wired to the built genome loop - cast bible is the authority
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  CONTAGIONRULEDCONTENT1 — build the grotesque cast: 35 RM defs, full donor replacement
+prose:    infrastructure/state/items/CONTAGION_RULED_CONTENT_1.md
+
+## CONTAGION_MECHANICS_BUILD_1 Build the Contagion mechanics: Burn/Bloom weather + tells, the Coalescence (one growing organism), Cloud Repulsor + gravship hardpoint, Sunbeam + arrest, the five bizarre Grown limbs on the Anomaly renderNode mechanism
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  CONTAGIONMECHANICSBUILD1 — the Burn/Bloom engine and the four ruled mechanisms
+prose:    infrastructure/state/items/CONTAGION_MECHANICS_BUILD_1.md

@@ -119,10 +119,10 @@ them looking up.
 - **Cycle:** the Contagion's sensory organ, adrift at canopy height reading the
   cloud. **Sinks as one, seconds before a Burn** — the player's first tell.
 - **Stats:** bodySize 0.7 · commonality 2.0 · diet none meaningful (aerial
-  filter-feeder on spore fall) · speed 1.2 ground. **Flyer** (it lives aloft):
-  `MaxFlightTime 8` / `FlightCooldown 10`, `flightSpeedFactor 1.5`,
-  `flightStartChanceOnJobStart 0.3`, no `canLeaveMapFlying` (it lairs under the
-  cloud).
+  filter-feeder on spore fall) · speed 1.2 ground. **GROUNDED FLOATER — owner
+  ruling by card 2026-09-27:** a drifting jelly is a floater, not a flapper; no
+  flight stats. Drawn at canopy scale; the sink-before-Burn tell stays a
+  cosmetic/behavioural beat, not a landing.
 - **Wiring:** `RM_ContagionFauna.xml`. The sink-before-Burn behaviour is the
   sheet's Owed engine pass (jelly tell), not this def's XML.
 
@@ -450,7 +450,8 @@ organisms (unfinished-flavored by construction).
 - Biome roster: `RM_Contagion.xml` `<wildAnimals>`/`<wildPlants>` in the
   **shorthand element form** (`<RM_Gawpsack>2.0</RM_Gawpsack>`), never `<li>` —
   the custom loader reads node name + text; a `<li>` silently discards.
-- Flyers (Gawpsack, Blisterfloat, Sparkleech, Skinflap, Gorekite): statBases
+- Flyers (Blisterfloat, Sparkleech, Skinflap, Gorekite — Gawpsack ruled a
+  grounded floater by card 2026-09-27): statBases
   `MaxFlightTime`/`FlightCooldown` + race `flightStartChanceOnJobStart`/
   `flightSpeedFactor`/`canFlyIntoMap`(/`canLeaveMapFlying` Blisterfloat only),
   vanilla Locust shape. The switch is the STAT, not a bool; flight animation

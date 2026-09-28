@@ -13,6 +13,29 @@ then bent). **The biome's name is THE CONTAGION** (owner's pick; the earlier wor
 image: **a red valley under a storm that never stops, where the clear sky is the thing to
 fear.**_
 
+⭐ **AMENDMENT 2026-09-27 (owner, `CONTAGION_BEDAZZLE_SITTING_1` — the bedazzle
+sitting; details in `contagion_grotesque_cast_2026-09-27.md`, the cast bible):**
+(1) **Naming register ruled:** every def here carries a bizarre one-or-two-word
+ENGLISH grotesque description (Bloody Mess, Gawpsack, Fleshsop…) — never invented-
+exotic words, never Star Wars names; batch 3c's drafts are superseded for this
+biome. (2) **Full RM_ development ruled** — the whole donor cast is replaced
+outright (defs, names, art), not patched. (3) **New natives admitted to the §4
+table** (all goo-corpse/re-absorbable, satisfying ban 3): Skinflap and Gorekite
+(the ruled "gross fleshy flapping skin things that fly"), Danglemaw, Crispling,
+Sloshbelly; flora Meatvine, Toothmoss, Wombpod (the gestation pods of the built
+genome loop), and the **Coalescence** — the biome's giant: one continuous organism
+that grows through staged forms during long Blooms, absorbing Unfinished and
+emitting manhunters, dead in any Burn, never leaves the storm shadow.
+(4) **Devices ruled:** the **Cloud Repulsor** (Helix trade; forces the Burn here,
+cancels cloud weather elsewhere; also a gravship hardpoint variant — the ship
+touch) and the **Sunbeam** (Helix UV weapon, purchasable + quest-given; weak vs
+people, murderous vs Contagion). (5) **The bizarre Grown-limb line ruled** (Pillar
+Arm, Lash, Eyeburst, Caudal Spring, Bellows) — visible renderNode limbs on the
+Anomaly tentacle mechanism, always a bargain never an upgrade (ban 6 untouched:
+these come via deliberate gestation surgery, and removal spawns an Unfinished).
+(6) **Weather-window tells formalized** (jelly sink + rattle). Cut at the sitting:
+silence-as-alarm, god-mid-birth.
+
 ⭐ **AMENDMENT 2026-09-10 (owner, `OCULAR_OVERDRIVE_SITE_1`):** the name **THE
 CONTAGION** stands as the canonical name — but **"the Overdrive" is not dead, it is
 the HELIX's name for it.** The Helix call the Contagion the Overdrive (their
@@ -192,8 +215,8 @@ bouquet**'s spine-armored seed rolls to the burn line and dies there as fertiliz
   random mutations** — not merely genetic shuffling: the survey of the stack's OTHER
   mutation systems (`MUTATION_MODIFIERS_SURVEY_1`) feeds it — with the bad genes
   definitely in the deck (genetic instability and kin). **It never just upgrades you. You
-  do not want this.** Cure: unruled — lean is *arrest, not reversal* (sun/purge stops
-  progression; what already changed stays).
+  do not want this.** Cure: **RULED 2026-09-27 — arrest, not reversal, and the Sunbeam is the arrest
+  tool**: irradiating the patient stops progression; what already changed stays.
 
 ## 8. Inhabited objects
 
