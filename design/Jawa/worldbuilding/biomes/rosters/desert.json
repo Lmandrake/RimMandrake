@@ -2,9 +2,9 @@
   "authored": "2026-09-09",
   "confidence": [
     {
-      "claim": "Dewback/Blurrg predator flags are real (they read as omnivore mounts)",
+      "claim": "Dewback predator flag is real (it reads as an omnivore mount)",
       "status": "UNMEASURED",
-      "why": "register special may be flag noise; both evicted on the proxy and CONFLICT-flagged for the owner review sheet"
+      "why": "RULED 2026-09-27 (LONGSHADE_DESIGN_SITTING_1 Q8): Dewback IN as herd/mount slowed under ban 3, with this flag measured at wiring; Blurrg's twin CONFLICT is closed — ruled OUT, reserved for the Leaning Scrub sitting"
     },
     {
       "claim": "boom-and-bust audit (ban 4) for kept insects",
@@ -28,6 +28,7 @@
     }
   ],
   "defNames": [
+    "RM_LongShade",
     "RUT_Desert"
   ],
   "evictions": [
@@ -219,7 +220,7 @@
     {
       "def": "AA_SandLion",
       "disposition": "homeless-reserve",
-      "reason": "ban 3 pursuit: predator + spd 6.0 ≥ 4.5 (MEASURED)"
+      "reason": "ban 3 pursuit: predator + spd 6.0 ≥ 4.5 (MEASURED); the 2026-09 round-2 import row was CONFIRMED DEAD 2026-09-27 (LONGSHADE_DESIGN_SITTING_1 Q9) — the ported RSW_SandLion (vekka) lives in the Stillsand, its one home"
     },
     {
       "def": "AA_ShadowCharger",
@@ -299,7 +300,7 @@
     {
       "def": "Blurrg",
       "disposition": "homeless-reserve",
-      "reason": "ban 3 proxy fails: predator + spd 5.0 (MEASURED) — icon; CONFLICT flagged for owner review sheet"
+      "reason": "RULED OUT 2026-09-27 (LONGSHADE_DESIGN_SITTING_1 Q8): its read is scrubland — reserved for the Leaning Scrub sitting; the old ban-3 proxy fail (predator + spd 5.0 MEASURED) stands recorded"
     },
     {
       "def": "Bogwing",
@@ -345,11 +346,6 @@
       "def": "Dactillion",
       "disposition": "homeless-reserve",
       "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast"
-    },
-    {
-      "def": "Dewback",
-      "disposition": "homeless-reserve",
-      "reason": "ban 3 proxy fails: register predator flag + spd 4.7 (MEASURED) — SW icon, likely flag noise; CONFLICT flagged for owner review sheet"
     },
     {
       "def": "Dinocrocuta",
@@ -452,6 +448,11 @@
       "reason": "ban 9: instantly nameable (a toad); also pursuit spd 6.0 predator (MEASURED)"
     },
     {
+      "def": "Gizka",
+      "disposition": "move:Pyrelands+Stillsand",
+      "reason": "one-home law: ruled 2026-09-14 (Pyrelands + Stillsand, <=2 homes fine) — the Long Shade row cut under that existing ruling at the 2026-09-27 sitting; no card needed"
+    },
+    {
       "def": "GraniteSlug",
       "disposition": "move:ExtremeDesert",
       "reason": "§9 (binding): trim to dune sea + poison forest"
@@ -475,11 +476,6 @@
       "def": "Insectomorph",
       "disposition": "homeless-reserve",
       "reason": "ban 3 pursuit: predator + spd 5.0 ≥ 4.5 (MEASURED)"
-    },
-    {
-      "def": "JOE_Cephalope",
-      "disposition": "homeless-reserve",
-      "reason": "ban 3 pursuit: predator + spd 8.8 ≥ 4.5 (MEASURED)"
     },
     {
       "def": "JRWBagaceratops",
@@ -525,6 +521,11 @@
       "def": "Jerbal",
       "disposition": "cut:creature_recognizability_rule.md §6",
       "reason": "cut:creature_recognizability_rule.md §6 — 0% survival, mod retirement ruled (prep §10.4): Beasts of the Rim"
+    },
+    {
+      "def": "Kreetle",
+      "disposition": "move:Stillsand",
+      "reason": "RULED 2026-09-27 (LONGSHADE_DESIGN_SITTING_1 card, Q6): ONE home, the Stillsand — this row cut; supersedes the leave-standing reading of the 2026-09-24 Webwork card"
     },
     {
       "def": "KellDragon",
@@ -748,6 +749,14 @@
       "law": "icon pack animal (prep §2.2); spd 4.3 non-pursuit"
     },
     {
+      "action": "import",
+      "band": "herd",
+      "commonality": 0.2,
+      "def": "Dewback",
+      "law": "RULED IN 2026-09-27 (LONGSHADE_DESIGN_SITTING_1 Q8): herd/mount, slowed under the pursuit ban (wraid treatment, spd <=4.4) with the register predator flag MEASURED at wiring; supersedes the 2026-09-09 proxy eviction",
+      "note": "weight provisional (BENCH, matches the herd band's 0.2 rows) — only the admission and the slow-down are ruled"
+    },
+    {
       "action": "keep",
       "band": "navigator",
       "commonality": 0.4,
@@ -767,13 +776,6 @@
       "commonality": 0.4,
       "def": "Gutkurr",
       "law": "owner card 2026-09-09: slowed 4.5→4.4 — legal burst predator under ban 3"
-    },
-    {
-      "action": "keep",
-      "band": "ambush-small",
-      "commonality": 0.8,
-      "def": "Kreetle",
-      "law": "ban 3 pass: predator spd 3.5 < 4.5 (MEASURED); patch-rim ambusher (prep §2.2)"
     },
     {
       "action": "keep",
@@ -836,13 +838,6 @@
       "action": "keep",
       "band": "ambush-small",
       "commonality": 0.1,
-      "def": "Gizka",
-      "law": "icon (KOTOR); spd 3.0 (MEASURED)"
-    },
-    {
-      "action": "keep",
-      "band": "ambush-small",
-      "commonality": 0.1,
       "def": "Krykna",
       "law": "SW desert spider icon (Rebels); spd 2.5 positional (MEASURED)"
     },
@@ -878,8 +873,8 @@
       "action": "keep",
       "band": "grain",
       "commonality": 0.2,
-      "def": "AA_Needleroll",
-      "law": "light-feeder, non-pursuit (MEASURED spd 2.5); dual home with ExtremeDesert"
+      "def": "RSW_Kudda",
+      "law": "the kudda (port of AA_Needleroll) — light-feeder, non-pursuit (MEASURED spd 2.5). RULED 2026-09-27 (LONGSHADE_DESIGN_SITTING_1 card): ONE home, the Long Shade — the Stillsand row cut the same sitting; ->RM_Kudda with the Q1 tier move"
     },
     {
       "action": "keep",
@@ -1058,26 +1053,20 @@
     {
       "action": "import",
       "commonality": 0.5,
-      "def": "AA_SandLion",
-      "law": "owner review 2026-09 (round2 move mapping): Sand burrower swimmer deserts"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
       "def": "RSW_Stoneback",
-      "law": "owner review 2026-09 (round2 move mapping): Anywhere on the dayside where it might be needed. 1.2 cells; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Stoneback to the already-ported, already-wired RSW_ name (RUT_Desert); STONEBACK_DEFNAME_COLLISION_1: confirmed as the BOKKA (the surviving RSW_Stoneback). owner 2026-09-22 (identity sheet + sitting): the bokka \"goes into any arid biome where it's needed (desert, extreme desert, or other hot arid day-side)\". Stays wired RUT_Desert 0.5; owner 2026-09-22, correcting BENCH: \"I meant pick one arid home.\" The arid biomes he listed were the CANDIDATE set, not an assignment — a shared habitat class is NOT an in-game reason to multi-home an animal (BIOME_SPECIFIC_FAUNA_LAW_1). THIS IS THE BOKKA'S ONE HOME. Chosen over the Stillsand because it is the pre-existing, deployed wiring AND because the Long Shade is one of the six rosters that FAIL the food-pyramid law (45.0% small): pulling a bodySize-0.4 animal at 0.5 commonality out of it would make a failing pyramid worse. If \"where it is needed\" should instead mean the thinner Stillsand (15 species vs 53), it is a one-line move"
+      "law": "owner review 2026-09 (round2 move mapping): Anywhere on the dayside where it might be needed. 1.2 cells; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Stoneback to the already-ported, already-wired RSW_ name (RUT_Desert); STONEBACK_DEFNAME_COLLISION_1: confirmed as the BOKKA (the surviving RSW_Stoneback). owner 2026-09-22 (identity sheet + sitting): the bokka \"goes into any arid biome where it's needed (desert, extreme desert, or other hot arid day-side)\". Stays wired RUT_Desert 0.5; owner 2026-09-22, correcting BENCH: \"I meant pick one arid home.\" The arid biomes he listed were the CANDIDATE set, not an assignment — a shared habitat class is NOT an in-game reason to multi-home an animal (BIOME_SPECIFIC_FAUNA_LAW_1). THIS IS THE BOKKA'S ONE HOME. Chosen over the Stillsand because it is the pre-existing, deployed wiring AND because the Long Shade is one of the six rosters that FAIL the food-pyramid law (45.0% small): pulling a bodySize-0.4 animal at 0.5 commonality out of it would make a failing pyramid worse. If \"where it is needed\" should instead mean the thinner Stillsand (15 species vs 53), it is a one-line move. 2026-09-27 (LONGSHADE_DESIGN_SITTING_1 Q1): tier move ratified, all 14 invented-name rows -> RM_LongShade (this one ->RM_Bokka)"
     },
     {
       "action": "import",
       "commonality": 0.5,
       "def": "RSW_TruffleMole",
-      "law": "owner review 2026-09 (round2 move mapping): sand burrower, desert & extreme desert, 0.4 cells; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_TruffleMole to the already-ported, already-wired RSW_ name (RUT_Desert)"
+      "law": "the pikkut (name DRAFT, batch 4c). RULED 2026-09-27 (LONGSHADE_DESIGN_SITTING_1 card): ONE home, the Long Shade — the 'desert & extreme desert' note was a CANDIDATE set per the owner's 2026-09-22 correction; the Stillsand row cut the same sitting. ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_TruffleMole to the already-ported RSW_ name; ->RM_ with the Q1 tier move"
     },
     {
       "action": "import",
       "commonality": 0.5,
       "def": "JOE_Cephalope",
-      "law": "owner review 2026-09 (round2 move mapping): sand burrower & swimmer, absorb & retire mod, anywhere there is deep hot sand"
+      "law": "the QORRAX (name RATIFIED 2026-09-27, LONGSHADE_DESIGN_SITTING_1 Q7; our own recreated art owed). Deadly sand-swimming predator TERRAIN-BOUND to the deep-sand walkable terrain (owner, typed: 'Deep sand pools are NOT unwalkable, just very slowly... Some in the Long Shade, Muchly in the Stillsand' - DEEP_SAND_WALKABLE_TERRAIN_1). The 2026-09-09 ban-3 eviction is RESOLVED: spd 8.8 is under-sand transit, not surface pursuit; wired in both deserts by the terrain ruling, weighted in the Stillsand"
     },
     {
       "action": "import",
@@ -1099,7 +1088,7 @@
     {
       "commonality": 0.8,
       "def": "RSW_Ultracactus",
-      "law": "DESERT_SIGNATURE_FLORA_1 (2026-09-20) — §4b/§7's signature plant, the buried canopy holding the open ground."
+      "law": "DESERT_SIGNATURE_FLORA_1 (2026-09-20) — §4b/§7's signature plant, the buried canopy holding the open ground. RULED OURS 2026-09-27 (owner, typed: 'The ultracactus is not canon, I made it.') -> RM_Ultracactus, anchoring the free tier; its pad is the standalone foragedFood (Q3)."
     },
     {
       "commonality": 0.6,
@@ -1253,7 +1242,7 @@
       "from_sheet": "desert §4b",
       "kind": "plant",
       "mechanic_load": "none blocking",
-      "name": "ultracactus (owner's own name, stands)"
+      "name": "ultracactus (owner's own name AND his own plant — canon status RULED OURS 2026-09-27: RM_Ultracactus)"
     },
     {
       "from_sheet": "desert §4b",
@@ -1270,14 +1259,32 @@
     {
       "from_sheet": "desert §4c / prep §2.4",
       "kind": "creature",
-      "mechanic_load": "C#: sand filter-feeding; def can land first",
-      "name": "filter-feeding shade-whale megafauna (body donor: GR_Paraceramuffalo bs 16 — RESKIN SOURCE ONLY, GR_ defs never placed as-is)"
+      "mechanic_load": "SHIPPED: RM_ShadeSeekingWanderExtension + RM_FilterFeedExtension + RM_CompDungSeeder, wired on the def",
+      "name": "the GLOOMCAST — filter-feeding shade-whale megafauna (name RULED 2026-09-27, the owner's own coinage, superseding the thommak draft; ->RM_ with the Q1 tier move)"
     },
     {
       "from_sheet": "desert §4c",
       "kind": "creature",
-      "mechanic_load": "C#: shade-follow",
-      "name": "glitter-birds (megafauna shadow commensals)"
+      "mechanic_load": "v1 = shade-seeking + spawn-weighted near the flagship; true follow-the-whale C# deferred",
+      "name": "glitter-birds (megafauna shadow commensals) — draft PIRRIK (RM_Pirrik, real flyer), at art per the 2026-09-27 fill-out commission, pending the owner's review sheet"
+    },
+    {
+      "from_sheet": "long_shade_bedazzle_2026-09-27.md §2c — the 2026-09-27 fill-out commission (owner, typed: 'Fill gaps in the animal and plant roster creatively and show me what you make for review.')",
+      "kind": "creature",
+      "mechanic_load": "reuses shipped comps only (RM_ShadeSeekingWanderExtension; RM_CompHeatBurstPredator on the dakkra)",
+      "name": "four DRAFT fill-out species pending the owner's review sheet: RM_Sollak (huge-herd shade wall, bs ~4.0, pack), RM_Gennok (herd endurer, pack), RM_Tebbra (herd-small dense-patch grazer), RM_Dakkra (burst predator) — names checker- and probe-clean, art queued 2026-09-27"
+    },
+    {
+      "from_sheet": "desert §8 dew line / long_shade_bedazzle_2026-09-27.md §3",
+      "kind": "plant",
+      "mechanic_load": "small C#: growth gate reading RM_MapComponent_ShadeGrid boundary adjacency",
+      "name": "RM_Dewfringe — the dew-line band plant; RULED 2026-09-27 (Q10): BOUND to the ultracactus ceiling — pale, rim-only, never green in quantity; art landed"
+    },
+    {
+      "from_sheet": "long_shade_bedazzle_2026-09-27.md §3 / Q3",
+      "kind": "item",
+      "mechanic_load": "pure XML",
+      "name": "RM_UltracactusPad — the free tier's foragedFood (RULED 2026-09-27, follows the ultracactus-is-ours ruling; closes the standalone forageability hole DESERT_FORAGEDFOOD_INERT_1 measured)"
     },
     {
       "from_sheet": "desert §4 / §10",
