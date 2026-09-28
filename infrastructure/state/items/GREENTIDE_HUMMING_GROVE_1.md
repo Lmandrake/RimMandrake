@@ -178,17 +178,26 @@ extension's own doc comment:
   OLD deployed assembly. This is the same "not deployed yet" fact already recorded above, seen from
   a second instrument.
 
+🔴 **CORRECTION 2026-09-28 (FOUNDRY): step 1 is done, by a different route than planned.**
+CreatureBehaviors folded into `mandrake.rm.biomes` (`BAROQUE_BIOMES_WAVE2_FOLD_1`) — there
+is no standalone `--mod CreatureBehaviors` deploy target any more, so the line below is
+stale prose, not an instruction to follow. What actually happened: the fold's own shutdown
+window deployed the current `src/RimMandrake/CreatureBehaviors/Assemblies/
+RimMandrake.CreatureBehaviors.dll` (built 2026-09-27 18:59) into the composed mod — MEASURED
+just now, the deployed copy at `Mods/RimMandrake.Biomes/Biomes/_Kits/CreatureBehaviors/
+Assemblies/` is byte-identical (same size, same mtime) to the repo copy. Whatever fix this
+item needed deployed is deployed. Zero errors naming Greentide, soundscape or Thalquith in
+today's 3 cold loads.
+
 ⛔ **Still genuinely blocked, not guessed past:**
-1. **Deploy** — `deploy_custom_mods.py --mod CreatureBehaviors` still shows the DLL/`.srchash` drift
-   (RimWorld is running right now, PID confirmed live); the companion DLL cannot be written while
-   the game is open. Apply at the next shutdown window.
+1. ~~**Deploy**~~ — done, see correction above.
 2. **The listen test** — per `## verify` below, nothing here may be reported as working, smooth, or
    even audible until the owner has heard it in a walked session; that needs the deployed DLL AND
    the owner present, the same posture as a flyer's live-visual check. Ship it as a savegame he can
-   walk once deployed, per the standing rule for anything judged by experience.
+   walk once deployed, per the standing rule for anything judged by experience. The DLL is now
+   deployed — this is the only remaining gate.
 
-`needs` moved to `deploy` to reflect that the remaining gate is the shutdown-window deploy, not
-further offline work.
+`needs` moves to `owner` (the walked-session listen test) — the deploy gate is closed.
 
 ## spec
 

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T19:10:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T19:11:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -894,7 +894,7 @@ prose:    infrastructure/state/items/HOSTILE_MOBILE_PLANTS_1.md
 ## GREENTIDE_HUMMING_GROVE_1 A grove that hums at differing pitches as you walk through it
 state:    doing
 row:      unassigned
-needs:    deploy
+needs:    owner
 target:   v1
 kind:     task
 summary:  1. Copy RMMapComponentBiomeAttitude's shape — plain MapComponent, per-tick layer decision,
