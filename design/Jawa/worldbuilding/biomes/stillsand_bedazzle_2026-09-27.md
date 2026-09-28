@@ -419,3 +419,43 @@ ledger shards (§7 Q11 covers the gap); `EXTREME_DESERT_CAVERN_BEAST_1` closed a
 criteria requiring a successor item that was never filed (§7 Q10); and
 `mandrake.rm.movingdunes` binds only vanilla `Desert`/`ExtremeDesert`, so the dunes
 engine is live on no Ash'karr biome (§7 Q12).
+
+## Rulings — the 2026-09-27 sitting (all 14 questions resolved, same day)
+
+Two card rounds this sitting plus the Long Shade sitting's cross-desert cards earlier
+the same day. Card clicks are "decision taken by question card"; quoted lines are the
+owner's typed words. This section is authoritative over §7's recommendations.
+
+1. **Q1 tier move — RATIFIED, all nine rows** — AND a commission, owner typed: *"but we
+   need to fill out that roster. That's silly. More!"* → a roster fill-out design pass
+   invents more Stillsand creatures and plants (within the sheets' laws) and returns as
+   an owner review sheet.
+2. **Q2 kudda — CUT here.** Ruled at the Long Shade cards: one home, the Long Shade
+   (both docs' keep-both recommendation overridden).
+3. **Q3 kreetle — STAYS here** (one home, the Stillsand — both docs' recommendation
+   reversed); **gizka — STAYS** (Pyrelands + Stillsand per the 2026-09-14 ruling).
+4. **Q4 truffle mole — CUT here** (one home, the Long Shade).
+5. **Q5 qorrax — settled at the Long Shade cards**: name ratified, our own recreated
+   art owed, and the owner's terrain ruling (*"Deep sand pools are NOT unwalkable, just
+   very slowly. And they should be an entire terrain type... Some in the Long Shade,
+   Muchly in the Stillsand."*) makes it terrain-bound across both deserts, weighted
+   here. `DEEP_SAND_WALKABLE_TERRAIN_1` carries the terrain change.
+6. **Q6 vekka — KEPT** (his call; the flag's own terms said it stands if he likes it).
+   The *shakkir* swap is dead.
+7. **Q7 depth arm — YES, annotate**: subsurface passes at any size; nothing evicted.
+8. **Q8 sizes — ikee SHRUNK** back to grain (~0.15); **spined-gow GROWN to giant
+   (bs ≥4) and wired rare** (~0.15 commonality).
+9. **Q9 sand busters — file the build**, marquee rank 1 (execution, was already ruled
+   2026-09-24).
+10. **Q10 cavern work — re-file both items** (beast + prized eggs; cavern authoring).
+11. **Q11 names — oommok (mirror giant) + siidda (dust husk) RATIFIED** (checker 6/6,
+    Wookieepedia 0 hits with a live probe). The four filler coins (ruukka, oorrik,
+    eemmok, vaalok) are also probe-clean and ride their builds.
+12. **Q12 dunes engine — YES**: bind `RM_Stillsand` (and the frozen twin until Phase B)
+    into `mandrake.rm.movingdunes`; biosilica harvest item checked at build.
+13. **Q13 one def — CONFIRMED, with a correction.** Owner typed: *"Dune Sea is a
+    region, not a biome. Be careful!"* — the Dune Sea is a REGION label (same law as
+    Umbra); `RM_Stillsand` is the one biome def, and no doc may treat the Dune Sea as
+    a biome.
+14. **Q14 marquee — AS RANKED**: sand busters → the crossing with the giant → the
+    buried record; eggs-as-water the cheap swap.
