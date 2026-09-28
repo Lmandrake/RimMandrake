@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ShadeMite.xml                        RimMandrake — DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1
+
+  Resolves ledger slug "grain-scale commensal fauna riding RM_MirrorGiant's
+  shade" (dune_sea.md §4: "the giants carry the only moving shadows on the
+  planet, and there is an ecology living in them... commensals ride it,
+  shelter under it, and follow it"; roster's own new_defs entry, "shade-
+  commensal micro-fauna living under a walking giant", mechanic_load "C#:
+  shade-follow (no donor mechanic keys to another creature's shadow)").
+
+  Third consumer of the shared shade-follow mechanism — do not re-derive
+  it. First consumer: RSW_GlitterBird follows RSW_ShadeWhale
+  (DESERT_GLITTER_BIRDS_COMMENSALS_1). This is the second and final
+  planned consumer named in that item's own build note: RM_MirrorGiant now
+  carries RM_CompProperties_ShadowCaster (this same pass); this def is a
+  RM_ShadowFollowerExtension-tagged commensal that follows whatever
+  spawned pawn on the map carries that comp — it names no host by
+  defName. searchRadius 60, same as the glitter-bird: RM_MirrorGiant is
+  even rarer (wildAnimals commonality 0.0005 vs. the whale's 0.015), so a
+  short search radius would make the follow behavior effectively never
+  trigger on a real map.
+
+  RM_-tier, not RUT_ or RSW_: invented content, no Star Wars flavor, per
+  Q11a — belongs franchise-free in mandrake.rm.stillsand directly (same
+  reasoning as RM_MirrorGiant/RM_DustHusk, authored this same wave), wired
+  into RM_Stillsand_Biome.xml's own wildAnimals, not the frozen
+  RUT_ExtremeDesert.xml twin and not WildAnimals_Stillsand.xml (that file
+  only replays Star-Wars-named content copied off the twin).
+
+  Body: grain-scale per dune_sea.md §4's bimodal law ("giants on the
+  surface, and grain-scale life below it, with a hard gap where every
+  ordinary animal would be") — bodySize 0.18, in the same band as
+  RM_DustHusk (0.15, this same mod). Checked cast_assignment.csv/
+  animal_census.csv first for an existing unclaimed grain-scale candidate
+  before authoring from scratch (this item's own instruction); every
+  grain-scale row there is already cast to RUT_ExtremeDesert (the frozen,
+  Star-Wars-named twin) and none is free to reuse directly in the RM_
+  tier without re-routing it through the IP patch layer, which this slug
+  does not call for — so a new invented species is correct here, not a
+  reuse. Same vanilla QuadrupedAnimalWithPawsAndTail body RM_DustHusk
+  uses — no new BodyDef, no external dependency.
+
+  Not a dormancy reskin (RM_DustHusk's own mechanic): this is an active
+  follower, awake and moving whenever its host is on the map.
+
+  Art: no existing render found for "shade mite"/"shadow mite"/
+  "commensal"/"mirror giant" companion in
+  infrastructure/artpipe/{done,pending,registry.jsonl} (checked this
+  pass). One 3-facing job filed, rmshademite_v1_{south,east,north}.
+
+  🔴 THE NAME IS NOT SETTLED — RM_ShadeMite is the INTERNAL working
+  defName, same posture RM_MirrorGiant/RM_DustHusk used. Folds into the
+  existing STILLSAND_SHIPPING_NAMES_1 card, not a new one.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_ShadeMite</defName>
+    <label>shade mite</label>
+    <description>A grain-scale scuttler that has never once, in its whole life, stood in direct sun. It lives entirely inside the moving shadow of a mirror giant — feeding on what the giant's bulk crushes into the sand, sheltering under the coolest ground on the planet, and moving only when the shadow moves. A shade mite separated from its giant does not go looking for another one; out here, there usually isn't another one to find.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <Mass>0.3</Mass>
+      <MarketValue>10</MarketValue>
+      <Wildness>0.9</Wildness>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>999</ComfyTemperatureMax>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandible</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <modExtensions>
+      <!-- DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1's shade-follow mechanism —
+           see this file's own header. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadowFollowerExtension">
+        <searchRadius>60</searchRadius>
+      </li>
+    </modExtensions>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>false</predator>
+      <herdAnimal>false</herdAnimal> <!-- bound to one host's shadow, not a flock -->
+      <baseBodySize>0.18</baseBodySize>
+      <baseHealthScale>0.35</baseHealthScale>
+      <baseHungerRate>0.06</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <trainability>None</trainability>
+      <roamMtbDays>60</roamMtbDays>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>10</lifeExpectancy>
+      <gestationPeriodDays>5</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(3, 0.5)</li>
+          <li>(5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.08</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_ShadeMite</defName>
+    <label>shade mite</label>
+    <labelPlural>shade mites</labelPlural>
+    <race>RM_ShadeMite</race>
+    <combatPower>3</combatPower>
+    <wildGroupSize>2~5</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

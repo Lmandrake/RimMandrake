@@ -112,6 +112,14 @@
            no patch at all. -->
       <RM_MirrorGiant>0.0005</RM_MirrorGiant>
       <RM_DustHusk>0.15</RM_DustHusk>
+      <!-- DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1: shade-follow commensal,
+           follows RM_MirrorGiant via RM_ShadowFollowerExtension — see that
+           def's own header. Independently spawned like any other wild
+           animal (the follow behavior is what ties it to the giant once
+           both are on the same map), commonality set low but above the
+           giant's own near-zero rate so a spawned mite has host-adjacent
+           odds without requiring one on every map. -->
+      <RM_ShadeMite>0.06</RM_ShadeMite>
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

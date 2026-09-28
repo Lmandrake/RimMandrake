@@ -66,6 +66,14 @@
   defName (same posture RUT_SealedSleeper/RUT_MortuaryCrawler used). No
   Stillsand shipping-names card exists yet; filed
   STILLSAND_SHIPPING_NAMES_1 this pass to cover it.
+
+  DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1: this def now also carries
+  RM_CompProperties_ShadowCaster (RimMandrake.CreatureBehaviors), marking
+  it a legitimate shadow-follow host — same mechanism RSW_ShadeWhale uses
+  for its glitter-bird commensal (DESERT_GLITTER_BIRDS_COMMENSALS_1),
+  parameterized by comp, not by a hardcoded species list.
+  commensalFollowRadius 5 — this giant's own bodySize (18) is slightly
+  above the shade whale's (16, radius 4), scaled up one step.
 -->
 <Defs>
 
@@ -106,6 +114,17 @@
         <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
       </li>
     </tools>
+    <comps>
+      <!-- DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1. Marks this def as a legitimate
+           shadow-follow host — RM_JobGiver_FollowShadowCaster scans the map
+           for the nearest spawned pawn carrying this comp. Generic mechanism,
+           RimMandrake.CreatureBehaviors; see that assembly's own header for
+           why a tracked comp was chosen over widening RM_MapComponent_
+           ShadeGrid's CastsShade to cover pawns. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadowCaster">
+        <commensalFollowRadius>5</commensalFollowRadius>
+      </li>
+    </comps>
     <race>
       <body>QuadrupedAnimalWithHooves</body>
       <predator>false</predator>
