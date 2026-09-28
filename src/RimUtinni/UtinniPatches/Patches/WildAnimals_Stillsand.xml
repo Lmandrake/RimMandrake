@@ -29,11 +29,23 @@
   RSW_Ikee and RSW_Vozzik respectively (same commonalities, same rows). This
   file follows the live def, not the item's now-stale table.
 
-  13 wildAnimals rows, all mandrake.rsw.swbestiary (our own RSW_ ports):
-    RSW_Kudda 0.3, RSW_Kreetle 0.2, RSW_WarWyrm 0.2, RSW_KraytDragon 0.15,
-    RSW_Ikee 0.15, RSW_GraniteSlug 0.1, RSW_Scurrier 0.1, RSW_Gizka 0.01,
-    RSW_GreaterKraytDragon 0.001, RSW_Vozzik 0.0005, RSW_TruffleMole 0.5,
-    RSW_SandLion 0.5, RSW_Drazzik 0.05
+  🔴 LONGSHADE_RULED_CONTENT_1 (2026-09-27 sitting, Q6) cut RSW_Kudda and
+  RSW_TruffleMole from the Add block below — their one home is now the Long
+  Shade (kudda: "ONE home, the Long Shade — the Stillsand row cut the same
+  sitting"; truffle mole/pikkut: same wording, rosters/dune_sea_deep_desert.json's
+  own homeless-reserve law field). That roster-side ruling landed at
+  70a87f76e ("Stillsand: propagate the 2026-09-27 sitting rulings") but this
+  file — the actual live wiring — still carried both rows until this pass;
+  MEASURED, not raced: the propagation commit's own diff touched only design
+  docs and the roster JSON, never this XML.
+
+  11 wildAnimals rows, all mandrake.rsw.swbestiary (our own RSW_ ports).
+  RSW_Kreetle STAYS (Q6: "kreetle ONE home, the Stillsand" — this doc's own
+  §7 recommendation to cut it was reversed by the card):
+    RSW_Kreetle 0.2, RSW_WarWyrm 0.2, RSW_KraytDragon 0.15, RSW_Ikee 0.15,
+    RSW_GraniteSlug 0.1, RSW_Scurrier 0.1, RSW_Gizka 0.01,
+    RSW_GreaterKraytDragon 0.001, RSW_Vozzik 0.0005, RSW_SandLion 0.5,
+    RSW_Drazzik 0.05
 
   1 wildAnimals row with no MayRequire — JOE_Cephalope 0.5. Flagged, not an
   RSW_/SW_/RUT_ name, but its ThingDef/PawnKindDef live in THIS SAME MOD
@@ -74,7 +86,6 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildAnimals</xpath>
       <value>
-        <RSW_Kudda>0.3</RSW_Kudda>
         <RSW_Kreetle>0.2</RSW_Kreetle>
         <RSW_WarWyrm>0.2</RSW_WarWyrm>
         <RSW_KraytDragon>0.15</RSW_KraytDragon>
@@ -84,7 +95,6 @@
         <RSW_Gizka>0.01</RSW_Gizka>
         <RSW_GreaterKraytDragon>0.001</RSW_GreaterKraytDragon>
         <RSW_Vozzik>0.0005</RSW_Vozzik>
-        <RSW_TruffleMole>0.5</RSW_TruffleMole>
         <RSW_SandLion>0.5</RSW_SandLion>
         <RSW_Drazzik>0.05</RSW_Drazzik>
       </value>

@@ -15,8 +15,8 @@
       - label "the Desert" -> "the Long Shade" (biome_mod_architecture.md §7 Q2,
         RULED 2026-09-21 — the owner's own recommended row; the twin keeps its old
         label unchanged, frozen).
-      - wildAnimals: the 51 RSW_-tier rows are OUT of this def by design (§7
-        Q11/Q12 — RimMandrake never names Star Wars) and ride
+      - wildAnimals: the 37 remaining canon Star Wars rows are OUT of this def
+        by design (§7 Q11/Q12 — RimMandrake never names Star Wars) and ride
         UtinniPatches/Patches/WildAnimals_LongShade.xml as a PatchOperationAdd
         instead, MayRequire="mandrake.rsw.swbestiary". JOE_Landopus and
         JOE_Cephalope stay inline (this biome's own native, non-Star-Wars fauna,
@@ -28,23 +28,50 @@
         🔴 OPEN, not resolved by this build: that shared def-ownership between
         the Long Shade and the Stillsand is unadjudicated (item's own MEASURED
         STATE section 3) — flagged for FOUNDRY/BENCH, not decided here.
+
+        🔴 LONGSHADE_RULED_CONTENT_1 (2026-09-27 sitting, Q1/Q5/Q6/Q8/Q9)
+        landed the sitting's rulings here, same pass as the new
+        RM_LongShade_Fauna.xml / RM_LongShade_Gloomcast.xml files:
+          - 14 invented-name rows (bokka, ossik, kudda, thurra, vosska,
+            khorrak, ommok, ulgga, jellypot, truffle mole, great devourer,
+            groundrunner, mature fleshbeast, shade whale) LEFT the Utinni
+            patch and now live INLINE below as their own RM_ defs — Q1, all
+            14 ratified. Labels unchanged except the shade whale, RULED
+            "gloomcast" (Q5).
+          - RSW_Kreetle and RSW_Gizka came OUT of the patch's Add block
+            entirely — Q6: kreetle's one home is now the Stillsand (reversing
+            this doc's own §7 recommendation), gizka's is Pyrelands+Stillsand
+            per the existing 2026-09-14 ruling.
+          - RSW_Dewback went IN, added to the patch's Add block — Q8:
+            herd/mount stock, predator flag MEASURED (RSW_Dewback.xml carries
+            no <predator> node at all — defaults false, the roster's "flag
+            noise" suspicion confirmed correct), slowed 4.7->4.4 via
+            rosters/desert.json stat_adjustments + gen_stat_adjustments.py
+            (the wraid/gutkurr treatment). Blurrg stays OUT per Q8's other
+            half.
+        Net: the patch's Add block is now 37 rows (36 canon + RSW_GlitterBird,
+        the whale's commensal, unaffected by this sitting) plus RSW_Dewback.
       - wildPlants: RUT_Vorrel -> RM_Vorrel, MayRequire dropped (moved into this
         mod's own Defs per §7 Q8 — see RM_Vorrel.xml's own header). RM_Leachmoss
-        and RM_Venomvine stay inline (non-Star-Wars, this mod's own). The 6
-        RSW_-tier rows (RSW_Ultracactus, RSW_SurraGrass, RSW_Plant_Chakroot_Wild,
-        RSW_Plant_HubbaGourd_Wild, RSW_VellaraBloom, RSW_DommoTree) were found
-        sitting inline here in violation of SW_FAUNA_NEVER_IN_RM_TIER_1 (audited
-        2026-09-25) and moved to
-        UtinniPatches/Patches/WildAnimals_LongShade.xml as a PatchOperationAdd —
-        same shape as the wildAnimals rows above. The "no WildPlants_<Biome>.xml
-        patch route exists anywhere yet" claim this comment used to make was
-        false: every other RimMandrake biome mod's wildPlants list was already
-        clean, and the routing goes onto the same WildAnimals_<Biome>.xml file,
-        no new patch shape needed.
+        and RM_Venomvine stay inline (non-Star-Wars, this mod's own). 5 of the
+        6 RSW_-tier rows found in violation of SW_FAUNA_NEVER_IN_RM_TIER_1
+        (audited 2026-09-25) — RSW_SurraGrass, RSW_Plant_Chakroot_Wild,
+        RSW_Plant_HubbaGourd_Wild, RSW_VellaraBloom, RSW_DommoTree — ride
+        UtinniPatches/Patches/WildAnimals_LongShade.xml as a PatchOperationAdd,
+        same shape as the wildAnimals rows above.
+        🔴 LONGSHADE_RULED_CONTENT_1 Q2/Q6: the 6th, RSW_Ultracactus, LEFT
+        that patch instead and is now inline as RM_Ultracactus — Q2 ruling
+        (owner, typed): "The ultracactus is not canon, I made it." RM_Dewfringe
+        (new, Q6) and its harvest RM_DewfringeSprig are inline too, growth
+        gated to shade-boundary cells by RM_Patch_DewfringeWildSpawnGate.cs
+        (mirrors RM_Leachmoss's own spawn-gate pattern, per-cell instead of a
+        global on/off).
 
-    Everything else below — terrain, weather, diseases, foragedFood,
-    allowedPackAnimals, wildPlantRegrowDays — is byte-for-byte the twin's own
-    values.
+    Everything else below — terrain, weather, diseases, allowedPackAnimals,
+    wildPlantRegrowDays — is byte-for-byte the twin's own values.
+    foragedFood changed by LONGSHADE_RULED_CONTENT_1 Q3: RSW_RawHubbaGourd
+    (MayRequire-guarded, inert standalone — DESERT_FORAGEDFOOD_INERT_1's exact
+    defect one tier down) -> RM_UltracactusPad, a real standalone RM-tier item.
   -->
 
   <BiomeDef>
@@ -59,7 +86,8 @@
     <animalDensity>0.4</animalDensity>
     <plantDensity>0.05</plantDensity>
     <forageability>0.25</forageability>
-    <foragedFood MayRequire="mandrake.rsw.swbestiary">RSW_RawHubbaGourd</foragedFood>
+    <foragedFood>RM_UltracactusPad</foragedFood>  <!-- LONGSHADE_RULED_CONTENT_1 Q3: real standalone RM-tier forage, closes the DESERT_FORAGEDFOOD_INERT_1 gap one tier down -->
+
     <wildPlantsCareAboutLocalFertility>false</wildPlantsCareAboutLocalFertility>
     <lakeBeachTerrain>Sand</lakeBeachTerrain>
     <movementDifficulty>1</movementDifficulty>
@@ -153,15 +181,35 @@
     <wildAnimals>
       <JOE_Landopus MayRequire="mandrake.rut.patches">0.5</JOE_Landopus>  <!-- landopus - small ambush predator, this biome's own native fauna -->
       <JOE_Cephalope MayRequire="mandrake.rut.patches">0.5</JOE_Cephalope>  <!-- cephalope - sand burrower & swimmer, this biome's own native fauna -->
-      <!-- The 51 RSW_-tier rows (§7 Q11/Q12) ride WildAnimals_LongShade.xml as a
-           PatchOperationAdd instead of living here — see this file's header. -->
+      <!-- LONGSHADE_RULED_CONTENT_1 Q1/Q5: the 14 invented-name rows, moved
+           inline from the Utinni patch this pass. Weights carried over
+           verbatim from WildAnimals_LongShade.xml's own Add block. -->
+      <RM_Bokka>0.5</RM_Bokka>
+      <RM_Ossik>0.4</RM_Ossik>
+      <RM_Kudda>0.2</RM_Kudda>
+      <RM_Thurra>0.05</RM_Thurra>
+      <RM_Vosska>0.05</RM_Vosska>
+      <RM_Khorrak>0.035</RM_Khorrak>
+      <RM_Ommok>0.025</RM_Ommok>
+      <RM_Ulgga>0.015</RM_Ulgga>
+      <RM_Jellypot>0.7</RM_Jellypot>
+      <RM_TruffleMole>0.5</RM_TruffleMole>
+      <RM_GreatDevourer>0.5</RM_GreatDevourer>
+      <RM_Groundrunner>0.5</RM_Groundrunner>
+      <RM_MatureFleshbeast>0.5</RM_MatureFleshbeast>
+      <RM_Gloomcast>0.015</RM_Gloomcast>  <!-- the shade whale, RULED "gloomcast" (Q5) -->
+      <!-- The 37 remaining canon Star Wars rows (§7 Q11/Q12) ride
+           WildAnimals_LongShade.xml as a PatchOperationAdd instead of living
+           here — see this file's header. -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
       <RM_Leachmoss MayRequire="mandrake.rm.environmentalhazards">1.5</RM_Leachmoss>  <!-- leachmoss: the fertile ground's fastest claimant, DESERT_LEACHMOSS_BUILD_1. -->
       <RM_Vorrel>0.1</RM_Vorrel>  <!-- the cycle plant, moved+renamed from RUT_Vorrel per §7 Q8, this mod's own def now, no MayRequire needed. Working name, see RM_Vorrel.xml's own header. -->
       <RM_Venomvine MayRequire="mandrake.rm.environmentalhazards">0.25</RM_Venomvine>  <!-- the vine that holds territory by injury, VENOMVINE_CONTACT_VENOM_BUILD_1. -->
-      <!-- The 6 RSW_-tier rows (SW_FAUNA_NEVER_IN_RM_TIER_1) ride
+      <RM_Ultracactus>0.8</RM_Ultracactus>  <!-- LONGSHADE_RULED_CONTENT_1 Q2: moved inline, weight carried over verbatim from the Utinni patch's Add block. "The ultracactus is not canon, I made it." -->
+      <RM_Dewfringe>0.4</RM_Dewfringe>  <!-- LONGSHADE_RULED_CONTENT_1 Q6: new shade-boundary rim plant, growth gated to the rim by RM_Patch_DewfringeWildSpawnGate.cs — this weight only matters where the C# gate already says yes. -->
+      <!-- The 5 remaining RSW_-tier rows (SW_FAUNA_NEVER_IN_RM_TIER_1) ride
            WildAnimals_LongShade.xml as a PatchOperationAdd instead of living
            here — see this file's header. -->
     </wildPlants>

@@ -1,0 +1,1680 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LongShade_Fauna.xml                    LONGSHADE_RULED_CONTENT_1, Q1
+
+  The 13 invented-name Long Shade animals the 2026-09-27 sitting ruled onto
+  this tier (bokka, ossik, kudda, thurra, vosska, khorrak, ommok, ulgga,
+  jellypot, truffle mole [pikkut], great devourer, groundrunner, mature
+  fleshbeast — the 14th, the shade whale/Gloomcast, has its own file,
+  RM_LongShade_Gloomcast.xml, because its body/leather/texture are shared
+  with RSW_Horax and needed duplicating rather than a straight rename).
+
+  Moved out of src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml
+  and src/RimStarWars/SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
+  (bokka, jellypot, truffle mole) and standalone RSW_GreatDevourer.xml /
+  RSW_Groundrunner.xml / RSW_MatureFleshbeast.xml, defNames renamed RSW_ -> RM_.
+  Labels UNCHANGED — the batch-4c naming sitting rules on labels, not this item.
+
+  Satellite defs each creature needs exclusively (eggs, the kudda's cactus
+  leather/meat, the great devourer's armoured-worm body) moved and renamed
+  alongside their creature; they live in RM_LongShade_FaunaSupport.xml so this
+  file stays races-only, matching every other RimMandrake biome mod's shape.
+
+  Per-creature simplifications made moving tiers (each also noted at its own
+  ThingDef, and in the LONGSHADE_RULED_CONTENT_1 closing report):
+    - kudda: leatherDef/specificMeatDef repointed off the shared RSW_CactusHide/
+      RSW_CactusMeat (still used by two SW-tier creatures that are not moving)
+      onto this mod's own RM_CactusHide/RM_CactusMeat duplicates.
+    - vosska: leatherDef Leather_RaptorPlates was a pre-existing dangling
+      reference (no ThingDef anywhere in this repo defines it) — corrected to
+      Leather_Bear in passing.
+    - khorrak: the RSW-tier steel-diet comp (RimMandrake.StarWars.SWBestiary.
+      CompProperties_MetalEater) and its useMeatFrom (RSW_Korrum, staying SW-
+      tier) are dropped — cross-mod references the free mod cannot carry. Diet
+      falls back to plain VegetarianRoughAnimal grazing.
+    - jellypot / truffle mole: their shared RSW-tier LifeStageDefs
+      (RSW_EusocialInsectAdult, RSW_DiggerBaby/Juvenile/Adult — both used by
+      other SW-tier creatures that are not moving) are repointed onto the
+      vanilla stages every other creature in this file already uses
+      (EusocialInsectAdult, AnimalBaby/Juvenile/Adult); their per-species
+      RSW_Biomes_*_Wounded/Death/Call/Angry SoundDefs are dropped (cosmetic,
+      cross-mod) rather than duplicated.
+    - mature fleshbeast: useMeatFrom AA_Helixien and the AA_TarGuzzler_* sound
+      refs were ALREADY dangling (Alpha Animals donor defNames this repo never
+      ported) — dropped rather than carried forward broken into a new tier.
+
+  Art: every texPath below is unchanged from the RSW_ file it moved from — no
+  art job filed by this item for these 13; several still point at "TEMP
+  PLACEHOLDER" donor textures or an unrendered RM_<Name>/RM_<Name> path,
+  exactly as they did before the move. Check
+  infrastructure/artpipe/{done,pending}/registry.jsonl before filing a fresh
+  job (CLAUDE.md's "check for existing regenerated art" rule) — this pass did
+  not search per-creature beyond bokka/ossik/etc's existing placeholder state.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Bokka</defName>
+    <label>bokka</label>
+    <description>These large reptile-like animals normally feed on the likes of cacti. If angered, however, their durable hide makes them quite difficult to kill.\n\nTheir longer back legs and strange appearance lends credence to the belief that they were engineered to live in arid environments. Why they live underground, however, is uncertain.</description>
+    <statBases>
+      <MoveSpeed>3.25</MoveSpeed>
+      <MarketValue>250</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.95</ToxicEnvironmentResistance>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggFertilizedDef>RM_EggBokkaFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RM_EggBokkaUnfertilized</eggUnfertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>5.661</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHealthScale>1.35</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <trainability>None</trainability>
+      <petness>0.15</petness>
+      <nuzzleMtbHours>12</nuzzleMtbHours>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2222</minAge>
+          <soundWounded>Pawn_Iguana_Wounded</soundWounded>
+          <soundDeath>Pawn_Iguana_Death</soundDeath>
+          <soundCall>Pawn_Iguana_Call</soundCall>
+          <soundAngry>Pawn_Iguana_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <headPosPerRotation>
+        <li>(-0.01, 0, 0.3)</li>
+        <li>(0.35, 0, 0.05)</li>
+        <li>(0.0, 0, -0.24)</li>
+        <li>(-0.35, 0, 0.05)</li>
+      </headPosPerRotation>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Bokka</defName>
+    <label>bokka</label>
+    <race>RM_Bokka</race>
+    <combatPower>40</combatPower>
+    <ecoSystemWeight>0.30</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback</texPath>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback</texPath>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_DesertAve -> RM_Ossik. useMeatFrom AA_MeadowAve (not ported, dangling) substituted with vanilla Cassowary. Dropped: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher (cosmetic refresh, donor framework), <renderTree>AA_Alternates (donor recolour system), VEF.AnimalBehaviours.AnimalStatExtension modExtension (info-card flavor only). Giddy-Up mod plug and artist credit removed from description; mechanic otherwise unchanged. -->
+		<defName>RM_Ossik</defName>
+		<label>ossik</label>
+		<description>A large flightless bird adapted to living in very arid terrain. Bony plates across its neck defend it from predators and from the scalding heat of the open sand. Slower to anger than its wetland relatives, the ossik is prized as a mount - fast, sure-footed on loose ground, and steady under a rider even at speed.</description>
+		<statBases>
+			<MoveSpeed>7.0</MoveSpeed>
+			<ComfyTemperatureMin>0</ComfyTemperatureMin>
+			<ComfyTemperatureMax>75</ComfyTemperatureMax>
+			<MarketValue>400</MarketValue>
+			<CaravanRidingSpeedFactor>1.6</CaravanRidingSpeedFactor>
+			<FilthRate>8</FilthRate>
+			<Wildness>0.75</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>1.55</cooldownTime>
+				<linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>1.85</cooldownTime>
+				<linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<comps>
+			<li Class="CompProperties_EggLayer">
+				<eggFertilizedDef>RM_EggOssikFertilized</eggFertilizedDef>
+				<eggUnfertilizedDef>RM_EggOssikUnfertilized</eggUnfertilizedDef>
+				<eggFertilizationCountMax>1</eggFertilizationCountMax>
+				<eggLayIntervalDays>6</eggLayIntervalDays>
+				<eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+				<eggCountRange>1</eggCountRange>
+			</li>
+		</comps>
+		<race>
+			<body>Bird</body>
+			<herdAnimal>true</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>1.0</baseBodySize>
+			<baseHealthScale>1.0</baseHealthScale>
+			<baseHungerRate>0.55</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<leatherDef>Leather_Bird</leatherDef>
+			<useMeatFrom>Cassowary</useMeatFrom>
+			<trainability>Advanced</trainability>
+			<manhunterOnDamageChance>0.25</manhunterOnDamageChance>
+			<manhunterOnTameFailChance>0.04</manhunterOnTameFailChance>
+			<lifeExpectancy>35</lifeExpectancy>
+			<packAnimal>true</packAnimal>
+			<gestationPeriodDays>10</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Ossik</defName>
+		<label>ossik</label>
+		<race>RM_Ossik</race>
+		<combatPower>70</combatPower>
+		<ecoSystemWeight>0.5</ecoSystemWeight>
+		<wildGroupSize>
+			<min>2</min>
+			<max>4</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<label>ossik chick</label>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Ossik/RM_Ossik</texPath>
+					<drawSize>0.85</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Ossik/RM_Ossik</texPath>
+					<drawSize>2.1</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Ossik/RM_Ossik</texPath>
+					<drawSize>2.75</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Needleroll -> RM_Kudda. Body AA_SentientPlant substituted with the vanilla QuadrupedAnimalWithPawsAndTail body already used for Cactipine/SandProwler in this batch (confirmed to carry Teeth + HeadAttackTool groups); bite tool's linkedBodyPartsGroup remapped AA_Mouth -> Teeth. ToolCapacityDef AA_ToxicSting substituted with vanilla Scratch (donor poison-sting DamageDef/HediffDef chain dropped, mechanic simplification). Dropped: VEF.AnimalBehaviours.CompProperties_LightSustenance (sun-feeding, donor framework - eats normally per foodType instead), CompProperties_InitialAbility (venom-barb ranged ability, donor framework). -->
+		<defName>RM_Kudda</defName>
+		<label>kudda</label>
+		<description>A cactus-form creature that has evolved to roll and creep across the most arid ground on the Rim. Kuddas need almost no water, drawing what little they use from morning condensation, and depend on long unbroken sunlight to live - sustained shade kills a herd.</description>
+		<statBases>
+			<MoveSpeed>2.50</MoveSpeed>
+			<ComfyTemperatureMin>0</ComfyTemperatureMin>
+			<ComfyTemperatureMax>100</ComfyTemperatureMax>
+			<MarketValue>250</MarketValue>
+			<ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+			<Wildness>0.6</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>stings</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>1.35</cooldownTime>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>6</power>
+				<cooldownTime>1.35</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>4</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+			</li>
+		</tools>
+		<race>
+			<body>QuadrupedAnimalWithPawsAndTail</body>
+			<herdAnimal>true</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>0.15</baseBodySize>
+			<baseHealthScale>0.25</baseHealthScale>
+			<baseHungerRate>0.001</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<leatherDef>RM_CactusHide</leatherDef>
+			<specificMeatDef>RM_CactusMeat</specificMeatDef>
+			<trainability>None</trainability>
+			<lifeExpectancy>6</lifeExpectancy>
+			<gestationPeriodDays>6.66</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalExotic</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Kudda</defName>
+		<label>kudda</label>
+		<race>RM_Kudda</race>
+		<combatPower>33</combatPower>
+		<ecoSystemWeight>0.3</ecoSystemWeight>
+		<wildGroupSize>
+			<min>6</min>
+			<max>10</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Kudda/RM_Kudda</texPath>
+					<drawSize>1.25</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Kudda/RM_Kudda</texPath>
+					<drawSize>1.6</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Kudda/RM_Kudda</texPath>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_Gigantelope -> RM_Thurra. Dropped: CompProperties_InitialHediff (variable carry-weight hediff roll), AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher, <renderTree>AA_Alternates - all donor framework/recolour. CompProperties_Milkable (vanilla) kept. -->
+		<defName>RM_Thurra</defName>
+		<label>thurra</label>
+		<description>Bred as a bigger, stronger relative of the muffalo, the thurra is an ideal pack beast - pneumatized bones keep it strong and dense without the weight. Its carrying capacity varies with the individual, set at birth, and colonies across the Rim have bred thurras for generations chasing the perfect pack animal.</description>
+		<statBases>
+			<MoveSpeed>4.5</MoveSpeed>
+			<ComfyTemperatureMin>-15</ComfyTemperatureMin>
+			<MarketValue>350</MarketValue>
+			<FilthRate>16</FilthRate>
+			<Wildness>0.6</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>13</power>
+				<cooldownTime>2.6</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>left hoof</label>
+				<capacities>
+					<li>Poke</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>right hoof</label>
+				<capacities>
+					<li>Poke</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+				<chanceFactor>0.5</chanceFactor>
+			</li>
+		</tools>
+		<comps>
+			<li Class="CompProperties_Milkable">
+				<milkDef>Milk</milkDef>
+				<milkIntervalDays>4</milkIntervalDays>
+				<milkAmount>15</milkAmount>
+			</li>
+		</comps>
+		<race>
+			<body>QuadrupedAnimalWithHooves</body>
+			<herdAnimal>true</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>2</baseBodySize>
+			<baseHealthScale>1.75</baseHealthScale>
+			<baseHungerRate>0.535</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<leatherDef>Leather_Heavy</leatherDef>
+			<trainability>None</trainability>
+			<manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+			<manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+			<lifeExpectancy>18</lifeExpectancy>
+			<packAnimal>true</packAnimal>
+			<roamMtbDays>2</roamMtbDays>
+			<gestationPeriodDays>10</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.50</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalCommon</li>
+			<li>AnimalFarm</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Thurra</defName>
+		<label>thurra</label>
+		<race>RM_Thurra</race>
+		<combatPower>100</combatPower>
+		<ecoSystemWeight>1.1</ecoSystemWeight>
+		<wildGroupSize>
+			<min>3</min>
+			<max>9</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<label>thurra calf</label>
+				<labelPlural>thurra calves</labelPlural>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Thurra/RM_Thurra</texPath>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Thurra/RM_Thurra</texPath>
+					<drawSize>2.25</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Thurra/RM_Thurra</texPath>
+					<drawSize>3</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_SandProwler -> RSW_Vosska -> LONGSHADE_RULED_CONTENT_1 Q1 tier move -> RM_Vosska. Dropped: VEF.AnimalBehaviours.CompProperties_GraphicByTerrain (sand-camouflage/burrow visual swap, donor framework) and <renderTree>VEF_GraphicByTerrainRenderTree; the burrow-and-strike AI is lost with them, stats/body/predator role stay. leatherDef corrected Leather_RaptorPlates -> Leather_Bear this pass: the donor name was never a real def in this repo (grep confirms no ThingDef anywhere defines Leather_RaptorPlates) — a pre-existing dangling reference, fixed in passing per "correctness outranks seat ownership" rather than carried forward into a new tier. -->
+
+		<defName>RM_Vosska</defName>
+		<label>vosska</label>
+		<description>A genetic amalgamation of big-cat, shark and sand skink, bred as a ferocious hunter for desert worlds. The vosska can move through loose sand almost as easily as open ground, letting it close on prey from ambush. Dense soils are too firm for it to work through.</description>
+		<statBases>
+			<MoveSpeed>4</MoveSpeed>
+			<ComfyTemperatureMin>0</ComfyTemperatureMin>
+			<ComfyTemperatureMax>70</ComfyTemperatureMax>
+			<MarketValue>450</MarketValue>
+			<FilthRate>2</FilthRate>
+			<Wildness>0.65</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>left claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>12</power>
+				<cooldownTime>1.5</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>right claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>12</power>
+				<cooldownTime>1.5</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>15</power>
+				<cooldownTime>1.85</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>15</power>
+				<cooldownTime>1.75</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>QuadrupedAnimalWithPawsAndTail</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>true</predator>
+			<baseBodySize>2</baseBodySize>
+			<baseHealthScale>2.5</baseHealthScale>
+			<baseHungerRate>0.1</baseHungerRate>
+			<foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+			<leatherDef>Leather_Bear</leatherDef>
+			<useMeatFrom>Cougar</useMeatFrom>
+			<trainability>Intermediate</trainability>
+			<manhunterOnDamageChance>1</manhunterOnDamageChance>
+			<manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+			<lifeExpectancy>18</lifeExpectancy>
+			<gestationPeriodDays>10</gestationPeriodDays>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalFighter</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Vosska</defName>
+		<label>vosska</label>
+		<race>RM_Vosska</race>
+		<combatPower>275</combatPower>
+		<ecoSystemWeight>0.3</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<label>vosska cub</label>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska</texPath>
+					<drawSize>1.8</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<label>vosska juvenile</label>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska</texPath>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska</texPath>
+					<drawSize>3.5</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- LONGSHADE_RULED_CONTENT_1, Q1 tier move: RSW_Khorrak -> RM_Khorrak (was Alpha Animals AA_Terramorph, ported RSW_-tier 2026-09-20). The RSW-tier steel-diet comp (RimMandrake.StarWars.SWBestiary.CompProperties_MetalEater) and its useMeatFrom (RSW_Korrum, an SW-tier creature staying in the Utinni layer) are DROPPED moving to this tier — both are cross-mod references the free RM_LongShade mod cannot carry. Stats/body/tools are unchanged; the khorrak eats VegetarianRoughAnimal like any other RM-tier grazer instead of steel. Mechanic simplification, same shape as every other donor-framework drop this cast already took on the way in. -->
+		<defName>RM_Khorrak</defName>
+		<label>khorrak</label>
+		<description>A strange crustacean bred for one purpose: mineral processing. The khorrak feeds on iron compounds, chemically working them into a hardened alloy otherwise found only in asteroids. The transmutation is slow, so a khorrak needs long stretches parked among mined steel to do its work.</description>
+		<statBases>
+			<MoveSpeed>1.8</MoveSpeed>
+			<ComfyTemperatureMin>-40</ComfyTemperatureMin>
+			<MarketValue>250</MarketValue>
+			<ArmorRating_Blunt>0.5</ArmorRating_Blunt>
+			<ArmorRating_Sharp>0.75</ArmorRating_Sharp>
+			<LeatherAmount>0</LeatherAmount>
+			<MeatAmount>0</MeatAmount>
+			<Wildness>0.65</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>fangs</label>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>14</power>
+				<cooldownTime>2.6</cooldownTime>
+				<linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>4</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>TurtleLike</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>1.5</baseBodySize>
+			<baseHealthScale>1</baseHealthScale>
+			<baseHungerRate>0.1</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<trainability>None</trainability>
+			<lifeExpectancy>15</lifeExpectancy>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Khorrak</defName>
+		<label>khorrak</label>
+		<race>RM_Khorrak</race>
+		<combatPower>80</combatPower>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RM_Khorrak/RM_Khorrak</texPath>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RM_Khorrak/RM_Khorrak</texPath>
+					<drawSize>1.75</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
+					<texPath>Things/Pawn/Animal/RM_Khorrak/RM_Khorrak</texPath>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_SandSquid -> RM_Ommok. Body AA_Squid substituted with vanilla Monkey (HeadAttackTool/Teeth confirmed present; Monkey carries no 'Arms' group tag on its Shoulder/Arm parts, so the tentacle tool is left UNGROUPED - always usable - rather than pointed at a group that resolves to nothing). Bite tool's AA_Mouth group remapped -> Teeth. Dropped: VEF.AnimalBehaviours.CompProperties_TerrainChanger (donor framework). -->
+		<defName>RM_Ommok</defName>
+		<label>ommok</label>
+		<description>Despite the name, the ommok is a genetically modified creature combining cephalopod and cone-snail traits, bred as cattle for worlds too dry to support ordinary livestock. It tolerates extreme water deprivation and grazes in slow-moving herds across open sand.</description>
+		<statBases>
+			<MoveSpeed>1.00</MoveSpeed>
+			<ComfyTemperatureMin>-10</ComfyTemperatureMin>
+			<ComfyTemperatureMax>100</ComfyTemperatureMax>
+			<MarketValue>350</MarketValue>
+			<ArmorRating_Blunt>0.7</ArmorRating_Blunt>
+			<ArmorRating_Sharp>0.7</ArmorRating_Sharp>
+			<LeatherAmount>0</LeatherAmount>
+			<FilthRate>8</FilthRate>
+			<Wildness>0.7</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+			</li>
+			<li>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>8</power>
+				<cooldownTime>2</cooldownTime>
+			</li>
+		</tools>
+		<race>
+			<body>Monkey</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>2.00</baseBodySize>
+			<baseHealthScale>1.0</baseHealthScale>
+			<baseHungerRate>0.05</baseHungerRate>
+			<foodType>VegetarianRoughAnimal</foodType>
+			<trainability>Intermediate</trainability>
+			<lifeExpectancy>25</lifeExpectancy>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+			<li>AnimalFarm</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Ommok</defName>
+		<label>ommok</label>
+		<race>RM_Ommok</race>
+		<combatPower>350</combatPower>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
+					<drawSize>2.7</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
+					<drawSize>3.5</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+
+	<ThingDef ParentName="AnimalThingBase">
+		<!-- Alpha Animals AA_MammothWorm -> RM_Ulgga. Body AA_WormWithArmorAndTusks substituted with vanilla Snake (HeadAttackTool on SnakeHead, group tag 'Mouth' on SnakeMouth - confirmed by reading the BodyDef, not guessed). ToolCapacityDefs AA_SiegeBlunt->Blunt and AA_ExtraDamageMechanoidsTusk->Poke (donor's anti-mechanoid bonus-damage mechanic dropped with it); TuskAttackTool group remapped -> Mouth (the only group Snake actually carries besides HeadAttackTool). Dropped: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher. CompProperties_EggLayer (vanilla) kept, pointed at this batch's own ported eggs. -->
+		<defName>RM_Ulgga</defName>
+		<label>ulgga</label>
+		<description>An extremely large, genetically engineered worm, armored and tusked but strangely peaceful for its size. Old records suggest it was once the worker caste of an artificial ecosystem, now running wild and self-sustaining out on the open sand.</description>
+		<statBases>
+			<MoveSpeed>2.0</MoveSpeed>
+			<ComfyTemperatureMin>-30</ComfyTemperatureMin>
+			<MarketValue>600</MarketValue>
+			<ArmorRating_Blunt>0.5</ArmorRating_Blunt>
+			<ArmorRating_Sharp>0.5</ArmorRating_Sharp>
+			<CaravanRidingSpeedFactor>1.2</CaravanRidingSpeedFactor>
+			<FilthRate>12</FilthRate>
+			<Wildness>0.9</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>10</power>
+				<cooldownTime>2.4</cooldownTime>
+			</li>
+			<li>
+				<label>tusk</label>
+				<capacities>
+					<li>Poke</li>
+				</capacities>
+				<power>12</power>
+				<cooldownTime>2.2</cooldownTime>
+				<linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+			</li>
+		</tools>
+		<comps>
+			<li Class="CompProperties_EggLayer">
+				<eggUnfertilizedDef>RM_EggTuskcoilUnfertilized</eggUnfertilizedDef>
+				<eggFertilizedDef>RM_EggTuskcoilFertilized</eggFertilizedDef>
+				<eggFertilizationCountMax>1</eggFertilizationCountMax>
+				<eggLayIntervalDays>10</eggLayIntervalDays>
+			</li>
+		</comps>
+		<race>
+			<body>Snake</body>
+			<herdAnimal>false</herdAnimal>
+			<predator>false</predator>
+			<baseBodySize>3.00</baseBodySize>
+			<baseHealthScale>3.0</baseHealthScale>
+			<baseHungerRate>0.535</baseHungerRate>
+			<leatherDef>RM_BlackChitin</leatherDef>
+			<useMeatFrom>Megaspider</useMeatFrom>
+			<trainability>Intermediate</trainability>
+			<lifeExpectancy>45</lifeExpectancy>
+			<lifeStageAges>
+				<li><def>AnimalBaby</def><minAge>0</minAge></li>
+				<li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+				<li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+			<li>AnimalFighter</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Ulgga</defName>
+		<label>ulgga</label>
+		<race>RM_Ulgga</race>
+		<combatPower>200</combatPower>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Ulgga/RM_Ulgga</texPath>
+					<drawSize>1.8</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Ulgga/RM_Ulgga</texPath>
+					<drawSize>3.2</drawSize>
+				</bodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
+					<texPath>Things/Pawn/Animal/RM_Ulgga/RM_Ulgga</texPath>
+					<drawSize>4.1</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+
+  <ThingDef ParentName="BaseInsect">
+    <defName>RM_Jellypot</defName>
+    <label>jellypot</label>
+    <description>Named the jellypot for its ability to produce insect jelly in its large thoracic sac, this rare animal is almost exclusively found near insectoid hives. Despite being farmed much like ants do with aphids, it does not seem capable of breeding in captivity.</description>
+    <statBases>
+      <MoveSpeed>1.65</MoveSpeed>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <MarketValue>200</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Blunt>0.18</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.18</ArmorRating_Sharp>
+      <FilthRate>1</FilthRate>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.9</ToxicEnvironmentResistance>
+      <Wildness>0.45</Wildness>
+    </statBases>
+    <uiIconScale>1.1</uiIconScale>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+			</comps>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <baseHungerRate>0.25</baseHungerRate>
+      <baseBodySize>0.65</baseBodySize>
+      <baseHealthScale>1</baseHealthScale>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <lifeExpectancy>1</lifeExpectancy>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.0</manhunterOnDamageChance>
+      <foodType>OmnivoreAnimal, VegetarianRoughAnimal, AnimalProduct</foodType>
+      <roamMtbDays>7</roamMtbDays>
+      <lifeStageAges>
+        <li>
+          <def>EusocialInsectLarva</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectJuvenile</def>
+          <minAge>0.03</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectAdult</def>
+          <minAge>0.2</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+    <butcherProducts>
+      <VFEI_Chitin MayRequire="oskarpotocki.vfe.insectoid">15</VFEI_Chitin>
+    </butcherProducts>
+    <modExtensions>
+			</modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Jellypot</defName>
+    <label>jellypot</label>
+    <race>RM_Jellypot</race>
+    <combatPower>15</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0.20</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Spelopede/Dessicated_Spelopede</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Spelopede/Dessicated_Spelopede</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot</texPath>
+          <drawSize>1</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.5, 0.37)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Spelopede/Dessicated_Spelopede</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+    <defaultFactionType MayRequire="oskarpotocki.vfe.insectoid">VFEI_Insect</defaultFactionType>
+    <aiAvoidCover MayRequire="oskarpotocki.vfe.insectoid">false</aiAvoidCover>
+    <defendPointRadius MayRequire="oskarpotocki.vfe.insectoid">0</defendPointRadius>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_TruffleMole</defName>
+    <label>truffle mole</label>
+    <description>Thought to be related in some strange way to the truffle pigs of Earth, this mole has a specialized sense of smell, enabling it to find rare fungi.</description>
+    <statBases>
+      <MoveSpeed>3.8</MoveSpeed>
+      <MarketValue>100</MarketValue>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <FilthRate>3</FilthRate>
+      <Wildness>0.60</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>14</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <herdAnimal>false</herdAnimal>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <baseBodySize>0.9</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <trainability>None</trainability>
+      <petness>0.20</petness>
+      <nuzzleMtbHours>24</nuzzleMtbHours>
+      <roamMtbDays>4</roamMtbDays>
+      <lifeExpectancy>8</lifeExpectancy>
+      <gestationPeriodDays>5.5</gestationPeriodDays>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.10</manhunterOnDamageChance>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 1)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2222</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <comps>
+			</comps>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+    <modExtensions>
+			</modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_TruffleMole</defName>
+    <label>truffle mole</label>
+    <race>RM_TruffleMole</race>
+    <combatPower>35</combatPower>
+    <ecoSystemWeight>0.75</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>Truffle mole pup</label>
+        <labelPlural>Truffle mole pups</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole</texPath>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/Dessicated_TruffleMole</texPath>
+          <drawSize>0.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole</texPath>
+          <drawSize>1.15</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/Dessicated_TruffleMole</texPath>
+          <drawSize>1.15</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole</texPath>
+          <drawSize>1.6</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/Dessicated_TruffleMole</texPath>
+          <drawSize>1.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+    <modExtensions>
+			</modExtensions>
+  </PawnKindDef>
+
+
+	<ThingDef ParentName="AnimalThingBase">
+		<defName>RM_GreatDevourer</defName>
+		<label>great devourer</label>
+		<description>Great Devourers are armoured worms known for their unquenchable appetite. Once a Great Devourer arrives, it will proceed to gorge itself on small prey, and total ecosystem collapse is almost a certainty.\n\nLuckily, they won't attack large creatures, including humans, unless provoked. Their whole name is in fact a pun, since they are not very resilient and are easily dispatched. They have however slow regenerative capabilities.</description>
+		<statBases>
+			<MoveSpeed>2.8</MoveSpeed>
+			<ComfyTemperatureMin>-5</ComfyTemperatureMin>
+			<MarketValue>400</MarketValue>
+			<ArmorRating_Blunt>.4</ArmorRating_Blunt>
+			<ArmorRating_Sharp>.4</ArmorRating_Sharp>
+			<FilthRate>8</FilthRate>
+			<Wildness>0.75</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>20</power>
+				<cooldownTime>2.6</cooldownTime>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>12</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>16</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+				<chanceFactor>0.3</chanceFactor>
+			</li>
+		</tools>
+		<comps>
+			<li Class="CompProperties_EggLayer">
+				<eggUnfertilizedDef>RM_GreatDevourerEggUnfertilized</eggUnfertilizedDef>
+				<eggFertilizedDef>RM_GreatDevourerEggFertilized</eggFertilizedDef>
+				<eggFertilizationCountMax>1</eggFertilizationCountMax>
+				<eggLayIntervalDays>6</eggLayIntervalDays>
+			</li>
+		</comps>
+		<race>
+			<body>RM_GreatDevourerBody</body>
+			<predator>true</predator>
+			<maxPreyBodySize>0.75</maxPreyBodySize>
+			<baseBodySize>2.5</baseBodySize>
+			<baseHealthScale>2.0</baseHealthScale>
+			<baseHungerRate>1.0</baseHungerRate>
+			<foodType>CarnivoreAnimal</foodType>
+			<leatherDef>Leather_Chitin</leatherDef>
+			<fleshType>Insectoid</fleshType>
+			<bloodDef>Filth_BloodInsect</bloodDef>
+			<useMeatFrom>Megaspider</useMeatFrom>
+			<trainability>Intermediate</trainability>
+			<lifeExpectancy>55</lifeExpectancy>
+			<lifeStageAges>
+				<li>
+					<def>AnimalBaby</def>
+					<minAge>0</minAge>
+				</li>
+				<li>
+					<def>AnimalJuvenile</def>
+					<minAge>0.25</minAge>
+				</li>
+				<li>
+					<def>AnimalAdult</def>
+					<minAge>0.5</minAge>
+					<soundWounded>Pawn_BigInsect_Pain</soundWounded>
+					<soundDeath>Pawn_BigInsect_Death</soundDeath>
+					<soundCall>Pawn_BigInsect_Call</soundCall>
+					<soundAngry>Pawn_BigInsect_Angry</soundAngry>
+				</li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+			<li>AnimalFighter</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_GreatDevourer</defName>
+		<label>great devourer</label>
+		<race>RM_GreatDevourer</race>
+		<combatPower>200</combatPower>
+		<ecoSystemWeight>1</ecoSystemWeight>
+		<alternateGraphicChance>1</alternateGraphicChance>
+		<alternateGraphics>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer2</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer3</texPath>
+			</li>
+		</alternateGraphics>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_Dessicated_GreatDevourer</texPath>
+					<drawSize>1.5</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<drawSize>2.5</drawSize>
+					<shadowData>
+						<volume>(0.3, 0.3, 0.3)</volume>
+						<offset>(0,0,-0.3)</offset>
+					</shadowData>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_Dessicated_GreatDevourer</texPath>
+					<drawSize>2.5</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<drawSize>3.5</drawSize>
+					<shadowData>
+						<volume>(0.4, 0.4, 0.4)</volume>
+						<offset>(0,0,-0.2)</offset>
+					</shadowData>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_Dessicated_GreatDevourer</texPath>
+					<drawSize>3.5</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+
+	<ThingDef ParentName="AnimalThingBase">
+		<defName>RM_Groundrunner</defName>
+		<label>groundrunner</label>
+		<description>A strange chimera between a bear and mole, groundrunners were used as walking heavy tools by desert prospectors when they hit rock that plasteel can't break, and for hauling large boulders their owners can't lift.\n\nDue to their domesticated origins, they are surprisingly docile and easy to tame. Their incredible strength and sharp claws allow them to break rocks with relative ease. But out here, those claws are usually reserved for ripping apart anything foolish enough to corner one.</description>
+		<statBases>
+			<MoveSpeed>3.00</MoveSpeed>
+			<ComfyTemperatureMin>-10</ComfyTemperatureMin>
+			<MarketValue>250</MarketValue>
+			<ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+			<FilthRate>4</FilthRate>
+			<Wildness>0.3</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<label>left claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>12</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+			</li>
+			<li>
+				<label>right claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>9</power>
+				<cooldownTime>2.0</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>12</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+			</li>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>12</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>4</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<herdAnimal>true</herdAnimal>
+			<predator>false</predator>
+			<body>QuadrupedAnimalWithPawsAndTail</body>
+			<baseBodySize>2</baseBodySize>
+			<baseHungerRate>0.535</baseHungerRate>
+			<baseHealthScale>3</baseHealthScale>
+			<foodType>OmnivoreRoughAnimal</foodType>
+			<leatherDef>Leather_Plain</leatherDef>
+			<trainability>Advanced</trainability>
+			<gestationPeriodDays>16</gestationPeriodDays>
+			<litterSizeCurve>
+				<points>
+					<li>(0.5, 0)</li>
+					<li>(1, 1)</li>
+					<li>(2, 1.7)</li>
+					<li>(3, 0.7)</li>
+					<li>(3.5, 0)</li>
+				</points>
+			</litterSizeCurve>
+			<lifeExpectancy>25</lifeExpectancy>
+			<lifeStageAges>
+				<li>
+					<def>AnimalBaby</def>
+					<minAge>0</minAge>
+				</li>
+				<li>
+					<def>AnimalJuvenile</def>
+					<minAge>0.25</minAge>
+				</li>
+				<li>
+					<def>AnimalAdult</def>
+					<minAge>0.3333</minAge>
+					<soundWounded>Pawn_Muffalo_Wounded</soundWounded>
+					<soundDeath>Pawn_Muffalo_Death</soundDeath>
+					<soundCall>Pawn_Muffalo_Call</soundCall>
+					<soundAngry>Pawn_Muffalo_Angry</soundAngry>
+				</li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalAlpha</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_Groundrunner</defName>
+		<race>RM_Groundrunner</race>
+		<label>groundrunner</label>
+		<combatPower>350</combatPower>
+		<ecoSystemWeight>0.2</ecoSystemWeight>
+		<alternateGraphicChance>1</alternateGraphicChance>
+		<alternateGraphics>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunnerW</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner2</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner3</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner4</texPath>
+			</li>
+			<li>
+				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner5</texPath>
+			</li>
+		</alternateGraphics>
+		<wildGroupSize>
+			<min>2</min>
+			<max>3</max>
+		</wildGroupSize>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+					<drawSize>1.0</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_Dessicated_GroundRunner</texPath>
+					<drawSize>1.0</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+					<drawSize>1.8</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_Dessicated_GroundRunner</texPath>
+					<drawSize>1.8</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+					<drawSize>2.5</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_Dessicated_GroundRunner</texPath>
+					<drawSize>2.5</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+
+	<ThingDef ParentName="AnimalThingBase">
+		<defName>RM_MatureFleshbeast</defName>
+		<label>mature fleshbeast</label>
+		<description>The unwanted result of a genetic experiment gone wrong, fleshbeasts are usually miserable, weak creatures that ooze pus and struggle to keep breathing for longer than a few days. Sometimes, however, a fleshbeast manages to survive, and even thrive - released into the wild, or simply stronger than average, growing into a pulsating, fleshy behemoth with a ravenous appetite.\n\nOut in the deep desert a mature fleshbeast will tear into anything it can catch, and rumor holds the biggest of them are cousins to something far larger sleeping under the dunes.</description>
+		<statBases>
+			<MoveSpeed>2.00</MoveSpeed>
+			<ComfyTemperatureMin>-70</ComfyTemperatureMin>
+			<MarketValue>550</MarketValue>
+			<MeatAmount>30</MeatAmount>
+			<LeatherAmount>30</LeatherAmount>
+			<FilthRate>24</FilthRate>
+			<Wildness>0.8</Wildness>
+		</statBases>
+		<tools>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>20</power>
+				<cooldownTime>1.85</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+				<chanceFactor>0.6</chanceFactor>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>15</power>
+				<cooldownTime>1.65</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<chanceFactor>0.4</chanceFactor>
+			</li>
+		</tools>
+		<race>
+			<body>RM_MatureFleshbeastBody</body>
+			<baseBodySize>6</baseBodySize>
+			<baseHealthScale>2.7</baseHealthScale>
+			<baseHungerRate>1.5</baseHungerRate>
+			<foodType>CarnivoreAnimalStrict</foodType>
+			<predator>true</predator>
+			<maxPreyBodySize>4</maxPreyBodySize>
+			<trainability>Intermediate</trainability>
+			<manhunterOnDamageChance>1</manhunterOnDamageChance>
+			<leatherDef>Leather_Light</leatherDef>
+			<hasGenders>false</hasGenders>
+			<lifeExpectancy>75</lifeExpectancy>
+			<lifeStageAges>
+				<li>
+					<def>AnimalAdult</def>
+					<minAge>0</minAge>
+				</li>
+			</lifeStageAges>
+			<soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+		</race>
+		<tradeTags>
+			<li>AnimalUncommon</li>
+			<li>AnimalFighter</li>
+		</tradeTags>
+	</ThingDef>
+
+	<PawnKindDef ParentName="AnimalKindBase">
+		<defName>RM_MatureFleshbeast</defName>
+		<label>mature fleshbeast</label>
+		<race>RM_MatureFleshbeast</race>
+		<combatPower>500</combatPower>
+		<ecoSystemWeight>1</ecoSystemWeight>
+		<canArriveManhunter>false</canArriveManhunter>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_MatureFleshbeast/AA_MatureFleshbeast</texPath>
+					<drawSize>6</drawSize>
+					<shadowData>
+						<volume>(0.30, 0.25, 0.20)</volume>
+					</shadowData>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Animal/AA_MatureFleshbeast/AA_Dessicated_MatureFleshbeast</texPath>
+					<drawSize>6</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+
+</Defs>
