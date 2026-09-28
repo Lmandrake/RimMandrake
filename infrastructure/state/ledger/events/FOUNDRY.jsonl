@@ -1000,3 +1000,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"TERMINALBIOMES_LIQUID_RETARGET_1","ts":"2026-09-28T05:23:02Z"}
 {"seat":"FOUNDRY","event":"start","id":"TERMINALBIOMES_LIQUID_RETARGET_1","ts":"2026-09-28T05:23:03Z"}
 {"seat":"FOUNDRY","event":"close","id":"TERMINALBIOMES_LIQUID_RETARGET_1","sha":"6d3dbb2e4","ts":"2026-09-28T05:29:12Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LONGSHADE_RULED_CONTENT_1","ts":"2026-09-28T05:29:55Z"}
+{"seat":"FOUNDRY","event":"start","id":"LONGSHADE_RULED_CONTENT_1","ts":"2026-09-28T05:29:56Z"}
+{"seat":"FOUNDRY","event":"close","id":"LONGSHADE_RULED_CONTENT_1","sha":"3bf918d54","ts":"2026-09-28T06:15:16Z"}
