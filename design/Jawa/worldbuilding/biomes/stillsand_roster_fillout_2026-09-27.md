@@ -200,12 +200,103 @@ if permanently in shade — the one creature in the set with no hard highlight.
 
 ## 3. The new flora
 
-(to fill)
+Three plants (gap 7). Flora names follow the flora convention (descriptive English — the
+`RSW_LightPipeNub` precedent); all three probed clean on Wookieepedia anyway (§5). Nothing
+below is green, leafy, lush, or a fuel source.
+
+### 3.1 The hourbloom — the flood made visible (the sheet's own event flora)
+
+**Description.** The anhydrobiotic bloom's body. When free water reaches the deep desert —
+a freak flood, a breached cistern, a spilled tank — the sand answers within hours: a carpet
+of pale, bone-and-rose cups that flower, seed, desiccate and blow away inside days. The
+bloom is dead land proving it was never dead, and then being dead land again. Its seeds are
+already everywhere; a sandstorm is an aerosol of them.
+
+**Growth law vs the sheets.** This is NOT a violation of ban 4 (no fast growth): the
+hours-to-days clock is deep_desert §4's own text (*"the ground blooms within hours and is
+dead again within days"*), the same carve-out the sarlacc's breach flood already cites.
+Never map-resident: it exists only as spawn output of the shipped
+`RM_IncidentWorker_BloomBurst` + `RM_BloomBurstExtension` (ExplosiveGrowth) — the bedazzle
+doc's chosen route, now given actual plant defs. `lifespanDays` ~4, dies to nothing (no
+dead-plant fuel), never sowable, never harvestable for food. Pale rose-and-bone art — the
+one legal exception to "nothing green" stays not-green.
+
+### 3.2 The kneel ollim — the second growth form (the flame-immune family grows)
+
+**Description.** The ollim's other body. Where the tall form is a bone-white truncate, the
+kneel form is the sheet's *shield*: a low, swept, wind-aligned dome that grows where the
+buried moisture is too thin to fund a tower — which is most places it grows at all. A
+bone-field usually carries one tower and a scatter of kneels, all one organism's slow
+children. It casts a hard black crescent of shade a grain animal can live in (a loomma
+cannot — too small a shadow; that hierarchy is deliberate).
+
+**Growth law vs the sheets.** Same law as the ollim: accretion, effectively geological —
+`growDays` at the engine ceiling, never sowable, fertility-independent, exempt from any
+global growth multiplier (ban 4). Not a fourth shade source: it IS a silverbole (the
+sheet's own "shields and flat-topped truncates" line). **Harvest/use:** fells to a small
+yield of the same `RM_OllimWood` (the shipped heat-immune, sharp/blunt-weak signature — no
+second material), so the flame-immune economy scales without a second stat def. Wired at
+~0.008, bone-fields only in read.
+
+### 3.3 The glasscrust — the graze base (what the grains eat)
+
+**Description.** The floor of the food web, and almost invisible: a living crust one grain
+thick, silica-cemented, that fuses the top millimetre of sand into a faint, frosted glitter.
+It is the light-pipe's poor relation — same chemistry, no lens, no depth — and it is what
+the kreetle, the scurrier and the liikka actually eat. Walked on, it crunches; a caravan's
+track through glasscrust stays legible for years, which in this biome is a feature: the
+sand remembers.
+
+**Growth law vs the sheets.** Flush with the surface (no above-ground silhouette beyond a
+glitter — the buried-flora law holds), never green, growth glacial (`growDays` very long,
+`fertilityMin` 0), dormant rather than dying in the constant heat. Never sowable.
+**Harvest/use:** yields a pinch of **biosilica grit** — a feeder input for the Q12
+biosilica lens item confirmed at today's sitting (the nub gives the lens; the crust gives
+the grit), and grazing animals strip it without killing it. Commonality 0.15, patchy —
+sheets of it, then a hundred cells of nothing.
 
 ## 4. Review-sheet notes
 
-(to fill)
+One line each — what the owner should actually judge:
+
+- **soorrak** — is a giant flier the right FIRST answer to the sheet's empty-sky paragraph,
+  and are its eggs the canteen item (folding §4.4's canteen half into a creature)?
+- **gaanok** — is a visible, never-attacking follower dread or dead content? (Its whole
+  design is that it does nothing until you fail.)
+- **liikka** — accept 0.2 as the biome's most common animal, or is even that too busy for
+  the emptiness?
+- **duumma** — is `RM_CompFluidSacs` drink-on-butcher the right water economy, and does a
+  mid-band depth-arm body need his explicit annotation blessing (Q7 precedent)?
+- **veessa** — does giving the mummified fields an eater ENRICH the preservation law or
+  quietly undermine "anything buried is perfectly preserved"? (It only mills the exposed.)
+- **loomma** — shade-bound-or-dies is a harsh tame; is a pet that cannot caravan acceptable?
+- **hourbloom** — confirm the bloom event owns plant defs rather than staying pure prose.
+- **kneel ollim** — one material (`RM_OllimWood`) for both forms, or does the shield form
+  deserve its own lesser stuff?
+- **glasscrust** — does the biome want a visible graze base at all, or should the grains'
+  food stay unstated? (This is the one row that adds surface texture everywhere.)
 
 ## 5. Name check results
 
-(to fill)
+Checker: `python3 src/RimMandrake/Utils/check_pseudo_sw_name.py <name>` — all six coins
+**PASS** (shape + no collision with the 137 canon entries; advisory style notes only).
+Wookieepedia probe: `action=query&list=search&srsearch=<name>`, `srlimit=3`, run
+2026-09-27; control probe **bantha → 3 hits** (Bantha; Bantha/Legends; Bantha fodder), so
+the search sees. Flora names are descriptive English per the flora convention but were
+probed anyway.
+
+| name | for | checker | Wookieepedia hits |
+|---|---|---|---|
+| **soorrak** | flier | PASS | 0 |
+| **gaanok** | follower | PASS | 0 |
+| **liikka** | light-eater | PASS | 0 |
+| **duumma** | dry-drummer | PASS | 0 |
+| **veessa** | miller | PASS | 0 |
+| **loomma** | tenant | PASS | 0 |
+| hourbloom | bloom flora | (flora convention) | 0 |
+| glasscrust | graze base | (flora convention) | 0 |
+
+Stem sweep against the ruled/drafted planet-wide set: no first-four-letter collision found
+in the batch-4 doc or today's ruled coins (nearest neighbours checked by hand: *soorrak* vs
+*skorra*, *veessa* vs *vosska*/*vekka*, *liikka* vs *ikee*/*kudda*, *loomma* vs *lundoba* —
+all distinct stems). All six are DRAFT until his word.
