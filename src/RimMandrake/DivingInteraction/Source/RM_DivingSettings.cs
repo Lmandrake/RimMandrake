@@ -124,6 +124,19 @@ namespace RimMandrake.DivingInteraction
         // stops writing more of it.
         public static bool chillThermalFootprintsEnabled = true;
 
+        // CHILL_FLOOR_LIGHT_1, 2026-09-28. The drowned aurora: a map-wide
+        // violet-teal glow on the Chill seabed that rises and falls with
+        // whichever aurora GameCondition is active on the SURFACE map above
+        // (Patch_ChillDrownedAurora.cs + RM_MapComponent_ChillDrownedAurora.cs).
+        // Own toggle per MOD_OPTIONS_RETROFIT_1: off degrades to "no layer-1
+        // light" — the seabed keeps whatever baseline glow vanilla's own
+        // weather/GameCondition blend already produces for it (this toggle
+        // never darkens anything below that), and layer 2 (Fuselight/
+        // Ghostpane's ordinary CompGlower point light) is completely
+        // unaffected either way, so the floor never goes fully black from
+        // toggling this off.
+        public static bool chillDrownedAuroraEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -138,6 +151,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref chillHeatedSuitEnabled, "chillHeatedSuitEnabled", true);
             Scribe_Values.Look(ref chillGardenDefenseEnabled, "chillGardenDefenseEnabled", true);
             Scribe_Values.Look(ref chillThermalFootprintsEnabled, "chillThermalFootprintsEnabled", true);
+            Scribe_Values.Look(ref chillDrownedAuroraEnabled, "chillDrownedAuroraEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -233,6 +247,15 @@ namespace RimMandrake.DivingInteraction
                   + "site also makes the garden's own defenses escalate faster on a return visit. Off: "
                   + "nothing new is deposited and that escalation bonus never applies; frost glaze "
                   + "already on a saved map is unaffected either way.");
+
+                list.Gap();
+                list.CheckboxLabeled("The Chill: drowned aurora floor light", ref chillDrownedAuroraEnabled,
+                    "Shipped default: ON. The seabed's ambient light rises and falls with whichever "
+                  + "aurora is active on the surface far above — a slow violet-teal glow that "
+                  + "ripples, never a fixed brightness. Off: the seabed loses this layer entirely "
+                  + "(whatever baseline light it would otherwise have is unaffected, never darkened "
+                  + "further); Fuselight and Ghostpane's own steady point-glow is unaffected either "
+                  + "way, so the floor never goes fully black from toggling this off.");
             }
 
             list.End();
