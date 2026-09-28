@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  SEA_DIVE_MAPS_BUILD_1 — the one Standable seafloor terrain shared by all
-  four sea-dive pocket maps (RM-tier, franchise-free, never named a biome).
+  SEA_DIVE_MAPS_BUILD_1 — the one Standable seafloor terrain shared by the
+  Scald/Grey Sea/Twilight Sea pocket maps (RM-tier, franchise-free, never
+  named a biome). The Chill split off onto its own RM_ChillIceBedrock +
+  RM_ChillRimeTerrace (CHILL_RIME_TERRACES_1, 2026-09-28,
+  RM_ChillFloorTerrainDefs.xml) — see GenStep_SeaFloorTerrain.cs's own
+  header for the per-sea branch.
 
   Why one shared terrain and not four: a vanilla sea BiomeDef's own
   terrainsByFertility paints a single Impassable deep-water terrain across

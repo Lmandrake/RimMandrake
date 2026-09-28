@@ -55,9 +55,11 @@ namespace RimMandrake.DivingInteraction
     //
     // ⛔ SCOPE. The step is listed ONLY on RM_SeaDiveGenerator_GreySea, and
     // it additionally refuses to run on a map whose biome is not RM_GreySea.
-    // The belt-and-braces matters: the floor terrain tag RM_SeaFloorGround is
-    // shared by all four sea floors, so nothing in the terrain can tell the
-    // Grey apart from the Scald.
+    // The belt-and-braces matters: the floor terrain tag RM_SeaFloorGround
+    // is shared by the Scald/Grey Sea/Twilight Sea floors (the Chill split
+    // off onto its own RM_ChillIceBedrock, CHILL_RIME_TERRACES_1,
+    // 2026-09-28), so nothing in the terrain can tell the Grey apart from
+    // the Scald.
     //
     // UPDATE 2026-09-26: the mechanisms this comment once called "owed" are
     // now built. MapComponent_BrineCrystallisation covers the pool/plume

@@ -177,11 +177,16 @@
         <li>RM_SeaFloorHabitat</li>
       </tileMutators>
     </pocketMapProperties>
+    <!-- CHILL_RIME_TERRACES_1, 2026-09-28: RM_ChillRimeTerraces added,
+         listed ONLY here — the ice-bedrock base it paints over is also
+         Chill-specific (GenStep_SeaFloorTerrain.cs's own branch), and this
+         step's own IsChillSeabedMap guard would no-op elsewhere anyway. -->
     <genSteps>
       <li>ElevationFertility</li>
       <li>RM_SeaFloorTerrain</li>
       <li>RM_PlaceSeaDiveExit</li>
       <li>RM_SeaFloorFauna</li>
+      <li>RM_ChillRimeTerraces</li>
       <li>Animals</li>
       <li>RockChunks</li>
       <li>Fog</li>
