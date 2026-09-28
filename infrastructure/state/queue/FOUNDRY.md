@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T10:00:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T10:16:21Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1783,16 +1783,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SELFTEST_FAILURES_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SELFTEST_FAILURES_TRIAGE_1.md
-
-## CHILL_FLOOR_LIGHT_1 Layered floor light: drowned aurora tied to weather over bioluminescent points
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  CHILLFLOORLIGHT1 — drowned aurora over bioluminescent points
-prose:    infrastructure/state/items/CHILL_FLOOR_LIGHT_1.md
 
 ## CHILL_AURORA_SURGE_1 Aurora surge storms: harvestable floor weather with shock risk
 state:    proposed
