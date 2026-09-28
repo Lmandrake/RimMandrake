@@ -91,6 +91,34 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+    <!-- DEEP_SAND_WALKABLE_TERRAIN_1 — owner, 2026-09-27: "an entire terrain type,
+         not just small pools. Some in the Long Shade, Muchly in the Stillsand."
+         Same TerrainPatchMaker mechanism as RM_LongShade.xml's own comment (reused
+         from vanilla Desert/ExtremeDesert's SoftSand patch, Biomes_WarmArid.xml),
+         tuned for "Muchly" = dominant rather than scattered: the threshold min is
+         dropped from the Long Shade's 0.65 to 0.2, admitting a far larger share of
+         the perlin noise range (fractal/Perlin sums cluster near the middle of
+         their range, so lowering the floor this far turns "occasional patch" into
+         "most of the map") and perlinFrequency is lowered to 0.03 for broad,
+         sweeping regions rather than many small blobs — fitting "a corrugated
+         ochre plain running unbroken to every horizon." minSize matches the Long
+         Shade's own raised floor (60, vs. vanilla's 13) so this never reads as
+         pools. These two numbers (0.65/0.045 vs 0.2/0.03) are FOUNDRY's tuning,
+         not measured in a live game — verify coverage with an actual map render
+         before calling the weighting final. -->
+    <terrainPatchMakers>
+      <li>
+        <perlinFrequency>0.03</perlinFrequency>
+        <minSize>60</minSize>
+        <thresholds>
+          <li>
+            <terrain>RM_DeepSand</terrain>
+            <min>0.2</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
     <baseWeatherCommonalities>
       <Clear>95</Clear>
       <DryThunderstorm>1</DryThunderstorm>

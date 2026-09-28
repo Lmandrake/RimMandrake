@@ -6,7 +6,14 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.flowworks</packageId>
+      <displayName>RimMandrake: FlowWorks</displayName>
+    </li>
+  </modDependencies>
   <loadAfter>
+    <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.creaturebehaviors</li>
     <li>mandrake.rm.environmentalhazards</li>
   </loadAfter>
