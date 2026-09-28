@@ -3,7 +3,11 @@
   ============================================================================
   RM_TwilightLightEconomyItems.xml      TerminalBiomes · TWILIGHT_LIGHT_ECONOMY_1
   ============================================================================
-  The light economy's five moveable/tradeable items:
+  The light economy's three moveable/tradeable items (TWILIGHT_TENANCY_PAPER_
+  REMOVAL_1 retired the two lease/forecast papers, RM_SkylightRight and
+  RM_WellChart, along with the Compact tenancy layer they belonged to —
+  owner, 2026-09-27: "The Compact does NOT sell light, that's not a mechanic
+  we accepted. Remove."):
 
   RM_TetherChain   — §2.2-1's hard cap. Buildable only after
                       RM_TwilightChainCraft (late research); before that it
@@ -20,17 +24,14 @@
   RM_NoothelmBulb  — the noothelm harvest, the stage-2 noothelm lamp's build
                       material. Does not rot on its own (it is not lit or
                       used until clipped to a chain, unlike the bladder).
-  RM_SkylightRight — §4.2's expiring lease paper (RM_Comp_SkylightRight).
-  RM_WellChart     — §4.4's aging forecast paper (RM_Comp_WellChart).
 
   PLACEHOLDER ART: RM_LampBladder/RM_NoothelmBulb reuse Things/Mote/BeamGlow
   (small, tinted) — both are "a piece of living light you can hold." The
-  chain and the two papers reuse this mod's own existing item icons
-  (RM_ElderUnknownWeapon / RM_SeaCatchItem, Textures/Things/Item/RM_GreySea/
-  — real, confirmed-present files, distinguished by <color> alone), since no
-  chain/link or paper art exists anywhere in this repo yet.
+  chain reuses this mod's own existing item icon (RM_ElderUnknownWeapon,
+  Textures/Things/Item/RM_GreySea/ — a real, confirmed-present file), since
+  no chain/link art exists anywhere in this repo yet.
   validate_patch.py, pointed at the real 629-mod install and Data folders,
-  confirms RM_ElderUnknownWeapon/RM_SeaCatchItem as real local files;
+  confirms RM_ElderUnknownWeapon as a real local file;
   Things/Mote/BeamGlow is vanilla, packed in an AssetBundle and so
   unverifiable by that scanner either way (WARN, not ERROR — same as every
   other vanilla-texture reuse in this pass).
@@ -168,64 +169,6 @@
     <thingCategories>
       <li>PlantFoodRaw</li>
     </thingCategories>
-  </ThingDef>
-
-  <!-- ================================================================
-       THE PAPERS — §4.2/§4.4. Both hold their real state in a comp; the
-       def itself is just a plain, non-stacking flavour item.
-       ================================================================ -->
-  <ThingDef ParentName="ResourceBase">
-    <defName>RM_SkylightRight</defName>
-    <label>skylight right</label>
-    <description>Lamp-black on vaal-green vellum: the Compact's own written claim to sow, hunt, gather or anchor inside one named well's cells. It is only ever worth as much as that well has left, and it dies with the well, not on a calendar.</description>
-    <graphicData>
-      <texPath>Things/Item/RM_GreySea/RM_SeaCatchItem</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <color>(40,40,44)</color>
-      <colorTwo>(60,110,80)</colorTwo>
-    </graphicData>
-    <soundInteract>Standard_Drop</soundInteract>
-    <soundDrop>Standard_Drop</soundDrop>
-    <stackLimit>1</stackLimit>
-    <statBases>
-      <MaxHitPoints>20</MaxHitPoints>
-      <MarketValue>0</MarketValue>
-      <Mass>0.05</Mass>
-      <Flammability>1.0</Flammability>
-    </statBases>
-    <thingCategories>
-      <li>ItemsMisc</li>
-    </thingCategories>
-    <comps>
-      <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_SkylightRight" />
-    </comps>
-  </ThingDef>
-
-  <ThingDef ParentName="ResourceBase">
-    <defName>RM_WellChart</defName>
-    <label>well chart</label>
-    <description>The well-keeper's own forecast, drawn fresh at the moment of sale: which well closes next, and where the next is likely to open. Accurate for about a week — after that it is a picture of a sea that no longer exists.</description>
-    <graphicData>
-      <texPath>Things/Item/RM_GreySea/RM_SeaCatchItem</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <color>(40,40,44)</color>
-      <colorTwo>(200,180,90)</colorTwo>
-    </graphicData>
-    <soundInteract>Standard_Drop</soundInteract>
-    <soundDrop>Standard_Drop</soundDrop>
-    <stackLimit>1</stackLimit>
-    <statBases>
-      <MaxHitPoints>20</MaxHitPoints>
-      <MarketValue>0</MarketValue>
-      <Mass>0.05</Mass>
-      <Flammability>1.0</Flammability>
-    </statBases>
-    <thingCategories>
-      <li>ItemsMisc</li>
-    </thingCategories>
-    <comps>
-      <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_WellChart" />
-    </comps>
   </ThingDef>
 
 </Defs>

@@ -122,6 +122,12 @@ namespace RimMandrake.TerminalBiomes
     public class CompChannelArrester : ThingComp
     {
         public bool Active = true;
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Values.Look(ref Active, "channelArresterActive", true);
+        }
     }
 
     public class RM_MapComponent_ChannelCurrent : MapComponent
@@ -159,6 +165,10 @@ namespace RimMandrake.TerminalBiomes
         // unaffected either way.
         private TerrainDef fordDef;
         private bool fordLookupDone;
+
+        // Cached once (the authored grid never changes after genstep, per
+        // the class header) rather than rescanned on every undersurge roll.
+        private bool? anyChannelCellCached;
 
         public RM_MapComponent_ChannelCurrent(Map map)
             : base(map)
@@ -342,11 +352,11 @@ namespace RimMandrake.TerminalBiomes
                     continue;
                 }
                 IntVec3 target = pos + step + step; // "two cells toward the bed"
-                if (!target.InBounds(map))
+                if (!target.InBounds(map) || !target.Standable(map))
                 {
                     target = pos + step;
                 }
-                if (target.InBounds(map))
+                if (target.InBounds(map) && target.Standable(map))
                 {
                     Move(p, target);
                     if (HasCurrent(target))
@@ -495,7 +505,7 @@ namespace RimMandrake.TerminalBiomes
             }
 
             IntVec3 next = pos + step;
-            if (!next.InBounds(map))
+            if (!next.InBounds(map) || !next.Standable(map))
             {
                 nextMoveTick.Remove(t);
                 return;
@@ -732,6 +742,14 @@ namespace RimMandrake.TerminalBiomes
             {
                 return;
             }
+            // This component is a plain MapComponent (auto-attaches to every
+            // map), but the undersurge is a Twilight Deep phenomenon — a map
+            // with no channel cells at all (sinkCells empty AND no lane cell
+            // ever authored) has nothing for it to affect and must not roll.
+            if (sinkCells.Count == 0 && !AnyChannelCellExists())
+            {
+                return;
+            }
             float mtbDays = freq == RM_UndersurgeFrequency.Common ? 4f : 12f; // INVENTED tuning, not a ruling
             if (!Rand.MTBEventOccurs(mtbDays, GenDate.TicksPerDay, UndersurgeRollIntervalTicks))
             {
@@ -747,12 +765,39 @@ namespace RimMandrake.TerminalBiomes
             map.gameConditionManager.RegisterCondition(cond);
         }
 
+        private bool AnyChannelCellExists()
+        {
+            if (anyChannelCellCached.HasValue)
+            {
+                return anyChannelCellCached.Value;
+            }
+            bool found = false;
+            if (lane != null)
+            {
+                for (int i = 0; i < lane.Length; i++)
+                {
+                    if (lane[i] != 0)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            anyChannelCellCached = found;
+            return found;
+        }
+
         private void MaybeWarnFirstEntry(Pawn p)
         {
             if (!RM_TerminalBiomesSettings.channelFirstEntryWarning)
             {
                 return;
             }
+            if (!p.IsColonist) // setting says "each colonist" — not wild animals or hostiles
+            {
+                return;
+            }
+            warnedPawns.RemoveAll(x => x == null || x.Destroyed); // dead colonists' refs don't need to stay forever
             if (warnedPawns.Contains(p))
             {
                 return;

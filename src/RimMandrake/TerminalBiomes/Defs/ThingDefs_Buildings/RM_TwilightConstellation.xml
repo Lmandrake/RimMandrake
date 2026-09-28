@@ -18,8 +18,8 @@
   Setting (default PassThroughOnly, matching his own "floats above you").
 
   PLACEHOLDER ART: RM_GlowTank's own texture (mandrake.rm.luminouspigment, a
-  hard dependency) for the cages AND the claim buoy — a glass-vessel
-  silhouette tinted differently per piece — and Things/Mote/BeamGlow tinted
+  hard dependency) for the cages — a glass-vessel silhouette tinted
+  differently per piece — and Things/Mote/BeamGlow tinted
   for the lamps (same family as RM_Skylight's placeholder, dimmer and
   smaller; validate_patch.py, pointed at the real 629-mod install and Data
   folders, confirms both textures exist and resolve). Real art owed
@@ -190,51 +190,5 @@
     </comps>
   </ThingDef>
 
-  <!-- ==================================================================
-       The claim-buoy, §4.1. NOT minifiable/mobile — it marks a well, it
-       doesn't chase one. Compact placement/re-placement rides
-       TWILIGHT_DEEPWATER_HOUSES_1; a player-built one self-claims the
-       nearest unclaimed open well on spawn (RM_Comp_ClaimBuoy).
-       ================================================================== -->
-  <ThingDef ParentName="BuildingBase">
-    <defName>RM_ClaimBuoy</defName>
-    <label>claim buoy</label>
-    <description>A small lit marker anchored over a skylight well, lamp-black and vaal-green like everything else the Compact stamps as theirs. Whoever's buoy stands over a well holds it — a courtesy the Compact keeps as carefully as it expects kept back.</description>
-    <graphicData>
-      <texPath>Things/Building/Production/RM_GlowTank</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1,1)</drawSize>
-      <color>(120,190,140)</color>
-    </graphicData>
-    <size>(1,1)</size>
-    <passability>PassThroughOnly</passability>
-    <fillPercent>0.2</fillPercent>
-    <rotatable>false</rotatable>
-    <selectable>true</selectable>
-    <tickerType>Never</tickerType>
-    <statBases>
-      <MaxHitPoints>100</MaxHitPoints>
-      <WorkToBuild>700</WorkToBuild>
-      <Flammability>0</Flammability>
-      <Beauty>2</Beauty>
-    </statBases>
-    <costList>
-      <Steel>20</Steel>
-    </costList>
-    <designationCategory>Production</designationCategory>
-    <constructionSkillPrerequisite>1</constructionSkillPrerequisite>
-    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
-    <building>
-      <uninstallWork>60</uninstallWork>
-      <isEdifice>false</isEdifice>
-    </building>
-    <comps>
-      <li Class="CompProperties_Glower">
-        <glowRadius>2.0</glowRadius>
-        <glowColor>(120,220,150,0)</glowColor>
-      </li>
-      <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_ClaimBuoy" />
-    </comps>
-  </ThingDef>
 
 </Defs>

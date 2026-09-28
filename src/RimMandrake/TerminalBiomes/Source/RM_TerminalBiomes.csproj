@@ -82,9 +82,6 @@
     <Compile Include="RM_CompGlowerMobile.cs" />
     <Compile Include="RM_CompCageCropSnapshot.cs" />
     <Compile Include="RM_Building_SunSphere.cs" />
-    <Compile Include="RM_Comp_SkylightRight.cs" />
-    <Compile Include="RM_Comp_WellChart.cs" />
-    <Compile Include="RM_Comp_ClaimBuoy.cs" />
     <!-- TWILIGHT_CHANNEL_CURRENT_1 -->
     <Compile Include="RM_MapComponent_ChannelCurrent.cs" />
     <Compile Include="RM_TerminalBiomesDefOf.cs" />

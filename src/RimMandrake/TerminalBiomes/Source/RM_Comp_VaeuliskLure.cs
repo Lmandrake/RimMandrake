@@ -8,14 +8,22 @@ namespace RimMandrake.TerminalBiomes
     // carrying the false glower; swaps to pawn on proximity/harvest-job
     // start." The reveal-swap is the one novel mechanism the item calls out.
     //
-    // No Harmony in this assembly (RM_TerminalBiomes.csproj's own header), so
-    // there is no seam to patch JobDriver_Harvest and detect "harvest job
-    // started" directly. A pawn cannot start a harvest job on this thing
-    // without first walking up to it, so a proximity check on CompTick fires
-    // at essentially the same moment a harvest attempt would begin, and it
-    // ALSO covers a pawn who merely walks past — which is correct for an
-    // ambush predator, not a gap in the spec's "proximity/harvest-job start"
-    // (an "or", not an "and").
+    // No JobDriver_Harvest patch exists in this assembly to detect "harvest
+    // job started" directly. A pawn cannot start a harvest job on this thing
+    // without first walking up to it, so a proximity check on CompTickLong
+    // fires at essentially the same moment a harvest attempt would begin,
+    // and it ALSO covers a pawn who merely walks past — which is correct for
+    // an ambush predator, not a gap in the spec's "proximity/harvest-job
+    // start" (an "or", not an "and").
+    //
+    // This attaches to a ThingDef parented on PlantBase, and CLAUDE.md's
+    // plant-ticker law means Plant never calls Tick() — only TickLong(). The
+    // check runs on CompTickLong with no manual interval gate on top: the
+    // engine's own Long-ticker cadence (TickLongInterval) already throttles
+    // it, so stacking a countdown on top would either be redundant or (if
+    // decremented once per Long-tick call rather than per tick) effectively
+    // disable the check for a day of ticks — the exact trap CLAUDE.md warns
+    // against.
     //
     // The tell (design D4b, "no breathing pulse... every living lamp in the
     // biome breathes"): this comp attaches to a ThingDef whose <comps> carry
@@ -33,10 +41,6 @@ namespace RimMandrake.TerminalBiomes
 
         // How close a pawn must come before the disguise drops.
         public float revealRadius = 1.9f;
-
-        // How often CompTick actually checks — this is a rare, stationary
-        // ambush, not something that needs a per-tick scan.
-        public int checkIntervalTicks = 30;
 
         // defName of the PawnKindDef the lure becomes. Soft lookup at reveal
         // time (never at load), same posture RM_CompEmergentSpawnOnDestroy
@@ -56,12 +60,11 @@ namespace RimMandrake.TerminalBiomes
 
     public class RM_Comp_VaeuliskLure : ThingComp
     {
-        private int ticksUntilNextCheck;
         private bool revealed;
 
         public RM_CompProperties_VaeuliskLure Props => (RM_CompProperties_VaeuliskLure)props;
 
-        public override void CompTick()
+        public override void CompTickLong()
         {
             if (revealed || !parent.Spawned)
             {
@@ -72,14 +75,7 @@ namespace RimMandrake.TerminalBiomes
                 return; // mod option: the vaulisk disguise disabled
             }
 
-            ticksUntilNextCheck--;
-            if (ticksUntilNextCheck > 0)
-            {
-                return;
-            }
             RM_CompProperties_VaeuliskLure p = Props;
-            ticksUntilNextCheck = System.Math.Max(1, p.checkIntervalTicks);
-
             Pawn discoverer = FindApproachingPawn(p.revealRadius);
             if (discoverer != null)
             {
@@ -165,7 +161,6 @@ namespace RimMandrake.TerminalBiomes
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.Look(ref ticksUntilNextCheck, "ticksUntilNextCheck", 0);
             Scribe_Values.Look(ref revealed, "revealed", false);
         }
     }

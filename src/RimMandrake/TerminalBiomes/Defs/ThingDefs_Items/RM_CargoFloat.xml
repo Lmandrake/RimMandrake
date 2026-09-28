@@ -25,6 +25,7 @@
     <description>A lattice-timber frame lashed to hoolimbre bladders — load it with whatever needs to go downstream, push it into the channel, and the current does the carrying. A weir catches it intact; even the sink cannot spoil what it holds.</description>
     <thingClass>RimMandrake.TerminalBiomes.RM_Thing_CargoFloat</thingClass>
     <category>Item</category>
+    <tickerType>Normal</tickerType>
     <selectable>true</selectable>
     <useHitPoints>true</useHitPoints>
     <graphicData>
