@@ -110,9 +110,10 @@ TIERS = {
                "mlie.starwarsanimalcollection transitively via its own "
                "modDependencies (also needed directly for AA_Eyeling).",
         "want": [
+            # BAROQUE_BIOMES_WAVE2_FOLD_1: weepingstones + environmentalhazards
+            # both folded into mandrake.rm.biomes, one entry covers both now.
             BRIDGE,
-            "mandrake.rm.weepingstones",
-            "mandrake.rm.environmentalhazards",
+            "mandrake.rm.biomes",
             "mandrake.rut.patches",
             "mandrake.rut.rotsporekit",
             "mandrake.rsw.swbestiary",
@@ -126,7 +127,7 @@ TIERS = {
                "GelatinousSlime's own universal RM_Archive_Default (priority 0), so "
                "Dialog_GeneArchive offers the frozen A-list, not the 17 vanilla "
                "placeholders. Needs Biotech for GeneDef at all.",
-        "want": [BRIDGE, "mandrake.rm.gelatinousslime", "mandrake.rut.patches"],
+        "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches"],  # BAROQUE_BIOMES_WAVE2_FOLD_1: gelatinousslime folded
         "dlc": True,
     },
     "pits": {
@@ -223,7 +224,7 @@ TIERS = {
             #    owns the ONLY copy of Things/Pawn/Animal/Fuelmite/* -- the texPath
             #    RSW_Zhakka (zhakka) binds to. Without it the creature spawns
             #    fine and renders as a magenta X.
-            "mandrake.rm.creaturebehaviors",
+            "mandrake.rm.biomes",  # BAROQUE_BIOMES_WAVE2_FOLD_1: creaturebehaviors folded
             "oskarpotocki.vfe.insectoid2",
             # 🔑 ADDED 2026-09-20 for DRUM_LURE_PREDATOR_BUILD_1: RSW_DrazzikEgg-
             # Fertilized's trap comp is MayRequire="mandrake.rm.proximityhatch" and
@@ -301,7 +302,7 @@ TIERS = {
                "carries it only under <loadAfter>, which closure does not walk.",
         "want": [
             BRIDGE,
-            "mandrake.rm.environmentalhazards",
+            "mandrake.rm.biomes",  # BAROQUE_BIOMES_WAVE2_FOLD_1: environmentalhazards folded
             "mandrake.rut.patches",
             "mandrake.rut.ashkarrflora",
             "mandrake.rsw.swbestiary",
@@ -314,7 +315,7 @@ TIERS = {
                "completion, terrain burn ticks and Mod Settings load clean "
                "against the actual RUT_ScaldWater* terrain it patches, with "
                "nothing else on the map that could explain a failure.",
-        "want": [BRIDGE, "mandrake.rut.patches", "mandrake.rm.divinginteraction"],
+        "want": [BRIDGE, "mandrake.rut.patches", "mandrake.rm.biomes"],  # BAROQUE_BIOMES_WAVE2_FOLD_1: divinginteraction folded
         "dlc": True,
     },
     "shrublandfauna": {
@@ -337,8 +338,7 @@ TIERS = {
         "want": [
             BRIDGE,
             "mandrake.rsw.swbestiary",
-            "mandrake.rm.creaturebehaviors",
-            "mandrake.rm.environmentalhazards",
+            "mandrake.rm.biomes",  # BAROQUE_BIOMES_WAVE2_FOLD_1: creaturebehaviors + environmentalhazards both folded
             "mandrake.rm.proximityhatch",
             "mandrake.rut.patches",
             "mandrake.rut.ashkarrflora",
@@ -360,9 +360,10 @@ TIERS = {
                "directly.",
         "want": [
             BRIDGE,
-            "mandrake.rm.leaningscrub",
+            # BAROQUE_BIOMES_WAVE2_FOLD_1: leaningscrub + environmentalhazards
+            # both folded into mandrake.rm.biomes, one entry covers both now.
+            "mandrake.rm.biomes",
             "mandrake.rsw.swbestiary",
-            "mandrake.rm.environmentalhazards",
             "mandrake.rut.patches",
             "mandrake.rut.ashkarrflora",
             "sarg.alphaanimals",
@@ -386,64 +387,41 @@ TIERS = {
 # complete, its art final or its mechanics firing. Isolation is the point: an
 # error under one of these tiers has exactly one mod of ours to blame.
 #
-# ⚠️ These do NOT replace the richer hand-written tiers above. `weepingstones`
-# and `leaningscrub` deliberately pull the Utinni patch layer and donor fauna
-# in order to prove the PATCHED roster lands; that is a different and larger
-# question. Keep both.
-#
-# ⛔ LanternDeeps is absent on purpose — LANTERNDEEPS_TIER_COLLISION_1. The
-# live `mandrake.rut.lanterndeeps` exists only in the game folder with no repo
-# copy, and the RM successor deploys to the same folder name. It joins this
-# wave once that migration is done, not before.
-BIOME_PROOF_MODS = [
-    "bluedesert", "contagion", "feverwood", "floodedcanyon", "forsakencrags",
-    "gelatinousslime", "greentide", "leaningscrub", "longshade", "miasma",
-    "nightsideice", "poisonforest", "pyrelands", "rustcathedral", "stillsand",
-    "terminalbiomes", "theforge", "therot", "thesump", "wasteland", "webwork",
-    "weepingstones",
-]
+# ⛔ RETIRED 2026-09-28 (BAROQUE_BIOMES_WAVE2_FOLD_1): this whole mechanism
+# generated one `proof_<biome>` tier per biome wanting that biome's OLD
+# STANDALONE packageId. All 29 candidate biomes/kits are now folded into
+# mandrake.rm.biomes, deploy_custom_mods.py REFUSES to deploy any of them
+# standalone (folded() check, points at --compose biomes instead), and their
+# standalone Mods/ folders are deleted — every one of these tiers would fail
+# to enable its own "want" mod. The question they asked ("does this biome
+# load clean on its own") is answered instead by `baroque_wave0` below,
+# which now covers the composed mod (all 29, both waves). Deleted rather
+# than left broken in place (CLAUDE.md: inaccurate material is deleted, not
+# superseded-in-place).
 
-for _biome in BIOME_PROOF_MODS:
-    TIERS["proof_%s" % _biome] = {
-        "why": "BIOME_LOAD_PROOF_WAVE_1: does mandrake.rm.%s load clean on its "
-               "own? Defs resolve, its BiomeDef is present in the loaded def "
-               "set, no cross-reference or XML errors attributable to it. "
-               "Narrow sense of PROVEN (owner, 2026-09-26) — this says nothing "
-               "about playability, cast completeness, art or mechanics; those "
-               "belong to that biome's bedazzle sitting." % _biome,
-        "want": [BRIDGE, "mandrake.rm.%s" % _biome],
-        "dlc": True,
-    }
-del _biome
-
-# BAROQUE_BIOMES_COMPOSE_1 wave 0: the composed 'RimMandrake: Baroque Biomes'
-# (deploy_custom_mods.py --compose biomes) on its own. Closure over the
-# GENERATED About.xml supplies the engines it still hard-depends on
-# (FlowWorks, CreatureBehaviors, EnvironmentalHazards, Alpha Biomes...).
+# BAROQUE_BIOMES_COMPOSE_1 / WAVE2_FOLD_1: the composed 'RimMandrake: Baroque
+# Biomes' (deploy_custom_mods.py --compose biomes) on its own. Closure over
+# the GENERATED About.xml supplies the engines it still hard-depends on
+# (FlowWorks, LuminousPigment, Alpha Biomes...). Covers all 29 folded
+# biomes/kits as of wave 2 (2026-09-28), not just wave 0's original 12.
 # ⛔ Never add a folded biome's standalone packageId here: its defs and types
 # would load twice.
 TIERS["baroque_wave0"] = {
-    "why": "BAROQUE_BIOMES_COMPOSE_1 wave 0: does the composed mandrake.rm.biomes "
-           "load clean — LoadFolders content roots, per-root Assemblies, every "
-           "composed biome's defs resolved (biomes_compose_prove.py), and the "
-           "settings shell's worldgen gate applied.",
+    "why": "BAROQUE_BIOMES_COMPOSE_1 / WAVE2_FOLD_1: does the composed "
+           "mandrake.rm.biomes load clean — LoadFolders content roots, "
+           "per-root Assemblies, every composed biome's defs resolved "
+           "(biomes_compose_prove.py), and the settings shell's worldgen "
+           "gate applied. Live-proven three times (waves 1-3, all 29 "
+           "entries), kept as the fast single-mod re-check for future "
+           "changes to any folded biome's content.",
     "want": [BRIDGE, "mandrake.rm.biomes"],
     "dlc": True,
 }
-# Its CONTROL: the same biomes as their old standalone mods, so every
-# Player.log line of the composed load can be attributed — present in both =
-# the biome's own content, composed-only = the compose. Reads whatever
-# standalone copies are deployed; check they match the repo before trusting it.
-TIERS["baroque_wave0_control"] = {
-    "why": "BAROQUE_BIOMES_COMPOSE_1 wave 0 control: the composed biomes loaded "
-           "as their standalone mods, for a line-by-line Player.log differential "
-           "against baroque_wave0.",
-    "want": [BRIDGE] + ["mandrake.rm.%s" % b for b in (
-        "contagion", "floodedcanyon", "forsakencrags", "leaningscrub", "miasma",
-        "poisonforest", "rustcathedral", "theforge", "thesump", "warscar",
-        "webwork", "weepingstones")],
-    "dlc": True,
-}
+# ⛔ RETIRED 2026-09-28 (BAROQUE_BIOMES_WAVE2_FOLD_1): baroque_wave0_control
+# wanted the folded biomes' OLD STANDALONE packageIds for an A/B Player.log
+# diff against baroque_wave0 — that comparison already ran during waves 0-2's
+# own load-proving, and it can never run again: those standalone Mods/
+# folders are deleted and deploy_custom_mods.py refuses to redeploy them.
 
 
 def read_about(path):
