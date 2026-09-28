@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T19:03:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T19:07:30Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1044,15 +1044,6 @@ kind:     task
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
 
-## LANTERNDEEPS_TIER_COLLISION_1 Live mandrake.rut.lanterndeeps exists ONLY in the game folder with no repo copy, and the RM successor deploys to the same folder name - deploying it would delete a mod the canonical save references
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
-prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
-
 ## SEA_FISHABLES_ALIVE_IN_DEPTHS_1 Every fishable in EVERY sea owes a living creature swimming the floor map, not just a catch item - owner ruling 2026-09-26
 state:    doing
 row:      unassigned
@@ -1571,16 +1562,6 @@ kind:     task
 blocked:  Re-verified 2026-09-26: RM_Window_Bazaar is still an inert Dialog_Trade subclass with no WindowStack.Add Harmony intercept and RM_BazaarTabDef has zero concrete instances/workers. BAZAAR_WINDOW_GRID_1 (the item that owns wiring the intercept in) is still doing, unfinished, last touched 2026-09-17 -- its own note names a real architectural hazard (naive Add-prefix replacement double-calls TradeSession.SetupWith and can double-fire the cannot-sell message) that is genuinely BAZAAR_WINDOW_GRID_1's scope to solve, not a one-line wiring fix. Not building the tab framework here -- that is scope creep into an item already filed and claimed. No new follow-on item needed; BAZAAR_WINDOW_GRID_1 already is the precisely-scoped 'wire Bazaar tabs to open' item. This item stays blocked until it (or a successor) ships a tab-worker slice with a real tab drawing content. (on BAZAAR_WINDOW_GRID_1)
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
-
-## LANTERNDEEPS_TIER_COLLISION_1 Live mandrake.rut.lanterndeeps exists ONLY in the game folder with no repo copy, and the RM successor deploys to the same folder name - deploying it would delete a mod the canonical save references
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  Offline half done (d45ff841e): repo backup proven byte-exact in git history, save census done (no placed Things, no Deep map, 5 VTE price-history keys only), route decided = in-place swap with folder-move rollback, RM loadAfter cycle removed. Remaining = execute the 7-step swap in the item file, which moves the live Mods\LanternDeeps folder and edits ModsConfig.xml, so it needs game DOWN + bridge in a load round. Live Mods folder and ModsConfig untouched this pass.
-summary:  LANTERNDEEPSTIERCOLLISION1 — the live Lantern Deeps has no repo copy, and its successor would delete it
-prose:    infrastructure/state/items/LANTERNDEEPS_TIER_COLLISION_1.md
 
 ## BIOME_DEFNAME_MIGRATION_WAVE_1 Three biomes renamed 2026-09-26 carry defNames that no longer match their labels: RM_NightsideIce/RM_PoisonForest/RM_Wasteland move to Sleeping Ice, Cauldron, Wastes per the Pyrelands precedent
 state:    proposed  (BLOCKED)
