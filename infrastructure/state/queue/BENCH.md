@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T16:07:26Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-28T16:20:51Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -22,6 +22,15 @@ target:   v1
 kind:     task
 summary:  GREYSEAFLOORPASS1 — the whole Grey Sea floor pass
 prose:    infrastructure/state/items/GREYSEA_FLOOR_PASS_1.md
+
+## BIOME_LOAD_PROOF_WAVE_1 Prove every biome mod loads clean standalone on a minimal list - the narrow donor-retirement sense of PROVEN, not full functionality
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
+prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
 
 ## BAROQUE_BEDAZZLE_PROGRAM_1 The bedazzle program: eleven biomes raised to the Baroque bar in ruled order (Contagion first, Black Crags last), four-movement ritual, nine-mark bar as the design gate; all other biomes grandfathered subject to the gate
 state:    ready
@@ -366,17 +375,7 @@ prose:    infrastructure/state/items/PLANETARY_LOADSCREEN_RENDERS_2.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## BIOME_LOAD_PROOF_WAVE_1 Prove every biome mod loads clean standalone on a minimal list - the narrow donor-retirement sense of PROVEN, not full functionality
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-waiting:  needs `game-up`, game is LOADING
-summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
-prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
+_none._
 
 # NOT THIS TARGET
 

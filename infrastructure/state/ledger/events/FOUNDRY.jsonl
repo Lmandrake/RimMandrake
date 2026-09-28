@@ -1071,3 +1071,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1","ts":"2026-09-28T16:07:08Z"}
 {"seat":"FOUNDRY","event":"start","id":"RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1","ts":"2026-09-28T16:07:09Z"}
 {"seat":"FOUNDRY","event":"close","id":"RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1","sha":"75f39d310","ts":"2026-09-28T16:07:26Z"}
+{"seat":"FOUNDRY","event":"close","id":"BAROQUE_BIOMES_WAVE1_JOIN_1","sha":"be2a6c77e24e0318b6f35efb2773bb5a44bd3871","ts":"2026-09-28T16:20:48Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-28T16:20:51Z"}
