@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T16:52:27Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-28T16:57:31Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1097,15 +1097,6 @@ target:   v1
 kind:     task
 summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
 prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md
-
-## BAROQUE_BIOMES_WAVE2_FOLD_1 Baroque Biomes Wave 2 (spec section 6): fold the 12 on-list biome/kit mods (FeverWood, GelatinousSlime, Greentide, LongShade, NightsideIce, Pyrelands, Stillsand, TerminalBiomes, TheRot, Wasteland, SeaShores, DivingInteraction) into the compose manifest at compose_wave 2, then a SINGLE ModsConfig swap that removes those 12 packageIds in the same write the new compose deploys - never split across two swaps or the game logs missing-mod noise. Cold-load prove + spot-check per-biome def counts equal to pre-merge (measured, not assumed).
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  (no items/BAROQUE_BIOMES_WAVE2_FOLD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BAROQUE_BIOMES_WAVE2_FOLD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
