@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T04:26:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T04:37:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -334,6 +334,26 @@ kind:     task
 blocked:  All named def-side gaps closed (TreeDrago/Agave/Dandelion evicted, now Bush/PincushionCactus too, 47aabd98c) -- wildPlants is now just the two RM_FE_ grasses. What's left is live-only: clear existing Bush/PincushionCactus instances, and a look at the ground fill with only two species carrying it. Rides the next load round. (on COLD_LOAD_RUN_SHEET_4)
 summary:  (no items/PYRELANDS_GRASS_SATURATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PYRELANDS_GRASS_SATURATION_1.md
+
+## WORLDMAP_BIOME_APPEARANCE_1 Regenerate our biomes' worldmap tile appearance AFTER the terminal repaint - measured 2026-09-27: only 2 of 29 BiomeDefs carry their own worldmap texture, the rest wear vanilla/donor faces; beautification mods become guidance then likely retire
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Owner-commissioned as a FUTURE ticket, explicitly blocked by the worldmap remake/repaint (BIOME_PAINT_ONCE_AT_THE_END_1): tile assignment moves wholesale there, so appearance work done earlier is judged against tiles that will move (on BIOME_PAINT_ONCE_AT_THE_END_1)
+summary:  WORLDMAPBIOMEAPPEARANCE1 — regenerate our biomes' worldmap tile appearance (AFTER the repaint)
+prose:    infrastructure/state/items/WORLDMAP_BIOME_APPEARANCE_1.md
+
+## PLANETARY_LOADSCREEN_RENDERS_2 Photo-realistic loadscreen planet renders seeded from OUR post-repaint worldmap beauty shots (ring, real terrain, color-to-reality mapping) - successor to the dropped PLANETARY_BEAUTY_LOADSCREENS_1
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Owner ruling 2026-09-27 (typed, mid-turn): loadscreen generation blocked by the repaint AND the regenerated beauty shots - mapping custom biomes to realistic imagery is too hard before both land (on WORLDMAP_BIOME_APPEARANCE_1)
+summary:  PLANETARYLOADSCREENRENDERS2 — photo-realistic loadscreen planet renders, seeded from OUR worldmap (AFTER the…
+prose:    infrastructure/state/items/PLANETARY_LOADSCREEN_RENDERS_2.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
