@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T06:30:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T06:37:53Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1079,15 +1079,6 @@ target:   v1
 kind:     task
 summary:  (no items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md
-
-## STILLSAND_RULED_CONTENT_1 Build the Stillsand content ruled 2026-09-27: nine-row tier move, oommok/siidda names, vekka kept, size fixes, dunes-engine wiring - fill-out/qorrax defs gated on owner review
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  STILLSANDRULEDCONTENT1 — build the Stillsand content the 2026-09-27 sitting ruled
-prose:    infrastructure/state/items/STILLSAND_RULED_CONTENT_1.md
 
 ## TWILIGHT_REVIEW_FIXES_1 Fix the 14 Twilight-wave code-review findings: 4 ship-blockers (plant CompTick lure, Never-ticker cargo float, undersurge on every biome, unstandable drift targets) + 10 smaller
 state:    doing
