@@ -1025,3 +1025,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"CHILL_FIRE_BAN_1","ts":"2026-09-28T07:45:28Z"}
 {"seat":"FOUNDRY","event":"start","id":"CHILL_FIRE_BAN_1","ts":"2026-09-28T07:45:29Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_FIRE_BAN_1","sha":"ca7a60c97","ts":"2026-09-28T07:54:41Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_THERMAL_ENGINE_1","ts":"2026-09-28T07:55:15Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_THERMAL_ENGINE_1","ts":"2026-09-28T07:55:16Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_THERMAL_ENGINE_1","sha":"d23e31584","ts":"2026-09-28T08:05:46Z"}

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T07:54:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T08:05:46Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1783,16 +1783,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SELFTEST_FAILURES_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SELFTEST_FAILURES_TRIAGE_1.md
-
-## CHILL_THERMAL_ENGINE_1 Chill seabed: brutal uniform cooling load + boil-shroud flecks around warm hulls
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  CHILLTHERMALENGINE1 — brutal cooling load + the boil shroud
-prose:    infrastructure/state/items/CHILL_THERMAL_ENGINE_1.md
 
 ## CHILL_HEATED_SUIT_1 Heated EVA suit, one charge clock, empty = fast hypothermia
 state:    proposed
