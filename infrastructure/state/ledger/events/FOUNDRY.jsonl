@@ -1073,3 +1073,8 @@
 {"seat":"FOUNDRY","event":"close","id":"RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1","sha":"75f39d310","ts":"2026-09-28T16:07:26Z"}
 {"seat":"FOUNDRY","event":"close","id":"BAROQUE_BIOMES_WAVE1_JOIN_1","sha":"be2a6c77e24e0318b6f35efb2773bb5a44bd3871","ts":"2026-09-28T16:20:48Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-28T16:20:51Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BAROQUE_BIOMES_WAVE2_FOLD_1","ts":"2026-09-28T16:21:41Z"}
+{"seat":"FOUNDRY","event":"start","id":"BAROQUE_BIOMES_WAVE2_FOLD_1","ts":"2026-09-28T16:21:42Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"BAROQUE_BIOMES_WAVE2_FOLD_1: compose+deploy the on-list fold, single ModsConfig swap, cold-load prove","ts":"2026-09-28T16:36:11Z"}
+{"seat":"FOUNDRY","event":"close","id":"BAROQUE_BIOMES_WAVE2_FOLD_1","sha":"c3a1e3fd1ca0caaf0fc830be68791fae051521b3","ts":"2026-09-28T16:57:30Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-28T16:57:31Z"}
