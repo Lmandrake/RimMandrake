@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T19:07:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T19:10:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -872,15 +872,6 @@ target:   v1
 kind:     task
 summary:  1. For each of the 71, check the drawCenter against the region's actual tiles.
 prose:    infrastructure/state/items/FEATURE_DRAWCENTER_UNVERIFIED_1.md
-
-## LONGSHADE_RM_MOD_BUILD_1 Phase A: build RM_LongShade as its own RimMandrake mod (mandrake.rm.longshade) — the Long Shade (the livable desert)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  🔑 biomemodarchitecture.md §5 Phase A is the authority — read it, do not re-derive
-prose:    infrastructure/state/items/LONGSHADE_RM_MOD_BUILD_1.md
 
 ## STONEBACK_BOKKA_ART_STANDARD_1 Judge the bokka's 2026-09-11 ported art against modern standards before regenerating (owner asked, did not order a regen)
 state:    doing
