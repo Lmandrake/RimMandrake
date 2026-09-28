@@ -133,3 +133,97 @@ through `active/`→`done/` on its own schedule.
 Left `doing`, not `blocked` — nothing here is stuck, it just needs the art
 job to finish, a naming batch with the owner, and a free bridge, none of
 which are answered by asking a question back.
+
+## FOUNDRY progress, 2026-09-28 (offline pass; live verify pivoted away mid-session)
+
+**Re-verified the prior build stands, nothing rebuilt.** `src/RimUtinni/GreentideRaidAnt/About/About.xml`
+carries `mandrake.rut.greentideraidant`; `RM_CreatureBehaviors.csproj` still lists
+`<Compile Include="RM_DirectedAssaultExtension.cs" />` and
+`RM_JobGiver_DirectedAssault.cs`; both source files exist; `git status` on
+`src/RimUtinni/GreentideRaidAnt` and `src/RimMandrake/CreatureBehaviors` is clean
+(committed at `feddf8808`/`dff88d3e0`); `dll_source_stamp.py check` reports MATCH
+for `RimMandrake.CreatureBehaviors.dll` — no rebuild needed.
+
+**Deploy: already in sync, no `--apply` needed.**
+`deploy_custom_mods.py --mod GreentideRaidAnt` → "in sync (7 files)".
+`RM_CreatureBehaviors` is folded into `RimMandrake.Biomes` now (wave 2,
+`Biomes.compose.json` entry `CreatureBehaviors`/`group: engine`) —
+`deploy_custom_mods.py --compose biomes` → "in sync (1108 files, 9 held)", the 9
+holds are all unrelated TheSump art-pending items. Both mods were deployed to the
+live Mods folder before this pass; nothing needed writing this time.
+
+**Patch/dependency sweep — confirmed clean, no functional donor reference anywhere.**
+Grepped the 4 named patches (`MegafaunaYield.xml`, `AnimalTolerances_Ashkarr.xml`,
+`OnlyOurFactions.xml`, `Armour_Leather.xml`) plus `Doctrine/About/About.xml` for
+`Sapiently|TheyAtomicMonsters|GiantAnt_Race|MyAntMod`: the only hits are a removal
+comment in `MegafaunaYield.xml` ("BoneAmount block removed — GiantAnt_Race is
+retired") and a "REMOVED" line in Doctrine's About.xml provenance comment — no
+`<modDependencies>`, `<loadAfter>`, or `MayRequire` targets the donor anywhere. A
+sitewide sweep (`grep -rl "Sapiently\.TheyAtomicMonsters\|MyAntMod\."` over `src/`
+and `design/`) turns up only prose/doc-comment mentions in our own new files
+(`RM_DirectedAssaultExtension.cs`, `RM_JobGiver_DirectedAssault.cs`,
+`GreentideRaidAnt`'s own About.xml/race/thinktree XML) — all describing what was
+replaced, none of them a live reference.
+
+**Savegame donor-reference check — done directly against the raw `.rws`, no bridge
+needed, confirms the item's prior "no save-embedded Things" finding rather than
+assuming it.** Grepped `CANONICAL_ASHKARR_START_2026-09-12.rws` (17.5 MB, offline
+file read) for `GiantAnt_Race`, `They_AntCarapace`, `They_CarapaceWall`,
+`GiantAnt_Faction`, `Corpse_GiantAnt_Race`: 12 + 8 + 1 + 7 raw hits, but every one
+is inside a universal catalog list — `ThingFilter`/stockpile-bill `allowedDefs`
+`<li>` lists (which enumerate every ThingDef the game knows, used or not), a
+per-def `recordsDeflate` production-stats bucket (`<thingDef>...</thingDef>`, same
+universal-catalog shape), a `FactionManager`-style known-factions `<li>` list, and
+an animal-catalog `<li>` list — never the placed-object pattern. Checked the
+placed-object pattern directly: `<def>GiantAnt_Race</def>`,
+`<def>They_AntCarapace</def>`, `<def>They_CarapaceWall</def>`,
+`<def>GiantAnt_Faction</def>`, `<def>Corpse_GiantAnt_Race</def>` (a Thing/Pawn's
+own def tag as a direct sibling, not inside a `<li>` filter list) all return **0**,
+and `GiantAnt_Faction` never appears as an actual `<faction>` record (leader,
+goodwill, etc.) — only the one catalog `<li>`. **Confirmed: a savegame scrub is not
+needed for this retirement**, matching the original scan's conclusion but now
+checked against the actual canonical save rather than assumed.
+
+**Added `modset_builder.py` tier `greentideant`** (`src/RimMandrake/Utils/modset_builder.py`):
+`want = [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.greentideraidant"]` resolves
+to a clean 14-mod dependency closure with **no** `MISSING` and, critically,
+**`Sapiently.TheyAtomicMonsters` absent from the want list entirely** — that
+absence *is* the retirement test. Plan-only run confirmed the closure (Harmony,
+Core+5 DLC, RimBridgeServer, VEF, AlphaBiomes, FlowWorks, LuminousPigment,
+mandrake.rm.biomes, mandrake.rut.greentideraidant — 14 total, down from 614).
+**Not yet applied or loaded.**
+
+**Live verify did NOT happen this pass — pivoted away mid-session.** Took the
+bridge (`rimflow bridge take`) and measured the game directly: `RimWorldWin64`
+running, bridge answering (`Bridge token:` fresh in `Player.log`, main-menu
+startup on the full 614-mod list, no colony/save loaded — confirmed via a
+`Player.log` tail before touching anything, so no active campaign was ever at
+risk). Mid-preparation (writing the `greentideant` tier, about to bring the game
+down to apply it), the coordinating session relayed that another window had
+broadcast `./game down` and instructed this window to stop bridge work and pivot
+to offline-only. **No live action was taken on the process or on
+`ModsConfig.xml`** — `bridge release` was run immediately, and the
+`greentideant` tier plan was never `--apply`'d.
+
+**Deliberately NOT done this pass, and why:**
+1. **Live full-list-analog verify** (race/pawnkinds load with no missing-def
+   errors under the `greentideant` tier; carapace item + wall buildable/spawnable;
+   `RM_JobGiver_DirectedAssault` actually drives an off-map assault) — blocked on
+   a free bridge and `needs: game-up`; the tier to run it with now exists
+   (`modset_builder.py --tier greentideant --apply`).
+2. **Retirement-completion**: removing `Sapiently.TheyAtomicMonsters` from the
+   live `ModsConfig.xml` and from `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`,
+   and adding it to `infrastructure/state/facts/retired_mods.json` (the
+   `51ede08fe` biomescore-retirement pattern) — deliberately deferred until the
+   live verify above actually passes; doing it first would retire the dependency
+   before proving the replacement works.
+3. Wall art (`rut_greentideant_carapacewall_atlas`/`_menuicon`) — still pending in
+   `infrastructure/artpipe/pending/`, artpipe daemon's Codex auth issue, not
+   something this pass can fix or needs to block on for the verify itself (the
+   6 done art jobs cover the body/dessicated states).
+4. The naming card (`NONCANON_BEAST_RENAME_1`) — unchanged, still owed, still not
+   a build-seat decision.
+
+Left `doing`. Everything above the "Live verify" heading is genuinely finished
+and does not need repeating; what remains is exactly steps 1-2 immediately above,
+both gated on `needs: game-up` + a free bridge, next FOUNDRY pass.

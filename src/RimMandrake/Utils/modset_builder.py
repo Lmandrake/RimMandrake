@@ -423,6 +423,24 @@ TIERS["baroque_wave0"] = {
 # own load-proving, and it can never run again: those standalone Mods/
 # folders are deleted and deploy_custom_mods.py refuses to redeploy them.
 
+# THEY_MOD_REPLICATION_1: does mandrake.rut.greentideraidant (the race, both
+# pawn kinds, the hidden raid faction, the carapace leather/wall, and the
+# RM_JobGiver_DirectedAssault-driven raid ThinkTree) load and resolve clean
+# WITHOUT Sapiently.TheyAtomicMonsters active at all -- the donor mod is
+# simply not in this tier's want list, which is the actual retirement test.
+# mandrake.rm.biomes is required (GreentideRaidAnt's own modDependencies) and
+# pulls FlowWorks/LuminousPigment/AlphaBiomes/Odyssey transitively.
+TIERS["greentideant"] = {
+    "why": "THEY_MOD_REPLICATION_1: prove RUT_GreentideAntRace + its 2 "
+           "pawnkinds + RUT_GreentideAntFaction + the carapace "
+           "leather/wall + RUT_ThinkTree_GreentideAnt (RM_JobGiver_"
+           "DirectedAssault) load and resolve with no missing-def / "
+           "cross-reference errors, on a list that does NOT include "
+           "Sapiently.TheyAtomicMonsters at all.",
+    "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.greentideraidant"],
+    "dlc": True,
+}
+
 
 def read_about(path):
     try:
