@@ -80,6 +80,8 @@
     <Compile Include="GenStep_ChillRimeTerraces.cs" />
     <Compile Include="RM_MapComponent_ChillDrownedAurora.cs" />
     <Compile Include="Patch_ChillDrownedAurora.cs" />
+    <Compile Include="RM_MapComponent_ChillAuroraSurge.cs" />
+    <Compile Include="RM_CompPowerPlantAuroraSurge.cs" />
   </ItemGroup>
 
   <ItemGroup>

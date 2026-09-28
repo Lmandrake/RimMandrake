@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CHILL_AURORA_SURGE_1 — deliverable 2, the harvest. "Free watts against
+  the brutal cooling load (CHILL_THERMAL_ENGINE_1), if you built for it."
+
+  RM_CompPowerPlantAuroraSurge (see that file's own header) makes real
+  power ONLY while RM_MapComponent_ChillAuroraSurge.IsSurgeActive is true
+  on this map, scaled 0..1 by how far the surface aurora sits above the
+  surge threshold — zero the rest of the time, by construction, matching
+  the item's own "harvest the storm, not a free permanent generator."
+
+  basePowerConsumption -1800: vanilla's own negative-consumption
+  convention for a generator (WindTurbine ships -2300) — this is the
+  building's PEAK output, delivered only at full surge intensity.
+
+  PLACEHOLDER ART: reusing vanilla's own DropBeacon texture
+  (Things/Building/Misc/DropBeacon, OrbitalTradeBeacon's own graphic) —
+  an antenna/mast silhouette already reaching for the sky, tinted
+  violet-teal to match the aurora palette RM_MapComponent_
+  ChillDrownedAurora's own TealColor/VioletColor constants establish.
+  Same posture as RM_HeatedSuitCharger reusing the vanilla Battery
+  texture tinted. infrastructure/artpipe/{done,pending}/registry.jsonl
+  was checked (2026-09-28) for any existing collector/antenna/aurora-
+  surge art before shipping this placeholder — none found. Real art is
+  owed; queue via the established artpipe pattern once the roster is
+  ready for a batch.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ChillAuroraCollector</defName>
+    <label>electrojet mast</label>
+    <description>A conductive mast strung with skyharp-tuned filaments, planted to catch the same electrojet spike that lights the floor from above. Idle under a quiet sky — when the aurora surges, current runs down its spine and out onto the grid. It draws nothing while the sky is calm, and nothing at all if boxed in under a roof.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <useHitPoints>true</useHitPoints>
+    <designationCategory>Power</designationCategory>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.25</fillPercent>
+    <altitudeLayer>Building</altitudeLayer>
+    <canOverlapZones>false</canOverlapZones>
+    <selectable>true</selectable>
+    <constructEffect>ConstructMetal</constructEffect>
+    <repairEffect>Repair</repairEffect>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <drawerType>MapMeshOnly</drawerType>
+    <graphicData>
+      <texPath>Things/Building/Misc/DropBeacon</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1.4)</drawSize>
+      <color>(150, 140, 210)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <WorkToBuild>2200</WorkToBuild>
+      <Mass>15</Mass>
+      <SellPriceFactor>0.7</SellPriceFactor>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>RimMandrake.DivingInteraction.CompPowerPlantAuroraSurge</compClass>
+        <basePowerConsumption>-1800</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <researchPrerequisites>
+      <li>OrbitalTech</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>

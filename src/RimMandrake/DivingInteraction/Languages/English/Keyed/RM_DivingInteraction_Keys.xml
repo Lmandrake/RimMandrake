@@ -37,4 +37,14 @@
   <RM_ChillGardenDefense_TarnnWokeText>Sustained destruction of the garden has roused {0} dormant Tarnn — scenery no longer. They will fight until this is settled, and stay settled once it is.</RM_ChillGardenDefense_TarnnWokeText>
   <RM_ChillGardenDefense_TarnnRoused>roused, defending the garden</RM_ChillGardenDefense_TarnnRoused>
 
+  <!-- CHILL_AURORA_SURGE_1 -->
+  <RM_ChillAuroraSurge_StartLabel>Aurora Surge</RM_ChillAuroraSurge_StartLabel>
+  <RM_ChillAuroraSurge_StartText>The electrojet spikes overhead. Down here every Iliss lights along its spine, the skyharps shimmer string by string, and arcs begin walking the conductive frost. The electrojet mast will draw real power while this lasts — but anyone caught outside, suited or not, is not safe from the current.</RM_ChillAuroraSurge_StartText>
+  <RM_ChillAuroraSurge_End>The surge fades. The floor settles back to its usual quiet glow.</RM_ChillAuroraSurge_End>
+  <RM_ChillAuroraSurge_ShockHit>{0} is caught in the open as the storm's current arcs through them!</RM_ChillAuroraSurge_ShockHit>
+  <RM_AuroraCollectorNotChillSeabed>Not on the Chill seabed — this mast can never draw current here.</RM_AuroraCollectorNotChillSeabed>
+  <RM_AuroraCollectorRoofed>Roofed — no open access to the sky the surge reaches through.</RM_AuroraCollectorRoofed>
+  <RM_AuroraCollectorHarvesting>Aurora surge active — harvesting at {0} of peak output.</RM_AuroraCollectorHarvesting>
+  <RM_AuroraCollectorIdle>No surge — dormant, drawing nothing.</RM_AuroraCollectorIdle>
+
 </LanguageData>
