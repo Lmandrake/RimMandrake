@@ -987,3 +987,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"BAROQUE_BIOMES_COMPOSE_1","ts":"2026-09-28T04:44:41Z"}
 {"seat":"FOUNDRY","event":"start","id":"BAROQUE_BIOMES_COMPOSE_1","ts":"2026-09-28T04:44:42Z"}
 {"seat":"FOUNDRY","event":"close","id":"PYRELANDS_DEDICATED_GRAZER_1","sha":"56010ad03e673c64776e458659dd63b9d4f74dde","ts":"2026-09-28T04:57:16Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"BAROQUE_BIOMES_COMPOSE_1 wave 0 load-prove","ts":"2026-09-28T04:58:03Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DEEP_SAND_WALKABLE_TERRAIN_1","ts":"2026-09-28T04:59:03Z"}
+{"seat":"FOUNDRY","event":"start","id":"DEEP_SAND_WALKABLE_TERRAIN_1","ts":"2026-09-28T04:59:04Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-28T05:04:58Z"}
+{"seat":"FOUNDRY","event":"close","id":"DEEP_SAND_WALKABLE_TERRAIN_1","sha":"eb5a35214","ts":"2026-09-28T05:19:13Z"}

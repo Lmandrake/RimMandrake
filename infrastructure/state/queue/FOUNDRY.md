@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T05:04:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-28T05:19:13Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1079,15 +1079,6 @@ target:   v1
 kind:     task
 summary:  (no items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TWILIGHT_TENANCY_PAPER_REMOVAL_1.md
-
-## DEEP_SAND_WALKABLE_TERRAIN_1 Deep sand: walkable-very-slow, a whole terrain type (some Long Shade, much Stillsand) - owner ruling 2026-09-27 supersedes the impassable spec
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. RMDeepSand becomes passable at a punishing pathCost ("just very slowly" —
-prose:    infrastructure/state/items/DEEP_SAND_WALKABLE_TERRAIN_1.md
 
 ## TWILIGHT_REVIEW_FIXES_1 Fix the 14 Twilight-wave code-review findings: 4 ship-blockers (plant CompTick lure, Never-ticker cargo float, undersurge on every biome, unstandable drift targets) + 10 smaller
 state:    doing
