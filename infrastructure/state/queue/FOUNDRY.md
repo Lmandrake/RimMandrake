@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T15:52:02Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T15:55:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1098,6 +1098,15 @@ kind:     task
 summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
 prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md
 
+## BAROQUE_BIOMES_WAVE1_JOIN_1 Baroque Biomes Wave 1: unified mod joins the owner's full list (one ADD, no removals); retarget RimUtinni FindMod/MayRequire naming folded packageIds; delete Wave 0's stale standalone folders
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  (no items/BAROQUE_BIOMES_WAVE1_JOIN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BAROQUE_BIOMES_WAVE1_JOIN_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1784,16 +1793,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SELFTEST_FAILURES_TRIAGE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SELFTEST_FAILURES_TRIAGE_1.md
 
-## BAROQUE_BIOMES_WAVE1_JOIN_1 Baroque Biomes Wave 1: unified mod joins the owner's full list (one ADD, no removals); retarget RimUtinni FindMod/MayRequire naming folded packageIds; delete Wave 0's stale standalone folders
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BAROQUE_BIOMES_WAVE1_JOIN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BAROQUE_BIOMES_WAVE1_JOIN_1.md
-
 ## RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1 RustCathedral's Mod calls GetSettings<T>() three times on one Mod instance (Hum/Walls settings read null) — pre-existing, found live in Baroque Biomes wave-0 load-prove, unrelated to the merge
 state:    proposed
 row:      unassigned
@@ -1863,3 +1862,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PIT_RENAME_STENCHLANDS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PIT_RENAME_STENCHLANDS_1.md
+
+## WASTELAND_RULED_CONTENT_1 Build the Wasteland survivor cast: full RM_ donor replacement - 8 fauna ports, 3 new processors, 6 flora, bezoar/soot items, brine label renames, texPath rescue (cast bible wasteland_survivor_cast_2026-09-28.md)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  WASTELANDRULEDCONTENT1 — build the survivor cast: full RM donor replacement
+prose:    infrastructure/state/items/WASTELAND_RULED_CONTENT_1.md
+
+## WASTELAND_MECHANICS_BUILD_1 Build the Wasteland mechanics: 20-cell Middenshell on TitanicCreatures, processor gatherable comps, ambient-dose comp, three storm WeatherDefs + MovingDunes exhumation, pollution-first dose layer
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  WASTELANDMECHANICSBUILD1 — the Middenshell, the processor comps, storms and the dose layer
+prose:    infrastructure/state/items/WASTELAND_MECHANICS_BUILD_1.md

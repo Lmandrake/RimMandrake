@@ -20,6 +20,36 @@ becomes the danger; the Wasteland is the opposite inversion — **the land itsel
 danger, and there is almost nothing alive to fear.** You can sleep here without a watch. The
 ground will still be killing you while you do.
 
+⭐ **AMENDMENT 2026-09-28 (owner, `WASTELAND_BEDAZZLE_SITTING_1` — the bedazzle
+sitting; rulings owner-typed on its ledger, cast details in
+`wasteland_survivor_cast_2026-09-28.md`, the cast bible):**
+(1) **Register REVISED — survivors, not sufferers.** Verbatim: *"ugly warty life
+that was already tough enough to survive the waste products… creatures that
+already ate the waste of other beings, survived extreme environments."* Names
+are English ugly-tough (Scumrat, Boilhide, Sloghog…), never invented-exotic,
+never Star Wars; §4's and §9's old pathos read is corrected in place below.
+(2) **Full RM_ development ruled** — the whole donor cast replaced outright
+(defs, names, art), not patched; the accepted name map is in the cast bible.
+(3) **New natives admitted to §4**: the **Sloghog** (ranchable excretor —
+bezoars), the **Sootgrazer** (ash-eater — fuel bricks), the **Smolderback**
+(the radiothermal solitary made flesh), and **the Middenshell** — the biome's
+giant, owner-ruled **twenty cells wide** on the TitanicCreatures engine, never
+hostile, proximity-dosed, its corpse a permanent bezoar-quarry landmark. Flora
+adds the **Cinderfelt**, the fresh-ash-fall marker mat. Brine trio: label-only
+renames (drazz→**brineleech**, tekk→**sparkcrab**; defNames frozen for the
+canonical save).
+(4) **The Throat's true name RULED: THE PIT** (§8 corrected).
+(5) **Storm mechanics ruled**: ash exhumation **reuses the MovingDunes
+mechanism** (this resolves the mutator-churn scope question the Owed section
+carried); the dose layer is **radiation AND pollution, ridden mostly on the
+Biotech pollution mechanism**.
+(6) **Warcaskets redefined as a cross-cutting suit class**
+(`WARCASKET_SUIT_CLASS_1`): extreme-temp/vacuum/toxin-resistant, an alternative
+to space suits and ocean access as TERRAIN survival (sea floors stay
+ship-only) — slow, bulky, failure-prone under compound threats, *"a primitive
+tank around a person."* Cask bay approved; interdependent cargo-bay
+waste-ecology allowed emergently.
+
 ## 0. The measurements everything rests on
 
 MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
@@ -103,10 +133,12 @@ under low sun; the terminator pockets sit in the wall's own fallout and glow.
 
 ### The wretched many
 
-Most life is **bizarre, mutated, small, and pathetic** — ordinary lineages being slowly
-ruined: vermin at the contamination edge, born wrong, short-lived, visibly suffering.
-Dangerous the way a cornered sick thing is dangerous, never the way a predator is. They are
-the biome's moving proof that this ground damages everything it touches.
+Most life is **bizarre, mutated, small — and completely at home** (register ruled
+2026-09-28: survivors, not sufferers). Ordinary lineages that were already tough enough:
+vermin that ate the waste of other beings, warty, short-lived, visibly marked by the
+ground — and doing fine. Dangerous the way a cornered thing is dangerous, never the way a
+predator is. They are the biome's moving proof that this ground marks everything it
+touches, and that something tougher than the ground got here first.
 
 ### The leveraging few — extremophile life at its edge
 
@@ -244,7 +276,7 @@ stupid**: their entire economy is the tipping fee; admitting the hazard ends the
 | **Fallout scour** | ash dunes, storm-exhumation sites, radiothermal dens, rib-vaults, the stormwall glow |
 | **Terminator pockets** | trapped enrichment, plasma storms, the oldest battle ruins, dead sarlacc throats |
 
-### ⭐ The Glowing Throat (working name — owner's pick owed)
+### ⭐ THE PIT (true name ruled 2026-09-28; "the Glowing Throat" was the working name)
 
 One dead sarlacc has had so much hideousness thrown down it that **an unholy glow now rises
 from it**, and the ground sometimes trembles as though it were moving or groaning. 🔴 **It
@@ -271,14 +303,16 @@ Junkers refuse and refute all of it.
 - **Light:** the dark families are lit by the stormwall's permanent glow on one horizon —
   sunset afterimage, aurora-halo storms, lightning flicker. The basins are the opposite:
   blinding salt-white under a low sun. Point-sources of *wrong* light punctuate both: the
-  radiotroph groves, the warm dens, the Throat.
+  radiotroph groves, the warm dens, the Pit.
 - **Palette:** salt white, ash grey, vitrified black-green, brine-pool mineral color — and
   the sickly radiances against it.
 - **Silhouette language:** horizons of nothing, then one enormous thing — a rib-vault, a
   dead hull, a throat mound. Architecture exists here only as remains.
-- **Fauna reads as pathos**: the wildlife should look like suffering, not menace.
+- **Fauna reads as tough ugly survivors** (register ruled 2026-09-28, replacing the old
+  pathos read): warts, plating and mineral crust worn as armor and adaptation — content,
+  never pitiable, and never menace either.
 - **Sound:** wind over crust; Geiger-analog clicks as the biome's heartbeat where the
-  player has the instrument; the rumor-tremor near the Throat.
+  player has the instrument; the rumor-tremor near the Pit.
 
 ## 10. Campaign hooks (owner-authored 2026-09-05 — candidate arcs, none built)
 
@@ -311,14 +345,13 @@ Junkers refuse and refute all of it.
 
 ## Owed
 
-- **Names, owner's pick:** the Throat's true name; the radiotroph flora, the excretors, the
-  radiothermal solitaries, the brine-battery creatures; the halo-storm and plasma-storm
-  player-facing names.
-- **Engine feasibility pass:** RimWorld has no native radiation — Biotech's pollution
-  system (wastepacks, polluted terrain, tox resistance) is the obvious spine and is nearly
-  this biome verbatim; needs a dose/geiger layer, the three storm weather defs, and the
-  storm map-reshuffle (mutator churn on a frozen world needs its own tooling and its own
-  ruling on scope).
+- **Names, owner's pick:** the halo-storm and plasma-storm player-facing names. (The
+  Throat/Pit, the excretors, the radiothermal solitary and the brine-battery creatures
+  were all named at the 2026-09-28 sitting — see the amendment block and the cast bible.)
+- **Engine feasibility pass:** RULED 2026-09-28 — the dose layer rides Biotech's
+  pollution mechanism (radiation AND pollution, pollution-first), and the storm
+  map-reshuffle reuses the MovingDunes mechanism. Build: `WASTELAND_MECHANICS_BUILD_1`
+  (the three storm WeatherDefs ride it too).
 - **Def tails:** 19 tiles at arc < 60 (min 37.1, up to 54 °C) look mislabeled — same
   instrument as the shrubland mend; fold into `WORLDMAP_DESERT_BAND_REPAIR_1`'s session.
 - The tipping-fee economy and the waste-caravan traffic want faction-spec wiring
