@@ -1046,3 +1046,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"CHILL_RIME_TERRACES_1","ts":"2026-09-28T09:28:08Z"}
 {"seat":"FOUNDRY","event":"start","id":"CHILL_RIME_TERRACES_1","ts":"2026-09-28T09:39:27Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_RIME_TERRACES_1","sha":"c2c1ace03","ts":"2026-09-28T09:40:10Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_WORLD_CRATER_1","ts":"2026-09-28T09:41:36Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_WORLD_CRATER_1","ts":"2026-09-28T09:41:37Z"}
+{"seat":"FOUNDRY","event":"file","id":"WARLAB_CRATER_ACCIDENTAL_TRIGGER_1","title":"RUT_WarLabReactorCore's CompIgniteCraterOnDestroy fires the planet-wide Chill crater swap on ANY destruction of that core, not only deliberate Route-1 arming -- accidental-detonation risk once the war lab is reachable; needs the Route-1 arming design first","kind":"task","target":"v1","caused_by":"CHILL_WORLD_CRATER_1","for":"FOUNDRY","ts":"2026-09-28T09:54:54Z"}
+{"seat":"FOUNDRY","event":"file","id":"JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1","title":"jawa/map_info's tool description claims map and tile biome 'diverge after a live world_tile_set' -- false per vanilla source (Map.Biome reads the tile directly, they cannot diverge for a non-pocket map); needs a DLL rebuild + its own commit","kind":"task","target":"v1","caused_by":"CHILL_WORLD_CRATER_1","for":"FOUNDRY","ts":"2026-09-28T09:54:55Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_WORLD_CRATER_1","sha":"4c2ecaca1","ts":"2026-09-28T09:55:03Z"}
