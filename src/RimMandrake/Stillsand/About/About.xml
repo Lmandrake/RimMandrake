@@ -19,6 +19,7 @@
   <loadAfter>
     <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.creaturebehaviors</li>
+    <li>Dubwise.DubsBadHygiene.Lite</li>
   </loadAfter>
   <description>STILLSAND_RM_MOD_BUILD_1 — RimMandrake tier standalone build of the Extreme
 Desert biome (Phase A row 1 of design/RimMandrake/biome_mod_architecture.md; parent
@@ -66,5 +67,17 @@ via its own allowedBiomes field — the planet-wide ban of vanilla's own Infesta
 mandrake.rut.patches' Infestation_PlanetwideBan.xml, not this mod. Neither caste is
 wired into wildAnimals — both are purely incident-spawned, matching the biome's own
 event-driven/dormant design law. Art queued (infrastructure/artpipe/art_lists/
-sandbuster_castes.csv), none rendered yet; every def ships with a placeholder texPath.</description>
+sandbuster_castes.csv), none rendered yet; every def ships with a placeholder texPath.
+
+✅ DESERT_CAVERN_BEAST_EGGS_1: ships the deep desert's cave-beast (guzzka, RM_Guzzka)
+and its prize eggs (RM_GuzzkaEggFertilized/Unfertilized) — deep_desert.md §8's "huge
+shaggy thing deep in a cavern, with massive eggs a Jawa would cross a desert for"
+(flavor-only reference to a canon Star Wars creature; guzzka itself is an original,
+non-canon coinage, checker-passed and Wookieepedia 0-hit). Creature + egg only, scoped
+per the item's own re-file — NOT wired into wildAnimals and no cavern terrain ships
+here: caverns/permanently shaded canyons are not yet generated ground, so this def is
+defined and homeless on purpose, pending the still-unbuilt cavern-authoring item. The
+egg optionally carries Dubs Bad Hygiene's WaterExt (MayRequire-gated, per-list-item, mirrors
+FlowWorks' RM_ColoredWaterBottles.xml) alongside its own always-on narrative water-value
+stats, so it reads as water-wealth with or without that mod active.</description>
 </ModMetaData>
