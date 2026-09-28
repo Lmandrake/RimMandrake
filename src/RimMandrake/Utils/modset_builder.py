@@ -416,6 +416,35 @@ for _biome in BIOME_PROOF_MODS:
     }
 del _biome
 
+# BAROQUE_BIOMES_COMPOSE_1 wave 0: the composed 'RimMandrake: Baroque Biomes'
+# (deploy_custom_mods.py --compose biomes) on its own. Closure over the
+# GENERATED About.xml supplies the engines it still hard-depends on
+# (FlowWorks, CreatureBehaviors, EnvironmentalHazards, Alpha Biomes...).
+# ⛔ Never add a folded biome's standalone packageId here: its defs and types
+# would load twice.
+TIERS["baroque_wave0"] = {
+    "why": "BAROQUE_BIOMES_COMPOSE_1 wave 0: does the composed mandrake.rm.biomes "
+           "load clean — LoadFolders content roots, per-root Assemblies, every "
+           "composed biome's defs resolved (biomes_compose_prove.py), and the "
+           "settings shell's worldgen gate applied.",
+    "want": [BRIDGE, "mandrake.rm.biomes"],
+    "dlc": True,
+}
+# Its CONTROL: the same biomes as their old standalone mods, so every
+# Player.log line of the composed load can be attributed — present in both =
+# the biome's own content, composed-only = the compose. Reads whatever
+# standalone copies are deployed; check they match the repo before trusting it.
+TIERS["baroque_wave0_control"] = {
+    "why": "BAROQUE_BIOMES_COMPOSE_1 wave 0 control: the composed biomes loaded "
+           "as their standalone mods, for a line-by-line Player.log differential "
+           "against baroque_wave0.",
+    "want": [BRIDGE] + ["mandrake.rm.%s" % b for b in (
+        "contagion", "floodedcanyon", "forsakencrags", "leaningscrub", "miasma",
+        "poisonforest", "rustcathedral", "theforge", "thesump", "warscar",
+        "webwork", "weepingstones")],
+    "dlc": True,
+}
+
 
 def read_about(path):
     try:

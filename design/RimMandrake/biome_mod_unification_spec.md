@@ -19,7 +19,7 @@ as evidence only.
 
 | Folder | packageId | On list | Why IN |
 |---|---|---|---|
-| BlueDesert | mandrake.rm.bluedesert | no | Biome (Phase A row 7) |
+| BlueDesert | mandrake.rm.bluedesert | yes (live file, 2026-09-27) | Biome (Phase A row 7) |
 | Contagion | mandrake.rm.contagion | no | Biome (row 16) |
 | FeverWood | mandrake.rm.feverwood | yes | Biome (row 22) |
 | FloodedCanyon | mandrake.rm.floodedcanyon | no | Biome (flood-canyon standalone). NB its DLL compile-references FlowWorks — unified mod gains a HARD dep on `mandrake.rm.flowworks` |
@@ -82,7 +82,7 @@ as evidence only.
 |---|---|---|---|
 | EnvironmentalHazards | mandrake.rm.environmentalhazards | yes | Kit consumed by 9+ biome mods (XML workers) and 3 biome DLLs at compile time — but also by ShipVermin-adjacent content. Fold IN, or stay a hard-required framework? §3 + card Q3 |
 | CreatureBehaviors | mandrake.rm.creaturebehaviors | yes | Same shape: consumed by 10 biome mods' XML + FeverWood/EH DLLs, but ALSO by ShipVermin (OUT) and HostileFlora. Card Q3 |
-| LanternDeeps | mandrake.rm.lanterndeeps | no (but `mandrake.rut.lanterndeeps` IS on list — retier apparently mid-flight, UNMEASURED which is deployed) | An underground biome layer (worldbuilding/biomes/) implemented as dungeon injection, and DivingInteraction's XML names its classes. Biome or dungeon framework? Card Q4 |
+| LanternDeeps | mandrake.rm.lanterndeeps | yes — `mandrake.rm.lanterndeeps` is active on the live file (2026-09-27); `mandrake.rut.lanterndeeps` is not | An underground biome layer (worldbuilding/biomes/) implemented as dungeon injection, and DivingInteraction's XML names its classes. Biome or dungeon framework? Card Q4 |
 | ExplosiveGrowth | mandrake.rm.explosivegrowth | yes | Soaked-plant growth mechanic — generic RM engine used by wet biomes. Kit or framework? Card Q4 |
 | HostileFlora | mandrake.rm.hostileflora | no | Mobile hostile plants (XML-only, rides CreatureBehaviors); cast spans biomes. Card Q4 |
 | MovingDunes | mandrake.rm.movingdunes | yes | Moving sand — desert-biome kit in spirit, but works on any sandy map. Card Q4 |
@@ -137,9 +137,11 @@ Mechanics, per concern:
   content root (Defs/, Textures/, Assemblies/, Patches/, Languages/ each scanned
   per root — this is how versioned 1.5/, 1.6/ folders work). So each biome keeps
   its internal layout byte-identical; no file is renamed, no def file merged.
-  FOUNDRY verifies the loadFolders-root-assemblies assumption on the FIRST wave's
-  load (it is standard 1.6 behaviour, but prove it once with a def+assembly biome
-  before trusting it for all 25).
+  Proven on wave 0's load (2026-09-27): per-root Assemblies load, including
+  RustCathedral's three DLLs and their custom def types. ⚠️ A relative path shipped
+  by two roots SHADOWS (decompiled `DirectXmlLoader.XmlAssetsInModFolder`: keyed by
+  path relative to its root, `TryAdd`, roots walked in reverse LoadFolders order), so
+  every content path must be unique across entries; the compose verb refuses otherwise.
 - **Def file layout.** Untouched — collision risk is defName-level, and §4 measured
   it at zero.
 - **Textures / texPath.** Textures bind by texPath, and texPaths are a global
@@ -315,9 +317,12 @@ exactly once and last:
 
 - **Wave 0 — compose + shell, off the live list.** Build the compose target, the
   generated About/LoadFolders, and the `RM_BiomesMod` settings shell. Compose ONLY
-  the 13 off-list biomes (BlueDesert, Contagion, FloodedCanyon, ForsakenCrags,
-  LeaningScrub, Miasma, PoisonForest, RustCathedral, Warscar, TheForge, TheSump,
-  Webwork, WeepingStones). Load-prove on a minimal tier (`modset_builder.py`, all
+  the 12 off-list biomes (Contagion, FloodedCanyon, ForsakenCrags, LeaningScrub,
+  Miasma, PoisonForest, RustCathedral, Warscar, TheForge, TheSump, Webwork,
+  WeepingStones). BlueDesert is ON the live list and waits for wave 2, as do the
+  four Q3/Q4 folds (CreatureBehaviors, EnvironmentalHazards, LanternDeeps,
+  MovingDunes) — all four are active on the live file, so folding any of them
+  earlier would load its defs and types twice. Load-prove on a minimal tier (`modset_builder.py`, all
   five DLC per the test-list law) — proves loadFolders content roots, per-root
   Assemblies loading, def counts per biome (`measure`, never grep), toggles gating.
   Zero risk: nothing here is on the live list.

@@ -121,9 +121,9 @@
       <li>RUT_MineableDeadSmartsteel</li>
     </forceRockTypes>
     <wildAnimals>
-      <RM_CathedralRoach MayRequire="mandrake.rm.rustcathedral">0.12</RM_CathedralRoach>
+      <RM_CathedralRoach>0.12</RM_CathedralRoach>
       <GR_Mecharat MayRequire="vanillaexpanded.vgeneticse">0.5</GR_Mecharat>
-      <RUT_LivingBolt MayRequire="mandrake.rm.rustcathedral">0.06</RUT_LivingBolt>
+      <RUT_LivingBolt>0.06</RUT_LivingBolt>
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

@@ -25,6 +25,18 @@ USAGE
   python src/RimMandrake/Utils/deploy_custom_mods.py --apply --mod Jawa_Patches
   python src/RimMandrake/Utils/deploy_custom_mods.py --apply --prune  # also delete deployed files no longer in repo
   python src/RimMandrake/Utils/deploy_custom_mods.py --pull Jawa_Patches   # game -> repo, rescue a hand-edit
+  python src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes       # plan the composed Baroque Biomes mod
+  python src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --apply
+
+COMPOSED MODS (BAROQUE_BIOMES_COMPOSE_1)
+========================================
+`--compose biomes` builds the one player-facing 'RimMandrake: Baroque Biomes'
+folder from the per-biome dev folders listed in src/RimMandrake/Biomes.compose.json
+(biomes_compose.py does the building), then runs it through the SAME
+compare/copy/verify/hold path as any other mod. Every source folder the
+manifest's current compose_wave folds in is REMOVED from ordinary discovery:
+`--mod Contagion` refuses and points here, so a folded biome is never
+redeployed standalone by habit.
 
 Runs from WSL or native Windows; the game paths are auto-detected.
 Exit code is 0 when repo and game agree, 1 when they do not — so it doubles as a
@@ -61,9 +73,36 @@ SRC_ROOT = os.path.join(ROOT, "src")
 SRC_TIERS = ("RimMandrake", "RimStarWars", "RimUtinni", "SPLIT_Phase3")
 
 
+def folded():
+    """-> {source folder: (composed target, key)} for folders a compose manifest
+    folds in. Read from SRC_ROOT at call time (the deploy-hold selftest rebinds
+    SRC_ROOT to a synthetic tree that has no manifest)."""
+    try:
+        return biomes_compose.folded_sources(SRC_ROOT)
+    except Exception as e:                    # a broken manifest must not hide mods
+        print("deploy_custom_mods.py: could not read the compose manifest (%s: %s); "
+              "treating nothing as folded" % (type(e).__name__, e), file=sys.stderr)
+        return {}
+
+
+def folded_refusal(names):
+    """Exit with a pointer if any requested name is folded into a composed mod."""
+    f = folded()
+    hit = [n for n in names if n in f]
+    if hit:
+        sys.exit("deploy_custom_mods.py: %s %s folded into %s (src/RimMandrake/"
+                 "Biomes.compose.json) and is no longer deployed standalone.\n"
+                 "  deploy it with: python3 src/RimMandrake/Utils/deploy_custom_mods.py "
+                 "--compose biomes [--apply]"
+                 % (", ".join(hit), "is" if len(hit) == 1 else "are",
+                    f[hit[0]][0]))
+
+
 def mod_dirs():
-    """-> {mod name: source dir}. A mod is a dir carrying About/About.xml."""
+    """-> {mod name: source dir}. A mod is a dir carrying About/About.xml.
+    Folders folded into a composed mod are excluded (see folded())."""
     out = {}
+    skip = folded()
     for tier in SRC_TIERS:
         d = os.path.join(SRC_ROOT, tier)
         if not os.path.isdir(d):
@@ -71,6 +110,8 @@ def mod_dirs():
         for n in sorted(os.listdir(d)):
             p = os.path.join(d, n)
             if os.path.isfile(os.path.join(p, "About", "About.xml")):
+                if tier == SRC_TIERS[0] and n in skip:
+                    continue
                 if n in out:
                     # Two tiers using the same bare folder name collide silently
                     # here otherwise — the second tier scanned wins with no
@@ -91,6 +132,7 @@ def mod_dir(name):
 # exists wins, so the same script serves both ways of running it.
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from game_paths import LOCAL_MODS, MODS_CONFIG            # noqa: E402
+import biomes_compose                                      # noqa: E402
 
 _MODS = [LOCAL_MODS]
 _CONFIG = [MODS_CONFIG]
@@ -313,7 +355,15 @@ def main():
     ap.add_argument("--pull", metavar="MOD",
                     help="reverse direction: copy the DEPLOYED copy back into the "
                          "repo, to rescue an edit made directly in the game folder")
+    ap.add_argument("--compose", choices=["biomes"],
+                    help="build the composed 'RimMandrake: Baroque Biomes' mod from "
+                         "src/RimMandrake/Biomes.compose.json into a temp dir and "
+                         "plan/deploy THAT (instead of the per-mod folders)")
     args = ap.parse_args()
+    if args.compose and (args.mod or args.pull):
+        ap.error("--compose builds one target; it does not combine with --mod/--pull")
+    for n in (args.mod or []) + ([args.pull] if args.pull else []):
+        folded_refusal([n])
 
     mods_dir = first_existing(_MODS, "the RimWorld Mods folder")
     config = first_existing(_CONFIG, "ModsConfig.xml")
@@ -360,8 +410,30 @@ def main():
         if unknown:
             sys.exit("deploy_custom_mods.py: no such mod in the repo: %s\n"
                      "  known mods: %s" % (", ".join(unknown), ", ".join(sorted(known_mods))))
-    names = args.mod or sorted(known_mods)
     holds = load_holds()
+    compose_tmp = None
+    if args.compose:
+        print("compose: %s  (manifest %s)" % (args.compose, pretty(
+            biomes_compose.manifest_path(SRC_ROOT))))
+        try:
+            cname, csrc, extra = biomes_compose.build(SRC_ROOT, tree, holds)
+        except biomes_compose.ComposeError as e:
+            sys.exit("deploy_custom_mods.py: REFUSING TO COMPOSE: %s" % e)
+        compose_tmp = os.path.dirname(csrc)
+        holds = holds + extra
+        targets = [(cname, csrc)]
+    else:
+        names = args.mod or sorted(known_mods)
+        targets = [(n, mod_dir(n)) for n in names]
+    try:
+        return _run(args, targets, holds, mods_dir, active)
+    finally:
+        if compose_tmp:
+            shutil.rmtree(compose_tmp, ignore_errors=True)
+
+
+def _run(args, targets, holds, mods_dir, active):
+    names = [n for n, _ in targets]
     print("repo : %s" % SRC_ROOT)
     print("game : %s" % mods_dir)
     print("mode : %s" % ("APPLY" if args.apply else "plan only (use --apply to write)"))
@@ -374,8 +446,7 @@ def main():
     any_leftover = False   # apply-mode exit code; unlike `drift`, NEVER reset by a
                            # later mod's clean verify — see the return statement below.
     wrote = 0
-    for name in names:
-        src = mod_dir(name)
+    for name, src in targets:
         dst = os.path.join(mods_dir, name)
         pid = package_id(src)
         new, changed, gone, same = compare(src, dst)
@@ -503,7 +574,7 @@ def main():
     # stale instruction in a doc: still present, still read, no longer true —
     # and it silently stops protecting whatever it was written for. Only
     # meaningful on a full run; with --mod most patterns legitimately miss.
-    if not args.mod:
+    if not args.mod and not args.compose:
         # Staleness is "does this pattern name a file that EXISTS", not "did it
         # fire this run". A hold on an in-sync file never appears in the drift
         # lists and would otherwise be reported stale on every clean run —
