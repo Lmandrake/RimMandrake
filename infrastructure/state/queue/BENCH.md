@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T03:19:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T04:03:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -31,15 +31,6 @@ target:   v1
 kind:     task
 summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
 prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
-
-## BIOME_MOD_UNIFICATION_1 Merge the biome mods into ONE player-facing RimMandrake.Biomes mod with per-biome toggles (ruled by card 2026-09-27, Q17): spec pass + card agenda, then FOUNDRY waves
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. A backgrounded design/spec pass writes
-prose:    infrastructure/state/items/BIOME_MOD_UNIFICATION_1.md
 
 # IN PROGRESS
 
@@ -260,6 +251,15 @@ target:   v1
 kind:     design
 summary:  A backgrounded Fable design pass writes
 prose:    infrastructure/state/items/STILLSAND_DESIGN_SITTING_1.md
+
+## BIOME_MOD_UNIFICATION_1 Merge the biome mods into ONE player-facing RimMandrake.Biomes mod with per-biome toggles (ruled by card 2026-09-27, Q17): spec pass + card agenda, then FOUNDRY waves
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. A backgrounded design/spec pass writes
+prose:    infrastructure/state/items/BIOME_MOD_UNIFICATION_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
