@@ -391,7 +391,20 @@ Verified against their sources, not re-derived:
 
 Decisions the evidence settles are stated above as spec and are NOT re-asked here
 (zero-collision findings, toggle semantics, wave mechanics, modcheck handling).
-Eight cards:
+
+🔴 **ALL EIGHT RULED 2026-09-27** (decisions taken by question card; Q1's name is the
+owner's own typed coinage): **Q1** the mod is **"RimMandrake: Baroque Biomes"**
+(packageId `mandrake.rm.biomes`) · **Q2** two Workshop pages in principle (biomes vs
+campaign; nothing executes until a release is real) · **Q3** CreatureBehaviors AND
+EnvironmentalHazards fold **IN** (overrides the recommendation — ShipVermin and
+HostileFlora become hard-dependents of Baroque Biomes) · **Q4** LanternDeeps IN,
+MovingDunes IN; ExplosiveGrowth, HostileFlora, OasisMaker, LuminousPigment, Pyrinth
+OUT · **Q5** per-biome DLLs · **Q6** compose at deploy time from per-biome dev
+folders · **Q7** FlowWorks owns generic liquid terrain — TerminalBiomes retargets
+now, nothing deleted until the world-remake window · **Q8** waves, the live list
+written once at wave 2. **Final IN roster: 29 mods** (the §1 25 + CB + EH +
+LanternDeeps + MovingDunes). Execution: `BAROQUE_BIOMES_COMPOSE_1` (wave 1 tooling),
+`TERMINALBIOMES_LIQUID_RETARGET_1` (Q7). The eight cards as asked, for the record:
 
 **Q1 — Final mod name (and packageId stays `mandrake.rm.biomes`).**
  a) "RimMandrake: Biomes" — plain, matches every sibling mod's naming.

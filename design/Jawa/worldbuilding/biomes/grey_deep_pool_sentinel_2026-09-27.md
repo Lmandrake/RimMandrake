@@ -1,4 +1,4 @@
-# The Grey Deep pool sentinel — the murrek (2026-09-27)
+# The Grey Deep pool sentinel — the orruhmu (2026-09-27)
 
 Status: DESIGN DRAFT — written by a DESIGN subagent for BENCH, unblocking
 `GREYSEA_RULED_CONTENT_1` §9. The ruling this executes (Q13, question card,
@@ -25,7 +25,7 @@ wide rescue window); ban 6 (no vanilla-Earth organism by name or read).
 
 ## 1. Identity
 
-**The murrek** (`RM_Murrek`) — a squat, urn-shaped bellows-sac that stations
+**The orruhmu** (`RM_Orruhmu`) — a squat, urn-shaped bellows-sac that stations
 itself on brine-pool shores and is, until it moves, one more salt dome. Body
 plan: a low rounded mantle crusted in the same white jacket mineral as the
 statuary, cauliflower-textured and marred like everything mineral in the Grey;
@@ -38,23 +38,23 @@ flee, does not care about you — until you crowd it.
 
 **Why it belongs to the Grey's register.** Mineral mimicry is the floor's
 house style — the giant pretends to be a pillar, the haarn pretends to be a
-helmet, the sallik pretends to be a pebble — and the murrek pretends to be a
+helmet, the sallik pretends to be a pebble — and the orruhmu pretends to be a
 salt dome, completing the set at the one station nothing else guards. It is
 grey-on-grey (white crust over grey flesh, no colour anywhere), solitary
 (`wildGroupSize 1`, rare), and slow. And its defence enforces the biome's own
-law on the player: **the Grey is a sea of solitary things, and the murrek
+law on the player: **the Grey is a sea of solitary things, and the orruhmu
 punishes company.** One pawn at a pool shore is a harvester; two are a crowd.
 
 **bodySize 0.6** — bigger than the haarn (0.4), well under the fessk (0.9):
 at RimWorld zoom it reads as a knee-high dome, exactly salt-dome-sized, which
-is the point. The player's first murrek is discovered, not spotted.
+is the point. The player's first orruhmu is discovered, not spotted.
 
 **Catchable? No — floor resident only, no `*Catch` twin.** Argued both ways:
 the every-fishable-lives rule runs one direction — everything you can PULL OUT
 must also live below — and does not oblige the converse; the anchors
 (reefback, fessk) already stand as floor-only precedent. For catchability: a
 thirteenth-plus catch row would be free variety. Against, and decisive: the
-murrek is not in the water column — it is a shore-walker at the pool lips of
+orruhmu is not in the water column — it is a shore-walker at the pool lips of
 the floor pocket map, no more fishable from the surface shore than a pillar
 is; and a creature whose organ is a crystallising weapon, hauled up on a
 line, invites exactly the "harvest the squirt" economy that Q7 just refused
@@ -75,7 +75,7 @@ consequence.** Build shape: lift the private
 `MapComponent_BrineCrystallisation.Encase(Pawn, ThingDef)` into a small shared
 static (`BrineEncasementUtility.Encase(Pawn)` — clear the cell's edifice, make
 the jacket, `TryEncase`, spawn, message), call it from both the map component
-and the murrek's one new comp, `RM_CompPoolSentinelSquirt` (a `ThingComp` on
+and the orruhmu's one new comp, `RM_CompPoolSentinelSquirt` (a `ThingComp` on
 the race def). The only new C# is the trigger; the encasement, the smother
 clock, the rescue, the message and the Scribe are all the shipped code.
 
@@ -85,8 +85,8 @@ comp counts spawned humanlike and mechanoid pawns within **5 cells**
 shipped map component). The rule, no rolls anywhere:
 
 - **0–1 pawns in range: nothing, ever.** A lone harvester can work beside a
-  murrek all day. The counterplay is the biome's own law: come alone.
-- **2 or more: the murrek swells.** One full rare tick of visible tell — the
+  orruhmu all day. The counterplay is the biome's own law: come alone.
+- **2 or more: the orruhmu swells.** One full rare tick of visible tell — the
   bellows inflates, the crust plates lift, a wet pressurising hiss (sound +
   swollen graphic/overlay + inspect line "swelling", **no light, no glow** —
   the tell is silhouette and sound, readable in murk at 5 cells because it is
@@ -98,7 +98,7 @@ shipped map component). The rule, no rolls anywhere:
   `RM_BrineEncasement` jacket, mined out by friends, smother timer at the
   shipped wide-rescue rate. One pawn per squirt, never an area wipe.
 
-**Cooldown: 15,000 ticks (6 in-game hours).** A spent murrek is flat, its
+**Cooldown: 15,000 ticks (6 in-game hours).** A spent orruhmu is flat, its
 crust dull (inspect line "spent"), and it shuffles to the pool lip to drink —
 the pool refills its ammunition, which is why it never strays from the shores.
 While spent it is just a strange dome; a second squirt needs a second visit's
@@ -112,7 +112,7 @@ worth of patience from it.
 - **No light tell, no glow** (ban 4) — the swell is shape and sound only;
   the spray is white matter, not luminance.
 - **It never hunts.** No manhunter, no pursuit, no melee worth the name; the
-  squirt has 5 cells of reach and the murrek does not chase what leaves them.
+  squirt has 5 cells of reach and the orruhmu does not chase what leaves them.
 - **It never sprays animals** and is never itself encased (native chemistry);
   it walks pool-lip cells unharmed, which is its whole niche.
 - **No harvest of the mechanism.** No gland item, no crystallising weapon
@@ -141,6 +141,12 @@ floor life 0.08–0.4; nothing on this floor is fast):
 
 ## 4. Name
 
+🔴 **RULED 2026-09-27: the shipping name is ORRUHMU (`RM_Orruhmu`) — the owner's own
+typed coinage on the ratification card**, a variant of the drafted "orruhm". Evidence
+for the exact string: 0 src/dump hits (inherited — any "Orruhmu" hit would contain
+"Orruhm", which measured 0) and Wookieepedia search 0 hits (sanity probe dianoga=10,
+same call). The candidate table below is the record of what was offered.
+
 Register: the Grey cast is short invented words with doubled letters —
 fessk, haarn, oomal, immu, maalu, nissik, grusk, sorruth, essarn, otheska,
 corrik, thollim, sallik, karrud, hessal (read live from `RM_GreySea.xml`
@@ -158,14 +164,14 @@ Probe: `dianoga` → 3 hits (Dianoga, Dianoga/Legends, …). The instrument sees
 
 | candidate | src grep | def dump | Wookieepedia search | verdict |
 |---|---|---|---|---|
-| **Murrek** (recommended) | 0 | 0 | `search: []` — 0 hits | CLEAN |
+| **Orruhmu** (recommended) | 0 | 0 | `search: []` — 0 hits | CLEAN |
 | Tessum (alternate) | 0 | 0 | `search: []` — 0 hits | CLEAN |
 | Orruhm (alternate) | 0 | 0 | `search: []` — 0 hits | CLEAN |
 
 (A fourth candidate, Ollusk, was dropped on 5 `src/` hits before the canon
-check.) `design/` was also swept for all three: 0 files. **Recommended
-shipping name: the murrek, `RM_Murrek`** — the doubled r and hard -ek sit
-beside nissik/grusk/corrik, and it says nothing in any language we could find.
+check.) `design/` was also swept for all three: 0 files. **Shipping name: the orruhmu, `RM_Orruhmu`** — the doubled r and round
+-uhmu sit beside oomal/immu/maalu, and it says nothing in any language we
+could find.
 
 ## 5. Art brief
 
@@ -177,7 +183,7 @@ surface and creature only.
 
 ```csv
 id,rimflow_item_id,prompt,canvas_w,canvas_h,reference,facings,style_notes,priority,background,channel
-RM_Murrek,GREYSEA_RULED_CONTENT_1,"RimWorld game animal sprite: the murrek, a squat urn-shaped bellows creature disguised as a salt dome — a low rounded mantle armoured in knobbly white salt crust, cauliflower-textured and slightly chipped and clouded, over soft grey flesh just visible at the seams, a ring of short stubby pads beneath, and a small puckered pale spout at the crown. It should read as a mineral formation first and an animal second. No nameable Earth animal.",256,256,,"south,east,north","pool-shore sentinel, bs~0.6; the read is a salt dome that is secretly breathing; grey-on-grey murk register: bone and salt whites over grey flesh, dim directionless grey-green gloom, no glow, no luminance, crust marred and never perfect; painterly vanilla-RimWorld animal art style",70,transparent,codex
+RM_Orruhmu,GREYSEA_RULED_CONTENT_1,"RimWorld game animal sprite: the orruhmu, a squat urn-shaped bellows creature disguised as a salt dome — a low rounded mantle armoured in knobbly white salt crust, cauliflower-textured and slightly chipped and clouded, over soft grey flesh just visible at the seams, a ring of short stubby pads beneath, and a small puckered pale spout at the crown. It should read as a mineral formation first and an animal second. No nameable Earth animal.",256,256,,"south,east,north","pool-shore sentinel, bs~0.6; the read is a salt dome that is secretly breathing; grey-on-grey murk register: bone and salt whites over grey flesh, dim directionless grey-green gloom, no glow, no luminance, crust marred and never perfect; painterly vanilla-RimWorld animal art style",70,transparent,codex
 ```
 
 ## 6. Def wiring notes
@@ -190,9 +196,9 @@ RM_Murrek,GREYSEA_RULED_CONTENT_1,"RimWorld game animal sprite: the murrek, a sq
   `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml`
   `<wildAnimals>` uses the **shorthand element form** — `BiomeAnimalRecord`'s
   custom loader reads node NAME as animal, node TEXT as commonality:
-  `<RM_Murrek>0.05</RM_Murrek>`. **Never `<li>`** — a `<li>` row is silently
+  `<RM_Orruhmu>0.05</RM_Orruhmu>`. **Never `<li>`** — a `<li>` row is silently
   dropped and can discard the def.
-- **`animalDensity` must stay > 0** or the murrek (and the whole roster) is
+- **`animalDensity` must stay > 0** or the orruhmu (and the whole roster) is
   dead content — `RM_GreySea` already sets `animalDensity 0.1` (verified
   live this pass), so nothing to change, only nothing to break.
 - **The comp class goes in DivingInteraction**, beside the encasement engine
