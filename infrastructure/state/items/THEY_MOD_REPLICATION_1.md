@@ -227,3 +227,141 @@ to offline-only. **No live action was taken on the process or on
 Left `doing`. Everything above the "Live verify" heading is genuinely finished
 and does not need repeating; what remains is exactly steps 1-2 immediately above,
 both gated on `needs: game-up` + a free bridge, next FOUNDRY pass.
+
+## FOUNDRY progress, 2026-09-28 (live verify completed, retirement closed)
+
+Bridge confirmed free and taken (`bridge take --for "live verify + finish donor
+retirement"`); game confirmed RUNNING via `./game`, matching the prior pass's
+handoff state.
+
+**Built and applied `modset_builder.py --tier greentideant --apply`** (14 mods:
+Harmony, Core+5 DLC, RimBridgeServer, VEF, AlphaBiomes, FlowWorks,
+LuminousPigment, `mandrake.rm.biomes`, `mandrake.rut.greentideraidant` —
+`Sapiently.TheyAtomicMonsters` absent). Confirmed `mandrake.rm.biomes`
+(deployed at `RimMandrake.Biomes\Biomes\_Kits\CreatureBehaviors\Assemblies\
+RimMandrake.CreatureBehaviors.dll`) carries the DirectedAssault DLL before
+restarting.
+
+**Found and fixed a genuine, unrelated, live-blocking bug on the very first
+restart** (fixed on sight per CLAUDE.md "correctness outranks seat
+ownership" — not part of this item's original scope, but it stood between
+any live verify and a working game, and left standing it would have crashed
+the NEXT fresh worldgen — quicktest or otherwise — under the full campaign
+list too):
+
+- Three `ParentName="<ConcreteVanillaDefName>"` references
+  (`RM_ChillHeatedSuit` → `Apparel_Vacsuit`, `RM_SandBusterMound` → `Hive`,
+  `RM_SandBusterTunnel` → `TunnelHiveSpawner`, all authored earlier the same
+  day, `5eaa306e4`/`0c6e84064`) **never resolved, on any mod list, ever** —
+  RimSage-confirmed against the decompiled `Verse/XmlInheritance.cs`:
+  `GetBestParentFor` indexes inheritance-parent candidates *only* by an XML
+  node's own `Name="..."` attribute, never by `<defName>`, and none of those
+  three vanilla/Odyssey defs carry one (they're concrete, playable defs, not
+  templates). Left null `thingClass` NREs
+  `ReadingPolicyDatabase.GenerateStartingPolicies()`
+  (`item.thingClass.SameOrSubclassOf<Book>()`) inside `Game..ctor()` —
+  crashing new-colony creation, quicktest, AND campaign save load alike, the
+  moment any of the three is active. Confirmed deployed live and byte-identical
+  to repo before fixing (both files are folded into `mandrake.rm.biomes`,
+  which is in the live campaign's `ModsConfig.FULL.LATEST.xml`) — this was a
+  real, latent risk to the owner's own next load, found only because this
+  item's live verify happened to construct a `Game` for the first time since
+  those files landed. Fixed by inheriting from the actual abstract templates
+  (`ApparelBase`, `BuildingNaturalBase`, `EtherealThingBase` — all of which do
+  carry `Name=`) and restating, verbatim, every field the concrete defs added
+  on top of them, so nothing the original authors intended to inherit was lost.
+- A second, independent instance of the same defect class:
+  `RM_LanternDeeps` (`0c6e84064`-adjacent, `LANTERNDEEPS_RM_MOD_BUILD_1`,
+  2026-09-26) declares no `<workerClass>` at all and never sets
+  `generatesNaturally=false`/`canAutoChoose=false` (unlike its sibling seabed
+  placeholder biomes, which do). `WorldGenStep_Terrain.BiomeFrom` iterates
+  every `BiomeDef` for every tile of a fresh world and only short-circuits on
+  `generatesNaturally` before touching `.Worker` (RimSage-confirmed) — so with
+  it left `true` (the field's default), this def entered ordinary surface-tile
+  scoring and crashed `BiomeDef.Worker` (`workerClass` null) on effectively the
+  first tile of any fresh worldgen. The file's own header already claimed "no
+  seed can place it" / "nothing here for worldgen to score" — the fix
+  (`generatesNaturally=false`, `canAutoChoose=false`) simply makes that true,
+  matching the pattern already used for the seabed placeholders two mods over.
+- Both fixes are additive/restorative only — no field any other item depends
+  on was removed. Deployed (`deploy_custom_mods.py --compose biomes --apply`),
+  restarted, and reverified clean before proceeding (0 "Could not find parent
+  node" hits, 0 null-thingClass Config errors, worldgen completed).
+- **Noted but NOT fixed** (out of scope, does not block this item, not
+  introduced by anything here): one further `Could not find parent node named
+  "RM_BaseGasDamaging"` hit on the full 614-mod boot — same defect family,
+  different content, worth a follow-up item but not chased down this pass.
+
+**Live verify, on the fixed 14-mod `greentideant` tier**
+(`start_debug_game_ready`, worldgen succeeded once the LanternDeeps fix
+landed):
+- `jawa/get_defs` on all 7 replicated defs (`RUT_GreentideAntRace`, both
+  pawnkinds, `RUT_GreentideAntFaction`, the carapace item, the carapace wall,
+  `RUT_ThinkTree_GreentideAnt`) — **7 of 7 resolved**, no errors.
+- `Player.log`: zero `Sapiently`/`TheyAtomicMonsters`/`MyAntMod` hits anywhere
+  on the tier; the only GreentideAnt-related lines are two expected
+  texture-not-found warnings (body + wall atlas art still pending, as already
+  noted above — unrelated to this pass).
+- Spawned `RUT_GreentideAntCarapace` and `RUT_GreentideAntCarapaceWall` via
+  `rimworld/spawn_thing`, then independently confirmed both as real map
+  presences via `jawa/list_things` (not trusting the bare `success: true`):
+  carapace item 100/100 HP at its spawn cell, carapace wall building 250/250
+  HP at its spawn cell, `scanned: 33372`.
+- Spawned 12 `RUT_GreentideAntSoldier` pawns hostile-factioned, recorded
+  positions, ran `rimworld/step_game_ticks` (583 ticks, game stayed paused —
+  a mutation observed without a UI unpause), and read positions back: **12 of
+  12** moved ~25-28 tiles, converging tightly on a point directly along the
+  vector from their spawn cluster toward the actual colonist positions ~80
+  tiles away — real directed movement toward the colony, not idling or random
+  wander, confirming `RM_JobGiver_DirectedAssault` actually drives the
+  behavior (`directedAssaultBehaviorEnabled` confirmed `true` by default in
+  `RM_CreatureBehaviorsMod.cs`).
+
+**Retirement completed.** Killed the game (Steam launch preserved throughout;
+`Stop-Process`/relaunch via `steam.exe -applaunch` only), built the
+post-retirement list from the verified pre-session full list
+(`deployed/config/ModsConfig.before-tier-greentideant.xml`, 614 mods,
+confirmed byte-identical in content to `ModsConfig.FULL.LATEST.xml` before
+touching anything): removed `sapiently.theyatomicmonsters`, inserted
+`mandrake.rut.greentideraidant` immediately after `mandrake.rm.biomes` (its
+functional dependency, and — since `mandrake.rm.biomes` was already the last
+entry — also the new last entry, a safe position since GreentideRaidAnt
+patches nothing and needs no specific load-order relative to anything else).
+Wrote the result to **both** the live `ModsConfig.xml` and
+`infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` (614 mods each,
+donor absent, replacement present — verified by parsing, not counting).
+Backed up the live file first
+(`deployed/config/ModsConfig.before-THEY_MOD_REPLICATION_1-retirement-write.xml`).
+
+**Restarted on the real, full 614-mod list** (~17 minutes, `Bridge token:`
+at `Player.log` line 59432) as the full-campaign-tolerates-the-removal proof
+— boot-to-main-menu only, no quicktest/worldgen attempted on the full list
+per the standing doctrine against that. Result: **no** corrupted-mods
+recovery reset, **zero** `Sapiently`/`TheyAtomicMonsters`/`MyAntMod` hits
+anywhere in the whole log, **zero** Config errors or exceptions naming any
+GreentideAnt/Carapace/ChillHeatedSuit/SandBusterMound/LanternDeeps def. The
+9 exceptions and 322 Config errors present in the full-list log are
+pre-existing and unrelated (ShipVermin, RSW_Shokk, FlowWorks/DeepSand,
+KurrethSwarm, TheSump, CannibalPirate/PirateYttakin — none touched by this
+item). This is the boot-to-menu-is-sufficient path from the task brief, not
+a full colony/save load — judged sufficient because the quicktest tier
+already proved mechanism+behavior and this pass only needed to prove the
+full dependency graph tolerates the swap.
+
+Added the retirement to `infrastructure/state/facts/retired_mods.json`
+(packageId `Sapiently.TheyAtomicMonsters`, `retiredOn: 2026-09-28`, `item:
+THEY_MOD_REPLICATION_1`), following the schema and `51ede08fe` precedent.
+
+**Still owed, explicitly out of this item's/a build seat's scope, does not
+block closing:**
+1. The coined pseudo-Star-Wars name (`NONCANON_BEAST_RENAME_1`) — labels are
+   still the donor's plain-English "giant ant" / "heated dive suit"-adjacent
+   text; defNames are stable and ready for the label swap once carded.
+2. Wall + body art — artpipe jobs already filed
+   (`infrastructure/artpipe/pending/rut_greentideant_*.json`), daemon-side,
+   not a build-seat blocker.
+3. Follow-up item for the `RM_BaseGasDamaging` parent-node XML error found
+   on the full-list boot (same defect family as the three fixed here,
+   different content, not chased down this pass).
+
+Released the bridge as the last action. Closing via `rimflow close`.
