@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T21:11:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T21:17:46Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -972,15 +972,6 @@ kind:     task
 summary:  1. Census every vanilla/DLC animal reachable in the Utinni scenario: biome
 prose:    infrastructure/state/items/VANILLA_BEAST_EXCISION_1.md
 
-## THEY_MOD_REPLICATION_1 Replicate They! (Giant Ants) in our own tier and retire the dependency — 1 race/2 kinds/hidden raid faction/carapace stuff+wall trivial XML, one small JobGiver in C#, new art+name; ~a day
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Re-author the whole surface in our tier (race, 2 pawnkinds, hidden raid
-prose:    infrastructure/state/items/THEY_MOD_REPLICATION_1.md
-
 ## MIASMA_SHIPPING_NAMES_1 Owner card: the_miasma working names (karrobel, karrathil, stranded deformation)
 state:    doing
 row:      unassigned
@@ -1895,3 +1886,13 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CRACKEDLANDSMECHANICSBUILD1 — the Swale, surveys, fossils-in-the-walls, the giants' behaviors, the soundscape
 prose:    infrastructure/state/items/CRACKEDLANDS_MECHANICS_BUILD_1.md
+
+## GASDAMAGING_PARENTNAME_UNRESOLVED_1 RM_BaseGasDamaging ParentName never resolves (XmlInheritance Name-attribute defect, same class as THEY_MOD_REPLICATION_1's fix)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  GASDAMAGINGPARENTNAMEUNRESOLVED1 — RMBaseGasDamaging ParentName never resolves
+prose:    infrastructure/state/items/GASDAMAGING_PARENTNAME_UNRESOLVED_1.md
