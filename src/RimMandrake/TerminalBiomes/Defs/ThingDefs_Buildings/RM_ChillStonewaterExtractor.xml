@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_ChillStonewaterExtractor.xml         CHILL_FLORA_BUILD_1
+  ============================================================================
+  Ruling 3 (owner, verbatim): "Cooking + real water source w/ power" — a
+  powered extractor placed on stonewater brakes acts as a genuine water
+  source, melting costs watts.
+
+  Building_WorkTable + CompPowerTrader, same shape as vanilla's own
+  BiofuelRefinery (RimSage-read, ParentName BenchBase) — Building_WorkTable
+  already refuses to run its bills without power (CanWorkWithoutPower false
+  by default, RimSage-read off Building_WorkTable.cs), which is what makes
+  "melting costs watts" literally true with no new C#: an unpowered
+  extractor simply will not run RM_Extract_MeltedWater
+  (RM_TheChillFuelChain.xml).
+
+  [ASSUMPTION, recorded per FOUNDRY's "specs state outcomes"]: no
+  researchPrerequisites set — the doc does not gate this behind a specific
+  research project and inventing a new ResearchProjectDef (with its own
+  tree placement) is out of this item's scope. Buildable as soon as a
+  colony has the materials and power to spare, same bar as any other small
+  utility building. Not placement-gated to a Stonewater plant specifically
+  (no PlaceWorker) — the doc's "placed on a brake" is read as fiction/siting
+  advice, matching how this codebase does not hard-gate every workbench's
+  placement to its thematic material either.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>RM_ChillStonewaterExtractor</defName>
+    <label>stonewater extractor</label>
+    <description>A powered rig meant to sit over a stonewater brake and melt its bones. The lake floor's only genuine water source: real, drinkable water, drawn out one watt at a time.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <category>Building</category>
+    <building>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+      <workTableRoomRole>Workshop</workTableRoomRole>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+      <workTableNotInRoomRoleFactor>0.8</workTableNotInRoomRoleFactor>
+    </building>
+    <canOverlapZones>false</canOverlapZones>
+    <!-- Placeholder art: reuses this mod's own RUT_SteamCatch production
+         building sprite (a single flat texture, no directional variants —
+         Graphic_Single, not the vanilla-style Graphic_Multi sheet a real
+         extractor sprite would want). validate_patch.py flagged the
+         original vanilla-Core "Things/Building/Production/Refinery" path as
+         an ERROR: it treats every Things/ path as this mod's own namespace,
+         so a genuinely vanilla path cannot be told apart from a typo here
+         and would risk a pink placeholder if wrong. Real art is owed. -->
+    <graphicData>
+      <texPath>Things/Building/Production/RUT_SteamCatch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <hasInteractionCell>true</hasInteractionCell>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <interactionCellIcon>DiningChair</interactionCellIcon>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <noRightClickDraftAttack>true</noRightClickDraftAttack>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <placeWorkers>
+      <li>PlaceWorker_ReportWorkSpeedPenalties</li>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+    <repairEffect>Repair</repairEffect>
+    <selectable>true</selectable>
+    <size>(2,2)</size>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <designationCategory>Production</designationCategory>
+    <drawerType>MapMeshOnly</drawerType>
+    <fillPercent>0.5</fillPercent>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <statBases>
+      <SellPriceFactor>0.7</SellPriceFactor>
+      <Mass>15</Mass>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>1200</WorkToBuild>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <surfaceType>Item</surfaceType>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <thingCategories Inherit="false">
+      <li>BuildingsProduction</li>
+    </thingCategories>
+    <useHitPoints>true</useHitPoints>
+    <comps>
+      <li Class="CompProperties_ReportWorkSpeed">
+        <workSpeedStat>WorkTableWorkSpeedFactor</workSpeedStat>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>120</basePowerConsumption>
+        <shortCircuitInRain>true</shortCircuitInRain>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <recipes>
+      <li>RM_Extract_MeltedWater</li>
+    </recipes>
+  </ThingDef>
+
+</Defs>

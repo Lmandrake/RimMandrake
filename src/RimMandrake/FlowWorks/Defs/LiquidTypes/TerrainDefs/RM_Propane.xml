@@ -16,6 +16,21 @@
   src/RimMandrake/FlowWorks/Tools/generate_liquid_suite.py; edit the table,
   never this file. Regenerate only against a re-frozen official dump, never a
   live capture (dumps decay — CHARTER's instrument order).
+
+  🔴 CHILL_FLORA_BUILD_1, 2026-09-28 — MANUAL PATCH, not yet folded into the
+  generator: RM_TheChillBed/RM_TheChillShelf tags added below to
+  RM_PropaneDeep/RM_PropaneShallow's own <tags>, per
+  design/Jawa/worldbuilding/biomes/the_propane_lake_flora_pass_2026-09-27.md
+  §"plantDensity and the unset-field trap" point 4 (the ten
+  RM_TheChillFlora.xml plants' wildTerrainTags need something to match).
+  generate_liquid_suite.py's generate() hardcodes extra_tags=["Water"] for
+  every LIQUID_ROWS entry uniformly (no per-row extra-tag field exists yet)
+  — running the full generator to add two tags would touch every other
+  liquid's terrain files too, an oversized blast radius for this item's
+  scope. Whoever next extends LIQUID_ROWS with a per-row extra-tags field
+  (or next regenerates this file from a re-frozen dump) MUST carry these two
+  tags forward by hand, or the Chill's whole flora roster silently stops
+  spawning again — same failure shape as PROPANELAKE_ANIMALDENSITY_ZERO_1.
   ============================================================================
 -->
 <Defs>
@@ -41,6 +56,7 @@
     <tags>
       <li>Water</li>
       <li>dbh_water</li>
+      <li>RM_TheChillShelf</li>
     </tags>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
@@ -67,6 +83,7 @@
     <tags>
       <li>Water</li>
       <li>dbh_water</li>
+      <li>RM_TheChillBed</li>
     </tags>
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">

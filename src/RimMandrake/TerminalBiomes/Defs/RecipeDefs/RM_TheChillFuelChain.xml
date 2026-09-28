@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TheChillFuelChain.xml                CHILL_FLORA_BUILD_1
+  ============================================================================
+  Ruling 2 (owner, sitting of 2026-09-27): "it's ok to harvest them for fuel.
+  This is very late gme" and, on shape: "Just have it result at the harvest
+  bench (hydrocarbon flesh) that can then be converted at the refinery."
+
+  The refinery ALREADY EXISTS — vanilla's own BiofuelRefinery, the same
+  building RUT_PropaneCatch_Refining.xml already hangs a Chill-catch-to-
+  chemfuel recipe on (src/RimUtinni/UtinniPatches/Defs/RecipeDefs/). No
+  parallel refinery building is invented here, per the item's own
+  instruction. Every recipe below is a standalone RecipeDef (no ParentName)
+  in that same shape, MayRequire="Ludeon.RimWorld.Odyssey" mirroring the
+  sibling recipe's own guard.
+
+  Three-step chain, because a vanilla Plant can only carry ONE
+  harvestedThingDef and two of these plants have TWO ruled fractions:
+
+    harvest -> [bench recipe, if the plant has two fractions] -> hydrocarbon
+    flesh (+ any second product) -> [refinery recipe] -> chemfuel
+
+  - Slackwax: RM_SlackwaxTimber (primary, kept as timber), OR
+  - Pitchpearl: RM_PitchpearlBeads (primary, kept as feed), feed into:
+      RM_Make_HydrocarbonFleshFromChillFlora -> RM_HydrocarbonFlesh
+  - Tarspool: RM_TarspoolStalk -> RM_Resolve_TarspoolStalk ->
+      RM_RimeNoduleEuphoric (ruling 8) + RM_HydrocarbonFlesh
+  - All hydrocarbon flesh -> RM_Make_ChemfuelFromHydrocarbonFlesh ->
+      Chemfuel. THIS is the gate ruling 2 means.
+
+  Yield numbers are [INVENTED], calibrated loosely against
+  RUT_PropaneCatch_Refining.xml's own 10 catch -> 35 chemfuel ratio (a purer
+  hydrocarbon feedstock than mixed catch, priced a little richer per unit).
+  ============================================================================
+-->
+<Defs>
+
+  <!-- Tarspool's stalk, resolved into its two ruled fractions in one bench
+       action ("scraping the crown... the heavy black tars at the base",
+       doc's own two-part harvest description) — one RecipeDef, two
+       <products>, rather than inventing a second harvestedThingDef field
+       the engine does not have. -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Resolve_TarspoolStalk</defName>
+    <label>resolve a tarspool stalk</label>
+    <description>Take a whole tarspool apart along its own bands: scrape the violet crown for its euphoric fraction, render the black base tars down to hydrocarbon flesh. The amber middle goes to neither and is simply lost.</description>
+    <jobString>Resolving a tarspool stalk.</jobString>
+    <workAmount>400</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Drug</soundWorking>
+    <recipeUsers>
+      <li>BiofuelRefinery</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_TarspoolStalk</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_TarspoolStalk</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_RimeNoduleEuphoric>1</RM_RimeNoduleEuphoric>
+      <RM_HydrocarbonFlesh>1</RM_HydrocarbonFlesh>
+    </products>
+  </RecipeDef>
+
+  <!-- Slackwax's offcuts, Pitchpearl's beads: the doc's own "who feeds the
+       chain" list, minus Tarspool (handled above). Interchangeable
+       ingredient filter, same shape as RUT_PropaneCatch_Refining.xml's own
+       seven-catch filter. -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Make_HydrocarbonFleshFromChillFlora</defName>
+    <label>render Chill flora into hydrocarbon flesh</label>
+    <description>Cut slackwax offcuts, or pitchpearl beads not wanted for feed, rendered down into stacked hydrocarbon flesh — inert, industrial, and worth nothing until a refinery wants it.</description>
+    <jobString>Rendering Chill flora into hydrocarbon flesh.</jobString>
+    <workAmount>500</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <recipeUsers>
+      <li>BiofuelRefinery</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <customSummary>Chill flora offcuts</customSummary>
+          <thingDefs>
+            <li>RM_SlackwaxTimber</li>
+            <li>RM_PitchpearlBeads</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_SlackwaxTimber</li>
+        <li>RM_PitchpearlBeads</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_HydrocarbonFlesh>2</RM_HydrocarbonFlesh>
+    </products>
+  </RecipeDef>
+
+  <!-- The gate itself — ruling 2's "converted at the refinery." Very-late-
+       game by construction: BiofuelRefinery's own research/power/Odyssey
+       requirements are the gate, exactly as the doc specifies ("reached
+       only by a colony that already flies a gravship to the floor and
+       back... until that bench exists the flesh is just the strangest meat
+       in the larder"). -->
+  <RecipeDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Make_ChemfuelFromHydrocarbonFlesh</defName>
+    <label>refine hydrocarbon flesh into chemfuel</label>
+    <description>Crack the Chill floor's own hydrocarbon flesh into chemfuel. It is purer feedstock than the pipe crews haul up from the shore catch — closer to decanting than to refining, and priced entirely in ship time and refinery watts.</description>
+    <jobString>Refining hydrocarbon flesh into chemfuel.</jobString>
+    <workAmount>1200</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <recipeUsers>
+      <li>BiofuelRefinery</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_HydrocarbonFlesh</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_HydrocarbonFlesh</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <Chemfuel>15</Chemfuel>
+    </products>
+  </RecipeDef>
+
+  <!-- Stonewater's powered extractor, ruling 3: "Cooking + real water
+       source w/ power" — the extractor melts harvested ice under power
+       into a genuine water item. RM_ChillStonewaterExtractor itself
+       (Building_WorkTable + CompPowerTrader) is in
+       RM_ChillStonewaterExtractor.xml, this pass; Building_WorkTable's own
+       power gate (CanWorkWithoutPower false, default) is what makes
+       "melting costs watts" literally true — the bill simply will not run
+       unpowered, verified against decompiled Building_WorkTable.BillStack/
+       UsableNow, not assumed. -->
+  <RecipeDef>
+    <defName>RM_Extract_MeltedWater</defName>
+    <label>melt stonewater ice</label>
+    <description>Run harvested stonewater ice through the powered extractor. The local granite comes apart into real, drinkable water — the lake floor's only genuine water source, and every litre of it costs watts.</description>
+    <jobString>Melting stonewater ice.</jobString>
+    <workAmount>300</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cremate</effectWorking>
+    <recipeUsers>
+      <li>RM_ChillStonewaterExtractor</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_StonewaterIce</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_StonewaterIce</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_MeltedWater>2</RM_MeltedWater>
+    </products>
+  </RecipeDef>
+
+</Defs>

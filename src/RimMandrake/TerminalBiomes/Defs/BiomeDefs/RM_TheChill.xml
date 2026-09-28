@@ -93,6 +93,34 @@
     <animalDensity>0.08</animalDensity>
     <coastalWildAnimals />
 
+    <!-- CHILL_FLORA_BUILD_1, 2026-09-28 — the same unset-field trap
+         PROPANELAKE_ANIMALDENSITY_ZERO_1 found on animalDensity applies
+         verbatim to plantDensity: left unset it defaults to 0f and the ten
+         RM_TheChillFlora.xml rows below could never spawn. 0.18 is RULED
+         (Q1, design/Jawa/worldbuilding/biomes/the_propane_lake_flora_pass_2026-09-27.md
+         §"plantDensity and the unset-field trap") — a hair above the Grey
+         Sea's animalDensity-relative position, sparser than any dayside
+         biome, matching the floor's own register of stillness. -->
+    <plantDensity>0.18</plantDensity>
+    <wildPlants>
+      <!-- Shorthand form only, per the same BiomeAnimalRecord/custom-loader
+           trap wildAnimals already carries above — an <li> wrapper here
+           silently discards the row. -->
+      <RM_Slackwax>0.9</RM_Slackwax>
+      <RM_Skyharp>0.8</RM_Skyharp>
+      <RM_Ghostpane>0.7</RM_Ghostpane>
+      <RM_Pitchpearl>0.7</RM_Pitchpearl>
+      <RM_Keelgrass>0.6</RM_Keelgrass>
+      <RM_Tarspool>0.6</RM_Tarspool>
+      <RM_Stonewater>0.4</RM_Stonewater>
+      <!-- RM_ChillStillbloom, not bare RM_Stillbloom — that defName
+           collides with RM_GreySeaUnderstorey.xml's own plant, see
+           RM_TheChillFlora.xml's def comment. -->
+      <RM_ChillStillbloom>0.35</RM_ChillStillbloom>
+      <RM_Fuselight>0.3</RM_Fuselight>
+      <RM_Eldspar>0.25</RM_Eldspar>
+    </wildPlants>
+
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
     <baseWeatherCommonalities>
       <Clear>14</Clear>

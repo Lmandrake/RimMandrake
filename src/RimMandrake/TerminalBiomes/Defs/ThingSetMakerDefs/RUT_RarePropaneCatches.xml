@@ -5,11 +5,19 @@
   table. Parented on vanilla's own RareFishingCatchesBase, same shape as
   RM_RareScaldCatches/RM_RareTwilightCatches/RUT_RareGreyCatches.
 
-  Three options: weight 4 Chemfuel x10-20 ("a sac of pooled fuel, frozen
-  round the line" — the tank's own catch, vanilla def); weight 2
-  RUT_AuroraGlass x1 (🔴 not kyber, carries no lightsaber property, never
-  will — ban 2, the_propane_lakes.md); weight 1 RUT_Oddu x4-6 ("a good
-  evening's worth").
+  🔴 CHILL_FLORA_BUILD_1, 2026-09-28 — RUT_AuroraGlass REMOVED from this
+  table (ruling 7, the_propane_lake_flora_pass_2026-09-27.md: "AuroraGlass
+  moves into the garden" — Eldspar hearts yield it now,
+  RM_TheChillFlora.xml, and it also appears as a rare vein find on the
+  war-lab drill shafts, CHILL_WARLAB_ROUTES_1 — neither built here). Two
+  options remain: weight 4 Chemfuel x10-20 ("a sac of pooled fuel, frozen
+  round the line" — the tank's own catch, vanilla def); weight 1 RUT_Oddu
+  x4-6 ("a good evening's worth"). Weights left as originally set (4/1) —
+  the doc does not re-rule the remaining ratio, and rebalancing it is not
+  this item's scope. The RimUtinni-tier frozen twin
+  (src/RimUtinni/UtinniPatches/Defs/ThingSetMakerDefs/RUT_RarePropaneCatches.xml)
+  is untouched deliberately: Phase B, per the doc's own "twin, for Phase B"
+  note.
 -->
 <Defs>
 
@@ -27,19 +35,6 @@
                 </thingDefs>
               </filter>
               <countRange>10~20</countRange>
-            </fixedParams>
-          </thingSetMaker>
-        </li>
-        <li>
-          <weight>2</weight>
-          <thingSetMaker Class="ThingSetMaker_StackCount">
-            <fixedParams>
-              <filter>
-                <thingDefs>
-                  <li MayRequire="mandrake.rut.patches">RUT_AuroraGlass</li>
-                </thingDefs>
-              </filter>
-              <countRange>1~1</countRange>
             </fixedParams>
           </thingSetMaker>
         </li>
