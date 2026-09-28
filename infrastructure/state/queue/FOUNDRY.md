@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T02:28:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T02:36:35Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1 grain-scale commensal fauna riding RM_MirrorGiant's shade
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  DUNESEASHADECOMMENSALMICROFAUNA1 — grain-scale life riding the mirror giant's shadow
-prose:    infrastructure/state/items/DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -1955,3 +1946,13 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  design/Jawa/worldbuilding/biomes/thepyrelands.md §4 (three-families fire-web ruling);
 prose:    infrastructure/state/items/PYRELANDS_DEDICATED_GRAZER_1.md
+
+## TWILIGHT_REVIEW_FIXES_1 Fix the 14 Twilight-wave code-review findings: 4 ship-blockers (plant CompTick lure, Never-ticker cargo float, undersurge on every biome, unstandable drift targets) + 10 smaller
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## criteria
+summary:  TWILIGHTREVIEWFIXES1 — fix the 14 code-review findings in the Twilight build wave
+prose:    infrastructure/state/items/TWILIGHT_REVIEW_FIXES_1.md
