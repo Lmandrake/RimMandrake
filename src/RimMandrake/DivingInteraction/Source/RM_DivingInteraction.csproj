@@ -78,6 +78,8 @@
     <Compile Include="Patch_ChillGardenDefense.cs" />
     <Compile Include="RM_MapComponent_ChillFootprints.cs" />
     <Compile Include="GenStep_ChillRimeTerraces.cs" />
+    <Compile Include="RM_MapComponent_ChillDrownedAurora.cs" />
+    <Compile Include="Patch_ChillDrownedAurora.cs" />
   </ItemGroup>
 
   <ItemGroup>

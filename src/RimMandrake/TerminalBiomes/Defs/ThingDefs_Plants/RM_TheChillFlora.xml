@@ -104,7 +104,17 @@
        Sublimation: it can vanish but it cannot wilt. Structurally
        unharvestable (harvestYield unset -> 0 -> PlantProperties.Harvestable
        false) — "anything warm enough to hold it is warm enough to erase
-       it," per the doc. -->
+       it," per the doc.
+
+       CHILL_FLOOR_LIGHT_1, 2026-09-28: CompProperties_Glower added —
+       this item's own text names Ghostpane (alongside Fuselight, which
+       already shipped one under CHILL_FLORA_BUILD_1) as the bottom's
+       "bioluminescent constants," and it had none. A pale violet-white ice
+       glow, dimmer and cooler than Fuselight's peroxide-lamp blue
+       (glowRadius 1.5 vs Fuselight's 2 — a passive frozen membrane reads
+       quieter than a hoarded-fire stalk), on the SAME violet-teal palette
+       this item's other layer (the drowned aurora) uses, never a generic
+       white/blue. -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Ghostpane</defName>
     <label>ghostpane</label>
@@ -121,6 +131,12 @@
       <Flammability>0</Flammability>
       <Beauty>2</Beauty>
     </statBases>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1.5</glowRadius>
+        <glowColor>(170,150,235,0)</glowColor>
+      </li>
+    </comps>
     <plant>
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
