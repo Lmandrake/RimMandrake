@@ -53,5 +53,18 @@ dependency on Utinni content. STILLSAND_RULED_CONTENT_1 explicitly deferred qorr
 the owner's art-review sheet — left untouched here and in the Utinni patch.
 
 Live proof (a scratch-world quicktest with all five expansions) is Desktop-only and OWED —
-see the item's own verify record.</description>
+see the item's own verify record.
+
+✅ SANDBUSTER_CASTES_BUILD_1 (2026-09-27/28, dune_sea.md's ruled "Amendment — the
+sand busters"): ships the biome's one incident-spawned threat. RM_Ruukka (the giant
+eruptor) and RM_Oorrik (the grain swarm) are the two ruled castes; RM_SandBusterMound
+is vanilla Hive re-skinned (same thingClass, new comps/art); RM_SandBusterTunnel
+(thingClass RM_SandBusterTunnelSpawner, the one new C# class this build needed)
+replaces vanilla's TunnelHiveSpawner at the eruption point. RM_SandBusterEruption
+(IncidentDefs/RM_SandBusterEruption.xml) confines the whole mechanism to RM_Stillsand
+via its own allowedBiomes field — the planet-wide ban of vanilla's own Infestation is
+mandrake.rut.patches' Infestation_PlanetwideBan.xml, not this mod. Neither caste is
+wired into wildAnimals — both are purely incident-spawned, matching the biome's own
+event-driven/dormant design law. Art queued (infrastructure/artpipe/art_lists/
+sandbuster_castes.csv), none rendered yet; every def ships with a placeholder texPath.</description>
 </ModMetaData>

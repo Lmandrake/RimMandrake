@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+<!--
+    Infestation_PlanetwideBan.xml                                Jawa_Patches
+    ============================================================================
+    SANDBUSTER_CASTES_BUILD_1 — dune_sea.md's "Amendment — the sand busters"
+    (owner-ruled 2026-09-24, NIGHTSIDE_ICE_DESIGN_SITTING_1): "the event is
+    banned everywhere else on the planet as part of the Utinni scenario —
+    the campaign layer suppresses the incident planet-wide, and only the
+    Dune Sea carries it."
+
+    Vanilla Core's own IncidentDef defName="Infestation" is zeroed out
+    EVERYWHERE, Stillsand included — not narrowed with disallowedBiomes to
+    exclude just the Dune Sea, because the Dune Sea does not get vanilla
+    Infestation either: it gets the re-skinned RM_SandBusterEruption
+    (mandrake.rm.stillsand, RM_SandBusterEruption.xml), which confines
+    itself to RM_Stillsand via its own <allowedBiomes> field. So this
+    incident's correct footprint is the empty set on every biome, which a
+    flat baseChance=0 gives directly — an allowedBiomes/disallowedBiomes
+    pair would have to enumerate every OTHER biome (or use disallowedBiomes
+    with RM_Stillsand on it, which would wrongly leave the incident live
+    there instead of the sand-buster replacement). baseChance=0 is also this
+    repo's own established pattern for "the mod stays active, the incident
+    just never fires again" — same mechanism as
+    MoEventsChancesZeroed_RuledCut.xml (MODLIST_RULED_CUTS_1), reused here
+    against a Core def instead of a third-party mod's.
+
+    baseChanceWithRoyalty is left untouched: the live IncidentDef dump
+    (RimSage, 2026-09-27) carries no override for it (default -1), so
+    ModsConfig.RoyaltyActive never reads it in preference to baseChance —
+    zeroing baseChance alone is sufficient regardless of which DLCs are
+    active (and per CLAUDE.md, every DLC is assumed active anyway).
+
+    Scope, deliberately narrow: this patch touches ONLY the storyteller-
+    picked IncidentDef defName="Infestation" (RimWorld.
+    IncidentWorker_Infestation) — the classic bug-storm event the amendment
+    names ("vanilla's infestation event — the huge insects that burst from
+    the ground"). It does NOT touch DeepDrillInfestation (a different
+    incident, triggered by the player's own deep-drilling action rather than
+    the storyteller), WastepackInfestation, Infestation_Jelly, or Anomaly's
+    own ComplexThreatDef defName="Infestation" (a different def type/system
+    entirely) — none of those are the incident the amendment describes, and
+    banning them was never asked for. If a future ruling widens the ban to
+    those, it is separate work, not an omission here.
+
+    No PatchOperationFindMod guard: this targets a Core IncidentDef, which
+    is always present regardless of the active mod list (unlike
+    MoEventsChancesZeroed_RuledCut.xml's third-party-mod target).
+-->
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/IncidentDef[defName="Infestation"]/baseChance</xpath>
+    <value>
+      <baseChance>0</baseChance>
+    </value>
+  </Operation>
+
+</Patch>

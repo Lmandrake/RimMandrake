@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SandBusters.xml                      RimMandrake — SANDBUSTER_CASTES_BUILD_1
+
+  The two sand-buster castes, ruled at NIGHTSIDE_ICE_DESIGN_SITTING_1 (2026-09-24
+  amendment to dune_sea.md) and named/scoped at STILLSAND_DESIGN_SITTING_1
+  (2026-09-27, Q9/Q14). Both coins checker 6/6 and Wookieepedia 0-hit (probed
+  live 2026-09-27) — confirmed non-canon, RM_-tier per Q11a, per the item's own
+  provenance note; not re-checked here.
+
+  These two PawnKindDefs are ONLY ever spawned by RM_SandBusterMound's own
+  CompProperties_SpawnerPawn (see RM_SandBusterMound.xml) — neither is wired
+  into RM_Stillsand_Biome.xml's <wildAnimals>. That is deliberate, not an
+  oversight: dune_sea.md §4 makes the whole biome event-driven ("the default
+  state of the dune sea is dormancy... it wakes up because something did
+  something"), and vanilla's own Megaspider/Spelopede/Megascarab are handled
+  the same way — threat-spawned by Hive, never a roster animal. Adding
+  these to wildAnimals would also violate the item's own "do not add
+  anything beyond the two ruled castes + mound + incident" constraint by
+  turning an event-driven ambush threat into an ambient population.
+
+  §6's bimodal law ("giant or grain-scale, nothing between... a hard gap
+  where every ordinary animal would be") is why there are TWO castes here
+  where vanilla's Hive has THREE (Megascarab/Spelopede/Megaspider): the
+  biome's own hard ban on medium bodies (R22's 0.3-3.0 mid-band) collapses
+  vanilla's small/medium/large trio onto exactly the two poles the sheet
+  allows. Ruukka is the giant pole, oorrik is the grain pole; there is no
+  "medium sand buster" and there is not supposed to be one.
+
+  SILHOUETTE (the sheet's own worst-offence clause, §6/Amendment: "no
+  recognisable spider/insect silhouette... a nameable giant is this sheet's
+  worst offence"): a RimWorld race's visual silhouette is entirely its ART
+  (texPath), never its BodyDef — BodyDef governs the health/hitbox skeleton
+  only (RimSage-confirmed: Hive's own spawnablePawnKinds read
+  Props.spawnablePawnKinds per-instance, nothing about body shape). So
+  neither caste below uses an insectoid BodyDef (BeetleLike/
+  BeetleLikeWithClaw, vanilla Megascarab/Megaspider's own bodies) — both use
+  plain mammalian quadruped skeletons, functionally identical to half this
+  biome's existing predator roster (RM_Vekka, RM_Drazzik). The actual "does
+  not read as a spider/beetle" requirement is carried by the ART BRIEF (see
+  each PawnKindDef's texPath comment and the artpipe job filed for this
+  item) — reusing a non-insect functional skeleton is necessary but not
+  sufficient, and whoever renders these must draw an eruption-adapted
+  burrower/driller silhouette, not a bug with a new paint job.
+
+  SUN-AXIS POLARISATION (§4: "every organism is polarised on the sun-axis...
+  the sun-face is mirror, ceramic, ablative armour... the shade-face carries
+  every opening the organism has"): both castes spend almost their entire
+  life below the sand and only briefly present a sun-face when they erupt
+  to strike — so the asymmetry is described in-fiction (dorsal plate vs.
+  soft ventral maw/digging face) and reflected mechanically the same way
+  RM_Oommok's is: through stats (heavy armor, nothing about a split
+  BodyDef) rather than a second body. This mirrors this mod's own existing
+  precedent (RM_Oommok's header: "that asymmetry is a property of the ART...
+  not something a BodyDef could express").
+
+  STATS: both castes use surpriseAttack stun bonuses on their first strike,
+  matching this biome's established "erupts and strikes before you can
+  react" pattern (RM_Vekka, RM_Drazzik — same mechanic, same precedent).
+  combatPower values are set so a mound's CompProperties_SpawnerPawn
+  (initialPawnsPoints 200 / maxSpawnedPawnsPoints 500, unchanged from
+  vanilla Hive) produces "one or two giants plus a real grain-scale swarm"
+  rather than either pole alone.
+
+  ART: no render exists for "ruukka"/"sand buster"/"oorrik" anywhere in
+  infrastructure/artpipe/{done,pending,_artsrc}/registry.jsonl (checked this
+  pass). Two 3-facing jobs filed (infrastructure/artpipe/art_lists/
+  sandbuster_castes.csv -> pending/RM_Ruukka_{south,east,north}.json,
+  RM_Oorrik_{south,east,north}.json) — both prompts
+  explicitly require the no-insect-silhouette + sun-face/shade-face split;
+  texPaths below point at each def's own future folder, art pending, same
+  posture this mod's other unrendered ports use (RM_Ikee, RM_Vekka,
+  RM_Drazzik, RM_Aurrok).
+-->
+<Defs>
+
+  <!-- ============== Ruukka — the giant eruptor ============== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Ruukka</defName>
+    <label>ruukka</label>
+    <description>A driving wedge of plate and muscle that spends its entire life a metre under the dune crest, and only ever shows itself once: coming straight up through the sand, dorsal plate first, in the half-second before it hits something. What surfaces is armoured top to bottom in fused, sun-bright scale; what it turns toward its prey afterward, jaws and digging claws both, has never once seen the light before that moment. It does not chase. It does not need to.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <Mass>1400</Mass>
+      <MarketValue>0</MarketValue>
+      <Wildness>1.0</Wildness>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <ArmorRating_Sharp>1.0</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.6</ArmorRating_Blunt>
+      <ArmorRating_Heat>2.0</ArmorRating_Heat>
+      <PainShockThreshold>0.8</PainShockThreshold>
+      <Flammability>0</Flammability>
+      <FilthRate>4</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>left drill-claw</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>32</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right drill-claw</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>32</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>jaws</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>24</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>26</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>plated head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <!-- Giant pole of §6's bimodal law (bs >=4, this mod's Q8-ratified floor). -->
+      <baseBodySize>5.0</baseBodySize>
+      <baseHealthScale>6.0</baseHealthScale>
+      <baseHungerRate>0.0</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <trainability>None</trainability>
+      <petness>0</petness>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <gestationPeriodDays>0</gestationPeriodDays>
+      <lifeExpectancy>6</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Ruukka</defName>
+    <label>ruukka</label>
+    <labelPlural>ruukkas</labelPlural>
+    <race>RM_Ruukka</race>
+    <!-- Never wild-spawned (not in any biome's wildAnimals — see this file's
+         header); faction is forced to the spawning mound's own faction
+         (Faction.OfInsects) by CompSpawnerPawn.TrySpawnPawn regardless of
+         this field, but set for the same documentary reason vanilla's own
+         InsectKindBase sets it. -->
+    <defaultFactionDef>Insect</defaultFactionDef>
+    <canArriveManhunter>false</canArriveManhunter>
+    <combatPower>230</combatPower>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- art pending — SANDBUSTER_CASTES_BUILD_1, pending/RM_Ruukka_{south,
+               east,north}.json filed. Brief:
+               NO insect/spider silhouette; dorsal sun-face plate vs. soft
+               ventral shade-face split must read clearly. -->
+          <texPath>Things/Pawn/Animal/RM_Ruukka/RM_Ruukka</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.2</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.6, 0.45)</volume>
+            <offset>(0,0,-0.1)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============== Oorrik — the grain swarm ============== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Oorrik</defName>
+    <label>oorrik</label>
+    <description>A single oorrik is nothing — a wet-mouthed sliver of a thing barely bigger than the grains it moves through. A mound's worth of them is a different problem: dozens surfacing in the same half-second across ten metres of sand, each one too small to hit and too many to count. Nothing about any one of them is dangerous. That was never the point.</description>
+    <statBases>
+      <MoveSpeed>5.5</MoveSpeed>
+      <Mass>0.3</Mass>
+      <MarketValue>0</MarketValue>
+      <Wildness>1.0</Wildness>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <MeatAmount>0</MeatAmount>
+      <Flammability>0</Flammability>
+    </statBases>
+    <tools>
+      <li>
+        <label>mouthparts</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>foreclaw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Rat</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <!-- Grain pole of §6's bimodal law (matches this mod's own ikee at 0.15). -->
+      <baseBodySize>0.18</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.0</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <trainability>None</trainability>
+      <petness>0</petness>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <gestationPeriodDays>0</gestationPeriodDays>
+      <lifeExpectancy>2</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Oorrik</defName>
+    <label>oorrik</label>
+    <labelPlural>oorriks</labelPlural>
+    <race>RM_Oorrik</race>
+    <defaultFactionDef>Insect</defaultFactionDef>
+    <canArriveManhunter>false</canArriveManhunter>
+    <!-- Low per-unit combatPower is deliberate — against a mound's fixed
+         initialPawnsPoints/maxSpawnedPawnsPoints (200/500, unchanged from
+         vanilla Hive) a low figure here is what makes "grain swarm" true in
+         play: many oorrik spawn per points budget rather than one or two. -->
+    <combatPower>16</combatPower>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- art pending — SANDBUSTER_CASTES_BUILD_1, pending/RM_Oorrik_{south,
+               east,north}.json filed. Brief:
+               NO insect/spider silhouette; grain-scale, not a scaled-down
+               copy of ruukka's art. -->
+          <texPath>Things/Pawn/Animal/RM_Oorrik/RM_Oorrik</texPath>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
