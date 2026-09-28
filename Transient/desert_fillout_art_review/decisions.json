@@ -1,0 +1,99 @@
+{
+ "decidedCount": 18,
+ "decisions": {
+  "RM_Dakkra": {
+   "decision": "keep"
+  },
+  "RM_Dewfringe": {
+   "decision": "keep"
+  },
+  "RM_Duumma": {
+   "decision": "keep"
+  },
+  "RM_Gaanok": {
+   "at": "2026-09-28T04:54:47.467Z",
+   "decision": "improve",
+   "note": "North facing appears to be looking at us still.",
+   "prefill": "keep"
+  },
+  "RM_Gennok": {
+   "at": "2026-09-28T04:52:11.600Z",
+   "decision": "improve",
+   "note": "Too cartoonish. More realistic please.",
+   "prefill": "keep"
+  },
+  "RM_Glasscrust": {
+   "decision": "keep"
+  },
+  "RM_Hourbloom": {
+   "decision": "keep"
+  },
+  "RM_KneelOllim": {
+   "at": "2026-09-28T04:56:55.153Z",
+   "decision": "improve",
+   "note": "More open, less hood-like. Like a sunshade, not a full hood.",
+   "prefill": "keep"
+  },
+  "RM_Liikka": {
+   "decision": "keep"
+  },
+  "RM_Loomma": {
+   "at": "2026-09-28T04:56:01.904Z",
+   "decision": "improve",
+   "note": "Too cartoonish, more realistic please",
+   "prefill": "keep"
+  },
+  "RM_Orruhmu": {
+   "at": "2026-09-28T04:57:35.296Z",
+   "decision": "improve",
+   "note": "North facing should not be able to see its mouth-thing",
+   "prefill": "keep"
+  },
+  "RM_Pirrik": {
+   "at": "2026-09-28T04:51:48.949Z",
+   "decision": "improve",
+   "note": "Too boring. This just looks like a bird. More alien please.",
+   "prefill": "keep"
+  },
+  "RM_Qorrax": {
+   "decision": "keep"
+  },
+  "RM_Sollak": {
+   "at": "2026-09-28T04:52:43.534Z",
+   "decision": "improve",
+   "note": "The review sheet appears to be truncating the thumbnails (though the click-through whole imagery looked good). This image's creature looks v ery large, but the image appears to be fairly moderate resolution. Suggest this creature to be MUCH larger than it is shown here by resolution.",
+   "prefill": "keep"
+  },
+  "RM_Soorrak": {
+   "at": "2026-09-28T04:54:09.918Z",
+   "decision": "regen",
+   "note": "Looks mechanical. Something very wrong with the north facing head. Looks cartoonish.",
+   "prefill": "keep"
+  },
+  "RM_Tebbra": {
+   "at": "2026-09-28T04:52:01.914Z",
+   "decision": "improve",
+   "note": "Too cartoonish and too \"cute/terran.\" More alien and realistic please.",
+   "prefill": "keep"
+  },
+  "RM_UltracactusPad": {
+   "decision": "keep"
+  },
+  "RM_Veessa": {
+   "decision": "keep"
+  }
+ },
+ "posture": "blacklist",
+ "reviewStatus": {
+  "state": "ruled",
+  "by": "owner",
+  "at": "2026-09-27T21:59:58-07:00",
+  "evidence": "sidecar-stamped session: savedBy=review-sheet-sidecar, writeCount=39, 9 overrides each with a typed note; owner said \"Review sheet complete\" in chat"
+ },
+ "savedAt": "2026-09-27T21:57:36-0700",
+ "savedBy": "review-sheet-sidecar",
+ "writeCount": 39,
+ "frozen": true,
+ "frozenAt": "2026-09-27T21:59:58-07:00",
+ "frozenMeaning": "Owner completed the review 2026-09-27: 9 keep, 8 improve, 1 regen. Redo jobs queued from the overrides; keeps ship as-is."
+}
