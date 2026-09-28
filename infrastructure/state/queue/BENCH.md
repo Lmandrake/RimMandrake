@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T05:04:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-28T05:30:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -251,6 +251,15 @@ target:   v1
 kind:     task
 summary:  1. A backgrounded design/spec pass writes
 prose:    infrastructure/state/items/BIOME_MOD_UNIFICATION_1.md
+
+## CONTAGION_BEDAZZLE_SITTING_1 Contagion bedazzle sitting - program row 1: review, roster fill, the four-turn volley to the nine-mark Baroque bar, then ticket + commission
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+summary:  (no items/CONTAGION_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CONTAGION_BEDAZZLE_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
