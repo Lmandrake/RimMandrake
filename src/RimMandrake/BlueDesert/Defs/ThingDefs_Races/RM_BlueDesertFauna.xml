@@ -115,10 +115,10 @@
           <minAge>0.8</minAge>
         </li>
       </lifeStageAges>
-      <butcherProducts>
-        <RM_ColdWax>12</RM_ColdWax>
-      </butcherProducts>
     </race>
+    <butcherProducts>
+      <RM_ColdWax>12</RM_ColdWax>
+    </butcherProducts>
     <!-- BLUE_DESERT_LIFE_AUTHORING_1: the sealed-gut hydrocarbon charge
          (RM_DorrakCharge, HediffDefs/RM_BlueDesertCharges.xml) is given at
          generation via PawnKindDef.startingHediffs below, not here. -->
@@ -252,9 +252,6 @@
           <minAge>0.3</minAge>
         </li>
       </lifeStageAges>
-      <butcherProducts>
-        <RM_ColdWax>6</RM_ColdWax>
-      </butcherProducts>
       <!-- §4d / COMMISSION_LEDGER_CLEANUP_1: "it goes, all at once, and the
            field goes with it" (this def's own description above): wraps
            vanilla DeathActionWorker_BigExplosion behind nativeDetonationsEnabled. -->
@@ -262,6 +259,9 @@
         <workerClass>RimMandrake.BlueDesert.RM_DeathActionWorker_BurnerBlast</workerClass>
       </deathAction>
     </race>
+    <butcherProducts>
+      <RM_ColdWax>6</RM_ColdWax>
+    </butcherProducts>
     <comps>
       <!-- §4b: the halo shows only while jogging/fleeing/fighting/hunting
            (RM_CompEffecter_Halo.ShouldShowEffecter, BlueDesertLife.cs). -->
@@ -399,10 +399,10 @@
           <minAge>0.4</minAge>
         </li>
       </lifeStageAges>
-      <butcherProducts>
-        <RM_ColdWax>2</RM_ColdWax>
-      </butcherProducts>
     </race>
+    <butcherProducts>
+      <RM_ColdWax>2</RM_ColdWax>
+    </butcherProducts>
     <modExtensions>
       <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
     </modExtensions>
