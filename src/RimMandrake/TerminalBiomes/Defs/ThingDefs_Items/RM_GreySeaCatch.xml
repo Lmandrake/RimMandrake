@@ -37,11 +37,13 @@
   are now inline in this mod. RM_GreySea.xml's fishTypes block and
   RM_GreySeaFloorLife.xml's header are updated in the same pass.
 
-  ⚠️ NOT migrated here, and still RUT_-tier on purpose — out of this item's
-  named scope: RUT_SaltCameo (the rare-table prize item, stays in
-  RUT_GreySeaFish_Items.xml) and RUT_RareGreyCatches (the ThingSetMakerDef
-  that names it and RUT_Hessal — updated to point at RM_HessalCatch, but the
-  ThingSetMakerDef itself keeps its RUT_ defName).
+  ✅ RUT_SaltCameo and RUT_RareGreyCatches — migrated GREYSEA_RULED_CONTENT_1,
+  2026-09-27 (housekeeping owed with the sitting's build, per the danger
+  pass's own note). RM_SaltCameo (RM_GreySeaSaltCameo.xml) and
+  RM_RareGreyCatches (RM_GreySeaRareCatch.xml, ThingSetMakerDefs/) are the
+  RM_-tier twins; RM_GreySea.xml's <rareCatchesSetMaker> now points at
+  RM_RareGreyCatches. The RUT_ originals are untouched, same reason as the
+  seven catch species above: RUT_GreySea.xml is frozen and still names them.
 -->
 <Defs>
 

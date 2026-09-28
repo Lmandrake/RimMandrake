@@ -116,6 +116,12 @@
            non-schooling (ban 2); no *Catch counterpart, see
            RM_GreySeaShoreLife.xml's own header. -->
       <RM_Corrik>0.05</RM_Corrik>
+      <!-- GREYSEA_RULED_CONTENT_1, Q13 (question card 2026-09-27): the
+           orruhmu, the one new pool-sentinel species — salt-dome-mimic,
+           haunts brine-pool shores, floor-only (no *Catch twin, see
+           grey_deep_pool_sentinel_2026-09-27.md §1). Rumour-rare, like the
+           corrik: RM_GreySeaFauna.xml carries the ThingDef/PawnKindDef pair. -->
+      <RM_Orruhmu>0.05</RM_Orruhmu>
     </wildAnimals>
     <animalDensity>0.1</animalDensity>
     <coastalWildAnimals />
@@ -148,7 +154,13 @@
          ("over trenches and brine rivers"; "grow ONLY around warm mineral
          seeps"). ⛔ Never remove their wildTerrainTags to "make them show
          up". -->
-    <plantDensity>0.14</plantDensity>
+    <!-- GREYSEA_RULED_CONTENT_1, Q3 (question card 2026-09-27): 0.14 -> 0.22.
+         the_grey_deep_flora_pass_2026-09-27.md: the shipped 0.14 was set with
+         only the seven crystal monuments; the ten-species understorey below
+         needs the extra budget to actually appear between them without
+         crowding the floor into lushness (still well under the Scald's
+         proposed 0.30 — the Grey stays the stiller sea). -->
+    <plantDensity>0.22</plantDensity>
     <wildPlants>
       <RM_CubicSculpture>0.6</RM_CubicSculpture>
       <RM_CruciblePod>0.5</RM_CruciblePod>
@@ -161,6 +173,25 @@
            "planar salt-rimed blade flora … hundreds of metres apart" — the
            sparsest thing on this floor by design, see RM_GreySeaSaltBlade.xml. -->
       <RM_SaltBladeGrey>0.03</RM_SaltBladeGrey>
+      <!-- GREYSEA_RULED_CONTENT_1, Q4-Q8 (question card 2026-09-27): the
+           density-driven half of the ten-species understorey
+           (RM_GreySeaUnderstorey.xml — the_grey_deep_flora_pass_2026-09-27.md
+           §"Route split", Route A list, verbatim numbers). RM_Rimebeard and
+           RM_Stillbloom are NOT here on purpose — Route B, placed by
+           GenStep_GreySeaFloorDressing at formation/pool-margin adjacency,
+           which `wildPlants` commonality cannot express. -->
+      <RM_Masonmat>1.0</RM_Masonmat>
+      <RM_Mournweft>0.5</RM_Mournweft>
+      <RM_Saltswoon>0.35</RM_Saltswoon>
+      <RM_Hoarstock>0.3</RM_Hoarstock>
+      <RM_Milkwell>0.25</RM_Milkwell>
+      <RM_Murkblush>0.2</RM_Murkblush>
+      <RM_Neverset>0.15</RM_Neverset>
+      <!-- Terrain-gated (wildTerrainTags RM_GreyBrineChannel), following
+           RM_GlassVeilKelp's own shipped pattern exactly: high commonality
+           is the weight WITHIN the channel's few hundred cells, not across
+           the map. Never remove the tag to "make it show up". -->
+      <RM_Brinecomb>1.5</RM_Brinecomb>
     </wildPlants>
 
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
@@ -191,31 +222,44 @@
     <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Grey Sea's catch table.
          terminal_seas_cast_proposal_2026-09-25.md verdict 2: essarn/sorruth
          ADDED here, not replacing the pre-existing table (see
-         RM_GreySeaCatch.xml's own header). -->
-    <maxFishPopulation>120</maxFishPopulation>
+         RM_GreySeaCatch.xml's own header).
+
+         GREYSEA_RULED_CONTENT_1, Q2 (question card 2026-09-27): option (c),
+         "keep all 13, rebalanced rare" — NO species cut. maxFishPopulation
+         halved (120 -> 60) and RM_OomalCatch/RM_KarrudCatch moved from
+         Common into Uncommon (the two lowest-weight Common rows), so the
+         line feels sparser at the dock without deleting anything shipped.
+         Remaining Common weights trimmed slightly for the same reason. -->
+    <maxFishPopulation>60</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <saltwater_Common>
-        <RM_SallikCatch>1.2</RM_SallikCatch>
-        <RM_KarrudCatch>1</RM_KarrudCatch>
-        <RM_HessalCatch>1</RM_HessalCatch>
-        <RM_OomalCatch>0.6</RM_OomalCatch>
-        <RM_EssarnCatch>1</RM_EssarnCatch>
+        <RM_SallikCatch>1.0</RM_SallikCatch>
+        <RM_HessalCatch>0.8</RM_HessalCatch>
+        <RM_EssarnCatch>0.8</RM_EssarnCatch>
         <!-- GREYSEA_SESSILE_LAYER_1: the sessile layer is catchable, so
              each of the three owes a row here beside its floor resident
              (the standing two-defs-per-species law). These are the cheap,
              reliable end of the table — sheet §7's "the sessile catch",
              what the shore camps actually live on. -->
-        <RM_NissikCatch>1.3</RM_NissikCatch>
-        <RM_ThollimCatch>1.1</RM_ThollimCatch>
-        <RM_GruskCatch>0.9</RM_GruskCatch>
+        <RM_NissikCatch>1.0</RM_NissikCatch>
+        <RM_ThollimCatch>0.9</RM_ThollimCatch>
+        <RM_GruskCatch>0.7</RM_GruskCatch>
       </saltwater_Common>
       <saltwater_Uncommon>
         <RM_MaaluCatch>1</RM_MaaluCatch>
         <RM_ImmuCatch>0.7</RM_ImmuCatch>
         <RM_HaarnCatch>0.4</RM_HaarnCatch>
         <RM_SorruthCatch>0.5</RM_SorruthCatch>
+        <!-- Q2's rebalance: moved down from Common, unchanged weights. -->
+        <RM_KarrudCatch>1</RM_KarrudCatch>
+        <RM_OomalCatch>0.6</RM_OomalCatch>
       </saltwater_Uncommon>
-      <rareCatchesSetMaker>RUT_RareGreyCatches</rareCatchesSetMaker>
+      <!-- GREYSEA_RULED_CONTENT_1 housekeeping: migrated off the RUT_
+           campaign-layer table (RUT_RareGreyCatches, still frozen for
+           RUT_GreySea's own use) onto the free-tier RM_RareGreyCatches
+           (RM_GreySeaRareCatch.xml) — RM_GreySea is TerminalBiomes' own
+           mod and must not cross-reference RimUtinni. -->
+      <rareCatchesSetMaker>RM_RareGreyCatches</rareCatchesSetMaker>
     </fishTypes>
   </BiomeDef>
 

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaRareCatch.xml             TerminalBiomes · authored 2026-09-27
+  ============================================================================
+  GREYSEA_RULED_CONTENT_1 housekeeping — the RM_-tier twin of
+  src/RimUtinni/UtinniPatches/Defs/ThingSetMakerDefs/RUT_RareGreyCatches.xml.
+  RM_GreySea.xml (this mod, franchise-free) must not cross-reference a
+  RimUtinni def with no MayRequire guard — that is exactly the shape
+  PATCH_MAYREQUIRE_GUARD_INERT_1 warns against for a missing-mod resolve, and
+  RM_GreySea's own tier is supposed to "look precisely the same" standalone
+  (Q11a). Same three-option shape, same weights, both items swapped for
+  their RM_ twins: RUT_SaltCameo -> RM_SaltCameo (RM_GreySeaSaltCameo.xml),
+  RUT_Hessal -> RM_HessalCatch (already shipped, RM_GreySeaCatch.xml).
+
+  RUT_RareGreyCatches is left untouched — RUT_GreySea.xml is frozen and
+  still points at it; both retire together at the Phase B repaint.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingSetMakerDef ParentName="RareFishingCatchesBase">
+    <defName>RM_RareGreyCatches</defName>
+    <root Class="ThingSetMaker_RandomOption">
+      <options>
+        <li>
+          <weight>4</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RM_SaltCameo</li>
+                </thingDefs>
+              </filter>
+              <countRange>1~1</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <weight>2</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RM_HessalCatch</li>
+                </thingDefs>
+              </filter>
+              <countRange>4~6</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <weight>1</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>Silver</li>
+                </thingDefs>
+              </filter>
+              <countRange>5~15</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+      </options>
+    </root>
+  </ThingSetMakerDef>
+
+</Defs>

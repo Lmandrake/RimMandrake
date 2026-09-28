@@ -377,4 +377,109 @@
     </lifeStages>
   </PawnKindDef>
 
+  <!-- =================================================================
+       RM_Orruhmu — the pool sentinel (GREYSEA_RULED_CONTENT_1 §9, Q13,
+       question card 2026-09-27). Full design:
+       design/Jawa/worldbuilding/biomes/grey_deep_pool_sentinel_2026-09-27.md
+       A salt-dome-mimic bellows creature stationed on brine-pool shores;
+       its squirt/encasement trigger is RM_CompPoolSentinelSquirt
+       (src/RimMandrake/DivingInteraction/Source/), reusing the shared
+       BrineEncasementUtility. Floor-only — no *Catch twin (design doc §1:
+       not in the water column, and a crystallising weapon hauled up on a
+       line invites exactly the "harvest the squirt" economy Q7 refused for
+       the neverset). Never tamed (Wildness 1.0 — a tamed encaser is a
+       weapon, and the Grey tames nothing); never hunts (predator false,
+       manhunterOnDamageChance 0 — its whole offence is the squirt, and
+       wounded it just subsides).
+       ================================================================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Orruhmu</defName>
+    <label>orruhmu</label>
+    <description>A squat, urn-shaped bellows-sac that stations itself on brine-pool shores and is, until it moves, one more salt dome: a low rounded mantle crusted in the same white jacket mineral as the statuary, cauliflower-textured and marred, hiding a soft grey bellows body on a ring of short shuffling pads. At its crown a puckered white spout is the only tell that this dome breathes. It shuffles a few cells a day between stations, drinks from the super-brine — the pool is both its larder and its ammunition — and waits. It does not hunt, does not flee, does not care about you. It does not tolerate a crowd.</description>
+    <statBases>
+      <MoveSpeed>0.7</MoveSpeed>
+      <MarketValue>25</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mantle shove</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.6</baseBodySize>
+      <baseHealthScale>1.1</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>120</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <comps>
+      <li Class="RimMandrake.DivingInteraction.CompProperties_PoolSentinelSquirt" />
+    </comps>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Orruhmu</defName>
+    <label>orruhmu</label>
+    <race>RM_Orruhmu</race>
+    <combatPower>45</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Orruhmu/RM_Orruhmu</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Orruhmu/RM_Orruhmu</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.65</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Orruhmu/RM_Orruhmu</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.85</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
 </Defs>

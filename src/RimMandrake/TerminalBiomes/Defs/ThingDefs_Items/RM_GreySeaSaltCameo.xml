@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaSaltCameo.xml             TerminalBiomes · authored 2026-09-27
+  ============================================================================
+  GREYSEA_RULED_CONTENT_1 housekeeping (grey_deep_sitting_agenda_2026-09-27.md
+  §"Sitting housekeeping" / the danger-floor pass §3.3 point 1): "the rare-
+  catch table and the salt cameo still carry the campaign-layer prefix while
+  every named catch moved to the free tier — a small owed migration."
+
+  RM_SaltCameo is the RM_-tier twin of RUT_SaltCameo
+  (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_GreySeaFish_Items.xml)
+  — content byte-identical (description, stats, texPath), only the defName
+  and tier move, same GREYSEA_CATCH_TIER_RENAME_1 pattern the seven catch
+  species already used.
+
+  ⚠️ RUT_SaltCameo is NOT deleted — src/RimUtinni/UtinniPatches/Defs/
+  ThingSetMakerDefs/RUT_RareGreyCatches.xml still names it and that
+  ThingSetMakerDef is reached from the FROZEN RUT_GreySea.xml ("stays as it
+  is, byte-for-byte... deleting it before then destroys the save"). Both
+  retire together at the Phase B planet repaint, not before — see
+  RM_GreySeaCatch.xml's own header for the identical reasoning on the seven
+  catch species.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- salt cameo — the Grey's rare-table headline prize. "a small creature
+       jacketed in pillar-mineral, the statuary made portable." Never rots —
+       the Grey's dead do not (ban 5): no CompProperties_Rottable. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SaltCameo</defName>
+    <label>salt cameo</label>
+    <description>A small creature — nobody can say which, or ever could — jacketed whole in pillar-mineral where it sank, the Grey's own statuary shrunk to a fist and made portable. Not carved: grown, the way everything else down there grows. A salt cameo does not rot and does not wear; it is exactly as it was found, and it will still be exactly that in a hundred years.</description>
+    <graphicData>
+      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>30</MarketValue>
+      <Mass>0.15</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>4</Beauty>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>25</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

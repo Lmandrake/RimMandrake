@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_GreySeaUnderstorey.xml           TerminalBiomes · authored 2026-09-27
+  ============================================================================
+  GREYSEA_RULED_CONTENT_1, Q4-Q8 (question card 2026-09-27, sheet ruling
+  recorded on GREYSEA_FLOOR_PASS_1): the ten understorey flora of
+  design/Jawa/worldbuilding/biomes/the_grey_deep_flora_pass_2026-09-27.md,
+  ALL TEN SHIP, with the four contested ones' resolutions:
+    Q5 — RM_Murkblush ships: structural colour, emits nothing, ever.
+    Q6 — RM_Masonmat is a plant (the mason's floor skirt); the mason itself
+         stays def-less fiction.
+    Q7 — RM_Neverset is PURE DRESSING: no harvest, no item, no product.
+    Q8 — RM_Stillbloom rides the pool SURFACE (Route B, see
+         GenStep_GreySeaFloorDressing.cs), falling back to the lip silently
+         if the engine refuses a plant on water terrain.
+
+  Reuses RM_GreyCrystalFloraBase (RM_GreySeaFlora.xml, same mod, same file
+  load order — ThingDefs_Plants) for the three engine facts that make any
+  Grey floor plant spawn at all: completelyIgnoreFertility (the floor's one
+  terrain is fertility 0), growMinGlow/growOptimalGlow 0 (blind murk), and
+  the temperature/lifespan shape already proven by the crystal seven. These
+  ten are FLESH, not crystal (the design register: "the monuments are
+  crystal, the understorey is flesh and felt") but the engine mechanics are
+  identical, so the base is reused rather than duplicated.
+
+  Route split (flora pass §"Route split"):
+    ROUTE A — density-driven, RM_GreySea.xml's <wildPlants> (shorthand
+    element form, never <li> — see that file's own header on the loader
+    trap): Masonmat, Mournweft, Saltswoon, Hoarstock, Milkwell, Murkblush,
+    Neverset, Brinecomb (terrain-gated).
+    ROUTE B — adjacency placement by GenStep_GreySeaFloorDressing.cs, which
+    `wildPlants` commonality cannot express: Rimebeard (near pillar/dome
+    clusters) and Stillbloom (pool-margin ring). NOT in <wildPlants>.
+
+  Ban 4 holds: nothing below emits light, including RM_Murkblush — its
+  "blush" is art direction for a lit READ (structural colour, like a
+  beetle's shell), never a glower comp.
+
+  His one aesthetic rule, verbatim, on every art brief for this biome:
+  "marred slightly, don't make them too perfect or they look manufactured."
+
+  PLACEHOLDER ART: reuses texPaths already shipped and confirmed physically
+  present elsewhere in this same mod (RM_GreySeaFlora.xml / RM_GreySeaCatch.xml),
+  distinguished by <color> per the flora pass's own art-direction table. Real
+  art is owed; before queuing any artpipe job, search infrastructure/artpipe/
+  done/ and _artsrc/ by subject first (owner ruling 2026-09-20) — none found
+  for these ten defNames at authoring time (checked: no Masonmat/Rimebeard/
+  Mournweft/Milkwell/Hoarstock/Saltswoon/Stillbloom/Brinecomb/Neverset/
+  Murkblush hits under either directory).
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ==================================================================
+       1. RM_MASONMAT — the pillar-mason's skirt (Q6). Route A, 1.0 — "the
+       commonest living thing on the floor." No harvest: it is pasture (the
+       sorruth's grazing target, finally giving that shipped description a
+       real def to point at) and pathCost only.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_Masonmat</defName>
+    <label>masonmat</label>
+    <description>A pale, faintly banded mat, firm as rind, spilling off a pillar's base and spreading across the sediment a hair a year — the pillar-mason at pasture, mineralising everything it crosses. The sorruth graze it in slow herds of one; a column with a wide skirt is an old column, and divers walking pillar-to-pillar learn to feel for the rind through their boots, because where the mat is, a pillar is near. One edge is always ragged.</description>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(232,230,222)</color>
+    </graphicData>
+    <pathCost>3</pathCost>
+    <plant>
+      <growDays>18</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.8~1.1</visualSizeRange>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       2. RM_RIMEBEARD — filament colony on the formations. ROUTE B ONLY
+       (not in <wildPlants> — placed by GenStep_GreySeaFloorDressing
+       adjacent to RM_SaltPillar/RM_SaltDome clusters). Harvests RM_RawSalt,
+       the one understorey plant a salt-hungry colony strips on purpose.
+       Where the giant has scraped, the beard regrows first — "a scrape
+       scar with young rimebeard on it is an old scar," the diver's second
+       tell.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_Rimebeard</defName>
+    <label>rimebeard</label>
+    <description>A beard of soft grey filaments hanging off a pillar flank or dome cap, each strand a rope of colony-flesh that drinks the brine whole and sweats the salt back out as a rime of needle crystals along its own length — an osmotic engine wearing its exhaust. Fresh rimebeard is silver-grey and soft; overdue, it whitens and bristles before it sheds. Under the beard the strand-flesh is the only wet-soft thing in the biome, and the sallik shelter in it.</description>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Beauty>3</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(198,198,192)</color>
+      <colorTwo>(240,240,236)</colorTwo>
+    </graphicData>
+    <plant>
+      <growDays>10</growDays>
+      <harvestWork>80</harvestWork>
+      <harvestedThingDef>RM_RawSalt</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.7~0.95</visualSizeRange>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       3. RM_MOURNWEFT — upright filament net, open sediment. Route A, 0.5.
+       Tells food from mineral by touch after a salt-snow fall; feeds the
+       sessile layer (nissik). No harvest.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_Mournweft</defName>
+    <label>mournweft</label>
+    <description>A waist-high loom of grey threads strung between three or four stiff spines, catching both the slow organic rain from the living sea above and the salt snow — then telling them apart by touch, kneading what lands with cilia too small to see, shrugging the mineral off the downwind side. After a salt-snow fall every weft on the floor is bowed white like a widow, straightening pale again over the following days. The warp is visibly hand-loomed and torn somewhere.</description>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantB</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(224,222,214)</color>
+    </graphicData>
+    <plant>
+      <growDays>8</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.2</visualSizeRange>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>3</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       4. RM_MILKWELL — the sponge equivalent, open sediment. Route A,
+       0.25. Prose-only halo (Q9 — the sponge freshens the water around
+       it; no yield modifier of any kind, per the ruling). Solitary by
+       temperament: no wildClusterRadius/Weight set on purpose.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_Milkwell</defName>
+    <label>milkwell</label>
+    <description>A knee-high barrel of dense felt, dirty ivory, that does the one thing this sea has forgotten: it makes the water gentler. A milkwell pumps brine through its body all its slow life and holds the salt back cell by cell, exhaling water fresh enough that the outflow shimmers above it like heat-haze — a well running upward, a spring at the bottom of a sea. Soft-bodied things that cannot live in the open brine live in its yard, and an old one sits in a circle of company like a chapel. When it finally fouls and dies it goes to salt in a season, becoming a white cast of itself.</description>
+    <statBases>
+      <MaxHitPoints>110</MaxHitPoints>
+      <Beauty>3</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(230,224,208)</color>
+    </graphicData>
+    <plant>
+      <growDays>25</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>1.0~1.3</visualSizeRange>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       5. RM_HOARSTOCK — the soft coral equivalent, near the statuary.
+       Route A, 0.3. The slowest-growing plant shipped anywhere (30 days).
+       Harvests RM_RawSalt at high work — quarrying the dead base kills the
+       plant, the yield is real and the price is written on it.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_Hoarstock</defName>
+    <label>hoarstock</label>
+    <description>A branching soft coral that ossifies from the base upward at a fixed, terrible pace: the living tissue is only ever the last hand-span of each branch tip, riding a pedestal of its own dead centuries, stone-grey below, felt-grey above. The otheska graze the boundary line where the dying tissue softens. A tall hoarstock is old the way pillars are old — divers who cannot read pillar-bands read hoarstocks instead. When the last tip turns, the whole plant is furniture, indistinguishable from the statuary it always grew beside.</description>
+    <statBases>
+      <MaxHitPoints>160</MaxHitPoints>
+      <Beauty>4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(186,186,182)</color>
+      <colorTwo>(222,220,214)</colorTwo>
+    </graphicData>
+    <plant>
+      <growDays>30</growDays>
+      <harvestWork>420</harvestWork>
+      <harvestedThingDef>RM_RawSalt</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>1.3~1.6</visualSizeRange>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       6. RM_SALTSWOON — the plant that is sometimes a puddle, hollows in
+       the sediment. Route A, 0.35. No harvest — dressing with a
+       personality.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_Saltswoon</defName>
+    <label>saltswoon</label>
+    <description>Solid is a losing posture in water that wants to jacket everything. For most of its life the saltswoon is a glossy grey syrup lying in a hollow — flesh deliquesced by its own enzymes, too concentrated for the brine to penetrate, too formless for crystal to grip. A few days a season it gathers itself, raises one soft translucent stalk, seeds, and swoons back into its bowl. A diver who steps in one is startled, unharmed, and faintly insulted.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(96,98,96)</color>
+    </graphicData>
+    <pathCost>2</pathCost>
+    <plant>
+      <growDays>12</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.7~0.95</visualSizeRange>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       7. RM_STILLBLOOM — the pool lily (Q8). ROUTE B ONLY (not in
+       <wildPlants> — placed on the pool-margin ring by
+       GenStep_GreySeaFloorDressing; design intent is "on the pool's skin",
+       engine fallback is "at its lip" if the engine refuses a plant on
+       water terrain — silent fallback, never a filed defect). No harvest,
+       structurally out of reach.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_Stillbloom</defName>
+    <label>stillbloom</label>
+    <description>A bone-white bloom resting on the density interface itself, root-threads hanging down into brine that kills everything — it never breaks the surface; the tension of the interface is its whole floor and its whole trick. It is the biome's warning made beautiful: a white flower seen through the murk means a pool is there, before the pool's stillness can be read. Divers do not pick them. Divers cannot pick them — every stillbloom grows exactly out of reach.</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Beauty>5</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantB</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(238,236,230)</color>
+      <colorTwo>(150,154,152)</colorTwo>
+    </graphicData>
+    <plant>
+      <growDays>15</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.6~0.85</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <!-- Structurally unharvestable — see the twist note above and Q8's
+           ban-1 audit (grey_deep_pool_sentinel/flora-pass docs): nothing
+           about this def makes a pool enterable. -->
+      <allowAutoCut>false</allowAutoCut>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       8. RM_BRINECOMB — gradient-eater, brine channel beds. Route A, 1.5,
+       TERRAIN-GATED (wildTerrainTags RM_GreyBrineChannel) — following
+       RM_GlassVeilKelp's own shipped pattern: high commonality is the
+       weight WITHIN the channel's few hundred cells, not across the map.
+       No harvest — dressing that makes the channels legible from further
+       away.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_Brinecomb</defName>
+    <label>brine comb</label>
+    <description>A row of grey teeth along a channel bed, each tooth a hollow blade holding its root-water dense and its tip-water light, eating the exchange between them — a plant whose food is the DIFFERENCE between two brines, starving anywhere the water is all one thing. Combs grow in runs down a channel's length like the baleen of something buried; where the Glass Veil Kelp curtains hang above, the combs line the floor of it, the kelp taking the light and the comb taking the gradient.</description>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(150,156,158)</color>
+      <colorTwo>(210,214,214)</colorTwo>
+    </graphicData>
+    <plant>
+      <growDays>9</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.55~0.8</visualSizeRange>
+      <wildOrder>1</wildOrder>
+      <wildTerrainTags>
+        <li>RM_GreyBrineChannel</li>
+      </wildTerrainTags>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       9. RM_NEVERSET — the sprig salt cannot take (Q7). Route A, 0.15.
+       RULED: PURE DRESSING — no harvest, no item, no product of any kind.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_Neverset</defName>
+    <label>neverset</label>
+    <description>Everything in the Grey ends in crystal except this. The neverset is a small ash-grey sprig whose sap is packed with proteins that refuse nucleation — brine cannot seed a crystal on it, in it, or against it, so the jacket mineral grows around a neverset and leaves a sprig-shaped void. It grows precisely where nothing else dares: in the jacket rings at the pool shores, among the statuary, in the chimneys' outer reach. Half of every sprig looks winter-dead and is not.</description>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(176,176,172)</color>
+    </graphicData>
+    <plant>
+      <growDays>14</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <!-- Q7 ruling, verbatim: "pure dressing, no harvest, no item, no
+           product of any kind." No harvestedThingDef/harvestYield/
+           harvestWork on purpose — do not add one without a fresh ruling. -->
+      <allowAutoCut>false</allowAutoCut>
+    </plant>
+  </ThingDef>
+
+  <!-- ==================================================================
+       10. RM_MURKBLUSH — structural colour, everywhere and invisible
+       (Q5). Route A, 0.2. RULED: SHIPS — emits nothing, ever; the blush
+       is art direction for its LIT read only (a subtle iridescent tint
+       under strong light), never a glower comp. Ban 4's tribute, not its
+       exception.
+       ================================================================== -->
+  <ThingDef ParentName="RM_GreyCrystalFloraBase">
+    <defName>RM_Murkblush</defName>
+    <label>murkblush</label>
+    <description>In the murk the murkblush is nothing: a low round cushion, grey as everything, beneath notice. Bring a lamp and it answers — not with light of its own but with the lamp's, returned through layered plates in its skin as a deep iridescent blush, oil-sheen blues and greens the Grey otherwise does not contain. The colour is structural: it exists only while the beam does, and costs the plant nothing. A floor of blushing cushions means a lamp burning somewhere nearby, and the sea's economy says what a burning lamp eventually brings.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(140,148,156)</color>
+    </graphicData>
+    <plant>
+      <growDays>7</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.55~0.8</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <!-- Beauty small positive, no harvest — see the twist note; Ban 4
+           audit: NO glower comp anywhere on this def, ever. -->
+      <allowAutoCut>false</allowAutoCut>
+    </plant>
+  </ThingDef>
+
+</Defs>

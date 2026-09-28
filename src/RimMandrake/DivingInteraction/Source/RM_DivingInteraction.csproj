@@ -51,12 +51,14 @@
     <Compile Include="GenStep_PlaceSeaDiveExit.cs" />
     <Compile Include="GenStep_GreySeaFloorDressing.cs" />
     <Compile Include="RM_BrineEncasement.cs" />
+    <Compile Include="BrineEncasementUtility.cs" />
     <Compile Include="MapComponent_BrineCrystallisation.cs" />
     <Compile Include="RM_SeabedLayer.cs" />
     <Compile Include="RM_Building_BrineElder.cs" />
     <Compile Include="RM_GameComponent_BrineElders.cs" />
     <Compile Include="RM_ElderTradeUtility.cs" />
     <Compile Include="Dialog_OfferToElder.cs" />
+    <Compile Include="RM_CompPoolSentinelSquirt.cs" />
   </ItemGroup>
 
   <ItemGroup>

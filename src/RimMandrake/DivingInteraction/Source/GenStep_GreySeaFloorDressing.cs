@@ -80,6 +80,16 @@ namespace RimMandrake.DivingInteraction
         private const float SeepApronRadius = 3.4f;
         private const int ElderSize = 7;
 
+        // GREYSEA_RULED_CONTENT_1, Q4-Q8 (question card 2026-09-27) — Route B
+        // of the_grey_deep_flora_pass_2026-09-27.md's understorey: the two
+        // species `wildPlants` commonality cannot express (RM_Rimebeard
+        // formation-adjacency, RM_Stillbloom pool-margin adjacency). See
+        // RM_GreySeaUnderstorey.xml for the defs themselves.
+        private const int RimebeardMinPerCluster = 2;
+        private const int RimebeardMaxPerCluster = 5;
+        private const float RimebeardSearchRadius = 1.8f;
+        private const int StillbloomCount = 5; // within the ruled 3-6 range
+
         public override int SeedPart => 5140937;
 
         public override void Generate(Map map, GenStepParams parms)
@@ -105,6 +115,20 @@ namespace RimMandrake.DivingInteraction
                 {
                     PlaceElder(map, basin, elder);
                 }
+
+                ThingDef stillbloom = Named<ThingDef>("RM_Stillbloom");
+                if (stillbloom != null)
+                {
+                    PlaceStillbloomOnPoolMargin(map, basin, stillbloom);
+                }
+            }
+
+            ThingDef rimebeard = Named<ThingDef>("RM_Rimebeard");
+            if (rimebeard != null)
+            {
+                ThingDef pillar = Named<ThingDef>("RM_SaltPillar");
+                ThingDef dome = Named<ThingDef>("RM_SaltDome");
+                PlaceRimebeardOnFormations(map, rimebeard, pillar, dome);
             }
 
             if (chimney == null)
@@ -217,6 +241,101 @@ namespace RimMandrake.DivingInteraction
                     continue;
                 }
                 map.terrainGrid.SetTerrain(c, apron);
+            }
+        }
+
+        // RM_Rimebeard hangs off the formations, not the terrain — there is
+        // no apron def to lean on (flora pass §"Route B"), so this is the
+        // one genuinely new placement rule. 2-5 per pillar/dome, on
+        // standable, unoccupied, non-water cells within RimebeardSearchRadius.
+        private static void PlaceRimebeardOnFormations(Map map, ThingDef rimebeard, ThingDef pillar, ThingDef dome)
+        {
+            List<Thing> hosts = new List<Thing>();
+            if (pillar != null)
+            {
+                hosts.AddRange(map.listerThings.ThingsOfDef(pillar));
+            }
+            if (dome != null)
+            {
+                hosts.AddRange(map.listerThings.ThingsOfDef(dome));
+            }
+
+            foreach (Thing host in hosts)
+            {
+                int target = Rand.RangeInclusive(RimebeardMinPerCluster, RimebeardMaxPerCluster);
+                int placed = 0;
+                foreach (IntVec3 c in GenRadial.RadialCellsAround(host.Position, RimebeardSearchRadius, useCenter: false))
+                {
+                    if (placed >= target)
+                    {
+                        break;
+                    }
+                    if (!c.InBounds(map) || c.GetTerrain(map).IsWater || c.GetEdifice(map) != null)
+                    {
+                        continue;
+                    }
+                    if (!GenSpawn.CanSpawnAt(rimebeard, c, map))
+                    {
+                        continue;
+                    }
+                    GenSpawn.Spawn(rimebeard, c, map);
+                    placed++;
+                }
+            }
+        }
+
+        // RM_Stillbloom, Q8: "rides the pool SURFACE engine permitting, lip
+        // placement as silent fallback." Pass 1 tries the pool's own
+        // margin/shallow cells (the surface); pass 2 (the lip, just past the
+        // jacket ring's inner edge) fills whatever pass 1 could not place —
+        // engine reality is that most plant defs refuse water terrain, so
+        // pass 2 is where placement is expected to land. Never file that as
+        // a defect: it is the ruled fallback, not a bug.
+        private static void PlaceStillbloomOnPoolMargin(Map map, IntVec3 basin, ThingDef stillbloom)
+        {
+            int placed = 0;
+            List<IntVec3> ring = new List<IntVec3>(GenRadial.RadialCellsAround(basin, JacketRingOuter, useCenter: false));
+
+            foreach (IntVec3 c in ring)
+            {
+                if (placed >= StillbloomCount)
+                {
+                    return;
+                }
+                float d = c.DistanceTo(basin);
+                if (d < PoolDeepRadius || d > PoolMarginRadius || !c.InBounds(map) || c.GetEdifice(map) != null)
+                {
+                    continue;
+                }
+                if (!GenSpawn.CanSpawnAt(stillbloom, c, map))
+                {
+                    continue;
+                }
+                GenSpawn.Spawn(stillbloom, c, map);
+                placed++;
+            }
+
+            foreach (IntVec3 c in ring)
+            {
+                if (placed >= StillbloomCount)
+                {
+                    return;
+                }
+                float d = c.DistanceTo(basin);
+                if (d <= PoolMarginRadius || d > JacketRingOuter || !c.InBounds(map))
+                {
+                    continue;
+                }
+                if (c.GetTerrain(map).IsWater || c.GetEdifice(map) != null)
+                {
+                    continue;
+                }
+                if (!GenSpawn.CanSpawnAt(stillbloom, c, map))
+                {
+                    continue;
+                }
+                GenSpawn.Spawn(stillbloom, c, map);
+                placed++;
             }
         }
 
