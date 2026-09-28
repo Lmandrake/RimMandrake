@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Stillsand_SignatureFlora.xml         RimMandrake — STILLSAND_RULED_CONTENT_1
+
+  Q1 tier move (2026-09-27 sitting, RATIFIED): the light-pipe nub and the ollim
+  (+ its harvested wood) leave the Utinni patch
+  (RSW_ExtremeDesertSignatureFlora.xml, itself unchanged and still wired into the
+  frozen RUT_ExtremeDesert.xml twin) for native, franchise-free copies here —
+  invented signature flora, no Star Wars IP (Q11a). Stats/description/plant
+  fields copied verbatim from the RSW_ originals; only defNames, internal
+  cross-references (descriptionHyperlinks) and texPaths are renamed.
+
+  Q12: the light-pipe nub's biosilica harvest — MEASURED this pass: no
+  "biosilica" item exists anywhere in the repo (grep clean). Genuinely missing,
+  per the item's own UNMEASURED-at-filing flag. RM_Biosilica added below as the
+  nub's harvestedThingDef — pure XML, no C#, matching the ollim/RM_OllimWood
+  precedent one door down. Recipes to actually USE it (ship glazing/sensor
+  lenses per BIOME_SHIP_CONTRIBUTIONS_1's register) are NOT authored here — the
+  item only asks for the harvest item itself; "one harvest item + 1-2 recipes is
+  pure XML once the harvest item exists" names the recipes as separate, later
+  work. Scoped to this new RM_-tier copy only: the original RSW_LightPipeNub
+  (still live on the frozen RUT_ExtremeDesert.xml twin) is left untouched, per
+  R22's freeze and this item's own explicit "do not touch RUT_ExtremeDesert"
+  instruction.
+
+  Art: real, deployed renders already exist for the light-pipe nub and the ollim
+  pair under their RSW_ texPaths (rslpn_v1/rswollim_v1/rswollimwood_v1, landed
+  2026-09-24). Reused verbatim below — texture binds by texPath, not defName, so
+  no re-render is owed for a pure tier move.
+-->
+<Defs>
+
+  <!-- ============== Light-pipe nub — the dune sea's whole visible biome ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_LightPipeNub</defName>
+    <label>light-pipe nub</label>
+    <description>A knuckle of water-clear, silica-cemented glass, flush with the sand and easy to miss until it catches the light. It is not a leaf and it has never been one — it is a lens, the only part of this organism that has ever seen the sun. Everything that actually does the plant's living is a metre or more underground, cool and out of sight, fed by whatever light this nub admits and nothing else. Walk the dune sea and you are walking over almost all of it.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_Biosilica</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <!-- rslpn_v1, real art, already deployed at this texPath. -->
+      <texPath>Things/Plant/RSW_LightPipeNub</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>2</pathCost>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>10</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.12~0.20</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>1</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <wildEqualLocalDistribution>true</wildEqualLocalDistribution>
+      <!-- Q12: the biosilica harvest — "harvested by the handful" (dune_sea.md §7),
+           so a small yield for cheap work, not a real wood-scale resource crop. -->
+      <harvestedThingDef>RM_Biosilica</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <harvestWork>200</harvestWork>
+      <harvestMinGrowth>0.5</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Ollim — the tree that grows to cast shade ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Ollim</defName>
+    <label>ollim</label>
+    <description>A bone-white shield rising out of the sand on a flat-topped trunk, standing where the faintest hint of buried moisture fed the growth of a single cell — centuries ago, and again, and again. It is photosynthetic in nothing and grows no leaf; its entire purpose above ground is casting the one patch of permanent shade for kilometres, over the seep or the corpse or the buried water that might one day sustain it. A stand of them is older than any ruin, and the true bones of vast dead things are usually growing up through the sand around their feet.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_OllimWood</ThingDef>
+    </descriptionHyperlinks>
+    <fillPercent>0.35</fillPercent>
+    <graphicData>
+      <!-- rswollim_v1, real art, already deployed at this texPath. -->
+      <texPath>Things/Plant/RSW_Ollim</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Flammability>0</Flammability>
+      <MaxHitPoints>350</MaxHitPoints>
+      <Mass>220</Mass>
+      <Nutrition>0</Nutrition>
+      <Beauty>4</Beauty>
+      <BeautyOutdoors>6</BeautyOutdoors>
+    </statBases>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.03</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>400</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieIfNoSunlight>False</dieIfNoSunlight>
+      <dieFromToxicFallout>False</dieFromToxicFallout>
+      <visualSizeRange>3.5~5.5</visualSizeRange>
+      <topWindExposure>0.15</topWindExposure>
+      <treeCategory>Super</treeCategory>
+      <harvestedThingDef>RM_OllimWood</harvestedThingDef>
+      <harvestYield>15</harvestYield>
+      <harvestWork>700</harvestWork>
+      <harvestTag>Wood</harvestTag>
+      <harvestMinGrowth>0.5</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <allowAutoCut>false</allowAutoCut>
+      <warnIfMarkedForCut>true</warnIfMarkedForCut>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Ollim wood — the "silver required" material signature ============== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_OllimWood</defName>
+    <label>ollim wood</label>
+    <description>Wood struck from an ollim stand — bone-white, dense as stone, and grown so slowly that a single plank predates most ruins on the planet. It shrugs off fire and blistering heat the way almost nothing else does, but a hard strike shatters it clean through: the tree traded strength for the one thing that actually kept it alive out here. Prized in a handful of recipes for exactly that trade-off.</description>
+    <graphicData>
+      <!-- rswollimwood_v1, real art, already deployed at this texPath. -->
+      <texPath>Things/Item/Resource/RSW_OllimWood</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Wood_Drop</soundInteract>
+    <soundDrop>Wood_Drop</soundDrop>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>75</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <burnableByRecipe>true</burnableByRecipe>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>7</MarketValue>
+      <Mass>0.5</Mass>
+      <MaxHitPoints>150</MaxHitPoints>
+      <DeteriorationRate>0.3</DeteriorationRate>
+      <Flammability>0.03</Flammability>
+      <StuffPower_Armor_Sharp>0.15</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.15</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>1.8</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>6</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>30</StuffPower_Insulation_Heat>
+      <SharpDamageMultiplier>1.6</SharpDamageMultiplier>
+      <BluntDamageMultiplier>1.6</BluntDamageMultiplier>
+    </statBases>
+    <stuffProps>
+      <stuffAdjective>ollim</stuffAdjective>
+      <categories>
+        <li>Woody</li>
+      </categories>
+      <appearance>Planks</appearance>
+      <commonality>0.015</commonality>
+      <color>(232,227,214)</color>
+      <constructEffect>ConstructWood</constructEffect>
+      <soundImpactBullet>BulletImpact_Wood</soundImpactBullet>
+      <soundMeleeHitSharp>MeleeHit_Wood</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Wood</soundMeleeHitBlunt>
+      <soundImpactMelee>Pawn_Melee_Punch_HitBuilding_Wood</soundImpactMelee>
+      <statFactors>
+        <MaxHitPoints>0.55</MaxHitPoints>
+        <Beauty>1.5</Beauty>
+        <Flammability>0.05</Flammability>
+        <WorkToMake>1.1</WorkToMake>
+        <WorkToBuild>1.1</WorkToBuild>
+      </statFactors>
+      <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
+    </stuffProps>
+  </ThingDef>
+
+  <!-- ============== Biosilica — the light-pipe nub's harvest (Q12) ============== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Biosilica</defName>
+    <label>biosilica</label>
+    <description>A handful of clear, glassy lenses cut from a light-pipe nub — real optics, grown rather than ground, and the only non-volcanic natural glass on the planet. Too small and irregular for anything but the most patient hand-fitted work, but genuinely optical-grade: sensor lenses and glazing panels made from it see just as clearly as anything shaped in a furnace.</description>
+    <graphicData>
+      <!-- art pending — brand-new item this pass, no render filed yet. -->
+      <texPath>Things/Item/Resource/RM_Biosilica</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>75</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>7</MarketValue>
+      <Mass>0.1</Mass>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <Beauty>2</Beauty>
+    </statBases>
+  </ThingDef>
+
+</Defs>

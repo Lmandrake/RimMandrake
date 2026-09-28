@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Ikee.xml                             RimMandrake — STILLSAND_RULED_CONTENT_1
+
+  Q1 tier move (2026-09-27 sitting, RATIFIED): the ikee leaves the Utinni patch
+  (RSW_Ikee, src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml,
+  itself unchanged and still wired into the frozen RUT_ExtremeDesert.xml twin — never
+  touched here) for a native, franchise-free copy here. Invented content, no Star
+  Wars flavor (Q11a): grotesquely enlarged eye on tentacles, nothing IP about it.
+
+  Q8 size ruling: SHRUNK back to grain (~0.15). The RSW_ port quietly tripled the
+  roster's approved figure to bs 0.4 (inside R22's banned 0.3-3.0 mid-band); this
+  copy authors it correctly from the start at 0.15 rather than porting the mistake.
+
+  Stats/body/tools copied verbatim from RSW_Ikee (vanilla Monkey body, already no
+  donor-framework dependency to drop) with only bs 0.4->0.15 and defName/label/
+  leatherDef-none/useMeatFrom(vanilla Pig, unchanged) touched.
+
+  ART: no render exists for "ikee" (checked infrastructure/artpipe/{done,_artsrc,
+  registry.jsonl} this pass — none found). texPath points at this def's own future
+  folder, same "art pending" posture RM_Kudda's LONGSHADE_RULED_CONTENT_1 port used.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Ikee</defName>
+    <label>ikee</label>
+    <description>A grotesquely enlarged eye that drags itself along on a few fleshy tentacles. Not very useful for much of anything. Something about the dune sea's flat, unmoving light seems to have bred this shape more than once.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>100</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MeatAmount>0</MeatAmount>
+      <Wildness>0.2</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>eye</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Monkey</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <!-- Q8: SHRUNK back to grain, ~0.15 (was ported at 0.4, tripling the roster's
+           approved figure and landing inside R22's banned 0.3-3.0 mid-band). -->
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <useMeatFrom>Pig</useMeatFrom>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <herdMigrationAllowed>false</herdMigrationAllowed>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Ikee</defName>
+    <label>ikee</label>
+    <race>RM_Ikee</race>
+    <combatPower>10</combatPower>
+    <ecoSystemWeight>0.30</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- art pending — STILLSAND_RULED_CONTENT_1 tier move, no render filed yet -->
+          <texPath>Things/Pawn/Animal/RM_Ikee/RM_Ikee</texPath>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ikee/RM_Ikee</texPath>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ikee/RM_Ikee</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

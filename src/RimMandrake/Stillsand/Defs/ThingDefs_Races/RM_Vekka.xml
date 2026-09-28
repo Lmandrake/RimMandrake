@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Vekka.xml                            RimMandrake — STILLSAND_RULED_CONTENT_1
+
+  Q1 tier move (2026-09-27 sitting, RATIFIED): leaves the Utinni patch (RSW_SandLion,
+  src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_SandLion.xml, itself unchanged
+  and still wired into the frozen RUT_ExtremeDesert.xml twin) for a native,
+  franchise-free copy here — invented content per Q11a.
+
+  Q6 name ruling: VEKKA KEPT (the owner's own call). The flag that this name was
+  porting-agent-coined and shared a canon character's given name (Vekka Lodik) offered
+  a swap to "shakkir"; the owner declined it explicitly — do not rename to shakkir.
+  defName renamed RM_Vekka (matching the ruled label), same convention this sitting's
+  other tier moves use (RM_Kudda, RM_Oommok, RM_Siidda).
+
+  Q7 depth-arm ruling: bs 2.0 sits inside R22's banned 0.3-3.0 mid-band, but this is a
+  SUBSURFACE strike predator ("works its whole body down into loose sand... surfaces
+  claws-first"), defended by depth rather than size — the ban's target was the
+  mid-sized SURFACE animal. Annotated in place per the screecher precedent; nothing
+  evicted (§7 Q7, ratified).
+
+  Stats/body/tools copied verbatim from RSW_SandLion.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vekka</defName>
+    <label>vekka</label>
+    <description>A heavy, big-cat predator bred for the deep desert, able to work its whole body down into loose sand to close on prey unseen. It surfaces claws-first, and the strike is usually over before anything has time to run. Guns are a poor answer to something that was never on the surface to begin with.</description>
+    <statBases>
+      <MoveSpeed>6</MoveSpeed>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <MarketValue>600</MarketValue>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>25</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>25</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.85</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>1.75</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <!-- Q7: mid-band (0.3-3.0) but depth-arm LEGAL — subsurface strike predator,
+           defended by depth, not size. Annotated, not evicted. -->
+      <baseBodySize>2</baseBodySize>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseHealthScale>2.5</baseHealthScale>
+      <leatherDef>Leather_Panthera</leatherDef>
+      <useMeatFrom>Cougar</useMeatFrom>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <lifeExpectancy>18</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vekka</defName>
+    <label>vekka</label>
+    <race>RM_Vekka</race>
+    <combatPower>300</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>vekka cub</label>
+        <bodyGraphicData>
+          <!-- art pending — STILLSAND_RULED_CONTENT_1 tier move, no render filed yet -->
+          <texPath>Things/Pawn/Animal/RM_Vekka/RM_Vekka</texPath>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <label>vekka juvenile</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vekka/RM_Vekka</texPath>
+          <drawSize>1.85</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vekka/RM_Vekka</texPath>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.1)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

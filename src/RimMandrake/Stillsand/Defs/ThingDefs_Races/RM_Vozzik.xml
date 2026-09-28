@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Vozzik.xml                           RimMandrake — STILLSAND_RULED_CONTENT_1
+
+  Q1 tier move (2026-09-27 sitting, RATIFIED): the vozzik leaves the Utinni patch
+  (RSW_Vozzik, src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml,
+  itself unchanged and still wired into the frozen RUT_ExtremeDesert.xml twin) for a
+  native, franchise-free copy here. Invented content (Q11a): a barely-moving giant
+  slug, no Star Wars IP.
+
+  bs 5.0, comm 0.0005 (§2a cast table's own MEASURED figures) — no size change ruled
+  for this row, only tier.
+
+  THE PLASMA VOLLEY STAYS GATED, NOT DUPLICATED: the donor mechanic (PORTED_BEAST_
+  MECHANICS_REBUILD_1's RSW_VoltmawPlasmaVolley AbilityDef + RSW_Projectile_
+  PlasmaBurst, and the comp class itself, RimMandrake.StarWars.SWBestiary.
+  CompProperties_InnateAbility) all live in mandrake.rsw.swbestiary's own compiled
+  assembly and def set. A franchise-free RM_-tier mod cannot hard-depend on that
+  Star-Wars-tier assembly/defs and still stand alone (Q11a's own "rich enough to
+  stand alone" bar). Duplicating the ability into an RM_-tier AbilityDef/comp was
+  considered and rejected as needless surface area; instead the <comps> entry below
+  is gated MayRequire="mandrake.rsw.swbestiary" (the same idiom already used
+  repeatedly in this codebase, e.g. RM_SapSuckerGuild.xml, RM_GreatboleGrub.xml) —
+  with SWBestiary active the vozzik keeps its plasma volley exactly as before;
+  without it, the comp simply does not load and the vozzik is a plain grazer. No new
+  AbilityDef/Projectile authored; RSW_VoltmawPlasmaVolley/RSW_Projectile_PlasmaBurst
+  are read verbatim, untouched, from their existing SWBestiary location.
+
+  ART: no render exists for "vozzik" (checked artpipe done/_artsrc/registry.jsonl —
+  none found). texPath points at this def's own future folder, art pending.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vozzik</defName>
+    <label>vozzik</label>
+    <description>A massive, barely-moving slug that grazes across the open dayside at a fraction of walking pace. Wherever it has gone, it has been going for a very long time; wherever it stops, it is likely to still be there years later.</description>
+    <statBases>
+      <MoveSpeed>0.6</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <MarketValue>4000</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <!-- Present only with mandrake.rsw.swbestiary active — see header. -->
+      <li Class="RimMandrake.StarWars.SWBestiary.CompProperties_InnateAbility" MayRequire="mandrake.rsw.swbestiary">
+        <ability>RSW_VoltmawPlasmaVolley</ability>
+      </li>
+    </comps>
+    <race>
+      <body>TurtleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>5.00</baseBodySize>
+      <baseHealthScale>10</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <trainability>Advanced</trainability>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+      <lifeExpectancy>30</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vozzik</defName>
+    <label>vozzik</label>
+    <race>RM_Vozzik</race>
+    <combatPower>650</combatPower>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- art pending — STILLSAND_RULED_CONTENT_1 tier move, no render filed yet -->
+          <texPath>Things/Pawn/Animal/RM_Vozzik/RM_Vozzik</texPath>
+          <drawSize>2.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vozzik/RM_Vozzik</texPath>
+          <drawSize>3.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vozzik/RM_Vozzik</texPath>
+          <drawSize>4.1</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

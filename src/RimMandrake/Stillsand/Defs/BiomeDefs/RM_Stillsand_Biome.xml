@@ -21,9 +21,28 @@
     stayed present-but-empty so that file's PatchOperationAdd had somewhere to land.
 
     2026-09-24 (COMMISSION_LEDGER_CLEANUP_1): wildAnimals is no longer empty — it now
-    also carries RM_MirrorGiant, a brand-new invented (non-SW) species authored directly
-    in this mod. Not every future addition here needs the patch route: only content that
-    is genuinely Star Wars IP does (Q11a). wildPlants/allowedPackAnimals remain empty.
+    also carries RM_MirrorGiant (renamed RM_Oommok below), a brand-new invented (non-SW)
+    species authored directly in this mod. Not every future addition here needs the
+    patch route: only content that is genuinely Star Wars IP does (Q11a).
+
+    STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting, Q1 RATIFIED): eight more invented
+    rows (kudda and pikkut/truffle mole then CUT — their one home is the Long Shade,
+    LONGSHADE_RULED_CONTENT_1) leave the Utinni patch for native RM_-tier copies here:
+    ikee, vozzik, vekka, drazzik, light-pipe nub, ollim(+wood). The frozen twin
+    RUT_ExtremeDesert.xml (R22, untouched here) keeps its own original RSW_-named
+    copies of all of them — this is a native duplicate for the free tier, not a
+    delete-and-move, since the live world still runs on the frozen twin until Phase
+    B's repaint. Q11 also ratified names: RM_MirrorGiant -> RM_Oommok ("oommok"),
+    RM_DustHusk -> RM_Siidda ("siidda"). Q8 grew the roster's one unwired row
+    (AA_SpinedGow) to giant scale as RM_Aurrok, wired rare.
+
+    Q7 depth-arm ruling: five wired rows sit inside R22's banned 0.3-3.0 mid-band
+    (ikee 0.15 now corrected out of it per Q8; vekka 2.0, drazzik 2.2 remain in it).
+    ALL are subsurface animals (strike predators or burrowers) — the ban's target was
+    the mid-sized SURFACE animal; a subsurface body is defended by depth instead of
+    size. Ratified: annotate in place (each def's own header/race comment), evict
+    nothing. wildPlants is no longer empty either (light-pipe nub, ollim).
+    allowedPackAnimals remains empty (canon pack animals only, Utinni-patched).
   -->
 
   <BiomeDef>
@@ -131,28 +150,43 @@
       <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">4</Sandstorm>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <!-- The copied Star-Wars-named cast stays empty here — see the header
-           comment; it is wired by
+      <!-- The remaining canon Star-Wars-named cast (kreetle, war wyrm, krayt
+           dragon x2, granite slug, scurrier, gizka, qorrax/JOE_Cephalope — the
+           last explicitly deferred, owner art-review pending) stays out of this
+           node entirely; it is wired by
            src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml.
-           RM_MirrorGiant below is different: a brand-new, invented (non-SW)
-           RM_-tier species authored directly in this mod
-           (COMMISSION_LEDGER_CLEANUP_1, dune_sea+deep_desert), so it needs
-           no patch at all. -->
-      <RM_MirrorGiant>0.0005</RM_MirrorGiant>
-      <RM_DustHusk>0.15</RM_DustHusk>
+           Everything below is invented, franchise-free RM_-tier content wired
+           inline, needing no patch (Q11a). -->
+      <RM_Oommok>0.0005</RM_Oommok>
+      <RM_Siidda>0.15</RM_Siidda>
       <!-- DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1: shade-follow commensal,
-           follows RM_MirrorGiant via RM_ShadowFollowerExtension — see that
-           def's own header. Independently spawned like any other wild
-           animal (the follow behavior is what ties it to the giant once
-           both are on the same map), commonality set low but above the
-           giant's own near-zero rate so a spawned mite has host-adjacent
-           odds without requiring one on every map. -->
+           follows RM_Oommok via RM_ShadowFollowerExtension — see that def's
+           own header. Independently spawned like any other wild animal (the
+           follow behavior is what ties it to the giant once both are on the
+           same map), commonality set low but above the giant's own near-zero
+           rate so a spawned mite has host-adjacent odds without requiring one
+           on every map. -->
       <RM_ShadeMite>0.06</RM_ShadeMite>
+      <!-- STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting, Q1): native RM_-tier
+           copies of the tier-moved cast (weights match the Utinni patch's
+           original RSW_ figures — a pure tier move, not a reweighting).
+           Vekka and drazzik sit in R22's banned 0.3-3.0 mid-band; both are
+           subsurface strike predators, legal by the Q7 depth-arm ruling
+           (annotated on each def, nothing evicted). -->
+      <RM_Ikee>0.15</RM_Ikee>
+      <RM_Vozzik>0.0005</RM_Vozzik>
+      <RM_Vekka>0.5</RM_Vekka>
+      <RM_Drazzik>0.05</RM_Drazzik>
+      <!-- §7 Q8: the roster's one confirmed unwired row, grown to giant scale. -->
+      <RM_Aurrok>0.15</RM_Aurrok>
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <!-- Deliberately empty — see the header comment. Wired by
-           src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml. -->
+      <!-- STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting, Q1): native RM_-tier
+           copies of the biome's own signature flora, tier-moved out of the
+           Utinni patch (weights unchanged from the original RSW_ rows). -->
+      <RM_LightPipeNub>0.1</RM_LightPipeNub>
+      <RM_Ollim>0.01</RM_Ollim>
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
     <allowedPackAnimals>

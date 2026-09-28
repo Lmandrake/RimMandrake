@@ -50,8 +50,13 @@
   pass). One 3-facing job filed, rmshademite_v1_{south,east,north}.
 
   🔴 THE NAME IS NOT SETTLED — RM_ShadeMite is the INTERNAL working
-  defName, same posture RM_MirrorGiant/RM_DustHusk used. Folds into the
-  existing STILLSAND_SHIPPING_NAMES_1 card, not a new one.
+  defName, same posture RM_Oommok/RM_Siidda used before their own naming.
+  STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting) ratified oommok/siidda and
+  four filler coins (ruukka, oorrik, eemmok, vaalok — none of them this def)
+  but did not name this creature; STILLSAND_SHIPPING_NAMES_1, which this
+  comment used to cite, was never filed and does not exist in items/ or the
+  ledger shards. This remains a genuinely unsettled name, most likely to be
+  resolved alongside the roster fill-out commission's own coined names.
 -->
 <Defs>
 

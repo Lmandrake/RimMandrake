@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_MirrorGiant.xml                     RimMandrake — COMMISSION_LEDGER_CLEANUP_1
+  RM_Oommok.xml (defName renamed from RM_MirrorGiant — STILLSAND_RULED_CONTENT_1)
+                                          RimMandrake — COMMISSION_LEDGER_CLEANUP_1
 
   Resolves ledger slug
   `dune_sea+deep_desert:mirror-plated-sun-axis-asymmetric-giant`
@@ -62,10 +63,13 @@
   explicitly (mirror-white, hard-edged dorsal plating vs. dark, soft
   ventral/shaded flank), the one property a reskin could never carry.
 
-  🔴 THE NAME IS NOT SETTLED — RM_MirrorGiant is the INTERNAL working
-  defName (same posture RUT_SealedSleeper/RUT_MortuaryCrawler used). No
-  Stillsand shipping-names card exists yet; filed
-  STILLSAND_SHIPPING_NAMES_1 this pass to cover it.
+  🔴 NAME RATIFIED — STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting, §7/Rulings
+  Q11): checker 6/6, Wookieepedia 0 hits with a live probe. RM_MirrorGiant was
+  the internal working defName; renamed RM_Oommok, label "oommok", here.
+  (The header line below still said "filed STILLSAND_SHIPPING_NAMES_1" — that
+  item was never filed and does not exist in items/ or the ledger shards; the
+  names are ruled directly in the sitting doc instead. Correcting a false
+  citation, not re-filing it.)
 
   DUNESEA_SHADE_COMMENSAL_MICROFAUNA_1: this def now also carries
   RM_CompProperties_ShadowCaster (RimMandrake.CreatureBehaviors), marking
@@ -78,8 +82,8 @@
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RM_MirrorGiant</defName>
-    <label>mirror giant</label>
+    <defName>RM_Oommok</defName>
+    <label>oommok</label>
     <description>A walking mountain whose upper hide is a fused sheet of mirror-bright, ablative plate — nothing soft is ever turned toward the sun. Every opening it has, every soft fold of skin, every sense organ, lives instead on its lower, shaded flank, permanently turned away from the light. It moves at the pace of a shadow on a sundial, and the shade it throws is the coolest, busiest ground for a hundred kilometres in any direction. Nothing here has ever needed to chase anything; the giant simply keeps walking, and whatever needs shade learns to walk with it.</description>
     <statBases>
       <MoveSpeed>1.8</MoveSpeed>
@@ -172,10 +176,10 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RM_MirrorGiant</defName>
-    <label>mirror giant</label>
-    <labelPlural>mirror giants</labelPlural>
-    <race>RM_MirrorGiant</race>
+    <defName>RM_Oommok</defName>
+    <label>oommok</label>
+    <labelPlural>oommoks</labelPlural>
+    <race>RM_Oommok</race>
     <combatPower>900</combatPower>
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.05</ecoSystemWeight>
