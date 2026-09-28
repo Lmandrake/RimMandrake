@@ -1003,3 +1003,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"LONGSHADE_RULED_CONTENT_1","ts":"2026-09-28T05:29:55Z"}
 {"seat":"FOUNDRY","event":"start","id":"LONGSHADE_RULED_CONTENT_1","ts":"2026-09-28T05:29:56Z"}
 {"seat":"FOUNDRY","event":"close","id":"LONGSHADE_RULED_CONTENT_1","sha":"3bf918d54","ts":"2026-09-28T06:15:16Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_RULED_CONTENT_1","ts":"2026-09-28T06:16:12Z"}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_RULED_CONTENT_1","ts":"2026-09-28T06:16:13Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-28T06:28:37Z"}
+{"seat":"FOUNDRY","event":"close","id":"STILLSAND_RULED_CONTENT_1","sha":"9c9ed72e2","ts":"2026-09-28T06:37:53Z"}
