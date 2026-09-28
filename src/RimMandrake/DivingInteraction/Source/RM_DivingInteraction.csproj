@@ -70,6 +70,7 @@
     <Compile Include="RM_ChillFireGate.cs" />
     <Compile Include="RM_MapComponent_ChillOxygenation.cs" />
     <Compile Include="Patch_ChillFireBan.cs" />
+    <Compile Include="RM_MapComponent_ChillBoilShroud.cs" />
   </ItemGroup>
 
   <ItemGroup>

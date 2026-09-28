@@ -58,6 +58,26 @@ namespace RimMandrake.DivingInteraction
             return map.IsPocketMap;
         }
 
+        /// <summary>
+        /// CHILL_THERMAL_ENGINE_1's ambient-severity hook. The pocket map's
+        /// outdoor temperature (RM_SeaDiveGenerator_TheChill's own
+        /// pocketMapProperties.temperature, -110) already IS the map's real
+        /// ambient severity — Verse.MapTemperature.OutdoorTemp returns it
+        /// directly for any pocket map, MEASURED off the decompiled engine,
+        /// and vanilla's own Room.TempTracker.EqualizeTemperature() already
+        /// pulls every unheated/underheated room toward it. No parallel
+        /// MapComponent was built to duplicate this — it is already public,
+        /// already live, and duplicating it would just be a second number
+        /// that can drift from the real one. CHILL_HEATED_SUIT_1 (or
+        /// anything else that needs "how brutal is it right now") reads
+        /// this, not a private field. NaN off the Chill seabed — check
+        /// IsChillSeabedMap first, or just test for NaN.
+        /// </summary>
+        public static float ChillSeabedAmbientC(Map map)
+        {
+            return IsChillSeabedMap(map) ? map.mapTemperature.OutdoorTemp : float.NaN;
+        }
+
         public static bool IsSelfOxidizing(Thing t)
         {
             return t?.def != null && t.def.HasModExtension<RM_SelfOxidizingExtension>();
