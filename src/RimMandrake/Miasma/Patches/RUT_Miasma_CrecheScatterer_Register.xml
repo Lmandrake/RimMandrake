@@ -33,7 +33,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
       <value>
-        <li MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.terminalbiomes">RUT_GenStep_CrecheScatterer</li>
+        <li>RUT_GenStep_CrecheScatterer</li>
       </value>
     </match>
   </Operation>

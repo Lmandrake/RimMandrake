@@ -22,12 +22,14 @@
      RUT_ToxinSealant.xml) rather than inventing a second sealant economy —
      same "a shared mechanism gets ONE def, reused cross-kit" precedent
      RUT_Scald/RM_ScaldArmor already set (FORGE_MECHANICS_1 reused
-     Greentide's own damage-type trio rather than duplicating it). Gated
-     MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.greentide" —
-     TWO packages, not one: RUT_ToxinSealant.xml's own defining def already
-     carries (its costList consumes
-     RM_ToxinSealant, a Greentide-mod item), so a reference to it needs the
-     same guard or it dangles when mandrake.rm.greentide alone is absent.
+     Greentide's own damage-type trio rather than duplicating it). Originally
+     gated on TWO packages, not one: RUT_ToxinSealant.xml's own defining def
+     already carries (its costList consumes RM_ToxinSealant, a Greentide-mod
+     item), so a reference to it needed the same guard or it would dangle
+     when mandrake.rm.greentide alone was absent. BAROQUE_BIOMES_WAVE2_FOLD_1:
+     both mandrake.rm.environmentalhazards and mandrake.rm.greentide fold
+     into mandrake.rm.biomes in the same wave, always co-present now, so the
+     guard is dropped rather than retargeted.
      Real finding against the sibling precedent this pass read before
      writing: RUT_GreatboleCore.xml's OWN comp <li> (in GREENTIDE_
      MECHANICS_2, not this item's file) is gated on only, despite the exact
@@ -79,7 +81,7 @@
       <deconstructible>false</deconstructible>
     </building>
     <comps>
-      <li MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.greentide" Class="RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker">
         <regrowthThing>RUT_FeverTrunkHeartwood</regrowthThing>
         <sealantTerrain>RUT_ToxinSealant</sealantTerrain>
         <regrowDaysRange>10~18</regrowDaysRange>

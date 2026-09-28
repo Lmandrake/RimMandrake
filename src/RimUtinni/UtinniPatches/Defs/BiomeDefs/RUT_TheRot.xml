@@ -131,7 +131,7 @@
       <RUT_SheenMist MayRequire="mandrake.rut.rotsporekit">10</RUT_SheenMist>
     </baseWeatherCommonalities>
     <biomeMapConditions>
-      <li MayRequire="mandrake.rm.environmentalhazards,mandrake.rut.rotsporekit">RUT_SheenExposureLock</li>
+      <li MayRequire="mandrake.rm.biomes,mandrake.rut.rotsporekit">RUT_SheenExposureLock</li>
     </biomeMapConditions>
     <wildAnimals>
       <RSW_FungalWeevil MayRequire="mandrake.rsw.swbestiary">0.4</RSW_FungalWeevil>  <!-- fungal weevil - ingest-strange, import -->

@@ -69,7 +69,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.terminalbiomes">
+  <GenStepDef>
     <defName>RUT_GenStep_CrecheScatterer</defName>
     <order>235</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
