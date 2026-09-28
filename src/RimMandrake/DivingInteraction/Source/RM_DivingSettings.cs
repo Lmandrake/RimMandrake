@@ -90,6 +90,15 @@ namespace RimMandrake.DivingInteraction
         // without switching off the whole pocket map.
         public static bool chillBoilShroudEnabled = true;
 
+        // CHILL_HEATED_SUIT_1, 2026-09-28. The heated dive suit's battery
+        // gauge — drains outdoors on the Chill seabed, recharges near a
+        // powered RM_HeatedSuitCharger. Own toggle per MOD_OPTIONS_
+        // RETROFIT_1: off degrades gracefully to "always full," i.e. the
+        // suit's charge-gated cold protection is simply always on and the
+        // charger building becomes inert decoration — off never strands a
+        // colonist on a dead battery mid-dive.
+        public static bool chillHeatedSuitEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -101,6 +110,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref greyElderTradeEnabled, "greyElderTradeEnabled", true);
             Scribe_Values.Look(ref chillFireBanEnabled, "chillFireBanEnabled", true);
             Scribe_Values.Look(ref chillBoilShroudEnabled, "chillBoilShroudEnabled", true);
+            Scribe_Values.Look(ref chillHeatedSuitEnabled, "chillHeatedSuitEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -169,6 +179,15 @@ namespace RimMandrake.DivingInteraction
                   + "shimmer follows any live colonist or powered device standing outdoors down "
                   + "there. Off: no flecks, nothing mechanical changes — the cold and the room "
                   + "freezing it fights are unaffected either way.");
+
+                list.Gap();
+                list.CheckboxLabeled("The Chill: heated suit battery drains", ref chillHeatedSuitEnabled,
+                    "Shipped default: ON. The heated dive suit's battery drains while worn "
+                  + "outdoors on the Chill's seabed, and recharges near a powered suit charging "
+                  + "rack. An empty suit gives no cold protection at all, only vanilla's own "
+                  + "hypothermia to fight on the walk back. Off: the suit's cold protection is "
+                  + "simply always on, and the charging rack becomes inert decoration — never "
+                  + "strands anyone on a dead battery.");
             }
 
             list.End();

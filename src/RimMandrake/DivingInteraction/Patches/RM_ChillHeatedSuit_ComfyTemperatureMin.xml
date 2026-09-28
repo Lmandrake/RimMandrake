@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CHILL_HEATED_SUIT_1 — wires RM_StatPart_HeatedSuitCharge into vanilla's
+  own StatDefOf.ComfyTemperatureMin (Defs/Core/Stats/Stats_Pawns_General.
+  xml), which already carries one <parts> entry (StatPart_GearStatOffset
+  for Insulation_Cold) — MEASURED via RimSage this session, so a bare
+  PatchOperationAdd onto the existing <parts> node is safe; there is no
+  "does <parts> exist yet" ambiguity to guard with a Conditional the way
+  CONTAGION_GENOME_ORGAN_GROWING_1 had to for <comps>.
+
+  This is how the suit's charge actually reaches vanilla's own hypothermia
+  math: HediffGiver_Hypothermia reads pawn.ComfortableTemperatureRange(),
+  which calls pawn.GetStatValue(StatDefOf.ComfyTemperatureMin) — the exact
+  stat this part now also transforms. No new temperature-tracking of any
+  kind was written for this item; the suit rides the engine's own pipe.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/StatDef[defName="ComfyTemperatureMin"]/parts</xpath>
+    <value>
+      <li Class="RimMandrake.DivingInteraction.RM_StatPart_HeatedSuitCharge" />
+    </value>
+  </Operation>
+
+</Patch>
