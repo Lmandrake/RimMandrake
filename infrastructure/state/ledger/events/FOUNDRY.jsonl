@@ -1028,3 +1028,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"CHILL_THERMAL_ENGINE_1","ts":"2026-09-28T07:55:15Z"}
 {"seat":"FOUNDRY","event":"start","id":"CHILL_THERMAL_ENGINE_1","ts":"2026-09-28T07:55:16Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_THERMAL_ENGINE_1","sha":"d23e31584","ts":"2026-09-28T08:05:46Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_HEATED_SUIT_1","ts":"2026-09-28T08:06:49Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_HEATED_SUIT_1","ts":"2026-09-28T08:06:50Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_HEATED_SUIT_1","sha":"5eaa306e4","ts":"2026-09-28T08:21:01Z"}
