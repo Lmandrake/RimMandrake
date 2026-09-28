@@ -52,6 +52,27 @@ to the session scratchpad. `git status src/RimMandrake/LanternDeeps` is clean.
 
 ⚠️ **Whoever takes this item: do not re-run `--pull` on this mod.**
 
+🔴 **CORRECTION 2026-09-28 (FOUNDRY) — the "reverted" claim above is FALSE as of
+right now.** `deploy_custom_mods.py --mod LanternDeeps` reports the live
+`Mods\LanternDeeps` folder **"in sync (79 files)"** with `mandrake.rm.lanterndeeps`
+— the full RM successor, not the reverted RUT About.xml this section describes.
+The deployed `About.xml`'s own mtime is **2026-09-26 16:43:22 -0700**, ~47 minutes
+after this item was filed — so either the "same minute" revert never actually
+landed, or a second `--apply` re-deployed the RM mod afterward and nobody updated
+this record. `ModsConfig.xml` still lists the OLD `mandrake.rut.lanterndeeps`
+packageId (unchanged), so the game has read `mandrake.rut.lanterndeeps` as a
+listed-but-missing mod for two days — exactly this item's own hazard scenario —
+and it is why `rimworld/load_game_ready` on the canonical save now refuses with
+`save.missing_mods`, naming `vanillaquestsexpanded.cryptoforge` (expected, FOUNDRY
+retired it this session), `mandrake.rut.rotsporekit` (separate, unrelated — its
+own mod folder is untouched, just toggled off in ModsConfig, trivial re-enable),
+and `mandrake.rut.lanterndeeps` (this hazard). Nothing was lost — steps 1/2's
+rescue materials (git history + `infrastructure/state/rescued/`) are exactly
+where this item's own "what is owed" said they'd be. Proceeding to complete step 4
+(ModsConfig swap) and verify per step 5, in the load round already underway for
+CRYPTOFORGE_HARVEST_RETIRE_1 step 4 — NOT resaving without the owner's word, per
+step 7.
+
 ## what the canonical save holds (MEASURED 2026-09-26, FOUNDRY)
 
 `Saves\CANONICAL_ASHKARR_START_2026-09-12.rws` (canon.yml `planet.start_savegame`),
