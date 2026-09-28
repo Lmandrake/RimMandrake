@@ -66,7 +66,137 @@ sheets rule, not by density.
 
 ## 2. The new cast
 
-(to fill)
+Six species, one per measured gap. Every behaviour names the shipped comp that carries it —
+new C# appears only as a priced option, never as a requirement. All names DRAFT (§5).
+
+### 2.1 The soorrak — the flier that owns the sky (gap 1)
+
+**Description.** A sail-winged giant that nests in the deep dune precisely because nothing
+alive can afford to walk there. Its sun-face is a single mirror-ceramic sheet — from below,
+crossing the white sky, it is nearly invisible except as a moving glare; its shade-face
+carries the eyes, the vents and the brood pouch. It drinks at the green line or the Scald's
+shore, hundreds of kilometres away, and carries water home in its crop. Its guano rings,
+dropped prey and dead chicks are the only organic import the deep dune receives — a soorrak
+nesting crag is the richest square kilometre of surface in the biome, and its **eggs are
+canteens**: a full one is drink in a rigid shell, and a Jawa will cross a horizon for a
+clutch. It ignores anything that cannot reach the nest, which is everything.
+
+**Def sketch.** bs 4.5 (giant band, mass arm), commonality 0.02. Real flight, core stats:
+`MaxFlightTime` 30 / `FlightCooldown` 8, `canFlyIntoMap` true, `canLeaveMapFlying` true (it
+drinks elsewhere — the sheet's own mechanism). Egg layer; the fertilised egg doubles as the
+§4.4 canteen item (ingestible, thirst-flavoured food+mood, heavy). No new C#: flight is
+vanilla core (the Locust/Chicken shape), eggs are vanilla `CompEggLayer`. Flip-book flying
+frames owed as art, never blocking flight. Reads strongest in the dune-sea region (a moving
+glare over the corrugation) — flavour note only, one biome def.
+
+**Art brief.** Top-down soaring silhouette folded at rest: sail wings with a mirror-white
+upper sheet, dark soft underside, long condensing snout that reads as plumbing rather than
+a face. No nameable Earth bird.
+
+### 2.2 The gaanok — the follower (gap 2)
+
+**Description.** The other legal hunter. A gaunt, stilt-legged walker the colour of bleached
+bone, powder-glazed, taller than a wall and thin as famine — and it never attacks. It simply
+appears on the horizon behind a caravan and walks, at exactly the caravan's pace, for days.
+It is doing arithmetic: a moving party is a sealed cask of water that will open itself if
+followed long enough. When something collapses — of heat, of thirst, of wounds — the gaanok
+is there within the hour, and it drinks. Shooting it is spending water on a thing that has
+not touched you; outrunning it is impossible because it does not run either. The horror is
+that it is patient, visible, and correct.
+
+**Def sketch.** bs 5.0 (giant band, mass arm — thermal inertia), commonality 0.01, moveSpeed
+~2.6 (a walking pawn's pace, never faster). Predator with `manhunterOnDamageChance` 0 — it
+declines fights. v1 ships on vanilla predator AI: the low speed makes a chase structurally
+impossible, so it takes only the downed and the slow, which IS the design. Priced option
+(small C#): a ThinkNode preferring prey carrying `RM_Hediff_SunScald` (hediff shipped in
+creaturebehaviors) — the follower keying on the biome's own scald mechanic. Not required.
+
+**Art brief.** Extreme verticality — the sheet's rare vertical event: column legs, a low
+slung condensing head carried at knee height, bone-white with hard black shadow.
+
+### 2.3 The liikka — the light-eater (gap 3, the kudda's vacated niche filled NEW)
+
+**Description.** A thumb-sized surface mite whose back is a domed mirror and whose underside
+is the entire rest of the animal. It is the only creature on the planet that meets the
+biome's one surplus head-on: it eats light — its dome meters photons down into photolytic
+tissue the way the light-pipe nubs do, and it sieves the top centimetre of sand for the
+glasscrust it grazes (§3.3). It never drinks; its whole water budget is metabolic. In a
+biome that hides everything, the liikka is the thing a traveller actually SEES: a scatter
+of stationary glints that turn out, on the next look, to have moved.
+
+**Def sketch.** bs 0.12 (grain band), commonality 0.2 — the most common animal in the biome
+and still sparse. Sun-axis polarised: mirror dome up, everything soft below. Feeding rides
+the shipped filter-feed stack: `RM_FilterFeedExtension` + `RM_JobGiver_FilterFeedTerrain` /
+`RM_JobDriver_FilterFeedTerrain` (creaturebehaviors) against sand terrain. No new C#.
+Yields a pinch of biosilica-adjacent chitin on butcher; not worth hunting, which is why it
+survives at 0.2.
+
+**Art brief.** A polished hemispherical mirror dome catching one hard specular point, tiny
+articulated shade-side legs just visible at the rim. Reads as a glint first, animal second.
+
+### 2.4 The duumma — the prey that drums dry (gap 5)
+
+**Description.** The fattest water-cask in the biome, and the ground's other liar. A
+barrel-bodied subsurface burrower, plated in matte dust-glaze, that ferries stored water
+between buried moisture pockets. Every subsurface hunter can feel a footfall; the duumma's
+answer is to falsify the ledger — when anything heavy moves nearby it goes utterly still
+and its gait-drum shifts to the dry, hollow signature of a desiccated husk: *nothing here
+worth a strike.* A player who learns the tell (the sand that went quiet) is standing on
+more water than a whole clutch of eggs; a predator that learns it, eats. Prey to the vekka,
+the drazzik and the krayt; prize to a Jawa.
+
+**Def sketch.** bs 1.8, **depth arm** — mid-band legal because it is subsurface, annotated
+in place per today's Q7 ruling. Commonality 0.08. The prize is carried by the shipped
+`RM_CompFluidSacs` (creaturebehaviors): butchering a fresh duumma yields fluid-sac items —
+drink you can carry, the eggs-as-water economy without an egg. The signal-falsification is
+v1 description + stats (no shipped comp expresses it; that is a cost stated honestly); the
+audible half can ride `RM_ProximitySoundscapeExtension` (shipped) if the sitting wants the
+sand to go quiet audibly. Never surfaces except to die.
+
+**Art brief.** A smooth dust-glazed barrel low in the sand, only the back visible — a
+half-buried keel with faint drum-plate ribbing. Powder glaze, never shiny (deep-desert ban 3).
+
+### 2.5 The veessa — the miller of the mummified fields (gap 4)
+
+**Description.** Nothing rots here, so something learned to eat what cannot rot. The veessa
+is a grain-scale plated miller that works the mummified fields — the intact dead of ten
+thousand years — rasping desiccated tissue into powder its gut chemistry can finally
+unlock. It is the only thing on the planet that digests the dry dead: everything else
+fights over the wet kill and leaves. Veessa sign is why some finds are bone-bright and
+others still wear their leather; a field with no veessa in it has something worse in it.
+It never touches the living or the fresh — fresh is water, and water draws things it
+cannot afford to meet.
+
+**Def sketch.** bs 0.15 (grain band), commonality 0.1. Vanilla carries it whole: a
+corpse-eating diet (`foodType` including Corpse, the vanilla carrion shape) — no new C#.
+Secondary option: `RM_EatCleanableExtension` (shipped) if the sitting wants it milling
+dust-filth too. Slow, timid, flees everything. Butchers to nearly nothing — hunting one is
+spending more water than it holds, which the description says out loud.
+
+**Art brief.** A flat oval grinder, dusty bone-and-tan plates, a broad rasp-mouth on the
+shade side; carries a faint powder bloom of the dust it makes. No nameable Earth insect.
+
+### 2.6 The loomma — the ollim's tenant (gap 6)
+
+**Description.** The rent-payer. A soft-bodied, kettle-sized commensal that lives its whole
+life inside one ollim's hard-edged permanent shadow — it cannot survive twenty minutes
+outside it. It forages the shade line at the shadow's rim, and it pays the tree: its dung
+and its water-rich waste go into the sand at the trunk, concentrating exactly the buried
+moisture the ollim accretes from. A stand with loomma in it is a working ecosystem; a
+stand without them is a dying one. Tame ones will pay rent to a colony instead — a slow,
+gentle fertiliser engine — but they die on any caravan that leaves the shade.
+
+**Def sketch.** bs 0.25 (grain band), commonality 0.05, meaningful only where ollim stand.
+The rent is the shipped `RM_CompDungSeeder` (creaturebehaviors) — waste that seeds and
+feeds, the sheet's "tenants pay in waste and water" made literal. Shade-binding rides the
+shipped shade stack: `RM_MapComponent_ShadeGrid` + `RM_ShadeSeekingWanderExtension` /
+`RM_JobGiver_WanderInShadeGrid`, with the shipped `RM_Hediff_SunScald` +
+`RM_HediffComp_ShadeDrivenSeverity` as the death-outside-shade clock. Evaluate
+`RM_TenantTruceExtension` (EnvironmentalHazards) at build for the tree-tenant truce shape,
+per the bedazzle doc's own note — grep before inventing holds; nothing new is needed.
+
+**Art brief.** A soft rounded dark-dun body with a pale dust cap, small and low, drawn as
+if permanently in shade — the one creature in the set with no hard highlight.
 
 ## 3. The new flora
 
