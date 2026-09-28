@@ -38,6 +38,16 @@
   PASS_1 comment). Neither carries a burn/damage number the other
   contradicts, so nothing here needed folding into the generator or
   deleting.
+
+  ✅ RE-CHECKED AGAIN under TERMINALBIOMES_LIQUID_RETARGET_1 (Q7 ownership
+  ruling execution, 2026-09-28): same conclusion holds. RM_PropaneLakeDeep/
+  RM_SolidPropane are the lake's own MAIN BODY terrain (waterDeepTerrain/
+  waterShallowTerrain on RM_PropaneLake.xml) and FlowWorks' RM_PropaneDeep/
+  RM_PropaneShallow are already directly wired as that same BiomeDef's
+  <coastal> shore-fishing edge — both in active, deliberate, simultaneous
+  use on one BiomeDef, not a stale fork. There is nothing generic left to
+  retarget here: this pair is a keeper, not a duplicate. Do not re-open this
+  a third time on a defName-similarity read alone.
   ============================================================================
 -->
 <Defs>

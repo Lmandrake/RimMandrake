@@ -56,6 +56,20 @@
       <displayName>Harmony</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
+    <li>
+      <!-- TERMINALBIOMES_LIQUID_RETARGET_1, 2026-09-28: RM_GreySea.xml's
+           default sea water already points straight at FlowWorks'
+           RM_WaterBrineDeep/RM_WaterBrineShallow (MayRequire-guarded), and
+           RM_PropaneLake.xml's <coastal> shore edge already points straight
+           at FlowWorks' RM_PropaneDeep/RM_PropaneShallow (unguarded) — a
+           genuine hard defName reference, same reasoning as the
+           environmentalhazards/divinginteraction entries above, not the
+           loadAfter-only kind. Promoted from loadAfter-only to make
+           close_over() see it; without FlowWorks loaded those two BiomeDef
+           fields resolve to nothing. -->
+      <packageId>mandrake.rm.flowworks</packageId>
+      <displayName>RimMandrake: FlowWorks</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
