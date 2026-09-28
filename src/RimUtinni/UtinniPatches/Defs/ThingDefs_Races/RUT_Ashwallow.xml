@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Ashwallow.xml                          UtinniPatches — new file 2026-09-28
+
+  PYRELANDS_DEDICATED_GRAZER_1: the "burrowers" family's own dedicated species
+  (the_pyrelands.md §4 — "grazers that let the fire pass over and emerge into
+  the fertilized ash"), distinct from RSW_Orray. Checked cast_assignment.csv
+  and animal_census.csv first (per this item's own step 1): no unassigned
+  small-grazer/burrower candidate exists there for this slot — every grazer
+  row already carries a biome ("ash-grazer" rows Zeer/Iriaz/AA_Barbslinger are
+  a DIFFERENT family; every other small grazer in the two CSVs is already
+  homed elsewhere) — so this is authored from scratch, same posture
+  RUT_SlimeGrazer/RUT_EmperorVulture used when no live donor passed.
+
+  DISTINCT FROM ORRAY, on every axis the item asks for:
+    - Orray: <predator>true</predator>, foodType includes CarnivoreAnimal/
+      OvivoreAnimal, custom claw-and-fang Orray BodyDef, baseBodySize 2.0,
+      MoveSpeed 5.0, packAnimal, manhunterOnDamageChance 1.0.
+    - Ashwallow: predator false, foodType VegetarianRoughAnimal only, plain
+      vanilla QuadrupedAnimalWithHooves body (hooves + head-butt tools only,
+      no claws/fangs), baseBodySize 1.3, MoveSpeed 3.7, not a pack animal,
+      manhunterOnDamageChance 0.05 (a docile grazer, not a fighter).
+    - Orray's own register text is flavor only ("burrows underground when
+      hungry") — grep confirmed (PYRELANDS_DEDICATED_GRAZER_1's own filing)
+      no C# anywhere implements it. Ashwallow is the first creature in this
+      repo with a REAL, mechanically-driven burrow-on-fire behaviour.
+
+  BEHAVIOUR: RM_BurrowOnFireExtension (below) opts it into
+  RM_JobGiver_BurrowOnFire / RM_JobDriver_Burrow
+  (src/RimMandrake/Pyrelands/Source/) — the biome's own new, generic
+  burrow-on-fire mechanism. Hooks MapComponent_BurnLine (already-built
+  fire-tracking) rather than re-deriving fire detection; see that mechanism's
+  own file headers. The cross-mod modExtension reference (UtinniPatches ->
+  mandrake.rm.pyrelands) is the SAME shape already used elsewhere in this mod
+  (e.g. RUT_TheScald.xml's RimMandrake.SeaShores.RM_SeaShoreExtension) — type
+  resolution for a Class= attribute searches every loaded assembly regardless
+  of load order, and mandrake.rm.pyrelands is already a hard dependency of
+  every Pyrelands creature cast here.
+
+  ART: none commissioned yet — checked infrastructure/artpipe/{done,pending}/
+  registry.jsonl and _artsrc for "burrow"/"pyrelands grazer"/"ashwallow" as of
+  this pass: clean, nothing pre-existing (the two "grazer" hits that DO exist,
+  rutslimegrazer_v1/v2 and desertportb_feralgrazer, are unrelated subjects —
+  the Slime biome's filter-feeder and a desert-port reskin, respectively).
+  texPath follows this biome's own convention
+  (Things/Pawn/Animal/Pyrelands/<Name>/<Name>) so the artpipe daemon has a
+  ready target once queued; owed as follow-up, not a build blocker (item
+  step 9).
+
+  Wired into RM_Pyrelands' live wildAnimals in
+  Patches/WildAnimals_Pyrelands.xml at commonality 0.18 — see that file's own
+  updated header for why.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RUT_Ashwallow</defName>
+    <label>ashwallow</label>
+    <description>A low, broad grazer of the burning savanna, plated across the shoulders in cracked grey hide the same colour as spent ash. It works the quickgrass in the calm between burns, and the instant it reads a front coming — heat on the wind, the hiss climbing before the light does — it drops flat, digs into the loosened root-mat with its forehooves, and goes still. The fire walks over it. It comes back up into the black once the ground has cooled, first into the fertilized ash and first to the regrowth sprint. It has no bite worth the name and nothing to hunt with; going to ground is the only trick it has, and it is enough.</description>
+    <statBases>
+      <MoveSpeed>3.7</MoveSpeed>
+      <MarketValue>220</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>58</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+      <FilthRate>1.5</FilthRate>
+      <Wildness>0.55</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left forehoof</label>
+        <labelNoLocation>forehoof</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftFoot</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right forehoof</label>
+        <labelNoLocation>forehoof</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightFoot</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <predator>false</predator>
+      <herdAnimal>false</herdAnimal>
+      <baseBodySize>1.3</baseBodySize>
+      <baseHealthScale>1.1</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <trainability>Minimal</trainability>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>11</lifeExpectancy>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 0.6)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.45</minAge>
+          <soundWounded>Pawn_Muffalo_Wounded</soundWounded>
+          <soundDeath>Pawn_Muffalo_Death</soundDeath>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
+          <soundAngry>Pawn_Muffalo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.Pyrelands.RM_BurrowOnFireExtension">
+        <detectionRadius>15</detectionRadius>
+      </li>
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RUT_Ashwallow</defName>
+    <label>ashwallow</label>
+    <race>RUT_Ashwallow</race>
+    <combatPower>50</combatPower>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <wildGroupSize>1~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.9</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

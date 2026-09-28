@@ -25,4 +25,24 @@
     <suspendable>false</suspendable>
   </JobDef>
 
+  <!-- ========================================================================
+       PYRELANDS_DEDICATED_GRAZER_1 — the burrow-on-fire job.
+       Driver: RimMandrake.Pyrelands.RM_JobDriver_Burrow. Dispatched only by
+       RM_JobGiver_BurrowOnFire, which will not issue it unless a fire is
+       already burning within the carrying race's own
+       RM_BurrowOnFireExtension.detectionRadius.
+
+       suspendable false, same reasoning as RM_FireHawkCarryEmber immediately
+       above: a burrow that resumes days later with the front long since
+       passed makes no sense — the driver's own tick check already re-derives
+       "is it still worth burrowing" every tick it runs, so nothing is lost by
+       simply not resuming a stale one.
+  ======================================================================== -->
+  <JobDef>
+    <defName>RM_Burrow</defName>
+    <driverClass>RimMandrake.Pyrelands.RM_JobDriver_Burrow</driverClass>
+    <reportString>burrowing to let the fire pass.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
 </Defs>

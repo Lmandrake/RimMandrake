@@ -339,5 +339,25 @@ namespace RimMandrake.Pyrelands
         /// RUT_PyrelandsFauna.xml, not re-invented here.</summary>
         public const int WorldHerdMinSize = 3;
         public const int WorldHerdMaxSize = 7;
+
+        // ---------------------------------------------------------------
+        // PYRELANDS_DEDICATED_GRAZER_1 — burrow-on-fire
+        // (RM_JobGiver_BurrowOnFire, RM_JobDriver_Burrow). Generic and
+        // opt-in via RM_BurrowOnFireExtension, so any race can adopt the
+        // "detect the fire, go to ground, re-emerge" behaviour without new
+        // C#; RUT_Ashwallow is the first consumer.
+        // ---------------------------------------------------------------
+        /// <summary>How close a free-standing fire has to be before an
+        /// extension-carrying race goes to ground. Comfortably wider than a
+        /// fire front's own width (FireFrontWidthCells, 9 cells) so the
+        /// animal burrows ahead of the line reaching it rather than at the
+        /// last possible cell. [INVENTED]</summary>
+        public const float BurrowDetectionRadius = 15f;
+
+        /// <summary>Safety cap: never stays burrowed longer than this even
+        /// if the fire-near check somehow never clears (a stuck Fire, a
+        /// modded interaction) — comfortably longer than any one front
+        /// takes to pass. 60000 ticks = 1 in-game day. [INVENTED]</summary>
+        public const int BurrowMaxTicks = 60000;
     }
 }

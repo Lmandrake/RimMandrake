@@ -43,6 +43,18 @@
   post-BOOM_FAMILY_CUT_1). It is a distinct venom-ambush niche, not the
   fire-follower niche — that is the sytheclaw's, per the 2026-09-14 recast.
 
+  🔴 2026-09-28 (PYRELANDS_DEDICATED_GRAZER_1): RUT_Ashwallow joins the roster,
+  0.18 — the "burrowers" family's own dedicated pure-grazer, distinct from
+  Orray (a predator hybrid; see Defs/ThingDefs_Races/RUT_Ashwallow.xml for the
+  full case). 0.18 sits between Orray's 0.25 (still the more commonly-seen
+  burrower, being also an opportunist predator) and Emberscythe's 0.05, and
+  is not equal to any other cast weight in this file — deliberate, so no two
+  species are silently mistaken for one another by weight alone. The 14-
+  animal, 4.91-weight sum in the header above is now 15 animals / 5.09;
+  not re-verified with biome_sheet_stats.py this pass (that tool audits the
+  live def dump's actual wired weights, a step owed alongside deploy/build
+  verification for this item, not a text change here).
+
   🔴 2026-09-19 (PYRELANDS_DONOR_PORT_4): every creature this file casts is now
   one of OUR defs. The four that still rode a donor defName — GR_Boomsnake,
   AA_Razorjack, AA_Barbslinger, AA_FireWasp — were re-authored as RUT_Flamefang,
@@ -85,6 +97,11 @@
     RUT_Barbslinger    0.15  ash-grazer         — was AA_Barbslinger (Alpha Animals)
     RUT_FireWasp       0.40  small-predator     — was AA_FireWasp    (Alpha Animals)
     RUT_Flamefang      0.50  venom-ambush       — was GR_Boomsnake   (Vanilla Genetics Expanded)
+
+  OURS, authored from scratch, no donor (PYRELANDS_DEDICATED_GRAZER_1,
+  2026-09-28 — Defs/ThingDefs_Races/RUT_Ashwallow.xml, always loaded with
+  this mod):
+    RUT_Ashwallow      0.18  burrower (pure grazer, distinct from Orray)
 
   OURS, re-authored off a dead donor defName (EMBERSCYTHE_MANTIS_REAUTHOR_1,
   rehomed into this mod by EMBERSCYTHE_PYRELANDS_REHOME_1 2026-09-19 —
@@ -208,6 +225,7 @@
         <RUT_Barbslinger>0.15</RUT_Barbslinger>
         <RUT_FireWasp>0.4</RUT_FireWasp>
         <RUT_Flamefang>0.5</RUT_Flamefang>
+        <RUT_Ashwallow>0.18</RUT_Ashwallow>
       </value>
     </match>
   </Operation>
