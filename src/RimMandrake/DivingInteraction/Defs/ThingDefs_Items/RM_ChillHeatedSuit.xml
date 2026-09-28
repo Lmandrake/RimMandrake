@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CHILL_HEATED_SUIT_1 — the heated dive suit, one clock (a battery charge
+  gauge; card ruling declined both the two-clock heat+air option and the
+  no-clock option). Full mechanism, Odyssey-research writeup and the
+  hypothermia-math this leans on: RM_CompHeatedSuitBattery.cs's own header.
+
+  ParentName="Apparel_Vacsuit" DELIBERATELY — Odyssey already ships exactly
+  "the appropriate suit type" (Defs/Odyssey/ThingDefs_Misc/Apparel_Various.
+  xml, MEASURED via RimSage this session): real shipped art, armor,
+  insulation, EquipDelay, body coverage, even the "restricts movement"
+  framing, all for free. This def inherits that whole shape and only
+  overrides what the Chill's own ruling actually asks for: Insulation_Cold
+  cut from the inherited 90 down to a modest 20 (see the .cs header — the
+  full -110C counteraction is charge-gated via RM_StatPart_HeatedSuitCharge,
+  not a static apparel stat, or an empty suit would still be halfway safe)
+  and the battery comp itself.
+
+  ART: reuses Odyssey's real Vacsuit texture/wornGraphicPath outright
+  (Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit) with a warm tint —
+  legitimate shipped DLC art for exactly this kind of garment, not a
+  placeholder standing in for a mismatched subject. infrastructure/artpipe/
+  {done,pending}/registry.jsonl carries nothing for "suit"/"heated"/"vacuum"
+  this session (checked before writing this file) — nothing to reuse from
+  our own pipeline, and nothing further queued: this art already fits.
+-->
+<Defs>
+
+  <ThingDef ParentName="Apparel_Vacsuit" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_ChillHeatedSuit</defName>
+    <label>heated dive suit</label>
+    <description>A vacuum-rated suit rebuilt around a battery-fed heating web instead of a passive shell — it recycles the wearer's air same as any vacsuit, but the real work is the coils. On the Chill's seabed the ambient cold alone would kill in hours; this is the only thing standing between a working pawn and that. The gauge on its own wrist display is not a fuel light. When it reads empty, the suit is just a heavy coat, and the cold does not wait.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.9</drawSize>
+      <color>(214, 108, 48)</color>
+    </graphicData>
+    <statBases>
+      <!-- Everything else (MaxHitPoints, Mass, ArmorRating_*, Insulation_
+           Heat, EquipDelay, WorkToMake) is inherited unchanged from
+           Apparel_Vacsuit — RimWorld's def-inheritance merges statBases by
+           tag, so only the one stat actually being changed needs stating.
+           Insulation_Cold: cut from the inherited 90. See file header and
+           the .cs header for why the static value must be modest — the
+           real -110C protection is 100% charge-gated. -->
+      <Insulation_Cold>20</Insulation_Cold>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.DivingInteraction.RM_CompProperties_HeatedSuitBattery">
+        <maxChargeTicks>15000</maxChargeTicks>
+        <drainIntervalTicks>250</drainIntervalTicks>
+        <rechargeRateMultiplier>3</rechargeRateMultiplier>
+        <chargerSearchRadius>3.9</chargerSearchRadius>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CHILL_HEATED_SUIT_1 — the suit's recharge side. Builder's choice per the
+  item ("a powered charger, or hull-proximity charging — your choice, but
+  it must consume the ship's power budget"): a real powered building, not
+  ambient hull proximity, because a Thing with CompPowerTrader is the only
+  way to make "recharging genuinely draws ship power" checkable rather than
+  asserted — it is a real, continuous consumer on the same PowerNet
+  CHILL_THERMAL_ENGINE_1's own heating load already competes on, feeding
+  that item's "extensive ship heating is THE logistics problem" design
+  exactly as the ruling asked. RM_CompHeatedSuitBattery.cs only recharges a
+  worn suit when this building is both nearby AND actually powered — an
+  underpowered ship's charger sits there, drawing nothing, charging no one.
+
+  PLACEHOLDER ART: reusing vanilla's Battery texture (Things/Building/Power/
+  Battery) via Graphic_Single/non-rotatable, same posture as RM_SeaDiveHatch
+  reusing CaveEntranceA — an electrical-equipment silhouette, tinted to
+  match the suit.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_HeatedSuitCharger</defName>
+    <label>suit charging rack</label>
+    <description>A wall-mounted rack that trickle-feeds a docked heated dive suit's battery straight off the ship's own grid. It draws power constantly while switched on, whether or not a suit is actually hanging on it — the systems that make the recharge possible are not free just because nothing is plugged in this minute.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <size>(1,2)</size>
+    <rotatable>false</rotatable>
+    <useHitPoints>true</useHitPoints>
+    <designationCategory>Structure</designationCategory>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.35</fillPercent>
+    <altitudeLayer>Building</altitudeLayer>
+    <canOverlapZones>false</canOverlapZones>
+    <selectable>true</selectable>
+    <constructEffect>ConstructMetal</constructEffect>
+    <repairEffect>Repair</repairEffect>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <graphicData>
+      <texPath>Things/Building/Power/Battery</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,2)</drawSize>
+      <color>(214, 108, 48)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <WorkToBuild>1800</WorkToBuild>
+      <Mass>18</Mass>
+      <SellPriceFactor>0.7</SellPriceFactor>
+    </statBases>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>300</basePowerConsumption>
+        <shortCircuitInRain>true</shortCircuitInRain>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <researchPrerequisites>
+      <li>OrbitalTech</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>
