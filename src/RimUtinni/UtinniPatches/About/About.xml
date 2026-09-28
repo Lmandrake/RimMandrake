@@ -50,7 +50,18 @@
     <li>lee.theforce.lightsaber</li>                        <!-- LANTERNDEEPS_RM_MOD_BUILD_1: RUT_LanternDeepGateKyber.xml,
                                                                    RUT_LanternDeepKyberScatter.xml (moved here with the KotOR
                                                                    carve-outs when RM_LanternDeeps split off) -->
-    <li>mandrake.rm.lanterndeeps</li>                       <!-- RUT_LanternDeepGateKyber.xml adds RM_LanternDeepGenerator/genSteps -->
+    <li>mandrake.rm.biomes</li>                             <!-- BAROQUE_BIOMES_WAVE2_FOLD_1: covers every one of the ten
+                                                                   now-folded packageIds this loadAfter used to name
+                                                                   individually (lanterndeeps, gelatinousslime,
+                                                                   environmentalhazards, greentide, bluedesert, seashores,
+                                                                   creaturebehaviors, leaningscrub, pyrelands, thesump) —
+                                                                   all now live inside mandrake.rm.biomes, one dependency
+                                                                   instead of ten. See those items for the individual
+                                                                   provenance (RUT_LanternDeepGateKyber.xml,
+                                                                   RUT_SlimeGeneArchive.xml, 83 EnvironmentalHazards
+                                                                   MayRequire sites, RUT_ToxinSealant.xml, RUT_BlueDesert.xml's
+                                                                   roster, RUT_SeaShoreExtension, BiomeCast_Ashkarr.xml,
+                                                                   WildAnimals_LeaningScrub.xml, BiomeArrivalLetters_TheSump.xml). -->
 
     <li>sarg.alphabiomes</li>                               <!-- AB_PyroclasticConflagration -->
     <li>IronScruff.PrimordialGeysers</li>                   <!-- IronScruff_PrimordialGeysers BiomeAnimalDanglingRefs_Fix.xml -->
@@ -65,22 +76,6 @@
       <li>mandrake.rm.patches</li>
     <li>mandrake.rsw.patches</li>
     <li>mandrake.rm.shipvermin</li>                          <!-- WreckVerminNest_ShipChunk.xml: RM_CompProperties_VerminNest -->
-    <li>mandrake.rm.gelatinousslime</li>                     <!-- SLIME_GENE_ARCHIVE_BUILD_1: RUT_SlimeGeneArchive.xml builds on
-                                                                   RimMandrake.GelatinousSlime.GeneArchiveDef and its GeneDefs -->
-    <li>mandrake.rm.environmentalhazards</li>                <!-- DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 80: MayRequire'd by 83
-                                                                   files across this mod (GenStepDefs, TerrainDefs, HediffDefs,
-                                                                   GameConditionDefs, etc.) but never declared here — found via
-                                                                   the same "ungated cross-mod ref" sweep as wave 79's RotSporeKit
-                                                                   fix. Contradicts this file's own "after every mod it touches" -->
-    <li>mandrake.rm.greentide</li>                           <!-- DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 80: MayRequire'd by
-                                                                   RUT_ToxinSealant.xml (RM_ToxinSealant item, costList) and 5
-                                                                   others; same gap as above -->
-    <li>mandrake.rm.bluedesert</li>                          <!-- BLUEDESERT_RM_MOD_BUILD_1: the frozen RUT_BlueDesert.xml's own
-                                                                   wildAnimals/wildPlants reference RM_Dorrak/RM_Krissek/RM_Vekkit/
-                                                                   RM_Palefloss/RM_Glassfern/RM_Chimeglobe, and RUT_PropaneLakeFauna.xml's
-                                                                   RUT_BurnerAscendant reuses RM_CompEffecter_HaloAlways/
-                                                                   RM_DeathActionWorker_BurnerBlast — all now live in this mod's own
-                                                                   assembly, not this mod's -->
 
 
     <!-- Added PATCHMODS_LOADAFTER_SWEEP_1 (2026-09-08): real MayRequire/FindMod
@@ -114,7 +109,6 @@
     <li>zal.comigogreaterswamps</li>                        <!-- BiomeCast_Ashkarr.xml -->
     <li>zal.gianttoads</li>                                 <!-- BiomeCast_Ashkarr.xml -->
     <li>mandrake.rm.flowworks</li>                          <!-- SEA_FLOOR_AND_CATCH_PASS_1: Defs/BiomeDefs/RUT_PropaneLake.xml names FlowWorks' RM_PropaneShallow / RM_PropaneDeep as its shore -->
-    <li>mandrake.rm.seashores</li>                          <!-- SEA_FLOOR_AND_CATCH_PASS_1: Defs/BiomeDefs/RUT_TheScald.xml, RUT_TwilightSea.xml, RUT_GreySea.xml and RUT_PropaneLake.xml each carry a RimMandrake.SeaShores.RM_SeaShoreExtension modExtension -->
       <!-- Added DIRTY_CODE_REVIEW_STANDING_LOOP_1 wave 81: MayRequire target(s) with no loadAfter declaration -->
     <li>biomesteam.biomescaverns</li>
     <li>leutiankane.mines2patchouterrim</li>
@@ -122,10 +116,6 @@
     <li>ludeon.rimworld.biotech</li>
     <li>ludeon.rimworld.ideology</li>
     <li>ludeon.rimworld.odyssey</li>
-    <li>mandrake.rm.creaturebehaviors</li>
-    <li>mandrake.rm.leaningscrub</li>                       <!-- LEANINGSCRUB_RM_MOD_BUILD_1: WildAnimals_LeaningScrub.xml targets Defs/BiomeDef[defName="RM_LeaningScrub"] -->
-    <li>mandrake.rm.pyrelands</li>
-    <li>mandrake.rm.thesump</li>                            <!-- BIOME_ARRIVAL_NARRATION_1: BiomeArrivalLetters_TheSump.xml targets Defs/BiomeDef[defName="RM_TheSump"]/modExtensions -->
     <li>mandrake.rut.rotsporekit</li>
     <li>mandrake.rut.rustcathedralroaches</li>
     <li>mlie.preceptsandmemes</li>
