@@ -29,7 +29,7 @@
 
   <Operation Class="RimMandrake.Utinni.UtinniPatches.PatchOperationSettingGate">
     <setting>holyFlameActEnabled</setting>
-    <match Class="PatchOperationConditional" MayRequire="mandrake.rm.environmentalhazards">
+    <match Class="PatchOperationConditional" MayRequire="mandrake.rm.biomes">
       <xpath>Defs/ThingDef[defName="RM_FlameStatuary"]/comps</xpath>
       <match Class="PatchOperationAdd">
         <xpath>Defs/ThingDef[defName="RM_FlameStatuary"]/comps</xpath>

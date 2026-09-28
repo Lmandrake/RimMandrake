@@ -59,7 +59,7 @@
        has stood on the shore once can make one.
        ================================================================= -->
 
-  <ThingDef ParentName="ApparelMakeableBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="ApparelMakeableBase">
     <defName>RM_Apparel_ScaldWrap</defName>
     <label>scald wrap</label>
     <description>A hooded cloak of oil-waxed cloth, cut long and stiffened with plate shaved off a walker's back, worn over everything else on the shore. It sheds live steam rather than letting it settle, which is the whole trick — and it is appalling to wear in the Anvil's heat, because the same seal that keeps the boil's breath out keeps your own in.</description>
@@ -74,7 +74,7 @@
       <li>Leathery</li>
     </stuffCategories>
     <costList>
-      <RM_ScaldWalkerChitin MayRequire="mandrake.rm.divinginteraction">12</RM_ScaldWalkerChitin>
+      <RM_ScaldWalkerChitin>12</RM_ScaldWalkerChitin>
     </costList>
     <tradeability>Sellable</tradeability>
     <statBases>
@@ -131,7 +131,7 @@
        Ruled Industrial research by the owner, 2026-09-25.
        ================================================================= -->
 
-  <ThingDef ParentName="ApparelMakeableBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="ApparelMakeableBase">
     <defName>RM_Apparel_BoilSuit</defName>
     <label>boil-suit</label>
     <description>A sealed one-piece and hood, rubberized and double-seamed, built for people whose work is standing in the Scald's breath all day. It is hot, heavy, slow and ugly, and it is the difference between a shift at the vents and a week in bed. The faceplate fogs. Everyone who wears one complains; nobody takes one off early.</description>
@@ -144,7 +144,7 @@
       <Cloth>60</Cloth>
       <Steel>30</Steel>
       <ComponentIndustrial>2</ComponentIndustrial>
-      <RM_ScaldWalkerChitin MayRequire="mandrake.rm.divinginteraction">20</RM_ScaldWalkerChitin>
+      <RM_ScaldWalkerChitin>20</RM_ScaldWalkerChitin>
     </costList>
     <tradeability>Sellable</tradeability>
     <statBases>

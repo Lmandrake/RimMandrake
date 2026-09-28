@@ -82,7 +82,7 @@
       <!-- Mod Settings gate: Terminal Biomes' S4 vent-fields toggle, as the
            shared-assembly steam-catch condenser reads it (a dormant vent
            feeds nothing). MayRequire: the extension class lives there. -->
-      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
         <gateKey>Scald.S4</gateKey>
       </li>
     </modExtensions>

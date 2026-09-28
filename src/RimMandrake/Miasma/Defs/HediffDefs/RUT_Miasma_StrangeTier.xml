@@ -130,7 +130,7 @@
     Plant.Growth nudge for damage. Values below match that comp's own
     documented defaults, written out explicit for citation.
   -->
-  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+  <HediffDef>
     <defName>RUT_Miasma_LoamLunged</defName>
     <label>loam-lunged</label>
     <description>Every breath carries a trace of the Working out of you. Nothing anyone would notice looking - but wherever you rest a while, the ground remembers it, just a little.</description>
@@ -170,7 +170,7 @@
     flagged for RM_MiasmaBoonLetterLabel/Text; .Translate() falls back to
     the raw key rather than erroring, so this does not block anything.
   -->
-  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+  <HediffDef>
     <defName>RUT_Miasma_MotherDreamed</defName>
     <label>mother-dreamed</label>
     <description>Once in a great while, the fever brings a dream - long, strange, and harmless. You wake with your hands already knowing what to do next. Wild-nature, not oracle: nothing in the haze speaks to you, it just leaves the door open sometimes.</description>

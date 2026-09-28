@@ -35,8 +35,7 @@
       <!-- TERMINALBIOMES_EH_HARD_DEP_1, 2026-09-26: RM_TerminalBiomesMod.cs
            does `using RimMandrake.EnvironmentalHazards;` and the .csproj
            carries a hard <Reference Include="RimMandrake.EnvironmentalHazards">
-           HintPath, and 16 of this mod's defs carry
-           MayRequire="mandrake.rm.environmentalhazards" — a genuine hard
+           HintPath, and 16 of this mod's defs carry — a genuine hard
            assembly reference, not a soft/optional one. It was loadAfter-only,
            which modset_builder.close_over() does not walk, so a
            dependency-closed mod list could omit EnvironmentalHazards entirely

@@ -30,7 +30,7 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.feverwood">
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.biomes">
     <xpath>/Defs/ThingDef[defName="RM_SekkulaathTank"]/comps/li[occupantKindDefName="RM_Sekkulaath_Juvenile"]/occupantKindDefName</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="RM_SekkulaathTank"]/comps/li[occupantKindDefName="RM_Sekkulaath_Juvenile"]/occupantKindDefName</xpath>
@@ -40,7 +40,7 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.feverwood">
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.biomes">
     <xpath>/Defs/ThingDef[defName="RSW_Dianoga"]/comps</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="RSW_Dianoga"]/comps</xpath>

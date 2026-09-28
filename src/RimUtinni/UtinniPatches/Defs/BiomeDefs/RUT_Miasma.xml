@@ -59,11 +59,11 @@
     <texture>Biomes/AB_MiasmicMangrove</texture>
     <diseaseMtbDays>15</diseaseMtbDays>
     <biomeMapConditions>
-      <li MayRequire="mandrake.rm.environmentalhazards">RUT_MiasmaWeatherLock</li>
+      <li MayRequire="mandrake.rm.biomes">RUT_MiasmaWeatherLock</li>
     </biomeMapConditions>
     <modExtensions>
       <!-- M4: "seen through breath", not the Lantern's dark (kit spec's own INVENTED 0.85). -->
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension">
         <glowMultiplier>0.85</glowMultiplier>
       </li>
       <!-- M1: the fresh->brine axis. Fresh band left unnamed (leaves vanilla
@@ -72,7 +72,7 @@
            this same mod's own RUT_Jawa_SaltCrust (no new terrain def), only
            ever repainting the two muck terrains RUT_Miasma's own
            terrainsByFertility already uses below. -->
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GradientAxisExtension">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_GradientAxisExtension">
         <waterBands>
           <li>
             <max>0.34</max>
@@ -102,7 +102,7 @@
            stormWindSpeedThreshold/residualFraction, which the spec left
            unspecified and this build pass picked and recorded (see
            RM_GradientSurgeExtension.cs's own header for why). -->
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GradientSurgeExtension">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_GradientSurgeExtension">
         <incidentDef>RUT_Surge</incidentDef>
         <baseMtbDays>5</baseMtbDays>
         <stormMtbMultiplier>0.25</stormMtbMultiplier>
@@ -131,7 +131,7 @@
            (RUT_StrandedDeformation.xml, this same pass) and is thereby
            excluded from RM_JobGiver_ReturnToWater's rescue pathing — see
            that hediff's own header for the full mechanism. -->
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_StrandingPoolsExtension">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_StrandingPoolsExtension">
         <strandedSpawnList>
           <li MayRequire="mandrake.rsw.swbestiary">RSW_MeeJuv</li>
           <li MayRequire="mandrake.rsw.swbestiary">RSW_YobshrimpJuv</li>

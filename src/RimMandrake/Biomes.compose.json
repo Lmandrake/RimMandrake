@@ -11,7 +11,7 @@
     "wave 2 = everything currently on the owner's live ModsConfig (measured 2026-09-27 from the live file, not the spec's snapshot): the spec's on-list 12, plus BlueDesert, CreatureBehaviors, EnvironmentalHazards, LanternDeeps and MovingDunes, which are ALL active on the live list. Folding any of them before the wave-2 swap would put its defs and types in the game twice."
   ],
   "target": "RimMandrake.Biomes",
-  "compose_wave": 0,
+  "compose_wave": 2,
   "about": {
     "name": "RimMandrake: Baroque Biomes",
     "packageId": "mandrake.rm.biomes",

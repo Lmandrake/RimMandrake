@@ -189,7 +189,7 @@
        RM_NightsideIce behaving identically for any OTHER world that already generates on
        it, until Phase B's repaint. MayRequire on this mod's own packageId so the op is a
        silent no-op if mandrake.rm.nightsideice is not loaded. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.nightsideice">
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.biomes">
     <xpath>/Defs/BiomeDef[defName="RM_NightsideIce"]/preventGenSteps</xpath>
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="RM_NightsideIce"]</xpath>

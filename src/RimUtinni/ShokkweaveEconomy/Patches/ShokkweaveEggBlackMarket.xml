@@ -80,7 +80,7 @@
 <Patch>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>RimMandrake: Webwork</li></mods>
+    <mods><li>RimMandrake: Baroque Biomes</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
 

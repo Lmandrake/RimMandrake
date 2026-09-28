@@ -37,7 +37,7 @@
 -->
 <Defs>
 
-  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+  <GameConditionDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_ScarlandsMarkLock</defName>
     <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
     <label>the Scarlands' weight</label>

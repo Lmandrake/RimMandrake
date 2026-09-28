@@ -26,7 +26,7 @@
 -->
 <Defs>
 
-  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+  <GameConditionDef>
     <defName>RUT_GradientSurge</defName>
     <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_GradientSurge</conditionClass>
     <label>the breath-tide surge</label>

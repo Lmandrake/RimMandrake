@@ -50,7 +50,7 @@
 -->
 <Defs>
 
-  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+  <GameConditionDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_ScariaOnsetArming</defName>
     <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_ArmLatentHazard</conditionClass>
     <label>the madness inevitably comes</label>

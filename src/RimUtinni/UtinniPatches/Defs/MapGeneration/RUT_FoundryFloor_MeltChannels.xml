@@ -38,7 +38,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_FoundryFloor_MeltChannels</defName>
     <order>300</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_TerrainChannels">

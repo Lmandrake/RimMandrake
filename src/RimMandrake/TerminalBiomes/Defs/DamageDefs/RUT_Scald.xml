@@ -39,7 +39,7 @@
     <hediff>Burn</hediff>
     <externalViolence>false</externalViolence>
     <canUseDeflectMetalEffect>false</canUseDeflectMetalEffect>
-    <armorCategory MayRequire="mandrake.rm.environmentalhazards">RM_ScaldArmor</armorCategory>
+    <armorCategory>RM_ScaldArmor</armorCategory>
     <defaultDamage>4</defaultDamage>
     <defaultArmorPenetration>0</defaultArmorPenetration>
     <deathMessage>{0} has been scalded to death.</deathMessage>

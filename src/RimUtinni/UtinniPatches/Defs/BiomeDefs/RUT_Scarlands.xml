@@ -120,8 +120,8 @@
       <li>RUT_ScarlandsGraveWardScatter</li>
     </extraGenSteps>
     <biomeMapConditions>
-      <li MayRequire="mandrake.rm.environmentalhazards">RUT_ScarlandsMarkLock</li>
-      <li MayRequire="mandrake.rm.environmentalhazards">RUT_ScariaOnsetArming</li>
+      <li MayRequire="mandrake.rm.biomes">RUT_ScarlandsMarkLock</li>
+      <li MayRequire="mandrake.rm.biomes">RUT_ScariaOnsetArming</li>
     </biomeMapConditions>
     <diseaseMtbDays>50</diseaseMtbDays>
     <diseases>

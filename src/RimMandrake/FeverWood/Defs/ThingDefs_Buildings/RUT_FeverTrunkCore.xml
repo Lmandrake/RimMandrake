@@ -25,13 +25,12 @@
      Greentide's own damage-type trio rather than duplicating it). Gated
      MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.greentide" —
      TWO packages, not one: RUT_ToxinSealant.xml's own defining def already
-     carries MayRequire="mandrake.rm.greentide" (its costList consumes
+     carries (its costList consumes
      RM_ToxinSealant, a Greentide-mod item), so a reference to it needs the
      same guard or it dangles when mandrake.rm.greentide alone is absent.
      Real finding against the sibling precedent this pass read before
      writing: RUT_GreatboleCore.xml's OWN comp <li> (in GREENTIDE_
-     MECHANICS_2, not this item's file) is gated on
-     MayRequire="mandrake.rm.environmentalhazards" only, despite the exact
+     MECHANICS_2, not this item's file) is gated on only, despite the exact
      same sealantTerrain reference — a latent dangling-cross-reference risk
      in the already-shipped Greentide code if mandrake.rm.environmentalhazards
      were ever active without mandrake.rm.greentide (currently moot: both

@@ -101,7 +101,7 @@
          <li> is load-bearing: an unresolvable extension class discards the whole
          BiomeDef silently. -->
     <modExtensions>
-      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores">
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.biomes">
         <deepTerrain>RUT_ScaldWaterOceanDeep</deepTerrain>
         <shallowTerrain>RUT_ScaldWaterOceanShallow</shallowTerrain>
       </li>

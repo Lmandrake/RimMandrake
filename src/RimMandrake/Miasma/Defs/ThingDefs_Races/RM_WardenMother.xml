@@ -135,11 +135,11 @@
       </lifeStageAges>
     </race>
     <comps>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.CompProperties_TerritorialAnchor">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_TerritorialAnchor">
         <dutyDef>RM_AnchorGuard</dutyDef>
         <anchorRadius>16</anchorRadius>
       </li>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.CompProperties_WaterLocked">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_WaterLocked">
         <checkIntervalTicks>60</checkIntervalTicks>
       </li>
     </comps>

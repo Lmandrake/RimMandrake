@@ -60,7 +60,7 @@
 -->
 <Defs>
 
-  <TraderKindDef MayRequire="mandrake.rm.webwork">
+  <TraderKindDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_Caravan_HuttCartel_EggMarket</defName>
     <label>Hutt Cartel egg broker</label>
     <commonality>0.15</commonality>

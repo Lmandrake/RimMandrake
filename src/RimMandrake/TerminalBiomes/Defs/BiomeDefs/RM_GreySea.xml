@@ -54,7 +54,7 @@
          than hard-depending on it — hence MayRequire on those two fields.
          beachTerrain is ours and needs no guard. -->
     <modExtensions>
-      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores">
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension">
         <deepTerrain MayRequire="mandrake.rm.flowworks">RM_WaterBrineDeep</deepTerrain>
         <shallowTerrain MayRequire="mandrake.rm.flowworks">RM_WaterBrineShallow</shallowTerrain>
         <beachTerrain>RM_SaltCrustShore</beachTerrain>

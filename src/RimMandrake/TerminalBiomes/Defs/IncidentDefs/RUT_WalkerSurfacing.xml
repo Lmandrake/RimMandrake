@@ -50,7 +50,7 @@
 -->
 <Defs>
 
-  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+  <IncidentDef>
     <defName>RUT_WalkerSurfacing</defName>
     <label>walker surfacing</label>
     <targetTags>

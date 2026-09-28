@@ -48,7 +48,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_FoundryFloor_TenderSpawn</defName>
     <order>860</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">

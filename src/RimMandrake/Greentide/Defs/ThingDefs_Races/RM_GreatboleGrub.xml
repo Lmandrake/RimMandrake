@@ -131,7 +131,7 @@
     <modExtensions>
       <!-- §4a: "approach and consume fallen fruit immediately." Unchanged
            mechanism, just pointed at the fruit. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_EatCleanableExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_EatCleanableExtension">
         <cleanableThingDefNames>
           <li>RM_GreatboleFruit</li>
         </cleanableThingDefNames>
@@ -145,7 +145,7 @@
            enrageState reuses the already-shipped RM_ParentalEnrage
            MentalStateDef (SHRUBLAND_GIANT_ENRAGE_1) verbatim; nothing about
            that state names a species. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_ParentalEnrageExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_ParentalEnrageExtension">
         <enrageState>RM_ParentalEnrage</enrageState>
         <guardedThingDefNames>
           <li>RM_GreatboleFruit</li>
@@ -156,20 +156,20 @@
         <exemptSameRace>true</exemptSameRace>
         <exemptSameFaction>true</exemptSameFaction>
       </li>
-      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension">
         <populationSoftCap>6</populationSoftCap>
         <populationHardCap>24</populationHardCap>
       </li>
     </modExtensions>
     <comps>
-      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ParentalEnrage" MayRequire="mandrake.rm.creaturebehaviors" />
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ParentalEnrage" />
       <!-- §4a: "breed fast while there is fruit to eat… when the fruit runs
            out, they go Manhunter" — GREATBOLE_HARVEST_LADDER_1's own
            widening of this comp (food gate + famine flip). famineMentalState
            is real, unscoped vanilla Manhunter, not the scoped
            RM_ParentalEnrage rage — "they go Manhunter" (spec's own words),
            a full swarm, deliberately distinct from the guard rage above. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder">
         <pawnSpawnIntervalDays>0.5~1.0</pawnSpawnIntervalDays>
         <pawnSpawnRadius>4</pawnSpawnRadius>
         <breedFoodThingDefNames>

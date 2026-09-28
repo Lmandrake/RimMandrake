@@ -70,10 +70,10 @@
       </li>
     </comps>
     <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension">
         <preparationFamily>RotLivePrep</preparationFamily>
       </li>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension">
         <treasureTag>RotTreasure</treasureTag>
       </li>
     </modExtensions>
@@ -113,10 +113,10 @@
       </li>
     </comps>
     <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension">
         <preparationFamily>RotLivePrep</preparationFamily>
       </li>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension">
         <treasureTag>RotTreasure</treasureTag>
       </li>
     </modExtensions>
@@ -156,10 +156,10 @@
       </li>
     </comps>
     <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivePrepExtension">
         <preparationFamily>RotLivePrep</preparationFamily>
       </li>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_TreasureMarkerExtension">
         <treasureTag>RotTreasure</treasureTag>
       </li>
     </modExtensions>

@@ -30,7 +30,7 @@
      owed — DEPLOY_HOLD. -->
 <Defs>
 
-  <TerrainDef MayRequire="mandrake.rm.greentide">
+  <TerrainDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_ToxinSealant</defName>
     <label>toxin-sealed floor</label>
     <description>Chamber floor painted over with toxin sealant and packed down. The living wood beneath cannot push through it, or close the cut you made.</description>

@@ -228,7 +228,7 @@
       <!-- LOW, per the ruling. The Brine Crown below is the one that
            genuinely maims. MayRequire: see the header — an unresolvable
            comp class discards the whole def, silently. -->
-      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
         <damageDef>Stab</damageDef>
         <damageAmount>2</damageAmount>
         <armorPenetration>0.05</armorPenetration>
@@ -343,7 +343,7 @@
     </plant>
     <pathCost>55</pathCost>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
         <damageDef>Stab</damageDef>
         <damageAmount>7</damageAmount>
         <armorPenetration>0.15</armorPenetration>

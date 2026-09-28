@@ -32,7 +32,7 @@
 -->
 <Defs>
 
-  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+  <GameConditionDef>
     <defName>RUT_MiasmaWeatherLock</defName>
     <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
     <label>the miasma's breath</label>

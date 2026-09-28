@@ -172,7 +172,7 @@
       </headPosPerRotation>
     </race>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FilthTrail" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FilthTrail">
         <filthDef>RUT_Filth_MouseTrack</filthDef>
         <validTerrains>
           <li>RM_TarShallow</li>
@@ -180,7 +180,7 @@
       </li>
     </comps>
     <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_DreadAvoidWanderExtension" MayRequire="mandrake.rm.environmentalhazards" />
+      <li Class="RimMandrake.EnvironmentalHazards.RM_DreadAvoidWanderExtension" />
     </modExtensions>
     <tradeTags>
       <li>AnimalCommon</li>

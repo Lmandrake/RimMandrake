@@ -58,7 +58,7 @@
 -->
 <Defs>
 
-  <ThingDef MayRequire="mandrake.rm.environmentalhazards" ParentName="BuildingNaturalBase">
+  <ThingDef ParentName="BuildingNaturalBase">
     <defName>RUT_BeastBulge</defName>
     <label>tar bulge</label>
     <description>Black and smooth, rising just above the surface of the deep tar. Wrong, somehow, in a way you can't point to.</description>

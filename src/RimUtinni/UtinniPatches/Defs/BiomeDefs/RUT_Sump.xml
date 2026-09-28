@@ -159,7 +159,7 @@
     </wildPlants>
     <wildPlantRegrowDays>20</wildPlantRegrowDays>
     <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension" MayRequire="mandrake.rm.biomes">
         <glowMultiplier>0.55</glowMultiplier>
         <suppressSunlightStatAffecter>true</suppressSunlightStatAffecter>
       </li>
@@ -171,7 +171,7 @@
            that entry's own header already documents — this def must always
            load regardless of whether mandrake.rm.environmentalhazards is
            active. -->
-      <li Class="RimMandrake.EnvironmentalHazards.RM_CarriedFilthHediffExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CarriedFilthHediffExtension" MayRequire="mandrake.rm.biomes">
         <filthDef>RM_Filth_Tar</filthDef>
         <hediffDef>RUT_Tarred</hediffDef>
       </li>

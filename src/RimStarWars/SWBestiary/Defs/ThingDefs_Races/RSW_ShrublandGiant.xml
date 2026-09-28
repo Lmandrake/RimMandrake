@@ -141,7 +141,7 @@
              AnimalBaby and AnimalJuvenile are guarded and AnimalAdult
              guards. No life stage is named, so a later ladder change cannot
              silently desync it. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_ParentalEnrageExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_ParentalEnrageExtension" MayRequire="mandrake.rm.biomes">
         <enrageState>RM_ParentalEnrage</enrageState>
         <triggerRadius>5</triggerRadius>
         <guardianSearchRadius>30</guardianSearchRadius>
@@ -154,7 +154,7 @@
       <!-- The ticker for the extension above. It rides on every giant, but
            only a calf does any work with it - an adult carrier is inert and
            is simply the thing that gets roused. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ParentalEnrage" MayRequire="mandrake.rm.creaturebehaviors" />
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ParentalEnrage" MayRequire="mandrake.rm.biomes" />
     </comps>
     <race>
       <body>RSW_Dewback</body>

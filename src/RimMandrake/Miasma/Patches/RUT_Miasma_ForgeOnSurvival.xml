@@ -70,7 +70,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/HediffDef[defName="Flu"]/comps</xpath>
       <value>
-        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
           <onlyInBiomes><li>RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
@@ -95,7 +95,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/HediffDef[defName="Animal_Flu"]/comps</xpath>
       <value>
-        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
           <onlyInBiomes><li>RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
@@ -120,7 +120,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/HediffDef[defName="Plague"]/comps</xpath>
       <value>
-        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
           <onlyInBiomes><li>RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
@@ -145,7 +145,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/HediffDef[defName="Animal_Plague"]/comps</xpath>
       <value>
-        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
           <onlyInBiomes><li>RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
@@ -170,7 +170,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/HediffDef[defName="Malaria"]/comps</xpath>
       <value>
-        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
           <onlyInBiomes><li>RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
@@ -195,7 +195,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/HediffDef[defName="SleepingSickness"]/comps</xpath>
       <value>
-        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
           <onlyInBiomes><li>RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>
@@ -220,7 +220,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/HediffDef[defName="WoundInfection"]/comps</xpath>
       <value>
-        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival" MayRequire="mandrake.rm.environmentalhazards">
+        <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_ForgeOnSurvival">
           <onlyInBiomes><li>RUT_Miasma</li><li>RM_Miasma</li></onlyInBiomes>
           <minPeakSeverity>0.6</minPeakSeverity>
           <noBoonWeight>55</noBoonWeight>

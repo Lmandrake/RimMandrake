@@ -90,8 +90,8 @@
           <anchorMarkerDef>RUT_CrecheMarker</anchorMarkerDef>
           <youngSpawnChance>0.35</youngSpawnChance>
           <youngKinds>
-            <li MayRequire="mandrake.rm.terminalbiomes">RM_SiltLampreyJuv</li>
-            <li MayRequire="mandrake.rm.terminalbiomes">RM_RustNipperJuv</li>
+            <li>RM_SiltLampreyJuv</li>
+            <li>RM_RustNipperJuv</li>
           </youngKinds>
           <youngDeformationHediff>RUT_StrandedDeformation</youngDeformationHediff>
           <youngSpawnRadius>1~3</youngSpawnRadius>

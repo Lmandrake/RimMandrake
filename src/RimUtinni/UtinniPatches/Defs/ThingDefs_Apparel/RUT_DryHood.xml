@@ -11,7 +11,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="HatMakeableBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="HatMakeableBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_DryHood</defName>
     <label>dry-hood</label>
     <description>A close-drawn hood sealed at the collar, lined to wick sweat off the scalp and neck rather than let it sit against saturated air. Cuts visibility at the edges — most people who wear one draw it back the moment they step indoors.</description>

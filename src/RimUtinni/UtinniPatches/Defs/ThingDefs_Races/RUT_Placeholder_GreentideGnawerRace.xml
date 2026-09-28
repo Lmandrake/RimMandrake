@@ -129,7 +129,7 @@
       </li>
     </tools>
     <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_GnawTreeBaseExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GnawTreeBaseExtension" MayRequire="mandrake.rm.biomes">
         <searchRadius>40</searchRadius>
         <chewTicksToFell>2400</chewTicksToFell>
       </li>

@@ -106,7 +106,7 @@
       <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
     </plant>
     <modExtensions>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_FellableTreeExtension">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_FellableTreeExtension">
         <isGiantClass>true</isGiantClass>
         <fellLength>16</fellLength>
         <fallDamageRange>150~260</fallDamageRange>

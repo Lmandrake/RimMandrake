@@ -139,13 +139,13 @@
       <soundEating>Insectoid_Eat</soundEating>
     </race>
     <comps>
-      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder">
         <pawnSpawnIntervalDays>0.5~1</pawnSpawnIntervalDays>
         <pawnSpawnRadius>3</pawnSpawnRadius>
       </li>
     </comps>
     <modExtensions>
-      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension">
         <populationSoftCap>40</populationSoftCap>
         <populationHardCap>100</populationHardCap>
         <populationGroupTag>RM_MiasmaScuttlers</populationGroupTag>
@@ -261,13 +261,13 @@
       <soundEating>Insectoid_Eat</soundEating>
     </race>
     <comps>
-      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder">
         <pawnSpawnIntervalDays>1~2</pawnSpawnIntervalDays>
         <pawnSpawnRadius>4</pawnSpawnRadius>
       </li>
     </comps>
     <modExtensions>
-      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension">
         <populationSoftCap>40</populationSoftCap>
         <populationHardCap>100</populationHardCap>
         <populationGroupTag>RM_MiasmaScuttlers</populationGroupTag>
@@ -397,13 +397,13 @@
       <soundEating>Insectoid_Eat</soundEating>
     </race>
     <comps>
-      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder">
         <pawnSpawnIntervalDays>2~4</pawnSpawnIntervalDays>
         <pawnSpawnRadius>3</pawnSpawnRadius>
       </li>
     </comps>
     <modExtensions>
-      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension">
         <populationSoftCap>40</populationSoftCap>
         <populationHardCap>100</populationHardCap>
         <populationGroupTag>RM_MiasmaScuttlers</populationGroupTag>

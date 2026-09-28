@@ -23,7 +23,7 @@
 -->
 <Defs>
 
-  <StatDef ParentName="ArmorRatingBase" MayRequire="mandrake.rm.environmentalhazards">
+  <StatDef ParentName="ArmorRatingBase">
     <defName>RM_WetBulbProtection</defName>
     <label>wet-bulb protection</label>
     <labelForFullStatList>Wet-bulb protection (armor stat)</labelForFullStatList>

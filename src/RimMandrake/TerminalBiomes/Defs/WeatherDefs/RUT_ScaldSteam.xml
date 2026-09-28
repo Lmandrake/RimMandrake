@@ -45,7 +45,7 @@
 -->
 <Defs>
 
-  <WeatherDef MayRequire="mandrake.rm.environmentalhazards">
+  <WeatherDef>
     <defName>RUT_ScaldSteam</defName>
     <label>the boil's breath</label>
     <description>Standing white steam over the Scald's cyan boil — the lake's own exhale, thick enough to soften a shot but never enough to slow a step.</description>

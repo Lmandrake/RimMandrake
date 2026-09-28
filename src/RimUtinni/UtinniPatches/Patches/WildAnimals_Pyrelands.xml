@@ -215,7 +215,7 @@
        here are gone, and with them the last reason this file could lose a creature to a
        donor mod being unsubscribed. Casting HERE, with the rest of the Pyrelands cast,
        rather than in BiomeCast_Ashkarr.xml — one biome, one file. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.pyrelands">
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.biomes">
     <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>

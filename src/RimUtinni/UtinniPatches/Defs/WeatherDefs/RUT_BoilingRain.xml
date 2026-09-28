@@ -23,7 +23,7 @@
 -->
 <Defs>
 
-  <WeatherDef MayRequire="mandrake.rm.environmentalhazards">
+  <WeatherDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_BoilingRain</defName>
     <label>boiling rain</label>
     <isBad>true</isBad>

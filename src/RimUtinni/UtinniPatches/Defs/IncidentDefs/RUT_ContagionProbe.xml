@@ -27,7 +27,7 @@
 -->
 <Defs>
 
-  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+  <IncidentDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_ContagionProbe</defName>
     <label>Contagion probe</label>
     <targetTags>

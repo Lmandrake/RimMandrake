@@ -18,7 +18,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.divinginteraction">
+  <GenStepDef>
     <defName>RM_GenStep_TwilightChannels</defName>
     <order>895</order>
     <genStep Class="RimMandrake.TerminalBiomes.RM_GenStep_TwilightChannels" />

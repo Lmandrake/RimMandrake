@@ -46,7 +46,7 @@
 -->
 <Defs>
 
-  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+  <GameConditionDef>
     <defName>RUT_SumpDuskLock</defName>
     <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
     <label>permanent dusk</label>

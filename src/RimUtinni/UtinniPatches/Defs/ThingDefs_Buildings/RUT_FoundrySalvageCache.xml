@@ -29,7 +29,7 @@
     ============================================================================
   -->
 
-  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_FoundrySalvageCache</defName>
     <label>forge-tech salvage</label>
     <description>A heap of scavenged forge-tech, still warm, wedged against the melt channel wall. Whoever — whatever — stacked it here clearly meant to come back.</description>

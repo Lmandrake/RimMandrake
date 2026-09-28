@@ -415,10 +415,13 @@ namespace RimMandrake.TerminalBiomes
         public RM_TerminalBiomesMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_TerminalBiomesSettings>();
-            if (ModsConfig.IsActive("mandrake.rm.environmentalhazards"))
-            {
-                RegisterMechanicGates();
-            }
+            // BAROQUE_BIOMES_WAVE2_FOLD_1: EnvironmentalHazards folds into
+            // mandrake.rm.biomes in the same wave as TerminalBiomes, so its
+            // packageId stops being independently active — this guard would
+            // go permanently false and silently stop registering the
+            // mechanic gates. Its own content is always co-present with
+            // TerminalBiomes' now (same mod), so the guard is unconditional.
+            RegisterMechanicGates();
             // TWILIGHT_PANE_STRIKE_1, D8's launch gate
             // (RM_Patch_GravEngineLaunchGate.cs). Building_GravEngine is a
             // plain Assembly-CSharp type present whether or not Odyssey is

@@ -49,7 +49,7 @@
 -->
 <Defs>
 
-  <RecipeDef Class="RimMandrake.EnvironmentalHazards.RM_RecipeDef_HediffByproduct" ParentName="SurgeryFlesh" MayRequire="mandrake.rm.environmentalhazards">
+  <RecipeDef Class="RimMandrake.EnvironmentalHazards.RM_RecipeDef_HediffByproduct" ParentName="SurgeryFlesh" MayRequire="mandrake.rm.biomes">
     <defName>RUT_ScrubTarred</defName>
     <label>scrub off tar</label>
     <description>Work a solvent into a tarred colonist's skin and hair until the tar lets go — and lets go of a little green gas with it. Not surgery in any real sense — just the only thing that gets it off short of waiting it out.</description>

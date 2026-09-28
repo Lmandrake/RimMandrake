@@ -37,7 +37,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="BuildingBase">
     <defName>RUT_DigShaft</defName>
     <label>tar dig shaft</label>
     <description>A braced shaft staked into the tar, worked by hand. The black keeps deep time down there — bones of unnamed ages, sunken machines, sealed casings, or a click you'd rather not have heard. Dig deeper at your own pace; the tar never runs out of things to sell back.</description>

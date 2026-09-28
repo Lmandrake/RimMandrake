@@ -176,7 +176,7 @@
            ANY movement (RM_CompEffecter_HaloAlways.ShouldShowEffecter,
            BlueDesertLife.cs §4c). Reuses Krissek's own effecterDef: the VFX
            itself needs no new art, only a different trigger condition. -->
-      <li Class="CompProperties_Effecter" MayRequire="mandrake.rm.bluedesert">
+      <li Class="CompProperties_Effecter" MayRequire="mandrake.rm.biomes">
         <compClass>RimMandrake.BlueDesert.RM_CompEffecter_HaloAlways</compClass>
         <effecterDef>RM_KrissekHalo</effecterDef>
       </li>
@@ -188,7 +188,7 @@
          GeneticRim.Core's static ctor and with it every new game's starting
          pawns (DEBUG_GAME_READY_WORLDUI_CRASH_1). -->
     <modExtensions>
-      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" MayRequire="mandrake.rm.bluedesert" />
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" MayRequire="mandrake.rm.biomes" />
     </modExtensions>
     <tradeTags>
       <li>AnimalFighter</li>
@@ -323,7 +323,7 @@
       </lifeStageAges>
     </race>
     <modExtensions>
-      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" MayRequire="mandrake.rm.bluedesert" />
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" MayRequire="mandrake.rm.biomes" />
     </modExtensions>
     <tradeTags>
       <li>AnimalFighter</li>

@@ -35,7 +35,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="EtherealThingBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="EtherealThingBase">
     <defName>RUT_SteamDevil</defName>
     <label>steam devil</label>
     <description>A wandering column of scalding vapor, dragged up off the river. It scalds what it crosses and knocks down what it can — a wet burn that heat-rated armor does nothing against.</description>

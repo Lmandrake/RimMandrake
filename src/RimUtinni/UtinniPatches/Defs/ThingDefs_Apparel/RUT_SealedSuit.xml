@@ -14,7 +14,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="ApparelMakeableBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="ApparelMakeableBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_SealedSuit</defName>
     <label>sealed suit</label>
     <description>A full-body suit of rubberized fabric over a sweat-wicking lining, cinched tight at the wrists, neck and ankles — cuts off the saturated outside air almost entirely. Hot, heavy and slow to put on, but nothing else worn keeps the wet-bulb clock as still.</description>

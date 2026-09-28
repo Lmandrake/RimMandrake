@@ -13,7 +13,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="ApparelMakeableBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="ApparelMakeableBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_WickingWrap</defName>
     <label>wicking wrap</label>
     <description>Layered fabric wound loose around the torso and legs, cut to pull sweat off the skin and let it evaporate — the one thing that still works once the air itself is already saturated. Light enough to wear under a sealed suit.</description>

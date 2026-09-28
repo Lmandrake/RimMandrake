@@ -103,7 +103,7 @@
          simply by being nested here. See RUT_FeverWood.xml's own comments
          for the full field-by-field rationale; not repeated here. -->
     <modExtensions>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
         <heartwoodThing>RUT_FeverTrunkHeartwood</heartwoodThing>
         <coreMarkerThing>RUT_FeverTrunkCore</coreMarkerThing>
         <boleCountRange>1~2</boleCountRange>
@@ -111,10 +111,10 @@
         <minSpacing>30</minSpacing>
         <edgeMargin>12</edgeMargin>
       </li>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_MirrorPoolBiomeExtension">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MirrorPoolBiomeExtension">
         <poolTerrain>RUT_FeverWoodMirrorPool</poolTerrain>
       </li>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
         <causewayTerrain>RUT_Boughway</causewayTerrain>
         <basinTerrains>
           <li>Soil</li>
@@ -151,7 +151,7 @@
           </li>
         </additionalPasses>
       </li>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GroundRefusalBiomeExtension">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GroundRefusalBiomeExtension">
         <refusalTerrain>MarshyTerrain</refusalTerrain>
         <convertFromTerrains>
           <li>Soil</li>

@@ -22,7 +22,7 @@
 -->
 <Defs>
 
-  <ThinkTreeDef MayRequire="mandrake.rm.environmentalhazards">
+  <ThinkTreeDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_ThinkTree_GreentideGnawerFell</defName>
     <insertTag>Animal_PreMain</insertTag>
     <thinkRoot Class="ThinkNode_Priority">

@@ -54,7 +54,7 @@
 -->
 <Defs>
 
-  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+  <GameConditionDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_BreaklightCondition</defName>
     <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
     <label>Breaklight</label>

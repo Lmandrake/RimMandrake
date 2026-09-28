@@ -33,7 +33,7 @@
 -->
 <Defs>
 
-  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+  <GameConditionDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_GreentideWetBulbLock</defName>
     <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_WetBulb</conditionClass>
     <label>wet-bulb overwhelm</label>

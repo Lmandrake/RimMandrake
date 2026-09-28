@@ -80,7 +80,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_SentinelGraveWard</defName>
     <thingClass>Building</thingClass>
     <label>Sentinel grave-ward</label>
