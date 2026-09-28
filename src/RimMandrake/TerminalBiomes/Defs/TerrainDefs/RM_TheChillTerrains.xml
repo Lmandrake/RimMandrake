@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RM_PropaneLakeTerrains.xml             TerminalBiomes · authored 2026-09-25
+  RM_TheChillTerrains.xml             TerminalBiomes · authored 2026-09-25
   ============================================================================
   TERMINALBIOMES_RM_MOD_BUILD_1 §2/§11 step 2 — this mod's ONE genuinely new
   authoring task. RUT_PropaneLake.xml's own waterDeepTerrain/
@@ -9,7 +9,7 @@
   AB_SolidPropane (Alpha Biomes, sarg.alphabiomes) — MEASURED: neither
   defName is defined anywhere under src/, so a donor TerrainDef sitting in a
   RimMandrake-tier BiomeDef's water fields is exactly the hard dependency the
-  tier may not assume (item §5 step 2). RM_PropaneLake.xml (this mod) is
+  tier may not assume (item §5 step 2). RM_TheChill.xml (this mod) is
   repointed to the two defs below instead of the donor pair.
 
   Properties matched to the donor's own measured shape (item §2, live def
@@ -29,20 +29,20 @@
   "frozen propane crust" look is real, owed art work, not done here.
 
   ✅ RE-CHECKED under LIQUID_TERRAIN_AUTHORED_TWICE_1 (closed 2026-09-27):
-  RM_PropaneLakeDeep/RM_SolidPropane (this file) both share the words
+  RM_TheChillDeep/RM_SolidPropane (this file) both share the words
   "liquid propane" with FlowWorks' RM_PropaneShallow/Deep but are not a fork
-  of the same content — RM_PropaneLake.xml uses BOTH at once, deliberately,
+  of the same content — RM_TheChill.xml uses BOTH at once, deliberately,
   for two different depths of the same lake (this file's pair as the main
   waterDeepTerrain/waterShallowTerrain, FlowWorks' pair as the fishable
-  <coastal> shore edge — see RM_PropaneLake.xml's own SEA_FLOOR_AND_CATCH_
+  <coastal> shore edge — see RM_TheChill.xml's own SEA_FLOOR_AND_CATCH_
   PASS_1 comment). Neither carries a burn/damage number the other
   contradicts, so nothing here needed folding into the generator or
   deleting.
 
   ✅ RE-CHECKED AGAIN under TERMINALBIOMES_LIQUID_RETARGET_1 (Q7 ownership
-  ruling execution, 2026-09-28): same conclusion holds. RM_PropaneLakeDeep/
+  ruling execution, 2026-09-28): same conclusion holds. RM_TheChillDeep/
   RM_SolidPropane are the lake's own MAIN BODY terrain (waterDeepTerrain/
-  waterShallowTerrain on RM_PropaneLake.xml) and FlowWorks' RM_PropaneDeep/
+  waterShallowTerrain on RM_TheChill.xml) and FlowWorks' RM_PropaneDeep/
   RM_PropaneShallow are already directly wired as that same BiomeDef's
   <coastal> shore-fishing edge — both in active, deliberate, simultaneous
   use on one BiomeDef, not a stale fork. There is nothing generic left to
@@ -53,7 +53,7 @@
 <Defs>
 
   <TerrainDef ParentName="WaterDeepBase">
-    <defName>RM_PropaneLakeDeep</defName>
+    <defName>RM_TheChillDeep</defName>
     <label>liquid propane</label>
     <description>A black mirror of liquid fuel, cold enough to kill and still enough to read the sky in. Nothing drinks it and nothing should try to cross it.</description>
     <renderPrecedence>399</renderPrecedence>

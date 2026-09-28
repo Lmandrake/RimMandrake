@@ -29,7 +29,7 @@
   <RecipeDef MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Make_ChemfuelFromPropaneCatch</defName>
     <label>render propane catch into chemfuel</label>
-    <description>Crack a batch of Propane Lake catch into chemfuel. The creatures of that shore are grown from fuel snow and burn like it; rendering them is closer to decanting than to refining.</description>
+    <description>Crack a batch of Chill catch into chemfuel. The creatures of that shore are grown from fuel snow and burn like it; rendering them is closer to decanting than to refining.</description>
     <jobString>Rendering propane catch into chemfuel.</jobString>
     <effectWorking>Cremate</effectWorking>
     <soundWorking>Recipe_Cremate</soundWorking>

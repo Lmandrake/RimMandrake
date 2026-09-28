@@ -30,7 +30,7 @@
   defs (dangling wildAnimals cross-reference) and orphan two generated
   patch files thousands of lines long. Duplicating instead of renaming is
   the same pattern TERMINALBIOMES_RM_MOD_BUILD_1 already used for
-  RM_Vaunoom/RUT_VWake (RM_PropaneLakeFauna.xml) — "a Q13 duplicate of the
+  RM_Vaunoom/RUT_VWake (RM_TheChillFauna.xml) — "a Q13 duplicate of the
   campaign RUT_VWake, which stays until Phase B; the two diverge from here."
 
   Stats/tools/race blocks below are copied verbatim from the RSW_ originals

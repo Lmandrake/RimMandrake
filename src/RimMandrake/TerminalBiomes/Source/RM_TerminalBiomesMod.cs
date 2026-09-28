@@ -64,7 +64,7 @@ namespace RimMandrake.TerminalBiomes
 
         // ── Per-biome (§7 Q1: four independent toggles) ─────────────────
         public static bool scaldEnabled = true;
-        public static bool propaneLakeEnabled = true;
+        public static bool chillEnabled = true;
         public static bool twilightSeaEnabled = true;
         public static bool greySeaEnabled = true;
 
@@ -173,7 +173,7 @@ namespace RimMandrake.TerminalBiomes
             base.ExposeData();
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
             Scribe_Values.Look(ref scaldEnabled, "scaldEnabled", true);
-            Scribe_Values.Look(ref propaneLakeEnabled, "propaneLakeEnabled", true);
+            Scribe_Values.Look(ref chillEnabled, "chillEnabled", true);
             Scribe_Values.Look(ref twilightSeaEnabled, "twilightSeaEnabled", true);
             Scribe_Values.Look(ref greySeaEnabled, "greySeaEnabled", true);
             Scribe_Values.Look(ref scaldS1SteamSkyEnabled, "scaldS1SteamSkyEnabled", true);
@@ -229,7 +229,7 @@ namespace RimMandrake.TerminalBiomes
             list.CheckboxLabeled("The Scald", ref scaldEnabled,
                 "A perched, boiling crater lake with its own kit (steam sky, steam-catch "
               + "condenser, vent fields, drifting wrecks) and margin fishing table.");
-            list.CheckboxLabeled("The Propane Lake", ref propaneLakeEnabled,
+            list.CheckboxLabeled("The Chill", ref chillEnabled,
                 "A black mirror of liquid fuel ringed by a frozen crust, with its own "
               + "catch table.");
             list.CheckboxLabeled("The Twilight Sea", ref twilightSeaEnabled,

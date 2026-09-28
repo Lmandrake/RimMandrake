@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_PropaneLakeFauna.xml                TerminalBiomes — authored 2026-09-24
+  RM_TheChillFauna.xml                TerminalBiomes — authored 2026-09-24
   ==========================================================================
   TERMINALBIOMES_RM_MOD_BUILD_1 wiring pass: THREE of the four floor-resident
   species `terminal_seas_cast_proposal_2026-09-25.md` names for the Propane
   Lake (heemin, oovanam, hoolen) — APPROVED, owner sitting 2026-09-25,
-  verdict 1. hoolen lives on RM_PropaneLake's own wildAnimals per verdict 4
+  verdict 1. hoolen lives on RM_TheChill's own wildAnimals per verdict 4
   (no shelf biome — "just confusing words").
 
   🔴 vaunoom is DELIBERATELY NOT built here. The proposal describes vaunoom
@@ -13,7 +13,7 @@
   src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PropaneLakeFauna.xml
   already ships RUT_VWake (authored 2026-09-25, COMMISSION_LEDGER_CLEANUP_1),
   the identical role — submerged, propane-native, serpentine, "attacks pawns
-  and pipe on sight" — already wired into RM_PropaneLake.xml's wildAnimals at
+  and pipe on sight" — already wired into RM_TheChill.xml's wildAnimals at
   commonality 0.04. There is an OPEN, unresolved decision item on this exact
   name (`PROPANELAKES_SHIPPING_NAMES_1`: keep RUT_VWake as the shipping name,
   or rename). Building a second, duplicate RM_Vaunoom ThingDef+PawnKindDef
@@ -33,7 +33,7 @@
   flat dark silhouette PNGs, real art queued to the artpipe.
 
   heemin and oovanam are ALSO wired as catchable fish (verdict 3: the
-  Propane Lake IS fishable) — see RM_PropaneLakeCatch.xml.
+  Chill IS fishable) — see RM_TheChillCatch.xml.
 -->
 <Defs>
 
@@ -45,7 +45,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Heemin</defName>
     <label>heemin</label>
-    <description>A near-transparent sliver swimming the top layer of the Propane Lake, aurora green and violet refracting faintly through it — visible mostly as a distortion in the black mirror rather than a shape. Palm-length kin of the lake's one giant, and far less trouble.</description>
+    <description>A near-transparent sliver swimming the top layer of the Chill, aurora green and violet refracting faintly through it — visible mostly as a distortion in the black mirror rather than a shape. Palm-length kin of the lake's one giant, and far less trouble.</description>
     <statBases>
       <MoveSpeed>4.5</MoveSpeed>
       <MarketValue>6</MarketValue>
@@ -217,14 +217,14 @@
 
   <!-- =================================================================
        RM_Hoolen — ice-sheet rim skimmer, the SURFACE face. Not caught —
-       verdict 4: no shelf biome, so hoolen lives on RM_PropaneLake's own
+       verdict 4: no shelf biome, so hoolen lives on RM_TheChill's own
        wildAnimals beside the lake-proper residents.
        ================================================================= -->
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Hoolen</defName>
     <label>hoolen</label>
-    <description>A long-legged, wide-footed skimmer that runs the frozen sheets between the Propane Lake's pools, licking condensed fuel frost off the crust. A faint blue combustion shimmer plays at its joints — a lesser cousin's read of the burner-line's own fire.</description>
+    <description>A long-legged, wide-footed skimmer that runs the frozen sheets between the Chill's pools, licking condensed fuel frost off the crust. A faint blue combustion shimmer plays at its joints — a lesser cousin's read of the burner-line's own fire.</description>
     <statBases>
       <MoveSpeed>3.5</MoveSpeed>
       <MarketValue>9</MarketValue>

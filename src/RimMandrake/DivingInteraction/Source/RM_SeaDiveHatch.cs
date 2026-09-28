@@ -36,7 +36,7 @@ namespace RimMandrake.DivingInteraction
             { "RM_TheScald", "RM_SeaDiveGenerator_TheScald" },
             { "RM_GreySea", "RM_SeaDiveGenerator_GreySea" },
             { "RM_TwilightSea", "RM_SeaDiveGenerator_TwilightSea" },
-            { "RM_PropaneLake", "RM_SeaDiveGenerator_PropaneLake" },
+            { "RM_TheChill", "RM_SeaDiveGenerator_TheChill" },
         };
 
         private MapGeneratorDef ResolveGeneratorForCurrentTile()

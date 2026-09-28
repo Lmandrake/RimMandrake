@@ -27,7 +27,7 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
         // substituted -- the frozen RUT_PropaneLake def still carries the
         // world until Phase B repaints it, so both must be matched for the
         // tile scan below to keep working through the move.
-        private static readonly string[] SourceBiomeDefNames = { "RUT_PropaneLake", "RM_PropaneLake" };
+        private static readonly string[] SourceBiomeDefNames = { "RUT_PropaneLake", "RM_TheChill" };
         private const string CraterBiomeDefName = "RUT_Wasteland";
 
         /// <summary>

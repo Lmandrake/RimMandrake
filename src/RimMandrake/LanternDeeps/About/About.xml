@@ -33,7 +33,7 @@ Also ships the darkness mechanic (carried light draws what lives down there) and
          About.xml now carries the ordering. -->
     <!-- LANTERNDEEPS_GENSTEP_ALLOWLIST_DEAD_1: GenStep_ScatterCavePortal's host-biome
          allowlist compares map.Biome.defName at RUNTIME (LanternDeepsMod.cs) against
-         the Nightside Ice / Propane Lake biomes and BiomeGRimond (grimterra.biomesmod).
+         the Nightside Ice / Chill biomes and BiomeGRimond (grimterra.biomesmod).
          A runtime string compare needs no load order; the GenStep self-gates to a
          no-op when a host biome is absent.
          LANTERNDEEPS_TIER_COLLISION_1: mandrake.rut.patches is deliberately NOT listed

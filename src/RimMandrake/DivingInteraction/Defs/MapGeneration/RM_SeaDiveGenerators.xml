@@ -14,7 +14,7 @@
   vanilla-shipped and unmodified.
 
   Temperatures are a placeholder read of each sea's own description (the
-  Scald boils, the Propane Lake is "cold here is total") — the real heat/
+  Scald boils, the Chill is "cold here is total") — the real heat/
   cold GEAR GATE (two-axis matrix: no-air x temperature, this item's
   ledger) is follow-on content, not this mechanism.
 -->
@@ -76,7 +76,7 @@
          are listed HERE and on no other generator ON PURPOSE. The tag
          RM_SeaFloorGround is shared by all four sea floors, so a
          tag-scoped global registration (the shape RUT_ScaldWreckScatter
-         uses) would grow salt pillars on the Scald and the Propane Lake.
+         uses) would grow salt pillars on the Scald and the Chill.
          The generator list is the only scope that is actually the Grey.
          Steps and their defs: mandrake.rm.terminalbiomes,
          Defs/MapGeneration/RM_GreySeaFloorScatter.xml.
@@ -139,8 +139,8 @@
   </MapGeneratorDef>
 
   <MapGeneratorDef MayRequire="mandrake.rm.terminalbiomes">
-    <defName>RM_SeaDiveGenerator_PropaneLake</defName>
-    <label>the Propane Lake floor</label>
+    <defName>RM_SeaDiveGenerator_TheChill</defName>
+    <label>the Chill floor</label>
     <disableCallAid>true</disableCallAid>
     <isUnderground>true</isUnderground>
     <pocketMapProperties>
@@ -151,7 +151,7 @@
            2026-09-26 (PocketMapProperties.cs, Game.cs, WorldComponent_GravshipController).
            SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1. -->
       <destroyOnParentMapAbandoned>false</destroyOnParentMapAbandoned>
-      <biome>RM_PropaneLake</biome>
+      <biome>RM_TheChill</biome>
       <temperature>-55</temperature>
       <canBeCleaned>true</canBeCleaned>
       <tileMutators>

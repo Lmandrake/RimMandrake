@@ -27,7 +27,7 @@ namespace RimMandrake.SeaShores
 
         // Drives the fishTypes override: fishing this sea's water pulls THIS
         // biome's catch table instead of the land map's. Off for a sea whose
-        // catch is an open design question (the Propane Lake is not water).
+        // catch is an open design question (the Chill is not water).
         public bool providesCatch = true;
 
         // Drives the shore terrain itself. Off means the tile still reads as
