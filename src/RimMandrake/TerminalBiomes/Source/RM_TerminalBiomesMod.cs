@@ -456,8 +456,8 @@ namespace RimMandrake.TerminalBiomes
     }
 
     // TWILIGHT_LIGHT_ECONOMY_1: "cages passable-beneath" (Mod Settings).
-    // No Harmony in this assembly, so the only vanilla lever for a
-    // building's own collision is ThingDef.passability itself — a shared,
+    // No Harmony patch exists for this specific lever, so the only vanilla
+    // one for a building's own collision is ThingDef.passability itself — a shared,
     // def-level field, not a per-instance override. [StaticConstructorOnStartup]
     // guarantees this runs after every def is loaded and resolved (Mod
     // constructors, where settings are READ from disk via GetSettings, run

@@ -2,31 +2,19 @@
 <!--
   RM_TwilightLightEconomy.xml            TerminalBiomes · TWILIGHT_LIGHT_ECONOMY_1
 
-  Translate keys for RM_MapComponent_WellLedger, RM_Building_SunSphere,
-  RM_Comp_SkylightRight, RM_Comp_WellChart and RM_Comp_ClaimBuoy.
+  Translate keys for RM_MapComponent_WellLedger and RM_Building_SunSphere.
+  TWILIGHT_TENANCY_PAPER_REMOVAL_1 (owner, 2026-09-27) retired
+  RM_Comp_SkylightRight, RM_Comp_WellChart, RM_Comp_ClaimBuoy and the
+  chart-forecast/poaching-standing keys that went with them.
 -->
 <LanguageData>
 
   <RM_TwilightWellClosingLabel>Skylight closing</RM_TwilightWellClosingLabel>
   <RM_TwilightWellClosingText>The well overhead is healing shut — the rim has thickened and dulled, and the light is going out of it. Whatever you've placed under it will sit in the dark once it closes.</RM_TwilightWellClosingText>
 
-  <RM_TwilightChart_NoData>No open well to forecast.</RM_TwilightChart_NoData>
-  <RM_TwilightChart_Forecast>The well-keeper reads about {0} days left on the soonest well to close.</RM_TwilightChart_Forecast>
-
   <RM_SunSphere_Husk>Husk — needs a fresh wild seed (a pallu or a lamp bladder).</RM_SunSphere_Husk>
   <RM_SunSphere_Seeded>Seeded — dark, just beginning to culture.</RM_SunSphere_Seeded>
   <RM_SunSphere_Culturing>Culturing — dim, growing brighter.</RM_SunSphere_Culturing>
   <RM_SunSphere_Mature>Mature — a small sun of its own.</RM_SunSphere_Mature>
-
-  <RM_SkylightRight_Expired>Expired — that well has closed.</RM_SkylightRight_Expired>
-  <RM_SkylightRight_Active>Grants rights on well #{0} while it stands open.</RM_SkylightRight_Active>
-
-  <RM_WellChart_Stale>Stale — this is a picture of a sea that no longer exists.</RM_WellChart_Stale>
-
-  <RM_ClaimBuoy_NoWell>Not standing over any open well.</RM_ClaimBuoy_NoWell>
-  <RM_ClaimBuoy_CompactHold>The Compact's own hold on well #{0}.</RM_ClaimBuoy_CompactHold>
-  <RM_ClaimBuoy_FreeHold>A free hold on well #{0} — honoured, but unprotected.</RM_ClaimBuoy_FreeHold>
-
-  <RM_TwilightPoachingFirstOffence>The Compact's warden notes the poaching in her ledger. Your standing with the Compact has taken a hit.</RM_TwilightPoachingFirstOffence>
 
 </LanguageData>

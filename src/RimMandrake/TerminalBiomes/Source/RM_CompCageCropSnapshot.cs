@@ -68,7 +68,16 @@ namespace RimMandrake.TerminalBiomes
 
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
-            CaptureSnapshot(map);
+            // MinifyUtility.MakeMinified (the uninstall/pack-up path this
+            // comp exists for) despawns with DestroyMode.Vanish. An actual
+            // deconstruct/kill/destroy passes its own mode (Deconstruct,
+            // Kill, KillFinalize, ...) — capturing then would destroy the
+            // crops with nothing left alive to ever respawn them from the
+            // snapshot, since the building itself is gone for good.
+            if (mode == DestroyMode.Vanish)
+            {
+                CaptureSnapshot(map);
+            }
             base.PostDeSpawn(map, mode);
         }
 

@@ -12,10 +12,9 @@
   subtype; that order is the contract between this file and that class —
   do not reorder the <comps> block below without updating it there too.
 
-  Gated behind 2 techprints + RM_TwilightSunSphereResearch + the wild seed
-  (§3.3, §4.5: "gated on good standing," which the Compact dialog that
-  sells the techprints — not built here — is responsible for checking via
-  RM_MapComponent_WellLedger.TechprintsAvailable).
+  Gated behind RM_TwilightSunSphereResearch + the wild seed only —
+  TWILIGHT_TENANCY_PAPER_REMOVAL_1 (owner, 2026-09-27) dropped the Compact
+  techprint-selling gate §3.3/§4.5 originally described.
 
   PLACEHOLDER ART: RM_GlowTank's own texture again (a third sibling in the
   "glass vessel that cultures something" family, tinted sun-gold this time).

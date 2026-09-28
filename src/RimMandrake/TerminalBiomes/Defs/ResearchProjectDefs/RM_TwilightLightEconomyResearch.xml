@@ -3,9 +3,10 @@
   ============================================================================
   RM_TwilightLightEconomyResearch.xml   TerminalBiomes · TWILIGHT_LIGHT_ECONOMY_1
   ============================================================================
-  Two research gates. §3.3: the sun-sphere is "2 Compact techprints + the
-  research + a wild seed" — techprintCount 2 here, techprints themselves
-  sold by the Compact (a future trader item, out of this build's scope).
+  Two research gates. TWILIGHT_TENANCY_PAPER_REMOVAL_1 (owner, 2026-09-27:
+  "The Compact does NOT sell light, that's not a mechanic we accepted.
+  Remove.") dropped the sun-sphere's techprint requirement — it is now
+  research + a wild seed only, same as every other building in this mod.
   §2.2-1: the tether-chain is "uncraftable until the late techprint
   research" — RM_TwilightChainCraft gates RM_TetherChain's own recipeMaker
   (RM_TwilightLightEconomyItems.xml) and, once done, raises the reachable
@@ -24,8 +25,6 @@
     <description>Culturing the ollumin in a sealed vessel until it makes its own light — a colony that finishes this never has to lease a well again.</description>
     <baseCost>3000</baseCost>
     <techLevel>Spacer</techLevel>
-    <techprintCount>2</techprintCount>
-    <techprintCommonality>0.6</techprintCommonality>
     <prerequisites>
       <li>Hydroponics</li>
     </prerequisites>

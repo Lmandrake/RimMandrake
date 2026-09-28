@@ -36,7 +36,6 @@ namespace RimMandrake.TerminalBiomes
         private const int WaningTicks = (int)(TicksPerDay * 1.5f); // the last ~1.5 days
         private const float WaningStepFraction = 0.2f; // radius steps down ~20% per half-day
         private const int WaningStepTicks = TicksPerDay / 2;
-        private const int ChartStalenessTicks = TicksPerDay * 7; // "accurate for ~a week"
 
         private static readonly ColorInt GoldGlow = new ColorInt(255, 210, 120, 0);
         private static readonly ColorInt CoolDeadGlow = new ColorInt(120, 140, 150, 0);
@@ -61,7 +60,6 @@ namespace RimMandrake.TerminalBiomes
             public bool warningLetterFired;
             public int noiseSeed;
             public Thing skylightThing; // the RM_Skylight thing, Scribe_References'd
-            public Thing buoyThing; // optional claim-buoy standing on this well, if any
 
             public void ExposeData()
             {
@@ -73,7 +71,6 @@ namespace RimMandrake.TerminalBiomes
                 Scribe_Values.Look(ref warningLetterFired, "warningLetterFired");
                 Scribe_Values.Look(ref noiseSeed, "noiseSeed");
                 Scribe_References.Look(ref skylightThing, "skylightThing");
-                Scribe_References.Look(ref buoyThing, "buoyThing");
             }
 
             public int TicksRemaining => System.Math.Max(0, lifespanTicks - ageTicks);
@@ -86,15 +83,6 @@ namespace RimMandrake.TerminalBiomes
         // A day scheduled to open a fresh well after one closes (§1.1: "a
         // well closing schedules a well opening elsewhere within ~a day").
         private List<int> pendingOpenTicks = new List<int>();
-
-        // The goodwill-shaped standing tracker for §4.3's sanction ladder.
-        // 100 = untouched. Detection wiring (which action counts as
-        // poaching a claimed well) is NOT built here — no sow/hunt/gather
-        // WorkGiver interception exists in this codebase to hook into yet —
-        // this is the tracker + query API a future pass calls into via
-        // RecordPoaching(). Never force, never a raid: nothing in this
-        // class can trigger either.
-        private int compactStanding = 100;
 
         public RM_MapComponent_WellLedger(Map map) : base(map)
         {
@@ -119,7 +107,6 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref nextWellId, "nextWellId", 1);
             Scribe_Values.Look(ref initialized, "initialized");
             Scribe_Collections.Look(ref pendingOpenTicks, "pendingOpenTicks", LookMode.Value);
-            Scribe_Values.Look(ref compactStanding, "compactStanding", 100);
             if (wells == null) wells = new List<WellRecord>();
             if (pendingOpenTicks == null) pendingOpenTicks = new List<int>();
         }
@@ -270,9 +257,17 @@ namespace RimMandrake.TerminalBiomes
                 well.warningLetterFired = false;
                 MaybeFireWarningLetter(well);
             }
-            if (well.stage == WellStage.Waning)
+            // Opening ramps the radius UP (factor = ageTicks/OpeningTicks)
+            // and Waning steps it DOWN — both need a continuous update, not
+            // just Waning, or an opening well sits at whatever its very
+            // first (or last-authored) radius happened to be for days.
+            if (well.stage == WellStage.Opening || well.stage == WellStage.Waning)
             {
-                ApplyVisualState(well); // step the radius/colour down continuously through waning.
+                ApplyVisualState(well);
+            }
+            else if (before == WellStage.Opening && well.stage == WellStage.Standing)
+            {
+                ApplyVisualState(well); // snap the ramp to exactly full (factor 1) on entry, once.
             }
             if (before != WellStage.Closed && well.stage == WellStage.Closed)
             {
@@ -309,9 +304,6 @@ namespace RimMandrake.TerminalBiomes
                 well.skylightThing.Destroy(DestroyMode.Vanish);
             }
             well.skylightThing = null;
-            // A claim buoy is left standing dark, unprotected — the spec
-            // never asks it to be removed on close; Compact buoy
-            // re-placement rides TWILIGHT_DEEPWATER_HOUSES_1's own cast.
 
             // Schedule a replacement opening elsewhere "within ~a day".
             pendingOpenTicks.Add(Find.TickManager.TicksGame + Rand.Range(0, TicksPerDay));
@@ -425,74 +417,6 @@ namespace RimMandrake.TerminalBiomes
             return false;
         }
 
-        // ── Public API: ledger ids, leases, charts (spec §4) ────────────
-
-        public bool IsWellOpen(int wellId)
-        {
-            foreach (WellRecord w in wells)
-            {
-                if (w.id == wellId)
-                {
-                    return w.stage != WellStage.Closed;
-                }
-            }
-            return false;
-        }
-
-        public WellRecord GetWell(int wellId)
-        {
-            foreach (WellRecord w in wells)
-            {
-                if (w.id == wellId) return w;
-            }
-            return null;
-        }
-
-        // A right may only be sold on a well that is not already waning
-        // (§4.2: "a waning well she will not sell at all"). Callers (a
-        // future Compact dialog) use this to gate the sale.
-        public bool CanSellRightOn(int wellId)
-        {
-            WellRecord w = GetWell(wellId);
-            return w != null && (w.stage == WellStage.Opening || w.stage == WellStage.Standing);
-        }
-
-        // Any currently open well the player might buy a right on, nearest first.
-        public IEnumerable<WellRecord> OpenWells()
-        {
-            foreach (WellRecord w in wells)
-            {
-                if (w.stage != WellStage.Closed) yield return w;
-            }
-        }
-
-        // §4.4: the chart's forecast text, generated fresh each time a
-        // chart is bought (RM_Comp_WellChart snapshots the returned string
-        // at creation — a chart is a picture taken once, not a live feed).
-        public string RollForecastText()
-        {
-            WellRecord soonest = null;
-            foreach (WellRecord w in wells)
-            {
-                if (w.stage == WellStage.Closed) continue;
-                if (soonest == null || w.TicksRemaining < soonest.TicksRemaining)
-                {
-                    soonest = w;
-                }
-            }
-            if (soonest == null)
-            {
-                return "RM_TwilightChart_NoData".Translate();
-            }
-
-            // "her read of its remaining days ... with a little noise."
-            Rand.PushState(soonest.noiseSeed ^ Find.TickManager.TicksGame / ChartStalenessTicks);
-            float noiseDays = Rand.Range(-0.5f, 0.5f);
-            Rand.PopState();
-            float daysLeft = Mathf.Max(0.1f, soonest.TicksRemaining / (float)TicksPerDay + noiseDays);
-            return "RM_TwilightChart_Forecast".Translate(daysLeft.ToString("0.#"));
-        }
-
         // ── Gardener/lid-dark hooks (called by RM_GardenerOverhead / the
         // lid-dark WeatherDef once those ship — content/danger pass scope,
         // §5/§7. Safe to call today: they simply have no caller yet.) ────
@@ -598,22 +522,5 @@ namespace RimMandrake.TerminalBiomes
             }
             return count;
         }
-
-        // ── §4.3 sanction ladder: standing tracker + query API only.
-        // Detection (what counts as poaching) is a future pass's wiring. ──
-
-        public void RecordPoaching()
-        {
-            if (compactStanding >= 70)
-            {
-                Messages.Message("RM_TwilightPoachingFirstOffence".Translate(), MessageTypeDefOf.NegativeEvent);
-            }
-            compactStanding = Mathf.Max(0, compactStanding - 15);
-        }
-
-        public bool ChainsAvailable => compactStanding >= 40;
-        public bool ChartsAvailable => compactStanding >= 40;
-        public bool TechprintsAvailable => compactStanding >= 40;
-        public float PriceMultiplier => compactStanding >= 70 ? 1f : 1.5f;
     }
 }

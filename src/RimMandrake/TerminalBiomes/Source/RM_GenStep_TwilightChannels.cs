@@ -190,7 +190,14 @@ namespace RimMandrake.TerminalBiomes
                     else
                     {
                         int band = System.Math.Abs(w) - MarginHalfWidth;
-                        current.SetBankBand(c, dir, band);
+                        // "toward the channel", not downstream (the component's
+                        // own contract, RM_MapComponent_ChannelCurrent.SetBankBand):
+                        // a bank cell sits perp*w off the centreline, so the
+                        // direction that reduces |w| back toward 0 is -perp
+                        // when w>0 and +perp when w<0.
+                        IntVec3 towardChannelOffset = w > 0 ? new IntVec3(-perp.x, 0, -perp.z) : perp;
+                        RM_FlowDir towardChannel = DirectionFromOffset(towardChannelOffset);
+                        current.SetBankBand(c, towardChannel, band);
                         PaintIfPresent(map, c, bankSilt);
                     }
                 }
@@ -322,6 +329,20 @@ namespace RimMandrake.TerminalBiomes
         {
             IntVec3 f = RM_MapComponent_ChannelCurrent.Offset(dir);
             return new IntVec3(-f.z, 0, f.x);
+        }
+
+        // The reverse of RM_MapComponent_ChannelCurrent.Offset — perp is
+        // always a rotated unit octant vector, so this always finds a match.
+        private static RM_FlowDir DirectionFromOffset(IntVec3 offset)
+        {
+            foreach (RM_FlowDir dir in System.Enum.GetValues(typeof(RM_FlowDir)))
+            {
+                if (dir != RM_FlowDir.None && RM_MapComponent_ChannelCurrent.Offset(dir) == offset)
+                {
+                    return dir;
+                }
+            }
+            return RM_FlowDir.None;
         }
     }
 }

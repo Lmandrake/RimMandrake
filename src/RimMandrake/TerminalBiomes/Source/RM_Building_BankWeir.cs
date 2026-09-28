@@ -61,14 +61,28 @@ namespace RimMandrake.TerminalBiomes
                 HitPoints = System.Math.Max(1, HitPoints - WearAmount); // "the current's ordinary gnaw"
             }
 
-            if (!neverBreaches && this.IsHashIntervalTick(600))
+            if (this.IsHashIntervalTick(600))
             {
-                Map map = Map;
-                RM_MapComponent_ChannelCurrent current = map?.GetComponent<RM_MapComponent_ChannelCurrent>();
-                bool untended = HitPoints < MaxHitPoints * BreachHpFraction;
-                if (current != null && current.SurgeActive && untended)
+                bool repaired = HitPoints >= MaxHitPoints * BreachHpFraction;
+                if (Arrester != null && !Arrester.Active && repaired)
                 {
-                    Breach();
+                    // Repaired since the last breach ended (a colonist re-drove
+                    // it) — the weir catches again with no new cascade needed.
+                    Arrester.Active = true;
+                }
+
+                if (!neverBreaches && !repaired)
+                {
+                    Map map = Map;
+                    RM_MapComponent_ChannelCurrent current = map?.GetComponent<RM_MapComponent_ChannelCurrent>();
+                    // Arrester.Active == false already means "broken and
+                    // spilling" — don't re-fire the breach cascade/message on
+                    // top of a weir that never got repaired between checks.
+                    bool alreadyBroken = Arrester != null && !Arrester.Active;
+                    if (current != null && current.SurgeActive && !alreadyBroken)
+                    {
+                        Breach();
+                    }
                 }
             }
         }
@@ -105,13 +119,12 @@ namespace RimMandrake.TerminalBiomes
                         continue;
                     }
                     Thing stake = cascadeStakes[i];
-                    // (c) "an HP cascade on a timer... stoppable at any
-                    // stake a colonist reaches in time" — a stake already
-                    // destroyed or already repaired back to full between
-                    // scheduling and firing is simply skipped, which is the
-                    // "stoppable" half: a colonist who re-drove it in time
-                    // saves it.
-                    if (stake != null && !stake.Destroyed && stake.HitPoints < stake.MaxHitPoints)
+                    // (c) stakes don't wear/tick on their own — a stake sits
+                    // at full HP right up until the cascade reaches it, so
+                    // gating this on "already damaged" (the review finding)
+                    // meant the cascade snapped nothing, ever. "Already
+                    // destroyed" is the only real reason left to skip.
+                    if (stake != null && !stake.Destroyed)
                     {
                         stake.TakeDamage(new DamageInfo(DamageDefOf.Deterioration, stake.MaxHitPoints));
                     }
@@ -125,7 +138,12 @@ namespace RimMandrake.TerminalBiomes
                 breaching = false;
                 if (Arrester != null)
                 {
-                    Arrester.Active = true; // the breach ends; the weir catches again once repaired past the threshold on its own next check
+                    // Only actually catches again once repaired past the
+                    // threshold — otherwise it stays broken/spilling (and
+                    // won't re-fire the breach cascade every 600 ticks; see
+                    // the Tick() alreadyBroken guard) until a colonist
+                    // repairs it, which the regular Tick() picks up.
+                    Arrester.Active = HitPoints >= MaxHitPoints * BreachHpFraction;
                 }
                 cascadeStakes = null;
                 cascadeFireTicks = null;
