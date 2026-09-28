@@ -23,13 +23,36 @@
   {done,pending}/registry.jsonl carries nothing for "suit"/"heated"/"vacuum"
   this session (checked before writing this file) — nothing to reuse from
   our own pipeline, and nothing further queued: this art already fits.
+
+  🔴 CORRECTED 2026-09-28 (THEY_MOD_REPLICATION_1 live-verify pass, unrelated
+  item — fixed on sight per CLAUDE.md "correctness outranks seat ownership"):
+  ParentName="Apparel_Vacsuit" NEVER resolved. RimWorld's XmlInheritance
+  (Verse/XmlInheritance.cs, GetBestParentFor) indexes parent candidates ONLY
+  by an XML node's own `Name="..."` attribute — never by <defName>. Vanilla's
+  own Apparel_Vacsuit ThingDef (Data/Odyssey/Defs/ThingDefs_Misc/
+  Apparel_Various.xml) carries no Name= attribute (it is a concrete,
+  playable def, not an inheritance template), so this pattern silently
+  produced "XML error: Could not find parent node named Apparel_Vacsuit" on
+  EVERY load, leaving thingClass null — which then NREs
+  ReadingPolicyDatabase.GenerateStartingPolicies() (item.thingClass.
+  SameOrSubclassOf<Book>() on a null thingClass) inside Game..ctor(),
+  crashing new-colony creation, quicktest AND campaign save load alike, the
+  moment this def is active. Root-caused live via RimSage against the
+  decompiled engine before touching anything. Fixed by inheriting from the
+  actual abstract template (ParentName="ApparelBase", which DOES carry
+  Name="ApparelBase") and restating, verbatim, the fields Apparel_Vacsuit
+  itself adds on top of that base — this def now states everything the
+  original header claimed was "inherited for free", because none of it
+  actually was.
 -->
 <Defs>
 
-  <ThingDef ParentName="Apparel_Vacsuit" MayRequire="Ludeon.RimWorld.Odyssey">
+  <ThingDef ParentName="ApparelBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_ChillHeatedSuit</defName>
     <label>heated dive suit</label>
     <description>A vacuum-rated suit rebuilt around a battery-fed heating web instead of a passive shell — it recycles the wearer's air same as any vacsuit, but the real work is the coils. On the Chill's seabed the ambient cold alone would kill in hours; this is the only thing standing between a working pawn and that. The gauge on its own wrist display is not a fuel light. When it reads empty, the suit is just a heavy coat, and the cold does not wait.</description>
+    <generateAllowChance>0</generateAllowChance>
+    <techLevel>Spacer</techLevel>
     <graphicData>
       <texPath>Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -37,15 +60,74 @@
       <color>(214, 108, 48)</color>
     </graphicData>
     <statBases>
-      <!-- Everything else (MaxHitPoints, Mass, ArmorRating_*, Insulation_
-           Heat, EquipDelay, WorkToMake) is inherited unchanged from
-           Apparel_Vacsuit — RimWorld's def-inheritance merges statBases by
-           tag, so only the one stat actually being changed needs stating.
-           Insulation_Cold: cut from the inherited 90. See file header and
-           the .cs header for why the static value must be modest — the
-           real -110C protection is 100% charge-gated. -->
+      <!-- Copied verbatim from Apparel_Vacsuit (see 2026-09-28 header note —
+           ParentName inheritance from it never actually worked), except
+           Insulation_Cold, cut from 90 to 20: the real -110C protection is
+           100% charge-gated, see file header and the .cs header. -->
+      <WorkToMake>48000</WorkToMake>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Mass>12</Mass>
+      <Flammability>0.4</Flammability>
+      <ArmorRating_Sharp>0.52</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.66</ArmorRating_Heat>
       <Insulation_Cold>20</Insulation_Cold>
+      <Insulation_Heat>15</Insulation_Heat>
+      <EquipDelay>14</EquipDelay>
     </statBases>
+    <equippedStatOffsets>
+      <MoveSpeed>-1.25</MoveSpeed>
+      <VacuumResistance>0.32</VacuumResistance>
+    </equippedStatOffsets>
+    <thingCategories>
+      <li>ApparelArmor</li>
+    </thingCategories>
+    <tradeTags>
+      <li>HiTechArmor</li>
+      <li>Armor</li>
+    </tradeTags>
+    <smeltable>true</smeltable>
+    <apparel>
+      <bodyPartGroups>
+        <li>Torso</li>
+        <li>Neck</li>
+        <li>Shoulders</li>
+        <li>Arms</li>
+        <li>Legs</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit</wornGraphicPath>
+      <layers>
+        <li>Middle</li>
+        <li>Shell</li>
+      </layers>
+      <tags>
+        <li>SpacerMilitary</li>
+        <li>Vacsuit</li>
+      </tags>
+      <defaultOutfitTags>
+        <li>Spacefarer</li>
+      </defaultOutfitTags>
+      <useDeflectMetalEffect>true</useDeflectMetalEffect>
+      <soundWear>Wear_PowerArmor</soundWear>
+      <soundRemove>Remove_PowerArmor</soundRemove>
+    </apparel>
+    <costList>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <Steel>90</Steel>
+      <Plasteel>20</Plasteel>
+    </costList>
+    <recipeMaker>
+      <researchPrerequisite>OrbitalTech</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedTechArmor</unfinishedThingDef>
+      <displayPriority>235</displayPriority>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+    </recipeMaker>
     <comps>
       <li Class="RimMandrake.DivingInteraction.RM_CompProperties_HeatedSuitBattery">
         <maxChargeTicks>15000</maxChargeTicks>

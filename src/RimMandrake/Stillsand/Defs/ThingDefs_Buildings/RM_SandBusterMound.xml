@@ -34,13 +34,34 @@
   Neither def is wired into RM_Stillsand_Biome.xml or any wildAnimals list —
   both are purely incident-spawned, by
   RM_IncidentWorker_SandBusterEruption (RM_SandBusterEruption.xml).
+
+  🔴 CORRECTED 2026-09-28 (THEY_MOD_REPLICATION_1 live-verify pass, unrelated
+  item — fixed on sight per CLAUDE.md "correctness outranks seat ownership"):
+  BOTH ParentName="Hive" (below) and ParentName="TunnelHiveSpawner" (on
+  RM_SandBusterTunnel) never resolved. RimWorld's XmlInheritance
+  (Verse/XmlInheritance.cs) indexes inheritance-parent candidates ONLY by an
+  XML node's own `Name="..."` attribute, never by <defName> — vanilla's own
+  Hive and TunnelHiveSpawner ThingDefs are concrete, playable defs with no
+  Name= attribute, so both produced "XML error: Could not find parent node
+  named ..." on every load and left thingClass null on RM_SandBusterMound,
+  which then NREs ReadingPolicyDatabase.GenerateStartingPolicies() inside
+  Game..ctor() — crashing new-colony creation, quicktest AND campaign save
+  load alike the instant this def is active (root-caused live via RimSage
+  against the decompiled engine). The comment below ("thingClass stays
+  RimWorld.Hive unchanged... needs no subclass") was true in INTENT but the
+  inheritance that was supposed to deliver it never fired. Fixed by
+  inheriting from the actual abstract template
+  (ParentName="BuildingNaturalBase", which DOES carry
+  Name="BuildingNaturalBase") and restating, verbatim, the fields vanilla
+  Hive itself adds on top of that base.
 -->
 <Defs>
 
-  <ThingDef ParentName="Hive">
+  <ThingDef ParentName="BuildingNaturalBase">
     <defName>RM_SandBusterMound</defName>
     <label>sand buster mound</label>
     <description>A dome of fused, sun-baked grit standing where a ruukka's brood has taken hold below — the one part of the whole nest that was ever meant to be seen. Everything living under it stays under the sand until something crosses too close; then the surface simply opens.</description>
+    <thingClass>Hive</thingClass>
     <graphicData>
       <!-- art pending — SANDBUSTER_CASTES_BUILD_1, pending/RM_SandBusterMound_
            south.json filed (infrastructure/artpipe/art_lists/
@@ -51,6 +72,15 @@
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>2.0</drawSize>
     </graphicData>
+    <uiIconScale>0.65</uiIconScale>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <fillPercent>0.5</fillPercent>
+    <pathCost>42</pathCost>
+    <receivesSignals>true</receivesSignals>
+    <blockWind>true</blockWind>
+    <tickerType>Normal</tickerType>
+    <passability>PassThroughOnly</passability>
     <statBases>
       <MaxHitPoints>160</MaxHitPoints>
       <Flammability>0</Flammability>
@@ -80,10 +110,24 @@
     <killedLeavings />
   </ThingDef>
 
-  <ThingDef ParentName="TunnelHiveSpawner">
+  <ThingDef ParentName="EtherealThingBase">
     <defName>RM_SandBusterTunnel</defName>
     <label>disturbed sand</label>
     <thingClass>RimMandrake.Stillsand.RM_SandBusterTunnelSpawner</thingClass>
+    <!-- Restated from vanilla TunnelHiveSpawner (see file-header
+         2026-09-28 correction note — ParentName="TunnelHiveSpawner" never
+         resolved, same XmlInheritance Name-attribute defect). category/
+         useHitPoints come from EtherealThingBase itself; drawerType is
+         overridden here same as TunnelHiveSpawner overrides it. -->
+    <category>Ethereal</category>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Normal</tickerType>
+    <drawerType>RealtimeOnly</drawerType>
+    <alwaysFlee>true</alwaysFlee>
+    <building>
+      <groundSpawnerSustainedEffecter>EmergencePointSustained2X2</groundSpawnerSustainedEffecter>
+      <groundSpawnerCompleteEffecter>EmergencePointComplete2X2</groundSpawnerCompleteEffecter>
+    </building>
   </ThingDef>
 
 </Defs>
