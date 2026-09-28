@@ -1007,3 +1007,7 @@
 {"seat":"FOUNDRY","event":"start","id":"STILLSAND_RULED_CONTENT_1","ts":"2026-09-28T06:16:13Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-28T06:28:37Z"}
 {"seat":"FOUNDRY","event":"close","id":"STILLSAND_RULED_CONTENT_1","sha":"9c9ed72e2","ts":"2026-09-28T06:37:53Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GREYSEA_RULED_CONTENT_1","ts":"2026-09-28T06:38:41Z"}
+{"seat":"FOUNDRY","event":"start","id":"GREYSEA_RULED_CONTENT_1","ts":"2026-09-28T06:38:42Z"}
+{"seat":"FOUNDRY","event":"note","id":"GREYSEA_RULED_CONTENT_1","text":"8 of 11 rulings + housekeeping built and committed at 7a09c160c (Q2/Q3/Q4-Q8/Q9/Q13/Q14/Q16 + rare-catch/salt-cameo tier migration). Q10/Q11 (ship crust ladder) and Q12 (deterministic lamp response) are NOT buildable yet: verified live, no ship-crystallisation or generalized light-attraction code exists. These are NOT unfiled -- GREYSEA_SHIP_CRYSTALLISATION_1 and DARKSEA_LIGHT_ATTRACTION_1 already exist, both claimed+started by BENCH 2026-09-27, still in active design (one note says 'Q4-Q10 still open'). This item stays open, blocked on those two landing design+build.","ts":"2026-09-28T06:55:43Z"}
+{"seat":"FOUNDRY","event":"block","id":"GREYSEA_RULED_CONTENT_1","reason":"Q10/Q11/Q12 need GREYSEA_SHIP_CRYSTALLISATION_1 + DARKSEA_LIGHT_ATTRACTION_1 (both BENCH, doing, design still in progress) before the remaining defs can be built","ts":"2026-09-28T06:55:47Z"}

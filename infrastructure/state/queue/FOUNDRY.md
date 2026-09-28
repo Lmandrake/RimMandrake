@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T06:37:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T06:55:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1089,6 +1089,15 @@ kind:     bug
 summary:  TWILIGHTREVIEWFIXES1 — fix the 14 code-review findings in the Twilight build wave
 prose:    infrastructure/state/items/TWILIGHT_REVIEW_FIXES_1.md
 
+## GREYSEA_RULED_CONTENT_1 Build the Grey Sea content ruled 2026-09-27: ten understorey flora at 0.22, catch rebalanced rare, crust clock + weather/berth multipliers, deterministic giant, Elder motion-only tell; pool sentinel blocked on BENCH design
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
+prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1593,6 +1602,16 @@ blocked:  Owner already ruled (BENCH note 2026-09-26T23:24:03Z on this item) tha
 summary:  (no items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md
 
+## GREYSEA_RULED_CONTENT_1 Build the Grey Sea content ruled 2026-09-27: ten understorey flora at 0.22, catch rebalanced rare, crust clock + weather/berth multipliers, deterministic giant, Elder motion-only tell; pool sentinel blocked on BENCH design
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Q10/Q11/Q12 need GREYSEA_SHIP_CRYSTALLISATION_1 + DARKSEA_LIGHT_ATTRACTION_1 (both BENCH, doing, design still in progress) before the remaining defs can be built
+summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
+prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1904,16 +1923,6 @@ kind:     build
 thin:     no ## spec, no ## criteria
 summary:  DESERTCAVERNBEASTEGGS1 — the deep-desert cave-beast + prized eggs (re-filed)
 prose:    infrastructure/state/items/DESERT_CAVERN_BEAST_EGGS_1.md
-
-## GREYSEA_RULED_CONTENT_1 Build the Grey Sea content ruled 2026-09-27: ten understorey flora at 0.22, catch rebalanced rare, crust clock + weather/berth multipliers, deterministic giant, Elder motion-only tell; pool sentinel blocked on BENCH design
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
-prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md
 
 ## BAROQUE_BIOMES_WAVE1_JOIN_1 Baroque Biomes Wave 1: unified mod joins the owner's full list (one ADD, no removals); retarget RimUtinni FindMod/MayRequire naming folded packageIds; delete Wave 0's stale standalone folders
 state:    proposed
