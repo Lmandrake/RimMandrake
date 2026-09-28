@@ -1,6 +1,11 @@
-# Biome mod architecture — one RimMandrake mod per converted biome
+# Biome mod architecture — one RimMandrake.Biomes mod, one section per biome
 
-_Design spec, 2026-09-20. Implements the owner ruling of the same day. **Status: RULED 2026-09-21 — all ten §7 questions answered, every name picked; Phase A executing.** 23 per-biome `<NAME>_RM_MOD_BUILD_1` items are filed off this spec under `BIOME_MOD_SPLIT_EXECUTION_1`, and one (`FLOODEDCANYON_RM_MOD_BUILD_1`) is built, live-proven and closed. Build from it. ⛔ Phase B — the terminal repaint, and any `RUT_` deletion — is still not filed and must not be started (`BIOME_PAINT_ONCE_AT_THE_END_1`)._
+_Design spec, 2026-09-20. Implements the owner ruling of the same day, **as amended by §7
+Q17 (2026-09-27): the per-biome mods merge NOW into ONE player-facing `RimMandrake.Biomes`
+mod with per-biome toggles (AlphaBiomes shape); everything below about per-biome content
+ownership, tiers, sittings and patch layering is unchanged, but "its own mod" now means
+"its own section of the unified mod" — execution is `BIOME_MOD_UNIFICATION_1`.**
+**Status: RULED 2026-09-21 — all ten §7 questions answered, every name picked; Phase A executing.** 23 per-biome `<NAME>_RM_MOD_BUILD_1` items are filed off this spec under `BIOME_MOD_SPLIT_EXECUTION_1`, and one (`FLOODEDCANYON_RM_MOD_BUILD_1`) is built, live-proven and closed. Build from it. ⛔ Phase B — the terminal repaint, and any `RUT_` deletion — is still not filed and must not be started (`BIOME_PAINT_ONCE_AT_THE_END_1`)._
 
 ## 1. The ruling and the amendment
 
@@ -679,10 +684,27 @@ to stand alone") is about CONTENT richness — a biome mod may declare ordinary 
 dependencies like any Workshop mod. Replacing a donor's cast with our own species remains
 the ruled default where the sitting rules it (identity, not a dependency ban).
 
+**Q17 — the biome mods PACKAGE AS ONE PLAYER-FACING MOD, MERGED NOW.** Decision taken by
+question card, 2026-09-27, on the owner's own framing (he proposed "a single
+RimMandrake.Biomes mod that players can configure/select from like AlphaBiomes does",
+noting "it might be simpler"). The deciding facts: the campaign ships a fixed savegame
+referencing every biome def, so per-mod player selection never existed for the campaign;
+cross-mod C# class references cannot be `MayRequire`-guarded (the Blue Desert
+`deathAction` failure, `BLUEDESERT_MOD_DEPENDENCY_DECISION_1`); and shared terrain got
+authored twice in two mods (`LIQUID_TERRAIN_AUTHORED_TWICE_1`). What changes: shipping
+packaging only — one mod, working name `RimMandrake.Biomes` / `mandrake.rm.biomes`, with
+a per-biome toggle screen per the Mod Settings law. What does NOT change: per-biome
+sittings and review, `RM_` def prefixes, the RimUtinni patch layer sitting beneath
+(Q15's layering survives — the ONE mod is the top level it patches), and Q13's
+duplicate-then-diverge for content shared between biomes (now same-mod, still separate
+defs). Non-biome mods (FlowWorks, Graffiti, Oracle, TheBazaar, …) stay independent.
+Execution and the open sub-decisions (final name, exact mod roster, folder/packaging
+strategy, assembly count, modcheck/deploy re-keying): `BIOME_MOD_UNIFICATION_1`.
+
 ### Nothing is open
 
-🔴 **All sixteen questions in this section are RULED — Q1–Q10 as of 2026-09-21, Q11 as of
-2026-09-22, Q12–Q15 as of 2026-09-23, Q16 as of 2026-09-24 — and every name is picked.** Q5 landed (`Warscar`); Q2 landed in full — `the
+🔴 **All seventeen questions in this section are RULED — Q1–Q10 as of 2026-09-21, Q11 as of
+2026-09-22, Q12–Q15 as of 2026-09-23, Q16 as of 2026-09-24, Q17 as of 2026-09-27 — and every name is picked.** Q5 landed (`Warscar`); Q2 landed in full — `the
 Stillsand`, `the Long Shade`, `the Leaning Scrub`; Q11 narrowed Q9 and put every Star Wars
 fauna row in the Utinni layer. **Nothing in this spec is waiting on the owner. Every row can
 start.**

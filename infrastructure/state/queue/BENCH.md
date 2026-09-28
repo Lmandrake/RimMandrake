@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T02:36:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T02:50:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -31,6 +31,15 @@ target:   v1
 kind:     task
 summary:  BIOMELOADPROOFWAVE1 — prove every biome mod loads clean, standalone
 prose:    infrastructure/state/items/BIOME_LOAD_PROOF_WAVE_1.md
+
+## BIOME_MOD_UNIFICATION_1 Merge the biome mods into ONE player-facing RimMandrake.Biomes mod with per-biome toggles (ruled by card 2026-09-27, Q17): spec pass + card agenda, then FOUNDRY waves
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. A backgrounded design/spec pass writes
+prose:    infrastructure/state/items/BIOME_MOD_UNIFICATION_1.md
 
 # IN PROGRESS
 
@@ -877,13 +886,3 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  EMPIREESCALATIONLADDER1 — how Imperial pressure actually climbs
 prose:    infrastructure/state/items/EMPIRE_ESCALATION_LADDER_1.md
-
-## BLUEDESERT_MOD_DEPENDENCY_DECISION_1 Should mandrake.rm.bluedesert join the full mod list? RUT_BurnerAscendant's deathAction still names a BlueDesert type and can't be MayRequire-guarded
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     decision
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BLUEDESERT_MOD_DEPENDENCY_DECISION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BLUEDESERT_MOD_DEPENDENCY_DECISION_1.md

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T02:36:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T02:50:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1956,3 +1956,13 @@ kind:     bug
 thin:     no ## spec, no ## criteria
 summary:  TWILIGHTREVIEWFIXES1 — fix the 14 code-review findings in the Twilight build wave
 prose:    infrastructure/state/items/TWILIGHT_REVIEW_FIXES_1.md
+
+## BLUEDESERT_JOIN_FULL_LIST_1 Add mandrake.rm.bluedesert to the full mod list (ruled by card 2026-09-27): deploy the mod, insert into ModsConfig load order (before UtinniPatches which loadAfters it), verify RUT_BurnerAscendant's config error is gone on the next full-list load
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BLUEDESERT_JOIN_FULL_LIST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLUEDESERT_JOIN_FULL_LIST_1.md
