@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T03:19:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T04:03:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1947,26 +1947,6 @@ thin:     no ## spec, no ## criteria
 summary:  TWILIGHTREVIEWFIXES1 — fix the 14 code-review findings in the Twilight build wave
 prose:    infrastructure/state/items/TWILIGHT_REVIEW_FIXES_1.md
 
-## BLUEDESERT_JOIN_FULL_LIST_1 Add mandrake.rm.bluedesert to the full mod list (ruled by card 2026-09-27): deploy the mod, insert into ModsConfig load order (before UtinniPatches which loadAfters it), verify RUT_BurnerAscendant's config error is gone on the next full-list load
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BLUEDESERT_JOIN_FULL_LIST_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BLUEDESERT_JOIN_FULL_LIST_1.md
-
-## FEVERWOOD_PLANT_DANGLING_REFS_1 15 FeverWood plant ThingDefs (RM_Ammeth family) resolve as missing at full-list load despite being active, deployed, and present in source
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  what
-prose:    infrastructure/state/items/FEVERWOOD_PLANT_DANGLING_REFS_1.md
-
 ## GREYSEA_RULED_CONTENT_1 Build the Grey Sea content ruled 2026-09-27: ten understorey flora at 0.22, catch rebalanced rare, crust clock + weather/berth multipliers, deterministic giant, Elder motion-only tell; pool sentinel blocked on BENCH design
 state:    proposed
 row:      unassigned
@@ -1976,3 +1956,23 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
 prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md
+
+## BAROQUE_BIOMES_COMPOSE_1 Wave 1 of the Baroque Biomes merge: build the compose verb in deploy_custom_mods.py (manifest of 29 IN mods per spec section 8 rulings, generated About.xml 'RimMandrake: Baroque Biomes' / mandrake.rm.biomes, loadFolders one root per biome, per-biome DLLs, root settings assembly with per-biome toggles) and load-prove the composed mod on a minimal list - spec: design/RimMandrake/biome_mod_unification_spec.md
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BAROQUE_BIOMES_COMPOSE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BAROQUE_BIOMES_COMPOSE_1.md
+
+## TERMINALBIOMES_LIQUID_RETARGET_1 Retarget TerminalBiomes' generic liquid terrain rows (boiling water, brine pool, liquid propane) onto FlowWorks' defs per the Q7 ownership ruling 2026-09-27; TerminalBiomes keeps only biome-specific formations; DELETE NOTHING until the world-remake window (placed terrain pins shortHashes)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TERMINALBIOMES_LIQUID_RETARGET_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TERMINALBIOMES_LIQUID_RETARGET_1.md
