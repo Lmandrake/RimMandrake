@@ -384,6 +384,7 @@ as the def and node TEXT as commonality; a `<li>` silently discards the def):
   <RM_Sloghog>0.3</RM_Sloghog>
   <RM_Sootgrazer>0.25</RM_Sootgrazer>
   <RM_Gravelgut>0.2</RM_Gravelgut>
+  <RM_Grimewing>0.15</RM_Grimewing>
   <RM_Smolderback>0.05</RM_Smolderback>
 </wildAnimals>
 ```
@@ -438,15 +439,21 @@ pitiable.
 Queued: **21 jobs** — 12 faced fauna, 6 single flora, 3 single item icons
 (brineleech, sparkcrab, brine plate — §5's art finding).
 
-## 9. Proposals tail
+## 9. The Grimewing — ruled in (decision taken by question card, 2026-09-28)
 
-**Flyer niche — proposal only, nothing built on it.** This cast has no flyers, and
-that is defensible: the sheet's air is the danger (ash storms, halo storms), and
-ground-hugging survivors read the register best. But one niche is genuinely open —
-**a carrion-finder that rides the storm-thermals**: the biome's exhumation lottery
-means fresh finds after every storm, and a wretched, half-bald scavenger bird
-(working name in register: **Grimewing**) circling a fresh exhumation would be the
-visible "the map re-dealt here" marker, the way the cinderfelt marks the fall. Per
-the owner's standing flyer rule it would be a real flyer (MaxFlightTime stat form).
-Filed as a proposal for the next Wasteland sitting; NOT in the roster, NOT in the
-CSV, no def owed.
+**The flyer niche is FILLED.** The **Grimewing** — a carrion-finder that rides the
+storm-thermals: the biome's exhumation lottery means fresh finds after every storm,
+and this wretched, half-bald scavenger bird circling a fresh exhumation is the
+visible "the map re-dealt here" marker, the way the cinderfelt marks the fall.
+
+- **Class:** wretched many (aerial scavenger). Per the standing flyer rule it is a
+  **real flyer**: `MaxFlightTime`/`FlightCooldown` statBases + race flight fields,
+  Locust shape, `canLeaveMapFlying` true (it is a bird; it lairs nowhere).
+- **Stats sketch:** bodySize ~0.5, carrion diet, speed ~4.0 ground / flightSpeedFactor
+  ~2.5. Commonality **0.15** (`<RM_Grimewing>0.15</RM_Grimewing>` joins the §7
+  roster block).
+- **Marked by:** patchy moth-eaten feathers over bare warty grey skin, salt-stained
+  hooked beak, wing gaps where feathers never grew back.
+- **Danger frame:** none — it eats what the storm digs up, never what walks.
+- **Art:** 3 faced jobs queued 2026-09-28 (`RM_Grimewing_*` in pending/; row
+  appended to the cast CSV). Build lands with `WASTELAND_RULED_CONTENT_1`.
