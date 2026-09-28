@@ -20,6 +20,24 @@
   and only through it (GenStep_Terrain); terrainPatchMakers then overlay the
   lanternstone shelves, soil and shallow water. Same shape and same thresholds as
   the donor, so map feel is unchanged.
+
+  🔴 CORRECTED 2026-09-28 (THEY_MOD_REPLICATION_1 live-verify pass, unrelated
+  item — fixed on sight per CLAUDE.md "correctness outranks seat ownership"):
+  the header above already says "no seed can place it" / "nothing here for
+  worldgen to score", but the def never actually told the engine that —
+  `generatesNaturally` defaults to true on BiomeDef, and it was never
+  declared `false` here (unlike RM_SeabedUnavailable/RM_SeabedFloor two
+  mods over, which DO set it). `WorldGenStep_Terrain.BiomeFrom` iterates
+  EVERY BiomeDef for EVERY tile of a fresh world and short-circuits on
+  `generatesNaturally` BEFORE touching `.Worker` (RimSage-confirmed against
+  the decompiled engine) — so with it left true, this def entered ordinary
+  surface-tile scoring, and since it also carries no `<workerClass>` (also
+  deliberate — "no worldgen route at all"), `BiomeDef.Worker` NREs
+  (`workerClass` null) on the very first tile of ANY fresh worldgen with
+  this def active: new colony, quicktest, or any future world remake.
+  Root-caused live, RimSage against decompiled `WorldGenStep_Terrain.
+  BiomeFrom`/`BiomeDef.Worker`. Fix: state the exclusion the header already
+  claims, matching the pattern already used for the seabed placeholders.
 -->
 <Defs>
 
@@ -28,6 +46,8 @@
     <label>the Lantern Deeps</label>
     <description>Voids grown by slow, cold crystallisation under the thickest crust on the planet. Enclosed, warm by comparison to the surface above, and humming. The only ambient light is lanternstone — the blue native crystal that carries light — and the glow-fungi pastured beneath it. Nothing reaches this place without excellent technology, which is why the caverns are full of it.</description>
 
+    <generatesNaturally>false</generatesNaturally>
+    <canAutoChoose>false</canAutoChoose>
     <animalDensity>2.5</animalDensity>
     <plantDensity>2</plantDensity>
     <wildPlantsAreCavePlants>true</wildPlantsAreCavePlants>
