@@ -593,6 +593,30 @@
         </li>
       </lifeStageAges>
     </race>
+    <!-- CHILL_GARDEN_DEFENSE_1, 2026-09-28 — "things catalogued as scenery
+         stand up and fight." Every RM_Tarnn that will ever exist is spawned
+         exclusively by GenStep_SeaFloorFauna reading THIS biome's
+         <wildAnimals> (MEASURED off that GenStep's own header: a sea
+         BiomeDef's wildAnimals is never consulted by vanilla's ambient
+         spawner, so that GenStep — which runs only when generating the
+         Chill's seabed pocket map — is the only place a Tarnn is ever
+         created), so starting dormant here can never strand a hypothetical
+         surface-spawned Tarnn. jobDormancy=true (not signal-driven — the
+         wake is always an explicit RM_MapComponent_ChillGardenDefense call,
+         WakeUp() + a forced ManhunterPermanent, never a passive proximity
+         trigger) shows the sleeping Zzz and keeps a dormant Tarnn from
+         acting, exactly the "ancient danger room" scenery-until-disturbed
+         read the ruling asks for. RM_CompTarnnRoused is what actually makes
+         a woken Tarnn a threat — see that file's header for the full
+         overcomable math. -->
+    <comps>
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+        <jobDormancy>true</jobDormancy>
+        <dormantStateLabelKey>DormantCompInactive</dormantStateLabelKey>
+      </li>
+      <li Class="RimMandrake.DivingInteraction.CompProperties_TarnnRoused" />
+    </comps>
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>

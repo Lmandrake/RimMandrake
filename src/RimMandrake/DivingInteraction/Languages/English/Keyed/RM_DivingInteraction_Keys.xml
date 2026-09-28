@@ -30,4 +30,11 @@
   <RM_HeatedSuitCharge>Suit battery: {0}</RM_HeatedSuitCharge>
   <RM_HeatedSuitChargeDepleted>Suit battery: DEPLETED — no cold protection</RM_HeatedSuitChargeDepleted>
 
+  <!-- CHILL_GARDEN_DEFENSE_1 -->
+  <RM_ChillGardenDefense_IlissArc>Arcs of current lash out from the frost around {0} — the garden is defending itself.</RM_ChillGardenDefense_IlissArc>
+  <RM_ChillGardenDefense_TarnnWokeReason>disturbed by sustained destruction of the seabed garden</RM_ChillGardenDefense_TarnnWokeReason>
+  <RM_ChillGardenDefense_TarnnWokeLabel>The Lattice Wakes</RM_ChillGardenDefense_TarnnWokeLabel>
+  <RM_ChillGardenDefense_TarnnWokeText>Sustained destruction of the garden has roused {0} dormant Tarnn — scenery no longer. They will fight until this is settled, and stay settled once it is.</RM_ChillGardenDefense_TarnnWokeText>
+  <RM_ChillGardenDefense_TarnnRoused>roused, defending the garden</RM_ChillGardenDefense_TarnnRoused>
+
 </LanguageData>

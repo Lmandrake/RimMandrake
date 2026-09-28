@@ -99,6 +99,17 @@ namespace RimMandrake.DivingInteraction
         // colonist on a dead battery mid-dive.
         public static bool chillHeatedSuitEnabled = true;
 
+        // CHILL_GARDEN_DEFENSE_1, 2026-09-28. The garden's tiered immune
+        // system: harvesting/killing floor life/directed heat draws an
+        // Iliss arc (stinging, survivable), sustained destruction wakes a
+        // bounded skirmish of dormant RM_Tarnn. Own toggle per MOD_OPTIONS_
+        // RETROFIT_1: off degrades to "the garden never fights back" — no
+        // arcs, no wake, floor life is simply passive/huntable like any
+        // other wildlife. Never strands anyone: RM_Tarnn's dormancy comp
+        // just never gets its WakeUp() call, so a toggled-off Tarnn is
+        // identical to an ordinary sessile floor-life creature.
+        public static bool chillGardenDefenseEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -111,6 +122,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref chillFireBanEnabled, "chillFireBanEnabled", true);
             Scribe_Values.Look(ref chillBoilShroudEnabled, "chillBoilShroudEnabled", true);
             Scribe_Values.Look(ref chillHeatedSuitEnabled, "chillHeatedSuitEnabled", true);
+            Scribe_Values.Look(ref chillGardenDefenseEnabled, "chillGardenDefenseEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -188,6 +200,14 @@ namespace RimMandrake.DivingInteraction
                   + "hypothermia to fight on the walk back. Off: the suit's cold protection is "
                   + "simply always on, and the charging rack becomes inert decoration — never "
                   + "strands anyone on a dead battery.");
+
+                list.Gap();
+                list.CheckboxLabeled("The Chill: the garden defends itself", ref chillGardenDefenseEnabled,
+                    "Shipped default: ON. Harvesting past a threshold, killing floor life, or hitting "
+                  + "it with directed heat draws a survivable electric arc from the Iliss. Sustained "
+                  + "destruction wakes a bounded group of dormant Tarnn into one hard, winnable fight "
+                  + "— never a raid, never repeating. Off: the floor garden never fights back; floor "
+                  + "life is simply passive wildlife.");
             }
 
             list.End();
