@@ -223,6 +223,10 @@ Star Wars cuisine track wants, and the margin for error is the flavour.
 
 ## 4c. The megafauna — harbours, vectors, and passengers
 
+_(RULED 2026-09-27, `LONGSHADE_DESIGN_SITTING_1`: the shade whale's shipping name is
+**gloomcast** — the owner typed his own coinage into the card; it supersedes the
+*thommak* draft. The glitter-birds' draft name is *pirrik*, pending his art review.)_
+
 Whale-metaphor animals crossing between harbours of shadow.
 
 - **They absorb enormous heat on the crossing and radiate it fiercely once shade is reached.**
@@ -369,15 +373,50 @@ cheap to decide now, expensive to retrofit.
 
 ---
 
+## Amendment — the 2026-09-27 Long Shade sitting (`LONGSHADE_DESIGN_SITTING_1`)
+
+Adds detail under the freeze; no ruling above changes. All twelve agenda questions of
+`long_shade_bedazzle_2026-09-27.md` ruled the same day — that doc's Rulings section is
+the full record. What lands on this sheet:
+
+- **The ultracactus is OURS.** Owner, typed: *"The ultracactus is not canon, I made
+  it."* → `RM_Ultracactus`, anchoring the free `RM_LongShade` tier; its pad is the
+  standalone `foragedFood`.
+- **The shade whale is the gloomcast** (his own coinage; see §4c). Its mechanics are
+  shipped (`RM_ShadeSeekingWanderExtension`, `RM_FilterFeedExtension`,
+  `RM_CompDungSeeder`).
+- **The dew-line fringe is BOUND to the ultracactus ceiling**: pale, rim-only, never
+  green in quantity (ban 8's own terms — a later pass may not inflate it).
+- **All 14 invented-name fauna rows move to `RM_LongShade`** (Q12 executed at this
+  sitting); labels wait for the batch-4c naming sitting.
+- **One-home rulings**: kreetle's one home is the **Stillsand** (this biome's row cut);
+  gizka's homes are Pyrelands + Stillsand (ruled 2026-09-14; this biome's row cut);
+  kudda and the truffle mole (pikkut) have their one home **here**.
+- **Dewback IN** as herd/mount, slowed under ban 3 with the predator flag measured
+  first; **Blurrg OUT** (kept free for the Leaning Scrub sitting). The sand-lion import
+  row is DEAD.
+- **The qorrax** (renamed cephalope, our own recreated art owed) is a deadly
+  sand-swimming predator **terrain-bound to deep sand** — owner, typed: *"Deep sand
+  pools are NOT unwalkable, just very slowly. And they should be an entire terrain
+  type... Some in the Long Shade, Muchly in the Stillsand."*
+  (`DEEP_SAND_WALKABLE_TERRAIN_1`.) Its spd 8.8 is under-sand transit, not surface
+  pursuit — ban 3 stands untouched.
+- **Roster fill-out commissioned**: *"Fill gaps in the animal and plant roster
+  creatively and show me what you make for review."* Five DRAFT species (sollak,
+  gennok, tebbra, dakkra, pirrik) are at art, returning as a review sheet.
+
 ## Owed
 
-- Names: the cycle plant and its prepared dish are **RULED — vorrel** (`STAGGERSEED_SHIPPING_NAME_1`).
-  Still owed: the glitter-birds. **Ultracactus is the owner's own and stands.**
+- Names: the cycle plant and its prepared dish are **RULED — vorrel** (`STAGGERSEED_SHIPPING_NAME_1`);
+  the shade whale is **RULED — gloomcast** (2026-09-27). Still owed: the glitter-birds'
+  name (draft *pirrik*, pending the fill-out review). **Ultracactus is the owner's own —
+  confirmed 2026-09-27, `RM_Ultracactus`.**
 - ⚠️ **`WORLDMAP_DESERT_BAND_REPAIR_1`** — only ~51% of the `Desert` def sits in arc 60–88.
   19.5% is at arc <60 and 41 °C (deep desert mislabelled); 29.6% is at arc >88 where the sun
   is at or below the horizon.
 - The **wide gaps** want authoring as named world features, and patch-chain connectivity wants
   to be something the map generator lays down rather than an accident of scatter — alongside
-  the deep desert's wind grain.
+  the deep desert's wind grain. **RULED 2026-09-27 (Q12): the gaps are named at the repaint
+  window, with the owner — not before.**
 - ⚠️ An earlier draft modelled the shade as a *connected network* travelled within. That was
   wrong (owner, 2026-09-05) and is superseded by the patch-and-dash model above.
