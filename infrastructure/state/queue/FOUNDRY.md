@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T07:43:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-28T07:54:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1793,16 +1793,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CHILLTHERMALENGINE1 — brutal cooling load + the boil shroud
 prose:    infrastructure/state/items/CHILL_THERMAL_ENGINE_1.md
-
-## CHILL_FIRE_BAN_1 Total fire ban on the Chill floor; fire returns only with pumped air; Fuselight exempt
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  CHILLFIREBAN1 — fire is impossible at the bottom of the Chill
-prose:    infrastructure/state/items/CHILL_FIRE_BAN_1.md
 
 ## CHILL_HEATED_SUIT_1 Heated EVA suit, one charge clock, empty = fast hypothermia
 state:    proposed
