@@ -1037,3 +1037,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"CHILL_FLORA_BUILD_1","ts":"2026-09-28T08:37:37Z"}
 {"seat":"FOUNDRY","event":"start","id":"CHILL_FLORA_BUILD_1","ts":"2026-09-28T08:37:38Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_FLORA_BUILD_1","sha":"3815690b5","ts":"2026-09-28T09:15:47Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_THERMAL_FOOTPRINTS_1","ts":"2026-09-28T09:16:59Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_THERMAL_FOOTPRINTS_1","ts":"2026-09-28T09:17:00Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_THERMAL_FOOTPRINTS_1","sha":"2684ac857","ts":"2026-09-28T09:26:24Z"}
