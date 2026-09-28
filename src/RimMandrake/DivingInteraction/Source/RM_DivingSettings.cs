@@ -137,6 +137,20 @@ namespace RimMandrake.DivingInteraction
         // toggling this off.
         public static bool chillDrownedAuroraEnabled = true;
 
+        // CHILL_AURORA_SURGE_1, 2026-09-28. Aurora surge storms: once
+        // CHILL_FLOOR_LIGHT_1's own CurrentAuroraIntensity crosses 0.7, the
+        // Chill seabed enters a surge — the electrojet collector
+        // (RM_ChillAuroraCollector, RM_CompPowerPlantAuroraSurge) draws
+        // real power scaled to intensity, every RM_Iliss glows and the
+        // skyharps shimmer, and any pawn caught unroofed takes periodic
+        // ElectricalBurn shock hits (with a chance to stagger). Own toggle
+        // per MOD_OPTIONS_RETROFIT_1: off degrades to "no surge ever
+        // fires" — the collector simply never generates (inert decoration,
+        // same as the heated suit charger with its own mechanic off), no
+        // dressing flecks, no shock risk. Never strands anyone: the risk
+        // this mechanic ADDS simply stops existing when it is off.
+        public static bool chillAuroraSurgeEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -152,6 +166,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref chillGardenDefenseEnabled, "chillGardenDefenseEnabled", true);
             Scribe_Values.Look(ref chillThermalFootprintsEnabled, "chillThermalFootprintsEnabled", true);
             Scribe_Values.Look(ref chillDrownedAuroraEnabled, "chillDrownedAuroraEnabled", true);
+            Scribe_Values.Look(ref chillAuroraSurgeEnabled, "chillAuroraSurgeEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -256,6 +271,15 @@ namespace RimMandrake.DivingInteraction
                   + "(whatever baseline light it would otherwise have is unaffected, never darkened "
                   + "further); Fuselight and Ghostpane's own steady point-glow is unaffected either "
                   + "way, so the floor never goes fully black from toggling this off.");
+
+                list.Gap();
+                list.CheckboxLabeled("The Chill: aurora surge storms", ref chillAuroraSurgeEnabled,
+                    "Shipped default: ON. When the drowned aurora spikes past a threshold, the seabed "
+                  + "enters a surge: an electrojet mast draws real power scaled to the spike, every Iliss "
+                  + "glows and the skyharps shimmer, and any colonist caught unroofed takes periodic "
+                  + "electrical shock hits — survivable if they get indoors promptly, genuinely dangerous "
+                  + "if they don't. Off: surges never happen — no power, no dressing, no risk; a built "
+                  + "electrojet mast simply sits idle.");
             }
 
             list.End();
