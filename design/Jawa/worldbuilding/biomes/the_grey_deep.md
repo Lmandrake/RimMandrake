@@ -94,6 +94,10 @@ swarms stay out of the Grey — anything that schools lives in the Twilight Deep
   waymark navigation through blindness, this world's lane-travel pattern
   (boughways, causeways, root-roads) taken underwater. Divers carve
   waymarks; a lost diver is someone who missed one pillar.
+  **RULED 2026-09-27 (sitting Q1): the pillar law is STORY ONLY.** The
+  pillars stand (built as formations) and the waymark fiction lives in
+  prose and descriptions, but navigation stays perfect — no waymark job,
+  no murk penalty, no lost-diver mechanic is owed.
 - **The crusted giant** — the endemic lineage (bred at the Miasma's crèches,
   returned here for its solitary centuries), **ill-tempered** (owner): brine
   that hurts, worn as a life condition. Centuries have **encased it in its
@@ -117,7 +121,15 @@ is the pocket map `RM_SeaDiveGenerator_GreySea` reading its cast off `RM_GreySea
 `<wildAnimals>`; the anchor cast ships as `RM_Reefback` (the crusted giant),
 `RM_Fessk` (**this IS the ossuary shrimp**), plus `RM_Otheska`, `RM_Sorruth`,
 `RM_Essarn`; nine `fishTypes`. The pillar exists in no def yet, though four
-descriptions name it.*
+descriptions name it.* *(Stale by 2026-09-27: the pillars now ship —
+`RM_SaltPillar` and its formation family, `GREYSEA_FLOOR_FORMATIONS_1`.)*
+
+- **[+2026-09-27] The catch register — RULED (sitting Q2): all 13 catch species
+  are KEPT, rebalanced RARE.** The fish population comes down and species move
+  into the uncommon/rare bands, so the sparseness is felt at the dock: the murk
+  hides plenty, but most days the line brings up little. The solitary law was
+  always about what moves in the water, not about deleting the larder — and no
+  later reviewer may "fix" the count downward; the breadth is ruled.
 
 - **[+2026-09-26] The sessile layer** — owner: *"Abundant shrimp, clam and mussel
   equivalents lurk among the formations, picking through what organic matter
@@ -146,8 +158,12 @@ descriptions name it.*
   same law.
 - **[+2026-09-26] Pool creatures** — owner: *"brine pools and the creatures near
   them have a unique defence: they squirt out a protein shower …"* — plural and
-  unnamed. The Elder is the extreme case (§4e). **Open:** which other creatures,
-  if any, carry the squirt; nothing is invented here until he names one.
+  unnamed. The Elder is the extreme case (§4e). **RULED 2026-09-27 (sitting
+  Q13): ONE new pool-sentinel species, designed fresh — the orruhmu**
+  (`RM_Orruhmu`, `grey_deep_pool_sentinel_2026-09-27.md`): a salt-dome-mimic
+  bellows-sac haunting the pool shores that squirts when crowded, the squirt
+  being a third trigger on the shipped encasement mechanism. The crystallising
+  set is now pools, chimneys, Elders and the orruhmu — closed.
 
 ## 4a. Flora — the crystalline idea [+2026-09-26]
 
@@ -233,8 +249,8 @@ Owner, 2026-09-26, six things in the order he gave them. Reference images by pat
   MEASURED 2026-09-26: RimCuisine is not in the mod list; the only cuisine mod is ours,
   `mandrake.rsw.cuisine`. ⇒ The salts are `RM_`-tier items of the Grey's own mod,
   consumed by our cuisine mod through `MayRequire`-guarded recipes; no hard dependency
-  either way. The palette matching the flora — pink, violet, amber, plus white — is a
-  BENCH inference, not a ruling.
+  either way. The palette — white, pink, violet, amber, one mineralogy with the flora —
+  was **RATIFIED by owner card 2026-09-27 (sitting Q16)**.
 - **Salt domes** — *"like mushrooms growing, strange shapes everywhere"* (image 03):
   rounded, capped, sometimes overhanging mounds — a second formation family, squat
   where the pillars are tall. *"Strange shapes everywhere"* is a density instruction:
@@ -333,10 +349,10 @@ every word below.** Digest, ruling-shaped:
   an observant diver leaves before it lands (this sheet's own principle: the tell that
   lets the observant survive). **RULED: "cripple nearby ships" is filed as its own
   engine check** (what a discharge can do to an Odyssey gravship is UNMEASURED) and does
-  not block the other three effects. **Open:** how the tell renders against ban 4 (the
-  only glow is the giant's mark) — the discharge is his word *"blinding"*, an event and
-  not dressing; the tell should read as motion and crackle along the lattice rather than
-  a standing light. His call if the art needs more than that.
+  not block the other three effects. **RULED 2026-09-27 (sitting Q14): the tell is
+  MOTION, CRACKLE and SOUND only** — arcing animation along the limbs, an audible
+  charge-whine, never a standing light; light exists only at the discharge instant
+  itself. Ban 4 keeps a perfect record until the one blinding moment.
 - **Its memory. RULED 2026-09-26: "the Reshapers" ARE the Rakata** — the Elders' own
   exonym for the people who terramanufactured the world (`ASHKARR_WORLD_DEFINITION.md`
   §3b, `ANCIENTS_AS_RAKATA_SPEC.md`). Recorded as THEIR word, not a new faction: they
@@ -371,8 +387,31 @@ every word below.** Digest, ruling-shaped:
   beautifully useless artifact whose significance only becomes apparent much later.*
   Tier (Q11a): the first three are canon IP and live in the `RSW_`/`RUT_` layer,
   patched onto the Elder's table with `MayRequire`; the last three ship `RM_`. One
-  example of each is a per-world flag. **Open:** the *"beautifully useless artifact"*
-  needs a plot home before it is a def, or it will be built as a trinket.
+  example of each is a per-world flag. **RULED 2026-09-27 (sitting Q15): the plot hook
+  is FILED** (`GREYSEA_USELESS_ARTIFACT_PLOT_1`) — the artifact is built when a plot
+  names it; the Elder ships with five treasures meanwhile.
+
+## 4f. The parked ship and the lamp — the clock and the mercy [+2026-09-27]
+
+The 2026-09-26 ship-crystallisation and light-attraction rulings (never a tomb; no
+heat-for-time trade; the sea pays you; the giant breaks the lamp, not the ship; lit
+cells yield more; the fessk watches from the rim) gained their numbers at the
+2026-09-27 sitting:
+
+- **The crust clock is the ladder (Q10):** cosmetic rime from about a day parked ·
+  the first salted door at two to three days · the whole-footprint jacket only after
+  something like a quadrum of neglect. An attended colony meets the first two stages
+  as texture; only a parked, forgotten hull becomes an exhibit.
+- **The pace takes WEATHER and BERTH multipliers, and nothing purchasable — ever
+  (Q11):** accretion runs faster under salt snow and at a berth near a chimney field
+  or brine channel (the super-brine gradient prices parking spots). Where you park
+  and what the sky is doing are reading-the-floor skills, not purchases; the ruling
+  that killed the fuel-for-time trade stays killed.
+- **The giant's lamp response is DETERMINISTIC and forgiving (Q12):** only
+  worklight-class light (never a torch), only after hours of steady burn,
+  telegraphed by the watcher at the rim and by fresh scrape-sign — and dowsing the
+  lamps always resets it. Light discipline is a learnable craft; deaths are the
+  player's own read of the tells.
 
 ## 5. Always true
 
@@ -522,10 +561,12 @@ words on each in the content doc §1):
 
 - **Implementation deferred by ruling** — no mechanics item filed: the
   design waits for the diving/underwater-play mods ("when they need it,"
-  owner 2026-09-07). When that need lands, the kit is: murk visibility,
-  pillar navigation + waymarks, brine-pool lethality + shore harvest,
-  scrape-sign and glow-mark telegraphy, statuary salvage (chisel jobs),
-  the shrimp's evasion AI.
+  owner 2026-09-07). When that need lands, the kit is: brine-pool
+  lethality + shore harvest, scrape-sign and glow-mark telegraphy,
+  statuary salvage (chisel jobs), the shrimp's evasion AI. *(Murk
+  visibility and pillar navigation + waymarks left this kit 2026-09-27:
+  sitting Q1 ruled the pillar law STORY ONLY — no waymark job, no murk
+  penalty, navigation stays perfect.)*
 - **The Twilight Deep** — the second sea's bottom is now owed its own
   sitting (the moldy sister: one mat shore-to-shore, a placid giant
   beneath — a wholly different underworld).
@@ -554,21 +595,21 @@ words on each in the content doc §1):
   clam, mussel) · `GREYSEA_SHORE_MUTATOR_SPECIFICS_1` (crust terrain + domes,
   no shore salt) · `GREYSEA_FLOOR_PASS_1`. Build order and the rough def count
   (~35–45, zero existing) are in the content doc §10.
-- **Roster** — `rosters/the_grey_sea.json` is stale against this sheet:
-  `"flora": []` is now false (seven forms commissioned) and `new_defs` owes rows
-  for the pillar (feature, not plant), chimneys, crystal mineral, pool grade,
-  Elders and the sessile layer. A sheet edit on his word at the next Grey sitting.
-- **`rakatan_legacy_index.md`** owes a row: the Elders' memory of the Reshapers'
-  arrival — the only eyewitness to the terramanufacture.
+- **Roster** — `rosters/the_grey_sea.json` was amended at the 2026-09-27 sitting
+  (its housekeeping row): the crystal seven + the ruled ten-understorey flora,
+  the sessile layer, the floor seven, the orruhmu, and the formation/pool/Elder
+  rows now stand in it.
+- **`rakatan_legacy_index.md`** carries the ruled row (added 2026-09-27): the
+  Elders' memory of the Reshapers' arrival — the only eyewitness to the
+  terramanufacture.
 
-### [+2026-09-26] Still open (his to answer; nothing invented meanwhile)
+### [+2026-09-27] The sitting closed the opens
 
-- Which pool creatures besides the Elder carry the crystallising squirt — his
-  sentence is plural and names none (§4).
-- How the Elder's charge tell renders against ban 4 (§4e).
-- A plot home for the *"beautifully useless artifact"* before it becomes a def
-  (§4e).
-- Whether the coloured salts share the flora's pink/violet/amber (a BENCH
-  inference, §4b).
-- The name and grade of the pool liquid (`LIQUID_TYPES_MOD_1`) and the jacket
-  mineral's defName — build questions, unassigned, never guessed here.
+All 17 agenda questions of `grey_deep_sitting_agenda_2026-09-27.md` were ruled
+2026-09-27 (recorded on `GREYSEA_FLOOR_PASS_1`): the four this sheet had carried
+as open are RULED where they land above — the pool sentinel is the orruhmu (Q13,
+§4), the Elder's tell is motion/crackle/sound only (Q14, §4e), the useless
+artifact's plot hook is filed (Q15, §4e), and the salt palette is ratified
+(Q16, §4b). Still genuinely open, build-side only: the name and grade of the
+pool liquid (`LIQUID_TYPES_MOD_1`) — the jacket mineral itself now ships
+(`RM_BrineJacket`, with `RM_BrineEncasement` as the pawn-holding jacket thing).
