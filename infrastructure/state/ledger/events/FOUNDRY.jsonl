@@ -992,3 +992,4 @@
 {"seat":"FOUNDRY","event":"start","id":"DEEP_SAND_WALKABLE_TERRAIN_1","ts":"2026-09-28T04:59:04Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-28T05:04:58Z"}
 {"seat":"FOUNDRY","event":"close","id":"DEEP_SAND_WALKABLE_TERRAIN_1","sha":"eb5a35214","ts":"2026-09-28T05:19:13Z"}
+{"seat":"FOUNDRY","event":"close","id":"BAROQUE_BIOMES_COMPOSE_1","sha":"d72017bd5","ts":"2026-09-28T05:20:30Z"}
