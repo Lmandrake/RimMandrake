@@ -30,8 +30,10 @@ and nowhere else; never restate a model choice outside it.
 > to keep rediscovering this.**"* · *"Don't worry about worldmap painting. Once we have
 > all the biomes in mods we will do the painting once and for all."*
 
-**The planet is painted ONCE, at the end, after every biome is its own mod.** Biome-to-tile
-assignment is redone wholesale at that pass.
+**The planet is painted ONCE, at the end, after every biome's content is mod-migrated.** Biome-to-tile
+assignment is redone wholesale at that pass. *(Packaging ruled 2026-09-27, §7 Q17 of
+`design/RimMandrake/biome_mod_architecture.md`: the biome mods merge NOW into ONE
+player-facing `RimMandrake.Biomes` mod with per-biome toggles — `BIOME_MOD_UNIFICATION_1`.)*
 
 - ✅ **A BiomeDef of ours carrying 0 of 21,872 tiles is the EXPECTED mid-migration state.**
   It is not a finding, not a defect, and not a reason to do, defer or escalate anything.
