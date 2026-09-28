@@ -20,7 +20,7 @@
 -->
 <Defs>
 
-  <WeatherDef MayRequire="mandrake.rm.environmentalhazards">
+  <WeatherDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_ForgeStill</defName>
     <label>forge still</label>
     <description>Long, still, baking heat under a haze of vent-steam. The mountain is between rains.</description>

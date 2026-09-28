@@ -27,7 +27,7 @@
 -->
 <Defs>
 
-  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+  <IncidentDef>
     <defName>RUT_FeverWood_MirrorBreak</defName>
     <label>mirror break</label>
     <targetTags>

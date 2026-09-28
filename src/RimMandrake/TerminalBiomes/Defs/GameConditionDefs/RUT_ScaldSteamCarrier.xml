@@ -38,7 +38,7 @@
 -->
 <Defs>
 
-  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+  <GameConditionDef>
     <defName>RUT_ScaldSteamCarrier</defName>
     <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
     <label>standing steam</label>

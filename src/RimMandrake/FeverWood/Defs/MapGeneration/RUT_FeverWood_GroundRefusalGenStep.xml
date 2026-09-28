@@ -24,7 +24,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef>
     <defName>RUT_GenStep_GroundRefusal</defName>
     <order>230</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_GroundRefusal" />

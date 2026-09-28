@@ -101,13 +101,13 @@
     <texture>Biomes/AB_MiasmicMangrove</texture>
     <diseaseMtbDays>15</diseaseMtbDays>
     <biomeMapConditions>
-      <li MayRequire="mandrake.rm.environmentalhazards">RUT_MiasmaWeatherLock</li>
+      <li>RUT_MiasmaWeatherLock</li>
     </biomeMapConditions>
     <modExtensions>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension">
+      <li Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension">
         <glowMultiplier>0.85</glowMultiplier>
       </li>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GradientAxisExtension">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GradientAxisExtension">
         <waterBands>
           <li>
             <max>0.34</max>
@@ -137,7 +137,7 @@
         <landRepaintKillPlant>RM_Ilbareen</landRepaintKillPlant>
         <landRepaintDeadPlant>RM_IlbareenDead</landRepaintDeadPlant>
       </li>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GradientSurgeExtension">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GradientSurgeExtension">
         <incidentDef>RUT_Surge</incidentDef>
         <baseMtbDays>5</baseMtbDays>
         <stormMtbMultiplier>0.25</stormMtbMultiplier>
@@ -146,7 +146,7 @@
         <recedeDaysRange>2~4</recedeDaysRange>
         <residualFraction>0.15</residualFraction>
       </li>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_StrandingPoolsExtension">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_StrandingPoolsExtension">
         <!-- SEA_BEASTS_TIER_RULING_1 (2026-09-25): RSW_SiltLampreyJuv's parent
              (silt lamprey) is one of the roster's 11 INVENTED sea beasts, so
              this row moved to the RM_ tier (RM_SeaBeasts_Invented.xml,
@@ -156,7 +156,7 @@
         <strandedSpawnList>
           <li MayRequire="mandrake.rsw.swbestiary">RSW_MeeJuv</li>
           <li MayRequire="mandrake.rsw.swbestiary">RSW_YobshrimpJuv</li>
-          <li MayRequire="mandrake.rm.terminalbiomes">RM_SiltLampreyJuv</li>
+          <li>RM_SiltLampreyJuv</li>
         </strandedSpawnList>
         <emptyWeight>40</emptyWeight>
         <smallWeight>50</smallWeight>
@@ -241,8 +241,8 @@
            and shipped here instead, so a franchise-free install still gets a real
            nursery. Parent adults (RM_RustNipper/RM_SiltLamprey) live in
            mandrake.rm.terminalbiomes (RM_SeaBeasts_Invented.xml). -->
-      <RM_RustNipperJuv MayRequire="mandrake.rm.terminalbiomes">0.25</RM_RustNipperJuv>
-      <RM_SiltLampreyJuv MayRequire="mandrake.rm.terminalbiomes">0.25</RM_SiltLampreyJuv>
+      <RM_RustNipperJuv>0.25</RM_RustNipperJuv>
+      <RM_SiltLampreyJuv>0.25</RM_SiltLampreyJuv>
       <!-- MIASMA_FAUNA_FLOOR_ROSTER_1 - the other three arthropod-floor scuttlers, native RM_ tier -->
       <RM_Karravel>3.5</RM_Karravel>  <!-- karravel - the carpet; the bulk of the floor, cheap protein for everything -->
       <RM_Karrimeth>0.8</RM_Karrimeth>  <!-- karrimeth - the mass; an event, not background, wildGroupSize carries the "carpet crossing" read -->

@@ -24,7 +24,7 @@
 -->
 <Defs>
 
-  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+  <IncidentDef>
     <defName>RUT_SteamDevilAppears</defName>
     <label>steam devil appears</label>
     <targetTags>

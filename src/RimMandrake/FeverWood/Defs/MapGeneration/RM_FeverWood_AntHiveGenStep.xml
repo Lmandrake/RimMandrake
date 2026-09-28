@@ -20,7 +20,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.feverwood">
+  <GenStepDef>
     <defName>RM_GenStep_AntHiveDungeon</defName>
     <order>236</order>
     <genStep Class="RimMandrake.FeverWood.RM_GenStep_AntHiveDungeon" />

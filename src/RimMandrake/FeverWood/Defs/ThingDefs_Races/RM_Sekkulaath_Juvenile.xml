@@ -15,8 +15,7 @@
   Star Wars. The campaign-layer swap ("Swap[s] the Dianoga in, replacing the
   Sekkulaath, when RimMandrake.StarWars is present", owner verbatim) is a
   PatchOperationReplace shipped from the OTHER side instead:
-  src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml,
-  MayRequire="mandrake.rm.feverwood", retargets
+  src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml,, retargets
   RM_CompProperties_CapturedSpecimen.occupantKindDefName on the tank's own
   ThingDef from RM_Sekkulaath_Juvenile to RSW_Dianoga — so this def never
   needs to know Star Wars content exists, and the swap is genuinely "swap,
@@ -24,7 +23,7 @@
 
   Body: "Snake" (vanilla Core BodyDef) — verified in-repo use, not guessed;
   every RM_/RSW_ small aquatic/serpentine creature already shipped in this
-  codebase uses it (RM_PropaneLakeFauna, RM_ScaldFauna, RM_TwilightSeaFauna,
+  codebase uses it (RM_TheChillFauna, RM_ScaldFauna, RM_TwilightSeaFauna,
   RM_GreySeaFauna, RM_StockedPoolFauna). Not tentacle-accurate at the
   body-part level, but body parts here only gate damage/health, not the
   sprite — the actual silhouette is the texture, flagged placeholder below.

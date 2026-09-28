@@ -38,7 +38,7 @@
 -->
 <Defs>
 
-  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+  <IncidentDef>
     <defName>RUT_TarPitBelch</defName>
     <label>tar pit belch</label>
     <targetTags>

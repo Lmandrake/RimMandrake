@@ -20,7 +20,7 @@
 -->
 <Defs>
 
-  <MapGeneratorDef MayRequire="mandrake.rm.terminalbiomes">
+  <MapGeneratorDef>
     <defName>RM_SeaDiveGenerator_TheScald</defName>
     <label>the Scald floor</label>
     <disableCallAid>true</disableCallAid>
@@ -51,7 +51,7 @@
     </genSteps>
   </MapGeneratorDef>
 
-  <MapGeneratorDef MayRequire="mandrake.rm.terminalbiomes">
+  <MapGeneratorDef>
     <defName>RM_SeaDiveGenerator_GreySea</defName>
     <label>the Grey Sea floor</label>
     <disableCallAid>true</disableCallAid>
@@ -103,7 +103,7 @@
     </genSteps>
   </MapGeneratorDef>
 
-  <MapGeneratorDef MayRequire="mandrake.rm.terminalbiomes">
+  <MapGeneratorDef>
     <defName>RM_SeaDiveGenerator_TwilightSea</defName>
     <label>the Twilight Sea floor</label>
     <disableCallAid>true</disableCallAid>
@@ -138,7 +138,7 @@
     </genSteps>
   </MapGeneratorDef>
 
-  <MapGeneratorDef MayRequire="mandrake.rm.terminalbiomes">
+  <MapGeneratorDef>
     <defName>RM_SeaDiveGenerator_TheChill</defName>
     <label>the Chill floor</label>
     <disableCallAid>true</disableCallAid>

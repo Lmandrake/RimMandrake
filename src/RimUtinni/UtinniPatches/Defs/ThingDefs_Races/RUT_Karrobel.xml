@@ -158,19 +158,19 @@
       <soundEating>Insectoid_Eat</soundEating>
     </race>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas" MayRequire="mandrake.rm.biomes">
         <gatherIntervalDays>3</gatherIntervalDays>
         <gatherAmount>8</gatherAmount>
         <gatherDef>RUT_DeltaLoam</gatherDef>
         <fullnessLabelKey>RUT_DeltaLoamCastings</fullnessLabelKey>
       </li>
-      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder" MayRequire="mandrake.rm.biomes">
         <pawnSpawnIntervalDays>1.5~3</pawnSpawnIntervalDays>
         <pawnSpawnRadius>3</pawnSpawnRadius>
       </li>
     </comps>
     <modExtensions>
-      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension" MayRequire="mandrake.rm.biomes">
         <populationSoftCap>40</populationSoftCap>
         <populationHardCap>100</populationHardCap>
         <populationGroupTag>RM_MiasmaScuttlers</populationGroupTag>

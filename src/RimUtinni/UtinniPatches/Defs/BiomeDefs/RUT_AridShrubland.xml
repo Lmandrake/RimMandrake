@@ -209,7 +209,7 @@
       <RG_Plant_CreepStern>0.2</RG_Plant_CreepStern>  <!-- creep stern -->
       <RG_Plant_CrimsonCushion>0.2</RG_Plant_CrimsonCushion>  <!-- crimson cushion -->
       <RG_Plant_Dervish>0.2</RG_Plant_Dervish>  <!-- dervish -->
-      <RM_VenomvineThicket MayRequire="mandrake.rm.environmentalhazards">0.15</RM_VenomvineThicket>  <!-- the fortress flora, §4 — VENOMVINE_FORTRESS_PASSABILITY_1. Lowest weight in this list on purpose and it is NOT a density dial: §4 says thickets "sometimes manage to colonize" and §6.6 bans dense flora here with this as the sole carve-out, so what must stay rare is the NUMBER of stands. How solid each one is comes from wildClusterRadius 8 / wildClusterWeight 25 on the def, not from this weight — raising this scatters more islands rather than thickening the ones there are. -->
+      <RM_VenomvineThicket MayRequire="mandrake.rm.biomes">0.15</RM_VenomvineThicket>  <!-- the fortress flora, §4 — VENOMVINE_FORTRESS_PASSABILITY_1. Lowest weight in this list on purpose and it is NOT a density dial: §4 says thickets "sometimes manage to colonize" and §6.6 bans dense flora here with this as the sole carve-out, so what must stay rare is the NUMBER of stands. How solid each one is comes from wildClusterRadius 8 / wildClusterWeight 25 on the def, not from this weight — raising this scatters more islands rather than thickening the ones there are. -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
   </BiomeDef>

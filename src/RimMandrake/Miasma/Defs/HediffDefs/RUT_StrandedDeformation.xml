@@ -65,7 +65,7 @@
       </li>
     </stages>
     <comps>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_HediffCompProperties_LocatableCall">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HediffCompProperties_LocatableCall">
         <callSound>Pawn_Frog_Call</callSound>
         <callIntervalTicksRange>900~1500</callIntervalTicksRange>
       </li>

@@ -28,7 +28,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="AnimalThingBase" MayRequire="mandrake.rm.creaturebehaviors">
+  <ThingDef ParentName="AnimalThingBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_Placeholder_GreentideLungerRace</defName>
     <label>lunger (placeholder)</label>
     <description>PLACEHOLDER — a vanilla alligator standing in for the real Greentide Lunger (roster pass owed). Submerges and waits, invisible, until something wanders into range.</description>

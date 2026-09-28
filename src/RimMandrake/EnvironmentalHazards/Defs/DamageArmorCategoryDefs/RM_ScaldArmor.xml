@@ -27,7 +27,7 @@
 -->
 <Defs>
 
-  <DamageArmorCategoryDef MayRequire="mandrake.rm.environmentalhazards">
+  <DamageArmorCategoryDef>
     <defName>RM_ScaldArmor</defName>
     <armorRatingStat>RM_ArmorRating_Scald</armorRatingStat>
   </DamageArmorCategoryDef>

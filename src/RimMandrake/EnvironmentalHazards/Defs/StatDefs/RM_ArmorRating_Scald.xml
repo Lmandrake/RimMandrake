@@ -20,7 +20,7 @@
 -->
 <Defs>
 
-  <StatDef ParentName="ArmorRatingBase" MayRequire="mandrake.rm.environmentalhazards">
+  <StatDef ParentName="ArmorRatingBase">
     <defName>RM_ArmorRating_Scald</defName>
     <label>armor - scald</label>
     <labelForFullStatList>Armor - Scald (armor stat)</labelForFullStatList>

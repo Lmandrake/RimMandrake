@@ -95,7 +95,7 @@
       <wildClusterWeight>22</wildClusterWeight>
     </plant>
     <modExtensions>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_FellableTreeExtension">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_FellableTreeExtension">
         <fellLength>10</fellLength>
         <fallDamageRange>60~100</fallDamageRange>
         <heartRadius>1</heartRadius>
@@ -346,7 +346,7 @@
       <wildClusterWeight>14</wildClusterWeight>
     </plant>
     <comps>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.CompProperties_CrackFall">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_CrackFall">
         <mtbDaysAtFullGrowth>3</mtbDaysAtFullGrowth>
         <minGrowthFraction>0.6</minGrowthFraction>
         <fallDelayTicksRange>200~600</fallDelayTicksRange>

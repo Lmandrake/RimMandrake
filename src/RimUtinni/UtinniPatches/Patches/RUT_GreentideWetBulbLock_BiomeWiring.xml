@@ -33,7 +33,7 @@
 
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>RimMandrake: Environmental Hazards Kit</li>
+      <li>RimMandrake: Baroque Biomes</li>
     </mods>
     <match Class="PatchOperationConditional">
       <xpath>/Defs/BiomeDef[defName="RUT_Greentide"]/biomeMapConditions</xpath>

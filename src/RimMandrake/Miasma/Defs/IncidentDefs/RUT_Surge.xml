@@ -58,7 +58,7 @@
 -->
 <Defs>
 
-  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+  <IncidentDef>
     <defName>RUT_Surge</defName>
     <label>the breath-tide surge</label>
     <targetTags>

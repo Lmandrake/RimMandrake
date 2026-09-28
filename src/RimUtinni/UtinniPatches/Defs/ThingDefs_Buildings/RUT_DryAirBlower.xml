@@ -20,7 +20,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_DryAirBlower</defName>
     <label>dry-air blower</label>
     <description>A fueled doorway machine that gushes hot, bone-dry air downward across its threshold. Run continuously, it holds the room behind it dry — the wet-bulb clock stops indoors — and the shimmer of heat off its vents sends anything wild-skinned looking for another way round. Fire is not the tool here; dry heat is the one alien thing the green has no answer for. Starve it of fuel and the room notices within hours.</description>

@@ -24,7 +24,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef>
     <defName>RUT_GenStep_GradientAxis</defName>
     <order>225</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_GradientAxis" />

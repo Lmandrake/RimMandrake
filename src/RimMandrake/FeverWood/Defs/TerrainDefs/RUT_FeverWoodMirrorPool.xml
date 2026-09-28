@@ -50,7 +50,7 @@
 -->
 <Defs>
 
-  <TerrainDef ParentName="WaterDeepBase" MayRequire="mandrake.rm.environmentalhazards">
+  <TerrainDef ParentName="WaterDeepBase">
     <defName>RUT_FeverWoodMirrorPool</defName>
     <label>black mirror pool</label>
     <description>Still, black water, deep and unrippled. Big animals wander in to drink and are sometimes simply gone. Nothing sane touches it, and nothing explains why.</description>

@@ -61,7 +61,7 @@
            minSeverityToStagger 0.6 lines up with the "staggering" stage
            below on purpose, so the visible label and the forced walk start
            in the same moment. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_ShadeStagger" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_ShadeStagger">
         <minSeverityToStagger>0.6</minSeverityToStagger>
         <steerIntervalTicks>250</steerIntervalTicks>
         <staggerRadius>22</staggerRadius>

@@ -50,7 +50,7 @@
     <!-- SEA_FLOOR_AND_CATCH_PASS_1: makes the land tiles around the Scald read
          as coastal and cut a real shore, with the Scald's own water. -->
     <modExtensions>
-      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores">
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension">
         <deepTerrain>RUT_ScaldWaterOceanDeep</deepTerrain>
         <shallowTerrain>RUT_ScaldWaterOceanShallow</shallowTerrain>
       </li>

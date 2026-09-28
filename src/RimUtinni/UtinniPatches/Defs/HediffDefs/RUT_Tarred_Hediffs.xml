@@ -55,7 +55,7 @@
     <isBad>true</isBad>
     <scenarioCanAdd>false</scenarioCanAdd>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_CarriedFilthExposure" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_CarriedFilthExposure" MayRequire="mandrake.rm.biomes">
         <filthDef>RM_Filth_Tar</filthDef>
         <!-- INVENTED-BUILD tuning: ~1.1 in-game days from fresh contact to the
              top stage while continuously re-exposed; ~1.7 days to heal off

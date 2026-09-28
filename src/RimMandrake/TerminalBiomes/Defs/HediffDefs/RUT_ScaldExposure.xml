@@ -51,7 +51,7 @@
 -->
 <Defs>
 
-  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+  <HediffDef>
     <defName>RUT_ScaldExposure</defName>
     <label>scald exposure</label>
     <description>Live steam, breathed and worn. The Scald's sky is the lake's own breath and it is clean — which does not make it safe: it is water at the boil, standing over everything, and skin and lungs take it the way they take any steam. Under a roof, or on one of the rare still days, it starts to come off.</description>

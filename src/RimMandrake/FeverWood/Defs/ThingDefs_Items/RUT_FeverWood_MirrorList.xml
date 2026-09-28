@@ -53,7 +53,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="ResourceBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="ResourceBase">
     <defName>RUT_FeverWood_MirrorList</defName>
     <label>mirror list</label>
     <description>A traders' ledger of which black pools have moved lately — ripples, silences, the mirrors that lied about where they were. Reading it marks the agitated pools on your map for a while. The list is a snapshot; the water keeps its own schedule.</description>

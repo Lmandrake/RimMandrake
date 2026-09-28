@@ -27,7 +27,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_ScarlandsGraveWardScatter</defName>
     <order>960</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RUT_GenStep_ScatterSentinelGraveWards">

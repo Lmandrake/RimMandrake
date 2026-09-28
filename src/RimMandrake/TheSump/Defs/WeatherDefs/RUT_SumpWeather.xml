@@ -41,7 +41,7 @@
 -->
 <Defs>
 
-  <WeatherDef MayRequire="mandrake.rm.environmentalhazards">
+  <WeatherDef>
     <defName>RUT_SumpWeather</defName>
     <label>permanent dusk</label>
     <description>The sun sits just below the horizon here and never rises further. Amber light along the edge of the world, cold still air, black glass and black pools under it. It does not rain.</description>

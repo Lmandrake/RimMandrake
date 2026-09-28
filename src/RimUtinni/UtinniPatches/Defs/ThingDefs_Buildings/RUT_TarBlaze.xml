@@ -76,7 +76,7 @@
 -->
 <Defs>
 
-  <ThingDef MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_TarBlaze</defName>
     <label>tar blaze</label>
     <description>A cell of poured tar, burning. Blinding smoke pours off it; nothing crosses while it burns.</description>

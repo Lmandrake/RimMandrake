@@ -20,7 +20,7 @@
     itself still rides BIOME_FAUNA_ASSIGNMENT_SITTING_1, out of this item's scope.
   -->
 
-  <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality" MayRequire="mandrake.rm.therot">
+  <ThingDef ParentName="BaseMeleeWeapon_Sharp_Quality" MayRequire="mandrake.rm.biomes">
     <defName>RUT_FungalMantisScythe</defName>
     <label>fungal mantis scythe</label>
     <description>A chitinous weapon made from the claws of a giant mantis. It excels at slashing at enemies while injecting two types of fungal spores into them.</description>

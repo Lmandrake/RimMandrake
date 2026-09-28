@@ -22,7 +22,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
       <value>
-        <li MayRequire="mandrake.rm.feverwood">RM_GenStep_AntHiveDungeon</li>
+        <li>RM_GenStep_AntHiveDungeon</li>
       </value>
     </match>
   </Operation>

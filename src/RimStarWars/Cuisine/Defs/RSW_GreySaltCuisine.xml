@@ -52,7 +52,7 @@
 
   <!-- ===================== the thought ===================== -->
 
-  <ThoughtDef MayRequire="mandrake.rm.terminalbiomes">
+  <ThoughtDef MayRequire="mandrake.rm.biomes">
     <defName>RSW_AteCrystalSaltCured</defName>
     <durationDays>1</durationDays>
     <stackLimit>3</stackLimit>
@@ -67,7 +67,7 @@
 
   <!-- ===================== the rations ===================== -->
 
-  <ThingDef Name="RSW_SaltCuredRationBase" ParentName="MealBase" Abstract="True" MayRequire="mandrake.rm.terminalbiomes">
+  <ThingDef Name="RSW_SaltCuredRationBase" ParentName="MealBase" Abstract="True" MayRequire="mandrake.rm.biomes">
     <graphicData>
       <texPath>Things/Item/Meal/RSW_SaltCured/RSW_SaltCured</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
@@ -86,7 +86,7 @@
     </ingestible>
   </ThingDef>
 
-  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.terminalbiomes">
+  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.biomes">
     <defName>RSW_SaltCuredRation_White</defName>
     <label>white-cured ration</label>
     <description>Food packed in flaked white crystal salt and left to give up its water. It keeps indefinitely, it travels, and it tastes clean in a way nothing cured in coarse salt ever does. The cheapest of the four, which on this planet still means somebody went to the bottom of the Grey Sea for it.</description>
@@ -98,7 +98,7 @@
     </statBases>
   </ThingDef>
 
-  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.terminalbiomes">
+  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.biomes">
     <defName>RSW_SaltCuredRation_Pink</defName>
     <label>pink-cured ration</label>
     <description>Cured in pink crystal salt, which colours whatever it touches and leaves an iron note behind the salt. It comes out of the crock faintly rose all the way through, which people either find appetising or do not.</description>
@@ -110,7 +110,7 @@
     </statBases>
   </ThingDef>
 
-  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.terminalbiomes">
+  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.biomes">
     <defName>RSW_SaltCuredRation_Violet</defName>
     <label>violet-cured ration</label>
     <description>Cured in violet crystal salt from the deep crystals at the pool margins — the rarest salt on the planet, traded against silver by weight, and here it is on a plate. Sharp, mineral, and slightly absurd. Served to people you are trying to impress or trying to owe something to.</description>
@@ -123,7 +123,7 @@
     </statBases>
   </ThingDef>
 
-  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.terminalbiomes">
+  <ThingDef ParentName="RSW_SaltCuredRationBase" MayRequire="mandrake.rm.biomes">
     <defName>RSW_SaltCuredRation_Amber</defName>
     <label>amber-cured ration</label>
     <description>Cured in amber crystal salt off the chimney fields, which carries whatever the vents dissolved out of the rock beneath. Smoky and warm, and the only one of the four that tastes of a place rather than of salt.</description>
@@ -149,7 +149,7 @@
        meaning anything.
   -->
 
-  <RecipeDef Name="RSW_SaltCureBase" ParentName="CookMealBase" Abstract="True" MayRequire="mandrake.rm.terminalbiomes">
+  <RecipeDef Name="RSW_SaltCureBase" ParentName="CookMealBase" Abstract="True" MayRequire="mandrake.rm.biomes">
     <workSpeedStat>CookSpeed</workSpeedStat>
     <requiredGiverWorkType>Cooking</requiredGiverWorkType>
     <effectWorking>Cook</effectWorking>
@@ -163,7 +163,7 @@
     </recipeUsers>
   </RecipeDef>
 
-  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.terminalbiomes">
+  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.biomes">
     <defName>RSW_CureWithWhiteSalt</defName>
     <label>cure ration in white crystal salt</label>
     <description>Pack raw food in white crystal salt from the Grey Sea floor and draw the water out of it.</description>
@@ -202,7 +202,7 @@
     </products>
   </RecipeDef>
 
-  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.terminalbiomes">
+  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.biomes">
     <defName>RSW_CureWithPinkSalt</defName>
     <label>cure ration in pink crystal salt</label>
     <description>Pack raw food in pink crystal salt from the Grey Sea floor and draw the water out of it.</description>
@@ -241,7 +241,7 @@
     </products>
   </RecipeDef>
 
-  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.terminalbiomes">
+  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.biomes">
     <defName>RSW_CureWithVioletSalt</defName>
     <label>cure ration in violet crystal salt</label>
     <description>Pack raw food in violet crystal salt — the rarest the Grey Sea gives up — and draw the water out of it.</description>
@@ -280,7 +280,7 @@
     </products>
   </RecipeDef>
 
-  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.terminalbiomes">
+  <RecipeDef ParentName="RSW_SaltCureBase" MayRequire="mandrake.rm.biomes">
     <defName>RSW_CureWithAmberSalt</defName>
     <label>cure ration in amber crystal salt</label>
     <description>Pack raw food in amber crystal salt off the Grey Sea's chimney fields and draw the water out of it.</description>

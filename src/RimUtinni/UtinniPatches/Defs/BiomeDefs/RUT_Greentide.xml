@@ -145,13 +145,13 @@
            (false): 0.75 is dim overcast, not true darkness, so a
            sunlight-gated effect (e.g. Biotech sun-sensitivity) should still
            read this biome as sunlit. -->
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.BiomeGlowMultiplierExtension">
         <glowMultiplier>0.75</glowMultiplier>
       </li>
       <!-- M12: the Greatbole. Counts/radius/spacing are all kit-spec
            INVENTED numbers; roofDef left unset so the GenStep's own default
            (RoofDefOf.RoofRockThick) applies. -->
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
         <heartwoodThing>RUT_GreatboleHeartwood</heartwoodThing>
         <coreMarkerThing>RUT_GreatboleCore</coreMarkerThing>
         <boleCountRange>1~2</boleCountRange>
@@ -174,7 +174,7 @@
       <li MayRequire="mandrake.rm.environmentalhazards,mandrake.rm.greentide" Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
         <causewayTerrain>RUT_RootCauseway</causewayTerrain>
         <basinTerrains>
-          <li MayRequire="mandrake.rm.greentide">RM_GreentideChurnmud</li>
+          <li MayRequire="mandrake.rm.biomes">RM_GreentideChurnmud</li>
         </basinTerrains>
         <pathsPerAnchorRange>3~6</pathsPerAnchorRange>
         <laneWidthRange>1~2</laneWidthRange>

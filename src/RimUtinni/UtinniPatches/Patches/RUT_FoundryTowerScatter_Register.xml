@@ -22,7 +22,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
       <value>
-        <li MayRequire="mandrake.rm.environmentalhazards">RUT_FoundryTowerScatter</li>
+        <li MayRequire="mandrake.rm.biomes">RUT_FoundryTowerScatter</li>
       </value>
     </match>
   </Operation>

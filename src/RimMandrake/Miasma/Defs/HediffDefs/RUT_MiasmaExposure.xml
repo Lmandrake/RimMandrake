@@ -41,7 +41,7 @@
 -->
 <Defs>
 
-  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+  <HediffDef>
     <defName>RUT_MiasmaExposure</defName>
     <label>miasma exposure</label>
     <description>A low-grade accumulation of the miasma's breath - fermentation gases and worse, settling in the lungs and blood. Mild on its own; it fades fast once you're out of the haze or under a roof.</description>

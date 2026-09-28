@@ -54,7 +54,7 @@
 -->
 <Defs>
 
-  <MapGeneratorDef MayRequire="mandrake.rm.environmentalhazards">
+  <MapGeneratorDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_FoundryFloor</defName>
     <label>foundry tower floor</label>
     <ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>

@@ -34,7 +34,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="BuildingBase">
     <defName>RUT_MoatFusePost</defName>
     <label>moat fuse post</label>
     <description>A hand-cranked igniter staked at the edge of a poured tar moat. One pull sends fire racing down every connected cell of tar — poured or natural — in a staggered front.</description>

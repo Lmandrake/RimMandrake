@@ -35,7 +35,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_GaslightLamp</defName>
     <label>gaslight lamp</label>
     <description>A small brass-and-glass fixture that burns a mix of tar-rendered Sumpgas in a warble-flamed wick. No two flickers land the same color twice — the light dances warm through amber, orange and rose and back, throwing shifting shadows nothing else on the Sump can match. Colonists linger near it without quite knowing why.</description>

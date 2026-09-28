@@ -28,7 +28,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_ContagionRingScatter</defName>
     <order>968</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_EdgeBandFilth">

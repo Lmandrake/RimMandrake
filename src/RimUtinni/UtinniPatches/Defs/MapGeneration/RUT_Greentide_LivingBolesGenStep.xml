@@ -24,7 +24,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_GenStep_LivingBoles</defName>
     <order>222</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_LivingBoles" />

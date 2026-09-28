@@ -22,7 +22,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef>
     <defName>RUT_GenStep_ScatterPools</defName>
     <order>226</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_ScatterPools" />

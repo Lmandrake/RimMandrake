@@ -61,7 +61,7 @@
        ⛔ Listed only on RM_SeaDiveGenerator_GreySea, and the step refuses
        any map whose biome is not RM_GreySea. The floor terrain tag is
        shared by all four seas, so scope cannot come from the terrain. -->
-  <GenStepDef MayRequire="mandrake.rm.terminalbiomes">
+  <GenStepDef>
     <defName>RM_GreySeaFloorDressing</defName>
     <order>880</order>
     <genStep Class="RimMandrake.DivingInteraction.GenStep_GreySeaFloorDressing" />

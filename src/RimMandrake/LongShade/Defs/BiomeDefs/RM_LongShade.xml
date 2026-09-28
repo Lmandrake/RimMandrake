@@ -204,9 +204,9 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <RM_Leachmoss MayRequire="mandrake.rm.environmentalhazards">1.5</RM_Leachmoss>  <!-- leachmoss: the fertile ground's fastest claimant, DESERT_LEACHMOSS_BUILD_1. -->
+      <RM_Leachmoss>1.5</RM_Leachmoss>  <!-- leachmoss: the fertile ground's fastest claimant, DESERT_LEACHMOSS_BUILD_1. -->
       <RM_Vorrel>0.1</RM_Vorrel>  <!-- the cycle plant, moved+renamed from RUT_Vorrel per §7 Q8, this mod's own def now, no MayRequire needed. Working name, see RM_Vorrel.xml's own header. -->
-      <RM_Venomvine MayRequire="mandrake.rm.environmentalhazards">0.25</RM_Venomvine>  <!-- the vine that holds territory by injury, VENOMVINE_CONTACT_VENOM_BUILD_1. -->
+      <RM_Venomvine>0.25</RM_Venomvine>  <!-- the vine that holds territory by injury, VENOMVINE_CONTACT_VENOM_BUILD_1. -->
       <RM_Ultracactus>0.8</RM_Ultracactus>  <!-- LONGSHADE_RULED_CONTENT_1 Q2: moved inline, weight carried over verbatim from the Utinni patch's Add block. "The ultracactus is not canon, I made it." -->
       <RM_Dewfringe>0.4</RM_Dewfringe>  <!-- LONGSHADE_RULED_CONTENT_1 Q6: new shade-boundary rim plant, growth gated to the rim by RM_Patch_DewfringeWildSpawnGate.cs — this weight only matters where the C# gate already says yes. -->
       <!-- The 5 remaining RSW_-tier rows (SW_FAUNA_NEVER_IN_RM_TIER_1) ride

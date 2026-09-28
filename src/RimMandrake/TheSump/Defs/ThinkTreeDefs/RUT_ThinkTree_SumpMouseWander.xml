@@ -37,7 +37,7 @@
 -->
 <Defs>
 
-  <ThinkTreeDef MayRequire="mandrake.rm.environmentalhazards">
+  <ThinkTreeDef>
     <defName>RUT_ThinkTree_SumpMouseWander</defName>
     <insertTag>Animal_PreMain</insertTag>
     <thinkRoot Class="ThinkNode_Priority">

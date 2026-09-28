@@ -50,7 +50,7 @@
     <match Class="PatchOperationAddModExtension">
       <xpath>/Defs/ThingDef[defName="AB_MangroveTree"]</xpath>
       <value>
-        <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.biomes">
           <pollinatorRace>RUT_FeverSwarm</pollinatorRace>
         </li>
       </value>
@@ -62,7 +62,7 @@
     <match Class="PatchOperationAddModExtension">
       <xpath>/Defs/ThingDef[defName="AB_ParasiticMangrove"]</xpath>
       <value>
-        <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.biomes">
           <pollinatorRace>RUT_FeverSwarm</pollinatorRace>
         </li>
       </value>
@@ -78,7 +78,7 @@
     <match Class="PatchOperationAddModExtension">
       <xpath>/Defs/ThingDef[defName="RM_Thessamor"]</xpath>
       <value>
-        <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.biomes">
           <pollinatorRace>RUT_FeverSwarm</pollinatorRace>
         </li>
       </value>
@@ -90,7 +90,7 @@
     <match Class="PatchOperationAddModExtension">
       <xpath>/Defs/ThingDef[defName="RM_Quennath"]</xpath>
       <value>
-        <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.biomes">
           <pollinatorRace>RUT_FeverSwarm</pollinatorRace>
         </li>
       </value>

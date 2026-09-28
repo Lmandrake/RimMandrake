@@ -117,7 +117,7 @@
       <RM_SheenMist>10</RM_SheenMist>
     </baseWeatherCommonalities>
     <biomeMapConditions>
-      <li MayRequire="mandrake.rm.environmentalhazards">RM_SheenExposureLock</li>
+      <li>RM_SheenExposureLock</li>
     </biomeMapConditions>
     <wildAnimals>
       <AA_Swarmling MayRequire="sarg.alphaanimals">0.3</AA_Swarmling>  <!-- swarmling - hybrid-vermin -->
@@ -178,8 +178,8 @@
     </wildPlants>
     <wildPlantRegrowDays>25</wildPlantRegrowDays>
     <modExtensions>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_AcceleratedRotExtension" />
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_WarmGroundExtension">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_AcceleratedRotExtension" />
+      <li Class="RimMandrake.EnvironmentalHazards.RM_WarmGroundExtension">
         <warmTerrains>
           <li>RM_TheRotGrass</li>
           <li>RM_TheRotSoilRich</li>

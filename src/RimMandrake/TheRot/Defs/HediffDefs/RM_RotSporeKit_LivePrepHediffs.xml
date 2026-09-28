@@ -8,8 +8,7 @@
     MayRequire ON EVERY CROSS-MOD <li>, never on a def or a patch Operation
     (kit law; measured 2026-09-17 that MayRequire on an Operation is INERT
     and killed a cold load). Every comp whose Class lives in
-    mandrake.rm.environmentalhazards carries
-    MayRequire="mandrake.rm.environmentalhazards" on the <li> itself — the
+    mandrake.rm.environmentalhazards carries on the <li> itself — the
     same shape RM_RotSporeKit_SheenHediffs.xml already ships. Without that
     mod the comp drops and the hediff survives as an inert marker, which is
     the correct degradation; an ungated <li Class="..."> would have thrown
@@ -73,7 +72,7 @@
     <maxSeverity>1</maxSeverity>
     <initialSeverity>1</initialSeverity>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_HediffCompProperties_HealPermanentWounds" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HediffCompProperties_HealPermanentWounds">
         <daysBetweenHeals>1</daysBetweenHeals>
         <healOnGain>true</healOnGain>
       </li>
@@ -200,7 +199,7 @@
     <initialSeverity>0.01</initialSeverity>
     <scenarioCanAdd>true</scenarioCanAdd>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_HediffCompProperties_SunlightScald" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HediffCompProperties_SunlightScald">
         <severityPerDayInSunlight>1.0</severityPerDayInSunlight>
         <severityPerDayShaded>-2.0</severityPerDayShaded>
         <maxSeverity>1.0</maxSeverity>

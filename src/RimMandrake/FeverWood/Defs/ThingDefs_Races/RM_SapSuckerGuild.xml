@@ -160,7 +160,7 @@
       <MarketValue>140</MarketValue>
     </statBases>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableCalmGated" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableCalmGated">
         <gatherDef>RM_ThornbugNectar</gatherDef>
       </li>
     </comps>
@@ -267,7 +267,7 @@
     <comps>
       <!-- Reused, not new — see file header. INVENTED radius/cooldown;
            no responder is tagged onto any Fever Wood race yet. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_PlantAlarm" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_PlantAlarm">
         <radius>24</radius>
         <tag>FeverWoodCrown</tag>
         <cooldownTicks>2500</cooldownTicks>
@@ -338,7 +338,7 @@
            calmFloor/fearRadius keep the shared class's own already-ruled
            defaults (card 3, ~40 cells); only gatherDef/amount/interval are
            set per-species here. -->
-      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableCalmGated" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableCalmGated">
         <gatherDef>RM_DrommathSap</gatherDef>
         <gatherAmount>10</gatherAmount>
         <gatherIntervalDays>3</gatherIntervalDays>

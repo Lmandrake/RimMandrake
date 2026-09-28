@@ -18,7 +18,7 @@
 -->
 <Defs>
 
-  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+  <HediffDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_WetBulbOverwhelm</defName>
     <label>wet-bulb overwhelm</label>
     <description>The air here holds more heat than the body can shed — sweat does nothing when the air itself is already saturated. Shade and a roof do not help; only sealed or wicking gear, or a truly dried room, slow it. Left unchecked, it collapses the victim and, if exposure continues, kills.</description>

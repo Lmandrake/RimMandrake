@@ -62,7 +62,7 @@
 -->
 <Defs>
 
-  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+  <GameConditionDef>
     <defName>RUT_ScaldSteamLock</defName>
     <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_WeatherPulse</conditionClass>
     <label>the boil's breath</label>

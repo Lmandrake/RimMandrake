@@ -56,7 +56,7 @@
     </statBases>
     <building>
       <isResourceRock>false</isResourceRock>
-      <mineableThing MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</mineableThing>
+      <mineableThing>RM_RawSalt</mineableThing>
       <mineableYield>6</mineableYield>
       <mineableYieldWasteable>false</mineableYieldWasteable>
       <mineableScatterCommonality>0</mineableScatterCommonality>

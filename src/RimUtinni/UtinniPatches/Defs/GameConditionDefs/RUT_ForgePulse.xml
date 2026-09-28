@@ -33,7 +33,7 @@
 -->
 <Defs>
 
-  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+  <GameConditionDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_ForgePulse</defName>
     <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_WeatherPulse</conditionClass>
     <label>the mountain's breath</label>

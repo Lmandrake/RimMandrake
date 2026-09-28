@@ -44,7 +44,7 @@
       </li>
       <!-- GREENTIDE_YEARNING_FRUIT_FILTH_1: fires once, when severity decays
            to 0 and the hediff is naturally removed. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_SeedPassage" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_SeedPassage" MayRequire="mandrake.rm.biomes">
         <filthDef>Filth_AnimalFilth</filthDef>
         <filthCount>1</filthCount>
         <germinateThingDef>RUT_YearningFruit</germinateThingDef>

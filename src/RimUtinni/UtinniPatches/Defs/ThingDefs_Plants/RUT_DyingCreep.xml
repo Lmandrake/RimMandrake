@@ -48,7 +48,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="PlantBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="PlantBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_DyingCreep</defName>
     <label>dying creep</label>
     <description>A tongue of red Contagion-creep, pushed up the slope. It will not hold this ground — within hours it blackens and dies, leaving only a dead mat behind.</description>

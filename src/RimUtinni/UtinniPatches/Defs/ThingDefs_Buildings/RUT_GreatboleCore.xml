@@ -46,7 +46,7 @@
       <deconstructible>false</deconstructible>
     </building>
     <comps>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker">
         <regrowthThing>RUT_GreatboleHeartwood</regrowthThing>
         <sealantTerrain>RUT_ToxinSealant</sealantTerrain>
         <regrowDaysRange>3~6</regrowDaysRange>

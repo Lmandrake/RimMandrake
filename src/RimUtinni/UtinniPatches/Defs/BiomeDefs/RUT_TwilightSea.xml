@@ -90,7 +90,7 @@
          <li> is load-bearing: an unresolvable extension class discards the whole
          BiomeDef silently. -->
     <modExtensions>
-      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores" />
+      <li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.biomes" />
     </modExtensions>
     <!-- WILD ANIMALS, landed 2026-09-09 by BIOME_FAUNA_ASSIGNMENT_SITTING_1 from
          design/Jawa/worldbuilding/biomes/rosters/the_twilight_sea.json. This

@@ -7,7 +7,7 @@
      INVENTED; the spec gives no cadence, only "a random event." -->
 <Defs>
 
-  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+  <IncidentDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_GreatboleFruitfall</defName>
     <label>greatbole fruitfall</label>
     <targetTags>

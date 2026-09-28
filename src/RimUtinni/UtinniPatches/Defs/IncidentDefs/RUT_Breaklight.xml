@@ -44,7 +44,7 @@
 -->
 <Defs>
 
-  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+  <IncidentDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_Breaklight</defName>
     <label>Breaklight</label>
     <targetTags>

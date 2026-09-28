@@ -49,7 +49,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.environmentalhazards">
+  <ThingDef ParentName="BuildingBase">
     <defName>RUT_SteamCatch</defName>
     <label>steam-catch condenser</label>
     <description>A condenser locked to a scald vent, drinking the clean breath of the boil and yielding distilled water for free — so long as you hold the ground and pay the shore's burns to build there.</description>

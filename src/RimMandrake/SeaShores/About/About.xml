@@ -13,7 +13,7 @@ The problem this solves is engine-shaped and total. In 1.6 a coastline is the `C
 This mod makes a sea opt in with one modExtension on its BiomeDef:
 
   &lt;modExtensions&gt;
-    &lt;li Class="RimMandrake.SeaShores.RM_SeaShoreExtension" MayRequire="mandrake.rm.seashores"&gt;
+    &lt;li Class="RimMandrake.SeaShores.RM_SeaShoreExtension"&gt;
       &lt;deepTerrain&gt;...&lt;/deepTerrain&gt;  &lt;shallowTerrain&gt;...&lt;/shallowTerrain&gt;
     &lt;/li&gt;
   &lt;/modExtensions&gt;

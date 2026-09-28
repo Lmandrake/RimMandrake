@@ -38,7 +38,7 @@
 -->
 <Defs>
 
-  <WeatherDef MayRequire="mandrake.rm.greentide">
+  <WeatherDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_RoilWeather</defName>
     <label>the Roil</label>
     <description>Waist-deep, hot fog that hugs the jungle floor while the canopy stands clear above it — the Greentide's permanent breath, thick enough to hide a Lunger and slow an aimed shot, never quite enough to slow a step.</description>

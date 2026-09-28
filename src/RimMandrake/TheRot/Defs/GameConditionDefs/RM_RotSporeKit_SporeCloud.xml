@@ -39,7 +39,7 @@
     there would be redundant.
   -->
 
-  <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
+  <GameConditionDef>
     <defName>RM_SporeCloud</defName>
     <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
     <label>spore cloud</label>
@@ -63,7 +63,7 @@
     </modExtensions>
   </GameConditionDef>
 
-  <IncidentDef MayRequire="mandrake.rm.environmentalhazards">
+  <IncidentDef>
     <defName>RM_SporeCloud</defName>
     <label>spore cloud</label>
     <category>Misc</category>

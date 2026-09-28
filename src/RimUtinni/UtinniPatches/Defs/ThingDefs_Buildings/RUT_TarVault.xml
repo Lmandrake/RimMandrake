@@ -78,7 +78,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="StorageShelfBase" MayRequire="mandrake.rm.thesump">
+  <ThingDef ParentName="StorageShelfBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_TarVault</defName>
     <label>tar vault</label>
     <description>A sunk barrel-rack packed in black Sump tar. Anything lowered into it stops aging the moment the tar closes over it — food stays fresh, a corpse stays whole, a hide stays supple, for as long as it sits sealed. The tar does not let go easily: pulling something back out clean takes a solvent to cut the seal, or it comes up ruined, fused uselessly into the tar that kept it.</description>

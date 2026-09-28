@@ -129,7 +129,7 @@
            no separate numbers for Fever Wood); roofDef left unset so the
            GenStep's own default (RoofDefOf.RoofRockThick) applies, same as
            Greentide. -->
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
         <heartwoodThing>RUT_FeverTrunkHeartwood</heartwoodThing>
         <coreMarkerThing>RUT_FeverTrunkCore</coreMarkerThing>
         <boleCountRange>1~2</boleCountRange>
@@ -170,10 +170,10 @@
            226) between F7's boles (222) and F6's causeways (228) so the
            causeways' basinTerrains allowlist below correctly routes around
            real pool cells. -->
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_MirrorPoolBiomeExtension">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_MirrorPoolBiomeExtension">
         <poolTerrain>RUT_FeverWoodMirrorPool</poolTerrain>
       </li>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
         <causewayTerrain>RUT_Boughway</causewayTerrain>
         <basinTerrains>
           <li>Soil</li>
@@ -252,7 +252,7 @@
            MayRequire needed, no invented fertility/texture value. See
            RM_GroundRefusalBiomeExtension.cs's own header for the full
            account. -->
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_GroundRefusalBiomeExtension">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_GroundRefusalBiomeExtension">
         <refusalTerrain>MarshyTerrain</refusalTerrain>
         <convertFromTerrains>
           <li>Soil</li>

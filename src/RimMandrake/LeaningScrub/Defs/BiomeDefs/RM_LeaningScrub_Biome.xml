@@ -168,7 +168,7 @@
       <RG_Plant_CreepStern>0.2</RG_Plant_CreepStern>  <!-- creep stern -->
       <RG_Plant_CrimsonCushion>0.2</RG_Plant_CrimsonCushion>  <!-- crimson cushion -->
       <RG_Plant_Dervish>0.2</RG_Plant_Dervish>  <!-- dervish -->
-      <RM_VenomvineThicket MayRequire="mandrake.rm.environmentalhazards">0.15</RM_VenomvineThicket>  <!-- fortress flora, already RimMandrake-tier, no move -->
+      <RM_VenomvineThicket>0.15</RM_VenomvineThicket>  <!-- fortress flora, already RimMandrake-tier, no move -->
     </wildPlants>
     <!-- RM_SweetlineTree (renamed from RUT_SweetlineTree, §7 Q8) ships as its own
          def in this mod (Defs/ThingDefs_Plants/RM_SweetlineTree.xml) but is

@@ -230,8 +230,8 @@
       warmGroundOffsetCelsius), not a per-biome field.
     -->
     <modExtensions>
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_AcceleratedRotExtension" />
-      <li MayRequire="mandrake.rm.environmentalhazards" Class="RimMandrake.EnvironmentalHazards.RM_WarmGroundExtension">
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_AcceleratedRotExtension" />
+      <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_WarmGroundExtension">
         <warmTerrains>
           <li>AB_MycoticGrass</li>
           <li>AB_MycoticSoilRich</li>

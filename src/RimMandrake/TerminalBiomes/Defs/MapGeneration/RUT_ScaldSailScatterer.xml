@@ -117,7 +117,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef>
     <defName>RUT_GenStep_ScaldSailScatterer</defName>
     <order>975</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">

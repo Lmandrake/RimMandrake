@@ -20,7 +20,7 @@
 -->
 <Defs>
 
-  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+  <HediffDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_DryAirAversion</defName>
     <label>dry-air aversion</label>
     <description>A blast of bone-dry heat off a dry-air blower — uncomfortable enough that a wild animal wants nothing more to do with wherever it came from.</description>

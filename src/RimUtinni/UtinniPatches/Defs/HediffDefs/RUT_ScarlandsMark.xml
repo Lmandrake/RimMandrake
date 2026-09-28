@@ -52,7 +52,7 @@
 -->
 <Defs>
 
-  <HediffDef MayRequire="mandrake.rm.environmentalhazards">
+  <HediffDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_ScarlandsMark</defName>
     <label>the Scarlands mark</label>
     <description>Something about this place gets under the skin and stays there — bad dreams, a shadow on the mood, a weight that never quite lifts even long after the dust of the Scarlands is washed off. The Jawa have a word for it. They are right.</description>
