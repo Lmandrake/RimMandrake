@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Guzzka.xml                            RimMandrake — DESERT_CAVERN_BEAST_EGGS_1
+
+  Deep Desert's cave-beast + prized eggs, re-filed successor to
+  EXTREME_DESERT_CAVERN_BEAST_1 (closed against "a correctly-scoped successor
+  exists" with none filed until now). Scope per the re-file, exactly two
+  things: this creature ThingDef/PawnKindDef and its egg item pair.
+  ⛔ NO cavern terrain/map-gen here — deep_desert.md §8's "caverns and
+  permanently shaded canyons" are real ecosystems this biome does not yet
+  generate; that piece is separate, unbuilt, design-owed work
+  (STILLSAND_DESIGN_SITTING_1 Q10's successor filing).
+
+  SOURCE: deep_desert.md §8 — "Caverns and permanently shaded canyons — the
+  real ecosystems... calories and self-defence matter again, and competition
+  is vicious because the territory is metres wide: plants and animals alike
+  strike out of the water like traps... reference the Mandalorian cave-beast:
+  a huge shaggy thing deep in a cavern, with massive eggs a Jawa would cross
+  a desert for." The "Mandalorian cave-beast" is FLAVOR/INSPIRATION ONLY (a
+  real canon Star Wars creature from the live-action show) — guzzka below is
+  an ORIGINAL, non-canon invention, RM_-tier per Q11a (a coined name is not
+  Star Wars IP even when "Star Wars style").
+
+  NAME: "guzzka" — coined per check_pseudo_sw_name.py (2 syllables, doubled
+  consonant, k/q/x/z present, vowel ending; PASS, no notes) and confirmed
+  0 hits on a live Wookieepedia search-API probe (action=query&list=search&
+  srsearch=Guzzka, starwars.fandom.com, this pass) — same two-check
+  convention RM_SandBusters.xml's ruukka/oorrik and RM_Oommok used.
+
+  SIZE/SCOPE: baseBodySize 5.5 sits at the biome's "giant pole" (§6's
+  bimodal law, Q8-ratified floor bs>=4 — same threshold RM_Ruukka uses),
+  clearing R22's banned 0.3-3.0 mid-band outright rather than needing a
+  depth-arm annotation like RM_Drazzik/RM_Vekka. A cavern territory is
+  "metres wide" (§8), so this is sized as a large ambush/guardian predator,
+  not a planet-scale megafauna like RM_Oommok (bodySize 18) — it has to fit
+  the room it lives in.
+
+  COLOUR/MATERIAL: shaggy coat described in §9's own palette (bleached bone,
+  pale dust, salt-white; no green, no black char, nothing shiny or
+  crystalline) even though caverns are shaded rather than open ground — the
+  hard bans (§6.3, §6.5, §6.9) are biome-wide, not "in the open" scoped, and
+  nothing here contradicts them. Real art is a separate step (queued below).
+
+  DANGER MECHANIC — two existing precedents reused, no new mechanism
+  invented (per the item's own steer to check before inventing):
+    1. Parent: manhunterOnDamageChance 1 (same field RM_Drazzik already uses
+       for "defends itself/its clutch absolutely") — communicates "fights
+       back completely" without any new comp.
+    2. Egg: CompProperties_ProximityHatch (RimMandrake.ProximityHatch,
+       MayRequire="mandrake.rm.proximityhatch", already a soft dependency of
+       this exact biome mod via RM_DrazzikEggFertilized) — approaching a
+       fertilized clutch hatches it early. Unlike Drazzik/Nizzek, the
+       hatchling here is a normal RM_Guzzka baby (via its own lifeStages),
+       not a third species — the item's scope is creature + egg only, so no
+       RM_Nizzek-equivalent third def is added; the trap is "you now have an
+       aggressive newborn apex predator in your face", not a bespoke hatchling
+       species.
+
+  EGG-AS-WATER MODELING — mirrors the two water-value precedents this repo
+  already ships, layered rather than reinvented:
+    - Structural shape (ParentName EggFertBase/EggUnfertBase, Nutrition +
+      MarketValue + Mass communicating "portable water wealth" narratively)
+      is RM_DrazzikEgg's own shape, already shipped in this exact mod for
+      this exact biome beat ("eggs as canteens") — scaled up since deep_
+      desert.md calls this specific clutch out as "massive eggs a Jawa would
+      cross a desert for", the named prize, not an ordinary predator's
+      clutch.
+    - Additionally, per-node MayRequire="Dubwise.DubsBadHygiene.Lite" gated
+      modExtensions/comps (DubsBadHygiene.WaterExt + CompContamination) are
+      layered on BOTH eggs, copied verbatim in shape from
+      FlowWorks/RM_ColoredWaterBottles.xml — so when that mod (already a
+      soft dependency pattern used elsewhere in this repo) is active, the
+      egg is ALSO literally seekable/drinkable water, not just narratively
+      "water-wealth". This is additive, per-<li> MayRequire (the documented-
+      safe form per CLAUDE.md's MayRequire trap — never a top-level
+      <Operation>, never a whole ThingDef gated on an optional mod, since
+      the egg must exist and read as valuable regardless of whether DBH is
+      installed). Untested in a live game (out of scope here per the item's
+      own verify bar); if it ever misbehaves under DBH, that is a DBH-
+      specific fix, not a reason the base egg item is wrong.
+
+  POPULATION DECISION: RM_Guzzka is DEFINED but NOT wired into
+  RM_Stillsand_Biome.xml's <wildAnimals> — same unwired posture
+  RM_Ruukka/RM_Oorrik take, for a related but distinct reason. Those two are
+  permanently incident-spawned (their only spawn route is
+  RM_SandBusterMound's CompProperties_SpawnerPawn) and would never belong in
+  an ambient roster even once caverns exist. Guzzka's habitat — "caverns and
+  permanently shaded canyons" — simply does not exist as generated terrain
+  yet (cavern map-gen is explicitly out of this item's scope and unbuilt).
+  Wiring it into the ambient Stillsand roster right now would place it on
+  ordinary open dune-sand tiles at some low commonality, which directly
+  contradicts its own sourcing: it is a cavern-only specialist, not a rare
+  surface encounter. Homing it correctly is cavern map-gen's job, not this
+  item's. Once that GenStep exists, the fitting move is almost certainly a
+  low-commonality entry in whatever wildAnimals-equivalent list that cavern
+  terrain gets (or a dedicated cavern biome/region roster) — not this file.
+  `canArriveManhunter` is therefore left at its default (unlike Ruukka/
+  Oorrik, which explicitly set it false) since a future cavern-adjacent
+  manhunter-pack incident is plausible once it has a real home; today it is
+  moot either way because nothing spawns it.
+
+  ART: no render exists for "guzzka"/"cave beast"/"cavern beast" anywhere in
+  infrastructure/artpipe/{done,pending}/registry.jsonl (checked this pass —
+  0 hits). Shipping with a placeholder texPath pointing at this def's own
+  future folder, same posture as every other unrendered port in this mod
+  (RM_Ruukka, RM_Oorrik, RM_Drazzik, RM_Ikee, RM_Aurrok). Not queuing an
+  artpipe job in this pass — the brief needs the cavern's shaded-permanently
+  lighting context to write well, and that context lands with the cavern
+  authoring item, not here.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Guzzka</defName>
+    <label>guzzka</label>
+    <description>A huge, shaggy shape that never leaves the deepest shade of its cavern, coat matted pale with mineral dust until it reads more like a drift of bleached fur-covered stone than an animal. It does not need to be fast; the whole territory it holds is a few metres of brine-fed growth in a crack in the rock, and nothing gets past it to reach the clutch without going through it first. Approached without violence it may only watch. Approached with a hand toward the eggs, every kilogram of it comes at once.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <Mass>950</Mass>
+      <MarketValue>1200</MarketValue>
+      <Wildness>0.98</Wildness>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.8</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.7</ArmorRating_Blunt>
+      <ArmorRating_Heat>1.0</ArmorRating_Heat>
+      <PainShockThreshold>0.85</PainShockThreshold>
+      <Flammability>1.2</Flammability>
+      <FilthRate>3</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>26</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>26</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>jaws</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>skull</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <!-- The biome's own established "prize egg" mechanism (RM_Drazzik) —
+           scaled up: this is the named "massive eggs" clutch, not an
+           ordinary predator's. -->
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RM_GuzzkaEggUnfertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RM_GuzzkaEggFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>40</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~1</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <!-- Giant pole of §6's bimodal law (bs >=4, same floor RM_Ruukka uses) —
+           clears R22's banned 0.3-3.0 mid-band outright. -->
+      <baseBodySize>5.5</baseBodySize>
+      <baseHealthScale>6.5</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>CarnivoreAnimal, OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <!-- None, not Advanced: an apex cavern guardian with manhunterOnDamageChance
+           1 and Wildness 0.98 reads as untameable, matching "dangerous to
+           approach" over the Drazzik precedent's tameable-ambush-predator
+           framing. Judgement call, documented per the item's ask. -->
+      <trainability>None</trainability>
+      <manhunterOnTameFailChance>0.5</manhunterOnTameFailChance>
+      <!-- The core "defends its eggs fiercely" signal — same field
+           RM_Drazzik already uses, no new mechanism. -->
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <gestationPeriodDays>45</gestationPeriodDays>
+      <lifeExpectancy>35</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Guzzka</defName>
+    <label>guzzka</label>
+    <labelPlural>guzzkas</labelPlural>
+    <race>RM_Guzzka</race>
+    <combatPower>620</combatPower>
+    <!-- Not wired into any wildAnimals list yet (see this file's header) —
+         ecoSystemWeight is moot until cavern map-gen exists, set to 0 to
+         document that rather than implying an ambient spawn rate. -->
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>guzzka cub</label>
+        <bodyGraphicData>
+          <!-- art pending — DESERT_CAVERN_BEAST_EGGS_1, no render exists
+               (registry checked this pass). -->
+          <texPath>Things/Pawn/Animal/RM_Guzzka/RM_Guzzka</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <label>guzzka juvenile</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Guzzka/RM_Guzzka</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Guzzka/RM_Guzzka</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.6</drawSize>
+          <shadowData>
+            <volume>(0.55, 0.55, 0.5)</volume>
+            <offset>(0,0,-0.1)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- The named prize — "massive eggs a Jawa would cross a desert for"
+       (deep_desert.md §8). Structural shape mirrors RM_DrazzikEggFertilized
+       (same mod, same "eggs as canteens" beat), scaled up; the optional
+       DBH water-mod layer mirrors RM_ColoredWaterBottles.xml. See this
+       file's header. -->
+  <ThingDef ParentName="EggFertBase">
+    <defName>RM_GuzzkaEggFertilized</defName>
+    <label>guzzka egg</label>
+    <description>Bigger than a Jawa's own head and heavy enough to need both arms, this is the whole reason anyone braves a guzzka's cavern at all — a rigid shell of good water thick enough to carry a scavenging party home. Sloshing, cool, and not remotely quiet if you hold still and listen: something inside it is already awake, and it did not wait for its mother to leave before it decided you were the reason to hurry.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggScaled</texPath>
+      <color>(222,214,190)</color>
+      <drawSize>1.4</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>220.0</MarketValue>
+      <Mass>5.5</Mass>
+      <Nutrition>1.8</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>16</hatcherDaystoHatch>
+        <hatcherPawn>RM_Guzzka</hatcherPawn>
+      </li>
+      <!-- The trap (deep_desert.md §4: "some eggs are birth traps... the
+           clutch is bait"): reuses RM_DrazzikEggFertilized's own mechanism
+           verbatim, already a soft dependency of this mod. -->
+      <li Class="RimMandrake.ProximityHatch.CompProperties_ProximityHatch" MayRequire="mandrake.rm.proximityhatch">
+        <triggerRadius>2.2</triggerRadius>
+        <scanIntervalTicks>60</scanIntervalTicks>
+      </li>
+      <!-- Optional literal-water layer, mirrors RM_ColoredWaterBottles.xml's
+           own shape; inert with no effect unless Dubs Bad Hygiene Lite is
+           active. Per-<li> MayRequire only (the documented-safe form). -->
+      <li Class="CompProperties" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <compClass>DubsBadHygiene.CompContamination</compClass>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="DubsBadHygiene.WaterExt" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <water>6</water>
+        <UseForWashing>true</UseForWashing>
+        <SeekForThirst>true</SeekForThirst>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RM_GuzzkaEggUnfertilized</defName>
+    <label>guzzka egg (unfert.)</label>
+    <description>Bigger than a Jawa's own head and heavy enough to need both arms. Nothing is going to hatch out of this one and nothing inside it is listening for you — it is exactly what it feels like: the best drink of water a person could carry out of the deep desert on their own back.</description>
+    <graphicData>
+      <texPath>swresource/EggScaled</texPath>
+      <color>(222,214,190)</color>
+      <drawSize>1.4</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>220.0</MarketValue>
+      <Mass>5.5</Mass>
+      <Nutrition>1.8</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <compClass>DubsBadHygiene.CompContamination</compClass>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="DubsBadHygiene.WaterExt" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <water>6</water>
+        <UseForWashing>true</UseForWashing>
+        <SeekForThirst>true</SeekForThirst>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
