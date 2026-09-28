@@ -7,9 +7,11 @@
   same folder's own precedent, RUT_SumpTarBeastGenStep_Register.xml (read
   directly before writing this).
 
-  MayRequire on the added <li> itself, not on the GenStepDef's own
-  declaration (same reasoning as that precedent): the cross-reference cannot
-  dangle if mandrake.rm.thesump is absent from the active mod list.
+  No MayRequire on the added <li>: the GenStepDef ships in this same mod, so
+  it is always present whenever this patch is. A self-naming
+  MayRequire naming mandrake.rm.thesump itself used to sit here; inside the composed
+  RimMandrake: Baroque Biomes that packageId is never active, so the guard
+  silently dropped the genstep (BAROQUE_BIOMES_COMPOSE_1 sweep 4).
 -->
 <Patch>
 
@@ -18,7 +20,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
       <value>
-        <li MayRequire="mandrake.rm.thesump">RUT_GenStep_DeepBlackMere</li>
+        <li>RUT_GenStep_DeepBlackMere</li>
       </value>
     </match>
   </Operation>
