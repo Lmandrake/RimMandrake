@@ -1022,3 +1022,6 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"CHILL_RENAME_FULL_1 live-tile check","ts":"2026-09-28T07:28:22Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-28T07:31:37Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_RENAME_FULL_1","sha":"a2184ac5c","ts":"2026-09-28T07:43:37Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_FIRE_BAN_1","ts":"2026-09-28T07:45:28Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_FIRE_BAN_1","ts":"2026-09-28T07:45:29Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_FIRE_BAN_1","sha":"ca7a60c97","ts":"2026-09-28T07:54:41Z"}
