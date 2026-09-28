@@ -1040,3 +1040,9 @@
 {"seat":"FOUNDRY","event":"claim","id":"CHILL_THERMAL_FOOTPRINTS_1","ts":"2026-09-28T09:16:59Z"}
 {"seat":"FOUNDRY","event":"start","id":"CHILL_THERMAL_FOOTPRINTS_1","ts":"2026-09-28T09:17:00Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_THERMAL_FOOTPRINTS_1","sha":"2684ac857","ts":"2026-09-28T09:26:24Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_RIME_TERRACES_1","ts":"2026-09-28T09:27:18Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_RIME_TERRACES_1","ts":"2026-09-28T09:27:19Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-28T09:28:04Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_RIME_TERRACES_1","ts":"2026-09-28T09:28:08Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_RIME_TERRACES_1","ts":"2026-09-28T09:39:27Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_RIME_TERRACES_1","sha":"c2c1ace03","ts":"2026-09-28T09:40:10Z"}
