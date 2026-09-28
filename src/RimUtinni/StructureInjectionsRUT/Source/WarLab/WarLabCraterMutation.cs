@@ -28,7 +28,12 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
         // world until Phase B repaints it, so both must be matched for the
         // tile scan below to keep working through the move.
         private static readonly string[] SourceBiomeDefNames = { "RUT_PropaneLake", "RM_TheChill" };
-        private const string CraterBiomeDefName = "RUT_Wasteland";
+
+        // CHILL_WORLD_CRATER_1, 2026-09-28: retargeted from the placeholder
+        // RUT_Wasteland (a stand-in from before the real aftermath biome
+        // existed) to RM_ChillCrater, the biome actually built for this
+        // mutation (src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_ChillCrater.xml).
+        private const string CraterBiomeDefName = "RM_ChillCrater";
 
         /// <summary>
         /// Fires the ignition once per save. Returns true only if it actually
