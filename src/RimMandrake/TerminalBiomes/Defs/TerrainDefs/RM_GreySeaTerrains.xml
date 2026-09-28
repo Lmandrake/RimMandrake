@@ -30,6 +30,17 @@
   numbers disagree because none are shared; nothing here was folded into the
   generator and nothing needed deleting.
 
+  ✅ RE-CHECKED AGAIN under TERMINALBIOMES_LIQUID_RETARGET_1 (Q7 ownership
+  ruling execution, 2026-09-28): same conclusion holds, and confirmed from
+  the live wiring, not just the description text — RM_GreySea.xml's own
+  <deepTerrain>/<shallowTerrain> (its default sea water) are ALREADY
+  FlowWorks' RM_WaterBrineDeep/RM_WaterBrineShallow directly
+  (MayRequire="mandrake.rm.flowworks"). RM_BrinePoolShallow/Deep here are a
+  separate floor hazard grade painted only by GenStep_GreySeaFloorDressing
+  (DivingInteraction), never the sea's default water. There is nothing
+  generic left to retarget for brine: this pair is a keeper, not a
+  duplicate. Do not re-open this a third time on a defName-similarity read
+  alone.
   ============================================================================
   THE SHORE: "every Grey Sea shoreline carries the crusty whiteness"
   ============================================================================

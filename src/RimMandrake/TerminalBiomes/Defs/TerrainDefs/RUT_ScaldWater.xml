@@ -108,6 +108,33 @@
   tiles. That is RUT_TheScald.xml's job (a BiomeDef, painted onto the 312
   Scald tiles only via the LIVE, owner-gated half of this item) — these are
   just the terrain defs themselves, which parse and validate standalone.
+
+  ============================================================================
+  TERMINALBIOMES_LIQUID_RETARGET_1 (Q7 ownership ruling execution,
+  2026-09-28) — investigated, NOT repointed. Reasoning:
+  ============================================================================
+  LIQUID_TERRAIN_AUTHORED_TWICE_1 (closed 2026-09-27) already found and
+  fixed the one real fork in this family: FlowWorks' generic
+  RM_WaterBoilingShallow/Deep still carried R-B4a's original burn 1/2 while
+  these six had been ruled to 3/4 on 2026-09-25/26. Fix applied there was to
+  sync generate_liquid_suite.py's boiling row to 3/300 shallow, 4/240 deep
+  and regenerate RM_WaterBoiling.xml — the NUMBERS now agree everywhere.
+  That item explicitly declined to repoint or delete this file, and
+  Q7's ownership ruling does not change that answer: FlowWorks' generated
+  suite only ever covers two variants (Shallow/Deep); it has no Ocean,
+  Moving-shallow or Moving-chest-deep rows at all (the generator's own
+  declared scope). The Scald genuinely needs all six — RM_TheScald.xml and
+  the frozen save-compat twin RUT_TheScald.xml both pin all six defNames by
+  name across waterDeepTerrain/waterShallowTerrain/waterMovingShallowTerrain/
+  waterMovingChestDeepTerrain/<coastal> — plus per-variant tuning FlowWorks'
+  generic suite does not carry at all: gravshipReplacementTerrain routing,
+  the RUT_ScaldShallow tag the wreck-scatter GenStep reads (tag-based, not
+  defName-based — RUT_ScaldWreckScatter.xml, unaffected either way), and the
+  SCALD_WATER_AGITATION_FLECKS_1 steam fleck tuning. This is a biome-specific
+  formation family that happens to share a substance name with FlowWorks'
+  generic pair, not a duplicate of it. Nothing here is orphaned; nothing was
+  retargeted. Do not re-open this a third time on a defName-similarity read
+  alone.
   ============================================================================
 -->
 <Defs>
