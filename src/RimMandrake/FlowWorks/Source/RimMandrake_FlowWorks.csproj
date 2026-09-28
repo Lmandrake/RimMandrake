@@ -121,6 +121,10 @@
   <ItemGroup>
     <Compile Include="ManyWaters\RiverSteamHook.cs" />
     <Compile Include="ManyWaters\RiverSteamSettings.cs" />
+    <!-- DEEP_SAND_WALKABLE_TERRAIN_1: the fishable-but-not-swimmable marker
+         and its one Harmony guard (JoyGiver_GoSwimming). -->
+    <Compile Include="ManyWaters\RM_NoRecreationalSwimExtension.cs" />
+    <Compile Include="ManyWaters\RM_Patch_NoRecreationalSandSwim.cs" />
   </ItemGroup>
 
   <!-- The liquid registry, merged 2026-09-16 (ruling 14). Namespace

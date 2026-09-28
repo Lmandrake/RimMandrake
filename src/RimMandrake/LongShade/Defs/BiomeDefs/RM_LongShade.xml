@@ -115,6 +115,31 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+    <!-- DEEP_SAND_WALKABLE_TERRAIN_1 — owner, 2026-09-27: "an entire terrain type,
+         not just small pools. Some in the Long Shade, Muchly in the Stillsand."
+         Mechanism reused verbatim from vanilla Desert/ExtremeDesert's own SoftSand
+         patch (Defs/Core/BiomeDefs/Biomes_WarmArid.xml — this biome's own donor
+         twin already ships one at perlinFrequency 0.05/threshold min 0.65/minSize
+         13); this is the same TerrainPatchMaker vanilla already uses to paint a
+         regional secondary terrain over terrainsByFertility, not a new GenStep.
+         "Some" = the SAME threshold vanilla uses for a modest, scattered presence
+         (min 0.65 — a proven "minority terrain" number), with minSize raised well
+         past vanilla's 13 so a qualifying patch always reads as a region, never a
+         one-cell speck (see RM_Stillsand_Biome.xml's own comment for the "Muchly"
+         side of this same tuning). -->
+    <terrainPatchMakers>
+      <li>
+        <perlinFrequency>0.045</perlinFrequency>
+        <minSize>60</minSize>
+        <thresholds>
+          <li>
+            <terrain>RM_DeepSand</terrain>
+            <min>0.65</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
     <baseWeatherCommonalities>
       <Clear>90</Clear>
       <DryThunderstorm>4</DryThunderstorm>

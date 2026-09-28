@@ -1,60 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  SAND_SWIMMERS_MOD_1 — Deep Sand: an impassable sand terrain that behaves like deep
-  water for pathing and fishing, without being water at all.
+  SAND_SWIMMERS_MOD_1 / DEEP_SAND_WALKABLE_TERRAIN_1 — Deep Sand: a slow, punishing
+  sand terrain that behaves like water for FISHING ONLY, without being water at all
+  and without being impassable.
 
-  MECHANISM, verified against RimWorld 1.6 + Odyssey source (not guessed):
-  - `TerrainDef.IsWater` (Verse/TerrainDef.cs) is `HasTag("Water")` — a TAG check, not
-    a hardcoded terrain-name list. Any TerrainDef carrying the "Water" tag reads as
-    water to every system that calls `.IsWater` (pathing, `Zone_Fishing.IsFishable`,
-    `SwimPathFinder`, `JoyGiver_GoSwimming`, `WaterSource`, flood/explosion FX, etc.).
+  2026-09-27 OWNER RULING SUPERSEDES "impassable like deep water", verbatim:
+  "Deep sand pools are NOT unwalkable, just very slowly. And they should be an entire
+  terrain type, not just small pools. Some in the Long Shade, Muchly in the
+  Stillsand." `passability` below is now `Standable` (was `Impassable`); `pathCost`
+  is UNCHANGED at 300 because that value was always just sitting inert behind the
+  Impassable flag — see the pathCost note below for what it now actually does, and
+  DEEP_SAND_WALKABLE_TERRAIN_1 for the biome-terrain-weighting half of this ruling
+  (RM_LongShade.xml / RM_Stillsand_Biome.xml `terrainPatchMakers`).
+
+  MECHANISM, verified against RimWorld 1.6 + Odyssey decompiled source (not guessed):
+  - `TerrainDef.IsWater` (Verse/TerrainDef.cs:324) is `HasTag("Water")` — a TAG check,
+    completely independent of `passability`. Any TerrainDef carrying the "Water" tag
+    reads as water to every system that calls `.IsWater`, whether or not it is
+    walkable (pathing avoidance, `Zone_Fishing.IsFishable`, `SwimPathFinder`,
+    `JoyGiver_GoSwimming`, `WaterSource`, flood/explosion FX, etc.) — this is exactly
+    why the fishing hookup below never needed to change.
   - `Zone_Fishing.IsFishable(cell)` (RimWorld/Zone_Fishing.cs) requires
     `cell.GetTerrain(map).IsWater` AND `cell.GetWaterBodyType(map) == FishType`, where
     `FishType` comes from the zone's `TerrainDef.waterBodyType` — a closed four-value
     enum, `Verse/WaterBodyType.cs` (None/Freshwater/Saltwater/Other); there is no "Sand"
     water body type, and adding one would need C#. Declaring `waterBodyType: Freshwater`
-    here is what lets a fishing zone actually form fishable cells on Deep Sand.
-  - Passability Impassable is what blocks ordinary pawn pathing — the same mechanism
-    `WaterDeep` (`Defs/Core/TerrainDefs/Terrain_Water.xml`) uses for "you cannot walk
-    across this." This def is written from scratch rather than ParentName="WaterBase"
-    to avoid inheriting water-only baggage (the `SoakingWet` traversedThought, the
-    `Map/WaterDepth` shader, `floodTerrain`) that reads wrong on sand.
+    here is what lets a fishing zone actually form fishable cells on Deep Sand, and
+    NONE of this depends on passability — fishability and walkability are unrelated
+    fields read by unrelated systems, which means this def's own PRIOR header (below,
+    kept for provenance in git) had it backwards: passability never "rode" the Water
+    tag; it is, and always was, its own explicit field.
+  - FISHING WAS ACTUALLY BROKEN WHILE THIS WAS IMPASSABLE, and flipping passability is
+    what fixes it: `Designator_ZoneAdd_Fishing.CanDesignateCell`
+    (RimWorld/Designator_ZoneAdd_Fishing.cs:65) refuses ("CannotPlaceFishingZone") on
+    any cell where `passability == Impassable` — a THIRD, separate passability check,
+    on top of `IsWater`/`waterBodyType`. So the player could never have drawn a fishing
+    zone on Deep Sand through the normal UI while it was Impassable, in any biome.
+    `IsFishable`/`WorkGiver_Fish` never cared about passability; only the zone-ADD
+    designator did, and only it blocked the whole feature.
+  - This def is written from scratch rather than `ParentName="WaterBase"`, deliberately,
+    to avoid inheriting water-only baggage (the `SoakingWet` traversedThought — a
+    per-TerrainDef field, never set here, so it does NOT ride the Water tag; the
+    `Map/WaterDepth` shader/`waterDepthMaterial`; `floodTerrain`) that reads wrong on
+    sand. That reasoning is UNCHANGED by the passability flip.
+  - THE ONE THING THAT DOES NOT GATE ON PASSABILITY, found while researching this
+    ruling: `JoyGiver_GoSwimming`'s cell validator requires `IsWater` AND
+    `x.Standable(pawn.Map)` — and `IntVec3.Standable` is exactly `Walkable` (i.e. not
+    Impassable) plus a things-on-cell check. While Deep Sand was Impassable, Standable
+    was always false and this joy activity could never target it; flipping to Standable
+    makes it eligible, so WITHOUT A GUARD a bored colonist could be offered a
+    recreational "go swimming" job on Deep Sand — `JobDriver_GoSwimming.
+    CheckForSwimmingPose()` sets `job.swimming = true` purely from `IsWater`, no depth
+    or WaterBase check, so the pawn would visibly swim-pose in sand. Guarded by
+    `RM_NoRecreationalSwimExtension` below + `RM_Patch_NoRecreationalSandSwim.cs`
+    (Harmony postfix on `JoyGiver_GoSwimming.TryGiveJob`, the ONLY production caller of
+    `SwimPathFinder.TryFindSwimPath` — verified, its only other caller is a debug
+    tool) — see that file's header for the full trace. This is exactly the "some OTHER
+    path than WaterBase" case the item asked to rule out, and it was real.
+  - `moveSpeedFactorByTerrainTag` (keyed on the "Water" TAG — e.g. `JOE_Cephalope`/
+    `JOE_Landopus`'s own PawnKindDefs already carry a `Water` entry) will now also
+    apply on Deep Sand for any pawnKind that has one. Checked, and this is CORRECT,
+    not a bug: it is exactly the water-adjacent sand-swimmer speed boost those kinds
+    were authored for.
+  - Deliberately NOT patched: `SwimPathFinder` itself, and `Pawn.Swimming`/
+    `DrawNonHumanlikeSwimmingGraphic` in general — those exist for the terrain's own
+    sand-swimming predator and for genuine water elsewhere, and gating the one
+    colonist-recreation entry point (above) is a complete fix without touching them.
+
+  pathCost 300 is UNCHANGED from the original (inert) Impassable-era value, and is now
+  load-bearing for the first time. Compared against the live def dump / vanilla source
+  for the closest analogues: Marsh and WaterShallow both ship `pathCost 30` (a mild
+  "wade through it" tax); WaterDeep ships `pathCost 300` too, but it is Impassable so
+  that number is normally inert there as well. 300 is 10x Marsh/WaterShallow's wade
+  cost — matching the description below ("sinks... slowly and completely") with a
+  genuinely punishing crawl rather than a shallow-water wade, while remaining finite
+  per the owner's ruling. `extraNonDraftedPerceivedPathCost`/
+  `extraDraftedPerceivedPathCost` (180/18) already match the Marsh/WaterShallow/
+  WaterDeep family exactly and needed no change.
 
   Engine/content split (NAMING_SCHEME_PLAN.md §1): this terrain is a pure mechanic —
-  "impassable ground you can fish in" — with zero Star Wars flavor, so it is RM tier
-  and lives here in ManyWaters (already the RM-tier "gathers all water effects/types"
-  engine, MANYWATERS_GENERIC_SPLIT_1) rather than a new mod. It names no biome of its
-  own, matching that mod's existing generic/biome-agnostic pattern. The Star-Wars-
-  flavored fish family that gets caught here is RSW tier (SWBestiary); the Ash'karr
-  biome hookup (which BiomeDef actually offers this fish list) is RUT tier
-  (UtinniPatches) — see Patches/SandFishing_CrackedLands.xml there.
+  "punishing-but-walkable sand you can fish in" — with zero Star Wars flavor, so it is
+  RM tier and lives here in ManyWaters (already the RM-tier "gathers all water
+  effects/types" engine, MANYWATERS_GENERIC_SPLIT_1) rather than a new mod. It names
+  no biome of its own, matching that mod's existing generic/biome-agnostic pattern.
+  The Star-Wars-flavored fish family caught in some sitings is RSW tier (SWBestiary);
+  a biome's own fishing hookup is that biome's own tier.
 
-  SITING — open question, NOT resolved here (world-tile placement is out of scope for
-  this item; see the item file). `dune_sea.md` §6 hard-bans "medium-sized fauna" in
-  the dune sea proper (giant-or-grain-scale only) and `ExtremeDesert` is literally the
-  SAME BiomeDef for both the dune sea (θ0-40) and deep desert (θ50-69, Glare/Kiln) —
-  there is no BiomeDef-level way to scope a fish family to deep-desert tiles only
-  without leaking into dune-sea tiles. The RUT hookup therefore targets Cracked Lands
-  (`ZBiome_Badlands`) only, which carries no such ban. Wiring ExtremeDesert/Desert too
-  (the item's other two siting suggestions) is a follow-up that first needs an answer
-  to that conflict — either keep any ExtremeDesert Deep Sand pool at θ≥40 (deep desert
-  proper), or give the fish family a giant/grain-scale variant fit for the dune sea.
+  SITING — this def is now painted as a real terrain REGION by
+  `RM_LongShade.xml`/`RM_Stillsand_Biome.xml`'s own `terrainPatchMakers`
+  (DEEP_SAND_WALKABLE_TERRAIN_1), not by a fixed pool siting list. The original
+  Cracked-Lands-only fish-family siting note this header used to carry is UNCHANGED
+  and untouched by this pass — see Patches/SandFishing_CrackedLands.xml's own header
+  for that history; it targets a different biome than the two this ruling touches.
 
   ART — PLACEHOLDER. texturePath below points at the vanilla `Terrain/Surfaces/SoftSand`
   texture as a deliberate stand-in so this never renders magenta; a real "sunken,
   rippled sand pool, visibly deeper/darker than surrounding sand" texture is OWED
   (generating-rimworld-sprites skill) and is not part of this pass.
 
-  ANTI-EXPONENTIAL: this def carries no yield lever of its own (that lives in the
-  biome's fishTypes/maxFishPopulation, RUT side) — it only makes cells fishable, it
-  does not make fish more common.
+  ANTI-EXPONENTIAL: this def carries no yield lever of its own (that lives in a
+  biome's own fishTypes/maxFishPopulation) — it only makes cells fishable, it does not
+  make fish more common.
 -->
 <Defs>
 
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_DeepSand</defName>
     <label>deep sand</label>
-    <description>A pool of sand deep enough to swallow a person whole. The surface looks like any other dune, but there is nothing solid beneath it — step out onto it and you sink, slowly and completely. Nothing walks across deep sand. Some things live in it.</description>
+    <description>A pool of sand deep enough to swallow a person whole. The surface looks like any other dune, but there is nothing solid beneath it -- step out onto it and you sink, slowly, fighting for every stride. Nothing crosses deep sand quickly. Some things live in it.</description>
     <texturePath>Terrain/Surfaces/SoftSand</texturePath>
     <!-- PLACEHOLDER ART — see header. -->
     <edgeType>FadeRough</edgeType>
@@ -62,7 +115,8 @@
     <renderPrecedence>353</renderPrecedence>
     <fertility>0</fertility>
     <natural>true</natural>
-    <passability>Impassable</passability>
+    <passability>Standable</passability>
+    <!-- 2026-09-27 ruling: walkable, just very slowly. See header. -->
     <pathCost>300</pathCost>
     <avoidWander>true</avoidWander>
     <canFreeze>false</canFreeze>
@@ -74,17 +128,17 @@
     <extraDraftedPerceivedPathCost>18</extraDraftedPerceivedPathCost>
     <waterBodyType>Freshwater</waterBodyType>
     <!-- Not literal water — Freshwater is the only bucket BiomeFishTypes offers that
-         isn't briny; picked so the biome-side fishTypes patch (RUT) has somewhere to
-         hang its freshwater_Common/Uncommon catches. -->
+         isn't briny; picked so a biome's own fishTypes has somewhere to hang its
+         freshwater_Common/Uncommon catches. -->
     <filthAcceptanceMask>
       <li>None</li>
     </filthAcceptanceMask>
     <tags>
       <li>Water</li>
-      <!-- The load-bearing tag: TerrainDef.IsWater == HasTag("Water"). Everything
-           else in this def follows from being tagged Water — impassability reads
-           the same as deep water, and Zone_Fishing/WorkGiver_Fish/JobDriver_Fish
-           work unmodified, no Harmony patch needed. -->
+      <!-- The load-bearing tag: TerrainDef.IsWater == HasTag("Water"). Fishing
+           (Zone_Fishing/WorkGiver_Fish/JobDriver_Fish) works unmodified off this tag
+           alone, no Harmony patch needed — passability is a fully separate field, see
+           header. -->
     </tags>
     <tools>
       <li>
@@ -101,6 +155,12 @@
       <Beauty>-5</Beauty>
       <BeautyOutdoors>-3</BeautyOutdoors>
     </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.ManyWaters.RM_NoRecreationalSwimExtension" />
+      <!-- Fishable "Water"-tagged ground, not literal swimmable water — keeps
+           JoyGiver_GoSwimming from offering a recreational swim job here now that
+           the terrain is Standable. See header and RM_Patch_NoRecreationalSandSwim.cs. -->
+    </modExtensions>
   </TerrainDef>
 
 </Defs>

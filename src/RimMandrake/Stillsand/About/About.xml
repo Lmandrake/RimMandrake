@@ -6,6 +6,15 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.flowworks</packageId>
+      <displayName>RimMandrake: FlowWorks</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.flowworks</li>
+  </loadAfter>
   <description>STILLSAND_RM_MOD_BUILD_1 — RimMandrake tier standalone build of the Extreme
 Desert biome (Phase A row 1 of design/RimMandrake/biome_mod_architecture.md; parent
 BIOME_MOD_SPLIT_EXECUTION_1). A corrugated ochre plain under a star that has not moved
