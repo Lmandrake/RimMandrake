@@ -1,10 +1,15 @@
 # The Grey Deep — sitting agenda, 2026-09-27
 
+> ✅ **THE SITTING HAPPENED AND ALL 17 QUESTIONS ARE RULED** — 2026-09-27, five card
+> rounds, recorded on `GREYSEA_FLOOR_PASS_1`. Each question below carries its ruling
+> inline; nothing in §2 is open any more. This document is now a record, not an agenda.
+
 Prepared for the `GREYSEA_FLOOR_PASS_1` owner sitting. Two halves: **§1 is the merged
 proposal** — everything the sheet, the content drop, the flora pass and the danger pass
-add up to, read as one place; **§2 is the card agenda** — every decision still genuinely
-open, numbered Q1–Q17, each with options and trade-offs. **§3 is the list of what is
-already ruled**, so the sitting never re-litigates.
+add up to, read as one place; **§2 is the card agenda** — every decision that was still
+open going in, numbered Q1–Q17, each with options and trade-offs, now each carrying its
+ruling. **§3 is the list of what was already ruled beforehand**, so the sitting never
+re-litigated.
 
 ## 0. Provenance and how to use this document
 
@@ -134,14 +139,15 @@ catch (Q2 settles its breadth); the pools' locked treasury with two keys (chisel
 Elder's exchange); and the Elders' novelty trade, where a colonist of a new xenotype is
 an offering.
 
-### 1.7 What is genuinely not settled
+### 1.7 What the sitting settled — all of it
 
-The navigation affordance the pillar law promises (Q1), the catch-table breadth (Q2),
-the whole understorey flora ruling (Q3–Q9), the crystallisation pace and what "time
-alone" covers (Q10–Q11), the giant's forgiveness (Q12), the unnamed squirting pool
-creatures (Q13), how the Elder's tell renders against ban 4 (Q14), the useless
-artifact's plot home (Q15), the salt palette ratification (Q16), and whether the other
-two seas' ship-touch voices get named today or at their own passes (Q17).
+Everything this section once listed as unsettled was ruled 2026-09-27: pillars story
+only (Q1), the catch kept-all rebalanced rare (Q2), the whole understorey shipping at
+0.22 (Q3–Q9), the crust ladder with weather+berth multipliers and nothing purchasable
+(Q10–Q11), the giant deterministic and forgiving (Q12), the orruhmu (Q13), the Elder's
+motion-only tell (Q14), the useless artifact's plot hook filed (Q15), the salt palette
+ratified (Q16), and the other seas' ship-touch voices left to their own passes (Q17).
+The per-question rulings stand inline in §2.
 
 ## 2. The card agenda — open decisions
 
@@ -152,6 +158,8 @@ language throughout; def names appear only as citations, never as the choice its
 ---
 
 ### Q1 — The pillars are built; is getting lost a mechanic or a story?
+
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): story only — no waymark job, no murk penalty, navigation stays perfect (overrides the (b) recommendation); the pillar forest is layout and prose.
 
 The sheet's law is that all travel below is pillar-to-pillar, divers carve waymarks,
 and a lost diver is someone who missed one pillar. The pillars themselves now stand on
@@ -188,6 +196,8 @@ small bonus, and (c)/(d) can layer on later without waste.
 
 ### Q2 — The catch table is rich; the sea's law is sparse. Coexist or thin?
 
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (c) — KEEP ALL 13, REBALANCED RARE: lower fish population, push species into the uncommon/rare bands, sparseness felt at the dock (overrides the (a) recommendation).
+
 Carried to this sitting by name (from `TERMINALBIOMES_RM_MOD_BUILD_1`, 2026-09-25).
 You ruled fish YES, and bizarre — that stands. The question left is breadth: the live
 def offers **13 catch species** (8 common, 4 uncommon, 1 rare table) at a healthy fish
@@ -223,6 +233,8 @@ not the fishing line, and one annotating sentence keeps a later reviewer from
 
 ### Q3 — How thick does the floor grow? (one number)
 
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (b) — plantDensity 0.22 ratified.
+
 The flora pass adds a ten-species understorey beneath your seven crystal monuments,
 and the whole thing hangs on one knob: plant density. Shipped today: 0.14, set when
 the seven monuments were the only flora. The pass proposes 0.22 so the small new layer
@@ -244,6 +256,8 @@ not in bare sediment.
 ---
 
 ### Q4 — Does the whole understorey ship, and does anything on it get cut?
+
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (a) — all ten understorey flora SHIP, subject to Q5–Q8 (all four subsequently ratified).
 
 Ten small flora, each with a different survival trick, none duplicating your seven or
 any other sea's tricks, all names invented and collision-checked. Six are
@@ -267,6 +281,8 @@ garnish.
 
 ### Q5 — The cushion that is only colourful under your lamp: tribute to the
 no-glow law, or violation?
+
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (a) — the murkblush SHIPS: structural colour, emits nothing, ban 4's tribute.
 
 One understorey plant is deliberately special: a grey cushion, invisible among
 everything else grey, that returns a player's lamplight as deep oil-sheen iridescence
@@ -293,6 +309,8 @@ the player's, and the sea keeps none of it.
 
 ### Q6 — May a piece of the pillar-mason become a plant?
 
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (a) — the mason's skirt IS a plant (RM_Masonmat); the mason itself stays def-less fiction.
+
 The mason — the Grey's monoculture, the builder of the pillars — has always been
 fiction: no def, no pawn, per your anchor-creatures ruling. The flora pass proposes
 its floor-level skirt as a plant: a pale banded mat where the film spills off a
@@ -318,6 +336,8 @@ it MORE real, not less.
 ---
 
 ### Q7 — The sprig that salt cannot take: does it become an item with a use?
+
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (a) — PURE DRESSING, no harvest, no item; the rescue-item variant (b) noted as the only acceptable later opening.
 
 One understorey plant survives by refusing crystallisation outright — brine cannot
 seed a crystal on it, so it grows precisely where everything else is jacketed: the
@@ -348,6 +368,8 @@ the ruling's spirit is "the sea is not negotiated with," and the sprig should ob
 ### Q8 — A flower on the killing pools: accept the one plant the player can never
 reach?
 
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (a) — the pool lily rides THE SURFACE engine permitting; lip fallback silently.
+
 The pools' surfaces get a resident: a bone-white lily riding the density interface
 itself, root-threads down in the brine that kills everything. It is the biome's
 warning made beautiful — a white flower seen through murk means a pool is there before
@@ -370,6 +392,8 @@ difference is invisible in a screenshot taken three cells away.
 ---
 
 ### Q9 — The sponge that makes gentle water: story only, or a small yield spot?
+
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (a) — PROSE ONLY; the ecology-clustering version (c) noted as the good later door.
 
 One understorey sponge freshens the water around itself all its slow life — its halo
 is where the soft-bodied things shelter, and when it dies it becomes a white cast of
@@ -398,6 +422,8 @@ wants it, and it costs nothing to leave the door open.
 
 ### Q10 — How fast does the sea file your ship?
 
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (a) — the proposed ladder: rime ~1 day · first salted door ~2–3 days · full jacket ~a quadrum.
+
 The crystallising hull is ruled (it happens; doors freeze shut; never a tomb; the sea
 pays you for chipping; no heat trade). The one thing no ruling touched is the clock.
 The danger pass proposes a ladder — cosmetic rime from about a day parked, the first
@@ -422,6 +448,8 @@ the quadrum-scale jacket is the story.
 ---
 
 ### Q11 — "Crust pace is time alone": does weather and parking spot count as time?
+
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (b) — WEATHER and BERTH modify the pace; nothing the player buys ever does ('time alone' killed trades, not terrain).
 
 Your ruling closed the heat trade: crust pace is time alone, the counters are chipping
 and leaving. The danger pass, written before that card landed, also proposed two
@@ -449,6 +477,8 @@ danger."
 
 ### Q12 — How forgiving is the giant about your lamps?
 
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (a) — DETERMINISTIC AND FORGIVING: worklight-class only, hours of burn, telegraphed, dowsing always resets.
+
 Ruled: a strong steady player light reads as a rival's mate-mark, and the crusted
 giant comes to break the lamp — not the ship, not the pawns. The open knob is the
 threshold and the mercy. The danger pass proposes: only worklight-class light (never
@@ -475,6 +505,8 @@ observant survive," and that promise is only kept if reading the tells actually 
 ---
 
 ### Q13 — Who else squirts? (the pool creatures your sentence left unnamed)
+
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (b) — ONE new pool-sentinel species designed fresh: the ORRUHMU (RM_Orruhmu, grey_deep_pool_sentinel_2026-09-27.md).
 
 Your drop: *"Brine pools and the creatures near them have a unique defence: they
 squirt out a protein shower causing ultra-rapid crystallisation."* Plural, and no
@@ -504,6 +536,8 @@ sentinel keeps the promise without a menagerie.
 
 ### Q14 — The Elder's warning light in a biome where nothing may glow
 
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (a) — MOTION, CRACKLE and SOUND only; light exists only at the discharge instant.
+
 Ruled: the discharge is both a defence and a rare event, with a visible charge
 build-up on the limbs as the tell. Ban 4 stands: the only glow in the Grey Deep is
 the giant's mark. The sheet leaves open how the tell RENDERS: your own word for the
@@ -532,6 +566,8 @@ first time; the sheet already says the observant survive on motion and crackle.
 
 ### Q15 — The "beautifully useless artifact" needs a home before it becomes a thing
 
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (a) — the plot hook is FILED (GREYSEA_USELESS_ARTIFACT_PLOT_1); the artifact is built when a plot names it.
+
 Among the Elders' one-of-each treasures, five are buildable now (three canon,
 patched; two invented besides this one). The sixth — *"some beautifully useless
 artifact whose significance only becomes apparent much later"* — is a plot hook
@@ -559,6 +595,8 @@ ledger row and keeps the promise honest.
 
 ### Q16 — The salt colours shipped on our guess — ratify or repaint
 
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (a) — RATIFIED: white, pink, violet, amber — one mineralogy with the flora.
+
 The coloured cooking salts are built: white, pink, violet, amber — the same palette
 as your crystal flora, on the explicit inference (recorded in the sheet as a BENCH
 inference, not a ruling) that ingredient and plant should read as one mineralogy.
@@ -574,6 +612,8 @@ kitchen's salts to rhyme with the floor's monuments or to be their own thing.
 ---
 
 ### Q17 — Do the other two seas get their ship-touch voices named today?
+
+> ✅ **RULED 2026-09-27** (decision taken by question card, recorded on `GREYSEA_FLOOR_PASS_1`): option (b) — the Scald's and the Propane Lake's ship-touch voices wait for THEIR OWN passes.
 
 The cross-sea grammar is ruled and half-filled: every sea touches a parked ship in
 its own voice — the Twilight drops panes, the Grey crystallises. The Scald and the

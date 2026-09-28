@@ -15,9 +15,10 @@ this file indexes what they LEFT._
 | 4 | **The Scald's makers** | The dark tower in the crater lake — the Rakatan ground-based high command, and the Scald's engineered geometry with it. | ✅ RULED (tower); dungeon owed | `biomes/the_scald.md` §the tower; `SCALD_DARK_TOWER_1` |
 | 5 | **The Webwork question** | Are the Shokk engineered? RULED: **no — they are the wyyyschokk of Kashyyyk** (owner, 2026-09-08), canon Star Wars fauna (web-casting giant spiders; *Han Solo and the Lost Legacy*, re-canonized in *Jedi: Fallen Order*), somehow on Ash'karr. NOT a Rakatan product — this row stays as the ruled negative so the claim is never re-litigated. | ✅ RULED (negative) | `biomes/the_webwork.md` §Shokkweave; `SHOKKWEAVE_SOLE_SOURCE_1` |
 | 6 | **Terramanufacture** | The planet-scale project: the dynamo at the substellar pole, the Cathedral as remnant, the unplanned war lab at the antistellar point. | ✅ RULED (arc); propagation owed | `TERRAMANUFACTURE_CANON_1`; `biomes/the_rust_cathedral.md` |
+| 7 | **The Grey Elders' memory of the Reshapers** | Not a thing they left — the one witness that watched them leave it: the Brine Elders (older than every faction) remember the Reshapers' arrival, "the Reshapers" being the Elders' own exonym for the Rakata (RULED 2026-09-26 — a description, not a new faction). The planet's only eyewitness to the terramanufacture; Elder text reports what changed in the water, never who or why. | ✅ RULED | `biomes/the_grey_deep.md` §4e; `GREYSEA_FLOOR_PASS_1` rulings 2026-09-26/27; `ANCIENTS_AS_RAKATA_SPEC.md` |
 
 **The rule this file enforces:** an engineered-legacy claim is made in exactly
 one sheet's §GM (or ruled item), and INDEXED here. Anything claiming Rakatan
 authorship that has no row is either new canon (add the row, cite the ruling)
-or drift (strike it). Count as of 2026-09-08: **6 ruled (5 Rakatan, 1 ruled
-NOT-Rakatan), 0 open** — the count is the point.
+or drift (strike it). Count as of 2026-09-27: **7 ruled (5 Rakatan legacies,
+1 ruled NOT-Rakatan, 1 eyewitness memory), 0 open** — the count is the point.

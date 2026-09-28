@@ -25,7 +25,13 @@
   "defNames": [
     "RM_GreySea"
   ],
-  "evictions": [],
+  "evictions": [
+    {
+      "def": "AA_Aerofleet",
+      "disposition": "cut:GreySea-only",
+      "reason": "decision by question card 2026-09-26 (GREYSEA_ANCHOR_CREATURES_1 ruling 2): CUT from the Grey Sea and replaced by RM_Corrik — a hole is filled with a NEW creature, never a neighbour's. Scoped to this biome only: RM_TwilightSea and RM_TheForge still cast it deliberately"
+    }
+  ],
   "fauna": [
     {
       "action": "import",
@@ -33,15 +39,42 @@
       "commonality": 0.005,
       "def": "RSW_Reefback",
       "law": "terminator_sea §4 (endemic giant, one per sea, no sharing); the_grey_deep §4: the crusted giant — the endemic lineage, ill-tempered, mineral-armored; R11: warden adults spend their centuries in the Grey Deep as the brine adults; bs 32, spd 2.0, non-predator, manhunter-on-hurt 50% (MEASURED)",
-      "note": "This is the warden lifecycle's ADULT side only — they breed and die in the Miasma (R11); the crèche/mothers side is the Miasma roster (parallel agent). Manhunter-on-hurt carries the ill-tempered read. Donor: RimMandrake - SW Sea Beasts (prep §6.4 menu)."
+      "note": "This is the warden lifecycle's ADULT side only — they breed and die in the Miasma (R11); the crèche/mothers side is the Miasma roster (parallel agent). Manhunter-on-hurt carries the ill-tempered read. BUILT: ships as RM_Reefback at 0.005 on RM_GreySea (MEASURED 2026-09-27)."
     },
     {
-      "action": "import",
-      "band": "shore/shadow-lane drifter",
+      "action": "keep",
+      "band": "shore/shadow-lane drifter — the aerofleet's replacement",
       "commonality": 0.05,
-      "def": "AA_Aerofleet",
-      "law": "terminator_sea prep §6.1 target allows 1-2 shore/shadow-lane forms; ubiquity-25 BINDING (owner card 2026-09-09): terminator-adjacent only, keep scarce; R17 fliers cross biomes; bs 0.2, spd 2.84, non-predator (MEASURED)",
-      "note": "Shared with the Twilight Sea shore — legal: endemism binds giants; a drifter ranges (R17). Shore-side only; the Grey DEEP's three-resident cap (ban 2) governs the bottom, which this row never touches."
+      "def": "RM_Corrik",
+      "law": "GREYSEA_ANCHOR_CREATURES_1 ruling 2 (decision by question card, 2026-09-26): AA_Aerofleet CUT from the Grey Sea and replaced by a new creature of ours, never a neighbour's — the corrik ships at the cut donor's own commonality; solitary, non-schooling (ban 2), no *Catch counterpart"
+    },
+    {
+      "action": "keep",
+      "band": "sessile layer",
+      "commonality": 0.9,
+      "def": "RM_Nissik",
+      "law": "GREYSEA_SESSILE_LAYER_1 (RULED all three NEW 2026-09-26; built): the sediment clam equivalent — abundance carried in commonality, wildGroupSize stays 1, which is how 'abundant' satisfies ban 2"
+    },
+    {
+      "action": "keep",
+      "band": "sessile layer",
+      "commonality": 0.8,
+      "def": "RM_Grusk",
+      "law": "sessile layer — the pillar-clustering mussel equivalent (1~4 wildGroupSize, the placement the sheet explicitly permits)"
+    },
+    {
+      "action": "keep",
+      "band": "sessile layer",
+      "commonality": 0.7,
+      "def": "RM_Thollim",
+      "law": "sessile layer — the hand-sized picker shrimp equivalent, authored so it never reads as a second ossuary shrimp"
+    },
+    {
+      "action": "keep",
+      "band": "pool-shore sentinel",
+      "commonality": 0.05,
+      "def": "RM_Orruhmu",
+      "law": "RULED 2026-09-27 (sitting Q13, decision by question card): ONE new pool-sentinel species designed fresh — the owner's 'creatures near them squirt' sentence made a creature. Salt-dome mimic bellows-sac at the pool lips; squirts the crystallising shower when crowded (third trigger on the shipped encasement mechanism); bs 0.6, wildGroupSize 1, rumour-rare; floor resident only, NO *Catch twin (design: grey_deep_pool_sentinel_2026-09-27.md)"
     },
     {
       "action": "import",
@@ -60,7 +93,7 @@
       "action": "import",
       "commonality": 0.5,
       "def": "AA_ColossalAerofleet",
-      "law": "owner review 2026-09 (round2 move mapping): rare creature wherever normal aerofleets end up"
+      "law": "owner review 2026-09 (round2 move mapping): rare creature wherever normal aerofleets end up — ⚠️ normal aerofleets no longer end up HERE (AA_Aerofleet cut from the Grey 2026-09-26, GREYSEA_ANCHOR_CREATURES_1), so by its own condition this row no longer includes the Grey; flagged for BENCH, not evicted unilaterally"
     },
     {
       "action": "import",
@@ -83,9 +116,100 @@
   ],
   "fish": {
     "list": [],
-    "ruling": "OVERTURNED 2026-09-26 by the owner at the bench, typed: \"There should be fish\" / \"But bizarre creatures of course\". The prior no-fish ruling (kept below for provenance) is DEAD. The Grey Sea is fishable and its catch must be BIZARRE - invented, strange creatures, never vanilla fish reskinned. NOTE the def already shipped fish before this ruling and contradicted the old one: RM_GreySea carries 9 entries (saltwater_Common RUT_Sallik/RUT_Karrud/RUT_Hessal/RUT_Oomal/RM_EssarnCatch; saltwater_Uncommon RUT_Maalu/RUT_Immu/RUT_Haarn/RM_SorruthCatch) with maxFishPopulation 120, all resolving. [GREYSEA_CATCH_TIER_RENAME_1, 2026-09-27: those seven RUT_ names are now RM_SallikCatch/RM_KarrudCatch/RM_HessalCatch/RM_OomalCatch/RM_MaaluCatch/RM_ImmuCatch/RM_HaarnCatch.] The *Catch rows pair a floor animal with its catchable form, which is the two-defs-per-sea-species rule already implemented. SUPERSEDED TEXT: no fish — the water is saturated brine going to saturated-plus at the bottom (the_grey_deep §3), the sea is a monoculture (terminator_sea §4), nothing schools in either layer, and the Grey Deep's roster is capped at three residents (ban 2). R2: the Grey Sea is salting — early on the salt road; its water is a chemistry, not a fishery. FISH_BY_BIOME_1: ruled no-fish, no analogs owed."
+    "ruling": "BREADTH RULED 2026-09-27 (sitting Q2, decision by question card): KEEP ALL 13 catch species, REBALANCED RARE — lower fish population, push species into the uncommon/rare bands, sparseness felt at the dock (overrides the coexist-annotated recommendation). | OVERTURNED 2026-09-26 by the owner at the bench, typed: \"There should be fish\" / \"But bizarre creatures of course\".The prior no-fish ruling (kept below for provenance) is DEAD. The Grey Sea is fishable and its catch must be BIZARRE - invented, strange creatures, never vanilla fish reskinned. NOTE the def already shipped fish before this ruling and contradicted the old one: RM_GreySea carries 9 entries (saltwater_Common RUT_Sallik/RUT_Karrud/RUT_Hessal/RUT_Oomal/RM_EssarnCatch; saltwater_Uncommon RUT_Maalu/RUT_Immu/RUT_Haarn/RM_SorruthCatch) with maxFishPopulation 120, all resolving. [GREYSEA_CATCH_TIER_RENAME_1, 2026-09-27: those seven RUT_ names are now RM_SallikCatch/RM_KarrudCatch/RM_HessalCatch/RM_OomalCatch/RM_MaaluCatch/RM_ImmuCatch/RM_HaarnCatch.] The *Catch rows pair a floor animal with its catchable form, which is the two-defs-per-sea-species rule already implemented. SUPERSEDED TEXT: no fish — the water is saturated brine going to saturated-plus at the bottom (the_grey_deep §3), the sea is a monoculture (terminator_sea §4), nothing schools in either layer, and the Grey Deep's roster is capped at three residents (ban 2). R2: the Grey Sea is salting — early on the salt road; its water is a chemistry, not a fishery. FISH_BY_BIOME_1: ruled no-fish, no analogs owed."
   },
-  "flora": [],
+  "flora": [
+    {
+      "commonality": 2.0,
+      "def": "RM_GlassVeilKelp",
+      "law": "the crystal seven (owner's own verbatim specs, GREYSEA_CRYSTAL_FLORA_1, built 2026-09-26/27; the_grey_deep.md §4a) — curtain stands over the brine channels, terrain-gated to RM_BrineChannel. plantDensity RULED 0.22 at the 2026-09-27 sitting (Q3), up from the shipped 0.14."
+    },
+    {
+      "commonality": 2.0,
+      "def": "RM_SaltChimneyVine",
+      "law": "crystal seven — grows only at the chimneys' warm mineral seeps (terrain-gated)."
+    },
+    {
+      "commonality": 0.6,
+      "def": "RM_CubicSculpture",
+      "law": "crystal seven — the general crystalline form."
+    },
+    {
+      "commonality": 0.5,
+      "def": "RM_CruciblePod",
+      "law": "crystal seven — sealed cube / open face / empty cage, clustered by the crystals and domes."
+    },
+    {
+      "commonality": 0.4,
+      "def": "RM_MosaicFanPalm",
+      "law": "crystal seven — tiled mosaic fans; pink/violet/amber variants of one def."
+    },
+    {
+      "commonality": 0.35,
+      "def": "RM_SpherePlant",
+      "law": "crystal seven — spined sphere; RULED 2026-09-26: does LOW contact damage."
+    },
+    {
+      "commonality": 0.15,
+      "def": "RM_BrineCrown",
+      "law": "crystal seven — anemoflora that retracts to a mineral porcupine; hurts on contact; preys on the sessile layer."
+    },
+    {
+      "commonality": 0.03,
+      "def": "RM_SaltBladeGrey",
+      "law": "terminator_sea §4/§9's salt-rimed blade flora, Grey shore variant — the sparsest thing on the floor by design (TERMINAL_SEAS_FLOOR_DRESSING_1)."
+    },
+    {
+      "commonality": 1.0,
+      "def": "RM_Masonmat",
+      "law": "the ruled ten-understorey (ALL TEN SHIP — owner cards 2026-09-27, Q4, at plantDensity 0.22 per Q3; specs the_grey_deep_flora_pass_2026-09-27.md) — the pillar-mason's skirt; Q6: YES the skirt is a plant, the mason itself stays def-less fiction. The commonest living thing on the floor; GenStep-thickened at pillar/dome feet."
+    },
+    {
+      "commonality": 0.0,
+      "def": "RM_Rimebeard",
+      "law": "understorey — efflorescent filament beard on the formations; NOT in wildPlants: placed by formation-adjacency (2-5 per pillar/dome cluster). Harvest: shed rime -> RM_RawSalt x2."
+    },
+    {
+      "commonality": 0.5,
+      "def": "RM_Mournweft",
+      "law": "understorey — tactile-sorting filament net, open sediment; feeds the sessile layer."
+    },
+    {
+      "commonality": 0.25,
+      "def": "RM_Milkwell",
+      "law": "understorey — the osmotic sponge that freshens the water; Q9 RULED: the halo is PROSE ONLY, no yield bonus (the lit-cells ruling stays the only yield dial; the ecology-clustering version is the noted later door)."
+    },
+    {
+      "commonality": 0.3,
+      "def": "RM_Hoarstock",
+      "law": "understorey — self-ossifying soft coral riding its own dead centuries; slowest-growing plant we ship; quarrying the base yields RM_RawSalt x3 and kills it."
+    },
+    {
+      "commonality": 0.35,
+      "def": "RM_Saltswoon",
+      "law": "understorey — deliquescent puddle-plant of the sediment hollows; dressing with a personality."
+    },
+    {
+      "commonality": 0.0,
+      "def": "RM_Stillbloom",
+      "law": "understorey — the bone-white pool lily riding the density interface; Q8 RULED: ON THE SURFACE engine permitting, lip fallback SILENTLY. NOT in wildPlants: placed on pool-margin cells by the dressing worker, 3-6 per pool. Structurally out of reach; the danger's warning."
+    },
+    {
+      "commonality": 1.5,
+      "def": "RM_Brinecomb",
+      "law": "understorey — gradient-eater of the brine channel beds; terrain-gated to RM_BrineChannel (never remove the tag to 'make it show up')."
+    },
+    {
+      "commonality": 0.15,
+      "def": "RM_Neverset",
+      "law": "understorey — the sprig salt cannot take, growing in the jacket rings and pool shores; Q7 RULED: PURE DRESSING, no harvest, no item (the rescue-item variant is the only acceptable later opening; a full anticrystallant is the trade the crust rulings refused)."
+    },
+    {
+      "commonality": 0.2,
+      "def": "RM_Murkblush",
+      "law": "understorey — structural colour, iridescent only under a player's lamp; Q5 RULED: SHIPS — ban 4's tribute, not its exception (it emits nothing, ever; every photon is the player's)."
+    }
+  ],
   "flora_purged": [],
   "law_sources": [
     "terminator_sea.md",
@@ -96,22 +220,34 @@
   ],
   "new_defs": [
     {
-      "from_sheet": "terminator_sea §4 (the Grey Sea holds a different mat) + the_grey_deep §4",
-      "kind": "plant",
-      "mechanic_load": "none for the def; pillar navigation/waymarks deferred to diving mods",
-      "name": "the pillar-mason (Grey monoculture — crystal-binding film that builds mineral columns)"
+      "from_sheet": "terminator_sea §4 + the_grey_deep §4/§4b",
+      "kind": "buildings/terrain",
+      "mechanic_load": "BUILT (GREYSEA_FLOOR_FORMATIONS_1, done): GenStep_GreySeaFloorDressing carves the deepest pool, rings it with jacket, paints seep aprons, runs the channels",
+      "name": "the mason's work and the floor formations — RM_SaltPillar, RM_SaltDome, RM_SaltChimney, RM_BrineJacket, RM_GreatSaltCrystal_White/Pink/Violet/Amber; terrains RM_SaltCrustShore, RM_BrineChannel, RM_ChimneySeepFloor. The pillar-mason ITSELF stays def-less fiction (anchor ruling); its floor-level skirt is the plant RM_Masonmat (Q6, 2026-09-27). RULED 2026-09-27 (Q1): the pillar navigation law is STORY ONLY — no waymark job, no murk penalty"
     },
     {
-      "from_sheet": "the_grey_deep §4, bans 3 (no combat/pet variant); no donor — RSW_Yobshrimp bs 0.2 is the wrong scale (MEASURED)",
+      "from_sheet": "the_grey_deep §4, bans 3 (no combat/pet variant)",
       "kind": "creature",
-      "mechanic_load": "C#: evasion AI — deferred to diving mods; def can land single-spawn per inherited bans",
-      "name": "the ossuary shrimp (man-sized, skeletal-seeming, shy and evasive, never attacks, never tamed)"
+      "mechanic_load": "built",
+      "name": "the ossuary shrimp — BUILT as RM_Fessk (0.01 on RM_GreySea); the danger pass's layer-2 tell (stands at the lamplight's rim, never enters, never attacks)"
     },
     {
-      "from_sheet": "the_grey_deep §4 + R11; prep §6.4 renames-to-endemic",
+      "from_sheet": "the_grey_deep §4 + R11",
       "kind": "creature",
-      "mechanic_load": "none",
-      "name": "rename ledger: RSW_Reefback → 'Brine Warden (adult)' / the crusted giant endemic label (defName migration is ordinary owed work — NAMING_SCHEME_EXECUTION_1 closed 2026-08-31, no gate remains)"
+      "mechanic_load": "done",
+      "name": "the crusted giant ships as RM_Reefback (the old RSW_ rename-ledger row is executed); its lamp response is RULED DETERMINISTIC AND FORGIVING (Q12, 2026-09-27): worklight-class only, hours of burn, telegraphed, dowsing always resets"
+    },
+    {
+      "from_sheet": "the_grey_deep §4d + §4f",
+      "kind": "terrain/building + liquid grade",
+      "mechanic_load": "encasement BUILT (RM_BrinePoolShallow/RM_BrinePoolDeep terrains; RM_BrineEncasement jacket thing; MapComponent_BrineCrystallisation); the saturated-plus LIQUID grade (LIQUID_TYPES_MOD_1) is still owed",
+      "name": "the brine pools' crystallisation defence — encased-as-an-object, mined out, never a hediff (RULED 2026-09-26); ship crust clock RULED 2026-09-27 (Q10/Q11): rime ~1d, first salted door 2-3d, full jacket ~a quadrum, weather + berth multipliers, nothing purchasable ever"
+    },
+    {
+      "from_sheet": "the_grey_deep §4e",
+      "kind": "building (multi-cell thing with comps)",
+      "mechanic_load": "BUILT: RM_BrineElder + RM_ElderTreasures; the ships engine check is its own bar (GREYSEA_BRINE_ELDERS_1)",
+      "name": "the Brine Elders — one per Grey tile, per-Elder seen-set novelty trade; tell RULED 2026-09-27 (Q14): motion, crackle and sound only, light only at the discharge instant; the sixth treasure's plot hook is FILED (Q15, GREYSEA_USELESS_ARTIFACT_PLOT_1), the Elder ships with five"
     },
     {
       "from_sheet": "terminator_sea §4/§9",
