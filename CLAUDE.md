@@ -224,9 +224,13 @@ MEASURED about the live world — the live system is the only instrument for "ri
   `LongtailGorg`, `Woolamander` and `Gornt` are canon Star Wars creatures with no entry. Routing a
   canon-vs-ours decision off that directory listing would have rewritten canon text for all seven.
 - **A number you brief a subagent with will come back to you.** A census reported "2 of
-  137 canon entries ruled"; the real figure is **25**. Two later agents measured 25 and
+  137 canon entries ruled"; the figure at the time was **25**. Two later agents measured 25 and
   both explicitly refused to adjust to the briefed figure — the correct behaviour. When
   two subagents disagree on a number, measure it yourself before it becomes a fact.
+  ⚠️ And the count MOVES: **RE-MEASURED 2026-09-28 it is 29 of 137**, so never cite a ruling
+  count from this file. A `## ruling` section carries the literal placeholder
+  `(empty — owner has not reviewed this …)`, so a non-empty test reports **136** and is wrong;
+  exclude the placeholder.
 
 ### Tools with surprising side effects
 - 🔴 **When a new game or world won't start, read the FIRST exception in `Player.log`, not the
