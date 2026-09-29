@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T21:20:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T01:52:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -17,7 +17,7 @@ The first heading below is what `rimflow next --seat FOUNDRY` returns. This file
 ## BMT_FAUNA_ABSORPTION_1 Port the 71 cast Beasts of the Rim creatures (41 in + 30 move per decisions_propagated) into our tier per the SWBestiary donor-retirement pattern, then retire mlie.beastsoftherim - owner ruled 2026-09-11 (Wave 2)
 state:    ready
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     build
 summary:  BMTFAUNAABSORPTION1 — donor corrected to biomesteam., ready to port
@@ -1886,13 +1886,3 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CRACKEDLANDSMECHANICSBUILD1 — the Swale, surveys, fossils-in-the-walls, the giants' behaviors, the soundscape
 prose:    infrastructure/state/items/CRACKEDLANDS_MECHANICS_BUILD_1.md
-
-## GASDAMAGING_PARENTNAME_UNRESOLVED_1 RM_BaseGasDamaging ParentName never resolves (XmlInheritance Name-attribute defect, same class as THEY_MOD_REPLICATION_1's fix)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  GASDAMAGINGPARENTNAMEUNRESOLVED1 — RMBaseGasDamaging ParentName never resolves
-prose:    infrastructure/state/items/GASDAMAGING_PARENTNAME_UNRESOLVED_1.md
