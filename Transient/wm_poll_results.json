@@ -1,0 +1,98 @@
+[
+  {
+    "step": 0,
+    "ticksGame": 500,
+    "x": 201,
+    "z": 193,
+    "terrain": "WaterShallow",
+    "isWater": true
+  },
+  {
+    "step": 1,
+    "ticksGame": 500,
+    "x": 203,
+    "z": 196,
+    "terrain": "WaterShallow",
+    "isWater": true
+  },
+  {
+    "step": 2,
+    "ticksGame": 500,
+    "x": 207,
+    "z": 200,
+    "terrain": "WaterShallow",
+    "isWater": true
+  },
+  {
+    "step": 3,
+    "ticksGame": 500,
+    "x": 204,
+    "z": 194,
+    "terrain": "WaterShallow",
+    "isWater": true
+  },
+  {
+    "step": 4,
+    "ticksGame": 500,
+    "x": 197,
+    "z": 201,
+    "terrain": "WaterShallow",
+    "isWater": true
+  },
+  {
+    "step": 5,
+    "ticksGame": 500,
+    "x": 195,
+    "z": 203,
+    "terrain": "WaterShallow",
+    "isWater": true
+  },
+  {
+    "step": 6,
+    "ticksGame": 500,
+    "x": 200,
+    "z": 207,
+    "terrain": "WaterShallow",
+    "isWater": true
+  },
+  {
+    "step": 7,
+    "ticksGame": 500,
+    "x": 201,
+    "z": 201,
+    "terrain": "WaterShallow",
+    "isWater": true
+  },
+  {
+    "step": 8,
+    "ticksGame": 500,
+    "x": 205,
+    "z": 197,
+    "terrain": "WaterShallow",
+    "isWater": true
+  },
+  {
+    "step": 9,
+    "ticksGame": 500,
+    "x": 202,
+    "z": 198,
+    "terrain": "WaterShallow",
+    "isWater": true
+  },
+  {
+    "step": 10,
+    "ticksGame": 500,
+    "x": 198,
+    "z": 205,
+    "terrain": "WaterShallow",
+    "isWater": true
+  },
+  {
+    "step": 11,
+    "ticksGame": 500,
+    "x": 199,
+    "z": 206,
+    "terrain": "WaterShallow",
+    "isWater": true
+  }
+]
