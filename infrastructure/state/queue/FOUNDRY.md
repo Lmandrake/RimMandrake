@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T07:47:42Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-29T08:08:55Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1017,6 +1017,15 @@ kind:     task
 summary:  DEEPFIREPAINTLIVEVERIFY1
 prose:    infrastructure/state/items/DEEPFIRE_PAINT_LIVE_VERIFY_1.md
 
+## SUMP_TAR_FIRE_NETWORK_1 Network fire with gate firebreaks; wire belch to glass-cooling
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+summary:  SUMPTARFIRENETWORK1 — network fire with gate firebreaks, and wiring the belch to glass-front cooling
+prose:    infrastructure/state/items/SUMP_TAR_FIRE_NETWORK_1.md
+
 ## SEA_FISHABLES_ALIVE_IN_DEPTHS_1 Every fishable in EVERY sea owes a living creature swimming the floor map, not just a catch item - owner ruling 2026-09-26
 state:    doing
 row:      unassigned
@@ -1544,6 +1553,16 @@ blocked:  needs owner: item's own spec says do not guess the pressure curve or p
 summary:  Caused by FEVERWOODTENTACLEBESTIARY1 (six tentacle types + the ordinary
 prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.md
 
+## FEVERWOOD_DIANOGA_TANK_TUNING_1 Sekkulaath prison tank — real numbers, not placeholders
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+blocked:  needs owner: item's own spec lists three taming numbers, the captivity-memory mechanism shape, and the fuel/staged-maturation scope explicitly as do-not-guess, same cluster as the other Feverwood tuning items
+summary:  Authority: FEVERWOODDIANOGAPRISON1 (build), design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
+prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_TANK_TUNING_1.md
+
 ## FEVERWOOD_SAP_SUCKER_TUNING_1 Real numbers and the mishandling trigger for the sap-sucker guild
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -1635,26 +1654,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## FEVERWOOD_DIANOGA_TANK_TUNING_1 Sekkulaath prison tank — real numbers, not placeholders
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  Authority: FEVERWOODDIANOGAPRISON1 (build), design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
-prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_TANK_TUNING_1.md
-
-## SUMP_TAR_FIRE_NETWORK_1 Network fire with gate firebreaks; wire belch to glass-cooling
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-thin:     no ## spec
-summary:  SUMPTARFIRENETWORK1 — network fire with gate firebreaks, and wiring the belch to glass-front cooling
-prose:    infrastructure/state/items/SUMP_TAR_FIRE_NETWORK_1.md
 
 ## GREENTIDE_CANOPY_SWARM_1 The Greentide's insect axis: a new canopy-hazard swarm, driving the Gnawer/Shatterer tree-fall mechanics
 state:    proposed
