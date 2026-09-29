@@ -1190,3 +1190,7 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"BAROQUE_CORPSE_MARKETVALUE_CRASH_1 diagnosis","ts":"2026-09-29T09:44:27Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-29T09:49:30Z"}
 {"seat":"FOUNDRY","event":"close","id":"BAROQUE_CORPSE_MARKETVALUE_CRASH_1","sha":"1bd060d6f","ts":"2026-09-29T09:50:09Z"}
+{"seat":"FOUNDRY","event":"claim","id":"JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1","ts":"2026-09-29T09:52:17Z"}
+{"seat":"FOUNDRY","event":"start","id":"JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1","ts":"2026-09-29T09:52:18Z"}
+{"seat":"FOUNDRY","event":"close","id":"JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1","sha":"8d5e3989b","ts":"2026-09-29T09:52:21Z"}
+{"seat":"FOUNDRY","event":"block","id":"WARLAB_CRATER_ACCIDENTAL_TRIGGER_1","reason":"needs the Route-1 arming design first, per its own title -- a deliberate arming sequence is a creative/gameplay call, not a mechanical fix; nothing to build until that design lands","ts":"2026-09-29T09:52:25Z"}
