@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T08:58:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T09:00:10Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1684,16 +1684,6 @@ kind:     bug
 thin:     no ## verify
 summary:  Three sonnet reviewers swept all 29 C files changed in the Twilight build wave
 prose:    infrastructure/state/items/TERMINALBIOMES_REVIEW_FIXES_1.md
-
-## RUT_RAREGREYCATCHES_DEFNAME_COLLISION_1 Same defName RUT_RareGreyCatches (ThingSetMakerDef) exists in two separate mods
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RUT_RAREGREYCATCHES_DEFNAME_COLLISION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RUT_RAREGREYCATCHES_DEFNAME_COLLISION_1.md
 
 ## CONTAGION_RULED_CONTENT_1 Build the Contagion grotesque cast: 35 RM_ defs replacing the donor roster outright (no patches), 8 new species, 4 real flyers, Wombpod wired to the built genome loop - cast bible is the authority
 state:    proposed
