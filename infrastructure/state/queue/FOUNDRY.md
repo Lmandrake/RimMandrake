@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T16:22:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T16:44:22Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -989,15 +989,6 @@ target:   v1
 kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
-
-## FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 The eye set-piece's frequency and the poison/radioactive suppression route
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     mechanism
-summary:  Caused by FEVERWOODTENTACLEBESTIARY1 (six tentacle types + the ordinary
-prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.md
 
 ## FEVERWOOD_TWO_FRONT_LURE_TUNING_1 Two-front lure numbers, prey-quality gate, and a free-tier second raider
 state:    doing
