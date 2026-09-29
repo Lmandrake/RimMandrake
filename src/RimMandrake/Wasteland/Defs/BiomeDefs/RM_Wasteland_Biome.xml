@@ -28,6 +28,11 @@
   originating biome pack active will render these two terrain rows as pink/
   magenta, not fail to load (RimWorld degrades an unresolved TerrainDef
   reference to the error-material terrain, not a hard crash).
+
+  ⭐ WASTELAND_RULED_CONTENT_1 (2026-09-29) superseded the wildAnimals/
+  wildPlants rosters described above: every donor row named in points 1-3
+  is now an owned RM_ port (see the wildAnimals/wildPlants blocks' own
+  comments below for the current, live roster and its provenance).
 -->
 <Defs>
 
@@ -117,33 +122,49 @@
       <RainyThunderstorm>0</RainyThunderstorm>
     </baseWeatherCommonalities>
 
-    <!-- Non-Star-Wars, non-Utinni-exclusive donor rows only — every RSW_/SW_/
-         mlie row and VAEWaste_Megatardi rides WildAnimals_Wasteland.xml in
-         UtinniPatches instead (see this file's header). -->
+    <!-- WASTELAND_RULED_CONTENT_1 — full RM_ donor replacement (cast bible
+         wasteland_survivor_cast_2026-09-28.md §7). Every donor row above is
+         REPLACED outright by an owned RM_ port at the same commonality;
+         Toxalope (vanilla Biotech) is dropped in favor of RM_Boilhide
+         without touching the vanilla def itself. Names follow the owner's
+         2026-09-29 art-sheet renames: RM_Scumrat -> RM_Scumslider,
+         RM_Middenbeetle -> RM_Gripper (Transient/bedazzle_art_sheets_2026-
+         09-28/wasteland/sheet.decisions.json). Zero donor MayRequire
+         references remain in this roster. Shorthand element form only
+         (BiomeAnimalRecord's custom loader reads node NAME as the def and
+         node TEXT as commonality — a `<li>` here silently discards the def).
+         The RUT_ twin's own patch-added campaign roster
+         (UtinniPatches/Patches/WildAnimals_Wasteland.xml) is untouched;
+         not this pass's scope. -->
     <wildAnimals>
-      <GR_Beetlefleet MayRequire="vanillaexpanded.vgeneticse">0.7</GR_Beetlefleet>  <!-- beetlefleet - wretched-small, keep -->
-      <GR_ParagonRat MayRequire="vanillaexpanded.vgeneticse">0.7</GR_ParagonRat>  <!-- rodent paragon - wretched-small, keep -->
-      <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.6</VFEI2_Swarmling>  <!-- swarmlings - wretched-small, adjust-keep -->
-      <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.6</VFEI2_BlackSwarmling>  <!-- black swarmlings - wretched-small, adjust-keep (MayRequire verbatim from source: this defName's own donor gate points at Alpha Animals, not VFE Insectoids 2) -->
-      <Toxalope MayRequire="Ludeon.RimWorld.Biotech">0.4</Toxalope>  <!-- toxalope - wretched-herd, import; vanilla Biotech animal -->
-      <GR_Molebear MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Molebear>  <!-- molebear - wretched-medium, keep -->
-      <GR_Spidercat MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Spidercat>  <!-- spidercat - wretched-medium, keep -->
-      <AA_Terramorph MayRequire="sarg.alphaanimals">0.2</AA_Terramorph>  <!-- terramorph - extremophile-odd, keep -->
+      <RM_Scumslider>0.7</RM_Scumslider>  <!-- port of GR_ParagonRat, renamed from Scumrat -->
+      <RM_Gripper>0.7</RM_Gripper>  <!-- port of GR_Beetlefleet, renamed from Middenbeetle -->
+      <RM_Gristleswarm>0.6</RM_Gristleswarm>  <!-- port of VFEI2_Swarmling -->
+      <RM_SootGristleswarm>0.6</RM_SootGristleswarm>  <!-- port of VFEI2_BlackSwarmling -->
+      <RM_Boilhide>0.4</RM_Boilhide>  <!-- port of vanilla Toxalope -->
+      <RM_Slagmole>0.4</RM_Slagmole>  <!-- port of GR_Molebear -->
+      <RM_Scabspinner>0.4</RM_Scabspinner>  <!-- port of GR_Spidercat -->
+      <RM_Sloghog>0.3</RM_Sloghog>  <!-- new: ranchable excretor -->
+      <RM_Sootgrazer>0.25</RM_Sootgrazer>  <!-- new: ash-eating processor -->
+      <RM_Gravelgut>0.2</RM_Gravelgut>  <!-- port of AA_Terramorph -->
+      <RM_Grimewing>0.15</RM_Grimewing>  <!-- new: flyer niche, ruled in 2026-09-28 -->
+      <RM_Smolderback>0.05</RM_Smolderback>  <!-- new: radiothermal solitary, rare -->
     </wildAnimals>
     <coastalWildAnimals />
 
     <wildPlants>
-      <RG_Plant_ToxiGrass>1.2</RG_Plant_ToxiGrass>  <!-- toxigrass -->
-      <RG_Plant_TallToxiGrass>0.8</RG_Plant_TallToxiGrass>  <!-- tall toxigrass -->
-      <Plant_GrayGrass>0.35</Plant_GrayGrass>  <!-- gray grass -->
+      <RM_Scumgrass>1.2</RM_Scumgrass>  <!-- port of RG_Plant_ToxiGrass -->
+      <RM_TallScumgrass>0.8</RM_TallScumgrass>  <!-- port of RG_Plant_TallToxiGrass -->
+      <Plant_GrayGrass>0.35</Plant_GrayGrass>  <!-- gray grass — vanilla, unchanged -->
       <RM_WastelandScorchedStars>0.3</RM_WastelandScorchedStars>  <!-- scorched stars — this mod's own duplicate of RUT_ScorchedStars, per §7 Q13 (DUPLICATE, THEN DIVERGE); see RM_WastelandFlora.xml -->
-      <AB_WeepingToxberry>0.2</AB_WeepingToxberry>  <!-- weeping toxberry - tree -->
-      <Plant_Toxipotato>0.2</Plant_Toxipotato>  <!-- toxipotato -->
-      <RM_DosimeterLawn>0.15</RM_DosimeterLawn>  <!-- dosimeter lawn - radiotroph flora -->
-      <AB_ToxiBulb>0.1</AB_ToxiBulb>  <!-- toxibulb -->
-      <Plant_TreePolux>0.1</Plant_TreePolux>  <!-- polux tree - tree -->
-      <RM_VaultRoot>0.08</RM_VaultRoot>  <!-- vault-root tree - sequestration tree -->
-      <VRE_PoluxBush>0.08</VRE_PoluxBush>  <!-- polux bush -->
+      <RM_Pusberry>0.2</RM_Pusberry>  <!-- port of AB_WeepingToxberry -->
+      <Plant_Toxipotato>0.2</Plant_Toxipotato>  <!-- toxipotato — vanilla Biotech, unchanged -->
+      <RM_DosimeterLawn>0.15</RM_DosimeterLawn>  <!-- dosimeter lawn - radiotroph flora, unchanged -->
+      <RM_Boilbulb>0.1</RM_Boilbulb>  <!-- port of AB_ToxiBulb -->
+      <Plant_TreePolux>0.1</Plant_TreePolux>  <!-- polux tree — vanilla, unchanged -->
+      <RM_VaultRoot>0.08</RM_VaultRoot>  <!-- vault-root tree - sequestration tree, unchanged -->
+      <RM_Wartshrub>0.08</RM_Wartshrub>  <!-- port of VRE_PoluxBush -->
+      <RM_Cinderfelt>0.02</RM_Cinderfelt>  <!-- new: fresh-ash-fall marker mat; token fallback row until the storm-germination wiring (WASTELAND_MECHANICS_BUILD_1) lands, per cast bible §6 -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>

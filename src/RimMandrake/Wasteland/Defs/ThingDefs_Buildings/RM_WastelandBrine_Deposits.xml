@@ -8,13 +8,17 @@
   this mod's own RM_Tekk/RM_Drazz/RM_BrinePlate. Field values unchanged; see
   that file's own header for the RockBase-not-vein-mineable crib and the
   terrainAffordanceNeeded finding.
+
+  WASTELAND_RULED_CONTENT_1 §5 — label-only renames follow the item renames
+  (defNames FROZEN): "tekk bed" -> "sparkcrab bed", "drazz bed" -> "brineleech
+  bed"; descriptions swap the old nouns in place.
 -->
 <Defs>
 
   <ThingDef ParentName="RockBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_BrineDeposit_Tekk</defName>
     <saveCompressible>false</saveCompressible>
-    <label>tekk bed</label>
+    <label>sparkcrab bed</label>
     <description>A crust of salt-white mineral over a shallow shelf, crawling with plate-scrapers just under the surface. Break the crust and they scatter for the taking.</description>
     <graphicData>
       <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
@@ -44,7 +48,7 @@
   <ThingDef ParentName="RockBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_BrineDeposit_Drazz</defName>
     <saveCompressible>false</saveCompressible>
-    <label>drazz bed</label>
+    <label>brineleech bed</label>
     <description>A stack of mineral wafers half-buried in the pool floor, salt-white and dark by turns — the owner, dormant and heavy, waiting under the crust. Mining it out is the only way anyone gets one without a dry line and a lot of patience.</description>
     <graphicData>
       <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
@@ -75,7 +79,7 @@
     <defName>RM_BrineDeposit_BrinePlate</defName>
     <saveCompressible>false</saveCompressible>
     <label>spent electrode bed</label>
-    <description>A drazz's discarded plates, gone still and cold, pressed into the mineral crust by seasons of brine. Rarer than a living bed and worth the extra digging.</description>
+    <description>A brineleech's discarded plates, gone still and cold, pressed into the mineral crust by seasons of brine. Rarer than a living bed and worth the extra digging.</description>
     <graphicData>
       <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
       <graphicClass>Graphic_Single</graphicClass>

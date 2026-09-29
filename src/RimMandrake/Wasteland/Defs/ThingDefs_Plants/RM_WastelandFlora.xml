@@ -112,4 +112,192 @@
     </plant>
   </ThingDef>
 
+  <!-- ======================================================================
+       WASTELAND_RULED_CONTENT_1 §3, §6 — the flora port wave. Donor rows
+       (RG_Plant_ToxiGrass, RG_Plant_TallToxiGrass, AB_WeepingToxberry,
+       AB_ToxiBulb, VRE_PoluxBush) come OUT of RM_Wasteland_Biome.xml's
+       wildPlants in the same commit these RM_ rows go in (cast bible §7).
+       Donor defs are inactive on this machine's current def dump (not
+       indexed by RimSage), so stat blocks are freshly authored against the
+       cast bible's own descriptions rather than literal donor field copies
+       — same idiom RM_ContagionFauna.xml uses for its fauna port wave.
+       New this wave: Cinderfelt (§6, storm-germination marker).
+       ====================================================================== -->
+
+  <!-- ============== Scumgrass (port of RG_Plant_ToxiGrass) ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Scumgrass</defName>
+    <label>scumgrass</label>
+    <description>A wiry tussock of grease-slicked grass that grows where cleaner plants die — dull grey-green blades with an oily sheen, tips crusted white with salt. The biome's default green: sparse but firmly rooted, and grazing animals eat it without complaint.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Scumgrass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <selectable>false</selectable>
+    <plant>
+      <growDays>3</growDays>
+      <harvestWork>50</harvestWork>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.4~0.8</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Tall Scumgrass (port of RG_Plant_TallToxiGrass) ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_TallScumgrass</defName>
+    <label>tall scumgrass</label>
+    <description>The same wiry, grease-slicked grass where the ground is richest — which here means worst. Waist-high, sight-blocking, salt crust heavier at the tips.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_TallScumgrass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.3</drawSize>
+    </graphicData>
+    <selectable>false</selectable>
+    <plant>
+      <growDays>5</growDays>
+      <harvestWork>60</harvestWork>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.7~1.1</visualSizeRange>
+      <topWindExposure>0.5</topWindExposure>
+      <blockAdjacentSow>false</blockAdjacentSow>
+      <wildOrder>2</wildOrder>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Pusberry (port of AB_WeepingToxberry) ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Pusberry</defName>
+    <label>pusberry</label>
+    <description>A small tree whose pale berries sit in weeping, wax-sealed sockets — it walls its fruit off from its own sap the way the boilhide walls off poison. Edible once processed; raw is a lesson.</description>
+    <minifiedDef IsNull="True" />
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Nutrition>1.0</Nutrition>
+      <Mass>45</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Pusberry</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.25, 0.2)</volume>
+        <offset>(0,0,-0.3)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.25</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>30</lifespanDaysPerGrowDays>
+      <fertilityMin>0.15</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>9</growDays>
+      <harvestWork>190</harvestWork>
+      <harvestYield>10</harvestYield>
+      <harvestedThingDef>RawBerries</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <harvestMinGrowth>0.55</harvestMinGrowth>
+      <topWindExposure>0.15</topWindExposure>
+      <visualSizeRange>0.8~1.6</visualSizeRange>
+      <wildClusterRadius>2</wildClusterRadius>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Boilbulb (port of AB_ToxiBulb) ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Boilbulb</defName>
+    <label>boilbulb</label>
+    <description>A ground bulb swollen into a blistered dome, mineral-crusted at the base, faintly warm to the hand. A forage staple for the wretched-many cast and a processed-food input for colonists.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Boilbulb</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <Nutrition>0.3</Nutrition>
+    </statBases>
+    <plant>
+      <growDays>6</growDays>
+      <harvestWork>60</harvestWork>
+      <harvestYield>4</harvestYield>
+      <harvestedThingDef>RawVegetables</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <harvestMinGrowth>0.5</harvestMinGrowth>
+      <maxMeshCount>2</maxMeshCount>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <wildOrder>3</wildOrder>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Wartshrub (port of VRE_PoluxBush) ============== -->
+  <ThingDef ParentName="BushBase">
+    <defName>RM_Wartshrub</defName>
+    <label>wartshrub</label>
+    <description>A knee-high shrub whose bark is one continuous wart-field — sequestration in miniature, locking what it drinks into its galls. Galls harvestable as a low-grade chemical/fuel input.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Wartshrub</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.0</drawSize>
+      <shadowData>
+        <volume>(0.4, 0.2, 0.2)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Nutrition>0.4</Nutrition>
+    </statBases>
+    <uiIconScale>0.8</uiIconScale>
+    <plant>
+      <growDays>7</growDays>
+      <harvestWork>70</harvestWork>
+      <harvestYield>4</harvestYield>
+      <harvestedThingDef>Chemfuel</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
+      <harvestMinGrowth>0.6</harvestMinGrowth>
+      <fertilityMin>0.08</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Cinderfelt — NEW, the fresh-ash-fall marker mat ==============
+       Wiring per cast bible §6: not a standing wildPlants weight in the
+       biome's normal sense — it germinates from the ash storm's own
+       aftermath. WASTELAND_MECHANICS_BUILD_1 owns the storm post-effect/
+       MapComponent that seeds it on fresh-fall terrain; this pass ships the
+       def plus the bible's own 0.02 wildPlants fallback row (see
+       RM_Wasteland_Biome.xml) so it is never dead content while that wiring
+       lands. dies in ~8 days as the fall compacts — short lifespanDaysPerGrowDays. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Cinderfelt</defName>
+    <label>cinderfelt</label>
+    <description>A felt-grey mat that grows only on fresh ash fall. After every storm the flats grow a grey pelt, and where the felt is thickest, the fall was heaviest — which is where the survey, and the dose, is. Fast-growing, short-lived; it dies as the fall compacts.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Cinderfelt</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <selectable>false</selectable>
+    <plant>
+      <growDays>1.5</growDays>
+      <lifespanDaysPerGrowDays>5.5</lifespanDaysPerGrowDays>
+      <harvestWork>30</harvestWork>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.4~0.7</visualSizeRange>
+      <topWindExposure>0.2</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <fertilityMin>0.0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
 </Defs>

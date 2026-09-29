@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Scabspinner.xml                      RimMandrake: Wasteland
+
+  WASTELAND_RULED_CONTENT_1 — full RM_ port of the donor GR_Spidercat row
+  (commonality 0.4). Art-sheet ruling (2026-09-29): "keep" — the base
+  3-facing render already reads.
+
+  Authority: cast bible §2. Register: the closest thing to a predator, kept
+  small and scoped to the small cast only — never a man-hunter, per the
+  biome's own "wildlife never the headline threat" ban.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Scabspinner</defName>
+    <label>scabspinner</label>
+    <description>A patchy-furred ambusher whose webs are half silk, half scab — it spins over its own sores and over its burrow mouth alike, and both hold. Crusted spinnerets, mange-map bald patches, joints re-silked daily. It hunts the small cast of the flats and flees anything larger.</description>
+    <statBases>
+      <MoveSpeed>4.0</MoveSpeed>
+      <Mass>18</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>fang</label>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>0.75</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>0.8</maxPreyBodySize>
+      <trainability>None</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Scabspinner</defName>
+    <label>scabspinner</label>
+    <race>RM_Scabspinner</race>
+    <combatPower>22</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.65</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Scabspinner/RM_Scabspinner</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

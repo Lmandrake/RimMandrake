@@ -13,14 +13,20 @@
   RUT_Hardwood copy on RM_Tekk and the unguarded AB_CrystalHorn donor texPath
   on RM_Drazz/RM_BrinePlate). Review sheet:
   Transient/bedazzle_art_sheets_2026-09-28/wasteland/sheet.html.
+
+  WASTELAND_RULED_CONTENT_1 §5 — label-only renames (cast bible §5): defNames
+  are FROZEN (the canonical save may reference them; RM_Tekk/RM_Drazz stay
+  exactly as-is) — only labels and each description's old noun change:
+  tekk -> sparkcrab, drazz -> brineleech. Mechanics, stats, hediff, terrains
+  are untouched.
 -->
 <Defs>
 
-  <!-- tekk — crustacean, common. "plate-scraper." -->
+  <!-- tekk (label: sparkcrab) — crustacean, common. "plate-scraper." -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_Tekk</defName>
-    <label>tekk</label>
-    <description>A salt-white, flat-bodied scraper the size of a thumb, living on the mineral beds under the brine and grazing the crust the drazz lay down. It carries a charge — a small one; picking one up bare-handed is a tingle and a lesson. They swarm on a carcass in the pool and strip it, and on a drazz that has spent its charge, which is how the pool's owner eventually dies. Edible after a long soak.</description>
+    <label>sparkcrab</label>
+    <description>A salt-white, flat-bodied scraper the size of a thumb, living on the mineral beds under the brine and grazing the crust the brineleech lay down. It carries a charge — a small one; picking one up bare-handed is a tingle and a lesson. They swarm on a carcass in the pool and strip it, and on a brineleech that has spent its charge, which is how the pool's owner eventually dies. Edible after a long soak.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_Tekk</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -38,11 +44,11 @@
     </comps>
   </ThingDef>
 
-  <!-- RM_Drazz — the brine-battery, the pool's owner. Optional raw-shock
-       hediff on raw ingestion only. -->
+  <!-- RM_Drazz (label: brineleech) — the brine-battery, the pool's owner.
+       Optional raw-shock hediff on raw ingestion only. -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_Drazz</defName>
-    <label>drazz</label>
+    <label>brineleech</label>
     <description>The owner. A forearm-long, plated, sea-cucumber-shaped thing whose body is a stack of living electrode wafers, salt-white and mineral-dark by turns, lying on the bed of a hypersaline pool and running on the ion gradient between the brine and the metal beneath it. It discharges as defense. The pool you want to mine has one, and it is a capacitor, and it does not want you there. Landed — carefully, on a dry line, by people who have done it before — it goes on discharging for an hour. Cooked, it is meat. Raw, it is a lesson.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_Drazz</texPath>
@@ -82,7 +88,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RM_BrinePlate</defName>
     <label>brine plate</label>
-    <description>A stacked mineral wafer, salt-white and dark by turns, pried off a drazz that has already spent its charge — or found loose on a pool floor, which is the same thing a season later. It still holds a whisper of charge; touch two together in the dark and they spark. Traders who buy oddities want it.</description>
+    <description>A stacked mineral wafer, salt-white and dark by turns, pried off a brineleech that has already spent its charge — or found loose on a pool floor, which is the same thing a season later. It still holds a whisper of charge; touch two together in the dark and they spark. Traders who buy oddities want it.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_BrinePlate</texPath>
       <graphicClass>Graphic_Single</graphicClass>

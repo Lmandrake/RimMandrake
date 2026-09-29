@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Grimewing.xml                        RimMandrake: Wasteland
+
+  WASTELAND_RULED_CONTENT_1 — new species, the flyer niche (cast bible §9,
+  ruled in by question card 2026-09-28), commonality 0.15. Art-sheet ruling
+  (2026-09-29, "improve"): "Darken it and make its skin more pink. Make its
+  knees bent forward like a mammal, to add alien nature." Shipped art is the
+  v2 regen answering that (infrastructure/artpipe/_artsrc/RM_Grimewing_v2_*).
+
+  Authority: cast bible §9. Per the repo's standing "if it flies in the
+  fiction, it flies in the game" rule (root CLAUDE.md) this is a REAL flyer:
+  MaxFlightTime/FlightCooldown statBases + race flight fields, Locust shape
+  (RimSage-confirmed against the decompiled/live Locust ThingDef —
+  flightStartChanceOnJobStart, flightSpeedFactor, canFlyIntoMap), plus
+  canLeaveMapFlying true because it is a bird that lairs nowhere (bible,
+  explicit). Never blocked on animation frames — none are set here
+  (flyingAnimationFramePathPrefix), matching the standing rule that a flyer
+  ships correct-but-plain rather than waiting on a frame sequence.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Grimewing</defName>
+    <label>grimewing</label>
+    <description>A wretched, half-bald scavenger bird that rides the storm-thermals — patchy moth-eaten feathers over bare warty grey skin, a salt-stained hooked beak, wing gaps where feathers never grew back. Fresh exhumation after a storm draws it circling: the visible marker that the map got re-dealt, the way the cinderfelt marks the fall. It eats what the storm digs up, never what walks.</description>
+    <statBases>
+      <MoveSpeed>4.0</MoveSpeed>
+      <Mass>14</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <MaxFlightTime>12</MaxFlightTime>
+      <FlightCooldown>6</FlightCooldown>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>hooked beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHealthScale>0.45</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>8</lifeExpectancy>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <flightStartChanceOnJobStart>0.1</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Grimewing</defName>
+    <label>grimewing</label>
+    <race>RM_Grimewing</race>
+    <combatPower>10</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Grimewing/RM_Grimewing</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Grimewing/RM_Grimewing</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Grimewing/RM_Grimewing</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.85</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

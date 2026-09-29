@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Gripper.xml                          RimMandrake: Wasteland
+
+  WASTELAND_RULED_CONTENT_1 — full RM_ port of the donor GR_Beetlefleet row
+  (commonality 0.7). RENAMED from the cast bible's original "Middenbeetle"
+  per the owner's 2026-09-29 art-sheet ruling (decisions.json RM_Middenbeetle
+  entry): "This beast is capable of stealing. Needs a new name to deconflict
+  Middenshell. How about a Gripper? Always carrying something." — chosen to
+  deconflict from the (out-of-scope-here) Middenshell giant, which also ships
+  as an excretor/hauler-of-debris theme.
+
+  Art: the ruling's note is about NAME and BEHAVIOR, not appearance (no
+  colour/shape critique, unlike Boilhide/Grimewing/Gristleswarm/Slagmole/
+  Sloghog's "improve" notes) — so per the standing "check for existing
+  regenerated art before queuing more" rule, this def REUSES the finished,
+  validated RM_Middenbeetle_{south,east,north} render under the new defName/
+  texPath rather than spending a fresh art job on an unchanged silhouette.
+  Copied from infrastructure/artpipe/_artsrc/RM_Middenbeetle_* into
+  Textures/Things/Pawn/Animal/RM_Gripper/ this pass.
+
+  Stealing behavior: the ruling calls it "part of the def, not just flavor",
+  but no JobGiver/WorkGiver for animal item-theft exists anywhere in this
+  mod's live C#, and authoring one is outside both this item's scope and
+  WASTELAND_MECHANICS_BUILD_1's (neither lists it). Flavor-only this wave,
+  same deferral shape as RM_ContagionFauna.xml's Doublemaw infection-bite —
+  followed up as WASTELAND_GRIPPER_STEAL_BEHAVIOR_1 (filed alongside this
+  build). herdAnimal marks its caravan-line travel; no theft mechanic is
+  wired.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gripper</defName>
+    <label>gripper</label>
+    <description>A fist-sized beetle that files across the flats in caravan lines, hauling scraps of everything back to middens it defends from nobody — carapace pitted like struck flint, salt rime at every seam, forelegs always gripping some scrap or other. It never comes back empty-handed.</description>
+    <statBases>
+      <MoveSpeed>3.8</MoveSpeed>
+      <Mass>6</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>gripping claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.25</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <trainability>None</trainability>
+      <lifeExpectancy>4</lifeExpectancy>
+      <manhunterOnDamageChance>0.0</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gripper</defName>
+    <label>gripper</label>
+    <race>RM_Gripper</race>
+    <combatPower>4</combatPower>
+    <wildGroupSize>2~5</wildGroupSize>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gripper/RM_Gripper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.32</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gripper/RM_Gripper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gripper/RM_Gripper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
