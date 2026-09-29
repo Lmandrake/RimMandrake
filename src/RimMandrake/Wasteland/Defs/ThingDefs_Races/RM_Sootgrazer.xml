@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Sootgrazer.xml                       RimMandrake: Wasteland
+
+  WASTELAND_RULED_CONTENT_1 — new species, the ash-eating processor
+  (commonality 0.25). Art-sheet ruling (2026-09-29): "keep" — base render
+  ships unchanged.
+
+  Authority: cast bible §3. Behavior/mechanic (same terrain-gated gatherable
+  comp family as the Sloghog, producing RM_SootBrick) is
+  WASTELAND_MECHANICS_BUILD_1's scope; this def lands with a named stub
+  point. Item RM_SootBrick itself IS this item's scope (§4) and ships
+  alongside.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sootgrazer</defName>
+    <label>sootgrazer</label>
+    <description>A slab-shouldered grazer that works the ash-fall like pasture — it eats deposition itself and presses what it can't burn into brick. Hide the exact grey of settled ash with darker grease-streak shadows it never had rain to earn, nostrils fringed with filter-bristle combs.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed>
+      <Mass>70</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-35</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <baseBodySize>1.0</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>10</lifeExpectancy>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalFarm</li>
+    </tradeTags>
+    <!-- WASTELAND_MECHANICS_BUILD_1 STUB POINT: same gatherable comp family
+         as RM_Sloghog, gated on ash-family/polluted terrain, producing
+         RM_SootBrick. Deliberately unset. -->
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sootgrazer</defName>
+    <label>sootgrazer</label>
+    <race>RM_Sootgrazer</race>
+    <combatPower>15</combatPower>
+    <wildGroupSize>2~4</wildGroupSize>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.65</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sootgrazer/RM_Sootgrazer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.95</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

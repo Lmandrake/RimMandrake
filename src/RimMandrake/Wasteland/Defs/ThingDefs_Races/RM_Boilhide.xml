@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Boilhide.xml                         RimMandrake: Wasteland
+
+  WASTELAND_RULED_CONTENT_1 — full RM_ port replacing the vanilla Biotech
+  Toxalope row in RM_Wasteland_Biome.xml's wildAnimals (commonality 0.4).
+  The vanilla Toxalope ThingDef/PawnKindDef are left completely untouched
+  elsewhere in the game — only the biome's roster ROW is dropped, in the same
+  commit this def lands (see RM_Wasteland_Biome.xml).
+
+  Art-sheet ruling (2026-09-29, "improve"): "Add some deadly color on those
+  boils. Too little color here. Maybe a dangerous violet tinged with
+  yellow?" — the shipped art is the v2 regen answering that note (copied
+  from infrastructure/artpipe/_artsrc/RM_Boilhide_v2_*).
+
+  Authority: cast bible §2. Stats sketch cribs Toxalope's own numbers
+  (RimSage-confirmed: bodySize 1.4, MoveSpeed 3.4, ToxicEnvironmentResistance
+  1, ToxicResistance 0.5) scaled down per the bible's own "bodySize ~0.7,
+  speed quick ~4.6" target — Boilhide reads leaner and faster than its donor,
+  an antelope shape under the warts, not a boomalope-cousin bulk.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Boilhide</defName>
+    <label>boilhide</label>
+    <description>A herd grazer whose entire hide is a landscape of sealed boils — each one a pocket where its body walled poison off and moved on, antlers fused into a single mineral-crusted club. It grazes the toxic flora of the flats without complaint and runs fast enough that nothing here catches it.</description>
+    <statBases>
+      <MoveSpeed>4.6</MoveSpeed>
+      <Mass>45</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ToxicResistance>0.6</ToxicResistance>
+      <ToxicEnvironmentResistance>1</ToxicEnvironmentResistance>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Wildness>0.55</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>club antler</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>hoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHump</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <baseBodySize>0.7</baseBodySize>
+      <baseHealthScale>0.65</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <trainability>None</trainability>
+      <lifeExpectancy>8</lifeExpectancy>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.33</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Boilhide</defName>
+    <label>boilhide</label>
+    <race>RM_Boilhide</race>
+    <combatPower>25</combatPower>
+    <wildGroupSize>2~5</wildGroupSize>
+    <ecoSystemWeight>0.8</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Boilhide/RM_Boilhide</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Boilhide/RM_Boilhide</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Boilhide/RM_Boilhide</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

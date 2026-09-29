@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Smolderback.xml                      RimMandrake: Wasteland
+
+  WASTELAND_RULED_CONTENT_1 — new species, the radiothermal solitary
+  (commonality 0.05, rare). Art-sheet ruling (2026-09-29): "keep" — base
+  render ships unchanged.
+
+  Authority: cast bible §3. The heat/dose behavior (CompHeatPusher + an
+  ambient tox/radiation hediff-per-rare-tick comp) is
+  WASTELAND_MECHANICS_BUILD_1's scope; this def lands with named stub points.
+  Solitary spacing reads from spawn-alone/wildGroupSize 1~1 alone — no
+  mental-map spacing mechanic is owed (bible, explicit).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Smolderback</defName>
+    <label>smolderback</label>
+    <description>So hot with its own decay it must dump heat to live — a living furnace that haunts the cold dark scour and cannot stand its own company. Back plates split by glowing seams, snow never lies on it, the ground steams where it beds. Tame one and winter is solved and dosed at once: it heats a shelter all winter, and irradiates it the entire time.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <Mass>140</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.6</ArmorRating_Heat>
+      <ComfyTemperatureMin>-60</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>TurtleLike</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <baseBodySize>1.8</baseBodySize>
+      <baseHealthScale>1.5</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>false</predator>
+      <maxPreyBodySize>0.4</maxPreyBodySize>
+      <trainability>Advanced</trainability>
+      <lifeExpectancy>20</lifeExpectancy>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+    <!-- WASTELAND_MECHANICS_BUILD_1 STUB POINTS: vanilla CompProperties_HeatPusher
+         (constant heat output) plus an ambient tox/radiation hediff-per-
+         rare-tick comp (dose to nearby pawns, riding the Biotech pollution
+         mechanism per the biome's dose-layer ruling). Deliberately unset. -->
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Smolderback</defName>
+    <label>smolderback</label>
+    <race>RM_Smolderback</race>
+    <combatPower>60</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Smolderback/RM_Smolderback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.95</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Smolderback/RM_Smolderback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Smolderback/RM_Smolderback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

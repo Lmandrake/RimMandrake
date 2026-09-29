@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WastelandItems.xml                   RimMandrake: Wasteland
+
+  WASTELAND_RULED_CONTENT_1 §4 — the excretor-economy item trio: the
+  Sloghog's bezoar product, the Middenshell corpse-quarry's rarer grade, and
+  the Sootgrazer's fuel brick. Authority: cast bible §3-§4, §7 (item list).
+
+  These are plain ResourceBase item defs only — the CompHasGatherableBodyResource
+  producer comps that make Sloghog/Sootgrazer actually yield them, and the
+  Middenshell corpse-quarry mining wiring, are WASTELAND_MECHANICS_BUILD_1's
+  scope. Defining the item defs themselves (so that item has something to
+  target) IS this item's own scope (§4).
+
+  Art: no existing finished render found anywhere in infrastructure/artpipe/
+  (registry.jsonl, done/, _artsrc/ searched by subject, including "bezoar"
+  and "sootbrick" keywords) — genuinely missing, not previously generated.
+  Queued this pass (appended to infrastructure/artpipe/art_lists/
+  wasteland_survivor_cast.csv) and rendered by the daemon within the same
+  session — REAL art, copied from infrastructure/artpipe/_artsrc/ into this
+  mod's own Textures/Things/Item/Resource/ below; texPaths resolve.
+-->
+<Defs>
+
+  <!-- ============== Contaminant bezoar — the Sloghog/Sootgrazer-family excretor product ============== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_ContaminantBezoar</defName>
+    <label>contaminant bezoar</label>
+    <description>A dense fist-sized lump of refined metal-salt contamination, coughed up whole by an excretor animal that spent days walking it out of poisoned ground. Heavy, layered, faintly waxy — worth real money to the right buyer, and worth keeping in small piles only. A kept herd producing these one stone at a time is the closest thing this ground has to a refinery.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_ContaminantBezoar</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>1.4</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>-2</Beauty>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>25</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <!-- ============== Vitrified bezoar — the rarer Middenshell-quarry grade ============== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_VitrifiedBezoar</defName>
+    <label>vitrified bezoar</label>
+    <description>A rarer, larger grade of contaminant bezoar, mined out of a hardened Middenshell corpse's own accreted shell — glassy black-green vitrified mineral fused with metal-salt layers, deep sickly-radiance seams glowing faintly inside the glass. The richest excretor-refining prize in the biome, priced in the dose you take digging it out.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_VitrifiedBezoar</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>65</MarketValue>
+      <Mass>2.2</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>-1</Beauty>
+      <DeteriorationRate>0.3</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>15</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <!-- ============== Soot brick — the Sootgrazer's fuel product ============== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SootBrick</defName>
+    <label>soot brick</label>
+    <description>A compressed brick of fuel-grade soot and ash, pressed out of a sootgrazer that spent the season eating deposition off the flats. Cheap, stackable, burns dirty but burns — and the supply is endless where the sky keeps falling.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_SootBrick</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>3</MarketValue>
+      <Mass>1.0</Mass>
+      <Flammability>1.0</Flammability>
+      <Beauty>-1</Beauty>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>75</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

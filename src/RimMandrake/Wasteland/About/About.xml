@@ -24,9 +24,10 @@ Ships:
      Utinni patch, never this def — RimMandrake never names Star Wars).
   2. The brine-battery mining archetype: RM_WastelandBrine{Deep,MovingChestDeep,
      Shallow,MovingShallow} terrain (Odyssey-gated ToxicWater* family), three
-     mineable deposit buildings (tekk/drazz/spent-electrode beds), the
-     RM_Tekk/RM_Drazz/RM_BrinePlate items they yield, RM_BrineShock (the
-     raw-drazz ingestion hediff), and the GenStepDefs + Base_Player
+     mineable deposit buildings (sparkcrab/brineleech/spent-electrode beds),
+     the RM_Tekk/RM_Drazz/RM_BrinePlate items they yield (labels: sparkcrab/
+     brineleech/brine plate, WASTELAND_RULED_CONTENT_1 §5), RM_BrineShock
+     (the raw-brineleech ingestion hediff), and the GenStepDefs + Base_Player
      registration that scatter the deposits into any RM_WastelandBrineShallow
      water a generated map carries.
 

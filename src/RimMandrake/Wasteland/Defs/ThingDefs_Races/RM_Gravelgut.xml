@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Gravelgut.xml                        RimMandrake: Wasteland
+
+  WASTELAND_RULED_CONTENT_1 — full RM_ port of the donor AA_Terramorph row
+  (commonality 0.2). Art-sheet ruling (2026-09-29): "keep" — base render ships
+  unchanged.
+
+  Authority: cast bible §2. The roster's resident extremophile-odd: eats the
+  ground itself and passes it as sorted pebbles. Distinct from the Sloghog
+  (WASTELAND_MECHANICS_BUILD_1's excretor): it sorts minerals, it does not
+  concentrate contamination — no gatherable-resource comp is owed here.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gravelgut</defName>
+    <label>gravelgut</label>
+    <description>A low armored slab that eats the ground itself — gravel, glass-crumb, mineral crust — and passes it as smooth sorted pebbles the locals kick apart to read what is buried underneath. Mouthparts worn to polished stone, hide set with a mosaic of swallowed-and-rejected glass. It ignores everything and hits like a wall if pressed.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <Mass>180</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Blunt>0.4</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.3</ArmorRating_Sharp>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>stone-worn maw</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>TurtleLike</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>1.8</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>30</lifeExpectancy>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gravelgut</defName>
+    <label>gravelgut</label>
+    <race>RM_Gravelgut</race>
+    <combatPower>45</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.15</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gravelgut/RM_Gravelgut</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

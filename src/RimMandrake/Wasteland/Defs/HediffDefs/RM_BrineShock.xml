@@ -15,7 +15,7 @@
   <HediffDef>
     <defName>RM_BrineShock</defName>
     <label>brine shock</label>
-    <description>A jolt from a drazz eaten raw — the charge it kept for its own defense, working on you instead. It passes.</description>
+    <description>A jolt from a brineleech eaten raw — the charge it kept for its own defense, working on you instead. It passes.</description>
     <hediffClass>HediffWithComps</hediffClass>
     <maxSeverity>1.0</maxSeverity>
     <stages>

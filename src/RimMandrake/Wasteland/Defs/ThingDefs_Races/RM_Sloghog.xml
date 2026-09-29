@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Sloghog.xml                          RimMandrake: Wasteland
+
+  WASTELAND_RULED_CONTENT_1 — new species, the ranchable excretor
+  (commonality 0.3). Art-sheet ruling (2026-09-29, "improve"): "Too terran.
+  Make it more alien." Shipped art is the v2 regen answering that
+  (infrastructure/artpipe/_artsrc/RM_Sloghog_v2_*).
+
+  Authority: cast bible §3. Behavior/mechanic (CompHasGatherableBodyResource
+  subclass gated on polluted terrain, producing RM_ContaminantBezoar) is
+  WASTELAND_MECHANICS_BUILD_1's scope, not this item's — this def lands with
+  no comp wired and a named stub point below for that item to fill in. Item
+  RM_ContaminantBezoar itself IS this item's scope (§4) and ships alongside.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sloghog</defName>
+    <label>sloghog</label>
+    <description>A warty, barrel-bodied hog that grazes poisoned ground with total contentment and periodically coughs up the poison as a stone worth selling. Wart fields down both flanks, tusks capped in mineral crust, content half-shut eyes. A kept herd is a slow refinery — the closest thing this ground has to livestock.</description>
+    <statBases>
+      <MoveSpeed>3.4</MoveSpeed>
+      <Mass>90</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ToxicEnvironmentResistance>1</ToxicEnvironmentResistance>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Wildness>0.35</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tusk</label>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndTusks</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <baseBodySize>1.2</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <trainability>Advanced</trainability>
+      <lifeExpectancy>10</lifeExpectancy>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalFarm</li>
+    </tradeTags>
+    <!-- WASTELAND_MECHANICS_BUILD_1 STUB POINT: a CompProperties_<TBD gatherable
+         subclass> goes here, producing RM_ContaminantBezoar, gated on standing
+         on polluted terrain when Biotech pollution is present (else on time),
+         crib CompMilkable's shape. Deliberately unset — no such C# class
+         exists in this mod yet; adding a <comps> block referencing one would
+         fail to load. -->
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sloghog</defName>
+    <label>sloghog</label>
+    <race>RM_Sloghog</race>
+    <combatPower>18</combatPower>
+    <wildGroupSize>2~5</wildGroupSize>
+    <ecoSystemWeight>0.7</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sloghog/RM_Sloghog</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sloghog/RM_Sloghog</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.85</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sloghog/RM_Sloghog</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

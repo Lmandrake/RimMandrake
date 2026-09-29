@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Gristleswarm.xml                     RimMandrake: Wasteland
+
+  WASTELAND_RULED_CONTENT_1 — full RM_ port of the donor VFEI2_Swarmling row
+  (commonality 0.6) plus its own separately-weighted variant def
+  RM_SootGristleswarm, porting VFEI2_BlackSwarmling (commonality 0.6) — the
+  donor pair were two ThingDefs, so the roster keeps them as two defs rather
+  than folding Soot into a colour channel (cast bible §2, explicit note).
+
+  Art-sheet rulings (2026-09-29): RM_Gristleswarm "improve" — "Looks ok, but
+  East facing has only four legs, while North and South have six. Make the
+  strange flesh between the plates sickly white." The shipped art is the v2
+  regen answering that (infrastructure/artpipe/_artsrc/RM_Gristleswarm_v2_*).
+  RM_SootGristleswarm "keep" — base render ships unchanged.
+
+  Authority: cast bible §2.
+-->
+<Defs>
+
+  <!-- ======================================================================
+       GRISTLESWARM (RM_Gristleswarm) — pack detritivore of rot-slow country.
+       ====================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gristleswarm</defName>
+    <label>gristleswarm</label>
+    <description>A knee-high scuttler of gristle and plate that lives in rot-slow country by eating what cannot rot — sinew, hide, bone-rind — and thriving on it. Exposed gristle at the joints gone leathery and grey, back plates crazed like dried mud. A pack fights back as one when one of its own is hurt.</description>
+    <statBases>
+      <MoveSpeed>4.2</MoveSpeed>
+      <Mass>10</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tearing mouthpart</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <trainability>None</trainability>
+      <lifeExpectancy>5</lifeExpectancy>
+      <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gristleswarm</defName>
+    <label>gristleswarm</label>
+    <race>RM_Gristleswarm</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>3~6</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.42</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gristleswarm/RM_Gristleswarm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ======================================================================
+       SOOT GRISTLESWARM (RM_SootGristleswarm) — the ash-country variant def.
+       ====================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_SootGristleswarm</defName>
+    <label>soot gristleswarm</label>
+    <description>The gristleswarm of the ash country — the same animal run through the chimney: soot-black, grease-sheened, ember-eyed. Same body, same pack-defense habit, better suited to the cold dark scour's margin.</description>
+    <statBases>
+      <MoveSpeed>4.2</MoveSpeed>
+      <Mass>10</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>tearing mouthpart</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <trainability>None</trainability>
+      <lifeExpectancy>5</lifeExpectancy>
+      <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_SootGristleswarm</defName>
+    <label>soot gristleswarm</label>
+    <race>RM_SootGristleswarm</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>3~6</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.42</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_SootGristleswarm/RM_SootGristleswarm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

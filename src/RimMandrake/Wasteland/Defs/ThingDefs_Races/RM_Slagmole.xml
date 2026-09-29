@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Slagmole.xml                         RimMandrake: Wasteland
+
+  WASTELAND_RULED_CONTENT_1 — full RM_ port of the donor GR_Molebear row
+  (commonality 0.4). Art-sheet ruling (2026-09-29, decisions.json RM_Slagmole
+  entry, "improve"): "Too much of this green stone in the back of otherwise
+  terrestrial animals. Give this fella a face like a shovel and keep the
+  digging front claws. Then make its back covered in rib-like structures." —
+  the shipped art is the v2 regen answering that note (copied from
+  infrastructure/artpipe/_artsrc/RM_Slagmole_v2_*).
+
+  Authority: cast bible §2. Register: survivor — a barrel of muscle that digs
+  through vitrified crust like frost.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Slagmole</defName>
+    <label>slagmole</label>
+    <description>A barrel of muscle built to dig through vitrified crust like frost, its claws worn glassy and its ribbed back set with embedded grit it never sheds. Its shovel-flat face reads the ground it digs; one eye going milky is common and never slows it down.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <Mass>110</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>digging claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>digging claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <baseBodySize>1.6</baseBodySize>
+      <baseHealthScale>1.3</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>14</lifeExpectancy>
+      <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Slagmole</defName>
+    <label>slagmole</label>
+    <race>RM_Slagmole</race>
+    <combatPower>50</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Slagmole/RM_Slagmole</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Slagmole/RM_Slagmole</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.05</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Slagmole/RM_Slagmole</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
