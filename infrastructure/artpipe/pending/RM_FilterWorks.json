@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T02:36:55Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_FilterWorks",
+  "priority": 70,
+  "prompt": "RimWorld game building sprite: the filter-works, a fluid-conversion bench of a toxic chemical forest \u2014 a waist-high riveted pressure vessel on a salvage frame, intake and outlet pipe stubs at opposite ends, a top-loading cartridge breech with one ribbed filter cartridge seated half-visible, a drip tray beneath the outlet; etched-metal patina, mineral rings where old drips dried, and exactly one bead of clean converted fluid at the outlet lip. It reads as a machine that pulls one fluid apart into another, built by people who learned it from ruins. Single structure, centered, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CAULDRON_BEDAZZLE_SITTING_1",
+  "style_notes": "the discoverable technology: converts one fluid to another via filtering, consumable cartridges; scavenger-precise industrial read, quiet and workmanlike; green-amber accent ONLY as the single outlet bead; cauldron register: a poison forest of glass and acid under chemical fog, the ground loud with slow-steam-engine chemistry; wet-lacquered black-green and char-brown darks, dark-crust purple-red film sheen, pale glass-crystal accents, sick green-amber ONLY where chemistry pools or beads or stains, condensate beading and mineral rings on every surface; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture with wet sheen, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}
