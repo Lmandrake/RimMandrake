@@ -261,7 +261,7 @@
       <body>Rat</body>
       <herdAnimal>false</herdAnimal>
       <predator>true</predator>
-      <!-- Grain pole of §6's bimodal law (matches this mod's own ikee at 0.15). -->
+      <!-- Grain pole of §6's bimodal law (matches this mod's own drageye (ikee) at 0.15). -->
       <baseBodySize>0.18</baseBodySize>
       <baseHealthScale>0.3</baseHealthScale>
       <baseHungerRate>0.0</baseHungerRate>

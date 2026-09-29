@@ -24,7 +24,7 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Ikee</defName>
-    <label>ikee</label>
+    <label>drageye</label>
     <description>A grotesquely enlarged eye that drags itself along on a few fleshy tentacles. Not very useful for much of anything. Something about the dune sea's flat, unmoving light seems to have bred this shape more than once.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
@@ -77,7 +77,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Ikee</defName>
-    <label>ikee</label>
+    <label>drageye</label>
     <race>RM_Ikee</race>
     <combatPower>10</combatPower>
     <ecoSystemWeight>0.30</ecoSystemWeight>
