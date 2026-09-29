@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T05:29:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T06:26:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1525,6 +1525,26 @@ blocked:  Real trace (Transient/Player.log.geneticrim_ctor_nre_2026-09-25 L11288
 summary:  REGROWTHRECOLORMINEABLESNRE1
 prose:    infrastructure/state/items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md
 
+## FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 The eye set-piece's frequency and the poison/radioactive suppression route
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     mechanism
+blocked:  needs owner: item's own spec says do not guess the pressure curve or pick poison/radioactive qualifying items; genuinely his call, not a build task
+summary:  Caused by FEVERWOODTENTACLEBESTIARY1 (six tentacle types + the ordinary
+prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.md
+
+## FEVERWOOD_SAP_SUCKER_TUNING_1 Real numbers and the mishandling trigger for the sap-sucker guild
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     mechanism
+blocked:  needs owner: item's own spec says numbers must not be guessed, same cluster as TENTACLE/DIANOGA tuning
+summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
+prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
+
 ## WEBWORK_EGG_BROKER_CHANNEL_1 Add the egg black-market broker channel as a Bazaar tab, once Bazaar has tabs
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1534,6 +1554,16 @@ kind:     task
 blocked:  Re-verified 2026-09-26: RM_Window_Bazaar is still an inert Dialog_Trade subclass with no WindowStack.Add Harmony intercept and RM_BazaarTabDef has zero concrete instances/workers. BAZAAR_WINDOW_GRID_1 (the item that owns wiring the intercept in) is still doing, unfinished, last touched 2026-09-17 -- its own note names a real architectural hazard (naive Add-prefix replacement double-calls TradeSession.SetupWith and can double-fire the cannot-sell message) that is genuinely BAZAAR_WINDOW_GRID_1's scope to solve, not a one-line wiring fix. Not building the tab framework here -- that is scope creep into an item already filed and claimed. No new follow-on item needed; BAZAAR_WINDOW_GRID_1 already is the precisely-scoped 'wire Bazaar tabs to open' item. This item stays blocked until it (or a successor) ships a tab-worker slice with a real tab drawing content. (on BAZAAR_WINDOW_GRID_1)
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
+
+## SUMP_TAR_LIVING_SYSTEMS_1 Living-map responders; tar rain mod-vs-scenario split
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     design
+blocked:  needs owner: pacing numbers (growth rate/re-route delay/migration speed) explicitly unruled, item says owner-ruling-or-live-tune not invented constants
+summary:  SUMPTARLIVINGSYSTEMS1 — living-map responders, and tar rain (mod vs scenario)
+prose:    infrastructure/state/items/SUMP_TAR_LIVING_SYSTEMS_1.md
 
 ## BIOME_DEFNAME_MIGRATION_WAVE_1 Three biomes renamed 2026-09-26 carry defNames that no longer match their labels: RM_NightsideIce/RM_PoisonForest/RM_Wasteland move to Sleeping Ice, Cauldron, Wastes per the Pyrelands precedent
 state:    proposed  (BLOCKED)
@@ -1597,16 +1627,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 The eye set-piece's frequency and the poison/radioactive suppression route
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     mechanism
-thin:     no ## verify, no ## criteria
-summary:  Caused by FEVERWOODTENTACLEBESTIARY1 (six tentacle types + the ordinary
-prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.md
-
 ## FEVERWOOD_DIANOGA_TANK_TUNING_1 Sekkulaath prison tank — real numbers, not placeholders
 state:    proposed
 row:      unassigned
@@ -1616,16 +1636,6 @@ kind:     task
 thin:     no ## verify, no ## criteria
 summary:  Authority: FEVERWOODDIANOGAPRISON1 (build), design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
 prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_TANK_TUNING_1.md
-
-## FEVERWOOD_SAP_SUCKER_TUNING_1 Real numbers and the mishandling trigger for the sap-sucker guild
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     mechanism
-thin:     no ## verify, no ## criteria
-summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
-prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
 
 ## DEEPFIRE_PAINT_LIVE_VERIFY_1 Deepfire painting + worn-glow darkness tradeoff (needs live bridge)
 state:    proposed
@@ -1646,16 +1656,6 @@ kind:     build
 thin:     no ## spec
 summary:  SUMPTARFIRENETWORK1 — network fire with gate firebreaks, and wiring the belch to glass-front cooling
 prose:    infrastructure/state/items/SUMP_TAR_FIRE_NETWORK_1.md
-
-## SUMP_TAR_LIVING_SYSTEMS_1 Living-map responders; tar rain mod-vs-scenario split
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     no ## spec
-summary:  SUMPTARLIVINGSYSTEMS1 — living-map responders, and tar rain (mod vs scenario)
-prose:    infrastructure/state/items/SUMP_TAR_LIVING_SYSTEMS_1.md
 
 ## GREENTIDE_FEVER_SPECIALISTS_1 Survivors become specialists: Greentide fevers as a qualification, not just attrition
 state:    proposed
@@ -1936,3 +1936,23 @@ kind:     task
 thin:     no ## verify
 summary:  - Art exists and is validated — do not queue any art. The render is the
 prose:    infrastructure/state/items/OGLEKNOT_CREATURE_BUILD_1.md
+
+## LEANINGSCRUB_RULED_CONTENT_1 Build the Leaning Scrub ruled cast: 4 fills + 9 menagerie + 4 fuzz flora + venomvine five-form showpiece + tamed-only Blurrg port chain + regen-all-donor-art + wire 5 existing RUT_ renders
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Four fills (mixed registers ruled): RMFuzzrunner (tunnel-hare prey
+prose:    infrastructure/state/items/LEANINGSCRUB_RULED_CONTENT_1.md
+
+## LEANINGSCRUB_MECHANICS_BUILD_1 Build the Leaning Scrub mechanics: Stall+Gale wind calendar, the Lean scent/fire axis, vaporator + V-blight, smother-craft, calling-pyre + fire-stamping giants, ripple concealment, rich soundscape, inhabited injections - warning-instrument theme trimmed by owner ruling
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. The Stall and the Gale (names RULED 2026-09-21, WeatherDefs at last;
+prose:    infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md
