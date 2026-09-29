@@ -85,6 +85,7 @@ namespace RimMandrake.TerminalBiomes
                 return;
             }
             TerrainDef plain = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_BankSilt");
+            TerrainDef rich = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_BankSilt_Rich");
             if (plain == null)
             {
                 return;
@@ -92,7 +93,10 @@ namespace RimMandrake.TerminalBiomes
             for (int i = 0; i < richened.Count; i++)
             {
                 IntVec3 c = richened[i];
-                if (c.InBounds(Map))
+                // Only revert a cell still carrying the richened terrain we
+                // painted — a floor (or anything else) the player built over
+                // it since is not ours to overwrite.
+                if (c.InBounds(Map) && (rich == null || c.GetTerrain(Map) == rich))
                 {
                     Map.terrainGrid.SetTerrain(c, plain);
                 }

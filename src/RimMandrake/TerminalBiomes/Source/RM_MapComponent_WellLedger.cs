@@ -131,6 +131,11 @@ namespace RimMandrake.TerminalBiomes
 
             ProcessPendingOpens();
 
+            if (RM_TerminalBiomesSettings.twilightDriftCadence == 0)
+            {
+                return; // Frozen — sandbox, wells never age.
+            }
+
             // Iterate a snapshot: AdvanceWell can remove/replace records.
             List<WellRecord> snapshot = new List<WellRecord>(wells);
             foreach (WellRecord well in snapshot)
@@ -170,13 +175,17 @@ namespace RimMandrake.TerminalBiomes
 
         private WellRecord OpenNewWell(IntVec3 cell)
         {
+            // twilightDriftCadence: 0 = frozen (aging itself is gated off in
+            // MapComponentTick, not here), 1 = week (shipped, the base
+            // 5-9 day roll), 2 = slow — roughly double the week.
+            int cadenceMultiplier = RM_TerminalBiomesSettings.twilightDriftCadence == 2 ? 2 : 1;
             WellRecord well = new WellRecord
             {
                 id = nextWellId++,
                 position = cell,
                 stage = WellStage.Opening,
                 ageTicks = 0,
-                lifespanTicks = Rand.RangeInclusive(5, 9) * TicksPerDay,
+                lifespanTicks = Rand.RangeInclusive(5, 9) * TicksPerDay * cadenceMultiplier,
                 noiseSeed = Rand.Range(0, 1000000),
             };
             well.skylightThing = SpawnSkylight(cell);
