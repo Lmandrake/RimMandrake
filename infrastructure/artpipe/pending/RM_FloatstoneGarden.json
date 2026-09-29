@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:41:57Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_FloatstoneGarden",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: a floatstone garden, a mineral growth blooming on freshly frozen volcanic crust \u2014 a globe of ultra-light pumice that looks like spun glass whirled into tangles: visible spun-thread structure wound outward in swirls like sugar-work, chamber over chamber, lace-walled and translucent-edged, standing on a short dark mineral root-boss, a few glass threads trailing loose at the crown as if the globe is already straining to tear free and drift. It must read as very beautiful first \u2014 delicate quarry standing on the deadliest ground. Single organism, centered, no ground shadow, no background scenery. No nameable Earth coral, dandelion or fungus.",
+  "reference": null,
+  "rimflow_item_id": "FORGE_BEDAZZLE_SITTING_1",
+  "style_notes": "forge register: a volcanic massif under doubled furnace light \u2014 hard white sun above, seam-red glow ONLY where the melt actually shows; basalt black, ash grey, obsidian gloss, steam-white plumes; nothing lives in the lava so nothing reads lava-native, no furred or lush-register anatomy, no ordinary rain; realistic painted natural-history illustration, grounded believable anatomy, matte mineral surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is OPAL-LACE: pale spun-glass whites and warm pearl, faint opal iridescence in the whirls, the root-boss basalt-dark for contrast, zero seam-red and zero green on the growth \u2014 the cast's one pure grace note, deliberately distinct from the rest of the cast; the freeze-phase growth (owner verbatim, LAW for this art: \"Ultra-light pumice made of what looks like spun glass whirled into tangles... Very beautiful.\"); visualSize ~1.4 cells; ripening variants derive from this master, do not average the design toward a generic bush"
+}

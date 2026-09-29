@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:41:57Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_DhokkurDormant",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: a dormant dhokkur, a colossal obsidian-backed rain-drinker of a volcanic massif in its FURLED state between rains \u2014 the giant settled into what reads as a weathered rock outcrop: limbs drawn fully under, spine plate-fans banked flat, the whole silhouette a low dome of layered obsidian shingle with dry volcanic ash drifted into every seam. The disguise must almost work: it reads as stone at a glance, and the one quiet tell is that the rain-gutter lines across the dome converge too regularly for geology. Viewed from above at a three-quarter game angle, single sprite, centered, no background scenery. No visible eyes, no face, no limbs showing, no fur, no inner glow.",
+  "reference": null,
+  "rimflow_item_id": "FORGE_BEDAZZLE_SITTING_1",
+  "style_notes": "forge register: a volcanic massif under doubled furnace light \u2014 hard white sun above, seam-red glow ONLY where the melt actually shows; basalt black, ash grey, obsidian gloss, steam-white plumes; nothing lives in the lava so nothing reads lava-native, no furred or lush-register anatomy, no ordinary rain; realistic painted natural-history illustration, grounded believable anatomy, matte mineral surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is RAIN-SLICK OBSIDIAN GONE DRY: matte ash-dusted black glass, blue-grey gloss only in the deepest seams, pale ash-grey drift filling \u2014 the walking form's wet palette powdered over, deliberately distinct from the rest of the cast; the dormant state graphic of the RM_Dhokkur giant (two-state creature, state swap owned by the cycle mechanics): same animal, same plate anatomy, furled; drawSize ~6.5 over the same footprint; the sprite may only whisper that it is alive \u2014 the tooltip does the lying"
+}
