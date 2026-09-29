@@ -143,7 +143,10 @@ dump is the design target and only the owner re-freezes it. The silent-failure t
 
 He says it, you run it, verbatim: `./game --said "<his words>" up|down|loading`.
 Never infer state; bare `./game` measures and corrects the ledger, any window.
-`broadcast.py` is his, with that single carve-out. The bridge is one-driver-at-a-time:
+`broadcast.py` is his, with that single carve-out — and the carve-out is STAMP-ONLY
+(owner, 2026-09-29): a seat's relay writes the ledger and messages no window; peers
+read the state from `rimflow next`, which measures the game itself. The bridge is
+one-driver-at-a-time:
 `rimflow bridge take` / `release`, release the moment you stop driving. **Superseded
 2026-09-02 — CLAUDE.md's own "The bridge is passed through one file" is now
 canonical**: it errs toward ALLOWING, not mutual lockout — a stale (45-minute-idle)

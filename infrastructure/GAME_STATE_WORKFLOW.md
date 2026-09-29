@@ -68,16 +68,19 @@ cannot tell which is loaded, that is the one case worth a one-line question.
 
 ## His phrases, and what you run
 
-The instant a game-state sentence arrives in your window, run the whole command —
-announce AND stamp, his words carried as provenance:
+The instant a game-state sentence arrives in your window, run the whole command,
+his words carried as provenance:
 
 ```
 ./game --said "game up" up          # down | loading | deploying | going-down
 ```
 
 `--owner-said` refuses bare assent ("yes", "ok") — a short instruction like
-"game up" passes. A ledger stamp alone is superseded: it leaves the other window
-deaf. This is the ONLY thing a window may reach `broadcast.py` for. The two states
+"game up" passes. 🔴 **An agent's relay stamps the ledger and messages NO window**
+(owner, 2026-09-29: cross-window game-state broadcasts *"burn tokens unnecessarily
+and rarely inform"*) — peers learn the state from `rimflow next`, which measures the
+game itself; only the owner running `broadcast.py` himself reaches windows. This is
+still the ONLY thing a window may reach `broadcast.py` for. The two states
 the machine cannot see — `DEPLOYING` vs `DOWN`, `GOING_DOWN` vs `UP` — are the
 owner's alone; the probe never touches them, and an inferred state is refused
 (`measured: true` is written by `probe.py` and nowhere else; a host with no

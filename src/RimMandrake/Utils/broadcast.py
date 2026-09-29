@@ -19,10 +19,16 @@ It prints what it recorded. Prose that merely mentions the game records nothing.
 🔴 THIS IS A USER TOOL. AGENTS DO NOT RUN IT — with ONE carve-out, added 2026-08-22.
 ⭐ THE CARVE-OUT: when the owner SAYS "game up" / "game down" / "game loading" to an
 agent, that agent runs `./game <state> --said "<his words>"` immediately, which lands
-here. He ruled it identical to him typing it himself: *"make it so that when I say game
-up, game down, game loading it is IDENTICAL to that !./game command."* It is a relay of
-his sentence, in the moment, and nothing else — ⛔ a state an agent INFERRED, and any
-message that is not a game state, remain his alone.
+here. It is a relay of his sentence, in the moment, and nothing else — ⛔ a state an
+agent INFERRED, and any message that is not a game state, remain his alone.
+🔴 AND SINCE 2026-09-29 THE CARVE-OUT IS STAMP-ONLY. Owner: *"Modify the agent
+definitions to not send broadcasts of game state to each other. It's burning tokens
+unnecessarily and rarely informs."* A seat running this writes the ledger event and
+messages NO window — `rimflow next` measures the game itself, so a peer learns the
+state the moment it looks. Window messaging happens only when the OWNER runs this
+himself. (This narrows the 2026-08-22 "IDENTICAL to !./game" ruling: the command an
+agent runs is unchanged; the cross-window announcement half no longer fires from a
+seat.)
 Owner's ruling, 2026-08-19: agents do not message each other, at all. `SendMessage`
 and `ListAgents` are DENIED to them in `.claude/settings.json`, so an agent has no
 way to reach a peer through the supported channel. This script deliberately goes
@@ -302,23 +308,15 @@ def game_state_in(text):
     return best
 
 
-def record_game(state, text):
-    """Append the OWNER's `game` event. Never fatal — the message still goes out."""
-    import subprocess
-    cli = os.path.join(REPO, "src/RimMandrake/rimflow/cli.py")
-    if not os.path.exists(cli):
-        return "rimflow not found; state NOT recorded"
-    # \U0001f534 CAPTURE WHO ACTUALLY RAN THIS before forcing OWNER — added 2026-08-25.
-    # `RIMFLOW_SEAT="OWNER"` below is a CONSTANT, not identity, and `frame()` stamps
-    # from-name="OWNER" on every message for the same reason: this tool was built on
-    # the assumption only the owner would run it. On 2026-08-25 `./game up --help`
-    # fired twice from some window and NOTHING in the message or the ledger could say
-    # which — the owner asked "who keeps saying this?" and the honest answer was that
-    # the system cannot know. It can now.
-    # \u26a0 RIMFLOW_SEAT is almost never set in a seat's shell — it is only source #1
-    # of four in rimflow's own resolve_seat(). Reading it alone would make this whole
-    # field silently never fire, which is the defect class it exists to catch. So it
-    # walks the same order rimflow does, minus --seat, which is not ours to see.
+def invoking_seat():
+    """-> the seat actually running this ("BENCH", ...), "OWNER", or "" for unknown.
+
+    Walks the same order rimflow's resolve_seat() does, minus --seat, which is not
+    ours to see. RIMFLOW_SEAT is almost never set in a seat's shell, so reading it
+    alone would make this silently never fire — the session-role file is the source
+    that actually answers. Since 2026-09-29 this answer also decides whether any
+    window message goes out at all (see main()).
+    """
     ran_by = (os.environ.get("RIMFLOW_SEAT")
               or os.environ.get("AGENT_SEAT") or "").strip().upper()
     if not ran_by:
@@ -334,6 +332,23 @@ def record_game(state, text):
                             break
             except OSError:
                 pass
+    return ran_by
+
+
+def record_game(state, text):
+    """Append the OWNER's `game` event. Never fatal — the message still goes out."""
+    import subprocess
+    cli = os.path.join(REPO, "src/RimMandrake/rimflow/cli.py")
+    if not os.path.exists(cli):
+        return "rimflow not found; state NOT recorded"
+    # \U0001f534 CAPTURE WHO ACTUALLY RAN THIS before forcing OWNER — added 2026-08-25.
+    # `RIMFLOW_SEAT="OWNER"` below is a CONSTANT, not identity, and `frame()` stamps
+    # from-name="OWNER" on every message for the same reason: this tool was built on
+    # the assumption only the owner would run it. On 2026-08-25 `./game up --help`
+    # fired twice from some window and NOTHING in the message or the ledger could say
+    # which — the owner asked "who keeps saying this?" and the honest answer was that
+    # the system cannot know. It can now — resolution lives in invoking_seat().
+    ran_by = invoking_seat()
     env = dict(os.environ, RIMFLOW_SEAT="OWNER")
     if ran_by and ran_by != "OWNER":
         env["RIMFLOW_RAN_BY"] = ran_by
@@ -454,6 +469,18 @@ def main(argv):
         err = record_game(state, text)
         stamp_failed = err is not None
         print("  game -> %-12s %s" % (state, err or "recorded in the ledger"))
+
+    # 🔴 AN AGENT RELAY STAMPS AND SAYS NOTHING — owner, 2026-09-29: *"Modify the
+    # agent definitions to not send broadcasts of game state to each other. It's
+    # burning tokens unnecessarily and rarely informs."* A message interrupts every
+    # receiving window and costs its tokens, while `rimflow next` already measures
+    # the game itself — so when a SEAT runs this (always via `./game --said`, the
+    # one legitimate agent path here), the ledger stamp above is the whole job and
+    # no window is messaged, not even one blocked on the game. Window messaging is
+    # the OWNER's alone; him running this himself is unchanged.
+    if state and invoking_seat() not in ("", "OWNER"):
+        print("  (agent relay: stamped only — no window messages; owner ruling 2026-09-29)")
+        return 1 if stamp_failed else 0
 
     if not live:
         print("no live sessions matched")
