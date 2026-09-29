@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BlueIceMineable.xml                     BLUEDESERT_RULED_CONTENT_1 §3
+
+  RM_BlueIce — the sheet's ⭐ "golden" mineable (the_blue_desert.md §7: "Blue
+  ice — mineable water-ice blocks of distilled-level purity"). RockBase-family
+  mineable + a single mined item, same pattern this repo already established
+  twice this sitting: src/RimUtinni/UtinniPatches's RUT_GreatboleHeartwood
+  (wall ParentName="RockBase", mineable=true, building.mineableThing + yield
+  + dropChance, mineableScatterCommonality=0 — deliberate placement, not
+  vanilla's own ore-vein scatterer) and src/RimMandrake/FloodedCanyon's
+  RM_FossilSeams (same shape, cited there as cribbed from this precedent).
+
+  Placement is OWED, not this file's scope: BLUEDESERT_MECHANICS_BUILD_1 §2's
+  quarry injection templates are the sheet's own home for it ("Injectable
+  ancient ice quarries" §8) — same restraint both precedents above already
+  took. mineableScatterCommonality stays 0 until that GenStep (or a
+  biome-scoped ore-vein patch) exists; shipping this def with real placement
+  authored by no one would be a silent-guess violation of the same kind this
+  repo's CLAUDE.md warns against elsewhere.
+
+  The thaw-roll comp (mechanics item §3: "every N blocks cut rolls nothing /
+  a fallen-debris find / a release") is that item's C# — this wall mines
+  cleanly to the item with no roll today. 🔴 STUB HOOKUP POINT for that item:
+  attach the roll comp to THIS ThingDef (RM_BlueIceMineable), same shape as
+  RUT_GreatboleHeartwood's own MapComponent-watches-mined-cells option, or a
+  ThingComp on this def akin to CompProperties_PlantCharge's placement in
+  BlueDesertLife.cs.
+
+  ART: no separate wall-face texture was commissioned (art commission table,
+  bluedesert_bedazzle_cast_2026-09-28.md §7: only the item icon, "mineable
+  atlas derives from it"). Per the bible's own fallback ("FOUNDRY derives the
+  atlas tile from the item art's material language if no separate wall
+  texture is commissioned"), the wall reuses the commissioned item PNG
+  directly (Graphic_Single, no linked-tile atlas) rather than a vanilla
+  rock texture — a real, non-placeholder texture, just not yet a dedicated
+  16-cell atlas. A bespoke wall atlas is owed art, not a def-correctness gap.
+-->
+<Defs>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_BlueIceMineable</defName>
+    <label>blue ice</label>
+    <description>Ancient water ice compressed so long and so clean that it is finally, truly blue in the body -- the one thing in the Blue Desert that is not a trick of scattering. Cut into it and the wall face weeps cold light for a moment before it goes dark again.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_BlueIce/RM_BlueIce</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>260</MaxHitPoints>
+    </statBases>
+    <mineable>true</mineable>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_BlueIce</mineableThing>
+      <mineableYield>15</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+</Defs>

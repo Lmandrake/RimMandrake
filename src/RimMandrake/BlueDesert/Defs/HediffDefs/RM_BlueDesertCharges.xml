@@ -80,6 +80,146 @@
     </comps>
   </HediffDef>
 
+  <!-- =================================================================
+       BLUEDESERT_RULED_CONTENT_1 — the depth cast (zhaaz/vrisk/dovvik/
+       utikka, ruled 2026-09-24) and the bedazzle four (vhaulk/murrek/
+       ossivel/virr, ruled 2026-09-28). Same per-species pattern as the
+       three above: HediffWithComps + HediffCompProperties_ExplodeOnDeath,
+       Flame 40, destroyBody false, given by PawnKindDef.startingHediffs.
+       ================================================================= -->
+
+  <HediffDef>
+    <defName>RM_ZhaazCharge</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>hydrocarbon charge</label>
+    <description>A propane-slush lobe's whole body is the charge; there is no separate gut to spare.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_ExplodeOnDeath">
+        <explosionRadius>2.5</explosionRadius>
+        <damageDef>Flame</damageDef>
+        <damageAmount>40</damageAmount>
+        <destroyBody>false</destroyBody>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_VriskCharge</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>hydrocarbon charge</label>
+    <description>A small reserve of Haze condensate, carried for the long skim between fields.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_ExplodeOnDeath">
+        <explosionRadius>1.1</explosionRadius>
+        <damageDef>Flame</damageDef>
+        <damageAmount>40</damageAmount>
+        <destroyBody>false</destroyBody>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_DovvikCharge</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>hydrocarbon charge</label>
+    <description>Whatever it has drained sits stored, not spent — a defuser's own charge is the fields it has visited.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_ExplodeOnDeath">
+        <explosionRadius>1.5</explosionRadius>
+        <damageDef>Flame</damageDef>
+        <damageAmount>40</damageAmount>
+        <destroyBody>false</destroyBody>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_UtikkaCharge</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>hydrocarbon charge</label>
+    <description>A fist-sized cropper's charge is small, but a whole scattering krissek pack finds it a fair meal in fire either way.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_ExplodeOnDeath">
+        <explosionRadius>1.1</explosionRadius>
+        <damageDef>Flame</damageDef>
+        <damageAmount>40</damageAmount>
+        <destroyBody>false</destroyBody>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <!-- 🔴 STUB HOOKUP POINT for BLUEDESERT_MECHANICS_BUILD_1 §1: today this
+       comp is the plain ungated ExplodeOnDeath every other native carries —
+       ANY death detonates at the full 15-radius. The RULED behaviour (sheet
+       amendment (2), bible §1 "Danger frame") is trigger-gated: detonate
+       ONLY on a heat-family killing blow (Flame/Burn; lightning's strike
+       damage IS Flame so it's free), PLUS an EMP-on-hit trap that detonates
+       a LIVING vhaulk immediately on any EMP damage (checked on hit, not on
+       death). The mechanics item adds two custom HediffComps here (a
+       death-cause filter alongside this ExplodeOnDeath comp, and an
+       EMP Notify_PawnPostApplyDamage hook, same shape as this file's own
+       RM_DorrakCharge -> HediffCompProperties_ExplodeOnPartDestroyed
+       precedent) — it does not need to replace this hediff, only add to
+       its <comps> list. -->
+  <HediffDef>
+    <defName>RM_VhaulkCharge</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>hydrocarbon charge (cistern)</label>
+    <description>A rolling cistern of pentane sludge, sealed and vast. The largest charge on the planet's surface -- do not still the mountain.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_ExplodeOnDeath">
+        <explosionRadius>15</explosionRadius>
+        <damageDef>Flame</damageDef>
+        <damageAmount>40</damageAmount>
+        <destroyBody>false</destroyBody>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_MurrekCharge</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>hydrocarbon charge</label>
+    <description>Krissek-clade, krissek-class charge -- ungated: flushing one with fire re-arms the drift field a different way.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_ExplodeOnDeath">
+        <explosionRadius>2.9</explosionRadius>
+        <damageDef>Flame</damageDef>
+        <damageAmount>40</damageAmount>
+        <destroyBody>false</destroyBody>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_OssivelCharge</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>hydrocarbon charge</label>
+    <description>The one charge on the roster you can survive standing next to -- a startled choir dying together in a floss field is its own cautionary tale.</description>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_ExplodeOnDeath">
+        <explosionRadius>1.1</explosionRadius>
+        <damageDef>Flame</damageDef>
+        <damageAmount>40</damageAmount>
+        <destroyBody>false</destroyBody>
+      </li>
+    </comps>
+  </HediffDef>
+
   <!-- §2f: given to a foreign (water-based) grazer that eats the flora, by
        RM_IngestionOutcomeDoer_ButaneGut. ToxicBuildup-shaped: severity per
        meal, lethal at 1, slow natural decay — so occasional grazing is

@@ -63,7 +63,11 @@
       <ArmorRating_Heat>0</ArmorRating_Heat>
       <ComfyTemperatureMin>-100</ComfyTemperatureMin>
       <ComfyTemperatureMax>-11</ComfyTemperatureMax>
-      <Wildness>1.0</Wildness>
+      <!-- BLUEDESERT_RULED_CONTENT_1 §6 (tameability pass): the blanket
+           all-untameable stance is dead. Dorrak is slow, armoured and a
+           lumbering grazer — a tameable cask, not a fighter — so it gets
+           the roster's most forgiving Wildness/trainability pairing. -->
+      <Wildness>0.85</Wildness>
     </statBases>
     <tools>
       <li>
@@ -98,7 +102,7 @@
       <baseHungerRate>0.35</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
       <predator>false</predator>
-      <trainability>None</trainability>
+      <trainability>Intermediate</trainability>
       <lifeExpectancy>30</lifeExpectancy>
       <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
       <lifeStageAges>
@@ -200,7 +204,11 @@
       <ArmorRating_Heat>0</ArmorRating_Heat>
       <ComfyTemperatureMin>-100</ComfyTemperatureMin>
       <ComfyTemperatureMax>-11</ComfyTemperatureMax>
-      <Wildness>1.0</Wildness>
+      <!-- BLUEDESERT_RULED_CONTENT_1 §6: still very hard to tame — a fast
+           predator that detonates when killed is the roster's danger case
+           ("a krissek pet is a torch in the kitchen", life brief §10) — but
+           per-def now, not a blanket 1.0/None law. -->
+      <Wildness>0.95</Wildness>
     </statBases>
     <tools>
       <li>
@@ -347,7 +355,9 @@
       <LeatherAmount>0</LeatherAmount>
       <ComfyTemperatureMin>-100</ComfyTemperatureMin>
       <ComfyTemperatureMax>-11</ComfyTemperatureMax>
-      <Wildness>0.9</Wildness>
+      <!-- BLUEDESERT_RULED_CONTENT_1 §6: the roster's harmless one — easiest
+           tame, and a salvage-following linewalker is a natural utility pet. -->
+      <Wildness>0.5</Wildness>
     </statBases>
     <tools>
       <li>
@@ -381,7 +391,7 @@
       <baseHungerRate>0.2</baseHungerRate>
       <foodType>CarnivoreAnimal</foodType>
       <predator>false</predator>
-      <trainability>None</trainability>
+      <trainability>Intermediate</trainability>
       <lifeExpectancy>10</lifeExpectancy>
       <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
       <herdAnimal>true</herdAnimal>
@@ -460,6 +470,828 @@
           <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
           <drawSize>1.0</drawSize>
         </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       BLUEDESERT_RULED_CONTENT_1 §1 — the 2026-09-24 depth cast, ruled at
+       BLUEDESERT_DESIGN_SITTING_1 and finally built here. All four are
+       hydrocarbon natives (ban 3): OrganicStandard heatstroke (§1f of the
+       design brief), ComfyTemperatureMax -11, a per-species
+       RM_*Charge hediff, RM_ColdWax butchery, MeatAmount/LeatherAmount 0.
+       Stats are FOUNDRY's design choices calibrated against the built
+       cast's anchors (dorrak bs 1.6 / krissek 0.9 / vekkit 0.45), per the
+       bible's own "numbers are design choices" note. Art: DONE, artpipe
+       bluedesert_* jobs, textures already placed under this mod's own
+       Textures/Things/Pawn/Animal/RM_<Name>/.
+       ================================================================= -->
+
+  <!-- ============== ZHAAZ — the engulf-feeder (living propane-slush lobe) ============== -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Zhaaz</defName>
+    <label>zhaaz</label>
+    <description>A slow grey lobe that reads as a puddle until it moves. It does not chase so much as arrive: a slush-fold opens where you did not expect a mouth and closes around whatever was standing there. No bones show through it because it does not have any worth the name. The crews call them puddles and never stand still near ice that looks too clean.</description>
+    <statBases>
+      <MoveSpeed>1.5</MoveSpeed>
+      <Mass>132</Mass>
+      <Flammability>0.1</Flammability>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Sharp>0.1</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <ArmorRating_Heat>0</ArmorRating_Heat>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-11</ComfyTemperatureMax>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>engulf</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>3.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <hediffGiverSets>
+        <li>OrganicStandard</li>
+      </hediffGiverSets>
+      <baseBodySize>2.2</baseBodySize>
+      <baseHealthScale>2.2</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>1.0</maxPreyBodySize>
+      <trainability>None</trainability>
+      <lifeExpectancy>15</lifeExpectancy>
+      <manhunterOnDamageChance>0.6</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <butcherProducts>
+      <RM_ColdWax>10</RM_ColdWax>
+    </butcherProducts>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Zhaaz</defName>
+    <label>zhaaz</label>
+    <race>RM_Zhaaz</race>
+    <combatPower>140</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <startingHediffs>
+      <li>
+        <def>RM_ZhaazCharge</def>
+        <severity>1</severity>
+      </li>
+    </startingHediffs>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============== VRISK — the Haze-skimmer (real flight) ============== -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vrisk</defName>
+    <label>vrisk</label>
+    <description>Kite-thin and near-flat in flight, it rides the Haze's own drift and skims what precipitates out of it, wingtips never quite still. On the ice it is an awkward fold of itself; in the air it is the only fast thing on the plateau that does not want to eat you. The crews watch them to guess where the Haze is thinnest.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <Mass>24</Mass>
+      <Flammability>0.1</Flammability>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Heat>0</ArmorRating_Heat>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-11</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+      <!-- "If it flies in the fiction, it flies in the game" (repo CLAUDE.md):
+           real flight via the STAT, not a race bool. Locust shape. -->
+      <MaxFlightTime>10</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>nip</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <hediffGiverSets>
+        <li>OrganicStandard</li>
+      </hediffGiverSets>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>8</lifeExpectancy>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <flightStartChanceOnJobStart>0.1</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <butcherProducts>
+      <RM_ColdWax>3</RM_ColdWax>
+    </butcherProducts>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vrisk</defName>
+    <label>vrisk</label>
+    <race>RM_Vrisk</race>
+    <combatPower>20</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <startingHediffs>
+      <li>
+        <def>RM_VriskCharge</def>
+        <severity>1</severity>
+      </li>
+    </startingHediffs>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vrisk/RM_Vrisk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vrisk/RM_Vrisk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vrisk/RM_Vrisk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============== DOVVIK — the proboscis defuser ============== -->
+  <!-- 🔴 STUB HOOKUP POINT for BLUEDESERT_MECHANICS_BUILD_1 §8: the
+       "drains plant charges" mechanic (a comp that reads/resets
+       RM_CompPlantCharge on a nearby plant, marking it charge-safe for a
+       day with a tint) is that item's own C# — this def ships as an
+       ordinary tameable grazer with no special ability yet. Tameable BY
+       DESIGN per BLUEDESERT_RULED_CONTENT_1 §6 (approved: "the tamed dovvik
+       minesweeper", review turn-2 ruling 4). -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Dovvik</defName>
+    <label>dovvik</label>
+    <description>A patient thing with one long curled proboscis it works into a plant's stem like a straw, and it does not leave until the charge is gone. Crews follow a dovvik trail through a floss field the way you'd follow a path someone already swept -- wherever it has fed, the field is a day safer to warm.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <Mass>36</Mass>
+      <Flammability>0.1</Flammability>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Heat>0</ArmorRating_Heat>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-11</ComfyTemperatureMax>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>proboscis</label>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <hediffGiverSets>
+        <li>OrganicStandard</li>
+      </hediffGiverSets>
+      <baseBodySize>0.6</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <butcherProducts>
+      <RM_ColdWax>5</RM_ColdWax>
+    </butcherProducts>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Dovvik</defName>
+    <label>dovvik</label>
+    <race>RM_Dovvik</race>
+    <combatPower>25</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <startingHediffs>
+      <li>
+        <def>RM_DovvikCharge</def>
+        <severity>1</severity>
+      </li>
+    </startingHediffs>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dovvik/RM_Dovvik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dovvik/RM_Dovvik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dovvik/RM_Dovvik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============== UTIKKA — the palefloss-cropper, krissek's staple prey ============== -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Utikka</defName>
+    <label>utikka</label>
+    <description>Fist-sized and always moving in a loose scatter, cropping palefloss down to the ice a strand at a time. There are more of them than anything else out here, which is the only reason there is anything left of them at all -- the krissek do not have to look far.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <Mass>15</Mass>
+      <Flammability>0.1</Flammability>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Heat>0</ArmorRating_Heat>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-11</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>nip</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <hediffGiverSets>
+        <li>OrganicStandard</li>
+      </hediffGiverSets>
+      <baseBodySize>0.25</baseBodySize>
+      <baseHealthScale>0.25</baseHealthScale>
+      <baseHungerRate>0.18</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <herdAnimal>true</herdAnimal>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <butcherProducts>
+      <RM_ColdWax>2</RM_ColdWax>
+    </butcherProducts>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Utikka</defName>
+    <label>utikka</label>
+    <race>RM_Utikka</race>
+    <combatPower>12</combatPower>
+    <wildGroupSize>4~10</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <startingHediffs>
+      <li>
+        <def>RM_UtikkaCharge</def>
+        <severity>1</severity>
+      </li>
+    </startingHediffs>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Utikka/RM_Utikka</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Utikka/RM_Utikka</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Utikka/RM_Utikka</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- =================================================================
+       BLUEDESERT_RULED_CONTENT_1 §2 — the four bedazzle natives (ruled
+       2026-09-28, names FINAL). vh- is the apex-predator marker: ONLY
+       RM_Vhaulk carries it. Cast bible:
+       design/Jawa/worldbuilding/biomes/bluedesert_bedazzle_cast_2026-09-28.md.
+       Art: DONE (bluedesert_bedazzle_cast.csv, all 5 jobs incl. RM_BlueIce),
+       textures already placed under this mod's own Textures/.
+       ================================================================= -->
+
+  <!-- ============== VHAULK — the colossus (GIANT, mark 5) ============== -->
+  <!-- 🔴 STUB HOOKUP POINT for BLUEDESERT_MECHANICS_BUILD_1 §1 (see this
+       def's own RM_VhaulkCharge hediff, HediffDefs/RM_BlueDesertCharges.xml,
+       for the detonation-gating stub) and §1's valve-tap-alive harvest
+       (work-giver operation at a valve body part). Body reuses
+       QuadrupedAnimalWithHoovesAndHump (the dorrak's own Hump-as-gut
+       compromise, bible §1: "the cosmetic-label compromise does not stretch
+       cleanly to a colossus" — so a bespoke Valve BodyDef is that item's to
+       build if it wants a dedicated tap part; the Hump remains a usable
+       stand-in coverage 0.10 target today). Six-pillar-legs description vs a
+       four-legged body is the SAME accepted mismatch the dorrak's own
+       description ("six short legs") already ships with in this file. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vhaulk</defName>
+    <label>vhaulk</label>
+    <description>From the ridge it reads as a hill that was not there last season. Six legs like quarry pillars, a back like a buried tank, and it eats a floss field the way weather eats a footprint -- whole, slowly, without noticing you. The crews call it the mountain and steer wide. The old warnings say do not still the mountain, and the crews who thought that was poetry are the reason the crews steer wide.</description>
+    <statBases>
+      <MoveSpeed>1.2</MoveSpeed>
+      <Mass>360</Mass>
+      <Flammability>0.1</Flammability>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Sharp>0.7</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.5</ArmorRating_Blunt>
+      <ArmorRating_Heat>0</ArmorRating_Heat>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-11</ComfyTemperatureMax>
+      <Wildness>0.98</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>slam</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>4.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHump</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <hediffGiverSets>
+        <li>OrganicStandard</li>
+      </hediffGiverSets>
+      <baseBodySize>6.0</baseBodySize>
+      <baseHealthScale>6.0</baseHealthScale>
+      <baseHungerRate>2.5</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>200</lifeExpectancy>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>8</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>25</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <butcherProducts>
+      <RM_ColdWax>80</RM_ColdWax>
+    </butcherProducts>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vhaulk</defName>
+    <label>vhaulk</label>
+    <race>RM_Vhaulk</race>
+    <combatPower>450</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>3.0</ecoSystemWeight>
+    <startingHediffs>
+      <li>
+        <def>RM_VhaulkCharge</def>
+        <severity>1</severity>
+      </li>
+    </startingHediffs>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============== MURREK — the drift ambusher ============== -->
+  <!-- Ships walk-and-hunt viable WITHOUT the burrow AI — a slow flat
+       predator, per the bible's own note. 🔴 STUB HOOKUP POINT for
+       BLUEDESERT_MECHANICS_BUILD_1 §6: buried/unburied states via a
+       burrow/unburrow job driver + a MapComponent listening for the drift
+       weather's end. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Murrek</defName>
+    <label>murrek</label>
+    <description>Flat as a dropped tarp and about as easy to see, once the sand has settled over it. It does not chase and it does not need to: it lies where the wind builds the drifts, and the drifts are everywhere the wind was. The crews walk the swept ice after a storm and probe the leaning sand with poles, and the poles are not long enough.</description>
+    <statBases>
+      <MoveSpeed>3.5</MoveSpeed>
+      <Mass>72</Mass>
+      <Flammability>0.1</Flammability>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Heat>0</ArmorRating_Heat>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-11</ComfyTemperatureMax>
+      <Wildness>0.97</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>strike</label>
+        <capacities>
+          <li>Stab</li>
+        </capacities>
+        <power>17</power>
+        <cooldownTime>2.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>jaws</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <hediffGiverSets>
+        <li>OrganicStandard</li>
+      </hediffGiverSets>
+      <baseBodySize>1.2</baseBodySize>
+      <baseHealthScale>1.2</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>1.0</maxPreyBodySize>
+      <trainability>None</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <manhunterOnDamageChance>0.8</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <butcherProducts>
+      <RM_ColdWax>8</RM_ColdWax>
+    </butcherProducts>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Murrek</defName>
+    <label>murrek</label>
+    <race>RM_Murrek</race>
+    <combatPower>110</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <startingHediffs>
+      <li>
+        <def>RM_MurrekCharge</def>
+        <severity>1</severity>
+      </li>
+    </startingHediffs>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Murrek/RM_Murrek</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.95</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Murrek/RM_Murrek</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Murrek/RM_Murrek</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.9</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============== OSSIVEL — the choir ============== -->
+  <!-- Ships silent-capable: no hard dependency on the sound work. 🔴 STUB
+       HOOKUP POINT for BLUEDESERT_MECHANICS_BUILD_1 §5: a sustainer ambient
+       keyed to pack presence + the silence-alarm (stops when a pawn above
+       bodySize ~1.0 nears). -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Ossivel</defName>
+    <label>ossivel</label>
+    <description>Knee-high, round-bodied, throat like a rank of organ pipes. At the line they stand in dozens and sing -- long cold chords you can hear through a sealed helmet, the only proof for a hundred kilometres that anything is glad to be here. The crews like them. The crews also count on them: when the singing stops all at once, you have until the echo dies to be somewhere else.</description>
+    <statBases>
+      <MoveSpeed>4.0</MoveSpeed>
+      <Mass>21</Mass>
+      <Flammability>0.1</Flammability>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Heat>0</ArmorRating_Heat>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-11</ComfyTemperatureMax>
+      <Wildness>0.55</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>nip</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <hediffGiverSets>
+        <li>OrganicStandard</li>
+      </hediffGiverSets>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHealthScale>0.35</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>9</lifeExpectancy>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <herdAnimal>true</herdAnimal>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <butcherProducts>
+      <RM_ColdWax>2</RM_ColdWax>
+    </butcherProducts>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Ossivel</defName>
+    <label>ossivel</label>
+    <race>RM_Ossivel</race>
+    <combatPower>25</combatPower>
+    <wildGroupSize>5~12</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <startingHediffs>
+      <li>
+        <def>RM_OssivelCharge</def>
+        <severity>1</severity>
+      </li>
+    </startingHediffs>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ossivel/RM_Ossivel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ossivel/RM_Ossivel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.68</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Ossivel/RM_Ossivel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
       </li>
     </lifeStages>
   </PawnKindDef>

@@ -29,9 +29,11 @@
     named a donor type, so this mod owes no RM_BiomeWorker_BlueDesert of its own.
 
     Everything else — every field, every wildPlants/wildAnimals row, every
-    number — is unchanged from the twin, including the three donor wildPlants
-    rows (AB_ToxiGrass/AB_CrystalHorn/PoisonPlantTallGrass) left unguarded per
-    the twin's own note that the ban-1 tension stays open for the owner.
+    number — was originally unchanged from the twin. The ban-1 tension that
+    left three donor wildPlants rows (AB_ToxiGrass/AB_CrystalHorn/
+    PoisonPlantTallGrass) unguarded is RESOLVED: BLUEDESERT_RULED_CONTENT_1
+    §4/§5 (turn-2 ruling 1, 2026-09-28) cut all three from this def's rows —
+    see the wildPlants block below for the current roster.
 
     The comment block immediately below is the twin's own original authoring
     note, carried over unedited for provenance; "RUT_BlueDesert" in it refers
@@ -117,17 +119,18 @@
     <isExtremeBiome>true</isExtremeBiome>
     <animalDensity>0.5</animalDensity>
     <plantDensity>0.33</plantDensity>
-    <!-- wildPlants: three donor rows (AB_ToxiGrass/AB_CrystalHorn/PoisonPlantTallGrass)
-         inherited unguarded from the twin — see this mod's own About.xml disclosure.
-         Left as-is, not a ruling on whether a water-metabolism donor plant belongs in a
-         ban-1 biome (that stays open for the owner). RM_Palefloss/RM_Glassfern/
-         RM_Chimeglobe are the biome's own ratified flora, added alongside them. -->
+    <!-- BLUEDESERT_RULED_CONTENT_1 §4/§5: the ban-1 tension is RESOLVED —
+         turn-2 ruling 1 (bible §0/review §5): "The three donor water-plants:
+         CUT. The ban stands — no water plants make sense here." AB_ToxiGrass,
+         AB_CrystalHorn and PoisonPlantTallGrass are removed from this biome's
+         rows (AB_CrystalHorn keeps its Propane Lakes home — RUT_PropaneLake
+         is untouched by this change). RM_Virr joins the three ratified
+         native flora at the bible's own §6 roster numbers. Shorthand element
+         form only — a <li> here would silently discard the whole entry. -->
     <wildPlants>
-      <AB_ToxiGrass>0.6</AB_ToxiGrass>  <!-- toxigrass -->
-      <AB_CrystalHorn>0.4</AB_CrystalHorn>  <!-- crystal horn -->
-      <PoisonPlantTallGrass>0.4</PoisonPlantTallGrass>  <!-- poison tall grass -->
       <RM_Palefloss>1.0</RM_Palefloss>
       <RM_Glassfern>0.5</RM_Glassfern>
+      <RM_Virr>0.4</RM_Virr>
       <RM_Chimeglobe>0.25</RM_Chimeglobe>
     </wildPlants>
     <hasVirtualPlants>false</hasVirtualPlants>
@@ -168,17 +171,26 @@
       <Overcast MayRequire="Ludeon.RimWorld.Odyssey">0</Overcast>
       <Blizzard MayRequire="Ludeon.RimWorld.Odyssey">0</Blizzard>
     </baseWeatherCommonalities>
-    <!-- Resident fauna per the design brief §6c: vekkit most common (herd
-         scavenger), dorrak mid (slow, armoured), krissek least common (a
-         hazard, not a background animal). AA_Thunderbeast is the roster's
+    <!-- Resident fauna: the original three (design brief §6c) plus
+         BLUEDESERT_RULED_CONTENT_1's full ruled cast — the 2026-09-24 depth
+         four (zhaaz/vrisk/dovvik/utikka) and the 2026-09-28 bedazzle four
+         (vhaulk/murrek/ossivel), at the cast bible's own §6 commonalities
+         (vhaulk the ruled 0.02-class rare). AA_Thunderbeast is the roster's
          trace-experiment import (Alpha Animals, non-Star-Wars, see this
          file's own correction note above) — ships inline, MayRequire-gated.
          `Vapaad` (genuinely canon) rides the Utinni patch layer instead —
-         see WildAnimals_BlueDesert.xml. -->
+         see WildAnimals_BlueDesert.xml. Shorthand element form only. -->
     <wildAnimals>
       <RM_Vekkit>0.8</RM_Vekkit>
+      <RM_Utikka>0.7</RM_Utikka>
       <RM_Dorrak>0.5</RM_Dorrak>
+      <RM_Ossivel>0.5</RM_Ossivel>
       <RM_Krissek>0.35</RM_Krissek>
+      <RM_Vrisk>0.3</RM_Vrisk>
+      <RM_Murrek>0.25</RM_Murrek>
+      <RM_Dovvik>0.2</RM_Dovvik>
+      <RM_Zhaaz>0.1</RM_Zhaaz>
+      <RM_Vhaulk>0.02</RM_Vhaulk>
       <AA_Thunderbeast MayRequire="sarg.alphaanimals">0.005</AA_Thunderbeast>  <!-- thunderbeast (yuddra) - trace-experiment import -->
     </wildAnimals>
     <coastalWildAnimals />
