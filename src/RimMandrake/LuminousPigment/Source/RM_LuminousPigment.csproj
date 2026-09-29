@@ -63,6 +63,18 @@
     <Compile Include="DeepfireGodExtension.cs" />
     <Compile Include="SumptuaryEngine.cs" />
     <Compile Include="ThoughtWorkers_Sumptuary.cs" />
+    <!-- DEEPFIRE_PAINT_LIVE_VERIFY_1, spec §10 step 5: painting Deepfire
+         onto walls/floors-furniture/art/apparel/weapons, and the proxy-
+         glower light system step 1 answered (spawned invisible 1x1 Thing,
+         never an unspawned proxy). -->
+    <Compile Include="DeepfireDefOf.cs" />
+    <Compile Include="DeepfirePaintUtility.cs" />
+    <Compile Include="MapComponent_DeepfireLights.cs" />
+    <Compile Include="CompDeepfire.cs" />
+    <Compile Include="CompInjector_Deepfire.cs" />
+    <Compile Include="Designator_Deepfire.cs" />
+    <Compile Include="WorkGiver_ApplyDeepfire.cs" />
+    <Compile Include="JobDriver_ApplyDeepfire.cs" />
   </ItemGroup>
 
   <ItemGroup>

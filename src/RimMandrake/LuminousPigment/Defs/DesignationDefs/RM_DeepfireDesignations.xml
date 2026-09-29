@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DeepfireDesignations.xml            LuminousPigment · DEEPFIRE_PAINT_LIVE_VERIFY_1
+  Spec §3.3. RM_ApplyDeepfireDesignation carries nothing but the target (the
+  coat count lives on CompDeepfire) — matches vanilla DesignationDefOf.Deconstruct's
+  own shape, not the coloured PaintBuilding one (no colorDef to carry).
+  Removal (RM_Designator_RemoveDeepfire) is an immediate action with no
+  designation of its own — "clears coats (no refund)", spec §3.3.
+-->
+<Defs>
+
+  <DesignationDef>
+    <defName>RM_ApplyDeepfireDesignation</defName>
+    <texturePath>UI/Designators/Paint_Bottom</texturePath>
+    <targetType>Thing</targetType>
+  </DesignationDef>
+
+</Defs>

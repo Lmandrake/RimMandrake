@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DeepfireWorkGivers.xml              LuminousPigment · DEEPFIRE_PAINT_LIVE_VERIFY_1
+  Spec §3.3: "one WorkGiver, workType chosen by target; if a single WorkGiver
+  cannot switch work types, ship two" — a WorkGiverDef's workType is a fixed
+  XML field (RimSage-verified: no per-target override point), so this ships
+  two, both driving the same RM_ApplyDeepfire job/JobDriver and differing
+  only in which Things they pick up (Construction: def.category == Building
+  — walls, furniture, statues; Crafting: everything else CompDeepfire was
+  injected into — apparel, weapons, loose art items).
+
+  🔴 priorityInType 400, NOT the originally-shipped 50 — MEASURED live
+  2026-09-29: at 50, `WorkTypeDef.ResolveReferences` sorts a work type's own
+  WorkGiverDefs `orderby priorityInType descending`
+  (RimSage-verified, Verse/WorkTypeDef.cs), and `JobGiver_Work`'s scan loop
+  `break`s out of lower-priority tiers the instant ANY earlier tier finds a
+  reachable target ANYWHERE on the map (RimWorld/JobGiver_Work.cs). Vanilla
+  Construction WorkGivers alone range up to ~220 in this mod list's own dump,
+  so 50 put this WorkGiver dead last: three colonists sat on designated,
+  reachable, fully-stocked deepfire targets for 19+ real game-hours of
+  Superfast time and never once picked up the job — `deepfire/debug_workgiver`
+  confirmed `HasJobOnThing` itself returns true the whole time, so the miss
+  was tier starvation, not a broken WorkGiver. 400 clears every observed
+  competing tier; RE-VERIFIED live at 400 (same session) that a colonist
+  fetches Deepfire and applies a coat within seconds of unpausing.
+-->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_ApplyDeepfireConstructionWorkGiver</defName>
+    <label>apply deepfire (buildings)</label>
+    <giverClass>RimMandrake.LuminousPigment.WorkGiver_ApplyDeepfireConstruction</giverClass>
+    <workType>Construction</workType>
+    <verb>apply deepfire to</verb>
+    <gerund>applying deepfire</gerund>
+    <priorityInType>400</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RM_ApplyDeepfireCraftingWorkGiver</defName>
+    <label>apply deepfire (items)</label>
+    <giverClass>RimMandrake.LuminousPigment.WorkGiver_ApplyDeepfireCrafting</giverClass>
+    <workType>Crafting</workType>
+    <verb>apply deepfire to</verb>
+    <gerund>applying deepfire</gerund>
+    <priorityInType>400</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_DeepfireLightProxy.xml              LuminousPigment · DEEPFIRE_PAINT_LIVE_VERIFY_1
+  ============================================================================
+  Spec §10 step 1's answer, recorded on the ledger item: CompGlower.ShouldBeLitNow
+  gates on parent.Spawned, so an UNSPAWNED proxy structurally cannot light
+  map.glowGrid. This def is the SPAWNED, invisible, unselectable 1x1 Thing
+  MapComponent_DeepfireLights.cs spawns one of per registered light (a coated
+  wall/furniture/item cell, spec §3.6's clustering is a later step).
+
+  🔴 category Item / altitudeLayer Item, NOT Building — MEASURED live
+  2026-09-29: the first shape (ParentName="BuildingBase", category Building,
+  altitudeLayer Building, fillPercent 0) DESTROYED the wall it was spawned on
+  top of. GenSpawn.Spawn's default WipeMode.Vanish calls
+  GenSpawn.SpawningWipes(newDef, oldDef) (RimSage-verified, Verse/GenSpawn.cs),
+  which wipes on `thingDef2.blocksAltitudes.Contains(thingDef.altitudeLayer)` —
+  BuildingBase's own inherited `blocksAltitudes` blocks the Building layer
+  regardless of fillPercent, so a fillPercent-0 Building-layer thing spawned
+  on an occupied cell still wiped the occupant. Moved to the `Item` category/
+  layer, the same shape this repo's own BuriedCache.xml precedent
+  (MovingDunes) already uses for an invisible marker meant to coexist with
+  whatever occupies its cell — RE-VERIFIED live afterward: a proxy now spawns
+  on a Steel wall's own cell and the wall survives.
+
+  glowRadius/glowColor on the XML comp are placeholders only: every spawn
+  immediately overrides CompGlower.GlowRadius/GlowColor at runtime
+  (MapComponent_DeepfireLights.SetLight) to the coated thing's own colour
+  and coat-scaled radius (spec §3.1/§3.2).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RM_DeepfireLightProxy</defName>
+    <label>deepfire light (internal)</label>
+    <description>Internal marker thing that carries a Deepfire glow light. If you can see or select this, something is wrong — report it.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <drawerType>None</drawerType>
+    <altitudeLayer>Item</altitudeLayer>
+    <passability>Standable</passability>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>false</selectable>
+    <useHitPoints>false</useHitPoints>
+    <destroyable>true</destroyable>
+    <alwaysHaulable>false</alwaysHaulable>
+    <designateHaulable>false</designateHaulable>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <stackLimit>1</stackLimit>
+    <tradeability>None</tradeability>
+    <neverMultiSelect>true</neverMultiSelect>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>0</Beauty>
+      <MarketValue>0</MarketValue>
+      <Mass>0</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1.5</glowRadius>
+        <glowColor>(255,255,255,0)</glowColor>
+        <overlightRadius>0</overlightRadius>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
