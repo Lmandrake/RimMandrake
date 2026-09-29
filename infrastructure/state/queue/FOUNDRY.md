@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T04:56:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T05:00:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1053,6 +1053,15 @@ kind:     task
 summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
 prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md
 
+## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  CRACKEDLANDSFULLRENAME1 — FloodedCanyon → CrackedLands, everywhere
+prose:    infrastructure/state/items/CRACKEDLANDS_FULL_RENAME_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1547,6 +1556,16 @@ blocked:  Q10/Q11/Q12 need GREYSEA_SHIP_CRYSTALLISATION_1 + DARKSEA_LIGHT_ATTRAC
 summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
 prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md
 
+## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+blocked:  owner call needed on how to handle the 44 live world tiles currently on RM_FloodedCanyon before the defName rename proceeds (see needs note)
+summary:  CRACKEDLANDSFULLRENAME1 — FloodedCanyon → CrackedLands, everywhere
+prose:    infrastructure/state/items/CRACKEDLANDS_FULL_RENAME_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1818,16 +1837,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1.md
-
-## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  CRACKEDLANDSFULLRENAME1 — FloodedCanyon → CrackedLands, everywhere
-prose:    infrastructure/state/items/CRACKEDLANDS_FULL_RENAME_1.md
 
 ## CRACKEDLANDS_RULED_CONTENT_1 Build the Cracked Lands ruled content: roster surgery (vanilla zoo out, RM_ migration, eopie to merchants), five new natives (Muttavaq/Uttaqar/Irqit/Tarruq/Veqma), fossil defs, the wax underwater suit, Fang Leaf relabel
 state:    proposed
