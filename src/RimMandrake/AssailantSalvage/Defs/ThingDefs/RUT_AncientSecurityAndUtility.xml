@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_AncientSecurityAndUtility.xml       AssailantSalvage · CRYPTOFORGE_HARVEST_RETIRE_1
+  ============================================================================
+  Step 1 citation swap: owned RUT_-prefixed replacements for 7 of the props
+  formerly cited in design/Jawa/art/SALVAGE_PALETTE.md to the donor Workshop
+  mod "Vanilla Quests Expanded - Cryptoforge" (packageId
+  vanillaquestsexpanded.cryptoforge, being retired outright per the owner's
+  "retire-after-harvest" ruling). Same gameplay stats/function as the donor
+  originals — HP, cost, size, and for the two turrets the full damage/range/
+  accuracy/power profile, carried over line-for-line from the donor XML —
+  but new defNames, OWNED art (queued separately, not yet on disk), and
+  original flavor text. Workshop art is not ours to ship.
+
+  Two turrets pull in their vanilla-style Gun + Bullet sub-defs
+  (RUT_<Name>_Gun / _Bullet) since Building_TurretGun needs them to function;
+  those weren't in this item's named defName list but are load-bearing
+  plumbing for RUT_AncientShieldedTurret / RUT_AncientSpacerAutocannon and
+  carry no independent gameplay content of their own, so no separate art
+  job — the Gun sub-defs reuse their parent's single art asset and the
+  Bullet sub-defs reuse existing vanilla Core projectile textures.
+
+  Where a donor def's thingClass was the donor's own compiled C# (not a
+  vanilla RimWorld class), that class is NOT reproduced — see the per-def
+  comments below for the closest vanilla equivalent used instead and what
+  donor-specific behavior was dropped.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- =================================================================
+       RUT_AncientShieldedTurret — donor VQE_AncientShieldedTurret.
+       thingClass swap: donor's VanillaQuestsExpandedCryptoforge.Building_
+       TurretGun_Armoured (a subclass adding "ballistic shield deflects
+       some shots" logic) -> vanilla Building_TurretGun. DROPPED: the
+       shield-deflection behavior described in the donor's flavor text —
+       there is no vanilla stat/comp equivalent, so this turret takes full
+       damage like any other turret. Every other stat (HP, power draw,
+       refuel economy, explosion-on-death, accuracy, range, burst/cooldown)
+       is carried over unchanged.
+       ================================================================= -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AncientShieldedTurret</defName>
+    <label>ancient shielded turret</label>
+    <description>A scavenged autonomous gun nest wrapped in a slab of ballistic plating, torn from some long-dead ship's hull. Its firing logic is dumb and indiscriminate - anything that moves in range gets shot, friend or foe. Burns through steel barrels fast, and it cooks off if hit hard enough.</description>
+    <thingClass>Building_TurretGun</thingClass>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientShieldedTurret</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <damageData>
+        <rect>(0.2,0.2,0.6,0.6)</rect>
+      </damageData>
+      <shadowData>
+        <volume>(0.27,0.25,0.27)</volume>
+        <offset>(0,0,0)</offset>
+      </shadowData>
+    </graphicData>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <altitudeLayer>Building</altitudeLayer>
+    <stealable>false</stealable>
+    <rotatable>false</rotatable>
+    <thingCategories>
+      <li>BuildingsSecurity</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>1800</WorkToBuild>
+      <Mass>8</Mass>
+      <Beauty>-20</Beauty>
+      <MarketValue>220</MarketValue>
+      <ShootingAccuracyTurret>0.96</ShootingAccuracyTurret>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <wickTicks>240</wickTicks>
+        <explosiveRadius>3.9</explosiveRadius>
+        <explosiveDamageType>Bomb</explosiveDamageType>
+        <chanceNeverExplodeFromDamage>0.5</chanceNeverExplodeFromDamage>
+      </li>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>125</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Breakdownable"/>
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Shots until barrel change</fuelLabel>
+        <fuelGizmoLabel>Barrel durability</fuelGizmoLabel>
+        <outOfFuelMessage>Needs new barrel</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>Steel</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelCapacity>60</fuelCapacity>
+        <fuelMultiplier>0.75</fuelMultiplier>
+        <initialFuelPercent>1</initialFuelPercent>
+        <autoRefuelPercent>0.5</autoRefuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <minimumFueledThreshold>1</minimumFueledThreshold>
+        <factorByDifficulty>true</factorByDifficulty>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <fuelIconPath>UI/Overlays/Barrel</fuelIconPath>
+      </li>
+      <li Class="CompProperties_Stunnable">
+        <affectedDamageDefs>
+          <li>Stun</li>
+          <li>EMP</li>
+        </affectedDamageDefs>
+      </li>
+    </comps>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.8</fillPercent>
+    <hasTooltip>true</hasTooltip>
+    <costList>
+      <Steel>44</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <building>
+      <combatPower>45</combatPower>
+      <ai_combatDangerous>true</ai_combatDangerous>
+      <turretGunDef>RUT_AncientShieldedTurret_Gun</turretGunDef>
+      <turretBurstCooldownTime>4.8</turretBurstCooldownTime>
+      <neverBuildable>true</neverBuildable>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_TurretTop</li>
+      <li>PlaceWorker_ShowTurretRadius</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>RUT_AncientShieldedTurret_Bullet</defName>
+    <label>salvaged turret bullet</label>
+    <graphicData>
+      <texPath>Things/Projectile/Bullet_Small</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <damageDef>Bullet</damageDef>
+      <damageAmountBase>12</damageAmountBase>
+      <speed>70</speed>
+    </projectile>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>RUT_AncientShieldedTurret_Gun</defName>
+    <label>ancient shielded turret</label>
+    <description>The barrel assembly of a scavenged shielded turret.</description>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientShieldedTurret</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <AccuracyTouch>0.77</AccuracyTouch>
+      <AccuracyShort>0.70</AccuracyShort>
+      <AccuracyMedium>0.45</AccuracyMedium>
+      <AccuracyLong>0.24</AccuracyLong>
+      <RangedWeapon_Cooldown>4.8</RangedWeapon_Cooldown>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>5</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <defaultProjectile>RUT_AncientShieldedTurret_Bullet</defaultProjectile>
+        <warmupTime>0</warmupTime>
+        <range>28.9</range>
+        <ticksBetweenBurstShots>8</ticksBetweenBurstShots>
+        <burstShotCount>2</burstShotCount>
+        <soundCast>GunShotA</soundCast>
+        <soundCastTail>GunTail_Light</soundCastTail>
+        <muzzleFlashScale>9</muzzleFlashScale>
+        <consumeFuelPerShot>1</consumeFuelPerShot>
+      </li>
+    </verbs>
+  </ThingDef>
+
+  <!-- =================================================================
+       RUT_AncientSpacerAutocannon — donor VQE_AncientSpacerAutocannon.
+       thingClass already vanilla (Building_TurretGun) in the donor's own
+       file, so no swap or dropped behavior here.
+       ================================================================= -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AncientSpacerAutocannon</defName>
+    <label>ancient spacer autocannon</label>
+    <description>A heavy ship-to-ship autocannon, ripped whole from a wreck's gun deck and dropped onto a mount. Slow to spin up, punishing once it does - its shells are built for punching through hull plate, not flesh.</description>
+    <thingClass>Building_TurretGun</thingClass>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientSpacerAutocannon</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.2, 2.2)</drawSize>
+      <drawOffset>(0,0,-0.1)</drawOffset>
+      <damageData>
+        <rect>(0.2,0.2,0.6,0.6)</rect>
+      </damageData>
+      <shadowData>
+        <volume>(1.5,0.35,1.4)</volume>
+        <offset>(0,0,-0.05)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <stealable>false</stealable>
+    <rotatable>false</rotatable>
+    <size>(2,2)</size>
+    <statBases>
+      <MaxHitPoints>380</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <WorkToBuild>15000</WorkToBuild>
+      <Mass>100</Mass>
+      <Beauty>-20</Beauty>
+      <ShootingAccuracyTurret>0.96</ShootingAccuracyTurret>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <hasTooltip>true</hasTooltip>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <building>
+      <ai_combatDangerous>true</ai_combatDangerous>
+      <turretTopDrawSize>3</turretTopDrawSize>
+      <turretTopOffset>(0, 0.05)</turretTopOffset>
+      <neverBuildable>true</neverBuildable>
+      <turretGunDef>RUT_AncientSpacerAutocannon_Gun</turretGunDef>
+      <turretBurstCooldownTime>3.5</turretBurstCooldownTime>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_TurretTop</li>
+      <li>PlaceWorker_ShowTurretRadius</li>
+    </placeWorkers>
+    <comps>
+      <li Class="CompProperties_Stunnable">
+        <affectedDamageDefs>
+          <li>Stun</li>
+          <li>EMP</li>
+        </affectedDamageDefs>
+      </li>
+      <li Class="CompProperties_Explosive">
+        <wickTicks>240</wickTicks>
+        <explosiveRadius>5.9</explosiveRadius>
+        <explosiveDamageType>Bomb</explosiveDamageType>
+        <chanceNeverExplodeFromDamage>0.5</chanceNeverExplodeFromDamage>
+      </li>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>250</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Breakdownable"/>
+    </comps>
+    <costList>
+      <Steel>176</Steel>
+      <Plasteel>40</Plasteel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>RUT_AncientSpacerAutocannon_Bullet</defName>
+    <label>salvaged autocannon shell</label>
+    <graphicData>
+      <texPath>Things/Projectile/Bullet_Big</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <damageDef>Bullet</damageDef>
+      <damageAmountBase>27</damageAmountBase>
+      <speed>88</speed>
+    </projectile>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>RUT_AncientSpacerAutocannon_Gun</defName>
+    <label>ancient spacer autocannon</label>
+    <description>The cannon assembly of a scavenged ship autocannon.</description>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientSpacerAutocannon</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <AccuracyTouch>0.28</AccuracyTouch>
+      <AccuracyShort>0.72</AccuracyShort>
+      <AccuracyMedium>0.66</AccuracyMedium>
+      <AccuracyLong>0.5</AccuracyLong>
+      <RangedWeapon_Cooldown>3.5</RangedWeapon_Cooldown>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>40</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <defaultProjectile>RUT_AncientSpacerAutocannon_Bullet</defaultProjectile>
+        <warmupTime>0</warmupTime>
+        <minRange>8.9</minRange>
+        <range>32.9</range>
+        <ticksBetweenBurstShots>17</ticksBetweenBurstShots>
+        <burstShotCount>3</burstShotCount>
+        <soundCast>Shot_Autocannon</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>12</muzzleFlashScale>
+        <consumeFuelPerShot>1</consumeFuelPerShot>
+      </li>
+    </verbs>
+  </ThingDef>
+
+  <!-- =================================================================
+       RUT_AncientLandmine — donor VQE_AncientLandmine (parent abstract
+       VQE_TrapIEDBase, flattened in below).
+       thingClass swap: donor's VanillaQuestsExpandedCryptoforge.Building_
+       InvisibleMine -> vanilla Building_TrapExplosive. This is a close
+       functional match, not a downgrade: vanilla's own buried IED traps
+       already use Building_TrapExplosive with an UI/Empty texPath and
+       selectable=false for exactly this "hidden until triggered" pattern,
+       so nothing donor-specific is actually lost here.
+       ================================================================= -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AncientLandmine</defName>
+    <label>ancient landmine</label>
+    <description>A buried charge scavenged from an old minefield, wired to a pressure-and-impact trigger. It sits invisible underfoot until something sets it off, and it's impossible to spot before that happens. Keep it well clear of other traps - the trigger is skittish.</description>
+    <thingClass>Building_TrapExplosive</thingClass>
+    <graphicData>
+      <texPath>UI/Empty</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData>
+        <rect>(0.1,0,0.8,0.3)</rect>
+      </damageData>
+    </graphicData>
+    <selectable>false</selectable>
+    <uiIconOffset>(0,-0.14)</uiIconOffset>
+    <uiIconPath>Things/Building/Ancient/RUT_AncientLandmine</uiIconPath>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <tickerType>Normal</tickerType>
+    <stealable>false</stealable>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <uiOrder>40</uiOrder>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>1</Flammability>
+      <Beauty>-4</Beauty>
+      <TrapSpringChance>1.0</TrapSpringChance>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>3.9</explosiveRadius>
+        <explosiveDamageType>Bomb</explosiveDamageType>
+        <startWickHitPointsPercent>0.2</startWickHitPointsPercent>
+        <wickTicks>30</wickTicks>
+        <startWickOnDamageTaken>
+          <li>Bullet</li>
+          <li>Arrow</li>
+          <li>ArrowHighVelocity</li>
+        </startWickOnDamageTaken>
+      </li>
+    </comps>
+    <building>
+      <isTrap>true</isTrap>
+      <trapPeacefulWildAnimalsSpringChanceFactor>0.25</trapPeacefulWildAnimalsSpringChanceFactor>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+      <neverBuildable>true</neverBuildable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_NeverAdjacentTrap</li>
+    </placeWorkers>
+    <specialDisplayRadius>3.9</specialDisplayRadius>
+  </ThingDef>
+
+  <!-- =================================================================
+       RUT_AncientFloorHeater — donor VQE_AncientFloorHeater.
+       thingClass swap: donor's VanillaQuestsExpandedCryptoforge.Building_
+       FloorHeater -> vanilla Building. All the actual heating/power/glow
+       behavior lives in the comps below (CompPowerTrader,
+       CompHeatPusherPowered, CompGlower), which are all vanilla and need
+       no custom class — the only thing that could theoretically be lost
+       is a donor-side visual on/off graphic swap, which this def doesn't
+       reproduce (it ships with one fixed graphic pending owned art).
+       ================================================================= -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AncientFloorHeater</defName>
+    <label>ancient floor heater</label>
+    <description>A squat, outdated floor unit salvaged from a derelict's environmental deck. The insulation is shot and the casing is scorched, but wire it to power and it still throws real heat.</description>
+    <thingClass>Building</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <selectable>true</selectable>
+    <fillPercent>0.05</fillPercent>
+    <useHitPoints>false</useHitPoints>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <tickerType>Normal</tickerType>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <pathCost>0</pathCost>
+    <statBases>
+      <Flammability>0</Flammability>
+      <MarketValue>280</MarketValue>
+      <Beauty>-20</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientFloorHeater</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <building>
+      <paintable>false</paintable>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+    </building>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>250</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_HeatPusher">
+        <compClass>CompHeatPusherPowered</compClass>
+        <heatPerSecond>21</heatPerSecond>
+        <heatPushMaxTemperature>28</heatPushMaxTemperature>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(255,150,100,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- =================================================================
+       RUT_AncientBlackBox / RUT_AncientBlackBox_Off — donor
+       VQE_AncientBlackBox / VQE_AncientBlackBox_Off.
+
+       The "On" donor def's thingClass (VanillaQuestsExpandedCryptoforge.
+       StudiableBuilding_Cryptoforge) plus its VEF.Buildings.
+       StudiableBuildingDetails modExtension are donor quest machinery: a
+       study gizmo that unlocks quest-chain intel for VQE_Cryptoforge_
+       Chapter1, a quest we are not keeping. DROPPED ENTIRELY per this
+       item's brief, not carried to a vanilla equivalent — there is no
+       quest to hook it to any more. Reinterpreted per SALVAGE_PALETTE.md
+       row 406 (VQE_AncientBlackBox_Off: Graphic_Multi, ~0.5 market,
+       ChunkSlagSteel x1.0 yield) as inert wreck salvage: both variants
+       are now plain scrap furniture, mineable/scrappable, matching the
+       donor's own "_Off" sibling which was ALREADY a bare vanilla
+       Building with no custom class or quest hook. RUT_AncientBlackBox
+       ("on") keeps only its cosmetic glow (vanilla CompProperties_Glower,
+       no custom code) as the visual difference from RUT_AncientBlackBox_
+       Off ("dead") - it carries no quest, gizmo or intel mechanic.
+       No cost data exists for the donor's "on" state (it was quest-only,
+       not deconstructible), so its HP/costList below are set to match its
+       "_Off" sibling, which does have real numbers.
+       ================================================================= -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AncientBlackBox</defName>
+    <label>ancient black box</label>
+    <description>A gutted flight recorder pried from a wreck's crash frame, its casing still faintly lit by a dying indicator. Whatever data it once held is long past recovery - it's dead weight now, good for its metal.</description>
+    <thingClass>Building</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <selectable>true</selectable>
+    <fillPercent>0.4</fillPercent>
+    <size>(3,1)</size>
+    <rotatable>true</rotatable>
+    <pathCost>30</pathCost>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientBlackBox</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3.5,1.5)</drawSize>
+    </graphicData>
+    <costList>
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>2.68</glowRadius>
+        <glowColor>(0, 235, 31, 0)</glowColor>
+      </li>
+    </comps>
+    <building>
+      <paintable>false</paintable>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AncientBlackBox_Off</defName>
+    <label>disabled ancient black box</label>
+    <description>A flight recorder stripped of power and purpose, its casing dark and cold. Nothing left inside worth reading - just scrap waiting to be broken down.</description>
+    <thingClass>Building</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <selectable>true</selectable>
+    <fillPercent>0.4</fillPercent>
+    <size>(3,1)</size>
+    <rotatable>true</rotatable>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <pathCost>30</pathCost>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientBlackBox_Off</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3.5,1.5)</drawSize>
+    </graphicData>
+    <costList>
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+    </costList>
+    <building>
+      <paintable>false</paintable>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+    </building>
+  </ThingDef>
+
+  <!-- =================================================================
+       RUT_BlueprintsBench — donor VQE_BlueprintsBench.
+       thingClass swap: donor's VanillaQuestsExpandedCryptoforge.
+       StudiableBuilding_Cryptoforge plus its VEF.Buildings.
+       StudiableBuildingDetails modExtension (a study gizmo granting a
+       Crafting inspiration) -> vanilla Building. DROPPED ENTIRELY, same
+       reasoning as the black box above: it's donor quest/study machinery
+       with no quest left to serve. Reinterpreted as inert salvageable
+       furniture matching SALVAGE_PALETTE.md row 416 (Graphic_Multi, ~0.5
+       market, ChunkSlagSteel x2.0 yield) — numbers below come straight
+       from the donor's own costList/statBases, which already describe
+       ordinary scrap furniture regardless of the study mechanic.
+       ================================================================= -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_BlueprintsBench</defName>
+    <label>ancient blueprints bench</label>
+    <description>A drafting bench salvaged from a wreck's fabrication bay, its surface still layered with brittle, water-stained schematics. The designs have long since faded past any use - it's just old furniture now.</description>
+    <thingClass>Building</thingClass>
+    <clearBuildingArea>true</clearBuildingArea>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_BlueprintsBench</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+    </graphicData>
+    <rotatable>true</rotatable>
+    <size>(1, 2)</size>
+    <statBases>
+      <Flammability>0.5</Flammability>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>1000</WorkToBuild>
+    </statBases>
+    <costList>
+      <ChunkSlagSteel>4</ChunkSlagSteel>
+    </costList>
+    <building>
+      <paintable>false</paintable>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+    </building>
+  </ThingDef>
+
+</Defs>

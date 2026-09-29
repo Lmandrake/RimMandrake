@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:54:56Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RUT_AncientShieldedTurret",
+  "priority": 70,
+  "prompt": "RimWorld game building sprite: a scavenged automated gun turret salvaged from a derelict ship, wrapped in a battered slab of curved ballistic plating bolted crudely in front of the barrel. Weathered dark alloy hull, exposed cabling and rivets, a stubby twin-barrel mount peeking past the shield edge, faint amber status light. Grounded, worn, clearly salvage rather than freshly manufactured \u2014 pitted metal, scorch marks, patched plating. Single object, centered, viewed from directly above at RimWorld's standard top-down game angle, no background scenery, no ground shadow beyond a small contact shadow.",
+  "reference": null,
+  "rimflow_item_id": "CRYPTOFORGE_HARVEST_RETIRE_1",
+  "style_notes": "citation-safe original design \u2014 do not reference, copy or describe any existing Workshop mod's art; this is an owned RimUtinni def, not a reskin of anything. Frozen derelict-ship salvage aesthetic: dark weathered alloy, rust and scorch marks, muted amber status lighting, matte industrial surfaces, realistic RimWorld painterly top-down building style, no outlines, no cartoon shading. Fixed orientation (rotatable=false), single facing only."
+}

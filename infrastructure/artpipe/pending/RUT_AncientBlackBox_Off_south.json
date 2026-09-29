@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:54:56Z",
+  "derive_from": "RUT_AncientBlackBox_Off_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RUT_AncientBlackBox_Off_south",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game building sprite: a dead, powered-down ship flight recorder casing \u2014 the same elongated armored shell as its lit counterpart but fully dark, no indicator lights, more heavily scorched and pitted, a few structural seams cracked open showing dull metal beneath. Reads as inert scrap, ready to be broken down. Centered, viewed from RimWorld's standard top-down game angle, no background scenery, minimal contact shadow.",
+  "reference": null,
+  "rimflow_item_id": "CRYPTOFORGE_HARVEST_RETIRE_1",
+  "style_notes": "citation-safe original design \u2014 do not reference, copy or describe any existing Workshop mod's art; this is an owned RimUtinni def, not a reskin of anything. Frozen derelict-ship salvage aesthetic: dark weathered alloy, rust and scorch marks, matte industrial surfaces, realistic RimWorld painterly top-down building style, no outlines, no cartoon shading. Fully dark and dead \u2014 no lit indicators anywhere, distinguishing it from RUT_AncientBlackBox. Elongated 3x1 footprint, rotatable."
+}
