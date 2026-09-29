@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T02:36:55Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_GasTapScaffold",
+  "priority": 70,
+  "prompt": "RimWorld game building sprite: the gas-tap scaffold, a scavenger-built wellhead cap in a toxic chemical forest \u2014 a squat four-legged clamped frame of mismatched salvage steel stood over a capped vent throat, cap screwed down against pressure with doubled clamps at every joint, a small banked accumulator tank low on one leg, a coiled take-off line, a gauge with a cracked face; corrosion patina everywhere the fog touches, fresh bright metal only at deep pry-marks where something large has tried to drink from the tap. No flame and no glow anywhere: a capped vent is a quiet fixture, the danger reads as pressure, not fire. Single structure, centered, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CAULDRON_BEDAZZLE_SITTING_1",
+  "style_notes": "buildable industry: caps a vent, stops the toxic flammable leak AND banks flow for refining; jawa salvage build language, doubled joints, honest wear; acid-etch and verdigris patina, mineral rings where drips dried, no green-amber except one dried stain line; cauldron register: a poison forest of glass and acid under chemical fog, the ground loud with slow-steam-engine chemistry; wet-lacquered black-green and char-brown darks, dark-crust purple-red film sheen, pale glass-crystal accents, sick green-amber ONLY where chemistry pools or beads or stains, condensate beading and mineral rings on every surface; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture with wet sheen, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}
