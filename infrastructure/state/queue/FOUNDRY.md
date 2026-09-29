@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T04:47:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T04:56:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1213,7 +1213,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-blocked:  step 5 resolved this pass (commit 71f887e4e), steps 2-3 already done; steps 1 (21-sprite dedicated art pass) and 4 (needs cold-load restart) are still genuinely owed and out of this offline-only session's scope
+blocked:  Steps 1-3 and 5 all complete; step 4's ModsConfig removal is also already done (614-mod live list, verified). Only remaining piece is the canonical-save cold-load check + resave, which is owner-reserved (frozen save, same gate as LANTERNDEEPS_TIER_COLLISION_1) -- not FOUNDRY's to run solo.
 summary:  Owner-said: "Retire-after-harvest." Harvest then retire VQE Cryptoforge:
 prose:    infrastructure/state/items/CRYPTOFORGE_HARVEST_RETIRE_1.md
 
