@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T06:43:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T07:47:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1945,3 +1945,63 @@ kind:     task
 thin:     no ## verify
 summary:  1. The Stall and the Gale (names RULED 2026-09-21, WeatherDefs at last;
 prose:    infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md
+
+## DEEPFIRE_FLOOR_PAINT_1 Deepfire floors: grid, postfixes, clustering, beauty hooks
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 6)
+prose:    infrastructure/state/items/DEEPFIRE_FLOOR_PAINT_1.md
+
+## DEEPFIRE_FIRSTCOAT_BONUS_1 Deepfire first-coat quality/beauty bonus
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 7)
+prose:    infrastructure/state/items/DEEPFIRE_FIRSTCOAT_BONUS_1.md
+
+## DEEPFIRE_WORN_GLOW_1 Deepfire worn-item glow + darkness-targeting combat tradeoff
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 8)
+prose:    infrastructure/state/items/DEEPFIRE_WORN_GLOW_1.md
+
+## DEEPFIRE_STATUS_THOUGHTS_1 Deepfire status engine: room-stat thoughts + comp-based detection
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 9)
+prose:    infrastructure/state/items/DEEPFIRE_STATUS_THOUGHTS_1.md
+
+## DEEPFIRE_GOD_BRIDGE_DELTAS_1 Deepfire remaining god deltas + statue extension + LightsOut check
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 10)
+prose:    infrastructure/state/items/DEEPFIRE_GOD_BRIDGE_DELTAS_1.md
+
+## DEEPFIRE_MOD_SETTINGS_1 Deepfire painting Mod Settings + cold-load validation
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 12)
+prose:    infrastructure/state/items/DEEPFIRE_MOD_SETTINGS_1.md
