@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T04:39:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T04:41:49Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -981,3 +981,13 @@ kind:     task
 thin:     no ## verify
 summary:  A design pitch pass per biome (Fable, backgrounded): new invented flora in each
 prose:    infrastructure/state/items/BEDAZZLE_FLORA_EXPANSION_1.md
+
+## IKEE_REJECT_SALVAGE_1 Make the rejected 2026-09-28 Ikee render into a NEW creature (owner-typed): render is validated art sitting unwired in artpipe done/_artsrc; owes a name in some biome's accent, a home biome, and a def - pitch name+home to the owner at a fitting sitting, then hand the def build to FOUNDRY
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/IKEE_REJECT_SALVAGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/IKEE_REJECT_SALVAGE_1.md
