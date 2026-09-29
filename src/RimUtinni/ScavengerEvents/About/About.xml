@@ -11,7 +11,12 @@ RUT_SCAVENGEREVENTS_BUILD_1.md for the mechanism reference this was built
 from). Own letter text, own defNames, own baseChance settings. Scope is 7 of
 the original 8 mechanisms (RescueTraitor CUT by owner ruling 2026-09-11 --
 its real mechanism was a half-decompiled body-horror mimicry/reveal, not a
-plain rescue). Retires mlie.moevents once the 7 are proven-fires.
+plain rescue). All 7 proven-fires live on the canonical campaign save
+2026-09-29 (RUT_Migration, RUT_SurvivalPod, RUT_PodCrash, RUT_ShipBreak,
+RUT_Thanksgiving, RUT_Insects, RUT_Stroke); mlie.moevents RETIRED the same
+day -- removed from ModsConfig.xml and ModsConfig.FULL.LATEST.xml, its
+interim MoEventsChancesZeroed_RuledCut.xml baseChance-zeroing patch deleted
+as moot (the donor incidents cannot fire once the mod itself is gone).
 
 MoreIncidents.dll ships under the MIT License (Copyright (c) 2020 Mlie,
 verified against the donor's own LICENSE.md/About.xml, 2026-09-25) --

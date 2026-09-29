@@ -215,3 +215,127 @@ All 7 built workers: build clean (done, prior session), deploy clean (done,
 prior + this session), defs validate clean against the live dump (this
 session). Proven-fires bridge test: still owed, blocked on bridge
 availability — do not force. RescueTraitor: CUT, no longer owed.
+
+## done this session (2026-09-29, FOUNDRY): all 7 proven-fires + donor retired
+Bridge taken (`RUT_SCAVENGEREVENTS_BUILD_1: prove-fires 7 workers, retire
+mlie.moevents`), live campaign save `CANONICAL_ASHKARR_START_2026-09-12`,
+game already loaded/Playing/paused, 6 colonists. All work below verified by
+reading real state back (`jawa/list_pawns`, `jawa/list_things`,
+`jawa/letter_list`) after each `jawa/fire_incident incidentDef=RUT_*
+dryRun=false` call — never trusted the tool's own `fired:true` alone.
+
+- **RUT_Migration — PROVEN.** 7 wild animals spawned at a map-edge entry cell
+  (War wyrm, Scurrier, Vozzik, 2x Krayt dragon, Kreetle, Kudda — all
+  `faction:null`, `hostile:false`, `intelligence:Animal`, drawn from THIS
+  map's own biome roster as designed), `NeutralEvent` letter "Migration"
+  landed. Left on the map — wild and harmless, matches designed behavior,
+  no cleanup needed.
+- **RUT_SurvivalPod — PROVEN**, after a real methodology trap: the falling
+  drop-pod skyfaller's defName is **`DropPodIncoming`**, not `ActiveDropPod`
+  (that's the CONTENTS container thing that only appears briefly after
+  landing, before its own `openDelay` elapses) — searching the wrong name
+  first read as "nothing spawned" for 130 ticks. Total fall+open latency
+  measured >130 but <530 ticks; 530 was safely sufficient. Once resolved, all
+  9 items confirmed landed: Hyperweave pants/shirt/jacket/tuque (stuff
+  resolved, `stuffDefName:Hyperweave`) + 4x `MealSurvivalPack` (new ids,
+  distinct from 3 pre-existing x10 stacks elsewhere on the map that a sloppy
+  first pass nearly mistook for this incident's own output — thing IDs are
+  monotonic per session, and the pre-existing stacks' ids were LOWER than
+  anything spawned this session) + 1x `Gun_Autopistol`. `PositiveEvent`
+  letter "Survival pod".
+- **RUT_PodCrash — PROVEN on a second fire.** First fire: letter sent
+  ("Pod crash", `NewQuest` LetterDef, matching the donor's quest-hook choice
+  exactly), but no new pawn was ever found on the map after 500 ticks, no
+  corpse either — inconclusive, not a confirmed defect (most likely the
+  pawn's default foreign-visitor AI walked it off-map within the window
+  before the down state was checked, since `HealthUtility.DamageUntilDowned`
+  and the drop-pod mechanics are proven-safe elsewhere in this same session;
+  RimSage-read `ActiveTransporter.PodOpen()`/`ActiveTransporterInfo` are
+  stock, unmodified vanilla and match our C#'s call shape exactly). Refired
+  immediately: villager "Jonah", faction "the Junkers" (`RUT_Jawa_Junkers`,
+  non-hostile), `downed:true`, `spawned:true` at the pod's landing cell,
+  confirming the mechanism. Left on the map (a legitimate rescue-able NPC,
+  not test pollution).
+- **RUT_ShipBreak — PROVEN.** Survivor "Alyona" (`Refugee` kind, faction "the
+  Junkers", `downed:true`, alive) + corpse "Noob, Medic" (`Corpse_Human`,
+  dead), each in its own pod, both non-hostile as coded — 🔴 **this
+  contradicts the task brief's assumption that ShipBreak spawns hostiles
+  that could hurt colonists; it does not, by design (`RandomNonHostileFaction`
+  is the only faction source in this worker).** `PositiveEvent` letter "Cargo
+  rain" (matches the donor's own mismatched key, `MO_CargoRain`, noted in the
+  mechanism reference). Loot delivery not independently re-confirmed by
+  defName (the randomly-picked lootDef wasn't predictable in advance) but
+  reuses the IDENTICAL `DropPodUtility.DropThingsNear` call already directly
+  proven working in the SurvivalPod test above. Left on the map.
+- **RUT_Thanksgiving — PROVEN, both halves.** Dry-run (`dryRun:true`)
+  returned `canFireNow:true` **against the live colony's own real state** —
+  no food was drained or faked to force this; the colony was genuinely
+  hungry at the time of testing, which is itself a clean proof that
+  `CanFireNowSub`'s nutrition-vs-`4×FreeColonistsSpawnedCount` gate reads
+  correctly. Fired for real: 2x `MealSimple` + 2x `MealFine` (each x10 stack)
+  delivered, `PositiveEvent` letter "Clan tribute".
+- **RUT_Insects — PROVEN, then cleaned up.** 2x Spelopede + 2x Megaspider
+  spawned (`countPerKind=2`, matching `max(2, round(6 colonists/3))`),
+  `faction:Insect` ("Hive"), `hostile:true`, `ThreatBig` letter "Insect
+  swarm". Game confirmed still `paused:true` throughout (verified via
+  `get_cell_info`, never trusted a flag alone) — all 4 killed via
+  `jawa/damage` (Bomb, amount 2000) before any tick advanced, per this
+  session's guardrail against letting spawned hostiles threaten the real
+  colony. Re-check after: none of the 4 ids resolve on the map any more.
+- **RUT_Stroke — PROVEN, then healed.** Colonist "Twice-Kin" went
+  `downed:true`, job `Wait_Downed`, `NegativeEvent` letter "Stroke", blood
+  filth count rose. Since this acts on a REAL persistent colonist (not
+  disposable test content), healed back afterward:
+  `rimworld/execute_debug_action` `Actions\T: Heal random injury (10)`
+  targeted at the pawn (8 calls) restored `downed:false`; re-verified via
+  `rimworld/list_colonists`. The `RUT_HadStroke` memory thought and the blood
+  filth were left in place (harmless, and exactly what the incident would
+  leave on a genuine natural fire).
+- **Colony verified undamaged at the end**: all 6 colonists `downed:false,
+  dead:false` on a final `rimworld/list_colonists` read, game still
+  `game_loaded`/`Playing`/`paused:true`.
+
+**mlie.moevents RETIRED** (spec required this before save freeze, gated only
+on proven-fires, now done):
+- Removed from the live `ModsConfig.xml`
+  (`C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon
+  Studios\Config\ModsConfig.xml`) and
+  `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` — 614→613 mods
+  each, via a one-off `xml.etree.ElementTree` edit (`Transient/
+  retire_moevents.py`) matching `modset_builder.py`'s own established
+  write pattern (parse, rebuild `activeMods`, round-trip CRLF), never a hand
+  edit or grep. Backups: `Transient/
+  ModsConfig_before_moevents_retirement_2026-09-29.xml` and the
+  `...FULL.LATEST_before...` sibling. `mandrake.rut.scavengerevents` still
+  sits immediately after where `mlie.moevents` used to be.
+- `MoEventsChancesZeroed_RuledCut.xml` (the interim `MODLIST_RULED_CUTS_1`
+  baseChance-zeroing patch) deleted — both the repo source
+  (`src/RimUtinni/UtinniPatches/Patches/`) and the deployed copy — now moot,
+  since the donor's incidents cannot fire once the mod itself is gone.
+- `src/RimUtinni/UtinniPatches/About/About.xml`'s `<forceLoadAfter>` list
+  (built for `Patches/FactionSlate/OnlyOurFactions.xml`) had its
+  `mlie.moevents` entry removed — it now points at nothing, harmlessly.
+- `src/RimUtinni/ScavengerEvents/About/About.xml` description updated to
+  past tense recording the retirement and the proven-fires date.
+- Both mods redeployed (`deploy_custom_mods.py --mod ScavengerEvents --apply`,
+  `--mod UtinniPatches --apply`), both VERIFIED in sync.
+- **NOT touched, flagged for its own item**:
+  `src/RimUtinni/UtinniPatches/Patches/MoEventsAbomination_YuuzhanVongRename.xml`
+  (`DONOR_FACTION_PROPER_NOUN_RENAMES_1`, a separate owner-ruled proper-noun
+  pass, 2026-09-11) still references `MO_AbominationFaction` /
+  `MO_AbominationPawnKind` / `MO_AbominationRace` under its own
+  `PatchOperationFindMod` guard — it will now safely match nothing forever
+  rather than erroring, but the text is permanently dead. Left alone as out
+  of this item's scope; whoever owns `DONOR_FACTION_PROPER_NOUN_RENAMES_1`
+  should decide whether to delete it.
+- `design/Jawa/fauna/animal_census.csv`'s `MO_AbominationRace` row: confirmed
+  already gone (prior session's 2026-09-25 claim was correct, re-verified
+  by grep, no re-edit needed).
+- No other active mod/patch/src file references `mlie.moevents` (checked
+  every `About.xml` under the deployed Mods folder plus all of `src/`).
+
+**Salvage-economy loot substitution and RescueTraitor remain explicitly out
+of scope**, per this item's own prior text — neither blocks closing.
+
+Bridge released at the end of this session
+(`rimflow bridge release`). Game left loaded, Playing, paused — not mid-restart.
