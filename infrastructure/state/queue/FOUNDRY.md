@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T10:29:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T10:50:32Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1080,6 +1080,15 @@ kind:     task
 summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
 prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md
 
+## CONTAGION_RULED_CONTENT_1 Build the Contagion grotesque cast: 35 RM_ defs replacing the donor roster outright (no patches), 8 new species, 4 real flyers, Wombpod wired to the built genome loop - cast bible is the authority
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  CONTAGIONRULEDCONTENT1 — build the grotesque cast: 35 RM defs, full donor replacement
+prose:    infrastructure/state/items/CONTAGION_RULED_CONTENT_1.md
+
 ## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1674,16 +1683,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## CONTAGION_RULED_CONTENT_1 Build the Contagion grotesque cast: 35 RM_ defs replacing the donor roster outright (no patches), 8 new species, 4 real flyers, Wombpod wired to the built genome loop - cast bible is the authority
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  CONTAGIONRULEDCONTENT1 — build the grotesque cast: 35 RM defs, full donor replacement
-prose:    infrastructure/state/items/CONTAGION_RULED_CONTENT_1.md
-
 ## CONTAGION_MECHANICS_BUILD_1 Build the Contagion mechanics: Burn/Bloom weather + tells, the Coalescence (one growing organism), Cloud Repulsor + gravship hardpoint, Sunbeam + arrest, the five bizarre Grown limbs on the Anomaly renderNode mechanism
 state:    proposed
 row:      unassigned
@@ -1933,3 +1932,43 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ROTSPOREKIT_GHOST_MOD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROTSPOREKIT_GHOST_MOD_1.md
+
+## CONTAGION_FLORA_PORT_1 Contagion: 9-item flora port (Eyebark, Lashgrass, Bleedleaf, Gorestalk, Rattlegrope, Sapblister, Bloody Fist, Halfmade Tree+Blighted) per cast bible Part 3
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  Scope
+prose:    infrastructure/state/items/CONTAGION_FLORA_PORT_1.md
+
+## CONTAGION_NEW_SPECIES_FLORA_1 Contagion: 5 new goo-bud species + 3 new flora (Skinflap/Gorekite/Danglemaw/Crispling/Sloshbelly + Meatvine/Toothmoss/Wombpod) per cast bible Parts 2
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  Scope
+prose:    infrastructure/state/items/CONTAGION_NEW_SPECIES_FLORA_1.md
+
+## CONTAGION_FLYER_WIRING_1 Contagion: flight statBases for Blisterfloat/Sparkleech/Skinflap/Gorekite per cast bible Part 4
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  Scope
+prose:    infrastructure/state/items/CONTAGION_FLYER_WIRING_1.md
+
+## CONTAGION_FINAL_BAN_SWEEP_1 Contagion: final roster confirmation + full ban sweep across all waves per cast bible Part 5
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  Scope
+prose:    infrastructure/state/items/CONTAGION_FINAL_BAN_SWEEP_1.md
