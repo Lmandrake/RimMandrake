@@ -4756,5 +4756,85 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
         }
 
+        // ================================================================
+        //  jawa/seabed_layer_probe - SEABED_PLANET_LAYER_1 live-verify probe.
+        //  Read-only. Written to prove the four things Phase 1's item text says
+        //  can only be proven live: the layer is registered (fresh world AND
+        //  load), the twin-guard's own tile-count equality holds against a
+        //  real grid, and the surface<->layer connection/zoom links exist and
+        //  survive a save/reload round trip. Reads RM_SeabedLayer by defName
+        //  only - no reference to the DivingInteraction assembly, so this
+        //  tool works whether or not that mod is the one currently loaded.
+        // ================================================================
+        [Tool(
+            "jawa/seabed_layer_probe",
+            Description =
+                "SEABED_PLANET_LAYER_1 live-verify probe. Looks up the RM_SeabedLayer " +
+                "PlanetLayerDef by name, finds its registered PlanetLayer on the current " +
+                "world (if any), and reads: tile count against the surface (the twin-guard's " +
+                "own invariant), and the surface<->layer AddConnection/zoom links. All raw " +
+                "reads, no writes. found:false with a message means the def or the " +
+                "registered layer was not present at call time - not an error.",
+            ResultDescription =
+                "success, found, and when found: surfaceTiles, seabedTiles, tilesMatch, " +
+                "hasConnSurfaceToLayer, hasConnLayerToSurface, zoomInDefName, zoomOutDefName.")]
+        public static async Task<object> SeabedLayerProbe(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                if (Find.World == null || Find.WorldGrid == null)
+                    return Fail("No world is loaded. Generate or load a world first.");
+
+                WorldGrid grid = Find.WorldGrid;
+                SurfaceLayer surface = grid.Surface;
+                PlanetLayerDef def = DefDatabase<PlanetLayerDef>.GetNamedSilentFail("RM_SeabedLayer");
+                if (def == null)
+                {
+                    return (object)new
+                    {
+                        success = true,
+                        found = false,
+                        message = "PlanetLayerDef RM_SeabedLayer is not in the def database - " +
+                                   "mandrake.rm.biomes (or its DivingInteraction kit) is not active.",
+                        ticksGame = TicksGameSafe(),
+                    };
+                }
+
+                PlanetLayer layer = grid.FirstLayerOfDef(def);
+                if (layer == null)
+                {
+                    return (object)new
+                    {
+                        success = true,
+                        found = false,
+                        message = "RM_SeabedLayer def exists but no PlanetLayer of that def is " +
+                                   "registered on this world yet.",
+                        ticksGame = TicksGameSafe(),
+                    };
+                }
+
+                bool connSurfaceToLayer = surface.HasConnectionFromTo(layer);
+                bool connLayerToSurface = layer.HasConnectionFromTo(surface);
+
+                return (object)new
+                {
+                    success = true,
+                    found = true,
+                    surfaceTiles = surface.TilesCount,
+                    seabedTiles = layer.TilesCount,
+                    tilesMatch = surface.TilesCount == layer.TilesCount,
+                    hasConnSurfaceToLayer = connSurfaceToLayer,
+                    hasConnLayerToSurface = connLayerToSurface,
+                    zoomInDefName = surface.zoomInToLayer != null && surface.zoomInToLayer.Def != null
+                        ? surface.zoomInToLayer.Def.defName : null,
+                    zoomOutDefName = layer.zoomOutToLayer != null && layer.zoomOutToLayer.Def != null
+                        ? layer.zoomOutToLayer.Def.defName : null,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
     }
 }
