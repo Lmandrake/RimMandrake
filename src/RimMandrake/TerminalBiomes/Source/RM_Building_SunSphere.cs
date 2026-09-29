@@ -37,9 +37,12 @@ namespace RimMandrake.TerminalBiomes
         {
             base.SpawnSetup(map, respawningAfterLoad);
             // Two CompRefuelable siblings share no distinct subtype, so
-            // they are told apart by comp ORDER: the seed comp is listed
-            // first in the def, the food comp second. See RM_SunSphere.xml's
-            // own comment for the order contract this relies on.
+            // they cannot be told apart by C# type. RM_SunSphere.xml lists
+            // the seed comp first and the food comp second, but a future
+            // def reorder must not silently swap "seed" and "feed"
+            // semantics -- identify each by what it actually ACCEPTS
+            // (the food comp's fuelFilter allows raw floor food; the seed
+            // comp's does not) rather than trusting list order alone.
             var refuelables = new System.Collections.Generic.List<CompRefuelable>();
             foreach (ThingComp c in AllComps)
             {
@@ -47,8 +50,19 @@ namespace RimMandrake.TerminalBiomes
             }
             if (refuelables.Count >= 2)
             {
-                seedComp = refuelables[0];
-                foodComp = refuelables[1];
+                bool firstIsFood = refuelables[0].Props.fuelFilter?.Allows(ThingDefOf.RawPotatoes) == true;
+                bool secondIsFood = refuelables[1].Props.fuelFilter?.Allows(ThingDefOf.RawPotatoes) == true;
+                if (firstIsFood != secondIsFood)
+                {
+                    foodComp = firstIsFood ? refuelables[0] : refuelables[1];
+                    seedComp = firstIsFood ? refuelables[1] : refuelables[0];
+                }
+                else
+                {
+                    Log.Error("RM_Building_SunSphere on " + ThingID + ": could not tell the seed and food CompRefuelable apart by fuelFilter (both or neither accept raw food) -- falling back to def order (seed first, food second). Check RM_SunSphere.xml's <comps> block.");
+                    seedComp = refuelables[0];
+                    foodComp = refuelables[1];
+                }
             }
             glowerComp = GetComp<CompGlower>();
             RecomputeVisual();
@@ -65,6 +79,10 @@ namespace RimMandrake.TerminalBiomes
         protected override void Tick()
         {
             base.Tick();
+            if (!RM_TerminalBiomesSettings.SunSphereActive)
+            {
+                return; // mod/biome all-off must degrade this feature too
+            }
             if (!this.IsHashIntervalTick(60))
             {
                 return;
