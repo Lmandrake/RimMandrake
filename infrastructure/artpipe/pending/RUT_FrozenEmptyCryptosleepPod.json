@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:51:28Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RUT_FrozenEmptyCryptosleepPod",
+  "priority": 90,
+  "prompt": "RimWorld game building sprite, top-down: a standing cryptosleep pod from a wrecked ancient starship, its transparent canopy hinged open and empty, a thin rime of frost coating the interior padding and the pod's dull steel shell, a few loose cables trailing from the open lid, faint frost-fogged glass. Reads as long-vacated rather than freshly used. Single object, centered, occupies a 1-wide by 2-tall footprint, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CRYPTOFORGE_HARVEST_RETIRE_1",
+  "style_notes": "citation-safe original design \u2014 describe only from this brief, do not reference any existing mod's cryptosleep pod texture or art asset as a source. RimWorld top-down painterly building style: clean readable silhouette, matte dull steel and frosted glass, muted cold-industrial palette (gunmetal grey, pale ice-blue, faint rust), no outlines, no cartoon shading, real alpha transparent background."
+}
