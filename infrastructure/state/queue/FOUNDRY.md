@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T09:00:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T09:50:09Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1044,6 +1044,15 @@ kind:     bug
 summary:  (no items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md
 
+## TERMINALBIOMES_REVIEW_FIXES_1 TerminalBiomes 29-file review fix wave: 2 dead tickerType mechanisms (vaulisk lure never springs, mobile glower never runs), 6 more BUGs, 6 RISKs, 4 NITs - findings are sonnet evidence, verify each
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Three sonnet reviewers swept all 29 C files changed in the Twilight build wave
+prose:    infrastructure/state/items/TERMINALBIOMES_REVIEW_FIXES_1.md
+
 ## TWILIGHT_TENANCY_PAPER_REMOVAL_1 Remove the Twilight tenancy paper layer from shipped code: delete RM_SkylightRight, RM_WellChart, RM_ClaimBuoy, the poaching-standing tracker and chart-forecast API from RM_MapComponent_WellLedger (built at 2cd74d35e); wells become free ground; RM_Building_SunSphere loses the Compact techprint cost (research + wild seed only). Owner typed 2026-09-27: 'The Compact does NOT sell light, that's not a mechanic we accepted. Remove.' Ruled physics stay: drift stages, warning stages, mobile constellation, cages, chains, sun-sphere.
 state:    doing
 row:      unassigned
@@ -1674,16 +1683,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/UTINNIPATCHES_ORPHAN_AUDIT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/UTINNIPATCHES_ORPHAN_AUDIT_1.md
-
-## TERMINALBIOMES_REVIEW_FIXES_1 TerminalBiomes 29-file review fix wave: 2 dead tickerType mechanisms (vaulisk lure never springs, mobile glower never runs), 6 more BUGs, 6 RISKs, 4 NITs - findings are sonnet evidence, verify each
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## verify
-summary:  Three sonnet reviewers swept all 29 C files changed in the Twilight build wave
-prose:    infrastructure/state/items/TERMINALBIOMES_REVIEW_FIXES_1.md
 
 ## CONTAGION_RULED_CONTENT_1 Build the Contagion grotesque cast: 35 RM_ defs replacing the donor roster outright (no patches), 8 new species, 4 real flyers, Wombpod wired to the built genome loop - cast bible is the authority
 state:    proposed
