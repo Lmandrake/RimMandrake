@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T15:20:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T15:42:44Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1579,16 +1579,6 @@ kind:     mechanism
 blocked:  needs owner: item's own spec says do not guess the pressure curve or pick poison/radioactive qualifying items; genuinely his call, not a build task
 summary:  Caused by FEVERWOODTENTACLEBESTIARY1 (six tentacle types + the ordinary
 prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.md
-
-## FEVERWOOD_DIANOGA_TANK_TUNING_1 Sekkulaath prison tank — real numbers, not placeholders
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-blocked:  needs owner: item's own spec lists three taming numbers, the captivity-memory mechanism shape, and the fuel/staged-maturation scope explicitly as do-not-guess, same cluster as the other Feverwood tuning items
-summary:  Authority: FEVERWOODDIANOGAPRISON1 (build), design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
-prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_TANK_TUNING_1.md
 
 ## FEVERWOOD_SAP_SUCKER_TUNING_1 Real numbers and the mishandling trigger for the sap-sucker guild
 state:    proposed  (BLOCKED)
