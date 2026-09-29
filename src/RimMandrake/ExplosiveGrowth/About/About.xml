@@ -22,7 +22,9 @@
     <li>Ludeon.RimWorld.Anomaly</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>mandrake.rm.flowworks</li>
-    <li>mandrake.rm.environmentalhazards</li>
+    <li>mandrake.rm.biomes</li>  <!-- was mandrake.rm.environmentalhazards, folded into
+         mandrake.rm.biomes's Biomes/_Kits/EnvironmentalHazards by BAROQUE_BIOMES_WAVE2_FOLD_1
+         (2026-09-28); GASDAMAGING_PARENTNAME_UNRESOLVED_1 sweep repointed this -->
     <li>mandrake.rm.contagion</li>
     <li>mandrake.rm.gelatinousslime</li>
     <li>mandrake.rm.pyrelands</li>

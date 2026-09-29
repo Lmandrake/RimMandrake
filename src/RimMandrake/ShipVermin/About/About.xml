@@ -72,16 +72,25 @@ wreckless map) has not yet been run live. See the item file for the
 block reason if this ships unclosed.</description>
   <modDependencies>
     <li>
-      <packageId>mandrake.rm.creaturebehaviors</packageId>
-      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <packageId>mandrake.rm.biomes</packageId>
+      <displayName>RimMandrake: Biomes</displayName>
     </li>
     <li>
       <packageId>mandrake.rsw.swbestiary</packageId>
       <displayName>RimMandrake: SW — Bestiary</displayName>
     </li>
   </modDependencies>
+  <!-- mandrake.rm.creaturebehaviors (this mod's RM_Alert_VerminPopulationBase provider) was
+       folded into mandrake.rm.biomes's Biomes/_Kits/CreatureBehaviors load folder by
+       BAROQUE_BIOMES_WAVE2_FOLD_1 (2026-09-28) — GASDAMAGING_PARENTNAME_UNRESOLVED_1 measured
+       that a loadAfter naming the now-defunct standalone packageId is silently a no-op (it
+       doesn't exist in the active list, so the constraint just vanishes), which let this mod
+       load BEFORE mandrake.rm.biomes and poisoned this whole assembly's GetTypes() with a
+       TypeLoadException on RM_Alert_VerminPopulationBase — every type in it (including
+       RM_CompProperties_VerminNest) became unresolvable, breaking WreckVerminNest_ShipChunk.xml's
+       patch. -->
   <loadAfter>
-    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.biomes</li>
     <li>mandrake.rsw.swbestiary</li>
   </loadAfter>
 </ModMetaData>
