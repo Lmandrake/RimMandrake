@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Veqma.xml                             RimMandrake — CRACKEDLANDS_RULED_CONTENT_1
+
+  The fifth of the Cracked Lands' five ruled new natives, invented (no donor def).
+  Bible: design/Jawa/worldbuilding/biomes/cracked_lands_bedazzle_cast_2026-09-28.md
+  §"RM_Veqma — the dowsing flora". Roster wiring (a `wildPlants` shorthand row,
+  shade-line placement) is a LATER pass over the shared roster/patch files, per
+  this item's own file-collision split — not done here.
+
+  PLACEMENT LAW (bible, for whoever wires `wildPlants`): grows ONLY on the shade
+  line — "ban 2, no green outside the shade line, respected by placement, not
+  exception." Nothing in this ThingDef enforces that (a plant def has no biome
+  placement field of its own); it is a note for the wiring pass, which must not
+  give this a blanket wildAnimals-style commonality across the whole biome.
+
+  NOT FARMABLE (bible: "its value is where it grows, not what it yields") —
+  expressed the same way this codebase's own comparable wild-only medicinal
+  plant does (Stillsand/RM_Stillsand_SignatureFlora.xml precedent read this
+  pass, and WeepingStones/RM_WeepingStonesNativeFlora.xml's RM_Salvecomb): no
+  `sowTags` element at all, so the plant never appears in the player's Plants
+  build menu. harvestedThingDef is vanilla `MedicineHerbal` (same choice
+  RM_Salvecomb and this biome's own FeverWood/LeaningScrub/WeepingStones flora
+  already make for "a little herbal/raw plantmatter" wild finds), harvestYield
+  kept low.
+
+  🔴 OWED TO CRACKEDLANDS_MECHANICS_BUILD_1, NOT THIS ITEM: the bible's real
+  mechanism — "graphic tint (or small variant set) keyed to the survey
+  component's hidden-water proximity score for its cell — the same score the
+  dowsing ladder reads, so the plant IS the UI." That is a per-cell runtime tint
+  read off a survey map component; nothing here wires it. This ThingDef ships a
+  single PLAIN STATIC graphic (Graphic_Random, no dynamic color/tint keying) so
+  it is a normal, inert wild plant until that mechanism exists — the blush
+  gradient is not faked here with a fixed color, since a permanently-blushed
+  veqma would read as a false "water here" signal.
+
+  ART: covered in this sitting's art commission
+  (infrastructure/artpipe/art_lists/cracked_lands_bedazzle_cast.csv — checked,
+  row present for RM_Veqma) so no fill_queue.py job is filed here. Until that
+  art lands, ships with a LOUD vanilla placeholder texPath (vanilla Bush,
+  grey-green tinted — a sparse wiry shrub silhouette is the closest vanilla
+  plant shape to "a sparse fan of grey-green whips"), same posture as this
+  biome's fauna file (RM_IrqitTarruq.xml) and this codebase's other invented
+  (donor-less) defs.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Veqma</defName>
+    <label>veqma</label>
+    <description>A wiry, near-leafless plant of the shade line — mostly taproot, the visible growth a sparse fan of tough grey-green whip-stems rising from one deep crown. Its root finds the hidden water, and its stem tips blush green in proportion to how near the water table sits: dull grey where it lies deep, brightening cell by cell toward the seep, vivid over a find. A stand of veqma is a contour map. Reading one is the first thing a Farmer teaches a child.</description>
+    <graphicData>
+      <!-- TEMP PLACEHOLDER: vanilla Bush texture, grey-green tinted. No donor def
+           exists (invented per the bible); real art is queued in
+           cracked_lands_bedazzle_cast.csv (row present, checked this pass). No
+           dynamic tint — see header — this is a single static graphic. -->
+      <texPath>Things/Plant/Bush</texPath>
+      <color>(150,158,132)</color>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Nutrition>0.04</Nutrition>
+      <Flammability>0.15</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <ingestible>
+      <preferability>DesperateOnly</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>18</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <visualSizeRange>0.35~0.6</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>MedicineHerbal</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestAfterGrowth>0.5</harvestAfterGrowth>
+      <harvestFailable>true</harvestFailable>
+      <!-- Wild-only: no sowTags — never appears in the player's Plants build
+           menu, matching RM_Salvecomb's precedent for "value is where it
+           grows, not what it yields". -->
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>6</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+</Defs>
