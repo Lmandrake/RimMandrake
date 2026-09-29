@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T10:27:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T10:29:28Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1043,15 +1043,6 @@ target:   v1
 kind:     bug
 summary:  (no items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md
-
-## UTINNIPATCHES_ORPHAN_AUDIT_1 Audit the full list of files deploy_custom_mods.py reports 'in game, not in repo' under UtinniPatches (and other mods) for stale/dangerous orphans vs. intentional residue
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/UTINNIPATCHES_ORPHAN_AUDIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/UTINNIPATCHES_ORPHAN_AUDIT_1.md
 
 ## TERMINALBIOMES_REVIEW_FIXES_1 TerminalBiomes 29-file review fix wave: 2 dead tickerType mechanisms (vaulisk lure never springs, mobile glower never runs), 6 more BUGs, 6 RISKs, 4 NITs - findings are sonnet evidence, verify each
 state:    doing
