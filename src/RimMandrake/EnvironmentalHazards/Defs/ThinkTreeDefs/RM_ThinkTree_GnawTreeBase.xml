@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       GREENTIDE_CANOPY_SWARM_1 — gives RM_JobGiver_GnawTreeBase (shipped by
+       GREENTIDE_MECHANICS_2 M6 feller 3 with no consumer race) its first
+       insertion point. RM_JobGiver_GnawTreeBase and RM_JobDriver_GnawTreeBase
+       themselves predate this item; only the splice was missing.
+
+       Same vanilla insertion hook and same structure
+       CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_ChewAnchors.xml
+       already established for this repo's own family of globally-inserted,
+       marker-extension-gated JobGivers (Defs/Core/ThinkTreeDefs/Animal.xml's
+       own <li Class="ThinkNode_SubtreesByTag"><insertTag>Animal_PreWander</insertTag></li>).
+       No MayRequire: Animal_PreWander is Core, and this ThinkTreeDef lives in
+       the same assembly (mandrake.rm.environmentalhazards) as the JobGiver it
+       inserts. The per-race gate is RM_GnawTreeBaseExtension, checked inside
+       RM_JobGiver_GnawTreeBase.TryGiveJob itself — the splice reaches every
+       animal, same "no XML per-species hook at this splice point" precedent.
+  ======================================================================== -->
+  <ThinkTreeDef>
+    <defName>RM_GnawTreeBase_Consume</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>50</insertPriority>
+    <thinkRoot Class="ThinkNode_Tagger">
+      <tagToGive>Misc</tagToGive>
+      <subNodes>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_JobGiver_GnawTreeBase" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

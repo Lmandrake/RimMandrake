@@ -88,6 +88,25 @@ namespace RimMandrake.Greentide
         public static bool stenchGrenadeEnabled = true;
         public static float stenchGrenadeRadiusMultiplier = 1f;
 
+        // GREENTIDE_CANOPY_SWARM_1. RM_Krannock's own tree-gnawing AI is
+        // ALREADY gated for free by the shared Environmental Hazards Kit's
+        // "Tree fall (crack, shatter, gnaw)" toggle (RM_EnvironmentalHazardsSettings
+        // .treeFallEnabled) — that toggle's own tooltip already names "a
+        // creature built to gnaw one down stops seeking a trunk to chew", so
+        // no duplicate Greentide-local toggle is wired to the mechanic
+        // itself; a second checkbox that just mirrored the kit's own would
+        // be a decoy, not a control.
+        //
+        // canopySwarmEnabled below is the master on/off for RM_Krannock's
+        // WILD SPAWNING once the Greentide's own review sitting places it in
+        // the biome roster (out of THIS item's scope by the item's own
+        // instruction — see GREENTIDE_CANOPY_SWARM_1). It is a deliberate
+        // no-op today, same posture as grazingSuppressionHookEnabled in
+        // RM_EnvironmentalHazardsSettings ("armed but the system it feeds
+        // hasn't shipped") — shipped now so no later pass has to retrofit
+        // MOD_OPTIONS_RETROFIT_1 onto it once placement lands.
+        public static bool canopySwarmEnabled = true;
+
         private string biomeListBuffer;
 
         public override void ExposeData()
@@ -108,6 +127,7 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref feverMarkGrantsImmunity, "feverMarkGrantsImmunity", true);
             Scribe_Values.Look(ref stenchGrenadeEnabled, "stenchGrenadeEnabled", true);
             Scribe_Values.Look(ref stenchGrenadeRadiusMultiplier, "stenchGrenadeRadiusMultiplier", 1f);
+            Scribe_Values.Look(ref canopySwarmEnabled, "canopySwarmEnabled", true);
         }
 
         /// <summary>True if the cross-biome opt-in currently applies to this biome (never to Greentide's own — that is native, not "cross").</summary>
@@ -236,6 +256,14 @@ namespace RimMandrake.Greentide
                     + " cells (" + stenchGrenadeRadiusMultiplier.ToString("0.00") + "x)");
                 stenchGrenadeRadiusMultiplier = list.Slider(stenchGrenadeRadiusMultiplier, 0.5f, 2f);
             }
+            list.GapLine();
+
+            list.Label("Canopy swarm (the krannock)");
+            list.CheckboxLabeled("Canopy swarm wild spawning", ref canopySwarmEnabled,
+                "Master on/off for the krannock (RM_Krannock) once it is placed in the biome's "
+              + "wild-animal roster by a future sitting — currently has no visible effect, since "
+              + "this creature is not yet wired into any roster. Its tree-gnawing AI is already "
+              + "covered by the Environmental Hazards Kit's own \"Tree fall\" toggle, not this one.");
 
             list.End();
         }
