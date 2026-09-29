@@ -9466,3 +9466,37 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_ForcedAncientAirlock_Large", "notes": "", "target": "RUT_ForcedAncientAirlock_Large", "ts": 1790657488.226037}
 {"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_FrozenEmptyCryptosleepPod", "ts": 1790657488.2340393}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_FrozenEmptyCryptosleepPod", "notes": "", "target": "RUT_FrozenEmptyCryptosleepPod", "ts": 1790657488.2576234}
+{"by": "artpiped", "elapsed_s": 123.86685659400246, "event": "generated", "job_id": "RM_Dhokkur_south", "target": "RM_Dhokkur/south", "ts": 1790657588.632803}
+{"by": "artpiped", "event": "validated", "job_id": "RM_Dhokkur_south", "target": "RM_Dhokkur/south", "ts": 1790657588.6552079, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_BustedShieldedTurret", "ts": 1790657599.18519}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_BustedShieldedTurret", "notes": "", "target": "RUT_BustedShieldedTurret", "ts": 1790657599.2107756}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_BustedSpacerAutocannon", "ts": 1790657599.219031}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_BustedSpacerAutocannon", "notes": "", "target": "RUT_BustedSpacerAutocannon", "ts": 1790657599.2416182}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_AncientShipLandingBeacon", "ts": 1790657599.2502272}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_AncientShipLandingBeacon", "notes": "", "target": "RUT_AncientShipLandingBeacon", "ts": 1790657599.2722836}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_CryptoAncientTerminal/east", "ts": 1790657599.2792656}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_CryptoAncientTerminal_east", "notes": "", "target": "RUT_CryptoAncientTerminal/east", "ts": 1790657599.300407}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_CryptoAncientTerminal/north", "ts": 1790657599.3080673}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_CryptoAncientTerminal_north", "notes": "", "target": "RUT_CryptoAncientTerminal/north", "ts": 1790657599.3300145}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_CryptoAncientTerminal/south", "ts": 1790657599.337846}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_CryptoAncientTerminal_south", "notes": "", "target": "RUT_CryptoAncientTerminal/south", "ts": 1790657599.3605509}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_CryptoAncientTerminalBank/east", "ts": 1790657599.3682735}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_CryptoAncientTerminalBank_east", "notes": "", "target": "RUT_CryptoAncientTerminalBank/east", "ts": 1790657599.3900707}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_CryptoAncientTerminalBank/north", "ts": 1790657599.3993807}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_CryptoAncientTerminalBank_north", "notes": "", "target": "RUT_CryptoAncientTerminalBank/north", "ts": 1790657599.4223776}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_CryptoAncientTerminalBank/south", "ts": 1790657599.4287043}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_CryptoAncientTerminalBank_south", "notes": "", "target": "RUT_CryptoAncientTerminalBank/south", "ts": 1790657599.4503317}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_RuinedHospitalBed/east", "ts": 1790657599.4579246}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_RuinedHospitalBed_east", "notes": "", "target": "RUT_RuinedHospitalBed/east", "ts": 1790657599.4819615}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_RuinedHospitalBed/north", "ts": 1790657599.4902685}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_RuinedHospitalBed_north", "notes": "", "target": "RUT_RuinedHospitalBed/north", "ts": 1790657599.5114117}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_RuinedHospitalBed/south", "ts": 1790657599.5176353}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_RuinedHospitalBed_south", "notes": "", "target": "RUT_RuinedHospitalBed/south", "ts": 1790657599.5393944}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_AncientTransmitterBeacon", "ts": 1790657599.5452945}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_AncientTransmitterBeacon", "notes": "", "target": "RUT_AncientTransmitterBeacon", "ts": 1790657599.567579}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_AncientWargamingTable/east", "ts": 1790657599.575862}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_AncientWargamingTable_east", "notes": "", "target": "RUT_AncientWargamingTable/east", "ts": 1790657599.5980349}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_AncientWargamingTable/north", "ts": 1790657599.6060042}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_AncientWargamingTable_north", "notes": "", "target": "RUT_AncientWargamingTable/north", "ts": 1790657599.629742}
+{"by": "fill_queue", "event": "registered", "source": "CRYPTOFORGE_HARVEST_RETIRE_1", "target": "RUT_AncientWargamingTable/south", "ts": 1790657599.6397974}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_AncientWargamingTable_south", "notes": "", "target": "RUT_AncientWargamingTable/south", "ts": 1790657599.6621828}
