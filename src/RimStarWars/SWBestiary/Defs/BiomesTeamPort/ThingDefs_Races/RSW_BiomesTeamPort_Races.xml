@@ -4656,8 +4656,13 @@ copied verbatim from the donor mods' own Textures trees.
   </PawnKindDef>
   <ThingDef ParentName="RSW_PollutedLands_AnimalThingBase">
     <defName>RSW_Creature_Mantrap</defName>
-    <label>mantrap</label>
-    <description>Massive compared to its progenitor, the venus flytrap, the mantrap is named such due to its ability to snag prey the size of humans. This variant has managed to develop proto-feet and can move very slowly to more food-rich environments. This all tends to terrify people.</description>
+    <!-- CRACKEDLANDS_RULED_CONTENT_1 (2026-09-28 sitting): relabelled "fang
+         leaf" to distinguish this near-stationary plant-form lure predator
+         (proto-feet, spd 0.00001) from the Miasma's AA_Mantrap (Alpha
+         Animals), the engineered mobile war-animal form, which keeps the
+         "mantrap" label as that biome's own business. defName untouched. -->
+    <label>fang leaf</label>
+    <description>Massive compared to its progenitor, the venus flytrap, the fang leaf is named for the way it snags prey the size of humans between jaws grown from a single leaf. It has managed to develop proto-feet and can move very slowly to more food-rich environments. This all tends to terrify people.</description>
     <statBases>
       <MoveSpeed>0.00001</MoveSpeed>
       <MarketValue>200</MarketValue>
@@ -4746,7 +4751,7 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Creature_Mantrap</defName>
-    <label>mantrap</label>
+    <label>fang leaf</label>  <!-- CRACKEDLANDS_RULED_CONTENT_1: relabel, defName untouched -->
     <race>RSW_Creature_Mantrap</race>
     <combatPower>75</combatPower>
     <wildGroupSize>1</wildGroupSize>

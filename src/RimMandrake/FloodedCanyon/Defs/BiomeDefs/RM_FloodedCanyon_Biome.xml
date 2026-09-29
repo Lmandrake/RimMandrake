@@ -102,24 +102,43 @@
       <SnowHard>1</SnowHard>
     </baseWeatherCommonalities>
 
-    <!-- Vanilla-core roster only. Follow-on roster items may add RM-tier
-         canyon-country creatures; this ships the biome functional on Core
-         alone. -->
+    <!-- CRACKEDLANDS_RULED_CONTENT_1 (2026-09-28 bedazzle sitting): the vanilla
+         terrestrial zoo (Iguana/Dromedary/Fox_Fennec/Warg/Rat/Cougar) and its
+         inline vanilla flora are evicted per the sitting's roster ruling and
+         replaced with this biome's own invented cast, so the free RM_ mod
+         reads as a real biome rather than reskinned vanilla (Q11a: "the free
+         mod looks the same as the campaign one"). True Star Wars canon
+         (gornt, can-cell, convor, woolamander) stays gated behind
+         mandrake.rsw.swbestiary in WildAnimals_CrackedLands.xml, not here —
+         only invented/non-canon content ships inline on this tier.
+         RM_Irqit (mudflat cohort breeder) deliberately carries NO row here:
+         it is mechanically cohort-spawned off the flood component's
+         soaked-cell list at recede (CRACKEDLANDS_MECHANICS_BUILD_1), not an
+         ambient roamer — a static wildAnimals commonality would make it
+         spawn year-round, contradicting "outside flood-weeks the biome shows
+         zero irqit and that is correct." -->
     <wildAnimals>
-      <Iguana>1.0</Iguana>
-      <Dromedary>0.4</Dromedary>
-      <Fox_Fennec>0.3</Fox_Fennec>
-      <Warg>0.15</Warg>
-      <Rat>0.6</Rat>
-      <Cougar>0.06</Cougar>
+      <RUT_SealedSleeper>0.2</RUT_SealedSleeper>  <!-- the Sealed, signature -->
+      <RUT_EmperorVulture>0.15</RUT_EmperorVulture>  <!-- the Patient, sky -->
+      <RSW_SandLeaper>0.2</RSW_SandLeaper>  <!-- the Spenders, invented exotic -->
+      <RSW_SandPillar>0.5</RSW_SandPillar>  <!-- small, invented exotic -->
+      <RSW_Creature_Mantrap>0.15</RSW_Creature_Mantrap>  <!-- the Patient, labelled "fang leaf" on its own def -->
+      <RSW_MutagenicNorphea>0.4</RSW_MutagenicNorphea>  <!-- the Sealed -->
+      <RM_Muttavaq>0.03</RM_Muttavaq>  <!-- the pan giant - one per pan, very rare -->
+      <RM_Uttaqar>0.05</RM_Uttaqar>  <!-- the crag giant (rock troll) - rare -->
+      <RM_Tarruq>0.12</RM_Tarruq>  <!-- the voice - year-round Patient resident -->
     </wildAnimals>
+    <!-- Flora is thin outside the shade line by design (Veqma's own placement
+         law is shade-only) — NOT a completeness gap this pass owns. The
+         campaign's WildAnimals_CrackedLands.xml Op3 already carries a fuller
+         alien-flora set (AB_HardyGrass/GRimMoss/AB_GargantuanLithops, none
+         RUT_-tier-locked) for open ground; porting those three onto this base
+         tier too is a reasonable near-term follow-up for "looks the same as
+         the campaign" parity, but the 2026-09-28 bedazzle sitting only ruled
+         Veqma as new flora content — not done here to avoid inventing beyond
+         what was ruled. -->
     <wildPlants>
-      <Plant_Grass>2.0</Plant_Grass>
-      <Plant_PincushionCactus>1.2</Plant_PincushionCactus>
-      <Plant_SaguaroCactus>0.8</Plant_SaguaroCactus>
-      <Plant_Agave>0.6</Plant_Agave>
-      <Plant_Bush>0.3</Plant_Bush>
-      <Plant_Dandelion>0.4</Plant_Dandelion>
+      <RM_Veqma>0.15</RM_Veqma>  <!-- the dowsing flora - shade line only -->
     </wildPlants>
   </BiomeDef>
 
