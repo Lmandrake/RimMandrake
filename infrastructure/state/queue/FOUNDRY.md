@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T01:52:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T02:14:12Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -359,15 +359,6 @@ target:   v1
 kind:     design
 summary:  Widen mandrake.rm.graffiti (RM tier, generic to any RimWorld game) from
 prose:    infrastructure/state/items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md
-
-## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Build RUTScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events
-prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
 
 ## CRYPTOFORGE_HARVEST_RETIRE_1 Harvest then retire VQE Cryptoforge: (1) reproduce the 18 SALVAGE_PALETTE-cited props as owned RUT_/RSW_ ThingDefs with OWNED art (citation swap - Workshop art is not ours to ship); (2) copy the 38 KCSG StructureLayoutDef XMLs into design/ as authoring reference, strip to owned symbols before any shipping use; (3) delete our two FindMod-gated patches (Armoury_RangedDamage.xml VQE bullet block, MegafaunaYield.xml VQE_Megamidge block) in the same change as removal; (4) remove from ModsConfig, cold-load check, resave canonical per the donor-retire pattern (save footprint is zero-placed: only workgiver rows + filters, which drop with warnings); (5) fauna sheets: IceCrawler/Megamidge are ruled out-of-canon - their rows resolve Out, coordinate with the owner's live review before applying. Optional design salvage: the thaw-pulse mechanic (heat wakes the ice) may be re-fictioned as terramanufacture content - separate design item if wanted. CherryPicker rows for its 2 turrets become moot at removal.
 state:    doing  (BLOCKED)
@@ -1224,16 +1215,6 @@ kind:     task
 blocked:  Fully resolved offline: rename tool (jawa/world_landmark_rename) is fixed, deployed, and proven live per 2026-09-10 history. Nothing left is offline-actionable -- the 18 hand-named renames need (1) owner skim of names.md (not yet done) and (2) a live bridge session batched with OASIS_LANDMARK_PLACEMENT_1, which is itself needs=bridge/ready. BENCH holds the bridge this wave for the owner's Pyrelands session; no FOUNDRY bridge slot exists tonight. (on COLD_LOAD_RUN_SHEET_4)
 summary:  Source
 prose:    infrastructure/state/items/LANDMARK_NAMING_PASS_1.md
-
-## RUT_SCAVENGEREVENTS_BUILD_1 Build RUT_ScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events mechanics as our own IncidentWorkers (SurvivalPod, ShipBreak, PodCrash->spacer rescue, RescueTraitor, Insects->desert fauna, Migration, Thanksgiving->clan-tribute/moisture-tithe, Stroke; drop Nausea+Amnesia), register-true letter text, loot from our salvage economy; per-event baseChance settings kept. Interim: zero all MO_ baseChances via Mo'Events own settings. Each worker needs a proven-fires bridge test. Then retire mlie.moevents BEFORE save freeze; delete stale animal_census.csv MO_AbominationRace row. Port behavior not bugs (author's 3 disabled events were buggy); check Mlie continuation license before lifting C# verbatim.
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-blocked:  7/8 mechanisms built, compiled clean, deployed, queued in ModsConfig for next load - blocked on: (1) a restart to prove-fires (owner was mid-session on the live map all session, did not force one), (2) a design decision on RescueTraitor (turned out to be a half-decompiled body-horror mimicry mechanic, not a simple port - see item for the corrected finding)
-summary:  Build RUTScavengerEvents (mandrake.rut.scavengerevents): port 8 Mo'Events
-prose:    infrastructure/state/items/RUT_SCAVENGEREVENTS_BUILD_1.md
 
 ## CRYPTOFORGE_HARVEST_RETIRE_1 Harvest then retire VQE Cryptoforge: (1) reproduce the 18 SALVAGE_PALETTE-cited props as owned RUT_/RSW_ ThingDefs with OWNED art (citation swap - Workshop art is not ours to ship); (2) copy the 38 KCSG StructureLayoutDef XMLs into design/ as authoring reference, strip to owned symbols before any shipping use; (3) delete our two FindMod-gated patches (Armoury_RangedDamage.xml VQE bullet block, MegafaunaYield.xml VQE_Megamidge block) in the same change as removal; (4) remove from ModsConfig, cold-load check, resave canonical per the donor-retire pattern (save footprint is zero-placed: only workgiver rows + filters, which drop with warnings); (5) fauna sheets: IceCrawler/Megamidge are ruled out-of-canon - their rows resolve Out, coordinate with the owner's live review before applying. Optional design salvage: the thaw-pulse mechanic (heat wakes the ice) may be re-fictioned as terramanufacture content - separate design item if wanted. CherryPicker rows for its 2 turrets become moot at removal.
 state:    doing  (BLOCKED)
