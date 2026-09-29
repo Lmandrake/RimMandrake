@@ -822,11 +822,10 @@ window's 11 notes alongside another's 5 events. Verify after: both windows' ids 
 `python3 -m modcheck.cli <verb>` from `src/RimMandrake/Utils`, and after that `cd` a git query
 or a glob makes `infrastructure/` look DELETED. Use absolute paths, or `cd` back.
 
-🔴 **Windows Git Credential Manager crashes on every invocation from a WSL git worktree** —
-`fatal: not a git repository: (NULL)`, `GitCredentialManager.GitException: Failed to
-enumerate all Git configuration entries`. Not one bad worktree: hit identically across 8+
-independent worktree agents in one session (2026-09-27). Never wait for a retry to fix it —
-route the push through a one-shot `gh auth token`-embedded Basic-auth header instead:
+✅ **On the Desktop, origin is SSH since 2026-09-29** (`git@github.com:Lmandrake/RimMandrake.git`,
+key `~/.ssh/id_ed25519`), so pushes from WSL worktrees never touch the Windows Git Credential
+Manager, which crashes on every https call from a worktree (`fatal: not a git repository:
+(NULL)`, 8+ agents, 2026-09-27). If a push ever falls back to https there, use a one-shot token header:
 `git -c credential.helper= -c http.https://github.com/.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$(gh auth token)" | base64 -w0)" push origin HEAD:main`.
 
 ## Code isn't clean until a review says so
