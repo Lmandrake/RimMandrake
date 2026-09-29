@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T05:00:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T05:29:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1062,6 +1062,15 @@ kind:     task
 summary:  CRACKEDLANDSFULLRENAME1 — FloodedCanyon → CrackedLands, everywhere
 prose:    infrastructure/state/items/CRACKEDLANDS_FULL_RENAME_1.md
 
+## CRACKEDLANDS_RULED_CONTENT_1 Build the Cracked Lands ruled content: roster surgery (vanilla zoo out, RM_ migration, eopie to merchants), five new natives (Muttavaq/Uttaqar/Irqit/Tarruq/Veqma), fossil defs, the wax underwater suit, Fang Leaf relabel
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  CRACKEDLANDSRULEDCONTENT1 — roster surgery, five new natives, fossils, the wax suit
+prose:    infrastructure/state/items/CRACKEDLANDS_RULED_CONTENT_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1566,6 +1575,16 @@ blocked:  owner call needed on how to handle the 44 live world tiles currently o
 summary:  CRACKEDLANDSFULLRENAME1 — FloodedCanyon → CrackedLands, everywhere
 prose:    infrastructure/state/items/CRACKEDLANDS_FULL_RENAME_1.md
 
+## CRACKEDLANDS_RULED_CONTENT_1 Build the Cracked Lands ruled content: roster surgery (vanilla zoo out, RM_ migration, eopie to merchants), five new natives (Muttavaq/Uttaqar/Irqit/Tarruq/Veqma), fossil defs, the wax underwater suit, Fang Leaf relabel
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  defs+roster complete and validated (0 errors); remaining is a live quicktest verify pass (needs deploy+bridge) plus the wax suit's terrain-survival mechanism, which needs CRACKEDLANDS_MECHANICS_BUILD_1 first
+summary:  CRACKEDLANDSRULEDCONTENT1 — roster surgery, five new natives, fossils, the wax suit
+prose:    infrastructure/state/items/CRACKEDLANDS_RULED_CONTENT_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1837,16 +1856,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1.md
-
-## CRACKEDLANDS_RULED_CONTENT_1 Build the Cracked Lands ruled content: roster surgery (vanilla zoo out, RM_ migration, eopie to merchants), five new natives (Muttavaq/Uttaqar/Irqit/Tarruq/Veqma), fossil defs, the wax underwater suit, Fang Leaf relabel
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  CRACKEDLANDSRULEDCONTENT1 — roster surgery, five new natives, fossils, the wax suit
-prose:    infrastructure/state/items/CRACKEDLANDS_RULED_CONTENT_1.md
 
 ## CRACKEDLANDS_MECHANICS_BUILD_1 Build the Cracked Lands mechanics: the Swale (FlowWorks-normal, Utinni-locked biome discovery), survey+cistern loop, wall fossils + flood re-cut, giant behaviors, chime soundscape, Peakstorm Light, salvage strikes, ledges/toll gate, bloom market
 state:    proposed
