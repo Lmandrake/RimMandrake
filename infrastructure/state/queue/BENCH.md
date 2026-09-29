@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T15:20:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T15:32:12Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -279,32 +279,14 @@ kind:     design
 summary:  (no items/WASTELAND_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WASTELAND_BEDAZZLE_SITTING_1.md
 
-## CAULDRON_BEDAZZLE_SITTING_1 The Cauldron bedazzle sitting - program row 5: score against the nine-mark bar, fill flora/fauna, four-turn volley, ticket + commission; execute the ruled PoisonForest->Cauldron rename (live-tile check gates any defName change)
+## LONGSHADE_BEDAZZLE_SITTING_1 Long Shade bedazzle sitting - program row 8: score against the nine-mark bar (09-27 sitting covered movements 1-2 + part of 3), fill gaps, four-turn volley to the bar, ticket + commission
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  The four movements of the program item, applied to this biome:
-prose:    infrastructure/state/items/CAULDRON_BEDAZZLE_SITTING_1.md
-
-## FORGE_BEDAZZLE_SITTING_1 The Forge bedazzle sitting - program row 6: score against the nine-mark bar, fill flora/fauna, four-turn volley, ticket + commission
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  The program's four movements: (1) Fable review pass →
-prose:    infrastructure/state/items/FORGE_BEDAZZLE_SITTING_1.md
-
-## LEANINGSCRUB_BEDAZZLE_SITTING_1 Leaning Scrub bedazzle sitting - program row 7: score against the nine-mark bar, fill flora/fauna, four-turn volley, ticket + commission; holds the Blurrg reservation from the Long Shade ruling
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/LEANINGSCRUB_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LEANINGSCRUB_BEDAZZLE_SITTING_1.md
+summary:  (no items/LONGSHADE_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
