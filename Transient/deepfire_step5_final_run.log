@@ -1,0 +1,50 @@
+
+=== start_debug_game_ready ===
+{"success": true, "message": "RimWorld map data is available and is paused for automation.", "state": {"programState": "MapInitializing", "inEntryScene": false, "hasCurrentGame": true, "currentMapId":
+programState: Playing
+colonist0 pos: {'x': 143, 'z': 116}
+
+=== spawn ===
+wall Thing_Wall26074 chair Thing_DiningChair26075 sculpture Thing_SculptureSmall26076 deepfire Thing_RM_Deepfire26073
+comp_coats wall True 0
+comp_coats chair True 0
+comp_coats sculpture True 0
+
+=== real job: designate + unpause + poll (wall) ===
+designate: {'success': True, 'alreadyDesignated': False, 'operation': {'OperationId': 'op_d44c75aaa24844759ea92b372889bd15', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/deepfire-designate', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-09-29T07:18:53.5230185+00:00', 'CompletedAtUtc': '2026-09-29T07:18:53.572006+00:00', 'DurationMs': 48, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}
+wall coats after real job: 0
+wall glow after coat1: 1.0 {'r': 0, 'g': 0, 'b': 0, 'a': 0}
+
+=== paint wall blue -> glow follows colour ===
+paint result: {'success': True, 'colorDef': 'Structure_Blue', 'drawColor': {'r': 0.09411765, 'g': 0.254901975, 'b': 0.4745098, 'a': 1.0}, 'operation': {'OperationId': 'op_199d558832ba4070a497de2f69f91143', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/deepfire-paint-building', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-09-29T07:21:58.2246951+00:00', 'CompletedAtUtc': '2026-09-29T07:21:58.2695805+00:00', 'DurationMs': 44, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}
+wall glow after paint blue: 1.0 {'r': 0, 'g': 0, 'b': 0, 'a': 0}
+
+=== coats 2 and 3 (direct AddCoat, same method the job calls) ===
+add_coat -> 2 0 -> 1
+add_coat -> 3 1 -> 2
+wall glow at 3 coats: 1.0 {'r': 11, 'g': 31, 'b': 59, 'a': 0}
+
+=== 4th coat refused ===
+attempt coat 4 -> 2 -> 3 (should be unchanged, capped at 3)
+
+=== remove -> 0 ===
+remove_coats -> 3 -> 0
+wall glow after removal: 1.0 {'r': 0, 'g': 0, 'b': 0, 'a': 0}
+
+=== minify chair, reinstall -> still glowing ===
+chair coats before minify: 2
+chair glow before minify: 1.0
+minify action candidates: []
+NO minify debug action found -- skipping minify/reinstall sub-proof
+cell after minify: null
+
+=== re-coat wall (fresh, since it was removed above) for the save/load check ===
+wall coats before save: 2
+wall glow before save: 1.0 {'r': 11, 'g': 31, 'b': 59, 'a': 0}
+
+=== save + load -> still glowing ===
+save_game: True None
+load_game: True None
+post-load programState: Playing
+wall cell after load: [{"defName": "RM_DeepfireLightProxy", "label": "Deepfire light (internal)", "className": "Verse.ThingWithComps", "stuffDefName": null, "isBlueprint": false, "isBlueprintBuild": false, "blueprintBuildDefName": null, "isFrame": false, "frameBuildDefName": null, "hitPoints": -1}]
+wall glow after save/load: 1.0 {'r': 9, 'g': 27, 'b': 51, 'a': 0}
