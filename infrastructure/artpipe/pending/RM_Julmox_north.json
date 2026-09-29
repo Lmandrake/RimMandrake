@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:41:57Z",
+  "derive_from": "RM_Julmox_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Julmox_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the julmox, a low wide plate-footed grazer of a volcanic massif, caught HALF-FANNED in its grazing hour after a boiling-rain burst \u2014 a broad flat-backed body low as a cooling slab, the signature its feet: oversized splayed heat-proof plate-soles that never sink into hot ash; sealing lids visible as clean seam-lines along flank and face, lifted open, a fringed grazing muzzle held low against the steaming rock, cropping the fresh moss film. Posture patient, workmanlike, herd-animal calm. Its covering reads as fine mineral plating, never fur. No nameable Earth tortoise, capybara or ox.",
+  "reference": null,
+  "rimflow_item_id": "FORGE_BEDAZZLE_SITTING_1",
+  "style_notes": "forge register: a volcanic massif under doubled furnace light \u2014 hard white sun above, seam-red glow ONLY where the melt actually shows; basalt black, ash grey, obsidian gloss, steam-white plumes; nothing lives in the lava so nothing reads lava-native, no furred or lush-register anatomy, no ordinary rain; realistic painted natural-history illustration, grounded believable anatomy, matte mineral surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is ASH-AND-BLOOM: pale kiln-grey and bone body wearing the flash window's paint \u2014 fresh moss-green staining on muzzle, plate-feet and belly, faint steam-damp darkening low; the one cast member allowed real green, because it is wearing its food, deliberately distinct from the rest of the cast; the standalone tier's pastoral spine, bs~1.2 class, drawSize ~1.8, tamable herd grazer that squats sealed between bursts and fans open to graze; the half-fanned posture must read as the grazing hour, not the wait; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the broad sealed back seams, rear plate-feet and low haunches"
+}

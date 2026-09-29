@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:41:57Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Floatstone",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: floatstone, an ultra-light volcanic building material \u2014 three cut blocks stacked, each cut face showing the whirled spun-glass grain frozen mid-swirl: the walls it builds look like swirled stone spun sugar made into blocks, and the cut faces must carry that visible whirl-lamination, never a flat pumice stipple. Strong the way a woven thing is strong, not flammable, and it must READ light: airy lace structure visible in every broken edge. Single item stack, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "FORGE_BEDAZZLE_SITTING_1",
+  "style_notes": "forge register: a volcanic massif under doubled furnace light \u2014 hard white sun above, seam-red glow ONLY where the melt actually shows; basalt black, ash grey, obsidian gloss, steam-white plumes; nothing lives in the lava so nothing reads lava-native, no furred or lush-register anatomy, no ordinary rain; realistic painted natural-history illustration, grounded believable anatomy, matte mineral surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is OPAL-LACE, shared with the floatstone garden because they are one material family: pearl-white body, warm cream swirl-bands, faint opal sheen at the block corners, deliberately distinct from the rest of the cast; item icon AND stuff-color master (defName RM_Floatstone: stuff-capable, strong, very light, flammability 0, high market value; walls ride the vanilla atlas tinted from this master's pearl tones); owner verbatim is LAW: \"the walls it makes look like swirled stone spun sugar made into blocks. Very beautiful.\""
+}
