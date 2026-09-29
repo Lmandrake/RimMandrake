@@ -273,3 +273,8 @@ infrastructure/artpipe/status/
 # derived: cloned prototypes under Transient/triposr_prototype (owner: local imagegen track PARKED 2026-09-05)
 Transient/triposr_prototype/TripoSR/
 Transient/triposr_prototype/torchmcubes/
+
+# local-only: ChatGPTConsult per-repo state — enrollment flag, thread cache, transcripts,
+# and suppressed-diff evidence patches. Stays machine-local by design so enrollment
+# (which authorizes autonomous egress of repo content) is never inherited by another checkout.
+.consult/
