@@ -48,9 +48,10 @@ def verdict(cmd, cwd):
     return DENY if '"deny"' in out else ALLOW
 
 
-def stamp_for(foo_text):
+def stamp_for(foo_text, dll_bytes):
     h = hashlib.sha256(foo_text.encode("utf-8")).hexdigest()
-    return "# project: TestMod/Source/TestMod.csproj\n%s Foo.cs\n" % h
+    dh = hashlib.sha256(dll_bytes).hexdigest()
+    return "# project: TestMod/Source/TestMod.csproj\n# dll: %s\n%s Foo.cs\n" % (dh, h)
 
 
 def write(path, text):
@@ -102,7 +103,7 @@ def main():
     write(p["csproj"], CSPROJ)
     write(p["foo"], FOO_V1)
     write_bytes(p["dll"], b"FAKE-DLL-BYTES-V1")
-    write(p["stamp"], stamp_for(FOO_V1))
+    write(p["stamp"], stamp_for(FOO_V1, b"FAKE-DLL-BYTES-V1"))
     g("add", "src")
     g("commit", "-q", "-m", "base: matching TestMod stamp")
     g("push", "-q", "-u", "origin", "main")
@@ -132,6 +133,21 @@ def main():
     g("add", "src")
     g("commit", "-q", "-m", "dll changed, stamp not regenerated")
     check("DLL changed without stamp -> deny", DENY)
+    g("reset", "-q", "--hard", "origin/main")
+
+    # 3b. DLL rebuilt via the real toolchain (source unchanged, stamp's own
+    #     "# dll:" line regenerated to match the new bytes) -> allow. This is
+    #     the BIOME_CONFIG_ERROR_TRIAGE_1 legitimate-catch-up shape: fixing a
+    #     stale DLL whose stamp already matched source. It must stay allowed
+    #     — the "# dll:" line is what lets case 3 (above) be told apart from
+    #     this one, instead of collapsing the two into one indistinguishable
+    #     diff shape the way the pre-2026-09-29 stamp format did.
+    new_dll = b"FAKE-DLL-BYTES-V2-PROPERLY-REBUILT"
+    write_bytes(p["dll"], new_dll)
+    write(p["stamp"], stamp_for(FOO_V1, new_dll))
+    g("add", "src")
+    g("commit", "-q", "-m", "dll rebuilt, stamp regenerated to match (legitimate catch-up)")
+    check("DLL rebuilt with matching stamp regen -> allow", ALLOW)
     g("reset", "-q", "--hard", "origin/main")
 
     # 4. A mismatch already on origin/main (pre-existing) must not block a
