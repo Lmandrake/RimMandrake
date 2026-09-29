@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T04:33:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T04:37:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -296,6 +296,15 @@ target:   v1
 kind:     task
 summary:  The program's four movements: (1) Fable review pass →
 prose:    infrastructure/state/items/FORGE_BEDAZZLE_SITTING_1.md
+
+## LEANINGSCRUB_BEDAZZLE_SITTING_1 Leaning Scrub bedazzle sitting - program row 7: score against the nine-mark bar, fill flora/fauna, four-turn volley, ticket + commission; holds the Blurrg reservation from the Long Shade ruling
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/LEANINGSCRUB_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LEANINGSCRUB_BEDAZZLE_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
