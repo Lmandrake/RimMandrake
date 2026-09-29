@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WaxSuit.xml                     CRACKEDLANDS_RULED_CONTENT_1 (FOUNDRY build)
+
+  design/Jawa/worldbuilding/biomes/cracked_lands_bedazzle_cast_2026-09-28.md
+  §"The wax suit — crack-wax sealed underwater suit": "a full-body sealed
+  apparel piece, crack-wax over a stiffened frame, that lets a pawn survive
+  water and underwater TERRAIN ... Terrain survival ONLY ... no sea-floor
+  access ... no pawn dive verb, mechanism or menu option anywhere in this
+  feature ... the same reconciliation WARCASKET_SUIT_CLASS_1 carries: an
+  apparel class may make hostile terrain survivable; it may never become a
+  travel mechanism."
+
+  🔴 SEA-FLOOR / SHIP-ONLY LAW UNTOUCHED: this def grants no dive verb, no
+  MapPortal access, no sea-floor teleport of any kind. `RM_SeaDiveHatch`
+  (DivingInteraction) remains the only way onto a sea floor. A future
+  reader: if this suit looks like it should let a pawn dive, that reading
+  is wrong — see CRACKEDLANDS_RULED_CONTENT_1 step 6 and
+  CRACKEDLANDS_MECHANICS_BUILD_1's own "no pawn dive verb anywhere in this
+  item" watch-out.
+
+  TERRAIN-SURVIVAL MECHANISM — SEARCHED, NOT FOUND REUSABLE, NOT WIRED:
+  This pass searched for an existing water/underwater-terrain-survival
+  stat or hediff to reuse rather than invent one, per this build's own
+  brief. Found:
+    - `WARCASKET_SUIT_CLASS_1` is a NAMED RECONCILIATION LINE (this file's
+      header above, and CRACKEDLANDS_RULED_CONTENT_1 step 6), not a built
+      item and not a mechanism — grep across src/ and
+      infrastructure/state/items/ turns up no such queue item and no
+      StatDef/HediffDef by that name. There is nothing there to reuse.
+    - RUT_SealedSleeper's crack-wax mechanism (`CompWaterWakeTrigger`) is a
+      WAKE trigger for a dormant creature, not a pawn survival mechanism —
+      irrelevant to a pawn standing in water.
+    - `RM_PitDrowning` (src/RimMandrake/FlowWorks/Defs/Pits/HediffDefs/
+      Pit_Hediffs.xml) is a real, shipped drowning hediff — but read its
+      trigger, CompPitFitting.CanSwim() (FlowWorks/Source/Pits/Fitting/
+      CompPitFitting.cs): immunity is checked ONLY via
+      `ImmunityHandler.AnyGeneMakesFullyImmuneTo(RM_PitDrowning)` — a GENE
+      check, with no apparel/stat hook at all (apparel cannot grant a gene).
+      It is also scoped to `CompPitFitting`-bearing pit cells (the
+      FlowWorks excavation-engine "Building_OpenPit" mechanic), not to
+      general open biome terrain — the Cracked Lands' 27 measured
+      open-water tiles (freeze ruling R6, `RM_FloodedCanyon_GameCondition
+      Defs.xml`'s flood water) are ordinary map terrain, not Pit cells, so
+      even a gene-immunity route would not reach them without new wiring.
+    - No vanilla RaceProperties/ApparelProperties flag or StatDef for
+      "survives deep/lethal water" was found either (same absence
+      RM_PitDrowning's own header already documents from its 2026-09
+      search).
+  Conclusion: no existing stat/hediff reaches "a pawn wearing this survives
+  the biome's lethal water terrain" without new C# or a new StatDef/
+  HediffDef — both declined per this build's own instruction. This def
+  therefore ships WITHOUT the survival mechanism wired. The suit is a
+  complete, craftable, wearable apparel piece with real stats; equipping
+  it today does not yet stop a pawn drowning in the Cracked Lands' open
+  water. Owed to `CRACKEDLANDS_MECHANICS_BUILD_1` (that item's own scope
+  leans on "existing machinery" for everything else it owns; a general
+  open-terrain drowning hediff + an apparel-readable immunity/resistance
+  hook is new work, not a rewire of RM_PitDrowning, since RM_PitDrowning's
+  own gene-only design is deliberate per its header and not something to
+  repurpose for apparel without discussion).
+
+  SHAPE: closest sibling in this exact codebase is RUT_SealedSuit
+  (UtinniPatches, "heaviest piece" of the Greentide kit tree — a full-body
+  ParentName="ApparelMakeableBase" sealed suit crafted from a biome
+  material + fabric/frame, Middle+Shell layers, heavy MoveSpeed penalty).
+  Mirrored directly: same body-part-group/layer shape, same
+  ElectricTailoringBench/HandTailoringBench recipe pattern. Worn-graphic
+  art reuses vanilla's real Vacsuit paperdoll (same placeholder-with-real-
+  shipped-art move RUT_SealedSuit and RM_ChillHeatedSuit both already make
+  in this codebase) tinted crack-wax pale; the new bedazzle-commissioned
+  icon (RM_CrackWaxSuit, already generated and copied into this mod's
+  Textures/ this pass) is the inventory/ground icon.
+
+  RM_ tier per Q11a (free mod looks the same as the campaign one); the
+  Utinni-side "discovered here" research/recipe UNLOCK gating named in the
+  bible ("crack-wax is this biome's material ... the recipe is discovered
+  here") is NOT built this pass — this ships as an always-available
+  recipe. Follow-up flagged, not owed to any existing item: a
+  RUT_/Utinni-tier research-unlock wrapper around this same defName, if
+  the owner wants the craft gated behind a Cracked-Lands-specific
+  discovery the way the Swale is gated (CRACKEDLANDS_MECHANICS_BUILD_1
+  §1's "LOCKED until discovered" shape).
+
+  🔴 KNOWN GAP, FLAGGED RATHER THAN SILENTLY RESOLVED: this recipe's
+  costList references `RUT_CrackWax` by the bible's own explicit
+  instruction ("crafted from RUT_CrackWax") — but that ThingDef is
+  currently defined ONLY in `mandrake.rut.patches` (UtinniPatches, the
+  Utinni-campaign-only patch layer, About.xml: "LOAD LAST ... after every
+  mod it touches"), which this mod's own About.xml does NOT depend on and
+  should not, per its own description ("nothing here knows what campaign
+  or planet uses it"). So this recipe is only actually craftable when
+  UtinniPatches happens to be active alongside this mod — standalone
+  RM_-only play cannot resolve the ingredient. This is the SAME shape of
+  gap the cast bible itself flags for `RUT_SealedSleeper`/`RUT_EmperorVulture`
+  ("today missing from the RM_ patch entirely") and is not something this
+  file resolves — it is a roster/patch-layer wiring question
+  (CRACKEDLANDS_RULED_CONTENT_1 step 2's own territory, owned this pass by
+  a different FOUNDRY agent) rather than a new-apparel-def one. Not
+  changed here: this mod's About.xml dependency list, or the roster/patch
+  files. If the resolution is "give the RM_ tier its own RM_CrackWax
+  duplicate resource" (the Greatbole precedent's shape), that is a content
+  decision for whoever owns that gap, not assumed here.
+-->
+<Defs>
+
+  <ThingDef ParentName="ApparelMakeableBase">
+    <defName>RM_CrackWaxSuit</defName>
+    <label>crack-wax suit</label>
+    <description>A full-body suit of stiffened fabric over a rigid frame, sealed watertight under a coat of smoothed crack-wax — the same waterproofing the Sealed shed from their burrows and the Farmers line their cisterns with, now worn. Heavy, slow and hot, but it keeps a pawn dry and breathing while they cross or work the Cracked Lands' flooded ground.\n\nTerrain only. This suit does not let anyone dive to a sea floor or come back from one — nothing does, except a ship.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/RM_CrackWaxSuit/RM_CrackWaxSuit</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.9</drawSize>
+      <color>(222, 210, 176)</color>
+    </graphicData>
+    <techLevel>Industrial</techLevel>
+    <tradeability>Sellable</tradeability>
+    <costStuffCount>50</costStuffCount>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <costList>
+      <RUT_CrackWax>25</RUT_CrackWax>
+      <Steel>6</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>160</MaxHitPoints>
+      <WorkToMake>24000</WorkToMake>
+      <Mass>8</Mass>
+      <Flammability>0.3</Flammability>
+      <StuffEffectMultiplierArmor>0.15</StuffEffectMultiplierArmor>
+      <StuffEffectMultiplierInsulation_Cold>0.2</StuffEffectMultiplierInsulation_Cold>
+      <StuffEffectMultiplierInsulation_Heat>0.2</StuffEffectMultiplierInsulation_Heat>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.08</ArmorRating_Blunt>
+      <EquipDelay>8</EquipDelay>
+    </statBases>
+    <equippedStatOffsets>
+      <!-- Heavy move/work penalty appropriate to a sealed suit, per the
+           bible. No terrain-survival stat offset here — see file header;
+           nothing exists yet for this apparel to grant. -->
+      <MoveSpeed>-0.6</MoveSpeed>
+      <WorkSpeedGlobal>-0.15</WorkSpeedGlobal>
+    </equippedStatOffsets>
+    <thingCategories>
+      <li>ApparelMisc</li>
+    </thingCategories>
+    <apparel>
+      <bodyPartGroups>
+        <li>Torso</li>
+        <li>Neck</li>
+        <li>Shoulders</li>
+        <li>Arms</li>
+        <li>Legs</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit</wornGraphicPath>
+      <layers>
+        <li>Middle</li>
+        <li>Shell</li>
+      </layers>
+      <tags>
+        <li>IndustrialAdvanced</li>
+      </tags>
+      <defaultOutfitTags>
+        <li>Worker</li>
+      </defaultOutfitTags>
+    </apparel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>ElectricTailoringBench</li>
+        <li>HandTailoringBench</li>
+      </recipeUsers>
+      <displayPriority>231</displayPriority>
+    </recipeMaker>
+    <tradeTags>
+      <li>BasicClothing</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

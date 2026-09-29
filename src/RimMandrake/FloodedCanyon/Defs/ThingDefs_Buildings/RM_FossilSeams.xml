@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FossilSeams.xml                 CRACKEDLANDS_RULED_CONTENT_1 (FOUNDRY build)
+
+  design/Jawa/worldbuilding/biomes/cracked_lands_bedazzle_cast_2026-09-28.md
+  §"Fossils — the canyon-wall strata": "fossil-bearing strata ship as
+  mineable defs seeded in canyon-wall generation ... the Greatbole-
+  Heartwood pattern — a wall cell the player can see is different and
+  dig." Cribbed directly from that pattern, read this pass from
+  src/RimMandrake/Greentide's RUT_GreatboleHeartwood and
+  src/RimMandrake/FeverWood's own RUT_FeverTrunkHeartwood copy of it:
+  ParentName="RockBase", mineable=true, building.mineableThing (one
+  ThingDef per rock def) + mineableYield + mineableDropChance,
+  mineableScatterCommonality=0 (placement is deliberate GenStep seeding,
+  not vanilla's automatic ore-vein scatterer — same as both precedents).
+
+  THREE DEFS, NOT ONE WEIGHTED LIST: this task's own brief asked for ONE
+  mineable def whose result varies by tier via a weighted yield list where
+  possible. Checked against the pattern it names as the model — vanilla
+  `BuildingProperties.mineableThing` (Source/RimWorld/BuildingProperties.cs,
+  same field RUT_GreatboleHeartwood's own header verified) is a single
+  ThingDef reference, not a list; there is no vanilla weighted-yield hook
+  on a mineable rock. The Greatbole-Heartwood pattern itself is single-
+  output-per-rock-def for exactly this reason, so it argues FOR three
+  defs, not against them. Building a weighted-random yield would need new
+  C# (a custom mineableThing resolver), which this pass was told not to
+  invent for the sibling wax-suit mechanism and is declined here for the
+  same reason.
+
+  The GenStep that actually SEEDS these into canyon-wall generation, and
+  the post-flood "fresh seams roll along the wetted wall line" re-cut, are
+  CRACKEDLANDS_MECHANICS_BUILD_1's C# (that item's §3 "Fossils in the
+  walls") — not this file. These three defs are the wall-face content the
+  GenStep will place; nothing here places them on a map yet.
+
+  ART: no wall-seam art existed in this sitting's CSV (checked
+  infrastructure/artpipe/{done,pending,registry.jsonl} for "fossil seam"/
+  "wall"/"mount"/"slab" — the CSV covered only the three mined ITEMS, the
+  suit and the Swale/creature cast, not the pre-mined wall face or the
+  display furniture below). Queued this pass as RM_FossilSeam
+  (infrastructure/artpipe/pending/RM_FossilSeam.json, filed via
+  fill_queue.py against this sitting's own CSV, appended) — ONE base wall
+  texture shared by all three tiers below and tinted per tier in
+  graphicData.color, rather than three separately rendered wall faces,
+  since the tiers are meant to read as "subtly different from the wall
+  around them," not as three distinct set-pieces. texPath points at where
+  that art will land once generated; until then this is a texPath-only
+  gap, not a def-correctness one.
+-->
+<Defs>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_FossilSeam_Impression</defName>
+    <label>fossil-bearing wall (impressions)</label>
+    <description>A stretch of canyon wall where the strata run pale and close-banded — split it and the odds favor a fern-mat, a shell-bed, a trackway. The common find, but the walls hold thousands of them.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_FossilSeam/RM_FossilSeam</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(214, 204, 188)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>220</MaxHitPoints>
+    </statBases>
+    <mineable>true</mineable>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_FossilImpression</mineableThing>
+      <mineableYield>3</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_FossilSeam_Skeleton</defName>
+    <label>fossil-bearing wall (articulated)</label>
+    <description>A denser run of strata, the kind that sometimes holds a whole animal instead of a print. Rarer along the wall line — and worth the extra work to dig out clean.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_FossilSeam/RM_FossilSeam</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(196, 182, 158)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>340</MaxHitPoints>
+    </statBases>
+    <mineable>true</mineable>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_FossilSkeleton</mineableThing>
+      <mineableYield>1</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_FossilSeam_Unique</defName>
+    <label>fossil-bearing wall (deep stratum)</label>
+    <description>Strata so old they read almost black, found only deep in the walls or where a flood has just cut a fresh face. What is in here is old enough that nobody is sure what it is until it is out.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_FossilSeam/RM_FossilSeam</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(96, 88, 82)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+    </statBases>
+    <mineable>true</mineable>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_FossilDeepStratum</mineableThing>
+      <mineableYield>1</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+</Defs>
