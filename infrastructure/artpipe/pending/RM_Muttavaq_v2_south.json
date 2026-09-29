@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:18:52Z",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south"
+  ],
+  "id": "RM_Muttavaq_v2_south",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the muttavaq, a canyon-floor giant that sleeps for years beneath a cracked clay pan and wakes when the flood reaches it \u2014 a vast low-slung body plated in dried-clay polygons that match the pan it slept under, a broad shovel head with straining jaw-plates for feeding like a walking weir in floodwater, thick pillar legs caked to the knee in wet clay, small deep-set eyes, wax-sheened seams where its burrow lining still clings. It reads as a piece of the cracked flats that stood up and started wading. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "FLOODEDCANYON_BEDAZZLE_SITTING_1",
+  "style_notes": "SOUTH-FACING REDO of an existing shipped creature \u2014 owner note verbatim: \"south graphic is obviously wrong, like bad grep or something?\" The shipped south is defective outright; redo it to match the shipped north/east identity: same individual, same clay-plated colossus, cracked-clay grey-white polygon plating, red-brown flood stain low on the body, pale wax sheen at the seams, broad shovel head with jaw-plates facing the camera (south = face toward camera, eyes and shovel head prominent). DO NOT CHANGE: silhouette family, canvas (512), transparent background with real alpha, the cracked lands palette. No reference image by design \u2014 match from this description. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 vary the clay-polygon tones (grey-white, bone, red-brown stain, faint shadowed moss green in creases) rather than one flat clay colour; realistic painted natural-history illustration, grounded believable anatomy under the clay, matte dried clay, mud and wax crust, never cartoonish, no outlines, alien but biologically plausible"
+}

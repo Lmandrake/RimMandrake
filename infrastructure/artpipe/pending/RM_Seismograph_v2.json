@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:18:53Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Seismograph_v2",
+  "priority": 70,
+  "prompt": "RimWorld game building sprite: a seismograph station, a plain readable scientific instrument-building in a scavenger camp's salvage style \u2014 a squat waist-high instrument housing of riveted salvaged plate on a bolted rock-anchor base, one clean glass-front panel showing a rotating paper drum with a scrawled trace line and a dark stylus arm, a small plumb-mass cylinder hanging in an open frame at the side, a hand-painted dial and two simple indicator lamps (unlit), cables staked neatly into the ground. Instantly readable as \"the machine that listens to the ground\": drum, stylus, anchor. Single structure, centered, top-down three-quarter building view, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CAULDRON_BEDAZZLE_SITTING_1",
+  "style_notes": "REGEN replacing rejected art \u2014 owner note verbatim: \"weird, replace\". The prior render read as weird; this one must be a PLAIN, READABLE instrument-building in the Cauldron kit style (same salvage-built register as the corroded wellhead / filter works / gas-tap scaffold family): scavenger-precise, lovingly kept, oiled bright where everything around it corrodes, the white drum paper the lightest value in the sprite. Research-gated alert building: it writes the loud ground's talk and alarms on the falter \u2014 silence is the warning. DO NOT: no green-amber chemistry stain on this subject (it is the kept machine), no creature read, no fantasy ornament. Canvas 256, transparent background with real alpha, single centered building. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 vary the salvage plate (gunmetal, oiled steel-blue, char-brown, brass fittings, white drum paper) instead of one corrosion tone; cauldron register darks around it: wet-lacquered black-green and char-brown, dark-crust purple-red film only as faint environmental film on the base plate; realistic painted illustration, matte metal with wet sheen, never cartoonish, no outlines"
+}

@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:18:53Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Eskith_v2_east",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the eskith, a knee-high feather-footed ground-drummer of a toxic chemical forest \u2014 a small upright quick body on two strong drumming legs, the feet the signature: wide splayed feather-fringed pads, oversized for the body, built to strike the ground and to read its answer; EXACTLY FIVE small eyes banked in an arc across the blunt head \u2014 five visible from the front, and in side profile EXACTLY THREE visible (the near-side arc), never more; drab wet-forest dark plumage-like covering with faint iridescence at the fringes. Posture alert, one foot raised mid-drum. It talks in knocks sent through the rock, and it reads as harmless, quick and tuned to the floor. No nameable Earth bird.",
+  "reference": null,
+  "rimflow_item_id": "CAULDRON_BEDAZZLE_SITTING_1",
+  "style_notes": "IMPROVE (all facings) of an existing shipped creature \u2014 owner note verbatim: \"Looks like it has five eyes. That means you can only see three on side profile.\" The eye count is now canon: FIVE eyes total banked across the head \u2014 south (front) shows all five, east (side) shows exactly three, north (rear) shows none. DO NOT CHANGE: silhouette family (knee-high two-legged drummer with oversized feather-fringed foot pads), canvas (256), facing set (south/east/north), transparent background with real alpha, the drab wet-lacquered plumage read. No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 vary the plumage darks (black-green, char-brown, oil-slick purple-red fringe iridescence) and let the pale condensate beading on the leg feathering read as a distinct value; cauldron register: wet-lacquered black-green and char-brown darks, dark-crust purple-red film sheen, pale glass-crystal accents, sick green-amber ONLY where chemistry pools or beads or stains; realistic painted natural-history illustration, matte texture with wet sheen, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view: no eyes, no face, only the back, folded fringe and drumming haunches"
+}

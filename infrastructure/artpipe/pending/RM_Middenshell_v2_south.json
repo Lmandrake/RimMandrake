@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:18:53Z",
+  "derive_from": "RM_Middenshell_v2_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Middenshell_v2_south",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the middenshell, a HUGE tubeworm-like creature \u2014 a truly large soft-bodied tube animal emerging from a LONG IRREGULAR SHELL made of accreted minerals fused into scavenged debris and vitrified bezoars, the shell a lumpy encrusted horn many body-lengths long, dragging low; from the tube mouth spread SCALED TENTACLES \u2014 thick muscular tentacles armored in overlapping scale plates, several extended, one lashed forward mid-grab as if pulling an object toward itself; no legs, no face beyond the tube aperture and its tentacle crown. It reads as a wreck-sized filter feeder that eats the world an object at a time. Truly large \u2014 the sprite composed to carry hill scale. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+  "style_notes": "REGEN, full redesign replacing the shipped walking-turtle-colossus read \u2014 owner note verbatim: \"Your color palette is too uniform per biome. Needs more variety. Please make this a huge tubeworm-like creature with scaled tentacles, a long irregular shell made of accreted minerals fused into debris and bezoars. Truly large. Will lash out a tentacle at objects and pull them towards itself, seeming to 'eat' them. Doors. Walls. Anything. Cannot pull off Gravplating or walls of a ship, but it can pull off any normal object sitting outside the ship not inherently 'gravship' items.\" The behaviour (tentacle-grab of loose objects) should read in the pose: one scaled tentacle lashed out mid-pull. All three facings (south/east/north), canvas 512, transparent background with real alpha, rendered large and high-fidelity so the scale carries in the pixels. Palette: the owner's uniformity complaint lands hardest here \u2014 the accreted shell is a MOSAIC of what it ate: salt-white crust, ash grey, vitrified black-green bezoar glass, rust-brown hull-plate scraps, bone, faint sickly-radiance seams deep in crevices; the soft tube body in contrasting raw flesh tones under the scale plates; wasteland survivor register, harsh dry light; tough ancient survivor, never pitiable, never monstrous-aggressive; realistic painted natural-history illustration, grounded believable anatomy, matte slag, glass and crust texture, never cartoonish, no outlines, alien but biologically plausible; north facing is a true rear view: no aperture, no tentacle crown visible, only the long encrusted shell from behind"
+}

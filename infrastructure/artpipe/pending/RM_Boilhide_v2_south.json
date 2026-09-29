@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:18:52Z",
+  "derive_from": "RM_Boilhide_v2_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Boilhide_v2_south",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the boilhide, a lean antelope-shaped grazer whose entire hide is a landscape of sealed boils \u2014 each a smooth walled-off dome where its body locked poison away, in ordered fields down the neck and flanks, the boil domes carrying a DEADLY WARNING COLOUR: a dangerous violet tinged with sickly yellow at the crowns, unmistakably toxic against the salt-grey hide; its antlers fused into a single mineral-crusted club; stance alert and healthy under the ugliness. It reads as a herd animal wearing its immunity on its skin. No nameable Earth antelope.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+  "style_notes": "IMPROVE (all facings) of an existing shipped creature \u2014 owner note verbatim: \"Add some deadly color on those boils. Too little color here. Maybe a dangerous violet tinged with yellow?\" The change is COLOUR ONLY on the boil domes: dangerous violet tinged with yellow, reading as sequestered poison. DO NOT CHANGE: silhouette family (lean antelope-shaped grazer, fused club antler), canvas (256), facing set (south/east/north), transparent background with real alpha, the salt-white and ash-grey base hide. No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 the violet-yellow boils ARE the variety move; also vary boil dome tones across the fields (deep violet, bruise purple, waxy yellow rims) instead of one repeated hue; wasteland survivor register: salt-white and ash-grey palette, vitrified black-green accents, harsh dry light; tough content survivor, never pitiable; realistic painted natural-history illustration, matte natural surface texture with boils and mineral crust, never cartoonish, no outlines, alien but biologically plausible; north facing is a true rear view: no eyes, no face, only the boil-fielded back and haunches"
+}
