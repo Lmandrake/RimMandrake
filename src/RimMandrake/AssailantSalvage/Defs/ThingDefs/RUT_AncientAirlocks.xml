@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_AncientAirlocks.xml                AssailantSalvage · CRYPTOFORGE_HARVEST_RETIRE_1 step 1
+  ============================================================================
+  Citation-swap replacements for 7 of the 22 salvage props donor-cited to
+  Workshop mod "Vanilla Quests Expanded - Cryptoforge" (vanillaquestsexpanded.cryptoforge)
+  in design/Jawa/art/SALVAGE_PALETTE.md. Owner ruling: retire-after-harvest —
+  Workshop art is not ours to ship, so gameplay stats/function are carried
+  over exactly, but defName, texPath and flavor text are entirely our own.
+  Owned art is queued separately to the artpipe (does not exist yet; expected).
+  Resolved flat (no shared abstract parent) against the donor's own
+  VQE_CryptoForgeBuildingBase / VQE_CryptoForgeBaseDoor abstracts, both of
+  which in turn add nothing beyond vanilla BuildingBase.
+  ============================================================================
+-->
+<Defs>
+
+  <!-- ===================================================================
+       RUT_AncientAirlock — a working reinforced airlock door, frozen-ship
+       set dressing. Donor: VQE_AncientAirlock (Buildings_Structure.xml,
+       ParentName VQE_CryptoForgeBaseDoor). thingClass Building_MultiTileDoor
+       is a vanilla RimWorld class (Source/RimWorld/Building_MultiTileDoor.cs)
+       — no donor C# dependency, kept as-is.
+       =================================================================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AncientAirlock</defName>
+    <label>ancient airlock</label>
+    <description>A hull airlock salvaged from a wreck older than anyone can date. The seal motors still hold pressure, slow and stubborn, and require solid wall on both sides to seat properly.</description>
+    <thingClass>Building_MultiTileDoor</thingClass>
+    <altitudeLayer>DoorMoveable</altitudeLayer>
+    <fillPercent>1</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Normal</tickerType>
+    <clearBuildingArea>true</clearBuildingArea>
+    <holdsRoof>true</holdsRoof>
+    <blockLight>true</blockLight>
+    <drawerType>RealtimeOnly</drawerType>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <statBases>
+      <WorkToBuild>5000</WorkToBuild>
+      <DoorOpenSpeed>0.5</DoorOpenSpeed>
+      <Beauty>0</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientAirlock</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Ancient/RUT_AncientAirlock_MenuIcon</uiIconPath>
+    <building>
+      <isInert>true</isInert>
+      <canPlaceOverWall>false</canPlaceOverWall>
+      <soundDoorOpenPowered>Door_OpenPowered</soundDoorOpenPowered>
+      <soundDoorClosePowered>Door_ClosePowered</soundDoorClosePowered>
+      <soundDoorOpenManual>Door_OpenManual</soundDoorOpenManual>
+      <soundDoorCloseManual>Door_CloseManual</soundDoorCloseManual>
+      <ai_chillDestination>false</ai_chillDestination>
+      <paintable>false</paintable>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+      <roamerCanOpen>false</roamerCanOpen>
+      <blueprintClass>Blueprint_Build</blueprintClass>
+      <blueprintGraphicData>
+        <texPath>Things/Building/Ancient/RUT_AncientAirlock_MenuIcon</texPath>
+        <graphicClass>Graphic_Multi</graphicClass>
+        <shaderType>EdgeDetect</shaderType>
+        <drawSize>2</drawSize>
+      </blueprintGraphicData>
+      <doorTopGraphic>
+        <texPath>Things/Building/Ancient/RUT_AncientAirlock_Top</texPath>
+        <graphicClass>Graphic_Multi</graphicClass>
+        <drawSize>(2.2, 2.2)</drawSize>
+      </doorTopGraphic>
+    </building>
+    <comps>
+      <li Class="CompProperties_Forbiddable">
+        <allowNonPlayer>true</allowNonPlayer>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_DoorLearnOpeningSpeed</li>
+    </placeWorkers>
+    <stealable>false</stealable>
+    <designationHotKey>Misc3</designationHotKey>
+  </ThingDef>
+
+  <!-- ===================================================================
+       RUT_AncientAirlock_Large — 2-wide variant. Donor: VQE_AncientAirlock_Large.
+       Same thingClass note as above.
+       =================================================================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AncientAirlock_Large</defName>
+    <label>ancient large airlock</label>
+    <description>A wide hull airlock, big enough for a loaded cargo sled to pass through. The frame is scorched but the seal still seats true.</description>
+    <thingClass>Building_MultiTileDoor</thingClass>
+    <altitudeLayer>DoorMoveable</altitudeLayer>
+    <fillPercent>1</fillPercent>
+    <size>(2,1)</size>
+    <rotatable>true</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Normal</tickerType>
+    <clearBuildingArea>true</clearBuildingArea>
+    <holdsRoof>true</holdsRoof>
+    <blockLight>true</blockLight>
+    <drawerType>RealtimeOnly</drawerType>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <statBases>
+      <WorkToBuild>5000</WorkToBuild>
+      <DoorOpenSpeed>0.5</DoorOpenSpeed>
+      <Beauty>0</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientAirlock_Large</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Ancient/RUT_AncientAirlock_Large_MenuIcon</uiIconPath>
+    <building>
+      <isInert>true</isInert>
+      <canPlaceOverWall>false</canPlaceOverWall>
+      <soundDoorOpenPowered>Door_OpenPowered</soundDoorOpenPowered>
+      <soundDoorClosePowered>Door_ClosePowered</soundDoorClosePowered>
+      <soundDoorOpenManual>Door_OpenManual</soundDoorOpenManual>
+      <soundDoorCloseManual>Door_CloseManual</soundDoorCloseManual>
+      <ai_chillDestination>false</ai_chillDestination>
+      <paintable>false</paintable>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+      <roamerCanOpen>false</roamerCanOpen>
+      <blueprintClass>Blueprint_Build</blueprintClass>
+      <blueprintGraphicData>
+        <texPath>Things/Building/Ancient/RUT_AncientAirlock_Large_MenuIcon</texPath>
+        <graphicClass>Graphic_Multi</graphicClass>
+        <shaderType>EdgeDetect</shaderType>
+        <drawSize>(2.6, 3.1)</drawSize>
+      </blueprintGraphicData>
+      <doorTopGraphic>
+        <texPath>Things/Building/Ancient/RUT_AncientAirlock_Large_Top</texPath>
+        <graphicClass>Graphic_Multi</graphicClass>
+        <drawSize>(3, 2.4)</drawSize>
+      </doorTopGraphic>
+    </building>
+    <comps>
+      <li Class="CompProperties_Forbiddable">
+        <allowNonPlayer>true</allowNonPlayer>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_DoorLearnOpeningSpeed</li>
+    </placeWorkers>
+    <stealable>false</stealable>
+    <designationHotKey>Misc3</designationHotKey>
+  </ThingDef>
+
+  <!-- ===================================================================
+       RUT_JammedAncientAirlock — stuck/locked state-variant prop, not a
+       functioning door. Donor: VQE_JammedAncientAirlock. DONOR C# DROPPED:
+       the donor comp is VEF.Buildings.CompProperties_JammedAirlock (Vanilla
+       Expanded Framework), which drives a colonist "force open" job that
+       converts this Thing into the working airlock. This mod carries no
+       VEF dependency (About.xml — Core only), so that comp is not carried
+       over; ships as a static impassable obstruction. Follow-up: a
+       RimMandrake-owned force-open comp/job would restore that behavior.
+       =================================================================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_JammedAncientAirlock</defName>
+    <label>stuck ancient airlock</label>
+    <description>A hull airlock seized in its frame, warped by whatever wrecked the ship. It won't budge without being forced.</description>
+    <thingClass>Building</thingClass>
+    <clearBuildingArea>true</clearBuildingArea>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <size>(1,1)</size>
+    <uiIconScale>0.5</uiIconScale>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_JammedAncientAirlock</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>2.2</drawSize>
+    </graphicData>
+    <building>
+      <paintable>false</paintable>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+    </building>
+  </ThingDef>
+
+  <!-- ===================================================================
+       RUT_JammedAncientAirlock_Large — 2-wide variant. Donor:
+       VQE_JammedAncientAirlock_Large. Same donor-C#-dropped note as above.
+       =================================================================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_JammedAncientAirlock_Large</defName>
+    <label>stuck ancient large airlock</label>
+    <description>A wide hull airlock seized in its frame, warped by whatever wrecked the ship. It won't budge without being forced.</description>
+    <thingClass>Building</thingClass>
+    <clearBuildingArea>true</clearBuildingArea>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <size>(2,1)</size>
+    <uiIconScale>0.5</uiIconScale>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_JammedAncientAirlock_Large</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3, 2.4)</drawSize>
+    </graphicData>
+    <building>
+      <paintable>false</paintable>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+    </building>
+  </ThingDef>
+
+  <!-- ===================================================================
+       RUT_ForcedAncientAirlock — the post-force-open state: propped, can't
+       close again, passable rubble overlay. Donor: VQE_ForcedAncientAirlock.
+       No donor C# on this state (no comps) — carried over as-is.
+       =================================================================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_ForcedAncientAirlock</defName>
+    <label>forced ancient airlock</label>
+    <description>A hull airlock pried open by main force. The seal is ruined; it will never close again.</description>
+    <thingClass>Building</thingClass>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0</fillPercent>
+    <size>(1,1)</size>
+    <uiIconScale>0.5</uiIconScale>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_ForcedAncientAirlock</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>2.2</drawSize>
+    </graphicData>
+    <building>
+      <paintable>false</paintable>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+    </building>
+  </ThingDef>
+
+  <!-- ===================================================================
+       RUT_ForcedAncientAirlock_Large — 2-wide variant. Donor:
+       VQE_ForcedAncientAirlock_Large. No donor C# on this state either.
+       =================================================================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_ForcedAncientAirlock_Large</defName>
+    <label>forced ancient large airlock</label>
+    <description>A wide hull airlock pried open by main force. The seal is ruined; it will never close again.</description>
+    <thingClass>Building</thingClass>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0</fillPercent>
+    <size>(2,1)</size>
+    <uiIconScale>0.5</uiIconScale>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_ForcedAncientAirlock_Large</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3, 2.4)</drawSize>
+    </graphicData>
+    <building>
+      <paintable>false</paintable>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+    </building>
+  </ThingDef>
+
+  <!-- ===================================================================
+       RUT_FrozenEmptyCryptosleepPod — an opened, vacated cryptosleep pod.
+       Donor: VQE_FrozenEmptyCryptosleepPod (Buildings_Cryptopods.xml).
+       thingClass Building is plain vanilla — no donor C# dependency.
+       =================================================================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_FrozenEmptyCryptosleepPod</defName>
+    <label>empty ancient cryptosleep pod</label>
+    <description>A cryptosleep pod, iced over and standing open. Whoever it once held is long gone — walked off the wreck, or never made it this far.</description>
+    <thingClass>Building</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <selectable>true</selectable>
+    <fillPercent>0.5</fillPercent>
+    <size>(1,2)</size>
+    <rotatable>true</rotatable>
+    <blockWind>true</blockWind>
+    <pathCost>42</pathCost>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <WorkToBuild>2000</WorkToBuild>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_FrozenEmptyCryptosleepPod</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+    </graphicData>
+    <costList>
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+      <Steel>50</Steel>
+      <Uranium>6</Uranium>
+    </costList>
+    <building>
+      <paintable>false</paintable>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+    </building>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.assailantsalvage</packageId>
+  <name>RimUtinni: Assailant Salvage</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+  <description>CRYPTOFORGE_HARVEST_RETIRE_1 step 1 — owned RUT_ ThingDef replacements for the 22 salvage props
+formerly cited to the donor mod "Vanilla Quests Expanded - Cryptoforge" (VQE_*) in
+design/Jawa/art/SALVAGE_PALETTE.md. Same gameplay stats and function as the donor originals
+(a citation swap, not a redesign) with entirely owned art and defNames — the donor mod is being
+retired outright per the owner's "retire-after-harvest" ruling (2026-09-11), and Workshop art is
+not ours to ship.
+
+These are frozen-ancient-ship set dressing: airlocks, a shielded turret and autocannon (plus
+their busted/jammed/forced variants), a landmine, a ship terminal + bank, a transmitter and
+landing beacon, a floor heater, a wargaming table, a blueprints bench, a frozen cryptosleep pod
+and a ruined hospital bed. They are staged here as standalone content, not yet wired into any
+map generation — the frozen first-impact complex they were originally harvested for
+(ASSAILANT_DUNGEON_BUILD_1, the Assailant dungeon) is separately blocked on a joint
+owner+BENCH creative-lock-in session and is not this item's scope.</description>
+</ModMetaData>
