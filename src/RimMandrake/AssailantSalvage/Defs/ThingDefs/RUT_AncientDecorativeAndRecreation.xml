@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RUT_AncientDecorativeAndRecreation.xml         AssailantSalvage · 2026-09-28
+  ============================================================================
+  CRYPTOFORGE_HARVEST_RETIRE_1 step 1 — citation swap for the donor Workshop
+  mod "Vanilla Quests Expanded - Cryptoforge" (vanillaquestsexpanded.cryptoforge,
+  packageId retired per the owner's "retire-after-harvest" ruling). Each def
+  below reproduces one donor prop cited in design/Jawa/art/SALVAGE_PALETTE.md:
+  same gameplay stats/function, but our own RUT_ defName, our own texPath
+  (art queued separately, not yet generated) and original flavor prose — the
+  donor's own description text is not reused anywhere here. Workshop art is
+  not ours to ship. All eight build directly on vanilla Core's BuildingBase,
+  matching the donor's own flat inheritance shape (its VQE_CryptoForgeBuildingBase
+  was itself an empty ParentName="BuildingBase" wrapper) — no new abstract
+  parent invented for this file.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_BustedShieldedTurret</defName>
+    <label>wrecked shielded turret</label>
+    <description>A gutted turret emplacement, its deflector housing crushed and its weapon long stripped for parts. Pure scrap now.</description>
+    <thingClass>Building</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <selectable>true</selectable>
+    <fillPercent>0.5</fillPercent>
+    <size>(1,1)</size>
+    <costList>
+      <Steel>20</Steel>
+    </costList>
+    <rotatable>false</rotatable>
+    <pathCost>20</pathCost>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-20</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_BustedShieldedTurret</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <building>
+      <paintable>false</paintable>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_BustedSpacerAutocannon</defName>
+    <label>wrecked spacer autocannon</label>
+    <description>A heavy shipboard cannon torn loose from its mount, barrel bent and its targeting array long dead. Whatever crew it once defended is centuries gone.</description>
+    <thingClass>Building</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <selectable>true</selectable>
+    <fillPercent>0.5</fillPercent>
+    <size>(2,2)</size>
+    <costList>
+      <Steel>20</Steel>
+    </costList>
+    <rotatable>false</rotatable>
+    <pathCost>20</pathCost>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-20</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_BustedSpacerAutocannon</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <building>
+      <paintable>false</paintable>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AncientShipLandingBeacon</defName>
+    <label>dead landing beacon</label>
+    <description>A corroded landing beacon, its guide light long dark. No ship will ever answer its call again.</description>
+    <thingClass>Building</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <selectable>true</selectable>
+    <fillPercent>0.35</fillPercent>
+    <size>(1,1)</size>
+    <costList>
+      <Steel>20</Steel>
+    </costList>
+    <rotatable>false</rotatable>
+    <pathCost>20</pathCost>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-6</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientShipLandingBeacon</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <building>
+      <paintable>false</paintable>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_CryptoAncientTerminal</defName>
+    <label>dead ship terminal</label>
+    <description>A single dark console, pried loose from some larger control station. The screen shows nothing.</description>
+    <thingClass>Building</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <selectable>true</selectable>
+    <fillPercent>0.2</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>true</rotatable>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_CryptoAncientTerminal</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <costList>
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+    </costList>
+    <building>
+      <paintable>false</paintable>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <neverBuildable>true</neverBuildable>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_CryptoAncientTerminalBank</defName>
+    <label>dead terminal bank</label>
+    <description>A row of dark consoles, once a working control station. Every screen in it has been dead for longer than anyone alive can remember.</description>
+    <thingClass>Building</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <selectable>true</selectable>
+    <fillPercent>0.2</fillPercent>
+    <size>(3,1)</size>
+    <rotatable>true</rotatable>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_CryptoAncientTerminalBank</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,1)</drawSize>
+    </graphicData>
+    <costList>
+      <ChunkSlagSteel>6</ChunkSlagSteel>
+    </costList>
+    <building>
+      <paintable>false</paintable>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_RuinedHospitalBed</defName>
+    <label>corroded medical berth</label>
+    <description>A rusted-out bed frame, its thin mattress somehow still mostly intact. It will hold a patient, poorly.</description>
+    <thingClass>Building_Bed</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <canOverlapZones>false</canOverlapZones>
+    <placeWorkers>
+      <li>PlaceWorker_ShowFacilitiesConnections</li>
+    </placeWorkers>
+    <passability>PassThroughOnly</passability>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <uiOrder>2020</uiOrder>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_RuinedHospitalBed</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <castEdgeShadows>True</castEdgeShadows>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Beauty>1</Beauty>
+      <WorkToBuild>2800</WorkToBuild>
+      <Mass>20</Mass>
+      <Flammability>0.8</Flammability>
+      <BedRestEffectiveness>0.85</BedRestEffectiveness>
+      <Comfort>0.75</Comfort>
+      <ImmunityGainSpeedFactor>0.95</ImmunityGainSpeedFactor>
+      <SurgerySuccessChanceFactor>0.65</SurgerySuccessChanceFactor>
+      <BirthRitualQualityOffset MayRequire="Ludeon.RimWorld.Biotech">1.5</BirthRitualQualityOffset>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_AffectedByFacilities">
+        <linkableFacilities>
+          <li>VitalsMonitor</li>
+          <li>EndTable</li>
+          <li>Dresser</li>
+          <li MayRequire="Ludeon.RimWorld.Ideology">SleepAccelerator</li>
+        </linkableFacilities>
+      </li>
+      <li Class="CompProperties_AssignableToPawn">
+        <drawAssignmentOverlay>false</drawAssignmentOverlay>
+        <compClass>CompAssignableToPawn_Bed</compClass>
+      </li>
+    </comps>
+    <size>(1,2)</size>
+    <building>
+      <bed_showSleeperBody>True</bed_showSleeperBody>
+      <bed_healPerDay>10</bed_healPerDay>
+      <buildingSizeCategory>Small</buildingSizeCategory>
+      <paintable>true</paintable>
+      <buildingTags>
+        <li>Bed</li>
+      </buildingTags>
+      <neverBuildable>true</neverBuildable>
+    </building>
+    <fillPercent>0.4</fillPercent>
+    <pathCost>42</pathCost>
+    <costList>
+      <Steel>70</Steel>
+    </costList>
+    <staticSunShadowHeight>0.17</staticSunShadowHeight>
+    <techLevel>Medieval</techLevel>
+    <uiIconScale>0.90</uiIconScale>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsFurniture</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AncientTransmitterBeacon</defName>
+    <label>dead transmitter beacon</label>
+    <description>A stripped transmission mast, its antenna snapped and its power cell long drained. Nothing is listening on the other end.</description>
+    <thingClass>Building</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <selectable>true</selectable>
+    <fillPercent>0.45</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientTransmitterBeacon</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <costList>
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+    </costList>
+    <building>
+      <paintable>false</paintable>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <neverBuildable>true</neverBuildable>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AncientWargamingTable</defName>
+    <label>battered wargaming table</label>
+    <description>A sturdy old tabletop built for pushing miniature armies across painted terrain. Its surface is scuffed and its edges dented, but the strategy games it hosts are as sharp as ever.</description>
+    <thingClass>Building</thingClass>
+    <!-- Donor's joyKind was its own custom JoyKindDef (VQE_Gaming_StrategicPlay,
+         backed by a donor JobDef + JoyGiverDef). We depend only on Core, so this
+         is retargeted to vanilla Gaming_Cerebral ("cerebral play" — chess/poker),
+         the closest vanilla joy category to tabletop strategy gaming. Donor
+         behavior dropped: none functionally — joy is still granted, at the
+         same JoyGainFactor, just filed under the vanilla joy kind instead of a
+         donor-specific one. -->
+    <graphicData>
+      <texPath>Things/Building/Ancient/RUT_AncientWargamingTable</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>(4,4)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsJoy</li>
+    </thingCategories>
+    <staticSunShadowHeight>0.2</staticSunShadowHeight>
+    <castEdgeShadows>True</castEdgeShadows>
+    <altitudeLayer>Building</altitudeLayer>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <fillPercent>0.40</fillPercent>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <building>
+      <joyKind>Gaming_Cerebral</joyKind>
+      <buildingSizeCategory>Medium</buildingSizeCategory>
+      <paintable>false</paintable>
+      <claimable>true</claimable>
+      <neverBuildable>true</neverBuildable>
+    </building>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <Mass>75</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>0</Beauty>
+      <JoyGainFactor>1.4</JoyGainFactor>
+    </statBases>
+    <size>(2,3)</size>
+    <costList>
+      <Steel>80</Steel>
+      <Cloth>80</Cloth>
+      <Plasteel>10</Plasteel>
+    </costList>
+    <pathCost>42</pathCost>
+    <passability>PassThroughOnly</passability>
+    <canOverlapZones>false</canOverlapZones>
+    <placeWorkers>
+      <li>PlaceWorker_NeverAdjacentUnstandable</li>
+    </placeWorkers>
+    <comps>
+      <li>
+        <compClass>CompQuality</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
