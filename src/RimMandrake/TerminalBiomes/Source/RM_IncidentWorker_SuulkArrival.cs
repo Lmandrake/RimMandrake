@@ -62,17 +62,20 @@ namespace RimMandrake.TerminalBiomes
             }
 
             int count = CountPlayerGlowers(map) >= PairGlowerThreshold && Rand.Bool ? 2 : 1;
-            Pawn last = null;
+            List<Pawn> spawned = new List<Pawn>(count);
             for (int i = 0; i < count; i++)
             {
                 IntVec3 spawnCell = (i == 0) ? cell : CellFinder.RandomClosewalkCellNear(cell, map, 3);
                 Pawn suulk = PawnGenerator.GeneratePawn(kindDef);
                 GenSpawn.Spawn(suulk, spawnCell, map);
-                last = suulk;
+                spawned.Add(suulk);
             }
 
+            // Jump target must cover every suulk spawned, not just the last
+            // one -- a two-suulk letter that only points at the second pawn
+            // strands the first from the letter's own click-to-jump.
             Find.LetterStack.ReceiveLetter("RM_SuulkArrivalLabel".Translate(),
-                "RM_SuulkArrivalText".Translate(), LetterDefOf.NeutralEvent, last);
+                "RM_SuulkArrivalText".Translate(), LetterDefOf.NeutralEvent, new LookTargets(spawned));
             return true;
         }
 
