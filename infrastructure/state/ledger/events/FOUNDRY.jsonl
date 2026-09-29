@@ -1109,3 +1109,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"RUT_SCAVENGEREVENTS_BUILD_1","ts":"2026-09-29T01:54:51Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"RUT_SCAVENGEREVENTS_BUILD_1: prove-fires 7 workers, retire mlie.moevents","ts":"2026-09-29T01:54:52Z"}
 {"seat":"FOUNDRY","event":"close","id":"RUT_SCAVENGEREVENTS_BUILD_1","sha":"d09e69728","reason":"All 7 workers (Migration/SurvivalPod/PodCrash/ShipBreak/Thanksgiving/Insects/Stroke) live-fired and verified via jawa/fire_incident + read-back on the canonical campaign save; mlie.moevents retired from live ModsConfig + FULL.LATEST, interim baseChance patch deleted as moot. RescueTraitor stays CUT; salvage-economy loot substitution stays explicitly out of scope, per the item's own text.","ts":"2026-09-29T02:14:12Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-29T02:14:56Z"}
