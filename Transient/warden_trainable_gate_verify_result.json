@@ -1,0 +1,418 @@
+{
+  "start_debug_game_ready": {
+    "success": false,
+    "message": "Timed out waiting for RimWorld entry scene readiness.",
+    "state": {
+      "programState": "Playing",
+      "inEntryScene": false,
+      "hasCurrentGame": true,
+      "currentMapId": "Map_0",
+      "currentMapIndex": 0,
+      "mapCount": 1,
+      "longEventPending": false,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "screenFading": false,
+      "fadeOverlayAlpha": 0.0,
+      "gameDataReady": true,
+      "mapDataReady": true,
+      "currentMapReady": true,
+      "screenFadeClear": true,
+      "playable": true,
+      "visualReady": true,
+      "automationReady": true
+    },
+    "entry": {
+      "success": false,
+      "satisfied": false,
+      "message": "Timed out waiting for RimWorld entry scene readiness.",
+      "targetReadiness": "entryScene",
+      "blockingReason": "A game is already loaded.",
+      "elapsedMs": 280025,
+      "attempts": 4518,
+      "probeFailureCount": 0,
+      "lastProbeError": null,
+      "state": {
+        "programState": "Playing",
+        "inEntryScene": false,
+        "hasCurrentGame": true,
+        "currentMapId": "Map_0",
+        "currentMapIndex": 0,
+        "mapCount": 1,
+        "longEventPending": false,
+        "paused": true,
+        "timeSpeed": "Paused",
+        "screenFading": false,
+        "fadeOverlayAlpha": 0.0,
+        "gameDataReady": true,
+        "mapDataReady": true,
+        "currentMapReady": true,
+        "screenFadeClear": true,
+        "playable": true,
+        "visualReady": true,
+        "automationReady": true
+      }
+    },
+    "operation": {
+      "OperationId": "op_db6e52239f6f46918f08b97b86fcd638",
+      "CapabilityId": "rimbridge.core/lifecycle/start-debug-game-ready",
+      "Status": 2,
+      "Success": true,
+      "StartedAtUtc": "2026-09-29T08:32:32.650618+00:00",
+      "CompletedAtUtc": "2026-09-29T08:37:12.6758927+00:00",
+      "DurationMs": 280025,
+      "Result": null,
+      "HasResult": true,
+      "ResultWasTruncated": false,
+      "Warnings": [],
+      "Error": null,
+      "Metadata": {}
+    }
+  },
+  "map_ready_after_polls": 0,
+  "map_ready": true,
+  "playing": true,
+  "spawn_attempts": [
+    {
+      "kind": "Muffalo",
+      "spawn": {
+        "success": true,
+        "message": "Spawned 1/1 Muffalo in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+          {
+            "ok": true,
+            "id": "Muffalo36010",
+            "name": "Muffalo 2",
+            "kindRequested": "Muffalo",
+            "kindActual": "Muffalo",
+            "kindSubstituted": false,
+            "faction": "PlayerColony",
+            "hostile": false,
+            "x": 0,
+            "z": 0,
+            "spawned": true,
+            "xenotype": null,
+            "xenotypeRequested": null,
+            "xenotypeApplied": true
+          }
+        ],
+        "ticksGame": 1,
+        "operation": {
+          "OperationId": "op_2fef9c21ee724d0ca5559423c07a70c7",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-09-29T08:37:12.7430204+00:00",
+          "CompletedAtUtc": "2026-09-29T08:37:12.7926497+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+        }
+      },
+      "visibility": {
+        "success": true,
+        "pawn": "Muffalo 2",
+        "rows": [
+          {
+            "trainable": "Rescue",
+            "visible": true,
+            "canAssign": false,
+            "reason": "Requires advanced trainability.",
+            "learned": false
+          },
+          {
+            "trainable": "Haul",
+            "visible": true,
+            "canAssign": false,
+            "reason": "Requires advanced trainability.",
+            "learned": false
+          }
+        ],
+        "ticksGame": 1,
+        "operation": {
+          "OperationId": "op_079ead8d7ce34d729d8d0de5c26d0898",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/animal-trainable-visibility",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-09-29T08:37:12.7936501+00:00",
+          "CompletedAtUtc": "2026-09-29T08:37:12.8421907+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+        }
+      }
+    }
+  ],
+  "chosen_species": "Muffalo",
+  "chosen_control_thingId": "Muffalo36010",
+  "control_baseline_rows": {
+    "Rescue": {
+      "trainable": "Rescue",
+      "visible": true,
+      "canAssign": false,
+      "reason": "Requires advanced trainability.",
+      "learned": false
+    },
+    "Haul": {
+      "trainable": "Haul",
+      "visible": true,
+      "canAssign": false,
+      "reason": "Requires advanced trainability.",
+      "learned": false
+    }
+  },
+  "control_final_visibility": {
+    "success": true,
+    "pawn": "Muffalo 2",
+    "rows": [
+      {
+        "trainable": "Rescue",
+        "visible": true,
+        "canAssign": false,
+        "reason": "Requires advanced trainability.",
+        "learned": false
+      },
+      {
+        "trainable": "Haul",
+        "visible": true,
+        "canAssign": false,
+        "reason": "Requires advanced trainability.",
+        "learned": false
+      }
+    ],
+    "ticksGame": 1,
+    "operation": {
+      "OperationId": "op_93cb74b3392d4a2a83c47f7a88409704",
+      "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/animal-trainable-visibility",
+      "Status": 2,
+      "Success": true,
+      "StartedAtUtc": "2026-09-29T08:37:12.8507078+00:00",
+      "CompletedAtUtc": "2026-09-29T08:37:12.8924875+00:00",
+      "DurationMs": 41,
+      "Result": null,
+      "HasResult": true,
+      "ResultWasTruncated": false,
+      "Warnings": [],
+      "Error": null,
+      "Metadata": {}
+    }
+  },
+  "subject_spawn": {
+    "success": true,
+    "message": "Spawned 1/1 Muffalo in faction PlayerColony.",
+    "spawnedCount": 1,
+    "failedCount": 0,
+    "substitutedCount": 0,
+    "xenotypeRequested": null,
+    "pawns": [
+      {
+        "ok": true,
+        "id": "Muffalo36011",
+        "name": "Muffalo 3",
+        "kindRequested": "Muffalo",
+        "kindActual": "Muffalo",
+        "kindSubstituted": false,
+        "faction": "PlayerColony",
+        "hostile": false,
+        "x": 2,
+        "z": 2,
+        "spawned": true,
+        "xenotype": null,
+        "xenotypeRequested": null,
+        "xenotypeApplied": true
+      }
+    ],
+    "ticksGame": 1,
+    "operation": {
+      "OperationId": "op_405a443fd67441fb9691b8316189de63",
+      "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+      "Status": 2,
+      "Success": true,
+      "StartedAtUtc": "2026-09-29T08:37:12.8924875+00:00",
+      "CompletedAtUtc": "2026-09-29T08:37:12.9426743+00:00",
+      "DurationMs": 50,
+      "Result": null,
+      "HasResult": true,
+      "ResultWasTruncated": false,
+      "Warnings": [],
+      "Error": null,
+      "Metadata": {}
+    }
+  },
+  "subject_thingId": "Muffalo36011",
+  "subject_pre_hediff_visibility": {
+    "success": true,
+    "pawn": "Muffalo 3",
+    "rows": [
+      {
+        "trainable": "Rescue",
+        "visible": true,
+        "canAssign": false,
+        "reason": "Requires advanced trainability.",
+        "learned": false
+      },
+      {
+        "trainable": "Haul",
+        "visible": true,
+        "canAssign": false,
+        "reason": "Requires advanced trainability.",
+        "learned": false
+      }
+    ],
+    "ticksGame": 1,
+    "operation": {
+      "OperationId": "op_c0f731e7986747ab9d4f41d3780fb325",
+      "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/animal-trainable-visibility",
+      "Status": 2,
+      "Success": true,
+      "StartedAtUtc": "2026-09-29T08:37:12.9436691+00:00",
+      "CompletedAtUtc": "2026-09-29T08:37:12.9929045+00:00",
+      "DurationMs": 49,
+      "Result": null,
+      "HasResult": true,
+      "ResultWasTruncated": false,
+      "Warnings": [],
+      "Error": null,
+      "Metadata": {}
+    }
+  },
+  "hediff_add": {
+    "success": true,
+    "action": "add",
+    "didWhat": "added RUT_StrandedDeformation (whole body)",
+    "partsAvailable": [
+      "Body",
+      "Spine",
+      "Stomach",
+      "Heart",
+      "Lung",
+      "Kidney",
+      "Liver",
+      "Neck",
+      "Head",
+      "Skull",
+      "Brain",
+      "Eye",
+      "Ear",
+      "Nose",
+      "AnimalJaw",
+      "Leg",
+      "Hoof"
+    ],
+    "hediffCount": 1,
+    "hediffs": [
+      {
+        "def": "RUT_StrandedDeformation",
+        "part": null,
+        "severity": 1.0
+      }
+    ],
+    "ticksGame": 1,
+    "operation": {
+      "OperationId": "op_e796e98d5ead4b40b3b783e4ad677282",
+      "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+      "Status": 2,
+      "Success": true,
+      "StartedAtUtc": "2026-09-29T08:37:12.9929045+00:00",
+      "CompletedAtUtc": "2026-09-29T08:37:13.0423696+00:00",
+      "DurationMs": 49,
+      "Result": null,
+      "HasResult": true,
+      "ResultWasTruncated": false,
+      "Warnings": [],
+      "Error": null,
+      "Metadata": {}
+    }
+  },
+  "subject_post_hediff_visibility": {
+    "success": true,
+    "pawn": "Muffalo 3",
+    "rows": [
+      {
+        "trainable": "Rescue",
+        "visible": false,
+        "canAssign": false,
+        "reason": "",
+        "learned": false
+      },
+      {
+        "trainable": "Haul",
+        "visible": false,
+        "canAssign": false,
+        "reason": "",
+        "learned": false
+      }
+    ],
+    "ticksGame": 1,
+    "operation": {
+      "OperationId": "op_3cb59776219142119f5baa259724cd36",
+      "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/animal-trainable-visibility",
+      "Status": 2,
+      "Success": true,
+      "StartedAtUtc": "2026-09-29T08:37:13.0528308+00:00",
+      "CompletedAtUtc": "2026-09-29T08:37:13.0929041+00:00",
+      "DurationMs": 40,
+      "Result": null,
+      "HasResult": true,
+      "ResultWasTruncated": false,
+      "Warnings": [],
+      "Error": null,
+      "Metadata": {}
+    }
+  },
+  "subject_other_trainables": {
+    "success": true,
+    "pawn": "Muffalo 3",
+    "rows": [
+      {
+        "trainable": "Tameness",
+        "visible": true,
+        "canAssign": true,
+        "reason": null,
+        "learned": true
+      },
+      {
+        "trainable": "Obedience",
+        "visible": true,
+        "canAssign": false,
+        "reason": "Requires intermediate trainability.",
+        "learned": false
+      },
+      {
+        "trainable": "Release",
+        "visible": true,
+        "canAssign": false,
+        "reason": "Requires intermediate trainability.",
+        "learned": false
+      }
+    ],
+    "ticksGame": 1,
+    "operation": {
+      "OperationId": "op_db21c0ce78464201a09b5b429ff76c20",
+      "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/animal-trainable-visibility",
+      "Status": 2,
+      "Success": true,
+      "StartedAtUtc": "2026-09-29T08:37:13.0929041+00:00",
+      "CompletedAtUtc": "2026-09-29T08:37:13.1422496+00:00",
+      "DurationMs": 49,
+      "Result": null,
+      "HasResult": true,
+      "ResultWasTruncated": false,
+      "Warnings": [],
+      "Error": null,
+      "Metadata": {}
+    }
+  }
+}

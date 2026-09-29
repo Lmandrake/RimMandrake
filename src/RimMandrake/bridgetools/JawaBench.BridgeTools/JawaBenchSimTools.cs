@@ -744,6 +744,76 @@ namespace JawaBench.BridgeTools
         }
 
         [Tool(
+            "jawa/animal_trainable_visibility",
+            Description =
+                "READ-ONLY. Calls the exact method the Training tab UI uses to decide which " +
+                "TrainableDef rows to show for a pawn: Pawn_TrainingTracker.CanAssignToTrain(TrainableDef, " +
+                "out visible), which internally resolves to the static 4-arg overload " +
+                "(td, pawn.def, out visible, pawn). Mutates nothing. Give 'trainables' as a " +
+                "comma-separated list of defNames (e.g. 'Rescue,Haul'), or omit it to check every " +
+                "TrainableDef in the game - what the tab itself iterates. " +
+                "WARDEN_MOTHER_TRAINABLE_GATE_1: built to verify RM_Patch_WardenYoungTrainableGate.cs's " +
+                "postfix on this exact method without needing a screenshot of the tab.",
+            ResultDescription = "success, and rows[]: trainable, visible, canAssign (bool), reason (string or null), learned.")]
+        public static async Task<object> AnimalTrainableVisibility(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "The animal's pawn id, thingId or name.")] string pawn = null,
+            [ToolParameter(Description = "Comma-separated TrainableDef names. Omit for every TrainableDef.")] string trainables = null)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                string err; var p = FindPawn(pawn, out err);
+                if (p == null) return Fail(err);
+                if (p.training == null) return Fail("Pawn '" + p.LabelShortCap + "' has no Pawn_TrainingTracker (training == null) - it is not a trainable race.");
+
+                List<TrainableDef> defs;
+                if (string.IsNullOrWhiteSpace(trainables))
+                {
+                    defs = DefDatabase<TrainableDef>.AllDefsListForReading.ToList();
+                }
+                else
+                {
+                    defs = new List<TrainableDef>();
+                    foreach (var name in trainables.Split(','))
+                    {
+                        var n = name.Trim();
+                        if (n.Length == 0) continue;
+                        var td = DefDatabase<TrainableDef>.GetNamedSilentFail(n);
+                        if (td == null) return Fail("No TrainableDef '" + n + "'.", DefSuggestions<TrainableDef>(n));
+                        defs.Add(td);
+                    }
+                }
+
+                var rows = new List<object>();
+                foreach (var td in defs)
+                {
+                    bool visible;
+                    AcceptanceReport report;
+                    try { report = p.training.CanAssignToTrain(td, out visible); }
+                    catch (Exception e) { return Fail("CanAssignToTrain threw for " + td.defName + ": " + e.GetType().Name + ": " + e.Message); }
+
+                    rows.Add(new
+                    {
+                        trainable = td.defName,
+                        visible,
+                        canAssign = report.Accepted,
+                        reason = report.Accepted ? null : report.Reason,
+                        learned = p.training.HasLearned(td),
+                    });
+                }
+
+                return (object)new
+                {
+                    success = true,
+                    pawn = p.LabelShortCap,
+                    rows,
+                    ticksGame = TicksGameSafe(),
+                };
+            });
+        }
+
+        [Tool(
             "jawa/instant_recruit",
             Description =
                 "*** ACTS ON THE LIVE COLONY *** InteractionWorker_RecruitAttempt.DoRecruit - the FULL " +
