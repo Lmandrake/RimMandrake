@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T14:58:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T15:20:45Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1089,15 +1089,6 @@ kind:     task
 summary:  CONTAGIONRULEDCONTENT1 — build the grotesque cast: 35 RM defs, full donor replacement
 prose:    infrastructure/state/items/CONTAGION_RULED_CONTENT_1.md
 
-## BLUEDESERT_RULED_CONTENT_1 Build the Blue Desert ruled cast: depth cast (zhaaz/vrisk/dovvik/utikka) + bedazzle four (Vhaulk/Murrek/Ossivel/Virr) + RM_BlueIce + water-plant cut + roster rewiring
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  BLUEDESERTRULEDCONTENT1 — build the ruled cast: eight natives, blue ice, the water-plant cut
-prose:    infrastructure/state/items/BLUEDESERT_RULED_CONTENT_1.md
-
 ## BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1 Live-verify a Baroque Biomes toggle actually stops worldgen placement, not just that the startup gate wires cleanly: flip one biome off in Mod Settings, generate a new world, confirm its BiomeDef never places a tile, flip back on. RM_BiomesGate's startup log (roster mapped, gate applied) is proven; an actual OFF-and-regenerate cycle is not.
 state:    doing
 row:      unassigned
@@ -1669,16 +1660,6 @@ blocked:  needs the Route-1 arming design first, per its own title -- a delibera
 summary:  (no items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md
 
-## PIT_RENAME_STENCHLANDS_1 Rename The Pit biome to The Stenchlands (owner request, this session) - no biome is currently labeled/defName'd 'Pit' (measured: grepped every BiomeDef label under RM_/RUT_, no hit), so first confirm which biome the owner means, then rename label+defName per the Cauldron/Black Crags renaming precedent (live-tile check before any defName change, since Ash'karr references BiomeDefs by shortHash)
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  genuinely needs owner: confirmed this is a real, unresolved ambiguity, not something to guess. Checked the near-miss first -- WASTELAND_BEDAZZLE_SITTING_1's ruling 'The Throat's true name = THE PIT' (design/Jawa/worldbuilding/biomes/wasteland.md:279) is a DIFFERENT thing: it renamed a LANDMARK within the Wasteland biome (the Glowing Throat -> The Pit), never mentions Stenchlands, and is not a BiomeDef rename. The original 'Pit biome -> Stenchlands' request is a separate ask, still unconfirmed per the prior session's own handoff (FOUNDRY_REBOOT_HANDOFF_202609281913.md). No BiomeDef anywhere is labeled or defName'd Pit. Needs him to say which biome he means before any rename work.
-summary:  (no items/PIT_RENAME_STENCHLANDS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PIT_RENAME_STENCHLANDS_1.md
-
 ## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1901,16 +1882,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 12)
 prose:    infrastructure/state/items/DEEPFIRE_MOD_SETTINGS_1.md
 
-## ROTSPOREKIT_GHOST_MOD_1 RotSporeKit (mandrake.rut.rotsporekit) is a dissolved mod still ACTIVE + fully deployed (130 files), duplicating TheRot content under old RUT_ defNames
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROTSPOREKIT_GHOST_MOD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROTSPOREKIT_GHOST_MOD_1.md
-
 ## CONTAGION_FLORA_PORT_1 Contagion: 9-item flora port (Eyebark, Lashgrass, Bleedleaf, Gorestalk, Rattlegrope, Sapblister, Bloody Fist, Halfmade Tree+Blighted) per cast bible Part 3
 state:    proposed
 row:      unassigned
@@ -1978,5 +1949,15 @@ needs:    offline
 target:   v1
 kind:     fix
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MOEVENTS_FINDMOD_RETIRED_1.md yet — write one when you have something to say)
+summary:  MOEVENTSFINDMODRETIRED1
 prose:    infrastructure/state/items/MOEVENTS_FINDMOD_RETIRED_1.md
+
+## ROTSPOREKIT_MAYREQUIRE_ORPHANED_1 Retiring RotSporeKit orphaned ~30 MayRequire-gated rows in 6 live biome files (RM_ equivalents exist, need repointing)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROTSPOREKIT_MAYREQUIRE_ORPHANED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROTSPOREKIT_MAYREQUIRE_ORPHANED_1.md
