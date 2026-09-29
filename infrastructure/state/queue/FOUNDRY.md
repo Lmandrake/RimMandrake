@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T10:50:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T11:16:37Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1651,6 +1651,16 @@ blocked:  needs the Route-1 arming design first, per its own title -- a delibera
 summary:  (no items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md
 
+## PIT_RENAME_STENCHLANDS_1 Rename The Pit biome to The Stenchlands (owner request, this session) - no biome is currently labeled/defName'd 'Pit' (measured: grepped every BiomeDef label under RM_/RUT_, no hit), so first confirm which biome the owner means, then rename label+defName per the Cauldron/Black Crags renaming precedent (live-tile check before any defName change, since Ash'karr references BiomeDefs by shortHash)
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  genuinely needs owner: confirmed this is a real, unresolved ambiguity, not something to guess. Checked the near-miss first -- WASTELAND_BEDAZZLE_SITTING_1's ruling 'The Throat's true name = THE PIT' (design/Jawa/worldbuilding/biomes/wasteland.md:279) is a DIFFERENT thing: it renamed a LANDMARK within the Wasteland biome (the Glowing Throat -> The Pit), never mentions Stenchlands, and is not a BiomeDef rename. The original 'Pit biome -> Stenchlands' request is a separate ask, still unconfirmed per the prior session's own handoff (FOUNDRY_REBOOT_HANDOFF_202609281913.md). No BiomeDef anywhere is labeled or defName'd Pit. Needs him to say which biome he means before any rename work.
+summary:  (no items/PIT_RENAME_STENCHLANDS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PIT_RENAME_STENCHLANDS_1.md
+
 ## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1692,26 +1702,6 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CONTAGIONMECHANICSBUILD1 — the Burn/Bloom engine and the four ruled mechanisms
 prose:    infrastructure/state/items/CONTAGION_MECHANICS_BUILD_1.md
-
-## WARCASKET_SUIT_CLASS_1 Warcaskets as a cross-cutting suit class (ruled 2026-09-28): extreme-temp + vacuum + toxin rated, the alternative to space suits; very slow, bulky, compound-threat failure rolls ('a primitive tank around a person'); ocean access = surviving water/brine TERRAIN only, sea floors stay ship-only; Junker sarcophagi variants carry the Wasteland salvage loop
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WARCASKET_SUIT_CLASS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WARCASKET_SUIT_CLASS_1.md
-
-## PIT_RENAME_STENCHLANDS_1 Rename The Pit biome to The Stenchlands (owner request, this session) - no biome is currently labeled/defName'd 'Pit' (measured: grepped every BiomeDef label under RM_/RUT_, no hit), so first confirm which biome the owner means, then rename label+defName per the Cauldron/Black Crags renaming precedent (live-tile check before any defName change, since Ash'karr references BiomeDefs by shortHash)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PIT_RENAME_STENCHLANDS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PIT_RENAME_STENCHLANDS_1.md
 
 ## WASTELAND_RULED_CONTENT_1 Build the Wasteland survivor cast: full RM_ donor replacement - 8 fauna ports, 3 new processors, 6 flora, bezoar/soot items, brine label renames, texPath rescue (cast bible wasteland_survivor_cast_2026-09-28.md)
 state:    proposed
@@ -1972,3 +1962,13 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  Scope
 prose:    infrastructure/state/items/CONTAGION_FINAL_BAN_SWEEP_1.md
+
+## WARCASKET_CASK_BAY_AND_SARCOPHAGI_1 Cask Bay crafting building + Junker corpse-interaction mechanism (WARCASKET_SUIT_CLASS_1 follow-on): sitting approved a Cask Bay building conceptually and wasteland.md §7's warcasket sarcophagi loot interaction ('suit, tools, and the half-extracted core still in its grips') for a dead Junker in RM_WarcasketJunker; neither is in WASTELAND_MECHANICS_BUILD_1's own listed scope (checked). The suit-side hook exists now: RM_JunkerSarcophagusExtension (RimMandrake.Warcasket), readable via apparelDef.GetModExtension<RM_JunkerSarcophagusExtension>() on RM_WarcasketJunker. Owed: the Cask Bay ThingDef/workbench (Warcasket currently crafts on TableMachining) and the actual corpse loot/interaction verb, which is Wasteland's own cast to build.
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WARCASKET_CASK_BAY_AND_SARCOPHAGI_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WARCASKET_CASK_BAY_AND_SARCOPHAGI_1.md
