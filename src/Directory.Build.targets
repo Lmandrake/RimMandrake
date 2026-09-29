@@ -20,8 +20,15 @@
     $(TargetPath).srchash beside the DLL:
 
         # project: <csproj path relative to src/, forward slashes>
+        # dll: <sha256-lower of the DLL's own bytes>
         <sha256-lower> <path relative to the project file, forward slashes>
         ... (one line per Compile item, sorted)
+
+    The "# dll:" line (added DLL_SOURCE_STAMP_GUARD_1 hole-close, 2026-09-29)
+    is what lets dll_source_stamp.py tell a legitimate rebuild (which always
+    regenerates this line to match the new DLL bytes, so the sidecar itself
+    changes) apart from a DLL swapped in without a real build (source hashes
+    still match, but the DLL no longer matches ITS OWN recorded hash).
 
     src/RimMandrake/Utils/dll_source_stamp.py recomputes the same hashes from
     a COMMITTED tree and compares; .claude/hooks/block_dll_source_mismatch.py
@@ -41,6 +48,7 @@
     <ParameterGroup>
       <StampPath ParameterType="System.String" Required="true" />
       <ProjectRel ParameterType="System.String" Required="true" />
+      <DllHash ParameterType="System.String" Required="true" />
       <Paths ParameterType="System.String[]" Required="true" />
       <Hashes ParameterType="System.String[]" Required="true" />
     </ParameterGroup>
@@ -57,9 +65,10 @@
         }
         Array.Sort(lines, StringComparer.Ordinal);
 
-        var outLines = new string[lines.Length + 1];
+        var outLines = new string[lines.Length + 2];
         outLines[0] = "# project: " + ProjectRel;
-        Array.Copy(lines, 0, outLines, 1, lines.Length);
+        outLines[1] = "# dll: " + DllHash.ToLowerInvariant();
+        Array.Copy(lines, 0, outLines, 2, lines.Length);
 
         File.WriteAllLines(StampPath, outLines);
       ]]></Code>
@@ -89,6 +98,10 @@
       <Output TaskParameter="Items" ItemName="_RimMandrakeSrcHashResult" />
     </GetFileHash>
 
+    <GetFileHash Files="$(TargetPath)" Algorithm="SHA256">
+      <Output TaskParameter="Items" ItemName="_RimMandrakeDllHashResult" />
+    </GetFileHash>
+
     <PropertyGroup>
       <_RimMandrakeSrcHashProjectRel>$([MSBuild]::MakeRelative('$(MSBuildThisFileDirectory)', '$(MSBuildProjectFullPath)').Replace('\', '/'))</_RimMandrakeSrcHashProjectRel>
     </PropertyGroup>
@@ -96,6 +109,7 @@
     <RimMandrakeWriteSourceHashStamp
         StampPath="$(TargetPath).srchash"
         ProjectRel="$(_RimMandrakeSrcHashProjectRel)"
+        DllHash="@(_RimMandrakeDllHashResult->'%(FileHash)')"
         Paths="@(_RimMandrakeSrcHashResult)"
         Hashes="@(_RimMandrakeSrcHashResult->'%(FileHash)')" />
 

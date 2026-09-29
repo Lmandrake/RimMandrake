@@ -9,11 +9,33 @@ stale/rebuilt RimMandrake.CreatureBehaviors.dll).
 
 src/Directory.Build.targets now writes a `<dll>.srchash` sidecar next to every
 DLL it builds (SHA256 of every @(Compile) item, one line each, sorted, plus a
-"# project: <csproj path relative to src/>" header). This script recomputes
-those hashes from COMMITTED git blobs (never the worktree — a worktree file
-can be edited without being committed, which would hide exactly the defect
-this guards against) and reports where a committed DLL's stamp disagrees with
-the committed source it claims to summarize.
+"# project: <csproj path relative to src/>" header and, since
+DLL_SOURCE_STAMP_GUARD_1's hole-close 2026-09-29, a "# dll: <sha256>" header
+of the DLL's OWN bytes). This script recomputes those hashes from COMMITTED
+git blobs (never the worktree — a worktree file can be edited without being
+committed, which would hide exactly the defect this guards against) and
+reports where a committed DLL's stamp disagrees with the committed source (or
+its own recorded bytes) it claims to summarize.
+
+WHY THE "# dll:" LINE: without it, a stamp only proves "recorded source
+hashes match committed source" — it says nothing about the DLL's own bytes.
+That left a real hole: if an attacker (or a sloppy hand-edit) swaps a
+committed DLL's bytes for anything at all WITHOUT touching source or the
+stamp, `check --range` sees "DLL changed, stamp unchanged, stamp still
+matches source" and — after the 2026-09-26 BIOME_CONFIG_ERROR_TRIAGE_1 fix
+that allowed a legitimate stale-DLL catch-up rebuild through on exactly that
+shape — silently ALLOWED it too, because the two cases are byte-for-byte
+indistinguishable without a hash of the DLL itself. Recording the DLL's own
+hash closes this: a legitimate rebuild via the real MSBuild target always
+regenerates "# dll:" to match the new bytes, which makes the stamp file
+itself change and land back in the ordinary "both moved together" path; a
+swap that bypasses the real build leaves the recorded hash stale, which now
+shows up as a MISMATCH instead of a silent MATCH. Older stamps committed
+before this line existed have no "# dll:" header — recompute_stamp treats
+that as "not yet migrated" and skips the DLL-hash check for them (unchanged,
+permissive behavior), so nothing already committed needs an unrelated
+rebuild; each project picks up the protection the next time it is actually
+rebuilt.
 
 Uses a single long-lived `git cat-file --batch` process for all blob reads
 (never one `git show`/`git cat-file` per file — this repo is on slow WSL
@@ -216,11 +238,17 @@ def recompute_stamp(cat, rev, stamp_repo_path, repo):
     project_rel = lines[0][len("# project:"):].strip()
     csproj_repo_path = SRC + "/" + project_rel
 
+    dll_hash = None
     recorded = {}
     for ln in lines[1:]:
         ln = ln.strip()
         if not ln:
             continue
+        if ln.startswith("# dll:"):
+            dll_hash = ln[len("# dll:"):].strip().lower()
+            continue
+        if ln.startswith("#"):
+            continue  # forward-compat: ignore any other header/comment line
         h, _, p = ln.partition(" ")
         recorded[_norm(p)] = h.lower()
 
@@ -229,8 +257,17 @@ def recompute_stamp(cat, rev, stamp_repo_path, repo):
         return Result("CSPROJ_MISSING",
                        ["%s not present at %s" % (csproj_repo_path, rev)])
 
-    union = sorted(set(recorded) | set(expected_paths))
     detail = []
+    if dll_hash is not None:
+        dll_repo_path = stamp_repo_path[: -len(".srchash")]
+        dll_bytes = cat.get("%s:%s" % (rev, dll_repo_path))
+        if dll_bytes is None:
+            detail.append("dll: committed DLL missing at %s" % rev)
+        elif hashlib.sha256(dll_bytes).hexdigest() != dll_hash:
+            detail.append("dll: hash in stamp does not match the committed "
+                           "DLL's own bytes (changed without a real rebuild?)")
+
+    union = sorted(set(recorded) | set(expected_paths))
     for p in union:
         file_repo_path = project_dir + "/" + p
         actual = cat.get("%s:%s" % (rev, file_repo_path))
