@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:18:52Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_FossilSkeleton_v2",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: an articulated fossil skeleton, a rarer slab of canyon-wall stone holding a whole small animal in the rock \u2014 a complete ARTICULATED skeleton of a small alien creature curled in death position, every bone JOINED to the next in a continuous connected anatomy: a real spine of linked vertebrae, limbs attached at true joints, ribs meeting the spine \u2014 nothing floating loose or scattered; the anatomy itself alien (wrong bone counts, an extra limb pair or a branching spine, an un-Earthly skull), bones mineral-dark against pale stone, red-brown strata lines running through the slab. It reads as a museum piece pulled whole from the wall. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "FLOODEDCANYON_BEDAZZLE_SITTING_1",
+  "style_notes": "IMPROVE of an existing shipped item icon \u2014 owner note verbatim: \"That skeleton doesn't make sense, needs to be joined together and be more alien\". The defect: the shipped skeleton reads as disconnected bones; the fix is a continuous articulated skeleton whose joints connect, with distinctly alien osteology. DO NOT CHANGE: item-icon read (slab of pale stone), canvas (256), transparent background with real alpha, single centered item. No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 vary the slab: pale sedimentary grey-white with warm bone-ochre patches, red-brown strata, mineral-dark bone with faint iridescent mineralization glints; cracked lands register, hard dry light, realistic painted natural-history illustration, grounded believable alien osteology, matte stone texture, never cartoonish, no outlines"
+}

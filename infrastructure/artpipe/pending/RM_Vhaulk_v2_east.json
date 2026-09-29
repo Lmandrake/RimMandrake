@@ -1,0 +1,20 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:18:52Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "east"
+  ],
+  "id": "RM_Vhaulk_v2_east",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the vhaulk, a house-sized sealed grazing colossus of a frozen night desert \u2014 six massive pillar legs like quarry columns, a vast seamed armored back with no true head, only a broad closed intake lid at the front like a garage door, frost rime standing thick on the flanks and legs, one long translucent sludge-window low along the lower flank faintly revealing the pale liquid mass it carries; posture slow, mid-stride, utterly indifferent to everything smaller than itself. It reads as a terrain feature that turns out to be an animal, still walking. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "BLUEDESERT_BEDAZZLE_SITTING_1",
+  "style_notes": "EAST-FACING REPAIR of an existing shipped creature \u2014 owner note verbatim: \"The east face should be frost-covered like the north and south are, with similar legs.\" The shipped north and south facings are the identity anchor: same individual, grey-on-grey seamed armor plates, frost rime standing THICK on flanks and legs (the east currently lacks it \u2014 that is the defect), pillar legs matching north/south in build, thickness and count. DO NOT CHANGE: silhouette family, canvas (512), transparent background with real alpha, the glacial blue-white and glass-grey palette, the sludge-window. No reference image by design \u2014 match from this description. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 within the frost register, vary the rime tones (blue-white, grey-green ice, faint mineral staining) rather than one uniform blue; blue desert register: glacial blue-white and glass-grey, blue-white only in frost rime, rim light and the translucent sludge-window, starlit cold light, no warm colour anywhere; realistic painted natural-history illustration, matte natural surface texture with frost and ice crust, never cartoonish, no outlines, alien but biologically plausible"
+}
