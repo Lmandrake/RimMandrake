@@ -1,0 +1,128 @@
+{
+  "sheetId": "bedazzle_wasteland_art_review_2026_09_28",
+  "posture": "blacklist",
+  "criterion": "Prefill = artpipe validator/facts PASS, which ranks technical validity (alpha, canvas, facing presence) — it cannot rank whether the thing looks right for the biome. Your eye rules.",
+  "exportedBy": "review-sheet-page",
+  "exportedAt": "2026-09-29T04:04:17.530Z",
+  "decidedCount": 22,
+  "decisions": {
+    "RM_BrinePlate": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Drazz": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Tekk": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Boilhide": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "Add some deadly color on those boils. Too little color here. Maybe a dangerous violet tinged with yellow?",
+      "at": "2026-09-29T03:49:32.122Z"
+    },
+    "RM_Gravelgut": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Grimewing": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "Darken it and make its skin more pink. Make its knees bent forward like a mammal, to add alien nature.",
+      "at": "2026-09-29T03:50:56.125Z"
+    },
+    "RM_Gristleswarm": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "Looks ok, but East facing has only four legs, while North and South have six. Make the strange flesh between the plates sickly white. ",
+      "at": "2026-09-29T03:52:03.015Z"
+    },
+    "RM_Middenbeetle": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "This beast is capable of stealing. Needs a new name to deconflict Middenshell. How about a Gripper? Always carrying something.",
+      "at": "2026-09-29T03:56:33.566Z"
+    },
+    "RM_Middenshell": {
+      "decision": "regen",
+      "prefill": "keep",
+      "note": "Your color palette is too uniform per biome. Needs more variety. Please make this a huge tubeworm-like creature with scaled tentacles, a long irregular shell made of accreted minerals fused into debris and bezoars. Truly large. Will lash out a tentacle at objects and pull them towards itself, seeming to \"eat\" them. Doors. Walls. Anything. Cannot pull off Gravplating or walls of a ship, but it can pull off any normal object sitting outside the ship not inherently \"gravship\" items.   ",
+      "at": "2026-09-29T03:58:52.855Z"
+    },
+    "RM_Scabspinner": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Scumrat": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": "Too terran. Make it more alien. How about a Scumslider? An oozing beast like a slug with two tails that it uses to lurch forward. Three eyes on stalks watching in all directions with eyes that are a cross between silly googly eyes and a horror-film's stare. ",
+      "at": "2026-09-29T04:00:32.534Z"
+    },
+    "RM_Slagmole": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "Too much of this green stone in the back of otherwise terrestrial animals. Give this fella a face like a shovel and keep the digging front claws. Then make its back covered in rib-like structures.",
+      "at": "2026-09-29T04:01:52.170Z"
+    },
+    "RM_Sloghog": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "Too terran. Make it more alien.",
+      "at": "2026-09-29T04:02:45.913Z"
+    },
+    "RM_Smolderback": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_SootGristleswarm": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Sootgrazer": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Boilbulb": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Cinderfelt": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Pusberry": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Scumgrass": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_TallScumgrass": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Wartshrub": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    }
+  }
+}

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T03:32:38Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-29T04:12:09Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -962,3 +962,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/STILLSAND_CAVERN_AUTHORING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/STILLSAND_CAVERN_AUTHORING_1.md
+
+## BEDAZZLE_FLORA_EXPANSION_1 Flora expansion pitches for Blue Desert, Cracked Lands and the Cauldron - owner asked for more plant-like members on all three sheets (2026-09-29); pitch new flora per biome accent at the next sitting
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BEDAZZLE_FLORA_EXPANSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BEDAZZLE_FLORA_EXPANSION_1.md
