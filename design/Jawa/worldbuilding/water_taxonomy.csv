@@ -18,3 +18,4 @@ fever_pool,Fever Wood pools,COMIGO_GreaterSwamp_Tropical,yes,the Tenant's aquife
 river_steam,Steaming rivers,dayside rivers (RiverSteam mod),yes,hot flowing fresh water,once cooled,cooling->potable; steam->fog,the_greentide.md;RiverSteam
 crack_flood,Cracked-lands flood,ZBiome_Badlands,yes,"flash flood — chimes, wall of water",yes (fresh),soak->explosive plant growth; drains,the_cracked_lands.md;FLOOD_WITNESS_EVENT_1
 dead_river,Dead-river termini,dayside river ends,yes,concentrating minerals toward brine,degrading,concentration->waste_brine,wasteland.md
+blue_ice,Blue ice (distilled-purity),RM_BlueDesert,yes (frozen),ancient compressed ice; near-zero mineral/particulate load — the taxonomy's top row,yes (melt),melt->potable (distilled-grade, no filtering needed); quarried as the biome's ⭐ premium mineable (RM_BlueIce),the_blue_desert.md;bluedesert_bedazzle_cast_2026-09-28.md;BLUEDESERT_RULED_CONTENT_1

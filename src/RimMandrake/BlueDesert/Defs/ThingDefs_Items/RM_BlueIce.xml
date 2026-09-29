@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BlueIce.xml                             BLUEDESERT_RULED_CONTENT_1 §3
+
+  The item form of the mineable (ThingDefs_Buildings/RM_BlueIceMineable.xml).
+  NOT a hydrocarbon product — unlike RM_ColdWax this is real distilled-purity
+  water-ice, the top row of the water taxonomy
+  (design/Jawa/worldbuilding/water_taxonomy.csv, id blue_ice, added this
+  change). It carries none of ColdWax's warm-detonation comps: water does not
+  explode when it warms, it melts.
+
+  Stockpilable/tradeable per the item's own scope line. MarketValue set here
+  (unlike ColdWax, which parks pricing on ECONOMY_TRADE_SWEEP_1) because the
+  sheet gives an explicit qualitative anchor — owner: "golden," i.e.
+  distinctly valuable premium water, not merely another stone — so a
+  plausible non-zero number belongs on the def rather than defaulting to 0
+  and reading as worthless. FOUNDRY tunes in playtest per the bible's own
+  "numbers are design choices" note.
+
+  🔴 STUB HOOKUP POINT for BLUEDESERT_MECHANICS_BUILD_1 §7 (the Cold Hold):
+  "blue-ice blocks as the ship's water stock" — this item is the row that
+  ship-contribution wires to; nothing here needs to change for that, the
+  item just needs to exist, which it now does.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_BlueIce</defName>
+    <label>blue ice</label>
+    <description>A cut block of the oldest ice on the plateau, quarried clean: deep glacial blue shot through with fine white crack-veils, clear enough at the thinnest edge to see a hand through. Distilled-grade water, frozen -- and worth quarrying for exactly that, in a desert with no water anywhere else.</description>
+    <possessionCount>10</possessionCount>
+    <tickerType>Never</tickerType>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_BlueIce/RM_BlueIce</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>3</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <MarketValue>8</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>
