@@ -108,8 +108,12 @@ namespace JawaBench.BridgeTools
                 "READ ONLY. Everything about the CURRENT MAP that currently needs five " +
                 "different tools and two round trips: its WORLD TILE (Map.Tile), the biome, " +
                 "size, hilliness, the tile's elevation/rainfall/swampiness/temperature, " +
-                "BOTH the tile's PrimaryBiome and the MAP's own Biome - they diverge after a live " +
-                "world_tile_set, because the tile changes and the generated map does not - the " +
+                "BOTH the tile's PrimaryBiome and the MAP's own Biome - for an ordinary (non-pocket) " +
+                "map these CANNOT diverge (Map.Biome is a live passthrough to TileInfo.PrimaryBiome, " +
+                "re-read on every access, confirmed against decompiled Verse/Map.cs) - reported " +
+                "together for convenience, not because a live world_tile_set can split them. A " +
+                "pocket map is the one case that can differ: it holds its own pocketTileInfo rather " +
+                "than reading the world tile live. The " +
                 "seasonal temperature right now, lat/long, the map parent (settlement, camp, " +
                 "quest site) and its faction. " +
                 "🔑 THE TILE IS THE POINT: world_tile_set + world_commit can change this " +
