@@ -187,6 +187,77 @@ commit `51ede08fe`.**
   Blocked by `BLUEDESERT_ORPHAN_LOAD_CRASH_1` (full-list cold load currently resets ModsConfig).
   Do this once that item closes, then close this one.
 
+## Live verification attempted 2026-09-28 — NOT CLOSED, mixed result, needs a BENCH/owner call
+
+`BLUEDESERT_ORPHAN_LOAD_CRASH_1` closed; picked this up. Mod-list level confirmed clean:
+**614-mod live `ModsConfig.xml`, `biomesteam.biomescore`/`biomescaverns`/`biomespollutedlands`
+all absent** (ElementTree-parsed). (Mod count has moved from 629→614 since this item's last
+update via unrelated same-day retirements/consolidation — `THEY_MOD_REPLICATION_1` and the
+`BAROQUE_BIOMES_WAVE1/2/3` biome-mod-unification waves — not a regression, just this project's
+own fast pace; see `ModsConfig.FULL.LATEST.xml`.)
+
+**Blocked, then unblocked, by an unrelated defect** (full root-cause + fix in
+`GASDAMAGING_PARENTNAME_UNRESOLVED_1`, cross-referenced there in full — not duplicated here):
+today's biome-mod-unification wave folded `mandrake.rm.creaturebehaviors` and
+`mandrake.rm.environmentalhazards` into `mandrake.rm.biomes` but left four OTHER mods
+(`mandrake.rm.shipvermin`, `mandrake.rut.rotsporekit`, `mandrake.rsw.swbestiary`,
+`mandrake.rm.explosivegrowth`) still declaring `loadAfter`/`modDependencies` on the now-defunct
+standalone packageIds, so they loaded before `mandrake.rm.biomes` and a `RotSporeKit` def
+(`RUT_ChokingSpores`, unrelated to BMT_ content) got a null `thingClass`, crashing
+`Game..ctor()` via `ReadingPolicyDatabase.GenerateStartingPolicies()` for EVERY fresh game
+construction (LoadGame or quicktest) — this is why every `load_game_ready` call timed out at
+`Entry`/`hasCurrentGame:false` with a stuck `Dialog_MessageBox`, regardless of mod content.
+Fixed (4 `About.xml` loadAfter repoints + a live `ModsConfig.xml` reorder + a stale
+`FlowWorks.dll` rebuild+redeploy — see that item for the commits). **This was NOT caused by,
+and does not touch, any BMT_/BiomesCore content** — confirmed by reading the crash's own def
+(`RUT_ChokingSpores`, a RotSporeKit gas def with no BMT_ lineage) and by the fact none of the
+four affected mods are Biomes!Team donors.
+
+**Once unblocked, the canonical save loaded successfully all the way to `programState: Playing`**
+(not just `mapData`) with `ignoreModCompatibility: true` — first clean fresh-Game construction
+this whole investigation. `rimworld/list_saves` still reports `missing_mods`/`compatible:false`
+(616 recorded vs 614 active, 8 missing) — **none of the 8 are Biomes!Team donors**: `They!`,
+`Cryptoforge`, and six RM_/RUT_ mods folded into `mandrake.rm.biomes` by today's consolidation
+(their content is now reachable under the unified mod, just under a packageId the save's stale
+meta list doesn't know about — expected drift, not a real absence).
+
+**The `Could not load reference` sweep is mixed, not clean**, checked specifically for lines
+AFTER the Scribe load actually starts (`"Loading game from file CANONICAL_ASHKARR_START_2026-09-12
+with mods:"`, not the earlier def-load-time noise a prior pass on this item already
+characterized as pre-existing/non-fatal on 2026-09-27):
+- **104 distinct BMT_-prefixed defNames** (eggs/meat/corpses of ~20 creature species — Maxolotl,
+  LandOctopus, BiliousVarog, BloodletterPetrel, CarrionVulture, FamineLocust, GastroToad,
+  Glowtail, Megakrill, Megaroach, MucklurkerCatfish, MutatingTumorfish, Norphea,
+  PustuleHornetQueen, Sacapillar, Screecher, SludgeCrawler, Swarmcaller, TaintedTurtle,
+  TripleSnapper, SmogMoth, BarbedPangolin, BunkerBug, ColonyPustuleHornet, Creature_Mantrap and
+  more) match, name-for-name, the SAME set already present in
+  `infrastructure/state/logs/harvested/Player_fulllist_clean_after_sumpgate_20260927T063252Z.log`
+  (2026-09-27, **pre-dating** this item's biomescore retirement work) — this is standing,
+  already-precedented, non-fatal save debt, not something this item's own work introduced.
+- **~14 ADDITIONAL distinct BMT_-prefixed defNames NOT in that 2026-09-27 reference set**:
+  `Blueprint_`/`Frame_`/`Blueprint_Install_` variants of `BMT_Chinampa_{Granite,Limestone,
+  Marble,Sandstone,Slate}`, `BMT_DenseSandWall`, `BMT_GlacialIceBuildable`,
+  `BMT_IceDiggingSpot`, `BMT_IceWallBuildable`, `BMT_LavaGenerator`, `BMT_LightSandWall`,
+  `BMT_MagmaPump`, `BMT_PontoonBridge`, `BMT_SandDiggingSpot` — all terrain/building content
+  (thematically Polluted Lands/Caverns), never seen flagged before in this item's history.
+  **Not chased further this pass** — reading which is genuinely new vs. an artifact of this
+  session's different mod set (8 unrelated mods also inactive right now, forcing
+  `ignoreModCompatibility`) needs a controlled comparison this session didn't have time for,
+  and a fix (a caverns/pollutedlands-equivalent save scrub, mirroring biomescore's own careful
+  backup+scrub+re-census procedure above) is exactly the kind of consequential action this
+  item's own doctrine says to do carefully, not improvise blind.
+- The broader 8-missing-mod noise (`VQE_`/`VWE_` Cryptoforge content, `They_`/`GiantAnt_Race`,
+  `RUT_Lanternstone*`) is separately explained by those 8 mods' own today's-consolidation
+  packageId drift (see above) and is NOT this item's concern.
+
+**Not closing.** The mod-list-level retirement (this item's own literal remaining scope) is
+clean. The save-content level shows two different signals: the LONG-STANDING BMT_ fauna debt is
+precedented as acceptable elsewhere in this project and arguably satisfies this item's spirit;
+the NEWLY-NOTICED BMT_ terrain/building debt does not have that precedent and is reported here
+rather than assessed — a BENCH/owner call on whether that second set blocks closing, needs its
+own scrub, or is itself pre-existing-and-fine (just never previously checked this specifically)
+is owed before this item closes.
+
 ---
 
 ## Original escalation (superseded above, kept for provenance) — donor mod and creature count don't match
