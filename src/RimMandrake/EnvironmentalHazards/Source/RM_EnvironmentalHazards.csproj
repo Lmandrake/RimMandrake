@@ -248,6 +248,18 @@
       <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- SUMP_TAR_FIRE_NETWORK_1 part 2: RUT_IncidentWorker_TarPitBelch now
+         spawns a real RimMandrake.FlowWorks.Flood_FlowWorks release (RM_Fluid_Tar)
+         instead of a filth splash. Same recipe as the CreatureBehaviors
+         reference above: mandrake.rm.flowworks becomes a real dependency of
+         this mod (see About.xml), and this incident already hard-required
+         FlowWorks' own RM_TarDeep/RM_TarShallow terrain (by defName string)
+         to ever fire at all, so this only makes an existing dependency
+         honest rather than adding a new one. -->
+    <Reference Include="RimMandrakeFlowWorks">
+      <HintPath>..\..\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>
