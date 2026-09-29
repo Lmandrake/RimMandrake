@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:37:35Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "coalescence_stage3_v2",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the Coalescence at its third stage, a great gathered tower of gelatinous crimson mass \u2014 dominated by wet translucent GOOP hauled upward into a taller heap, dozens of open eyes ringing it at every height, RANDOM mismatched part-limbs jutting from the gel at arbitrary places and angles, none coordinated, none braced or arranged like a body about to stand \u2014 ropes of tissue still feeding up into it from the goo at its base. Taller and more massive than stage two but still a formless heap, not an almost-body. It reads as goop piling toward something, shape still unratified. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "IMPROVE of an existing shipped set-piece stage \u2014 owner note verbatim: \"keep more of the gelatinous goop with eyes and random limbs, less of the near body-like emergence of coordinated limbs\". The defect: the shipped stage 3 reads as a coordinated almost-body about to stand; the fix is MORE formless gelatinous goop with eyes and randomly placed uncoordinated limbs, NO body-like bracing or upright body plan \u2014 height and mass carry the escalation instead. DO NOT CHANGE: silhouette family (a gathered tower, taller than stage 2), canvas (512), single centered subject, transparent background with real alpha; keep silhouette family and palette continuous with stages 1 and 2 (same organism, more mass). No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 within the storm-dark red-valley register vary the reds: wet glistening crimson, translucent gel highlights, bruise-purple, sclera whites, pink-blue aberrant accents, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, wet translucent-gel surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

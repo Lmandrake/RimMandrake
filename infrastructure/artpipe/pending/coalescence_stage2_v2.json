@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-29T04:37:35Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "coalescence_stage2_v2",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the Coalescence at its second stage, a heaped crimson mass of gelatinous gathered tissue taller than a man \u2014 dominated by wet translucent GOOP, dozens of eyes of different sizes open across and inside it, RANDOM disjointed part-limbs surfacing and half-submerging back into the gel at arbitrary places and angles \u2014 an arm here, a jointed leg there, none attached to anything, none coordinated, no two pointing the same way; wet folds of the mass slumping under their own weight. Nothing about it should suggest an emerging body plan \u2014 it is still a formless heap. It reads as a crowd dissolved into goop, not yet a thing. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "IMPROVE of an existing shipped set-piece stage \u2014 owner note verbatim: \"keep more of the gelatinous goop with eyes and random limbs, less of the near body-like emergence of coordinated limbs\". The defect: the shipped stage 2 reads as limbs organizing toward a body; the fix is MORE formless gelatinous goop with eyes and randomly placed uncoordinated limbs, NO body-like arrangement. DO NOT CHANGE: silhouette family (a heaped mass taller than a man), canvas (512), single centered subject, transparent background with real alpha; keep silhouette family and palette continuous with stages 1 and 3 (same organism, more mass). No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 within the storm-dark red-valley register vary the reds: wet glistening crimson, translucent gel highlights, bruise-purple, sclera whites everywhere, pink-blue aberrant accents, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, wet translucent-gel surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}
