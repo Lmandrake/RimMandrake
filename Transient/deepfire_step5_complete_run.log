@@ -1,0 +1,46 @@
+
+=== start_debug_game_ready ===
+pawn: Thing_Human587 pos {'x': 138, 'z': 125}
+
+=== spawn ===
+wall Thing_Wall24543 chair Thing_DiningChair24544 sculpture Thing_SculptureSmall24545 deepfire Thing_RM_Deepfire24542
+comp_coats wall True 0
+comp_coats chair True 0
+comp_coats sculpture True 0
+
+=== REAL job: designate wall + let colonist do it (via WorkGiver/JobDriver, no forcing) ===
+designate: {'success': True, 'alreadyDesignated': False, 'operation': {'OperationId': 'op_a3503e9276ed4e0290606ba95a279143', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/deepfire-designate', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-09-29T07:40:55.3945274+00:00', 'CompletedAtUtc': '2026-09-29T07:40:55.4440322+00:00', 'DurationMs': 49, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}
+poll 0 coats 0 pawn0 job RM_ApplyDeepfire tick 201
+poll 1 coats 0 pawn0 job RM_ApplyDeepfire tick 401
+poll 2 coats 0 pawn0 job RM_ApplyDeepfire tick 601
+poll 3 coats 1 pawn0 job GotoWander tick 801
+WALL COAT1 via REAL job: 1
+wall glow after real coat1: 0.515243769 {'r': 30, 'g': 30, 'b': 30, 'a': 0}
+
+=== paint wall blue -> glow follows colour ===
+paint result colorDef/drawColor: Structure_Blue {'r': 0.09411765, 'g': 0.254901975, 'b': 0.4745098, 'a': 1.0}
+wall glow after paint blue: 0.515243769 {'r': 6, 'g': 17, 'b': 32, 'a': 0}
+
+=== coats 2 and 3 (direct AddCoat -- same method the job calls on completion) ===
+-> coat2: 1 -> 2
+-> coat3: 2 -> 3
+wall glow at 3 coats: 0.515243769 {'r': 18, 'g': 49, 'b': 91, 'a': 0}
+
+=== 4th coat refused (capped at 3) ===
+attempt coat4: 3 -> 3
+
+=== remove -> 0, light off ===
+remove_coats: 3 -> 0
+wall glow after removal: 0.515243769 {'r': 0, 'g': 0, 'b': 0, 'a': 0}
+
+=== chair: 2 coats, then save/load persistence check ===
+chair coats before save: 2
+chair glow before save: 0.515243769 {'r': 65, 'g': 47, 'b': 32, 'a': 0}
+save_game: True
+load_game: True
+post-load programState: Playing
+chair cell after load, things: [{"defName": "RM_DeepfireLightProxy", "label": "Deepfire light (internal)", "className": "Verse.ThingWithComps", "stuffDefName": null, "isBlueprint": false, "isBlueprintBuild": false, "blueprintBuildDefName": null, "isFrame": false, "frameBuildDefName": null, "hitPoints": -1}, {"defName": "DiningChair", "label": "Wooden dining chair (normal)", "className": "Verse.Building", "stuffDefName": "WoodLo
+chair still present after load: True
+chair-cell glow after save/load: 0.515335441 {'r': 120, 'g': 87, 'b': 60, 'a': 0}
+
+=== ALL DONE ===
