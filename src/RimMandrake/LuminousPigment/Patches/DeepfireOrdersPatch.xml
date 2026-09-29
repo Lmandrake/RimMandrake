@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DeepfireOrdersPatch.xml                LuminousPigment · DEEPFIRE_PAINT_LIVE_VERIFY_1
+  Registers the two Deepfire designators in the vanilla "Orders" toolbar —
+  same xpath/shape as this repo's own precedent (Graffiti_OrdersPatch.xml,
+  FlowWorks_OrdersPatch.xml, RM_FeverWood_StakeLureOrdersPatch.xml): a
+  Designator with no entry here never reaches the Architect/Orders menu at
+  all (DesignationCategoryDef.ResolveDesignators builds resolvedDesignators
+  only from specialDesignatorClasses).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Ludeon.RimWorld</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/DesignationCategoryDef[defName="Orders"]/specialDesignatorClasses</xpath>
+      <value>
+        <li>RimMandrake.LuminousPigment.Designator_Deepfire</li>
+        <li>RimMandrake.LuminousPigment.Designator_RemoveDeepfire</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

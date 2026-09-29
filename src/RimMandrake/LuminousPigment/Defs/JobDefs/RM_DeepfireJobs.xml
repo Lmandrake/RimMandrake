@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DeepfireJobs.xml                    LuminousPigment · DEEPFIRE_PAINT_LIVE_VERIFY_1
+  Spec §3.3: fetch cost Deepfire from a stockpile, go to target, 600-tick toil
+  x WorkSpeedGlobal, Artistic XP 100, then CompDeepfire.AddCoat.
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_ApplyDeepfire</defName>
+    <driverClass>RimMandrake.LuminousPigment.JobDriver_ApplyDeepfire</driverClass>
+    <reportString>applying deepfire to TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+</Defs>
