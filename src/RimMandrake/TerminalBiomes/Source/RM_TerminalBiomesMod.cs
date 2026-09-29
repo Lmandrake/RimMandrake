@@ -160,11 +160,14 @@ namespace RimMandrake.TerminalBiomes
         public static int twilightChainAvailability = 1;
         public static bool twilightSuulkPressureScalingEnabled = true;
         public static bool twilightCagesPassableBeneath = true;
-        public static bool twilightLivingDecorNeedsLight = false;
         public static float twilightSunSphereGraceDays = 3f;
         public static bool twilightChartsAgeEnabled = true;
 
         public static bool TwilightWellDriftActive => masterEnabled && twilightSeaEnabled && twilightWellDriftEnabled;
+        // No dedicated toggle of its own (it's a buildable, not a spawned
+        // mechanism) — but the mod's own master/biome switches must still
+        // degrade it like everything else in this layer (RM_Building_SunSphere).
+        public static bool SunSphereActive => masterEnabled && twilightSeaEnabled;
 
         private string biomeListBuffer;
 
@@ -204,7 +207,6 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref twilightChainAvailability, "twilightChainAvailability", 1);
             Scribe_Values.Look(ref twilightSuulkPressureScalingEnabled, "twilightSuulkPressureScalingEnabled", true);
             Scribe_Values.Look(ref twilightCagesPassableBeneath, "twilightCagesPassableBeneath", true);
-            Scribe_Values.Look(ref twilightLivingDecorNeedsLight, "twilightLivingDecorNeedsLight", false);
             Scribe_Values.Look(ref twilightSunSphereGraceDays, "twilightSunSphereGraceDays", 3f);
             Scribe_Values.Look(ref twilightChartsAgeEnabled, "twilightChartsAgeEnabled", true);
         }
@@ -332,9 +334,6 @@ namespace RimMandrake.TerminalBiomes
                 "The floating farm doesn't use up surface space because it floats above you. "
               + "Off: a cage occupies its cells like a normal building. Takes effect after mod "
               + "settings apply, at the next map/region rebuild.");
-            list.CheckboxLabeled("Living decor needs light", ref twilightLivingDecorNeedsLight,
-                "Off (default): sealed living clips (noothelm bulb, hoolimbre string) never die "
-              + "from neglect. On: the stricter behaviour — they need light to keep living.");
             list.Label("Sun-sphere grace period before it dims to a husk: " + twilightSunSphereGraceDays.ToString("0.#") + " days");
             twilightSunSphereGraceDays = list.Slider(twilightSunSphereGraceDays, 0.5f, 10f);
             list.CheckboxLabeled("Charts age", ref twilightChartsAgeEnabled,
