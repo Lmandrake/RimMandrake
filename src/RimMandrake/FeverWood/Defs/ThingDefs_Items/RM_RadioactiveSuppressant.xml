@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_RadioactiveSuppressant.xml          FEVERWOOD_TENTACLE_SETPIECE_TUNING_1
+
+  §6f: "outside the Utinni scenario it can be crafted from Uranium" — the
+  free-tier suppression route (the campaign-tier "genuinely dangerous
+  radioactive salvage" reagent stays explicitly DEFERRED, per the
+  2026-09-29 ruling — no such item exists yet, and this file does not
+  invent one). A colonist crafts this at a machining table from raw
+  vanilla Uranium, then carries it to a pool cell flagged by
+  RM_Designator_FoulPool; RM_JobDriver_FoulPool consumes it and calls
+  RM_MapComponent_TentacleWatch.SuppressPoolWithRadioactiveMaterial.
+
+  PLACEHOLDER ART: a flat-color 128x128 PNG in this mod's own Things/Item/
+  Resource/RM_RadioactiveSuppressant/ namespace — same convention this
+  mod's other custom resource items already use (RM_SeepOil,
+  RM_SeveredTentacleFlesh, the six tentacle limbs), and the only choice
+  validate_patch.py's texPath classifier does not flag as an ERROR: a
+  vanilla-borrowed path under Things/Item/Resource/ collides with a real
+  directory this mod already owns there (RM_SeepOil et al.), so the
+  classifier cannot tell a genuine typo from a legitimate vanilla reuse and
+  correctly refuses to guess. Searched infrastructure/artpipe/
+  done+registry.jsonl for "uranium"/"suppressant"/"radioactive" first per
+  the standing rule; found nothing for this item. Real bespoke art is owed
+  to the standing pipeline.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_RadioactiveSuppressant</defName>
+    <label>radioactive suppressant charge</label>
+    <description>A sealed charge of processed Uranium, machined to go unstable fast and diffuse into whatever it is dumped into. Foul a Fever Wood pool with one and whatever lives beneath it goes quiet for days — the free-tier answer to a threat the campaign world only ever meets with rarer, more dangerous salvage.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.85</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>1.2</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <stackLimit>25</stackLimit>
+    <techLevel>Industrial</techLevel>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>RM_MakeRadioactiveSuppressant</defName>
+    <label>craft radioactive suppressant charge</label>
+    <description>Machine raw Uranium down into a sealed charge that goes unstable fast once exposed — dump one into a Fever Wood pool to drive whatever lives beneath it down for days.</description>
+    <jobString>Machining a radioactive suppressant charge.</jobString>
+    <workAmount>1200</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <workSkillLearnFactor>0.5</workSkillLearnFactor>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Uranium</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Uranium</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <li>
+        <thingDef>RM_RadioactiveSuppressant</thingDef>
+        <count>5</count>
+      </li>
+    </products>
+    <recipeUsers>
+      <li>TableMachining</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>

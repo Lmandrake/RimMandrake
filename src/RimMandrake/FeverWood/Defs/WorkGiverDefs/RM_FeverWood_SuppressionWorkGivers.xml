@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWood_SuppressionWorkGivers.xml     FEVERWOOD_TENTACLE_SETPIECE_TUNING_1
+
+  §6f's Uranium free-tier suppression route. workType Hauling: this is a
+  plain carry-and-dump task, same category as any other haul job — no
+  captive/tamed animal involved, so Warden (this mod's other WorkGivers'
+  workType) does not fit.
+-->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_FoulPool</defName>
+    <label>foul pool with suppressant</label>
+    <giverClass>RimMandrake.FeverWood.RM_WorkGiver_FoulPool</giverClass>
+    <workType>Hauling</workType>
+    <priorityInType>50</priorityInType>
+    <verb>foul</verb>
+    <gerund>fouling</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <canBeDoneByMechs>false</canBeDoneByMechs>
+  </WorkGiverDef>
+
+</Defs>
