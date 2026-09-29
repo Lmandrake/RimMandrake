@@ -1,4 +1,15 @@
 # LanternDeeps — validation walk
+RETIRED: this walk documents the mod's PRE-REBUILD implementation. It was rebuilt
+donor-free and renamed to src/RimMandrake/LanternDeeps (packageId mandrake.rm.lanterndeeps,
+defNames re-prefixed RUT_->RM_ throughout, no more Biomes! Caverns dependency) by
+LANTERNDEEPS_RM_MOD_BUILD_1 / CAVERNS_PARITY_BUILD_1. Every identifier below (path,
+packageId, RUT_ defNames, the RimMandrake.Utinni.LanternDeeps namespace) names the
+retired implementation on purpose, as a historical record — it is not a live
+validation walk for the current mod. Whether to write a fresh walk for the current
+RM_LanternDeeps, or delete this file outright, is the owner's call per doctor.py's own
+ORPHAN_WALK remedy; out of scope for SELFTEST_FAILURES_TRIAGE_1, which only owed
+walklint's 3 findings clean, not a file-level decision.
+<!-- walklint-ok: retired pre-rebuild path/packageId, kept as historical record -->
 subject: src/RimUtinni/LanternDeeps  (packageId mandrake.rut.lanterndeeps)
 deps: BiomesTeam.BiomesCaverns (modDependencies + loadAfter, for BMT_CrystalCaverns and
 BMT_CrystalsGenerator); m00nl1ght.GeologicalLandforms (loadAfter only, no hard need found
@@ -46,6 +57,7 @@ own.
   (LANTERN_DEEPS_INJECTION_1).
 
 ## the walk
+<!-- walklint-ok: step 1 records the retired packageId on purpose, see the RETIRED note above -->
 1. [L] Player.log after load contains no "Config error in mandrake.rut.lanterndeeps" and no
    XML error naming `RUT_LanternDeepEmergence.xml`, `RUT_LanternDeepGenerator.xml`,
    `RUT_LanternDeepEmergence_Scatter.xml` or `RUT_LanternDeepEmergence_MapGenPatch.xml`
