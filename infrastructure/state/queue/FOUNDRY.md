@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T06:35:50Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T06:43:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1008,6 +1008,15 @@ kind:     task
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
 
+## DEEPFIRE_PAINT_LIVE_VERIFY_1 Deepfire painting + worn-glow darkness tradeoff (needs live bridge)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  DEEPFIREPAINTLIVEVERIFY1
+prose:    infrastructure/state/items/DEEPFIRE_PAINT_LIVE_VERIFY_1.md
+
 ## SEA_FISHABLES_ALIVE_IN_DEPTHS_1 Every fishable in EVERY sea owes a living creature swimming the floor map, not just a catch item - owner ruling 2026-09-26
 state:    doing
 row:      unassigned
@@ -1636,16 +1645,6 @@ kind:     task
 thin:     no ## verify, no ## criteria
 summary:  Authority: FEVERWOODDIANOGAPRISON1 (build), design/Jawa/worldbuilding/biomes/feverwooddeepandmud2026-09-23.md
 prose:    infrastructure/state/items/FEVERWOOD_DIANOGA_TANK_TUNING_1.md
-
-## DEEPFIRE_PAINT_LIVE_VERIFY_1 Deepfire painting + worn-glow darkness tradeoff (needs live bridge)
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  DEEPFIREPAINTLIVEVERIFY1
-prose:    infrastructure/state/items/DEEPFIRE_PAINT_LIVE_VERIFY_1.md
 
 ## SUMP_TAR_FIRE_NETWORK_1 Network fire with gate firebreaks; wire belch to glass-cooling
 state:    proposed
