@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T06:26:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T06:35:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1656,16 +1656,6 @@ kind:     build
 thin:     no ## spec
 summary:  SUMPTARFIRENETWORK1 — network fire with gate firebreaks, and wiring the belch to glass-front cooling
 prose:    infrastructure/state/items/SUMP_TAR_FIRE_NETWORK_1.md
-
-## GREENTIDE_FEVER_SPECIALISTS_1 Survivors become specialists: Greentide fevers as a qualification, not just attrition
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     spec, verify and criteria all present
-summary:  1. Answer U1 and U2 on the Desktop first. ⛔ Author nothing before that — the answers decide
-prose:    infrastructure/state/items/GREENTIDE_FEVER_SPECIALISTS_1.md
 
 ## GREENTIDE_CANOPY_SWARM_1 The Greentide's insect axis: a new canopy-hazard swarm, driving the Gnawer/Shatterer tree-fall mechanics
 state:    proposed
