@@ -1,0 +1,253 @@
+{
+  "sheetId": "contagion_cast_art_review_2026_09_28",
+  "posture": "blacklist",
+  "criterion": "Prefill = artpipe validator PASS, which ranks technical validity (alpha, canvas, facing presence) — it cannot rank whether the creature/plant/item looks right, or whether a redo actually fixed the note it was queued for. Your eye rules.",
+  "exportedBy": "review-sheet-page",
+  "exportedAt": "2026-09-29T04:28:02.372Z",
+  "decidedCount": 47,
+  "decisions": {
+    "RM_BloodyMess": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "Add more red goopey transparent jelly holding the thing together, less like a bunch of guts.",
+      "at": "2026-09-29T04:17:08.534Z"
+    },
+    "RM_Gawpsack": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Blisterfloat": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Scorchpod": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Bloodlurk": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Meltgut": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Sparkleech": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_SparkleechGrub": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Scaldhide": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Doublemaw": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Gnashling": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Ikee": {
+      "decision": "regen",
+      "prefill": "keep",
+      "note": "ERROR! We liked the Ikee from before! Keep the little crawling single eye with tentacles as before. The Jawa consider it cute. This thing is hideous. Just a single eyeball with just enough flesh and a few small tentacles to pull itself around.",
+      "at": "2026-09-29T04:21:26.610Z"
+    },
+    "RM_Shambles": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Peeper": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Eyestinger": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Fleshsop": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "The expression should be one of anger. This is a bioweapon.",
+      "at": "2026-09-29T04:22:39.426Z"
+    },
+    "RM_Skinflap": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": "This one will be fun to try and animate.",
+      "at": "2026-09-29T04:23:00.633Z"
+    },
+    "RM_Gorekite": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Danglemaw": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Crispling": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Sloshbelly": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Eyebark": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "Make it hang droopily downward like a willow. ",
+      "at": "2026-09-29T04:25:12.453Z"
+    },
+    "RM_Lashgrass": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Bleedleaf": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Gorestalk": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Rattlegrope": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Sapblister": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_BloodyFist": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_HalfmadeTree": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_HalfmadeTreeBlighted": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Meatvine": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Toothmoss": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Wombpod": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "coalescence_stage1": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "coalescence_stage2": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "keep more of the gelatinous goop with eyes and random limbs, less of the near body-like emergence of coordinated limbs",
+      "at": "2026-09-29T04:24:32.128Z"
+    },
+    "coalescence_stage3": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "keep more of the gelatinous goop with eyes and random limbs, less of the near body-like emergence of coordinated limbs",
+      "at": "2026-09-29T04:24:36.223Z"
+    },
+    "RM_CloudRepulsor": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "It should not be shown with the beam in the art... that must be added by the game later when it is on",
+      "at": "2026-09-29T04:26:38.768Z"
+    },
+    "RM_Sunbeam": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Gaanok_b": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Gennok_b": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_KneelOllim_b": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Loomma_b": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Orruhmu_b": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Pirrik_b": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Sollak_b": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Soorrak_b": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Tebbra_b": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    }
+  }
+}

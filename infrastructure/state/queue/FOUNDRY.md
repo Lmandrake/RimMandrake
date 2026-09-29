@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T04:12:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T04:33:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1894,6 +1894,26 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SWALE_CANAL_ART_REFERENCE_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Build a real FlowWorks canal on a live map (quicktest fine; bridge work —
 prose:    infrastructure/state/items/SWALE_CANAL_ART_REFERENCE_1.md
+
+## FORGE_RULED_CONTENT_1 Build the Forge ruled cast: wire all waiting (Tibidee/ColossalAerofleet/fleet-flier art/FlashFlora), four admitted natives (Dhokkur/Julmox/Jossur/Dhuvvox), floatstone material (spun-glass pumice, non-flammable, beautiful walls)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Wire in all waiting (owner, turn 2: "Wire in all waiting."): Tibidee and
+prose:    infrastructure/state/items/FORGE_RULED_CONTENT_1.md
+
+## FORGE_CYCLE_MECHANICS_1 Build the Forge fire-and-water grand cycle: gas-wash ignition, boiling rain + FlowWorks flooding, steam plumes + temporary basalt/pumice freeze, floatstone growth phase, glowing cracks, melt-back - extends FORGE_MECHANICS_1's F1 pulse, coordinate
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  The pulse becomes a six-phase grand cycle:
+prose:    infrastructure/state/items/FORGE_CYCLE_MECHANICS_1.md
