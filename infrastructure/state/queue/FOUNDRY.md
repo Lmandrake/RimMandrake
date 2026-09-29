@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T15:42:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T16:12:38Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1570,16 +1570,6 @@ blocked:  Real trace (Transient/Player.log.geneticrim_ctor_nre_2026-09-25 L11288
 summary:  REGROWTHRECOLORMINEABLESNRE1
 prose:    infrastructure/state/items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md
 
-## FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 The eye set-piece's frequency and the poison/radioactive suppression route
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     mechanism
-blocked:  needs owner: item's own spec says do not guess the pressure curve or pick poison/radioactive qualifying items; genuinely his call, not a build task
-summary:  Caused by FEVERWOODTENTACLEBESTIARY1 (six tentacle types + the ordinary
-prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.md
-
 ## FEVERWOOD_SAP_SUCKER_TUNING_1 Real numbers and the mishandling trigger for the sap-sucker guild
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -1681,6 +1671,16 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 The eye set-piece's frequency and the poison/radioactive suppression route
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     mechanism
+thin:     no ## verify, no ## criteria
+summary:  Caused by FEVERWOODTENTACLEBESTIARY1 (six tentacle types + the ordinary
+prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.md
 
 ## CONTAGION_MECHANICS_BUILD_1 Build the Contagion mechanics: Burn/Bloom weather + tells, the Coalescence (one growing organism), Cloud Repulsor + gravship hardpoint, Sunbeam + arrest, the five bizarre Grown limbs on the Anomaly renderNode mechanism
 state:    proposed
