@@ -32,10 +32,11 @@
   but you would have to train it by releasing it from the tanks... Advanced
   training is fine, but it should have large wildness, be very challenging
   to tame, and have a high chance of attacking if you fail." trainability
-  Advanced is the ruled value; Wildness/manhunterOnTameFailChance/
-  manhunterOnDamageChance below are INVENTED placeholders standing in for
-  numbers the owner explicitly said not to guess — see
-  FEVERWOOD_DIANOGA_TANK_TUNING_1 for the real pass. waterSeeker=true is the
+  Advanced is the ruled value. Wildness (0.85), manhunterOnTameFailChance
+  (0.55) and manhunterOnDamageChance (0.95) are now RULED (owner,
+  FEVERWOOD_DIANOGA_TANK_TUNING_1, 2026-09-29 — Wildness and fail-chance kept
+  the shipped placeholders, damage-chance pushed up from the 0.85 placeholder).
+  waterSeeker=true is the
   built-in vanilla lever for "makes for the nearest water" (§6m stage 1);
   it is an approximation (a race flag, not a custom beeline JobGiver) and is
   documented as such in that item.
@@ -101,7 +102,7 @@
            challenging to tame", "high chance of attacking if you fail"),
            values not. FEVERWOOD_DIANOGA_TANK_TUNING_1. -->
       <manhunterOnTameFailChance>0.55</manhunterOnTameFailChance>
-      <manhunterOnDamageChance>0.85</manhunterOnDamageChance>
+      <manhunterOnDamageChance>0.95</manhunterOnDamageChance>
       <waterSeeker>true</waterSeeker>
       <waterCellCost>1</waterCellCost>
       <gestationPeriodDays>10</gestationPeriodDays>
