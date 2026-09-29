@@ -325,6 +325,17 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rut.patches", "mandrake.rm.biomes"],  # BAROQUE_BIOMES_WAVE2_FOLD_1: divinginteraction folded
         "dlc": True,
     },
+    "warcasket": {
+        "why": "Live-verify WARCASKET_SUIT_CLASS_1: RM_Warcasket's stat offsets "
+               "(Insulation_Cold/Heat, VacuumResistance, ToxicEnvironmentResistance, "
+               "RM_HazardousTerrainProtection), RM_CompWarcasketIntegrity's "
+               "compound-failure comp resolving its Class, and "
+               "RM_MapComponent_HazardousTerrainImmersion running against the "
+               "Wasteland's real RM_WastelandBrine* terrain, with nothing else on "
+               "the map that could explain a failure.",
+        "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rm.warcasket"],  # BAROQUE_BIOMES_WAVE2_FOLD_1: environmentalhazards+wasteland folded
+        "dlc": True,
+    },
     "shrublandfauna": {
         "why": "The union of `beastmechanics` and `desertplants`: one load that can "
                "answer SHRUBLAND_GIANT_ENRAGE_1 (RSW_ShrublandGiant + "

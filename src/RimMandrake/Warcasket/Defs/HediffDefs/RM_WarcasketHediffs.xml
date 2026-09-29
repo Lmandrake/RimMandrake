@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WarcasketHediffs.xml                Warcasket - WARCASKET_SUIT_CLASS_1
+
+  Two hediffs, one per hazard the mod adds real mechanism for. Stage shape
+  cribbed from this repo's own RUT_WetBulbOverwhelm.xml (UtinniPatches) -
+  escalating capMods, a final life-threatening stage, lethalSeverity 1 so
+  it keeps getting worse until death if exposure continues, tendable.
+
+  RM_TerrainImmersionHazard: applied by RM_MapComponent_
+  HazardousTerrainImmersion to a pawn standing on deep/non-walkable water
+  without enough RM_HazardousTerrainProtection. Heals off on its own once
+  the pawn is out of the hazard (see the MapComponent's own negative
+  gain), same "clock, not a switch" shape WetBulb uses.
+
+  RM_WarcasketBreach: applied by RM_CompWarcasketIntegrity on a compound
+  failure roll - the suit's own "primitive tank around a person" failing
+  under simultaneous heat/cold/vacuum/toxin strain. Decays slowly on its
+  own (HediffCompProperties_SeverityPerDay) so a single failure is a
+  scare, not a death sentence, but stacking failures under sustained
+  compound exposure is genuinely dangerous - lethalSeverity 1, same as
+  the terrain hazard.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_TerrainImmersionHazard</defName>
+    <label>hazardous immersion</label>
+    <description>Standing in water or brine too deep to simply walk through, with nothing sealed enough to keep it out. The body cannot tell dose from drowning down here — cold, pressure and whatever the water is carrying all arrive together. Left unchecked, it collapses the victim and, if exposure continues, kills.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.25, 0.45, 0.65)</defaultLabelColor>
+    <lethalSeverity>1</lethalSeverity>
+    <stages>
+      <li>
+        <label>chilled and pressed</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <label>waterlogged</label>
+        <minSeverity>0.1</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>overwhelmed</label>
+        <minSeverity>0.35</minSeverity>
+        <painOffset>0.15</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.3</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>drowning</label>
+        <minSeverity>0.65</minSeverity>
+        <lifeThreatening>true</lifeThreatening>
+        <painOffset>0.3</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.55</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.15</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <tendable>true</tendable>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_WarcasketBreach</defName>
+    <label>warcasket breach</label>
+    <description>A seal, joint or plate on a warcasket has failed under compound strain — heat, cold, vacuum and poison finding a way past a suit built to hold out only one at a time. Tendable, and it fades on its own if the wearer gets clear of the compound threat, but a bad breach or repeated failures escalate fast.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75, 0.35, 0.2)</defaultLabelColor>
+    <lethalSeverity>1</lethalSeverity>
+    <stages>
+      <li>
+        <label>seal strained</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <label>breach</label>
+        <minSeverity>0.15</minSeverity>
+        <painOffset>0.15</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.15</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>major breach</label>
+        <minSeverity>0.5</minSeverity>
+        <lifeThreatening>true</lifeThreatening>
+        <painOffset>0.3</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.35</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <tendable>true</tendable>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <baseTendDuration>90000</baseTendDuration>
+      </li>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.4</severityPerDay>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

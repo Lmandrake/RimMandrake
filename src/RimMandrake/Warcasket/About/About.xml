@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.warcasket</packageId>
+  <name>RimMandrake: Warcasket</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.biomes</packageId>
+      <displayName>RimMandrake: Baroque Biomes</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <!-- mandrake.rm.environmentalhazards was folded into mandrake.rm.biomes's
+         Biomes/_Kits/EnvironmentalHazards by BAROQUE_BIOMES_WAVE2_FOLD_1
+         (2026-09-28) - same repoint src/RimMandrake/ExplosiveGrowth/About/About.xml
+         already carries. HazardTargeting (this mod's SumApparelStat/
+         ProtectionDriveFactor dependency) ships inside mandrake.rm.biomes now. -->
+    <li>mandrake.rm.biomes</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+  </loadAfter>
+  <description>WARCASKET_SUIT_CLASS_1. A cross-cutting heavy survival-apparel class, generalized:
+it names no biome, faction or campaign and is playable standalone on any generated RimWorld
+planet. Owner ruling, 2026-09-28 (WASTELAND_BEDAZZLE_SITTING_1), verbatim: "Warcaskets REDEFINED
+cross-cutting: very resistant to extreme temps + vacuum + toxins, an alternative to space suits
+and ocean access, but very slow, bulky, prone to failure under compound threats — a primitive
+tank around a person."
+
+RM tier: nothing here knows what campaign or planet uses it. The Wasteland biome (and the frozen
+Utinni campaign's own Wasteland instance) is this suit's primary use case — Junkers wear a
+further-adjusted variant to extract fuel from ruined ground — but the suit class itself works
+anywhere extreme temperature, vacuum or toxic-terrain protection matters: any DLC's space
+exposure, any biome's toxic fallout, any modded ocean/brine shore.
+
+Ships, all togglable in Mod Settings (defaults = shipped behavior, MOD_OPTIONS_RETROFIT_1
+doctrine):
+
+  1. RM_Warcasket — the base suit. Real stat coverage for all three hazard classes (extreme-temp
+     Insulation_Cold/Insulation_Heat, vacuum via Odyssey's own VacuumResistance, toxin via
+     Biotech's own ToxicEnvironmentResistance), a heavy MoveSpeed/WorkSpeedGlobal penalty ("very
+     slow, bulky"), and a real compound-failure mechanic: RM_CompWarcasketIntegrity tracks how
+     many hazard classes are simultaneously active against the wearer and rolls a genuine failure
+     chance once two or more stack, damaging the suit and injuring the wearer with a tendable
+     RM_WarcasketBreach hediff — not flavor text, an actual risk that scales with how compound the
+     threat gets and how damaged the suit already is.
+  2. RM_WarcasketJunker — a Junker-adjusted variant carrying RM_JunkerSarcophagusExtension, a
+     marker+metadata ModExtension a biome's own cast can hook a corpse-interaction onto ("a dead
+     Junker in an adjusted warcasket is a sealed salvage-within-salvage: suit, tools, and the
+     half-extracted core still in its grips" — wasteland.md §7). This mod builds only the suit-side
+     hook; the corpse mechanism itself belongs to whoever owns that biome's cast.
+  3. Terrain-survival wiring: RM_HazardousTerrainProtection (a summed apparel stat, same shape as
+     this repo's RM_WetBulbProtection) and RM_MapComponent_HazardousTerrainImmersion, a general
+     hazard engine (not warcasket-specific — any apparel granting the stat helps, on any map) that
+     applies RM_TerrainImmersionHazard to a pawn standing on deep/non-walkable water terrain
+     without enough protection. Scoped deliberately to non-walkable ("must swim") water only —
+     an ordinary shallow ford or marsh margin every biome already has pawns cross freely is never
+     the hazard; only water nothing can simply walk across is. 🔴 This is TERRAIN survival only:
+     it grants no dive verb, no MapPortal access, no sea-floor teleport of any kind. A sea FLOOR
+     stays reachable only through a gravship's own RM_SeaDiveHatch — "the ship is the only way
+     down and the only way back" (owner ruling, 2026-09-26). A warcasket lets its wearer stand
+     safely at the edge or wade the shallows and margins of a hostile sea or brine pool; it never
+     lets them dive to, or return from, the floor beneath one.
+
+NOT in this mod: the cask-bay crafting building the sitting approved conceptually, and the
+Junker corpse-interaction mechanism itself (the loot, the half-extracted core item, the
+interaction verb) — both are a biome cast's own scope. See WARCASKET_CASK_BAY_AND_SARCOPHAGI_1.
+  </description>
+</ModMetaData>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Warcasket.xml                       Warcasket - WARCASKET_SUIT_CLASS_1
+
+  Owner ruling (WASTELAND_BEDAZZLE_SITTING_1, 2026-09-28), verbatim: "very
+  resistant to extreme temps + vacuum + toxins, an alternative to space
+  suits and ocean access, but very slow, bulky, prone to failure under
+  compound threats - a primitive tank around a person."
+
+  SHAPE cribbed from three precedents already in this codebase (read in
+  full before writing this file):
+    - RUT_SealedSuit.xml (UtinniPatches) - the ApparelMakeableBase/
+      Middle+Shell/ElectricTailoringBench+HandTailoringBench recipe shape.
+    - RM_ChillHeatedSuit.xml (DivingInteraction) - real VacuumResistance
+      equippedStatOffset usage, and the 2026-09-28 corrected lesson this
+      file obeys: ParentName resolves by an XML node's own Name="..."
+      attribute, never by <defName>. RM_Warcasket below carries
+      Name="RM_Warcasket" for exactly that reason - RM_WarcasketJunker
+      inherits from it correctly rather than repeating that bug.
+    - RM_ScaldGear.xml (TerminalBiomes) - three distinct protection stats
+      legitimately coexisting on one garment (here: Insulation_Cold/Heat,
+      VacuumResistance, ToxicEnvironmentResistance, RM_HazardousTerrainProtection),
+      each a REAL vanilla or repo-shared stat, not invented flavor:
+        Insulation_Cold/Insulation_Heat  -> extreme-temp rated (vanilla)
+        VacuumResistance (equippedStatOffset) -> vacuum rated (Odyssey's
+          own stat; StatWorker_VacuumResistance)
+        ToxicEnvironmentResistance (statBases) -> toxin rated (Biotech's
+          own stat; gates HediffComp_ImmunizableToxic and pollution/toxic
+          fallout exposure - the same vanilla mechanism a gas mask uses)
+        RM_HazardousTerrainProtection -> this mod's own terrain-survival
+          stat (RM_WarcasketStats.xml), read by
+          RM_MapComponent_HazardousTerrainImmersion.
+
+  MayRequire="Ludeon.RimWorld.Odyssey" on the ThingDef itself is a LOAD-
+  SAFETY guard only (CLAUDE.md: "assume all DLCs" is a design axis, not a
+  reason to skip a load-order guard) - VacuumResistance and Room.Vacuum
+  are Odyssey-era stat/mechanic and this def's whole "alternative to a
+  space suit" framing assumes it is present, same guard RM_ChillHeatedSuit
+  already carries.
+
+  COMPOUND-FAILURE MECHANIC: RM_CompProperties_WarcasketIntegrity (see
+  RM_CompWarcasketIntegrity.cs). Not flavor text - counts how many of
+  {vacuum, extreme temp, toxic terrain} are simultaneously true for the
+  wearer right now, and once 2+ stack, rolls a real failure chance every
+  check that damages the suit's own HP and injures the wearer with a
+  tendable RM_WarcasketBreach hediff. A single hazard alone never fails
+  the suit - "a primitive tank" survives one threat fine; it is the
+  COMPOUND case that is dangerous, per the ruling's own framing.
+
+  CASK BAY: the sitting approved a crafting building for this suit
+  conceptually ("Cask bay approved"), but building it is out of this
+  item's scope (WASTELAND_MECHANICS_BUILD_1's own listed scope does not
+  mention it either - checked before writing this file). This recipe
+  ships on TableMachining so the suit is craftable today; a future Cask
+  Bay building can add itself as an additional recipeUser via a small
+  patch without touching this file. Follow-on:
+  WARCASKET_CASK_BAY_AND_SARCOPHAGI_1.
+
+  ART: infrastructure/artpipe (registry, done/, _artsrc/) searched for
+  "warcasket" before writing this file - nothing found generated or
+  ruled on. Queued this pass via fill_queue.py (rimflow_item_id
+  WARCASKET_SUIT_CLASS_1) and the artpipe daemon finished both jobs
+  (facts PASS) before this file was committed, so graphicData.texPath
+  below is the REAL generated icon for each def, copied into this mod's
+  own Textures/ - not a placeholder. wornGraphicPath still reuses
+  vanilla's real shipped Vacsuit paperdoll (same legitimate move
+  RUT_SealedSuit/RM_ChillHeatedSuit/RM_CrackWaxSuit already make in this
+  codebase): the generated art is a single flat icon render, not a
+  4-facing rigged paperdoll, so it serves the inventory/ground icon while
+  the paperdoll still needs a real donor.
+-->
+<Defs>
+
+  <ThingDef ParentName="ApparelMakeableBase" Name="RM_Warcasket" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Warcasket</defName>
+    <label>warcasket</label>
+    <description>A crude, riveted shell built to keep a person alive anywhere at once — scavenged plate over rubberized joints, a sealed chest unit doing the work of a space suit, a radiation liner doing the work of a gas mask. It is not elegant. It is not fast. Whoever welded it together was not building armor; they were building a primitive tank to stand inside, and it shows in every over-built seam. It holds against extreme heat, extreme cold, vacuum and poisoned ground all at once — right up until it doesn't, because nothing this improvised holds every seam forever when everything is trying to kill you simultaneously.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/RM_Warcasket/RM_Warcasket</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <techLevel>Industrial</techLevel>
+    <tradeability>Sellable</tradeability>
+    <costList>
+      <Steel>200</Steel>
+      <Plasteel>30</Plasteel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>320</MaxHitPoints>
+      <WorkToMake>60000</WorkToMake>
+      <Mass>32</Mass>
+      <Flammability>0.25</Flammability>
+      <ArmorRating_Sharp>0.62</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.5</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.7</ArmorRating_Heat>
+      <Insulation_Cold>140</Insulation_Cold>
+      <Insulation_Heat>100</Insulation_Heat>
+      <ToxicEnvironmentResistance>0.9</ToxicEnvironmentResistance>
+      <RM_HazardousTerrainProtection>0.9</RM_HazardousTerrainProtection>
+      <EquipDelay>25</EquipDelay>
+    </statBases>
+    <equippedStatOffsets>
+      <!-- "very slow, bulky" - a heavier movement/work penalty than any
+           other suit in this codebase (RM_ChillHeatedSuit's -1.25 is the
+           previous ceiling); this is the point, not an oversight. -->
+      <MoveSpeed>-1.8</MoveSpeed>
+      <WorkSpeedGlobal>-0.25</WorkSpeedGlobal>
+      <VacuumResistance>0.85</VacuumResistance>
+    </equippedStatOffsets>
+    <thingCategories>
+      <li>ApparelArmor</li>
+    </thingCategories>
+    <tradeTags>
+      <li>HiTechArmor</li>
+      <li>Armor</li>
+    </tradeTags>
+    <smeltable>true</smeltable>
+    <apparel>
+      <bodyPartGroups>
+        <li>Torso</li>
+        <li>Neck</li>
+        <li>Shoulders</li>
+        <li>Arms</li>
+        <li>Legs</li>
+        <li>Waist</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit</wornGraphicPath>
+      <layers>
+        <li>Middle</li>
+        <li>Shell</li>
+      </layers>
+      <tags>
+        <li>IndustrialAdvanced</li>
+        <li>Vacsuit</li>
+      </tags>
+      <defaultOutfitTags>
+        <li>Worker</li>
+        <li>Soldier</li>
+      </defaultOutfitTags>
+      <useDeflectMetalEffect>true</useDeflectMetalEffect>
+      <soundWear>Wear_PowerArmor</soundWear>
+      <soundRemove>Remove_PowerArmor</soundRemove>
+    </apparel>
+    <recipeMaker>
+      <!-- Cask Bay not built this pass, see file header. TableMachining
+           keeps this craftable today; a future Cask Bay building adds
+           itself as another recipeUser via patch, not an edit here. -->
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <displayPriority>236</displayPriority>
+    </recipeMaker>
+    <comps>
+      <li Class="RimMandrake.Warcasket.RM_CompProperties_WarcasketIntegrity">
+        <checkIntervalTicks>250</checkIntervalTicks>
+        <vacuumThreshold>0.5</vacuumThreshold>
+        <extremeColdThresholdC>-60</extremeColdThresholdC>
+        <extremeHeatThresholdC>70</extremeHeatThresholdC>
+        <baseFailureChancePerCheck>0.015</baseFailureChancePerCheck>
+        <failureChancePerExtraHazard>0.02</failureChancePerExtraHazard>
+        <integrityDamagePerFailure>12</integrityDamagePerFailure>
+        <wearerHediffSeverityPerFailure>0.08</wearerHediffSeverityPerFailure>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       RM_WarcasketJunker — the Junker-adjusted variant. wasteland.md §7:
+       "a dead Junker in an adjusted warcasket is a sealed salvage-within-
+       salvage: suit, tools, and the half-extracted core still in its
+       grips." This ThingDef is the SUIT-SIDE hook only — see
+       RM_JunkerSarcophagusExtension.cs for what a Wasteland-owning mod
+       reads off it. generateAllowChance 0: this variant should only ever
+       appear via a Junker PawnKindDef's own <apparel> list once that
+       exists, never scattered onto random pawns by vanilla's own
+       apparel-generation roll.
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <ThingDef ParentName="RM_Warcasket">
+    <defName>RM_WarcasketJunker</defName>
+    <label>adjusted warcasket</label>
+    <description>A warcasket further modified for the one job Junkers actually do: standing inside a fuel-hot ruin long enough to cut a reactor core loose. Extraction clamps and a hooked prying tool are welded to one forearm; extra fuel-stained canisters ride the chest unit where a soldier's would carry ammunition. Hazard stripes are painted crudely over the plating by hand, again and again, by someone who has already died once in a suit exactly like it.</description>
+    <generateAllowChance>0</generateAllowChance>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/RM_WarcasketJunker/RM_WarcasketJunker</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Warcasket.RM_JunkerSarcophagusExtension">
+        <isSealedSarcophagus>true</isSealedSarcophagus>
+        <flavorNote>A dead Junker, sealed. Whatever they were hauling out is still in here with them.</flavorNote>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
