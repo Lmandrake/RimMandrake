@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T01:30:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T01:52:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -285,7 +285,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/CAULDRON_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
+summary:  The four movements of the program item, applied to this biome:
 prose:    infrastructure/state/items/CAULDRON_BEDAZZLE_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
