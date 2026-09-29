@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T02:27:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T02:37:28Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -999,15 +999,6 @@ kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
 
-## WARDEN_MOTHER_PATHFINDER_VERIFY_1 Live-verify the warden mother's water-only movement and load cleanly
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  WARDENMOTHERPATHFINDERVERIFY1 — live-verify the warden mother's water-only movement and load cleanly
-prose:    infrastructure/state/items/WARDEN_MOTHER_PATHFINDER_VERIFY_1.md
-
 ## FEVERWOOD_TWO_FRONT_LURE_TUNING_1 Two-front lure numbers, prey-quality gate, and a free-tier second raider
 state:    doing
 row:      unassigned
@@ -1883,8 +1874,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify
-summary:  CAULDRONMECHANICSBUILD1 — Build the Cauldron mechanics
+thin:     no ## verify
+summary:  Five organs, one machine:
 prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
 
 ## CAULDRON_FULL_RENAME_1 Full rename PoisonForest -> Cauldron everywhere down to defNames incl. frozen RUT_ twin and soils (owner-typed 2026-09-28); live-tile shortHash check gates defName changes

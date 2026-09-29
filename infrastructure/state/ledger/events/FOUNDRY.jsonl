@@ -1110,3 +1110,7 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"RUT_SCAVENGEREVENTS_BUILD_1: prove-fires 7 workers, retire mlie.moevents","ts":"2026-09-29T01:54:52Z"}
 {"seat":"FOUNDRY","event":"close","id":"RUT_SCAVENGEREVENTS_BUILD_1","sha":"d09e69728","reason":"All 7 workers (Migration/SurvivalPod/PodCrash/ShipBreak/Thanksgiving/Insects/Stroke) live-fired and verified via jawa/fire_incident + read-back on the canonical campaign save; mlie.moevents retired from live ModsConfig + FULL.LATEST, interim baseChance patch deleted as moot. RescueTraitor stays CUT; salvage-economy loot substitution stays explicitly out of scope, per the item's own text.","ts":"2026-09-29T02:14:12Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-29T02:14:56Z"}
+{"seat":"FOUNDRY","event":"claim","id":"WARDEN_MOTHER_PATHFINDER_VERIFY_1","ts":"2026-09-29T02:17:05Z"}
+{"seat":"FOUNDRY","event":"start","id":"WARDEN_MOTHER_PATHFINDER_VERIFY_1","ts":"2026-09-29T02:17:06Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"WARDEN_MOTHER_PATHFINDER_VERIFY_1: state-read verify of water-lock mechanism","ts":"2026-09-29T02:17:07Z"}
+{"seat":"FOUNDRY","event":"close","id":"WARDEN_MOTHER_PATHFINDER_VERIFY_1","sha":"23d94b450","reason":"Water-lock mechanism live-measured (24/24 water-terrain samples over 4.8h, duty/job state confirmed via save read, RUT_StrandedDeformation config-error fixed on sight). Chase-vs-backstop race (item's own optional step 5) left open, no attacker available.","ts":"2026-09-29T02:37:28Z"}
