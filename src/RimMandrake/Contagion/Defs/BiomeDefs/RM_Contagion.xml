@@ -38,6 +38,15 @@
     MayRequire (inherited from the twin, not this build's scope to fix) — see
     About.xml for the disclosure. RUT_RustPuff keeps its existing
     MayRequire="mandrake.rut.rotsporekit" cross-mod dependency, unchanged.
+
+    ⭐ SUPERSEDED 2026-09-29 (CONTAGION_RULED_CONTENT_1 Wave A): the paragraph
+    above describing "all 10 remaining wildAnimals rows... the twin's content
+    unchanged" no longer holds for <wildAnimals> — every donor AA_ row and
+    RUT_Sytheclaw (never admitted; Pyrelands is its home) were replaced
+    outright by the 16-def RM_ port in Defs/ThingDefs_Races/
+    RM_ContagionFauna.xml, per the cast bible's full-RM-development ruling.
+    <wildAnimals> is now donor-free and cross-mod-dependency-free. wildPlants
+    (still donor AB_*) is untouched — that port is a separate follow-on item.
   -->
 
   <BiomeDef>
@@ -117,17 +126,28 @@
       <FoggyRain>1</FoggyRain>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <AA_OcularJelly MayRequire="sarg.alphaanimals">2.0</AA_OcularJelly>  <!-- ocular jelly - the-eyes, keep -->
-      <AA_RedSpore MayRequire="sarg.alphaanimals">0.85</AA_RedSpore>  <!-- red spore - the-leaker, keep -->
-      <AA_RedGoo MayRequire="sarg.alphaanimals">0.75</AA_RedGoo>  <!-- red goo - the-body, keep -->
-      <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - the-sower, keep -->
-      <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>  <!-- blood shrimp - the-drinker, adjust-keep -->
-      <AA_Drainer MayRequire="sarg.alphaanimals">0.15</AA_Drainer>  <!-- drainer - the-thieves, adjust-keep -->
-      <RUT_Sytheclaw MayRequire="mandrake.rut.patches">0.15</RUT_Sytheclaw>  <!-- sytheclaw - the-pickers, adjust-keep; RimMandrake-tier creature whose def still lives in RimUtinni (RUT_PyrelandsPortedFauna.xml) — gated per this file's own header note, not evicted (multi-home evictions are stopped) -->
-      <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - the-undertaker, adjust-keep -->
-      <AA_RoughPlatedMonitor MayRequire="sarg.alphaanimals">0.1</AA_RoughPlatedMonitor>  <!-- rough-plated monitor - the-basker, keep -->
-      <AA_Swarmling MayRequire="sarg.alphaanimals">0.1</AA_Swarmling>  <!-- swarmling - the-pickers, adjust-keep -->
-      <AA_DrainerLarva MayRequire="sarg.alphaanimals">0.05</AA_DrainerLarva>  <!-- drainer larva - the-thieves, keep -->
+      <!-- CONTAGION_RULED_CONTENT_1 Wave A, 2026-09-29: the donor AA_/AG_/GR_
+           cast and RUT_Sytheclaw (never admitted here; Pyrelands is its home)
+           are OUT — replaced outright by the RM_ port below, per the cast
+           bible's full-RM-development ruling. Commonalities are the cast
+           bible §2's ruled numbers verbatim. Shorthand element form only —
+           <li> silently discards a wildAnimals entry. -->
+      <RM_Gawpsack>2.0</RM_Gawpsack>  <!-- gawpsack - the-eyes -->
+      <RM_Scorchpod>0.85</RM_Scorchpod>  <!-- scorchpod - the-leaker -->
+      <RM_BloodyMess>0.75</RM_BloodyMess>  <!-- bloody mess - the-body -->
+      <RM_ContagionIkee>0.6</RM_ContagionIkee>  <!-- ikee - the-wretched-small; defName disambiguated from RM_Ikee (Stillsand's own RM_Ikee.xml collides — see the fauna file's own note and CONTAGION_IKEE_NAME_COLLISION_1) -->
+      <RM_Shambles>0.5</RM_Shambles>  <!-- the shambles - the-walking-dead -->
+      <RM_Peeper>0.5</RM_Peeper>  <!-- peeper - the-watcher-kin -->
+      <RM_Eyestinger>0.5</RM_Eyestinger>  <!-- eyestinger - the-tail -->
+      <RM_Fleshsop>0.5</RM_Fleshsop>  <!-- fleshsop - the-pitiable -->
+      <RM_Blisterfloat>0.5</RM_Blisterfloat>  <!-- blisterfloat - the-sower -->
+      <RM_Bloodlurk>0.2</RM_Bloodlurk>  <!-- bloodlurk - the-drinker -->
+      <RM_Sparkleech>0.15</RM_Sparkleech>  <!-- sparkleech - the-thieves (adult) -->
+      <RM_Doublemaw>0.15</RM_Doublemaw>  <!-- doublemaw - the-pickers -->
+      <RM_Meltgut>0.1</RM_Meltgut>  <!-- meltgut - the-undertaker -->
+      <RM_Scaldhide>0.1</RM_Scaldhide>  <!-- scaldhide - the-basker -->
+      <RM_Gnashling>0.1</RM_Gnashling>  <!-- gnashling - the-pickers -->
+      <RM_SparkleechGrub>0.05</RM_SparkleechGrub>  <!-- sparkleech grub - the-thieves (grub) -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

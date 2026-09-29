@@ -15,9 +15,12 @@
 
     NOT wired into RM_Contagion.xml's <wildAnimals> — these are not part of
     the biome's ambient breeding wildlife pool (they never reproduce; they
-    are budded). CompSpawnerUnfinished (patched onto the donor AA_RedGoo,
-    Patches/RedGooSpawnsUnfinished.xml) is the only thing that ever creates
-    one, matching "what the goo buds" literally.
+    are budded). CompSpawnerUnfinished is the only thing that ever creates
+    one, matching "what the goo buds" literally. SUPERSEDED 2026-09-29
+    (CONTAGION_RULED_CONTENT_1 Wave A): the comp now lives directly in
+    RM_BloodyMess's own <comps> (Defs/ThingDefs_Races/RM_ContagionFauna.xml)
+    — the donor-targeting Patches/RedGooSpawnsUnfinished.xml this paragraph
+    used to describe is deleted (no patches, per the ruling).
 
     Lifespan: CompProperties_RandomizeUnfinished (on this ThingDef, no patch
     needed since it's our own def) applies RM_UnfinishedUnraveling at a
