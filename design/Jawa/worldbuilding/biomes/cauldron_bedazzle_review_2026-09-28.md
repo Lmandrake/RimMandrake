@@ -331,3 +331,37 @@ evidence, the four fills are collision-proven pitches, the rename census is
 ticket-ready, and the slate above is the movement-3 opening hand. Nothing here re-opens
 a frozen ruling; no rename executed; no items filed; tile counts nowhere cited as
 evidence (paint is terminal).*
+
+---
+
+## Ruled at the sitting — 2026-09-28 volley outcomes
+
+The four-turn volley closed same-day. Every ruling below is owner-typed, quoted
+verbatim in `CAULDRON_BEDAZZLE_SITTING_1`'s ledger notes; tickets:
+`CAULDRON_RULED_CONTENT_1` · `CAULDRON_MECHANICS_BUILD_1` · `CAULDRON_FULL_RENAME_1`.
+
+1. **Soundscape REVERSED** — the ground is LOUD ("like a slow steam engine": rushes,
+   groans, sighs, rumbles, gurgles, hisses, dull slow roars). The frozen sheet's
+   "quiet in a way that is wrong" identity is overturned as baseline; the wrong
+   silence survives inverted as the vent-bloom alarm (the engine falters).
+2. **Slate B accepted** with the slow-harvest lever: metal-infused trees are slow
+   to fell, yield growth-scaled metal.
+3. **Slate C ruled**: the discoverable tech is conversion of one fluid to another
+   via filtering (LiquidDef/FlowWorks lane).
+4. **Vent gas ruled**: highly flammable, burns with toxic smoke, should be stopped
+   (capping pressure); refines to valuable liquid reagents (C+D merged).
+5. **Vexxiss redesigned**: solid giant, NO explosion ("too many exploding giant
+   beasts"); inhales a vent to pause its production; attacks igniters and puts
+   fires out; poisons water bodies on touch. Turn 4: shear harvest KEPT but yields
+   a **rare material immune to powerful acids and temperature** (working name
+   vexxith, collision sweep owed), not metal.
+6. **Mark 9**: Oomo dislikes the Cauldron but does not refuse to go — slate H
+   softened from refusal to grimace.
+7. **The 7 unwired imports**: "Wire and keep." — all seven wire in; overrides the
+   frozen sheet's bans on the two contradicting rows.
+8. **Renames**: poison ground renames with the biome; full rename "all the way
+   down to the defs" (BENCH reading: including the frozen RUT_ twin, stated at
+   turn 3, not corrected at turn 4). Live-tile shortHash check gates.
+9. **Fills admitted by ticket**: zisska, eskith, xithess stand as pitched.
+10. **Not ruled either way**: slate E (gravship scab) — neither adopted nor struck;
+    remains sitting-row material for a future pass. Mark 6 stays the one open MISS.
