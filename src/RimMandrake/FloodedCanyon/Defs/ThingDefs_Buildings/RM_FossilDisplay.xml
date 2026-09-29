@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FossilDisplay.xml               CRACKEDLANDS_RULED_CONTENT_1 (FOUNDRY build)
+
+  design/Jawa/worldbuilding/biomes/cracked_lands_bedazzle_cast_2026-09-28.md
+  §"Fossils — the canyon-wall strata": "Display furniture: a mounted-
+  display family (sculpture-shaped: quality-bearing, beauty-scaled by the
+  fossil tier mounted) — the wall slab, the free-standing skeleton mount.
+  A Farmer homestead with a mounted deep-stratum piece over the door is
+  saying something; so is a gravship galley with one bolted to the
+  bulkhead."
+
+  Modeled off vanilla's own sculpture family (read live this pass from
+  Data/Core/Defs/ThingDefs_Buildings/Buildings_Art.xml,
+  ParentName="SculptureBase" — itself ParentName="ArtBuildingBase",
+  Name="SculptureBase" IS present so inheritance resolves, unlike the
+  Apparel_Vacsuit trap RM_ChillHeatedSuit's own header documents).
+  SculptureBase already carries everything "sculpture-shaped, quality-
+  bearing" asks for: CompQuality (from ArtBuildingBase), CompProperties_Art
+  (procedural name/description, canBeEnjoyedAsArt), the Artistic
+  meditation-focus wiring, TableSculpting recipeUsers, paintable building.
+  No new C# — both defs below inherit that whole comp stack.
+
+  "BEAUTY-SCALED BY THE FOSSIL TIER MOUNTED" — simplified honestly: vanilla
+  RecipeDef output is one fixed ThingDef regardless of which specific
+  alternate ingredient was consumed (there is no stock "read which
+  ingredient was used and scale a stat" hook short of new C#, declined for
+  the same no-new-C# reason RM_FossilSeams.xml's header gives). Instead,
+  the fossil TIER is coupled to the furniture SHAPE by ingredient
+  requirement: the wall slab is built from a common impression or a
+  deep-stratum slab (both are described as slab-shaped pieces in the
+  roster); the skeleton mount specifically requires an articulated
+  skeleton (a whole animal is what makes a free-standing mount worth
+  building). Base Beauty is tiered by SHAPE (slab modest, mount grand,
+  mirroring vanilla SculptureSmall vs SculptureLarge), and vanilla's own
+  quality->Beauty StatPart (inherited via CompQuality/ArtBuildingBase)
+  scales it further from crafting skill, same as every vanilla sculpture.
+  True per-instance "the specific piece mounted sets the beauty" coupling
+  is a real gap — flagged, not built; a future pass could split each into
+  per-tier defs or add a small CompUsedIngredients-reading StatPart if the
+  owner wants finer granularity than this.
+
+  ART: no art existed for either shape in this sitting's CSV — queued this
+  pass as RM_FossilDisplaySlab / RM_FossilDisplayMount
+  (infrastructure/artpipe/pending/, filed via fill_queue.py against this
+  sitting's CSV, appended). texPaths below point at where that art will
+  land; texPath-only warnings are expected until the daemon runs them.
+-->
+<Defs>
+
+  <ThingDef ParentName="SculptureBase">
+    <defName>RM_FossilDisplaySlab</defName>
+    <label>fossil display slab</label>
+    <description>A dressed stone frame bolted flat to the wall, holding a fossil slab presented like a museum plaque. Every Cracked Lands homestead has at least one; a gravship galley with one bolted to the bulkhead is saying the crew has been somewhere worth remembering.</description>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/RM_FossilDisplaySlab/RM_FossilDisplaySlab</texPath>
+    </graphicData>
+    <fillPercent>0.25</fillPercent>
+    <rotatable>false</rotatable>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Mass>3</Mass>
+      <Beauty>35</Beauty>
+      <WorkToMake>10000</WorkToMake>
+    </statBases>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>25</costStuffCount>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Artistic</workSkill>
+      <unfinishedThingDef>UnfinishedSculpture</unfinishedThingDef>
+      <effectWorking>Sculpt</effectWorking>
+      <soundWorking>Recipe_Sculpt</soundWorking>
+      <recipeUsers>
+        <li>TableSculpting</li>
+      </recipeUsers>
+      <displayPriority>240</displayPriority>
+      <fixedIngredientFilter>
+        <thingDefs>
+          <li>RM_FossilImpression</li>
+          <li>RM_FossilDeepStratum</li>
+        </thingDefs>
+      </fixedIngredientFilter>
+      <ingredients>
+        <li>
+          <filter>
+            <thingDefs>
+              <li>RM_FossilImpression</li>
+              <li>RM_FossilDeepStratum</li>
+            </thingDefs>
+          </filter>
+          <count>1</count>
+        </li>
+      </ingredients>
+      <products>
+        <RM_FossilDisplaySlab>1</RM_FossilDisplaySlab>
+      </products>
+    </recipeMaker>
+  </ThingDef>
+
+  <ThingDef ParentName="SculptureBase">
+    <defName>RM_FossilDisplayMount</defName>
+    <label>fossil skeleton mount</label>
+    <description>A worked stone-and-metal armature holding a complete articulated skeleton upright in display pose. The centerpiece of the room it stands in — Farmers who find a whole animal in the wall build one of these instead of selling the find.</description>
+    <castEdgeShadows>true</castEdgeShadows>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Building/RM_FossilDisplayMount/RM_FossilDisplayMount</texPath>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <fillPercent>0.4</fillPercent>
+    <rotatable>false</rotatable>
+    <statBases>
+      <MaxHitPoints>130</MaxHitPoints>
+      <Mass>6</Mass>
+      <Beauty>90</Beauty>
+      <WorkToMake>22000</WorkToMake>
+    </statBases>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>60</costStuffCount>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Artistic</workSkill>
+      <unfinishedThingDef>UnfinishedSculpture</unfinishedThingDef>
+      <effectWorking>Sculpt</effectWorking>
+      <soundWorking>Recipe_Sculpt</soundWorking>
+      <recipeUsers>
+        <li>TableSculpting</li>
+      </recipeUsers>
+      <displayPriority>241</displayPriority>
+      <fixedIngredientFilter>
+        <thingDefs>
+          <li>RM_FossilSkeleton</li>
+        </thingDefs>
+      </fixedIngredientFilter>
+      <ingredients>
+        <li>
+          <filter>
+            <thingDefs>
+              <li>RM_FossilSkeleton</li>
+            </thingDefs>
+          </filter>
+          <count>1</count>
+        </li>
+      </ingredients>
+      <products>
+        <RM_FossilDisplayMount>1</RM_FossilDisplayMount>
+      </products>
+    </recipeMaker>
+  </ThingDef>
+
+</Defs>

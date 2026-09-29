@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Fossils.xml                     CRACKEDLANDS_RULED_CONTENT_1 (FOUNDRY build)
+
+  design/Jawa/worldbuilding/biomes/cracked_lands_bedazzle_cast_2026-09-28.md
+  §"Fossils — the canyon-wall strata": "the canyon walls are FULL of the
+  dead ... fossil-bearing strata ship as mineable defs ... Mining a seam
+  yields the fossil item family." The three mined-item tiers, ThingDefs
+  only — this file.
+
+  TIER-IMPLEMENTATION SHAPE: three separate item ThingDefs (not one item
+  with a runtime-random appearance) because the mineable rock that PRODUCES
+  them is, per vanilla BuildingProperties, one `mineableThing` ThingDef per
+  mineable rock ThingDef — there is no vanilla weighted/list yield. See
+  ThingDefs_Buildings/RM_FossilSeams.xml's own header for why that pushed
+  the seam side to three RockBase-mineable defs too, mirroring the
+  Greatbole-Heartwood pattern (RUT_GreatboleHeartwood /
+  RUT_FeverTrunkHeartwood: ParentName="RockBase", one mineableThing each).
+
+  DEEP-STRATUM UNIQUE: shipped this pass as a single high-value rare
+  mineable-drop ThingDef (RM_FossilDeepStratum), stackLimit 1, no
+  bespoke "named, one-off" quest-item behavior (no QualityCategory-driven
+  naming, no per-instance unique identity). The bible's own quest-grade
+  framing ("each one a named, one-off piece") is quest-DESIGN work — a
+  QuestScriptDef/reward pass, not raw def authoring — and is explicitly
+  not invented here. Flagged as owed, not built: a future quest pass may
+  want a MinifiedThing-with-CompArt naming treatment, or several distinct
+  RM_FossilDeepStratum_* defs each carrying its own lore description; both
+  are quest-item shape decisions, not this pass's to make.
+
+  The flood re-cut mechanic (GenStep placing these seams in canyon-wall
+  generation; post-flood re-cutting fresh seams along the soaked-cell
+  list) is CRACKEDLANDS_MECHANICS_BUILD_1's C#, not this file's — see that
+  item's §3 "Fossils in the walls".
+
+  ART: RM_FossilImpression / RM_FossilSkeleton / RM_FossilDeepStratum were
+  already generated and finished this sitting
+  (infrastructure/artpipe/done/RM_Fossil*.json, no owner ruling filed yet
+  in Transient/bedazzle_art_sheets_2026-09-28/cracked_lands/decisions.json
+  — posture is still "prefill", decidedCount 0) and copied into this mod's
+  own Textures/ folder this pass. RM_FossilSkeleton uses the _v2 render
+  (the later of two generations on file; no ruling exists yet to prefer
+  v1, and v2 is the more recent attempt).
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_FossilImpression</defName>
+    <label>fossil impression</label>
+    <description>A hand-sized slab of canyon-wall stone, split to show the pressed print of something that lived and died here in a wetter age — a fern-mat, a shell-bed, a trackway crossing the face. Common enough that every wall near the water line has a few, and worth a modest sum to anyone off-world who has never seen a sky this dry.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_FossilImpression/RM_FossilImpression</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>1.2</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <Beauty>3</Beauty>
+    </statBases>
+    <stackLimit>25</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_FossilSkeleton</defName>
+    <label>articulated fossil skeleton</label>
+    <description>A whole small animal, curled in death and caught whole in the stone — every joint still in place after however many thousand floods. Rare enough that a Farmer who finds one tells the story for years, and serious money to anyone building a collection.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>140</MarketValue>
+      <Mass>4</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.3</DeteriorationRate>
+      <Beauty>8</Beauty>
+    </statBases>
+    <stackLimit>5</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_FossilDeepStratum</defName>
+    <label>deep-stratum fossil</label>
+    <description>A heavy dark slab from the oldest layers the canyon walls expose — strata so old they read almost black, holding the edge of something immense: massive plated bone, mineral-dark, still curled the way it fell asleep. Whatever it is, it was already ancient when the flood started cutting this ground. Quest-grade; museum-grade; the kind of find a Farmer keeps quiet about until they've decided who deserves to know.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Special/RM_FossilDeepStratum/RM_FossilDeepStratum</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>650</MarketValue>
+      <Mass>9</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.2</DeteriorationRate>
+      <Beauty>18</Beauty>
+    </statBases>
+    <stackLimit>1</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <tradeability>Sellable</tradeability>
+  </ThingDef>
+
+</Defs>
