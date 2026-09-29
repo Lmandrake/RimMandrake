@@ -22,10 +22,11 @@
   tradeable/debug-spawnable and wired as an always-available
   `butcherProducts` yield on the Sealed.
 
-  Texture: placeholder only, same class as RUT_Bitumen/RUT_ThrummelSeepwax
-  (UtinniPatches already claims Textures/Things/Item/Resource/ as its own
-  namespace, so a borrowed vanilla icon would hard-error validate_patch.py)
-  — repointed to a new RUT_CrackWax/ folder, expected pending texPath.
+  Texture: real bedazzle-commissioned render at
+  Textures/Things/Item/Resource/RUT_CrackWax/RUT_CrackWax.png
+  (FLOODEDCANYON_BEDAZZLE_SITTING_1 job, wired 2026-09-28; Graphic_StackCount
+  folder form, same class as RUT_Bitumen). Review sheet:
+  Transient/bedazzle_art_sheets_2026-09-28/cracked_lands/sheet.html.
 -->
 <Defs>
 
