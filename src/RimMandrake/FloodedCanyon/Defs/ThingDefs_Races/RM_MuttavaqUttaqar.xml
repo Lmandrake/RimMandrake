@@ -516,8 +516,29 @@
            scaled up from its 2 per the bible's "same drop scaled up" /
            "planet's largest single crack-wax deposit" — see header. The
            sheet's ground-drop-on-wake behaviour is the wake comp's job,
-           not built here. -->
-      <RUT_CrackWax>200</RUT_CrackWax>
+           not built here.
+
+           BAROQUE_CORPSE_MARKETVALUE_CRASH_1: RUT_CrackWax is defined ONLY
+           in mandrake.rut.patches (UtinniPatches, RUT_CrackedLandsItems.xml)
+           — RM_Muttavaq is this file's own "invented, no donor" RM-tier
+           creature and mandrake.rm.biomes's About.xml does not, and must
+           not, depend on the campaign-only RUT tier. Left unguarded, this
+           entry's thingDef cross-reference resolves to null whenever
+           mandrake.rm.biomes loads without UtinniPatches (e.g. the
+           baroque_wave0 quicktest tier) and List<ThingDefCountClass>
+           KEEPS the entry with a null thingDef rather than dropping it —
+           RimWorld's own ThingDefGenerator_Corpses.CalculateMarketValue
+           then NREs on butcherProducts[i].thingDef.BaseMarketValue for
+           EVERY implied corpse def, which trips the engine's corrupted-
+           mods recovery and silently strips every custom mod. MayRequire
+           on a List<ThingDefCountClass> shorthand entry (unlike a top-
+           level <Operation MayRequire=...>, PATCH_MAYREQUIRE_GUARD_INERT_1)
+           IS honored by DirectXmlToObject.ListFromXml — confirmed against
+           the decompiled 1.6 engine — so this guard correctly drops the
+           whole entry (RM_Muttavaq keeps its default meat+leather yield
+           only) whenever UtinniPatches is absent, and restores the
+           intended campaign bonus whenever it is present. -->
+      <RUT_CrackWax MayRequire="mandrake.rut.patches">200</RUT_CrackWax>
     </butcherProducts>
     <tradeTags>
       <li>AnimalUncommon</li>

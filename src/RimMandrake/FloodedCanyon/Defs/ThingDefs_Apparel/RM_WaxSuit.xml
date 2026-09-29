@@ -101,6 +101,20 @@
   files. If the resolution is "give the RM_ tier its own RM_CrackWax
   duplicate resource" (the Greatbole precedent's shape), that is a content
   decision for whoever owns that gap, not assumed here.
+
+  BAROQUE_CORPSE_MARKETVALUE_CRASH_1: guarded the costList entry below with
+  MayRequire="mandrake.rut.patches" — same unguarded-cross-tier-reference
+  shape as RM_MuttavaqUttaqar.xml's RUT_CrackWax butcherProducts entry
+  (same item, same fix), which crashed RimWorld's implied-corpse-def
+  generation and triggered the engine's silent corrupted-mods recovery.
+  This costList entry is the identical List<ThingDefCountClass> mechanism
+  and was one dereference away from the same class of NRE (StatWorker_
+  MarketValue / CostListCalculator) the moment anything computes this
+  suit's market value without UtinniPatches loaded. The guard only stops
+  the crash — it does NOT resolve the gap above: the suit is still craftable
+  everywhere (About.xml/roster untouched, per the note above), just for
+  Steel+ComponentIndustrial alone whenever UtinniPatches is absent, and for
+  the full bible-specified cost whenever it is present.
 -->
 <Defs>
 
@@ -122,7 +136,7 @@
       <li>Leathery</li>
     </stuffCategories>
     <costList>
-      <RUT_CrackWax>25</RUT_CrackWax>
+      <RUT_CrackWax MayRequire="mandrake.rut.patches">25</RUT_CrackWax>
       <Steel>6</Steel>
       <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
