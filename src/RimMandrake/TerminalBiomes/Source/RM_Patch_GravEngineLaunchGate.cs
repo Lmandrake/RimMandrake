@@ -68,6 +68,15 @@ namespace RimMandrake.TerminalBiomes
             {
                 return;
             }
+            if (RM_VeilFallDefOf.RM_VeilPane == null)
+            {
+                // A failed def load must never turn a launch-gate postfix
+                // into a launch-gate crash. This postfix can only ever
+                // downgrade an already-Accepted report (see this file's own
+                // header) — skipping it on a null DefOf fails open, which
+                // stays honest with that guarantee.
+                return;
+            }
             foreach (Thing thing in map.listerThings.ThingsOfDef(RM_VeilFallDefOf.RM_VeilPane))
             {
                 if (__instance.OnValidSubstructure(thing))
