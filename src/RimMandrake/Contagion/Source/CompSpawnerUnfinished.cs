@@ -4,8 +4,11 @@ using Verse;
 
 namespace RimMandrake.Contagion
 {
-    // CONTAGION_UNFINISHED_SPAWNER_1. Patched onto the donor AA_RedGoo
-    // (Patches/RedGooSpawnsUnfinished.xml) — "What the goo buds" per
+    // CONTAGION_UNFINISHED_SPAWNER_1. Wired directly into RM_BloodyMess's own
+    // <comps> (Defs/ThingDefs_Races/RM_ContagionFauna.xml) since
+    // CONTAGION_RULED_CONTENT_1 Wave A, 2026-09-29 — the donor-targeting
+    // Patches/RedGooSpawnsUnfinished.xml is deleted (no patches, per the cast
+    // bible's full-RM-development ruling). "What the goo buds" per
     // the_contagion.md §4: the amoeba periodically buds a short-lived
     // RM_TheUnfinished nearby.
     //
