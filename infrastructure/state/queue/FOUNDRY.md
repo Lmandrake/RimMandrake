@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T09:50:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T09:52:25Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1632,6 +1632,16 @@ blocked:  Q10/Q11/Q12 need GREYSEA_SHIP_CRYSTALLISATION_1 + DARKSEA_LIGHT_ATTRAC
 summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
 prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md
 
+## WARLAB_CRATER_ACCIDENTAL_TRIGGER_1 RUT_WarLabReactorCore's CompIgniteCraterOnDestroy fires the planet-wide Chill crater swap on ANY destruction of that core, not only deliberate Route-1 arming -- accidental-detonation risk once the war lab is reachable; needs the Route-1 arming design first
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  needs the Route-1 arming design first, per its own title -- a deliberate arming sequence is a creative/gameplay call, not a mechanical fix; nothing to build until that design lands
+summary:  (no items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md
+
 ## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1703,26 +1713,6 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  CONTAGIONMECHANICSBUILD1 — the Burn/Bloom engine and the four ruled mechanisms
 prose:    infrastructure/state/items/CONTAGION_MECHANICS_BUILD_1.md
-
-## WARLAB_CRATER_ACCIDENTAL_TRIGGER_1 RUT_WarLabReactorCore's CompIgniteCraterOnDestroy fires the planet-wide Chill crater swap on ANY destruction of that core, not only deliberate Route-1 arming -- accidental-detonation risk once the war lab is reachable; needs the Route-1 arming design first
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md
-
-## JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1 jawa/map_info's tool description claims map and tile biome 'diverge after a live world_tile_set' -- false per vanilla source (Map.Biome reads the tile directly, they cannot diverge for a non-pocket map); needs a DLL rebuild + its own commit
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1.md
 
 ## WARCASKET_SUIT_CLASS_1 Warcaskets as a cross-cutting suit class (ruled 2026-09-28): extreme-temp + vacuum + toxin rated, the alternative to space suits; very slow, bulky, compound-threat failure rolls ('a primitive tank around a person'); ocean access = surviving water/brine TERRAIN only, sea floors stay ship-only; Junker sarcophagi variants carry the Wasteland salvage loop
 state:    proposed
