@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T04:33:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T04:46:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1917,3 +1917,13 @@ kind:     task
 thin:     no ## verify
 summary:  The pulse becomes a six-phase grand cycle:
 prose:    infrastructure/state/items/FORGE_CYCLE_MECHANICS_1.md
+
+## OGLEKNOT_CREATURE_BUILD_1 Build RM_Ogleknot: the Contagion's eye-knot creature wearing the already-validated rejected-Ikee render (art exists, wire by texPath, queue nothing); small skitterer, Contagion register
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  - Art exists and is validated — do not queue any art. The render is the
+prose:    infrastructure/state/items/OGLEKNOT_CREATURE_BUILD_1.md
