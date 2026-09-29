@@ -1,0 +1,45 @@
+Reading additional input from stdin...
+OpenAI Codex v0.153.4
+--------
+workdir: D:\Luke\dev\Rimworld
+model: gpt-5.6-sol
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 01a0eb2e-849d-7e21-a5bb-ec71bb67a3bb
+--------
+user
+You are consulting on worldbuilding for a RimWorld-style colony sim biome: a volcanic crater land of fire and water. The cycle: superheated gas bursts ignite the map, then torrential rains flood it, quenching open lava vents into a TEMPORARY crust of basalt shingle and pumice chunks; strange forms then grow rapidly from this frozen crust, fueled by gases and extreme heat raging below; finally glowing cracks spread and the whole crust melts back into lava, destroying whatever grew. Question B: give FIVE ideas for what these transient fast-growing forms could BE. Explicitly FORBIDDEN: valuable crystals or gems or anything that is just a mineral to mine. Wanted: really unusual, special, eerie things a player would run out onto doomed ground to see or interact with before the melt takes them back. For each: a name, two vivid sentences of what it is and how it behaves, one sentence of the gameplay interaction. Number them B1-B5. Be strange and specific, not generic.
+codex
+**B1 — The Fault Choir.** Bladder-like organisms inflate from cracks, each with a black throat that sings one sustained note through the steam. As the lava rises, thousands join in eerie harmonies that mimic the names and voices of colonists standing nearby.  
+**Gameplay:** A pawn can tune the bladders with heatproof rods, revealing the timing and location of the next eruption—if they finish the melody before the crust fails.
+
+**B2 — Rain-Sewn Pilgrims.** The downpour stitches ash, shed hair, bones, and drowned insects into spindly figures that silently reenact events that happened on the map years ago. Just before melting, each pilgrim turns toward one colonist and performs a gesture from a possible future: an embrace, a murder, or a funeral.  
+**Gameplay:** Players can follow and study a pilgrim to uncover buried history or gain a cryptic warning about an approaching colony event.
+
+**B3 — The Borrowed Herd.** Pale, many-jointed animals bud from the pumice already bearing scars, brands, and prosthetics copied from the colony’s livestock. They gallop in impossible looping paths, occasionally splitting open to release warm rain and the sounds of distant biomes.  
+**Gameplay:** Roping one before the melt lets a handler temporarily exchange local weather with the climate trapped inside it.
+
+**B4 — Underworld Mouths.** Rows of fleshy doors rise upright from the crust, framed by ribs and breathing through keyholes rimmed with wet eyelashes. When knocked upon, they open briefly onto chambers far below the magma, where unseen inhabitants offer objects, demands, or whispered accusations.  
+**Gameplay:** A colonist may conduct one blind trade through a mouth, sacrificing something personally meaningful for an unpredictable subterranean favor.
+
+**B5 — The Minute Mothers.** Towering stalks of cartilage grow, flower, and sag within hours, cradling translucent cocoons shaped like adult colonists. Each cocoon rapidly rehearses an entire unlived lifetime—working, loving, aging, and dying—while wearing its copied pawn’s face.  
+**Gameplay:** The original pawn can touch their double to absorb one perfected skill passion, but also inherits a memory and relationship from the life that never happened.
+**B1 — The Fault Choir.** Bladder-like organisms inflate from cracks, each with a black throat that sings one sustained note through the steam. As the lava rises, thousands join in eerie harmonies that mimic the names and voices of colonists standing nearby.  
+**Gameplay:** A pawn can tune the bladders with heatproof rods, revealing the timing and location of the next eruption—if they finish the melody before the crust fails.
+
+**B2 — Rain-Sewn Pilgrims.** The downpour stitches ash, shed hair, bones, and drowned insects into spindly figures that silently reenact events that happened on the map years ago. Just before melting, each pilgrim turns toward one colonist and performs a gesture from a possible future: an embrace, a murder, or a funeral.  
+**Gameplay:** Players can follow and study a pilgrim to uncover buried history or gain a cryptic warning about an approaching colony event.
+
+**B3 — The Borrowed Herd.** Pale, many-jointed animals bud from the pumice already bearing scars, brands, and prosthetics copied from the colony’s livestock. They gallop in impossible looping paths, occasionally splitting open to release warm rain and the sounds of distant biomes.  
+**Gameplay:** Roping one before the melt lets a handler temporarily exchange local weather with the climate trapped inside it.
+
+**B4 — Underworld Mouths.** Rows of fleshy doors rise upright from the crust, framed by ribs and breathing through keyholes rimmed with wet eyelashes. When knocked upon, they open briefly onto chambers far below the magma, where unseen inhabitants offer objects, demands, or whispered accusations.  
+**Gameplay:** A colonist may conduct one blind trade through a mouth, sacrificing something personally meaningful for an unpredictable subterranean favor.
+
+**B5 — The Minute Mothers.** Towering stalks of cartilage grow, flower, and sag within hours, cradling translucent cocoons shaped like adult colonists. Each cocoon rapidly rehearses an entire unlived lifetime—working, loving, aging, and dying—while wearing its copied pawn’s face.  
+tokens used**Gameplay:** The original pawn can touch their double to absorb one perfected skill passion, but also inherits a memory and relationship from the life that never happened.
+
+4,193
