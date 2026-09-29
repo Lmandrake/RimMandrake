@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T06:41:20Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Crustweevil_east",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the crustweevil, a domed long-snouted weevil-analog that grazes crust lichens on a windswept plain \u2014 a smooth armored dome with the legs hidden under the shell rim, a long curved snout held down against the ground mid-graze. Small, dense, unhurried. No nameable Earth beetle species read.",
+  "reference": null,
+  "rimflow_item_id": "LEANINGSCRUB_BEDAZZLE_SITTING_1",
+  "style_notes": "leaning scrub register: a knee-high silver-green scrubland under a low, fog-softened sun that never rises or sets \u2014 the last ten minutes of a sunset that never ends; silver-green fuzz banding grey darkward and waxy gold sunward, everything leaning the same way in a wind that never stops; no rain and nothing rain-slicked; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is OXIDE-SHEEN: near-black shell with an oily blue-green oxide iridescence and a pale dust film at the dome crown; deliberately distinct from the rest of the cast; bs~0.05, drawSize ~0.5, the invertebrate base of the food web; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the iridescent dome and shell rim from behind"
+}

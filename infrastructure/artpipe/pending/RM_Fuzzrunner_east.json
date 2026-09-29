@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T06:41:19Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Fuzzrunner_east",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the fuzzrunner, a plump low-slung tunnel-hare of a windswept knee-high scrubland \u2014 big sprinting hindquarters, small tucked ears built for corridors, a blunt whiskered muzzle, caught mid-lope low to the ground as if under a canopy just above its back. Round with fog-fat, workmanlike and watchful, never cute. Its coat is short dense plush, not fluffy. No nameable Earth rabbit or rodent.",
+  "reference": null,
+  "rimflow_item_id": "LEANINGSCRUB_BEDAZZLE_SITTING_1",
+  "style_notes": "leaning scrub register: a knee-high silver-green scrubland under a low, fog-softened sun that never rises or sets \u2014 the last ten minutes of a sunset that never ends; silver-green fuzz banding grey darkward and waxy gold sunward, everything leaning the same way in a wind that never stops; no rain and nothing rain-slicked; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is FOG-SILVER: pale silver-buff coat with a damp grey underside and a darker spine-line \u2014 the one animal painted the canopy's own silver so a glimpse reads as the fuzz itself moving; deliberately distinct from the rest of the cast; the biome's staple prey animal, bs~0.2, drawSize ~0.8, herd-common tunnel-runner that freezes rigid when the wind dies; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the big haunches, spine-line and tucked ears from behind"
+}

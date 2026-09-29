@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T06:41:20Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Whipfuzz",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: whipfuzz, the thin between-shrub grass of a windswept knee-high scrubland \u2014 a sparse tuft of long fine blades that lie almost flat, every blade bent the SAME direction by a wind that never stops, tips whipping. Sparse and struggling, never lush, never a dense clump. Single plant, viewed from a slight isometric game camera angle, centered, soft shadow only, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "LEANINGSCRUB_BEDAZZLE_SITTING_1",
+  "style_notes": "leaning scrub register: a knee-high silver-green scrubland under a low, fog-softened sun that never rises or sets \u2014 the last ten minutes of a sunset that never ends; silver-green fuzz banding grey darkward and waxy gold sunward, everything leaning the same way in a wind that never stops; no rain and nothing rain-slicked; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is SILVER-GREEN, the biome's signature register carried by exactly one plant so the rest of the flora is free to differ: pale silver-green blades darkening at the root; fire-resistant living flora \u2014 nothing dry, straw-like or tinder-read; the permanent lean is the read: one direction, all blades; Graphic_Random master, distinct tangles wanted, drawSize ~1.0"
+}

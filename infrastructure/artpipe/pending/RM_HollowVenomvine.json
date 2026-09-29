@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T06:41:20Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_HollowVenomvine",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: a hollow venomvine stand \u2014 an ancient thorn thicket of a windswept scrubland that died from the inside and stands anyway: a cluster of open weathered grey cane-tubes at man height, dark gallery mouths readable at the base where small animals thread them like streets, thorns worn blunt with age. Architecture grown, not built. Single plant, slight isometric game angle, centered, soft shadow only, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "LEANINGSCRUB_BEDAZZLE_SITTING_1",
+  "style_notes": "leaning scrub register: a knee-high silver-green scrubland under a low, fog-softened sun that never rises or sets \u2014 the last ten minutes of a sunset that never ends; silver-green fuzz banding grey darkward and waxy gold sunward, everything leaning the same way in a wind that never stops; no rain and nothing rain-slicked; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 the venomvine family is this cast's SHOWPIECE (owner verbatim: the art should be especially rich, varied, interesting \u2014 its the strange showpiece here); family register: near-black woven canes, bone-pale recurved thorns, standing MAN-HEIGHT OR MORE (never a ground mat \u2014 the frozen sheet rules it the only tall vegetation in the biome), leaning sunward like everything else; each form carries its own distinct accent; this form's accent is DRIFTWOOD-GREY: the family's near-black weathered out to silvered grey, the palest form \u2014 age made visible; the crawl-through gate mechanics ride the build ticket; drawSize ~2.2"
+}
