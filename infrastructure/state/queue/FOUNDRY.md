@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T11:23:46Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-29T11:43:46Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1712,16 +1712,6 @@ thin:     no ## spec, no ## criteria
 summary:  CONTAGIONMECHANICSBUILD1 — the Burn/Bloom engine and the four ruled mechanisms
 prose:    infrastructure/state/items/CONTAGION_MECHANICS_BUILD_1.md
 
-## WASTELAND_RULED_CONTENT_1 Build the Wasteland survivor cast: full RM_ donor replacement - 8 fauna ports, 3 new processors, 6 flora, bezoar/soot items, brine label renames, texPath rescue (cast bible wasteland_survivor_cast_2026-09-28.md)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  WASTELANDRULEDCONTENT1 — build the survivor cast: full RM donor replacement
-prose:    infrastructure/state/items/WASTELAND_RULED_CONTENT_1.md
-
 ## WASTELAND_MECHANICS_BUILD_1 Build the Wasteland mechanics: 20-cell Middenshell on TitanicCreatures, processor gatherable comps, ambient-dose comp, three storm WeatherDefs + MovingDunes exhumation, pollution-first dose layer
 state:    proposed
 row:      unassigned
@@ -1971,3 +1961,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WARCASKET_CASK_BAY_AND_SARCOPHAGI_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARCASKET_CASK_BAY_AND_SARCOPHAGI_1.md
+
+## WASTELAND_GRIPPER_STEAL_BEHAVIOR_1 Gripper (RM_Gripper) stealing behavior C# — owner art-sheet ruling said 'always carrying something' is part of the def, not just flavor; no JobGiver/WorkGiver for animal item-theft exists yet
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WASTELAND_GRIPPER_STEAL_BEHAVIOR_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WASTELAND_GRIPPER_STEAL_BEHAVIOR_1.md
