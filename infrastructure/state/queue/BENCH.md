@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-28T21:20:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T01:30:19Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -278,6 +278,15 @@ target:   v1
 kind:     design
 summary:  (no items/WASTELAND_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WASTELAND_BEDAZZLE_SITTING_1.md
+
+## CAULDRON_BEDAZZLE_SITTING_1 The Cauldron bedazzle sitting - program row 5: score against the nine-mark bar, fill flora/fauna, four-turn volley, ticket + commission; execute the ruled PoisonForest->Cauldron rename (live-tile check gates any defName change)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/CAULDRON_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CAULDRON_BEDAZZLE_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
