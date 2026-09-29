@@ -50,6 +50,13 @@ ship-only) — slow, bulky, failure-prone under compound threats, *"a primitive
 tank around a person."* Cask bay approved; interdependent cargo-bay
 waste-ecology allowed emergently.
 
+⭐ **AMENDMENT 2026-09-29 (owner, `PIT_RENAME_STENCHLANDS_1`):** **The Pit's name
+further ruled: THE STENCHLANDS.** The rename request predated confirmation of which
+site it meant; the owner confirmed in conversation that it is this sitting's Pit (the
+former Glowing Throat, §8) he meant. Full chain: the Glowing Throat (working name) →
+The Pit (ruled 2026-09-28) → **The Stenchlands** (ruled 2026-09-29). §8/§9/§10 below
+corrected in place to the current name.
+
 ## 0. The measurements everything rests on
 
 MEASURED via `src/RimMandrake/Utils/biome_sheet_stats.py` (canon CSV + the 8 overlay
@@ -264,7 +271,7 @@ because nobody else wants to enforce anything in a Wasteland.
 
 🔴 **They are digging up the very plants that are crusting over the poison** — ripping the
 sequestration vaults for their dirty reactors and weaponry, reintroducing buried
-contamination into circulation. And **their denial about the Throat is institutional, not
+contamination into circulation. And **their denial about the Stenchlands is institutional, not
 stupid**: their entire economy is the tipping fee; admitting the hazard ends the dump.
 
 ### The mutator/injection palette (the one-def ruling, made concrete)
@@ -276,7 +283,7 @@ stupid**: their entire economy is the tipping fee; admitting the hazard ends the
 | **Fallout scour** | ash dunes, storm-exhumation sites, radiothermal dens, rib-vaults, the stormwall glow |
 | **Terminator pockets** | trapped enrichment, plasma storms, the oldest battle ruins, dead sarlacc throats |
 
-### ⭐ THE PIT (true name ruled 2026-09-28; "the Glowing Throat" was the working name)
+### ⭐ THE STENCHLANDS (true name ruled 2026-09-29, superseding "The Pit," ruled 2026-09-28; "the Glowing Throat" was the working name before that)
 
 One dead sarlacc has had so much hideousness thrown down it that **an unholy glow now rises
 from it**, and the ground sometimes trembles as though it were moving or groaning. 🔴 **It
@@ -303,7 +310,7 @@ Junkers refuse and refute all of it.
 - **Light:** the dark families are lit by the stormwall's permanent glow on one horizon —
   sunset afterimage, aurora-halo storms, lightning flicker. The basins are the opposite:
   blinding salt-white under a low sun. Point-sources of *wrong* light punctuate both: the
-  radiotroph groves, the warm dens, the Pit.
+  radiotroph groves, the warm dens, the Stenchlands.
 - **Palette:** salt white, ash grey, vitrified black-green, brine-pool mineral color — and
   the sickly radiances against it.
 - **Silhouette language:** horizons of nothing, then one enormous thing — a rib-vault, a
@@ -312,11 +319,11 @@ Junkers refuse and refute all of it.
   pathos read): warts, plating and mineral crust worn as armor and adaptation — content,
   never pitiable, and never menace either.
 - **Sound:** wind over crust; Geiger-analog clicks as the biome's heartbeat where the
-  player has the instrument; the rumor-tremor near the Pit.
+  player has the instrument; the rumor-tremor near the Stenchlands.
 
 ## 10. Campaign hooks (owner-authored 2026-09-05 — candidate arcs, none built)
 
-- 🔑 **The Throat as the environmental doomsday clock**, and the faction triangle around
+- 🔑 **The Stenchlands as the environmental doomsday clock**, and the faction triangle around
   it: the **Junkers** cannot admit it; **Wildsteam** (the wild's partisans, preaching to
   deaf ears) and **Deepwater** both sincerely care about the planet's future habitability
   and have no leverage — ⇒ **the players are the only hands all three can use.** Survey
@@ -337,7 +344,7 @@ Junkers refuse and refute all of it.
      second station). The dark tower at the Scald (`SCALD_DARK_TOWER_1`) is a different
      dungeon with a similar theme; do not conflate the two.
   5. **The Slime experiment** (owner, 2026-09-06 — `the_slime.md` §7): scoop tons of the
-     living genetic database onto the gravship and pour it down the Throat — likely killing what
+     living genetic database onto the gravship and pour it down the Stenchlands — likely killing what
      you poured, maybe neutralizing the pit, with genuinely unknown results below. The
      only option that is an experiment rather than a verdict.
 
@@ -346,8 +353,9 @@ Junkers refuse and refute all of it.
 ## Owed
 
 - **Names, owner's pick:** the halo-storm and plasma-storm player-facing names. (The
-  Throat/Pit, the excretors, the radiothermal solitary and the brine-battery creatures
-  were all named at the 2026-09-28 sitting — see the amendment block and the cast bible.)
+  Stenchlands (Throat → Pit → Stenchlands), the excretors, the radiothermal solitary and
+  the brine-battery creatures were all named at the 2026-09-28/2026-09-29 sittings — see
+  the amendment blocks and the cast bible.)
 - **Engine feasibility pass:** RULED 2026-09-28 — the dose layer rides Biotech's
   pollution mechanism (radiation AND pollution, pollution-first), and the storm
   map-reshuffle reuses the MovingDunes mechanism. Build: `WASTELAND_MECHANICS_BUILD_1`
