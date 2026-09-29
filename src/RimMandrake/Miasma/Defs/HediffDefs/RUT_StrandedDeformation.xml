@@ -44,6 +44,17 @@
   trained-behaviour backstop that same section rules. See that class's own
   header (Source/RM_WardenMotherSuccession.cs) for why this is scoped to
   hediff carriers only, not every rescued nursery juvenile.
+
+  🔴 WARDEN_MOTHER_PATHFINDER_VERIFY_1 fix, live-measured 2026-09-29:
+  `<hediffClass>Hediff</hediffClass>` above was wrong — a plain `Hediff` never
+  reads `HediffDef.comps` at all (only `HediffWithComps` does), so both comps
+  on this def, LocatableCall and SelfTameOnRecord, were dead weight that
+  compiled clean and never once ran. Caught as `Config error in
+  RUT_StrandedDeformation: has comps but hediffClass is not HediffWithComps
+  or subclass thereof` on a live baroque_wave0 quicktest load — the exact
+  config-error sweep this item's own spec named. Fixed to `HediffWithComps`,
+  matching this same folder's own `RUT_MiasmaExposure` (comps, HediffWithComps)
+  precedent.
 -->
 <Defs>
 
@@ -51,7 +62,7 @@
     <defName>RUT_StrandedDeformation</defName>
     <label>stranded deformation</label>
     <description>Gills gone leathery, fins splaying into feet that don't quite work. Whatever this creature was built to be, the muck had other ideas — it cannot return to open water, and it does not thrive there on land either. It calls, and it does not stop.</description>
-    <hediffClass>Hediff</hediffClass>
+    <hediffClass>HediffWithComps</hediffClass>
     <isBad>true</isBad>
     <tendable>false</tendable>
     <initialSeverity>1</initialSeverity>
