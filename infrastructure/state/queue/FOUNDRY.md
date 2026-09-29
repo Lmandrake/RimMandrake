@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T10:04:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T10:27:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1044,6 +1044,15 @@ kind:     bug
 summary:  (no items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1.md
 
+## UTINNIPATCHES_ORPHAN_AUDIT_1 Audit the full list of files deploy_custom_mods.py reports 'in game, not in repo' under UtinniPatches (and other mods) for stale/dangerous orphans vs. intentional residue
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/UTINNIPATCHES_ORPHAN_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/UTINNIPATCHES_ORPHAN_AUDIT_1.md
+
 ## TERMINALBIOMES_REVIEW_FIXES_1 TerminalBiomes 29-file review fix wave: 2 dead tickerType mechanisms (vaulisk lure never springs, mobile glower never runs), 6 more BUGs, 6 RISKs, 4 NITs - findings are sonnet evidence, verify each
 state:    doing
 row:      unassigned
@@ -1674,16 +1683,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## UTINNIPATCHES_ORPHAN_AUDIT_1 Audit the full list of files deploy_custom_mods.py reports 'in game, not in repo' under UtinniPatches (and other mods) for stale/dangerous orphans vs. intentional residue
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/UTINNIPATCHES_ORPHAN_AUDIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/UTINNIPATCHES_ORPHAN_AUDIT_1.md
-
 ## CONTAGION_RULED_CONTENT_1 Build the Contagion grotesque cast: 35 RM_ defs replacing the donor roster outright (no patches), 8 new species, 4 real flyers, Wombpod wired to the built genome loop - cast bible is the authority
 state:    proposed
 row:      unassigned
@@ -1933,3 +1932,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 12)
 prose:    infrastructure/state/items/DEEPFIRE_MOD_SETTINGS_1.md
+
+## ROTSPOREKIT_GHOST_MOD_1 RotSporeKit (mandrake.rut.rotsporekit) is a dissolved mod still ACTIVE + fully deployed (130 files), duplicating TheRot content under old RUT_ defNames
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ROTSPOREKIT_GHOST_MOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ROTSPOREKIT_GHOST_MOD_1.md
