@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T04:12:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T04:21:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -969,6 +969,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BEDAZZLE_FLORA_EXPANSION_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  A design pitch pass per biome (Fable, backgrounded): new invented flora in each
 prose:    infrastructure/state/items/BEDAZZLE_FLORA_EXPANSION_1.md
