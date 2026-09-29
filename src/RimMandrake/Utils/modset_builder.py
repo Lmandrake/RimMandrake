@@ -96,6 +96,13 @@ TIERS = {
         "want": [BRIDGE],
         "dlc": True,
     },
+    "luminouspigment": {
+        "why": "DEEPFIRE_PAINT_LIVE_VERIFY_1 spec §10 step 5 quicktest: prove "
+               "CompDeepfire + the designator/WorkGiver/JobDriver + the "
+               "spawned-invisible-proxy light system against GroundGlowAt.",
+        "want": [BRIDGE, "mandrake.rm.luminouspigment"],
+        "dlc": True,
+    },
     "weepingstones": {
         "why": "Live-load/quicktest proof for WEEPINGSTONES_RM_MOD_BUILD_1: does "
                "mandrake.rm.weepingstones load clean, does RM_WeepingStones "
