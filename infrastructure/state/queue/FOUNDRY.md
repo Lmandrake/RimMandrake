@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T08:39:02Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T08:40:57Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1684,16 +1684,6 @@ kind:     bug
 thin:     no ## verify
 summary:  Three sonnet reviewers swept all 29 C files changed in the Twilight build wave
 prose:    infrastructure/state/items/TERMINALBIOMES_REVIEW_FIXES_1.md
-
-## WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1 Retire RM_MoldMatRoof: the waveglass is a sky, not a floor plant - replace it with a shed panel that drifts down and is harvested
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WAVEGLASS_PANEL_REPLACES_FLOOR_PLANT_1.md
 
 ## RUT_RAREGREYCATCHES_DEFNAME_COLLISION_1 Same defName RUT_RareGreyCatches (ThingSetMakerDef) exists in two separate mods
 state:    proposed
