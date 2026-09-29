@@ -149,3 +149,4 @@ TRAP: a faced animal job whose prompt says 'top-down' is refused whole by artpip
 - `git commit <paths>` refuses an untracked file that was never `git add`ed — pathspec commits only take known files; add first, then commit by explicit path (2026-09-29, twice in one session).
 - codex.exe with expired ChatGPT auth prints a plausible session header then 401 refresh-token spam and exit 1 — grade the answer body, not the header; re-login is owner-only (2026-09-29).
 - `grep -oP` on config.toml containing Windows paths mangles backslashes (\U, \b eaten) — resolve a Windows binary by globbing its install dir, not by parsing the path out of a config (2026-09-29).
+- broadcast.py stores some emoji as LITERAL \uXXXX escape text in comments; the Edit tool fails to match those regions in both raw and rendered form — patch such comment blocks with a python re.sub instead (hit 2026-09-29, stamp-only relay change).
