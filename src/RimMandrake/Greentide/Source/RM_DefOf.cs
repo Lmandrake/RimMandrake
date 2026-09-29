@@ -9,6 +9,7 @@ namespace RimMandrake.Greentide
 		public static JobDef RM_DigOutBuried;
 		public static JobDef RM_FreeMired;
 		public static HediffDef RM_Mired;
+		public static HediffDef RM_FeverMark;
 		public static DesignationDef RM_DesignationDigOutBuried;
 
 		static RM_DefOf()

@@ -206,6 +206,16 @@
         <baseTendDurationHours>24</baseTendDurationHours>
         <severityPerDayTended>-1.2</severityPerDayTended>
       </li>
+      <!-- GREENTIDE_FEVER_SPECIALISTS_1, U1's answer: HediffComp.CompPostPostRemoved()
+           fires on removal (recovery) regardless of which of the two comps above
+           actually zeroed the severity, so this rides both the ambient-incident
+           and deliberate-dose routes for free. See
+           RM_HediffComp_MarksFeverSurvivor.cs for the gate on reaching the
+           collapse stage first (index 2 below) before the mark is earned. -->
+      <li Class="RimMandrake.Greentide.HediffCompProperties_MarksFeverSurvivor">
+        <markHediff>RM_FeverMark</markHediff>
+        <collapseStageIndex>2</collapseStageIndex>
+      </li>
     </comps>
     <stages>
       <li>
@@ -250,6 +260,40 @@
             <setMax>0.05</setMax>
           </li>
         </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- GREENTIDE_FEVER_SPECIALISTS_1 — R1 "immunological capital"
+       (design/Jawa/worldbuilding/biomes/greentide_risk_reward_2026-09-22.md
+       §4/§4b), owner-picked by question card 2026-09-25. RM_Frenzy is the
+       single signature illness chosen to confer this (see that item's
+       history note for why: it is this project's own authored disease, the
+       flavor is literally "feverish", and it already carries the real
+       downtime/death-risk shape the reward is meant to be earned against -
+       the other six biome disease rows are vanilla generic illness with no
+       comparable narrative weight to hang a badge on).
+
+       Applied once, permanently, by RM_HediffComp_MarksFeverSurvivor on
+       RM_Frenzy's own comps list - never authored or removed by anything
+       else. isBad false and no stats/capMods anywhere below: this is a
+       badge, not a debuff. The qualification gate (U2) lives in C#, not
+       here: RM_IncidentWorker_FrenzyDisease and
+       RM_IngestionOutcomeDoer_FrenzyDose both skip a pawn who already
+       carries this. -->
+  <HediffDef>
+    <defName>RM_FeverMark</defName>
+    <label>fever-marked</label>
+    <description>The lasting signature of a Greentide fever survived rather than merely endured — a permanent, visible record that this colonist rode the Frenzy all the way into the coma and came back out. It confers no injury and costs nothing to carry. The jungle does not do this twice: a fever-marked colonist does not catch the Frenzy again, ambient or self-dosed.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.35, 0.75, 0.55)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <label>fever-marked</label>
       </li>
     </stages>
   </HediffDef>

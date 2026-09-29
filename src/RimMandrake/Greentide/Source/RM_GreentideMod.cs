@@ -63,6 +63,19 @@ namespace RimMandrake.Greentide
         public static bool frenzyEnabled = true;
         public static float frenzySeverityMultiplier = 1f;
 
+        // GREENTIDE_FEVER_SPECIALISTS_1. R1 "immunological capital" — the
+        // permanent RM_FeverMark badge on a colonist who survives the Frenzy
+        // (reaches the collapse stage and is tended out of it alive) and the
+        // resistance-on-re-exposure gate that makes it a real qualification.
+        // feverMarkEnabled is the master switch (off: RM_Frenzy behaves exactly
+        // as GREENTIDE_FRENZY_DISEASE_1 shipped it, no mark ever applied).
+        // feverMarkGrantsImmunity is a separate sub-toggle so a player can keep
+        // the cosmetic badge (health-tab bragging rights) without the gameplay
+        // gate, or turn the gate off while the badge still applies — both read
+        // false with feverMarkEnabled off regardless of their own state.
+        public static bool feverMarkEnabled = true;
+        public static bool feverMarkGrantsImmunity = true;
+
         // GREENTIDE_GRENADE_WEAPONS_1. The stench smoke grenade — the only
         // one of the jungle's three named grenades this item builds (the
         // seeding grenade and both toxin routes stay designed-but-unbuilt,
@@ -91,6 +104,8 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
             Scribe_Values.Look(ref frenzyEnabled, "frenzyEnabled", true);
             Scribe_Values.Look(ref frenzySeverityMultiplier, "frenzySeverityMultiplier", 1f);
+            Scribe_Values.Look(ref feverMarkEnabled, "feverMarkEnabled", true);
+            Scribe_Values.Look(ref feverMarkGrantsImmunity, "feverMarkGrantsImmunity", true);
             Scribe_Values.Look(ref stenchGrenadeEnabled, "stenchGrenadeEnabled", true);
             Scribe_Values.Look(ref stenchGrenadeRadiusMultiplier, "stenchGrenadeRadiusMultiplier", 1f);
         }
@@ -191,6 +206,20 @@ namespace RimMandrake.Greentide
             {
                 list.Label("  Dose strength: " + frenzySeverityMultiplier.ToString("0.00") + "x");
                 frenzySeverityMultiplier = list.Slider(frenzySeverityMultiplier, 0.5f, 2f);
+                list.Gap();
+                list.CheckboxLabeled("  Survivors become specialists", ref feverMarkEnabled,
+                    "A colonist who lives through the Frenzy's coma keeps a permanent, visible "
+                  + "RM_FeverMark in their health tab — earned only by reaching the coma stage and "
+                  + "being tended out of it alive, never by an early cure. Off: the Frenzy behaves "
+                  + "exactly as before, no mark is ever applied.");
+                if (feverMarkEnabled)
+                {
+                    list.CheckboxLabeled("    Marked colonists are resistant to catching it again", ref feverMarkGrantsImmunity,
+                        "The qualification half of the reward: a fever-marked colonist is dropped from "
+                      + "the ambient Frenzy incident's victim pool, and a harvested dose is wasted on "
+                      + "one rather than re-applying. Off: the badge is purely cosmetic — a marked "
+                      + "colonist can still catch or be dosed with the Frenzy like anyone else.");
+                }
             }
             list.GapLine();
 
