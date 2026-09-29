@@ -3,10 +3,13 @@
 #
 # 🔴 OWNER, 2026-08-22: *"make it so that when I say game up, game down, game loading
 # it is IDENTICAL to that !./game command. Fix it for this specific thing."*
-# ⇒ WHEN HE SAYS IT, THE AGENT RUNS THIS. Not a stamp, not a paraphrase — this exact
-# command, so the other windows hear it in the same breath the ledger is written. That
+# ⇒ WHEN HE SAYS IT, THE AGENT RUNS THIS. Not a paraphrase — this exact command. That
 # is the ONLY thing an agent may run this for: relaying his words the moment he says
 # them. Announcing a state you INFERRED is still the thing the ruling forbids.
+# 🔴 OWNER, 2026-09-29: an agent's relay STAMPS THE LEDGER ONLY — broadcast.py sends
+# no window messages when a seat runs it (*"burning tokens unnecessarily and rarely
+# informs"*). Peers learn the state from `rimflow next`, which measures the game
+# itself. Only the owner running this reaches windows.
 # ⭐ Add `--said "<his words>"` and the quote is recorded on the ledger event as the
 # authorization; without it the event is still OWNER's, just unattributed.
 #
@@ -21,13 +24,10 @@
 # event to the ledger itself — but reaching it meant typing a python3 path.
 #
 # 🔑 THIS IS A WRAPPER, NOT A SECOND MECHANISM. It builds the sentence and hands it
-# to broadcast.py, so it does BOTH things at once and cannot drift from it:
-#   1. every agent window is told, which is the one message that legitimately
-#      crosses windows and is the OWNER's to send;
-#   2. the ledger is stamped, so `rimflow next` starts offering or withholding the
-#      items whose `needs` depends on it.
-# ⚠️ Stamping without announcing, or announcing without stamping, is how the board
-# came to read DOWN while RimWorld was running.
+# to broadcast.py, which stamps the ledger so `rimflow next` starts offering or
+# withholding the items whose `needs` depends on it — and, when the OWNER is the
+# one running it, also tells every agent window. From a seat the stamp is the
+# whole act (owner, 2026-09-29).
 set -euo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 bc="$here/src/RimMandrake/Utils/broadcast.py"
@@ -70,8 +70,9 @@ case "${1}" in
         echo "  --said \"…\"  an agent relaying the owner's spoken words, verbatim."
         echo "               🔴 That is the ONLY reason an agent runs this. Never a state it inferred."
         echo
-        echo "Announces to every agent window AND stamps the ledger, in one act."
-        echo "🔴 The owner's, and an agent's ONLY when relaying his words as he says them."
+        echo "Stamps the ledger; run by the OWNER it also announces to every agent window."
+        echo "🔴 An agent's ONLY when relaying his words as he says them — and an agent's"
+        echo "   run stamps only, messaging no window (owner, 2026-09-29)."
         exit 0 ;;
 esac
 
@@ -97,13 +98,13 @@ case "${1,,}" in
 esac
 shift
 # ⛔ A note may never start with a dash. The note slot is free text appended after an
-# em dash and sent to every window; a flag landing here is always a mistyped command,
+# em dash onto the recorded sentence; a flag landing here is always a mistyped command,
 # never something the owner meant to say. Refusing costs nothing and the alternative
-# is a false announcement — see the help note above for what that looked like.
+# is a false record — see the help note above for what that looked like.
 for _a in "$@"; do
     case "$_a" in -*)
         echo "refusing: '$_a' looks like a flag, not a note." >&2
-        echo "the note is free text appended to the announcement and sent to EVERY window." >&2
+        echo "the note is free text appended to the recorded sentence." >&2
         echo "for the usage:  ./game --help" >&2
         exit 2 ;;
     esac

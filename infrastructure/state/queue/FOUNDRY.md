@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T11:43:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T14:58:32Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1089,6 +1089,15 @@ kind:     task
 summary:  CONTAGIONRULEDCONTENT1 — build the grotesque cast: 35 RM defs, full donor replacement
 prose:    infrastructure/state/items/CONTAGION_RULED_CONTENT_1.md
 
+## BLUEDESERT_RULED_CONTENT_1 Build the Blue Desert ruled cast: depth cast (zhaaz/vrisk/dovvik/utikka) + bedazzle four (Vhaulk/Murrek/Ossivel/Virr) + RM_BlueIce + water-plant cut + roster rewiring
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  BLUEDESERTRULEDCONTENT1 — build the ruled cast: eight natives, blue ice, the water-plant cut
+prose:    infrastructure/state/items/BLUEDESERT_RULED_CONTENT_1.md
+
 ## BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1 Live-verify a Baroque Biomes toggle actually stops worldgen placement, not just that the startup gate wires cleanly: flip one biome off in Mod Settings, generate a new world, confirm its BiomeDef never places a tile, flip back on. RM_BiomesGate's startup log (roster mapped, gate applied) is proven; an actual OFF-and-regenerate cycle is not.
 state:    doing
 row:      unassigned
@@ -1722,16 +1731,6 @@ thin:     no ## spec, no ## criteria
 summary:  WASTELANDMECHANICSBUILD1 — the Middenshell, the processor comps, storms and the dose layer
 prose:    infrastructure/state/items/WASTELAND_MECHANICS_BUILD_1.md
 
-## BLUEDESERT_RULED_CONTENT_1 Build the Blue Desert ruled cast: depth cast (zhaaz/vrisk/dovvik/utikka) + bedazzle four (Vhaulk/Murrek/Ossivel/Virr) + RM_BlueIce + water-plant cut + roster rewiring
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  BLUEDESERTRULEDCONTENT1 — build the ruled cast: eight natives, blue ice, the water-plant cut
-prose:    infrastructure/state/items/BLUEDESERT_RULED_CONTENT_1.md
-
 ## BLUEDESERT_MECHANICS_BUILD_1 Build the Blue Desert mechanics: vhaulk trigger-gated detonation (EMP-on-hit trap), Warnings study ladder + cold-cutting, blue-ice thaw rolls, three weathers, soundscape + crack cue, Cold Hold + drift burial, murrek re-seeding, dovvik minesweeper, ablation salvage
 state:    proposed
 row:      unassigned
@@ -1971,3 +1970,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WASTELAND_GRIPPER_STEAL_BEHAVIOR_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WASTELAND_GRIPPER_STEAL_BEHAVIOR_1.md
+
+## MOEVENTS_FINDMOD_RETIRED_1 Two FindMod patches name retired Mo'Events (Continued); selftest_retired_mods fails
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MOEVENTS_FINDMOD_RETIRED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOEVENTS_FINDMOD_RETIRED_1.md

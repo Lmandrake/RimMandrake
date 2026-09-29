@@ -998,7 +998,10 @@ Steam, launching the game, running a cold load, anything the session needs — n
 needs a question first. This supersedes asking-first instincts elsewhere in this file for
 anything gated only on "do you have the bridge."
 
-`src/RimMandrake/Utils/broadcast.py` is the owner's tool; the game-state relay above is its only carve-out.
+`src/RimMandrake/Utils/broadcast.py` is the owner's tool; the game-state relay above is its
+only carve-out, and since 2026-09-29 that relay is STAMP-ONLY — a seat running it writes the
+ledger event and messages no window (owner: game-state broadcasts between agents *"burn tokens
+unnecessarily and rarely inform"*; `rimflow next` measures the game itself).
 🔴 Run commands yourself — a `!`-prefixed paste handed to the owner is the defect
 (hook-enforced on Stop); anything he must LOOK at comes with the complete native path.
 
