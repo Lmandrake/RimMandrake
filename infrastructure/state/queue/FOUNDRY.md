@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T16:12:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T16:22:57Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -990,6 +990,15 @@ kind:     build
 summary:  SCALDWATERAGITATIONFLECKS1 — wreck shadow fix + ambient water agitation
 prose:    infrastructure/state/items/SCALD_WATER_AGITATION_FLECKS_1.md
 
+## FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 The eye set-piece's frequency and the poison/radioactive suppression route
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     mechanism
+summary:  Caused by FEVERWOODTENTACLEBESTIARY1 (six tentacle types + the ordinary
+prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.md
+
 ## FEVERWOOD_TWO_FRONT_LURE_TUNING_1 Two-front lure numbers, prey-quality gate, and a free-tier second raider
 state:    doing
 row:      unassigned
@@ -1570,16 +1579,6 @@ blocked:  Real trace (Transient/Player.log.geneticrim_ctor_nre_2026-09-25 L11288
 summary:  REGROWTHRECOLORMINEABLESNRE1
 prose:    infrastructure/state/items/REGROWTH_RECOLOR_MINEABLES_NRE_1.md
 
-## FEVERWOOD_SAP_SUCKER_TUNING_1 Real numbers and the mishandling trigger for the sap-sucker guild
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     mechanism
-blocked:  needs owner: item's own spec says numbers must not be guessed, same cluster as TENTACLE/DIANOGA tuning
-summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
-prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
-
 ## WEBWORK_EGG_BROKER_CHANNEL_1 Add the egg black-market broker channel as a Bazaar tab, once Bazaar has tabs
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1672,15 +1671,15 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 The eye set-piece's frequency and the poison/radioactive suppression route
+## FEVERWOOD_SAP_SUCKER_TUNING_1 Real numbers and the mishandling trigger for the sap-sucker guild
 state:    proposed
 row:      unassigned
 needs:    owner
 target:   v1
 kind:     mechanism
 thin:     no ## verify, no ## criteria
-summary:  Caused by FEVERWOODTENTACLEBESTIARY1 (six tentacle types + the ordinary
-prose:    infrastructure/state/items/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1.md
+summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
+prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
 
 ## CONTAGION_MECHANICS_BUILD_1 Build the Contagion mechanics: Burn/Bloom weather + tells, the Coalescence (one growing organism), Cloud Repulsor + gravship hardpoint, Sunbeam + arrest, the five bizarre Grown limbs on the Anomaly renderNode mechanism
 state:    proposed
