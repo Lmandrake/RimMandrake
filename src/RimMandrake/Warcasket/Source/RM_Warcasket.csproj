@@ -1,0 +1,88 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    WARCASKET_SUIT_CLASS_1. Same recipe as
+    src/RimMandrake/FloodedCanyon/Source/RM_FloodedCanyon.csproj — copy
+    that header if this one goes stale.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Warcasket\Source\RM_Warcasket.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+
+    No Harmony patch needed — every class here rides a vanilla extension
+    point (ThingComp/MapComponent/Mod+ModSettings), same shape
+    RM_FloodedCanyon's own non-Harmony classes use.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrake.Warcasket</AssemblyName>
+    <RootNamespace>RimMandrake.Warcasket</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <!-- This mod is a hazard-math CLIENT of EnvironmentalHazards' shared
+       HazardTargeting utility (SumApparelStat/ProtectionDriveFactor), so
+       it compiles against that mod's own assembly, same pattern
+       RM_FloodedCanyon uses for RimMandrake:FlowWorks. The source folder
+       stays at src/RimMandrake/EnvironmentalHazards regardless of
+       deployment packaging (BAROQUE_BIOMES_WAVE2_FOLD_1 composes it into
+       the deployed mandrake.rm.biomes mod's own Assemblies/ alongside
+       RimMandrake.Biomes.dll - compose never moves the source folder, see
+       src/RimMandrake/Biomes.compose.json's own doc comment), so this
+       build-time reference and About.xml's mandrake.rm.biomes dependency
+       are both correct at once. Build EnvironmentalHazards first; the DLL
+       is tracked in the repo, so a clean checkout already has one. -->
+  <PropertyGroup Condition="'$(EnvironmentalHazardsDll)' == ''">
+    <EnvironmentalHazardsDll>$(MSBuildThisFileDirectory)..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</EnvironmentalHazardsDll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="RM_WarcasketDefOf.cs" />
+    <Compile Include="RM_WarcasketSettings.cs" />
+    <Compile Include="RM_JunkerSarcophagusExtension.cs" />
+    <Compile Include="RM_CompWarcasketIntegrity.cs" />
+    <Compile Include="RM_MapComponent_HazardousTerrainImmersion.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.EnvironmentalHazards">
+      <HintPath>$(EnvironmentalHazardsDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
