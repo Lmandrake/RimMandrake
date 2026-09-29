@@ -1,0 +1,36 @@
+{
+  "sheetId": "bedazzle_blue_desert_art_review_2026_09_28",
+  "posture": "blacklist",
+  "criterion": "Prefill = artpipe validator/facts PASS, which ranks technical validity (alpha, canvas, facing presence) — it cannot rank whether the thing looks right for the biome. Your eye rules.",
+  "exportedBy": "review-sheet-page",
+  "exportedAt": "2026-09-29T03:41:19.464Z",
+  "decidedCount": 5,
+  "decisions": {
+    "RM_Murrek": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Ossivel": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Vhaulk": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "The east face should be frost-covered like the north and south are, with similar legs.",
+      "at": "2026-09-29T03:40:16.268Z"
+    },
+    "RM_Virr": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_BlueIce": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    }
+  }
+}

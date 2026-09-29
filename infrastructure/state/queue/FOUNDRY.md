@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T02:53:10Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-29T04:12:09Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1887,3 +1887,13 @@ kind:     task
 thin:     no ## verify
 summary:  - Scope is EVERYTHING the census names, including defNames and the soils
 prose:    infrastructure/state/items/CAULDRON_FULL_RENAME_1.md
+
+## SWALE_CANAL_ART_REFERENCE_1 Swale art from live reference: build a real FlowWorks canal in game, screenshot it, spec the RM_Swale art from the shots (owner-typed on the sheet 2026-09-29); current Swale art stands as placeholder until then
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SWALE_CANAL_ART_REFERENCE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SWALE_CANAL_ART_REFERENCE_1.md
