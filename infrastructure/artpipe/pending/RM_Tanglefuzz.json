@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T06:41:20Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Tanglefuzz",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: tanglefuzz, the den-anchor bush of a windswept knee-high scrubland \u2014 a woody, knotted shrub over a visibly massive near-black root-flare, a shadowed hollow readable at the base where burrows converge, grey-olive foliage leaning hard in the permanent wind. Knee-high at most, one bush alone (spaced flora law \u2014 never a clump). Single plant, slight isometric game angle, centered, soft shadow only, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "LEANINGSCRUB_BEDAZZLE_SITTING_1",
+  "style_notes": "leaning scrub register: a knee-high silver-green scrubland under a low, fog-softened sun that never rises or sets \u2014 the last ten minutes of a sunset that never ends; silver-green fuzz banding grey darkward and waxy gold sunward, everything leaning the same way in a wind that never stops; no rain and nothing rain-slicked; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is DUSKY OLIVE over a DARK HEART: grey-olive foliage over near-black knotted wood and exposed root-flare, the den mouth a readable shadow at the base; fire-resistant living flora, nothing dry or brittle; drawSize ~1.2, Graphic_Random master"
+}

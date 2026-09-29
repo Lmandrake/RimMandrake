@@ -524,7 +524,7 @@ rideable, work-beast temperament.
 | `rut_wildhealroot` | `RM_WildHealroot` | ditto |
 | `rmvenomvine_v1` | **`RM_Venomvine` ONLY (already wired 2026-09-26)** | ⛔ NOT kept as the thicket base — §6 verdict. Comes OFF this biome's wire list; the fresh `RM_VenomvineThicket` render replaces it here, and the shared texPath must split (§11). |
 
-## 10. Queued art — 23 sprite sets, 61 job files
+## 10. Queued art — 27 subjects (17 faced sets + 10 singles), 61 job files — FILED, 0 refused
 
 **CSV:** `infrastructure/artpipe/art_lists/leaningscrub_bedazzle_cast.csv` —
 `rimflow_item_id LEANINGSCRUB_BEDAZZLE_SITTING_1`, channel codex, transparent,

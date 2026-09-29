@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T06:41:21Z",
+  "derive_from": "rsw_blurrg_v1_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "rsw_blurrg_v1_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the Star Wars canon Blurrg \u2014 a heavy bipedal reptilian beast of burden and mount: two massive columnar hind legs and no functional forelimbs, an enormous rounded body sloping back to a thick tapered tail, a broad blunt head that is mostly a wide frog-like mouth, small eyes set high, carried low on a short heavy neck. Posture standing square and placid, a broken-in work animal. Canon appearance (The Mandalorian) outranks invention.",
+  "reference": null,
+  "rimflow_item_id": "LEANINGSCRUB_BEDAZZLE_SITTING_1",
+  "style_notes": "leaning scrub register: a knee-high silver-green scrubland under a low, fog-softened sun that never rises or sets \u2014 the last ten minutes of a sunset that never ends; silver-green fuzz banding grey darkward and waxy gold sunward, everything leaning the same way in a wind that never stops; no rain and nothing rain-slicked; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 canon subject \u2014 canon appearance is the acceptance target and a canon_references entry is design-owed; judge this render against that entry once written; palette per canon: mottled tan and grey-brown leathery hide, paler belly, darker mottling across the back \u2014 the diversity law is satisfied by canon itself, nothing else in this cast is tan leather on two legs; TAMED-ONLY mount for the Leaning Scrub (never wild \u2014 frozen ban 4 threaded as written), bs 2.5, drawSize ~2.4; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the great haunches, rounded back and tail root from behind"
+}

@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T06:41:19Z",
+  "derive_from": "RM_Zellik_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Zellik_south",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the zellik, a tall hunched wind-hunting flyer of a windswept knee-high scrubland, GROUNDED \u2014 long wings folded and drooped past the tail like a closed umbrella, a lean keeled body on strong bare tarsi, a flat wide-eyed face built for reading texture at great distance, posture patient, still, and slightly wrong. It hunts only when the wind dies and the canopy beneath it goes still. This is the grounded sprite only. No nameable Earth owl, harrier or heron.",
+  "reference": null,
+  "rimflow_item_id": "LEANINGSCRUB_BEDAZZLE_SITTING_1",
+  "style_notes": "leaning scrub register: a knee-high silver-green scrubland under a low, fog-softened sun that never rises or sets \u2014 the last ten minutes of a sunset that never ends; silver-green fuzz banding grey darkward and waxy gold sunward, everything leaning the same way in a wind that never stops; no rain and nothing rain-slicked; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is SLATE-AND-GLARE: dark storm-slate mantle over a pale fog-white underside, one waxy-gold ring around each eye as the sole hot accent \u2014 the cold pole of the cast, deliberately distinct from the rest; bs~0.9, drawSize ~1.6 grounded because the folded wings carry the size; TRUE FLYER (MaxFlightTime stats) \u2014 flight flip-book frames are a separate follow-on and must not be attempted here; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the folded wing-drape, mantle and tarsi from behind"
+}

@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T06:41:20Z",
+  "derive_from": "RM_Rollbug_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Rollbug_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the rollbug, a broad flat-backed beetle-analog that keeps the tunnel-runs of a knee-high scrubland clean \u2014 caught in its pushing posture, head low, forebody braced, strong hind legs set to roll a burden (render the animal ALONE, no ball, no debris). Built like a small vault door on legs. No nameable Earth dung beetle read.",
+  "reference": null,
+  "rimflow_item_id": "LEANINGSCRUB_BEDAZZLE_SITTING_1",
+  "style_notes": "leaning scrub register: a knee-high silver-green scrubland under a low, fog-softened sun that never rises or sets \u2014 the last ten minutes of a sunset that never ends; silver-green fuzz banding grey darkward and waxy gold sunward, everything leaning the same way in a wind that never stops; no rain and nothing rain-slicked; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is TAR-POLISH: deep tar-brown chitin polished to a bright shine on the wear-points of the forebody and hind legs, dull dust film everywhere else \u2014 worn tool, not jewel; deliberately distinct from the rest of the cast; bs~0.06, drawSize ~0.55, carrion and waste feeder on fixed corridor beats; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the flat polished back and braced hind legs from behind"
+}

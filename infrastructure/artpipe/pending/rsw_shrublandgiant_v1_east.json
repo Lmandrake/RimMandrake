@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-29T06:41:20Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "rsw_shrublandgiant_v1_east",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the thunderstep, the huge grazing giant of a windswept knee-high scrubland \u2014 a walking hill: a vast dun-and-slate grazer on four pillar legs, deep-slung belly, a long muscular neck carrying the head high above the scrub (the only raised head on the whole plain), sheets of shaggy wool snagging and trailing along the flanks, posture mid-graze and utterly indifferent. It is not a threat; it is terrain that eats. No nameable Earth elephant, sauropod-fantasy or bison read, and no reptilian war-beast read.",
+  "reference": null,
+  "rimflow_item_id": "LEANINGSCRUB_BEDAZZLE_SITTING_1",
+  "style_notes": "leaning scrub register: a knee-high silver-green scrubland under a low, fog-softened sun that never rises or sets \u2014 the last ten minutes of a sunset that never ends; silver-green fuzz banding grey darkward and waxy gold sunward, everything leaning the same way in a wind that never stops; no rain and nothing rain-slicked; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is WALKING HILL: dun hide over a slate shadow mass, one flank lit warm by the low gold light (the frozen sheet's own image: giants as walking hills with lit flanks), wool in paler dusty hanks; deliberately distinct from the rest of the cast; OWNERSHIP REGEN of RSW_ShrublandGiant, today a Fambaa donor reskin \u2014 keep the silhouette ROLE (huge quadruped grazer, bs 6.0) and replace the animal with our own; drawSize ~7.0; rendered 512 so the scale carries in the pixels; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the vast plated-wool back, haunches and pillar hind legs from behind"
+}
