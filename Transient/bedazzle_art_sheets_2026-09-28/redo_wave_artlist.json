@@ -1,0 +1,176 @@
+[
+  {
+    "id": "RM_Vhaulk_v2",
+    "rimflow_item_id": "BLUEDESERT_BEDAZZLE_SITTING_1",
+    "canvas_w": 512,
+    "canvas_h": 512,
+    "priority": 70,
+    "facings": [
+      "east"
+    ],
+    "prompt": "RimWorld game creature sprite: the vhaulk, a house-sized sealed grazing colossus of a frozen night desert — six massive pillar legs like quarry columns, a vast seamed armored back with no true head, only a broad closed intake lid at the front like a garage door, frost rime standing thick on the flanks and legs, one long translucent sludge-window low along the lower flank faintly revealing the pale liquid mass it carries; posture slow, mid-stride, utterly indifferent to everything smaller than itself. It reads as a terrain feature that turns out to be an animal, still walking. No nameable Earth animal.",
+    "style_notes": "EAST-FACING REPAIR of an existing shipped creature — owner note verbatim: \"The east face should be frost-covered like the north and south are, with similar legs.\" The shipped north and south facings are the identity anchor: same individual, grey-on-grey seamed armor plates, frost rime standing THICK on flanks and legs (the east currently lacks it — that is the defect), pillar legs matching north/south in build, thickness and count. DO NOT CHANGE: silhouette family, canvas (512), transparent background with real alpha, the glacial blue-white and glass-grey palette, the sludge-window. No reference image by design — match from this description. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — within the frost register, vary the rime tones (blue-white, grey-green ice, faint mineral staining) rather than one uniform blue; blue desert register: glacial blue-white and glass-grey, blue-white only in frost rime, rim light and the translucent sludge-window, starlit cold light, no warm colour anywhere; realistic painted natural-history illustration, matte natural surface texture with frost and ice crust, never cartoonish, no outlines, alien but biologically plausible",
+    "oversize_reason": "colossus-scale subject; matches the accepted 512 canvas of this subject's original bedazzle job (scale must carry in the pixels)"
+  },
+  {
+    "id": "RM_Muttavaq_v2",
+    "rimflow_item_id": "FLOODEDCANYON_BEDAZZLE_SITTING_1",
+    "canvas_w": 512,
+    "canvas_h": 512,
+    "priority": 70,
+    "facings": [
+      "south"
+    ],
+    "prompt": "RimWorld game creature sprite: the muttavaq, a canyon-floor giant that sleeps for years beneath a cracked clay pan and wakes when the flood reaches it — a vast low-slung body plated in dried-clay polygons that match the pan it slept under, a broad shovel head with straining jaw-plates for feeding like a walking weir in floodwater, thick pillar legs caked to the knee in wet clay, small deep-set eyes, wax-sheened seams where its burrow lining still clings. It reads as a piece of the cracked flats that stood up and started wading. No nameable Earth animal.",
+    "style_notes": "SOUTH-FACING REDO of an existing shipped creature — owner note verbatim: \"south graphic is obviously wrong, like bad grep or something?\" The shipped south is defective outright; redo it to match the shipped north/east identity: same individual, same clay-plated colossus, cracked-clay grey-white polygon plating, red-brown flood stain low on the body, pale wax sheen at the seams, broad shovel head with jaw-plates facing the camera (south = face toward camera, eyes and shovel head prominent). DO NOT CHANGE: silhouette family, canvas (512), transparent background with real alpha, the cracked lands palette. No reference image by design — match from this description. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — vary the clay-polygon tones (grey-white, bone, red-brown stain, faint shadowed moss green in creases) rather than one flat clay colour; realistic painted natural-history illustration, grounded believable anatomy under the clay, matte dried clay, mud and wax crust, never cartoonish, no outlines, alien but biologically plausible",
+    "oversize_reason": "colossus-scale subject; matches the accepted 512 canvas of this subject's original bedazzle job (scale must carry in the pixels)"
+  },
+  {
+    "id": "RM_FossilSkeleton_v2",
+    "rimflow_item_id": "FLOODEDCANYON_BEDAZZLE_SITTING_1",
+    "canvas_w": 256,
+    "canvas_h": 256,
+    "priority": 70,
+    "facings": [],
+    "prompt": "RimWorld game item sprite: an articulated fossil skeleton, a rarer slab of canyon-wall stone holding a whole small animal in the rock — a complete ARTICULATED skeleton of a small alien creature curled in death position, every bone JOINED to the next in a continuous connected anatomy: a real spine of linked vertebrae, limbs attached at true joints, ribs meeting the spine — nothing floating loose or scattered; the anatomy itself alien (wrong bone counts, an extra limb pair or a branching spine, an un-Earthly skull), bones mineral-dark against pale stone, red-brown strata lines running through the slab. It reads as a museum piece pulled whole from the wall. Single item, centered, no ground shadow, no background scenery.",
+    "style_notes": "IMPROVE of an existing shipped item icon — owner note verbatim: \"That skeleton doesn't make sense, needs to be joined together and be more alien\". The defect: the shipped skeleton reads as disconnected bones; the fix is a continuous articulated skeleton whose joints connect, with distinctly alien osteology. DO NOT CHANGE: item-icon read (slab of pale stone), canvas (256), transparent background with real alpha, single centered item. No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — vary the slab: pale sedimentary grey-white with warm bone-ochre patches, red-brown strata, mineral-dark bone with faint iridescent mineralization glints; cracked lands register, hard dry light, realistic painted natural-history illustration, grounded believable alien osteology, matte stone texture, never cartoonish, no outlines"
+  },
+  {
+    "id": "RM_Boilhide_v2",
+    "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+    "canvas_w": 256,
+    "canvas_h": 256,
+    "priority": 70,
+    "facings": [
+      "south",
+      "east",
+      "north"
+    ],
+    "prompt": "RimWorld game creature sprite: the boilhide, a lean antelope-shaped grazer whose entire hide is a landscape of sealed boils — each a smooth walled-off dome where its body locked poison away, in ordered fields down the neck and flanks, the boil domes carrying a DEADLY WARNING COLOUR: a dangerous violet tinged with sickly yellow at the crowns, unmistakably toxic against the salt-grey hide; its antlers fused into a single mineral-crusted club; stance alert and healthy under the ugliness. It reads as a herd animal wearing its immunity on its skin. No nameable Earth antelope.",
+    "style_notes": "IMPROVE (all facings) of an existing shipped creature — owner note verbatim: \"Add some deadly color on those boils. Too little color here. Maybe a dangerous violet tinged with yellow?\" The change is COLOUR ONLY on the boil domes: dangerous violet tinged with yellow, reading as sequestered poison. DO NOT CHANGE: silhouette family (lean antelope-shaped grazer, fused club antler), canvas (256), facing set (south/east/north), transparent background with real alpha, the salt-white and ash-grey base hide. No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — the violet-yellow boils ARE the variety move; also vary boil dome tones across the fields (deep violet, bruise purple, waxy yellow rims) instead of one repeated hue; wasteland survivor register: salt-white and ash-grey palette, vitrified black-green accents, harsh dry light; tough content survivor, never pitiable; realistic painted natural-history illustration, matte natural surface texture with boils and mineral crust, never cartoonish, no outlines, alien but biologically plausible; north facing is a true rear view: no eyes, no face, only the boil-fielded back and haunches"
+  },
+  {
+    "id": "RM_Grimewing_v2",
+    "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+    "canvas_w": 256,
+    "canvas_h": 256,
+    "priority": 70,
+    "facings": [
+      "south",
+      "east",
+      "north"
+    ],
+    "prompt": "RimWorld game creature sprite: the grimewing, a wretched half-bald scavenger bird that rides storm-thermals over the toxic waste flats — patchy moth-eaten feathers over bare PINK-GREY skin, the whole animal DARK in value, wart-studded featherless head and neck in raw pink, a heavy hooked beak stained with salt, long broad soaring wings with gaps where feathers never grew back, and legs whose knees bend FORWARD like a mammal's — an unmistakably wrong, alien articulation on a bird frame — hunched vulture posture at rest. It reads as a carrion-finder that won: ugly, content, prospering. No nameable Earth vulture or condor.",
+    "style_notes": "IMPROVE (all facings) of an existing shipped creature — owner note verbatim: \"Darken it and make its skin more pink. Make its knees bent forward like a mammal, to add alien nature.\" Three changes: darker overall value, bare skin more pink, leg knees articulated bending forward (mammal-wise, not bird-wise). DO NOT CHANGE: silhouette family (half-bald scavenger bird, long broad load-bearing soaring wings — a REAL FLYER), canvas (256), facing set (south/east/north), transparent background with real alpha. No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — set the raw pink skin and dark sooty feathers against the biome's salt-white and ash-grey rather than repeating them, with sparing sickly-radiance glints; wasteland survivor register, harsh dry light; tough content survivor, never pitiable; realistic painted natural-history illustration, matte natural surface texture with grime, warts and mineral crust, never cartoonish, no outlines, alien but biologically plausible; north facing is a true rear view: no eyes, no face, no beak, only the hunched back, folded wings and tail"
+  },
+  {
+    "id": "RM_Gristleswarm_v2",
+    "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+    "canvas_w": 256,
+    "canvas_h": 256,
+    "priority": 70,
+    "facings": [
+      "south",
+      "east",
+      "north"
+    ],
+    "prompt": "RimWorld game creature sprite: the gristleswarm, a knee-high pack scuttler of gristle and plate — exposed sinew at every joint gone leathery, the strange flesh between the plates a SICKLY WHITE, back plates crazed like dried mud, a low wedge head with tearing mouthparts for stripping hide and bone-rind that nothing else can eat, and EXACTLY SIX sturdy legs — six on every facing, three per side clearly countable in side view. It reads as a scavenger built from the leftovers it lives on. No nameable Earth animal.",
+    "style_notes": "IMPROVE (full redo, all facings) of an existing shipped creature — owner note verbatim: \"Looks ok, but East facing has only four legs, while North and South have six. Make the strange flesh between the plates sickly white.\" Two defects: the east facing shows FOUR legs where north/south show six (fix: exactly six, three per side in side view), and the inter-plate flesh must go sickly white on ALL facings. Choice recorded: one full-redo row (east master, north/south derived) rather than per-facing repairs, because the flesh tint touches every facing anyway and derivation guarantees the leg count and palette stay coherent across the set. DO NOT CHANGE: silhouette family (knee-high plated pack scuttler, wedge head), canvas (256), facing set (south/east/north), transparent background with real alpha, mud-crazed plate read. No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — the sickly-white flesh against leather-grey plates is the variety move; vary plate tones (ash, bone, faint black-green vitrified flecks) rather than one grey; wasteland survivor register, harsh dry light; realistic painted natural-history illustration, matte texture with grime and crust, never cartoonish, no outlines, alien but biologically plausible; north facing is a true rear view: no face, only crazed back plates and rear legs"
+  },
+  {
+    "id": "RM_Slagmole_v2",
+    "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+    "canvas_w": 256,
+    "canvas_h": 256,
+    "priority": 70,
+    "facings": [
+      "south",
+      "east",
+      "north"
+    ],
+    "prompt": "RimWorld game creature sprite: the slagmole, a barrel-bodied burrowing animal built for digging through vitrified crust — huge digging front claws worn glassy-smooth, a face like a SHOVEL: a broad flat scoop-blade of a snout built to plane through crust, small weak eyes with one gone milky, heavy shoulders, and a back covered in RIB-LIKE STRUCTURES — a row of arched bone-hard ridges running the length of the spine like the exposed frame of a hull, with only sparse traces of embedded grit between them. It reads as muscle that eats through glass and does not mind. No nameable Earth animal.",
+    "style_notes": "IMPROVE (all facings) of an existing shipped creature — owner note verbatim: \"Too much of this green stone in the back of otherwise terrestrial animals. Give this fella a face like a shovel and keep the digging front claws. Then make its back covered in rib-like structures.\" Three changes: much LESS green stone on the back (the vitrified black-green grit-cobble read is out), the snout becomes a broad flat shovel-blade face, and the back gains arched rib-like ridge structures. KEEP: the huge glassy-smooth digging front claws — owner said keep them. DO NOT CHANGE: silhouette family (barrel-bodied heavy digger), canvas (256), facing set (south/east/north), transparent background with real alpha. No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — with the green gone, vary the back: bone-pale rib ridges, dun and ash hide, dust-brown shadow, only trace black-green flecks; wasteland survivor register: salt-white and ash-grey base, harsh dry light; tough content survivor; realistic painted natural-history illustration, matte texture with grime and mineral crust, never cartoonish, no outlines, alien but biologically plausible; north facing is a true rear view: no eyes, no face, only the rib-ridged back and haunches"
+  },
+  {
+    "id": "RM_Sloghog_v2",
+    "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+    "canvas_w": 256,
+    "canvas_h": 256,
+    "priority": 70,
+    "facings": [
+      "south",
+      "east",
+      "north"
+    ],
+    "prompt": "RimWorld game creature sprite: the sloghog, a warty barrel-bodied grazer of poisoned ground, content and prospering — but distinctly ALIEN, no Earth pig anywhere in the read: a six-limbed low-slung barrel body, a broad lipless feeding plate instead of a snout with paired mineral-crusted tusk-hooks at its corners, a transverse row of four small content half-shut eyes set across the brow, dense wart fields down both flanks, hide seamed in segmented bands, sturdy splayed trotter-pads. It reads as livestock that turned the waste into a living and is pleased about it — and as nothing from Earth.",
+    "style_notes": "IMPROVE (all facings) of an existing shipped creature — owner note verbatim: \"Too terran. Make it more alien.\" The shipped art reads as an Earth hog; keep the silhouette FAMILY (low-slung warty barrel grazer, heavy belly, content posture) and the palette anchors (salt-white and ash-grey base, dull flesh-grey wart fields, mineral-crusted tusk caps) but push the anatomy alien: six limbs, feeding plate instead of a pig snout, transverse four-eye row, segmented hide bands. DO NOT CHANGE: canvas (256), facing set (south/east/north), transparent background with real alpha, the content ranchable read. No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — vary the hide bands (ash, dun, pale salt-bleach, dull flesh) and give the wart fields subtle tonal spread instead of one grey; wasteland survivor register, vitrified black-green accents, harsh dry light; tough content survivor, never pitiable; realistic painted natural-history illustration, matte texture with warts, grime and crust, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view: no eyes, no face, only the warted segmented back and hindquarters"
+  },
+  {
+    "id": "RM_Eskith_v2",
+    "rimflow_item_id": "CAULDRON_BEDAZZLE_SITTING_1",
+    "canvas_w": 256,
+    "canvas_h": 256,
+    "priority": 70,
+    "facings": [
+      "south",
+      "east",
+      "north"
+    ],
+    "prompt": "RimWorld game creature sprite: the eskith, a knee-high feather-footed ground-drummer of a toxic chemical forest — a small upright quick body on two strong drumming legs, the feet the signature: wide splayed feather-fringed pads, oversized for the body, built to strike the ground and to read its answer; EXACTLY FIVE small eyes banked in an arc across the blunt head — five visible from the front, and in side profile EXACTLY THREE visible (the near-side arc), never more; drab wet-forest dark plumage-like covering with faint iridescence at the fringes. Posture alert, one foot raised mid-drum. It talks in knocks sent through the rock, and it reads as harmless, quick and tuned to the floor. No nameable Earth bird.",
+    "style_notes": "IMPROVE (all facings) of an existing shipped creature — owner note verbatim: \"Looks like it has five eyes. That means you can only see three on side profile.\" The eye count is now canon: FIVE eyes total banked across the head — south (front) shows all five, east (side) shows exactly three, north (rear) shows none. DO NOT CHANGE: silhouette family (knee-high two-legged drummer with oversized feather-fringed foot pads), canvas (256), facing set (south/east/north), transparent background with real alpha, the drab wet-lacquered plumage read. No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — vary the plumage darks (black-green, char-brown, oil-slick purple-red fringe iridescence) and let the pale condensate beading on the leg feathering read as a distinct value; cauldron register: wet-lacquered black-green and char-brown darks, dark-crust purple-red film sheen, pale glass-crystal accents, sick green-amber ONLY where chemistry pools or beads or stains; realistic painted natural-history illustration, matte texture with wet sheen, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view: no eyes, no face, only the back, folded fringe and drumming haunches"
+  },
+  {
+    "id": "RM_Vexxiss_v2",
+    "rimflow_item_id": "CAULDRON_BEDAZZLE_SITTING_1",
+    "canvas_w": 512,
+    "canvas_h": 512,
+    "priority": 70,
+    "facings": [
+      "south",
+      "east",
+      "north"
+    ],
+    "prompt": "RimWorld game creature sprite: the vexxiss, a colossal solid giant of a toxic chemical forest — a slag-plated hill that walks: a vast low-slung body on massive pillar limbs, armored in layered plates of smelter-slag and bark-scab grown together — and the OUTSIDE of the armor as colorful as a cauldron vent's mineral terracing: bone-white mineral rings and crusts grading into green-amber chemical stain, dark-crust purple-red film sheen across the plate faces, pale glass-crystal encrustations, laid down in concentric bands and drip-terraces as if the animal itself were a vent the forest painted; a graded row of pale crystal spine-fans standing down the back like vents on a boiler, a blunt eyeless prow of a head that is more intake than face — NO eyes anywhere on the body. Posture slow, mid-stride, patient, utterly solid. It reads as a piece of terrain that turned out to be alive. Absolutely nothing explosive-looking: no inner glow, no gas-bag translucence, no volatile distended volumes — it reads as painted stone and patience, never as ordnance. No nameable Earth animal.",
+    "style_notes": "IMPROVE (all facings) of an existing shipped creature — owner note verbatim: \"Make its outside as colorful as the Cauldron Vents\". The shipped RM_CauldronVent art defines the target palette, named here: bone-white outer mineral rings grading to a sick green-amber inner stain, concentric mineral-ring terracing, dark-crust purple-red film sheen, pale glass-crystal accents, condensate beading — put THAT colour language on the vexxiss's plate exterior in bands and drip-terraces. DO NOT CHANGE: silhouette family (low-slung colossus on pillar limbs with crystal spine-fans, bs~6.0 scale read), canvas (512), facing set (south/east/north), transparent background with real alpha. HARD BANS UNCHANGED: no eyes anywhere, nothing explosive-looking, no glow-from-within, no wick, no bright warning colour that reads as ordnance — the colour is mineral crust, not danger signalling. No reference image by design. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — this subject is the flagship of that law in the Cauldron: bone-white, green-amber, purple-red and glass-crystal against the char darks, varied band by band; cauldron register; realistic painted natural-history illustration, matte texture with wet sheen and mineral rings, never cartoonish, no outlines, alien but biologically plausible; north facing is a true rear view: no face, only the vast painted plated back, spine-fans from behind and rear pillar limbs",
+    "oversize_reason": "colossus-scale subject; matches the accepted 512 canvas of this subject's original bedazzle job (scale must carry in the pixels)"
+  },
+  {
+    "id": "RM_Seismograph_v2",
+    "rimflow_item_id": "CAULDRON_BEDAZZLE_SITTING_1",
+    "canvas_w": 256,
+    "canvas_h": 256,
+    "priority": 70,
+    "facings": [],
+    "prompt": "RimWorld game building sprite: a seismograph station, a plain readable scientific instrument-building in a scavenger camp's salvage style — a squat waist-high instrument housing of riveted salvaged plate on a bolted rock-anchor base, one clean glass-front panel showing a rotating paper drum with a scrawled trace line and a dark stylus arm, a small plumb-mass cylinder hanging in an open frame at the side, a hand-painted dial and two simple indicator lamps (unlit), cables staked neatly into the ground. Instantly readable as \"the machine that listens to the ground\": drum, stylus, anchor. Single structure, centered, top-down three-quarter building view, no background scenery.",
+    "style_notes": "REGEN replacing rejected art — owner note verbatim: \"weird, replace\". The prior render read as weird; this one must be a PLAIN, READABLE instrument-building in the Cauldron kit style (same salvage-built register as the corroded wellhead / filter works / gas-tap scaffold family): scavenger-precise, lovingly kept, oiled bright where everything around it corrodes, the white drum paper the lightest value in the sprite. Research-gated alert building: it writes the loud ground's talk and alarms on the falter — silence is the warning. DO NOT: no green-amber chemistry stain on this subject (it is the kept machine), no creature read, no fantasy ornament. Canvas 256, transparent background with real alpha, single centered building. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — vary the salvage plate (gunmetal, oiled steel-blue, char-brown, brass fittings, white drum paper) instead of one corrosion tone; cauldron register darks around it: wet-lacquered black-green and char-brown, dark-crust purple-red film only as faint environmental film on the base plate; realistic painted illustration, matte metal with wet sheen, never cartoonish, no outlines"
+  },
+  {
+    "id": "RM_Middenshell_v2",
+    "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+    "canvas_w": 512,
+    "canvas_h": 512,
+    "priority": 70,
+    "facings": [
+      "south",
+      "east",
+      "north"
+    ],
+    "prompt": "RimWorld game creature sprite: the middenshell, a HUGE tubeworm-like creature — a truly large soft-bodied tube animal emerging from a LONG IRREGULAR SHELL made of accreted minerals fused into scavenged debris and vitrified bezoars, the shell a lumpy encrusted horn many body-lengths long, dragging low; from the tube mouth spread SCALED TENTACLES — thick muscular tentacles armored in overlapping scale plates, several extended, one lashed forward mid-grab as if pulling an object toward itself; no legs, no face beyond the tube aperture and its tentacle crown. It reads as a wreck-sized filter feeder that eats the world an object at a time. Truly large — the sprite composed to carry hill scale. No nameable Earth animal.",
+    "style_notes": "REGEN, full redesign replacing the shipped walking-turtle-colossus read — owner note verbatim: \"Your color palette is too uniform per biome. Needs more variety. Please make this a huge tubeworm-like creature with scaled tentacles, a long irregular shell made of accreted minerals fused into debris and bezoars. Truly large. Will lash out a tentacle at objects and pull them towards itself, seeming to 'eat' them. Doors. Walls. Anything. Cannot pull off Gravplating or walls of a ship, but it can pull off any normal object sitting outside the ship not inherently 'gravship' items.\" The behaviour (tentacle-grab of loose objects) should read in the pose: one scaled tentacle lashed out mid-pull. All three facings (south/east/north), canvas 512, transparent background with real alpha, rendered large and high-fidelity so the scale carries in the pixels. Palette: the owner's uniformity complaint lands hardest here — the accreted shell is a MOSAIC of what it ate: salt-white crust, ash grey, vitrified black-green bezoar glass, rust-brown hull-plate scraps, bone, faint sickly-radiance seams deep in crevices; the soft tube body in contrasting raw flesh tones under the scale plates; wasteland survivor register, harsh dry light; tough ancient survivor, never pitiable, never monstrous-aggressive; realistic painted natural-history illustration, grounded believable anatomy, matte slag, glass and crust texture, never cartoonish, no outlines, alien but biologically plausible; north facing is a true rear view: no aperture, no tentacle crown visible, only the long encrusted shell from behind",
+    "oversize_reason": "colossus-scale subject; matches the accepted 512 canvas of this subject's original bedazzle job (scale must carry in the pixels)"
+  },
+  {
+    "id": "RM_Scumslider",
+    "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+    "canvas_w": 256,
+    "canvas_h": 256,
+    "priority": 70,
+    "facings": [
+      "south",
+      "east",
+      "north"
+    ],
+    "prompt": "RimWorld game creature sprite: the scumslider, an oozing slug-like beast of the toxic waste flats — a glistening low soft body sheathed in grime-streaked mucus, TWO muscular TAILS trailing behind that it plants and flexes to LURCH itself forward (mid-lurch posture, body compressed forward off the planted tails), and THREE EYES ON STALKS rising from the head end, each stalk turned a different direction so it watches everywhere at once — the eyes themselves a cross between silly googly cartoon eyes and a horror-film stare: round, white-rimmed, wrong. It reads as vermin that won: busy, unbothered, prospering on ruin. No nameable Earth slug or snail.",
+    "style_notes": "NEW SUBJECT replacing the too-terran RM_Scumrat look — owner note verbatim: \"Too terran. Make it more alien. How about a Scumslider? An oozing beast like a slug with two tails that it uses to lurch forward. Three eyes on stalks watching in all directions with eyes that are a cross between silly googly eyes and a horror-film stare.\" Collision-swept 2026-09-28: no def, design or item carries the name (only this ruling's own ledger provenance; sanity probe korrum=67 files). All three facings (south/east/north): south shows all three eye stalks toward camera, east shows the lurch profile with both tails planted, north is a true rear view — tails and mucus-sheathed back only, no eyes. Canvas 256, transparent background with real alpha. OWNER LAW verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" — the mucus sheen is the variety instrument: grime-streaked translucent ooze picking up salt-white, ash-grey, oily purple-green iridescence and sparing sickly-radiance glints over a dull flesh-grey body; wasteland survivor register, vitrified black-green accents, harsh dry light; tough content survivor, never pitiable; realistic painted natural-history illustration, grounded believable anatomy, wet mucus sheen over matte hide, never cartoonish despite the googly-horror eyes, no outlines, alien but biologically plausible"
+  }
+]
