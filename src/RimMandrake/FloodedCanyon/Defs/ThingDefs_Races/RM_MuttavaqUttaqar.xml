@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_MuttavaqUttaqar.xml                 RimMandrake — CRACKEDLANDS_RULED_CONTENT_1
+
+  Two of the five new Cracked Lands natives ruled at FLOODEDCANYON_BEDAZZLE_
+  SITTING_1 (design/Jawa/worldbuilding/biomes/cracked_lands_bedazzle_cast_
+  2026-09-28.md). Roster wiring (WildAnimals_CrackedLands.xml,
+  RM_FloodedCanyon_Biome.xml) is a separate pass per CRACKEDLANDS_RULED_
+  CONTENT_1's own file-collision note — not touched here.
+
+  ============================================================================
+  RM_Uttaqar — the rock troll, ported as ours
+  ============================================================================
+
+  Port of `DA_RockTroll` (Dinonysus's RockTroll mod, workshop 3472275628,
+  1.6/Defs/ThingDefs_Races/Animal_RockTroll.xml, read in full this pass).
+  Donor numbers kept as baseline per the bible: baseBodySize 4.5,
+  baseHealthScale 10, MoveSpeed 3.5, manhunterOnDamageChance 1.0, armor 1.2
+  sharp / 0.7 blunt / 0.8 heat, MarketValue 5300, lifeExpectancy 750,
+  trainability Intermediate.
+
+  Label ships as "rock troll" (bible: uttaqar-as-label is a batch-4h DRAFT
+  the owner passed on twice); defName is RM_Uttaqar per the commission.
+
+  HEDIFF DECISION — self-petrification PORTED, not flagged-and-skipped.
+  Read the donor's own DA_BloodPetrification HediffDef (Animal_RockTroll.xml,
+  same file) and its HediffGiverSetDef "RockTroll" (HediffGiverSetDefs/
+  HediffGiverSets.xml, same mod): both are pure data. The hediff is a plain
+  HediffWithComps using three STOCK comp classes (HediffCompProperties_
+  Disappears, HediffCompProperties_SeverityPerDay, HediffCompProperties_
+  Effecter) and the giver set uses the STOCK HediffGiver_Bleeding class. No
+  donor C# is load-bearing anywhere in this mechanic, so this is case (a):
+  ported as RM_UttaqarPetrification (five stages, same severity/stage shape
+  as the donor) + RM_UttaqarPetrificationGivers (HediffGiverSetDef), wired
+  onto race.hediffGiverSets below. Colour/labels re-voiced ("wound-stone")
+  per the bible's "old uttaqar are effectively walking petroglyphs" framing.
+
+  DORMANT-DISGUISE DECISION — FLAGGED AND SKIPPED, not ported. The donor's
+  cousin mechanic (`DA_HibernatingRockTroll`, a RockBase "strange stone
+  formation" a troll emerges from) depends on
+  `EmergingAnimals.CompProperties_RockCamo` and `EmergingAnimals.
+  CompProperties_EmergingAnimal` — compiled classes from a separate donor
+  framework mod (EmergingAnimals), not data, and not something this pass may
+  invent C# to replace. Per the brief's rule ("if the donor's hediff/comp
+  needs compiled behavior you can't replicate data-only, ship without it and
+  flag"), RM_Uttaqar ships with NO dormant-disguise rock-formation cousin
+  this pass. OWED to a follow-up mechanics pass (CRACKEDLANDS_MECHANICS_
+  BUILD_1 is the filed item for this biome's C#-bearing mechanisms; the
+  disguise cousin is not yet itemised inside it as of this write — whoever
+  claims it should add a line).
+
+  DROPPED per the standing port rule (donor-framework comps/items come out,
+  stats/body/form stay — RM_Aurrok.xml precedent):
+  - `WanderPreference.MountainPreference` and `EmergingAnimals.
+    CompProperties_RockCamo` comps (both donor framework C#).
+  - PawnKindDef abilities `DA_GiantRockThrow`/`DA_CrushingSlam` and
+    specialTrainables `DA_BoulderThrow`/`DA_CrushingSlam` — donor-defined
+    AbilityDefs/TrainableDefs we do not own; kept only the plain Odyssey
+    core trainables (AttackTarget, Dig) the donor also listed.
+  - `leatherDef DA_Leather_RockTroll` and `butcherProducts DA_Sangonite` —
+    both donor-specific ThingDefs this mod does not depend on. Substituted
+    vanilla `Leather_Heavy` (matches RUT_SealedSleeper/RM_Aurrok precedent)
+    and dropped the bespoke butcherProducts line — default meat+leather
+    yield only, no invented resource.
+  - Tool capacity `DA_DemolishTroll` (donor ToolCapacityDef) on the head
+    tool — substituted vanilla `Blunt`, matching the Aurrok head-tool shape.
+  - Body `DA_BipedalAnimalWithClaws` (donor BodyDef, EmergingAnimals-mod
+    adjacent) — substituted the closest vanilla claws body,
+    `QuadrupedAnimalWithClawsTailAndJowl` (Core/Bodies_Animal_Quadruped.xml),
+    rather than importing another donor BodyDef for a silhouette detail.
+  - Sound cues `DA_Pawn_RockTroll_*` (donor SoundDefs) — substituted the
+    vanilla Rhinoceros set (Pawn_Rhinoceros_Wounded/Death/Call/Angry), the
+    closest "heavy armored beast" vanilla voice.
+
+  ART: no render exists for "uttaqar"/"rock troll" tied to this biome (this
+  commission owes it, per the bible — not FOUNDRY's fill_queue.py this
+  pass). TEMP PLACEHOLDER: the donor's own texture path
+  (Animal/RockTroll/RockTroll), same loud-donor-texture-as-placeholder
+  convention RM_Aurrok.xml uses.
+
+  ============================================================================
+  RM_Muttavaq — the pan giant (invented, no donor)
+  ============================================================================
+
+  Authored from the bible's own "Stats sketch" paragraph — no donor def.
+  baseBodySize 5.0, baseHealthScale 12, MoveSpeed 2.0, manhunterOnDamageChance
+  0 (awake and asleep, per the bible: "it never hunts, never raids, never
+  manhunters" and "damage while waking it is answered by the wake itself, not
+  by rage"), Wildness 1.0, untrainable, lifeExpectancy in centuries (320,
+  concrete number per the brief).
+
+  WAKE-COMP DECISION — flagged and skipped, per the brief. The bible's real
+  wake mechanism (`CompWaterWakeTrigger` family scaled to giant size,
+  FlowWorks depth edits on its feeding trail) is explicitly "the mechanics
+  item's C#, not this document's" — CRACKEDLANDS_MECHANICS_BUILD_1's scope.
+  Shipped here: stock `CompProperties_CanBeDormant` (startsDormant true) only,
+  same as the brief asked. As an INTERIM, testable trigger only — same
+  posture RUT_SealedSleeper.xml's header used while its own real wake comp
+  was being built — added stock `CompProperties_WakeUpDormant` with
+  `wakeUpOnDamage=true` so a quicktest can wake and inspect one without the
+  real C# landing first; this is NOT the bible's water-wake mechanism and
+  should be left alongside it, not replaced, once RM_CompWaterWakeTrigger
+  (or its giant-scale equivalent) exists. `receivesSignals=true` set on the
+  ThingDef per CompProperties_CanBeDormant.ConfigErrors (required whenever
+  jobDormancy is false).
+
+  CRACK-WAX YIELD: mirrors RUT_SealedSleeper.xml's own mechanism exactly —
+  a `butcherProducts` shorthand entry, scaled up from the sleeper's 2 to 200
+  ("the planet's largest single crack-wax deposit... a fortune in crack-wax
+  and meat"). The sheet's actual "wake sheds a ground-drop" behaviour is the
+  wake comp's job (owed, see above) — this butcherProducts line is the
+  always-available second source, same "second, always-available source"
+  role RUT_CrackWax.xml's own header describes for the sleeper.
+
+  NOT A HERD ANIMAL: wildGroupSize min/max 1 (one per pan, pans rare).
+  Intended roster commonality ~0.02-0.05 per the bible — noted here for
+  whoever wires WildAnimals_CrackedLands.xml; not set by this file.
+
+  ART: no render exists ("this commission" owes it, per the bible). TEMP
+  PLACEHOLDER: vanilla Thrumbo texture path as a plausible large-creature
+  stand-in, flagged loudly below — swap the instant real art lands.
+-->
+<Defs>
+
+  <!-- ======================= RM_Uttaqar — hediff first, referenced by the race below ======================= -->
+
+  <HediffDef>
+    <defName>RM_UttaqarPetrification</defName>
+    <label>wound-stone</label>
+    <defaultLabelColor>(163,65,65)</defaultLabelColor>
+    <hediffClass>HediffWithComps</hediffClass>
+    <description>Near-instant clotting that ossifies into dense, stone-like formations wherever an uttaqar is wounded — the same process the crag giants use in place of scars. Provides ablative protection and slows blood loss while it lasts; old uttaqar carry layers of it like tree rings.</description>
+    <maxSeverity>1</maxSeverity>
+    <minSeverity>0.1</minSeverity>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>60000</disappearsAfterTicks>
+      </li>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>10</severityPerDay>
+      </li>
+      <li Class="HediffCompProperties_Effecter">
+        <stateEffecter>Berserk</stateEffecter>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0.1</minSeverity>
+        <label>minor</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <minSeverity>0.15</minSeverity>
+        <label>minor</label>
+        <statFactors>
+          <IncomingDamageFactor>0.9</IncomingDamageFactor>
+        </statFactors>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.30</minSeverity>
+        <label>moderate</label>
+        <statFactors>
+          <IncomingDamageFactor>0.6</IncomingDamageFactor>
+        </statFactors>
+        <totalBleedFactor>0.8</totalBleedFactor>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.60</minSeverity>
+        <label>severe</label>
+        <statFactors>
+          <IncomingDamageFactor>0.5</IncomingDamageFactor>
+        </statFactors>
+        <totalBleedFactor>0.5</totalBleedFactor>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.3</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.80</minSeverity>
+        <label>extreme</label>
+        <statFactors>
+          <IncomingDamageFactor>0.5</IncomingDamageFactor>
+        </statFactors>
+        <totalBleedFactor>0</totalBleedFactor>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.3</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffGiverSetDef>
+    <defName>RM_UttaqarPetrificationGivers</defName>
+    <hediffGivers>
+      <li Class="HediffGiver_Bleeding">
+        <hediff>RM_UttaqarPetrification</hediff>
+      </li>
+    </hediffGivers>
+  </HediffGiverSetDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Uttaqar</defName>
+    <label>rock troll</label>
+    <description>A colossal, eyeless creature that owns the Cracked Lands' crag walls, talus slopes and slot-canyon dark the way the muttavaq owns the flats — it surfaces from its lair only when provoked. Lacking real regeneration, it answers every wound with stone: ultra-fast clotting ossifies into dense ablative formations within minutes, so an old uttaqar reads as more rock than flesh, seamed with wound-stone in layers a Farmer can count like tree rings.</description>
+    <receivesSignals>true</receivesSignals>
+    <statBases>
+      <MoveSpeed>3.5</MoveSpeed>
+      <MarketValue>5300</MarketValue>
+      <ComfyTemperatureMin>-55</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <ArmorRating_Sharp>1.2</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.7</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.8</ArmorRating_Heat>
+      <PainShockThreshold>1</PainShockThreshold>
+      <IncomingDamageFactor>0.8</IncomingDamageFactor>
+      <InjuryHealingFactor>2</InjuryHealingFactor>
+      <Flammability>0</Flammability>
+      <Wildness>0.80</Wildness>
+      <FilthRate>8</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <!-- Substituted vanilla Blunt for the donor's DA_DemolishTroll
+               ToolCapacityDef (donor-only def) — see header. -->
+          <li>Blunt</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>17</power>
+        <cooldownTime>2.3</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>17</power>
+        <cooldownTime>2.3</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>23</power>
+        <cooldownTime>2.3</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <!-- Substituted vanilla QuadrupedAnimalWithClawsTailAndJowl for the
+           donor's DA_BipedalAnimalWithClaws (donor/EmergingAnimals-adjacent
+           BodyDef) — see header. -->
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <predator>true</predator>
+      <maxPreyBodySize>8.5</maxPreyBodySize>
+      <baseBodySize>4.5</baseBodySize>
+      <baseHealthScale>10</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <trainability>Intermediate</trainability>
+      <foodType>OmnivoreAnimal, OvivoreAnimal</foodType>
+      <manhunterOnTameFailChance>0.7</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <packAnimal>false</packAnimal>
+      <!-- Substituted vanilla Leather_Heavy for the donor's
+           DA_Leather_RockTroll (donor-only ThingDef) — see header. -->
+      <leatherDef>Leather_Heavy</leatherDef>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Dig</li>
+      </specialTrainables>
+      <hediffGiverSets>
+        <li>RM_UttaqarPetrificationGivers</li>
+      </hediffGiverSets>
+      <gestationPeriodDays>40</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 1)</li>
+          <li>(2.0, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>750</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.10</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.20</minAge>
+          <!-- Substituted vanilla Rhinoceros voice set for the donor's
+               DA_Pawn_RockTroll_* SoundDefs (donor-only) — see header. -->
+          <soundWounded>Pawn_Rhinoceros_Wounded</soundWounded>
+          <soundDeath>Pawn_Rhinoceros_Death</soundDeath>
+          <soundCall>Pawn_Rhinoceros_Call</soundCall>
+          <soundAngry>Pawn_Rhinoceros_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+      <headPosPerRotation>
+        <li>(0.0, 0, 0.4)</li>
+        <li>(0.27, 0, 0.18)</li>
+        <li>(0.0, 0, 0.1)</li>
+        <li>(-0.27, 0, 0.18)</li>
+      </headPosPerRotation>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Uttaqar</defName>
+    <label>rock troll</label>
+    <race>RM_Uttaqar</race>
+    <combatPower>650</combatPower>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- TEMP PLACEHOLDER: donor RockTroll texture, loud-donor-art
+               convention (RM_Aurrok.xml precedent) until this commission's
+               real render lands. -->
+          <texPath>Animal/RockTroll/RockTrollBaby</texPath>
+          <drawSize>2.2</drawSize>
+          <shaderType>CutoutComplex</shaderType>
+          <shadowData>
+            <volume>(0.6, 0.25, 0.20)</volume>
+            <offset>(0,0,-0.03)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Animal/RockTroll/RockTroll</texPath>
+          <drawSize>2</drawSize>
+          <shaderType>CutoutComplex</shaderType>
+          <shadowData>
+            <volume>(0.475, 0.375, 0.375)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Animal/RockTroll/RockTroll</texPath>
+          <drawSize>3.5</drawSize>
+          <shaderType>CutoutComplex</shaderType>
+          <shadowData>
+            <volume>(1, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.02)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ======================= RM_Muttavaq — the pan giant ======================= -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Muttavaq</defName>
+    <label>muttavaq</label>
+    <description>A canyon-floor giant that sleeps for years under a clay pan the eye reads as ordinary terrain — a low mounded polygon field a touch too regular, cracks radiating from a center dried clay never makes on its own. Walk the famous cracked-pan flats and you walk on sleeping animals; walk THIS pan and you walk on one animal. It never hunts, never raids and never manhunters, awake or asleep — the flood wakes it wherever the water reaches, and it spends the flood-weeks wading the wet floor as a walking weir, straining mud and carrion through its jaw-plates. At the dry it digs in wherever it stands and becomes terrain again, somewhere new. Its burrow-lining is the planet's largest single crack-wax deposit; killing one asleep is easy, shameful, and a fortune.</description>
+    <receivesSignals>true</receivesSignals>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <MarketValue>4200</MarketValue>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.4</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.5</ArmorRating_Blunt>
+      <Flammability>0</Flammability>
+      <Wildness>1.0</Wildness>
+      <FilthRate>20</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>jaw-plates</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>foreleg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>3</cooldownTime>
+        <!-- QuadrupedAnimalWithClawsTailAndJowl has no FrontLeftLeg/
+             FrontRightLeg groups (checked against the body's own def) —
+             uses the claws groups it actually has, relabelled. -->
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>foreleg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <!-- INTERIM trigger only, see header: the bible's real wake
+             mechanism (CompWaterWakeTrigger scaled to a giant, terrain
+             writes on its feeding trail) is CRACKEDLANDS_MECHANICS_BUILD_1's
+             C#, not built here. wakeUpOnDamage lets a quicktest wake one
+             without that comp landing first; keep alongside it, don't
+             replace, once it exists. -->
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <predator>false</predator>
+      <baseBodySize>5.0</baseBodySize>
+      <baseHealthScale>12</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>60</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <!-- lifeExpectancy in centuries per the bible; concrete number picked
+           for this pass. -->
+      <lifeExpectancy>320</lifeExpectancy>
+      <gestationPeriodDays>120</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0.3)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.15</minAge>
+          <soundWounded>Pawn_Thrumbo_Pain</soundWounded>
+          <soundDeath>Pawn_Thrumbo_Death</soundDeath>
+          <soundCall>Pawn_Thrumbo_Call</soundCall>
+          <soundAngry>Pawn_Thrumbo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <butcherProducts>
+      <!-- Mirrors RUT_SealedSleeper.xml's own butcherProducts mechanism,
+           scaled up from its 2 per the bible's "same drop scaled up" /
+           "planet's largest single crack-wax deposit" — see header. The
+           sheet's ground-drop-on-wake behaviour is the wake comp's job,
+           not built here. -->
+      <RUT_CrackWax>200</RUT_CrackWax>
+    </butcherProducts>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Muttavaq</defName>
+    <label>muttavaq</label>
+    <race>RM_Muttavaq</race>
+    <combatPower>420</combatPower>
+    <!-- Not a herd animal — one per pan, pans rare. Intended roster
+         commonality ~0.02-0.05 per the bible; set by whoever wires
+         WildAnimals_CrackedLands.xml, not by this file. -->
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <wildGroupSize>
+      <min>1</min>
+      <max>1</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- TEMP PLACEHOLDER: vanilla Thrumbo texture as a plausible
+               large-creature stand-in — this commission owes real art, not
+               FOUNDRY's fill_queue.py this pass. -->
+          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <drawSize>2.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <drawSize>3.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <drawSize>4.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

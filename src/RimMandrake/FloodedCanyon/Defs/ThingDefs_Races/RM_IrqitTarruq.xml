@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_IrqitTarruq.xml                      RimMandrake — CRACKEDLANDS_RULED_CONTENT_1
+
+  Two of the Cracked Lands' five ruled new natives, both invented (no donor def).
+  Bible: design/Jawa/worldbuilding/biomes/cracked_lands_bedazzle_cast_2026-09-28.md
+  §"RM_Irqit — the mudflat breeder" and §"RM_Tarruq — the voice". Roster wiring
+  (wildAnimals rows, commonality) is a LATER pass over the shared roster/patch
+  files, per this item's own file-collision split — not done here.
+
+  ═══════════════════════════ RM_Irqit — the mudflat breeder ═══════════════════════════
+
+  Bible stats sketch, taken as-is: baseBodySize ~0.12, herd-spawning, MoveSpeed
+  ~4.5, wildness 1.0, no manhunter, trivial combat stats, tiny meat yield (left to
+  the engine's own bodySize->meat computation rather than an override — 0.12 is
+  already the smallest body in this file by a wide margin).
+
+  🔴 OWED TO CRACKEDLANDS_MECHANICS_BUILD_1, NOT THIS ITEM: the bible's real
+  lifecycle mechanism — "spawned as a cohort on the flood component's
+  soaked-cell list at recede... aging on a fast lifecycle clock... at dry-out
+  the cohort dies where it stands." That is a C# spawn/aging-clock system reading
+  the flood map component's soaked-cell list; nothing here wires it. This ThingDef
+  + PawnKindDef ship as an ordinary small animal that CAN be spawned/aged by
+  vanilla means in the interim (quicktest, `jawa/spawn_thing`, a manual wildAnimals
+  row) without erroring, so the mechanics item has something real to drive.
+
+  LIFECYCLE SHAPE CHOSEN HERE: a single lifeStage (AnimalAdult, minAge 0) — no
+  baby/juvenile split, matching this biome's OWN precedent for a creature that is
+  born ready to act (RM_Nizzek, Stillsand/RM_Drazzik.xml, same single-stage
+  shape for a newborn that hatches "already hostile"). The irqit's version of
+  that idiom is "born already able to scramble and breed once" — a baby/juvenile
+  stage would imply a growth arc the bible explicitly denies ("breeds exactly
+  once... dies as the mud stiffens").
+
+  lifeExpectancy: no sub-1-year precedent exists anywhere in this codebase
+  (checked: `grep -rn "lifeExpectancy>0\." src/RimMandrake src/RimUtinni` — zero
+  hits) so there is no convention to match exactly. Chosen here: 0.05 (~18
+  days), inside the bible's own "a few days to weeks" frame and short enough to
+  read as a flood-week creature if the vanilla aging curve is ever left to run
+  it unassisted. The mechanics item's fast lifecycle clock is expected to
+  override/drive the real cohort timing regardless — this field is a plausible
+  fallback, not the actual clock.
+
+  ═══════════════════════════════ RM_Tarruq — the voice ═══════════════════════════════
+
+  Bible stats sketch, taken as-is: baseBodySize ~0.45, MoveSpeed ~4.8, agile, shy
+  (high wildness, no manhunter — "it answers threat by going vertical"), modest
+  predator diet (crack-life/irqit stragglers/eggs — foodType CarnivoreAnimal).
+  Year-round resident (standard baby/juvenile/adult lifeStageAges, no seasonal
+  gimmick). ROSTER COMMONALITY (not wired here, for the wiring pass): bible says
+  ~0.1-0.15.
+
+  Body: Monkey — a lean climbing quadruped shape reads closest to "long-limbed
+  climber built for the vertical dark" of the bodies already in use in this
+  codebase (grep of `<body>` across src/RimMandrake); no dedicated climber body
+  exists to match more precisely.
+
+  🔴 OWED TO A FOLLOW-UP PASS, NOT THIS ITEM: the bible's ambient-call/silence
+  mechanism — "an ambient call (SoundDef, slate E's pipeline) keyed to tarruq
+  presence, gated OFF by the flood map component's pre-chime phase." That is
+  audio-pipeline + flood-map-component wiring (a SoundDef plus the boolean gate
+  read), not a ThingDef field; no CRACKEDLANDS-named audio item was found to cite
+  by ID at build time, so this note stands in its place. This creature def ships
+  with no SoundDef fields overridden (inherits AnimalKindBase's stock ambience),
+  which is honest: it makes no sound claim the game cannot yet keep.
+
+  ═════════════════════════════════════ ART ═════════════════════════════════════
+
+  Both are covered in this sitting's art commission
+  (infrastructure/artpipe/art_lists/cracked_lands_bedazzle_cast.csv — checked,
+  rows present for RM_Irqit and RM_Tarruq) so no fill_queue.py job is filed here.
+  Until that art lands, both ship with a LOUD vanilla placeholder texPath, same
+  posture as this codebase's other invented (donor-less) creatures
+  (Stillsand/RM_Drazzik.xml's RM_Nizzek uses vanilla Chicken; RM_Guzzka points at
+  its own not-yet-populated folder). Irqit points at vanilla Rat (small,
+  ground-hugging, plausible silhouette for a palm-sized scrambler); Tarruq points
+  at vanilla Monkey (climbing quadruped, plausible silhouette for a lean
+  crack-dweller).
+-->
+<Defs>
+
+  <!-- ══════════════════════ RM_Irqit — the mudflat breeder ══════════════════════ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Irqit</defName>
+    <label>irqit</label>
+    <description>Palm-sized and soft-bodied, glossy wet skin over a quick paddling scramble — the irqit exists as eggs in the dry clay for years, waiting. When the flood recedes, every soaked cell turns into a nursery: a sudden carpet of small frantic life between the roar and the dry. Each one breeds exactly once, lays into the wet clay, and dies as the mud stiffens. It is a living calendar of the flood, gone as completely as it arrived.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <MarketValue>3</MarketValue>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>1</FilthRate>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>nip</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>1.5</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.12</baseBodySize>
+      <baseHealthScale>0.15</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <!-- See header: no sub-1-year precedent exists in this codebase; chosen to
+           sit inside the bible's "days to weeks" frame as a plausible fallback,
+           not the real cohort clock (that is CRACKEDLANDS_MECHANICS_BUILD_1's). -->
+      <lifeExpectancy>0.05</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Irqit</defName>
+    <label>irqit</label>
+    <race>RM_Irqit</race>
+    <combatPower>2</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <!-- "Herd-spawning" / "a sudden carpet" — a high wildGroupSize on an ordinary
+         PawnKindDef, same idiom this codebase already uses for a swarm creature
+         (Miasma/RM_Karrimeth's 40~90). The real cohort-on-recede spawn is the
+         mechanics item's; this is what a vanilla/manual spawn call produces
+         until that lands. -->
+    <wildGroupSize>15~40</wildGroupSize>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- TEMP PLACEHOLDER: vanilla Rat's own body art. No donor def exists
+               (invented per the bible); real art is queued in
+               cracked_lands_bedazzle_cast.csv (row present, checked this pass). -->
+          <texPath>Things/Pawn/Animal/Rat/Rat</texPath>
+          <color>(150,140,110)</color>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══════════════════════════════ RM_Tarruq — the voice ══════════════════════════════ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Tarruq</defName>
+    <label>tarruq</label>
+    <description>A lean, long-limbed climber built for the vertical dark of the crack network — grip-padded feet, a deep resonating throat-chamber that carries its low territorial calls for hundreds of meters, each animal answering its neighbors down the line. On an ordinary day the Cracked Lands' soundscape is wind, then tarruq, then wind. It goes silent and climbs when the cracks begin to fill — a Farmer trusts that hush as the biome's second warning, before even the chimes.</description>
+    <statBases>
+      <MoveSpeed>4.8</MoveSpeed>
+      <MarketValue>60</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.7</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.7</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.4</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Monkey</body>
+      <predator>true</predator>
+      <herdAnimal>false</herdAnimal>
+      <baseBodySize>0.45</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <trainability>None</trainability>
+      <!-- Shy, not aggressive — "it answers threat by going vertical". -->
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <lifeExpectancy>11</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Tarruq</defName>
+    <label>tarruq</label>
+    <race>RM_Tarruq</race>
+    <combatPower>55</combatPower>
+    <!-- Shy, low-commonality resident — roster commonality (~0.1-0.15 per the
+         bible) is the wiring pass's, not this def's; wildGroupSize here just
+         keeps it from reading as a herd animal. -->
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>tarruq kit</label>
+        <bodyGraphicData>
+          <!-- TEMP PLACEHOLDER: vanilla Monkey's own body art. No donor def
+               exists (invented per the bible); real art is queued in
+               cracked_lands_bedazzle_cast.csv (row present, checked this pass). -->
+          <texPath>Things/Pawn/Animal/Monkey/Monkey</texPath>
+          <color>(140,130,115)</color>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
+          <drawSize>0.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Monkey/Monkey</texPath>
+          <color>(140,130,115)</color>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Monkey/Monkey</texPath>
+          <color>(140,130,115)</color>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
+          <drawSize>1.3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
