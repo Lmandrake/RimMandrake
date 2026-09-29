@@ -1194,3 +1194,8 @@
 {"seat":"FOUNDRY","event":"start","id":"JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1","ts":"2026-09-29T09:52:18Z"}
 {"seat":"FOUNDRY","event":"close","id":"JAWA_MAP_INFO_BIOME_DIVERGE_DOCSTRING_WRONG_1","sha":"8d5e3989b","ts":"2026-09-29T09:52:21Z"}
 {"seat":"FOUNDRY","event":"block","id":"WARLAB_CRATER_ACCIDENTAL_TRIGGER_1","reason":"needs the Route-1 arming design first, per its own title -- a deliberate arming sequence is a creative/gameplay call, not a mechanical fix; nothing to build until that design lands","ts":"2026-09-29T09:52:25Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SEABED_PLANET_LAYER_1","ts":"2026-09-29T09:52:59Z"}
+{"seat":"FOUNDRY","event":"start","id":"SEABED_PLANET_LAYER_1","ts":"2026-09-29T09:53:01Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"SEABED_PLANET_LAYER_1 live verify","ts":"2026-09-29T09:55:54Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-29T10:03:25Z"}
+{"seat":"FOUNDRY","event":"close","id":"SEABED_PLANET_LAYER_1","sha":"0e1bba537","reason":"All 5 verify items proven live: fresh-world reg, existing-save/load reg (save+reload round trip), twin-guard holds on real 119904-tile grid, connections+zoom links survive round trip, both biomes + world object resolve clean with no ConfigErrors. Added jawa/seabed_layer_probe bridge tool to read PlanetLayer connections (none existed). Mod list restored to 613, verified.","ts":"2026-09-29T10:04:11Z"}

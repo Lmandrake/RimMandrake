@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T09:52:25Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T10:04:11Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1673,16 +1673,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## SEABED_PLANET_LAYER_1 Seabed planet layer: the sea floor as a geometric twin of the surface
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## criteria
-summary:  Phase 1 — the layer, offline-provable, no content:
-prose:    infrastructure/state/items/SEABED_PLANET_LAYER_1.md
 
 ## UTINNIPATCHES_ORPHAN_AUDIT_1 Audit the full list of files deploy_custom_mods.py reports 'in game, not in repo' under UtinniPatches (and other mods) for stale/dangerous orphans vs. intentional residue
 state:    proposed
