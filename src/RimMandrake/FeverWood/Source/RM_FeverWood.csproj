@@ -69,6 +69,10 @@
     <Compile Include="RM_WorkGiver_StunForStaking.cs" />
     <Compile Include="RM_WorkGiver_HaulToStake.cs" />
     <Compile Include="RM_JobDriver_HaulToStake.cs" />
+    <Compile Include="RM_SuppressionDefOf.cs" />
+    <Compile Include="RM_Designator_FoulPool.cs" />
+    <Compile Include="RM_WorkGiver_FoulPool.cs" />
+    <Compile Include="RM_JobDriver_FoulPool.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FoulPool.xml                      FEVERWOOD_TENTACLE_SETPIECE_TUNING_1
+
+  §6f's Uranium free-tier suppression route. RM_Designator_FoulPool flags a
+  registered pool cell; RM_WorkGiver_FoulPool finds a reachable
+  RM_RadioactiveSuppressant stack and hands out this job.
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_FoulPool</defName>
+    <driverClass>RimMandrake.FeverWood.RM_JobDriver_FoulPool</driverClass>
+    <reportString>fouling a pool with a radioactive suppressant.</reportString>
+  </JobDef>
+
+</Defs>

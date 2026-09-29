@@ -23,14 +23,44 @@ namespace RimMandrake.FeverWood
     // map — same "generic kit, not hardcoded to one biome" posture as
     // RM_GenStep_RootCauseways/RM_MapComponent_LivingRegrowth.
     //
-    // 🔴 Does NOT decide how often the rare eye set-piece (Bloom) arrives —
-    // that is this item's own explicitly-unset, do-not-guess tuning number
-    // (design sheet §2b: "the single most important tuning number... unset
-    // — nobody has chosen it"). Bloom gets a low, flagged-INVENTED ambient
-    // weight below as a placeholder so the def is reachable at all, not a
-    // real answer to the pressure-model question the sheet's own §6d
-    // raises. The real trigger (base roll + pool size + provocation +
-    // pressure + deliberate summon) is unbuilt; see this item's close note.
+    // FEVERWOOD_TENTACLE_SETPIECE_TUNING_1, 2026-09-29: the eye no longer
+    // spawns through the ordinary ambient roll at all (REPLACES, not
+    // alongside — see below). Bloom is now exclusively the payload of the
+    // "Great Emergence" — the distinct, rarer, bigger set-piece §2b row 3
+    // describes ("a massive attack in a large pool with many tentacles and
+    // the eye itself"). This is architecturally cleaner than layering a
+    // second independent roll beside the ordinary one: the design sheet's
+    // own ladder table (§2b) never lists "a lone eye sighting" as a tier at
+    // all — only "ordinary" (1-2 limbs) and the grand set-piece exist — so
+    // folding Bloom into the ordinary weighted table (the prior shipped
+    // shape) was itself the mismatch this item was filed to fix, not a
+    // baseline to preserve alongside the new event.
+    //
+    // Detection ("large pool + many limbs" — §6d's four-input pressure
+    // model is explicitly NOT required by this item; this is the simpler
+    // composed threshold it asks for instead): a pool cluster qualifies as
+    // "large" once its registered cell count clears
+    // tentacleGreatEmergencePoolSizeThreshold, and "many limbs" is read as
+    // accumulated activity — encounterPressure increments by one on every
+    // ORDINARY ambient encounter this map produces (§6d's own framing:
+    // "every ordinary encounter at a pool is a deposit toward its big
+    // one") and must clear tentacleGreatEmergencePressureThreshold before
+    // the Great Emergence becomes eligible at all. Both numbers are
+    // legible/telegraphed in the sense §6i requires fairness to come from
+    // (pool size is visible terrain; activity is the player's own doing),
+    // never a hidden colony-wealth or maturity check — none is added here,
+    // per §6i's explicit "no protection" ruling standing unchanged.
+    //
+    // Frequency (owner ruling 2026-09-29, question card: "roughly the
+    // CURRENT odds, ~1/50"): once eligible, each successful ordinary-roll
+    // tick has a tentacleGreatEmergenceChance (default 0.02 = 1/50) chance
+    // to escalate into the Great Emergence instead of an ordinary spawn —
+    // same rough magnitude as the retired placeholder's 2-of-105 Bloom
+    // weight (~1.9%), now gated on the real "big pool under pressure"
+    // condition instead of a flat per-roll weight. Firing resets
+    // encounterPressure to 0 (the deposit is spent), which is what stops
+    // it re-firing every subsequent successful roll while a large pool
+    // stays eligible.
     public class RM_MapComponent_TentacleWatch : MapComponent
     {
         private struct LimbWeight
@@ -47,6 +77,8 @@ namespace RimMandrake.FeverWood
         private const int AmbientCheckIntervalTicks = 2500; // 1 in-game hour
         private const int PoolCacheRefreshTicks = 60000; // pools don't move; re-scan once a day
 
+        // Bloom is deliberately absent — it is no longer an ordinary-roll
+        // outcome (see class header, FEVERWOOD_TENTACLE_SETPIECE_TUNING_1).
         private static readonly LimbWeight[] AmbientTable =
         {
             new LimbWeight("RM_Sekkulaath_Feeler", 40f),
@@ -54,7 +86,6 @@ namespace RimMandrake.FeverWood
             new LimbWeight("RM_Sekkulaath_Lash", 20f),
             new LimbWeight("RM_Sekkulaath_Porter", 10f),
             new LimbWeight("RM_Sekkulaath_Sentinel", 8f),
-            new LimbWeight("RM_Sekkulaath_Bloom", 2f),
         };
 
         private static readonly string[] AllLimbDefNames =
@@ -67,6 +98,7 @@ namespace RimMandrake.FeverWood
         private bool permanentlyKilled;
         private bool porterAngeredForever;
         private int sentinelCount;
+        private int encounterPressure; // FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 — see class header
 
         private List<IntVec3> poolCellsCache;
         private int poolCacheBuiltTick = -999999;
@@ -109,7 +141,24 @@ namespace RimMandrake.FeverWood
                 return;
             }
 
+            if (RM_FeverWoodSettings.tentacleGreatEmergenceEnabled
+                && GreatEmergenceEligible(pools)
+                && Rand.Chance(UnityEngine.Mathf.Clamp01(RM_FeverWoodSettings.tentacleGreatEmergenceChance)))
+            {
+                SpawnGreatEmergence(pools);
+                return;
+            }
+
             SpawnEncounter(pools);
+        }
+
+        /// <summary>"Large pool + many limbs" detection — see class header
+        /// for why this composed threshold, not §6d's full four-input
+        /// model, is what this item builds.</summary>
+        private bool GreatEmergenceEligible(List<IntVec3> pools)
+        {
+            return pools.Count >= UnityEngine.Mathf.Max(1, RM_FeverWoodSettings.tentacleGreatEmergencePoolSizeThreshold)
+                && encounterPressure >= UnityEngine.Mathf.Max(0, RM_FeverWoodSettings.tentacleGreatEmergencePressureThreshold);
         }
 
         private void SpawnEncounter(List<IntVec3> pools)
@@ -128,6 +177,51 @@ namespace RimMandrake.FeverWood
                 Thing thing = ThingMaker.MakeThing(def);
                 GenSpawn.Spawn(thing, cell, map);
             }
+
+            encounterPressure++; // §6d: "every ordinary encounter... is a deposit toward its big one"
+        }
+
+        /// <summary>The distinct set-piece (§2b row 3, owner verbatim: "a
+        /// massive attack in a large pool with many tentacles and the eye
+        /// itself"). Spawns several ordinary limbs together with a Bloom at
+        /// the same qualifying pool and announces it as a real Letter,
+        /// deliberately louder than SpawnEncounter's silent ordinary
+        /// spawns — "genuinely distinct, bigger, rarer, more dramatic"
+        /// per the 2026-09-29 ruling. Consumes (resets) the accumulated
+        /// pressure that made it eligible.</summary>
+        private void SpawnGreatEmergence(List<IntVec3> pools)
+        {
+            IntVec3 seed = pools[Rand.Range(0, pools.Count)];
+
+            int minLimbs = UnityEngine.Mathf.Max(1, RM_FeverWoodSettings.tentacleGreatEmergenceMinLimbs);
+            int maxLimbs = UnityEngine.Mathf.Max(minLimbs, RM_FeverWoodSettings.tentacleGreatEmergenceMaxLimbs);
+            int limbCount = Rand.RangeInclusive(minLimbs, maxLimbs);
+
+            for (int i = 0; i < limbCount; i++)
+            {
+                ThingDef def = RollLimb();
+                if (def == null)
+                {
+                    continue;
+                }
+                IntVec3 cell = i == 0 ? seed : RandomNearbyPoolCell(seed, pools);
+                Thing thing = ThingMaker.MakeThing(def);
+                GenSpawn.Spawn(thing, cell, map);
+            }
+
+            ThingDef bloomDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Sekkulaath_Bloom");
+            if (bloomDef != null)
+            {
+                Thing bloom = ThingMaker.MakeThing(bloomDef);
+                GenSpawn.Spawn(bloom, seed, map);
+            }
+
+            encounterPressure = 0;
+
+            Find.LetterStack.ReceiveLetter(
+                "The Great Emergence",
+                "The water at a large pool churns and breaks open — many tentacles rise together, and beneath them, exposed for one long moment, the eye itself. This is the strategic moment: driving off or killing the eye ends the whole attack. There is no protection here beyond what you can see coming.",
+                LetterDefOf.ThreatBig, new TargetInfo(seed, map));
         }
 
         private IntVec3 RandomNearbyPoolCell(IntVec3 seed, List<IntVec3> pools)
@@ -231,6 +325,31 @@ namespace RimMandrake.FeverWood
         public void OnPorterAttacked()
         {
             porterAngeredForever = true;
+        }
+
+        /// <summary>§6f/FEVERWOOD_TENTACLE_SETPIECE_TUNING_1: the Uranium
+        /// free-tier suppression trigger. Reuses blockedUntilTick exactly
+        /// like OnLimbRetreated/OnLimbSevered — "same shape as a sever's
+        /// respite" per this item's own spec. That reuse is also the
+        /// answer to §6f's open "does it harm the pool's other content"
+        /// question: blockedUntilTick already gates the WHOLE ambient roll
+        /// in MapComponentTick (both SpawnEncounter and
+        /// SpawnGreatEmergence, which is the only place a Porter — and so
+        /// RM_Corvath's treasure trickle — can spawn), so suppressing here
+        /// silences hostile encounters and the treasure trickle equally:
+        /// "the whole pool going quiet," not a selective effect. Called by
+        /// RM_JobDriver_FoulPool once a carried RM_RadioactiveSuppressant
+        /// charge is used at a registered pool cell.</summary>
+        public void SuppressPoolWithRadioactiveMaterial(int ticks)
+        {
+            int until = Find.TickManager.TicksGame + ticks;
+            if (until > blockedUntilTick)
+            {
+                blockedUntilTick = until;
+            }
+            Messages.Message(
+                "The pool's water clouds and stills. Whatever lives beneath it is driven down by the fouling — no tentacles, and no trickle of scavenged goods, until the material diffuses away.",
+                new TargetInfo(map.Center, map), MessageTypeDefOf.PositiveEvent);
         }
 
         public void DriveOffAllLimbs(int ticks)
@@ -368,6 +487,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref blockedUntilTick, "blockedUntilTick", 0);
             Scribe_Values.Look(ref permanentlyKilled, "permanentlyKilled", false);
             Scribe_Values.Look(ref porterAngeredForever, "porterAngeredForever", false);
+            Scribe_Values.Look(ref encounterPressure, "encounterPressure", 0);
             // sentinelCount is deliberately NOT scribed: every spawned
             // sentinel's own RM_CompTentacleLimb.PostSpawnSetup re-registers
             // with Notify_SentinelUp() on load too (PostSpawnSetup fires for

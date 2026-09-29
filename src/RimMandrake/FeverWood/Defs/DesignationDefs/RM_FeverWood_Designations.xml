@@ -25,4 +25,16 @@
     <texturePath>Designations/Slaughter</texturePath>
   </DesignationDef>
 
+  <!--
+    FEVERWOOD_TENTACLE_SETPIECE_TUNING_1, §6f: "foul this pool cell with a
+    radioactive suppressant" — a cell target, same shape as vanilla's own
+    Mine designation. RM_Designator_FoulPool applies it; RM_WorkGiver_FoulPool
+    scans for it and clears it once RM_JobDriver_FoulPool completes.
+  -->
+  <DesignationDef>
+    <defName>RM_Designation_FoulPool</defName>
+    <targetType>Cell</targetType>
+    <texturePath>Designations/Mine</texturePath>
+  </DesignationDef>
+
 </Defs>

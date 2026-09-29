@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWood_SuppressionOrdersPatch.xml    FEVERWOOD_TENTACLE_SETPIECE_TUNING_1
+
+  Registers RM_Designator_FoulPool in the vanilla "Orders" toolbar — same
+  xpath/shape as RM_FeverWood_StakeLureOrdersPatch.xml, whose own header
+  records why this is written explicitly rather than assumed: a Designator
+  with no entry here never reaches the Architect/Orders menu at all.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Ludeon.RimWorld</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/DesignationCategoryDef[defName="Orders"]/specialDesignatorClasses</xpath>
+      <value>
+        <li>RimMandrake.FeverWood.RM_Designator_FoulPool</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
