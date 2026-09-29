@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T08:08:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-29T08:24:39Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1654,16 +1654,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## GREENTIDE_CANOPY_SWARM_1 The Greentide's insect axis: a new canopy-hazard swarm, driving the Gnawer/Shatterer tree-fall mechanics
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     spec, verify and criteria all present
-summary:  1. Design the creature concept as a card set first, per this project's standing practice for a new
-prose:    infrastructure/state/items/GREENTIDE_CANOPY_SWARM_1.md
 
 ## WARDEN_MOTHER_TRAINABLE_GATE_1 Hard-exclude Rescue/general Haul from a self-tamed warden young's training tab
 state:    proposed
