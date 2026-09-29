@@ -12,9 +12,15 @@
       <displayName>RimMandrake: Creature Behaviors</displayName>
       <steamWorkshopUrl />
     </li>
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards Kit</displayName>
+      <steamWorkshopUrl />
+    </li>
   </modDependencies>
   <loadAfter>
     <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.environmentalhazards</li>
   </loadAfter>
   <description>GREENTIDE_STANDALONE_MOD_1 (owner ruling, 2026-09-11, on the churnmud
 card, verbatim: "This is a really cool mechanic and suggests making the Biome
@@ -88,9 +94,15 @@ used to call "owed separately." RM_Greatbole drops true hardwood
 (RM_GreatboleHardwood, a new RM_ tier resource — deliberately NOT a
 reference to the campaign's RUT_Hardwood, so this mod still depends on
 nothing Utinni-side) via the shared, def-agnostic RM_FellableTreeExtension /
-RM_TreeFallUtility mechanism in mandrake.rm.environmentalhazards (an
-optional dependency, gated per-&lt;li&gt; with MayRequire, not a hard mod
-dependency of this mod). The roster's seven non-tree understory plants
+RM_TreeFallUtility mechanism in mandrake.rm.environmentalhazards. CORRECTED
+2026-09-29 (GREENTIDE_CANOPY_SWARM_1): that dependency was previously
+described here as "optional, gated per-&lt;li&gt; with MayRequire" but no
+&lt;li&gt; anywhere in this mod (RM_Greatbole.xml's own RM_FellableTreeExtension
+included) ever actually carried a MayRequire guard — a real gap, since
+MayRequire on a modExtension &lt;li&gt; class reference is exactly the kind of
+element it's documented to work on. mandrake.rm.environmentalhazards is now a
+declared modDependency/loadAfter instead of an unenforced assumption. The
+roster's seven non-tree understory plants
 (brakkel, tumbel, sarquin, phorrik, wollick, maddrick, illurin) are a
 follow-on, GREENTIDE_UNDERSTORY_PLANT_ROSTER_1 — this biome's foragedFood
 stays RawBerries until brakkel ships to replace it.
@@ -103,6 +115,19 @@ by the ambient half of RM_Frenzy (RM_Greentide_FrenzyDisease); the deliberate
 half is a harvested item, RM_FrenzyDose, refined at a Drug Lab from
 RM_GorbelethToxin (RM_Gorbeleth's own harvest, row 14 of the tree roster).
 Both routes are gated by one Mod Settings toggle.
+
+GREENTIDE_CANOPY_SWARM_1 (2026-09-29) gave the Greentide its canopy-hazard
+insect axis — a new creature, RM_Krannock, distinct from RM_Skerrel's gall
+wasp (a separate item) and not a reuse of the existing 27-row fauna cast per
+the owner's own ruling. A large flying beetle, RM_Krannock carries
+RM_GnawTreeBaseExtension and drives the already-shipped Gnawer mechanic
+(RM_JobGiver_GnawTreeBase / RM_TreeFallUtility, mandrake.rm.environmentalhazards)
+via a new ThinkTreeDef splice in that mod — real flight per the standing
+rule, group/swarm wildGroupSize. The Shatterer mechanic
+(fellsTreesBelowHealthFraction) remains deliberately unwired to any creature
+— see the def's own header for why. NOT placed in WildAnimals_Greentide.xml
+or given a commonality/band: roster placement is owed to this biome's own
+review sitting, not this item. Art is queued, not yet generated.
 
 Live proof is OWED at publish time — see the item's own verify record.</description>
 </ModMetaData>

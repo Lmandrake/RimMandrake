@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Krannock.xml                                      GREENTIDE_CANOPY_SWARM_1
+
+  The Greentide's canopy-hazard insect axis. Owner ruling (question card,
+  2026-09-25, on GREENTIDE_RISK_REWARD_EXCHANGE_1's Q3): the canopy-hazard
+  insects are a NEW canopy swarm layer — new creature + art + behaviour — not
+  folded into the existing 27-row WildAnimals_Greentide.xml cast, and NOT
+  RM_Skerrel/RM_SkerrelGall (the sting-stacking gall wasp of
+  GREENTIDE_WASP_SWARM_1 — a separate, already-designed item; do not conflate).
+
+  ── Design card (this pass IS the design sitting — owner AFK, FOUNDRY's own
+     call per the item's "author nothing before the design pass" instruction) ──
+
+  Silhouette: large (baseBodySize 1.6 — bigger than RM_Quarrok's 1.4, well
+  past ordinary vermin scale), armoured, insectoid. Per the ruling's own
+  wording ("canopy-hazard... canopy is dangerous overhead") it is a canopy
+  flier, not a ground-walker like Quarrok/Webwork's cast — it works trunks
+  from the ground when it descends, but lives and travels through the high
+  canopy between trees.
+
+  Tier: RM_ (invented, franchise-free). Nothing about "a forest-hazard
+  insect that chews tree bases" is Star Wars IP — per §7/Q11a, an invented
+  exotic name stays RM_ tier unless it is GENUINE canon vocabulary. Checked
+  the candidate against the Wookieepedia search API before finalizing
+  (curl "https://starwars.fandom.com/api.php?action=query&list=search&srsearch=Krannock&format=json"
+  → {"query":{"search":[]}}, zero hits, 2026-09-29) — also checked Vrelk,
+  Chakrith, Gnashwing (all zero hits) before settling on Krannock. No
+  collision anywhere in this repo either (grep -ri krannock: zero hits before
+  this file).
+
+  Solo vs. group: GROUP — wildGroupSize 3~6. The item's own title
+  ("CANOPY_SWARM") is itself the strongest signal here: this is not a lone
+  apex predator, it is a dispersed working party that shows up a few at a
+  time and leaves a changed forest behind it. lifeStageAges reuses vanilla's
+  EusocialInsectLarva/Juvenile/Adult (Locust/Megaspider's own stages) rather
+  than inventing new ones — "eusocial" fits a swarm-behaviour insect exactly
+  and needs no new LifeStageDef.
+
+  Which mechanic(s): GNAWER ONLY, explicitly, not both — settling the
+  ambiguity the item itself flags ("the design pass's own audit found the
+  Gnawer/Shatterer split ambiguous... settle that explicitly rather than
+  defaulting to 'one creature does everything' without saying so"). Reasons,
+  stated plainly:
+    1. RM_JobGiver_GnawTreeBase / RM_JobDriver_GnawTreeBase / the
+       RM_GnawTreeBaseExtension marker are a complete, already-built,
+       already-consumed pattern (RM_Quarrok's own RM_ChewAnchorsConsumerExtension
+       is the structural precedent for "marker extension + inserted
+       ThinkTreeDef splice, no new C#") — wiring Krannock to it is pure XML,
+       zero new code, zero new risk.
+    2. The Shatterer mechanic (fellsTreesBelowHealthFraction on
+       HediffComp_PeriodicAreaAttack) has NO existing "grant this HediffDef
+       permanently at spawn" wiring anywhere in this repo (checked: no
+       hediffGiverSets pattern fits — that is a probabilistic disease roll,
+       not "always has it"; no InnateHediff-shaped comp exists to reuse).
+       Building one would be new mechanism-adjacent C# under an item whose
+       own spec says "wire it to the existing mechanics, do not invent new
+       ones" and whose constraints forbid any live/bridge proof of a new
+       comp actually firing correctly. Forcing it in now would be the
+       "default to one creature does everything, without saying so" failure
+       the item explicitly warns against, wearing ambition as a disguise.
+    3. The criteria line ("you hear trees falling in the canopy before you
+       ever see what is doing it") is fully satisfied by Gnawer alone — a
+       hidden insect chewing through trunks and dropping them is the whole
+       image; nothing about it requires the Shatterer's area-damage aura too.
+  ⇒ The Shatterer mechanic remains unwired to any creature after this item,
+  exactly as it was before — a real, open follow-on (a second creature, or a
+  later pass on this one) rather than something this item silently claimed.
+
+  Flight: FLIES, for real — MaxFlightTime/FlightCooldown stat pair
+  (Pawn_FlightTracker.CanEverFly), never a bool, per the standing rule ("if
+  it flies in the fiction, it flies in the game") and copied from the
+  vanilla Locust shape (Odyssey's own flying insect swarm animal — the
+  closest vanilla analog to "canopy-hazard insect swarm" that exists) rather
+  than invented from scratch. canLeaveMapFlying deliberately OMITTED, same
+  posture as RM_Sivvern (Webwork) — it lairs in the Greentide canopy, no
+  migration mechanism is claimed, so the narrow flier carve-out
+  (BIOME_SPECIFIC_FAUNA_LAW_1) is not invoked. No flyingAnimationFramePathPrefix/
+  -FrameCount: the flip-book frame set is OWED with the rest of this
+  creature's art (see About.xml note on this item) — GetBestFlyAnimation
+  returns null with none set and it flies plainly; never block flight
+  waiting on frames.
+
+  Roster placement: NOT done here, deliberately. Per the item's own
+  instruction ("do NOT add it to WildAnimals_Greentide.xml's 27-row cast
+  sweep... placement goes through the Greentide's own review sitting"), this
+  def is real, valid and wireable but carries no commonality/band assignment
+  and is not referenced from any BiomeDef's <wildAnimals> anywhere. It will
+  not spawn on any map until that sitting places it.
+
+  Meat/leather: useMeatFrom Megaspider, LeatherAmount 0 — same "no new
+  generic-resource art owed" call the vanilla Locust itself makes (Odyssey's
+  Races_Animal_Insect.xml), so this def needs no new meat/leather texture to
+  be content-complete.
+
+  Art: none exists. Searched infrastructure/artpipe/registry.jsonl,
+  done/, _artsrc/ this pass for "canopy", "gnaw", "krannock" (all
+  zero hits) — sanity-probed against "bloodymess" (24) and "greentide" (77)
+  to confirm the search instrument itself works before trusting the zero.
+  Queued via the normal fill_queue.py route:
+  infrastructure/artpipe/art_lists/greentide_krannock.csv → RM_Krannock_v1
+  (south/east/north, 256x256). Placeholder texPath below points at the owed
+  location; never deploy against a donor texture for this creature — the
+  swarm-flier-with-mandibles silhouette is the whole point.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Krannock</defName>
+    <label>krannock</label>
+    <description>A slab-plated flying beetle the size of a dog, grey-green chitin dulled under a fur of moss and bark-dust, wings folded flat along its back until it drops out of the canopy onto a trunk it has already marked. It works alone or in a scattered handful, jaws built to grind through green wood in hours rather than days — you hear the trunk giving way long before you ever see what did it.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.75</Wildness>
+      <!-- Real flight, per the standing rule (owner, 2026-09-19). Core stat
+           pair (Pawn_FlightTracker.CanEverFly), copied from vanilla Locust
+           (Odyssey Races_Animal_Insect.xml) — the closest existing vanilla
+           analog to a canopy-hazard insect swarm. -->
+      <MaxFlightTime>9</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <baseBodySize>1.6</baseBodySize>
+      <baseHealthScale>1.3</baseHealthScale>
+      <baseHungerRate>0.28</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <manhunterOnDamageChance>0.08</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>9</lifeExpectancy>
+      <gestationPeriodDays>8</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>EusocialInsectLarva</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectAdult</def>
+          <minAge>0.35</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+
+      <!-- Real flight, vanilla Locust's own shape. canLeaveMapFlying
+           deliberately OMITTED — it lairs in the Greentide canopy, no
+           migration mechanism claimed (see header). -->
+      <flightStartChanceOnJobStart>0.12</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.3</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+    </race>
+    <modExtensions>
+      <!-- GREENTIDE_CANOPY_SWARM_1: gives RM_JobGiver_GnawTreeBase (shipped
+           by GREENTIDE_MECHANICS_2 M6 feller 3 with no consumer race) its
+           first consumer. Same presence-only idiom RM_Quarrok's own
+           RM_ChewAnchorsConsumerExtension already established for this kit
+           of globally-inserted JobGivers — no-op for any race that doesn't
+           carry it. No MayRequire: same convention RM_Greatbole.xml already
+           set for a modExtension from this same assembly (see this mod's
+           own About.xml — mandrake.rm.environmentalhazards is now a
+           declared dependency, fixing the gap that def's own comment
+           described but didn't act on). -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GnawTreeBaseExtension">
+        <searchRadius>35</searchRadius>
+        <chewTicksToFell>1800</chewTicksToFell>
+      </li>
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Krannock</defName>
+    <label>krannock</label>
+    <race>RM_Krannock</race>
+    <combatPower>35</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <!-- GROUP, not solo — the "canopy SWARM" design call (see header): a
+         dispersed working party, not a lone apex predator. -->
+    <wildGroupSize>3~6</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <!-- No flyingAnimationFramePathPrefix/-FrameCount: the flip-book frame
+         set is OWED with the rest of this creature's art (header).
+         GetBestFlyAnimation returns null with none set and it flies
+         plainly — never block flight waiting on frames. -->
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Krannock/RM_Krannock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Krannock/RM_Krannock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Krannock/RM_Krannock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
