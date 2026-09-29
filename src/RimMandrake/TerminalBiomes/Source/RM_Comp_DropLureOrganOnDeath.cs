@@ -42,7 +42,16 @@ namespace RimMandrake.TerminalBiomes
                 return;
             }
             Thing organ = ThingMaker.MakeThing(dropDef);
-            GenPlace.TryPlaceThing(organ, pos, previousMap, ThingPlaceMode.Near);
+            if (!GenPlace.TryPlaceThing(organ, pos, previousMap, ThingPlaceMode.Near))
+            {
+                // A nearby-cell search failed (e.g. a fully impassable kill
+                // site) -- widen the search before the trophy the design
+                // promises just silently never appears.
+                if (!GenPlace.TryPlaceThing(organ, pos, previousMap, ThingPlaceMode.Radius, squareRadius: 5))
+                {
+                    organ.Destroy(DestroyMode.Vanish); // genuinely nowhere to put it
+                }
+            }
         }
     }
 }

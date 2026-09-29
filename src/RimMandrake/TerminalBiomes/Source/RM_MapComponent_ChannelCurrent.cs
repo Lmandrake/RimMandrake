@@ -238,7 +238,7 @@ namespace RimMandrake.TerminalBiomes
         // ════════════════════════════════════════════════════════════════
         public bool HasCurrent(IntVec3 c)
         {
-            if (flowDir == null || !c.InBounds(map))
+            if (lane == null || flowDir == null || bankBand == null || !c.InBounds(map))
             {
                 return false;
             }

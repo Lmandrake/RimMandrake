@@ -107,8 +107,14 @@ namespace RimMandrake.TerminalBiomes
             RevertNearbySiltTraps();
         }
 
+        private const int BreachCheckIntervalTicks = 15; // fine enough to resolve a stake-cascade timer; no need for every-tick resolution across a 2500-tick window
+
         private void TickBreach()
         {
+            if (!this.IsHashIntervalTick(BreachCheckIntervalTicks))
+            {
+                return;
+            }
             if (cascadeFireTicks != null)
             {
                 int now = Find.TickManager.TicksGame;
