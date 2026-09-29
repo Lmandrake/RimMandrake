@@ -158,6 +158,90 @@ namespace JawaBench.BridgeTools
             });
         }
 
+        private const string FluidDefTypeName = "RimMandrake.FlowWorks.FluidDef";
+
+        [Tool(
+            "jawa/flowworks_spawn_flood",
+            Description =
+                "TEST-ONLY: spawns a real RimMandrake.FlowWorks.Flood_FlowWorks release " +
+                "(ThingDef RM_FluidCanalFlood) at a cell, Configure()d with a named FluidDef " +
+                "and a volume, exactly the three calls (ThingMaker.MakeThing -> Configure -> " +
+                "GenSpawn.Spawn) SUMP_TAR_FIRE_NETWORK_1 part 2 added to " +
+                "RUT_IncidentWorker_TarPitBelch.TryExecuteWorker. Built to live-prove that " +
+                "sequence (and FluidDef.coolsToGlassEdge/Flood_FlowWorks.CoolFrontToGlass, " +
+                "which neither the offline FlowWorks selftest nor any existing live caller " +
+                "ever exercised - grep the source, nothing spawns RM_FluidCanalFlood before " +
+                "this tool) without needing sarg.alphabiomes/mandrake.rm.thesump (TheSump's " +
+                "own hard dependency, not installed on this machine) just to reach a real tar " +
+                "pit. Reflection-coupled the same way jawa/canal_cell_report is: works with " +
+                "or without FlowWorks loaded, fails loudly naming why. Pick a small volume " +
+                "(e.g. 8-15 with FluidDef.volumePerTile=1) to keep the release's self-limiting " +
+                "finish (frontier walls in or reservoir exhausts) within a few thousand ticks " +
+                "of step_game_ticks rather than tar's full ticksPerTile=360 budget.",
+            ResultDescription =
+                "success, cell, fluidDef, volume, thingId, flowWorksLoaded, ticksGame. " +
+                "Failure names exactly which resolve step missed (type, def, Configure " +
+                "method) rather than throwing.")]
+        public static async Task<object> FlowWorksSpawnFlood(
+            IRimBridgeContext ctx,
+            CancellationToken cancellationToken,
+            [ToolParameter(Description = "Map cell X to seed the release at.")] int x,
+            [ToolParameter(Description = "Map cell Z to seed the release at.")] int z,
+            [ToolParameter(Description = "FluidDef defName, e.g. RM_Fluid_Tar.", DefaultValue = "RM_Fluid_Tar")]
+            string fluidDefName = "RM_Fluid_Tar",
+            [ToolParameter(Description = "Reservoir volume handed to Configure(). Small (8-15) for a fast test.")]
+            float volume = 10f)
+        {
+            return await ctx.MainThread.InvokeAsync(() =>
+            {
+                Map map = Find.CurrentMap;
+                if (map == null) return Fail("No current map.");
+                IntVec3 c = new IntVec3(x, 0, z);
+                if (!c.InBounds(map))
+                    return Fail("Cell " + c + " is out of bounds on map " + map.uniqueID
+                        + " (size " + map.Size.x + "x" + map.Size.z + ").");
+
+                Type floodType = GenTypes.GetTypeInAnyAssembly(FluidFloodTypeName);
+                if (floodType == null)
+                    return Fail("RimMandrake.FlowWorks.Flood_FlowWorks not resolvable - FlowWorks is not loaded.");
+                Type fluidDefType = GenTypes.GetTypeInAnyAssembly(FluidDefTypeName);
+                if (fluidDefType == null)
+                    return Fail("RimMandrake.FlowWorks.FluidDef not resolvable - FlowWorks is not loaded.");
+
+                ThingDef floodThingDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FluidCanalFlood");
+                if (floodThingDef == null)
+                    return Fail("No ThingDef named RM_FluidCanalFlood.");
+                if (!floodType.IsAssignableFrom(floodThingDef.thingClass))
+                    return Fail("RM_FluidCanalFlood.thingClass is " + floodThingDef.thingClass
+                        + ", expected " + floodType.FullName + ".");
+
+                Type dbType = typeof(DefDatabase<>).MakeGenericType(fluidDefType);
+                MethodInfo getNamed = dbType.GetMethod("GetNamedSilentFail", new[] { typeof(string) });
+                object fluidDefInstance = getNamed.Invoke(null, new object[] { fluidDefName });
+                if (fluidDefInstance == null)
+                    return Fail("No FluidDef named '" + fluidDefName + "'.");
+
+                MethodInfo configure = floodType.GetMethod("Configure", new[] { fluidDefType, typeof(float) });
+                if (configure == null)
+                    return Fail("Flood_FlowWorks.Configure(FluidDef, float) not found by reflection - signature changed?");
+
+                Thing flood = ThingMaker.MakeThing(floodThingDef);
+                configure.Invoke(flood, new object[] { fluidDefInstance, volume });
+                GenSpawn.Spawn(flood, c, map);
+
+                return (object)new
+                {
+                    success = true,
+                    cell = new { x, z },
+                    fluidDef = fluidDefName,
+                    volume,
+                    thingId = flood.ThingID,
+                    flowWorksLoaded = true,
+                    ticksGame = TicksGameSafe()
+                };
+            });
+        }
+
         [Tool(
             "jawa/type_probe",
             Description =

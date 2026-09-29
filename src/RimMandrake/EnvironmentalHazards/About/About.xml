@@ -59,14 +59,27 @@ RimMandrake.CreatureBehaviors.RM_MapComponent_SilenceCue.TriggerHush for the
 mirror-break "everything goes silent to watch" beat (the_fever_wood.md §9),
 reusing the Greentide kit's own silence-cue class rather than a second
 implementation. This makes mandrake.rm.creaturebehaviors a real dependency
-of this mod, same shape mandrake.rm.shipvermin already ships.</description>
+of this mod, same shape mandrake.rm.shipvermin already ships.
+
+SUMP_TAR_FIRE_NETWORK_1 part 2 (2026-09-29): RUT_IncidentWorker_TarPitBelch
+now spawns a real RimMandrake.FlowWorks.Flood_FlowWorks release (RM_Fluid_Tar)
+at the epicenter instead of a filth splash, so its cooled edge becomes real
+RM_TarGlass terrain via FluidDef.coolsToGlassEdge. This incident already
+hard-required FlowWorks' own RM_TarDeep/RM_TarShallow terrain to ever fire,
+so declaring mandrake.rm.flowworks as a dependency makes that existing need
+explicit rather than adding a new one.</description>
   <modDependencies>
     <li>
       <packageId>mandrake.rm.creaturebehaviors</packageId>
       <displayName>RimMandrake: Creature Behaviors</displayName>
     </li>
+    <li>
+      <packageId>mandrake.rm.flowworks</packageId>
+      <displayName>RimMandrake: FlowWorks</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.flowworks</li>
   </loadAfter>
 </ModMetaData>

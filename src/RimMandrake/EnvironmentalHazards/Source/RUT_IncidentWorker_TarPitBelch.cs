@@ -1,4 +1,6 @@
+using RimMandrake.FlowWorks;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
@@ -7,24 +9,18 @@ namespace RimMandrake.EnvironmentalHazards
     // should also occasionally be a random event when a tar pit just belches
     // a huge amount of tar out all over the local terrain."
     //
-    // SCOPE NOTE, read before extending this class: a later same-day ledger
-    // note on this item re-frames the belch's EVENTUAL shape as a FlowWorks
-    // flood pulse whose fronts cool to walkable glass, full rulings on
-    // SUMP_TAR_HYDROLOGY_1. That item owns the whole canal-work/fire-network/
-    // Deep-Black-mere FlowWorks integration for the tar biome, and none of
-    // its engineering exists yet (RM_Tar carries no pulse-spread or glass-
-    // cooling code today — those are that item's own "engineering-tier
-    // questions, build's discretion"). This class ships the scenario-scoped
-    // v1 the owner's own words describe: an occasional incident that finds
-    // an existing tar pit (RM_TarDeep/RM_TarShallow terrain, already
-    // generated on Sump maps via LIQUID_TYPES_MOD_1) and coats the
-    // surrounding ground in tar filth, reusing RM_TarCoatingUtility
-    // (SUMP_TAR_NASTINESS_1 S1) exactly as that item's own header names this
-    // class as its intended first consumer. When SUMP_TAR_HYDROLOGY_1 builds
-    // the real flood-pulse/glass-front mechanism, its own build should
-    // replace this class's coating call (find epicenter -> flood pulse)
-    // without needing to touch the IncidentDef, the settings toggle, or the
-    // biome restriction below — the trigger/anchor shape stays the same.
+    // SUMP_TAR_FIRE_NETWORK_1 part 2: the swap this class's own header used
+    // to describe as owed ("find epicenter -> flood pulse") is now done. The
+    // epicenter/settings/biome-restriction shape below is UNCHANGED from the
+    // v1 filth-coat incident (SUMP_TAR_NASTINESS_1 S1's RM_TarCoatingUtility
+    // is no longer called here, but nothing else moved) — only the payload
+    // changed, from a filth splash to a real SUMP_TAR_HYDROLOGY_1-built
+    // Flood_FlowWorks release seeded with RM_Fluid_Tar. That FluidDef's own
+    // <coolsToGlassEdge>RM_TarGlass</coolsToGlassEdge> (FlowWorks_Fluids.xml)
+    // fires automatically the moment the release self-limits (Flood_FlowWorks.
+    // Tick() -> CoolFrontToGlass(), reservoir exhausted or walled in) — this
+    // class needs no glass-specific code of its own, and touches no
+    // IncidentDef, no settings field and no biome restriction to get it.
     public class RUT_IncidentWorker_TarPitBelch : IncidentWorker
     {
         // Bounded sample, not a full-map scan — same posture
@@ -54,29 +50,28 @@ namespace RimMandrake.EnvironmentalHazards
                 return false; // no tar pit on this map — not a no-op bug, just nothing to belch
             }
 
-            ThingDef tarFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Filth_Tar");
-            if (tarFilth == null)
+            ThingDef floodDef = RimMandrakeFlowWorks_DefOf.RM_FluidCanalFlood;
+            FluidDef tarFluid = RimMandrakeFlowWorks_DefOf.RM_Fluid_Tar;
+            if (floodDef == null || tarFluid == null)
             {
-                return false; // LIQUID_TYPES_MOD_1 content missing/renamed — refuse rather than crash
+                return false; // FlowWorks content missing/renamed — refuse rather than crash
             }
 
-            // "a huge amount of tar... all over the local terrain": a wide,
-            // settings-tunable radius and a thick coat. thicknessPerCell 3 is
-            // this pass's own INVENTED-BUILD constant, deliberately thicker
-            // than a beast's own tracking splash (RM_Comp_TarCoatingSource's
-            // own default of 1) since this is meant to read as a real event,
-            // not ambient nastiness.
-            int coated = RM_TarCoatingUtility.CoatRadius(
-                map,
-                epicenter,
-                RM_EnvironmentalHazardsSettings.tarBelchRadius,
-                tarFilth,
-                thicknessPerCell: 3);
+            // "a huge amount of tar... all over the local terrain": the same
+            // settings-tunable radius the old filth coat used, reinterpreted
+            // as the footprint (in tiles) this release should be able to pay
+            // for. Flood_FlowWorks.PayableTiles derives tile count from
+            // remainingVolume / fluidDef.volumePerTile, so working backwards
+            // from "roughly a disc of this radius" gives the volume to hand
+            // Configure() -- pi*r^2 tiles, tar's own volumePerTile (currently
+            // 1, FlowWorks_Fluids.xml) per tile.
+            float radius = RM_EnvironmentalHazardsSettings.tarBelchRadius;
+            float targetTiles = Mathf.PI * radius * radius;
+            float volume = Mathf.Max(1f, targetTiles) * Mathf.Max(0.0001f, tarFluid.volumePerTile);
 
-            if (coated == 0)
-            {
-                return false; // every cell in range refused the filth (e.g. all bare rock) — no-op, not a broken incident
-            }
+            Flood_FlowWorks flood = (Flood_FlowWorks)ThingMaker.MakeThing(floodDef);
+            flood.Configure(tarFluid, volume);
+            GenSpawn.Spawn(flood, epicenter, map);
 
             Find.LetterStack.ReceiveLetter(
                 "RUT_TarPitBelchLabel".Translate(),
