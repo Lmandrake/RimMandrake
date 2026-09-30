@@ -1279,8 +1279,8 @@
 		</tools>
 		<comps>
 			<li Class="CompProperties_EggLayer">
-				<eggUnfertilizedDef>RM_GreatDevourerEggUnfertilized</eggUnfertilizedDef>
-				<eggFertilizedDef>RM_GreatDevourerEggFertilized</eggFertilizedDef>
+				<eggUnfertilizedDef>RM_EggGreatDevourerUnfertilized</eggUnfertilizedDef>
+				<eggFertilizedDef>RM_EggGreatDevourerFertilized</eggFertilizedDef>
 				<eggFertilizationCountMax>1</eggFertilizationCountMax>
 				<eggLayIntervalDays>6</eggLayIntervalDays>
 			</li>

@@ -339,6 +339,7 @@ TheSump/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml           # BENCH: no art y
 #    and art deploy together in one --apply, same pattern as the Scald/Sump
 #    holds above. Independent: none of the six references another's art.
 UtinniPatches/Defs/ThingDefs_Items/RUT_TibannaGas.xml           # BENCH: no art yet, 2026-09-13
+UtinniPatches/Patches/RUT_TibannaTap_BeldonWiring.xml           # LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: held with RUT_TibannaGas.xml (its CompProperties_GatherableGas.gasDef dangled a cross-ref while the gas item deployed without it)
 UtinniPatches/Defs/ThingDefs_Items/RUT_DeadCreep.xml            # BENCH: no art yet, 2026-09-13
 UtinniPatches/Defs/ThingDefs_Plants/RUT_DyingCreep.xml          # BENCH: no art yet, 2026-09-13
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_VentSmelter.xml      # BENCH: no art yet, 2026-09-13
@@ -368,6 +369,8 @@ UtinniPatches/Patches/RUT_VentKiln_RecipeWiring.xml             # BENCH: held wi
 #    and art deploy together in one --apply, same pattern as the holds above.
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundryTowerEntrance.xml   # BENCH: no art yet, 2026-09-14
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundrySalvageCache.xml    # BENCH: no art yet, 2026-09-14
+UtinniPatches/Defs/MapGeneration/RUT_FoundryTowerScatter.xml          # LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: held with RUT_FoundryTowerEntrance.xml (its RM_SetPieceElement_SpawnMarker.markerDef dangled a cross-ref while the entrance deployed without it)
+UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor_SalvageCache.xml    # LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: held with RUT_FoundrySalvageCache.xml (its RM_SetPieceElement_SpawnMarker.markerDef dangled a cross-ref while the cache deployed without it)
 
 # --- GREENTIDE_MECHANICS_2 M1/M2 build pass: RUT_DryAirBlower, no art yet --
 # 2026-09-14, GREENTIDE_MECHANICS_2 M1/M2 build pass. RUT_DryAirBlower.xml
@@ -441,3 +444,18 @@ TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml   # FOUNDRY: no art yet, 2026
 # => LIFT per-facing as each animal's art lands under TheSump/Textures/
 #    Things/Pawn/Animal/RM_<Name>/RM_<Name>_{south,east,north}.png.
 TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml   # FOUNDRY: no art yet, 2026-09-26
+
+# --- LOAD_ERRORS_DEF_FIELDS_1 (2026-09-30): RM_TheSump_Biome.xml outran its own held cast ---
+# RM_TheSump_Biome.xml's <wildAnimals>/<wildPlants> wire in all 5 SUMP_FAUNA_ROSTER_1 rows
+# (RM_SumpMouse/RM_Brommet/RM_Dredgel/RM_Skarrid/RM_Skellarn) and 8 of the 9 SUMP_FLORA_ROSTER_1
+# rows (RM_Dorvel/RM_Skelver/RM_Korveth/RM_Brindeth/RM_Soffeth/RM_Tolleth/RM_Mirrelin/RM_Pallick)
+# — every one of those defs lives in RM_SumpFauna.xml/RM_SumpFlora.xml above, both held for art.
+# The biome deployed anyway and threw 13 "Could not resolve cross-reference" errors (cold load
+# 2026-09-30), each cascading into a NullReferenceException in BiomeDef.ConfigErrors() (wa.animal
+# null on the unresolved rows). Held whole-file, at row granularity: BIOME_PAINT_ONCE_AT_THE_END_1
+# already rules this def carries 0 tiles pending the terminal repaint, so nothing user-visible is
+# lost by holding it — the file's other content (workerClass, terrain, weather, diseases) isn't
+# reachable in play either way yet.
+# => LIFT together with RM_SumpFlora.xml and RM_SumpFauna.xml above once their art lands (or once
+#    the wildAnimals/wildPlants rows are trimmed to only already-deployed defs).
+TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml   # LOAD_ERRORS_DEF_FIELDS_1: held with RM_SumpFlora.xml/RM_SumpFauna.xml, 2026-09-30
