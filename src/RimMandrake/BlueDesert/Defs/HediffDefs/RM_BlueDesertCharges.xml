@@ -156,19 +156,16 @@
     </comps>
   </HediffDef>
 
-  <!-- 🔴 STUB HOOKUP POINT for BLUEDESERT_MECHANICS_BUILD_1 §1: today this
-       comp is the plain ungated ExplodeOnDeath every other native carries —
-       ANY death detonates at the full 15-radius. The RULED behaviour (sheet
-       amendment (2), bible §1 "Danger frame") is trigger-gated: detonate
-       ONLY on a heat-family killing blow (Flame/Burn; lightning's strike
-       damage IS Flame so it's free), PLUS an EMP-on-hit trap that detonates
-       a LIVING vhaulk immediately on any EMP damage (checked on hit, not on
-       death). The mechanics item adds two custom HediffComps here (a
-       death-cause filter alongside this ExplodeOnDeath comp, and an
-       EMP Notify_PawnPostApplyDamage hook, same shape as this file's own
-       RM_DorrakCharge -> HediffCompProperties_ExplodeOnPartDestroyed
-       precedent) — it does not need to replace this hediff, only add to
-       its <comps> list. -->
+  <!-- BLUEDESERT_MECHANICS_BUILD_1 §1: the RULED trigger gate (sheet
+       amendment (2), bible §1 "Danger frame"). One comp does both halves —
+       RimMandrake.BlueDesert.RM_HediffComp_HeatGatedExplodeOnDeath
+       (Source/RM_VhaulkDetonation.cs): detonate ONLY on a heat-family
+       killing blow (Flame/Burn; lightning's strike damage IS Flame, so it
+       comes free; heatstroke or a burn wound as the culprit hediff also
+       counts), and the ion trap — ANY EMP damage against a LIVING vhaulk
+       detonates it on the hit. A kinetic or cold kill leaves the cistern
+       intact to butcher. Mod Settings can restore the ungated any-death
+       blast or disable the EMP trap. -->
   <HediffDef>
     <defName>RM_VhaulkCharge</defName>
     <hediffClass>HediffWithComps</hediffClass>
@@ -177,7 +174,18 @@
     <isBad>false</isBad>
     <tendable>false</tendable>
     <comps>
-      <li Class="HediffCompProperties_ExplodeOnDeath">
+      <li Class="RimMandrake.BlueDesert.RM_HediffCompProperties_HeatGatedExplodeOnDeath">
+        <heatDamageDefs>
+          <li>Flame</li>
+          <li>Burn</li>
+        </heatDamageDefs>
+        <heatCulpritHediffs>
+          <li>Heatstroke</li>
+          <li>Burn</li>
+        </heatCulpritHediffs>
+        <empDamageDefs>
+          <li>EMP</li>
+        </empDamageDefs>
         <explosionRadius>15</explosionRadius>
         <damageDef>Flame</damageDef>
         <damageAmount>40</damageAmount>

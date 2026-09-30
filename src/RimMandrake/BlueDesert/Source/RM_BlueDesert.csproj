@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="RM_BlueDesertMod.cs" />
     <Compile Include="BlueDesertLife.cs" />
+    <Compile Include="RM_VhaulkDetonation.cs" />
   </ItemGroup>
 
   <ItemGroup>
