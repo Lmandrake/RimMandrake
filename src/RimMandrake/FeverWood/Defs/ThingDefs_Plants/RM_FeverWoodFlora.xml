@@ -223,6 +223,7 @@
     <defName>RM_OssagrelSap</defName>
     <label>ossagrel sap</label>
     <description>Sugar-thick syrup wept from ossagrel canes. Distills into a rough liquor or ferments into nectar; the crown's own sap-suckers drink it straight from the plant.</description>
+    <tickerType>Rare</tickerType>
     <graphicData>
       <texPath>Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -313,13 +314,14 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBaseNonEdible">
+  <ThingDef ParentName="PlantBase">
     <defName>RM_Verrow</defName>
     <label>verrow</label>
     <description>Few fronds, held high and thin, with heavy dull-skinned gourds hanging well below them on long stalks — the fruit is the visual mass, not the leaves. The crown's staple food, reachable from a boughway without climbing. Free calories that draw the crown's grazers, and then the things that wait for grazers.</description>
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
       <Flammability>0.4</Flammability>
+      <Nutrition>0.10</Nutrition>
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Verrow/RM_Verrow_a</texPath>
@@ -666,13 +668,14 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBaseNonEdible">
+  <ThingDef ParentName="PlantBase">
     <defName>RM_Tullick</defName>
     <label>tullick</label>
     <description>A tight low whorl of dull ribbed leaves with the ground visibly domed beneath it by the tuber below. The ground's one real reward — a bulk starch for the people working the causeway. Digging it churns the mud around it, an honest small cost.</description>
     <statBases>
       <MaxHitPoints>25</MaxHitPoints>
       <Flammability>0.3</Flammability>
+      <Nutrition>0.15</Nutrition>
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Tullick/RM_Tullick_a</texPath>
