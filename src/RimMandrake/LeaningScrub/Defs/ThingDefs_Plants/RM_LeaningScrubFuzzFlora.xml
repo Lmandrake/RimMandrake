@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LeaningScrubFuzzFlora.xml               LEANINGSCRUB_RULED_CONTENT_1
+
+  The four fuzz flora the cast bible commissions (Whipfuzz, Pillowmoss,
+  Tanglefuzz, Cruststar). All are fire-resistant LIVING flora (Flammability 0:
+  frozen sheet ban 9 - no dry-tinder), leaning with the wind like RM_Fuzz.
+  Descriptions are the bible's (design/Jawa/worldbuilding/biomes/
+  leaningscrub_bedazzle_cast_2026-09-29.md section 5).
+
+  STUB: the vaporator/fog-condenser behaviour of Pillowmoss, the den-anchor
+  behaviour of Tanglefuzz and the crustweevil grazing of Cruststar are
+  LEANINGSCRUB_MECHANICS_BUILD_1's; here they are plain plants. Numbers are
+  design proposals; FOUNDRY calibrates.
+
+  Art: each texPath is a Graphic_Random FOLDER (Things/Plant/RM_<Name>/) whose
+  render is queued in artpipe (leaningscrub_bedazzle_cast.csv) and not yet
+  wired - a missing-texture placeholder until it is. Expected, not a defect.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Whipfuzz</defName>
+    <label>whipfuzz</label>
+    <description>The between-plant grass of the quincunx: thin silver blades that lie almost flat in the wind and never stop moving.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0.1</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Whipfuzz</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.1, 0.1)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <fillPercent>0.1</fillPercent>
+    <pathCost>6</pathCost>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <preferability>RawBad</preferability>
+    </ingestible>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>5</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.9~1.1</visualSizeRange>
+      <topWindExposure>1.0</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestYield>1</harvestYield>
+      <harvestWork>30</harvestWork>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>45</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Pillowmoss</defName>
+    <label>pillowmoss</label>
+    <description>A fat, low cushion that drinks the wind - fog beads on it all day, and the ground under a pillowmoss is the only reliably wet ground on the plain.</description>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Pillowmoss</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.4, 0.3, 0.2)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <fillPercent>0.2</fillPercent>
+    <pathCost>10</pathCost>
+    <plant>
+      <fertilityMin>0.3</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>9</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.7~0.9</visualSizeRange>
+      <topWindExposure>0.2</topWindExposure>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>20</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Tanglefuzz</defName>
+    <label>tanglefuzz</label>
+    <description>Where a tanglefuzz grows the runs converge: a woody, knotted bush whose root-ball holds a hollow, and half the runway nation is dug in under one.</description>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Tanglefuzz</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.45, 0.3, 0.3)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <selectable>true</selectable>
+    <fillPercent>0.3</fillPercent>
+    <pathCost>18</pathCost>
+    <plant>
+      <fertilityMin>0.35</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>14</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>1.0~1.3</visualSizeRange>
+      <topWindExposure>0.6</topWindExposure>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>25</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Cruststar</defName>
+    <label>cruststar</label>
+    <description>A hand-span star of pale lichen flat against the root-bound crust, rimmed gold where it fruits. The crustweevils graze it like a herd on a pasture the size of a plate.</description>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Cruststar</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <fillPercent>0.0</fillPercent>
+    <pathCost>0</pathCost>
+    <plant>
+      <fertilityMin>0.15</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>7</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.5~0.7</visualSizeRange>
+      <topWindExposure>0.0</topWindExposure>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+</Defs>

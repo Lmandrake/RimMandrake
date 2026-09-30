@@ -17,12 +17,9 @@
   B deletes that biome def outright. See RM_LeaningScrub_Biome.xml's own
   header for the full reasoning.
 
-  Art: zero PNGs exist for any of these three defNames anywhere (MEASURED,
-  same as the originals) — expected, not a defect. The three existing
-  artpipe jobs (rut_grellbush, rut_wildhealroot, rut_grellspine) target the
-  OLD texPaths inside mandrake.rut.ashkarrflora and do not benefit these
-  defs; fresh art jobs for the RM_ texPaths below are separate, later,
-  unfiled work.
+  Art: the finished rut_grellbush, rut_grellspine and rut_wildhealroot
+  renders are wired at Textures/Things/Plant/RM_<Name>/RM_<Name>_a.png
+  (LEANINGSCRUB_RULED_CONTENT_1).
 -->
 <Defs>
 
