@@ -35,6 +35,7 @@
     <defName>RM_SeveredTentacleFlesh</defName>
     <label>severed tentacle flesh</label>
     <description>A length of thick, rubbery flesh, still faintly warm, cut from a limb of whatever vast thing lives beneath the Fever Wood's pools. It grows back — eventually, on the animal, not in the pack. Traders who know the biome pay well for it; it renders into a rich meat and a strange, purple-tinged tea.</description>
+    <tickerType>Rare</tickerType>
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>

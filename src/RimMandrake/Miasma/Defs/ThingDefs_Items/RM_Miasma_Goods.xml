@@ -43,7 +43,7 @@
     <label>delta silt</label>
     <description>Black, fine and slick silt dug from an immarel bed, extraordinary-smelling and rich with whatever the gradient has carried down. Refines into the delta's luxury attar wherever a still exists to work it.</description>
     <possessionCount>20</possessionCount>
-    <tickerType>Never</tickerType>
+    <tickerType>Rare</tickerType>
     <graphicData>
       <texPath>Things/Item/Resource/RM_DeltaSilt/RM_DeltaSilt</texPath>
       <graphicClass>Graphic_Single</graphicClass>

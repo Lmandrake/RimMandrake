@@ -85,6 +85,22 @@
     </statBases>
     <burnableByRecipe>true</burnableByRecipe>
     <healthAffectsPrice>false</healthAffectsPrice>
+    <!-- ResourceVerbBase (WoodLog's own ParentName, see header) carries
+         equipmentType=Primary + CompEquippable, so a child MUST supply its
+         own tools or trip ThingDef.ConfigErrors' "is equipment but has no
+         verbs or tools" — copied verbatim from vanilla WoodLog's own single
+         "log"/Blunt tool, dropped when this def's shape was copied in by
+         hand. -->
+    <tools>
+      <li>
+        <label>log</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+      </li>
+    </tools>
     <stuffProps>
       <stuffAdjective>waxen</stuffAdjective>
       <categories>
@@ -122,6 +138,7 @@
     <defName>RM_TarspoolStalk</defName>
     <label>tarspool stalk</label>
     <description>A whole tarspool, cut and unresolved: black base, amber middle, violet crown, still banded in the order the sky laid it down. Wicking floss holds the fractions apart until something takes it apart on purpose.</description>
+    <tickerType>Rare</tickerType>
     <graphicData>
       <texPath>Things/Plant/RM_Tarspool/RM_Tarspool</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -208,6 +225,8 @@
     <defName>RM_PitchpearlBeads</defName>
     <label>pitchpearl beads</label>
     <description>Glossy black beads, each one a season's worth of the sky's darkest manufacture, rolled and sealed around a grit of ice. Low-grade forage — animals take them readily, pawns only when nothing better is left — and, sealed and portable as they are, exactly what a refinery wants once a colony has one.</description>
+    <tickerType>Rare</tickerType>
+    <socialPropernessMatters>true</socialPropernessMatters>
     <graphicData>
       <texPath>Things/Plant/RM_Pitchpearl/RM_Pitchpearl</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -244,6 +263,8 @@
     <defName>RM_StonewaterIce</defName>
     <label>stonewater ice</label>
     <description>Chipped bone-white ice from a stonewater brake — the hardest mineral this biome owns, granite at −80°. Usable straight from the chip pile for cooking or drinking, cold enough to ache; melted properly it is the only real water the lake floor has.</description>
+    <tickerType>Rare</tickerType>
+    <socialPropernessMatters>true</socialPropernessMatters>
     <graphicData>
       <texPath>Things/Plant/RM_Stonewater/RM_Stonewater</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -280,6 +301,7 @@
     <defName>RM_MeltedWater</defName>
     <label>melted water</label>
     <description>Real liquid water, melted out of a stonewater brake by a powered extractor. The lake floor's only genuine water source — every litre of it cost watts, so even a cup of this is drawn straight from the thermal economy.</description>
+    <socialPropernessMatters>true</socialPropernessMatters>
     <graphicData>
       <texPath>Things/Plant/RM_Stonewater/RM_Stonewater</texPath>
       <graphicClass>Graphic_Single</graphicClass>

@@ -49,6 +49,7 @@
     <defName>RM_SekkulaathCream</defName>
     <label>sekkulaath cream</label>
     <description>A pale, rich secretion harvested from a fed captive sekkulaath — the base of the cream-filled donut line canon dianoga trade is known for. It spoils quickly, same as any dairy off any animal.</description>
+    <tickerType>Rare</tickerType>
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
