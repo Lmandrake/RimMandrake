@@ -1,0 +1,54 @@
+{
+ "RM_TheScald": {
+  "biome": "RM_TheScald",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_TheScald",
+  "temp": 11.4376535,
+  "weather": {
+   "weather": {
+    "current": "Fog",
+    "last": "Clear",
+    "curWeatherAge": 101514,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RUT_ScaldSteamLock",
+     "label": "The boil's breath",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    },
+    {
+     "def": "RUT_ScaldSteamCarrier",
+     "label": "Standing steam",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "RM_Bladderboil": 3
+  },
+  "plants": {
+   "Plant_TreeAnima": 1
+  },
+  "errors": [
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ }
+}
