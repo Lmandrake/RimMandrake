@@ -1347,3 +1347,50 @@
 {"seat":"FOUNDRY","event":"claim","id":"LONGSHADE_BEDAZZLE_MECHANICS_1","ts":"2026-09-30T03:48:58Z"}
 {"seat":"FOUNDRY","event":"start","id":"LONGSHADE_BEDAZZLE_MECHANICS_1","ts":"2026-09-30T03:49:03Z"}
 {"seat":"FOUNDRY","event":"close","id":"CONTAGION_FLORA_PORT_1","sha":"b632297aa","ts":"2026-09-30T03:53:32Z"}
+{"seat":"FOUNDRY","event":"claim","id":"WASTELAND_GRIPPER_STEAL_BEHAVIOR_1","ts":"2026-09-30T04:00:18Z"}
+{"seat":"FOUNDRY","event":"start","id":"WASTELAND_GRIPPER_STEAL_BEHAVIOR_1","ts":"2026-09-30T04:00:19Z"}
+{"seat":"FOUNDRY","event":"note","id":"LONGSHADE_BEDAZZLE_MECHANICS_1","text":"Tranche 1 landed fbd93df94/0ce07fecf/75439be21: Part 1 golden-hour pinned sun (Creature Behaviors kit piece, exposes fixed shadow vector for SOLAR_HEAT_EXPOSURE_1), Part 2 mirrak mechanics + def + mirrak hide (NOT in roster until art lands - would be magenta), Part 3 sarlacc kill sign only. Remaining: Swimmer's road + Crawler Road need SOLAR_HEAT_EXPOSURE_1's shade-patch graph; Long Carry needs SHADE_GEAR_FAMILY_1; mirrak haze behaviour needs smoke calendar; mirrak roster row waits on art; sky colours/glow 0.8 need owner-watched tuning. Report: Transient/longshade_mechanics_tranche1_report.md","ts":"2026-09-30T04:08:41Z"}
+{"seat":"FOUNDRY","event":"block","id":"LONGSHADE_BEDAZZLE_MECHANICS_1","reason":"Remaining parts depend on SOLAR_HEAT_EXPOSURE_1, SHADE_GEAR_FAMILY_1, smoke calendar, mirrak art","ts":"2026-09-30T04:08:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SOLAR_HEAT_EXPOSURE_1","ts":"2026-09-30T04:08:46Z"}
+{"seat":"FOUNDRY","event":"start","id":"SOLAR_HEAT_EXPOSURE_1","ts":"2026-09-30T04:08:51Z"}
+{"seat":"FOUNDRY","event":"close","id":"WASTELAND_GRIPPER_STEAL_BEHAVIOR_1","sha":"10287c1e2","ts":"2026-09-30T04:13:13Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SHADE_GEAR_FAMILY_1","ts":"2026-09-30T04:13:14Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHADE_GEAR_FAMILY_1","ts":"2026-09-30T04:13:15Z"}
+{"seat":"FOUNDRY","event":"block","id":"SHADE_GEAR_FAMILY_1","reason":"Waits on SOLAR_HEAT_EXPOSURE_1 tranche 1 (heat-kind extension + directional shade grid) now in flight","ts":"2026-09-30T04:13:21Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CONTAGION_FINAL_BAN_SWEEP_1","ts":"2026-09-30T04:13:22Z"}
+{"seat":"FOUNDRY","event":"start","id":"CONTAGION_FINAL_BAN_SWEEP_1","ts":"2026-09-30T04:13:23Z"}
+{"seat":"FOUNDRY","event":"note","id":"SOLAR_HEAT_EXPOSURE_1","text":"Tranche 1 landed cea416ce3/b397ad1b2/bd7ec43d4/8a0ba70df: §2 heat-kind BiomeDef extension (overhead RM_LongShade; lowSun RM_Stillsand, RM_FloodedCanyon; ambient RM_TheScald, RM_TheForge, RM_Greentide), §3 directional shade grid on the pinned sun, §1 sun raises perceived temperature into vanilla heatstroke (size-scaled), §7 settings, §4 one Harmony path-cost patch (Creature Behaviors already had Harmony), §6 sun-load bar; selftest 11/11. Remaining: §5 rest-dash-rest AI + drafted-pawn range ring; owner rulings on RM_RustCathedral and RUT_ twins; quicktests; owner-watched strictness sitting. Report: Transient/solar_heat_tranche1_report.md","ts":"2026-09-30T04:28:31Z"}
+{"seat":"FOUNDRY","event":"unblock","id":"SHADE_GEAR_FAMILY_1","ts":"2026-09-30T04:28:34Z"}
+{"seat":"FOUNDRY","event":"close","id":"CONTAGION_FINAL_BAN_SWEEP_1","sha":"b458498d5","ts":"2026-09-30T04:32:03Z"}
+{"seat":"FOUNDRY","event":"note","id":"ROTSPOREKIT_MAYREQUIRE_ORPHANED_1","text":"CONTAGION_FINAL_BAN_SWEEP_1 (b458498d5) fixed the one row in RM_Contagion.xml: RUT_RustPuff/rotsporekit -> RM_RustPuff/mandrake.rm.therot (THEROT_RM_MOD_BUILD_1 absorbed it 2026-09-24). Remaining: 21 dangling RUT_*/mandrake.rut.rotsporekit refs across RUT_Contagion, RUT_Miasma, RUT_TheForge, RUT_TheRot (18), RUT_WeepingStones - these are what selftest_deployed_biome_refs fails on. Where an RM_ equivalent exists in mandrake.rm.therot the fix is mechanical.","ts":"2026-09-30T04:32:04Z"}
+{"seat":"FOUNDRY","event":"note","id":"OGLEKNOT_CREATURE_BUILD_1","text":"Post-close fix 96cb26201: goo-corpse DeathActionProperties_Vanish + lifeExpectancy 3, per ban 3 (flagged by CONTAGION_FINAL_BAN_SWEEP_1).","ts":"2026-09-30T04:32:05Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BLURRG_CANON_REGEN_1","ts":"2026-09-30T04:32:15Z"}
+{"seat":"FOUNDRY","event":"start","id":"BLURRG_CANON_REGEN_1","ts":"2026-09-30T04:32:16Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RM_RAWVENOM_ART_1","ts":"2026-09-30T04:32:17Z"}
+{"seat":"FOUNDRY","event":"start","id":"RM_RAWVENOM_ART_1","ts":"2026-09-30T04:32:18Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FORGE_MISSING_ART_1","ts":"2026-09-30T04:32:19Z"}
+{"seat":"FOUNDRY","event":"start","id":"FORGE_MISSING_ART_1","ts":"2026-09-30T04:32:20Z"}
+{"seat":"FOUNDRY","event":"claim","id":"JOSSUR_FLIGHT_FRAMES_1","ts":"2026-09-30T04:32:21Z"}
+{"seat":"FOUNDRY","event":"start","id":"JOSSUR_FLIGHT_FRAMES_1","ts":"2026-09-30T04:32:22Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FLOATSTONE_WALL_ATLAS_1","ts":"2026-09-30T04:32:23Z"}
+{"seat":"FOUNDRY","event":"start","id":"FLOATSTONE_WALL_ATLAS_1","ts":"2026-09-30T04:32:24Z"}
+{"seat":"FOUNDRY","event":"close","id":"FLOATSTONE_WALL_ATLAS_1","sha":"87a139193","ts":"2026-09-30T04:41:30Z"}
+{"seat":"FOUNDRY","event":"note","id":"FLOATSTONE_WALL_ATLAS_1","text":"No atlas needed: RM_Floatstone is a StoneBlocksBase stuff; walls use the shared vanilla wall atlas tinted by stuff colour.","ts":"2026-09-30T04:41:31Z"}
+{"seat":"FOUNDRY","event":"note","id":"JOSSUR_FLIGHT_FRAMES_1","text":"Artpipe has no multi-frame sequence support (fill_queue/common/artpiped are single-image-per-facing). Needs pipeline machinery before any frames can be queued; RM_Jossur flies without frames meanwhile (optional per flyer law).","ts":"2026-09-30T04:41:32Z"}
+{"seat":"FOUNDRY","event":"block","id":"JOSSUR_FLIGHT_FRAMES_1","reason":"Artpipe lacks frame-sequence jobs; needs pipeline work first","ts":"2026-09-30T04:41:33Z"}
+{"seat":"FOUNDRY","event":"note","id":"BLURRG_CANON_REGEN_1","text":"Jobs queued at 87a139193 and dropped into the live pending/ (shared tree could not fast-forward). Close once renders land and are wired.","ts":"2026-09-30T04:41:34Z"}
+{"seat":"FOUNDRY","event":"block","id":"BLURRG_CANON_REGEN_1","reason":"Waiting on artpipe daemon renders","ts":"2026-09-30T04:41:35Z"}
+{"seat":"FOUNDRY","event":"note","id":"RM_RAWVENOM_ART_1","text":"Jobs queued at 87a139193 and dropped into the live pending/ (shared tree could not fast-forward). Close once renders land and are wired.","ts":"2026-09-30T04:41:36Z"}
+{"seat":"FOUNDRY","event":"block","id":"RM_RAWVENOM_ART_1","reason":"Waiting on artpipe daemon renders","ts":"2026-09-30T04:41:37Z"}
+{"seat":"FOUNDRY","event":"note","id":"FORGE_MISSING_ART_1","text":"Jobs queued at 87a139193 and dropped into the live pending/ (shared tree could not fast-forward). Close once renders land and are wired.","ts":"2026-09-30T04:41:38Z"}
+{"seat":"FOUNDRY","event":"block","id":"FORGE_MISSING_ART_1","reason":"Waiting on artpipe daemon renders","ts":"2026-09-30T04:41:39Z"}
+{"seat":"FOUNDRY","event":"note","id":"FORGE_MISSING_ART_1","text":"RM_CinderCrust skipped: no def and no identity written anywhere; needs a design line before art.","ts":"2026-09-30T04:41:40Z"}
+{"seat":"FOUNDRY","event":"claim","id":"WARCASKET_CASK_BAY_AND_SARCOPHAGI_1","ts":"2026-09-30T04:41:48Z"}
+{"seat":"FOUNDRY","event":"start","id":"WARCASKET_CASK_BAY_AND_SARCOPHAGI_1","ts":"2026-09-30T04:41:49Z"}
+{"seat":"FOUNDRY","event":"close","id":"SHADE_GEAR_FAMILY_1","sha":"5769d2dd0","ts":"2026-09-30T04:45:38Z"}
+{"seat":"FOUNDRY","event":"note","id":"SHADE_GEAR_FAMILY_1","text":"Art: 8 render jobs pending in artpipe (texPaths wired under EnvironmentalHazards/Textures). Unverified live: parasol render on pawn, tent shading on placement, save/load; all shade numbers first guesses.","ts":"2026-09-30T04:45:39Z"}
+{"seat":"FOUNDRY","event":"note","id":"LONGSHADE_BEDAZZLE_MECHANICS_1","text":"SHADE_GEAR_FAMILY_1 landed 5769d2dd0 - Long Carry prerequisite now exists.","ts":"2026-09-30T04:45:42Z"}
+{"seat":"FOUNDRY","event":"note","id":"WARCASKET_CASK_BAY_AND_SARCOPHAGI_1","text":"Title was wrong: the owner-approved cask bay (Wasteland sitting turn 2, slate item 7) is 'the lead-lined cask bay (gravship touch) - a shielded hardpoint that lets the ship haul the Throat's casks', NOT a warcasket crafting bench. Built that: RM_CaskBay gravship-only cask storage; Junker sarcophagi crack-open yielding RM_HalfExtractedCore. Remaining: five waste-run destinations, Stenchlands cask item, Junker pawnkind wearing the suit, core's use.","ts":"2026-09-30T04:59:12Z"}
+{"seat":"FOUNDRY","event":"close","id":"WARCASKET_CASK_BAY_AND_SARCOPHAGI_1","sha":"27adad24d","ts":"2026-09-30T04:59:14Z"}
+{"seat":"FOUNDRY","event":"file","id":"WARCASKET_CASK_ART_1","title":"Art for RM_CaskBay (building) and RM_HalfExtractedCore (item); texPaths wired under Warcasket/Textures, no render exists","kind":"task","target":"v1","needs":"offline","caused_by":"WARCASKET_CASK_BAY_AND_SARCOPHAGI_1","for":"FOUNDRY","ts":"2026-09-30T04:59:16Z"}
+{"seat":"FOUNDRY","event":"file","id":"WARCASKET_WASTE_RUN_REMAINDER_1","title":"Cask-bay follow-ons: five waste-run destinations, Stenchlands cask item, Junker pawnkind wearing the warcasket, what the half-extracted core is for","kind":"task","target":"v1","needs":"owner","caused_by":"WARCASKET_CASK_BAY_AND_SARCOPHAGI_1","for":"FOUNDRY","ts":"2026-09-30T04:59:17Z"}

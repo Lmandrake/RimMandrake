@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T03:53:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T04:59:17Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1188,8 +1188,26 @@ kind:     task
 summary:  1. The Stall and the Gale (names RULED 2026-09-21, WeatherDefs at last;
 prose:    infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md
 
-## LONGSHADE_BEDAZZLE_MECHANICS_1 Long Shade bedazzle mechanics: golden-hour perpetual sunset + pinned sun angle, mirrak false-shadow ambusher, swimmer's road (one young sarlacc, visible signs of every loss), Crawler Road wreck line, Long Carry sun graves
+## RM_RAWVENOM_ART_1 RM_RawVenom item art missing everywhere; drop-in path LeaningScrub/Textures/Things/Item/Resource/RM_RawVenom.png
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/RM_RAWVENOM_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RM_RAWVENOM_ART_1.md
+
+## SOLAR_HEAT_EXPOSURE_1 Planet-wide sun heat: sun exposure feeds VANILLA heat (no new heat kind), per-biome heat kind (overhead sun / low sun / steam), directional shade grid, sun-cost pathing, rest-dash-rest animal behaviour, dash-radius ring; Long Shade is first consumer
 state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Sun exposure feeds vanilla heat. A pawn standing in unshaded sun on a sun-heat map takes
+prose:    infrastructure/state/items/SOLAR_HEAT_EXPOSURE_1.md
+
+## LONGSHADE_BEDAZZLE_MECHANICS_1 Long Shade bedazzle mechanics: golden-hour perpetual sunset + pinned sun angle, mirrak false-shadow ambusher, swimmer's road (one young sarlacc, visible signs of every loss), Crawler Road wreck line, Long Carry sun graves
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1205,6 +1223,33 @@ target:   v1
 kind:     task
 summary:  1. Wire the finished-but-unwired art. RMOssik, RMKudda, RMThurra, RMVosska,
 prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_CONTENT_1.md
+
+## JOSSUR_FLIGHT_FRAMES_1 Flight flip-book frames for RM_Jossur (optional; flight stat already set)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/JOSSUR_FLIGHT_FRAMES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/JOSSUR_FLIGHT_FRAMES_1.md
+
+## FORGE_MISSING_ART_1 No render anywhere: RM_CinderCrust (identity unwritten), RUT_TibannaGas, RUT_FoundryTowerEntrance, RUT_FoundrySalvageCache
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/FORGE_MISSING_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FORGE_MISSING_ART_1.md
+
+## BLURRG_CANON_REGEN_1 Regen RSW_Blurrg art with canon forelimbs (two short two-clawed arms); v1 renders wired now omit them
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/BLURRG_CANON_REGEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLURRG_CANON_REGEN_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1820,6 +1865,26 @@ blocked:  Remaining parts need art/audio/scene layouts or Part 6 cover system; t
 summary:  1. The Stall and the Gale (names RULED 2026-09-21, WeatherDefs at last;
 prose:    infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md
 
+## RM_RAWVENOM_ART_1 RM_RawVenom item art missing everywhere; drop-in path LeaningScrub/Textures/Things/Item/Resource/RM_RawVenom.png
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Waiting on artpipe daemon renders
+summary:  (no items/RM_RAWVENOM_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RM_RAWVENOM_ART_1.md
+
+## LONGSHADE_BEDAZZLE_MECHANICS_1 Long Shade bedazzle mechanics: golden-hour perpetual sunset + pinned sun angle, mirrak false-shadow ambusher, swimmer's road (one young sarlacc, visible signs of every loss), Crawler Road wreck line, Long Carry sun graves
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Remaining parts depend on SOLAR_HEAT_EXPOSURE_1, SHADE_GEAR_FAMILY_1, smoke calendar, mirrak art
+summary:  1. Golden hour (owner: "I like the golden hour concept. A perpetual beautiful sunset.").
+prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_MECHANICS_1.md
+
 ## LONGSHADE_BEDAZZLE_CONTENT_1 Long Shade bedazzle content: wire the finished-but-unwired art (7 magenta creatures + vorrel family), five filler defs, qorrax rename, glitter-bird/pirrik dedupe, gloomcast own art, AA texture deps, mirrak def, maidenbloom + review-gated fills
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1829,6 +1894,36 @@ kind:     task
 blocked:  Remaining parts need art (gloomcast, 3 magenta), mechanics pairing (mirrak), owner review sheet (fills)
 summary:  1. Wire the finished-but-unwired art. RMOssik, RMKudda, RMThurra, RMVosska,
 prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_CONTENT_1.md
+
+## JOSSUR_FLIGHT_FRAMES_1 Flight flip-book frames for RM_Jossur (optional; flight stat already set)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Artpipe lacks frame-sequence jobs; needs pipeline work first
+summary:  (no items/JOSSUR_FLIGHT_FRAMES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/JOSSUR_FLIGHT_FRAMES_1.md
+
+## FORGE_MISSING_ART_1 No render anywhere: RM_CinderCrust (identity unwritten), RUT_TibannaGas, RUT_FoundryTowerEntrance, RUT_FoundrySalvageCache
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Waiting on artpipe daemon renders
+summary:  (no items/FORGE_MISSING_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FORGE_MISSING_ART_1.md
+
+## BLURRG_CANON_REGEN_1 Regen RSW_Blurrg art with canon forelimbs (two short two-clawed arms); v1 renders wired now omit them
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Waiting on artpipe daemon renders
+summary:  (no items/BLURRG_CANON_REGEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLURRG_CANON_REGEN_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -1922,36 +2017,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 12)
 prose:    infrastructure/state/items/DEEPFIRE_MOD_SETTINGS_1.md
 
-## CONTAGION_FINAL_BAN_SWEEP_1 Contagion: final roster confirmation + full ban sweep across all waves per cast bible Part 5
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  Scope
-prose:    infrastructure/state/items/CONTAGION_FINAL_BAN_SWEEP_1.md
-
-## WARCASKET_CASK_BAY_AND_SARCOPHAGI_1 Cask Bay crafting building + Junker corpse-interaction mechanism (WARCASKET_SUIT_CLASS_1 follow-on): sitting approved a Cask Bay building conceptually and wasteland.md §7's warcasket sarcophagi loot interaction ('suit, tools, and the half-extracted core still in its grips') for a dead Junker in RM_WarcasketJunker; neither is in WASTELAND_MECHANICS_BUILD_1's own listed scope (checked). The suit-side hook exists now: RM_JunkerSarcophagusExtension (RimMandrake.Warcasket), readable via apparelDef.GetModExtension<RM_JunkerSarcophagusExtension>() on RM_WarcasketJunker. Owed: the Cask Bay ThingDef/workbench (Warcasket currently crafts on TableMachining) and the actual corpse loot/interaction verb, which is Wasteland's own cast to build.
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WARCASKET_CASK_BAY_AND_SARCOPHAGI_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WARCASKET_CASK_BAY_AND_SARCOPHAGI_1.md
-
-## WASTELAND_GRIPPER_STEAL_BEHAVIOR_1 Gripper (RM_Gripper) stealing behavior C# — owner art-sheet ruling said 'always carrying something' is part of the def, not just flavor; no JobGiver/WorkGiver for animal item-theft exists yet
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WASTELAND_GRIPPER_STEAL_BEHAVIOR_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WASTELAND_GRIPPER_STEAL_BEHAVIOR_1.md
-
 ## ROTSPOREKIT_MAYREQUIRE_ORPHANED_1 Retiring RotSporeKit orphaned ~30 MayRequire-gated rows in 6 live biome files (RM_ equivalents exist, need repointing)
 state:    proposed
 row:      unassigned
@@ -1962,72 +2027,22 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ROTSPOREKIT_MAYREQUIRE_ORPHANED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROTSPOREKIT_MAYREQUIRE_ORPHANED_1.md
 
-## RM_RAWVENOM_ART_1 RM_RawVenom item art missing everywhere; drop-in path LeaningScrub/Textures/Things/Item/Resource/RM_RawVenom.png
+## WARCASKET_CASK_ART_1 Art for RM_CaskBay (building) and RM_HalfExtractedCore (item); texPaths wired under Warcasket/Textures, no render exists
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RM_RAWVENOM_ART_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RM_RAWVENOM_ART_1.md
+summary:  (no items/WARCASKET_CASK_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WARCASKET_CASK_ART_1.md
 
-## SOLAR_HEAT_EXPOSURE_1 Planet-wide sun heat: sun exposure feeds VANILLA heat (no new heat kind), per-biome heat kind (overhead sun / low sun / steam), directional shade grid, sun-cost pathing, rest-dash-rest animal behaviour, dash-radius ring; Long Shade is first consumer
+## WARCASKET_WASTE_RUN_REMAINDER_1 Cask-bay follow-ons: five waste-run destinations, Stenchlands cask item, Junker pawnkind wearing the warcasket, what the half-extracted core is for
 state:    proposed
 row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Sun exposure feeds vanilla heat. A pawn standing in unshaded sun on a sun-heat map takes
-prose:    infrastructure/state/items/SOLAR_HEAT_EXPOSURE_1.md
-
-## SHADE_GEAR_FAMILY_1 Shade gear family, cross-biome: parasols, shade tents, stand-behind sun shields; effectiveness set by each biome's heat kind (overhead/low sun/steam where shade does nothing)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  - Parasol: an apparel/utility item that shades its wearer and, weakly, one adjacent cell.
-prose:    infrastructure/state/items/SHADE_GEAR_FAMILY_1.md
-
-## JOSSUR_FLIGHT_FRAMES_1 Flight flip-book frames for RM_Jossur (optional; flight stat already set)
-state:    proposed
-row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/JOSSUR_FLIGHT_FRAMES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/JOSSUR_FLIGHT_FRAMES_1.md
-
-## FLOATSTONE_WALL_ATLAS_1 Wall/linked atlas art for RM_Floatstone building stone
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FLOATSTONE_WALL_ATLAS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FLOATSTONE_WALL_ATLAS_1.md
-
-## FORGE_MISSING_ART_1 No render anywhere: RM_CinderCrust (identity unwritten), RUT_TibannaGas, RUT_FoundryTowerEntrance, RUT_FoundrySalvageCache
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FORGE_MISSING_ART_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FORGE_MISSING_ART_1.md
-
-## BLURRG_CANON_REGEN_1 Regen RSW_Blurrg art with canon forelimbs (two short two-clawed arms); v1 renders wired now omit them
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BLURRG_CANON_REGEN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BLURRG_CANON_REGEN_1.md
+summary:  (no items/WARCASKET_WASTE_RUN_REMAINDER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WARCASKET_WASTE_RUN_REMAINDER_1.md
