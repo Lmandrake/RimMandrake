@@ -553,3 +553,43 @@ on the lee strip's edge, so walls placed across the vector make farmland.
 **Owed before any build:** canon sweep of mirrak/tollok/harrok/skellok (Wookieepedia probe
 failed this pass); `RM_Hardpan` (review slate #6) if S1's hard-ground refuge is to exist; a
 perf check of a directional full-map recompute every 2000 ticks.
+
+## 6. The shortlist, lived — expanded, combined, sharpened
+
+Owner, typed, mid-pass: *"Ok, now your turn. Expand, beautify, and improve!"* Each shortlist
+item below is developed as what the player **sees, hears and feels** in the shade at golden
+hour, then improved — combined with its neighbours where they are stronger together, each
+given one moment the player will tell someone about. Feasibility notes stay honest; nothing
+here adds a build line that §1–§5 did not price, unless it says so.
+
+### 6.1 The Law of the Light (§1 dash + §3 golden hour, one build)
+
+pending
+
+### 6.2 The mirrak — the shadow that points the wrong way
+
+pending
+
+### 6.3 The swimmer's road — one young sarlacc, one journey, one well
+
+pending
+
+### 6.4 The Crawler Road — salvage that is also the only way across
+
+pending
+
+### 6.5 The Long Carry — the gap graves and the shade you bring with you
+
+pending
+
+### 6.6 The farm on the horizon — the besieged homestead and its mirror
+
+pending
+
+### 6.7 The gnomon line — a treasure map that only the haze can finish
+
+pending
+
+### 6.8 How the package plays across a colony's first year
+
+pending
