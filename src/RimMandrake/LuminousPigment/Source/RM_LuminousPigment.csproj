@@ -99,6 +99,10 @@
     <!-- DEEPFIRE_PROXY_BLOCKS_STORAGE_1: proof actions for the Ethereal
          static proxy (no item displacement, storage not blocked). -->
     <Compile Include="DeepfireProxyStorageDebugActions.cs" />
+    <!-- DEEPFIRE_STATUS_THOUGHTS_1, spec §10 step 9: room display score,
+         RM_DeepfireBedroom, RM_ImpressedByDeepfire goodwill, dev proof actions. -->
+    <Compile Include="MapComponent_DeepfireStatus.cs" />
+    <Compile Include="DeepfireStatusDebugActions.cs" />
   </ItemGroup>
 
   <ItemGroup>

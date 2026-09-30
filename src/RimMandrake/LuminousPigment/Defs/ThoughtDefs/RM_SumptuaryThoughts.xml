@@ -3,14 +3,14 @@
   ============================================================================
   RM_SumptuaryThoughts.xml           LuminousPigment · DEEPFIRE_PAINT_STATUS_CUISINE_1
   ============================================================================
-  Spec §4.1 — the "purple engine". Three of its five thoughts ship here
-  (worn-goods only, no room stat needed); RM_DeepfireBedroom and
-  RM_ImpressedByDeepfire need painted-furniture room scores (piece 1,
-  painting) and are deferred to DEEPFIRE_PAINT_LIVE_VERIFY_1 along with it.
-  Situational, workerClass-driven (Source/ThoughtWorkers_Sumptuary.cs);
-  moodScale is NOT applied here (a flat multiplier over hediff/thought stage
-  numbers would need its own hook — left for that follow-on to add
-  alongside the room-stat thoughts, rather than half-wire one setting now).
+  Spec §4.1 — the "purple engine". Worn-goods thoughts (display score from
+  CompDeepfire coats on worn apparel / the primary weapon) plus
+  RM_DeepfireBedroom (room display score, DEEPFIRE_STATUS_THOUGHTS_1).
+  RM_ImpressedByDeepfire is a goodwill change, not a thought: its
+  HistoryEventDef is at the bottom of this file and
+  Source/MapComponent_DeepfireStatus.cs applies it.
+  Situational, workerClass-driven (Source/ThoughtWorkers_Sumptuary.cs).
+  moodScale is not applied here; wiring settings is DEEPFIRE_MOD_SETTINGS_1's.
   ============================================================================
 -->
 <Defs>
@@ -63,5 +63,23 @@
       </li>
     </stages>
   </ThoughtDef>
+
+  <!-- Spec §4.1: titled pawn, bedroom/throne room score >= 3: +4; >= 8: +6. -->
+  <ThoughtDef>
+    <defName>RM_DeepfireBedroom</defName>
+    <workerClass>RimMandrake.LuminousPigment.ThoughtWorker_DeepfireBedroom</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li><label>deepfire-lit quarters</label><description>My rooms glow the way a noble's rooms should.</description><baseMoodEffect>4</baseMoodEffect></li>
+      <li><label>splendid deepfire quarters</label><description>My rooms blaze with deepfire. Anyone who enters knows who lives here.</description><baseMoodEffect>6</baseMoodEffect></li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Spec §4.1: a visiting titled pawn impressed by a deepfire-lit public
+       room. Goodwill reason label only (Faction.TryAffectGoodwillWith reason). -->
+  <HistoryEventDef>
+    <defName>RM_ImpressedByDeepfire</defName>
+    <label>impressed by deepfire</label>
+  </HistoryEventDef>
 
 </Defs>

@@ -3,13 +3,12 @@ using Verse;
 
 namespace RimMandrake.LuminousPigment
 {
-    // Spec §4.1's thoughts, minus the two that need room stats over painted
-    // furniture (RM_DeepfireBedroom, RM_ImpressedByDeepfire) -- both wait on
-    // CompDeepfire/floor coats (piece 1, painting), deferred to
-    // DEEPFIRE_PAINT_LIVE_VERIFY_1. The three here only need worn apparel /
-    // equipped weapons, so they work today even though nothing is tagged
-    // with StatusGoodExtension yet (score is always 0 -> every worker
-    // returns Inactive -- the engine is present, real, and silent).
+    // Spec §4.1's thoughts. The wearer/observer four read
+    // SumptuaryUtility.DisplayScoreFor (CompDeepfire coats on worn apparel
+    // and the primary weapon, plus any StatusGoodExtension good).
+    // RM_DeepfireBedroom reads the room display score
+    // (MapComponent_DeepfireStatus.CachedRoomScore). RM_ImpressedByDeepfire
+    // is goodwill, not a thought: MapComponent_DeepfireStatus.
     public abstract class ThoughtWorker_DeepfireStatusBase : ThoughtWorker
     {
         protected abstract bool RequireTitled { get; }
@@ -54,6 +53,42 @@ namespace RimMandrake.LuminousPigment
                 return ThoughtState.Inactive;
             }
             return ThoughtState.ActiveAtStage(0);
+        }
+    }
+
+    // RM_DeepfireBedroom: a titled pawn whose bedroom or throne room has a
+    // room display score >= BedroomScoreLow (+4) / >= BedroomScoreHigh (+6).
+    // The better of the two rooms counts. Royalty's own throne-room
+    // requirements are untouched.
+    public class ThoughtWorker_DeepfireBedroom : ThoughtWorker
+    {
+        protected override ThoughtState CurrentStateInternal(Pawn p)
+        {
+            if (!LuminousPigmentSettings.statusEnabled) return ThoughtState.Inactive;
+            if (!SumptuaryUtility.IsTitled(p)) return ThoughtState.Inactive;
+            int score = BestOwnRoomScore(p);
+            if (score >= DeepfireStatusDefaults.BedroomScoreHigh) return ThoughtState.ActiveAtStage(1);
+            if (score >= DeepfireStatusDefaults.BedroomScoreLow) return ThoughtState.ActiveAtStage(0);
+            return ThoughtState.Inactive;
+        }
+
+        public static int BestOwnRoomScore(Pawn p)
+        {
+            if (p?.ownership == null) return 0;
+            int best = 0;
+            Room bedroom = p.ownership.OwnedRoom;
+            if (bedroom != null) best = MapComponent_DeepfireStatus.CachedRoomScore(bedroom);
+            Building_Throne throne = p.ownership.AssignedThrone;
+            if (throne != null && throne.Spawned)
+            {
+                Room throneRoom = throne.GetRoom();
+                if (throneRoom != null && throneRoom != bedroom)
+                {
+                    int s = MapComponent_DeepfireStatus.CachedRoomScore(throneRoom);
+                    if (s > best) best = s;
+                }
+            }
+            return best;
         }
     }
 
