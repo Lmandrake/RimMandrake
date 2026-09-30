@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BlueDesertHaze.xml     BLUEDESERT_MECHANICS_BUILD_1 §4 (tranche 1)
+
+  The Haze's exposure, ruled 2026-09-24 (the_blue_desert.md §4b amendment):
+  "a mild exposure hediff on unroofed pawns (hydrocarbon film: chill, minor
+  breathing; decays under roof) via the existing
+  EnvironmentalHazards.EnvironmentalWeatherExtension — zero new C#."
+
+  Shape copied from the Miasma's RUT_MiasmaWeatherLock + RUT_MiasmaExposure:
+  a permanent biomeMapConditions entry (attached in RM_BlueDesert.xml) whose
+  extension only bootstraps the carrier hediff onto every eligible pawn; the
+  hediff's own RM_HediffComp_EnvironmentalExposure does the severity math,
+  accruing only while the CURRENT weather is RM_Haze and the pawn is
+  unroofed, decaying otherwise. forcedWeather is deliberately unset, so
+  GameCondition_EnvironmentalWeather.ForcedWeather() returns null and the
+  biome's ordinary weather rotation runs untouched.
+
+  Gate: RM_MechanicGateExtension key "bluedesert.hazeExposure", registered by
+  RM_BlueDesertMod against its own settings (hazeExposureEnabled). Off: no
+  pawn is newly given the film. A pawn that already carries it keeps the
+  comp's own accrue/decay math — a known, named limit of the shared
+  exposure comp, which reads no gate.
+
+  The Blue Desert's own natives are hydrocarbon-bodied and live in the Haze:
+  immune by list. Severity rates and stages are this build's INVENTED tuning
+  toward "mild" — no lethalSeverity, it cannot kill.
+-->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RM_BlueDesertHazeCarrier</defName>
+    <conditionClass>RimMandrake.EnvironmentalHazards.GameCondition_EnvironmentalWeather</conditionClass>
+    <label>the Haze</label>
+    <description>The Blue Desert's sky periodically lets fall a fine hydrocarbon condensate. Anyone caught outside in it takes on a chilling film.</description>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension">
+        <carrierHediff>RM_HazeFilm</carrierHediff>
+        <carrierHediffSeverity>0.0001</carrierHediffSeverity>
+        <damageIntervalTicks>2500</damageIntervalTicks>
+        <affects>Flesh</affects>
+        <immuneThingDefs>
+          <li>RM_Dorrak</li>
+          <li>RM_Krissek</li>
+          <li>RM_Vekkit</li>
+          <li>RM_Zhaaz</li>
+          <li>RM_Vrisk</li>
+          <li>RM_Dovvik</li>
+          <li>RM_Utikka</li>
+          <li>RM_Vhaulk</li>
+          <li>RM_Murrek</li>
+          <li>RM_Ossivel</li>
+        </immuneThingDefs>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>bluedesert.hazeExposure</gateKey>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+  <HediffDef>
+    <defName>RM_HazeFilm</defName>
+    <label>haze film</label>
+    <description>A thin film of hydrocarbon condensate on skin and in the lungs, picked up outdoors during the Haze. It chills and makes breathing a little harder. It wears off under a roof or once the Haze clears.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.7,0.78,0.95)</defaultLabelColor>
+    <minSeverity>0.0001</minSeverity>
+    <initialSeverity>0.0001</initialSeverity>
+    <makesSickThought>false</makesSickThought>
+    <tendable>false</tendable>
+    <stages>
+      <li>
+        <label>trace</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <minSeverity>0.15</minSeverity>
+        <label>light film</label>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.04</offset>
+          </li>
+        </capMods>
+        <statOffsets>
+          <ComfyTemperatureMin>4</ComfyTemperatureMin>
+        </statOffsets>
+      </li>
+      <li>
+        <minSeverity>0.5</minSeverity>
+        <label>heavy film</label>
+        <painOffset>0.03</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+        <statOffsets>
+          <ComfyTemperatureMin>8</ComfyTemperatureMin>
+        </statOffsets>
+      </li>
+    </stages>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_EnvironmentalExposure">
+        <onlyDuringWeather>RM_Haze</onlyDuringWeather>
+        <severityPerDayExposed>0.6</severityPerDayExposed>
+        <severityPerDayUnexposed>-1.2</severityPerDayUnexposed>
+        <affects>Flesh</affects>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>
