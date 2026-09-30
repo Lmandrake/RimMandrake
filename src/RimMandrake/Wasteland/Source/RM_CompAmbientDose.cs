@@ -104,6 +104,7 @@ namespace RimMandrake.Wasteland
 
             Map map = parent.Map;
             IntVec3 pos = parent.Position;
+            CellRect body = parent.OccupiedRect();
             Room room = Props.doseRoomWhenIndoors ? pos.GetRoom(map) : null;
             bool indoors = room != null && !room.UsesOutdoorTemperature;
             float r = Props.radius;
@@ -128,7 +129,9 @@ namespace RimMandrake.Wasteland
                 }
                 else
                 {
-                    float d2 = (p.Position - pos).LengthHorizontalSquared;
+                    // Measured from the body's EDGE, so a multi-cell source (the 20-wide
+                    // Middenshell) doses from its whole footprint; a 1-cell pawn is unchanged.
+                    float d2 = (p.Position - body.ClosestCellTo(p.Position)).LengthHorizontalSquared;
                     if (d2 > r2)
                     {
                         continue;

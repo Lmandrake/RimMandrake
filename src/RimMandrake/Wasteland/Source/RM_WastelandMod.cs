@@ -43,6 +43,11 @@ namespace RimMandrake.Wasteland
         public static bool gripperSpawnsCarrying = true;
         public static float gripperTheftMtbHours = 3f;
 
+        // WASTELAND_MIDDENSHELL_FOOTPRINT_1 — the 20-wide giant (RM_Middenshell.cs).
+        public static bool middenshellEnabled = true;
+        public static bool middenshellGrabEnabled = true;
+        public static int middenshellStepTicks = 400;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -60,6 +65,9 @@ namespace RimMandrake.Wasteland
             Scribe_Values.Look(ref gripperTheftEnabled, "gripperTheftEnabled", true);
             Scribe_Values.Look(ref gripperSpawnsCarrying, "gripperSpawnsCarrying", true);
             Scribe_Values.Look(ref gripperTheftMtbHours, "gripperTheftMtbHours", 3f);
+            Scribe_Values.Look(ref middenshellEnabled, "middenshellEnabled", true);
+            Scribe_Values.Look(ref middenshellGrabEnabled, "middenshellGrabEnabled", true);
+            Scribe_Values.Look(ref middenshellStepTicks, "middenshellStepTicks", 400);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -96,7 +104,7 @@ namespace RimMandrake.Wasteland
             list.GapLine();
 
             list.CheckboxLabeled("Ambient dose creatures", ref ambientDoseEnabled,
-                "Smolderbacks (and the Middenshell, when built) dose nearby pawns, or their "
+                "Smolderbacks and the Middenshell (and its mined-out carcass) dose nearby pawns, or their "
               + "whole room when indoors, with toxic buildup. Never an attack.");
             list.Label("Ambient dose strength: " + ambientDoseMultiplier.ToStringPercent());
             ambientDoseMultiplier = list.Slider(ambientDoseMultiplier, 0f, 3f);
@@ -122,6 +130,17 @@ namespace RimMandrake.Wasteland
             list.Label("Gripper theft attempts: about every "
                      + gripperTheftMtbHours.ToString("0.#") + " hours per idle gripper");
             gripperTheftMtbHours = list.Slider(gripperTheftMtbHours, 0.5f, 24f);
+            list.GapLine();
+
+            list.CheckboxLabeled("The Middenshell", ref middenshellEnabled,
+                "The twenty-cell-wide giant crawls in from a map edge on Wasteland maps (one at "
+              + "most per map), flattening what lies in its path. Never hostile; being near it "
+              + "doses you. Off: it never arrives, and one already on a map lies still.");
+            list.CheckboxLabeled("Middenshell tentacle grabs", ref middenshellGrabEnabled,
+                "Now and then it lashes a tentacle at a nearby object (items, doors, walls) and "
+              + "eats it. Never anything on gravship substructure or any gravship part.");
+            list.Label("Middenshell crawl: one cell every " + middenshellStepTicks + " ticks");
+            middenshellStepTicks = (int)list.Slider(middenshellStepTicks, 120f, 2000f);
 
             list.End();
         }
