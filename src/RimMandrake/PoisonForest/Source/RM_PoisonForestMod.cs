@@ -25,12 +25,27 @@ namespace RimMandrake.PoisonForest
         public static bool metalYieldEnabled = true;
         public static float metalYieldFactor = 1f;
 
+        // CAULDRON_MECHANICS_BUILD_1 part 2: the vent bloom's stacking metal
+        // load on pawns outdoors + unroofed. Off = the bloom is weather only.
+        public static bool ventBloomExposureEnabled = true;
+        public static float ventBloomExposureFactor = 1f;
+
+        // CAULDRON_MECHANICS_BUILD_1 part 5: vexxiss behaviours.
+        public static bool vexxissFireWardenEnabled = true;
+        public static bool vexxissAttacksIgniter = true;
+        public static bool vexxissPoisonsWater = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref metalYieldEnabled, "metalYieldEnabled", true, true);
             Scribe_Values.Look(ref metalYieldFactor, "metalYieldFactor", 1f, true);
+            Scribe_Values.Look(ref ventBloomExposureEnabled, "ventBloomExposureEnabled", true, true);
+            Scribe_Values.Look(ref ventBloomExposureFactor, "ventBloomExposureFactor", 1f, true);
+            Scribe_Values.Look(ref vexxissFireWardenEnabled, "vexxissFireWardenEnabled", true, true);
+            Scribe_Values.Look(ref vexxissAttacksIgniter, "vexxissAttacksIgniter", true, true);
+            Scribe_Values.Look(ref vexxissPoisonsWater, "vexxissPoisonsWater", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -55,6 +70,34 @@ namespace RimMandrake.PoisonForest
                 list.Label("Metal yield: " + metalYieldFactor.ToString("0.0") + "x (default 1.0x)");
                 metalYieldFactor = list.Slider(metalYieldFactor, 0.1f, 3f);
             }
+
+            list.GapLine();
+            list.CheckboxLabeled("Vent bloom builds a metal load",
+                ref ventBloomExposureEnabled,
+                "During a vent bloom, anyone outdoors under open sky slowly takes on a "
+                + "metal-load condition. A roof or toxic-resistant gear keeps it off; native "
+                + "animals are unaffected. Off: the bloom is weather only.");
+            if (ventBloomExposureEnabled)
+            {
+                list.Label("Metal load build-up: " + ventBloomExposureFactor.ToString("0.0") + "x (default 1.0x)");
+                ventBloomExposureFactor = list.Slider(ventBloomExposureFactor, 0.1f, 3f);
+            }
+
+            list.GapLine();
+            list.CheckboxLabeled("Vexxiss puts out fires",
+                ref vexxissFireWardenEnabled,
+                "A vexxiss that notices a nearby fire walks to it and smothers it. Off: it ignores fire.");
+            if (vexxissFireWardenEnabled)
+            {
+                list.CheckboxLabeled("  ...and attacks whoever started it",
+                    ref vexxissAttacksIgniter,
+                    "When the fire has a known starter still in reach, the vexxiss goes for them first. "
+                    + "A tame vexxiss never attacks its own faction.");
+            }
+            list.CheckboxLabeled("Vexxiss poisons the water it wades through",
+                ref vexxissPoisonsWater,
+                "Water cells a vexxiss stands in, and the cells touching it, turn to toxic water. "
+                + "Off: water is left alone.");
 
             list.End();
         }

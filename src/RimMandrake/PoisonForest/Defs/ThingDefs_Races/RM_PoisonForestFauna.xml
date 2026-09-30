@@ -214,9 +214,12 @@
     deliberately NOT copied. Shearing yields RM_Vexxith through vanilla
     CompProperties_Shearable, which works on a LIVING TAMED animal only
     (CompShearable needs a faction); a corpse yields nothing of it. Wild-vexxiss
-    shearing, vent inhaling, gas-tap prying, the fire-warden attack and the
-    water-poisoning touch are BEHAVIOURS and need C#:
-    CAULDRON_MECHANICS_BUILD_1. Not stubbed here.
+    shearing, vent inhaling and gas-tap prying are BEHAVIOURS still owed by
+    CAULDRON_MECHANICS_BUILD_1 (vent inhaling and prying need the part-3 vent
+    and scaffold defs first). The fire-warden attack and the water-poisoning
+    touch are built: RimMandrake.PoisonForest.RM_CompVexxissBehaviour
+    (Source/RM_CompVexxissBehaviour.cs), with giveNonToolUserBeatFireVerb so
+    the animal owns vanilla's beat-fire verb. Both are Mod Settings toggles.
 
     RM_Zisska: mineral-rasper. foodType is VegetarianRoughAnimal, so in the
     game it eats plants (vein moss, the crust film, is the nearest thing to
@@ -277,6 +280,7 @@
       <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
       <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
       <herdAnimal>false</herdAnimal>
+      <giveNonToolUserBeatFireVerb>true</giveNonToolUserBeatFireVerb>  <!-- fire warden: owns vanilla's beat-fire verb -->
       <lifeStageAges>
         <li>
           <def>AnimalBaby</def>
@@ -297,6 +301,22 @@
         <shearIntervalDays>60</shearIntervalDays>
         <woolAmount>12</woolAmount>
         <woolDef>RM_Vexxith</woolDef>
+      </li>
+      <!-- CAULDRON_MECHANICS_BUILD_1 part 5: fire warden + poisons water on touch.
+           Radii/intervals are INVENTED tuning. Swap targets are vanilla's own
+           toxic-water terrains (Odyssey's toxic-lake set). -->
+      <li Class="RimMandrake.PoisonForest.RM_CompProperties_VexxissBehaviour">
+        <fireScanRadius>14</fireScanRadius>
+        <igniterChaseRadius>30</igniterChaseRadius>
+        <waterPoisonRadius>1.5</waterPoisonRadius>
+        <waterSwaps>
+          <li><from>WaterShallow</from><to>ToxicWaterShallow</to></li>
+          <li><from>WaterDeep</from><to>ToxicWaterDeep</to></li>
+          <li><from>WaterMovingShallow</from><to>ToxicWaterMovingShallow</to></li>
+          <li><from>WaterMovingChestDeep</from><to>ToxicWaterMovingChestDeep</to></li>
+          <li><from>WaterOceanShallow</from><to>ToxicWaterOceanShallow</to></li>
+          <li><from>WaterOceanDeep</from><to>ToxicWaterOceanDeep</to></li>
+        </waterSwaps>
       </li>
     </comps>
     <tradeTags>

@@ -43,6 +43,8 @@
     <Compile Include="RM_PoisonForestMod.cs" />
     <Compile Include="RM_PoisonForestBiome.cs" />
     <Compile Include="RM_CompMetalYield.cs" />
+    <Compile Include="RM_VentBloomExposure.cs" />
+    <Compile Include="RM_CompVexxissBehaviour.cs" />
   </ItemGroup>
 
   <ItemGroup>
