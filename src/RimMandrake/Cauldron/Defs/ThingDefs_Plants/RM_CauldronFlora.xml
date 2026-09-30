@@ -146,7 +146,7 @@
     <plant>
       <growDays>6</growDays>
       <harvestWork>40</harvestWork>
-      <maxMeshCount>3</maxMeshCount>
+      <maxMeshCount>4</maxMeshCount>
       <visualSizeRange>0.5~0.9</visualSizeRange>
       <topWindExposure>0</topWindExposure>
       <wildOrder>1</wildOrder>
@@ -190,7 +190,7 @@
       <growDays>8</growDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
-      <maxMeshCount>2</maxMeshCount>
+      <maxMeshCount>4</maxMeshCount>
       <visualSizeRange>0.9~1.6</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
       <wildOrder>3</wildOrder>
@@ -214,7 +214,7 @@
       <growDays>8</growDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
-      <maxMeshCount>2</maxMeshCount>
+      <maxMeshCount>4</maxMeshCount>
       <visualSizeRange>0.9~1.5</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
       <wildOrder>3</wildOrder>
@@ -238,7 +238,7 @@
       <growDays>6</growDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
-      <maxMeshCount>3</maxMeshCount>
+      <maxMeshCount>4</maxMeshCount>
       <visualSizeRange>0.7~1.3</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
       <wildOrder>2</wildOrder>
@@ -262,7 +262,7 @@
       <growDays>6</growDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
-      <maxMeshCount>3</maxMeshCount>
+      <maxMeshCount>4</maxMeshCount>
       <visualSizeRange>0.7~1.3</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
       <wildOrder>2</wildOrder>

@@ -1117,3 +1117,9 @@ independently: a debug-action census (`rimworld/list_debug_action_children`), a
 `Player.log` init line, or a live spawn/read through a different route.
 **Recurs when:** querying any mod-defined (non-vanilla) Def subclass via `get_defs`.
 (SETTLEMENT_VISIT_LOOP_1, 2026-09-24)
+
+## 🔴 `logCount: 0` from a debug action can mean LOGGING IS OFF, not "the action never ran"
+**Symptom:** `execute_debug_action` on our `Actions\Forge cycle: report state (current map)` returned `success: true`, `effects.logCount: 0`, and Player.log held no line from a method that calls `Log.Message` unconditionally. It was read as "mod debug actions are no-ops" (BRIDGE_MOD_DEBUGACTIONS_NOOP_1, 2026-09-30).
+**Cause:** `Verse/Log.cs` stops ALL managed logging after **10,000** messages (`Reached max messages limit. Stopping logging to avoid spam.`, and it also sets `Debug.unityLogger.logEnabled = false`). After that, `Log.Message`/`Warning`/`Error` return immediately, so the in-game log, RimBridge's LogJournal and Player.log all go silent. In that session **8,994** of the 10,000 were our own plants' `must have plant.MaxMeshCount that is a perfect square` (`Plant.cs:1000`, which accepts only 1/4/9/16/25).
+**Fix:** before trusting a silent debug action, grep Player.log for `Reached max messages limit`. The only reset is the Debug log window's **Clear** button (`EditWindow_Log` → `Log.Clear` → `ResetMessageCount`), and no bridge tool calls it. Keep `maxMeshCount` a perfect square (all 15 offenders fixed 2026-09-30).
+**Recurs when:** any long session on the full list with a per-frame or per-print error spammer. Every log-based verdict after the cap is blind.

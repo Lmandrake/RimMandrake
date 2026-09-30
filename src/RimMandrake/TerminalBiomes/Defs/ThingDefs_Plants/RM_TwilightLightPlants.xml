@@ -74,7 +74,7 @@
       <harvestedThingDef>RM_LampBladder</harvestedThingDef>
       <harvestFailable>false</harvestFailable>
       <harvestMinGrowth>0.5</harvestMinGrowth>
-      <maxMeshCount>2</maxMeshCount>
+      <maxMeshCount>4</maxMeshCount>
       <visualSizeRange>0.7~1.1</visualSizeRange>
       <wildClusterRadius>6</wildClusterRadius>
       <wildClusterWeight>1.2</wildClusterWeight>
