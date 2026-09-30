@@ -74,6 +74,17 @@
     </graphicData>
     <soundInteract>Interact_ChargeRifle</soundInteract>
     <tradeability>All</tradeability>
+    <!-- No recipeMaker (purchasable/quest-given only, per this file's own
+         header) — but BaseGun sets smeltable=true with no costList of its
+         own, and with none inherited here smelting had nothing to give back
+         (ThingDef.ConfigErrors "is smeltable but does not give anything for
+         smelting"). A costList feeds value/smelt calc without implying a
+         craft recipe — same posture vanilla's own Gun_ChargeLance_Unique
+         uses (recipeMaker explicitly nulled, costList still inherited). -->
+    <costList>
+      <Steel>45</Steel>
+      <ComponentSpacer>3</ComponentSpacer>
+    </costList>
     <statBases>
       <MarketValue>1400</MarketValue>
       <Mass>3.2</Mass>
