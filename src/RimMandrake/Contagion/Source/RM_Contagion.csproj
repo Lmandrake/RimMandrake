@@ -57,6 +57,11 @@
     <!-- CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1 -->
     <Compile Include="Recipe_InstallGrownBodyPart.cs" />
     <Compile Include="GenomeMatchBonusUtility.cs" />
+    <!-- CONTAGION_MECHANICS_BUILD_1 Part 1: the Burn and the Bloom -->
+    <Compile Include="RM_ContagionSkyDefOf.cs" />
+    <Compile Include="RM_ContagionSkyExtension.cs" />
+    <Compile Include="RM_MapComponent_ContagionSky.cs" />
+    <Compile Include="RM_GameCondition_ContagionBurn.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CONTAGION_MECHANICS_BUILD_1 Part 1 — the Bloom and the Burn (weathers).
+
+  RM_ContagionBloom — the standing storm. "Donor red fog re-skinned" (item §1):
+  replaces the donor AB_RedFog row in RM_Contagion's baseWeatherCommonalities,
+  so the biome no longer needs sarg.alphabiomes for its crown weather.
+  accuracyMultiplier 0.4 is ban 5 ("red fog's x0.4 stands"). Rain + wind-storm
+  + fog ambience and lightning flashes are the sheet §9 "endless rain and
+  thunder as the baseline", built from vanilla's own SoundDefs/event classes
+  (the same ones RainyThunderstorm/FoggyRain ship); bespoke sound (the rattle,
+  a Burn sting) needs audio assets and is not in this file.
+  Lightning STRIKES are deliberately rare: the valley is always wet.
+
+  RM_ContagionBurn — the tear. Reachable ONLY through
+  RM_GameCondition_ContagionBurn's ForcedWeather: it is in no biome's
+  baseWeatherCommonalities (so WeatherDecider scores it 0 everywhere) and
+  canOccurAsRandomForcedEvent is false (so vanilla's GameCondition_ForceWeather
+  "weather controller" roll, which picks any isBad weather, can never land it
+  on another map). transitionTicksOverride 600: the cloud TEARS, it does not
+  drift open (the field is read by WeatherDecider when Anomaly is active, which
+  every supported install is). Accuracy 1.0: "the red fog lifts, ranged
+  weapons work". Sky: near-white, over-bright — "the valley suddenly,
+  horribly bright" (sheet §9).
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RM_ContagionBloom</defName>
+    <label>the Bloom</label>
+    <description>The Contagion's standing storm: warm red rain, red fog thick enough to lose a hand in, thunder that never quite stops. Ranged weapons are close to useless. Everything under it is budding.</description>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <isBad>true</isBad>
+    <favorability>Neutral</favorability>
+    <perceivePriority>2</perceivePriority>
+    <repeatable>true</repeatable>
+    <durationRange>20000~60000</durationRange>
+    <temperatureRange>0~999</temperatureRange>
+    <rainRate>1</rainRate>
+    <windSpeedFactor>1.4</windSpeedFactor>
+    <accuracyMultiplier>0.4</accuracyMultiplier>
+    <moveSpeedMultiplier>0.9</moveSpeedMultiplier>
+    <weatherThought>SoakingWet</weatherThought>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+      <li>Ambient_Rain</li>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <eventMakers>
+      <li>
+        <averageInterval>900</averageInterval>
+        <eventClass>WeatherEvent_LightningFlash</eventClass>
+      </li>
+      <li>
+        <averageInterval>6000</averageInterval>
+        <eventClass>WeatherEvent_LightningStrike</eventClass>
+      </li>
+    </eventMakers>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+      <li>WeatherOverlay_Rain</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.72,0.1,0.1)</sky>
+      <shadow>(0.92,0.9,0.9)</shadow>
+      <overlay>(0.62,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.85,0.08,0.08)</sky>
+      <shadow>(0.92,0.9,0.9)</shadow>
+      <overlay>(0.55,0.45,0.45)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.3,0.03,0.03)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.45,0.4,0.4)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.3,0.03,0.03)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.45,0.4,0.4)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <WeatherDef>
+    <defName>RM_ContagionBurn</defName>
+    <label>the Burn</label>
+    <description>The storm has torn open and the sun is coming straight through: raw, sterilizing light on everything under open sky. The fog is gone and a rifle shoots true again. Every native thing is diving for cover, and anything that cannot find it scorches.</description>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <isBad>true</isBad>
+    <favorability>VeryBad</favorability>
+    <perceivePriority>3</perceivePriority>
+    <repeatable>false</repeatable>
+    <durationRange>1000~2000</durationRange>
+    <transitionTicksOverride>600</transitionTicksOverride>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <windSpeedFactor>0.6</windSpeedFactor>
+    <accuracyMultiplier>1</accuracyMultiplier>
+    <skyColorsDay>
+      <sky>(1,0.98,0.95)</sky>
+      <shadow>(0.97,0.96,0.94)</shadow>
+      <overlay>(0.95,0.93,0.9)</overlay>
+      <saturation>1.1</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,0.9,0.8)</sky>
+      <shadow>(0.95,0.9,0.85)</shadow>
+      <overlay>(0.9,0.82,0.72)</overlay>
+      <saturation>1.1</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.45,0.42,0.5)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.4,0.4,0.45)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.3,0.3,0.38)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.3,0.3,0.35)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

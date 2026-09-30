@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CONTAGION_MECHANICS_BUILD_1 Part 1 — the Burn as a map condition.
+  Registered only by RM_MapComponent_ContagionSky.StartBurn (the sky clock and
+  the Cloud Repulsor), which refuses any map whose biome lacks
+  RM_ContagionSkyExtension. No IncidentDef fires it, so no storyteller can
+  drop it on another biome. allowUnderground false: a cave has no sky to tear.
+-->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RM_ContagionBurnCondition</defName>
+    <conditionClass>RimMandrake.Contagion.RM_GameCondition_ContagionBurn</conditionClass>
+    <label>the Burn</label>
+    <description>The Contagion's storm has torn open. Raw UV is scorching everything under open sky: natives are diving for roof, canopy and water; anyone else out in it takes a sunscald dose. The fog is gone — ranged weapons work.</description>
+    <startMessage>The storm tears open — the Burn. Get under a roof, a tree, or into water.</startMessage>
+    <endMessage>The cloud closes over the valley again. The Burn is over.</endMessage>
+    <allowUnderground>false</allowUnderground>
+    <canBePermanent>false</canBePermanent>
+    <weatherDef>RM_ContagionBurn</weatherDef>
+  </GameConditionDef>
+
+</Defs>

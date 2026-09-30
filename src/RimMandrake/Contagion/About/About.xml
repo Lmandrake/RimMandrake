@@ -33,7 +33,7 @@ placement worker, `RM_BiomeWorker_Contagion`, replacing the donor Alpha Biomes
 `BiomeWorker_OcularForest` — a donor type in `workerClass` is a hard dependency
 the RimMandrake tier may not assume), its full resident roster transplanted
 wholesale from the frozen campaign twin (11 `wildAnimals` rows, 10 `wildPlants`
-rows, Alpha Biomes' weather and Alpha Biomes/vanilla disease suite), and a Mod
+rows, Alpha Biomes/vanilla disease suite), and a Mod
 Settings screen with the standard worldgen-rarity master toggle
 (MOD_OPTIONS_RETROFIT_1 doctrine — default = shipped behavior, 0 = never
 generates).
@@ -65,8 +65,15 @@ Warg, this mod's own precedent) — `infrastructure/artpipe/done/` was checked
 first and holds no existing "Unfinished"/chimera art; bespoke art remains
 owed, queued separately.
 
-The Burn/Bloom weather mechanic remains unbuilt design work and lands here
-later, at any point, with no dependency direction.
+`CONTAGION_MECHANICS_BUILD_1` Part 1 (2026-09-29): the Bloom and the Burn.
+The biome owns its sky — `RM_ContagionBloom` (red fog, rain, thunder, ranged
+accuracy x0.4) is the standing weather; the Burn (`RM_ContagionBurn`) is never
+rolled by vanilla weather but scheduled by `RM_MapComponent_ContagionSky` only
+on a biome carrying `RM_ContagionSkyExtension`, a few days apart. Shortly before
+each tear the gawpsacks stop and settle as one (the tell). During a Burn the fog
+lifts, UV-shy natives burn and dive for roof, canopy or water, the armored ones
+hunt, and anyone else in the open takes `RM_BurnDose`. Mod Settings: on/off,
+tells on/off, frequency, damage.
 
 Zero Star Wars content lives in this biome's roster at all — the twin's own
 `wildAnimals` carries no `RSW_`/`SW_`/`mlie.*` row, so no Utinni patch is needed
