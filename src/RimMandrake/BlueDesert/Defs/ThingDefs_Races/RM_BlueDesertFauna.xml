@@ -1065,11 +1065,11 @@
   </PawnKindDef>
 
   <!-- ============== MURREK — the drift ambusher ============== -->
-  <!-- Ships walk-and-hunt viable WITHOUT the burrow AI — a slow flat
-       predator, per the bible's own note. 🔴 STUB HOOKUP POINT for
-       BLUEDESERT_MECHANICS_BUILD_1 §6: buried/unburied states via a
-       burrow/unburrow job driver + a MapComponent listening for the drift
-       weather's end. -->
+  <!-- A slow flat predator that also walks and hunts normally. Its drift
+       ambush is BLUEDESERT_MECHANICS_BUILD_1 §6 (Source/RM_MurrekDrift.cs):
+       when RM_IceSandDrift ends, RM_MapComponent_MurrekDrifts sends it into
+       a deep drift (RM_MurrekBurrow job, RM_MurrekBuried hediff); tuning on
+       the drift WeatherDef's RM_MurrekReseedExtension. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Murrek</defName>
     <label>murrek</label>

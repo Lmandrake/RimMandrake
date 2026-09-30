@@ -53,6 +53,9 @@ namespace RimMandrake.BlueDesert
         // BLUEDESERT_MECHANICS_BUILD_1 §5 (CompPlantCharge.PlayCrackCue).
         public static bool crackCueEnabled = true;
 
+        // BLUEDESERT_MECHANICS_BUILD_1 §6 (RM_MurrekDrift.cs).
+        public static bool murrekReseedEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -69,6 +72,7 @@ namespace RimMandrake.BlueDesert
             Scribe_Values.Look(ref hazeExposureEnabled, "hazeExposureEnabled", true);
             Scribe_Values.Look(ref thawRollEnabled, "thawRollEnabled", true);
             Scribe_Values.Look(ref crackCueEnabled, "crackCueEnabled", true);
+            Scribe_Values.Look(ref murrekReseedEnabled, "murrekReseedEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -114,6 +118,10 @@ namespace RimMandrake.BlueDesert
             list.CheckboxLabeled("Crack warning before flora detonates", ref crackCueEnabled,
                 "A warming charge-plant cracks audibly one step before it goes off. Off: no warning "
               + "sound; the detonation timing is unchanged.");
+            list.CheckboxLabeled("Murrek bury in fresh drifts", ref murrekReseedEnabled,
+                "When an ice-sand drift ends, murrek dig into the new drifts and lie hidden until prey "
+              + "comes close, and a few new ones may settle in away from the colony. Clearing the "
+              + "sand flushes a buried one. Off: murrek never bury; any already buried surface.");
 
             list.Label("Warm-detonation threshold: " + warmDetonationThresholdC.ToString("0") + " °C");
             warmDetonationThresholdC = list.Slider(warmDetonationThresholdC, -1f, 15f);

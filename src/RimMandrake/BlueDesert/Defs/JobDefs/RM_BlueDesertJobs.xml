@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BlueDesertJobs.xml     BLUEDESERT_MECHANICS_BUILD_1 §6 (tranche 2)
+
+  RM_MurrekBurrow: the murrek's burrow/unburrow job (Source/RM_MurrekDrift.cs).
+  Walk to a deep drift cell, dig in, lie buried until prey comes close, the
+  drift is dug out or erodes, it is hurt, or hunger/tiredness pull it up.
+  Given only by RM_MapComponent_MurrekDrifts at the end of an ice-sand drift.
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_MurrekBurrow</defName>
+    <driverClass>RimMandrake.BlueDesert.RM_JobDriver_MurrekBurrow</driverClass>
+    <reportString>lying buried in the drift.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <suspendable>false</suspendable>
+  </JobDef>
+
+</Defs>
