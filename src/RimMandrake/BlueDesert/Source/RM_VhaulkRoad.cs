@@ -151,10 +151,19 @@ namespace RimMandrake.BlueDesert
                     Props.boomSound.PlayOneShot(new TargetInfo(pawn.Position, map));
                 }
             }
-            if (DepartOn && !departing && departTick >= 0 && Find.TickManager.TicksGame >= departTick
+            if (DepartOn && departTick >= 0 && Find.TickManager.TicksGame >= departTick
                 && parent.IsHashIntervalTick(250))
             {
-                TryStartDeparture(pawn);
+                // A flee, a fight or a meal can replace the walk-off job;
+                // when that happens, send it on its way again.
+                if (departing && (pawn.CurJob == null || !pawn.CurJob.exitMapOnArrival))
+                {
+                    departing = false;
+                }
+                if (!departing)
+                {
+                    TryStartDeparture(pawn);
+                }
             }
         }
 
