@@ -5,6 +5,25 @@ using Verse;
 
 namespace RimMandrake.LuminousPigment
 {
+    // DEEPFIRE_LIVE_FAILURES_1: thingClass of RM_DeepfireLightProxy and
+    // RM_DeepfireWornLightProxy. The proxy's lifetime belongs to
+    // MapComponent_DeepfireLights, and its anchor's despawn removes it
+    // synchronously -- so any caller destroying from a per-cell SNAPSHOT
+    // (vanilla GenDebug.ClearArea: GetThingList(map).ToList() then Destroy
+    // each; RimSage Verse/GenDebug.cs) reaches the proxy a second time after
+    // the coated building on the same cell already took it down, and vanilla
+    // Thing.Destroy logs "Tried to destroy already-destroyed thing". Measured
+    // live 2026-09-30 (x4 across the Deepfire proofs). A second destroy of a
+    // proxy has nothing left to do, so it is a no-op here.
+    public class DeepfireLightProxy : ThingWithComps
+    {
+        public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
+        {
+            if (Destroyed) return;
+            base.Destroy(mode);
+        }
+    }
+
     // Spec §10 step 1's answer (recorded on DEEPFIRE_PAINT_LIVE_VERIFY_1,
     // no live bridge needed to derive it -- confirmed against decompiled
     // Verse/CompGlower.cs + Verse/GlowGrid.cs): CompGlower.ShouldBeLitNow

@@ -54,7 +54,7 @@ namespace RimMandrake.LuminousPigment
         {
             Map map = Find.CurrentMap;
             IntVec3 c = UI.MouseCell();
-            walker?.Destroy();
+            if (walker != null && !walker.Destroyed) walker.Destroy();
             walker = SpawnColonist(map, c, TestCoats);
             Log.Message(Tag + ReportPawn(walker, "spawnWalker"));
         }
@@ -123,15 +123,27 @@ namespace RimMandrake.LuminousPigment
                     StatRequest.For(coated), ToStringNumberSense.Absolute, dodgeC) ?? "";
                 bool explained = expl.Contains(Patch_ShotReport_GetTextReadout.LineLabel.CapitalizeFirst());
 
-                if (rc.AimOnTargetChance > rp.AimOnTargetChance) coatedHigher++;
+                // DEEPFIRE_LIVE_FAILURES_1: vanilla factorFromTargetSize is
+                // Clamp(target.BodySize, 0.5, 2) (RimSage Verse/ShotReport.cs),
+                // and the twins are random colonists -- live 2026-09-30 a plain
+                // twin at body size 0.8 read 0.3258 against 0.4072 for size 1.0,
+                // and 2 of 20 pairs had a smaller coated twin. The x1.25 was
+                // applied in every row (coated/plain = 1.25 exactly at equal
+                // size); what differed was the pawns. Twins are now baseliner
+                // adults, and the tally compares aim PER UNIT of each twin's own
+                // clamped size, so a body-size gap cannot flip it.
+                float sizeC = Mathf.Clamp(coated.BodySize, DeepfirePaintDefaults.TargetSizeFactorMin, DeepfirePaintDefaults.TargetSizeFactorMax);
+                float sizeP = Mathf.Clamp(plain.BodySize, DeepfirePaintDefaults.TargetSizeFactorMin, DeepfirePaintDefaults.TargetSizeFactorMax);
+                if (rc.AimOnTargetChance / sizeC > rp.AimOnTargetChance / sizeP) coatedHigher++;
                 if (line) readoutLines++;
                 if (dark) darkCount++;
                 if (dodgeC < dodgeP || dodgeP <= 0f) dodgeLower++;
                 if (explained) dodgeExplained++;
                 rows.Add(string.Format(inv,
-                    "{{\"coatedAim\":{0:0.####},\"plainAim\":{1:0.####},\"coatedTotal\":{2:0.####},\"plainTotal\":{3:0.####},\"dark\":{4},\"line\":{5},\"dodgeCoated\":{6:0.####},\"dodgePlain\":{7:0.####},\"dodgeExplained\":{8}}}",
+                    "{{\"coatedAim\":{0:0.####},\"plainAim\":{1:0.####},\"coatedTotal\":{2:0.####},\"plainTotal\":{3:0.####},\"dark\":{4},\"line\":{5},\"dodgeCoated\":{6:0.####},\"dodgePlain\":{7:0.####},\"dodgeExplained\":{8},\"coatedSize\":{9:0.##},\"plainSize\":{10:0.##},\"coatedSizeFactor\":{11:0.####}}}",
                     rc.AimOnTargetChance, rp.AimOnTargetChance, rc.TotalEstimatedHitChance, rp.TotalEstimatedHitChance,
-                    B(dark), B(line), dodgeC, dodgeP, B(explained)));
+                    B(dark), B(line), dodgeC, dodgeP, B(explained), coated.BodySize, plain.BodySize,
+                    Patch_ShotReport_HitReportFor.FactorFromTargetSize(ref rc)));
 
                 coated.Destroy();
                 plain.Destroy();
@@ -159,8 +171,8 @@ namespace RimMandrake.LuminousPigment
         {
             Map map = Find.CurrentMap;
             IntVec3 c = UI.MouseCell();
-            styler?.Destroy();
-            styleStation?.Destroy();
+            if (styler != null && !styler.Destroyed) styler.Destroy();
+            if (styleStation != null && !styleStation.Destroyed) styleStation.Destroy();
 
             ThingDef stationDef = ThingDef.Named(LacquerWornItemUtility.StylingStationDefName);
             styleStation = GenSpawn.Spawn(ThingMaker.MakeThing(stationDef, GenStuff.DefaultStuffFor(stationDef)), c, map, WipeMode.Vanish);
@@ -200,7 +212,9 @@ namespace RimMandrake.LuminousPigment
 
         private static Pawn SpawnColonist(Map map, IntVec3 c, int coats)
         {
-            Pawn p = PawnGenerator.GeneratePawn(PawnKindDefOf.Colonist, Faction.OfPlayer);
+            // Baseliner adults: every proof pawn the same body size (see HitPairsAtCell).
+            Pawn p = PawnGenerator.GeneratePawn(new PawnGenerationRequest(PawnKindDefOf.Colonist, Faction.OfPlayer,
+                forcedXenotype: XenotypeDefOf.Baseliner, developmentalStages: DevelopmentalStage.Adult));
             GenSpawn.Spawn(p, c, map, WipeMode.Vanish);
             Apparel parka = (Apparel)ThingMaker.MakeThing(ThingDef.Named("Apparel_Parka"), ThingDefOf.Cloth);
             p.apparel.Wear(parka, dropReplacedApparel: false);
@@ -233,7 +247,8 @@ namespace RimMandrake.LuminousPigment
                 sb.AppendFormat(inv, ",\"groundGlow\":{0:0.####},\"skyGlow\":{1:0.####},\"roofed\":{2},\"glowingInDark\":{3},\"wornLights\":{4}",
                     map.glowGrid.GroundGlowAt(p.Position), map.skyManager.CurSkyGlow, B(p.Position.Roofed(map)),
                     B(DeepfireDarkness.IsGlowingInDark(p)), mc != null ? mc.WornLightCount : -1);
-                sb.AppendFormat(inv, ",\"job\":\"{0}\"", p.CurJobDef?.defName ?? "");
+                sb.AppendFormat(inv, ",\"job\":\"{0}\",\"moveSpeed\":{1:0.##}", p.CurJobDef?.defName ?? "",
+                    p.GetStatValue(StatDefOf.MoveSpeed));
             }
             Apparel parka = ParkaOf(p);
             sb.AppendFormat(inv, ",\"coats\":{0}", parka?.GetComp<CompDeepfire>()?.coats ?? -1);

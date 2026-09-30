@@ -32,8 +32,8 @@ namespace RimMandrake.LuminousPigment
         {
             Map map = Find.CurrentMap;
             IntVec3 c = UI.MouseCell();
-            titled?.Destroy();
-            commoner?.Destroy();
+            if (titled != null && !titled.Destroyed) titled.Destroy();
+            if (commoner != null && !commoner.Destroyed) commoner.Destroy();
             titled = SpawnColonist(map, c);
             commoner = SpawnColonist(map, c + new IntVec3(PawnSpacing, 0, 0));
             bool titleSet = false;
@@ -119,10 +119,10 @@ namespace RimMandrake.LuminousPigment
             Map map = Find.CurrentMap;
             IntVec3 c = UI.MouseCell();
             Faction player = Faction.OfPlayer;
-            Faction f = PickVisitorFaction(player);
+            Faction f = PickVisitorFaction(player, out PawnKindDef kind);
             if (f == null) { Log.Message(Tag + "{\"action\":\"impress\",\"faction\":null}"); return; }
-            visitor?.Destroy();
-            visitor = PawnGenerator.GeneratePawn(f.def.basicMemberKind, f);
+            if (visitor != null && !visitor.Destroyed) visitor.Destroy();
+            visitor = PawnGenerator.GeneratePawn(new PawnGenerationRequest(kind, f, developmentalStages: DevelopmentalStage.Adult));
             GenSpawn.Spawn(visitor, c, map, WipeMode.Vanish);
             if (!SumptuaryUtility.IsTitled(visitor) && Faction.OfEmpire != null && visitor.royalty != null)
             {
@@ -181,17 +181,32 @@ namespace RimMandrake.LuminousPigment
                 + ",\"displayScore\":" + SumptuaryUtility.DisplayScoreFor(p) + "}");
         }
 
-        private static Faction PickVisitorFaction(Faction player)
+        // DEEPFIRE_LIVE_FAILURES_1: the Empire FactionDef has NO basicMemberKind
+        // (RimSage def dump: pawnGroupMakers only), and the Empire branch used to
+        // return it unchecked, so GeneratePawn(null, empire) threw the NRE seen
+        // live 2026-09-30. Every candidate now comes with a humanlike kind:
+        // basicMemberKind, else Faction.RandomPawnKind() (humanlike
+        // pawnGroupMaker options), and a faction with neither is skipped.
+        private static Faction PickVisitorFaction(Faction player, out PawnKindDef kind)
         {
+            kind = null;
             Faction empire = Faction.OfEmpire;
-            if (empire != null && !empire.HostileTo(player) && !empire.defeated) return empire;
+            if (IsVisitorCandidate(empire, player, out kind)) return empire;
             foreach (Faction f in Find.FactionManager.AllFactionsListForReading)
             {
-                if (f.IsPlayer || f.Hidden || f.defeated || f.HostileTo(player)) continue;
-                if (!f.def.humanlikeFaction || f.def.basicMemberKind == null) continue;
-                return f;
+                if (IsVisitorCandidate(f, player, out kind)) return f;
             }
             return null;
+        }
+
+        private static bool IsVisitorCandidate(Faction f, Faction player, out PawnKindDef kind)
+        {
+            kind = null;
+            if (f == null || f.IsPlayer || f.Hidden || f.defeated || f.HostileTo(player)) return false;
+            if (!f.def.humanlikeFaction) return false;
+            kind = f.def.basicMemberKind;
+            if (kind == null || kind.RaceProps == null || !kind.RaceProps.Humanlike) kind = f.RandomPawnKind();
+            return kind != null && kind.RaceProps != null && kind.RaceProps.Humanlike;
         }
 
         private static string BuildPairReport()
@@ -200,6 +215,17 @@ namespace RimMandrake.LuminousPigment
             sb.Append("{\"action\":\"reportPair\"");
             if (titled == null || commoner == null) return sb.Append(",\"found\":false}").ToString();
             sb.Append(",\"found\":true");
+            // DEEPFIRE_LIVE_FAILURES_1: SituationalThoughtHandler caches each
+            // other-pawn's social thoughts and only re-evaluates them 100
+            // ticks after the last recalculation (RimSage
+            // RimWorld/SituationalThoughtHandler.cs). The proof reads this
+            // report several times in the SAME tick, so the post-dress read
+            // got the cache the pre-dress read had built: aboveStationActive
+            // true from the worker, but an empty live social list (live
+            // 2026-09-30). The game's own reading at the 100-tick cadence is
+            // correct; the report must drop the cache before it reads.
+            titled.needs?.mood?.thoughts?.situational?.Notify_SituationalThoughtsDirty();
+            commoner.needs?.mood?.thoughts?.situational?.Notify_SituationalThoughtsDirty();
             AppendPawn(sb, "titled", titled);
             AppendPawn(sb, "commoner", commoner);
             ThoughtDef above = DefDatabase<ThoughtDef>.GetNamed("RM_WearsAboveStation");

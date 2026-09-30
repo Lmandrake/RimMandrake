@@ -24,17 +24,18 @@ takes its indoor branch. (The outdoor branch -- sky glow <= 0.35 -- is not exerc
      GroundGlowAt(pawn) > 0.3, glowingInDark true.
   2  order it 30 cells east; step to the next 15-tick poll, then every 15 ticks until it
      arrives: at EVERY sample the proxy sits on the pawn's cell and GroundGlowAt(pawn) > 0.3.
-     It must actually travel (>= 25 cells covered, >= 10 samples).
+     It must actually travel (>= 25 cells covered, proxy seen at >= 5 distinct cells).
   3  strip its coats -> untracked, no worn light, glow at its cell back under 0.3.
-  4  20 fresh coated/uncoated pairs, symmetric about one rifle shooter under a roof:
-     every pair -> coated twin glowingInDark, its AimOnTargetChance > the plain twin's,
+  4  20 fresh coated/uncoated baseliner-adult pairs, symmetric about one rifle shooter under
+     a roof: every pair -> coated twin glowingInDark, its AimOnTargetChance per unit of its
+     own clamped body size > the plain twin's,
      its hit readout carries the "Glowing in the dark" line, its MeleeDodgeChance is lower
      than the twin's (or both are 0 -- the dodge curve floors low-skill pawns) and its stat
      explanation names the line.
   5  styling station + 3 deepfire + an uncoated colonist -> the lacquer job is queued via
      the dialog's own Accept entry point; step ticks until done -> parka coats 1 and the
      3 deepfire are consumed.
-  6  cleanup; no new errors in the log naming LuminousPigment/Deepfire/WornGlow.
+  6  cleanup; no NEW Error-type log line naming this mod (deepfire_log_check.py).
 Exit 0 = every assertion passed, 1 = at least one failed, 2 = could not run.
 """
 import argparse
@@ -44,6 +45,7 @@ import time
 
 sys.path.insert(0, r"src\RimMandrake\Utils")
 import rimbridge_client as rb
+import deepfire_log_check
 
 TAG = "[DeepfireWorn] "
 CATEGORY = "Deepfire"
@@ -134,7 +136,7 @@ if st.get("programState") != "Playing":
     print("not Playing:", st.get("programState"))
     sys.exit(2)
 
-call("jawa/drain_log", errorsOnly=True)  # discard errors that predate this proof
+LOG_BASE = deepfire_log_check.baseline(call)  # errors already in the buffer do not count
 
 actions = find_actions()
 print("WornGlow dev actions:", sorted(actions))
@@ -174,8 +176,16 @@ for _ in range(80):
         break
     step(POLL)
 travelled = (samples[-1].get("x", 0) - start_x) if samples and start_x is not None else 0
-check("walk: >= 10 samples and >= 25 cells travelled", len(samples) >= 10 and travelled >= 25,
-      "%d samples, %s cells" % (len(samples), travelled))
+# DEEPFIRE_LIVE_FAILURES_1: the old ">= 10 samples" bar assumed ~13 ticks/cell (26 polls for
+# 30 cells). Live 2026-09-30 the walker covered all 30 cells in 7 polls with every sample on its
+# proxy, so the bar failed a correct light. The count of polls depends on walk speed; what the proof
+# needs is that the light was seen FOLLOWING the pawn, i.e. at several distinct cells along the walk.
+distinct = len({(s.get("x"), s.get("z")) for s in samples})
+check("walk: >= 25 cells travelled, proxy sampled at >= 5 distinct cells along the way",
+      travelled >= 25 and distinct >= 5,
+      "%d samples at %d distinct cells, %s cells travelled, moveSpeed %s, ticks %s"
+      % (len(samples), distinct, travelled, (samples[0].get("moveSpeed") if samples else None),
+         [(s.get("ticks"), s.get("x")) for s in samples][:12]))
 check("walk: proxy on the pawn's cell, cell roofed (no sky), GroundGlowAt > 0.3 at EVERY sample", samples and not bad,
       "%d bad: %s" % (len(bad), json.dumps(bad[:3])))
 
@@ -190,7 +200,11 @@ h = run(actions, "hit-report pairs", x=X + 15, z=Z + 15)
 if h:
     print("    first rows:", json.dumps(h.get("rows", [])[:3]))
 check("pairs: coated twin glowing in the dark in all %d" % PAIRS, h and h.get("darkCount") == PAIRS, json.dumps({k: v for k, v in (h or {}).items() if k != "rows"}))
-check("pairs: coated AimOnTargetChance > plain twin's in all %d" % PAIRS, h and h.get("coatedHigher") == PAIRS)
+check("pairs: coated AimOnTargetChance > plain twin's (per unit body size) in all %d" % PAIRS,
+      h and h.get("coatedHigher") == PAIRS,
+      json.dumps([r for r in (h or {}).get("rows", [])
+                  if r.get("coatedAim", 0) / max(r.get("coatedSize") or 1, 0.5)
+                  <= r.get("plainAim", 0) / max(r.get("plainSize") or 1, 0.5)][:4]))
 check("pairs: 'Glowing in the dark' line in the hit readout in all %d" % PAIRS, h and h.get("readoutLines") == PAIRS)
 check("pairs: coated MeleeDodgeChance lower (or both floored at 0) in all %d" % PAIRS, h and h.get("dodgeLowerOrZero") == PAIRS)
 check("pairs: dodge stat explanation names the line in all %d" % PAIRS, h and h.get("dodgeExplained") == PAIRS)
@@ -210,10 +224,8 @@ check("styling: the %d deepfire were consumed" % STYLE_COST, y and y.get("deepfi
 
 print("== 6 cleanup + log ==")
 run(actions, "cleanup test pawns")
-logs = call("jawa/drain_log", errorsOnly=True)
-text = json.dumps(logs)
-badk = [k for k in ("LuminousPigment", "Deepfire", "WornGlow") if k in text]
-check("no LuminousPigment/Deepfire/WornGlow errors logged during the proof", not badk, text[:600] if badk else "")
+new_errors = deepfire_log_check.new_mod_errors(call, LOG_BASE)
+check("no LuminousPigment/Deepfire/WornGlow Error-type lines logged (new) during the proof", not new_errors, json.dumps(new_errors[:5]))
 
 failed = [n for n, ok in results if not ok]
 print("\n%d/%d passed" % (len(results) - len(failed), len(results)))

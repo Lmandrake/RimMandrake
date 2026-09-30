@@ -48,7 +48,9 @@
     <defName>RM_DeepfireLightProxy</defName>
     <label>deepfire light (internal)</label>
     <description>Internal marker thing that carries a Deepfire glow light. If you can see or select this, something is wrong — report it.</description>
-    <thingClass>ThingWithComps</thingClass>
+    <!-- DEEPFIRE_LIVE_FAILURES_1: a ThingWithComps whose Destroy is a no-op when
+         already destroyed (snapshot-destroyers such as GenDebug.ClearArea). -->
+    <thingClass>RimMandrake.LuminousPigment.DeepfireLightProxy</thingClass>
     <category>Ethereal</category>
     <drawerType>None</drawerType>
     <altitudeLayer>Item</altitudeLayer>
@@ -100,7 +102,9 @@
     <defName>RM_DeepfireWornLightProxy</defName>
     <label>deepfire worn light (internal)</label>
     <description>Internal marker thing that carries the glow of a pawn's deepfire-lacquered gear. If you can see or select this, something is wrong — report it.</description>
-    <thingClass>ThingWithComps</thingClass>
+    <!-- DEEPFIRE_LIVE_FAILURES_1: a ThingWithComps whose Destroy is a no-op when
+         already destroyed (snapshot-destroyers such as GenDebug.ClearArea). -->
+    <thingClass>RimMandrake.LuminousPigment.DeepfireLightProxy</thingClass>
     <category>Ethereal</category>
     <drawerType>None</drawerType>
     <altitudeLayer>Item</altitudeLayer>
