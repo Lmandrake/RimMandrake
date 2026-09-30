@@ -1,0 +1,24 @@
+home map 1 tile 10372 biome ZBiome_Grasslands
+settings before: requireGravEngine=True seaFloorBandsEnabled=True
+
+=== TheScald (RM_TheScald)
+hatch spawn: {'success': True, 'thingsPlaced': 1, 'failed': 0}
+EnterPortal: {'success': True, 'accepted': True, 'reason': None, 'error': None}
+
+=== GreySea (RM_GreySea)
+hatch spawn: {'success': True, 'thingsPlaced': 1, 'failed': 0}
+EnterPortal: {'success': True, 'accepted': True, 'reason': None, 'error': None}
+
+=== TwilightSea (RM_TwilightSea)
+hatch spawn: {'success': True, 'thingsPlaced': 1, 'failed': 0}
+EnterPortal: {'success': True, 'accepted': True, 'reason': None, 'error': None}
+
+=== TheChill (RM_TheChill)
+hatch spawn: {'success': True, 'thingsPlaced': 1, 'failed': 0}
+EnterPortal: {'success': True, 'accepted': True, 'reason': None, 'error': None}
+
+VERDICTS:
+  TheScald     FAIL (no pocket map generated)
+  GreySea      FAIL (no pocket map generated)
+  TwilightSea  FAIL (no pocket map generated)
+  TheChill     FAIL (no pocket map generated)
