@@ -1269,3 +1269,11 @@
 {"seat":"FOUNDRY","event":"claim","id":"CONTAGION_NEW_SPECIES_FLORA_1","ts":"2026-09-30T00:46:27Z"}
 {"seat":"FOUNDRY","event":"start","id":"CONTAGION_NEW_SPECIES_FLORA_1","ts":"2026-09-30T00:46:29Z"}
 {"seat":"FOUNDRY","event":"close","id":"CONTAGION_NEW_SPECIES_FLORA_1","sha":"3e217f4ff","ts":"2026-09-30T00:52:13Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CONTAGION_FLYER_WIRING_1","ts":"2026-09-30T00:53:11Z"}
+{"seat":"FOUNDRY","event":"start","id":"CONTAGION_FLYER_WIRING_1","ts":"2026-09-30T00:53:13Z"}
+{"seat":"FOUNDRY","event":"close","id":"CONTAGION_FLYER_WIRING_1","sha":"6ce458d32","ts":"2026-09-30T00:54:02Z"}
+{"seat":"FOUNDRY","event":"close","id":"LEANINGSCRUB_RULED_CONTENT_1","sha":"66dffc905","ts":"2026-09-30T01:11:28Z"}
+{"seat":"FOUNDRY","event":"close","id":"CAULDRON_RULED_CONTENT_1","sha":"71c4a821a","ts":"2026-09-30T01:11:30Z"}
+{"seat":"FOUNDRY","event":"file","id":"BLURRG_RSW_PORT_1","title":"Port RSW_Blurrg (tamed-only) with canon entry and art; Leaning Scrub ruled content names it","kind":"task","target":"v1","needs":"offline","caused_by":"LEANINGSCRUB_RULED_CONTENT_1","for":"FOUNDRY","ts":"2026-09-30T01:12:27Z"}
+{"seat":"FOUNDRY","event":"file","id":"LEANINGSCRUB_ART_WIRING_1","title":"Wire art for 27 Leaning Scrub subjects (thunderstep, yanker, scrap-nest bird, RM_RawVenom, venomvine split, zellik/dustflutter flight frames); check artpipe done/ first","kind":"task","target":"v1","needs":"offline","caused_by":"LEANINGSCRUB_RULED_CONTENT_1","for":"FOUNDRY","ts":"2026-09-30T01:12:28Z"}
+{"seat":"FOUNDRY","event":"file","id":"CAULDRON_TREE_METAL_YIELD_1","title":"C# comp for the metal second yield on the two Cauldron trees; stubs are commented in defs","kind":"task","target":"v1","needs":"offline","caused_by":"CAULDRON_RULED_CONTENT_1","for":"FOUNDRY","ts":"2026-09-30T01:12:29Z"}
