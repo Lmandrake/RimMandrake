@@ -16,8 +16,8 @@
     <workSpeedStat>ButcheryFleshSpeed</workSpeedStat>
     <workSkill>Cooking</workSkill>
     <workSkillLearnFactor>0.5</workSkillLearnFactor>
-    <effectWorking>Butcher</effectWorking>
-    <soundWorking>Recipe_Butcher</soundWorking>
+    <effectWorking>ButcherFlesh</effectWorking>
+    <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
     <ingredients>
       <li>
         <filter>
@@ -34,18 +34,9 @@
       </thingDefs>
     </fixedIngredientFilter>
     <products>
-      <li>
-        <thingDef>RM_GreatboleFruitSteak</thingDef>
-        <count>4</count>
-      </li>
-      <li>
-        <thingDef>RM_RoyalRind</thingDef>
-        <count>1</count>
-      </li>
-      <li>
-        <thingDef>RM_GreatboleSeed</thingDef>
-        <count>1</count>
-      </li>
+      <RM_GreatboleFruitSteak>4</RM_GreatboleFruitSteak>
+      <RM_RoyalRind>1</RM_RoyalRind>
+      <RM_GreatboleSeed>1</RM_GreatboleSeed>
     </products>
     <recipeUsers>
       <li>TableButcher</li>
