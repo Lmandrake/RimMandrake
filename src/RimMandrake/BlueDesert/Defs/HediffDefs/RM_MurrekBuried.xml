@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_MurrekBuried.xml     BLUEDESERT_MECHANICS_BUILD_1 §6 (tranche 2)
+
+  The murrek's buried state: vanilla HediffComp_Invisibility with the same
+  figures as Core/Anomaly's HoraxianInvisibility, so a buried murrek cannot be
+  seen, targeted or hunted, and a disruptor flare, fire or damage still
+  reveals it. Added and removed only by RM_JobDriver_MurrekBurrow; every exit
+  from that job removes it.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_MurrekBuried</defName>
+    <label>buried in drift</label>
+    <description>Flat under the ice sand, waiting. Nothing on the surface shows where it lies.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>false</visibleToPlayer>
+        <fadeDurationTicks>60</fadeDurationTicks>
+        <recoverFromDisruptedTicks>90</recoverFromDisruptedTicks>
+      </li>
+      <li Class="HediffCompProperties_DisappearsOnDeath" />
+    </comps>
+  </HediffDef>
+
+</Defs>

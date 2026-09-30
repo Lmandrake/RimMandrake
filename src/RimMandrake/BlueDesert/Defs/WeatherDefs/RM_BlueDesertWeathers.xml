@@ -82,6 +82,27 @@
       <overlay>(0.44,0.50,0.60)</overlay>
       <saturation>0.85</saturation>
     </skyColorsNightMid>
+    <!-- §6 murrek re-seeding (Source/RM_MurrekDrift.cs): when this weather
+         ends on an RM_BlueDesert map, idle wild murrek re-bury in the deep
+         drifts it left and a few new ones are seeded buried if the animal
+         ecosystem has room. Every figure is this build's INVENTED tuning. -->
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_MurrekReseedExtension">
+        <murrekKind>RM_Murrek</murrekKind>
+        <burrowJob>RM_MurrekBurrow</burrowJob>
+        <buriedHediff>RM_MurrekBuried</buriedHediff>
+        <minDriftDepth>0.5</minDriftDepth>
+        <flushDepth>0.25</flushDepth>
+        <burrowSearchRadius>40</burrowSearchRadius>
+        <minSpacing>6</minSpacing>
+        <newPerStorm>0~2</newPerStorm>
+        <maxMurrekOnMap>6</maxMurrekOnMap>
+        <spawnClearanceFromColony>18</spawnClearanceFromColony>
+        <ambushRadius>2.9</ambushRadius>
+        <burrowTicks>180</burrowTicks>
+        <maxBuriedTicks>120000</maxBuriedTicks>
+      </li>
+    </modExtensions>
   </WeatherDef>
 
   <!-- ═══ the Haze ═══ -->

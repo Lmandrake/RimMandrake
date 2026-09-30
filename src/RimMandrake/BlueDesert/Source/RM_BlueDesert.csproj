@@ -60,6 +60,7 @@
     <Compile Include="BlueDesertLife.cs" />
     <Compile Include="RM_VhaulkDetonation.cs" />
     <Compile Include="RM_BlueIceThaw.cs" />
+    <Compile Include="RM_MurrekDrift.cs" />
   </ItemGroup>
 
   <ItemGroup>
