@@ -27,6 +27,11 @@ namespace RimMandrake.LuminousPigment
     // state on every call.
     public class RM_StatPart_Deepfire : StatPart
     {
+        // XML-declared defaults (Patches/DeepfireBeautyStatPart.xml), kept
+        // for schema validity -- DEEPFIRE_MOD_SETTINGS_1 reads the live
+        // LuminousPigmentSettings.beautyFlat/beautyPct/beautySizeCap in
+        // BonusFor below instead of these fields, so a settings change takes
+        // effect immediately with no def rewrite.
         public float beautyFlat = DeepfirePaintDefaults.FirstCoatBeautyFlat;
         public float beautyPct = DeepfirePaintDefaults.FirstCoatBeautyPct;
 
@@ -65,8 +70,8 @@ namespace RimMandrake.LuminousPigment
         private float BonusFor(Thing thing, float baseBeauty)
         {
             int area = thing != null ? System.Math.Max(1, thing.def.size.x * thing.def.size.z) : 1;
-            float sizeFactor = Mathf.Min(area, DeepfirePaintDefaults.FirstCoatBeautySizeCap);
-            return beautyFlat * sizeFactor + beautyPct * baseBeauty;
+            float sizeFactor = Mathf.Min(area, LuminousPigmentSettings.beautySizeCap);
+            return LuminousPigmentSettings.beautyFlat * sizeFactor + LuminousPigmentSettings.beautyPct * baseBeauty;
         }
 
         private static bool Applies(StatRequest req)

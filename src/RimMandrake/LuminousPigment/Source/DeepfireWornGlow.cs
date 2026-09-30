@@ -69,7 +69,7 @@ namespace RimMandrake.LuminousPigment
             if (maxCoats <= 0) return false;
 
             int i = Mathf.Clamp(maxCoats, 0, CompDeepfire.MaxCoats);
-            float intensity = DeepfirePaintDefaults.CoatIntensity[i];
+            float intensity = LuminousPigmentSettings.coatIntensity[i];
             color = new Color(r / weight * intensity, g / weight * intensity, b / weight * intensity, 1f);
             radius = DeepfireColorUtility.RadiusForCoats(maxCoats);
             return true;

@@ -10,7 +10,9 @@
   HistoryEventDef is at the bottom of this file and
   Source/MapComponent_DeepfireStatus.cs applies it.
   Situational, workerClass-driven (Source/ThoughtWorkers_Sumptuary.cs).
-  moodScale is not applied here; wiring settings is DEEPFIRE_MOD_SETTINGS_1's.
+  The baseMoodEffect numbers below are the moodScale=1.0 defaults; every
+  mood stage is rescaled at startup/settings-change by
+  LuminousPigmentMod.ApplyStatusMoodScale() (DEEPFIRE_MOD_SETTINGS_1).
   ============================================================================
 -->
 <Defs>

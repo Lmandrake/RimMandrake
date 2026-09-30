@@ -66,7 +66,7 @@ namespace RimMandrake.LuminousPigment
             Building edifice = c.GetEdifice(map);
             if (edifice != null && edifice.def.Fillage == FillCategory.Full) return;
 
-            __result += DeepfirePaintDefaults.FloorBeautyPerCell;
+            __result += LuminousPigmentSettings.floorBeautyPerCell;
         }
     }
 
@@ -92,8 +92,8 @@ namespace RimMandrake.LuminousPigment
             MapComponent_DeepfireLights mc = MapComponent_DeepfireLights.Get(room.Map);
             if (mc == null || mc.CoatedFloorCellCount == 0) return 0f;
             int coated = mc.CountCoatedFloorCells(room.Cells);
-            float bonus = DeepfirePaintDefaults.FloorRoomBonusPer10 * (coated / 10);
-            return Mathf.Min(bonus, DeepfirePaintDefaults.FloorRoomBonusCap);
+            float bonus = LuminousPigmentSettings.floorRoomBonusPer10 * (coated / 10);
+            return Mathf.Min(bonus, LuminousPigmentSettings.floorRoomBonusCap);
         }
     }
 }

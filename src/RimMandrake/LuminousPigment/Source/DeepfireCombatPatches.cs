@@ -20,10 +20,11 @@ namespace RimMandrake.LuminousPigment
 
         public static void Postfix(LocalTargetInfo target, ref ShotReport __result)
         {
+            if (!LuminousPigmentSettings.combatPenaltiesEnabled) return;
             if (!(target.Thing is Pawn pawn)) return;
             if (!DeepfireDarkness.IsGlowingInDark(pawn)) return;
             ref float f = ref FactorFromTargetSize(ref __result);
-            f = Mathf.Clamp(f * DeepfirePaintDefaults.GlowTargetFactor,
+            f = Mathf.Clamp(f * LuminousPigmentSettings.glowTargetFactor,
                 DeepfirePaintDefaults.TargetSizeFactorMin, DeepfirePaintDefaults.TargetSizeFactorMax);
         }
     }
@@ -40,11 +41,12 @@ namespace RimMandrake.LuminousPigment
 
         public static void Postfix(ref ShotReport __instance, ref string __result)
         {
+            if (!LuminousPigmentSettings.combatPenaltiesEnabled) return;
             TargetInfo t = TargetField(ref __instance);
             if (!(t.Thing is Pawn pawn)) return;
             if (!DeepfireDarkness.IsGlowingInDark(pawn)) return;
             __result += "   " + LineLabel.CapitalizeFirst() + ": x"
-                + DeepfirePaintDefaults.GlowTargetFactor.ToString("0.##") + " target size\n";
+                + LuminousPigmentSettings.glowTargetFactor.ToString("0.##") + " target size\n";
         }
     }
 
@@ -58,19 +60,23 @@ namespace RimMandrake.LuminousPigment
     // linear) curve back into the unfinalized domain.
     public class RM_StatPart_GlowingTarget : StatPart
     {
+        // XML-declared default (Patches/DeepfireGlowingTargetStatPart.xml),
+        // kept for schema validity -- DEEPFIRE_MOD_SETTINGS_1 reads the live
+        // LuminousPigmentSettings.glowDodgePenalty below instead.
         public float penalty = DeepfirePaintDefaults.GlowDodgePenalty;
 
         public override void TransformValue(StatRequest req, ref float val)
         {
             if (!Applies(req)) return;
+            float livePenalty = LuminousPigmentSettings.glowDodgePenalty;
             SimpleCurve curve = parentStat?.postProcessCurve;
             if (curve == null || curve.PointsCount < 2)
             {
-                val -= penalty;
+                val -= livePenalty;
                 return;
             }
             float final = curve.Evaluate(val);
-            float target = Mathf.Max(parentStat.minValue, final - penalty);
+            float target = Mathf.Max(parentStat.minValue, final - livePenalty);
             val = InverseEvaluate(curve, target, val);
         }
 
@@ -78,11 +84,12 @@ namespace RimMandrake.LuminousPigment
         {
             if (!Applies(req)) return null;
             return Patch_ShotReport_GetTextReadout.LineLabel.CapitalizeFirst() + ": -"
-                + penalty.ToStringPercent() + " (after the curve)";
+                + LuminousPigmentSettings.glowDodgePenalty.ToStringPercent() + " (after the curve)";
         }
 
         private static bool Applies(StatRequest req) =>
-            req.Thing is Pawn pawn && DeepfireDarkness.IsGlowingInDark(pawn);
+            LuminousPigmentSettings.combatPenaltiesEnabled
+            && req.Thing is Pawn pawn && DeepfireDarkness.IsGlowingInDark(pawn);
 
         // Smallest x whose curve value reaches `y`, never above the current
         // value (the offset only ever lowers dodge).

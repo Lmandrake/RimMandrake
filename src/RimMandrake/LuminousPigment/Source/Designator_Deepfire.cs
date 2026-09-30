@@ -30,6 +30,7 @@ namespace RimMandrake.LuminousPigment
 
         public override AcceptanceReport CanDesignateCell(IntVec3 c)
         {
+            if (!LuminousPigmentSettings.paintingEnabled) return "Deepfire painting is disabled in Mod Settings.";
             if (!c.InBounds(Map) || c.Fogged(Map)) return false;
 
             System.Collections.Generic.List<Thing> thingList = c.GetThingList(Map);
@@ -60,6 +61,7 @@ namespace RimMandrake.LuminousPigment
         // thing-path target there).
         private bool CanDesignateFloor(IntVec3 c)
         {
+            if (!LuminousPigmentSettings.floorsPaintable) return false;
             MapComponent_DeepfireLights mc = MapComponent_DeepfireLights.Get(Map);
             if (mc == null || !mc.CanAddFloorCoat(c)) return false;
             Building edifice = c.GetEdifice(Map);
@@ -69,10 +71,16 @@ namespace RimMandrake.LuminousPigment
 
         public override AcceptanceReport CanDesignateThing(Thing t)
         {
+            if (!LuminousPigmentSettings.paintingEnabled) return false;
             CompDeepfire comp = t.TryGetComp<CompDeepfire>();
             if (comp == null) return false;
             if (!comp.CanAddCoat) return "Already fully coated.";
             if (t.Faction != Faction.OfPlayer) return false;
+            if (!DeepfireTargetClassUtility.IsPaintable(t)) return false;
+            if (!LuminousPigmentSettings.ishkoIdolPaintable && DeepfireGodDeltas.StatueGodOf(t) == DeepfireGodDeltas.Ishko)
+            {
+                return "Ishko's own idol refuses the deepfire.";
+            }
             if (Map.designationManager.DesignationOn(t, Designation) != null) return false;
             return true;
         }

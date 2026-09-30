@@ -6,11 +6,13 @@ using Verse.AI;
 
 namespace RimMandrake.LuminousPigment
 {
-    // Spec §3.2/§3.3's numbers. Plain constants, not Mod Settings yet --
-    // wiring sliders for these is spec §10 step 12's job (Mod Settings
-    // screen), explicitly out of scope for step 5. Move these into
-    // LuminousPigmentSettings when that step lands; nothing here should be
-    // read from two places once it does.
+    // Spec §3.2/§3.3's numbers. DEEPFIRE_MOD_SETTINGS_1 moved the live-tuned
+    // ones into LuminousPigmentSettings (coat radius/intensity, glowMinValue,
+    // costs, clustering, worn-glow tick interval, combat/beauty/floor
+    // numbers) -- those fields below now serve only as Scribe defaults and
+    // as the settings arrays' seed values. The rest (engine-shape constants:
+    // stack-split art guard, dark-test thresholds mirroring private GlowGrid
+    // math) are not spec §7 keys and stay plain constants here.
     public static class DeepfirePaintDefaults
     {
         // index 0 unused (0 coats = no light); 1..3 coats.
@@ -23,7 +25,10 @@ namespace RimMandrake.LuminousPigment
 
         // DEEPFIRE_FLOOR_PAINT_1 (spec §3.3/§3.5/§3.6, §7 keys clusterBlock,
         // costFloorCell, floorBeautyPerCell, floorRoomBonusPer10,
-        // floorRoomBonusCap). Settings wiring is DEEPFIRE_MOD_SETTINGS_1's.
+        // floorRoomBonusCap). Wired to LuminousPigmentSettings by
+        // DEEPFIRE_MOD_SETTINGS_1; these are Scribe/seed defaults only.
+        // ClusterRadiusBonus is NOT a spec §7 key -- internal tuning, stays
+        // a plain constant.
         public const int ClusterBlock = 3;              // 1 = one light per cell/thing
         public const float ClusterRadiusBonus = 1f;     // "radius = coat radius + 1" (only for a cluster of 2+ cells)
         public const int CostFloorCell = 1;
@@ -32,15 +37,17 @@ namespace RimMandrake.LuminousPigment
         public const float FloorRoomBonusCap = 10f;
 
         // DEEPFIRE_FIRSTCOAT_BONUS_1 (spec §3.5 "everything else" /
-        // RM_StatPart_Deepfire on Beauty). Settings wiring is
-        // DEEPFIRE_MOD_SETTINGS_1's.
+        // RM_StatPart_Deepfire on Beauty). Wired to LuminousPigmentSettings
+        // by DEEPFIRE_MOD_SETTINGS_1; Scribe/seed defaults only.
         public const float FirstCoatBeautyFlat = 3f;
         public const float FirstCoatBeautyPct = 0.25f;
         public const int FirstCoatBeautySizeCap = 4;
 
         // DEEPFIRE_WORN_GLOW_1 (spec §3.4, §7 keys wornLightTickInterval,
-        // glowTargetFactor, glowDodgePenalty). Settings wiring is
-        // DEEPFIRE_MOD_SETTINGS_1's.
+        // glowTargetFactor, glowDodgePenalty). Wired to LuminousPigmentSettings
+        // by DEEPFIRE_MOD_SETTINGS_1; Scribe/seed defaults only.
+        // LacquerWorkTicks/LacquerArtisticXP/WornRescanInterval and the
+        // dark-test thresholds below are NOT spec §7 keys -- internal tuning.
         public const int WornLightTickInterval = 15;     // cell-change poll for a glowing pawn's proxy
         public const int WornRescanInterval = 250;       // backstop sweep (load, missed notifies, death)
         public const int LacquerWorkTicks = 1000;        // "1000 ticks" at the press / styling station
@@ -68,7 +75,7 @@ namespace RimMandrake.LuminousPigment
         public static float RadiusForCoats(int coats)
         {
             int i = Mathf.Clamp(coats, 0, CompDeepfire.MaxCoats);
-            return DeepfirePaintDefaults.CoatRadius[i];
+            return LuminousPigmentSettings.coatRadius[i];
         }
 
         // Spec §3.1: "the glow colour is the draw colour with its HSV value
@@ -77,13 +84,32 @@ namespace RimMandrake.LuminousPigment
         public static Color GlowColorFor(Color drawColor, int coats)
         {
             int i = Mathf.Clamp(coats, 0, CompDeepfire.MaxCoats);
-            float intensity = DeepfirePaintDefaults.CoatIntensity[i];
+            float intensity = LuminousPigmentSettings.coatIntensity[i];
 
             Color.RGBToHSV(drawColor, out float h, out float s, out float v);
-            v = Mathf.Max(v, DeepfirePaintDefaults.GlowMinValue);
+            v = Mathf.Max(v, LuminousPigmentSettings.glowMinValue);
             Color lit = Color.HSVToRGB(h, s, v);
 
             return new Color(lit.r * intensity, lit.g * intensity, lit.b * intensity, 1f);
+        }
+    }
+
+    // DEEPFIRE_MOD_SETTINGS_1, spec §7 "floorsPaintable / wallsPaintable /
+    // furniturePaintable / apparelPaintable / weaponsPaintable -- target
+    // classes". Floors are gated separately (Designator_Deepfire.
+    // CanDesignateFloor -- there is no Thing to classify); this covers
+    // everything CanDesignateThing sees. Same class boundaries as
+    // DeepfireCostUtility.CostFor, checked in the same order (art items are
+    // furniture/apparel/weapons that also carry CompArt -- they follow
+    // whichever bucket they'd cost as).
+    public static class DeepfireTargetClassUtility
+    {
+        public static bool IsPaintable(Thing t)
+        {
+            if (t.def.IsApparel) return LuminousPigmentSettings.apparelPaintable;
+            if (t.def.IsWeapon) return LuminousPigmentSettings.weaponsPaintable;
+            if (t.def.building != null && t.def.building.isWall) return LuminousPigmentSettings.wallsPaintable;
+            return LuminousPigmentSettings.furniturePaintable;
         }
     }
 
@@ -93,15 +119,17 @@ namespace RimMandrake.LuminousPigment
     {
         public static int CostFor(Thing t)
         {
-            if (t.TryGetComp<CompArt>() != null) return 3; // art item
-            if (t.def.IsApparel) return 3;
-            if (t.def.IsWeapon) return 3;
-            if (t.def.building != null && t.def.building.isWall) return 1; // wall cell
+            if (t.TryGetComp<CompArt>() != null) return LuminousPigmentSettings.costArt;
+            if (t.def.IsApparel) return LuminousPigmentSettings.costApparel;
+            if (t.def.IsWeapon) return LuminousPigmentSettings.costWeapon;
+            if (t.def.building != null && t.def.building.isWall) return LuminousPigmentSettings.costWallCell;
 
-            // furniture/building: 1x1 = 2, larger = 2 + 1/extra cell, cap 6.
+            // furniture/building: 1x1 = base, larger = base + perExtraCell/extra cell, capped.
             int cells = System.Math.Max(1, t.def.size.x * t.def.size.z);
-            if (cells <= 1) return 2;
-            return System.Math.Min(6, 2 + (cells - 1));
+            if (cells <= 1) return LuminousPigmentSettings.costFurnitureBase;
+            int cost = LuminousPigmentSettings.costFurnitureBase
+                + (cells - 1) * LuminousPigmentSettings.costFurniturePerExtraCell;
+            return System.Math.Min(LuminousPigmentSettings.costFurnitureCap, cost);
         }
 
         // Single-stack fetch (MVP for step 5's proof) -- the stack must hold

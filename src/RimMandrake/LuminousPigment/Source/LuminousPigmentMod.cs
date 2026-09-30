@@ -20,18 +20,19 @@ namespace RimMandrake.LuminousPigment
     // no restart -- SlimeMod's own precedent, src/RimMandrake/GelatinousSlime/
     // Source/SlimeMod.cs).
     //
-    // The Chain (Phase 1, DEEPFIRE_PIGMENT_MOD_1) plus the three pieces of
-    // DEEPFIRE_PAINT_STATUS_CUISINE_1 this build ships: Cuisine's 14
-    // glow-hediff families, the Ninefold god-bridge's two wireable deltas,
-    // and the sumptuary status engine's worn-goods thoughts. Painting and
-    // worn-item lighting (spec §3) are NOT here -- deferred to
-    // DEEPFIRE_PAINT_LIVE_VERIFY_1, which needs the spec's own live
-    // proxy-glower quicktest first. Their settings ship with that follow-on;
-    // a toggle for a mechanism that does not exist yet would be a stub,
-    // which the standing Mod Settings rule forbids -- same reasoning also
-    // keeps Cuisine's per-family weight sliders and effectScale out of this
-    // pass (unwired numbers). The god numbers are all wired
-    // (DEEPFIRE_GOD_BRIDGE_DELTAS_1).
+    // The Chain (Phase 1, DEEPFIRE_PIGMENT_MOD_1), the Cuisine/god-bridge/
+    // status pieces of DEEPFIRE_PAINT_STATUS_CUISINE_1, and -- as of
+    // DEEPFIRE_MOD_SETTINGS_1 -- the whole "Painting" group (spec §7):
+    // coats/radius/intensity, per-target costs, clustering, the five
+    // paintable-target toggles, worn-item lighting, the styling-station
+    // checkbox, the combat penalties and the first-coat/floor beauty
+    // numbers, plus moodScale and goodwillPerImpressedVisit (Status) and
+    // ishkoIdolPaintable (Gods). Still NOT wired here, and still real gaps
+    // (Cuisine's per-family weight sliders and effectScale): those are not
+    // among the numbers DEEPFIRE_FLOOR_PAINT_1/DEEPFIRE_FIRSTCOAT_BONUS_1/
+    // DEEPFIRE_WORN_GLOW_1/DEEPFIRE_STATUS_THOUGHTS_1/DEEPFIRE_GOD_BRIDGE_
+    // DELTAS_1 named as owed, so they stay out of this item's scope. The
+    // god numbers are all wired (DEEPFIRE_GOD_BRIDGE_DELTAS_1).
     public class LuminousPigmentSettings : ModSettings
     {
         public static bool shoreMatsEnabled = true;
@@ -53,6 +54,45 @@ namespace RimMandrake.LuminousPigment
         public static int tankYield = 2;
         public static float tankPower = 180f;
         public static float tankPowerGraceHours = 6f;
+
+        // Painting (spec §3, §7 "Painting" group) -- DEEPFIRE_MOD_SETTINGS_1.
+        // Every one of these is read LIVE at its point of use (the
+        // established pattern for this file: statusEnabled/offenceThreshold/
+        // godDeltaLike etc. are all read straight off this class, not baked
+        // into a def), so a change while paused takes effect on the very
+        // next call -- no def rewrite, no ApplySettings entry needed.
+        public static bool paintingEnabled = true;
+        public static int maxCoats = CompDeepfire.MaxCoats;
+        public static float[] coatRadius = (float[])DeepfirePaintDefaults.CoatRadius.Clone();
+        public static float[] coatIntensity = (float[])DeepfirePaintDefaults.CoatIntensity.Clone();
+        public static float glowMinValue = DeepfirePaintDefaults.GlowMinValue;
+        public static int costWallCell = 1;
+        public static int costFloorCell = DeepfirePaintDefaults.CostFloorCell;
+        public static int costFurnitureBase = 2;
+        public static int costFurniturePerExtraCell = 1;
+        public static int costFurnitureCap = 6;
+        public static int costArt = 3;
+        public static int costApparel = 3;
+        public static int costWeapon = 3;
+        public static int clusterBlock = DeepfirePaintDefaults.ClusterBlock;
+        public static bool floorsPaintable = true;
+        public static bool wallsPaintable = true;
+        public static bool furniturePaintable = true;
+        public static bool apparelPaintable = true;
+        public static bool weaponsPaintable = true;
+        public static bool wornLightEnabled = true;
+        public static bool stylingStationLacquer = true;
+        public static int wornLightTickInterval = DeepfirePaintDefaults.WornLightTickInterval;
+        public static float glowTargetFactor = DeepfirePaintDefaults.GlowTargetFactor;
+        public static float glowDodgePenalty = DeepfirePaintDefaults.GlowDodgePenalty;
+        public static bool combatPenaltiesEnabled = true;
+        public static bool artQualityBump = true;
+        public static float beautyFlat = DeepfirePaintDefaults.FirstCoatBeautyFlat;
+        public static float beautyPct = DeepfirePaintDefaults.FirstCoatBeautyPct;
+        public static int beautySizeCap = DeepfirePaintDefaults.FirstCoatBeautySizeCap;
+        public static float floorBeautyPerCell = DeepfirePaintDefaults.FloorBeautyPerCell;
+        public static float floorRoomBonusPer10 = DeepfirePaintDefaults.FloorRoomBonusPer10;
+        public static float floorRoomBonusCap = DeepfirePaintDefaults.FloorRoomBonusCap;
 
         // Cuisine (spec §6, §7 "Cuisine" group)
         public static bool cuisineEnabled = true;
@@ -78,13 +118,16 @@ namespace RimMandrake.LuminousPigment
         public static float godDeltaIshko = 3f;          // Small: Ishko's dislike of a plain first coat
         public static float godDeltaStatue = 15f;        // Large: a god's own statue coated
         public static int godDeltaDiminishAfter = 10;    // first-coat events per def before deltas shrink to 1
+        public static bool ishkoIdolPaintable = true;    // off = the designator refuses Ishko's own idol
 
         // Status -- the purple engine (spec §7 "Status" group)
         public static bool statusEnabled = true;
         public static int displayCap = 6;
         public static int offenceThreshold = 2;
+        public static float moodScale = 1.0f;
         public static float opinionAboveStation = -15f;
         public static bool ranklessColoniesEnjoyIt = true;
+        public static int goodwillPerImpressedVisit = DeepfireStatusDefaults.GoodwillPerImpressedVisit;
 
         public override void ExposeData()
         {
@@ -106,6 +149,43 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref tankPower, "tankPower", 180f);
             Scribe_Values.Look(ref tankPowerGraceHours, "tankPowerGraceHours", 6f);
 
+            Scribe_Values.Look(ref paintingEnabled, "paintingEnabled", true);
+            Scribe_Values.Look(ref maxCoats, "maxCoats", CompDeepfire.MaxCoats);
+            List<float> coatRadiusList = new List<float>(coatRadius);
+            Scribe_Collections.Look(ref coatRadiusList, "coatRadius", LookMode.Value);
+            if (coatRadiusList != null && coatRadiusList.Count == coatRadius.Length) coatRadius = coatRadiusList.ToArray();
+            List<float> coatIntensityList = new List<float>(coatIntensity);
+            Scribe_Collections.Look(ref coatIntensityList, "coatIntensity", LookMode.Value);
+            if (coatIntensityList != null && coatIntensityList.Count == coatIntensity.Length) coatIntensity = coatIntensityList.ToArray();
+            Scribe_Values.Look(ref glowMinValue, "glowMinValue", DeepfirePaintDefaults.GlowMinValue);
+            Scribe_Values.Look(ref costWallCell, "costWallCell", 1);
+            Scribe_Values.Look(ref costFloorCell, "costFloorCell", DeepfirePaintDefaults.CostFloorCell);
+            Scribe_Values.Look(ref costFurnitureBase, "costFurnitureBase", 2);
+            Scribe_Values.Look(ref costFurniturePerExtraCell, "costFurniturePerExtraCell", 1);
+            Scribe_Values.Look(ref costFurnitureCap, "costFurnitureCap", 6);
+            Scribe_Values.Look(ref costArt, "costArt", 3);
+            Scribe_Values.Look(ref costApparel, "costApparel", 3);
+            Scribe_Values.Look(ref costWeapon, "costWeapon", 3);
+            Scribe_Values.Look(ref clusterBlock, "clusterBlock", DeepfirePaintDefaults.ClusterBlock);
+            Scribe_Values.Look(ref floorsPaintable, "floorsPaintable", true);
+            Scribe_Values.Look(ref wallsPaintable, "wallsPaintable", true);
+            Scribe_Values.Look(ref furniturePaintable, "furniturePaintable", true);
+            Scribe_Values.Look(ref apparelPaintable, "apparelPaintable", true);
+            Scribe_Values.Look(ref weaponsPaintable, "weaponsPaintable", true);
+            Scribe_Values.Look(ref wornLightEnabled, "wornLightEnabled", true);
+            Scribe_Values.Look(ref stylingStationLacquer, "stylingStationLacquer", true);
+            Scribe_Values.Look(ref wornLightTickInterval, "wornLightTickInterval", DeepfirePaintDefaults.WornLightTickInterval);
+            Scribe_Values.Look(ref glowTargetFactor, "glowTargetFactor", DeepfirePaintDefaults.GlowTargetFactor);
+            Scribe_Values.Look(ref glowDodgePenalty, "glowDodgePenalty", DeepfirePaintDefaults.GlowDodgePenalty);
+            Scribe_Values.Look(ref combatPenaltiesEnabled, "combatPenaltiesEnabled", true);
+            Scribe_Values.Look(ref artQualityBump, "artQualityBump", true);
+            Scribe_Values.Look(ref beautyFlat, "beautyFlat", DeepfirePaintDefaults.FirstCoatBeautyFlat);
+            Scribe_Values.Look(ref beautyPct, "beautyPct", DeepfirePaintDefaults.FirstCoatBeautyPct);
+            Scribe_Values.Look(ref beautySizeCap, "beautySizeCap", DeepfirePaintDefaults.FirstCoatBeautySizeCap);
+            Scribe_Values.Look(ref floorBeautyPerCell, "floorBeautyPerCell", DeepfirePaintDefaults.FloorBeautyPerCell);
+            Scribe_Values.Look(ref floorRoomBonusPer10, "floorRoomBonusPer10", DeepfirePaintDefaults.FloorRoomBonusPer10);
+            Scribe_Values.Look(ref floorRoomBonusCap, "floorRoomBonusCap", DeepfirePaintDefaults.FloorRoomBonusCap);
+
             Scribe_Values.Look(ref cuisineEnabled, "cuisineEnabled", true);
             Scribe_Values.Look(ref steerMinSkill, "steerMinSkill", 10);
             Scribe_Values.Look(ref vermilionMinSkill, "vermilionMinSkill", 14);
@@ -124,12 +204,15 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref godDeltaIshko, "godDeltaIshko", 3f);
             Scribe_Values.Look(ref godDeltaStatue, "godDeltaStatue", 15f);
             Scribe_Values.Look(ref godDeltaDiminishAfter, "godDeltaDiminishAfter", 10);
+            Scribe_Values.Look(ref ishkoIdolPaintable, "ishkoIdolPaintable", true);
 
             Scribe_Values.Look(ref statusEnabled, "statusEnabled", true);
             Scribe_Values.Look(ref displayCap, "displayCap", 6);
             Scribe_Values.Look(ref offenceThreshold, "offenceThreshold", 2);
+            Scribe_Values.Look(ref moodScale, "moodScale", 1.0f);
             Scribe_Values.Look(ref opinionAboveStation, "opinionAboveStation", -15f);
             Scribe_Values.Look(ref ranklessColoniesEnjoyIt, "ranklessColoniesEnjoyIt", true);
+            Scribe_Values.Look(ref goodwillPerImpressedVisit, "goodwillPerImpressedVisit", DeepfireStatusDefaults.GoodwillPerImpressedVisit);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -191,6 +274,85 @@ namespace RimMandrake.LuminousPigment
             tankPowerGraceHours = list.Slider(tankPowerGraceHours, 0f, 48f);
             list.GapLine();
 
+            list.Label("PAINTING");
+            list.CheckboxLabeled("Painting enabled", ref paintingEnabled,
+                "Off: the designator and WorkGiver stop accepting new deepfire jobs. Existing coats " +
+                "keep glowing.");
+            list.Label("Max coats: " + maxCoats.ToString());
+            maxCoats = Mathf.RoundToInt(list.Slider(maxCoats, 1f, CompDeepfire.MaxCoats));
+            for (int i = 1; i <= CompDeepfire.MaxCoats; i++)
+            {
+                list.Label("Coat " + i + " radius: " + coatRadius[i].ToString("0.0"));
+                coatRadius[i] = list.Slider(coatRadius[i], 0.5f, 6f);
+                list.Label("Coat " + i + " intensity: " + coatIntensity[i].ToString("0.00"));
+                coatIntensity[i] = list.Slider(coatIntensity[i], 0.1f, 1f);
+            }
+            list.Label("Dark-dye value floor: " + glowMinValue.ToString("0.00"));
+            glowMinValue = list.Slider(glowMinValue, 0f, 1f);
+            list.GapLine();
+
+            list.Label("Deepfire cost per target");
+            list.Label("Wall cell: " + costWallCell.ToString());
+            costWallCell = Mathf.RoundToInt(list.Slider(costWallCell, 0f, 20f));
+            list.Label("Floor cell: " + costFloorCell.ToString());
+            costFloorCell = Mathf.RoundToInt(list.Slider(costFloorCell, 0f, 20f));
+            list.Label("Furniture, 1x1: " + costFurnitureBase.ToString());
+            costFurnitureBase = Mathf.RoundToInt(list.Slider(costFurnitureBase, 0f, 20f));
+            list.Label("Furniture, per extra cell: " + costFurniturePerExtraCell.ToString());
+            costFurniturePerExtraCell = Mathf.RoundToInt(list.Slider(costFurniturePerExtraCell, 0f, 20f));
+            list.Label("Furniture cap: " + costFurnitureCap.ToString());
+            costFurnitureCap = Mathf.RoundToInt(list.Slider(costFurnitureCap, 0f, 20f));
+            list.Label("Art item: " + costArt.ToString());
+            costArt = Mathf.RoundToInt(list.Slider(costArt, 0f, 20f));
+            list.Label("Apparel: " + costApparel.ToString());
+            costApparel = Mathf.RoundToInt(list.Slider(costApparel, 0f, 20f));
+            list.Label("Weapon: " + costWeapon.ToString());
+            costWeapon = Mathf.RoundToInt(list.Slider(costWeapon, 0f, 20f));
+            list.GapLine();
+
+            list.Label("Light clustering: " + clusterBlock.ToString() + " cell(s) per group");
+            list.Label("1 = one light per coated cell/thing (most accurate, most lights).");
+            clusterBlock = Mathf.RoundToInt(list.Slider(clusterBlock, 1f, 5f));
+            list.GapLine();
+
+            list.Label("What can take deepfire");
+            list.CheckboxLabeled("Floors", ref floorsPaintable);
+            list.CheckboxLabeled("Walls", ref wallsPaintable);
+            list.CheckboxLabeled("Furniture and art", ref furniturePaintable);
+            list.CheckboxLabeled("Apparel", ref apparelPaintable);
+            list.CheckboxLabeled("Weapons", ref weaponsPaintable);
+            list.GapLine();
+
+            list.CheckboxLabeled("Worn deepfire lights its wearer", ref wornLightEnabled,
+                "Off: worn apparel/weapons keep their coats but only glow while sitting on the ground.");
+            list.CheckboxLabeled("Styling-station lacquer checkbox", ref stylingStationLacquer,
+                "Off: the styling station's deepfire checkbox is hidden. The press-fetch job still works.");
+            list.Label("Worn-light cell poll: every " + wornLightTickInterval + " ticks");
+            wornLightTickInterval = Mathf.RoundToInt(list.Slider(wornLightTickInterval, 5f, 60f));
+            list.CheckboxLabeled("Combat penalties for glowing in the dark", ref combatPenaltiesEnabled,
+                "Off: a glowing pawn is neither easier to hit at range nor easier to land a melee blow on.");
+            list.Label("Ranged: x" + glowTargetFactor.ToString("0.00") + " target size in the dark");
+            glowTargetFactor = list.Slider(glowTargetFactor, 1f, 2f);
+            list.Label("Melee: -" + glowDodgePenalty.ToString("0.00") + " dodge chance in the dark");
+            glowDodgePenalty = list.Slider(glowDodgePenalty, 0f, 0.3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("First-coat quality bump on art items", ref artQualityBump,
+                "Off: an art item's first coat charges Deepfire as normal but does not bump its quality.");
+            list.Label("Beauty bonus (everything else): +" + beautyFlat.ToString("0.#")
+                + " flat x size, +" + beautyPct.ToStringPercent() + " of base beauty");
+            beautyFlat = list.Slider(beautyFlat, 0f, 20f);
+            beautyPct = list.Slider(beautyPct, 0f, 1f);
+            list.Label("Beauty size-factor cap: " + beautySizeCap.ToString());
+            beautySizeCap = Mathf.RoundToInt(list.Slider(beautySizeCap, 1f, 9f));
+            list.Label("Floor beauty per coated cell: " + floorBeautyPerCell.ToString("0.00"));
+            floorBeautyPerCell = list.Slider(floorBeautyPerCell, 0f, 5f);
+            list.Label("Room beauty per 10 coated floor cells: " + floorRoomBonusPer10.ToString("0.#")
+                + ", capped at " + floorRoomBonusCap.ToString("0.#"));
+            floorRoomBonusPer10 = list.Slider(floorRoomBonusPer10, 0f, 10f);
+            floorRoomBonusCap = list.Slider(floorRoomBonusCap, 0f, 50f);
+            list.GapLine();
+
             list.Label("CUISINE");
             list.CheckboxLabeled("Deepfire dishes", ref cuisineEnabled,
                 "Off: every deepfire recipe disappears from the cookery bill list. Existing glow " +
@@ -228,6 +390,8 @@ namespace RimMandrake.LuminousPigment
             godDeltaStatue = list.Slider(godDeltaStatue, 0f, 40f);
             list.Label("Full reactions per kind of thing painted, then just 1: " + godDeltaDiminishAfter.ToString());
             godDeltaDiminishAfter = Mathf.RoundToInt(list.Slider(godDeltaDiminishAfter, 1f, 50f));
+            list.CheckboxLabeled("Ishko's own idol can be painted", ref ishkoIdolPaintable,
+                "Off: the designator refuses to mark Ishko's own idol for a coat.");
             list.GapLine();
 
             list.Label("STATUS (the purple engine)");
@@ -237,12 +401,16 @@ namespace RimMandrake.LuminousPigment
             displayCap = Mathf.RoundToInt(list.Slider(displayCap, 1f, 12f));
             list.Label("Commoner display score that offends a titled pawn: " + offenceThreshold.ToString());
             offenceThreshold = Mathf.RoundToInt(list.Slider(offenceThreshold, 1f, 6f));
+            list.Label("Mood scale (multiplies every deepfire status thought): x" + moodScale.ToString("0.00"));
+            moodScale = list.Slider(moodScale, 0f, 3f);
             list.Label("Opinion penalty for wearing above one's station: " + opinionAboveStation.ToString("0"));
             opinionAboveStation = list.Slider(opinionAboveStation, -40f, 0f);
             list.CheckboxLabeled("Colonies with no Royalty or Ideology still enjoy it", ref ranklessColoniesEnjoyIt,
                 "On (default): with neither DLC active nobody can be titled, so the engine degrades " +
                 "to a plain 'nice clothes' mood for everyone. Off: with neither DLC active, nobody " +
                 "gets a thought at all.");
+            list.Label("Goodwill per impressed visitor: " + goodwillPerImpressedVisit.ToString());
+            goodwillPerImpressedVisit = Mathf.RoundToInt(list.Slider(goodwillPerImpressedVisit, 0f, 10f));
 
             list.End();
         }
@@ -342,6 +510,25 @@ namespace RimMandrake.LuminousPigment
             ApplyCuisineSkillRequirements();
             ApplyCuisineRecipeVisibility();
             ApplyStatusThoughtNumbers();
+            ApplyStatusMoodScale();
+            ApplyClusterBlockToMaps();
+        }
+
+        // clusterBlock's block indices are keyed off the block size, so a
+        // live change leaves every map's existing cluster bookkeeping stale
+        // (RM_MapComponent_DeepfireLights.Clusters.cs's own comment). Rebuild
+        // every loaded map's clustering from scratch on every apply --
+        // ApplySettings() already runs at startup (LongEventHandler) and on
+        // every settings-window close (WriteSettings), so a menu-only visit
+        // with no slider touched also pays this cost; that is cheap (a full
+        // map scan, not per tick) and correctness-safe either way.
+        private static void ApplyClusterBlockToMaps()
+        {
+            List<Map> maps = Find.Maps;
+            for (int i = 0; i < maps.Count; i++)
+            {
+                MapComponent_DeepfireLights.Get(maps[i])?.RebuildAllClustering();
+            }
         }
 
         // The 14 steered recipes' skillRequirements (Cooking) track
@@ -425,6 +612,39 @@ namespace RimMandrake.LuminousPigment
             if (aboveStation != null && aboveStation.stages.Count > 0)
             {
                 aboveStation.stages[0].baseOpinionOffset = LuminousPigmentSettings.opinionAboveStation;
+            }
+        }
+
+        // DEEPFIRE_MOD_SETTINGS_1, spec §7 "moodScale ... multiplies every
+        // thought stage". A ThoughtDef stage's baseMoodEffect is baked into
+        // the def at load and read straight off it whenever mood is summed
+        // (RimSage-verified: ThoughtWorker only picks a STAGE, it carries no
+        // multiplier of its own) -- same shape as opinionAboveStation below,
+        // just per-stage. Only mood thoughts are scaled; RM_WearsAboveStation
+        // is opinion-based and already has its own dedicated setting.
+        private static readonly float[] TitledMoodBase = { 3f, 5f, 8f };
+        private static readonly float[] CommonMoodBase = { 1f, 2f, 3f };
+        private static readonly float[] SawCommonerMoodBase = { -3f };
+        private static readonly float[] BedroomMoodBase = { 4f, 6f };
+
+        private static void ApplyStatusMoodScale()
+        {
+            ApplyMoodScaleTo("RM_WearingDeepfireTitled", TitledMoodBase);
+            ApplyMoodScaleTo("RM_WearingDeepfireCommon", CommonMoodBase);
+            ApplyMoodScaleTo("RM_SawCommonerInDeepfire", SawCommonerMoodBase);
+            ApplyMoodScaleTo("RM_DeepfireBedroom", BedroomMoodBase);
+        }
+
+        private static void ApplyMoodScaleTo(string defName, float[] baseValues)
+        {
+            ThoughtDef def = DefDatabase<ThoughtDef>.GetNamedSilentFail(defName);
+            if (def?.stages == null) return;
+            for (int i = 0; i < def.stages.Count && i < baseValues.Length; i++)
+            {
+                if (def.stages[i] != null)
+                {
+                    def.stages[i].baseMoodEffect = baseValues[i] * LuminousPigmentSettings.moodScale;
+                }
             }
         }
 

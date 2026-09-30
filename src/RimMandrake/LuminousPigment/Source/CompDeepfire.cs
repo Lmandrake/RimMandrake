@@ -31,7 +31,11 @@ namespace RimMandrake.LuminousPigment
 
         public CompProperties_Deepfire Props => (CompProperties_Deepfire)props;
 
-        public bool CanAddCoat => coats < MaxCoats;
+        // DEEPFIRE_MOD_SETTINGS_1, spec §7 "maxCoats ... the slider cannot
+        // exceed it": MaxCoats (3) is the architecture ceiling (CoatRadius/
+        // CoatIntensity are sized for it); LuminousPigmentSettings.maxCoats
+        // is a runtime cap that can only ever lower it, never raise it.
+        public bool CanAddCoat => coats < Mathf.Min(MaxCoats, LuminousPigmentSettings.maxCoats);
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
