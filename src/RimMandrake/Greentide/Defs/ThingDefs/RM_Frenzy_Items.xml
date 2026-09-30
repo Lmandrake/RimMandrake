@@ -133,9 +133,10 @@
       <Mass>0.05</Mass>
     </statBases>
     <techLevel>Neolithic</techLevel>
-    <thingCategories>
-      <li>Drugs</li>
-    </thingCategories>
+    <!-- thingCategories NOT re-declared: MakeableDrugBase -> DrugBase already
+         gives Drugs by inheritance (Data/Core/Drugs/DrugBases.xml); repeating
+         it here duplicated the category (ThingDef.ConfigErrors "has
+         duplicate thingCategory Drugs"). -->
     <thingClass>ThingWithComps</thingClass>
     <tradeTags>
       <li>Drugs</li>
