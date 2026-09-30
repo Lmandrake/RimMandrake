@@ -30,6 +30,13 @@ namespace RimMandrake.LuminousPigment
         public const float FloorBeautyPerCell = 0.5f;
         public const float FloorRoomBonusPer10 = 2f;
         public const float FloorRoomBonusCap = 10f;
+
+        // DEEPFIRE_FIRSTCOAT_BONUS_1 (spec §3.5 "everything else" /
+        // RM_StatPart_Deepfire on Beauty). Settings wiring is
+        // DEEPFIRE_MOD_SETTINGS_1's.
+        public const float FirstCoatBeautyFlat = 3f;
+        public const float FirstCoatBeautyPct = 0.25f;
+        public const int FirstCoatBeautySizeCap = 4;
     }
 
     public static class DeepfireColorUtility
