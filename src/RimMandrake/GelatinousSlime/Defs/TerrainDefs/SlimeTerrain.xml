@@ -105,6 +105,15 @@
     <pathCost>16</pathCost>
     <avoidWander>true</avoidWander>
     <generatedFilth>RM_Filth_SlimeSmear</generatedFilth>
+    <!-- Generates its own tracked filth; matches vanilla Sand's own posture
+         (Data/Core/Defs/TerrainDefs/Terrain_Ground.xml) of accepting only
+         Unnatural filth (blood, rubble) rather than the default Any, so it
+         doesn't also accept its own/other natural-terrain filth back onto
+         itself — clears TerrainDef.ConfigErrors' "makes terrain filth and
+         also accepts it". -->
+    <filthAcceptanceMask>
+      <li>Unnatural</li>
+    </filthAcceptanceMask>
     <extinguishesFire>true</extinguishesFire>
     <affordances>
       <li>Light</li>
@@ -124,6 +133,10 @@
     <pathCost>25</pathCost>
     <avoidWander>true</avoidWander>
     <generatedFilth>RM_Filth_SlimeSmear</generatedFilth>
+    <!-- Same fix as RM_Slime_Mud above. -->
+    <filthAcceptanceMask>
+      <li>Unnatural</li>
+    </filthAcceptanceMask>
     <extinguishesFire>true</extinguishesFire>
     <holdSnowOrSand>false</holdSnowOrSand>
     <statBases>
