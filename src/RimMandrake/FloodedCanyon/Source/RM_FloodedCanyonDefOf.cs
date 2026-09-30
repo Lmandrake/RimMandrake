@@ -20,6 +20,9 @@ namespace RimMandrake.FloodedCanyon
         public static ThingDef RM_FossilSeam_Skeleton;
         public static ThingDef RM_FossilSeam_Unique;
 
+        // CRACKEDLANDS_MECHANICS_BUILD_1 §5 — the herald sky.
+        public static WeatherDef RM_PeakstormLight;
+
         static RM_FloodedCanyonDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_FloodedCanyonDefOf));

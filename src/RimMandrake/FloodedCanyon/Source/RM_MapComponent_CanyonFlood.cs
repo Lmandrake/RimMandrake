@@ -63,6 +63,10 @@ namespace RimMandrake.FloodedCanyon
         private int nextFloodTick = -1;
         private int floodEndTick = -1;
 
+        // Peakstorm Light coupling (MaybeFollowPeakstorm).
+        private int lastRecedeTick = -1;
+        private bool peakstormPulledThisCycle;
+
         // Cells this cycle's flood is currently standing on, to convert
         // back to soil at recede time (only if still ours — see header).
         // NON-EXCAVATED cells only: an excavated one is never written here.
@@ -153,6 +157,10 @@ namespace RimMandrake.FloodedCanyon
                         ScheduleNextFlood();
                         return;
                     }
+                    if (now % 2500 == 0)
+                    {
+                        MaybeFollowPeakstorm(now);
+                    }
                     if (now >= nextFloodTick - HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours))
                     {
                         RingChime();
@@ -172,6 +180,7 @@ namespace RimMandrake.FloodedCanyon
                     if (now >= floodEndTick)
                     {
                         RecedeFlood();
+                        lastRecedeTick = now;
                         phase = Phase.Dry;
                         ScheduleNextFlood();
                     }
@@ -189,8 +198,41 @@ namespace RimMandrake.FloodedCanyon
             return UnityEngine.Mathf.Max(2500, UnityEngine.Mathf.RoundToInt(days * 60000f));
         }
 
+        // CRACKEDLANDS_MECHANICS_BUILD_1 §5: "the flood clock biases its chime
+        // window to follow" Peakstorm Light. Checked hourly while dry. Once
+        // per storm (peakstormPulledThisCycle), and only when at least half a
+        // period has passed since the last recede, a standing Peakstorm Light
+        // pulls a flood that is still more than a day away forward to
+        // 0.5–1.5 days out. The chime still rings chimeLeadTimeHours before
+        // it — the storm on the peaks never removes the warning.
+        private void MaybeFollowPeakstorm(int now)
+        {
+            if (!RM_FloodedCanyonSettings.peakstormBiasEnabled || peakstormPulledThisCycle)
+            {
+                return;
+            }
+            if (map.weatherManager.curWeather != RM_FloodedCanyonDefOf.RM_PeakstormLight)
+            {
+                return;
+            }
+            int periodTicks = DaysToTicks(RM_FloodedCanyonSettings.floodPeriodDays);
+            if (lastRecedeTick >= 0 && now - lastRecedeTick < periodTicks / 2)
+            {
+                return;
+            }
+            int pulled = now + Rand.RangeInclusive(30000, 90000);
+            int minTicks = HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours) + 2500;
+            pulled = System.Math.Max(pulled, now + minTicks);
+            if (nextFloodTick - now > 60000 && pulled < nextFloodTick)
+            {
+                nextFloodTick = pulled;
+                peakstormPulledThisCycle = true;
+            }
+        }
+
         private void ScheduleNextFlood()
         {
+            peakstormPulledThisCycle = false;
             int periodTicks = DaysToTicks(RM_FloodedCanyonSettings.floodPeriodDays);
             int jitter = Rand.RangeInclusive(-periodTicks / 3, periodTicks / 3);
             nextFloodTick = Find.TickManager.TicksGame + System.Math.Max(2500, periodTicks + jitter);
@@ -429,6 +471,8 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref phase, "phase", Phase.Dry);
             Scribe_Values.Look(ref nextFloodTick, "nextFloodTick", -1);
             Scribe_Values.Look(ref floodEndTick, "floodEndTick", -1);
+            Scribe_Values.Look(ref lastRecedeTick, "lastRecedeTick", -1);
+            Scribe_Values.Look(ref peakstormPulledThisCycle, "peakstormPulledThisCycle", false);
             Scribe_Collections.Look(ref activeFloodCells, "activeFloodCells", LookMode.Value);
             Scribe_Collections.Look(ref raisedFillCells, "raisedFillCells", LookMode.Value);
             Scribe_Collections.Look(ref raisedFillPrior, "raisedFillPrior", LookMode.Value);

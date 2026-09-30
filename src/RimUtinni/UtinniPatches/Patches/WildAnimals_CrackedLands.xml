@@ -171,7 +171,10 @@
   <!-- Op 4: the weather ban (ban 5 — no rain in the canyons; no basis for
        snow either). Replaces the whole dictionary rather than adding to it,
        since RM_'s own table already carries non-zero Rain/SnowGentle/
-       SnowHard that must read as banned, not merely supplemented. -->
+       SnowHard that must read as banned, not merely supplemented.
+       RM_PeakstormLight (CRACKEDLANDS_MECHANICS_BUILD_1 §5, the herald sky;
+       zero precipitation by construction) rides in the replacement, or the
+       campaign would lose it; its 10 is a calibration pick, not ruled. -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/baseWeatherCommonalities</xpath>
     <match Class="PatchOperationReplace">
@@ -179,6 +182,7 @@
       <value>
         <baseWeatherCommonalities>
           <Clear>85</Clear>
+          <RM_PeakstormLight>10</RM_PeakstormLight>
           <DryThunderstorm>3</DryThunderstorm>
           <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">8</Sandstorm>
           <Fog>0</Fog>

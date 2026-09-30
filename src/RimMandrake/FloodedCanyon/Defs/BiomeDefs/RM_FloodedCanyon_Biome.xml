@@ -93,8 +93,14 @@
       </li>
     </terrainsByFertility>
 
+    <!-- RM_PeakstormLight: CRACKEDLANDS_MECHANICS_BUILD_1 §5, the herald sky
+         (zero precipitation by construction). Commonality 3 is a calibration
+         pick, not a ruled number. The campaign REPLACES this whole table
+         (UtinniPatches/Patches/WildAnimals_CrackedLands.xml Op 4, ban 5) and
+         carries its own RM_PeakstormLight row there. -->
     <baseWeatherCommonalities>
       <Clear>20</Clear>
+      <RM_PeakstormLight>3</RM_PeakstormLight>
       <Rain>0.5</Rain>
       <DryThunderstorm>2</DryThunderstorm>
       <RainyThunderstorm>0.3</RainyThunderstorm>
