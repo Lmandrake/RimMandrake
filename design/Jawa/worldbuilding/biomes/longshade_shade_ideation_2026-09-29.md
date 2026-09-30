@@ -680,20 +680,170 @@ does for multi-homing.
 
 ### 6.4 The Crawler Road — salvage that is also the only way across
 
-pending
+*(N2 wreck road + N3 crawler shade, combined: the road leads to the crawler.)*
+
+**What you see.** Across the widest gap on the map, a dotted line of dead machines: a
+landspeeder on its side, a cart chassis, a skiff with its rail torn off, a length of crawler
+tread — each exactly one human dash from the next, each throwing a long violet strip, each
+with something lying in its lee. At the far end, half-buried and tilted, the hull of a
+sandcrawler, three decks high, throwing the largest shadow for miles. In that shadow the
+biome's whole hierarchy is arranged like a court: the gloomcast in the deep centre, a herd
+packed round it, a dakkra at the rim, pirrik in the air. The hatch is at the back.
+
+**What you hear.** Metal ticking as it takes the heat on its lit face; wind whistling through
+the tread section; inside the crawler (up close), something mechanical cycling, very slowly.
+
+**What you feel.** Greed and guilt, together. Every hulk is a haul of steel and components,
+and every hulk you strip deletes a stepping stone — for the herds, for the caravans, for your
+own colonists coming home.
+
+**Improvements.**
+- 🔑 **The road can be rebuilt — by you.** Haul a stripped hulk (or build a cheap shade frame)
+  into a gap in the chain and the road re-links. The player can be the **road-maker** as well
+  as the road-breaker, and extend a chain across a gap nothing has crossed — new traffic, new
+  game, new trouble. Ties to W4: herder clans notice who keeps the road open.
+- **Breaking a link has a visible consequence.** The next herd that arrives at the missing
+  stepping stone stops at the rim, calls, waits — then turns back, or tries the long run and
+  leaves its weakest dead on the pavement (which is new salvage — D1).
+- **The crawler's sleepers.** The shipped `RSW_DeadCrawler` promises "sleeping hands" inside.
+  Here, the sleeping hands are **Jawa-built droids that went dormant in the shade** because
+  the shade is where they could keep cool — wake them and they are the crawler's last crew,
+  and (I5) somebody will come back for them.
+- **The memorable moment:** prying off the last panel of the landspeeder, then watching a
+  herd arrive at the empty sand where it stood, and stand there calling.
+
+**Honest feasibility.** Small: a GenStep laying wreck buildings (with `staticSunShadowHeight`)
+along a chain whose spacing comes from the patch graph's human dash range; the crawler is the
+shipped mutator with a big shadow height. Re-linking is vanilla hauling of a minified wreck
+(make the wrecks minifiable — XML). The dormant-droid crew is the one addition, and is
+RSW/Utinni content on the shipped crawler.
 
 ### 6.5 The Long Carry — the gap graves and the shade you bring with you
 
-pending
+*(D1 gap graves + W1 carried awning, combined, and linked to 6.7.)*
+
+**What you see.** Out on the gold, forty cells from any shadow, a pack animal lies where it
+fell a hundred years ago, still loaded, dry as paper, its rider beside it. Nothing has ever
+come for them — nothing can afford to. Then your party goes out: four colonists under a
+stretched hide awning on poles, walking in step, a moving rectangle of violet shade crossing
+the light. Halfway, two tebbra break from the nearest patch and run to join them under the
+awning. Nobody shoos them.
+
+**What you hear.** The shimmer rising as the party leaves the rocks; under the awning it
+drops away to footsteps and breathing; the creak of the poles.
+
+**What you feel.** That you have learned the biome — you are doing what the gloomcast does.
+
+**Improvements.**
+- 🔑 **The graves hold stories that point.** Some travellers carry a journal or a scratched
+  slate: a page naming a **gnomon** (6.7) and which way its shadow falls, or the location of
+  a dew well that no longer shows on any map. Salvage becomes the start of a trail.
+- **Hitchhikers.** Small animals caught in the open will run to *any* moving shade, including
+  yours. A party under an awning collects a little train of refugees — tameable, huntable,
+  and occasionally a mirrak's prey follows them in. Falls out of §1 (the awning is a patch).
+- **Mirrak-hide awnings** cast deeper shade (6.2) — the gear loop closes.
+- **The memorable moment:** the small wild animals running in to stand under your awning.
+
+**Honest feasibility.** Small each: a GenStep for the graves (corpse + gear + optional journal
+item pointing at a real map feature — the item stores a target cell); the awning is a
+two-pawn carried object — ⚠️ the cheapest honest version is **apparel** (a parasol frame per
+pawn, each casting a small shade via the shipped `RM_Comp_ShadowCaster` logic), because a
+true shared two-pawn carried building has no vanilla precedent. Price the shared awning as
+medium and ship parasols first.
 
 ### 6.6 The farm on the horizon — the besieged homestead and its mirror
 
-pending
+*(I1 besieged moisture farm, sharpened with a signalling mirror.)*
+
+**What you see.** A flash on the horizon. Then another: short, long, short. A heliograph —
+the one instrument that works forever here, because the sun never moves and never sets.
+Somebody is signalling. Your colonist with the best eyes reads it: *water for help.* When you
+get there: a roofed homestead with vaporator towers standing in a line across dead fields,
+each tower throwing a long thin shadow with a pale dew line — and in every one of those
+shadows, an animal. A herd is packed against the house's south wall. A dakkra lies in the
+barn doorway. The family has been indoors for eleven days.
+
+**What you hear.** The vaporators' slow hum from the ones still running; from the house, a
+child; from the barn, nothing.
+
+**What you feel.** The harbour ladder (ruled #1) from the outside — this is what your own base
+will become.
+
+**Improvements.**
+- 🔑 **The heliograph is a building you get to keep.** A buildable `RM_Heliograph` (a mirror
+  on a mast) lets the colony **talk to neighbours across the map** in this biome only: after
+  the rescue, the farm flashes warnings to you — *swimmer seen on the east sand*, *haze
+  coming*, *herd heading your way* — early-warning letters for incidents from 6.3 and F3.
+  It is the Long Shade's radio, and it works because the light is permanent.
+- **Three endings.** Clear the yard (reward: water, a working vaporator, a flashing ally);
+  trade them passage out (they leave; you inherit the stand and its shade-chain); or wait —
+  they give up and walk into the light, and the homestead becomes a ruin in a later visit,
+  the harbour ladder having won.
+- **The vaporator towers are the shade** (N5) — clearing the yard means clearing every tower's
+  lee, one dash at a time.
+- **The memorable moment:** the first flash on the horizon.
+
+**Honest feasibility.** Small–medium: an `RM_InhabitedPlace` variant on the shipped Inhabited
+framework (HOMESTEAD roster has 10 characters) + the `RSW_GenStep_MoistureFarm` template +
+seeding the yard with §1 residents; the heliograph is a building + a letter-sender keyed to
+incidents firing within its range (small). ⚠️ Leaning Scrub owns buildable moisture *farming*;
+this is a siege and a signal, not a water economy — keep it that way.
 
 ### 6.7 The gnomon line — a treasure map that only the haze can finish
 
-pending
+*(D2 still gnomons, improved with the smoke calendar.)*
+
+**What you see.** A single dressed stone standing alone on the pavement where nothing else
+stands, taller than anything natural near it, a line cut into its lit face. Its shadow runs
+out across the gold, violet, dead straight, and ends on a patch of sand that is very slightly
+the wrong colour. It has ended there for a thousand years. Dig: a cache — old, sealed, dry.
+
+**What you hear.** Nothing special — and that is the charm; it is a quiet discovery in a loud
+light.
+
+**What you feel.** Kinship with whoever did this. They understood the sun was stopped, and
+used it as a pen.
+
+**Improvements.**
+- 🔑 **Two tips, one of them hidden.** The builders knew about the haze too. Each gnomon
+  marks **two** caches: one at the clear-sky tip, and one further out, **at the tip of the
+  haze shadow** — the length the shadow reaches only while the smoke calendar's haze is on.
+  The second cache cannot be found except during haze (the shadow must be seen to be read).
+  The ruled season of relief becomes treasure season. Zero extra code beyond §1.3 + ruled #2:
+  the haze lengthens the pinned vector; the GenStep places the second cache at the haze
+  length.
+- **Chains.** Some gnomons' shadows end at the foot of the next gnomon — a line across the
+  map, ending at something worth the walk (a shade-cool cellar, D4; a sealed dew well, D5).
+- **Emptied ones.** Some tips are already dug — someone got there first — and their grave is
+  in the gap nearby (6.5).
+- **The memorable moment:** the haze arriving, the gnomon's shadow creeping out across the
+  sand past the old dig — and stopping somewhere new.
+
+**Honest feasibility.** Small: a `Building` monolith with a tall `staticSunShadowHeight`
+(renders the shadow); a GenStep burying cache(s) at `pos + unit(shadowVector) × length` for
+clear and haze lengths; the cache is a vanilla buried/minable container. Depends on §1.3/§3.1
+(pinned vector) — without it the gnomon is scenery.
 
 ### 6.8 How the package plays across a colony's first year
 
-pending
+1. **Landing.** The unchanging sunset; combed violet shadows; herds at the rims, deciding.
+   The first colonist comes home heat-laden. The dash ring appears when you draft someone.
+   *(6.1)*
+2. **First weeks.** You roof a shed and the harbour ladder begins: small life moves in. You
+   find the Crawler Road and strip one wreck; a herd stops at the gap and calls. *(6.4, ruled
+   #1)*
+3. **First month.** A flash on the horizon. The farm. You clear the yard one tower-shadow at a
+   time and come home with a heliograph. *(6.6)*
+4. **The first haze.** Every shadow grows; the herds cross the uncrossable; mirrak show up as
+   short dark ovals among long violet ones; a gnomon's shadow creeps out to its second cache.
+   *(6.2, 6.7, ruled #2)*
+5. **Mid-year.** The heliograph flashes: *swimmer on the east sand.* You have days. Hardpan
+   moat, a decoy ring out in the sand, or a fight in the gap. *(6.3)*
+6. **Late year.** A Long Carry out to the graves under a mirrak-hide awning, following a dead
+   traveller's slate to a gnomon line. The wild things run in under your shade. *(6.5, 6.7)*
+7. **And one day** the gloomcast alters its route to your walls (ruled #1), and the pirrik come
+   with it, and the sunset has not moved at all.
+
+Every beat above sits on the one build (§1 + §3). That is why it is ranked first: without the
+strict dash and the pinned shadow, every other item on this list is scenery; with them, each
+is a different reason to step out of the shade.
