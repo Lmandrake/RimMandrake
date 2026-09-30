@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_CrawlerRoad_Wrecks.xml     LONGSHADE_BEDAZZLE_MECHANICS_1 part 4 (tranche 2)
+
+  The Crawler Road's RM-tier link (longshade_shade_ideation_2026-09-29.md §6.4;
+  cast bible §2D). Laid by RM_GenStep_CrawlerRoad (RM_LongShadeMapgen.cs).
+  The Star Wars links (RSW_WreckedSkiff, RSW_CrawlerTreadWreck) and the dead
+  sandcrawler terminus are in mandrake.rsw.injections.
+
+  Every wreck is shade: staticSunShadowHeight is what the shade grid's
+  caster scan reads, and it also draws the long rendered shadow along the
+  pinned sun. Every wreck is salvage (deconstruct returns its costList) and
+  minifiable (building.alwaysUninstallable lets the player uninstall an
+  unowned wreck — Designator_Uninstall, RimSage), so a stripped or moved wreck
+  breaks the crossing and a reinstalled one mends it.
+
+  RM_CrawlerRoadTerminus is a transient marker: the road GenStep spawns it at
+  the last stop, runs the terminus GenStep (anchored on it), and destroys it.
+  It is never on a finished map.
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RM_WreckedCart</defName>
+    <label>wrecked cart</label>
+    <description>A draught cart that broke its axle out on the sand and was left where it stopped. One wheel lies flat beside it, the planks have split and greyed like driftwood, and a scrap of hide still hangs from the rail. It throws a shadow long enough to rest in. Strip it for wood and metal, or take it up and set it down somewhere a shadow is needed more.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <passability>PassThroughOnly</passability>
+    <pathCost>40</pathCost>
+    <fillPercent>0.45</fillPercent>
+    <staticSunShadowHeight>0.8</staticSunShadowHeight>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <graphicData>
+      <texPath>Things/Building/RM_WreckedCart/RM_WreckedCart</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.4,2.4)</drawSize>
+    </graphicData>
+    <building>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <deconstructible>true</deconstructible>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+      <alwaysUninstallable>true</alwaysUninstallable>
+    </building>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <costList>
+      <WoodLog>30</WoodLog>
+      <Steel>10</Steel>
+    </costList>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <WorkToBuild>900</WorkToBuild>
+      <Mass>35</Mass>
+      <Flammability>0.8</Flammability>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <soundImpactDefault>BulletImpact_Wood</soundImpactDefault>
+    <tickerType>Never</tickerType>
+  </ThingDef>
+
+  <ThingDef>
+    <defName>RM_CrawlerRoadTerminus</defName>
+    <label>crawler road terminus</label>
+    <description>A map-generation marker. Never left on a map.</description>
+    <thingClass>Thing</thingClass>
+    <category>Ethereal</category>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>None</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <selectable>false</selectable>
+    <tickerType>Never</tickerType>
+  </ThingDef>
+
+</Defs>

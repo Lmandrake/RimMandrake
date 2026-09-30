@@ -48,6 +48,16 @@ namespace RimMandrake.StarWars.Sarlacc
         /// message naming what was taken (vanilla already messages for the player's own).</summary>
         public static bool takeSignsEnabled = true;
 
+        /// <summary>LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2, the swimmer's road: the
+        /// once-per-map incident (Long Shade maps) in which one young swimmer swims rim
+        /// to rim toward the biggest dew ring and roots there. Needs Creature Behaviors'
+        /// shade-patch graph.</summary>
+        public static bool swimmerRoadEnabled = true;
+
+        /// <summary>When a road swimmer roots, every wild animal sheltering in that
+        /// patch of shade breaks from it at once.</summary>
+        public static bool rootingEvacuatesPatch = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -59,6 +69,8 @@ namespace RimMandrake.StarWars.Sarlacc
             Scribe_Values.Look(ref secondHediffChance, "secondHediffChance", 0.2f);
             Scribe_Values.Look(ref breachFloodVisualEnabled, "breachFloodVisualEnabled", true);
             Scribe_Values.Look(ref takeSignsEnabled, "takeSignsEnabled", true);
+            Scribe_Values.Look(ref swimmerRoadEnabled, "swimmerRoadEnabled", true);
+            Scribe_Values.Look(ref rootingEvacuatesPatch, "rootingEvacuatesPatch", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -90,6 +102,18 @@ namespace RimMandrake.StarWars.Sarlacc
               + "and a message names what was taken, so nothing on the map simply vanishes. Off: "
               + "only your own colonists' and animals' swallows are announced (the base game's "
               + "own message), and wild prey goes under without a trace until it is spat out.");
+            list.GapLine();
+
+            list.Label("The swimmer's road (Long Shade)");
+            list.CheckboxLabeled("Swimmer's road incident", ref swimmerRoadEnabled,
+                "Once per map, ever, on a Long Shade map: one young swimmer comes up at the map edge "
+              + "and swims shade to shade toward the biggest dew ring on soft ground, usually your "
+              + "walls, leaping at whatever stands on a dew line it passes. If it gets there it roots "
+              + "for good. Needs Creature Behaviors (its shade-patch graph and sun heat). Off: the "
+              + "incident never fires, and a swimmer already on the road wanders like any other.");
+            list.CheckboxLabeled("Rooting empties the patch", ref rootingEvacuatesPatch,
+                "When the road swimmer roots, every wild animal sheltering in that shade breaks from "
+              + "it at once. Off: they stay until the mouth takes one.");
             list.GapLine();
 
             list.Label("Changed on return");

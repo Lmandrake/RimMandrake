@@ -57,6 +57,12 @@ taken-and-returned sacred/unclean specifically to the Sun-Debt ideoligion (this
 mod only ships the generic RSW-tier hediff, per the naming-tier doctrine that
 faction-specific reactions are RimUtinni content, not RimStarWars).
 
+THE SWIMMER'S ROAD (LONGSHADE_BEDAZZLE_MECHANICS_1): once per map, ever, on a Long
+Shade map, one swimmer comes up at the edge and swims shade to shade toward the
+biggest dew ring, leaping at flesh on the dew line, and roots there for good. Every
+take leaves disturbed sand and a message. Uses mandrake.rm.creaturebehaviors'
+shade-patch graph when that mod is active (loadAfter, soft).
+
 Requires the Anomaly DLC (Devourer's body/render-tree/comp are reused by
 reference) — every def here that touches it is MayRequire-gated.</description>
   <modDependencies>
@@ -73,5 +79,8 @@ reference) — every def here that touches it is MayRequire-gated.</description>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Anomaly</li>
     <li>brrainz.harmony</li>
+    <!-- LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2: the swimmer's road reads its
+         shade-patch graph. Soft: without it the incident never fires. -->
+    <li>mandrake.rm.creaturebehaviors</li>
   </loadAfter>
 </ModMetaData>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LONGSHADE_BEDAZZLE_MECHANICS_1 part 3, tranche 2 — the swimmer's road
+  (longshade_shade_ideation_2026-09-29.md §6.3; owner: "3 Swimmer's road: IN,
+  with a condition"). Code: Source/RSW_SwimmerRoad.cs.
+
+  One young sarlacc swimmer per map, ever (RSW_MapComponent_SwimmerRoad.fired),
+  swimming rim to rim along Creature Behaviors' shade-patch graph toward the
+  largest dew ring on soft ground, and rooting there into RSW_SarlaccAnchored.
+
+  One-home note (owner, 2026-09-21: "young versions that grow in [one place] then
+  migrate"): the sarlacc's home is the deep desert; the swimmer is its moving
+  life stage, and the Long Shade is where the young go to root. That is the
+  narrow in-game carve-out, not a second home.
+
+  Biome gate is data: RSW_SwimmerRoadExtension.biomes (defNames, so nothing
+  here cross-references the Long Shade mod). Toggle: Sarlacc Mod Settings,
+  "Swimmer's road incident".
+-->
+<Defs>
+
+  <IncidentDef MayRequire="Ludeon.RimWorld.Anomaly">
+    <defName>RSW_SwimmerRoad</defName>
+    <label>sarlacc swimmer</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.StarWars.Sarlacc.RSW_IncidentWorker_SwimmerRoad</workerClass>
+    <baseChance>0.6</baseChance>
+    <earliestDay>20</earliestDay>
+    <letterLabel>Sarlacc swimmer</letterLabel>
+    <letterText>A sarlacc swimmer has come up out of the deep desert, following water.\n\nThe sand at the map edge is moving: a low wake just under the skin of the dune. It is not hunting you. It is going somewhere, the way everything here goes, shade to shade, pausing at every rim, and whatever stands on a dew line in its reach stops standing.\n\nIt is heading for the biggest dew ring on the map. If it gets there it roots for good, a permanent well with a mouth. It spends water on every metre and every strike, so a long gap wears it down. Droids carry no water and it ignores them.</letterText>
+    <letterDef>ThreatSmall</letterDef>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Sarlacc.RSW_SwimmerRoadExtension">
+        <biomes>
+          <li>RM_LongShade</li>
+        </biomes>
+        <pawnKind>RSW_SarlaccSwimmer</pawnKind>
+        <minRingRimCells>8</minRingRimCells>
+        <rootWithinCells>2.9</rootWithinCells>
+        <rimPauseTicks>90~240</rimPauseTicks>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+  <!-- The swimmer runs Anomaly's Devourer think tree; its Devourer_PreWander
+       insert tag (RimSage, ThinkTreeDef Devourer) sits after the ability and
+       fight givers and before WanderAnywhere. The giver returns null for every
+       pawn except the one road swimmer. -->
+  <ThinkTreeDef MayRequire="Ludeon.RimWorld.Anomaly">
+    <defName>RSW_SwimmerRoad</defName>
+    <insertTag>Devourer_PreWander</insertTag>
+    <insertPriority>100</insertPriority>
+    <thinkRoot Class="RimMandrake.StarWars.Sarlacc.RSW_JobGiver_SwimmerRoad" />
+  </ThinkTreeDef>
+
+</Defs>

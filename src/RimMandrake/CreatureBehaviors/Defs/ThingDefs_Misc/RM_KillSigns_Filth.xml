@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_KillSigns_Filth.xml     LONGSHADE_BEDAZZLE_MECHANICS_1 (tranche 2)
+
+  The owner's condition on every ambusher here: "we can't have animals
+  "disappear spontaneously." There needs to be SOME kind of indication of
+  what happened to them." These two decals are the visible half of that sign
+  (the message is code, in each taker's comp). Kit pieces, so any taker can
+  name them:
+    RM_Filth_DragMark      a smeared trough where something was hauled down.
+                           The mirrak's seizure (RM_LongShade_Mirrak.xml,
+                           CompProperties_FalseShadeAmbusher.seizeFilth).
+    RM_Filth_DisturbedSand a collapsed funnel fed by a wake that ends. The
+                           sarlacc swimmer's take (mandrake.rsw.sarlacc looks
+                           it up by name and falls back to Filth_Sand).
+  Art: artpipe jobs of the same names (finished 2026-09-30), one master each,
+  Graphic_Random over its folder, the Filth_BlastMark shape.
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_DragMark</defName>
+    <label>drag mark</label>
+    <description>A smeared trough in the sand, scuffed at the edges, with a thin dried smear running down it. Something was pulled under here.</description>
+    <graphicData>
+      <texPath>Things/Filth/RM_DragMark</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.6</drawSize>
+    </graphicData>
+    <filth>
+      <placementMask>
+        <li>Terrain</li>
+      </placementMask>
+      <disappearsInDays>20~25</disappearsInDays>
+      <cleaningWorkToReduceThickness>35</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+    </filth>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_DisturbedSand</defName>
+    <label>disturbed sand</label>
+    <description>A shallow collapsed funnel ringed with slumped crust. A low furrow runs into it and stops. Something under the sand came up here and took whatever was standing on it.</description>
+    <graphicData>
+      <texPath>Things/Filth/RM_DisturbedSand</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>2.2</drawSize>
+    </graphicData>
+    <filth>
+      <placementMask>
+        <li>Terrain</li>
+      </placementMask>
+      <disappearsInDays>20~25</disappearsInDays>
+      <cleaningWorkToReduceThickness>35</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+    </filth>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+  </ThingDef>
+
+</Defs>

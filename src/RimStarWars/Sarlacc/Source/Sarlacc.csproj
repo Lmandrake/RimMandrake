@@ -42,6 +42,9 @@
     <Compile Include="CompSarlaccAnchoredMouth.cs" />
     <Compile Include="CompSarlaccCisternBreach.cs" />
     <Compile Include="MapComponent_SarlaccBreachFlood.cs" />
+    <!-- LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2: the swimmer's road. Soft reference to
+         RimMandrake.CreatureBehaviors (its shade-patch graph and dash job); build that first. -->
+    <Compile Include="RSW_SwimmerRoad.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +62,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>..\..\..\RimMandrake\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
