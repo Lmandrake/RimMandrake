@@ -279,7 +279,8 @@ namespace RimMandrake.Wasteland
         {
             base.Enable(receivedArgs);
             nextDeliveryTick = Find.TickManager.TicksGame + GenDate.TicksPerDay;
-            string padLine = RM_CompTippingPad.FindPad(map) != null
+            RM_CompTippingPad pad = RM_CompTippingPad.FindPad(map);
+            string padLine = pad != null
                 ? "Your tipping pad is marked; the first load comes in about a day."
                 : "Build a waste tipping pad (Misc) before the first load arrives in about a day, or the convoy turns back.";
             Find.LetterStack.ReceiveLetter("Tipping licensed",
@@ -287,7 +288,7 @@ namespace RimMandrake.Wasteland
               + deliveries + " times, and pay " + silverPerDelivery + " silver each time. " + padLine
               + "\n\nThe casks stay yours: they can leak if breached, they can feed tamed processor animals "
               + "through a sealed cask bay, and they can be reburied — illegally.",
-                LetterDefOf.NeutralEvent, new LookTargets(RM_CompTippingPad.FindPad(map)?.parent), convoyFaction, quest);
+                LetterDefOf.NeutralEvent, pad != null ? new LookTargets(pad.parent) : LookTargets.Invalid, convoyFaction, quest);
         }
 
         public override void QuestPartTick()
