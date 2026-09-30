@@ -17,11 +17,9 @@
   loadAfters) — referenced bare, matching the original file's own precedent
   of not MayRequire-gating the class reference.
 
-  No art yet (0 PNGs) — same as the original RUT_FleetFlier.xml, which never
-  had any either (COMMISSION_LEDGER_CLEANUP_1's own header: "genuinely new,
-  no existing render found"; three artpipe jobs filed but not yet realized).
-  Not a defect, not this build's job (CLAUDE.md "prove art missing before
-  generating").
+  Art: Textures/Things/Pawn/Animal/RM_FleetFlier/ (south/east/north), the
+  artpipe renders rutfleetflier_v1_* from COMMISSION_LEDGER_CLEANUP_1, wired
+  by FORGE_RULED_CONTENT_1.
 -->
 <Defs>
 

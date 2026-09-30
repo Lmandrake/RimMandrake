@@ -53,10 +53,11 @@
     defName that has never actually spawned on the frozen RUT_TheForge (its
     own wildAnimals spawns only the donor's bare Beldon). This mod is the
     first place the tap's real target actually lives in a Forge wildAnimals
-    list. Only the 4 non-Star-Wars donor rows the frozen def already carries
-    (Q9) plus RM_FleetFlier (COMMISSION_LEDGER_CLEANUP_1's own from-scratch,
-    zero-donor creature — an even stronger Q9/Q11a case than a donor import)
-    are inline here.
+    list. Inline here: the 4 non-Star-Wars donor rows the frozen def already
+    carries (Q9), AA_ColossalAerofleet (FORGE_RULED_CONTENT_1), RM_FleetFlier
+    (COMMISSION_LEDGER_CLEANUP_1's own from-scratch, zero-donor creature) and
+    the four ruled natives RM_Dhokkur/RM_Julmox/RM_Jossur/RM_Dhuvvox
+    (FORGE_RULED_CONTENT_1).
 
     wildPlants: the frozen def's RUT_FireLavender/RUT_HeatsinkFungus are
     renamed RM_FireLavender/RM_HeatsinkFungus (§7 Q8's "each plant moves into
@@ -175,6 +176,17 @@
       <AA_Metallovore MayRequire="sarg.alphaanimals">0.15</AA_Metallovore>  <!-- metallovore - ground-slow -->
       <AA_CrescendoAnole MayRequire="sarg.alphaanimals">0.5</AA_CrescendoAnole>  <!-- crescendo anole - small, ECOSYSTEM_PYRAMID_LAW_1 -->
       <RM_FleetFlier>0.45</RM_FleetFlier>  <!-- fleet flier - small sky, from-scratch, renamed from RUT_FleetFlier -->
+      <!-- FORGE_RULED_CONTENT_1 (FORGE_BEDAZZLE_SITTING_1, owner turn 2 "Wire in all
+           waiting."): the roster's AA_ColossalAerofleet row, weight from
+           rosters/the_forge.json. -->
+      <AA_ColossalAerofleet MayRequire="sarg.alphaanimals">0.5</AA_ColossalAerofleet>  <!-- greater bulloo - sky, LARGE -->
+      <!-- FORGE_RULED_CONTENT_1 (turn 4 "1) admit."): the four admitted natives,
+           Defs/ThingDefs_Races/RM_TheForgeNatives.xml. The dhuvvox's baseline row
+           stands in until FORGE_CYCLE_MECHANICS_1 owns its burst-window spawning. -->
+      <RM_Dhokkur>0.02</RM_Dhokkur>  <!-- dhokkur - GIANT, rain-drinker -->
+      <RM_Julmox>0.4</RM_Julmox>  <!-- julmox - ground herd, tamable -->
+      <RM_Jossur>0.06</RM_Jossur>  <!-- jossur - sky apex predator -->
+      <RM_Dhuvvox>0.3</RM_Dhuvvox>  <!-- dhuvvox - flash-swarm, small -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

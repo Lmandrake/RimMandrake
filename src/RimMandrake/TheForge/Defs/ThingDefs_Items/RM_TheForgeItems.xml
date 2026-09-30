@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_TheForgeItems.xml                   FORGE_RULED_CONTENT_1, new 2026-09-29
+
+  RM_Floatstone: owner, FORGE_BEDAZZLE_SITTING_1 turn 7, verbatim: "Ultra-light
+  pumice made of what looks like spun glass whirled into tangles. Super strong
+  and light building material, not flammable, quite valuable, and the walls it
+  makes look like swirled stone spun sugar made into blocks. Very beautiful."
+    - Stone-blocks shape (StoneBlocksBase, the RM_Lanternstone precedent), so
+      it is Stony stuff and builds walls. Walls ride the vanilla wall atlas
+      tinted by stuffProps color (cast bible section 4); a custom swirl-grain
+      wall atlas is a follow-on only if the owner asks.
+    - Strong: MaxHitPoints factor above granite's 1.7. Light: Mass 0.1 per
+      block against granite's 1.25. Not flammable: Flammability factor 0.
+      Valuable: MarketValue 8 per block. Beautiful: Beauty factor and offset.
+    - Obtained ONLY by harvesting RM_FloatstoneGarden (RM_TheForge_Flora.xml);
+      stuffProps commonality 0 and generateCommonality 0 so nothing else
+      produces it. The garden's freeze-phase spawn cycle and drift-off belong
+      to FORGE_CYCLE_MECHANICS_1.
+
+  RM_DhokkurHide: the heat-shielding hide the dhokkur butchers to (ruled
+  frame, FORGE_RULED_CONTENT_1 section 2). Vanilla LeatherBase texture tinted
+  obsidian blue-black; no own art needed.
+-->
+<Defs>
+
+  <ThingDef ParentName="StoneBlocksBase">
+    <defName>RM_Floatstone</defName>
+    <label>floatstone</label>
+    <description>A block of floatstone weighs what a lie weighs. Spun glass whirled into tangles, frozen mid-swirl, strong the way a woven thing is strong -- it will not burn, it barely presses on the hand that carries it, and a wall of it looks like swirled stone spun sugar cut into blocks. The Farmers sell it by the promise instead of the weight. Nobody has ever asked for the weight back.</description>
+    <graphicData>
+      <texPath>Things/Item/RM_Floatstone/RM_Floatstone</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <tradeability>All</tradeability>
+    <generateCommonality>0</generateCommonality>
+    <generateAllowChance>0</generateAllowChance>
+    <statBases>
+      <MarketValue>8</MarketValue>
+      <Mass>0.1</Mass>
+      <MaxHitPoints>220</MaxHitPoints>
+      <SharpDamageMultiplier>0.8</SharpDamageMultiplier>
+      <BluntDamageMultiplier>0.9</BluntDamageMultiplier>
+      <Beauty>6</Beauty>
+      <ConstructionSpeedFactor>1.2</ConstructionSpeedFactor>
+      <Flammability>0</Flammability>
+    </statBases>
+    <stuffProps>
+      <color>(236,226,210)</color>
+      <commonality>0</commonality>
+      <appearance>Smooth</appearance>
+      <stuffAdjective>floatstone</stuffAdjective>
+      <soundImpactBullet>BulletImpact_Ground</soundImpactBullet>
+      <soundMeleeHitSharp>MeleeHit_Stone</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Stone</soundMeleeHitBlunt>
+      <statFactors>
+        <MaxHitPoints>2.2</MaxHitPoints>
+        <Beauty>1.8</Beauty>
+        <MarketValue>1.0</MarketValue>
+        <Flammability>0</Flammability>
+        <WorkToBuild>3.5</WorkToBuild>
+        <WorkToMake>1.1</WorkToMake>
+        <DoorOpenSpeed>0.8</DoorOpenSpeed>
+        <MeleeWeapon_CooldownMultiplier>0.9</MeleeWeapon_CooldownMultiplier>
+      </statFactors>
+      <statOffsets>
+        <Beauty>2</Beauty>
+      </statOffsets>
+    </stuffProps>
+  </ThingDef>
+
+  <ThingDef ParentName="LeatherBase">
+    <defName>RM_DhokkurHide</defName>
+    <label>dhokkur hide</label>
+    <description>Plated hide from a dhokkur, glassy black and heavier than it looks. The boiling rain runs off it without leaving a mark; forge-hands prize it for anything that has to stand between a body and the heat.</description>
+    <graphicData>
+      <color>(46,52,64)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>9</MarketValue>
+      <StuffPower_Armor_Sharp>1.4</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.6</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>2.4</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>6</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>40</StuffPower_Insulation_Heat>
+      <Flammability>0</Flammability>
+    </statBases>
+    <stuffProps>
+      <color>(46,52,64)</color>
+      <commonality>0</commonality>
+      <statFactors>
+        <MaxHitPoints>1.3</MaxHitPoints>
+        <Flammability>0</Flammability>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+
+</Defs>

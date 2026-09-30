@@ -31,12 +31,20 @@
   cold-and-dark), and no art yet (0 PNGs, same expected mid-migration state
   as RM_Fuzz/RM_Grellbush in LEANINGSCRUB_RM_MOD_BUILD_1 — the "regenerated"
   art half of Q13 is separate, unowed work, not invented here).
+
+  FORGE_RULED_CONTENT_1 (owner, FORGE_BEDAZZLE_SITTING_1 turn 2: "Wire in all
+  waiting."): all three owned flora above now use
+  RimMandrake.EnvironmentalHazards.RUT_Plant_FlashFlora as thingClass (x8
+  growth inside the post-burst flash window, x0.05 outside it, vanilla rate
+  when the weather pulse is switched off). That class ships in the
+  environmentalhazards assembly this mod already hard-depends on.
 -->
 <Defs>
 
   <!-- ============== Fire lavender ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_FireLavender</defName>
+    <thingClass>RimMandrake.EnvironmentalHazards.RUT_Plant_FlashFlora</thingClass>  <!-- FORGE_RULED_CONTENT_1: flash-window growth -->
     <label>fire lavender</label>
     <description>A lavender that has adapted to survive off the glow of magma, thriving in heat that would kill any ordinary flower. Well loved for its beauty despite — or because of — the furnace it grows in.</description>
     <graphicData>
@@ -81,6 +89,7 @@
   <!-- ============== Heatsink fungus ============== -->
   <ThingDef ParentName="TreeBase">
     <defName>RM_HeatsinkFungus</defName>
+    <thingClass>RimMandrake.EnvironmentalHazards.RUT_Plant_FlashFlora</thingClass>  <!-- FORGE_RULED_CONTENT_1: flash-window growth -->
     <label>heatsink fungus</label>
     <description>Using a complex mix of chemical reactions, this fungus draws in heat to fuel its own growth. Settlers build around it, or move it indoors, to take the edge off a scorching room.</description>
     <graphicData>
@@ -114,6 +123,7 @@
        crust-fungus (Q13), NOT RM_Sagecrust ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_CinderCrust</defName>
+    <thingClass>RimMandrake.EnvironmentalHazards.RUT_Plant_FlashFlora</thingClass>  <!-- FORGE_RULED_CONTENT_1: flash-window growth -->
     <label>cinder crust</label>
     <description>A tough, ash-grey crust-fungus that clings to cooling rock at the skirts of the massif, baked hard by radiant heat rather than any light it drinks. Nothing much eats it and nothing much kills it; it is the first thing to grow back after a boiling-rain burst scalds a slope bare.</description>
     <graphicData>
@@ -141,6 +151,54 @@
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>200</wildClusterWeight>
       <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Floatstone garden — FORGE_RULED_CONTENT_1 ==============
+       The growth-phase form the owner admitted at FORGE_BEDAZZLE_SITTING_1
+       turn 7 (the sole one; turn 8 cut the other four). Harvest yields
+       RM_Floatstone (Defs/ThingDefs_Items/RM_TheForgeItems.xml), the only
+       source of it. Deliberately in NO wildPlants list: it appears only
+       during the freeze phase, and that spawn cycle, the ripening states and
+       the tear-free drift ahead of the melt are FORGE_CYCLE_MECHANICS_1 (C#).
+       Plain Plant thingClass, not flash flora: it grows on the frozen crust,
+       not in the rain window. Can grow on bare rock (fertilityMin 0,
+       fertilitySensitivity 0) and in the dark. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_FloatstoneGarden</defName>
+    <label>floatstone garden</label>
+    <description>When the melt freezes over and the plumes stand tall, the crust blooms. A floatstone garden starts as a knot of glass threads and whirls itself outward into a lace-walled globe, chamber over chamber, light enough that a grown one strains at its own root. Caught ripe, it is the most beautiful quarry on the planet. Left standing, it tears free ahead of the melt and drifts away over the seams -- the one form the lava never gets back.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_FloatstoneGarden</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Beauty>12</Beauty>
+      <Nutrition>0</Nutrition>
+      <Flammability>0</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>20</minGrowthTemperature>
+      <maxGrowthTemperature>400</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>40</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>400</maxOptimalGrowthTemperature>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>2</growDays>
+      <harvestedThingDef>RM_Floatstone</harvestedThingDef>
+      <harvestYield>35</harvestYield>
+      <harvestWork>600</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestMinGrowth>0.9</harvestMinGrowth>
+      <neverBlightable>true</neverBlightable>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <visualSizeRange>1.1~1.4</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
   </ThingDef>

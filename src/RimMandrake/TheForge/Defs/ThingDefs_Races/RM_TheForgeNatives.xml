@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_TheForgeNatives.xml                 FORGE_RULED_CONTENT_1, new 2026-09-29
+
+  The four natives admitted at FORGE_BEDAZZLE_SITTING_1 turn 4 ("1) admit.").
+  Descriptions and frames from design/Jawa/worldbuilding/biomes/
+  forge_bedazzle_cast_2026-09-29.md section 3. All four are invented names,
+  so they are RM tier and wired inline in RM_TheForge_Biome.xml (Q11a).
+  One home each: the Forge.
+
+  Art: Textures/Things/Pawn/Animal/RM_<Name>/ (south/east/north,
+  Graphic_Multi), from the FORGE_BEDAZZLE_SITTING_1 artpipe jobs.
+
+  Numbers are design proposals (cast bible section 0); the ruled parts are
+  the relationships: the dhokkur is the giant, the julmox is the tamable herd,
+  the jossur is the sky apex, the dhuvvox is the swarm.
+
+  STUBS owed to FORGE_CYCLE_MECHANICS_1 (C#, out of scope here):
+    - RM_Dhokkur dormancy: dormant through still heat, reads as terrain, wakes
+      only during boiling rain. The dormant sprite ships at
+      Textures/Things/Pawn/Animal/RM_DhokkurDormant/RM_DhokkurDormant.png and
+      is referenced by nothing yet; the mechanic swaps to it.
+    - RM_Dhuvvox window lifecycle: erupts by the hundred at a burst, reseals
+      and despawns at window end. The sealed-nodule sprite ships at
+      Textures/Things/Pawn/Animal/RM_DhuvvoxNodule/RM_DhuvvoxNodule.png, also
+      unreferenced. Until the mechanic lands the dhuvvox spawns as an ordinary
+      low-commonality wild animal.
+    - RM_Julmox sealed-between-bursts state and flash-window grazing.
+    - Mod Settings toggles for all of the above.
+-->
+<Defs>
+
+  <!-- ============== Dhokkur: the giant on the clock ============== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Dhokkur</defName>
+    <label>dhokkur</label>
+    <description>Half the outcrops on the skirts are stone. The other half are waiting for rain. A dormant dhokkur sits out the still heat as a hill of banked obsidian plates, ash drifted into its seams, and the survey crews learn the difference the day the sky opens: the hill stands up. It walks its own path -- the same path, worn a thousand bursts deep -- drinking the scald straight off its back while everything else on the mountain runs for a roof. It is not angry. It has never needed to be. Its hide turns the boiling rain, and the boiling rain is the worst thing this mountain knows how to say.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <Mass>4000</Mass>
+      <Flammability>0</Flammability>
+      <MeatAmount>1000</MeatAmount>
+      <LeatherAmount>200</LeatherAmount>
+      <ArmorRating_Sharp>1.0</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.7</ArmorRating_Blunt>
+      <ArmorRating_Heat>2.0</ArmorRating_Heat>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>120</ComfyTemperatureMax>
+      <Wildness>0.98</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>front leg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>3.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLegs</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>3.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>6.0</baseBodySize>
+      <baseHealthScale>9.0</baseHealthScale>
+      <!-- It drinks rain, not food: foodType None means no Food need at all
+           (RM_Suush precedent, RaceProperties.EatsFood). -->
+      <foodType>None</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>120</lifeExpectancy>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+      <leatherDef>RM_DhokkurHide</leatherDef>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Dhokkur</defName>
+    <label>dhokkur</label>
+    <race>RM_Dhokkur</race>
+    <combatPower>550</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>3.0</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhokkur/RM_Dhokkur</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhokkur/RM_Dhokkur</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhokkur/RM_Dhokkur</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============== Julmox: the plate-footed pastoral spine ============== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Julmox</defName>
+    <label>julmox</label>
+    <description>Low and wide as a cooling slab, on feet spread into plates that never sink into hot ash. Between rains the julmox squats sealed, lids down over every seam, a row of dull kettles on the skirts. Then the burst passes, the rock steams, the moss film blooms -- and the herd fans open and goes to work, cropping the two hours the mountain allows. The Farmers keep them for the same reason the mountain does: they are patient, they are sealed against the worst of it, and they turn stone-film into meat. Pasture is wherever it last rained.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <Mass>90</Mass>
+      <Flammability>0.3</Flammability>
+      <MeatAmount>110</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.8</ArmorRating_Heat>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left plate-foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right plate-foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>1.2</baseBodySize>
+      <baseHealthScale>1.3</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Simple</trainability>
+      <lifeExpectancy>22</lifeExpectancy>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <herdAnimal>true</herdAnimal>
+      <gestationPeriodDays>28</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Julmox</defName>
+    <label>julmox</label>
+    <race>RM_Julmox</race>
+    <combatPower>50</combatPower>
+    <wildGroupSize>4~9</wildGroupSize>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Julmox/RM_Julmox</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Julmox/RM_Julmox</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Julmox/RM_Julmox</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============== Jossur: the sky apex ==============
+       REAL core-1.6 flight (flyer law): MaxFlightTime/FlightCooldown stats +
+       Locust-shape race flags. No flight flip-book frames yet; a frameless
+       flyer flies with no wing-beat, which is correct. Frames are a named
+       follow-on (cast bible section 7). canLeaveMapFlying false: a resident
+       apex, not a migrant. Rides the shipped F3 vapor-column layer through
+       CompProperties_VaporDrifter (EnvironmentalHazards, the RM_FleetFlier
+       precedent). Never live-test its flight unattended. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Jossur</defName>
+    <label>jossur</label>
+    <description>The columns are pasture, and every pasture gets its wolf. The jossur rides the vent updrafts on wings longer than the rest of it put together, hanging in the shimmer where the fleet fliers race and the young fumeriders drift -- and then it stops hanging. Grounded, it is an awkward folded thing, all wing-knuckle and stilt, mantling over its kill in the ash. Airborne, it is the reason the herds keep their young in the middle of the smoke.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed>
+      <Mass>45</Mass>
+      <Flammability>0.4</Flammability>
+      <MeatAmount>60</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Heat>0.6</ArmorRating_Heat>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <Wildness>0.95</Wildness>
+      <MaxFlightTime>20</MaxFlightTime>
+      <FlightCooldown>6</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>talons</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>hooked beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_VaporDrifter">
+        <forageRadiusBeyondColumns>20</forageRadiusBeyondColumns>
+        <groundHazardImmune>true</groundHazardImmune>
+      </li>
+    </comps>
+    <race>
+      <body>Bird</body>
+      <predator>true</predator>
+      <maxPreyBodySize>1.3</maxPreyBodySize>
+      <baseBodySize>1.6</baseBodySize>
+      <baseHungerRate>0.6</baseHungerRate>
+      <baseHealthScale>1.4</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <herdAnimal>false</herdAnimal>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.4</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <lifeExpectancy>18</lifeExpectancy>
+      <flightStartChanceOnJobStart>0.4</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>false</canLeaveMapFlying>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Jossur</defName>
+    <label>jossur</label>
+    <race>RM_Jossur</race>
+    <combatPower>110</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.8</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Jossur/RM_Jossur</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Jossur/RM_Jossur</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Jossur/RM_Jossur</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============== Dhuvvox: the flash-swarm ============== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Dhuvvox</defName>
+    <label>dhuvvox</label>
+    <description>Kick through the ash between rains and you will turn up little glazed nodules, heavy for their size, and think them slag. Then the rain comes down boiling, and the slag hatches. For two hours the skirts run with dhuvvox -- a floor of quick glitter stripping the wet rock of everything the flash woke -- and when the stone dries they seal where they stand and are slag again. The old hands tell time by them. When the dhuvvox run, you reap; when they still, you are already late for shelter.</description>
+    <statBases>
+      <MoveSpeed>4.4</MoveSpeed>
+      <Mass>1</Mass>
+      <Flammability>0.2</Flammability>
+      <MeatAmount>4</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Heat>1.0</ArmorRating_Heat>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>120</ComfyTemperatureMax>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.2</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <herdAnimal>true</herdAnimal>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>3</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Dhuvvox</defName>
+    <label>dhuvvox</label>
+    <race>RM_Dhuvvox</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>6~14</wildGroupSize>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhuvvox/RM_Dhuvvox</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhuvvox/RM_Dhuvvox</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhuvvox/RM_Dhuvvox</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
