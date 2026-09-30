@@ -171,7 +171,7 @@
     <wildPlants>
       <Plant_Reeds>1.0</Plant_Reeds>  <!-- sarnreed -->
       <RM_Shadefern>0.4</RM_Shadefern>  <!-- shadefern - RULED replacement for the donor AB_GreenRockFern (WEEPING_STONES_DESIGN_SITTING_1 ruling 3) -->
-      <RUT_Dewshrooms MayRequire="mandrake.rut.rotsporekit">0.4</RUT_Dewshrooms>  <!-- dewshrooms; shared with The Rot's kit, left inline pending the shared-plant decision -->
+      <RM_Dewshrooms MayRequire="mandrake.rm.therot">0.4</RM_Dewshrooms>  <!-- dewshrooms; shared with The Rot's kit, left inline pending the shared-plant decision -->
       <Plant_Ambrosia>0.12</Plant_Ambrosia>  <!-- ambrosia bush -->
       <!-- WEEPINGSTONES_RM_MOD_BUILD_1 wave 2 — the other 9 invented flora
            rows ruled at WEEPING_STONES_DESIGN_SITTING_1 (2026-09-24). -->

@@ -150,7 +150,7 @@
            rosters/the_contagion.json on that date and reached the game only through
            BiomeFlora_Ashkarr.xml's now-retired replace operation; transplanted here by
            BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 so this def carries them itself. -->
-      <RUT_RustPuff MayRequire="mandrake.rut.rotsporekit">0.3</RUT_RustPuff>  <!-- rust puff -->
+      <RM_RustPuff MayRequire="mandrake.rm.therot">0.3</RM_RustPuff>  <!-- rust puff -->
       <AB_AlienTree_Polluted>0.15</AB_AlienTree_Polluted>  <!-- mutated ocular tree - tree -->
     </wildPlants>
     <wildPlantRegrowDays>25</wildPlantRegrowDays>
