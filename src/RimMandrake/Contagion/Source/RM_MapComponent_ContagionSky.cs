@@ -24,6 +24,7 @@ namespace RimMandrake.Contagion
     {
         private int nextBurnTick = -1;
         private bool tellsBegun;
+        private int bloomSinceTick = -1;
 
         public RM_MapComponent_ContagionSky(Map map) : base(map) { }
 
@@ -35,6 +36,7 @@ namespace RimMandrake.Contagion
             base.ExposeData();
             Scribe_Values.Look(ref nextBurnTick, "nextBurnTick", -1);
             Scribe_Values.Look(ref tellsBegun, "tellsBegun", false);
+            Scribe_Values.Look(ref bloomSinceTick, "bloomSinceTick", -1);
         }
 
         public bool BurnActive => BurnCondition() != null;
@@ -57,17 +59,30 @@ namespace RimMandrake.Contagion
             if (now % RM_ContagionSky.Interval != 0) return;
 
             RM_ContagionSkyExtension ext = RM_ContagionSky.ExtFor(map);
-            if (ext == null || !RM_ContagionSettings.burnEnabled)
+            if (ext == null)
             {
                 nextBurnTick = -1;
                 tellsBegun = false;
+                bloomSinceTick = -1;
                 return;
             }
 
             if (BurnActive)
             {
                 // A Burn already holds the sky (natural or Repulsor-forced);
-                // the next one is scheduled from its end.
+                // the next one is scheduled from its end, and so is the Bloom
+                // clock the Coalescence reads.
+                nextBurnTick = -1;
+                tellsBegun = false;
+                bloomSinceTick = -1;
+                return;
+            }
+
+            if (bloomSinceTick < 0) bloomSinceTick = now;
+            TryFormCoalescence(ext, now);
+
+            if (!RM_ContagionSettings.burnEnabled)
+            {
                 nextBurnTick = -1;
                 tellsBegun = false;
                 return;
@@ -97,6 +112,49 @@ namespace RimMandrake.Contagion
                 nextBurnTick = -1;
                 tellsBegun = false;
             }
+        }
+
+        // Part 2 — the Coalescence forms during a LONG Bloom (bloomSinceTick
+        // = when the last Burn ended), one per map at a time, away from the
+        // player's home area. Spawned as a faction-less organism-building
+        // (Building_RM_Coalescence) that the next Burn kills.
+        private void TryFormCoalescence(RM_ContagionSkyExtension ext, int now)
+        {
+            if (!RM_ContagionSettings.coalescenceEnabled || ext.coalescenceDef == null) return;
+            if (now - bloomSinceTick < ext.coalescenceLongBloomTicks) return;
+            if (map.listerThings.ThingsOfDef(ext.coalescenceDef).Count > 0) return;
+            if (!Rand.MTBEventOccurs(ext.coalescenceMtbDays, GenDate.TicksPerDay, RM_ContagionSky.Interval)) return;
+
+            IntVec2 size = ext.coalescenceDef.size;
+            bool found = CellFinderLoose.TryGetRandomCellWith(c =>
+            {
+                if (map.areaManager.Home[c]) return false;
+                CellRect r = GenAdj.OccupiedRect(c, Rot4.North, size).ExpandedBy(1);
+                if (!r.InBounds(map)) return false;
+                foreach (IntVec3 cc in r)
+                {
+                    if (!cc.Standable(map) || cc.GetEdifice(map) != null || map.areaManager.Home[cc]) return false;
+                }
+                return true;
+            }, map, 1000, out IntVec3 cell);
+            if (!found) return;
+
+            foreach (IntVec3 cc in GenAdj.OccupiedRect(cell, Rot4.North, size))
+            {
+                List<Thing> things = cc.GetThingList(map);
+                for (int i = things.Count - 1; i >= 0; i--)
+                {
+                    if (things[i] is Plant) things[i].Destroy();
+                }
+            }
+            Thing coal = ThingMaker.MakeThing(ext.coalescenceDef);
+            GenSpawn.Spawn(coal, cell, map);
+            Find.LetterStack.ReceiveLetter(
+                "The Coalescence",
+                "The storm has held too long. Somewhere in the goo the Contagion has been left alone long enough to gather itself: "
+                + "a swelling of eyes and part-limbs that pulls the Unfinished into itself, grows, and sends the ones it does not eat "
+                + "out mad.\n\nIt cannot survive the open sky — the next Burn will kill it.",
+                LetterDefOf.ThreatBig, coal);
         }
 
         private static int RollGap(RM_ContagionSkyExtension ext)

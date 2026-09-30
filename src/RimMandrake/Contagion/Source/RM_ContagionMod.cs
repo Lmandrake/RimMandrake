@@ -48,6 +48,11 @@ namespace RimMandrake.Contagion
         // Sunbeam damage multiplier against Contagion natives (1 = no bonus).
         public static float sunbeamNativeFactor = 6f;
 
+        // CONTAGION_MECHANICS_BUILD_1 Part 2 — the Coalescence. Off: none
+        // forms, and an existing one stops growing, absorbing and emitting
+        // (it still dies to the next Burn).
+        public static bool coalescenceEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -60,12 +65,16 @@ namespace RimMandrake.Contagion
             Scribe_Values.Look(ref burnDamageFactor, "burnDamageFactor", 1f, true);
             Scribe_Values.Look(ref cloudRepulsorEnabled, "cloudRepulsorEnabled", true, true);
             Scribe_Values.Look(ref sunbeamNativeFactor, "sunbeamNativeFactor", 6f, true);
+            Scribe_Values.Look(ref coalescenceEnabled, "coalescenceEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls: the screen outgrew one page with the mechanics build.
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            list.Begin(view);
 
             list.Label("Biome rarity: " + RarityLabel());
             list.Label("At 0 the Contagion never generates on a new planet. "
@@ -108,6 +117,13 @@ namespace RimMandrake.Contagion
             burnFrequency = list.Slider(burnFrequency, 0.1f, 4f);
             list.Label("Burn damage: " + burnDamageFactor.ToString("0.00") + "x (0 = weather only, no harm)");
             burnDamageFactor = list.Slider(burnDamageFactor, 0f, 3f);
+            list.CheckboxLabeled(
+                "The Coalescence enabled",
+                ref coalescenceEnabled,
+                "During a long Bloom the Contagion can gather itself into one giant organism "
+                + "that absorbs the Unfinished, grows through three forms and sends out mad ones. "
+                + "Any Burn kills it, spilling genome samples. With the Burn switched off only "
+                + "damage or a Cloud Repulsor can kill it. Off: none forms.");
 
             list.GapLine();
             list.CheckboxLabeled(
@@ -119,8 +135,15 @@ namespace RimMandrake.Contagion
             list.Label("Sunbeam vs Contagion natives: " + sunbeamNativeFactor.ToString("0.0") + "x (1 = no bonus)");
             sunbeamNativeFactor = list.Slider(sunbeamNativeFactor, 1f, 12f);
 
+            viewHeight = list.CurHeight + 12f;
             list.End();
+            Widgets.EndScrollView();
         }
+
+        private static Vector2 scrollPos;
+        // Starts tall so the first frame never column-wraps; then tracks the
+        // listing's real height.
+        private static float viewHeight = 2000f;
 
         private static string RarityLabel()
         {

@@ -149,6 +149,9 @@
           <li>RM_Gawpsack</li>
         </tellSinkers>
         <!-- tellRattlers: RM_Rattlegrope once the flora port lands. -->
+        <coalescenceDef>RM_Coalescence</coalescenceDef>
+        <coalescenceLongBloomTicks>90000</coalescenceLongBloomTicks>
+        <coalescenceMtbDays>0.5</coalescenceMtbDays>
       </li>
     </modExtensions>
     <wildAnimals>
