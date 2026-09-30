@@ -7260,16 +7260,16 @@
     "sha": "35010446a"
   },
   "src/RimMandrake/TerminalBiomes/Source/RM_Building_SiltTrap.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-27",
-    "hash": "fc75a8c11fd44d11afcf08944296852dc3831002c1c209eaaf05016adedec588",
-    "sha": "35010446a"
+    "cleanCount": 2,
+    "date": "2026-09-30",
+    "hash": "c0b6810f4e80e2fdd3fb9c33c02ab56fa98b0d423643100f369fd4145e1b1feb",
+    "sha": "d8806cba9"
   },
   "src/RimMandrake/TerminalBiomes/Source/RM_Building_SunSphere.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-27",
-    "hash": "376d15c2256a83e6c01ecda0f10f117a70fc1e2a62c26f5481353ca9f966c734",
-    "sha": "35010446a"
+    "cleanCount": 2,
+    "date": "2026-09-30",
+    "hash": "ed5afeb500e0f695ce643a8fc31dfe16e5233f4f2554a30de278491ecbc67373",
+    "sha": "d8806cba9"
   },
   "src/RimMandrake/TerminalBiomes/Source/RM_CompGlowerMobile.cs": {
     "cleanCount": 1,
@@ -7278,10 +7278,10 @@
     "sha": "35010446a"
   },
   "src/RimMandrake/TerminalBiomes/Source/RM_Comp_DropLureOrganOnDeath.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-27",
-    "hash": "38299cda83f173d0a5c067b00a3d8cba72b8e13c12b1fe4e2583edd2011c5938",
-    "sha": "35010446a"
+    "cleanCount": 2,
+    "date": "2026-09-30",
+    "hash": "03a9af6c4f7e67662638510fd5f0ee5c78afa672ebd2bb20655c9f6742c9cec7",
+    "sha": "d8806cba9"
   },
   "src/RimMandrake/TerminalBiomes/Source/RM_Comp_SkylightRight.cs": {
     "cleanCount": 1,
@@ -7314,10 +7314,10 @@
     "sha": "35010446a"
   },
   "src/RimMandrake/TerminalBiomes/Source/RM_IncidentWorker_SuulkArrival.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-27",
-    "hash": "7ee2fda5606dd3fd9cef31c6172223237dc57bc03f77cc2a176d2450a092a54a",
-    "sha": "35010446a"
+    "cleanCount": 2,
+    "date": "2026-09-30",
+    "hash": "4d327a82e4bc3f75a375c677de48b9112324414dde5fc1560ba98a3664f13165",
+    "sha": "d8806cba9"
   },
   "src/RimMandrake/TerminalBiomes/Source/RM_JobDriver_FeedOnGlow.cs": {
     "cleanCount": 1,
@@ -7338,10 +7338,10 @@
     "sha": "35010446a"
   },
   "src/RimMandrake/TerminalBiomes/Source/RM_Patch_GravEngineLaunchGate.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-27",
-    "hash": "a3b2a143012a6bf28da4bbd9011c7c5d20f725dcd6a4b2ccec992b569129f8f8",
-    "sha": "35010446a"
+    "cleanCount": 2,
+    "date": "2026-09-30",
+    "hash": "af84d40d49bcfbfc36cf6802ee464b957a8ec6886cf23b3f121a8859d7bf4d31",
+    "sha": "d8806cba9"
   },
   "src/RimMandrake/TerminalBiomes/Source/RM_SeekGlowExtension.cs": {
     "cleanCount": 1,
