@@ -182,7 +182,9 @@
       <AA_ColossalAerofleet MayRequire="sarg.alphaanimals">0.5</AA_ColossalAerofleet>  <!-- greater bulloo - sky, LARGE -->
       <!-- FORGE_RULED_CONTENT_1 (turn 4 "1) admit."): the four admitted natives,
            Defs/ThingDefs_Races/RM_TheForgeNatives.xml. The dhuvvox's baseline row
-           stands in until FORGE_CYCLE_MECHANICS_1 owns its burst-window spawning. -->
+           spawns them; FORGE_CYCLE_MECHANICS_1's dormancy comp seals the
+           dhokkur/julmox/dhuvvox between rains. Mass dhuvvox eruption at a
+           burst is a later tranche. -->
       <RM_Dhokkur>0.02</RM_Dhokkur>  <!-- dhokkur - GIANT, rain-drinker -->
       <RM_Julmox>0.4</RM_Julmox>  <!-- julmox - ground herd, tamable -->
       <RM_Jossur>0.06</RM_Jossur>  <!-- jossur - sky apex predator -->

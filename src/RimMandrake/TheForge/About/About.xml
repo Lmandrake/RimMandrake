@@ -16,9 +16,14 @@
       <packageId>mandrake.rm.environmentalhazards</packageId>
       <displayName>RimMandrake: Environmental Hazards</displayName>
     </li>
+    <li>
+      <packageId>mandrake.rm.flowworks</packageId>
+      <displayName>RimMandrake: FlowWorks</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
+    <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.environmentalhazards</li>
   </loadAfter>
   <description>THEFORGE_RM_MOD_BUILD_1 (Phase A row 21 of
@@ -49,19 +54,26 @@ wildAnimals spawned only the bare donor Beldon, so the tap's target never
 actually lived on this biome. This mod casts RSW_Beldon in the campaign
 patch instead.
 
-Ships one real behaviour switch, togglable in Mod Settings (default =
-shipped behavior, MOD_OPTIONS_RETROFIT_1 doctrine):
+The fire-and-water grand cycle: the mountain's breath stretches into six
+phases. Still heat; a gas wash that sets flammable ground alight; torrential
+boiling rain that floods the low ground; the freeze, when the open lava
+crusts over into walkable basalt shingle and pumice rubble under huge steam;
+the growth, when floatstone gardens bloom on the crust; and then glowing
+cracks and the melt-back, which burns whatever still stands on the crust.
+The dhokkur stands up only in the boiling rain, and the julmox and dhuvvox
+stay sealed until the rain and its growth window.
 
-  1. The master toggle: turns this mod's own settings-driven behaviour off
-     without touching the biome def itself — the massif, its plants and its
-     animals keep loading and playing exactly as before.
+Real behaviour switches in Mod Settings (default = shipped behavior,
+MOD_OPTIONS_RETROFIT_1 doctrine): the master toggle; weather-pulse bursts;
+the grand cycle and each of its parts (gas wash, flooding, lava freeze,
+destructive melt-back, floatstone gardens, creature dormancy, warning
+letters). All off, the biome still loads and plays; crust left standing
+melts back without harming anything.
 
-The remaining toggles (weather-pulse bursts, tibanna-tap rate, vapor-column
-immunity, tower scatter count, die-off ring density, vent work-speed bonus)
-are scaffolding for FORGE_MECHANICS_1's shared mechanics, matching
-RM_TheRotSettings' own precedent: declared, exposed and shown in this
-screen, but not yet wired to change behaviour — that consolidation is owed
-alongside FORGE_MECHANICS_1's own remaining work, not this build.
+Still scaffolding (declared and shown, not yet wired, matching
+RM_TheRotSettings' precedent): tibanna-tap rate, vapor-column immunity,
+tower scatter count, die-off ring density, vent work-speed bonus — owed
+alongside FORGE_MECHANICS_1's own remaining work.
 
 NOT in this mod: the foundry tower dungeon shell, the Contagion die-off
 ring, the tibanna gas item and its gather mechanism, and the vent-industry

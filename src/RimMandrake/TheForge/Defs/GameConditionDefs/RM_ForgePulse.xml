@@ -24,7 +24,12 @@
 
   <GameConditionDef>
     <defName>RM_ForgePulse</defName>
-    <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_WeatherPulse</conditionClass>
+    <!-- FORGE_CYCLE_MECHANICS_1: the pulse class's own subclass, which keeps
+         every pulse behaviour (bursts, scald, flash window) and adds the
+         six-phase grand cycle around it (Source/RM_GameCondition_ForgeCycle.cs).
+         With "Grand cycle" off in Mod Settings it behaves exactly as the bare
+         RM_GameCondition_WeatherPulse did. -->
+    <conditionClass>RimMandrake.TheForge.RM_GameCondition_ForgeCycle</conditionClass>
     <label>the mountain's breath</label>
     <description>The Forge rains on itself: long still heat, broken by sudden violent bursts of scalding rain that flash back to steam off the hot rock within seconds.</description>
     <canBePermanent>true</canBePermanent>
@@ -40,6 +45,45 @@
         <scaldDamageAmount>4</scaldDamageAmount>
         <scaldDamageIntervalTicks>60</scaldDamageIntervalTicks>
         <onlyUnroofed>true</onlyUnroofed>
+      </li>
+      <!-- The Forge's "Weather-pulse bursts" toggle (RM_TheForgeMod.cs registers
+           this key). -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>TheForge.Pulse</gateKey>
+      </li>
+      <!-- FORGE_CYCLE_MECHANICS_1: every number INVENTED (the item rules the
+           order and content of the phases, not their lengths). -->
+      <li Class="RimMandrake.TheForge.RM_ForgeCycleExtension">
+        <stillHours>48~72</stillHours>
+        <gasWashHours>2~3</gasWashHours>
+        <rainHours>6~9</rainHours>
+        <freezeHours>10~14</freezeHours>
+        <growthHours>54~66</growthHours>
+        <cracksHours>6~8</cracksHours>
+        <meltHours>1.5~2.5</meltHours>
+        <hissLeadHours>1.5</hissLeadHours>
+        <gasWashWaves>2~4</gasWashWaves>
+        <gasWashRadius>7</gasWashRadius>
+        <gasWashCellChance>0.3</gasWashCellChance>
+        <gasWashFireSize>0.3~0.7</gasWashFireSize>
+        <floodReleases>2~4</floodReleases>
+        <floodTilesPerRelease>45</floodTilesPerRelease>
+        <!-- LavaDeep is permanent top terrain (Odyssey lava mutators). LavaShallow
+             is itself temporary (a lava flow) and is left alone. -->
+        <freezableTerrains>
+          <li>LavaDeep</li>
+        </freezableTerrains>
+        <basaltTerrain>RM_BasaltShingle</basaltTerrain>
+        <pumiceTerrain>RM_PumiceRubble</pumiceTerrain>
+        <pumiceChance>0.3</pumiceChance>
+        <maxFrozenCells>6000</maxFrozenCells>
+        <freezeWeather>Fog</freezeWeather>
+        <gardenDef>RM_FloatstoneGarden</gardenDef>
+        <gardenCount>5~10</gardenCount>
+        <gardenStartGrowth>0.35</gardenStartGrowth>  <!-- ripens (0.9) inside the growth phase even with night rest -->
+        <crackTerrain>RM_GlowingCrackCrust</crackTerrain>
+        <meltPawnBurn>18</meltPawnBurn>
+        <meltPawnBurnHits>4</meltPawnBurnHits>
       </li>
     </modExtensions>
   </GameConditionDef>

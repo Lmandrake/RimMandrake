@@ -15,8 +15,8 @@
       Valuable: MarketValue 8 per block. Beautiful: Beauty factor and offset.
     - Obtained ONLY by harvesting RM_FloatstoneGarden (RM_TheForge_Flora.xml);
       stuffProps commonality 0 and generateCommonality 0 so nothing else
-      produces it. The garden's freeze-phase spawn cycle and drift-off belong
-      to FORGE_CYCLE_MECHANICS_1.
+      produces it. The gardens are seeded on the frozen crust and drift off
+      ahead of the melt by RM_GameCondition_ForgeCycle (FORGE_CYCLE_MECHANICS_1).
 
   RM_DhokkurHide: the heat-shielding hide the dhokkur butchers to (ruled
   frame, FORGE_RULED_CONTENT_1 section 2). Vanilla LeatherBase texture tinted
