@@ -43,9 +43,7 @@ namespace RimMandrake.Contagion
         // Tell 1: these sink (stop, settle, throw a puff) when a Burn is near.
         public List<ThingDef> tellSinkers = new List<ThingDef>();
 
-        // Tell 2: these plants rattle when a Burn is near. Empty until the
-        // Rattlegrope port lands (RM_Rattlegrope does not exist yet; the
-        // donor AB_TentacularPlant is not ours to wire).
+        // Tell 2: these plants rattle when a Burn is near (RM_Rattlegrope).
         public List<ThingDef> tellRattlers = new List<ThingDef>();
 
         // Burn damage to a UV-shy native caught in the open, per 250 ticks,
