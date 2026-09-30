@@ -1,7 +1,10 @@
 # CONTAGION_MECHANICS_BUILD_1 — tranche 1 report
 
 ## Status
-Part 1 built (clean build, XML parses). Working on Parts 4/3 next.
+Tranche 1 complete: Parts 1, 3, 4 (weapon) and 2 (v1) built; Part 5 blocked on design.
+Verified offline only: all Contagion Defs XML parse, `dotnet build` 0 errors 0 warnings,
+`run_selftests.py` 76/78 (only the known `selftest_deployed_biome_refs` failure; one
+unmeasured, two skipped). Not deployed, no game/bridge, no live test.
 
 Engine seams checked against decompiled 1.6 via RimSage (connected):
 `WeatherDecider.ForcedWeather` (last active condition's `ForcedWeather()` wins; a
@@ -62,7 +65,19 @@ the Bloom is Neutral so it is not).
 - Art: artpipe `RM_CloudRepulsor_v2` (the owner-ruled beamless housing).
 - Mod Settings: Repulsor on/off; Sunbeam native multiplier.
 
-## Part 5 Limbs
+## Part 5 Limbs — NOT BUILT (blocked on design, not time)
+The item says each limb carries "its cost rider (see cast doc)", but the cast doc
+(`contagion_grotesque_cast_2026-09-27.md`) never mentions any of the five, and the only
+other sources (`the_contagion.md` amendment, the BENCH sitting note) give names only.
+Missing, and not guessable: what each limb does (which carry melee tools, what stat it
+changes), each one's cost rider (the "bargain, never an upgrade" half — ban 6 depends on
+it), install part per limb, and art (no limb textures queued or generated). "Monstrous-
+grade samples roll them" also has no seam: genome samples carry no grade (the only
+"monstrous" in the mod is the Unfinished's `RM_UnfinishedMonstrous` hediff). The engine
+mechanism IS confirmed via RimSage: vanilla Anomaly `Tentacle` = `Hediff_AddedPart`,
+`renderNodeProperties` with `PawnRenderNodeProperties_Spastic` (per-facing drawData,
+drawSize, rotation/spasm ranges), `HediffCompProperties_FleshbeastEmerge` for the
+removal-spawns-a-monster shape — ready to copy once the five are specified.
 
 ## Part 2 Coalescence — BUILT (v1, stationary)
 - `Defs/ThingDefs/RM_Coalescence.xml` + `Building_RM_Coalescence`: one continuous,
@@ -90,4 +105,12 @@ the Bloom is Neutral so it is not).
   the behavioural beat ships.
 - Rattlegrope tell wiring: add `<li>RM_Rattlegrope</li>` to the biome's `tellRattlers`
   when the flora port lands.
-- Live verify (quicktest: Burn only on RM_Contagion; tells precede it) — not run, per brief.
+- Sunbeam ARREST (medical use stopping Contagion-touched progression): no Contagion-
+  touched progression hediff exists to arrest — build that first.
+- Trade tables / quest rewards for Sunbeam and both Repulsors: BENCH's.
+- Coalescence: roaming/heavy AI not built (stationary by design here); the Contagion
+  mulch item for its death spill does not exist.
+- Part 5 grown limbs: needs a per-limb spec (effect, cost rider, install part), art, and
+  a sample-grade seam — see Part 5.
+- Live verify for all of it (quicktest: Burn only on RM_Contagion; tells precede it;
+  Coalescence grows/absorbs/emits and dies to a Repulsor-forced Burn) — not run, per brief.
