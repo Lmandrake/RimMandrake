@@ -8,7 +8,7 @@
 
   Authority: cast bible §3. The heat/dose behavior (CompHeatPusher + an
   ambient tox/radiation hediff-per-rare-tick comp) is
-  WASTELAND_MECHANICS_BUILD_1's scope; this def lands with named stub points.
+  WASTELAND_MECHANICS_BUILD_1's scope; that item wired the comps below.
   Solitary spacing reads from spawn-alone/wildGroupSize 1~1 alone — no
   mental-map spacing mechanic is owed (bible, explicit).
 -->
@@ -71,10 +71,23 @@
     <tradeTags>
       <li>AnimalExotic</li>
     </tradeTags>
-    <!-- WASTELAND_MECHANICS_BUILD_1 STUB POINTS: vanilla CompProperties_HeatPusher
-         (constant heat output) plus an ambient tox/radiation hediff-per-
-         rare-tick comp (dose to nearby pawns, riding the Biotech pollution
-         mechanism per the biome's dose-layer ruling). Deliberately unset. -->
+    <!-- WASTELAND_MECHANICS_BUILD_1 §3: the living furnace. Vanilla heat
+         pusher (settings-gated subclass) + the ambient-dose comp: toxic
+         buildup, via vanilla ToxicUtility, to every pawn in its room when
+         indoors or within 6 cells outdoors. Ambient, never an attack. -->
+    <comps>
+      <li Class="CompProperties_HeatPusher">
+        <compClass>RimMandrake.Wasteland.RM_CompRadiothermalHeat</compClass>
+        <heatPerSecond>12</heatPerSecond>
+        <heatPushMaxTemperature>26</heatPushMaxTemperature>
+      </li>
+      <li Class="RimMandrake.Wasteland.RM_CompProperties_AmbientDose">
+        <radius>6</radius>
+        <toxicFactor>0.35</toxicFactor>
+        <edgeFactor>0.5</edgeFactor>
+        <doseRoomWhenIndoors>true</doseRoomWhenIndoors>
+      </li>
+    </comps>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Smolderback</defName>
