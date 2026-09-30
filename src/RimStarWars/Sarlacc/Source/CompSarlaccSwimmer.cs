@@ -96,6 +96,10 @@ namespace RimMandrake.StarWars.Sarlacc
                 bool digestingNow = devourer.Digesting;
                 if (digestingNow)
                 {
+                    if (!wasDigesting)
+                    {
+                        LeaveTakeSign(devourer.DigestingPawn);
+                    }
                     lastDigestingPawn = devourer.DigestingPawn;
                 }
                 else if (wasDigesting && lastDigestingPawn != null)
@@ -147,6 +151,33 @@ namespace RimMandrake.StarWars.Sarlacc
                 {
                     RootHere(foundSeep: true);
                 }
+            }
+        }
+
+        // LONGSHADE_BEDAZZLE_MECHANICS_1 part 3 (tranche 1) — the owner's condition on
+        // the swimmer: no animal may "disappear spontaneously". Vanilla CompDevourer
+        // despawns the prey on the swallow and drops the body again when digestion
+        // ends (RimSage, CompDevourer.StartDigesting/DropPawn), but in between the
+        // prey is simply gone, and only the player's own pawns get a message. This
+        // marks the swallow itself: churned sand where the prey went under, and a
+        // message for prey that is not the player's (vanilla covers those).
+        private void LeaveTakeSign(Pawn prey)
+        {
+            if (!RSW_SarlaccSettings.takeSignsEnabled || prey == null || !parent.Spawned)
+            {
+                return;
+            }
+            ThingDef sand = DefDatabase<ThingDef>.GetNamedSilentFail("Filth_Sand");
+            if (sand != null)
+            {
+                FilthMaker.TryMakeFilth(parent.Position, parent.Map, sand, 4);
+            }
+            if (prey.Faction != Faction.OfPlayer)
+            {
+                Messages.Message(
+                    "The sand heaves and settles: a sarlacc swimmer has taken " + prey.LabelIndefinite() + ".",
+                    new LookTargets(parent),
+                    MessageTypeDefOf.NeutralEvent);
             }
         }
 
