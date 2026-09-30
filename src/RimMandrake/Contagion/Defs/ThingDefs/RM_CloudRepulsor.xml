@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CONTAGION_MECHANICS_BUILD_1 Part 3 — the Cloud Repulsor.
+
+  Helix trade device (item §3): warmup, then while powered it forces the Burn
+  on a Contagion map and holds plain Clear weather on any other surface map
+  (CompCloudRepulsor). Not player-constructible — acquired by trade or quest
+  and installed (minifiable). Trade tables and quest rewards are BENCH's to
+  wire; no tradeTags are set here so no vanilla trader stocks it by accident.
+
+  RM_CloudRepulsorShip — "the gravship hardpoint variant is the ship touch":
+  the same device and beam, but it installs only on gravship substructure
+  (terrainAffordanceNeeded Substructure, the affordance vanilla Odyssey's own
+  gravship components use), so it rides the ship between maps.
+
+  Art: artpipe job RM_CloudRepulsor_v2 (validated pass, 2026-09-29) — the
+  owner-ruled beamless housing; the violet beam is drawn by the comp at
+  runtime while the device is live. Numbers (power 900 W, warmup 2500 ticks,
+  market value) are this build's INVENTED tuning.
+
+  GameConditionDef RM_RepulsorClearSky: the off-Contagion effect — vanilla
+  GameCondition_ForceWeather holding Clear, re-asserted every 250 ticks by the
+  device for 750 ticks so it lapses on its own when the device stops.
+-->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RM_RepulsorClearSky</defName>
+    <conditionClass>GameCondition_ForceWeather</conditionClass>
+    <label>repulsed sky</label>
+    <description>A Helix cloud repulsor is punching a hole in the sky overhead: no rain, no fog, while it runs.</description>
+    <weatherDef>Clear</weatherDef>
+    <allowUnderground>false</allowUnderground>
+    <canBePermanent>false</canBePermanent>
+    <natural>false</natural>
+  </GameConditionDef>
+
+  <ThingDef ParentName="BuildingBase" Name="RM_CloudRepulsorBase" Abstract="True">
+    <thingClass>Building</thingClass>
+    <tickerType>Normal</tickerType>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <graphicData>
+      <texPath>Things/Building/RM_CloudRepulsor</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2, 2)</drawSize>
+      <shadowData>
+        <volume>(1.6, 0.6, 1.4)</volume>
+      </shadowData>
+    </graphicData>
+    <size>(2, 2)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>30</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <blockWind>true</blockWind>
+    <canOverlapZones>false</canOverlapZones>
+    <techLevel>Spacer</techLevel>
+    <tradeability>All</tradeability>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <WorkToBuild>4000</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Beauty>-6</Beauty>
+      <Mass>60</Mass>
+      <MarketValue>3200</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>900</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+      <li Class="RimMandrake.Contagion.CompProperties_CloudRepulsor">
+        <warmupTicks>2500</warmupTicks>
+        <holdTicks>750</holdTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_CloudRepulsorBase">
+    <defName>RM_CloudRepulsor</defName>
+    <label>cloud repulsor</label>
+    <description>A squat Helix field device that, once warmed up and powered, throws a brilliant violet beam straight up and punches a hole in the sky. Over the Contagion it tears the storm open and holds it open: a man-made Burn, with everything the Burn does to what stands under it. Anywhere else it simply holds the sky clear of rain and fog.</description>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_CloudRepulsorBase">
+    <defName>RM_CloudRepulsorShip</defName>
+    <label>cloud repulsor hardpoint</label>
+    <description>The Helix cloud repulsor built as a gravship hardpoint: the same field device and the same violet beam, mounted to install on gravship substructure so it travels with the ship. Over the Contagion it tears the storm open and holds it open; anywhere else it holds the sky clear of rain and fog.</description>
+    <terrainAffordanceNeeded>Substructure</terrainAffordanceNeeded>
+  </ThingDef>
+
+</Defs>

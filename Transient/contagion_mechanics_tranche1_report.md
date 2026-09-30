@@ -36,9 +36,31 @@ the Bloom is Neutral so it is not).
   `RM_Rattlegrope` is not ported yet.
 - Mod Settings: Burn on/off, tells on/off, frequency, damage factor.
 
-## Part 4 Sunbeam
+## Part 4 Sunbeam — BUILT (weapon); arrest NOT built
+- `Defs/ThingDefs/RM_Sunbeam.xml`: `RM_Sunbeam` (BaseGun, Spacer, 3-shot burst, range
+  19.9, no recipe — trade/quest hook tags only), projectile `RM_Bullet_Sunbeam` (5 dmg),
+  DamageDef `RM_UVBeam`, injury `RM_UVSunburn` (BurnBase, permanent label "sunburn
+  scar", 3x scar chance).
+- `DamageWorker_RM_UV`: multiplies the hit vs any Contagion native (race rostered on a
+  biome carrying the sky extension, + extraNatives) by the settings factor (default 6x).
+- Art: artpipe `RM_Sunbeam` (validated) copied from `_artsrc`, mirrored to face right.
+- NOT built: the ruled ARREST medical use — there is no Contagion-touched progression
+  hediff anywhere in `src/` for it to stop.
 
-## Part 3 Cloud Repulsor
+## Part 3 Cloud Repulsor — BUILT
+- `Defs/ThingDefs/RM_CloudRepulsor.xml`: `RM_CloudRepulsor` (installs on Medium ground)
+  and `RM_CloudRepulsorShip` (the gravship hardpoint variant: installs only on
+  Substructure, the affordance Odyssey's gravship components use). 2x2, 900 W,
+  flickable, breakdownable, minifiable, tradeability All, no designationCategory (Helix
+  trade device), no tradeTags (BENCH wires trade tables/quests).
+- `CompCloudRepulsor`: 2500-tick warmup while powered; once warm, every 250 ticks
+  re-asserts its effect for 750 ticks (so it lapses by itself on power loss / removal):
+  Contagion map → `StartBurn` (forced Burn, full pressure if Burn damage is enabled);
+  any other surface map → `RM_RepulsorClearSky` (vanilla GameCondition_ForceWeather
+  holding Clear). Skipped in vacuum and underground. Violet beam drawn at runtime with
+  vanilla's `Other/OrbitalBeam` texture (owner: beam is the game's, not the art's).
+- Art: artpipe `RM_CloudRepulsor_v2` (the owner-ruled beamless housing).
+- Mod Settings: Repulsor on/off; Sunbeam native multiplier.
 
 ## Part 5 Limbs
 

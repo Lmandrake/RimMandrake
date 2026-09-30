@@ -75,6 +75,13 @@ lifts, UV-shy natives burn and dive for roof, canopy or water, the armored ones
 hunt, and anyone else in the open takes `RM_BurnDose`. Mod Settings: on/off,
 tells on/off, frequency, damage.
 
+Two Helix devices (Parts 3/4, trade/quest items — not constructible): the
+`RM_Sunbeam` UV projector (weak, scarring burns on people; a Mod Settings
+multiplier, default 6x, against Contagion natives) and the `RM_CloudRepulsor`
+(plus the gravship-substructure `RM_CloudRepulsorShip`): powered and warmed up,
+it forces the Burn on a Contagion map and holds the sky clear of rain and fog
+anywhere else, drawing a violet beam while live.
+
 Zero Star Wars content lives in this biome's roster at all — the twin's own
 `wildAnimals` carries no `RSW_`/`SW_`/`mlie.*` row, so no Utinni patch is needed
 for fauna (unlike most sibling RM_ biome mods, there is no `WildAnimals_Contagion.xml`).

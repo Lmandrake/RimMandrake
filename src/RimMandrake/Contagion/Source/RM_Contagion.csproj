@@ -62,6 +62,9 @@
     <Compile Include="RM_ContagionSkyExtension.cs" />
     <Compile Include="RM_MapComponent_ContagionSky.cs" />
     <Compile Include="RM_GameCondition_ContagionBurn.cs" />
+    <!-- CONTAGION_MECHANICS_BUILD_1 Parts 3/4: Cloud Repulsor, Sunbeam -->
+    <Compile Include="CompCloudRepulsor.cs" />
+    <Compile Include="DamageWorker_RM_UV.cs" />
   </ItemGroup>
 
   <ItemGroup>
