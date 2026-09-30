@@ -74,7 +74,7 @@
     </modExtensions>
   </ThingDef>
 
-  <!-- STUB: the lash (strike-once, then recovery droop) is a MAP COMPONENT owned by LEANINGSCRUB_MECHANICS_BUILD_1 - never a plant CompTick (plants only TickLong). Until it lands this is the base thicket in the twitcher palette. The recovery-droop retint is a follow-on art derive. -->
+  <!-- The lash (strike-once, then recovery droop) is RM_CompProperties_Lash below, driven by RM_MapComponent_TwitcherLash (Source/RM_TwitcherLash.cs) - never a plant CompTick (plants only TickLong). The comp holds the tuning and the Scribed ready-tick and shows the spent/poised inspect line. The recovery-droop retint is a follow-on art derive. -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_TwitcherVenomvine</defName>
     <label>twitcher venomvine</label>
@@ -120,6 +120,13 @@
         <blockBodySize>1.5</blockBodySize>
         <threadMoveCost>300</threadMoveCost>
         <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Lash">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>8</damageAmount>
+        <armorPenetration>0.1</armorPenetration>
+        <recoveryTicks>2500</recoveryTicks>
+        <minGrowth>0.5</minGrowth>
       </li>
     </comps>
     <modExtensions>

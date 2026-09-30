@@ -50,6 +50,11 @@ namespace RimMandrake.LeaningScrub
         public static bool galeRaidWeightingEnabled = true;
         public static float galeRaidWeightFactor = 2f;
 
+        // ── part 9: the twitcher lash (RM_TwitcherLash.cs) ──
+        public static bool twitcherLashEnabled = true;
+        public static float twitcherLashDamageFactor = 1f;
+        public static float twitcherLashRecoveryFactor = 1f;
+
         private static Vector2 scroll;
         private static float viewHeight = 900f;
 
@@ -66,6 +71,9 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref galeTurbineBreakdownMtbDays, "galeTurbineBreakdownMtbDays", 3f, true);
             Scribe_Values.Look(ref galeRaidWeightingEnabled, "galeRaidWeightingEnabled", true, true);
             Scribe_Values.Look(ref galeRaidWeightFactor, "galeRaidWeightFactor", 2f, true);
+            Scribe_Values.Look(ref twitcherLashEnabled, "twitcherLashEnabled", true, true);
+            Scribe_Values.Look(ref twitcherLashDamageFactor, "twitcherLashDamageFactor", 1f, true);
+            Scribe_Values.Look(ref twitcherLashRecoveryFactor, "twitcherLashRecoveryFactor", 1f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -111,6 +119,15 @@ namespace RimMandrake.LeaningScrub
                 + "other threat. It does not add threats.");
             list.Label("Raid weight during the Gale: x" + galeRaidWeightFactor.ToString("0.0"));
             galeRaidWeightFactor = list.Slider(galeRaidWeightFactor, 1f, 5f);
+
+            list.GapLine();
+            list.CheckboxLabeled("Twitcher venomvine lashes", ref twitcherLashEnabled,
+                "A twitcher venomvine strikes once at anything that comes within a cell of it, "
+                + "then droops spent for about an hour. Off: it is an ordinary venomvine stand.");
+            list.Label("Lash damage: x" + twitcherLashDamageFactor.ToString("0.00"));
+            twitcherLashDamageFactor = list.Slider(twitcherLashDamageFactor, 0.25f, 3f);
+            list.Label("Lash recovery time: x" + twitcherLashRecoveryFactor.ToString("0.00"));
+            twitcherLashRecoveryFactor = list.Slider(twitcherLashRecoveryFactor, 0.25f, 4f);
 
             viewHeight = list.CurHeight + 20f;
             list.End();
