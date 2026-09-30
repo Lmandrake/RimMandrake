@@ -263,10 +263,10 @@ Two rows — large for craft, true sprite size for whether it reads at all — a
 over a checkerboard so transparency is visible rather than read as black.
 **The validator says shippable; only this says good.**
 
-🔴 **"Good" is judged by Fable-tier review, not the owner (owner's ruling,
+🔴 **"Good" is judged by Opus-tier review, not the owner (owner's ruling,
 2026-09-01).** Art presence in game — magenta, invisible Graphic_Multi, wrong
 texPath — is proven by MACHINE against a screenshot or atlas; art quality and
-style coherence are graded by Fable evaluation. The owner sees art only inside
+style coherence are graded by Opus evaluation. The owner sees art only inside
 a staged review environment, and only for the calls that genuinely need him
 (`infrastructure/VALIDATION_LADDER.md`).
 

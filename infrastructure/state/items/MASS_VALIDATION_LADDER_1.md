@@ -14,8 +14,8 @@ questions."*
 Full ladder design: `infrastructure/VALIDATION_LADDER.md` (owner-ruled,
 2026-09-01) — L0 offline / L1 resolved-live (minimal-list restart + `jawa/get_defs` +
 manifest diff) / L2 behavior gauntlet (batched quicktest, art proven by
-machine) / L3 Fable evaluation (art/style/thematic judgment, bridge in
-Fable's own hands) / L4 human (gameplay/fun/thematic coherence/UI only).
+machine) / L3 Opus evaluation (art/style/thematic judgment, bridge in
+the evaluating agent's own hands) / L4 human (gameplay/fun/thematic coherence/UI only).
 This item builds the machinery; the ladder DOC states the design and is not
 duplicated here.
 

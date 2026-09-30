@@ -68,7 +68,7 @@ memory:
 Only ONE file on disk uses act language (`review/WORLDMAP_FINAL_REVIEW_2026-09-08.md`).
 The campaign has never been written as acts. That is the gap the sitting fills.
 
-## Phase A — the GATHER (BENCH orchestrates; a Fable subagent, backgrounded)
+## Phase A — the GATHER (BENCH orchestrates; an Opus subagent, backgrounded)
 
 Design work is never done in-window (`Agent_Policy.md`). One artifact:
 
@@ -119,7 +119,7 @@ Grouped under exactly these six headings:
 Rules for the gather:
 - **Nothing invented.** Every line has a source path. A gap is written `GAP`, never
   filled with a plausible sentence. The brief to the subagent says this in its first
-  line and its last, because a Fable subagent handed a story will write the story.
+  line and its last, because a design subagent handed a story will write the story.
 - **Dead or live?** Where a fragment's status is in doubt, use the two-blind-arms
   discipline (memory `two-blind-arms-doc-audit`): one arm reads the fragment list
   only, one reads the rulings only; a fragment is marked SUPERSEDED only where both
@@ -181,7 +181,7 @@ CAMPAIGN_ARC.md exists and is propagated; the generation wave is its successor.
 - Phase C items filed, one per owed transition, each citing the arc beat it serves.
 
 ## traps
-- **The gather is an extract, not an authoring pass.** A Fable subagent handed "the
+- **The gather is an extract, not an authoring pass.** A design subagent handed "the
   campaign story" will write a beautiful one. Forbid it in the first line of the
   brief; grade the return by sampling quotes against their sources.
 - **Frozen sheets** (`BIOME_FREEZE_FABLE_REVIEW_1`): amendments add detail and never

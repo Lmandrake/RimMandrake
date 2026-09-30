@@ -6,7 +6,7 @@ color in palette and more plants."
 
 ## spec
 
-A design pitch pass per biome (Fable, backgrounded): new invented flora in each
+A design pitch pass per biome (Opus, backgrounded): new invented flora in each
 biome's own accent, collision-swept, each with a role (food / material / hazard
 / beauty), palette-diverse per the owner's uniformity ruling (LESSONS_INBOX
 2026-09-29). Pitches go to the owner as sitting rows; admitted rows land on the

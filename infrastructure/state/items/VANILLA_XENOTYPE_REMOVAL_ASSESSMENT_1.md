@@ -152,7 +152,7 @@ question, because the wiring is nearly uniform:
 ## Still owed after he rules
 
 - The niche-coverage half — "does an `RSW_RimMandrake*` species already fill this role" —
-  is genuine design judgment and is **not** answered here. It wants a Fable pass against
+  is genuine design judgment and is **not** answered here. It wants an Opus design pass against
   the canon library, per xenotype, once he has picked cut-vs-spawn-block.
 - If he picks spawn-block: the list of faction xenotype sets to patch is in the raw
   output, faction by faction.

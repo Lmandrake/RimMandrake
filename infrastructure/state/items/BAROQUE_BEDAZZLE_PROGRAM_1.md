@@ -18,7 +18,7 @@ once.
 
 1. **Review what's there.** Source, roster, frozen sheet, ledger — read before
    inventing (the standing law: this project keeps having already built it).
-   A Fable design pass writes the review + gap census.
+   An Opus design pass (backgrounded subagent) writes the review + gap census.
 2. **Fill the roster.** Flora and fauna holes filled with NEW invented
    creatures (never a neighbour's — one biome, one home), names in the biome's
    own accent, collision-proven on both instruments.

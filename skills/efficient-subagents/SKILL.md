@@ -64,10 +64,10 @@ One question. Bounded inputs. An explicit stop condition.
   conversational turn.** A script cleared ~1,750 items in ~22 minutes where a
   turn-by-turn agent died at 10 minutes having done a handful.
 - 🔴 **Always pass `model`.** Omitting it inherits the parent — which is how every
-  grep in this project's history ran on Opus. `haiku` for greps, censuses and
-  existence checks; `sonnet` when the agent must interpret what it finds; `opus`
-  only if you will act on the return without re-deriving it, which means asking why
-  it is a subagent. Full ladder: `infrastructure/agents/Agent_Policy.md`.
+  grep in this project's history ran on Opus. `haiku` only for OS-level searches — greps, globs,
+  censuses, existence checks; `sonnet` for well-defined coding with a checkable
+  outcome and for sweeps that must interpret what they find; `opus` for design,
+  complex code generation, and anything acted on without re-deriving it. Full ladder: `infrastructure/agents/Agent_Policy.md`.
 - 🔴 **A task-scoped negative instruction to a fork must explicitly SUSPEND the
   seat's own standing autonomy doctrine, not just state the narrower task.** A
   fork given "recon only, do NOT touch the bridge, do NOT claim/start/modify
