@@ -1,0 +1,743 @@
+{
+ "biome": "RM_Contagion",
+ "samples": [
+  {
+   "t": 22,
+   "ticks": 420164,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 33
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 42,
+   "ticks": 434666,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 33
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 63,
+   "ticks": 447587,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 33
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 83,
+   "ticks": 458898,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 33
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 104,
+   "ticks": 474846,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 34
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 124,
+   "ticks": 486144,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 30
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 145,
+   "ticks": 497500,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 31
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 167,
+   "ticks": 510000,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 188,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 208,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 228,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 248,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 268,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 289,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 309,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 329,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 349,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 369,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 389,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 410,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 430,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 450,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 470,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 490,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 511,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 531,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 551,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 571,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 591,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 612,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 632,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 652,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 672,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 692,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 712,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 733,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 753,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 773,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 793,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 813,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 833,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 854,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 874,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 894,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 914,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 934,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 955,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 975,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 995,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1015,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1035,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1056,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1076,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1096,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1116,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1136,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1157,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1177,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1197,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1217,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1237,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1257,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1278,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1298,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 1318,
+   "ticks": 510750,
+   "weather": "RM_ContagionBloom",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 32
+   },
+   "terrainDelta": {}
+  }
+ ],
+ "terrain0": {
+  "GU_AlienSand": 41658,
+  "Gravel": 4786,
+  "GU_AlienSandFine": 4063,
+  "Limestone_Rough": 3399,
+  "MR_BasaltBase_Rough": 2258,
+  "GU_RichAlienSand": 1875,
+  "Granite_Rough": 1652,
+  "WaterMovingShallow": 1627,
+  "WaterMovingChestDeep": 358,
+  "AncientConcrete": 249,
+  "AM_JewishTileMarble": 149,
+  "AM_FlagstonePristineLimestone": 124,
+  "AM_SteampunkTileMarble": 100,
+  "VFEArch_CobblestoneFloorGranite": 69,
+  "AncientTile": 40,
+  "BrokenAsphalt": 30,
+  "AM_MesoamericanTileSlate": 29,
+  "AM_KemeticTileMudstone": 13,
+  "OuterRim_BrickRoadPatterned_Slate": 12,
+  "TileGranite": 8,
+  "Soil": 1
+ }
+}
