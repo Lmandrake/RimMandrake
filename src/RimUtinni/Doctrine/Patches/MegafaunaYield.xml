@@ -3873,38 +3873,6 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Mo'Events (Continued)</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- MO_AbominationRace MeatAmount: bodySize 2.00, base 280, yields 560 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="MO_AbominationRace"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="MO_AbominationRace"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="MO_AbominationRace"]/statBases</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- MO_AbominationRace BoneAmount: bodySize 2.00, base 100, yields 200 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="MO_AbominationRace"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="MO_AbominationRace"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>100</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="MO_AbominationRace"]/statBases</xpath>
-            <value><BoneAmount>100</BoneAmount></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>Odyssey</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
