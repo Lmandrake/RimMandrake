@@ -193,6 +193,14 @@
       <!-- Deliberately empty — see the header comment. Wired by
            src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml. -->
     </allowedPackAnimals>
+    <modExtensions>
+      <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "lowSun" - the Deep Desert (this def merges deep_desert.md + dune_sea.md): "a low sun in the deep desert, so a shield you stand behind works and overhead shade does not".
+           heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <heatKind>lowSun</heatKind>
+        <heatOffsetC>35</heatOffsetC>
+      </li>
+    </modExtensions>
   </BiomeDef>
 
 </Defs>

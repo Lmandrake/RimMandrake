@@ -54,6 +54,12 @@
         <deepTerrain>RUT_ScaldWaterOceanDeep</deepTerrain>
         <shallowTerrain>RUT_ScaldWaterOceanShallow</shallowTerrain>
       </li>
+      <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - the Scald: the_scald.md "A crater sea that boils. Volcanic heat rises under it".
+           heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <heatKind>ambient</heatKind>
+        <heatOffsetC>15</heatOffsetC>
+      </li>
     </modExtensions>
 
     <!-- Genuine canon Star Wars residents (sando aqua monster, faa, mee) ride
