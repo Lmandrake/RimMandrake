@@ -35,7 +35,15 @@ namespace RimMandrake.DivingInteraction
 
             // Clear the cell first: a jacket is an Impassable edifice and
             // cannot share a cell with a pillar or a dome that scattered here.
-            cell.GetEdifice(map)?.Destroy();
+            // An indestructible edifice (the dive exit, destroyable=false) is
+            // never destroyed: the engine refuses and logs an error. No
+            // encasement on such a cell (SEA_DIVE_LIVE_ERRORS_1).
+            Building edifice = cell.GetEdifice(map);
+            if (edifice != null && !edifice.def.destroyable)
+            {
+                return false;
+            }
+            edifice?.Destroy();
 
             RM_Building_BrineEncasement jacket =
                 (RM_Building_BrineEncasement)ThingMaker.MakeThing(jacketDef);

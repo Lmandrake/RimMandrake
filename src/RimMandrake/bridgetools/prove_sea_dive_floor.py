@@ -49,9 +49,16 @@ def xz(pos):
     return q[0], q[-1]
 
 def loaded_maps():
-    # set_current_map refuses an unknown id and lists every loaded map.
+    # set_current_map refuses an unknown id and lists every loaded map - UNDER "details"
+    # (JawaBenchTerrainTools.Fail(message, extra) -> {success, message, details}). Reading a
+    # top-level "loadedMaps" returned {} every time, so the 2026-09-30 run reported "no pocket
+    # map generated" x4 while Player.log showed maps 2-5 generated pocket=True
+    # (SEA_DIVE_LIVE_ERRORS_1). An empty listing is a broken instrument, never "no maps".
     r = call("jawa/set_current_map", mapId=-987654)
-    return {m["mapId"]: m for m in (r.get("loadedMaps") or [])}
+    maps = (r.get("details") or {}).get("loadedMaps") or r.get("loadedMaps") or []
+    if not maps:
+        raise RuntimeError("loaded_maps(): no map listing in %r - instrument broken" % (r,))
+    return {m["mapId"]: m for m in maps}
 
 def terrain_census(map_id, sx, sz):
     c = collections.Counter(); read = 0
@@ -113,6 +120,15 @@ try:
         mi = call("jawa/map_info"); sx, sz = mi.get("sizeX"), mi.get("sizeZ")
         terr, read = terrain_census(mid, sx, sz)
         plants = collections.Counter(th.get("def") for th in (call("jawa/list_things", group="Plant", limit=100000).get("things") or []))
+        # SEA_DIVE_LIVE_ERRORS_1: exactly one exit, and not standing in water (the Grey Sea
+        # basin used to carve over it).
+        exits = call("jawa/list_things", defName="RM_SeaDiveExit").get("things") or []
+        exit_terr = []
+        for ex in exits:
+            ex_x, ex_z = xz(ex)
+            tr = call("jawa/get_terrain_batch", rects="%d,%d,1,1" % (ex_x, ex_z), mapId=mid)
+            exit_terr.append((tr.get("ops") or "").split(":")[0])
+        print("exits", len(exits), "exit terrain", exit_terr)
         print("map biome", mi.get("mapBiome"), "size", sx, sz, "cellsRead", read)
         print("terrain:", json.dumps(dict(terr.most_common(20))))
         print("plants:", json.dumps(dict(plants.most_common(30))))
@@ -121,6 +137,8 @@ try:
         # Sanity: the census must see the base floor, or it cannot see anything.
         if terr.get(expect_terr[0], 0) == 0:
             verdicts[sea] = "UNMEASURED (base floor %s not seen - census broken?)" % expect_terr[0]
+        elif len(exits) != 1 or any("BrinePool" in t for t in exit_terr):
+            verdicts[sea] = "FAIL (dive exit: %d found, terrain %s)" % (len(exits), exit_terr)
         elif missing_t:
             verdicts[sea] = "FAIL (band terrains absent: %s)" % missing_t
         elif expect_plants and sum(plants.get(x, 0) for x in expect_plants) == 0:
