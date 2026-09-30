@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T05:03:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T05:25:46Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1198,7 +1198,7 @@ summary:  1. Sun exposure feeds vanilla heat. A pawn standing in unshaded sun on
 prose:    infrastructure/state/items/SOLAR_HEAT_EXPOSURE_1.md
 
 ## LONGSHADE_BEDAZZLE_MECHANICS_1 Long Shade bedazzle mechanics: golden-hour perpetual sunset + pinned sun angle, mirrak false-shadow ambusher, swimmer's road (one young sarlacc, visible signs of every loss), Crawler Road wreck line, Long Carry sun graves
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1865,6 +1865,16 @@ kind:     task
 blocked:  Offline build complete; needs Long Shade quicktest (game-up) + owner-watched strictness sitting
 summary:  1. Sun exposure feeds vanilla heat. A pawn standing in unshaded sun on a sun-heat map takes
 prose:    infrastructure/state/items/SOLAR_HEAT_EXPOSURE_1.md
+
+## LONGSHADE_BEDAZZLE_MECHANICS_1 Long Shade bedazzle mechanics: golden-hour perpetual sunset + pinned sun angle, mirrak false-shadow ambusher, swimmer's road (one young sarlacc, visible signs of every loss), Crawler Road wreck line, Long Carry sun graves
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Offline tranches done; needs quicktest (game-up), smoke calendar, audio, owner tuning
+summary:  1. Golden hour (owner: "I like the golden hour concept. A perpetual beautiful sunset.").
+prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_MECHANICS_1.md
 
 ## LONGSHADE_BEDAZZLE_CONTENT_1 Long Shade bedazzle content: wire the finished-but-unwired art (7 magenta creatures + vorrel family), five filler defs, qorrax rename, glitter-bird/pirrik dedupe, gloomcast own art, AA texture deps, mirrak def, maidenbloom + review-gated fills
 state:    doing  (BLOCKED)
