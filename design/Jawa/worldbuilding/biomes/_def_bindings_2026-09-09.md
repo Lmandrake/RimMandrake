@@ -29,7 +29,7 @@ ground**; the tile column sums to 21,872.
 | `RUT_CrackedLands` | 970 | `the_cracked_lands.md` | **YES** — §10 "The bestiary sorts — a fauna divided by TIME, not space" | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml` |
 | `RUT_AridShrubland` | 628 | `arid_shrubland.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_AridShrubland.xml` |
 | `RM_TwilightSea` | 607 | `terminator_sea.md` (surface); `the_twilight_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TwilightSea.xml` |
-| `RUT_PoisonForest` | 546 | `cauldron.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PoisonForest.xml` (defName rename BLOCKED — live tiles, `CAULDRON_FULL_RENAME_1`) |
+| `RUT_Cauldron` | 546 | `cauldron.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Cauldron.xml` (renamed from `RUT_PoisonForest` 2026-09-30, `CAULDRON_FULL_RENAME_1`, question-card decision — live tiles ride to the paint-once-at-the-end repaint) |
 | `RM_GreySea` | 472 | `terminator_sea.md` (surface); `the_grey_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml` |
 | `RM_TheScald` | 312 | `the_scald.md` | no | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml` |
 | `RUT_RustCathedral` | 236 | `the_rust_cathedral.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_RustCathedral.xml` |
@@ -117,7 +117,7 @@ tolerances/sowTags/texPath; it is the `POOL` constant read by
 narrative-category keys, holding **20** distinct BiomeDef defName keys, all of
 them painted `RUT_*`/`ZBiome_Grasslands` defs: `RUT_AridShrubland,
 RUT_Contagion, RUT_CrackedLands, RUT_Desert, RUT_ExtremeDesert, RUT_FeverWood,
-RUT_ForsakenCrags, RUT_Greentide, RUT_Miasma, RUT_PoisonForest, RUT_Scarlands,
+RUT_ForsakenCrags, RUT_Greentide, RUT_Miasma, RUT_Cauldron, RUT_Scarlands,
 RUT_Slime, RUT_Sump, RUT_TheForge, RM_TheRot, RUT_Umbra, RUT_Wasteland,
 RUT_Webwork, RUT_WeepingStones, ZBiome_Grasslands`. The other **7** painted
 defs are in the module's own `PLANTLESS` set on purpose — `RUT_NightsideIce,

@@ -152,9 +152,10 @@ FAMILIES = {
     'AB_HardyGrass': 1.0, 'GRimMoss': 0.8, 'RUT_TwistingThorngrass': 0.5,
     'RUT_TwistingThornweed': 0.4, 'RUT_TwistingThornwood': 0.2,
     'AB_GargantuanLithops': 0.15},
-  'RM_Cauldron': {   # RM_ mod built 2026-09-25, POISONFOREST_RM_MOD_BUILD_1 — was
-                          # RUT_PoisonForest (still frozen, world-carrying twin, identical
-                          # content). 546 tiles · 9 plants — AB_CrystalHorn moved out (owner review
+  'RM_Cauldron': {   # RM_ mod built 2026-09-25, POISONFOREST_RM_MOD_BUILD_1 — twin is
+                          # RUT_Cauldron (renamed from RUT_PoisonForest 2026-09-30,
+                          # CAULDRON_FULL_RENAME_1), still frozen, world-carrying, identical
+                          # content. 546 tiles · 9 plants — AB_CrystalHorn moved out (owner review
                           # 2026-09-20: "propane lakes and blue desert only"); AB_GiantToxicFlower
                           # moved in (SHEET_ORPHAN_CONSUMPTION_1: wasteland -> here, "poison forest")
     'RUT_TwistingThornwood': 0.6, 'RUT_TreeMartyr': 0.5,

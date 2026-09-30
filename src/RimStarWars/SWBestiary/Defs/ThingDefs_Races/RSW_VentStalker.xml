@@ -117,7 +117,7 @@
       <gestationPeriodDays>10</gestationPeriodDays>
       <lifeExpectancy>10</lifeExpectancy>
       <wildBiomes>
-        <RUT_PoisonForest>0.05</RUT_PoisonForest>
+        <RUT_Cauldron>0.05</RUT_Cauldron>  <!-- CAULDRON_FULL_RENAME_1 (2026-09-30): renamed from RUT_PoisonForest -->
       </wildBiomes>
       <lifeStageAges>
         <li>

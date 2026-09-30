@@ -13,7 +13,7 @@ family a shared plant is kinship; across two it is the zoo effect he objected to
 generator refuses to build if any plant crosses.
 
 ⭐ **His three named favourites all have a home** — `Plant_TreeDrago` in `Desert`,
-`BMT_Plant_TreeTwistingThornwood` and `BMT_Plant_TreeMartyr` in `PoisonForest`, where the
+`BMT_Plant_TreeTwistingThornwood` and `BMT_Plant_TreeMartyr` in the Cauldron, where the
 rest of the Polluted Lands trees live.
 
 ⛔ **Four plants are CUT and appear nowhere below** — `Plant_TreePine`, `Plant_TreeBirch`,
@@ -86,7 +86,7 @@ original commissioning snapshot, kept for provenance, not the live state.
 | 0.2 | **twisting thornwood** | 🌳 | `RUT_TwistingThornwood` · RimUtinni Patches (Jawa campaign) |
 | 0.15 | **gargantuan lithops** |  | `AB_GargantuanLithops` · Alpha Biomes |
 
-### `RUT_PoisonForest` — 546 tiles · -10 … 41 °C (median 11) · plantDensity 0.5
+### `RUT_Cauldron` — 546 tiles · -10 … 41 °C (median 11) · plantDensity 0.5
 
 *was 9 inherited plants → now **9** assigned*
 

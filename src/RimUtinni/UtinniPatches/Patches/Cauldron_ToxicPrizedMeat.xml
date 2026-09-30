@@ -13,7 +13,7 @@
 
   Three of the four keepers are foreign donor defs, so each is wrapped in
   PatchOperationFindMod on the owning mod, same as this biome's own
-  wildAnimals wiring (RUT_PoisonForest.xml) and the same mod-name strings
+  wildAnimals wiring (RUT_Cauldron.xml) and the same mod-name strings
   already proven live in this repo's own MegafaunaYield.xml ("Alpha
   Animals", "Horrors (Continued)", "Star Wars Animal Collection
   (Continued)"). RSW_Screecher is ours (mandrake.rsw.swbestiary, always

@@ -16,7 +16,7 @@
     MEASURED (sheet SS0): 1,126 tiles, arc p10/median/p90 73/90/108 (sitting exactly
     on the terminator at the median). War-legacy split (sheet SS0): Wasteland is the
     POISONED legacy — conventional radiation and chemical contamination, never
-    Assailant bioweapon content (that is PoisonForest's and the Contagion's lane).
+    Assailant bioweapon content (that is the Cauldron's and the Contagion's lane).
 
     Weather: ban 5 is explicit — "No rain (R-H1: rain falls only at the greatest
     altitudes; the Wasteland is not one)" — so Rain/RainyThunderstorm are zeroed.
@@ -142,7 +142,7 @@
       <RSW_Maligoat MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Maligoat>  <!-- maligoat - wretched-herd, keep -->
       <!-- MULTI-HOMED ON PURPOSE - owner approved 2026-09-22 (BIOME_SPECIFIC_FAUNA_LAW_1):
            the screecher is a real flier (MaxFlightTime 35.0) that MIGRATES in from the wetter
-           RUT_PoisonForest to lay in the heat. It is the law's own carve-out, not a violation.
+           RUT_Cauldron to lay in the heat. It is the law's own carve-out, not a violation.
            ⛔ Do not "fix" it by cutting either home. -->
       <RSW_Screecher MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import; hot end of the migration -->
       <GR_Molebear MayRequire="vanillaexpanded.vgeneticse">0.4</GR_Molebear>  <!-- molebear - wretched-medium, keep -->

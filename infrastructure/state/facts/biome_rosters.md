@@ -55,7 +55,7 @@ plan that is not mostly about `mlie.starwarsanimalcollection` and
 | `RUT_Greentide` | 2 | 0 | 36 | 0 | swanimals:30, alphabiomes:2, alphaanimals:2 |
 | `RUT_ExtremeDesert` | 0 | 0 | 22 | 3 | swanimals:10, droiddepot:7, alphaanimals:4 |
 | `RUT_Miasma` | 10 | 0 | 20 | 7 | alphaanimals:10, swanimals:9 |
-| `RUT_PoisonForest` | 1 | 0 | 16 | 9 | alphaanimals:8, swanimals:3, alphamemes:3 |
+| `RUT_Cauldron` | 1 | 0 | 16 | 9 | alphaanimals:8, swanimals:3, alphamemes:3 |
 | `RUT_FeverWood` | 3 | 0 | 15 | 0 | swanimals:10, alphabiomes:3 |
 | `RUT_ForsakenCrags` | 0 | 0 | 14 | 6 | alphaanimals:14 |
 | `RUT_Wasteland` | 7 | 1 | 12 | 1 | alphaanimals:5, vgeneticse:4 |

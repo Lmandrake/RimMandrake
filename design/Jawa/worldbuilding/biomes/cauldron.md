@@ -3,10 +3,17 @@
 > 🔄 **RENAMED — `CAULDRON_FULL_RENAME_1`, 2026-09-29.** "Poison ground gets
 > renamed to this biome" (owner-typed). This file was `poison_forest.md`; the
 > RM_ tier's defName/mod/namespace all moved to Cauldron naming. The frozen
-> campaign twin `RUT_PoisonForest` keeps its OLD defName — 546 live world
+> campaign twin was `RUT_PoisonForest` at that pass — 546 live world
 > tiles, defName rename BLOCKED pending an owner call, same shape as
 > `CRACKEDLANDS_FULL_RENAME_1`. The prose below is unchanged (an amendment,
 > not a ruling change) and still uses the old name throughout.
+
+> 🔄 **AMENDED — `CAULDRON_FULL_RENAME_1`, 2026-09-30, question-card decision.**
+> The block above is now stale on one point: the campaign twin's defName IS
+> renamed, `RUT_PoisonForest` → `RUT_Cauldron`. Its 546 live world tiles ride
+> to the paint-once-at-the-end repaint (CLAUDE.md: a biome on 0 tiles
+> mid-migration is expected, not a defect). The prose below still uses the
+> old name throughout — an amendment, not a ruling change.
 
 > 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
 > sheet are frozen: **amendments add detail; they never change a ruling.** The
