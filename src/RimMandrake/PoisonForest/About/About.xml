@@ -43,8 +43,15 @@ longer depends on Alpha Biomes; RM_Xithess (a filter-frond with a vent-chemistry
 yield) joins them. Three owned natives are added (RM_Vexxiss, RM_Zisska,
 RM_Eskith, with RM_Vexxith shear material and RM_ZisskaMeat) and four Alpha
 Animals imports (Plasmorph, Lucifer bug, Radyak, Ripper hound), each
-MayRequire'd. Not yet built (needs C#): the vexxiss's wild-shear job and
-fire-warden behaviour, the growth-scaled metal second yield on both trees.
+MayRequire'd. The thornwood and martyr tree carry a growth-scaled metal
+second yield.
+
+CAULDRON_MECHANICS_BUILD_1: the biome's four own weathers (scatter-dusk, vapour
+bank, dewfall, vent bloom) replace the donor fog; a vent bloom builds a slow
+metal-load condition on anyone outdoors under open sky. The vexxiss puts out
+fires, goes for whoever started them, and turns the water it wades through
+toxic. Each is a Mod Settings toggle. Not yet built: the vexxiss's wild-shear
+job and vent inhaling.
 
 ⚠️ Not fully donor-free: the world-map texture (Biomes/PoisonForest, BiomesPlus)
 carries no MayRequire, inherited unchanged from the frozen campaign twin. The
