@@ -55,6 +55,7 @@
     <Compile Include="RM_SeaDiveHatch.cs" />
     <Compile Include="PlaceWorker_NeedsGravEngine.cs" />
     <Compile Include="GenStep_SeaFloorTerrain.cs" />
+    <Compile Include="RM_SeaFloorBandsExtension.cs" />
     <Compile Include="GenStep_SeaFloorFauna.cs" />
     <Compile Include="GenStep_PlaceSeaDiveExit.cs" />
     <Compile Include="GenStep_GreySeaFloorDressing.cs" />

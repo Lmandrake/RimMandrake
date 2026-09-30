@@ -151,6 +151,14 @@ namespace RimMandrake.DivingInteraction
         // this mechanic ADDS simply stops existing when it is off.
         public static bool chillAuroraSurgeEnabled = true;
 
+        // SEA_DIVE_FLOOR_TERRAIN_1, 2026-09-30. Per-sea habitat terrain
+        // bands on the dive floor (GenStep_SeaFloorTerrain +
+        // RM_SeaFloorBandsExtension). Affects map generation only: off, a
+        // newly generated sea floor is one plain terrain and tag-gated floor
+        // flora (crowncarpet, the Chill's bed/shelf garden) has nowhere to
+        // grow. Floors already generated keep their terrain either way.
+        public static bool seaFloorBandsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -167,6 +175,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref chillThermalFootprintsEnabled, "chillThermalFootprintsEnabled", true);
             Scribe_Values.Look(ref chillDrownedAuroraEnabled, "chillDrownedAuroraEnabled", true);
             Scribe_Values.Look(ref chillAuroraSurgeEnabled, "chillAuroraSurgeEnabled", true);
+            Scribe_Values.Look(ref seaFloorBandsEnabled, "seaFloorBandsEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -185,6 +194,14 @@ namespace RimMandrake.DivingInteraction
                     "Shipped default: ON. The owner's ruling is that a gravship is the sole way "
                   + "to reach a sea floor — turning this off lets the hatch be built anywhere, for "
                   + "testing or a different ruleset, but that is not the shipped experience.");
+
+                list.Gap();
+                list.CheckboxLabeled("Sea floors: habitat terrain bands (map generation)", ref seaFloorBandsEnabled,
+                    "Shipped default: ON. AFFECTS MAP GENERATION. A newly generated sea floor gets "
+                  + "each sea's own habitat terrain in patches (the Scald's mat-ringed hot pools, "
+                  + "the Chill's propane crust and liquid pools) so its floor flora can grow. Off: "
+                  + "the floor is one plain terrain and that flora never appears. Floors already "
+                  + "generated are unchanged either way.");
 
                 list.Gap();
                 list.CheckboxLabeled("Grey Sea: brine pools crystallise intruders", ref greyPoolDefenceEnabled,
