@@ -32,8 +32,21 @@
 
     ⚠️ NOT donor-free: terrain/texture entries carry no MayRequire (inherited
     from the twin, not this build's scope to fix) — see About.xml for the
-    disclosure. RUT_RustPuff keeps its existing
-    MayRequire="mandrake.rut.rotsporekit" cross-mod dependency, unchanged.
+    disclosure.
+
+    🔧 FIXED 2026-09-29 (CONTAGION_FINAL_BAN_SWEEP_1): the wildPlants row named
+    `RUT_RustPuff` with `MayRequire="mandrake.rut.rotsporekit"` — dead on
+    arrival. `mandrake.rut.rotsporekit` was absorbed into `mandrake.rm.therot`
+    on 2026-09-24 (THEROT_RM_MOD_BUILD_1, `df79753dc`), a day BEFORE this mod
+    was built by copying the twin verbatim, and the plant itself was renamed
+    `RM_RustPuff` in that same absorption
+    (src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_Flora.xml).
+    So the row named a defName that has never existed and gated on a
+    packageId that no About.xml has ever declared — the entry could never
+    resolve and the plant could never spawn here, regardless of TheRot's
+    load state. Now `RM_RustPuff` / `MayRequire="mandrake.rm.therot"`.
+    Other files across the repo still cite the stale `RUT_RustPuff` name —
+    out of this mod's scope, left for a separate sweep.
 
     ⭐ SUPERSEDED 2026-09-29 (CONTAGION_RULED_CONTENT_1 Wave A, then
     CONTAGION_FLORA_PORT_1): every donor AA_/AB_ row and RUT_Sytheclaw (never
@@ -198,7 +211,7 @@
       <RM_Rattlegrope>0.4</RM_Rattlegrope>  <!-- rattlegrope - the second tell -->
       <RM_Sapblister>0.4</RM_Sapblister>  <!-- sapblister - sap/wound-sealant source -->
       <RM_BloodyFist>0.3</RM_BloodyFist>  <!-- bloody fist - seed-fist fertilizer source -->
-      <RUT_RustPuff MayRequire="mandrake.rut.rotsporekit">0.3</RUT_RustPuff>  <!-- rust puff -->
+      <RM_RustPuff MayRequire="mandrake.rm.therot">0.3</RM_RustPuff>  <!-- rust puff -->
       <RM_HalfmadeTreeBlighted>0.15</RM_HalfmadeTreeBlighted>  <!-- blighted halfmade tree - front-line variant -->
       <RM_Meatvine>0.35</RM_Meatvine>  <!-- meatvine - infection-front vine -->
       <RM_Toothmoss>0.3</RM_Toothmoss>  <!-- toothmoss - burn-line carpet -->

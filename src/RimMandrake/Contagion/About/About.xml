@@ -103,13 +103,16 @@ of 52 species `BIOME_SPECIFIC_FAUNA_LAW_1` lists as multi-homed and
 unadjudicated; multi-home evictions are stopped by owner ruling, so it is not
 moved or renamed here.
 
-⚠️ Not entirely donor-free: all ten `wildPlants` rows and the terrain/texture
-fields carry no `MayRequire`, inherited unguarded from the frozen campaign twin
-(pre-existing gap, not introduced by this build). The eleven `wildAnimals` rows
-keep their original `MayRequire="sarg.alphaanimals"` gates (bar `RUT_Sytheclaw`,
-above) and degrade gracefully without it. `RUT_RustPuff` is a real cross-mod
-dependency on `mandrake.rut.rotsporekit`, kept as the twin had it, pending that
-kit's eventual absorption into `mandrake.rm.therot`.
+✅ CORRECTED 2026-09-29 (CONTAGION_FINAL_BAN_SWEEP_1): the paragraph this
+replaces described the pre-port donor roster (ten `wildPlants` rows on
+`sarg.alphaanimals`/`sarg.alphabiomes` gates) — stale since
+`CONTAGION_RULED_CONTENT_1` Wave A and `CONTAGION_FLORA_PORT_1` replaced the
+whole roster. Current state: `wildAnimals` (21 rows) and `wildPlants` (13
+rows) are entirely `RM_`-owned with one exception, `RM_RustPuff`
+(`MayRequire="mandrake.rm.therot"`, a real cross-mod dependency on The Rot's
+kit — RustPuff itself lives in `mandrake.rm.therot`, not here). Terrain/
+texture fields still carry no `MayRequire` (inherited unguarded from the
+frozen campaign twin, pre-existing gap, not introduced by this build).
 
 NOT in this mod: the Ashfall Research Base and every other campaign plot hook
 (`OCULAR_OVERDRIVE_SITE_1`); F5, "the Contagion die-off ring," which is a
