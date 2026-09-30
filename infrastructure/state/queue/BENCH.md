@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T07:49:16Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-30T11:43:43Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1000,6 +1000,6 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BEDAZZLE_ENRICHMENT_REVIEW_REST_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Leaning Scrub GPT enrichment cards. GPT's answer is in the committed consult folder
 prose:    infrastructure/state/items/BEDAZZLE_ENRICHMENT_REVIEW_REST_1.md
