@@ -53,6 +53,7 @@
     <Compile Include="RM_LeaningScrubMod.cs" />
     <Compile Include="RM_LeaningScrubDefOf.cs" />
     <Compile Include="RM_WindCalendar.cs" />
+    <Compile Include="RM_TwitcherLash.cs" />
   </ItemGroup>
 
   <ItemGroup>
