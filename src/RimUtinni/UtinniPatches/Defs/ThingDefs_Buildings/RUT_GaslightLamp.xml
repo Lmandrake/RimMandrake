@@ -50,6 +50,7 @@
     <pathCost>14</pathCost>
     <rotatable>false</rotatable>
     <size>(1,1)</size>
+    <tickerType>Normal</tickerType>
     <statBases>
       <MaxHitPoints>80</MaxHitPoints>
       <WorkToBuild>900</WorkToBuild>
