@@ -56,6 +56,7 @@
       <visualSizeRange>0.55~0.85</visualSizeRange>
       <topWindExposure>1.0</topWindExposure>
       <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_FuzzFiber</harvestedThingDef>  <!-- smother-craft input, LEANINGSCRUB_MECHANICS_BUILD_1 part 4 -->
       <harvestYield>2</harvestYield>
       <harvestWork>40</harvestWork>
       <harvestAfterGrowth>0.3</harvestAfterGrowth>
