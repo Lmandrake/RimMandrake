@@ -556,7 +556,6 @@
       <ComfyTemperatureMin>-100</ComfyTemperatureMin>
       <ComfyTemperatureMax>-30</ComfyTemperatureMax>
       <Wildness>0.2</Wildness>
-      <Beauty>2</Beauty>
     </statBases>
     <tools>
       <li>
