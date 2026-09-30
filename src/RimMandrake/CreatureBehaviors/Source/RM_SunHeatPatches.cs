@@ -77,6 +77,27 @@ namespace RimMandrake.CreatureBehaviors
         /// whose biome carries RM_SunHeatExtension are kept.</summary>
         public static void Register(Map map, RM_MapComponent_ShadeGrid grid)
         {
+            // Drop maps from a previous game: quitting to the menu does not
+            // always call MapRemoved, and a stale key would keep the fast
+            // "no heat maps" exit from firing.
+            if (heatMaps.Count > 0 && Find.Maps != null)
+            {
+                List<Map> stale = null;
+                foreach (Map m in heatMaps.Keys)
+                {
+                    if (!Find.Maps.Contains(m))
+                    {
+                        (stale ??= new List<Map>()).Add(m);
+                    }
+                }
+                if (stale != null)
+                {
+                    foreach (Map m in stale)
+                    {
+                        heatMaps.Remove(m);
+                    }
+                }
+            }
             if (map != null && grid != null && grid.HeatExtension != null)
             {
                 heatMaps[map] = grid;
