@@ -103,6 +103,11 @@
          RM_DeepfireBedroom, RM_ImpressedByDeepfire goodwill, dev proof actions. -->
     <Compile Include="MapComponent_DeepfireStatus.cs" />
     <Compile Include="DeepfireStatusDebugActions.cs" />
+    <!-- DEEPFIRE_GOD_BRIDGE_DELTAS_1, spec §10 step 10: coat/worn/statue/sold
+         god deltas, the LightsOut exemption for our proxies, dev proof actions. -->
+    <Compile Include="DeepfireGodDeltas.cs" />
+    <Compile Include="DeepfireLightsOutCompat.cs" />
+    <Compile Include="DeepfireGodDeltaDebugActions.cs" />
   </ItemGroup>
 
   <ItemGroup>
