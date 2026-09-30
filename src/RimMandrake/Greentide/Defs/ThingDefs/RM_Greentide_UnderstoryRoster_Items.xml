@@ -68,9 +68,8 @@
       <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
       <MarketValue>1.6</MarketValue>
     </statBases>
-    <thingCategories>
-      <li>PlantFoodRaw</li>
-    </thingCategories>
+    <!-- thingCategories NOT re-declared: PlantFoodRawBase already gives
+         PlantFoodRaw by inheritance (ConfigErrors "duplicate thingCategory"). -->
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Rare</tickerType>
     <useHitPoints>true</useHitPoints>
@@ -122,9 +121,7 @@
       <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
       <MarketValue>1.3</MarketValue>
     </statBases>
-    <thingCategories>
-      <li>PlantFoodRaw</li>
-    </thingCategories>
+    <!-- thingCategories NOT re-declared: see RM_BrakkelFruit above. -->
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Rare</tickerType>
     <useHitPoints>true</useHitPoints>
@@ -176,9 +173,7 @@
       <FoodPoisonChanceFixedHuman>0.01</FoodPoisonChanceFixedHuman>
       <MarketValue>2.2</MarketValue>
     </statBases>
-    <thingCategories>
-      <li>PlantFoodRaw</li>
-    </thingCategories>
+    <!-- thingCategories NOT re-declared: see RM_BrakkelFruit above. -->
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Rare</tickerType>
     <useHitPoints>true</useHitPoints>
@@ -230,9 +225,7 @@
       <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
       <MarketValue>1.0</MarketValue>
     </statBases>
-    <thingCategories>
-      <li>PlantFoodRaw</li>
-    </thingCategories>
+    <!-- thingCategories NOT re-declared: see RM_BrakkelFruit above. -->
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Rare</tickerType>
     <useHitPoints>true</useHitPoints>
