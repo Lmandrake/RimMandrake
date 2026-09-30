@@ -75,10 +75,7 @@
       </thingDefs>
     </fixedIngredientFilter>
     <products>
-      <li>
-        <thingDef>RM_RadioactiveSuppressant</thingDef>
-        <count>5</count>
-      </li>
+      <RM_RadioactiveSuppressant>5</RM_RadioactiveSuppressant>
     </products>
     <recipeUsers>
       <li>TableMachining</li>

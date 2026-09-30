@@ -49,10 +49,7 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <li>
-            <kind>Wyyyschokk</kind>
-            <selectionWeight>10</selectionWeight>
-          </li>
+          <Wyyyschokk>10</Wyyyschokk>
         </options>
       </li>
     </pawnGroupMakers>

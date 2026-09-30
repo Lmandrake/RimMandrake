@@ -48,10 +48,7 @@
       <li>
         <kindDef>Combat</kindDef>
         <options>
-          <li>
-            <kind>RM_Kurreth</kind>
-            <selectionWeight>10</selectionWeight>
-          </li>
+          <RM_Kurreth>10</RM_Kurreth>
         </options>
       </li>
     </pawnGroupMakers>
