@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T01:35:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T02:27:14Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1089,6 +1089,33 @@ kind:     task
 summary:  CONTAGIONRULEDCONTENT1 — build the grotesque cast: 35 RM defs, full donor replacement
 prose:    infrastructure/state/items/CONTAGION_RULED_CONTENT_1.md
 
+## CONTAGION_MECHANICS_BUILD_1 Build the Contagion mechanics: Burn/Bloom weather + tells, the Coalescence (one growing organism), Cloud Repulsor + gravship hardpoint, Sunbeam + arrest, the five bizarre Grown limbs on the Anomaly renderNode mechanism
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  CONTAGIONMECHANICSBUILD1 — the Burn/Bloom engine and the four ruled mechanisms
+prose:    infrastructure/state/items/CONTAGION_MECHANICS_BUILD_1.md
+
+## WASTELAND_MECHANICS_BUILD_1 Build the Wasteland mechanics: 20-cell Middenshell on TitanicCreatures, processor gatherable comps, ambient-dose comp, three storm WeatherDefs + MovingDunes exhumation, pollution-first dose layer
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  WASTELANDMECHANICSBUILD1 — the Middenshell, the processor comps, storms and the dose layer
+prose:    infrastructure/state/items/WASTELAND_MECHANICS_BUILD_1.md
+
+## BLUEDESERT_MECHANICS_BUILD_1 Build the Blue Desert mechanics: vhaulk trigger-gated detonation (EMP-on-hit trap), Warnings study ladder + cold-cutting, blue-ice thaw rolls, three weathers, soundscape + crack cue, Cold Hold + drift burial, murrek re-seeding, dovvik minesweeper, ablation salvage
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  BLUEDESERTMECHANICSBUILD1 — the Warnings, blue-ice quarrying, the vhaulk trap, weathers, sound, Cold Hold
+prose:    infrastructure/state/items/BLUEDESERT_MECHANICS_BUILD_1.md
+
 ## BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1 Live-verify a Baroque Biomes toggle actually stops worldgen placement, not just that the startup gate wires cleanly: flip one biome off in Mod Settings, generate a new world, confirm its BiomeDef never places a tile, flip back on. RM_BiomesGate's startup log (roster mapped, gate applied) is proven; an actual OFF-and-regenerate cycle is not.
 state:    doing
 row:      unassigned
@@ -1116,14 +1143,32 @@ kind:     task
 summary:  CRACKEDLANDSRULEDCONTENT1 — roster surgery, five new natives, fossils, the wax suit
 prose:    infrastructure/state/items/CRACKEDLANDS_RULED_CONTENT_1.md
 
-## CAULDRON_MECHANICS_BUILD_1 Build the Cauldron mechanics: engine-underfoot soundscape + falter tell, four ratified weathers, flammable vent gas w/ toxic smoke + gas-tap scaffolds, filter-works fluid conversion, vexxiss behaviors, Oomo dislike content
+## CRACKEDLANDS_MECHANICS_BUILD_1 Build the Cracked Lands mechanics: the Swale (FlowWorks-normal, Utinni-locked biome discovery), survey+cistern loop, wall fossils + flood re-cut, giant behaviors, chime soundscape, Peakstorm Light, salvage strikes, ledges/toll gate, bloom market
 state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  CRACKEDLANDSMECHANICSBUILD1 — the Swale, surveys, fossils-in-the-walls, the giants' behaviors, the soundscape
+prose:    infrastructure/state/items/CRACKEDLANDS_MECHANICS_BUILD_1.md
+
+## CAULDRON_MECHANICS_BUILD_1 Build the Cauldron mechanics: engine-underfoot soundscape + falter tell, four ratified weathers, flammable vent gas w/ toxic smoke + gas-tap scaffolds, filter-works fluid conversion, vexxiss behaviors, Oomo dislike content
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 summary:  Five organs, one machine:
 prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
+
+## LEANINGSCRUB_MECHANICS_BUILD_1 Build the Leaning Scrub mechanics: Stall+Gale wind calendar, the Lean scent/fire axis, vaporator + V-blight, smother-craft, calling-pyre + fire-stamping giants, ripple concealment, rich soundscape, inhabited injections - warning-instrument theme trimmed by owner ruling
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. The Stall and the Gale (names RULED 2026-09-21, WeatherDefs at last;
+prose:    infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1629,6 +1674,16 @@ blocked:  Q10/Q11/Q12 need GREYSEA_SHIP_CRYSTALLISATION_1 + DARKSEA_LIGHT_ATTRAC
 summary:  GREYSEARULEDCONTENT1 — build the Grey Sea content ruled at the 2026-09-27 sitting
 prose:    infrastructure/state/items/GREYSEA_RULED_CONTENT_1.md
 
+## CONTAGION_MECHANICS_BUILD_1 Build the Contagion mechanics: Burn/Bloom weather + tells, the Coalescence (one growing organism), Cloud Repulsor + gravship hardpoint, Sunbeam + arrest, the five bizarre Grown limbs on the Anomaly renderNode mechanism
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Remaining: limbs need per-limb design + art + Monstrous sample grade; sound assets; live verify
+summary:  CONTAGIONMECHANICSBUILD1 — the Burn/Bloom engine and the four ruled mechanisms
+prose:    infrastructure/state/items/CONTAGION_MECHANICS_BUILD_1.md
+
 ## WARLAB_CRATER_ACCIDENTAL_TRIGGER_1 RUT_WarLabReactorCore's CompIgniteCraterOnDestroy fires the planet-wide Chill crater swap on ANY destruction of that core, not only deliberate Route-1 arming -- accidental-detonation risk once the war lab is reachable; needs the Route-1 arming design first
 state:    proposed  (BLOCKED)
 row:      unassigned
@@ -1638,6 +1693,16 @@ kind:     task
 blocked:  needs the Route-1 arming design first, per its own title -- a deliberate arming sequence is a creative/gameplay call, not a mechanical fix; nothing to build until that design lands
 summary:  (no items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARLAB_CRATER_ACCIDENTAL_TRIGGER_1.md
+
+## WASTELAND_MECHANICS_BUILD_1 Build the Wasteland mechanics: 20-cell Middenshell on TitanicCreatures, processor gatherable comps, ambient-dose comp, three storm WeatherDefs + MovingDunes exhumation, pollution-first dose layer
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Middenshell footprint + plasma-storm gate + storm names need owner/design calls
+summary:  WASTELANDMECHANICSBUILD1 — the Middenshell, the processor comps, storms and the dose layer
+prose:    infrastructure/state/items/WASTELAND_MECHANICS_BUILD_1.md
 
 ## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
 state:    doing  (BLOCKED)
@@ -1658,6 +1723,26 @@ kind:     task
 blocked:  defs+roster complete and validated (0 errors); remaining is a live quicktest verify pass (needs deploy+bridge) plus the wax suit's terrain-survival mechanism, which needs CRACKEDLANDS_MECHANICS_BUILD_1 first
 summary:  CRACKEDLANDSRULEDCONTENT1 — roster surgery, five new natives, fossils, the wax suit
 prose:    infrastructure/state/items/CRACKEDLANDS_RULED_CONTENT_1.md
+
+## CAULDRON_MECHANICS_BUILD_1 Build the Cauldron mechanics: engine-underfoot soundscape + falter tell, four ratified weathers, flammable vent gas w/ toxic smoke + gas-tap scaffolds, filter-works fluid conversion, vexxiss behaviors, Oomo dislike content
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Remaining parts need design calls (gas grid, falter tell foreknowledge) or unbuilt FlowWorks/ruins; not offline-buildable as specced
+summary:  Five organs, one machine:
+prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
+
+## LEANINGSCRUB_MECHANICS_BUILD_1 Build the Leaning Scrub mechanics: Stall+Gale wind calendar, the Lean scent/fire axis, vaporator + V-blight, smother-craft, calling-pyre + fire-stamping giants, ripple concealment, rich soundscape, inhabited injections - warning-instrument theme trimmed by owner ruling
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Remaining parts need art/audio/scene layouts or Part 6 cover system; tranche 1 landed
+summary:  1. The Stall and the Gale (names RULED 2026-09-21, WeatherDefs at last;
+prose:    infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -1680,46 +1765,6 @@ kind:     mechanism
 thin:     no ## verify, no ## criteria
 summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
-
-## CONTAGION_MECHANICS_BUILD_1 Build the Contagion mechanics: Burn/Bloom weather + tells, the Coalescence (one growing organism), Cloud Repulsor + gravship hardpoint, Sunbeam + arrest, the five bizarre Grown limbs on the Anomaly renderNode mechanism
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  CONTAGIONMECHANICSBUILD1 — the Burn/Bloom engine and the four ruled mechanisms
-prose:    infrastructure/state/items/CONTAGION_MECHANICS_BUILD_1.md
-
-## WASTELAND_MECHANICS_BUILD_1 Build the Wasteland mechanics: 20-cell Middenshell on TitanicCreatures, processor gatherable comps, ambient-dose comp, three storm WeatherDefs + MovingDunes exhumation, pollution-first dose layer
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  WASTELANDMECHANICSBUILD1 — the Middenshell, the processor comps, storms and the dose layer
-prose:    infrastructure/state/items/WASTELAND_MECHANICS_BUILD_1.md
-
-## BLUEDESERT_MECHANICS_BUILD_1 Build the Blue Desert mechanics: vhaulk trigger-gated detonation (EMP-on-hit trap), Warnings study ladder + cold-cutting, blue-ice thaw rolls, three weathers, soundscape + crack cue, Cold Hold + drift burial, murrek re-seeding, dovvik minesweeper, ablation salvage
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  BLUEDESERTMECHANICSBUILD1 — the Warnings, blue-ice quarrying, the vhaulk trap, weathers, sound, Cold Hold
-prose:    infrastructure/state/items/BLUEDESERT_MECHANICS_BUILD_1.md
-
-## CRACKEDLANDS_MECHANICS_BUILD_1 Build the Cracked Lands mechanics: the Swale (FlowWorks-normal, Utinni-locked biome discovery), survey+cistern loop, wall fossils + flood re-cut, giant behaviors, chime soundscape, Peakstorm Light, salvage strikes, ledges/toll gate, bloom market
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  CRACKEDLANDSMECHANICSBUILD1 — the Swale, surveys, fossils-in-the-walls, the giants' behaviors, the soundscape
-prose:    infrastructure/state/items/CRACKEDLANDS_MECHANICS_BUILD_1.md
 
 ## CAULDRON_FULL_RENAME_1 Full rename PoisonForest -> Cauldron everywhere down to defNames incl. frozen RUT_ twin and soils (owner-typed 2026-09-28); live-tile shortHash check gates defName changes
 state:    proposed
@@ -1770,16 +1815,6 @@ kind:     task
 thin:     no ## verify
 summary:  - Art exists and is validated — do not queue any art. The render is the
 prose:    infrastructure/state/items/OGLEKNOT_CREATURE_BUILD_1.md
-
-## LEANINGSCRUB_MECHANICS_BUILD_1 Build the Leaning Scrub mechanics: Stall+Gale wind calendar, the Lean scent/fire axis, vaporator + V-blight, smother-craft, calling-pyre + fire-stamping giants, ripple concealment, rich soundscape, inhabited injections - warning-instrument theme trimmed by owner ruling
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. The Stall and the Gale (names RULED 2026-09-21, WeatherDefs at last;
-prose:    infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md
 
 ## DEEPFIRE_FLOOR_PAINT_1 Deepfire floors: grid, postfixes, clustering, beauty hooks
 state:    proposed
