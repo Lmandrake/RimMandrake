@@ -1,0 +1,220 @@
+{
+ "mapBiome": "RM_Contagion",
+ "spawn": "existing",
+ "forcePause": false,
+ "start": "{'success': True, 'action': 'start', 'scope': 'map', 'notes': ['replaced an already-active instance', 'registered RM_ContagionBurnCondition for 20000 ticks'], 'endsNextTick': False, 'gamePaused': False, 'listCaveat': None, 'activeConditions': [{'def': 'RM_ContagionBurnCondition', 'permanent': False,",
+ "samples": [
+  {
+   "t": 20,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 40,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 60,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 80,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 100,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 120,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 140,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 160,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 180,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 201,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 221,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 241,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 261,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 281,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 301,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 321,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 341,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 361,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 381,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 402,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  },
+  {
+   "t": 422,
+   "ticks": 512200,
+   "weather": "RM_ContagionBurn",
+   "conditions": [
+    "RM_ContagionBurnCondition"
+   ],
+   "hediffs": {},
+   "pawns": 31
+  }
+ ],
+ "log": [],
+ "errors": []
+}

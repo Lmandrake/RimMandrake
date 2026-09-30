@@ -1,0 +1,627 @@
+{
+ "samples": [
+  {
+   "t": 20,
+   "ticks": 348954,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_GlowingCrackCrust": 4268,
+    "RM_BasaltShingle": -2973,
+    "RM_PumiceRubble": -1295
+   }
+  },
+  {
+   "t": 42,
+   "ticks": 360109,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_GlowingCrackCrust": 5292,
+    "LavaDeep": 708
+   }
+  },
+  {
+   "t": 63,
+   "ticks": 366826,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 84,
+   "ticks": 375133,
+   "weather": "RM_BoilingRain",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 104,
+   "ticks": 387232,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 124,
+   "ticks": 397774,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 145,
+   "ticks": 409390,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 165,
+   "ticks": 420389,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 186,
+   "ticks": 430558,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 206,
+   "ticks": 439993,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 226,
+   "ticks": 450119,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 247,
+   "ticks": 460040,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 267,
+   "ticks": 471316,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 288,
+   "ticks": 480847,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 308,
+   "ticks": 489179,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 329,
+   "ticks": 498721,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 349,
+   "ticks": 509390,
+   "weather": "RM_BoilingRain",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 6000
+   }
+  },
+  {
+   "t": 369,
+   "ticks": 520327,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 5428,
+    "RM_BasaltShingle": -3778,
+    "RM_PumiceRubble": -1650
+   }
+  },
+  {
+   "t": 390,
+   "ticks": 527648,
+   "weather": "Fog",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "LavaDeep": 2814,
+    "RM_BasaltShingle": -1946,
+    "RM_PumiceRubble": -868
+   }
+  },
+  {
+   "t": 411,
+   "ticks": 536270,
+   "weather": "Fog",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 431,
+   "ticks": 550895,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 452,
+   "ticks": 563222,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 472,
+   "ticks": 575910,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 492,
+   "ticks": 588005,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 514,
+   "ticks": 600060,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 535,
+   "ticks": 612272,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 555,
+   "ticks": 621746,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 576,
+   "ticks": 630630,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 596,
+   "ticks": 640160,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 616,
+   "ticks": 652630,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 637,
+   "ticks": 662501,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 657,
+   "ticks": 671682,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 678,
+   "ticks": 680166,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 702,
+   "ticks": 690120,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 722,
+   "ticks": 699360,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 743,
+   "ticks": 711342,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 763,
+   "ticks": 711847,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  },
+  {
+   "t": 783,
+   "ticks": 711847,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {
+    "RM_BasaltShingle": 28,
+    "RM_PumiceRubble": -28
+   }
+  }
+ ],
+ "terrain0": {
+  "AB_BlackPebbles": 32968,
+  "AB_HardenedGrass": 7302,
+  "CooledLava": 4816,
+  "RM_BasaltShingle": 4179,
+  "Gravel": 3651,
+  "Limestone_Rough": 3164,
+  "RM_PumiceRubble": 1821,
+  "AB_HardenedGrassFertile": 1516,
+  "Slate_Rough": 1419,
+  "LavaDeep": 481,
+  "Substructure": 341,
+  "BrokenSubstructure": 278,
+  "AncientConcrete": 222,
+  "OuterRim_StoneHex_Granite": 99,
+  "FT_ConcreteTile": 74,
+  "TileSlate": 58,
+  "AncientTile": 32,
+  "BrokenAsphalt": 30,
+  "OuterRim_StoneHex_Limestone": 27,
+  "TileLimestone": 22
+ },
+ "forgeLog": [],
+ "errors": [
+  "Object with load ID Map_0 is referenced (xml node name: rootMap) but is not deep-saved. This will cause errors during loading.\r",
+  "Object with load ID Map_0 is referenced (xml node name: OriginMap) but is not deep-saved. This will cause errors during loading.\r",
+  "Exception ticking Tibidee206611 (at (29, 0, 3)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (29, 0, 4)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (25, 0, 6)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (32, 0, 2)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (30, 0, 3)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (29, 0, 7)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (28, 0, 5)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (28, 0, 6)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (34, 0, 4)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (31, 0, 3)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (31, 0, 2)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (29, 0, 2)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (33, 0, 3)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (28, 0, 3)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (32, 0, 3)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (31, 0, 5)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (32, 0, 4)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (30, 0, 2)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (30, 0, 5)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (29, 0, 5)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (28, 0, 2)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (28, 0, 4)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (33, 0, 2)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (34, 0, 3)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (32, 0, 5)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (29, 0, 6)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (27, 0, 6)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (27, 0, 9)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (27, 0, 4)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (30, 0, 4)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (31, 0, 4)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (28, 0, 7)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (33, 0, 4)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (27, 0, 5)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee206611 (at (27, 0, 2)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee207989 (at (103, 0, 48)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee207989 (at (103, 0, 49)): System.NullReferenceException: Object reference not set to an instance of an object\r",
+  "Exception ticking Tibidee207989 (at (101, 0, 48)): System.NullReferenceException: Object reference not set to an instance of an object\r"
+ ]
+}

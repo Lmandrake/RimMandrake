@@ -1,0 +1,304 @@
+{
+ "samples": [
+  {
+   "t": 20,
+   "ticks": 12263,
+   "weather": "RM_BoilingRain",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 40,
+   "ticks": 29391,
+   "weather": "Fog",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 62,
+   "ticks": 45263,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 82,
+   "ticks": 65776,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 103,
+   "ticks": 87290,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 123,
+   "ticks": 106824,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 143,
+   "ticks": 125415,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 164,
+   "ticks": 147012,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 185,
+   "ticks": 165252,
+   "weather": "RM_BoilingRain",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 206,
+   "ticks": 181221,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 226,
+   "ticks": 201359,
+   "weather": "Fog",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 246,
+   "ticks": 218302,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 267,
+   "ticks": 237008,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 287,
+   "ticks": 252913,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 307,
+   "ticks": 265365,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 328,
+   "ticks": 280846,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 348,
+   "ticks": 297929,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 369,
+   "ticks": 314477,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 389,
+   "ticks": 332665,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 409,
+   "ticks": 351382,
+   "weather": "RM_BoilingRain",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 430,
+   "ticks": 370976,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 450,
+   "ticks": 390256,
+   "weather": "Fog",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  },
+  {
+   "t": 471,
+   "ticks": 408840,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "terrainDelta": {}
+  }
+ ],
+ "terrain0": {
+  "AB_BlackPebbles": 40916,
+  "AB_HardenedGrass": 6579,
+  "Gravel": 5057,
+  "Limestone_Rough": 3392,
+  "MR_BasaltBase_Rough": 2517,
+  "Granite_Rough": 1652,
+  "AB_HardenedGrassFertile": 1528,
+  "AncientConcrete": 251,
+  "TileMarble": 165,
+  "AM_JewishTileMarble": 124,
+  "AM_JewishTileLimestone": 79,
+  "AM_JewishTileObsidian": 78,
+  "AM_SteampunkTileSandstone": 57,
+  "AncientTile": 40,
+  "BrokenAsphalt": 30,
+  "VFEArch_CobblestoneFloorGranite": 10,
+  "OuterRim_StoneHex_Limestone": 9,
+  "AM_KemeticTileLimestone": 8,
+  "AM_JewishTileCragstone": 7,
+  "Soil": 1
+ },
+ "forgeLog": [],
+ "errors": []
+}

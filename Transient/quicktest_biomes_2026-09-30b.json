@@ -1,0 +1,379 @@
+{
+ "RM_Contagion": {
+  "biome": "RM_Contagion",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Contagion",
+  "temp": 21.1253872,
+  "weather": {
+   "weather": {
+    "current": "RM_ContagionBloom",
+    "last": "RM_ContagionBloom",
+    "curWeatherAge": 12348,
+    "rainRate": 1.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Skinflap": 8,
+   "RM_Gawpsack": 6,
+   "RM_Peeper": 4,
+   "RM_Scorchpod": 3,
+   "RM_Blisterfloat": 3,
+   "RM_Sparkleech": 2,
+   "RM_Ogleknot": 1,
+   "RM_BloodyMess": 1,
+   "RM_Sloshbelly": 1,
+   "RM_Fleshsop": 1,
+   "RM_Gorekite": 1
+  },
+  "plants": {
+   "RM_Lashgrass": 88,
+   "RM_Toothmoss": 44,
+   "RM_Bleedleaf": 21,
+   "RM_Gorestalk": 14,
+   "RM_Sapblister": 9,
+   "RM_Rattlegrope": 7,
+   "RM_BloodyFist": 6,
+   "RM_Eyebark": 4,
+   "RM_Meatvine": 3,
+   "RM_HalfmadeTree": 2,
+   "RM_Wombpod": 1,
+   "RM_HalfmadeTreeBlighted": 1
+  },
+  "errors": [
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r",
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_TheForge": {
+  "biome": "RM_TheForge",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_TheForge",
+  "temp": 21.1253872,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 9561,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RM_ForgePulse",
+     "label": "The mountain's breath",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "RSW_Maguana": 3,
+   "AA_CrescendoAnole": 2,
+   "RM_Jossur": 2,
+   "RSW_LavaFlea": 2,
+   "Tibidee": 2,
+   "AA_ColossalAerofleet": 1
+  },
+  "plants": {
+   "Plant_Fireweed": 59,
+   "Plant_MagmaCactus": 40,
+   "AB_TinkleGrass": 29,
+   "IronScruff_PrimordialGrass": 27,
+   "IronScruff_Bindweed": 23,
+   "AB_FirevineTree": 14,
+   "IronScruff_PrimordialTallGrass": 8
+  },
+  "errors": []
+ },
+ "RM_LongShade": {
+  "biome": "RM_LongShade",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_LongShade",
+  "temp": 21.1253872,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 9561,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RSW_Wraid": 2,
+   "RM_Qorrax": 2,
+   "JOE_Landopus": 2,
+   "RM_Mirrak": 1,
+   "RM_Jellypot": 1,
+   "RM_GreatDevourer": 1
+  },
+  "plants": {
+   "RM_Leachmoss": 70,
+   "RM_Ultracactus": 41,
+   "RSW_SurraGrass": 23,
+   "RM_Dewfringe": 19,
+   "RM_Venomvine": 12,
+   "RSW_Plant_Chakroot_Wild": 11,
+   "RSW_VellaraBloom": 9,
+   "RM_Vorrel": 7,
+   "RSW_Plant_HubbaGourd_Wild": 5,
+   "RSW_DommoTree": 3
+  },
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_Cauldron": {
+  "biome": "RM_Cauldron",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Cauldron",
+  "temp": 21.1253872,
+  "weather": {
+   "weather": {
+    "current": "RM_ScatterDusk",
+    "last": "RM_ScatterDusk",
+    "curWeatherAge": 9561,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Eskith": 7,
+   "RSW_Neebray": 2,
+   "GR_Beetlefleet": 2,
+   "RSW_GraniteSlug": 2,
+   "AM_Dryad_Corruptor": 1,
+   "AA_OcularJelly": 1,
+   "RSW_VentStalker": 1
+  },
+  "plants": {
+   "RM_RavenNettle": 57,
+   "RM_DarkCrust": 37,
+   "RM_RedBugloss": 36,
+   "RM_TwistingThornwood": 19,
+   "RM_CrystalFlower": 14,
+   "RM_TreeMartyr": 14,
+   "RM_Xithess": 14,
+   "RM_BloodBouquet": 7,
+   "RM_GiantAgariTox": 2
+  },
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_LeaningScrub": {
+  "biome": "RM_LeaningScrub",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_LeaningScrub",
+  "temp": 21.1253872,
+  "weather": {
+   "weather": {
+    "current": "RM_ScrubWind",
+    "last": "RM_ScrubWind",
+    "curWeatherAge": 9561,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RSW_Scurrier": 7,
+   "RSW_Convor": 4,
+   "RSW_Eopie": 3,
+   "RSW_MossBeetle": 2,
+   "RM_Shirrel": 2,
+   "RM_Thornhold": 2,
+   "RSW_TunnelSnake": 2,
+   "Terrorworm": 2,
+   "RSW_Mudhorn": 1,
+   "RM_Surrik": 1,
+   "RSW_Lothcat": 1,
+   "RSW_ImperialToad": 1,
+   "RM_Fuzzviper": 1,
+   "RM_Zellik": 1
+  },
+  "plants": {
+   "RG_Plant_AridGrass": 136,
+   "RM_Fuzz": 20,
+   "RM_Whipfuzz": 14,
+   "RM_Cruststar": 7,
+   "RM_Pillowmoss": 6,
+   "Plant_Brambles": 6,
+   "RG_Plant_CrimsonCushion": 6,
+   "RG_Plant_CreepStern": 5
+  },
+  "errors": []
+ },
+ "RM_Wasteland": {
+  "biome": "RM_Wasteland",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Wasteland",
+  "temp": 21.1253872,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 9561,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RSW_FleeceSpider": 1
+  },
+  "plants": {
+   "RM_Scumgrass": 124,
+   "RM_TallScumgrass": 34,
+   "RM_DosimeterLawn": 15,
+   "RM_WastelandScorchedStars": 9,
+   "RM_Boilbulb": 4,
+   "Plant_TreePolux": 4,
+   "RM_Cinderfelt": 3,
+   "RM_Pusberry": 3,
+   "RM_Wartshrub": 2,
+   "RM_VaultRoot": 2
+  },
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_BlueDesert": {
+  "biome": "RM_BlueDesert",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_BlueDesert",
+  "temp": 21.1253872,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 9561,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RM_BlueDesertHazeCarrier",
+     "label": "The Haze",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "Vapaad": 3
+  },
+  "plants": {},
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_FloodedCanyon": {
+  "biome": "RM_FloodedCanyon",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_FloodedCanyon",
+  "temp": 21.1253872,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 9561,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RSW_Gornt": 3,
+   "RSW_MutagenicNorphea": 2,
+   "RSW_CanCell": 1
+  },
+  "plants": {
+   "AB_HardyGrass": 59,
+   "GRimMoss": 51,
+   "RUT_TwistingThorngrass": 40,
+   "RUT_TwistingThornweed": 24,
+   "AB_GargantuanLithops": 10,
+   "RM_Veqma": 9,
+   "RUT_TwistingThornwood": 7
+  },
+  "errors": [
+   "Error while determining if RSW_MutagenicNorphea186767 should have Need RSW_ToxinDependence: System.ArgumentNullException: Value cannot be null.\r",
+   "Error while determining if RSW_MutagenicNorphea186768 should have Need RSW_ToxinDependence: System.ArgumentNullException: Value cannot be null.\r"
+  ]
+ }
+}

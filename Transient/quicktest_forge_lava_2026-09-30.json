@@ -1,0 +1,677 @@
+{
+ "biome": "RM_TheForge",
+ "samples": [
+  {
+   "t": 20,
+   "ticks": 5753,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 11
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 41,
+   "ticks": 12081,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 11
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 61,
+   "ticks": 19037,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 11
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 82,
+   "ticks": 30131,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 11
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 103,
+   "ticks": 40361,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 11
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 124,
+   "ticks": 52580,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 10
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 144,
+   "ticks": 66585,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 10
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 165,
+   "ticks": 81268,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 9
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 186,
+   "ticks": 97749,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 206,
+   "ticks": 113797,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 16
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 227,
+   "ticks": 127986,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 14
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 247,
+   "ticks": 145149,
+   "weather": "RM_BoilingRain",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 1
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 269,
+   "ticks": 159007,
+   "weather": "Fog",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 3
+   },
+   "terrainDelta": {
+    "LavaDeep": -2448,
+    "RM_BasaltShingle": 1710,
+    "RM_PumiceRubble": 738
+   }
+  },
+  {
+   "t": 290,
+   "ticks": 166927,
+   "weather": "Fog",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 5
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 3918,
+    "RM_PumiceRubble": 1691,
+    "LavaDeep": -5609
+   }
+  },
+  {
+   "t": 310,
+   "ticks": 183056,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 7
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 331,
+   "ticks": 198628,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 7
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 352,
+   "ticks": 214700,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 8
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 372,
+   "ticks": 229579,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 8
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 393,
+   "ticks": 246232,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 8
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 413,
+   "ticks": 262697,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 8
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 434,
+   "ticks": 273382,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 13
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 454,
+   "ticks": 286127,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 16
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 475,
+   "ticks": 300631,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 16
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 496,
+   "ticks": 313575,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 516,
+   "ticks": 325252,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 537,
+   "ticks": 338187,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 557,
+   "ticks": 343087,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 577,
+   "ticks": 343087,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 597,
+   "ticks": 343087,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 618,
+   "ticks": 343087,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 638,
+   "ticks": 343087,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 658,
+   "ticks": 343087,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 678,
+   "ticks": 343087,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 698,
+   "ticks": 343087,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  },
+  {
+   "t": 719,
+   "ticks": 343087,
+   "weather": "RM_ForgeStill",
+   "conditions": [
+    [
+     "RM_ForgePulse",
+     "The mountain's breath"
+    ]
+   ],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {
+    "RM_BasaltShingle": 4179,
+    "RM_PumiceRubble": 1821,
+    "LavaDeep": -6000
+   }
+  }
+ ],
+ "terrain0": {
+  "AB_BlackPebbles": 32968,
+  "AB_HardenedGrass": 7302,
+  "LavaDeep": 6481,
+  "CooledLava": 4816,
+  "Gravel": 3651,
+  "Limestone_Rough": 3164,
+  "AB_HardenedGrassFertile": 1516,
+  "Slate_Rough": 1419,
+  "Substructure": 341,
+  "BrokenSubstructure": 278,
+  "AncientConcrete": 222,
+  "OuterRim_StoneHex_Granite": 99,
+  "FT_ConcreteTile": 74,
+  "TileSlate": 58,
+  "AncientTile": 32,
+  "BrokenAsphalt": 30,
+  "OuterRim_StoneHex_Limestone": 27,
+  "TileLimestone": 22
+ }
+}

@@ -1,0 +1,438 @@
+{
+ "RM_Contagion": {
+  "biome": "RM_Contagion",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Contagion",
+  "temp": 5.484336,
+  "weather": {
+   "weather": {
+    "current": "RM_ContagionBloom",
+    "last": "FoggyRain",
+    "curWeatherAge": 23887,
+    "rainRate": 1.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Gawpsack": 9,
+   "RM_Skinflap": 8,
+   "RM_Scorchpod": 5,
+   "RM_ContagionIkee": 4,
+   "RM_Eyestinger": 4,
+   "RM_Peeper": 4,
+   "RM_Crispling": 3,
+   "RM_Shambles": 2,
+   "RM_Ogleknot": 2,
+   "RM_BloodyMess": 2,
+   "RM_Fleshsop": 1,
+   "RM_Meltgut": 1,
+   "RM_Sparkleech": 1
+  },
+  "plants": {
+   "RM_Lashgrass": 126,
+   "RM_Toothmoss": 40,
+   "RM_Bleedleaf": 11,
+   "RM_Rattlegrope": 5,
+   "RM_Meatvine": 5,
+   "RM_Gorestalk": 4,
+   "RM_BloodyFist": 4,
+   "RM_Sapblister": 3,
+   "RM_Wombpod": 1,
+   "RM_HalfmadeTree": 1
+  },
+  "errors": [
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_TheForge": {
+  "biome": "RM_TheForge",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_TheForge",
+  "temp": 5.484336,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 128518,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RM_ForgePulse",
+     "label": "The mountain's breath",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "RSW_LavaFlea": 6,
+   "RM_FleetFlier": 4,
+   "LavaSnail": 3,
+   "AA_CrescendoAnole": 2,
+   "AA_ColossalAerofleet": 1,
+   "Tibidee": 1
+  },
+  "plants": {
+   "Plant_Fireweed": 74,
+   "Plant_MagmaCactus": 29,
+   "IronScruff_PrimordialGrass": 26,
+   "AB_TinkleGrass": 23,
+   "IronScruff_Bindweed": 22,
+   "IronScruff_PrimordialTallGrass": 15,
+   "AB_FirevineTree": 11
+  },
+  "errors": [
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_LongShade": {
+  "biome": "RM_LongShade",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_LongShade",
+  "temp": 5.484336,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 128518,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Qorrax": 6,
+   "JOE_Landopus": 3,
+   "RM_Bokka": 1,
+   "RM_Jellypot": 1
+  },
+  "plants": {
+   "RM_Leachmoss": 70,
+   "RM_Ultracactus": 41,
+   "RSW_SurraGrass": 25,
+   "RM_Dewfringe": 15,
+   "RSW_Plant_Chakroot_Wild": 15,
+   "RM_Venomvine": 12,
+   "RSW_Plant_HubbaGourd_Wild": 8,
+   "RSW_VellaraBloom": 6,
+   "RM_Vorrel": 4,
+   "RSW_DommoTree": 4
+  },
+  "errors": [
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_Cauldron": {
+  "biome": "RM_Cauldron",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Cauldron",
+  "temp": 5.484336,
+  "weather": {
+   "weather": {
+    "current": "RM_ScatterDusk",
+    "last": "RM_ScatterDusk",
+    "curWeatherAge": 128518,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "AM_Dryad_Ocular": 5,
+   "RSW_Neebray": 4,
+   "RSW_Screecher": 4,
+   "Silooth": 3,
+   "AM_Dryad_Tumorous": 2,
+   "RSW_GraniteSlug": 2,
+   "GR_Beetlefleet": 1,
+   "RM_Suush": 1,
+   "AM_Dryad_Corruptor": 1,
+   "Visceral": 1,
+   "AA_Plasmorph": 1
+  },
+  "plants": {
+   "RM_RavenNettle": 81,
+   "RM_DarkCrust": 53,
+   "RM_RedBugloss": 45,
+   "RM_TwistingThornwood": 6,
+   "RM_BloodBouquet": 5,
+   "RM_CrystalFlower": 4,
+   "RM_Xithess": 4,
+   "RM_TreeMartyr": 2
+  },
+  "errors": [
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_LeaningScrub": {
+  "biome": "RM_LeaningScrub",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_LeaningScrub",
+  "temp": 5.484336,
+  "weather": {
+   "weather": {
+    "current": "RM_ScrubWind",
+    "last": "Overcast",
+    "curWeatherAge": 128518,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RSW_Scurrier": 6,
+   "RSW_Gizka": 5,
+   "RSW_Sketto": 3,
+   "RSW_Mudhorn": 3,
+   "RM_Ribbonwhip": 1,
+   "Terrorworm": 1,
+   "RM_Fuzzviper": 1,
+   "RSW_ImperialToad": 1
+  },
+  "plants": {
+   "RM_Fuzz": 55,
+   "RM_Whipfuzz": 34,
+   "RG_Plant_AridGrass": 31,
+   "Plant_Brambles": 17,
+   "RG_Plant_CrimsonCushion": 16,
+   "RM_Cruststar": 14,
+   "RM_Pillowmoss": 13,
+   "RG_Plant_CreepStern": 12,
+   "RM_Tanglefuzz": 2,
+   "RM_Grellbush": 2,
+   "RM_VenomvineThicket": 1,
+   "RM_TwitcherVenomvine": 1,
+   "RM_WildHealroot": 1,
+   "RG_Plant_Dervish": 1
+  },
+  "errors": [
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_Wasteland": {
+  "biome": "RM_Wasteland",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Wasteland",
+  "temp": 5.484336,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 128518,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RSW_FleeceSpider": 1
+  },
+  "plants": {
+   "RM_Scumgrass": 105,
+   "RM_TallScumgrass": 34,
+   "RM_WastelandScorchedStars": 18,
+   "RM_DosimeterLawn": 16,
+   "RM_Pusberry": 9,
+   "RM_Wartshrub": 4,
+   "RM_Boilbulb": 4,
+   "RM_VaultRoot": 4,
+   "Plant_TreePolux": 4,
+   "RM_Cinderfelt": 2
+  },
+  "errors": [
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_BlueDesert": {
+  "biome": "RM_BlueDesert",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_BlueDesert",
+  "temp": 5.484336,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 128518,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RM_BlueDesertHazeCarrier",
+     "label": "The Haze",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "Vapaad": 4
+  },
+  "plants": {},
+  "errors": [
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_FloodedCanyon": {
+  "biome": "RM_FloodedCanyon",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_FloodedCanyon",
+  "temp": 5.484336,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 128518,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RSW_MutagenicNorphea": 2,
+   "RSW_CanCell": 2,
+   "RUT_EmperorVulture": 1,
+   "RSW_Creature_Mantrap": 1,
+   "RUT_SealedSleeper": 1
+  },
+  "plants": {
+   "AB_HardyGrass": 59,
+   "GRimMoss": 48,
+   "RUT_TwistingThorngrass": 31,
+   "RUT_TwistingThornweed": 22,
+   "RUT_TwistingThornwood": 17,
+   "RM_Veqma": 12,
+   "AB_GargantuanLithops": 11
+  },
+  "errors": [
+   "Error while determining if RSW_MutagenicNorphea283540 should have Need RSW_ToxinDependence: System.ArgumentNullException: Value cannot be null.\r",
+   "Error while determining if RSW_MutagenicNorphea283541 should have Need RSW_ToxinDependence: System.ArgumentNullException: Value cannot be null.\r",
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_TheScald": {
+  "biome": "RM_TheScald",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_TheScald",
+  "temp": 5.484336,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 128518,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RUT_ScaldSteamLock",
+     "label": "The boil's breath",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    },
+    {
+     "def": "RUT_ScaldSteamCarrier",
+     "label": "Standing steam",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "RSW_Mee": 8
+  },
+  "plants": {
+   "Plant_TreeAnima": 1
+  },
+  "errors": [
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ }
+}

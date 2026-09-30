@@ -1,0 +1,380 @@
+{
+ "RM_Contagion": {
+  "biome": "RM_Contagion",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Contagion",
+  "temp": 6.049057,
+  "weather": {
+   "weather": {
+    "current": "RM_ContagionBloom",
+    "last": "RM_ContagionBloom",
+    "curWeatherAge": 11893,
+    "rainRate": 1.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Gawpsack": 6,
+   "GraniteSlug": 3,
+   "RM_Sloshbelly": 3,
+   "RM_Shambles": 2,
+   "RM_Fleshsop": 2,
+   "RM_Scorchpod": 1,
+   "RM_Bloodlurk": 1,
+   "RM_Peeper": 1,
+   "RM_Doublemaw": 1,
+   "RM_Eyestinger": 1,
+   "RM_BloodyMess": 1
+  },
+  "plants": {
+   "RM_Lashgrass": 65,
+   "RM_Bleedleaf": 30,
+   "RM_Sapblister": 23,
+   "RM_Gorestalk": 20,
+   "RM_Toothmoss": 18,
+   "RM_BloodyFist": 16,
+   "RM_Rattlegrope": 12,
+   "RM_Eyebark": 5,
+   "RM_Meatvine": 4,
+   "RM_HalfmadeTree": 4,
+   "RM_HalfmadeTreeBlighted": 2,
+   "RM_Wombpod": 1
+  },
+  "errors": []
+ },
+ "RM_TheForge": {
+  "biome": "RM_TheForge",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_TheForge",
+  "temp": 6.049057,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 4330,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RM_ForgePulse",
+     "label": "The mountain's breath",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "RM_Dhuvvox": 18,
+   "AA_Metallovore": 6,
+   "AA_CrescendoAnole": 2,
+   "RSW_LavaFlea": 2,
+   "Tibidee": 1
+  },
+  "plants": {
+   "Plant_Fireweed": 75,
+   "Plant_MagmaCactus": 34,
+   "IronScruff_PrimordialGrass": 23,
+   "IronScruff_Bindweed": 23,
+   "AB_TinkleGrass": 23,
+   "IronScruff_PrimordialTallGrass": 13,
+   "AB_FirevineTree": 9
+  },
+  "errors": []
+ },
+ "RM_LongShade": {
+  "biome": "RM_LongShade",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_LongShade",
+  "temp": 6.049057,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 4330,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RSW_IridonianReek": 3,
+   "RM_GreatDevourer": 1
+  },
+  "plants": {
+   "RM_Leachmoss": 60,
+   "RM_Ultracactus": 39,
+   "RM_Dewfringe": 15,
+   "RSW_SurraGrass": 14,
+   "Plant_Grass": 14,
+   "RSW_Plant_Chakroot_Wild": 11,
+   "RSW_Plant_HubbaGourd_Wild": 9,
+   "RM_Venomvine": 9,
+   "Plant_Moss": 8,
+   "RSW_DommoTree": 6,
+   "RM_Vorrel": 5,
+   "RSW_VellaraBloom": 3,
+   "Plant_TallGrass": 3,
+   "Plant_Brambles": 2,
+   "RG_Plant_Coldheart": 1,
+   "RG_Plant_TigerLily": 1
+  },
+  "errors": []
+ },
+ "RM_Cauldron": {
+  "biome": "RM_Cauldron",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Cauldron",
+  "temp": 6.049057,
+  "weather": {
+   "weather": {
+    "current": "RM_ScatterDusk",
+    "last": "RM_VapourBank",
+    "curWeatherAge": 4330,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Eskith": 4,
+   "Visceral": 2,
+   "AA_OcularJelly": 2,
+   "RM_Suush": 1,
+   "RSW_Neebray": 1,
+   "GR_Beetlefleet": 1,
+   "RSW_Lylek": 1
+  },
+  "plants": {
+   "RM_CrystalFlower": 33,
+   "RM_RedBugloss": 29,
+   "RM_RavenNettle": 26,
+   "RM_DarkCrust": 25,
+   "RM_Xithess": 22,
+   "RM_TreeMartyr": 21,
+   "RM_TwistingThornwood": 19,
+   "RM_BloodBouquet": 19,
+   "RM_GiantAgariTox": 2,
+   "RM_KeeningCordax": 2,
+   "Plant_TallGrass": 1,
+   "RM_GiantToxicFlower": 1
+  },
+  "errors": []
+ },
+ "RM_LeaningScrub": {
+  "biome": "RM_LeaningScrub",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_LeaningScrub",
+  "temp": 6.049057,
+  "weather": {
+   "weather": {
+    "current": "RM_ScrubWind",
+    "last": "RM_ScrubWindFog",
+    "curWeatherAge": 4330,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RSW_Iriaz": 11,
+   "RSW_Nuna": 5,
+   "RSW_FrilledGorg": 4,
+   "RSW_Lothcat": 3,
+   "RSW_Sketto": 3,
+   "RSW_TunnelSnake": 2,
+   "RM_Zellik": 1,
+   "RSW_ImperialToad": 1
+  },
+  "plants": {
+   "Plant_Brambles": 41,
+   "RM_Fuzz": 40,
+   "RM_Whipfuzz": 31,
+   "RG_Plant_AridGrass": 20,
+   "RM_Cruststar": 15,
+   "RM_Pillowmoss": 12,
+   "RG_Plant_CrimsonCushion": 11,
+   "RG_Plant_CreepStern": 10,
+   "RM_Grellbush": 3,
+   "Plant_Grass": 3,
+   "RM_Tanglefuzz": 2,
+   "RM_TwitcherVenomvine": 2,
+   "RM_WildHealroot": 2,
+   "Plant_Moss": 1,
+   "RM_HollowVenomvine": 1,
+   "Plant_Nysyllin_Wild": 1,
+   "Plant_TallGrass": 1,
+   "RM_DrippingVenomvine": 1,
+   "RG_Plant_Dervish": 1,
+   "RM_VenomvineThicket": 1,
+   "RM_CrownVenomvine": 1
+  },
+  "errors": []
+ },
+ "RM_Wasteland": {
+  "biome": "RM_Wasteland",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Wasteland",
+  "temp": 6.049057,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 4330,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RSW_Borcatu": 3,
+   "RSW_Maligoat": 1
+  },
+  "plants": {
+   "RM_Scumgrass": 111,
+   "RM_TallScumgrass": 37,
+   "RM_DosimeterLawn": 22,
+   "RM_WastelandScorchedStars": 10,
+   "RM_Boilbulb": 5,
+   "RM_Pusberry": 5,
+   "Plant_TreePolux": 4,
+   "RM_Wartshrub": 3,
+   "RM_VaultRoot": 2,
+   "RM_Cinderfelt": 1
+  },
+  "errors": []
+ },
+ "RM_BlueDesert": {
+  "biome": "RM_BlueDesert",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_BlueDesert",
+  "temp": 6.049057,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "RM_IceSandDrift",
+    "curWeatherAge": 4330,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RM_BlueDesertHazeCarrier",
+     "label": "The Haze",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "Vapaad": 1
+  },
+  "plants": {
+   "RM_Palefloss": 81,
+   "RM_Virr": 52,
+   "RM_Glassfern": 52,
+   "RM_Chimeglobe": 15
+  },
+  "errors": []
+ },
+ "RM_FloodedCanyon": {
+  "biome": "RM_FloodedCanyon",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_FloodedCanyon",
+  "temp": 6.049057,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 4330,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RSW_Woolamander": 6
+  },
+  "plants": {
+   "AB_HardyGrass": 58,
+   "GRimMoss": 58,
+   "RUT_TwistingThorngrass": 30,
+   "RUT_TwistingThornweed": 22,
+   "AB_GargantuanLithops": 12,
+   "RM_Veqma": 10,
+   "RUT_TwistingThornwood": 10
+  },
+  "errors": []
+ }
+}
