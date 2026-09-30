@@ -46,6 +46,10 @@
         <RSW_LavaFlea MayRequire="mandrake.rsw.swbestiary">0.25</RSW_LavaFlea>
         <RSW_Beldon MayRequire="mandrake.rsw.swbestiary">0.08</RSW_Beldon>
         <RSW_Maguana MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Maguana>
+        <!-- FORGE_RULED_CONTENT_1 (owner "Wire in all waiting."): the roster's
+             Tibidee row, weight from rosters/the_forge.json. Canon, so it rides
+             this layer; no RSW_ port exists, so the donor defName is cast. -->
+        <Tibidee MayRequire="mlie.starwarsanimalcollection">0.5</Tibidee>
       </value>
     </match>
   </Operation>

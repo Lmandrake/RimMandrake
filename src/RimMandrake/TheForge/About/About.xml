@@ -36,10 +36,12 @@ RM tier: nothing here knows what campaign or planet uses it. It ships its
 own signature flora (fire lavender, heatsink fungus, and a heat-hardened
 crust-fungus distinct from any other biome's own variant per
 biome_mod_architecture.md §7 Q13), its own closed boiling-rain weather
-cycle, its own red haze weather, and a modest core of non-franchise
-wildlife including a from-scratch fleet flier. Franchise-specific fauna
+cycle, its own red haze weather, and its own wildlife: the fleet flier,
+the dhokkur (a hill-sized rain-drinker), the julmox herd, the jossur sky
+predator and the dhuvvox swarm. Floatstone, a light, strong, unburnable
+building stone, is harvested from floatstone gardens. Franchise-specific fauna
 (Star Wars creatures) never appear in this def; a companion Utinni patch
-layers three of them on top for the campaign that wants the fuller cast,
+layers four of them on top for the campaign that wants the fuller cast,
 exactly as it does with every other RimMandrake biome mod — and fixes a
 defName mismatch the frozen twin never had a chance to: the campaign's
 tibanna-tap mechanism targets the ported RSW_Beldon, but the twin's own
