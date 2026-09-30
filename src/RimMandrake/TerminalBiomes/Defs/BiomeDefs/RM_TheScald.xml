@@ -146,10 +146,52 @@
       <Clear>14</Clear>
       <Fog>8</Fog>
     </baseWeatherCommonalities>
+    <!-- SCALD_CROWNCARPET_NO_HABITAT_1, 2026-09-30, round 2: the single band
+         below (RUT_ScaldWaterOceanDeep, -999..999) meant EVERY non-rock cell
+         on a regenerated Scald map came out deep water — MEASURED live:
+         49,940 deep / 0 shallow on a 250x250 map, so RUT_ScaldWaterOceanShallow
+         (crowncarpet's own habitat tag, RM_CrowncarpetBed, RUT_ScaldWater.xml)
+         never appeared and the plantDensity fix above still had nowhere to
+         place the plant.
+
+         MapGenUtility.TerrainFrom() -> TerrainThreshold.TerrainAtValue()
+         picks the terrain by per-cell FERTILITY, first band whose
+         [min,max] contains the value wins (RimSage-read TerrainThreshold.cs).
+         Fertility itself is an INDEPENDENT Perlin field
+         (GenStep_ElevationFertility.cs, freq 0.021, 6 octaves, ScaleBias
+         0.5/0.5) — uncorrelated with the elevation noise that produces this
+         map's Gravel/rock outcrops (the "land" a diver actually sees; the
+         same MEASURED census read 4,626 Gravel + 3,212 Marble_Rough + 2,310
+         Granite_Rough). So a fertility band cannot hug those outcrops the
+         way a literal shoreline would — it gives a naturalistic irregular
+         PATCH of shallow across the floor, not a ring around the rock. A
+         ring-around-rock shoreline would need a new adjacency-based GenStep
+         (flagged, not built here — out of this item's XML-only scope).
+
+         Two bands, first-match-wins order preserved (deep first): fertility
+         < 0.6 stays deep (the design-doc-named majority), >= 0.6 goes
+         shallow. GravTide's own donor seabed biomes (Biomes_Seabed.xml,
+         workshop/3779600989) use this SAME single-band-per-zone shape and
+         get their real floor variety from a custom GenStep_Seabed instead —
+         confirming terrainsByFertility bands are the biome-level fallback,
+         not GravTide's real depth mechanism, but they are the mechanism
+         this def already committed to and the simplest fix that needs no
+         new C#. RUT_ScaldWaterOceanShallow already carries the
+         RM_CrowncarpetBed tag (RUT_ScaldWater.xml), so wiring it in here is
+         the whole fix — no terrain-def edit needed.
+         EXPECTED (not measured from this offline worktree — no bridge):
+         roughly a 65-80% deep / 20-35% shallow split, since the fertility
+         Perlin field centers near 0.5 and a 0.6 cutoff sits in its upper
+         tail; the live regen is the only real measurement. -->
     <terrainsByFertility>
       <li>
         <terrain>RUT_ScaldWaterOceanDeep</terrain>
         <min>-999</min>
+        <max>0.6</max>
+      </li>
+      <li>
+        <terrain>RUT_ScaldWaterOceanShallow</terrain>
+        <min>0.6</min>
         <max>999</max>
       </li>
     </terrainsByFertility>
