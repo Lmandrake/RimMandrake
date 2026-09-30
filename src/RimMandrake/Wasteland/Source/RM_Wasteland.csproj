@@ -10,8 +10,9 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony: the only classes here are a BiomeWorker (plain engine
-    extension point) and the Mod/ModSettings pair. No shared kit assembly is
+    No Harmony: a BiomeWorker, the Mod/ModSettings pair, and the
+    WASTELAND_MECHANICS_BUILD_1 comps/MapComponent/DefModExtensions — all
+    plain engine extension points. No shared kit assembly is
     referenced — Wasteland is not a §2b kit biome (item §8).
   -->
 
@@ -41,6 +42,10 @@
   <ItemGroup>
     <Compile Include="RM_BiomeWorker_Wasteland.cs" />
     <Compile Include="RM_WastelandMod.cs" />
+    <Compile Include="RM_WastelandMechanicsExtensions.cs" />
+    <Compile Include="RM_MapComponent_WastelandStorms.cs" />
+    <Compile Include="RM_CompAmbientDose.cs" />
+    <Compile Include="RM_CompProcessorGatherable.cs" />
   </ItemGroup>
 
   <ItemGroup>
