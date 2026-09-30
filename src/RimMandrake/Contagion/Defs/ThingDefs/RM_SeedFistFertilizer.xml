@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_FLORA_PORT_1. The Bloody Fist harvest: an item, never food (ban 4). The
+    plant's armored seed-fist breaks off and rolls to the burn line to die as
+    fertilizer; harvesting one early is how a colonist gets it instead. Icon reuses
+    the Bloody Fist plant texture as a placeholder, same convention as RM_WombpodSac.
+  -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SeedFistFertilizer</defName>
+    <label>seed-fist fertilizer</label>
+    <description>An armored seed-fist cut from a bloody fist before it could break off and roll to the burn line to die. Ground down it makes a rich fertilizer. Not food.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_BloodyFist/RM_BloodyFist</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.6, 0.6)</drawSize>
+    </graphicData>
+    <stackLimit>50</stackLimit>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>0.6</Mass>
+      <Flammability>0.4</Flammability>
+      <MarketValue>2</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>Sellable</tradeability>
+  </ThingDef>
+
+</Defs>

@@ -27,26 +27,23 @@
         among 52 unadjudicated multi-homed species; multi-home evictions are
         stopped by owner ruling, so it is not moved or renamed here.
 
-    Everything else — texture, terrain, weather, diseases, all 10 remaining
-    wildAnimals rows, all 10 wildPlants rows — is the twin's content unchanged.
-    Zero RSW_/SW_/mlie.* rows exist in the twin's wildAnimals (MEASURED,
-    CONTAGION_RM_MOD_BUILD_1's own STATE section §3), so nothing moves to a
-    Utinni patch from THIS def — unlike most sibling RM_ biome mods, there is
-    no WildAnimals_Contagion.xml.
+    Everything else — texture, terrain, weather, diseases — is the twin's
+    content unchanged.
 
-    ⚠️ NOT donor-free: terrain/texture and all 10 wildPlants entries carry no
-    MayRequire (inherited from the twin, not this build's scope to fix) — see
-    About.xml for the disclosure. RUT_RustPuff keeps its existing
+    ⚠️ NOT donor-free: terrain/texture entries carry no MayRequire (inherited
+    from the twin, not this build's scope to fix) — see About.xml for the
+    disclosure. RUT_RustPuff keeps its existing
     MayRequire="mandrake.rut.rotsporekit" cross-mod dependency, unchanged.
 
-    ⭐ SUPERSEDED 2026-09-29 (CONTAGION_RULED_CONTENT_1 Wave A): the paragraph
-    above describing "all 10 remaining wildAnimals rows... the twin's content
-    unchanged" no longer holds for <wildAnimals> — every donor AA_ row and
-    RUT_Sytheclaw (never admitted; Pyrelands is its home) were replaced
-    outright by the 16-def RM_ port in Defs/ThingDefs_Races/
-    RM_ContagionFauna.xml, per the cast bible's full-RM-development ruling.
-    <wildAnimals> is now donor-free and cross-mod-dependency-free. wildPlants
-    (still donor AB_*) is untouched — that port is a separate follow-on item.
+    ⭐ SUPERSEDED 2026-09-29 (CONTAGION_RULED_CONTENT_1 Wave A, then
+    CONTAGION_FLORA_PORT_1): every donor AA_/AB_ row and RUT_Sytheclaw (never
+    admitted; Pyrelands is its home) were replaced outright — <wildAnimals> by
+    the 16-def RM_ port in Defs/ThingDefs_Races/RM_ContagionFauna.xml,
+    <wildPlants> by the 9-def RM_ port in Defs/PlantDefs/RM_ContagionFlora.xml
+    (cast bible §4) — per the cast bible's full-RM-development ruling. Both
+    rosters are now donor-free and cross-mod-dependency-free (RUT_RustPuff's
+    own dependency above is unrelated: a RUT_ campaign-layer item, not an AB_
+    donor row).
   -->
 
   <BiomeDef>
@@ -148,7 +145,9 @@
         <tellSinkers>
           <li>RM_Gawpsack</li>
         </tellSinkers>
-        <!-- tellRattlers: RM_Rattlegrope once the flora port lands. -->
+        <tellRattlers>
+          <li>RM_Rattlegrope</li>
+        </tellRattlers>
         <coalescenceDef>RM_Coalescence</coalescenceDef>
         <coalescenceLongBloomTicks>90000</coalescenceLongBloomTicks>
         <coalescenceMtbDays>0.5</coalescenceMtbDays>
@@ -186,16 +185,21 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_AlienGrass>1.0</AB_AlienGrass>  <!-- ocular grass -->
-      <AB_AlienTree>1.0</AB_AlienTree>  <!-- ocular tree - tree -->
-      <AB_RedLeaves>0.6</AB_RedLeaves>  <!-- ocular plant -->
-      <AB_HalfAlienTree>0.5</AB_HalfAlienTree>  <!-- half transformed ocular tree - tree -->
-      <AB_RedPlantsTall>0.5</AB_RedPlantsTall>  <!-- ocular plant -->
-      <AB_GlobularPlant>0.4</AB_GlobularPlant>  <!-- globular aberration -->
-      <AB_TentacularPlant>0.4</AB_TentacularPlant>  <!-- tentacular aberration -->
-      <AB_BloodBouquet>0.3</AB_BloodBouquet>  <!-- blood bouquet -->
+      <!-- CONTAGION_FLORA_PORT_1: the donor AB_* cast is OUT — replaced
+           outright by the RM_ port below, per the cast bible's
+           full-RM-development ruling. Commonalities are the cast bible §4's
+           ruled numbers verbatim. Shorthand element form only — <li>
+           silently discards a wildPlants entry. -->
+      <RM_Eyebark>1.0</RM_Eyebark>  <!-- eyebark - the-canopy -->
+      <RM_Lashgrass>1.0</RM_Lashgrass>  <!-- lashgrass - ground cover -->
+      <RM_Bleedleaf>0.6</RM_Bleedleaf>  <!-- bleedleaf - low shrub -->
+      <RM_Gorestalk>0.5</RM_Gorestalk>  <!-- gorestalk - tall columns -->
+      <RM_HalfmadeTree>0.5</RM_HalfmadeTree>  <!-- halfmade tree - infection front -->
+      <RM_Rattlegrope>0.4</RM_Rattlegrope>  <!-- rattlegrope - the second tell -->
+      <RM_Sapblister>0.4</RM_Sapblister>  <!-- sapblister - sap/wound-sealant source -->
+      <RM_BloodyFist>0.3</RM_BloodyFist>  <!-- bloody fist - seed-fist fertilizer source -->
       <RUT_RustPuff MayRequire="mandrake.rut.rotsporekit">0.3</RUT_RustPuff>  <!-- rust puff -->
-      <AB_AlienTree_Polluted>0.15</AB_AlienTree_Polluted>  <!-- mutated ocular tree - tree -->
+      <RM_HalfmadeTreeBlighted>0.15</RM_HalfmadeTreeBlighted>  <!-- blighted halfmade tree - front-line variant -->
       <RM_Meatvine>0.35</RM_Meatvine>  <!-- meatvine - infection-front vine -->
       <RM_Toothmoss>0.3</RM_Toothmoss>  <!-- toothmoss - burn-line carpet -->
       <RM_Wombpod>0.2</RM_Wombpod>  <!-- wombpod - genome-loop host source -->
