@@ -507,6 +507,15 @@ you would build the version he rejected. Door family is its own item,
 `FLOWWORKS_DOOR_FAMILY_1`: **two** stuffable defs, never the three he described and
 then talked himself out of.
 
+## 🔴 One kind of heat, planet-wide — owner, 2026-09-29/30
+
+*"It can't be a new "kind" of heat."* Sun exposure feeds **vanilla** heat (temperature → Heatstroke),
+never a new hediff, and every extreme-heat biome declares a heat KIND: overhead sun, low sun, or
+ambient (steam/volcanic, where shade does nothing). *"The biome takes its sun angle from its
+latitude"*, meaning the tile's planet latitude, never a region's prose. Shade gear works per heat kind.
+And **no animal or pawn ever vanishes without a readable sign.** Items: `SOLAR_HEAT_EXPOSURE_1`,
+`SHADE_GEAR_FAMILY_1`.
+
 ## 🔑 "Star Wars style" naming is NOT Star Wars IP — owner, 2026-09-22 (Q11a)
 
 *"The fact that we will use "star wars style" naming doesn't mean they have to live in the star
