@@ -1,0 +1,22 @@
+FirstCoat dev actions: ['T: FirstCoat: coat thing at cell', 'T: FirstCoat: destroy thing at cell', 'T: FirstCoat: remove coats at cell', 'T: FirstCoat: report thing at cell', 'T: FirstCoat: spawn art Legendary at cell', 'T: FirstCoat: spawn art Normal at cell', 'T: FirstCoat: spawn wall at cell']
+== 0 spawn Normal-quality sculpture ==
+  PASS  spawn: art, Normal quality, 0 coats, bonus not applied  {"action": "spawnArt", "found": true, "thingId": 17720, "def": "SculptureSmall", "isArt": true, "coats": 0, "bonusApplied": false, "quality": "Normal", "beauty": 50}
+== 1 first coat ==
+  PASS  coat 1: coats=1, bonusApplied=true, quality Good  {"action": "coat", "found": true, "thingId": 17720, "def": "SculptureSmall", "isArt": true, "coats": 1, "bonusApplied": true, "quality": "Good", "beauty": 150}
+== 2 second coat (bonus must not re-fire) ==
+  PASS  coat 2: coats=2, quality UNCHANGED at Good  {"action": "coat", "found": true, "thingId": 17720, "def": "SculptureSmall", "isArt": true, "coats": 2, "bonusApplied": true, "quality": "Good", "beauty": 150}
+== 3 Legendary caps, coat still charged ==
+  PASS  spawn: art, Legendary quality  {"action": "spawnArt", "found": true, "thingId": 17723, "def": "SculptureSmall", "isArt": true, "coats": 0, "bonusApplied": false, "quality": "Legendary", "beauty": 600}
+  PASS  coat: Legendary stays Legendary, coats=1 (still charged)  {"action": "coat", "found": true, "thingId": 17723, "def": "SculptureSmall", "isArt": true, "coats": 1, "bonusApplied": true, "quality": "Legendary", "beauty": 600}
+== 4 wall baseline (everything-else / Beauty StatPart path) ==
+  PASS  spawn: wall, not art, 0 coats  {"action": "spawnWall", "found": true, "thingId": 17725, "def": "Wall", "isArt": false, "coats": 0, "bonusApplied": false, "quality": "", "beauty": 0}
+== 5 coat the wall ==
+  PASS  coat: coats=1, Beauty rises by flat*sizeFactor + pct*baseBeauty  0.0000 -> 3.0000 (rise 3.0000, expected 3.0000)
+== 6 strip coats: bonus disappears, no permanent mark ==
+  PASS  strip: coats=0, Beauty back to baseline  0.0000 vs baseline 0.0000
+== 7 reapply: same rise, not double (remove + reapply does not re-bump) ==
+  PASS  reapply: coats=1, Beauty rise matches step 5 exactly (no double-count)  3.0000 vs step-5 3.0000
+== 8 log ==
+  PASS  no LuminousPigment/Deepfire/FirstCoat Error-type lines logged (new) during the proof  []
+
+10/10 passed

@@ -1,0 +1,47 @@
+make_empty_room: {"success": true, "rect": {"x": 59, "z": 59, "w": 8, "h": 8}, "wallDef": "Wall", "floorDef": "WoodPlankFloor", "doorAt": {"x": 62, "z": 66}, "cellsWalled": 28, "cellsFloored": 64, "ticksGame": 1355, "operation": {"OperationId": "op_26e3543016014ec697bed07706a1a3eb", "CapabilityId": "extension.global
+Deepfire dev actions: ['T: GodDeltas: coat floor cell at cell', 'T: GodDeltas: coat idol of Ishko at cell', 'T: GodDeltas: coat idol of Rekko at cell', 'T: GodDeltas: coat new parka at cell', 'T: GodDeltas: coat new wall at cell', 'T: GodDeltas: diminish test at cell', 'T: GodDeltas: second coat on thing at cell', 'T: GodDeltas: sold deepfire (simulated deal)', 'T: LightsOut: switch off room at cell']
+== 1 first coat, wall ==
+    {"action": "wall", "found": true, "def": "Wall", "coats": 1, "statueGod": "", "wornClass": false, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "deltas": {"Ishko": {"b": -100, "d": 0}, "Ohm": {"b": 100, "d": 0}, "Oomo": {"b": 100, "d": 0}, "MobUnloo": {"b": 100, "d": 0}, "Rekko": {"b": 100, "d": 0}, "TaBaa": {"b": 100, "d": 0}, "Zizzik": {"b": 100, "d": 0}, "Shkaar": {"b": 100, "d": 0}, "Ozzik": {"b": 100, "d": 0}}}
+  PASS  wall: 1 coat, not worn, not a statue  {"action": "wall", "found": true, "def": "Wall", "coats": 1, "statueGod": "", "wornClass": false, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "deltas": {"Ishko": {"b":
+  PASS  wall first coat: Ishko -3, trio +8, other five +3  x1.00
+== 2 second coat ==
+  PASS  wall: second coat landed (2 coats)  {"action": "secondCoat", "found": true, "def": "Wall", "coats": 2, "statueGod": "", "wornClass": false, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "deltas": {"Ishko":
+  PASS  second coat: no god moves  x1.00
+== 3 first coat, parka ==
+    {"action": "parka", "found": true, "def": "Apparel_Parka", "coats": 1, "statueGod": "", "wornClass": true, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "deltas": {"Ishko": {"b": -100, "d": 0}, "Ohm": {"b": 100, "d": 0}, "Oomo": {"b": 100, "d": 0}, "MobUnloo": {"b": 100, "d": 0}, "Rekko": {"b": 100, "d": 0}, "TaBaa": {"b": 100, "d": 0}, "Zizzik": {"b": 100, "d": 0}, "Shkaar": {"b": 100, "d": 0}, "Ozzik": {"b": 100, "d": 0}}}
+  PASS  parka: worn class  {"action": "parka", "found": true, "def": "Apparel_Parka", "coats": 1, "statueGod": "", "wornClass": true, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "deltas": {"Ishk
+  PASS  parka first coat: Ishko -8, trio +8, other five +3  x1.00
+== 4 idol of Rekko ==
+    {"action": "idol:Rekko", "found": true, "def": "SculptureSmall", "coats": 1, "statueGod": "Rekko", "wornClass": false, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "deltas": {"Ishko": {"b": -100, "d": 0}, "Ohm": {"b": 100, "d": 0}, "Oomo": {"b": 100, "d": 0}, "MobUnloo": {"b": 100, "d": 0}, "Rekko": {"b": 100, "d": 0}, "TaBaa": {"b": 100, "d": 0}, "Zizzik": {"b": 100, "d": 0}, "Shkaar": {"b": 100, "d": 0}, "Ozzik": {"b": 100, "d": 0}}}
+  PASS  idol: extension read as Rekko  {"action": "idol:Rekko", "found": true, "def": "SculptureSmall", "coats": 1, "statueGod": "Rekko", "wornClass": false, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "del
+  PASS  Rekko idol: Rekko +15, Ishko -3, every other god +3  x1.00
+== 5 idol of Ishko ==
+    {"action": "idol:Ishko", "found": true, "def": "SculptureSmall", "coats": 1, "statueGod": "Ishko", "wornClass": false, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "deltas": {"Ishko": {"b": -100, "d": 0}, "Ohm": {"b": 100, "d": 0}, "Oomo": {"b": 100, "d": 0}, "MobUnloo": {"b": 100, "d": 0}, "Rekko": {"b": 100, "d": 0}, "TaBaa": {"b": 100, "d": 0}, "Zizzik": {"b": 100, "d": 0}, "Shkaar": {"b": 100, "d": 0}, "Ozzik": {"b": 100, "d": 0}}}
+  PASS  idol: extension read as Ishko  {"action": "idol:Ishko", "found": true, "def": "SculptureSmall", "coats": 1, "statueGod": "Ishko", "wornClass": false, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "del
+  PASS  Ishko idol: Ishko -15, every other god +3  x1.00
+== 6 floor cell ==
+    {"action": "floor", "terrain": "WoodPlankFloor", "added": true, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "deltas": {"Ishko": {"b": -100, "d": 0}, "Ohm": {"b": 100, "d": 0}, "Oomo": {"b": 100, "d": 0}, "MobUnloo": {"b": 100, "d": 0}, "Rekko": {"b": 100, "d": 0}, "TaBaa": {"b": 100, "d": 0}, "Zizzik": {"b": 100, "d": 0}, "Shkaar": {"b": 100, "d": 0}, "Ozzik": {"b": 100, "d": 0}}}
+  PASS  floor: cell coated  {"action": "floor", "terrain": "WoodPlankFloor", "added": true, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "deltas": {"Ishko": {"b": -100, "d": 0}, "Ohm": {"b": 100, 
+  PASS  floor first coat: Ishko -3, trio +8, other five +3  x1.00
+== 7 diminish ==
+    {"action": "diminish", "diminishAfter": 10, "events": 11, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "lastFull": {"Ishko": {"b": -100, "d": 0}, "Ohm": {"b": 100, "d": 0}, "Oomo": {"b": 100, "d": 0}, "MobUnloo": {"b": 100, "d": 0}, "Rekko": {"b": 100, "d": 0}, "TaBaa": {"b": 100, "d": 0}, "Zizzik": {"b": 100, "d": 0}, "Shkaar": {"b": 100, "d": 0}, "Ozzik": {"b": 100, "d": 0}}, "firstDiminished": {"Ishko": {"b": -100, "d": 0}, "Ohm": {"b": 100, "d": 0}, "Oomo": {"b": 100, "d": 0}, "MobUnloo": {"b": 100, "d": 0}, "Rekko": {"b": 100, "d": 0}, "TaBaa": {"b": 100, "d": 0}, "Zizzik": {"b": 100, "d": 0}, "Shkaar": {"b": 100, "d": 0}, "Ozzik": {"b": 100, "d": 0}}}
+  PASS  diminish: diminishAfter+1 events recorded on the wall def  {"action": "diminish", "diminishAfter": 10, "events": 11, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "lastFull": {"Ishko": {"b": -100, "d": 0}, "Ohm": {"b": 100, "d":
+  PASS  diminish: event #diminishAfter still full strength  x1.00
+  PASS  diminish: the next event is +-1 per god  x1.00
+== 8 sold ==
+    {"action": "sold", "prefixRegistered": true, "postfixRegistered": true, "sellsJar": true, "sellsCoatedSculpture": true, "sellsSteel": false, "buysJar": false, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "deltas": {"Ishko": {"b": -100, "d": 0}, "Ohm": {"b": 100, "d": 0}, "Oomo": {"b": 100, "d": 0}, "MobUnloo": {"b": 100, "d": 0}, "Rekko": {"b": 100, "d": 0}, "TaBaa": {"b": 100, "d": 0}, "Zizzik": {"b": 100, "d": 0}, "Shkaar": {"b": 100, "d": 0}, "Ozzik": {"b": 100, "d": 0}}}
+  PASS  sold: prefix and postfix registered on TradeDeal.TryExecute  {"action": "sold", "prefixRegistered": true, "postfixRegistered": true, "sellsJar": true, "sellsCoatedSculpture": true, "sellsSteel": false, "buysJar": false, "ninefold": true, "engineEnabled": true, 
+  PASS  sold: a sold jar and a sold coated sculpture count; sold steel and a bought jar do not  {"action": "sold", "prefixRegistered": true, "postfixRegistered": true, "sellsJar": true, "sellsCoatedSculpture": true, "sellsSteel": false, "buysJar": false, "ninefold": true, "engineEnabled": true, "godsReact": true, "multiplier": 1, "deltas": {"Ishko": {"b": -100, "d": 0}, "Ohm": {"b": 100, "d": 
+  PASS  sold: Mob'Unloo +8, nobody else  x1.00
+== 9 LightsOut ==
+    {"action": "lightsOut", "lightsOutLoaded": true, "canBeLightPatched": true, "canConsumePatched": true, "flickLights": true, "proxyFound": true, "roomOutdoors": false, "proxyCanBeLight": false, "lampCanBeLight": true, "proxyGlowsBefore": true, "proxyGlowsAfter": true, "proxyCanConsume": null, "lampCanConsume": false}
+  PASS  LightsOut: both compat patches applied  
+  PASS  LightsOut: FlickLights on and room indoors (the switch-off can run)  {"action": "lightsOut", "lightsOutLoaded": true, "canBeLightPatched": true, "canConsumePatched": true, "flickLights": true, "proxyFound": true, "roomOutdoors": false, "proxyCanBeLight": false, "lampCa
+  PASS  LightsOut control: the StandingLamp IS a light and was switched off  canBeLight=True canConsume=False
+  PASS  LightsOut: the Deepfire proxy is NOT a light to it  
+  PASS  LightsOut: proxy glows before and after the switch-off  before=True after=True canConsume=None
+  PASS  LightsOut: proxy has no consume status (glow postfix leaves it alone)  
+== 10 log ==
+  PASS  no LuminousPigment/Deepfire/Ninefold Error-type lines logged (new) during the proof  []
+
+25/25 passed, 0 UNMEASURED
