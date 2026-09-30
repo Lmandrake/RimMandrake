@@ -202,11 +202,57 @@ throws a short shadow, which is why the giant's moving shade (marquee #2) is the
 
 ## 4. Nine-mark scorecard
 
-pending
+| # | Mark | Verdict | Evidence |
+|---|---|---|---|
+| 1 | Unique mechanic | **HIT** | **The planet's only infestation.** The sand-buster eruption (`RM_IncidentWorker_SandBusterEruption`, tunnel spawner, dormant mound, ruukka + oorrik castes) is built and biome-gated, and the Utinni layer bans Core's `Infestation` everywhere else (`0c6e84064`). No other biome can erupt under your colony. Seconded by the drum-lure + proximity-hatch trap pair (drazzik → nizzek). Caveat: every caste is magenta until its finished art is wired. |
+| 2 | Discoverable technology | **MISS** | Nothing teaches. `RM_Biosilica` exists as a harvest item, but **no recipe, research or building consumes it** (`git grep RM_Biosilica` finds only the flora file). The sheet's promised "real lenses" have no use. The solar offer (§7 ⭐) has no build. Eggs-as-water exist as items with no carry economy. |
+| 3 | Unique resources | **HIT** | `RM_Biosilica` (the only non-volcanic glass on the planet), `RM_OllimWood` (fire-immune, hammer-weak, shipped stat signature), `RM_GuzzkaEgg*` (DBH water in a shell), `RM_DrazzikEgg*` (water, or a trap). Caveats: the guzzka is wired nowhere, so its egg cannot be found, and biosilica has no icon and no use. |
+| 4 | Surprising creatures | **HIT** | A predator that drums the ground to sound like a wounded meal (drazzik). Eggs that hatch *at* you (nizzek). A dust-animal a storm wakes (siidda). A colony-floor eruption (ruukka). The fill-out's gaanok (the follower that waits for you to fail) and soorrak are art-ruled but have no defs. |
+| 5 | GIANT beast | **HIT (art caveat)** | `RM_Oommok` bs **18.0**, the largest wired body on the planet's free tier, with `ShadowCaster` live and the shade mite following it. Its face is **magenta**: `rmmirrorgiant_v1` (6 files) is done and unwired. The crossing-with-the-giant payoff (marquee #2) is unbuilt. Second tier: aurrok 4.0, vozzik 5.0, ruukka 5.0, and canon WarWyrm/krayts in the campaign. |
+| 6 | Gravship touch | **MISS** | Nothing references the ship in this biome's voice. The 09-27 doc §6 proposed a biosilica lens array, an egg cistern and a solar catch-yard, and none was carded. `BIOME_SHIP_CONTRIBUTIONS_1` has no Stillsand row. |
+| 7 | Soundscape | **MISS** | No SoundDef, no ambient, no register in either sheet. For a biome whose drum-lure and eruptions are *vibration*, the ear is its most unused sense. |
+| 8 | Interesting weather | **MISS** | Stock Clear/DryThunderstorm/Odyssey Sandstorm only. The sheet's destructive, seeding sandstorm (deep_desert §8) is unbuilt, and 🔴 the vanilla day-night sky **violates** dune_sea §6's first ban (§2). The moving dunes are terrain physics, not sky. |
+| 9 | Relationship to the gods | **PARTIAL** | The **Sun-Debt** ideoligion is built and belongs to the tribes who hold this biome, and its theology ("the sun lends and the sand collects") is a desert liturgy waiting for a place. But no biome content touches it. Sh'kaar is the Long Shade's parked hook, not ours. |
+
+**Score as built: 4 HIT / 1 PARTIAL / 4 MISS.** That is up from the program table's "content today:
+1", because the rank-1 marquee, the tier move, the dunes binding, the shade-mite commensal and the
+cavern beast all landed between 09-25 and 09-28. **What sets this biome apart: the physics is
+done and the presence is missing.** The biome's own threats are built, but its face is magenta (six
+finished render sets sit unwired), its roster fill-out has no defs, its sky breaks its own first
+ban, and its crossing and buried-record marquees have engines with no content on them. Movement 3
+here should aim at **the ear, the sky, the ship and the tech** (the four MISSes) without adding
+surface busyness. The admission test still binds: *if an idea makes a Stillsand map look busier,
+it is wrong.*
 
 ## 5. Ruled-but-unbuilt debt
 
-pending
+Each item here is ruled, has no build item, and is owed regardless of what movement 3 rules. They
+become movement-4 tickets.
+
+1. **The fill-out cast: 6 creatures + 3 plants.** The owner ruled the art sheet 2026-09-27 (soorrak
+   REGEN; gaanok / loomma / kneel ollim IMPROVE; liikka / duumma / veessa / hourbloom / glasscrust
+   KEEP), and the redo `_b` sets are validated in the registry. **No def and no item exists.**
+   `STILLSAND_RULED_CONTENT_1` explicitly held them "gated on the owner's review sheet". That gate
+   opened and nothing was filed (`git grep soorrak|gaanok|… src infrastructure/state/items` → 0).
+2. **The presentation wave: six finished render sets unwired.** `rmmirrorgiant_v1` → oommok,
+   `rmdusthusk_v1` → siidda, `rmshademite_v1/v2` → shade mite, `RM_Ruukka` / `RM_Oorrik` /
+   `RM_SandBusterMound` → the busters. Each texPath resolves nowhere in the repo. New art is owed
+   for vozzik, vekka, drazzik, guzzka, aurrok (off Alpha Animals' texture), nizzek and the
+   biosilica icon. The nub, ollim and wood still borrow SWBestiary's textures.
+3. **Caverns: filed in the ledger with no item file.** `STILLSAND_CAVERN_AUTHORING_1` was filed
+   2026-09-28 (BENCH), but no `items/` or `items/closed/` file exists. So the built guzzka and its
+   prize eggs spawn nowhere, and deep_desert §8's "serious authoring effort belongs here" stays
+   unplaced.
+4. **Smaller ruled rows with no carrier:**
+   - **vaalok**, the free-tier pack giant: Q11 rides it on a build that was never filed, so the
+     standalone mod generates no traders.
+   - **eemmok**, the probe-clean name Q11 ruled "rides its build": the commensal shipped as the
+     English "shade mite". Rename owed, or rule the English name.
+   - **qorrax**: still a Utinni-tier ThingDef patch-routed into an RM biome, where Q1 moved the other
+     invented rows inline.
+   - **vozzik**: carries an SWBestiary comp in the free tier.
+   - Card rows: **"drageye"** (FOUNDRY's label, not an accent coin), and the eternal-noon sky lock
+     the sheet's ban requires (§2; §8 #2).
 
 ## 6. Roster gaps and proposed fills
 
