@@ -131,4 +131,459 @@
     </plant>
   </ThingDef>
 
+  <!--
+    CONTAGION_FLORA_PORT_1. Cast bible §4's nine flora ports, full RM_ development
+    (owner ruling on CONTAGION_BEDAZZLE_SITTING_1: new defs, new names, new art, no
+    patches). None edible, none foragable (ban 4) - no Nutrition stat, no
+    <ingestible> block on any of them, same shape as Meatvine/Toothmoss/Wombpod above.
+    Donor: Alpha Biomes (workshop 1841354677, packageId sarg.alphabiomes),
+    1.6/Defs/ThingDefs_Plants/Plants_OcularForest.xml (+ Plants_Ocular_Polluted.xml
+    for the blighted variant). Wired into RM_Contagion.xml's <wildPlants> in place of
+    the donor AB_* rows, same change.
+  -->
+
+  <!-- Eyebark: the canopy - a tree studded with working eyes that track passers-by.
+       Tapped by the Sparkleech; the Danglemaw hangs from it. Poor-yield wood harvest,
+       long growDays. Art: RM_Eyebark_v2 IMPROVE pass (owner: "hang droopily downward
+       like a willow"), validated pass, supersedes the v1 render. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Eyebark</defName>
+    <label>eyebark</label>
+    <description>A gnarled alien tree whose red-brown bark is studded with dozens of working eyes, set in welted sockets up the trunk and along the boughs, all open and tracking. Its canopy hangs in long limp curtains of wet dark-red foliage, boughs bowed under the weight. The peaks' dominant organism -- the Sparkleech taps it, the Danglemaw hangs from it.</description>
+    <statBases>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <BeautyOutdoors>-6</BeautyOutdoors>
+      <Mass>150</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Eyebark/RM_Eyebark</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.35</fillPercent>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <passability>PassThroughOnly</passability>
+    <pathCost>130</pathCost>
+    <rotatable>false</rotatable>
+    <blockWind>true</blockWind>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <minGrowthTemperature>0</minGrowthTemperature>
+      <minOptimalGrowthTemperature>15</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>45</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>70</maxGrowthTemperature>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <treeCategory>Full</treeCategory>
+      <growDays>16</growDays>
+      <lifespanDaysPerGrowDays>10</lifespanDaysPerGrowDays>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <harvestWork>320</harvestWork>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestTag>Wood</harvestTag>
+      <harvestYield>6</harvestYield>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <visualSizeRange>2.6~3.4</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>4</wildOrder>
+      <topWindExposure>0.3</topWindExposure>
+      <interferesWithRoof>true</interferesWithRoof>
+      <burnedThingDef IsNull="True" />
+      <choppedThingDef IsNull="True" />
+      <smashedThingDef IsNull="True" />
+    </plant>
+  </ThingDef>
+
+  <!-- Lashgrass: ground cover of fine red filaments that flinch away from footsteps
+       in a spreading wave - the ground telling everything where you are. No yield. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Lashgrass</defName>
+    <label>lashgrass</label>
+    <description>Fine red filaments carpeting the ground, flinching away from footsteps in a spreading wave. It tells everything in the valley exactly where you are.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>1.2</Flammability>
+      <BeautyOutdoors>-2</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Lashgrass/RM_Lashgrass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <selectable>false</selectable>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>0</minGrowthTemperature>
+      <minOptimalGrowthTemperature>15</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>45</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>70</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>2.5</growDays>
+      <lifespanDaysPerGrowDays>4</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <maxMeshCount>9</maxMeshCount>
+      <wildOrder>1</wildOrder>
+      <topWindExposure>0.4</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- Bleedleaf: low shrub whose leaves wet through with red at the veins and drip;
+       "not even 100% carbon based" (donor's own phrase, kept). No yield. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Bleedleaf</defName>
+    <label>bleedleaf</label>
+    <description>A low shrub whose leaves wet through with red at the veins and drip -- not even 100% carbon based, whatever it is made of.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <BeautyOutdoors>-3</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Bleedleaf/RM_Bleedleaf</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <selectable>false</selectable>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>0</minGrowthTemperature>
+      <minOptimalGrowthTemperature>15</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>45</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>70</maxGrowthTemperature>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>4</growDays>
+      <lifespanDaysPerGrowDays>6</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.7~1.0</visualSizeRange>
+      <maxMeshCount>2</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <topWindExposure>0.4</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- Gorestalk: tall red columns like stood-up entrails, faintly peristaltic -
+       knife country's set dressing, tall enough to block sight lines. No yield. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Gorestalk</defName>
+    <label>gorestalk</label>
+    <description>Tall red columns standing like stood-up entrails, faintly peristaltic. They grow thick enough in the knife country to block a sightline entirely.</description>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <BeautyOutdoors>-4</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Gorestalk/RM_Gorestalk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.2, 0.25, 0.12)</volume>
+        <offset>(0,0,-0.3)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>false</selectable>
+    <fillPercent>0.3</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>60</pathCost>
+    <blockWind>true</blockWind>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>6</growDays>
+      <lifespanDaysPerGrowDays>7</lifespanDaysPerGrowDays>
+      <visualSizeRange>1.8~2.4</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <topWindExposure>0.1</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- Rattlegrope: a knot of tentacular limbs that gropes the air - and rattles
+       before a Burn (the sheet's second tell). STUB ONLY: the rattle behaviour is
+       C# owned by the mechanics item, not built here. Plant comps (if any are ever
+       added) must override CompTickLong, never CompTick - Plant only ticks Long
+       (RimSage-confirmed, see CLAUDE.md). Data-only wiring done here: RM_Rattlegrope
+       is added to RM_ContagionSkyExtension's existing <tellRattlers> list in
+       RM_Contagion.xml, which RM_MapComponent_ContagionSky.cs already consumes -
+       no new C# added by this port. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Rattlegrope</defName>
+    <label>rattlegrope</label>
+    <description>A knot of tentacular limbs that gropes slowly at the air, blue nodules at each tip. It rattles before a Burn comes through -- one of the valley's two tells that the sky is about to clear.</description>
+    <statBases>
+      <MaxHitPoints>110</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+      <BeautyOutdoors>-5</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Rattlegrope/RM_Rattlegrope</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>false</selectable>
+    <fillPercent>0.3</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>110</pathCost>
+    <blockWind>true</blockWind>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>6</growDays>
+      <lifespanDaysPerGrowDays>7</lifespanDaysPerGrowDays>
+      <visualSizeRange>1.6~2.1</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <topWindExposure>0.2</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- Sapblister: a swollen globular plant whose skin blisters weep red sap - the
+       sheet's insect repellent and wound-sealant. Harvest yields RM_RedSap, an item,
+       never food. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Sapblister</defName>
+    <label>sapblister</label>
+    <description>A swollen globular plant whose skin blisters weep a red sap, thick enough to keep insects at bay and to seal a wound. Not food, whatever else it is good for.</description>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <BeautyOutdoors>-4</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Sapblister/RM_Sapblister</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.3</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>110</pathCost>
+    <blockWind>true</blockWind>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>6</growDays>
+      <lifespanDaysPerGrowDays>7</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.5</harvestAfterGrowth>
+      <harvestedThingDef>RM_RedSap</harvestedThingDef>
+      <harvestYield>10</harvestYield>
+      <harvestWork>200</harvestWork>
+      <visualSizeRange>2.0~2.6</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <topWindExposure>0.2</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- Bloody Fist (owner's coinage): a clenched knuckle of dark red blooms on a
+       spined stalk; its armored seed-fist breaks off, rolls to the burn line and
+       dies there as fertilizer. Harvest yields RM_SeedFistFertilizer, an item,
+       never food. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_BloodyFist</defName>
+    <label>bloody fist</label>
+    <description>A clenched knuckle of dark red blooms on a spined stalk. Its armored seed-fist breaks off when ripe, rolls to the burn line and dies there -- fertilizer for whatever grows back after the next Burn.</description>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.6</Flammability>
+      <BeautyOutdoors>-3</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_BloodyFist/RM_BloodyFist</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.25</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>80</pathCost>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>5</growDays>
+      <lifespanDaysPerGrowDays>6</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.5</harvestAfterGrowth>
+      <harvestedThingDef>RM_SeedFistFertilizer</harvestedThingDef>
+      <harvestYield>4</harvestYield>
+      <harvestWork>220</harvestWork>
+      <visualSizeRange>1.6~2.0</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <topWindExposure>0.1</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
+  <!-- Halfmade Tree: the infection front, advancing in Blooms, burned back in Burns.
+       Art redo (cast bible §4, folded in from the_contagion.md's Owed section): half
+       PLANT, alien on BOTH halves, never a half oak. Art: RM_HalfmadeTree, generated
+       fresh through the pipeline (not the retired halfalientree_v1 render), validated
+       pass. Poor-yield wood harvest, matching the donor's own halved-value shape. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_HalfmadeTree</defName>
+    <label>halfmade tree</label>
+    <description>The infection front made visible: half of this tree is one alien plant, and the other half is a second, different alien wrongness overwriting the first -- pulsating red structures eating into gnarled dark growth, neither half anything a person would call a tree back home. It advances in a Bloom and burns back in a Burn.</description>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0.8</Flammability>
+      <BeautyOutdoors>-5</BeautyOutdoors>
+      <Mass>150</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.35</fillPercent>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <passability>PassThroughOnly</passability>
+    <pathCost>130</pathCost>
+    <rotatable>false</rotatable>
+    <blockWind>true</blockWind>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <treeCategory>Full</treeCategory>
+      <growDays>10</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <harvestWork>300</harvestWork>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestTag>Wood</harvestTag>
+      <harvestYield>18</harvestYield>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <visualSizeRange>2.3~3.0</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>3</wildOrder>
+      <topWindExposure>0.3</topWindExposure>
+      <interferesWithRoof>true</interferesWithRoof>
+      <burnedThingDef IsNull="True" />
+      <choppedThingDef IsNull="True" />
+      <smashedThingDef IsNull="True" />
+    </plant>
+  </ThingDef>
+
+  <!-- blighted halfmade tree: the variant (plain-modifier form) - the downslope
+       front-line texture, further gone, barely a plant at all. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_HalfmadeTreeBlighted</defName>
+    <label>blighted halfmade tree</label>
+    <description>A halfmade tree further gone: the infection has all but finished overwriting it, and what's left barely reads as a plant at all. Downslope, front-line texture -- the leading edge of the Bloom.</description>
+    <statBases>
+      <MaxHitPoints>260</MaxHitPoints>
+      <Flammability>0.9</Flammability>
+      <BeautyOutdoors>-7</BeautyOutdoors>
+      <Mass>170</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_HalfmadeTreeBlighted/RM_HalfmadeTreeBlighted</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <fillPercent>0.35</fillPercent>
+    <minifiedDef>MinifiedTree</minifiedDef>
+    <passability>PassThroughOnly</passability>
+    <pathCost>130</pathCost>
+    <rotatable>false</rotatable>
+    <blockWind>true</blockWind>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <treeCategory>Full</treeCategory>
+      <growDays>5</growDays>
+      <lifespanDaysPerGrowDays>4</lifespanDaysPerGrowDays>
+      <soundHarvesting>Harvest_Tree</soundHarvesting>
+      <soundHarvestFinish>Harvest_Tree_Finish</soundHarvestFinish>
+      <harvestWork>800</harvestWork>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestTag>Wood</harvestTag>
+      <harvestYield>4</harvestYield>
+      <harvestMinGrowth>0.4</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <visualSizeRange>2.0~2.8</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>3</wildOrder>
+      <topWindExposure>0.3</topWindExposure>
+      <interferesWithRoof>true</interferesWithRoof>
+      <burnedThingDef IsNull="True" />
+      <choppedThingDef IsNull="True" />
+      <smashedThingDef IsNull="True" />
+    </plant>
+  </ThingDef>
+
 </Defs>

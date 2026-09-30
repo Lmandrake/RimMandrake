@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_FLORA_PORT_1. The Sapblister harvest: an item, never food (ban 4). The
+    sheet's insect repellent and wound-sealant. Icon reuses the Sapblister plant
+    texture as a placeholder, same convention as RM_WombpodSac.
+  -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_RedSap</defName>
+    <label>red sap</label>
+    <description>Thick red sap harvested from a sapblister's weeping skin. Not food -- it keeps insects at bay and seals a wound.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Sapblister/RM_Sapblister</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.6, 0.6)</drawSize>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.2</Mass>
+      <Flammability>0.5</Flammability>
+      <MarketValue>1.5</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>Sellable</tradeability>
+  </ThingDef>
+
+</Defs>
