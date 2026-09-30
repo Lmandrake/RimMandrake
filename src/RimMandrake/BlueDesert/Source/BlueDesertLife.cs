@@ -55,6 +55,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 using Verse.AI.Group;
+using Verse.Sound;
 
 namespace RimMandrake.BlueDesert
 {
@@ -154,11 +155,33 @@ namespace RimMandrake.BlueDesert
                 {
                     parent.Kill(new DamageInfo(DamageDefOf.Flame, 99999f));
                 }
+                else
+                {
+                    PlayCrackCue();
+                }
             }
             else
             {
                 warmTicksInARow = 0;
             }
+        }
+
+        // BLUEDESERT_MECHANICS_BUILD_1 §5: the crack cue. Played on the FIRST
+        // warm long tick of the two-long-tick countdown above, so a listening
+        // player gets roughly one long tick (~33 s) to run before the charge
+        // goes. A one-shot, not a sustainer: a plant only ever ticks Long
+        // (Plant overrides TickLong, never Tick), and a Sustainer must be
+        // Maintain()ed every frame-tick or it ends, so a plant cannot keep one
+        // alive. RM_PhaseCrack's maxSimultaneous 1 stops a warming field from
+        // stacking a hundred copies.
+        private void PlayCrackCue()
+        {
+            if (!RM_BlueDesertSettings.crackCueEnabled || parent.Map == null)
+            {
+                return;
+            }
+            SoundDef crack = DefDatabase<SoundDef>.GetNamedSilentFail("RM_PhaseCrack");
+            crack?.PlayOneShot(new TargetInfo(parent.Position, parent.Map));
         }
 
         public override void PostDestroy(DestroyMode mode, Map previousMap)

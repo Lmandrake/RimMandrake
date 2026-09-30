@@ -50,6 +50,9 @@ namespace RimMandrake.BlueDesert
         // BLUEDESERT_MECHANICS_BUILD_1 §3 (RM_BlueIceThaw.cs).
         public static bool thawRollEnabled = true;
 
+        // BLUEDESERT_MECHANICS_BUILD_1 §5 (CompPlantCharge.PlayCrackCue).
+        public static bool crackCueEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -65,6 +68,7 @@ namespace RimMandrake.BlueDesert
             Scribe_Values.Look(ref ruledWeathersEnabled, "ruledWeathersEnabled", true);
             Scribe_Values.Look(ref hazeExposureEnabled, "hazeExposureEnabled", true);
             Scribe_Values.Look(ref thawRollEnabled, "thawRollEnabled", true);
+            Scribe_Values.Look(ref crackCueEnabled, "crackCueEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -107,6 +111,9 @@ namespace RimMandrake.BlueDesert
             list.CheckboxLabeled("Blue-ice thaw finds", ref thawRollEnabled,
                 "Every few blue-ice blocks mined, the warmed face may give up old fallen debris "
               + "(metal, wreckage). Off: blue ice mines cleanly with no roll.");
+            list.CheckboxLabeled("Crack warning before flora detonates", ref crackCueEnabled,
+                "A warming charge-plant cracks audibly one step before it goes off. Off: no warning "
+              + "sound; the detonation timing is unchanged.");
 
             list.Label("Warm-detonation threshold: " + warmDetonationThresholdC.ToString("0") + " °C");
             warmDetonationThresholdC = list.Slider(warmDetonationThresholdC, -1f, 15f);
