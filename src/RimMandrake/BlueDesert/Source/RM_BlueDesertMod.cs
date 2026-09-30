@@ -56,6 +56,20 @@ namespace RimMandrake.BlueDesert
         // BLUEDESERT_MECHANICS_BUILD_1 §6 (RM_MurrekDrift.cs).
         public static bool murrekReseedEnabled = true;
 
+        // BLUEDESERT_GPT_ENRICHMENT_1 §1 (RM_ColdSink.cs).
+        public static bool coldSinkEnabled = true;
+        public static float coldSinkCapacityFactor = 1f;
+
+        // BLUEDESERT_GPT_ENRICHMENT_1 §2 (RM_AblationSalvage.cs).
+        public static bool ablationSalvageEnabled = true;
+        public static float ablationPaceFactor = 1f;
+
+        // BLUEDESERT_GPT_ENRICHMENT_1 §4 (RM_VhaulkRoad.cs).
+        public static bool vhaulkRoadEnabled = true;
+        public static float vhaulkRoadDaysFactor = 1f;
+        public static bool vhaulkDepartsEnabled = true;
+        public static float vhaulkStayDaysFactor = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -73,12 +87,23 @@ namespace RimMandrake.BlueDesert
             Scribe_Values.Look(ref thawRollEnabled, "thawRollEnabled", true);
             Scribe_Values.Look(ref crackCueEnabled, "crackCueEnabled", true);
             Scribe_Values.Look(ref murrekReseedEnabled, "murrekReseedEnabled", true);
+            Scribe_Values.Look(ref coldSinkEnabled, "coldSinkEnabled", true);
+            Scribe_Values.Look(ref coldSinkCapacityFactor, "coldSinkCapacityFactor", 1f);
+            Scribe_Values.Look(ref ablationSalvageEnabled, "ablationSalvageEnabled", true);
+            Scribe_Values.Look(ref ablationPaceFactor, "ablationPaceFactor", 1f);
+            Scribe_Values.Look(ref vhaulkRoadEnabled, "vhaulkRoadEnabled", true);
+            Scribe_Values.Look(ref vhaulkRoadDaysFactor, "vhaulkRoadDaysFactor", 1f);
+            Scribe_Values.Look(ref vhaulkDepartsEnabled, "vhaulkDepartsEnabled", true);
+            Scribe_Values.Look(ref vhaulkStayDaysFactor, "vhaulkStayDaysFactor", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls: the enrichment toggles pushed the list past one screen.
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(inRect.height, lastListHeight));
+            Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            list.Begin(viewRect);
 
             list.Label("Blue Desert");
             list.CheckboxLabeled("Mod enabled", ref masterEnabled,
@@ -125,9 +150,40 @@ namespace RimMandrake.BlueDesert
 
             list.Label("Warm-detonation threshold: " + warmDetonationThresholdC.ToString("0") + " °C");
             warmDetonationThresholdC = list.Slider(warmDetonationThresholdC, -1f, 15f);
+            list.GapLine();
 
+            list.CheckboxLabeled("Blue-ice cold rack", ref coldSinkEnabled,
+                "A rack loaded with blue ice keeps an enclosed room at its setting by melting the ice, "
+              + "with no power, and drips the melt into cans of clean water. Off: the rack holds its "
+              + "ice and does nothing.");
+            list.Label("Cold held per block of blue ice: x" + coldSinkCapacityFactor.ToString("0.00"));
+            coldSinkCapacityFactor = list.Slider(coldSinkCapacityFactor, 0.25f, 4f);
+
+            list.CheckboxLabeled("The ablation line gives things up", ref ablationSalvageEnabled,
+                "Now and then a crack sounds near the plateau's edge; hours later something shows under "
+              + "the ice while scavengers circle it, and then wreckage, sky-metal or a long-dead body "
+              + "comes to the surface. Off: this event never happens.");
+            list.Label("How slowly a find surfaces: x" + ablationPaceFactor.ToString("0.00"));
+            ablationPaceFactor = list.Slider(ablationPaceFactor, 0.25f, 3f);
+
+            list.CheckboxLabeled("Vhaulk road", ref vhaulkRoadEnabled,
+                "A walking vhaulk presses a pale road into the ice that lasts a few days, crops the plants "
+              + "it passes, trails frost and booms now and then. Off: it walks like any animal.");
+            list.Label("How long a vhaulk road lasts: x" + vhaulkRoadDaysFactor.ToString("0.00"));
+            vhaulkRoadDaysFactor = list.Slider(vhaulkRoadDaysFactor, 0.25f, 4f);
+            list.CheckboxLabeled("Vhaulk moves on", ref vhaulkDepartsEnabled,
+                "A wild vhaulk walks off the map after a few days, with a letter. Off: it stays, like "
+              + "any wild animal.");
+            list.Label("How long a vhaulk stays: x" + vhaulkStayDaysFactor.ToString("0.00"));
+            vhaulkStayDaysFactor = list.Slider(vhaulkStayDaysFactor, 0.25f, 4f);
+
+            lastListHeight = list.CurHeight + 12f;
             list.End();
+            Widgets.EndScrollView();
         }
+
+        private static Vector2 scrollPosition;
+        private static float lastListHeight = 1400f;
     }
 
     public class RM_BlueDesertMod : Mod

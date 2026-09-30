@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_AblationSalvage.xml               BLUEDESERT_GPT_ENRICHMENT_1 §2
+                                       (the BLUEDESERT_MECHANICS_BUILD_1 §8
+                                       ablation-line incident family)
+
+  "The line gives back slowly": three variants of one staged incident
+  (Source/RM_AblationSalvage.cs) — wreckage, meteoritic metal, a freeze-dried
+  body. Crack (map-wide sound + unlocated message) -> hours later a dark
+  shape under thinning ice, with vekkit and vrisk drawn to it and circling
+  -> hours later the ice gives way and the letter arrives.
+
+  Blue Desert only (IncidentDef.allowedBiomes, checked by the vanilla
+  IncidentWorker.CanFireNow). baseChance/minRefireDays and every stage timing
+  are INVENTED tuning; Mod Settings carry an on/off and a pace slider.
+
+  Corpse kinds: SpaceRefugee_Clothed (Core) and AncientSoldier (Ideology;
+  every DLC is a shipping prerequisite, the MayRequire is load safety only).
+  RM_Vekkit / RM_Vrisk are this mod's own PawnKindDefs
+  (ThingDefs_Races/RM_BlueDesertFauna.xml). ShipChunk, ChunkSlagSteel,
+  ComponentIndustrial, Steel, Plasteel, Gold are Core ThingDefs.
+
+  ART OWED: Things/Special/RM_AblationSilhouette (the dark shape under the
+  ice; one texture, drawn translucent, 3x3 cells).
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RM_AblationEmergence</defName>
+    <label>deep crack in the ice</label>
+    <description>Something far down in the old ice is coming up. The ice over it is thinning; in a few hours it will give way.</description>
+    <thingClass>RimMandrake.BlueDesert.RM_AblationEmergence</thingClass>
+    <category>Ethereal</category>
+    <tickerType>Rare</tickerType>
+    <drawerType>RealtimeOnly</drawerType>
+    <altitudeLayer>Filth</altitudeLayer>
+    <useHitPoints>false</useHitPoints>
+    <selectable>true</selectable>
+    <rotatable>false</rotatable>
+    <graphicData>
+      <texPath>Things/Special/RM_AblationSilhouette</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(3,3)</drawSize>
+      <color>(1,1,1,0.7)</color>
+    </graphicData>
+  </ThingDef>
+
+  <IncidentDef Name="RM_AblationSalvageBase" Abstract="True">
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.BlueDesert.RM_IncidentWorker_AblationSalvage</workerClass>
+    <baseChance>0.5</baseChance>
+    <minRefireDays>8</minRefireDays>
+    <allowedBiomes>
+      <li>RM_BlueDesert</li>
+    </allowedBiomes>
+  </IncidentDef>
+
+  <IncidentDef ParentName="RM_AblationSalvageBase">
+    <defName>RM_AblationSalvage_Wreckage</defName>
+    <label>the line gives up wreckage</label>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_AblationSalvageExtension">
+        <markerDef>RM_AblationEmergence</markerDef>
+        <items>
+          <li><thing>ShipChunk</thing><count>1~1</count></li>
+          <li><thing>ChunkSlagSteel</thing><count>1~1</count></li>
+          <li><thing>ComponentIndustrial</thing><count>2~5</count></li>
+        </items>
+        <pickerKind>RM_Vekkit</pickerKind>
+        <flierKind>RM_Vrisk</flierKind>
+        <crackSound>RM_AblationDistantCrack</crackSound>
+        <exposeSound>RM_AblationIceGives</exposeSound>
+        <crackMessage>A deep crack rolls across the plateau from somewhere near its edge.</crackMessage>
+        <silhouetteMessage>The ice has thinned over something dark. The Pickers have noticed.</silhouetteMessage>
+        <letterLabel>The line gave up wreckage</letterLabel>
+        <letterText>The ice has worn through over a piece of something that fell out of the sky long ago: hull plate, burnt and twisted, and whatever was inside it. It is lying on the surface now, free for whoever gets to it first.</letterText>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+  <IncidentDef ParentName="RM_AblationSalvageBase">
+    <defName>RM_AblationSalvage_Metal</defName>
+    <label>the line gives up meteoritic metal</label>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_AblationSalvageExtension">
+        <markerDef>RM_AblationEmergence</markerDef>
+        <items>
+          <li><thing>Steel</thing><count>40~90</count></li>
+          <li><thing>Plasteel</thing><count>10~30</count></li>
+          <li><thing>Gold</thing><count>3~12</count></li>
+        </items>
+        <pickerKind>RM_Vekkit</pickerKind>
+        <flierKind>RM_Vrisk</flierKind>
+        <crackSound>RM_AblationDistantCrack</crackSound>
+        <exposeSound>RM_AblationIceGives</exposeSound>
+        <crackMessage>A deep crack rolls across the plateau from somewhere near its edge.</crackMessage>
+        <silhouetteMessage>The ice has thinned over something dark. The Pickers have noticed.</silhouetteMessage>
+        <letterLabel>The line gave up sky-metal</letterLabel>
+        <letterText>The ice has worn through over a fallen stone, and it is not stone: a meteorite, iron and stranger metals, that dropped onto this plateau before anyone was here and has been riding the ice up ever since.</letterText>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+  <IncidentDef ParentName="RM_AblationSalvageBase">
+    <defName>RM_AblationSalvage_Fallen</defName>
+    <label>the line gives up the fallen</label>
+    <baseChance>0.35</baseChance>
+    <modExtensions>
+      <li Class="RimMandrake.BlueDesert.RM_AblationSalvageExtension">
+        <markerDef>RM_AblationEmergence</markerDef>
+        <items>
+          <li><thing>ChunkSlagSteel</thing><count>1~1</count></li>
+        </items>
+        <corpses>
+          <li><kind>SpaceRefugee_Clothed</kind><weight>3</weight></li>
+          <li MayRequire="Ludeon.RimWorld.Ideology"><kind>AncientSoldier</kind><weight>1</weight></li>
+        </corpses>
+        <corpseYearsAgo>40~1200</corpseYearsAgo>
+        <pickerKind>RM_Vekkit</pickerKind>
+        <flierKind>RM_Vrisk</flierKind>
+        <crackSound>RM_AblationDistantCrack</crackSound>
+        <exposeSound>RM_AblationIceGives</exposeSound>
+        <crackMessage>A deep crack rolls across the plateau from somewhere near its edge.</crackMessage>
+        <silhouetteMessage>The ice has thinned over something dark and person-shaped. The Pickers have noticed.</silhouetteMessage>
+        <letterLabel>The line gave up the fallen</letterLabel>
+        <letterText>The ice has worn through over a body. It fell from orbit, and the cold kept it: freeze-dried, whole, still in what it wore the day it came down, with a little wreckage around it.</letterText>
+        <corpseLetterText>Papers and tags on the body name {0}, a {1}. By the depth of the ice it came up through, {0} fell about {2} years ago.</corpseLetterText>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

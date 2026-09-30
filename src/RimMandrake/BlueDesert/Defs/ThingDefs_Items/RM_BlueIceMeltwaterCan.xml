@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BlueIceMeltwaterCan.xml           BLUEDESERT_GPT_ENRICHMENT_1 §1
+
+  What the blue-ice heat sink (RM_ColdSinkRack) drips into, and what the melt
+  recipe (RecipeDefs/RM_BlueIceRecipes.xml) makes directly. Water, not a
+  hydrocarbon product, so hard ban 3 (warm-detonation) does not apply, same
+  as RM_BlueIce itself. Distilled grade: water_taxonomy.csv row blue_ice.
+
+  ART OWED: Things/Item/Resource/RM_BlueIceMeltwaterCan/RM_BlueIceMeltwaterCan.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_BlueIceMeltwaterCan</defName>
+    <label>blue-ice meltwater</label>
+    <description>A sealed can of meltwater from blue ice: water of distilled purity, with nothing in it at all. In a desert with no water anywhere else, it is worth more than it weighs.</description>
+    <possessionCount>6</possessionCount>
+    <tickerType>Never</tickerType>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_BlueIceMeltwaterCan/RM_BlueIceMeltwaterCan</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <stackLimit>50</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>2</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <MarketValue>10</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>
