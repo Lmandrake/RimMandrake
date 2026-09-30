@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-30T04:38:38Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_RawVenom",
+  "priority": 100,
+  "prompt": "RimWorld game item sprite: raw venom \u2014 thick amber beads of venom scraped from an overproducing venomvine stand, pooled and semi-solid in a small stack, glistening wet resin texture, danger implied by colour and texture alone (no skulls, no warning icons). Single item stack, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "RM_RAWVENOM_ART_1",
+  "style_notes": "leaning scrub register: a knee-high silver-green scrubland under a low, fog-softened sun that never rises or sets \u2014 the last ten minutes of a sunset that never ends; realistic painted natural-history illustration, grounded believable, matte surface texture, never cartoonish, never cute, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is AMBER-VENOM: deep amber and burnt-honey resin tones, near-black at the core of each bead, a single wet highlight \u2014 echoes RM_DrippingVenomvine's cane-borne bead strings (Things/Plant/RM_DrippingVenomvine), the plant it is harvested from; item icon for RM_RawVenom (Things/Item/Resource/RM_RawVenom, Graphic_StackCount)"
+}

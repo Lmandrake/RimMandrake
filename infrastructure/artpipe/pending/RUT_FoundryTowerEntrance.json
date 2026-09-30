@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-30T04:38:38Z",
+  "drawsize": 3.0,
+  "facing": null,
+  "facings": [],
+  "id": "RUT_FoundryTowerEntrance",
+  "priority": 100,
+  "prompt": "RimWorld game building sprite: a dark tower door \u2014 a heavy dark iron door set into the base of a cone of black volcanic stone, vent-steam bleeding from the seams around its warm-to-the-touch frame; reads as a permanent world feature / dungeon-entrance portal, not a player-buildable structure. Front-on single view, 3x3 footprint, no background scenery beyond the immediate stone the door is set into.",
+  "reference": null,
+  "rimflow_item_id": "FORGE_MISSING_ART_1",
+  "style_notes": "forge register: a volcanic massif under doubled furnace light \u2014 hard white sun above, seam-red glow ONLY where the melt actually shows; basalt black, ash grey, obsidian gloss, steam-white plumes; realistic painted illustration, grounded believable, matte mineral surface texture, never cartoonish, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 palette anchor matches the cast's basalt/seam-red default (architecture, not a creature needing a distinct accent): black basalt stone, dull warm iron door, seam-red glow bleeding only from the frame edges, steam-white venting; building icon for RUT_FoundryTowerEntrance (Things/Building/Production/RUT_FoundryTowerEntrance, Graphic_Single, drawSize 3x3); DEPLOY_HOLD'd per its own header \u2014 the tower's own exterior skyline is explicitly out of scope, door only"
+}

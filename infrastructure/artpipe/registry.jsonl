@@ -9896,3 +9896,17 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krannock_v1_east", "notes": "", "target": "RM_Krannock/east", "ts": 1790670226.4345446}
 {"by": "fill_queue", "event": "registered", "source": "GREENTIDE_CANOPY_SWARM_1", "target": "RM_Krannock/north", "ts": 1790670226.441595}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krannock_v1_north", "notes": "", "target": "RM_Krannock/north", "ts": 1790670226.4676652}
+{"by": "fill_queue", "event": "registered", "source": "BLURRG_CANON_REGEN_1", "target": "rsw_blurrg/south", "ts": 1790743118.7784355}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "rsw_blurrg_v2_south", "notes": "", "target": "rsw_blurrg/south", "ts": 1790743118.8108203}
+{"by": "fill_queue", "event": "registered", "source": "BLURRG_CANON_REGEN_1", "target": "rsw_blurrg/east", "ts": 1790743118.8225427}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "rsw_blurrg_v2_east", "notes": "", "target": "rsw_blurrg/east", "ts": 1790743118.84848}
+{"by": "fill_queue", "event": "registered", "source": "BLURRG_CANON_REGEN_1", "target": "rsw_blurrg/north", "ts": 1790743118.8608098}
+{"by": "fill_queue", "event": "queued", "iteration": 2, "job_id": "rsw_blurrg_v2_north", "notes": "", "target": "rsw_blurrg/north", "ts": 1790743118.885865}
+{"by": "fill_queue", "event": "registered", "source": "RM_RAWVENOM_ART_1", "target": "RM_RawVenom", "ts": 1790743118.8973064}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_RawVenom", "notes": "", "target": "RM_RawVenom", "ts": 1790743118.9233205}
+{"by": "fill_queue", "event": "registered", "source": "FORGE_MISSING_ART_1", "target": "RUT_TibannaGas", "ts": 1790743118.9338744}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_TibannaGas", "notes": "", "target": "RUT_TibannaGas", "ts": 1790743118.9590988}
+{"by": "fill_queue", "event": "registered", "source": "FORGE_MISSING_ART_1", "target": "RUT_FoundryTowerEntrance", "ts": 1790743118.9707375}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_FoundryTowerEntrance", "notes": "", "target": "RUT_FoundryTowerEntrance", "ts": 1790743118.995234}
+{"by": "fill_queue", "event": "registered", "source": "FORGE_MISSING_ART_1", "target": "RUT_FoundrySalvageCache", "ts": 1790743119.0064676}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_FoundrySalvageCache", "notes": "", "target": "RUT_FoundrySalvageCache", "ts": 1790743119.0285442}
