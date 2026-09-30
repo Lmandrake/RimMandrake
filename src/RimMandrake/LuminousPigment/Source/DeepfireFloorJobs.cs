@@ -20,6 +20,7 @@ namespace RimMandrake.LuminousPigment
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
+            if (!LuminousPigmentSettings.paintingEnabled) return true;
             return !pawn.Map.designationManager.AnySpawnedDesignationOfDef(DeepfireDefOf.RM_ApplyDeepfireFloorDesignation);
         }
 
@@ -33,6 +34,7 @@ namespace RimMandrake.LuminousPigment
 
         public override bool HasJobOnCell(Pawn pawn, IntVec3 c, bool forced = false)
         {
+            if (!LuminousPigmentSettings.floorsPaintable) return false;
             Map map = pawn.Map;
             if (map.designationManager.DesignationAt(c, DeepfireDefOf.RM_ApplyDeepfireFloorDesignation) == null) return false;
             MapComponent_DeepfireLights mc = MapComponent_DeepfireLights.Get(map);
@@ -40,7 +42,7 @@ namespace RimMandrake.LuminousPigment
             if (map.designationManager.DesignationAt(c, DesignationDefOf.RemoveFloor) != null) return false;
             if (!pawn.CanReserveAndReach(c, PathEndMode, Danger.Some, 1, -1, ReservationLayerDefOf.Floor)) return false;
 
-            if (DeepfireCostUtility.FindNearbyDeepfire(pawn, DeepfirePaintDefaults.CostFloorCell, forced) == null)
+            if (DeepfireCostUtility.FindNearbyDeepfire(pawn, LuminousPigmentSettings.costFloorCell, forced) == null)
             {
                 JobFailReason.Is("No deepfire available.");
                 return false;
@@ -50,10 +52,10 @@ namespace RimMandrake.LuminousPigment
 
         public override Job JobOnCell(Pawn pawn, IntVec3 cell, bool forced = false)
         {
-            Thing stack = DeepfireCostUtility.FindNearbyDeepfire(pawn, DeepfirePaintDefaults.CostFloorCell, forced);
+            Thing stack = DeepfireCostUtility.FindNearbyDeepfire(pawn, LuminousPigmentSettings.costFloorCell, forced);
             if (stack == null) return null;
             Job job = JobMaker.MakeJob(DeepfireDefOf.RM_ApplyDeepfireFloor, cell, stack);
-            job.count = DeepfirePaintDefaults.CostFloorCell;
+            job.count = LuminousPigmentSettings.costFloorCell;
             return job;
         }
     }

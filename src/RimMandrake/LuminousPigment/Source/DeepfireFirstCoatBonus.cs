@@ -29,6 +29,7 @@ namespace RimMandrake.LuminousPigment
         {
             CompArt art = parent?.TryGetComp<CompArt>();
             if (art == null) return; // non-art: RM_StatPart_Deepfire handles the bonus, nothing to do here
+            if (!LuminousPigmentSettings.artQualityBump) return; // spec §7 artQualityBump off -- coat still charges, no bump
 
             CompQuality quality = parent.TryGetComp<CompQuality>();
             if (quality == null) return; // CompArt with no CompQuality never happens in vanilla or our own defs; nothing to bump

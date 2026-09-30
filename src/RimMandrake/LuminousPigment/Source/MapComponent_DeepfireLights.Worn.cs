@@ -84,7 +84,12 @@ namespace RimMandrake.LuminousPigment
         public void RefreshWornPawn(Pawn pawn)
         {
             if (pawn == null) return;
-            bool here = pawn.Spawned && pawn.Map == map && !pawn.Dead && !pawn.Destroyed;
+            // DEEPFIRE_MOD_SETTINGS_1, spec §7 wornLightEnabled: "off = worn
+            // items glow only on the ground". The item is despawned while
+            // worn (its own thing-light is already gone via PostDeSpawn), so
+            // simply never granting/holding a worn proxy is the whole gate.
+            bool here = LuminousPigmentSettings.wornLightEnabled
+                && pawn.Spawned && pawn.Map == map && !pawn.Dead && !pawn.Destroyed;
             if (here && WornGlowUtility.TryComputeLight(pawn, out Color color, out float radius) && radius > 0f)
             {
                 if (!wornPawns.TryGetValue(pawn, out WornKey key))
@@ -111,7 +116,7 @@ namespace RimMandrake.LuminousPigment
                 wornSweptOnce = true;
                 SweepWornPawns();
             }
-            else if (ticks % DeepfirePaintDefaults.WornLightTickInterval == 0)
+            else if (ticks % System.Math.Max(1, LuminousPigmentSettings.wornLightTickInterval) == 0)
             {
                 PollWornPositions();
             }

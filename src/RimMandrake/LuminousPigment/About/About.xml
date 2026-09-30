@@ -37,30 +37,39 @@ ruled 2026-09-25/26). RimMandrake tier — every name here is invented, nothing 
 dye it makes whatever colour the dye gives glow. It comes from crowncarpet, a rainbow bacterial
 mat found rarely on any ocean shore.
 
-THIS BUILD (Phase 1 — the chain, spec §2): crowncarpet (wild shore spawn on any ocean, a
-GenStepDef scatter at low commonality), the one-day fresh-mat clock (dies fast, dies at once if
-chilled — CompMatVitality), the Deepfire press (a screw press and an alchemical retort welded
-together, powered only, gated by a research project hidden until a mat is first seen), the
-refining recipe, Deepfire itself (a resource that glows faintly in a stockpile), and the
-GlowTank (a slow, low-yield cultured source). Every number is a Mod Settings toggle; the whole
-gate can be turned to Buildable or Unbuildable instead of Research.
+THE CHAIN (Phase 1, spec §2): crowncarpet (wild shore spawn on any ocean, a GenStepDef scatter at
+low commonality), the one-day fresh-mat clock (dies fast, dies at once if chilled —
+CompMatVitality), the Deepfire press (a screw press and an alchemical retort welded together,
+powered only, gated by a research project hidden until a mat is first seen), the refining recipe,
+Deepfire itself (a resource that glows faintly in a stockpile), and the GlowTank (a slow,
+low-yield cultured source). The whole gate can be turned to Buildable or Unbuildable instead of
+Research.
 
-THIS BUILD ALSO SHIPS (DEEPFIRE_PAINT_STATUS_CUISINE_1, partial): Cuisine's 14 glow-hediff
-families (§6) with 15 recipes on any stove and the chef-skill-steered outcome mechanism; the
-Ninefold god bridge (§5) wired for the two events that do not need painting (a dish eaten; the
-vermilion family reaching tier III); and the sumptuary "purple engine" (§4) as a real, generic,
-currently-inert reusable system (its own thoughts fire once something is tagged with
-RM_StatusGoodExtension — nothing is yet).
+PAINTING (spec §3): a real designator/WorkGiver/comp mechanism coats a wall, floor, furniture, art
+piece, apparel or weapon in Deepfire (up to three coats; colour comes from however the target is
+already painted/dyed, Deepfire adds the glow). Floors cluster into shared area lights rather than
+one per cell. A first coat bumps an art item's quality once, or adds a flat/percentage Beauty
+bonus to everything else (plus a room-line bonus for coated floors). Worn apparel and equipped
+weapons light their wearer through one moving per-pawn proxy, with a matching darkness-targeting
+combat tradeoff (easier to hit at range, easier to land a melee blow, both only while genuinely
+glowing in the dark) — reachable from a lacquer gizmo on the pawn, or (with Ideology) a checkbox
+on the styling station.
 
-STILL NOT IN THIS BUILD — filed as DEEPFIRE_PAINT_LIVE_VERIFY_1: painting Deepfire onto walls,
-floors, furniture, art, apparel and weapons (the designator/comp/beauty-and-quality mechanism, §3)
-and worn Deepfire's moving light with its darkness-targeting combat tradeoff (§3.4). Both need the
-spec's own live proxy-glower quicktest (§10 step 1) before anything else may be built on the
-light-proxy shape it decides, plus (for the combat tradeoff) a live bridge comparison of
-ShotReport.HitReportFor numbers the spec's own build plan calls for (§10 step 8) — not owner-
-blocked, but genuinely needing a live game, not a def dump. The gods' coat/sold/statue-coat deltas
-and the status engine's room-stat thoughts (RM_DeepfireBedroom, RM_ImpressedByDeepfire) wait on
-CompDeepfire from that same follow-on, not a new design question.
+STATUS (spec §4, the "purple engine"): titled and common pawns alike react to wearing or
+surrounding themselves in Deepfire; a titled pawn's own lit quarters and a lit public room
+impressing a visiting dignitary are both wired.
+
+THE GODS (spec §5, with Ninefold loaded): every Ninefold god reacts to a first coat (building,
+worn item, or a tagged statue), and to a sale or gift of Deepfire goods.
+
+CUISINE (spec §6): 14 glow-hediff families with 15 recipes on any stove and the chef-skill-steered
+outcome mechanism.
+
+Every number above — the chain's costs and yields, every painting number (coat radius/intensity,
+per-target costs, clustering, the five paintable-target toggles, combat penalties, beauty bonuses),
+status thresholds and mood scale, the god deltas, and Cuisine's skill gates — is a real Mod
+Settings toggle or slider; turning a whole group off degrades gracefully (existing coats/thoughts
+keep working, nothing new is created).
 
 The Scald's Utinni-tier sourcing (the bottom-walkers laying crowncarpet as they pass, and the
 Stillfluid/Thornwillow fixative recipe) is a patch in the Utinni layer, not this mod — this mod

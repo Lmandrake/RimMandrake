@@ -69,6 +69,7 @@ namespace RimMandrake.LuminousPigment
 
         public static void DrawCheckboxes(Dialog_StylingStation dlg, Rect rect)
         {
+            if (!LuminousPigmentSettings.stylingStationLacquer) return;
             Pawn pawn = PawnRef(dlg);
             Dictionary<Apparel, Color> colors = ColorsRef(dlg);
             if (pawn?.apparel == null || colors == null) return;

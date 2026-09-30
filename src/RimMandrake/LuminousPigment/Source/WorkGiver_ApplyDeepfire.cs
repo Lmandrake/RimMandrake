@@ -21,6 +21,7 @@ namespace RimMandrake.LuminousPigment
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
+            if (!LuminousPigmentSettings.paintingEnabled) return true;
             return !pawn.Map.designationManager.AnySpawnedDesignationOfDef(DeepfireDefOf.RM_ApplyDeepfireDesignation);
         }
 
@@ -36,6 +37,7 @@ namespace RimMandrake.LuminousPigment
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             if (!AcceptsTarget(t)) return false;
+            if (!DeepfireTargetClassUtility.IsPaintable(t)) return false;
 
             CompDeepfire comp = t.TryGetComp<CompDeepfire>();
             if (comp == null || !comp.CanAddCoat) return false;

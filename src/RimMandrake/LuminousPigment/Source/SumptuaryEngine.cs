@@ -18,8 +18,11 @@ namespace RimMandrake.LuminousPigment
         public int statusLevel = 1;
     }
 
-    // DEEPFIRE_STATUS_THOUGHTS_1 (spec §4.1 room thoughts, §7 key
-    // goodwillPerImpressedVisit). Settings wiring is DEEPFIRE_MOD_SETTINGS_1's.
+    // DEEPFIRE_STATUS_THOUGHTS_1 (spec §4.1 room thoughts). GoodwillPerImpressedVisit
+    // is only this class's seed for LuminousPigmentSettings.goodwillPerImpressedVisit
+    // (spec §7) -- MapComponent_DeepfireStatus reads the live setting, not this
+    // constant, wired by DEEPFIRE_MOD_SETTINGS_1. The rest (bedroom/impress
+    // thresholds, cache/check intervals) are internal tuning, not spec §7 keys.
     public static class DeepfireStatusDefaults
     {
         public const int WallFloorCellsPerPoint = 10;    // "walls/floors count 1 per 10 cells"

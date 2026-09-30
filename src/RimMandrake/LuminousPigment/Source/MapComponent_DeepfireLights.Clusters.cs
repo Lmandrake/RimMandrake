@@ -185,7 +185,7 @@ namespace RimMandrake.LuminousPigment
 
         private static bool IsClusterable(Thing t)
         {
-            return DeepfirePaintDefaults.ClusterBlock > 1
+            return LuminousPigmentSettings.clusterBlock > 1
                 && t.def.category == ThingCategory.Building
                 && t.def.size.x == 1 && t.def.size.z == 1;
         }
@@ -242,11 +242,13 @@ namespace RimMandrake.LuminousPigment
 
         // ---- block rebuild ----
 
-        private int BlocksX => (map.Size.x + DeepfirePaintDefaults.ClusterBlock - 1) / DeepfirePaintDefaults.ClusterBlock;
+        private static int ClusterBlockSize => System.Math.Max(1, LuminousPigmentSettings.clusterBlock);
+
+        private int BlocksX => (map.Size.x + ClusterBlockSize - 1) / ClusterBlockSize;
 
         private int BlockIndex(IntVec3 c)
         {
-            int b = DeepfirePaintDefaults.ClusterBlock;
+            int b = ClusterBlockSize;
             return (c.z / b) * BlocksX + (c.x / b);
         }
 
@@ -260,7 +262,7 @@ namespace RimMandrake.LuminousPigment
 
         private void RebuildBlock(int block)
         {
-            int size = DeepfirePaintDefaults.ClusterBlock;
+            int size = ClusterBlockSize;
             int bx = block % BlocksX;
             int bz = block / BlocksX;
             tmpGroups.Clear();
@@ -301,6 +303,7 @@ namespace RimMandrake.LuminousPigment
             {
                 ClusterGroup g = kv.Value;
                 float radius = DeepfireColorUtility.RadiusForCoats(kv.Key.Coats);
+                // ClusterRadiusBonus is not a spec §7 key -- internal tuning, stays a constant.
                 if (g.Cells.Count > 1) radius += DeepfirePaintDefaults.ClusterRadiusBonus;
                 SetLight(kv.Key, AnchorCell(g.Cells), g.GlowColor, radius);
                 produced.Add(kv.Key);
@@ -390,6 +393,52 @@ namespace RimMandrake.LuminousPigment
             clusteredThings.Clear();
             blockThings.Clear();
             blockKeys.Clear();
+        }
+
+        // DEEPFIRE_MOD_SETTINGS_1, spec §7 clusterBlock: block indices are
+        // keyed off the block SIZE (BlocksX/BlockIndex), so a live setting
+        // change leaves every existing key stale. Rebuild every cluster from
+        // scratch -- the same "floor grid + every coated Thing" FinalizeInit
+        // already does on map load -- instead of trying to migrate the old
+        // block bookkeeping in place. Called from LuminousPigmentMod.
+        // ApplySettings() for every loaded map.
+        public void RebuildAllClustering()
+        {
+            var staleKeys = new List<object>();
+            foreach (KeyValuePair<object, LightEntry> kv in entries)
+            {
+                if (kv.Key is ClusterKey) staleKeys.Add(kv.Key);
+            }
+            for (int i = 0; i < staleKeys.Count; i++) RemoveLight(staleKeys[i]);
+            ClearClusterState();
+
+            if (floorCoats != null && coatedFloorCells > 0)
+            {
+                var doneBlocks = new HashSet<int>();
+                for (int i = 0; i < floorCoats.Length; i++)
+                {
+                    if (floorCoats[i] == 0) continue;
+                    IntVec3 c = map.cellIndices.IndexToCell(i);
+                    int b = BlockIndex(c);
+                    if (doneBlocks.Add(b)) RebuildBlock(b);
+                }
+            }
+
+            RegisterCoatedIn(map.listerBuildings.allBuildingsColonist);
+            RegisterCoatedIn(map.listerBuildings.allBuildingsNonColonist);
+        }
+
+        private void RegisterCoatedIn(List<Building> buildings)
+        {
+            if (buildings == null) return;
+            for (int i = 0; i < buildings.Count; i++)
+            {
+                Thing t = buildings[i];
+                if (!IsClusterable(t)) continue;
+                CompDeepfire comp = t.TryGetComp<CompDeepfire>();
+                if (comp == null || comp.coats <= 0) continue;
+                RegisterClusteredThing(t);
+            }
         }
 
         // ---- persistence ----

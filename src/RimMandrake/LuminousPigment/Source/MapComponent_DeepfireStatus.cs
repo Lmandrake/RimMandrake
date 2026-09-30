@@ -76,7 +76,7 @@ namespace RimMandrake.LuminousPigment
                 if (!GameComponent_Deepfire.CanImpress(f)) continue;
                 if (bestScore < 0) bestScore = BestPublicRoomScore();
                 if (bestScore < DeepfireStatusDefaults.ImpressRoomScore) return 0;
-                f.TryAffectGoodwillWith(player, DeepfireStatusDefaults.GoodwillPerImpressedVisit,
+                f.TryAffectGoodwillWith(player, LuminousPigmentSettings.goodwillPerImpressedVisit,
                     canSendMessage: true, canSendHostilityLetter: false, reason: DeepfireDefOf.RM_ImpressedByDeepfire);
                 GameComponent_Deepfire.MarkImpressed(f);
                 if (impressed == null) impressed = new List<Faction>();
