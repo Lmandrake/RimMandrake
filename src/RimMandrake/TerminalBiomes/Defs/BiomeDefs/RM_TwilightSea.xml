@@ -82,10 +82,34 @@
       <Fog>7</Fog>
       <Rain>4</Rain>
     </baseWeatherCommonalities>
+    <!-- SEA_FLOOR_SINGLE_BAND_1, 2026-09-30: same single-band defect
+         SCALD_CROWNCARPET_NO_HABITAT_1 fixed on RM_TheScald.xml (ca774b8b9).
+         Split into two bands, deep-first (order matters, first match wins).
+
+         🔴 Unlike the Grey Sea (RM_WaterBrineDeep/Shallow) and the Chill
+         (RM_TheChillDeep/RM_SolidPropane), the Twilight Sea has NO
+         bespoke deep/shallow TerrainDef pair anywhere under src/ — its
+         RM_SeaShoreExtension above is a bare, field-less
+         `<li Class="..." />` (no deepTerrain/shallowTerrain/beachTerrain
+         set), and there is no RM_TwilightSea*Terrains.xml. Per this item's
+         own instruction ("if a sea has no shallow variant, report it
+         rather than borrowing another sea's"): this stays on vanilla
+         WaterOceanDeep/WaterOceanShallow — the shared baseline every sea
+         falls back to with nothing of its own, not a borrow of the Grey's
+         brine or the Chill's propane. None of the Twilight's three
+         wildPlants rows (RM_SaltBladeTwilight, RM_HoolimbrePlant,
+         RM_NoothelmPlant — RM_TwilightSeaFlora.xml) carries a
+         wildTerrainTags at all, so this split unblocks no currently-blocked
+         roster row here either; it only corrects the structural defect. -->
     <terrainsByFertility>
       <li>
         <terrain>WaterOceanDeep</terrain>
         <min>-999</min>
+        <max>0.6</max>
+      </li>
+      <li>
+        <terrain>WaterOceanShallow</terrain>
+        <min>0.6</min>
         <max>999</max>
       </li>
     </terrainsByFertility>

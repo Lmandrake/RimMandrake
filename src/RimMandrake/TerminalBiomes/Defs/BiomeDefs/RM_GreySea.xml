@@ -211,10 +211,42 @@
       <Fog>7</Fog>
       <RM_GreySaltSnow>6</RM_GreySaltSnow>
     </baseWeatherCommonalities>
+    <!-- SEA_FLOOR_SINGLE_BAND_1, 2026-09-30: the single band below
+         (WaterOceanDeep, -999..999) was the same defect
+         SCALD_CROWNCARPET_NO_HABITAT_1 found and fixed on RM_TheScald.xml
+         (ca774b8b9) — MapGenUtility.TerrainFrom()'s fertility-threshold
+         fallback gave every non-rock cell the one terrain, unconditionally.
+         Two bands now, deep-first (order matters, first match wins):
+         RM_WaterBrineDeep/RM_WaterBrineShallow (FlowWorks,
+         mandrake.rm.flowworks — a HARD modDependency of this mod's own
+         About.xml, not the loadAfter-only MayRequire on the field below
+         would suggest) replace the plain vanilla pair, matching what this
+         same BiomeDef already uses as its own water terrain elsewhere
+         (RM_SeaShoreExtension's deepTerrain/shallowTerrain fields above) —
+         "this sea's own existing shallow/deep TerrainDefs", not vanilla
+         filler and not another sea's.
+
+         🔴 Unlike the Chill (RM_TheChill.xml, this same pass), NEITHER of
+         the Grey's ten understorey/crystal flora rows is gated on a
+         wildTerrainTags matching RM_WaterBrineDeep/Shallow — the only two
+         terrain-gated plants (RM_GlassVeilKelp/RM_SaltChimneyVine, tags
+         RM_GreyBrineChannel/RM_GreyChimneySeep) are painted by a SEPARATE
+         mechanism (GenStep_GreySeaFloorDressing, RM_GreySeaTerrains.xml),
+         not by this fertility split. So this split does not unblock any
+         currently-blocked roster row on the Grey; it corrects the same
+         structural single-band defect and gives the floor a real
+         deep/shallow terrain split for whatever generation path does read
+         it (see the report's headline finding — GenStep_SeaFloorTerrain
+         does NOT, for the actual gravship-dive floor). -->
     <terrainsByFertility>
       <li>
-        <terrain>WaterOceanDeep</terrain>
+        <terrain>RM_WaterBrineDeep</terrain>
         <min>-999</min>
+        <max>0.6</max>
+      </li>
+      <li>
+        <terrain>RM_WaterBrineShallow</terrain>
+        <min>0.6</min>
         <max>999</max>
       </li>
     </terrainsByFertility>
