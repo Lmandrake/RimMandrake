@@ -256,12 +256,217 @@ become movement-4 tickets.
 
 ## 6. Roster gaps and proposed fills
 
-pending
+### What is still open after the ruled fill-out lands
+
+With the 09-27 fill-out built, the free tier covers every band the fill-out doc's §1 found empty:
+
+- sky: soorrak
+- attritional hunting: gaanok
+- light-eating: liikka
+- the dry drum: duumma
+- the dry dead: veessa
+- the ollim's rent: loomma
+- event flora: hourbloom
+- the second ollim form: kneel ollim
+- the graze base: glasscrust
+
+The admission test (*buried, dormant, giant, or a line*) and *"if the roster looks healthy, it is
+wrong"* mean **only gaps a sheet explicitly names are filled**. Checked sheet by sheet, two remain:
+
+| gap | sheet source | state |
+|---|---|---|
+| **the blood trigger.** The thesis: dormant life is *"woken by water, vibration or blood, with the player as the detonator"* (09-27 §1). Vibration has busters and drazzik. Damage has siidda. Water is built elsewhere: `RUT_CompWaterWakeTrigger` and the Flooded Canyon's `RM_CompPanSleeper`, so a Stillsand water-waker would **echo** them and is not proposed. **Blood has no bearer.** | dune_sea §4 + 09-27 §1 | open |
+| **the glass is only ever a plant.** dune_sea §1: the nubs *"are the only visible part of almost everything alive here"*. The roster's only glass is `RM_LightPipeNub`, a plant. No animal wears the glass. | dune_sea §1, §4 "grain-scale subsurface micro-fauna" | open |
+
+**Deliberately NOT filled:**
+- caverns (`STILLSAND_CAVERN_AUTHORING_1` owns them);
+- more giants, strikers or fliers;
+- any flora: dune_sea §3's own *"Two plants and a scatter of glass IS the flora"*, already
+  exceeded by the ruled three;
+- a wreck-shelter tenant, because it would echo the Long Shade's harbour tenancy;
+- a water-woken animal (the echo above).
+
+### Proposed fills: 2 NEW invented creatures, `RM_` tier, one home each
+
+The names are struck in the ruled Dune Sea accent (doubled vowel + doubled consonant, -a/-ik/-ok,
+5–7 letters, one long vowel). **Sweep, this pass**, in python:
+
+- `git grep -il` over `src/ design/ infrastructure/ skills/`. Probes: `korrum` 89 files, `vosska` 20.
+- artpipe registry + `done/_artsrc/pending/active/failed/_withdrawn` by name. Probe: `soorrak` 42
+  registry lines.
+- first-four-letter stems: `zuur`/`piinn` hit only base64 noise.
+- `check_pseudo_sw_name.py`: all PASS against 138 canon entries.
+- live Wookieepedia `list=search`. Control: `bantha` → Bantha, Bantha/Legends, Bantha fodder.
+
+| # | name (alt) | sweep | band | the creature |
+|---|---|---|---|---|
+| 1 | **zuurrik** (*muurra*) | 0 files / 0 art / 0 wiki, and 0 / 0 / 0 for the alt | grain ~0.12, subsurface, dormant | **The blood-waker.** A dormant filament-swarm in the top hand of sand. It is not woken by footfall (that is every other thing here). It is woken by **blood on the sand**: wet, salt, and the only free water a fight ever spills. Kill something in the Stillsand and within the hour the stain boils with zuurrik stripping it, then the bodies around it. Then they go dormant again, fatter, and the sand is clean. It is the veessa's opposite: the veessa mills the *dry* dead, the zuurrik the *wet*. What it does to play: **fighting here starts a clock**. Kill, loot fast, leave. A battle left standing becomes a zuurrik bloom. Never attacks the unwounded. Keys to the blood filth, never to the clock (the no-circadian ban). |
+| 2 | **piinnok** (*tiillok*, ⚠ fuzzy wiki near-miss on real-world names; 0 files) | 0 / 0 / 0 | grain ~0.1, subsurface | **The watching glass.** Half the "light-pipe nubs" in a field are not plants. They are the eye-lenses of piinnok, sessile burrowers whose one exposed organ is a water-clear dome. In a biome where *"nothing tracks the sun"*, the piinnok is **the one thing that tracks anything: you.** Walk past a nub field and a few glints turn to follow. They are harmless and edible, and a butchered piinnok yields biosilica of a better grade (its lens was *built* to see). Their real value is that they are **living geophones**: when a field's piinnok lenses all sink at once, something large is moving under that sand. They are the player's first, free, readable warning of the buried threat, and they pair with slate #1. |
+
+Both are invented (Q11a → `RM_`) and single-homed. Neither reuses a neighbour's mechanism: the
+Long Shade's mirrak is a false *shade* ambusher, and the piinnok is a true lens that ambushes nothing.
 
 ## 7. Art already generated (never re-queue)
 
-pending
+This was searched by BOTH spellings, including the prior port names. Everything below is validated in
+`registry.jsonl` or has a `done/` manifest. None of it is to be queued again.
+
+**Finished, waiting on WIRING (the def exists, its texPath resolves nowhere):**
+- `rmmirrorgiant_v1` (6) → `RM_Oommok`
+- `rmdusthusk_v1` (6) → `RM_Siidda`
+- `rmshademite_v1` + `_v2` → `RM_ShadeMite`
+- `RM_Ruukka_*` (3) → `RM_Ruukka`
+- `RM_Oorrik_*` (3) → `RM_Oorrik`
+- `RM_SandBusterMound_south` (1) → the mound, currently on vanilla `Hive`
+
+**Finished and owner-ruled, waiting on DEFS:**
+- `RM_Soorrak` + `_b` (REGEN → `_b` is the redo)
+- `RM_Gaanok` + `_b`, `RM_Loomma` + `_b`, `RM_KneelOllim` + `_b` (IMPROVE → `_b`)
+- `RM_Liikka`, `RM_Duumma`, `RM_Veessa`, `RM_Hourbloom`, `RM_Glasscrust` (KEEP)
+- `RM_Qorrax` (KEEP; wire with its tier move)
+
+**Finished and wired:** `RM_Ikee`; `rslpn_v1` / `rswollim_v1` / `rswollimwood_v1`. These last three
+live under SWBestiary's `RSW_` texture paths, so a copy into `Stillsand/Textures` is owed if the free
+mod is to stand alone.
+
+**Nothing exists for (the only legitimate new jobs):** vozzik, vekka, drazzik, guzzka, aurrok
+(0 under aurrok/spinedgow; it currently wears Alpha Animals' AA_SpinedGow), nizzek, the biosilica
+icon, and the two fills above. Canon rows (krayts, war wyrm, kreetle, granite slug, scurrier, gizka,
+bloddle) are the campaign port's to queue, not this sitting's.
 
 ## 8. Candidate mechanics slate, ranked
 
-pending
+**Already ruled and riding (Q14, not re-argued):** sand busters (BUILT) → the crossing with the
+giant → the buried record, with eggs-as-water as the cheap swap. They appear below only where a new
+candidate *enriches* them.
+
+**Kept clear of:**
+- the Long Shade package: strict dashing, directional shade, mirrak, the young sarlacc's road, the
+  Crawler Road, the Long Carry, golden hour, the shade awning, the heliograph farm, the gnomon line;
+- Sh'kaar (parked there);
+- the Leaning Scrub's wind calendar and gale;
+- the Blue Desert's silence-then-boom;
+- the Cracked Lands' survey and water-wake sleepers;
+- the Cauldron's fluid-conversion tech;
+- the Forge's giant-on-the-clock.
+
+**The owner's standing taste from 09-29** applies too: position and shelter must be *interesting*,
+and **nothing vanishes without a sign**. Every loss below leaves a readable mark.
+
+**The Stillsand's family is the GROUND.** The Long Shade is about exposure: the sky, the sun, where
+you stand. The Stillsand is about **what is under you and what you set off**: sound through the
+feet, sand that moves, a debt paid into the dirt. Every candidate is a trigger, a transit or a dig,
+never a resident (the admission test).
+
+1. **The Listening: the biome is heard through the ground** *(marks 7 + 2).* The Stillsand's
+   soundscape is **subsurface**. The air is near-silent: no insects, no wind-hum, one hard light. The
+   ground carries everything:
+   - the **honest drums**: an erupting mound's pre-rumble, the oorrik hiss, a duumma going still;
+   - the **lying drum**: the drazzik's *"fat and wounded"*, played through the sand;
+   - the long tread of the oommok, audible through the ground long before it clears the horizon.
+
+   The **discoverable technology** is the **biosilica geophone**. It is a staked resonator of grown
+   glass, taught by the biome itself: studying a ruukka corpse or a spent mound (Anomaly's
+   study-target shape; the Sump's `RUT_Sump_Research.xml` is our research precedent) unlocks it.
+   Planted, it gives:
+   - a radius readout of subsurface bodies as sound markers;
+   - early warning of a loading mound (marquee #1 gets a counter-play);
+   - buried caches within range (marquee #3 gets a finder).
+
+   ⚠ **It cannot tell a true drum from a drazzik's lie.** The player learns that part, and the
+   learning is the game. **Engine:** `RM_MapComponent_ProximitySoundscape` +
+   `RM_ProximitySoundscapeExtension` (shipped, Greentide) for the ground layers; `RM_CompDrumLure`
+   already defines the "vibration" vocabulary. The geophone is one comp scanning a radius for tagged
+   things (mound, subsurface pawns, `RM_Dunes_BuriedCache`), plus an overlay. SoundDefs follow the
+   placeholder-grain convention. *Uniqueness:* the only biome heard with your feet, and the only
+   tech that reads the ground. *Trade-off:* the readout must stay coarse (a direction and a size,
+   not a map pin), or the biome's dread dies.
+2. **The dunes take the ship** *(mark 6).* A landed gravship is the largest windward obstacle in a
+   thousand kilometres, and the shipped `mandrake.rm.movingdunes` does to it what it does to every
+   obstacle: **banks sand on the windward hull and scours the lee**. Parked long enough, the ship
+   starts becoming part of the buried record. The engine buries hull-adjacent *exterior* cells
+   only, never interior. The landing and takeoff thump is also **the loudest drum on the map**: it
+   raises the sand-buster eruption chance near the pad, scaled by ship mass. **Signs, not vanishing:**
+   a drift line creeps up the hull cell by cell, and a letter names the first buried cell. The
+   Stillsand's own answers:
+   - **ollim-wood sand anchors**: pads of the fire-immune, grain-aligned wood that the dunes flow
+     around;
+   - **digging out** with the Greentide `RM_JobDriver_DigOutBuried` loop.
+
+   The reward is the **biosilica lens array** refit (09-27 §6, unruled until now): the ship's
+   sensors or solar take the planet's only non-volcanic glass. That becomes the Stillsand row for
+   `BIOME_SHIP_CONTRIBUTIONS_1`. *Uniqueness:* the Long Shade's ship is a harbour (hospitality) and
+   the Leaning Scrub's is the tallest thing on the plain. Here **the land slowly claims the ship**.
+   *Trade-off:* it must never hard-lock a launch. Burial delays and costs, and the mass cap and the
+   permanent-burial toggle (OFF by default, owner card 2026-09-25) stay binding.
+3. **The Stillstorm: the storm that digs** *(mark 8; deep_desert §8's own, unbuilt).* This is the
+   one weather that belongs to nowhere else. A rare, long sandstorm that:
+   - **rewrites the map**: `movingdunes`' `transportRateMultiplier` spikes for its duration, so the
+     dunes march in hours instead of seasons;
+   - **tears thin roofs and walls** below a mass threshold;
+   - **carries light pawns downwind**, with a drag trail and a letter every time, never a silent
+     loss;
+   - **seeds** at its end: dormant siidda, a glasscrust sheet, and one `RM_IncidentWorker_BloomBurst`
+     hourbloom trigger (shipped).
+   
+   Its gift, when it clears, is **one emergence**: a hull, a mummified caravan or a sealed cache the
+   storm uncovered (marquee #3 on a real clock). Engine: WeatherDef + GameConditionDef; displacement
+   and roof damage are small C#; the dune rate is an existing setting hook. *Distinct:* the Leaning
+   Scrub's gale is a calendar that bends fire and plants, and this is a single excavation event.
+   *Trade-off:* pawn carry must be survivable and legible, or it reads as a bug.
+4. **The Return: the Sun-Debt paid into the sand** *(mark 9).* The built Sun-Debt says *"the sun
+   lends and the sand collects… we take back what was drawn"*, and its holders live in this biome.
+   Give them the place:
+   - **the Return**, a ritual of pouring drawn water back into the Stillsand at a mummified field
+     (Utinni tier, an Ideology ritual on the Sun-Debt);
+   - **the sand answers**: the ground blooms (a hourbloom burst, the shipped bloom incident), the
+     only time dead land flowers on command, and it is dead again within days, on the sheet's own
+     clock.
+
+   The RM tier keeps the physics without the theology: water poured onto Stillsand sand can trigger
+   a bloom. For the Sun-Debt, drinking a canteen-egg or running a moisture machine here is *drawing*,
+   and a debt-holder notices (a small thought, and the faction's goodwill). *Uniqueness:* the only
+   biome where you **pay** the god, with the one thing the biome lacks. *Distinct from* Sh'kaar
+   (parked, the Long Shade's) and from the Sarlacc's stages (its own Utinni patch). *Trade-off:*
+   Ideology-tier content, so the RM bloom must stand alone.
+5. **Biosilica optics: the lens economy** *(marks 2 + 3).* Biosilica today is a harvest with no use.
+   Give it three:
+   - a **solar concentrator** panel (bonus output under the pinned noon of #7);
+   - a **fine-optics** recipe (a scope or sight component, or a substitute input where vanilla uses
+     components);
+   - the ship lens array (#2).
+
+   🔴 **UNMEASURED gate:** whether vanilla `CompPowerPlantSolar` reads the sky glow or the raw clock
+   (09-27 §4.5). Read it in RimSage before promising "100% uptime forever". The dune sea's ⭐ solar
+   offer is the sheet's own strongest colony reason, and it has no build.
+6. **Blood on the sand: the zuurrik clock** *(mark 4, fill #1 as mechanic).* A map component polls
+   new blood filth on sand cells in this biome. Past a threshold it wakes a zuurrik swarm there (a
+   dormant-spawn, the siidda shape). The swarm strips corpses and blood, then re-buries. **The sign:**
+   the stain boils and the corpse is left as a picked skeleton, never a disappearance. Small C#.
+7. **The watching glass** *(mark 4, fill #2 as mechanic).* Piinnok lenses track the nearest moving
+   pawn (a facing flip on a sessile animal) and **all sink** when a subsurface body over a size
+   threshold passes within radius: the player's free early warning. It pairs with #1: the geophone
+   is the manufactured version of what the piinnok already does. Small C#, or XML + an existing
+   dormancy comp.
+8. **Eternal noon: the sky the sheet requires** *(mark 8 enabler; ban compliance, not a headline).*
+   dune_sea §6's first ban (*no day-night, no moving shadows*) is broken by the vanilla sky today.
+   Add the shipped `RM_PinnedSunExtension` to `RM_Stillsand` with the opposite palette to the Long
+   Shade's: bleached-white sky, high glow, shadow colour pure black, no penumbra. Its per-tile
+   elevation already comes from the arc, so the shadows run near-zero in the Dune Sea and long in
+   the far ring. *Echo stated frankly:* it is the Long Shade's mechanism, used for the opposite sky,
+   because the sheet demands it. XML only.
+9. **The crossing, enriched** *(ruled #2; enrichment only).* What this slate adds to the ruled
+   crossing: the oommok's tread is the loudest honest drum (#1), and following it is the only way
+   across the Dune Sea region, where lowSun leaves almost no cast shade (§3). Its shadow is the one
+   moving harbour, and the Stillstorm (#3) is the one time the giant stops. Nothing here changes
+   the ruling.
+10. **Movement-4 pre-ticket, not a mechanic: the presentation-and-debt wave.** Wire the six finished
+    render sets, build the nine fill-out defs plus zuurrik and piinnok if admitted, place the guzzka
+    via cavern authoring, file vaalok, rename the shade mite to eemmok (or rule the English name),
+    and move the qorrax inline. This is the largest visible change available to this biome, and it
+    needs no ruling beyond "yes".
+
+**Recommended volley opener (movement 3):** #1 + #2 + #3 as the spine: *"the ground is heard, the
+dunes take the ship, the storm digs."* Then #4 for the gods, #5 for the tech, #6–#7 as the two fills'
+mechanics, #8 as ban compliance, #9 riding the ruling, and #10 ticketed regardless. Candidates #1–#5
+turn all four MISSes and the PARTIAL. Not one of them makes the surface busier.
