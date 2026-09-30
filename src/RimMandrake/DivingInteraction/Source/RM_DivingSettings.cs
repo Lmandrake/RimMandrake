@@ -159,6 +159,16 @@ namespace RimMandrake.DivingInteraction
         // grow. Floors already generated keep their terrain either way.
         public static bool seaFloorBandsEnabled = true;
 
+        // REALFOW_POCKET_MAP_COMPAT_1, 2026-09-30. Compatibility fix for the
+        // third-party Real Fog of War (Patch_RealFoWStaleHearing.cs): stops
+        // its hearing pass from reading pawns left behind on the previous map
+        // after a colonist changes map. Without it, every diver arriving on a
+        // (smaller) sea floor with moving animals nearby on the surface logs
+        // an IndexOutOfRangeException every 100 ticks. Not gated by
+        // masterEnabled: it fixes every map change (Anomaly's undercave
+        // too), not only dives. Does nothing when Real FoW is absent.
+        public static bool realFowCompatEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -176,6 +186,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref chillDrownedAuroraEnabled, "chillDrownedAuroraEnabled", true);
             Scribe_Values.Look(ref chillAuroraSurgeEnabled, "chillAuroraSurgeEnabled", true);
             Scribe_Values.Look(ref seaFloorBandsEnabled, "seaFloorBandsEnabled", true);
+            Scribe_Values.Look(ref realFowCompatEnabled, "realFowCompatEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -298,6 +309,14 @@ namespace RimMandrake.DivingInteraction
                   + "if they don't. Off: surges never happen — no power, no dressing, no risk; a built "
                   + "electrojet mast simply sits idle.");
             }
+
+            list.Gap();
+            list.CheckboxLabeled("Compatibility: Real Fog of War map-change fix", ref realFowCompatEnabled,
+                "Shipped default: ON. Only matters if Real Fog of War is installed. When a colonist "
+              + "moves to another map (a sea floor, a cave), Real Fog of War keeps listening for "
+              + "animals left behind on the old map and throws an error every couple of seconds. "
+              + "This drops those stale entries before each listen. Off: Real Fog of War's own "
+              + "behaviour, errors included. Takes effect immediately.");
 
             list.End();
         }

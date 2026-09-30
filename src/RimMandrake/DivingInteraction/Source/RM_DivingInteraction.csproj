@@ -83,6 +83,7 @@
     <Compile Include="Patch_ChillDrownedAurora.cs" />
     <Compile Include="RM_MapComponent_ChillAuroraSurge.cs" />
     <Compile Include="RM_CompPowerPlantAuroraSurge.cs" />
+    <Compile Include="Patch_RealFoWStaleHearing.cs" />
   </ItemGroup>
 
   <ItemGroup>
