@@ -10,9 +10,9 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony: a BiomeWorker, the Mod/ModSettings pair, and the
-    WASTELAND_MECHANICS_BUILD_1 comps/MapComponent/DefModExtensions — all
-    plain engine extension points. No shared kit assembly is
+    Harmony: exactly one postfix (Building_GravEngine.CanLaunch, the sealed cask
+    bay's launch check, WASTELAND_GPT_ENRICHMENT_1 §3) — that method has no
+    extension point. Everything else is a plain engine extension point. No shared kit assembly is
     referenced — Wasteland is not a §2b kit biome (item §8).
   -->
 
@@ -35,6 +35,10 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
@@ -50,6 +54,8 @@
     <Compile Include="RM_Middenshell.cs" />
     <Compile Include="RM_NamedStorms.cs" />
     <Compile Include="RM_MiddenshellProcession.cs" />
+    <Compile Include="RM_WasteCaskBay.cs" />
+    <Compile Include="RM_RiteOfTipping.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,6 +73,12 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- WASTELAND_GPT_ENRICHMENT_1 §3: one postfix on Building_GravEngine.CanLaunch, which has
+         no extension point (RimSage, decompiled 1.6). -->
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

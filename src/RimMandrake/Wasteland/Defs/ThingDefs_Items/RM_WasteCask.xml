@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WASTELAND_GPT_ENRICHMENT_1 §3/§4 — the WASTE cask (not a warcasket). A physical object
+  with a stored dose (RM_CompWasteCask): breached below half its hit points it leaks tox gas
+  and pollution, loudly (message + "Waste leaking" alert every pulse). It weathers outdoors
+  (DeteriorationRate), so an abandoned cask will breach eventually. Stored in the sealed cask
+  bay it does not deteriorate and, while the bay's seals hold, does not leak.
+  Marked as waste (RM_WasteMarkerExtension) so a stockpile of them lures the Middenshell.
+
+  Art: PLACEHOLDER — the vanilla Biotech wastepack texture (Things/Item/Resource/Wastepack,
+  verified against the decompiled 1.6 Wastepack def). A bespoke cask is owed.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_WasteCask</defName>
+    <label>waste cask</label>
+    <description>A heavy sealed drum of old, dangerous waste — dose-bearing slag, spent cells, contaminated sludge — the kind of thing the Wasteland has been collecting for centuries.\n\nIt is safe while it is whole. Breached below half its integrity it leaks tox gas and pollution until it is moved into a powered sealed cask bay or off the map, and a cask destroyed outright spills everything at once. Left outdoors it weathers.\n\nA sealed cask bay holds casks safely, and a tamed sloghog or sootgrazer beside the bay can digest them into bezoars or soot bricks. A cask can also be dug back into the ground — illegally.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Wastepack</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <MarketValue>1</MarketValue>
+      <Mass>30</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Beauty>-30</Beauty>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.Wasteland.RM_CompProperties_WasteCask">
+        <doseRange>0.6~1.0</doseRange>
+        <leakHpFraction>0.5</leakHpFraction>
+        <leakIntervalTicks>2500</leakIntervalTicks>
+        <leakPollutionCells>3</leakPollutionCells>
+        <leakGasAmount>80</leakGasAmount>
+        <dosePerLeak>0.05</dosePerLeak>
+        <heatPerDose>18</heatPerDose>
+        <reburyTicks>900</reburyTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.Wasteland.RM_WasteMarkerExtension" />
+    </modExtensions>
+  </ThingDef>
+
+  <!-- Illegal reburial: a hauling job on a marked cask. -->
+  <JobDef>
+    <defName>RM_ReburyWasteCask</defName>
+    <driverClass>RimMandrake.Wasteland.JobDriver_RM_ReburyWasteCask</driverClass>
+    <reportString>reburying TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_ReburyWasteCask</defName>
+    <label>rebury waste casks</label>
+    <giverClass>RimMandrake.Wasteland.WorkGiver_RM_ReburyWasteCask</giverClass>
+    <workType>Hauling</workType>
+    <verb>rebury</verb>
+    <gerund>reburying</gerund>
+    <priorityInType>20</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WASTELAND_GPT_ENRICHMENT_1 §4 — the RITE OF TIPPING.
+
+  The ask: license a marked tipping pad (RM_WasteTippingPad) and take N loads of waste casks.
+  The reason: silver per load and access (goodwill) with the convoy's faction.
+  The choice: accept at all; later, hand a cask to the evidence-seeker (goodwill with them,
+    a hit with the convoy) or refuse; keep the casks safe, feed them to processors through a
+    sealed cask bay, or rebury them illegally (fouled ground, and the burial may be found out).
+  Failure: no pad at a delivery twice running, or the convoy faction turns hostile.
+  Reward: silver + goodwill per load; a containment grant from the financier once a sealed
+    cask bay stands.
+  Deadline: the offer expires in 2-3 days; loads every ~4 days (RM_TippingQuestExtension).
+
+  Firing route: RM_RiteOfTipping (IncidentWorker_GiveQuest, Wasteland maps only, Mod Settings
+  gated inside QuestNode_RM_TippingContract.TestRunInt). rootSelectionWeight 0: never a random
+  quest.
+
+  Tier: RM_, franchise-free. RM_TippingQuestExtension's faction lists are EMPTY here (any
+  non-hostile humanlike faction); the campaign fills them by Utinni patch
+  (src/RimUtinni/UtinniPatches/Patches/RiteOfTipping_Factions.xml).
+-->
+<Defs>
+
+  <QuestScriptDef>
+    <defName>RM_Quest_RiteOfTipping</defName>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <expireDaysRange>2~3</expireDaysRange>
+    <defaultChallengeRating>1</defaultChallengeRating>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Rite of Tipping</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->A supervised waste convoy run by [convoyFactionName] wants somewhere to tip. If you license a marked tipping pad on your land, they will land [casksPerDelivery] sealed waste casks on it [deliveries] times, and pay [silverPerDelivery] silver for each load, with the standing that comes with it.\n\nThe casks become yours to deal with. Kept whole they are only a burden; breached, they leak. A sealed cask bay contains them, and a tamed sloghog or sootgrazer beside the bay will digest them. You could also put them back in the ground, but not legally.\n\nOthers with a stake in this planet are watching. Some may want evidence of what is being tipped here; some may pay for proper containment.\n\nBuild a waste tipping pad (Misc) before the first load. If the convoy finds no pad twice, the licence is void.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="QuestNode_GetMap" />
+        <li Class="RimMandrake.Wasteland.QuestNode_RM_TippingContract">
+          <outSignalSuccess>TippingDone</outSignalSuccess>
+          <outSignalFail>TippingVoid</outSignalFail>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>TippingDone</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>TippingVoid</inSignal>
+          <outcome>Fail</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+      </nodes>
+    </root>
+    <modExtensions>
+      <li Class="RimMandrake.Wasteland.RM_TippingQuestExtension">
+        <casksPerDelivery>3~5</casksPerDelivery>
+        <deliveries>3</deliveries>
+        <deliveryIntervalDays>4</deliveryIntervalDays>
+        <silverPerCask>55</silverPerCask>
+        <goodwillPerDelivery>6</goodwillPerDelivery>
+        <evidenceGoodwill>15</evidenceGoodwill>
+        <evidenceRefusedGoodwill>-5</evidenceRefusedGoodwill>
+        <evidenceConvoyGoodwill>-10</evidenceConvoyGoodwill>
+        <financeGrantSilver>450</financeGrantSilver>
+        <financeGoodwill>8</financeGoodwill>
+        <reburialDiscoveryChance>0.5</reburialDiscoveryChance>
+        <reburialGoodwill>-15</reburialGoodwill>
+        <missedDeliveriesAllowed>1</missedDeliveriesAllowed>
+      </li>
+    </modExtensions>
+  </QuestScriptDef>
+
+  <IncidentDef>
+    <defName>RM_RiteOfTipping</defName>
+    <label>waste convoy offers a tipping licence</label>
+    <category>GiveQuest</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <allowedBiomes>
+      <li>RM_Wasteland</li>
+    </allowedBiomes>
+    <workerClass>IncidentWorker_GiveQuest</workerClass>
+    <questScriptDef>RM_Quest_RiteOfTipping</questScriptDef>
+    <baseChance>0.4</baseChance>
+    <earliestDay>8</earliestDay>
+    <minRefireDays>30</minRefireDays>
+  </IncidentDef>
+
+  <LetterDef ParentName="CustomChoiceLetterBase">
+    <defName>RM_TippingEvidence</defName>
+    <color>(191, 170, 95)</color>
+    <flashInterval>-1</flashInterval>
+    <letterClass>RimMandrake.Wasteland.ChoiceLetter_RM_TippingEvidence</letterClass>
+  </LetterDef>
+
+  <!-- The tipping pad: a marker post; RM_CompTippingPad licenses the 7x7 area around it.
+       Art: PLACEHOLDER — the vanilla ship landing beacon texture
+       (Things/Building/Misc/ShipLandingBeacon, verified against the decompiled 1.6 def). -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_WasteTippingPad</defName>
+    <label>waste tipping pad</label>
+    <description>A marker post that licenses the ground around it as a waste tipping pad. A licensed convoy lands its casks inside the marked area. Select it to see the area.</description>
+    <graphicData>
+      <texPath>Things/Building/Misc/ShipLandingBeacon</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(200,190,90)</color>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>14</pathCost>
+    <fillPercent>0.15</fillPercent>
+    <rotatable>false</rotatable>
+    <designationCategory>Misc</designationCategory>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <tickerType>Never</tickerType>
+    <costList>
+      <Steel>25</Steel>
+    </costList>
+    <statBases>
+      <MaxHitPoints>75</MaxHitPoints>
+      <WorkToBuild>600</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Mass>5</Mass>
+    </statBases>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.Wasteland.RM_CompProperties_TippingPad">
+        <radius>3</radius>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

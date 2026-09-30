@@ -60,6 +60,18 @@ namespace RimMandrake.Wasteland
         public static bool middenshellLureEnabled = true;
         public static float middenshellLureRange = 60f;
 
+        // WASTELAND_GPT_ENRICHMENT_1 §3 — the sealed cask bay and waste casks (RM_WasteCaskBay.cs).
+        public static bool caskLeaksEnabled = true;
+        public static float caskLeakSeverity = 1f;
+        public static int caskBayPerCell = 2;
+        public static bool caskProcessingEnabled = true;
+        public static float caskProcessingPerDay = 0.5f;
+        public static bool caskLaunchCheckEnabled = true;
+        public static bool caskReburialEnabled = true;
+
+        // WASTELAND_GPT_ENRICHMENT_1 §4 — the Rite of Tipping (RM_RiteOfTipping.cs).
+        public static bool tippingEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -88,12 +100,25 @@ namespace RimMandrake.Wasteland
             Scribe_Values.Look(ref middenshellTrailEnabled, "middenshellTrailEnabled", true);
             Scribe_Values.Look(ref middenshellLureEnabled, "middenshellLureEnabled", true);
             Scribe_Values.Look(ref middenshellLureRange, "middenshellLureRange", 60f);
+            Scribe_Values.Look(ref caskLeaksEnabled, "caskLeaksEnabled", true);
+            Scribe_Values.Look(ref caskLeakSeverity, "caskLeakSeverity", 1f);
+            Scribe_Values.Look(ref caskBayPerCell, "caskBayPerCell", 2);
+            Scribe_Values.Look(ref caskProcessingEnabled, "caskProcessingEnabled", true);
+            Scribe_Values.Look(ref caskProcessingPerDay, "caskProcessingPerDay", 0.5f);
+            Scribe_Values.Look(ref caskLaunchCheckEnabled, "caskLaunchCheckEnabled", true);
+            Scribe_Values.Look(ref caskReburialEnabled, "caskReburialEnabled", true);
+            Scribe_Values.Look(ref tippingEnabled, "tippingEnabled", true);
         }
+
+        private static Vector2 scroll;
+        private static float viewHeight = 1400f;
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            Rect view = new Rect(0f, 0f, inRect.width - 20f, viewHeight);
+            Widgets.BeginScrollView(inRect, ref scroll, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            list.Begin(view);
 
             list.CheckboxLabeled("Wasteland enabled", ref wastelandEnabled,
                 "Master switch. Off: the biome and its defs still load (nothing here is "
@@ -187,8 +212,39 @@ namespace RimMandrake.Wasteland
               + "line until the waste is eaten.");
             list.Label("Waste lure range: " + middenshellLureRange.ToString("0") + " cells");
             middenshellLureRange = list.Slider(middenshellLureRange, 10f, 150f);
+            list.GapLine();
 
+            list.Label("Waste casks and the sealed cask bay (not the warcasket bay).");
+            list.CheckboxLabeled("Breached casks leak", ref caskLeaksEnabled,
+                "A waste cask below half its hit points, or a sealed cask bay whose seals fail, leaks tox gas "
+              + "and pollution — always with a message and an alert. Off: casks are inert.");
+            list.Label("Leak severity: " + caskLeakSeverity.ToStringPercent());
+            caskLeakSeverity = list.Slider(caskLeakSeverity, 0.25f, 3f);
+            list.Label("Sealed cask bay capacity: " + caskBayPerCell + " casks per cell ("
+                     + (caskBayPerCell * 6) + " per bay)");
+            caskBayPerCell = (int)list.Slider(caskBayPerCell, 1f, 6f);
+            list.CheckboxLabeled("Processor animals convert casks", ref caskProcessingEnabled,
+                "With processing switched on at a bay, a tamed sloghog or sootgrazer standing next to it "
+              + "converts stored casks into bezoars or soot bricks.");
+            list.Label("Processing rate: " + caskProcessingPerDay.ToString("0.##") + " casks per day");
+            caskProcessingPerDay = list.Slider(caskProcessingPerDay, 0.1f, 3f);
+            list.CheckboxLabeled("Waste blocks unsafe gravship launches", ref caskLaunchCheckEnabled,
+                "A gravship will not launch while a sealed cask bay aboard is unpowered, damaged or hot, "
+              + "or while a waste cask sits loose on its deck.");
+            list.CheckboxLabeled("Illegal reburial", ref caskReburialEnabled,
+                "Casks can be marked to be dug back into the ground: gone from the map, but the ground is "
+              + "fouled and the burial may be discovered.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Rite of Tipping", ref tippingEnabled,
+                "On Wasteland maps a supervised waste convoy may offer silver and goodwill to tip waste "
+              + "casks on a licensed tipping pad; another faction may ask for evidence, and a third may "
+              + "finance proper containment. Off: the offer never comes.");
+
+            viewHeight = list.CurHeight + 20f;
             list.End();
+            Widgets.EndScrollView();
+            RM_WasteCaskBayUtility.ApplyCapacity();
         }
     }
 

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WASTELAND_GPT_ENRICHMENT_1 §3 — the SEALED CASK BAY (RM_WasteCaskBay). ⚠️ Distinct from
+  Warcasket's RM_CaskBay ("cask bay", the warcasket suit bay of
+  WARCASKET_CASK_BAY_AND_SARCOPHAGI_1): different defName, different label.
+
+  Storage for waste casks only; capacity is Mod Settings casks-per-cell x 6 cells
+  (RM_WasteCaskBayUtility.ApplyCapacity writes maxItemsInCell). RM_CompWasteContainment
+  shows seal integrity / internal heat / stored dose / launch safety, contains leaks while
+  its seals hold (power), leaks visibly when they fail, runs cask processing, and on a
+  gravship's substructure gates the launch (Harmony postfix on Building_GravEngine.CanLaunch).
+
+  Art: PLACEHOLDER — the vanilla shelf texture (Things/Building/Furniture/Shelf, verified
+  against the decompiled 1.6 Shelf def). A bespoke sealed bay is owed.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_WasteCaskBay</defName>
+    <label>sealed cask bay</label>
+    <description>A powered, shielded rack for waste casks. While its seals have power, anything stored in it stays contained — breached casks included — and it neither weathers nor leaks. Its readout shows seal integrity, internal heat, stored dose and whether it is safe to fly.\n\nWithout power the seals run down; below half integrity, or with the bay itself shot up, it starts to leak.\n\nBuilt on a gravship's substructure it flies with the ship, but the ship will not launch while the bay is unpowered, damaged or running hot, or while any waste cask is loose on the deck.\n\nSwitch on processing and a tamed sloghog or sootgrazer standing beside the bay will digest the casks, one by one, into bezoars or soot bricks.</description>
+    <thingClass>RimMandrake.Wasteland.Building_RM_WasteCaskBay</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Furniture/Shelf</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(4.5,3)</drawSize>
+      <color>(150,160,120)</color>
+    </graphicData>
+    <size>(3,2)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <canOverlapZones>false</canOverlapZones>
+    <surfaceType>Item</surfaceType>
+    <tickerType>Rare</tickerType>
+    <rotatable>true</rotatable>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <designationCategory>Misc</designationCategory>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <researchPrerequisites>
+      <li>Electricity</li>
+    </researchPrerequisites>
+    <costList>
+      <Steel>150</Steel>
+      <Plasteel>20</Plasteel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <WorkToBuild>4000</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Mass>60</Mass>
+      <Beauty>-6</Beauty>
+    </statBases>
+    <inspectorTabs>
+      <li>ITab_Storage</li>
+    </inspectorTabs>
+    <building>
+      <preventDeteriorationOnTop>true</preventDeteriorationOnTop>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <maxItemsInCell>2</maxItemsInCell>
+      <blueprintClass>Blueprint_Storage</blueprintClass>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>RM_WasteCask</li>
+          </thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>RM_WasteCask</li>
+          </thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>200</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimMandrake.Wasteland.RM_CompProperties_WasteContainment">
+        <leakThreshold>0.5</leakThreshold>
+        <launchIntegrity>0.75</launchIntegrity>
+        <launchHeatLimit>40</launchHeatLimit>
+        <chargeDrainPerRare>0.005</chargeDrainPerRare>
+        <chargeRegenPerRare>0.02</chargeRegenPerRare>
+        <poweredHeatFactor>0.25</poweredHeatFactor>
+        <leakIntervalTicks>2500</leakIntervalTicks>
+        <leakPollutionCells>6</leakPollutionCells>
+        <leakGasAmount>150</leakGasAmount>
+        <processorRadius>4.9</processorRadius>
+        <processedOutputFactor>2</processedOutputFactor>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

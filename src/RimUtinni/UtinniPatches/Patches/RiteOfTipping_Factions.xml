@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RiteOfTipping_Factions.xml                UtinniPatches — WASTELAND_GPT_ENRICHMENT_1 §4
+
+  Casts the campaign's faction triangle into the Wasteland mod's franchise-free Rite of
+  Tipping (src/RimMandrake/Wasteland/Defs/Quests/RM_RiteOfTipping.xml), whose own
+  RM_TippingQuestExtension leaves every faction list empty (= any non-hostile faction).
+  Per wasteland.md §10 and FACTION_SPEC.md: the Junkers run the convoy, Wildsteam asks
+  for evidence, Deepwater finances proper containment. The three FactionDefs ship in this
+  mod (Defs/FactionDefs/), so no MayRequire is needed on them; the Conditional makes the
+  patch a no-op if the Wasteland mod is absent.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/QuestScriptDef[defName="RM_Quest_RiteOfTipping"]/modExtensions/li[@Class="RimMandrake.Wasteland.RM_TippingQuestExtension"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/QuestScriptDef[defName="RM_Quest_RiteOfTipping"]/modExtensions/li[@Class="RimMandrake.Wasteland.RM_TippingQuestExtension"]</xpath>
+      <value>
+        <convoyFactions>
+          <li>RUT_Jawa_Junkers</li>
+        </convoyFactions>
+        <evidenceFactions>
+          <li>RUT_Jawa_WildsteamClan</li>
+        </evidenceFactions>
+        <financeFactions>
+          <li>RUT_Jawa_DeepwaterCompact</li>
+        </financeFactions>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
