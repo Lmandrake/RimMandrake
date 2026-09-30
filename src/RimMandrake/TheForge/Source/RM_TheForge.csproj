@@ -43,6 +43,27 @@
   <ItemGroup>
     <Compile Include="RM_TheForgeMod.cs" />
     <Compile Include="RM_BiomeWorker_TheForge.cs" />
+    <!-- FORGE_CYCLE_MECHANICS_1 -->
+    <Compile Include="RM_ForgeCycleExtension.cs" />
+    <Compile Include="RM_GameCondition_ForgeCycle.cs" />
+    <Compile Include="RM_CompForgeCycleDormancy.cs" />
+    <Compile Include="RM_PawnRenderNodeWorker_DormantBody.cs" />
+    <Compile Include="RM_ForgeCycleDebugActions.cs" />
+  </ItemGroup>
+
+  <!-- FORGE_CYCLE_MECHANICS_1: the cycle subclasses the F1 pulse
+       (EnvironmentalHazards, a hard modDependency) and spawns FlowWorks water
+       releases (FlowWorks is EnvironmentalHazards' own hard dependency, now
+       declared here too). Build EnvironmentalHazards first. -->
+  <ItemGroup>
+    <Reference Include="RimMandrake.EnvironmentalHazards">
+      <HintPath>..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrakeFlowWorks">
+      <HintPath>..\..\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

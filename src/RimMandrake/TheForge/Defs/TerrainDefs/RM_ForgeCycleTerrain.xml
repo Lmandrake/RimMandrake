@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ForgeCycleTerrain.xml               FORGE_CYCLE_MECHANICS_1 (tranche 1)
+
+  The crust the grand cycle lays over the lava in phase 4 (the freeze) and
+  turns to glowing cracks in phase 6. All three are TEMPORARY terrain: they
+  live on the 1.6 temp-terrain layer (TerrainGrid.SetTempTerrain, saved in
+  tempGrid), so the lava underneath is never touched and the melt-back is
+  simply removing the layer (RM_GameCondition_ForgeCycle). No
+  terrainOnRemoved: removal must reveal the lava again, not leave rock.
+
+  NaturalTerrainBase already grants Walkable; each def adds only the rest.
+
+  Art: no new textures. The shingle reuses vanilla's cooled-lava surface,
+  darkened; the pumice reuses vanilla gravel, pale; the cracks reuse the
+  cooled-lava surface tinted ember-red with a real glow. Values INVENTED.
+  Proper crust art is a later ask, not a blocker.
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_BasaltShingle</defName>
+    <label>basalt shingle</label>
+    <description>A fresh skin of black basalt plates over lava the boiling rain has quenched. Walkable, still warm, and temporary: the fire underneath has not gone anywhere.</description>
+    <texturePath>Terrain/Surfaces/CooledLava</texturePath>
+    <color>(0.72, 0.70, 0.72)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>395</renderPrecedence>
+    <pathCost>4</pathCost>
+    <fertility>0</fertility>
+    <temporary>true</temporary>
+    <tempTerrain>
+      <destroysFloors>false</destroysFloors>
+    </tempTerrain>
+    <heatPerTick>0.05</heatPerTick>
+    <holdSnowOrSand>false</holdSnowOrSand>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+    </affordances>
+    <generatedFilth>Filth_VolcanicAsh</generatedFilth>
+    <statBases>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_PumiceRubble</defName>
+    <label>pumice rubble</label>
+    <description>Frothed, glassy pumice chunks where the quenched melt boiled as it set. Light, sharp-edged, crunching underfoot, and gone again at the next melt.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <color>(0.93, 0.90, 0.84)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>396</renderPrecedence>
+    <pathCost>9</pathCost>
+    <fertility>0</fertility>
+    <temporary>true</temporary>
+    <tempTerrain>
+      <destroysFloors>false</destroysFloors>
+    </tempTerrain>
+    <heatPerTick>0.03</heatPerTick>
+    <holdSnowOrSand>false</holdSnowOrSand>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+    <generatedFilth>Filth_VolcanicAsh</generatedFilth>
+    <statBases>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_GlowingCrackCrust</defName>
+    <label>glowing cracks</label>
+    <description>The crust is splitting from below, red light showing in every seam. It will melt back into open lava soon. Do not stand here.</description>
+    <texturePath>Terrain/Surfaces/CooledLava</texturePath>
+    <color>(1.0, 0.55, 0.35)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>397</renderPrecedence>
+    <pathCost>8</pathCost>
+    <fertility>0</fertility>
+    <temporary>true</temporary>
+    <tempTerrain>
+      <destroysFloors>false</destroysFloors>
+    </tempTerrain>
+    <glowColor>(214,94,4,0)</glowColor>
+    <glowRadius>2</glowRadius>
+    <heatPerTick>0.15</heatPerTick>
+    <avoidWander>true</avoidWander>
+    <extraDraftedPerceivedPathCost>40</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>200</extraNonDraftedPerceivedPathCost>
+    <holdSnowOrSand>false</holdSnowOrSand>
+    <generatedFilth>Filth_VolcanicAsh</generatedFilth>
+    <statBases>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

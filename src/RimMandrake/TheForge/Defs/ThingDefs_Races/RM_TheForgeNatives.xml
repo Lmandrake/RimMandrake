@@ -15,18 +15,20 @@
   the relationships: the dhokkur is the giant, the julmox is the tamable herd,
   the jossur is the sky apex, the dhuvvox is the swarm.
 
-  STUBS owed to FORGE_CYCLE_MECHANICS_1 (C#, out of scope here):
-    - RM_Dhokkur dormancy: dormant through still heat, reads as terrain, wakes
-      only during boiling rain. The dormant sprite ships at
-      Textures/Things/Pawn/Animal/RM_DhokkurDormant/RM_DhokkurDormant.png and
-      is referenced by nothing yet; the mechanic swaps to it.
-    - RM_Dhuvvox window lifecycle: erupts by the hundred at a burst, reseals
-      and despawns at window end. The sealed-nodule sprite ships at
-      Textures/Things/Pawn/Animal/RM_DhuvvoxNodule/RM_DhuvvoxNodule.png, also
-      unreferenced. Until the mechanic lands the dhuvvox spawns as an ordinary
-      low-commonality wild animal.
-    - RM_Julmox sealed-between-bursts state and flash-window grazing.
-    - Mod Settings toggles for all of the above.
+  FORGE_CYCLE_MECHANICS_1 (tranche 1) built the clock these creatures keep:
+    - RM_CompForgeCycleDormancy (Source/RM_CompForgeCycleDormancy.cs) on top
+      of stock CompCanBeDormant: the dhokkur wakes only in boiling rain; the
+      julmox and the dhuvvox stay sealed until the rain and its flash window.
+      Tamed animals never seal. Toggle: "Creatures sleep through the dry
+      phases".
+    - The sealed look: RM_DormantAnimalBody render tree
+      (Defs/PawnRenderTreeDefs/) shows each life stage's
+      stationaryGraphicData only while sealed. The dhokkur uses the shipped
+      RM_DhokkurDormant sprite, the dhuvvox the RM_DhuvvoxNodule sprite; the
+      julmox has no sealed sprite and simply lies still.
+  Still owed (later tranche): the dhuvvox eruption "by the hundred" at a
+  burst (today the ordinary wild population seals and hatches), and the
+  dhokkur's path memory.
 -->
 <Defs>
 
@@ -70,7 +72,28 @@
         <chanceFactor>0.2</chanceFactor>
       </li>
     </tools>
+    <comps>
+      <!-- FORGE_CYCLE_MECHANICS_1: jobDormancy HOLDS it asleep; freezeNeeds
+           keeps a long seal from starving it (RM_MuttavaqUttaqar precedent). -->
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+        <jobDormancy>true</jobDormancy>
+        <freezeNeeds>
+          <li>Food</li>
+          <li>Rest</li>
+        </freezeNeeds>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+      <li Class="RimMandrake.TheForge.CompProperties_ForgeCycleDormancy">
+        <awakeDuringRain>true</awakeDuringRain>
+        <awakeDuringFlashWindow>false</awakeDuringFlashWindow>
+        <wakeMessage>The rain is falling and a hill on the skirts has stood up: a {0} is walking.</wakeMessage>
+      </li>
+    </comps>
     <race>
+      <renderTree>RM_DormantAnimalBody</renderTree>
       <body>QuadrupedAnimalWithHooves</body>
       <baseBodySize>6.0</baseBodySize>
       <baseHealthScale>9.0</baseHealthScale>
@@ -118,6 +141,11 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>3.5</drawSize>
         </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DhokkurDormant/RM_DhokkurDormant</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>3.5</drawSize>
+        </stationaryGraphicData>
       </li>
       <li>
         <bodyGraphicData>
@@ -125,6 +153,11 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>5.5</drawSize>
         </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DhokkurDormant/RM_DhokkurDormant</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>5.5</drawSize>
+        </stationaryGraphicData>
       </li>
       <li>
         <bodyGraphicData>
@@ -132,6 +165,11 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>7.5</drawSize>
         </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DhokkurDormant/RM_DhokkurDormant</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>7.5</drawSize>
+        </stationaryGraphicData>
       </li>
     </lifeStages>
   </PawnKindDef>
@@ -184,6 +222,25 @@
         <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
       </li>
     </tools>
+    <comps>
+      <!-- FORGE_CYCLE_MECHANICS_1: jobDormancy HOLDS it asleep; freezeNeeds
+           keeps a long seal from starving it (RM_MuttavaqUttaqar precedent). -->
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+        <jobDormancy>true</jobDormancy>
+        <freezeNeeds>
+          <li>Food</li>
+          <li>Rest</li>
+        </freezeNeeds>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+      <li Class="RimMandrake.TheForge.CompProperties_ForgeCycleDormancy">
+        <awakeDuringRain>true</awakeDuringRain>
+        <awakeDuringFlashWindow>true</awakeDuringFlashWindow>
+      </li>
+    </comps>
     <race>
       <body>QuadrupedAnimalWithHooves</body>
       <baseBodySize>1.2</baseBodySize>
@@ -398,7 +455,27 @@
         <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
       </li>
     </tools>
+    <comps>
+      <!-- FORGE_CYCLE_MECHANICS_1: jobDormancy HOLDS it asleep; freezeNeeds
+           keeps a long seal from starving it (RM_MuttavaqUttaqar precedent). -->
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+        <jobDormancy>true</jobDormancy>
+        <freezeNeeds>
+          <li>Food</li>
+          <li>Rest</li>
+        </freezeNeeds>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+      <li Class="RimMandrake.TheForge.CompProperties_ForgeCycleDormancy">
+        <awakeDuringRain>true</awakeDuringRain>
+        <awakeDuringFlashWindow>true</awakeDuringFlashWindow>
+      </li>
+    </comps>
     <race>
+      <renderTree>RM_DormantAnimalBody</renderTree>
       <body>BeetleLike</body>
       <baseBodySize>0.1</baseBodySize>
       <baseHungerRate>0.2</baseHungerRate>
@@ -444,6 +521,11 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.3</drawSize>
         </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DhuvvoxNodule/RM_DhuvvoxNodule</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.3</drawSize>
+        </stationaryGraphicData>
       </li>
       <li>
         <bodyGraphicData>
@@ -451,6 +533,11 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.4</drawSize>
         </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DhuvvoxNodule/RM_DhuvvoxNodule</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.4</drawSize>
+        </stationaryGraphicData>
       </li>
       <li>
         <bodyGraphicData>
@@ -458,6 +545,11 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DhuvvoxNodule/RM_DhuvvoxNodule</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.5</drawSize>
+        </stationaryGraphicData>
       </li>
     </lifeStages>
   </PawnKindDef>

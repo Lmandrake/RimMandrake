@@ -159,9 +159,10 @@
        The growth-phase form the owner admitted at FORGE_BEDAZZLE_SITTING_1
        turn 7 (the sole one; turn 8 cut the other four). Harvest yields
        RM_Floatstone (Defs/ThingDefs_Items/RM_TheForgeItems.xml), the only
-       source of it. Deliberately in NO wildPlants list: it appears only
-       during the freeze phase, and that spawn cycle, the ripening states and
-       the tear-free drift ahead of the melt are FORGE_CYCLE_MECHANICS_1 (C#).
+       source of it. Deliberately in NO wildPlants list: the grand cycle
+       (RM_GameCondition_ForgeCycle, FORGE_CYCLE_MECHANICS_1) seeds it on the
+       frozen crust at the growth phase and tears every unharvested one free
+       (drift-off, messaged) when the glowing cracks appear.
        Plain Plant thingClass, not flash flora: it grows on the frozen crust,
        not in the rain window. Can grow on bare rock (fertilityMin 0,
        fertilitySensitivity 0) and in the dark. -->
