@@ -165,6 +165,18 @@ namespace RimMandrake.LuminousPigment
             return list;
         }
 
+        // DEEPFIRE_PROXY_BLOCKS_STORAGE_1 proof: the cells the floor proxies sit on.
+        public List<IntVec3> FloorLightCells()
+        {
+            var list = new List<IntVec3>();
+            foreach (KeyValuePair<object, LightEntry> kv in entries)
+            {
+                if (kv.Key is ClusterKey k && k.Kind == KindFloor && kv.Value.Proxy != null && !kv.Value.Proxy.Destroyed)
+                    list.Add(kv.Value.Proxy.Position);
+            }
+            return list;
+        }
+
         // ---- building cluster membership ----
 
         private static bool IsClusterable(Thing t)

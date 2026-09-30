@@ -11,10 +11,12 @@ namespace RimMandrake.LuminousPigment
     // gates on parent.Spawned, and only PostSpawnSetup registers a glower
     // with map.glowGrid. An UNSPAWNED proxy structurally cannot light the
     // grid, so every light this class owns is a real SPAWNED, invisible,
-    // unselectable RM_DeepfireLightProxy (category/altitudeLayer Item, NOT
-    // Building -- MEASURED live 2026-09-29 that a Building-layer proxy gets
-    // WIPED, along with whatever it was meant to light, by GenSpawn.Spawn's
-    // default WipeMode.Vanish; see the def's own header) carrying CompGlower, whose colour
+    // unselectable RM_DeepfireLightProxy (altitudeLayer Item, NOT Building --
+    // MEASURED live 2026-09-29 that a Building-layer proxy WIPES whatever it
+    // was meant to light via GenSpawn.Spawn's default WipeMode.Vanish; and
+    // category Ethereal, NOT Item -- an Item-category proxy shoved real items
+    // off its cell and made the cell read full to storage,
+    // DEEPFIRE_PROXY_BLOCKS_STORAGE_1; see the def's own header) carrying CompGlower, whose colour
     // and radius are set at runtime via the comp's own override setters --
     // never spawn/destroy per movement (the expensive pattern spec
     // painting_integration.md §4 warns against; here a light only respawns
