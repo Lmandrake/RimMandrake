@@ -60,6 +60,8 @@
     <Compile Include="RM_JunkerSarcophagusExtension.cs" />
     <Compile Include="RM_CompWarcasketIntegrity.cs" />
     <Compile Include="RM_MapComponent_HazardousTerrainImmersion.cs" />
+    <Compile Include="RM_Sarcophagus.cs" />
+    <Compile Include="RM_CaskBay.cs" />
   </ItemGroup>
 
   <ItemGroup>

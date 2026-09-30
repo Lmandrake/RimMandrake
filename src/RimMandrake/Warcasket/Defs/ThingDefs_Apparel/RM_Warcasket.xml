@@ -47,14 +47,9 @@
   the suit - "a primitive tank" survives one threat fine; it is the
   COMPOUND case that is dangerous, per the ruling's own framing.
 
-  CASK BAY: the sitting approved a crafting building for this suit
-  conceptually ("Cask bay approved"), but building it is out of this
-  item's scope (WASTELAND_MECHANICS_BUILD_1's own listed scope does not
-  mention it either - checked before writing this file). This recipe
-  ships on TableMachining so the suit is craftable today; a future Cask
-  Bay building can add itself as an additional recipeUser via a small
-  patch without touching this file. Follow-on:
-  WARCASKET_CASK_BAY_AND_SARCOPHAGI_1.
+  RECIPE: crafted on TableMachining. The sitting's "cask bay" is a
+  gravship hazmat hold for waste casks (RM_CaskBay.xml), not a warcasket
+  workbench, so no other recipeUser is owed.
 
   ART: infrastructure/artpipe (registry, done/, _artsrc/) searched for
   "warcasket" before writing this file - nothing found generated or
@@ -144,9 +139,6 @@
       <soundRemove>Remove_PowerArmor</soundRemove>
     </apparel>
     <recipeMaker>
-      <!-- Cask Bay not built this pass, see file header. TableMachining
-           keeps this craftable today; a future Cask Bay building adds
-           itself as another recipeUser via patch, not an edit here. -->
       <recipeUsers>
         <li>TableMachining</li>
       </recipeUsers>
@@ -174,9 +166,10 @@
        RM_WarcasketJunker — the Junker-adjusted variant. wasteland.md §7:
        "a dead Junker in an adjusted warcasket is a sealed salvage-within-
        salvage: suit, tools, and the half-extracted core still in its
-       grips." This ThingDef is the SUIT-SIDE hook only — see
-       RM_JunkerSarcophagusExtension.cs for what a Wasteland-owning mod
-       reads off it. generateAllowChance 0: this variant should only ever
+       grips." Sealed at death by RM_CompSarcophagusSeal; cracked open by
+       the corpse float-menu job (RM_Sarcophagus.cs), which drops the suit
+       and spawns `salvage` below: the welded extraction tooling
+       (components + steel) and RM_HalfExtractedCore. generateAllowChance 0: this variant should only ever
        appear via a Junker PawnKindDef's own <apparel> list once that
        exists, never scattered onto random pawns by vanilla's own
        apparel-generation roll.
@@ -196,8 +189,17 @@
       <li Class="RimMandrake.Warcasket.RM_JunkerSarcophagusExtension">
         <isSealedSarcophagus>true</isSealedSarcophagus>
         <flavorNote>A dead Junker, sealed. Whatever they were hauling out is still in here with them.</flavorNote>
+        <crackOpenTicks>1200</crackOpenTicks>
+        <salvage>
+          <ComponentIndustrial>2</ComponentIndustrial>
+          <Steel>25</Steel>
+          <RM_HalfExtractedCore>1</RM_HalfExtractedCore>
+        </salvage>
       </li>
     </modExtensions>
+    <comps>
+      <li Class="RimMandrake.Warcasket.RM_CompProperties_SarcophagusSeal" />
+    </comps>
   </ThingDef>
 
 </Defs>
