@@ -18,7 +18,7 @@
   <ThingDef>
     <defName>RM_Middenshell</defName>
     <label>middenshell</label>
-    <description>A colossal, ancient excretor twenty paces across — the sloghog's deep-time cousin grown into geography. A soft tube body lives inside a long irregular shell of accreted minerals fused into scavenged debris, hull scraps and its own vitrified bezoars: centuries of everything it ate, worn as architecture.\n\nIt is never hostile. It does not fight and barely notices you. But it crawls, slowly and without stopping, and whatever lies in its path is flattened or swallowed. Now and then a scaled tentacle lashes out and drags a nearby object — a crate, a door, a wall — into the shell. It will not touch a gravship.\n\nStanding near it is a dose: the ground it concentrates leaks off the shell as toxic buildup.\n\nKilled, its shell hardens where it falls into a quarry of contaminant and vitrified bezoars, and the dose stays with the stone.</description>
+    <description>A colossal, ancient excretor twenty paces across — the sloghog's deep-time cousin grown into geography. A soft tube body lives inside a long irregular shell of accreted minerals fused into scavenged debris, hull scraps and its own vitrified bezoars: centuries of everything it ate, worn as architecture.\n\nIt is never hostile. It does not fight and barely notices you. But it crawls, slowly and without stopping, and whatever lies in its path is flattened or swallowed. Now and then a scaled tentacle lashes out and drags a nearby object — a crate, a door, a wall — into the shell. It will not touch a gravship.\n\nIt comes as a procession: hours before it arrives the crust trembles and loose metal creeps toward the edge it will enter by. It crosses the map on one slow line and leaves by the far edge, pressing a permanent track behind it strewn with hot footprints, shell flakes and small bezoars. A stockpile holding waste draws it off its line.\n\nStanding near it is a dose: the ground it concentrates leaks off the shell as toxic buildup.\n\nKilled, its shell hardens where it falls into a quarry of contaminant and vitrified bezoars, and the dose stays with the stone.</description>
     <thingClass>RimMandrake.Wasteland.Building_Middenshell</thingClass>
     <category>Building</category>
     <size>(20,20)</size>
@@ -72,6 +72,17 @@
         <vitrifiedChance>0.12</vitrifiedChance>
         <carcassAlongFactor>1</carcassAlongFactor>
         <carcassAcrossFactor>0.6</carcassAcrossFactor>
+        <!-- WASTELAND_GPT_ENRICHMENT_1 §2: the Procession's wake. -->
+        <trailTerrain>RM_MiddenshellTrack</trailTerrain>
+        <trailTerrainChance>0.85</trailTerrainChance>
+        <edgeScarTerrain>RM_MiddenshellEdgeScar</edgeScarTerrain>
+        <footprintFilth>RM_Filth_MiddenshellFootprint</footprintFilth>
+        <footprintChance>0.12</footprintChance>
+        <flakeFilth>RM_Filth_MiddenshellFlakes</flakeFilth>
+        <flakeChance>0.08</flakeChance>
+        <trailBezoar>RM_ContaminantBezoar</trailBezoar>
+        <trailBezoarChance>0.04</trailBezoarChance>
+        <footprintHeat>40</footprintHeat>
       </li>
     </modExtensions>
   </ThingDef>

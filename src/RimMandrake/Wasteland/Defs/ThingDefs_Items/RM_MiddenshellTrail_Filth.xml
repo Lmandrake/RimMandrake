@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WASTELAND_GPT_ENRICHMENT_1 §2 — filth the Middenshell Procession drops on its trail.
+  Textures are vanilla cluster folders (Things/Filth/Ash, Things/Filth/RubbleRock, verified
+  against the decompiled 1.6 Filth_Ash / Filth_RubbleRock), tinted — PLACEHOLDER art.
+  The footprint's heat is a heat push + heat-glow fleck at drop time
+  (Building_Middenshell.LeaveTrail); filth itself cannot carry a heater comp.
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_MiddenshellFootprint</defName>
+    <label>hot middenshell footprint</label>
+    <description>A smear pressed into the ground by a middenshell's underside, still warm and faintly smoking with its own decay heat.</description>
+    <graphicData>
+      <graphicClass>Graphic_Cluster</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/Ash</texPath>
+      <color>(150,88,52,230)</color>
+      <drawSize>3</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-12</Beauty>
+      <Cleanliness>-10</Cleanliness>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth</cleaningSound>
+      <disappearsInDays>20~30</disappearsInDays>
+      <cleaningWorkToReduceThickness>60</cleaningWorkToReduceThickness>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_MiddenshellFlakes</defName>
+    <label>middenshell shell flakes</label>
+    <description>Plates of accreted mineral, slag and fused junk shed from a middenshell's shell as it grinds along.</description>
+    <graphicData>
+      <graphicClass>Graphic_Cluster</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/RubbleRock</texPath>
+      <color>(130,138,104)</color>
+    </graphicData>
+    <statBases>
+      <Beauty>-12</Beauty>
+      <Cleanliness>-5</Cleanliness>
+      <BeautyOutdoors>-3</BeautyOutdoors>
+    </statBases>
+    <filth>
+      <cleaningSound>Interact_CleanFilth</cleaningSound>
+      <disappearsInDays>45~60</disappearsInDays>
+      <cleaningWorkToReduceThickness>40</cleaningWorkToReduceThickness>
+    </filth>
+  </ThingDef>
+
+</Defs>

@@ -49,6 +49,7 @@
     <Compile Include="RM_GripperTheft.cs" />
     <Compile Include="RM_Middenshell.cs" />
     <Compile Include="RM_NamedStorms.cs" />
+    <Compile Include="RM_MiddenshellProcession.cs" />
   </ItemGroup>
 
   <ItemGroup>
