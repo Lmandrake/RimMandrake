@@ -1332,3 +1332,18 @@
 {"seat":"FOUNDRY","event":"claim","id":"OGLEKNOT_CREATURE_BUILD_1","ts":"2026-09-30T03:14:18Z"}
 {"seat":"FOUNDRY","event":"start","id":"OGLEKNOT_CREATURE_BUILD_1","ts":"2026-09-30T03:14:19Z"}
 {"seat":"FOUNDRY","event":"close","id":"OGLEKNOT_CREATURE_BUILD_1","sha":"ef1a9f4c4","ts":"2026-09-30T03:15:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BLURRG_ART_JOB_FIX_1","ts":"2026-09-30T03:17:29Z"}
+{"seat":"FOUNDRY","event":"start","id":"BLURRG_ART_JOB_FIX_1","ts":"2026-09-30T03:17:31Z"}
+{"seat":"FOUNDRY","event":"close","id":"BLURRG_ART_JOB_FIX_1","sha":"8f723337d","ts":"2026-09-30T03:17:32Z"}
+{"seat":"FOUNDRY","event":"file","id":"BLURRG_CANON_REGEN_1","title":"Regen RSW_Blurrg art with canon forelimbs (two short two-clawed arms); v1 renders wired now omit them","kind":"task","target":"v1","needs":"offline","caused_by":"BLURRG_ART_JOB_FIX_1","for":"FOUNDRY","ts":"2026-09-30T03:17:33Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LONGSHADE_BEDAZZLE_CONTENT_1","ts":"2026-09-30T03:18:08Z"}
+{"seat":"FOUNDRY","event":"start","id":"LONGSHADE_BEDAZZLE_CONTENT_1","ts":"2026-09-30T03:18:09Z"}
+{"seat":"FOUNDRY","event":"note","id":"FORGE_CYCLE_MECHANICS_1","text":"Tranche 1 landed 699adbff0/1f7a12ae4: six-phase cycle as RM_ForgePulse subclass of the existing pulse; gas wash, FlowWorks flood, freeze crust as temporary overlay (lava untouched), floatstone growth + drift-off, crack warning + melt-back destroying things on melting cells; Dhokkur/Julmox/Dhuvvox dormancy between rains; 8 settings; dev step actions. Remaining: live check (Forge terrain carries no lava, so freeze may no-op and cycle short-circuits), existing saves keep old pulse, all numbers placeholder, soundscape, vapor columns + sky herds, dhuvvox mass eruption, dhokkur path memory, crust art. Report: Transient/forge_cycle_mechanics_tranche1_report.md","ts":"2026-09-30T03:26:29Z"}
+{"seat":"FOUNDRY","event":"block","id":"FORGE_CYCLE_MECHANICS_1","reason":"Tranche 1 landed; remaining needs live check (lava-less Forge terrain), audio, art","ts":"2026-09-30T03:26:30Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CONTAGION_FLORA_PORT_1","ts":"2026-09-30T03:26:31Z"}
+{"seat":"FOUNDRY","event":"start","id":"CONTAGION_FLORA_PORT_1","ts":"2026-09-30T03:26:32Z"}
+{"seat":"FOUNDRY","event":"note","id":"LONGSHADE_BEDAZZLE_CONTENT_1","text":"Parts 1,2,3,4,6 landed dab5a10c4: 7 renamed creatures + vorrel family art wired, fillers sollak/gennok/tebbra/dakkra, JOE_Cephalope->RM_Qorrax with all refs, RSW_GlitterBird merged into RM_Pirrik, Alpha Animals texture deps removed (GreatDevourer/Groundrunner/MatureFleshbeast now magenta pending queued art). Remaining: Part 5 gloomcast art, Part 7 mirrak (paired with LONGSHADE_BEDAZZLE_MECHANICS_1), Part 8 maidenbloom + unruled fills to an owner review sheet. Report: Transient/longshade_content_report.md","ts":"2026-09-30T03:48:52Z"}
+{"seat":"FOUNDRY","event":"block","id":"LONGSHADE_BEDAZZLE_CONTENT_1","reason":"Remaining parts need art (gloomcast, 3 magenta), mechanics pairing (mirrak), owner review sheet (fills)","ts":"2026-09-30T03:48:54Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LONGSHADE_BEDAZZLE_MECHANICS_1","ts":"2026-09-30T03:48:58Z"}
+{"seat":"FOUNDRY","event":"start","id":"LONGSHADE_BEDAZZLE_MECHANICS_1","ts":"2026-09-30T03:49:03Z"}
+{"seat":"FOUNDRY","event":"close","id":"CONTAGION_FLORA_PORT_1","sha":"b632297aa","ts":"2026-09-30T03:53:32Z"}

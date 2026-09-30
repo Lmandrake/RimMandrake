@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T03:15:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T03:53:32Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1171,7 +1171,7 @@ summary:  - Scope is EVERYTHING the census names, including defNames and the soi
 prose:    infrastructure/state/items/CAULDRON_FULL_RENAME_1.md
 
 ## FORGE_CYCLE_MECHANICS_1 Build the Forge fire-and-water grand cycle: gas-wash ignition, boiling rain + FlowWorks flooding, steam plumes + temporary basalt/pumice freeze, floatstone growth phase, glowing cracks, melt-back - extends FORGE_MECHANICS_1's F1 pulse, coordinate
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1187,6 +1187,24 @@ target:   v1
 kind:     task
 summary:  1. The Stall and the Gale (names RULED 2026-09-21, WeatherDefs at last;
 prose:    infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md
+
+## LONGSHADE_BEDAZZLE_MECHANICS_1 Long Shade bedazzle mechanics: golden-hour perpetual sunset + pinned sun angle, mirrak false-shadow ambusher, swimmer's road (one young sarlacc, visible signs of every loss), Crawler Road wreck line, Long Carry sun graves
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Golden hour (owner: "I like the golden hour concept. A perpetual beautiful sunset.").
+prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_MECHANICS_1.md
+
+## LONGSHADE_BEDAZZLE_CONTENT_1 Long Shade bedazzle content: wire the finished-but-unwired art (7 magenta creatures + vorrel family), five filler defs, qorrax rename, glitter-bird/pirrik dedupe, gloomcast own art, AA texture deps, mirrak def, maidenbloom + review-gated fills
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Wire the finished-but-unwired art. RMOssik, RMKudda, RMThurra, RMVosska,
+prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_CONTENT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1782,6 +1800,16 @@ blocked:  RUT_PoisonForest has 546 live tiles; owner call on renaming the campai
 summary:  - Scope is EVERYTHING the census names, including defNames and the soils
 prose:    infrastructure/state/items/CAULDRON_FULL_RENAME_1.md
 
+## FORGE_CYCLE_MECHANICS_1 Build the Forge fire-and-water grand cycle: gas-wash ignition, boiling rain + FlowWorks flooding, steam plumes + temporary basalt/pumice freeze, floatstone growth phase, glowing cracks, melt-back - extends FORGE_MECHANICS_1's F1 pulse, coordinate
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Tranche 1 landed; remaining needs live check (lava-less Forge terrain), audio, art
+summary:  The pulse becomes a six-phase grand cycle:
+prose:    infrastructure/state/items/FORGE_CYCLE_MECHANICS_1.md
+
 ## LEANINGSCRUB_MECHANICS_BUILD_1 Build the Leaning Scrub mechanics: Stall+Gale wind calendar, the Lean scent/fire axis, vaporator + V-blight, smother-craft, calling-pyre + fire-stamping giants, ripple concealment, rich soundscape, inhabited injections - warning-instrument theme trimmed by owner ruling
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1791,6 +1819,16 @@ kind:     task
 blocked:  Remaining parts need art/audio/scene layouts or Part 6 cover system; tranche 1 landed
 summary:  1. The Stall and the Gale (names RULED 2026-09-21, WeatherDefs at last;
 prose:    infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md
+
+## LONGSHADE_BEDAZZLE_CONTENT_1 Long Shade bedazzle content: wire the finished-but-unwired art (7 magenta creatures + vorrel family), five filler defs, qorrax rename, glitter-bird/pirrik dedupe, gloomcast own art, AA texture deps, mirrak def, maidenbloom + review-gated fills
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Remaining parts need art (gloomcast, 3 magenta), mechanics pairing (mirrak), owner review sheet (fills)
+summary:  1. Wire the finished-but-unwired art. RMOssik, RMKudda, RMThurra, RMVosska,
+prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_CONTENT_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -1884,16 +1922,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 12)
 prose:    infrastructure/state/items/DEEPFIRE_MOD_SETTINGS_1.md
 
-## CONTAGION_FLORA_PORT_1 Contagion: 9-item flora port (Eyebark, Lashgrass, Bleedleaf, Gorestalk, Rattlegrope, Sapblister, Bloody Fist, Halfmade Tree+Blighted) per cast bible Part 3
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  Scope
-prose:    infrastructure/state/items/CONTAGION_FLORA_PORT_1.md
-
 ## CONTAGION_FINAL_BAN_SWEEP_1 Contagion: final roster confirmation + full ban sweep across all waves per cast bible Part 5
 state:    proposed
 row:      unassigned
@@ -1944,16 +1972,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RM_RAWVENOM_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RM_RAWVENOM_ART_1.md
 
-## BLURRG_ART_JOB_FIX_1 Pending artpipe jobs rsw_blurrg_v1_* say no forelimbs (canon: two short clawed arms) and drawsize 1.0 vs def adult 2.4; fix before the daemon runs them
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BLURRG_ART_JOB_FIX_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BLURRG_ART_JOB_FIX_1.md
-
 ## SOLAR_HEAT_EXPOSURE_1 Planet-wide sun heat: sun exposure feeds VANILLA heat (no new heat kind), per-biome heat kind (overhead sun / low sun / steam), directional shade grid, sun-cost pathing, rest-dash-rest animal behaviour, dash-radius ring; Long Shade is first consumer
 state:    proposed
 row:      unassigned
@@ -1973,26 +1991,6 @@ kind:     task
 thin:     no ## verify
 summary:  - Parasol: an apparel/utility item that shades its wearer and, weakly, one adjacent cell.
 prose:    infrastructure/state/items/SHADE_GEAR_FAMILY_1.md
-
-## LONGSHADE_BEDAZZLE_MECHANICS_1 Long Shade bedazzle mechanics: golden-hour perpetual sunset + pinned sun angle, mirrak false-shadow ambusher, swimmer's road (one young sarlacc, visible signs of every loss), Crawler Road wreck line, Long Carry sun graves
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Golden hour (owner: "I like the golden hour concept. A perpetual beautiful sunset.").
-prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_MECHANICS_1.md
-
-## LONGSHADE_BEDAZZLE_CONTENT_1 Long Shade bedazzle content: wire the finished-but-unwired art (7 magenta creatures + vorrel family), five filler defs, qorrax rename, glitter-bird/pirrik dedupe, gloomcast own art, AA texture deps, mirrak def, maidenbloom + review-gated fills
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Wire the finished-but-unwired art. RMOssik, RMKudda, RMThurra, RMVosska,
-prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_CONTENT_1.md
 
 ## JOSSUR_FLIGHT_FRAMES_1 Flight flip-book frames for RM_Jossur (optional; flight stat already set)
 state:    proposed
@@ -2023,3 +2021,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FORGE_MISSING_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FORGE_MISSING_ART_1.md
+
+## BLURRG_CANON_REGEN_1 Regen RSW_Blurrg art with canon forelimbs (two short two-clawed arms); v1 renders wired now omit them
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BLURRG_CANON_REGEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLURRG_CANON_REGEN_1.md
