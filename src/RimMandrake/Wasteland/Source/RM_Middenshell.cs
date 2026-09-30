@@ -4,6 +4,7 @@ using System.Text;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace RimMandrake.Wasteland
 {
@@ -53,6 +54,24 @@ namespace RimMandrake.Wasteland
         /// <summary>Carcass shape: ellipse semi-axes as a fraction of half the body width.</summary>
         public float carcassAlongFactor = 1f;
         public float carcassAcrossFactor = 0.6f;
+
+        // ── WASTELAND_GPT_ENRICHMENT_1 §2: the Procession's wake ─────────
+        /// <summary>Terrain pressed into the ground behind it (the visible trail).</summary>
+        public TerrainDef trailTerrain;
+        /// <summary>Chance per trailing cell per step to press the trail terrain.</summary>
+        public float trailTerrainChance = 0.85f;
+        /// <summary>Terrain torn into the map edge where it leaves (the edge scar).</summary>
+        public TerrainDef edgeScarTerrain;
+        /// <summary>Hot footprints and shell flakes dropped on trailing cells.</summary>
+        public ThingDef footprintFilth;
+        public float footprintChance = 0.12f;
+        public ThingDef flakeFilth;
+        public float flakeChance = 0.08f;
+        /// <summary>A minor bezoar shed on the trail, per step.</summary>
+        public ThingDef trailBezoar;
+        public float trailBezoarChance = 0.04f;
+        /// <summary>Heat pushed into a footprint cell (only matters under a roof).</summary>
+        public float footprintHeat = 40f;
     }
 
     public class Building_Middenshell : Building
@@ -62,6 +81,12 @@ namespace RimMandrake.Wasteland
         private int nextGrabTick = -1;
         private int eatenCount;
         private int stepsTaken;
+
+        // WASTELAND_GPT_ENRICHMENT_1 §2 — the Procession. -1 = the old free wander
+        // (a Middenshell from before the Procession, or one spawned by debug).
+        private int processionExitRot = -1;
+        private IntVec3 lureCell = IntVec3.Invalid;
+        private int lureCheckStep = -1;
 
         public RM_MiddenshellExtension Ext =>
             def.GetModExtension<RM_MiddenshellExtension>() ?? DefaultExt;
@@ -81,6 +106,20 @@ namespace RimMandrake.Wasteland
             Scribe_Values.Look(ref nextGrabTick, "nextGrabTick", -1);
             Scribe_Values.Look(ref eatenCount, "eatenCount", 0);
             Scribe_Values.Look(ref stepsTaken, "stepsTaken", 0);
+            Scribe_Values.Look(ref processionExitRot, "processionExitRot", -1);
+            Scribe_Values.Look(ref lureCell, "lureCell", IntVec3.Invalid);
+            Scribe_Values.Look(ref lureCheckStep, "lureCheckStep", -1);
+        }
+
+        /// <summary>True when it is crossing toward an exit edge (the Procession).</summary>
+        public bool InProcession => processionExitRot >= 0;
+        public Rot4 ExitHeading => new Rot4(Mathf.Max(0, processionExitRot));
+        public IntVec3 LureCell => lureCell;
+
+        /// <summary>Begin the Procession: cross the map heading <paramref name="exit"/> and leave by that edge.</summary>
+        public void BeginProcession(Rot4 exit)
+        {
+            processionExitRot = exit.AsInt;
         }
 
         private static bool Active =>
@@ -148,6 +187,10 @@ namespace RimMandrake.Wasteland
             Map map = Map;
             lastStepTick = Find.TickManager.TicksGame;
             Rot4 heading = Rotation;
+            if (InProcession && RM_WastelandSettings.middenshellProcessionEnabled)
+            {
+                return TryProcessionStep(map);
+            }
             if (Rand.Chance(Ext.turnChancePerStep) || !CanStepTo(heading, map))
             {
                 List<Rot4> options = new List<Rot4> { Rot4.North, Rot4.East, Rot4.South, Rot4.West };
@@ -174,6 +217,11 @@ namespace RimMandrake.Wasteland
                 }
             }
 
+            return DoStep(heading, map);
+        }
+
+        private bool DoStep(Rot4 heading, Map map)
+        {
             IntVec3 next = Position + heading.FacingCell;
             CellRect oldRect = this.OccupiedRect();
             CellRect newRect = GenAdj.OccupiedRect(next, heading, def.Size);
@@ -189,7 +237,272 @@ namespace RimMandrake.Wasteland
             {
                 Find.Selector.Select(this, playSound: false, forceDesignatorDeselect: false);
             }
+            if (Spawned)
+            {
+                LeaveTrail(oldRect, this.OccupiedRect(), map);
+            }
             return Spawned;
+        }
+
+        // ── The Procession (WASTELAND_GPT_ENRICHMENT_1 §2) ───────────────
+
+        /// <summary>
+        /// A readable crossing: straight toward the exit edge, bending only toward a
+        /// waste-stockpile lure or around a blocker, never back the way it came.
+        /// At the exit margin it leaves the map; its trail and edge scar stay.
+        /// </summary>
+        private bool TryProcessionStep(Map map)
+        {
+            Rot4 exit = ExitHeading;
+            UpdateLure(map);
+
+            IntVec3 aheadCenter = Position + exit.FacingCell;
+            CellRect aheadRect = GenAdj.OccupiedRect(aheadCenter, exit, def.Size);
+            if (!lureCell.IsValid && !aheadRect.ExpandedBy(1).InBounds(map))
+            {
+                ExitMap(map, exit);
+                return false;
+            }
+
+            List<Rot4> order = new List<Rot4>(5);
+            if (lureCell.IsValid)
+            {
+                IntVec3 d = lureCell - this.OccupiedRect().CenterCell;
+                bool xMajor = Mathf.Abs(d.x) >= Mathf.Abs(d.z);
+                Rot4 xDir = d.x >= 0 ? Rot4.East : Rot4.West;
+                Rot4 zDir = d.z >= 0 ? Rot4.North : Rot4.South;
+                order.Add(xMajor ? xDir : zDir);
+                order.Add(xMajor ? zDir : xDir);
+            }
+            order.Add(exit);
+            Rot4 left = exit.Rotated(RotationDirection.Counterclockwise);
+            Rot4 right = exit.Rotated(RotationDirection.Clockwise);
+            if (Rotation == right)
+            {
+                order.Add(right);
+                order.Add(left);
+            }
+            else
+            {
+                order.Add(left);
+                order.Add(right);
+            }
+            foreach (Rot4 r in order)
+            {
+                if (r == exit.Opposite && !lureCell.IsValid)
+                {
+                    continue; // never back the way it came
+                }
+                if (CanStepTo(r, map))
+                {
+                    return DoStep(r, map);
+                }
+            }
+            if (lureCell.IsValid)
+            {
+                lureCell = IntVec3.Invalid; // the lure is unreachable; carry on
+            }
+            prevPosition = Position;
+            return false; // hemmed in: it waits
+        }
+
+        /// <summary>Waste stockpiles divert it: the nearest stockpile holding waste inside lure range.</summary>
+        private void UpdateLure(Map map)
+        {
+            if (!RM_WastelandSettings.middenshellLureEnabled)
+            {
+                lureCell = IntVec3.Invalid;
+                return;
+            }
+            if (lureCell.IsValid && !ZoneAtHoldsWaste(lureCell, map))
+            {
+                lureCell = IntVec3.Invalid;
+                lureCheckStep = -1;
+            }
+            if (lureCell.IsValid || stepsTaken < lureCheckStep)
+            {
+                return;
+            }
+            lureCheckStep = stepsTaken + 5;
+            IntVec3 me = this.OccupiedRect().CenterCell;
+            float bestDist = RM_WastelandSettings.middenshellLureRange;
+            IntVec3 best = IntVec3.Invalid;
+            List<Zone> zones = map.zoneManager.AllZones;
+            for (int i = 0; i < zones.Count; i++)
+            {
+                if (!(zones[i] is Zone_Stockpile sp) || sp.Cells.Count == 0)
+                {
+                    continue;
+                }
+                IntVec3 wasteCell = IntVec3.Invalid;
+                foreach (Thing t in sp.AllContainedThings)
+                {
+                    if (RM_WasteUtility.IsWaste(t))
+                    {
+                        wasteCell = t.Position;
+                        break;
+                    }
+                }
+                if (!wasteCell.IsValid)
+                {
+                    continue;
+                }
+                float dist = wasteCell.DistanceTo(me);
+                if (dist < bestDist)
+                {
+                    bestDist = dist;
+                    best = wasteCell;
+                }
+            }
+            if (best.IsValid)
+            {
+                Messages.Message("The middenshell has scented a waste stockpile and turns toward it.",
+                    new LookTargets(new TargetInfo(best, map)), MessageTypeDefOf.NeutralEvent, historical: false);
+            }
+            lureCell = best;
+        }
+
+        private static bool ZoneAtHoldsWaste(IntVec3 c, Map map)
+        {
+            if (!(map.zoneManager.ZoneAt(c) is Zone_Stockpile sp))
+            {
+                return false;
+            }
+            foreach (Thing t in sp.AllContainedThings)
+            {
+                if (RM_WasteUtility.IsWaste(t))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>The wake behind a step: pressed trail, hot footprints, shell flakes, minor bezoars.</summary>
+        private void LeaveTrail(CellRect oldRect, CellRect newRect, Map map)
+        {
+            if (!RM_WastelandSettings.middenshellTrailEnabled)
+            {
+                return;
+            }
+            RM_MiddenshellExtension ext = Ext;
+            List<IntVec3> behind = new List<IntVec3>();
+            foreach (IntVec3 c in oldRect)
+            {
+                if (!newRect.Contains(c) && c.InBounds(map))
+                {
+                    behind.Add(c);
+                }
+            }
+            for (int i = 0; i < behind.Count; i++)
+            {
+                IntVec3 c = behind[i];
+                if (ext.trailTerrain != null && Rand.Chance(ext.trailTerrainChance))
+                {
+                    PressTerrain(c, map, ext.trailTerrain);
+                }
+                if (ext.footprintFilth != null && Rand.Chance(ext.footprintChance))
+                {
+                    FilthMaker.TryMakeFilth(c, map, ext.footprintFilth);
+                    if (map == Find.CurrentMap && Rand.Chance(0.3f))
+                    {
+                        FleckMaker.ThrowHeatGlow(c, map, 1.2f);
+                    }
+                    if (ext.footprintHeat > 0f)
+                    {
+                        GenTemperature.PushHeat(c, map, ext.footprintHeat);
+                    }
+                }
+                if (ext.flakeFilth != null && Rand.Chance(ext.flakeChance))
+                {
+                    FilthMaker.TryMakeFilth(c, map, ext.flakeFilth);
+                }
+            }
+            if (ext.trailBezoar != null && behind.Count > 0 && Rand.Chance(ext.trailBezoarChance))
+            {
+                Thing bezoar = ThingMaker.MakeThing(ext.trailBezoar);
+                GenPlace.TryPlaceThing(bezoar, behind.RandomElement(), map, ThingPlaceMode.Near);
+            }
+            if (map == Find.CurrentMap && GrindSound != null)
+            {
+                GrindSound.PlayOneShot(new TargetInfo(this.OccupiedRect().CenterCell, map));
+            }
+        }
+
+        private static SoundDef grindSound;
+        private static SoundDef GrindSound =>
+            grindSound ?? (grindSound = DefDatabase<SoundDef>.GetNamedSilentFail("RM_Middenshell_Grind"));
+
+        /// <summary>
+        /// Press a natural, passable, non-water cell into <paramref name="terr"/>. Constructed
+        /// floor was already torn up by the crush; substructure is never reached.
+        /// </summary>
+        public static bool PressTerrain(IntVec3 c, Map map, TerrainDef terr)
+        {
+            TerrainDef cur = c.GetTerrain(map);
+            if (cur == null || cur == terr || cur.IsWater || cur.IsFloor || cur.IsSubstructure
+                || cur.passability == Traversability.Impassable || !cur.natural)
+            {
+                return false;
+            }
+            map.terrainGrid.SetTerrain(c, terr);
+            return true;
+        }
+
+        /// <summary>Leave by the exit edge: the edge scar is torn into the margin and the body goes.</summary>
+        public void ExitMap(Map map, Rot4 exit)
+        {
+            CellRect body = this.OccupiedRect();
+            RM_MiddenshellExtension ext = Ext;
+            if (ext.edgeScarTerrain != null && RM_WastelandSettings.middenshellTrailEnabled)
+            {
+                CellRect scar = body.ExpandedBy(1).ClipInsideMap(map);
+                foreach (IntVec3 c in scar)
+                {
+                    PressTerrain(c, map, ext.edgeScarTerrain);
+                    if (ext.flakeFilth != null && Rand.Chance(ext.flakeChance * 2f))
+                    {
+                        FilthMaker.TryMakeFilth(c, map, ext.flakeFilth);
+                    }
+                }
+            }
+            Messages.Message("The middenshell has crawled off the " + EdgeName(exit)
+                           + " edge of the map. Its trail and a torn edge scar remain.",
+                new LookTargets(new TargetInfo(body.CenterCell, map)), MessageTypeDefOf.NeutralEvent, historical: true);
+            Destroy(DestroyMode.Vanish);
+        }
+
+        public static string EdgeName(Rot4 r)
+        {
+            if (r == Rot4.North) return "north";
+            if (r == Rot4.East) return "east";
+            if (r == Rot4.South) return "south";
+            return "west";
+        }
+
+        public override void DrawExtraSelectionOverlays()
+        {
+            base.DrawExtraSelectionOverlays();
+            if (!Spawned || !InProcession)
+            {
+                return;
+            }
+            Vector3 from = this.TrueCenter();
+            IntVec3 target;
+            if (lureCell.IsValid)
+            {
+                target = lureCell;
+            }
+            else
+            {
+                IntVec3 c = this.OccupiedRect().CenterCell;
+                Rot4 exit = ExitHeading;
+                target = exit == Rot4.North ? new IntVec3(c.x, 0, Map.Size.z - 1)
+                       : exit == Rot4.South ? new IntVec3(c.x, 0, 0)
+                       : exit == Rot4.East ? new IntVec3(Map.Size.x - 1, 0, c.z)
+                       : new IntVec3(0, 0, c.z);
+            }
+            GenDraw.DrawLineBetween(from, target.ToVector3Shifted());
         }
 
         public bool CanStepTo(Rot4 heading, Map map)
@@ -336,7 +649,8 @@ namespace RimMandrake.Wasteland
             {
                 return null;
             }
-            Thing target = candidates.RandomElement();
+            List<Thing> waste = candidates.Where(RM_WasteUtility.IsWaste).ToList();
+            Thing target = waste.Count > 0 ? waste.RandomElement() : candidates.RandomElement();
             Vector3 from = target.DrawPos;
             Vector3 to = this.TrueCenter();
             for (int i = 0; i <= 6; i++)
@@ -447,6 +761,13 @@ namespace RimMandrake.Wasteland
                         + " to " + r.maxX + "," + r.maxZ + ")");
             sb.Append("Heading: " + Rotation.ToStringHuman() + ". Steps taken: " + stepsTaken
                     + ". Things eaten: " + eatenCount + ".");
+            if (InProcession)
+            {
+                sb.AppendLine();
+                sb.Append(lureCell.IsValid
+                    ? "Diverted: crawling toward a waste stockpile."
+                    : "Procession: crossing toward the " + EdgeName(ExitHeading) + " edge.");
+            }
             return sb.ToString().TrimEndNewlines();
         }
 
@@ -541,6 +862,10 @@ namespace RimMandrake.Wasteland
             {
                 return false;
             }
+            if (map.GetComponent<RM_MapComponent_MiddenshellProcession>()?.Pending ?? false)
+            {
+                return false;
+            }
             return !Building_Middenshell.AnyOnMap(map, shellDef);
         }
 
@@ -551,6 +876,16 @@ namespace RimMandrake.Wasteland
             if (!Building_Middenshell.TryFindEdgeSpawn(map, shellDef, out IntVec3 center, out Rot4 heading))
             {
                 return false;
+            }
+            // WASTELAND_GPT_ENRICHMENT_1 §2: the Procession's omen comes first; the
+            // body arrives hours later at the edge the loose metal points toward.
+            RM_MapComponent_MiddenshellProcession procession = map.GetComponent<RM_MapComponent_MiddenshellProcession>();
+            if (RM_WastelandSettings.middenshellProcessionEnabled && procession != null)
+            {
+                procession.Schedule(center, heading);
+                SendStandardLetter(def.letterLabel, def.letterText + "\n\n" + procession.OmenLetterSuffix(),
+                    def.letterDef, parms, new LookTargets(new TargetInfo(center, map)));
+                return true;
             }
             Building_Middenshell shell = Building_Middenshell.SpawnAt(map, shellDef, center, heading);
             if (shell == null)

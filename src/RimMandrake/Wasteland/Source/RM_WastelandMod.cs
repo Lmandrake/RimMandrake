@@ -53,6 +53,13 @@ namespace RimMandrake.Wasteland
         public static float namedStormWarningFactor = 1f;
         public static bool cinderwireEmpEnabled = true;
 
+        // WASTELAND_GPT_ENRICHMENT_1 §2 — the Middenshell Procession (RM_MiddenshellProcession.cs).
+        public static bool middenshellProcessionEnabled = true;
+        public static int middenshellOmenHours = 4;
+        public static bool middenshellTrailEnabled = true;
+        public static bool middenshellLureEnabled = true;
+        public static float middenshellLureRange = 60f;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -76,6 +83,11 @@ namespace RimMandrake.Wasteland
             Scribe_Values.Look(ref namedStormPhasesEnabled, "namedStormPhasesEnabled", true);
             Scribe_Values.Look(ref namedStormWarningFactor, "namedStormWarningFactor", 1f);
             Scribe_Values.Look(ref cinderwireEmpEnabled, "cinderwireEmpEnabled", true);
+            Scribe_Values.Look(ref middenshellProcessionEnabled, "middenshellProcessionEnabled", true);
+            Scribe_Values.Look(ref middenshellOmenHours, "middenshellOmenHours", 4);
+            Scribe_Values.Look(ref middenshellTrailEnabled, "middenshellTrailEnabled", true);
+            Scribe_Values.Look(ref middenshellLureEnabled, "middenshellLureEnabled", true);
+            Scribe_Values.Look(ref middenshellLureRange, "middenshellLureRange", 60f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -160,6 +172,21 @@ namespace RimMandrake.Wasteland
               + "eats it. Never anything on gravship substructure or any gravship part.");
             list.Label("Middenshell crawl: one cell every " + middenshellStepTicks + " ticks");
             middenshellStepTicks = (int)list.Slider(middenshellStepTicks, 120f, 2000f);
+            list.CheckboxLabeled("Middenshell procession", ref middenshellProcessionEnabled,
+                "It announces itself hours ahead (the crust trembles, loose metal creeps toward the "
+              + "edge it will come from), then crosses the map on a straight, readable line and "
+              + "leaves by the far edge. Off: it arrives unannounced and wanders until killed.");
+            list.Label("Procession warning: " + middenshellOmenHours + " hours before it arrives");
+            middenshellOmenHours = (int)list.Slider(middenshellOmenHours, 1f, 12f);
+            list.CheckboxLabeled("Middenshell trail", ref middenshellTrailEnabled,
+                "It presses a trail of crushed ground behind it and drops hot footprints, shell "
+              + "flakes and the odd small bezoar; where it leaves the map it tears an edge scar. "
+              + "The trail and scar are permanent terrain.");
+            list.CheckboxLabeled("Waste stockpiles divert it", ref middenshellLureEnabled,
+                "A stockpile holding toxic wastepacks or waste casks within range draws it off its "
+              + "line until the waste is eaten.");
+            list.Label("Waste lure range: " + middenshellLureRange.ToString("0") + " cells");
+            middenshellLureRange = list.Slider(middenshellLureRange, 10f, 150f);
 
             list.End();
         }

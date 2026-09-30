@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WASTELAND_GPT_ENRICHMENT_1 §2 — the Middenshell Procession's permanent marks.
+  Building_Middenshell.PressTerrain lays these on NATURAL, passable, non-water cells only
+  (never floor, never substructure). Both reuse the vanilla Gravel surface texture
+  (Terrain/Surfaces/Gravel, verified against the decompiled 1.6 Gravel TerrainDef),
+  tinted — PLACEHOLDER art; bespoke surfaces are owed (see the item's art-owed list).
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_MiddenshellTrack</defName>
+    <label>middenshell track</label>
+    <description>Ground crushed flat and glazed by a middenshell's passing: a trench twenty paces wide of packed crust, slag and metal-salt smear. Nothing grows in it.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <color>(0.52,0.48,0.40)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>322</renderPrecedence>
+    <fertility>0</fertility>
+    <pathCost>1</pathCost>
+    <natural>true</natural>
+    <takeFootprints>True</takeFootprints>
+    <affordances>
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
+    <statBases>
+      <Beauty>-4</Beauty>
+      <BeautyOutdoors>-1</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_MiddenshellEdgeScar</defName>
+    <label>middenshell edge scar</label>
+    <description>Where a middenshell dragged itself off the map: the ground torn open and gouged into ridges, dark with its leakage. A landmark for as long as anyone lives here.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <color>(0.30,0.30,0.24)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>323</renderPrecedence>
+    <fertility>0</fertility>
+    <pathCost>6</pathCost>
+    <natural>true</natural>
+    <affordances>
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Diggable</li>
+    </affordances>
+    <statBases>
+      <Beauty>-8</Beauty>
+      <BeautyOutdoors>-2</BeautyOutdoors>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+  </TerrainDef>
+
+</Defs>
