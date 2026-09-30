@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1 — the acoustic-scanner payload for the Utinni twin
+  RUT_CrackedLands. Same targets as the RimMandrake-tier Cracked Lands
+  (src/RimMandrake/FloodedCanyon/Patches/RM_AcousticPayload_FloodedCanyon.xml, whose
+  header explains each target); keep the two in step until CRACKEDLANDS_FULL_RENAME_1
+  retires one of the defs. FindMod-guarded on mandrake.rm.acousticscanner; RM_ defNames
+  are strings resolved at pulse time, so an absent mandrake.rm.floodedcanyon just
+  hears nothing of those kinds.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>mandrake.rm.acousticscanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RUT_CrackedLands"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>The canyon gives back only rock and dry clay. No water close enough to hear, and every pan rings hollow the way a pan should.</quietText>
+          <targets>
+            <li>
+              <label>hidden water</label>
+              <reading>A wet, dull note under the clay where the pulse should have rung.</reading>
+              <color>(0.35, 0.65, 1)</color>
+              <terrainDefs>
+                <li>WaterShallow</li>
+                <li>WaterMovingShallow</li>
+                <li>WaterDeep</li>
+                <li>WaterMovingChestDeep</li>
+                <li>HotSpring</li>
+                <li>Mud</li>
+              </terrainDefs>
+              <onlyFogged>true</onlyFogged>
+            </li>
+            <li>
+              <label>shallow water table</label>
+              <reading>The shade line hums: something down there is wet, and the veqma know where.</reading>
+              <color>(0.45, 0.9, 0.85)</color>
+              <thingDefs>
+                <li>RM_Veqma</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>fossil strata</label>
+              <reading>Dense, close-banded echoes in the walls: old bone lies in layers.</reading>
+              <color>(0.95, 0.85, 0.55)</color>
+              <thingDefs>
+                <li>RM_FossilSeam_Impression</li>
+                <li>RM_FossilSeam_Skeleton</li>
+                <li>RM_FossilSeam_Unique</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>suspiciously regular pan</label>
+              <reading>A clay pan that answers too slowly, and too deep. It is breathing.</reading>
+              <color>(1, 0.45, 0.35)</color>
+              <weight>3</weight>
+              <pawnRaces>
+                <li>RM_Muttavaq</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>void in the rock</label>
+              <reading>The echo drops into an empty space behind the canyon wall.</reading>
+              <color>(0.75, 0.6, 1)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RM_Acoustic_SettingsCategory>Acoustic Scanner</RM_Acoustic_SettingsCategory>
+  <RM_Acoustic_SettingEnabled>Acoustic sounders can fire</RM_Acoustic_SettingEnabled>
+  <RM_Acoustic_SettingEnabledTip>Master switch. Off: every sounder's pulse button is disabled and no reading is drawn.</RM_Acoustic_SettingEnabledTip>
+  <RM_Acoustic_SettingRequireShip>Require a landed gravship</RM_Acoustic_SettingRequireShip>
+  <RM_Acoustic_SettingRequireShipTip>On (shipped): a pulse needs a grav engine on the map and the sounder standing on substructure. Off exists for testing or other rulesets.</RM_Acoustic_SettingRequireShipTip>
+  <RM_Acoustic_SettingEffects>Pulse effects (dust, thump, camera shake)</RM_Acoustic_SettingEffects>
+  <RM_Acoustic_SettingEffectsTip>Cosmetic only. The reading is the same either way.</RM_Acoustic_SettingEffectsTip>
+  <RM_Acoustic_SettingCooldown>Cooldown between pulses: {0} hours</RM_Acoustic_SettingCooldown>
+  <RM_Acoustic_SettingOverlay>Reading stays on the map for: {0} hours</RM_Acoustic_SettingOverlay>
+  <RM_Acoustic_SettingRange>Listening range: {0} cells</RM_Acoustic_SettingRange>
+  <RM_Acoustic_SettingBand>Band size: {0} cells (never below {1}; a reading is always banded, never exact)</RM_Acoustic_SettingBand>
+  <RM_Acoustic_SettingReset>Reset to defaults</RM_Acoustic_SettingReset>
+
+  <RM_Acoustic_PulseLabel>Sound the ground</RM_Acoustic_PulseLabel>
+  <RM_Acoustic_PulseDesc>Fire a sounding pulse through the hull and listen to what the ground gives back. The reply is drawn over the map as broad bands of likelihood for a few hours.</RM_Acoustic_PulseDesc>
+  <RM_Acoustic_Disabled>Acoustic sounding is switched off in Mod Settings.</RM_Acoustic_Disabled>
+  <RM_Acoustic_NoPower>No power.</RM_Acoustic_NoPower>
+  <RM_Acoustic_NotOnShip>The sounder must stand on the substructure of a landed gravship.</RM_Acoustic_NotOnShip>
+  <RM_Acoustic_Cooldown>Transducer settling: ready in {0}.</RM_Acoustic_Cooldown>
+  <RM_Acoustic_Ready>Ready to sound.</RM_Acoustic_Ready>
+
+  <RM_Acoustic_LetterLabel>Sounding reading</RM_Acoustic_LetterLabel>
+  <RM_Acoustic_LetterIntro>The pulse rolled out through {0} and came back changed:</RM_Acoustic_LetterIntro>
+  <RM_Acoustic_LetterBanded>The overlay shows bands of likelihood, not positions. Dig, walk or look inside them.</RM_Acoustic_LetterBanded>
+  <RM_Acoustic_NothingUnusual>Nothing unusual. The ground answers the way ground should.</RM_Acoustic_NothingUnusual>
+  <RM_Acoustic_TierFaint>a faint return</RM_Acoustic_TierFaint>
+  <RM_Acoustic_TierModerate>a clear return</RM_Acoustic_TierModerate>
+  <RM_Acoustic_TierStrong>a strong return</RM_Acoustic_TierStrong>
+</LanguageData>

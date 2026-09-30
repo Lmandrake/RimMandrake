@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1 — the Stillsand's acoustic-scanner payload. Item spec:
+  "things moving or buried under the sand, such as swimmers, caches and caves.
+  Coordinate with the Stillsand sitting's Listening and sand-swim kit."
+
+  Pure XML, FindMod-guarded on mandrake.rm.acousticscanner; every def is a defName
+  string resolved at pulse time (RM_Dunes_BuriedCache is mandrake.rm.movingdunes and
+  simply hears nothing when that mod is absent).
+
+  Swimmers: the sand-swim kit (RM_SandSwimExtension, stillsand_turn3_development
+  §2.1) is not built, so the swimmer set is named here by race: the four invented
+  natives whose descriptions put them UNDER the sand (drazzik, ruukka, vekka, siidda).
+  Canon swimmers (sand stalker, sarlacc swimmer) are Star Wars IP and belong in a
+  Utinni-layer addition, not this RM file. When the kit lands, a C# target reading
+  RM_SandSwimExtension can replace the list.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>mandrake.rm.acousticscanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_Stillsand"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Wind and sand noise, and under it nothing: the dunes lie still all the way down.</quietText>
+          <targets>
+            <li>
+              <label>something moving under the sand</label>
+              <reading>Under the hiss, a low rumble you feel in your teeth. It is not where it was a moment ago.</reading>
+              <color>(1, 0.4, 0.3)</color>
+              <weight>2</weight>
+              <pawnRaces>
+                <li>RM_Drazzik</li>
+                <li>RM_Ruukka</li>
+                <li>RM_Vekka</li>
+                <li>RM_Siidda</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>buried cache</label>
+              <reading>A hard, hollow ring inside a drift: something made, and sealed, under the sand.</reading>
+              <color>(1, 0.85, 0.4)</color>
+              <thingDefs>
+                <li>RM_Dunes_BuriedCache</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>brood chamber</label>
+              <reading>A honeycomb of small echoes: tunnels, and many things in them.</reading>
+              <color>(0.85, 0.5, 1)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RM_SandBusterMound</li>
+                <li>RM_SandBusterTunnel</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>cave</label>
+              <reading>The pulse falls into a long, cool emptiness inside the rock.</reading>
+              <color>(0.5, 0.75, 1)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
