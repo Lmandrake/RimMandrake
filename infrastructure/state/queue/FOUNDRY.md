@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T02:27:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T02:54:03Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1108,7 +1108,7 @@ summary:  WASTELANDMECHANICSBUILD1 — the Middenshell, the processor comps, sto
 prose:    infrastructure/state/items/WASTELAND_MECHANICS_BUILD_1.md
 
 ## BLUEDESERT_MECHANICS_BUILD_1 Build the Blue Desert mechanics: vhaulk trigger-gated detonation (EMP-on-hit trap), Warnings study ladder + cold-cutting, blue-ice thaw rolls, three weathers, soundscape + crack cue, Cold Hold + drift burial, murrek re-seeding, dovvik minesweeper, ablation salvage
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1144,7 +1144,7 @@ summary:  CRACKEDLANDSRULEDCONTENT1 — roster surgery, five new natives, fossil
 prose:    infrastructure/state/items/CRACKEDLANDS_RULED_CONTENT_1.md
 
 ## CRACKEDLANDS_MECHANICS_BUILD_1 Build the Cracked Lands mechanics: the Swale (FlowWorks-normal, Utinni-locked biome discovery), survey+cistern loop, wall fossils + flood re-cut, giant behaviors, chime soundscape, Peakstorm Light, salvage strikes, ledges/toll gate, bloom market
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1160,6 +1160,24 @@ target:   v1
 kind:     task
 summary:  Five organs, one machine:
 prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
+
+## CAULDRON_FULL_RENAME_1 Full rename PoisonForest -> Cauldron everywhere down to defNames incl. frozen RUT_ twin and soils (owner-typed 2026-09-28); live-tile shortHash check gates defName changes
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Scope is EVERYTHING the census names, including defNames and the soils
+prose:    infrastructure/state/items/CAULDRON_FULL_RENAME_1.md
+
+## FORGE_RULED_CONTENT_1 Build the Forge ruled cast: wire all waiting (Tibidee/ColossalAerofleet/fleet-flier art/FlashFlora), four admitted natives (Dhokkur/Julmox/Jossur/Dhuvvox), floatstone material (spun-glass pumice, non-flammable, beautiful walls)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Wire in all waiting (owner, turn 2: "Wire in all waiting."): Tibidee and
+prose:    infrastructure/state/items/FORGE_RULED_CONTENT_1.md
 
 ## LEANINGSCRUB_MECHANICS_BUILD_1 Build the Leaning Scrub mechanics: Stall+Gale wind calendar, the Lean scent/fire axis, vaporator + V-blight, smother-craft, calling-pyre + fire-stamping giants, ripple concealment, rich soundscape, inhabited injections - warning-instrument theme trimmed by owner ruling
 state:    doing  (BLOCKED)
@@ -1704,6 +1722,16 @@ blocked:  Middenshell footprint + plasma-storm gate + storm names need owner/des
 summary:  WASTELANDMECHANICSBUILD1 — the Middenshell, the processor comps, storms and the dose layer
 prose:    infrastructure/state/items/WASTELAND_MECHANICS_BUILD_1.md
 
+## BLUEDESERT_MECHANICS_BUILD_1 Build the Blue Desert mechanics: vhaulk trigger-gated detonation (EMP-on-hit trap), Warnings study ladder + cold-cutting, blue-ice thaw rolls, three weathers, soundscape + crack cue, Cold Hold + drift burial, murrek re-seeding, dovvik minesweeper, ablation salvage
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Offline tranches done; remaining parts need valve decision, quarry tableaus, Horrors item, Harmony tint, audio, design call, live look
+summary:  BLUEDESERTMECHANICSBUILD1 — the Warnings, blue-ice quarrying, the vhaulk trap, weathers, sound, Cold Hold
+prose:    infrastructure/state/items/BLUEDESERT_MECHANICS_BUILD_1.md
+
 ## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1723,6 +1751,16 @@ kind:     task
 blocked:  defs+roster complete and validated (0 errors); remaining is a live quicktest verify pass (needs deploy+bridge) plus the wax suit's terrain-survival mechanism, which needs CRACKEDLANDS_MECHANICS_BUILD_1 first
 summary:  CRACKEDLANDSRULEDCONTENT1 — roster surgery, five new natives, fossils, the wax suit
 prose:    infrastructure/state/items/CRACKEDLANDS_RULED_CONTENT_1.md
+
+## CRACKEDLANDS_MECHANICS_BUILD_1 Build the Cracked Lands mechanics: the Swale (FlowWorks-normal, Utinni-locked biome discovery), survey+cistern loop, wall fossils + flood re-cut, giant behaviors, chime soundscape, Peakstorm Light, salvage strikes, ledges/toll gate, bloom market
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Remaining parts need FlowWorks changes, art, audio; tranche 1 landed
+summary:  CRACKEDLANDSMECHANICSBUILD1 — the Swale, surveys, fossils-in-the-walls, the giants' behaviors, the soundscape
+prose:    infrastructure/state/items/CRACKEDLANDS_MECHANICS_BUILD_1.md
 
 ## CAULDRON_MECHANICS_BUILD_1 Build the Cauldron mechanics: engine-underfoot soundscape + falter tell, four ratified weathers, flammable vent gas w/ toxic smoke + gas-tap scaffolds, filter-works fluid conversion, vexxiss behaviors, Oomo dislike content
 state:    doing  (BLOCKED)
@@ -1766,16 +1804,6 @@ thin:     no ## verify, no ## criteria
 summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
 
-## CAULDRON_FULL_RENAME_1 Full rename PoisonForest -> Cauldron everywhere down to defNames incl. frozen RUT_ twin and soils (owner-typed 2026-09-28); live-tile shortHash check gates defName changes
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  - Scope is EVERYTHING the census names, including defNames and the soils
-prose:    infrastructure/state/items/CAULDRON_FULL_RENAME_1.md
-
 ## SWALE_CANAL_ART_REFERENCE_1 Swale art from live reference: build a real FlowWorks canal in game, screenshot it, spec the RM_Swale art from the shots (owner-typed on the sheet 2026-09-29); current Swale art stands as placeholder until then
 state:    proposed
 row:      unassigned
@@ -1785,16 +1813,6 @@ kind:     task
 thin:     no ## verify
 summary:  1. Build a real FlowWorks canal on a live map (quicktest fine; bridge work —
 prose:    infrastructure/state/items/SWALE_CANAL_ART_REFERENCE_1.md
-
-## FORGE_RULED_CONTENT_1 Build the Forge ruled cast: wire all waiting (Tibidee/ColossalAerofleet/fleet-flier art/FlashFlora), four admitted natives (Dhokkur/Julmox/Jossur/Dhuvvox), floatstone material (spun-glass pumice, non-flammable, beautiful walls)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Wire in all waiting (owner, turn 2: "Wire in all waiting."): Tibidee and
-prose:    infrastructure/state/items/FORGE_RULED_CONTENT_1.md
 
 ## FORGE_CYCLE_MECHANICS_1 Build the Forge fire-and-water grand cycle: gas-wash ignition, boiling rain + FlowWorks flooding, steam plumes + temporary basalt/pumice freeze, floatstone growth phase, glowing cracks, melt-back - extends FORGE_MECHANICS_1's F1 pulse, coordinate
 state:    proposed
@@ -1945,3 +1963,43 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BLURRG_ART_JOB_FIX_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BLURRG_ART_JOB_FIX_1.md
+
+## SOLAR_HEAT_EXPOSURE_1 Planet-wide sun heat: sun exposure feeds VANILLA heat (no new heat kind), per-biome heat kind (overhead sun / low sun / steam), directional shade grid, sun-cost pathing, rest-dash-rest animal behaviour, dash-radius ring; Long Shade is first consumer
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SOLAR_HEAT_EXPOSURE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SOLAR_HEAT_EXPOSURE_1.md
+
+## SHADE_GEAR_FAMILY_1 Shade gear family, cross-biome: parasols, shade tents, stand-behind sun shields; effectiveness set by each biome's heat kind (overhead/low sun/steam where shade does nothing)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SHADE_GEAR_FAMILY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHADE_GEAR_FAMILY_1.md
+
+## LONGSHADE_BEDAZZLE_MECHANICS_1 Long Shade bedazzle mechanics: golden-hour perpetual sunset + pinned sun angle, mirrak false-shadow ambusher, swimmer's road (one young sarlacc, visible signs of every loss), Crawler Road wreck line, Long Carry sun graves
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LONGSHADE_BEDAZZLE_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_MECHANICS_1.md
+
+## LONGSHADE_BEDAZZLE_CONTENT_1 Long Shade bedazzle content: wire the finished-but-unwired art (7 magenta creatures + vorrel family), five filler defs, qorrax rename, glitter-bird/pirrik dedupe, gloomcast own art, AA texture deps, mirrak def, maidenbloom + review-gated fills
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LONGSHADE_BEDAZZLE_CONTENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_CONTENT_1.md
