@@ -23,8 +23,11 @@ namespace RimMandrake.LuminousPigment
     // CompDeepfire's own PostDeSpawn/PostSpawnSetup hooks).
     //
     // One proxy per registered KEY:
-    //  - step 5 (this item's scope): the coated Thing itself (walls,
-    //    furniture, art, apparel, weapons on the ground).
+    //  - step 5: the coated Thing itself (multi-cell furniture, art,
+    //    apparel, weapons on the ground).
+    //  - step 6 (DEEPFIRE_FLOOR_PAINT_1, MapComponent_DeepfireLights.Clusters.cs):
+    //    a ClusterKey per 3x3 block x kind x coats x colour, covering coated
+    //    floor cells and coated 1x1 buildings (walls, small furniture).
     //  - the RegisterHediffGlow/DeregisterHediffGlow pair below: the
     //    contract HediffComp_DeepfireGlow.cs (Cuisine, already shipped)
     //    already soft-binds to by reflection. That hediff comp re-registers
@@ -35,7 +38,7 @@ namespace RimMandrake.LuminousPigment
     //    tick worn-item movement, the lacquer gizmo/JobDriver, the styling-
     //    station checkbox, the darkness-targeting combat hooks) is spec §10
     //    step 8 -- explicitly out of scope here; filed separately.
-    public class MapComponent_DeepfireLights : MapComponent
+    public partial class MapComponent_DeepfireLights : MapComponent
     {
         private class LightEntry
         {
@@ -49,22 +52,45 @@ namespace RimMandrake.LuminousPigment
         {
         }
 
+        // One-entry cache: BeautyUtility.CellBeauty (postfixed for the floor
+        // bonus) runs hundreds of times per beauty sample, and GetComponent<T>
+        // is a linear scan over every mod's map components. Map instances are
+        // never reused, so a stale entry can only miss, never mis-hit.
+        private static Map cachedMap;
+        private static MapComponent_DeepfireLights cachedComp;
+
         public static MapComponent_DeepfireLights Get(Map map)
         {
-            return map?.GetComponent<MapComponent_DeepfireLights>();
+            if (map == null) return null;
+            if (map == cachedMap && cachedComp != null) return cachedComp;
+            MapComponent_DeepfireLights mc = map.GetComponent<MapComponent_DeepfireLights>();
+            cachedMap = map;
+            cachedComp = mc;
+            return mc;
         }
 
         // ---- Thing-anchored lights (step 5) ----
 
+        // DEEPFIRE_FLOOR_PAINT_1 (spec §3.6): a 1x1 Building (walls, small
+        // furniture) no longer owns a proxy of its own -- it joins the 3x3
+        // block cluster in MapComponent_DeepfireLights.Clusters.cs, so a
+        // 400-cell hall is ~45 lights, not 400. Larger things keep one proxy
+        // per Thing (they already cover several cells with one light).
         public void RegisterThingLight(Thing thing, Color color, float radius)
         {
             if (thing == null || !thing.Spawned || thing.Map != map) return;
+            if (IsClusterable(thing))
+            {
+                RegisterClusteredThing(thing);
+                return;
+            }
             SetLight(thing, thing.Position, color, radius);
         }
 
         public void DeregisterThingLight(Thing thing)
         {
             if (thing == null) return;
+            if (DeregisterClusteredThing(thing)) return;
             RemoveLight(thing);
         }
 
@@ -160,6 +186,12 @@ namespace RimMandrake.LuminousPigment
         {
             base.MapRemoved();
             entries.Clear();
+            ClearClusterState();
+            if (cachedMap == map)
+            {
+                cachedMap = null;
+                cachedComp = null;
+            }
         }
     }
 }

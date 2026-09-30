@@ -39,6 +39,22 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- DEEPFIRE_FLOOR_PAINT_1: floor cells (spec §3.3: workType Construction
+       for floors). Same 400 as its siblings, for the tier-starvation reason
+       measured above. -->
+  <WorkGiverDef>
+    <defName>RM_ApplyDeepfireFloorWorkGiver</defName>
+    <label>apply deepfire (floors)</label>
+    <giverClass>RimMandrake.LuminousPigment.WorkGiver_ApplyDeepfireFloor</giverClass>
+    <workType>Construction</workType>
+    <verb>apply deepfire to</verb>
+    <gerund>applying deepfire</gerund>
+    <priorityInType>400</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
   <WorkGiverDef>
     <defName>RM_ApplyDeepfireCraftingWorkGiver</defName>
     <label>apply deepfire (items)</label>

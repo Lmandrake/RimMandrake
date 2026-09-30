@@ -20,6 +20,16 @@ namespace RimMandrake.LuminousPigment
         // HSV value floor so a near-black dye still crosses GlowGrid's
         // GameGlowLitThreshold (0.3f, RimSage-verified Verse/GlowGrid.cs).
         public const float GlowMinValue = 0.45f;
+
+        // DEEPFIRE_FLOOR_PAINT_1 (spec §3.3/§3.5/§3.6, §7 keys clusterBlock,
+        // costFloorCell, floorBeautyPerCell, floorRoomBonusPer10,
+        // floorRoomBonusCap). Settings wiring is DEEPFIRE_MOD_SETTINGS_1's.
+        public const int ClusterBlock = 3;              // 1 = one light per cell/thing
+        public const float ClusterRadiusBonus = 1f;     // "radius = coat radius + 1" (only for a cluster of 2+ cells)
+        public const int CostFloorCell = 1;
+        public const float FloorBeautyPerCell = 0.5f;
+        public const float FloorRoomBonusPer10 = 2f;
+        public const float FloorRoomBonusCap = 10f;
     }
 
     public static class DeepfireColorUtility

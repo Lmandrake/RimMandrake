@@ -37,6 +37,7 @@ namespace RimMandrake.LuminousPigment
             {
                 if (CanDesignateThing(thingList[i]).Accepted) return true;
             }
+            if (CanDesignateFloor(c)) return true;
             return "Nothing here can take deepfire.";
         }
 
@@ -47,6 +48,23 @@ namespace RimMandrake.LuminousPigment
             {
                 if (CanDesignateThing(thingList[i]).Accepted) DesignateThing(thingList[i]);
             }
+            if (CanDesignateFloor(c))
+            {
+                Map.designationManager.AddDesignation(new Designation(c, DeepfireDefOf.RM_ApplyDeepfireFloorDesignation));
+            }
+        }
+
+        // DEEPFIRE_FLOOR_PAINT_1, spec §3.3: "any floor cell with a floor
+        // terrain with fewer than three coats in the floor grid". Not under a
+        // full-fillage edifice (a wall hides its floor; the wall is the
+        // thing-path target there).
+        private bool CanDesignateFloor(IntVec3 c)
+        {
+            MapComponent_DeepfireLights mc = MapComponent_DeepfireLights.Get(Map);
+            if (mc == null || !mc.CanAddFloorCoat(c)) return false;
+            Building edifice = c.GetEdifice(Map);
+            if (edifice != null && edifice.def.Fillage == FillCategory.Full) return false;
+            return Map.designationManager.DesignationAt(c, DeepfireDefOf.RM_ApplyDeepfireFloorDesignation) == null;
         }
 
         public override AcceptanceReport CanDesignateThing(Thing t)
@@ -92,6 +110,9 @@ namespace RimMandrake.LuminousPigment
             {
                 if (CanDesignateThing(thingList[i]).Accepted) return true;
             }
+            MapComponent_DeepfireLights mc = MapComponent_DeepfireLights.Get(Map);
+            if (mc != null && mc.FloorCoatsAt(c) > 0) return true;
+            if (Map.designationManager.DesignationAt(c, DeepfireDefOf.RM_ApplyDeepfireFloorDesignation) != null) return true;
             return "Nothing here carries deepfire.";
         }
 
@@ -102,6 +123,10 @@ namespace RimMandrake.LuminousPigment
             {
                 if (CanDesignateThing(thingList[i]).Accepted) DesignateThing(thingList[i]);
             }
+            // DEEPFIRE_FLOOR_PAINT_1: floor cells -- strip coats (no refund)
+            // and cancel a pending floor order.
+            MapComponent_DeepfireLights.Get(Map)?.ClearFloorCoats(c);
+            Map.designationManager.TryRemoveDesignation(c, DeepfireDefOf.RM_ApplyDeepfireFloorDesignation);
         }
 
         public override AcceptanceReport CanDesignateThing(Thing t)
