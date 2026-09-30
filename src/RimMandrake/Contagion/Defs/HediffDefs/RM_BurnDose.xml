@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CONTAGION_MECHANICS_BUILD_1 Part 1 — the Burn's pressure on visitors.
+  "The clear sky is ... hostile to visitors (dose, burn)" (sheet §5).
+  Added by RM_GameCondition_ContagionBurn at 0.02 per 250 ticks under open sky
+  (x the Mod Settings damage factor): one hour in the open is ~0.2, a whole
+  worst-case Burn (4000 ticks) is ~0.32 — painful, never lethal from one Burn.
+  Fades at 0.5/day once out of the light. Numbers are this build's INVENTED
+  tuning; the sheet gives none.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_BurnDose</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>Burn dose</label>
+    <labelNoun>a Burn dose</labelNoun>
+    <description>Sunscald and a radiation-like sickness from standing under the Contagion's torn sky: blistered skin, a headache behind the eyes, nausea. It fades once out of the light.</description>
+    <defaultLabelColor>(0.95, 0.85, 0.5)</defaultLabelColor>
+    <isBad>true</isBad>
+    <makesSickThought>true</makesSickThought>
+    <initialSeverity>0.001</initialSeverity>
+    <maxSeverity>1.0</maxSeverity>
+    <lethalSeverity>1.0</lethalSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.5</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>light</label>
+        <minSeverity>0</minSeverity>
+        <painOffset>0.03</painOffset>
+      </li>
+      <li>
+        <label>sunscald</label>
+        <minSeverity>0.2</minSeverity>
+        <painOffset>0.1</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>sick</label>
+        <minSeverity>0.45</minSeverity>
+        <painOffset>0.2</painOffset>
+        <vomitMtbDays>0.5</vomitMtbDays>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.15</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>severe</label>
+        <minSeverity>0.75</minSeverity>
+        <lifeThreatening>true</lifeThreatening>
+        <painOffset>0.35</painOffset>
+        <vomitMtbDays>0.2</vomitMtbDays>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.3</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.25</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

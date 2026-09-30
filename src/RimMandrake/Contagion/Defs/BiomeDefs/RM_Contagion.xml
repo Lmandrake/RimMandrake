@@ -117,14 +117,40 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+    <!-- CONTAGION_MECHANICS_BUILD_1 Part 1 (2026-09-29): the biome owns its
+         sky. The Bloom (RM_ContagionBloom, ours) replaces the donor AB_RedFog
+         as the standing state. Clear and DryThunderstorm are OUT: here the
+         clear sky is the Burn, and the Burn is never rolled by WeatherDecider
+         — it comes only from RM_MapComponent_ContagionSky's clock (see
+         RM_ContagionSkyExtension below), so its frequency is ours. The
+         remaining vanilla wet weathers are the storm's lulls. -->
     <baseWeatherCommonalities>
-      <AB_RedFog MayRequire="sarg.alphabiomes">70</AB_RedFog>
-      <Clear>8</Clear>
-      <Rain>1</Rain>
-      <DryThunderstorm>1</DryThunderstorm>
-      <RainyThunderstorm>1</RainyThunderstorm>
-      <FoggyRain>1</FoggyRain>
+      <RM_ContagionBloom>70</RM_ContagionBloom>
+      <RainyThunderstorm>4</RainyThunderstorm>
+      <FoggyRain>4</FoggyRain>
+      <Rain>2</Rain>
     </baseWeatherCommonalities>
+    <modExtensions>
+      <li Class="RimMandrake.Contagion.RM_ContagionSkyExtension">
+        <meanDaysBetweenBurns>3</meanDaysBetweenBurns>
+        <burnDurationTicks>1500~4000</burnDurationTicks>
+        <tellLeadTicks>1250</tellLeadTicks>
+        <extraNatives>
+          <li>RM_TheUnfinished</li>
+        </extraNatives>
+        <armoredNatives>
+          <li>RM_Scaldhide</li>
+          <li>RM_Crispling</li>
+        </armoredNatives>
+        <leakerNatives>
+          <li>RM_Scorchpod</li>
+        </leakerNatives>
+        <tellSinkers>
+          <li>RM_Gawpsack</li>
+        </tellSinkers>
+        <!-- tellRattlers: RM_Rattlegrope once the flora port lands. -->
+      </li>
+    </modExtensions>
     <wildAnimals>
       <!-- CONTAGION_RULED_CONTENT_1 Wave A, 2026-09-29: the donor AA_/AG_/GR_
            cast and RUT_Sytheclaw (never admitted here; Pyrelands is its home)

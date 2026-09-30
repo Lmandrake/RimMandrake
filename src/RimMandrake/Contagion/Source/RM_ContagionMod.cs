@@ -31,12 +31,27 @@ namespace RimMandrake.Contagion
         // out their (short) lives normally.
         public static bool unfinishedSpawnerEnabled = true;
 
+        // CONTAGION_MECHANICS_BUILD_1 Part 1 — the Burn and the Bloom. Only
+        // ever acts on a map whose biome carries RM_ContagionSkyExtension.
+        // Off: no Burn is ever scheduled; the Bloom weather still rolls from
+        // the biome's commonalities (it is plain weather).
+        public static bool burnEnabled = true;
+        public static bool burnTellsEnabled = true;
+        // Multiplier on how often Burns come (1 = shipped: one every ~3 days).
+        public static float burnFrequency = 1f;
+        // Multiplier on the Burn's damage to natives and dose to visitors.
+        public static float burnDamageFactor = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref genomeOrganGrowingEnabled, "genomeOrganGrowingEnabled", true, true);
             Scribe_Values.Look(ref unfinishedSpawnerEnabled, "unfinishedSpawnerEnabled", true, true);
+            Scribe_Values.Look(ref burnEnabled, "burnEnabled", true, true);
+            Scribe_Values.Look(ref burnTellsEnabled, "burnTellsEnabled", true, true);
+            Scribe_Values.Look(ref burnFrequency, "burnFrequency", 1f, true);
+            Scribe_Values.Look(ref burnDamageFactor, "burnDamageFactor", 1f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -67,6 +82,24 @@ namespace RimMandrake.Contagion
                 + "Unfinished chimera nearby — random-limb, days-long-lived, dissolving to "
                 + "goo on death. Off stops new ones from budding; any already alive keep "
                 + "living out their (short) lives normally.");
+
+            list.GapLine();
+            list.CheckboxLabeled(
+                "The Burn enabled",
+                ref burnEnabled,
+                "Rare tears in the Contagion's storm: the red fog lifts, ranged fire works, "
+                + "and raw UV scorches everything under open sky — natives burn and dive for "
+                + "roof, canopy or water; visitors take a sunscald dose. Only ever happens on a "
+                + "Contagion map. Off: the storm never tears.");
+            list.CheckboxLabeled(
+                "Burn tells enabled",
+                ref burnTellsEnabled,
+                "Shortly before a Burn the gawpsacks stop and settle, puffing, as one — "
+                + "the only forecast the valley gives. Off: Burns arrive unannounced.");
+            list.Label("Burn frequency: " + burnFrequency.ToString("0.00") + "x (1 = one every ~3 days)");
+            burnFrequency = list.Slider(burnFrequency, 0.1f, 4f);
+            list.Label("Burn damage: " + burnDamageFactor.ToString("0.00") + "x (0 = weather only, no harm)");
+            burnDamageFactor = list.Slider(burnDamageFactor, 0f, 3f);
 
             list.End();
         }
