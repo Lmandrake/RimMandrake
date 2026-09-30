@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1 — the ship-mounted acoustic sounder.
+  Not a ship-mounted chime and not a wax tank (both rejected at the Cracked Lands sitting).
+
+  Ship-mounted: vanilla PlaceWorker_OnSubstructure (Odyssey, RimSage-verified) refuses
+  any cell whose foundation is not gravship substructure. The class re-checks at pulse
+  time that the map carries a GravEngine and the sounder still stands on substructure.
+
+  PLACEHOLDER ART: vanilla GroundPenetratingScanner texture (same 3x3 footprint and
+  drawSize); no bespoke art exists yet.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_AcousticSounder</defName>
+    <label>acoustic sounder</label>
+    <description>A heavy transducer bolted through the hull into the ship's belly. When the gravship is landed and the sounder is powered, it can fire a sounding pulse: dust jumps from the walls, a bass note rolls through the deck plating, and for a few hours afterward the ground's reply hangs over the map as broad bands of likelihood. It never says exactly where; it says where to look. What it hears depends on the land beneath the ship.</description>
+    <thingClass>RimMandrake.AcousticScanner.RM_Building_AcousticSounder</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Misc/GroundPenetratingScanner</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2.65</drawSize>
+      <drawRotated>false</drawRotated>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.4</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <designationCategory>Misc</designationCategory>
+    <terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>6000</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Mass>60</Mass>
+      <Beauty>-6</Beauty>
+    </statBases>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+    </building>
+    <comps>
+      <li Class="CompProperties_Forbiddable"></li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>300</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"></li>
+      <li Class="CompProperties_Breakdownable"></li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_OnSubstructure</li>
+    </placeWorkers>
+    <researchPrerequisites>
+      <li>RM_AcousticSounding</li>
+    </researchPrerequisites>
+  </ThingDef>
+</Defs>

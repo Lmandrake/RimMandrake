@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Acoustic Scanner</name>
+  <packageId>mandrake.rm.acousticscanner</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+  </loadAfter>
+  <description>GRAVSHIP_ACOUSTIC_SCANNER_1 — a gravship listens to the ground, in every biome.
+
+Research acoustic sounding (after basic gravtech) and build an acoustic sounder on your gravship's substructure. Once the ship is landed and the sounder is powered, fire a sounding pulse: dust jumps off nearby walls, a bass thump runs through the hull, and a temporary overlay shows broad probability bands of what the ground gave back. Never exact cells: every reading is a coarse band, re-gridded on each pulse.
+
+What it hears depends on the biome. Each biome supplies its own payload as a def extension on its BiomeDef (RimMandrake.AcousticScanner.RM_AcousticPayloadExtension), so adding a biome is pure XML. A biome with no payload reads "nothing unusual".
+
+Mod Settings: master on/off, require a landed gravship, pulse effects, cooldown, overlay duration, range, and band size (floored at 7 cells).</description>
+</ModMetaData>

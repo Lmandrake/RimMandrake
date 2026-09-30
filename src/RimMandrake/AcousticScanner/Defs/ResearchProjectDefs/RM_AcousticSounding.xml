@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1 — "unlocked by a first field survey or a research step
+  (discoverable technology), not given free." The research route. Prerequisite
+  BasicGravtech (Odyssey; RimSage-verified 2026-09-30, researchViewX 9 / Y 4.8).
+  Placed at X 10 / Y 5.6, between BasicGravtech and StandardGravtech (11 / 4.8).
+-->
+<Defs>
+  <ResearchProjectDef>
+    <defName>RM_AcousticSounding</defName>
+    <label>acoustic sounding</label>
+    <description>Turn a landed gravship into a drum. A hull-mounted sounder drives a low pulse into the ground and listens to what comes back: water, voids, buried things, things that move. The reading is never exact, only broad bands of likelihood, and what the ground gives back depends on where you land.</description>
+    <baseCost>600</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>BasicGravtech</li>
+    </prerequisites>
+    <researchViewX>10</researchViewX>
+    <researchViewY>5.6</researchViewY>
+  </ResearchProjectDef>
+</Defs>
