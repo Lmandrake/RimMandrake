@@ -996,10 +996,10 @@
     "sha": "598e1495b"
   },
   "src/RimMandrake/Contagion/Source/CompSpawnerUnfinished.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-26",
-    "hash": "97fc790db4fa4d4c8dacb935787011b11d125e75f7379583812cd6ed167500c6",
-    "sha": "598e1495b"
+    "cleanCount": 2,
+    "date": "2026-09-30",
+    "hash": "ca4b94c1f44c7ca1c76b6b5bce616881373e542454fc46e3eca7684c2e690bfd",
+    "sha": "9e0526efd"
   },
   "src/RimMandrake/Contagion/Source/FloatMenuOptionProvider_InjectGenomeSample.cs": {
     "cleanCount": 1,
@@ -5148,16 +5148,16 @@
     "sha": "51ede08fe"
   },
   "src/RimMandrake/LuminousPigment/Source/DeepfireGodExtension.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-26",
-    "hash": "144521cee079189fb2963b4c1826988bd4759477ad5571fc67e11670fd9396af",
-    "sha": "51ede08fe"
+    "cleanCount": 2,
+    "date": "2026-09-30",
+    "hash": "d580aa44f1cffe6767d8166ceb6071456dee23be25e1f4c76153bf9454c359df",
+    "sha": "9e0526efd"
   },
   "src/RimMandrake/LuminousPigment/Source/GameComponent_Deepfire.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-26",
-    "hash": "565f7507b4bba614cdd0354999993f26c7f28d15f1962b0974883bebb1a86894",
-    "sha": "51ede08fe"
+    "cleanCount": 2,
+    "date": "2026-09-30",
+    "hash": "827f0967c5c03b9f406da1a06f17392764e919a8f2725386367f639450c45fa7",
+    "sha": "9e0526efd"
   },
   "src/RimMandrake/LuminousPigment/Source/GenRecipePatch.cs": {
     "cleanCount": 1,
@@ -5208,16 +5208,16 @@
     "sha": "51ede08fe"
   },
   "src/RimMandrake/LuminousPigment/Source/SumptuaryEngine.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-26",
-    "hash": "c4510770585665f2bee29627336ce954e46f59feb0b038b64203c456f56854ff",
-    "sha": "51ede08fe"
+    "cleanCount": 2,
+    "date": "2026-09-30",
+    "hash": "17cb399e2a6819f71ad07e4fb215f5574869f8294629adbdd9c2ecf40d0367d9",
+    "sha": "9e0526efd"
   },
   "src/RimMandrake/LuminousPigment/Source/ThoughtWorkers_Sumptuary.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-26",
-    "hash": "dc0ae97d6af324fc8a0bdc9e55d27e85d7b24c954da492862c6e3af128ccf8e4",
-    "sha": "51ede08fe"
+    "cleanCount": 2,
+    "date": "2026-09-30",
+    "hash": "75006876a9e58ebf6ba4cab08fad3baea03bf407101484165ec5fcedcda9a6c6",
+    "sha": "9e0526efd"
   },
   "src/RimMandrake/MandrakePatches/About/About.xml": {
     "cleanCount": 5,
@@ -8561,10 +8561,10 @@
     "sha": "eb2cdddd"
   },
   "src/RimMandrake/Utils/dll_source_stamp.py": {
-    "cleanCount": 1,
-    "date": "2026-09-25",
-    "hash": "4ede1f311418dcd8a46e82e5e951824efa477ca41f0df7e2efc2c1234978284c",
-    "sha": "f596dcc26"
+    "cleanCount": 2,
+    "date": "2026-09-30",
+    "hash": "433f3163420405ba4d0032a6f6a1dc9a81acf4d85a3283e05e0622799ab9e6d8",
+    "sha": "9e0526efd"
   },
   "src/RimMandrake/Utils/doc_claims.py": {
     "cleanCount": 2,
