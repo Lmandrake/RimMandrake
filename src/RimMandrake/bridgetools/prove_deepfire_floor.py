@@ -93,7 +93,9 @@ def find_actions():
         if label == CATEGORY or (c.get("path") or "").endswith("\\" + CATEGORY):
             sub = call("rimworld/list_debug_action_children", path=c.get("path"))
             return {(leaf.get("label") or ""): leaf.get("path") for leaf in sub.get("children") or []}
-    return {}
+    # 1.6 flattens mod categories: the actions sit directly under Actions as "T: Floor: ..."
+    return {(c.get("label") or ""): c.get("path") for c in r.get("children") or []
+            if "Floor:" in (c.get("label") or c.get("path") or "")}
 
 
 def run(actions, label_part):
