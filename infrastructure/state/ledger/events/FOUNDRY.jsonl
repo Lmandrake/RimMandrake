@@ -1277,3 +1277,16 @@
 {"seat":"FOUNDRY","event":"file","id":"BLURRG_RSW_PORT_1","title":"Port RSW_Blurrg (tamed-only) with canon entry and art; Leaning Scrub ruled content names it","kind":"task","target":"v1","needs":"offline","caused_by":"LEANINGSCRUB_RULED_CONTENT_1","for":"FOUNDRY","ts":"2026-09-30T01:12:27Z"}
 {"seat":"FOUNDRY","event":"file","id":"LEANINGSCRUB_ART_WIRING_1","title":"Wire art for 27 Leaning Scrub subjects (thunderstep, yanker, scrap-nest bird, RM_RawVenom, venomvine split, zellik/dustflutter flight frames); check artpipe done/ first","kind":"task","target":"v1","needs":"offline","caused_by":"LEANINGSCRUB_RULED_CONTENT_1","for":"FOUNDRY","ts":"2026-09-30T01:12:28Z"}
 {"seat":"FOUNDRY","event":"file","id":"CAULDRON_TREE_METAL_YIELD_1","title":"C# comp for the metal second yield on the two Cauldron trees; stubs are commented in defs","kind":"task","target":"v1","needs":"offline","caused_by":"CAULDRON_RULED_CONTENT_1","for":"FOUNDRY","ts":"2026-09-30T01:12:29Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LEANINGSCRUB_ART_WIRING_1","ts":"2026-09-30T01:13:13Z"}
+{"seat":"FOUNDRY","event":"start","id":"LEANINGSCRUB_ART_WIRING_1","ts":"2026-09-30T01:13:14Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CAULDRON_TREE_METAL_YIELD_1","ts":"2026-09-30T01:13:15Z"}
+{"seat":"FOUNDRY","event":"start","id":"CAULDRON_TREE_METAL_YIELD_1","ts":"2026-09-30T01:13:16Z"}
+{"seat":"FOUNDRY","event":"close","id":"CAULDRON_TREE_METAL_YIELD_1","sha":"9d3986f0a","ts":"2026-09-30T01:20:31Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BLURRG_RSW_PORT_1","ts":"2026-09-30T01:20:37Z"}
+{"seat":"FOUNDRY","event":"start","id":"BLURRG_RSW_PORT_1","ts":"2026-09-30T01:20:39Z"}
+{"seat":"FOUNDRY","event":"close","id":"LEANINGSCRUB_ART_WIRING_1","sha":"1a202c407","ts":"2026-09-30T01:23:21Z"}
+{"seat":"FOUNDRY","event":"file","id":"RM_RAWVENOM_ART_1","title":"RM_RawVenom item art missing everywhere; drop-in path LeaningScrub/Textures/Things/Item/Resource/RM_RawVenom.png","kind":"task","target":"v1","needs":"offline","caused_by":"LEANINGSCRUB_ART_WIRING_1","for":"FOUNDRY","ts":"2026-09-30T01:23:22Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CAULDRON_MECHANICS_BUILD_1","ts":"2026-09-30T01:23:33Z"}
+{"seat":"FOUNDRY","event":"start","id":"CAULDRON_MECHANICS_BUILD_1","ts":"2026-09-30T01:23:34Z"}
+{"seat":"FOUNDRY","event":"close","id":"BLURRG_RSW_PORT_1","sha":"7592e256f","ts":"2026-09-30T01:35:52Z"}
+{"seat":"FOUNDRY","event":"file","id":"BLURRG_ART_JOB_FIX_1","title":"Pending artpipe jobs rsw_blurrg_v1_* say no forelimbs (canon: two short clawed arms) and drawsize 1.0 vs def adult 2.4; fix before the daemon runs them","kind":"task","target":"v1","needs":"offline","caused_by":"BLURRG_RSW_PORT_1","for":"FOUNDRY","ts":"2026-09-30T01:35:54Z"}
