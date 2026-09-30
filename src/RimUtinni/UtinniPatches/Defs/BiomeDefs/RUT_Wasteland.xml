@@ -20,10 +20,9 @@
 
     Weather: ban 5 is explicit — "No rain (R-H1: rain falls only at the greatest
     altitudes; the Wasteland is not one)" — so Rain/RainyThunderstorm are zeroed.
-    ToxRain and GrayPall (Anomaly) kept: SS4b names ash storms and radiation-halo
-    storms as the standing weather (no WeatherDef yet exists for either by that
-    name — SS Owed engine-feasibility — ToxRain and GrayPall are the nearest
-    existing stand-ins, reflavored, not invented). Ban 7 stands: "Plasma storms
+    ToxRain is zeroed too (owner, 2026-09-30, by question card: no rain of any kind here).
+    GrayPall (Anomaly) is kept. The ash storm and radiation halo WeatherDefs now exist in
+    the RM_ tier (WASTELAND_MECHANICS_BUILD_1). Ban 7 stands: "Plasma storms
     never occur outside the terminator families" — none added here since no plasma
     WeatherDef exists to add.
 
@@ -124,7 +123,7 @@
       <SnowGentle>1.5</SnowGentle>
       <SnowHard>1</SnowHard>
       <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
-      <ToxRain MayRequire="Ludeon.RimWorld.Biotech">4</ToxRain>
+      <ToxRain MayRequire="Ludeon.RimWorld.Biotech">0</ToxRain>
       <Rain>0</Rain>
       <RainyThunderstorm>0</RainyThunderstorm>
     </baseWeatherCommonalities>
