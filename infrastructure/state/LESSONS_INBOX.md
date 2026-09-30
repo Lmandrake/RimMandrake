@@ -156,3 +156,8 @@ TRAP: a faced animal job whose prompt says 'top-down' is refused whole by artpip
 - Copying pushed artpipe jobs into the live pending/ double-queues any the daemon already moved to active/ or done/; check both before copying (FOUNDRY, 2026-09-30).
 - 2026-09-30 BENCH: handoff.py says UNPUSHED for commits shared_sync.py already replayed onto origin when the shared tree can't reset (peer dirty files); verify by subject against origin/main before believing it.
 - 2026-09-30 BENCH: 'moving dunes' and 'sand swimmers' are OUR mods (mandrake.rm.movingdunes; SAND_SWIMMERS_MOD_1 spread across FlowWorks/SWBestiary) - an installed-mod About.xml sweep cannot find them; search src/ and item ids.
+- RimWorld 1.6 lists our mods' [DebugAction]s flat under Actions with a "T: " prefix, not inside a category node (FOUNDRY, 2026-09-30).
+- Regenerate Current Map wipes colonists and a generated side map with no colonists is culled; test on the home map and respawn colonists with bridgetools/spawn_test_colonists.py (FOUNDRY, 2026-09-30).
+- jawa/list_pawns puts hediffs under health.hediffs; reading x["hediffs"] reports a false zero (FOUNDRY, 2026-09-30).
+- rimworld/screenshot_cell_rect can crop the wrong screen region at far zoom; crop from the full frame it saves beside the crop (FOUNDRY, 2026-09-30).
+- shared_sync.py replay conflicts if the shared tree created a file origin already has; commit such files from a private worktree (FOUNDRY, 2026-09-30).
