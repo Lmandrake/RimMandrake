@@ -20,10 +20,17 @@ namespace RimMandrake.PoisonForest
         // planet. 1 = the shipped default.
         public static float biomeRarityFactor = 1f;
 
+        // CAULDRON_TREE_METAL_YIELD_1: the metal second yield on the thornwood
+        // and martyr tree. Off = they yield wood only. Factor scales the count.
+        public static bool metalYieldEnabled = true;
+        public static float metalYieldFactor = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
+            Scribe_Values.Look(ref metalYieldEnabled, "metalYieldEnabled", true, true);
+            Scribe_Values.Look(ref metalYieldFactor, "metalYieldFactor", 1f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -37,6 +44,17 @@ namespace RimMandrake.PoisonForest
                        + "toxin-laced forest patches. Affects planets generated "
                        + "afterwards, never one that already exists.");
             biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+
+            list.GapLine();
+            list.CheckboxLabeled("Metal-infused trees yield metal",
+                ref metalYieldEnabled,
+                "Twisting thornwood and martyr trees drop steel beside their wood, "
+                + "more from older growth. Off: wood only. Takes effect on the next harvest.");
+            if (metalYieldEnabled)
+            {
+                list.Label("Metal yield: " + metalYieldFactor.ToString("0.0") + "x (default 1.0x)");
+                metalYieldFactor = list.Slider(metalYieldFactor, 0.1f, 3f);
+            }
 
             list.End();
         }

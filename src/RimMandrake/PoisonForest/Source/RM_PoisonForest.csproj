@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="RM_PoisonForestMod.cs" />
     <Compile Include="RM_PoisonForestBiome.cs" />
+    <Compile Include="RM_CompMetalYield.cs" />
   </ItemGroup>
 
   <ItemGroup>
