@@ -64,5 +64,13 @@ needs a Windows-side JawaBench build, pre-existing/expected per every prior
 DEEPFIRE_* report). `selftest_deployed_biome_refs.py`, which FAILED in all five
 prior follow-on reports, PASSED here (fixed elsewhere, not by this item).
 
-## Still to do
-- [ ] commit + rebase + push + ancestry check
+## Land
+- [x] commit `75f5887f7` (pre-rebase)
+- [x] rebase onto origin/main (clean, no conflicts; the one new commit
+      `ad2e123a4` touched only Transient proof outputs + a new bridgetools
+      script, nothing under LuminousPigment/Source, so no rebuild was needed)
+- [x] push origin HEAD:main
+- [x] ancestry confirmed: `git merge-base --is-ancestor 75f5887f7 origin/main` -> 0
+
+## Result
+Landed at `75f5887f758715e3ffb2b59d51efe13cd4219321` on origin/main.
