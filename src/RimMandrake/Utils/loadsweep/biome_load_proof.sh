@@ -50,7 +50,7 @@ defname_for() {
     gelatinousslime) echo "RM_GelatinousSlime" ;;
     floodedcanyon)   echo "RM_FloodedCanyon" ;;
     nightsideice)    echo "RM_NightsideIce" ;;
-    poisonforest)    echo "RM_PoisonForest" ;;
+    poisonforest)    echo "RM_Cauldron" ;;
     wasteland)       echo "RM_Wasteland" ;;
     leaningscrub)    echo "RM_LeaningScrub" ;;
     terminalbiomes)  echo "RM_TheScald" ;;   # kit mod: 4 biomes, Scald is the probe

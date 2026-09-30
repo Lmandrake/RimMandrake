@@ -1,21 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    MIASMA_RM_MOD_BUILD_1. Same recipe as
-    src/RimMandrake/Cauldron/Source/RM_Cauldron.csproj — copy that
-    header if this one goes stale.
+    POISONFOREST_RM_MOD_BUILD_1. Same recipe as
+    src/RimMandrake/ForsakenCrags/Source/RM_ForsakenCrags.csproj — copy
+    that header if this one goes stale.
 
-    Harmony IS referenced, for ONE patch only:
-    RM_Patch_WardenYoungTrainableGate.cs (WARDEN_MOTHER_TRAINABLE_GATE_1),
-    postfixes on Pawn_TrainingTracker.CanAssignToTrain/HasLearned — there is
-    no XML lever for per-pawn TrainableDef exclusion. Everything else here is a
-    plain extension point. (The six real mechanics this biome ships all live in the SHARED
-    mandrake.rm.environmentalhazards assembly, which brings its own Harmony
-    dependency separately — this mod only needs loadAfter on it, not a
-    second Harmony reference.)
+    NO HARMONY REFERENCE, DELIBERATELY. The only hook this mod uses is a
+    vanilla extension point (BiomeWorker, ModSettings). Nothing here patches
+    an engine method, so nothing here breaks on a game update that renames
+    one. About.xml carries no brrainz.harmony dependency either.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Miasma\Source\RM_Miasma.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Cauldron\Source\RM_Cauldron.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->
@@ -23,8 +19,8 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>RimMandrake.Miasma</AssemblyName>
-    <RootNamespace>RimMandrake.Miasma</RootNamespace>
+    <AssemblyName>RimMandrake.Cauldron</AssemblyName>
+    <RootNamespace>RimMandrake.Cauldron</RootNamespace>
     <Version>1.0.0</Version>
 
     <OutputPath>..\Assemblies\</OutputPath>
@@ -44,17 +40,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="RM_MiasmaMod.cs" />
-    <Compile Include="RM_MiasmaBiome.cs" />
-    <Compile Include="RM_WardenMotherSuccession.cs" />
-    <Compile Include="RM_Patch_WardenYoungTrainableGate.cs" />
-    <Compile Include="RM_CompProperties_PlantPredator.cs" />
-    <Compile Include="RM_CompPlantPredator.cs" />
+    <Compile Include="RM_CauldronMod.cs" />
+    <Compile Include="RM_CauldronBiome.cs" />
+    <Compile Include="RM_CompMetalYield.cs" />
+    <Compile Include="RM_VentBloomExposure.cs" />
+    <Compile Include="RM_CompVexxissBehaviour.cs" />
   </ItemGroup>
-
-  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
-    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
-  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
@@ -63,10 +54,6 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="0Harmony">
-      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine">

@@ -2,7 +2,7 @@
 <!--
   COMMISSION_LEDGER_CLEANUP_1 (poison_forest sheet slug
   `toxic-prized-meat-def-property-on-the-4-flagged-keepers-neeb`), companion
-  to RUT_PoisonForestPrizedMeats.xml (same folder tree).
+  to RUT_CauldronPrizedMeats.xml (same folder tree).
 
   One shared thought pair, not four bespoke ones: the slug's own title reads
   "def PROPERTY on the 4 flagged keepers" — a single mechanical property
@@ -16,7 +16,7 @@
 <Defs>
 
   <ThoughtDef>
-    <defName>RUT_AtePoisonForestMeatDirect</defName>
+    <defName>RUT_AteCauldronMeatDirect</defName>
     <thoughtClass>Thought_Memory</thoughtClass>
     <showBubble>true</showBubble>
     <icon>Things/Mote/ThoughtSymbol/Food</icon>
@@ -31,7 +31,7 @@
   </ThoughtDef>
 
   <ThoughtDef>
-    <defName>RUT_AtePoisonForestMeatAsIngredient</defName>
+    <defName>RUT_AteCauldronMeatAsIngredient</defName>
     <thoughtClass>Thought_Memory</thoughtClass>
     <showBubble>true</showBubble>
     <icon>Things/Mote/ThoughtSymbol/Food</icon>

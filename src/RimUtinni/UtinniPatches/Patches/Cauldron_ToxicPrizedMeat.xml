@@ -4,7 +4,7 @@
   `toxic-prized-meat-def-property-on-the-4-flagged-keepers-neeb`).
 
   Points each of the 4 flagged keepers' `<race>` at the hand-authored meat
-  ThingDefs in RUT_PoisonForestPrizedMeats.xml (same mod, Defs/ThingDefs_Items).
+  ThingDefs in RUT_CauldronPrizedMeats.xml (same mod, Defs/ThingDefs_Items).
   Required because `ThingDefGenerator_Meat` only skips auto-generating
   "Meat_<defName>" when `race.specificMeatDef` is already non-null at
   load time — there is no XML node to Add/Replace on an engine-generated

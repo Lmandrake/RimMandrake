@@ -71,7 +71,7 @@ as evidence only.
 | LongShade | mandrake.rm.longshade | yes | Biome (row 2) |
 | Miasma | mandrake.rm.miasma | no | Biome (row 19) |
 | NightsideIce | mandrake.rm.nightsideice | yes | Biome (row 5) |
-| PoisonForest | mandrake.rm.poisonforest | no | Biome (row 10) |
+| Cauldron | mandrake.rm.cauldron | no | Biome (row 10) |
 | Pyrelands | mandrake.rm.pyrelands | yes | Biome |
 | RustCathedral | mandrake.rm.rustcathedral | no | Biome (row 12); carries 3 DLLs already — precedent for multi-DLL Assemblies |
 | Scarlands | mandrake.rm.warscar | no | Biome (Warscar, row 20; folder name ≠ mod name) |
@@ -359,7 +359,7 @@ exactly once and last:
 - **Wave 0 — compose + shell, off the live list.** Build the compose target, the
   generated About/LoadFolders, and the `RM_BiomesMod` settings shell. Compose ONLY
   the 12 off-list biomes (Contagion, FloodedCanyon, ForsakenCrags, LeaningScrub,
-  Miasma, PoisonForest, RustCathedral, Warscar, TheForge, TheSump, Webwork,
+  Miasma, Cauldron, RustCathedral, Warscar, TheForge, TheSump, Webwork,
   WeepingStones). BlueDesert is ON the live list and waits for wave 2, as do the
   four Q3/Q4 folds (CreatureBehaviors, EnvironmentalHazards, LanternDeeps,
   MovingDunes) — all four are active on the live file, so folding any of them

@@ -1,4 +1,12 @@
-# The Poison Forest — biome definition sheet
+# The Cauldron (formerly the Poison Forest) — biome definition sheet
+
+> 🔄 **RENAMED — `CAULDRON_FULL_RENAME_1`, 2026-09-29.** "Poison ground gets
+> renamed to this biome" (owner-typed). This file was `poison_forest.md`; the
+> RM_ tier's defName/mod/namespace all moved to Cauldron naming. The frozen
+> campaign twin `RUT_PoisonForest` keeps its OLD defName — 546 live world
+> tiles, defName rename BLOCKED pending an owner call, same shape as
+> `CRACKEDLANDS_FULL_RENAME_1`. The prose below is unchanged (an amendment,
+> not a ruling change) and still uses the old name throughout.
 
 > 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
 > sheet are frozen: **amendments add detail; they never change a ruling.** The

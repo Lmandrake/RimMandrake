@@ -301,7 +301,12 @@ namespace RimMandrake.Pyrelands
         public static readonly string[] NearTerminatorBiomeDefNames =
         {
             "AB_MycoticJungle", "BMT_FungalForest",
-            "PoisonForest", "RUT_PoisonForest", "RM_PoisonForest",
+            // CAULDRON_FULL_RENAME_1 (2026-09-29): RM_PoisonForest -> RM_Cauldron.
+            // RUT_PoisonForest itself is NOT renamed -- 546 live world tiles,
+            // blocked pending an owner call, same shape as CRACKEDLANDS_FULL_RENAME_1.
+            // Old name kept alongside the new one, same "list every plausible
+            // name" policy as the comment above.
+            "PoisonForest", "RUT_PoisonForest", "RM_PoisonForest", "RM_Cauldron",
         };
 
         /// <summary>Same cadence as the map leg's own interval, so a herd's

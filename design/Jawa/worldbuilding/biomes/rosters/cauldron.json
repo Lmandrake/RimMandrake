@@ -28,7 +28,7 @@
     }
   ],
   "defNames": [
-    "RM_PoisonForest"
+    "RM_Cauldron"
   ],
   "evictions": [
     {
@@ -466,32 +466,32 @@
     }
   ],
   "law_sources": [
-    "poison_forest.md §6",
+    "cauldron.md §6",
     "_assignment_prep.md §5 + §9 (BINDING)",
     "_freeze_rulings_2026-09-07.md R13 (chemical vents, no heat)",
     "owner cards 2026-09-09"
   ],
   "new_defs": [
     {
-      "from_sheet": "poison_forest §4 ground-sense",
+      "from_sheet": "cauldron §4 ground-sense",
       "kind": "creature",
       "mechanic_load": "none blocking (prep §12)",
       "name": "eyeless vibration-sensing ambusher (the signature)"
     },
     {
-      "from_sheet": "poison_forest §4",
+      "from_sheet": "cauldron §4",
       "kind": "plant",
       "mechanic_load": "none",
       "name": "dark crust phototroph flora (black/purple/red films on starward faces)"
     },
     {
-      "from_sheet": "poison_forest §7 cuisine chain",
+      "from_sheet": "cauldron §7 cuisine chain",
       "kind": "creature",
       "mechanic_load": "meat hediff def, no C# (prep §5.4)",
       "name": "toxic-prized-meat def property on the 4 flagged keepers (Neebray, Visceral, BMT_Screecher, AA_Helixien)"
     }
   ],
-  "sheet": "poison_forest",
+  "sheet": "cauldron",
   "stat_adjustments": [],
   "tiles": 557
 }

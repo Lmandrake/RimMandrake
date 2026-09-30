@@ -16,7 +16,7 @@
     RM tier: nothing here knows what campaign or planet uses it. Fully donor-free
     for wildlife would be nice but is NOT true today - see the wildAnimals/wildPlants
     notes below, matching the honesty standard every sibling RM_ biome mod ships
-    (compare RM_PoisonForest's own About.xml "NOT entirely donor-free" section).
+    (compare RM_Cauldron's own About.xml "NOT entirely donor-free" section).
 
     workerClass: replaces the donor AlphaBiomes.BiomeWorker_MiasmicMangrove with
     this mod's own RM_BiomeWorker_Miasma (RM_MiasmaBiome.cs) - a donor type in
@@ -81,7 +81,7 @@
     RUT_Miasma and RM_Miasma, so the mechanics keep firing on the live save.
 
     texture (Biomes/AB_MiasmicMangrove) is inherited unchanged from the twin,
-    same posture as RM_PoisonForest's own donor world-map texture - not this
+    same posture as RM_Cauldron's own donor world-map texture - not this
     build's scope to fix.
   -->
 

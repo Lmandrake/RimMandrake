@@ -4,11 +4,11 @@
   WildAnimals_PoisonForest.xml               UtinniPatches — new file 2026-09-25
   ============================================================================
 
-  Wires the campaign's Star Wars fauna onto RM_PoisonForest's wildAnimals,
+  Wires the campaign's Star Wars fauna onto RM_Cauldron's wildAnimals,
   layered on top of the 13 non-Star-Wars rows that mod ships inline (Genetic
   Rim/Alpha Animals/Alpha Memes/Horrors — Q9 permits those directly on a
   RM_ def). Per §7 Q11 ("RimMandrake should not name star wars ever"),
-  RM_PoisonForest may not carry any Star Wars creature by any route, so
+  RM_Cauldron may not carry any Star Wars creature by any route, so
   every one of the frozen RUT_PoisonForest.xml's 5 Star Wars/campaign-tier
   rows rides HERE instead. Shape: WildAnimals_LeaningScrub.xml /
   WildAnimals_Pyrelands.xml.
@@ -33,7 +33,7 @@
   biome into the hot Wasteland to lay; the law's own carve-out, not a
   violation. Do not "fix" it by cutting either home.
 
-  No unconditional PatchOperationReplace op is needed here: RM_PoisonForest's
+  No unconditional PatchOperationReplace op is needed here: RM_Cauldron's
   own BiomeDef already ships a real 13-species wildAnimals block inline, so
   both ops below are plain PatchOperationConditional + PatchOperationAdd
   onto that existing node.
@@ -54,9 +54,9 @@
       <li>RimMandrake: SW — Bestiary</li>
     </mods>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
+      <xpath>Defs/BiomeDef[defName="RM_Cauldron"]/wildAnimals</xpath>
       <match Class="PatchOperationAdd">
-        <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
+        <xpath>Defs/BiomeDef[defName="RM_Cauldron"]/wildAnimals</xpath>
         <value>
           <RSW_Neebray>0.8</RSW_Neebray>
           <RSW_Mynock>0.2</RSW_Mynock>
@@ -81,9 +81,9 @@
       <li>Star Wars Animal Collection (Continued)</li>
     </mods>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
+      <xpath>Defs/BiomeDef[defName="RM_Cauldron"]/wildAnimals</xpath>
       <match Class="PatchOperationAdd">
-        <xpath>Defs/BiomeDef[defName="RM_PoisonForest"]/wildAnimals</xpath>
+        <xpath>Defs/BiomeDef[defName="RM_Cauldron"]/wildAnimals</xpath>
         <value>
           <Silooth>0.5</Silooth>
         </value>
