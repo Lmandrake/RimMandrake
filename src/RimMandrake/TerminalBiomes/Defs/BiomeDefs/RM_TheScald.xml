@@ -130,6 +130,17 @@
     <!-- GRAVTIDE SUPPORT (UNDERWATER_BIOME_SUPPORT_1) — the three fields a
          modded water biome needs that GravTide otherwise only patches onto
          vanilla Ocean/Lake by defName. -->
+    <!-- SCALD_CROWNCARPET_NO_HABITAT_1, 2026-09-30: plantDensity was UNSET
+         (engine default 0), so the wildPlants row below never fired through
+         the wild-plant spawner at all — MEASURED live: a regenerated Scald
+         map held 1 plant (an anima tree, unrelated). Diagnosed in full by
+         the_scald_underwater_flora_pass_2026-09-27.md ("Current state of the
+         biome") but never landed. 0.3 is that design pass's own proposed
+         value (owner question 2, still open) — it names the whole range
+         0.15-0.5 as safe for the roster, so this is the accepted default,
+         not a new invention; re-tune later if the owner names a different
+         number. -->
+    <plantDensity>0.3</plantDensity>
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
     <baseWeatherCommonalities>
       <Clear>14</Clear>
