@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T16:44:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T00:36:38Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -381,6 +381,16 @@ kind:     task
 blocked:  Owner ruling 2026-09-27 (typed, mid-turn): loadscreen generation blocked by the repaint AND the regenerated beauty shots - mapping custom biomes to realistic imagery is too hard before both land (on WORLDMAP_BIOME_APPEARANCE_1)
 summary:  PLANETARYLOADSCREENRENDERS2 — photo-realistic loadscreen planet renders, seeded from OUR worldmap (AFTER the…
 prose:    infrastructure/state/items/PLANETARY_LOADSCREEN_RENDERS_2.md
+
+## DESIGN_MATERIALS_REVIEW_1 DesignMaterials: first-ever whole-game materials balance review - normalize Star Wars + RimWorld exotic alloys, every exotic source in fauna/flora, recipes of all buildables, all salvage items; gated on flora/fauna/biomes being fixed
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Owner-gated: runs only after flora, fauna and biomes are fixed (the bedazzle program is that work). (on BAROQUE_BEDAZZLE_PROGRAM_1)
+summary:  (no items/DESIGN_MATERIALS_REVIEW_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DESIGN_MATERIALS_REVIEW_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
