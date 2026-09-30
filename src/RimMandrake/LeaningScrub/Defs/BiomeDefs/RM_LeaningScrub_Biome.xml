@@ -215,6 +215,11 @@
          design sheet). Inventing a commonality number here would be exactly the
          kind of data decision that item, not this one, owns. -->
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
+    <modExtensions>
+      <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 2: the Lean - each map locks one wind
+           heading (Source/RM_TheLean.cs). -->
+      <li Class="RimMandrake.LeaningScrub.RM_LeanExtension" />
+    </modExtensions>
   </BiomeDef>
 
 </Defs>

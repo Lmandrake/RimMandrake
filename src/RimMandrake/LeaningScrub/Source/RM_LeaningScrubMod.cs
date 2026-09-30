@@ -60,6 +60,13 @@ namespace RimMandrake.LeaningScrub
         public static float smotherDays = 30f;
         public static float smotherYieldFactor = 1f;
 
+        // ── part 2: the Lean (RM_TheLean.cs) ──
+        public static bool leanEnabled = true;
+        public static bool leanScentEnabled = true;
+        public static float leanScentRange = 16f;
+        public static bool leanFireEnabled = true;
+        public static float leanFireBias = 0.5f;
+
         private static Vector2 scroll;
         private static float viewHeight = 900f;
 
@@ -82,6 +89,11 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref smotherCraftEnabled, "smotherCraftEnabled", true, true);
             Scribe_Values.Look(ref smotherDays, "smotherDays", 30f, true);
             Scribe_Values.Look(ref smotherYieldFactor, "smotherYieldFactor", 1f, true);
+            Scribe_Values.Look(ref leanEnabled, "leanEnabled", true, true);
+            Scribe_Values.Look(ref leanScentEnabled, "leanScentEnabled", true, true);
+            Scribe_Values.Look(ref leanScentRange, "leanScentRange", 16f, true);
+            Scribe_Values.Look(ref leanFireEnabled, "leanFireEnabled", true, true);
+            Scribe_Values.Look(ref leanFireBias, "leanFireBias", 0.5f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -146,6 +158,21 @@ namespace RimMandrake.LeaningScrub
             smotherDays = list.Slider(smotherDays, 1f, 120f);
             list.Label("Dead venomvine yield: x" + smotherYieldFactor.ToString("0.00"));
             smotherYieldFactor = list.Slider(smotherYieldFactor, 0.25f, 3f);
+
+            list.GapLine();
+            list.CheckboxLabeled("The Lean: one locked wind heading per map", ref leanEnabled,
+                "Each map of a biome that leans (the Leaning Scrub) keeps one wind heading for "
+                + "its whole life. Off: the two effects below never apply.");
+            list.CheckboxLabeled("Lean: wild prey smell people upwind of them", ref leanScentEnabled,
+                "A wild non-predator bolts from a person standing upwind of it within the range "
+                + "below. Approach from downwind and it never knows you are there.");
+            list.Label("Scent range: " + leanScentRange.ToString("0") + " cells");
+            leanScentRange = list.Slider(leanScentRange, 4f, 30f);
+            list.CheckboxLabeled("Lean: fire races downwind", ref leanFireEnabled,
+                "Part of every fire spread picks only downwind cells, so fire runs with the wind "
+                + "and creeps against it.");
+            list.Label("Downwind fire bias: " + (leanFireBias * 100f).ToString("0") + "%");
+            leanFireBias = list.Slider(leanFireBias, 0f, 1f);
 
             viewHeight = list.CurHeight + 20f;
             list.End();
