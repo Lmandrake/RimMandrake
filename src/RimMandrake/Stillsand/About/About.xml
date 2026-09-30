@@ -45,7 +45,7 @@ invented, franchise-free content directly — no longer empty. wildAnimals carri
 and aurrok (a grown spined-gow port); wildPlants carries the light-pipe nub and the ollim
 (+ its harvested wood, + a new biosilica harvest item). None of this is Star Wars IP.
 
-⚠️ One row, JOE_Cephalope (qorrax), carries no RSW_/SW_/RUT_ prefix but is flagged in the
+⚠️ One row, RM_Qorrax (renamed from JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified), carries no RSW_/SW_/RUT_ prefix but is flagged in the
 item's own MEASURED STATE and routed to the Utinni patch file anyway: its ThingDef/
 PawnKindDef live in
 src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml (Utinni

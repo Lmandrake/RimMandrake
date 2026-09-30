@@ -301,21 +301,18 @@
 			<li>
 				<label>ossik chick</label>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Ossik/RM_Ossik</texPath>
 					<drawSize>0.85</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Ossik/RM_Ossik</texPath>
 					<drawSize>2.1</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Ossik/RM_Ossik</texPath>
 					<drawSize>2.75</drawSize>
 				</bodyGraphicData>
@@ -404,21 +401,18 @@
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Kudda/RM_Kudda</texPath>
 					<drawSize>1.25</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Kudda/RM_Kudda</texPath>
 					<drawSize>1.6</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Kudda/RM_Kudda</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
@@ -530,21 +524,18 @@
 				<label>thurra calf</label>
 				<labelPlural>thurra calves</labelPlural>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Thurra/RM_Thurra</texPath>
 					<drawSize>1.5</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Thurra/RM_Thurra</texPath>
 					<drawSize>2.25</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Thurra/RM_Thurra</texPath>
 					<drawSize>3</drawSize>
 				</bodyGraphicData>
@@ -644,7 +635,6 @@
 			<li>
 				<label>vosska cub</label>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska</texPath>
 					<drawSize>1.8</drawSize>
 				</bodyGraphicData>
@@ -652,14 +642,12 @@
 			<li>
 				<label>vosska juvenile</label>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska</texPath>
 					<drawSize>3.5</drawSize>
 				</bodyGraphicData>
@@ -737,21 +725,18 @@
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
 					<texPath>Things/Pawn/Animal/RM_Khorrak/RM_Khorrak</texPath>
 					<drawSize>1.5</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
 					<texPath>Things/Pawn/Animal/RM_Khorrak/RM_Khorrak</texPath>
 					<drawSize>1.75</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Ferroclaw_east/_north/_south -->
 					<texPath>Things/Pawn/Animal/RM_Khorrak/RM_Khorrak</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
@@ -827,21 +812,18 @@
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
 					<drawSize>1.5</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
 					<drawSize>2.7</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
 					<drawSize>3.5</drawSize>
 				</bodyGraphicData>
@@ -926,21 +908,18 @@
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Ulgga/RM_Ulgga</texPath>
 					<drawSize>1.8</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Ulgga/RM_Ulgga</texPath>
 					<drawSize>3.2</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- art pending — LONGSHADE_RULED_CONTENT_1 tier move, no render filed yet -->
 					<texPath>Things/Pawn/Animal/RM_Ulgga/RM_Ulgga</texPath>
 					<drawSize>4.1</drawSize>
 				</bodyGraphicData>
@@ -1251,6 +1230,14 @@
 
 
 	<ThingDef ParentName="AnimalThingBase">
+		<!-- LONGSHADE_BEDAZZLE_CONTENT_1 part 6: texPaths below repointed off Alpha
+		     Animals' own AA_GreatDevourer textures onto this def's own RM_GreatDevourer
+		     path — the free mod must not hard-depend on sarg.alphaanimals for its
+		     texture to resolve. No owned render exists yet (checked
+		     infrastructure/artpipe/done, _artsrc, pending, registry.jsonl: 3 jobs are
+		     QUEUED in pending/ under RM_GreatDevourer_{east,north,south}, not yet
+		     rendered) — this def is intentionally magenta until that job clears.
+		     BLOCKED, art owed. Never repoint back at AA_ art to hide the magenta. -->
 		<defName>RM_GreatDevourer</defName>
 		<label>great devourer</label>
 		<description>Great Devourers are armoured worms known for their unquenchable appetite. Once a Great Devourer arrives, it will proceed to gorge itself on small prey, and total ecosystem collapse is almost a certainty.\n\nLuckily, they won't attack large creatures, including humans, unless provoked. Their whole name is in fact a pun, since they are not very resilient and are easily dispatched. They have however slow regenerative capabilities.</description>
@@ -1349,29 +1336,29 @@
 		<alternateGraphicChance>1</alternateGraphicChance>
 		<alternateGraphics>
 			<li>
-				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+				<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
 			</li>
 			<li>
-				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer2</texPath>
+				<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer2</texPath>
 			</li>
 			<li>
-				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer3</texPath>
+				<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer3</texPath>
 			</li>
 		</alternateGraphics>
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_Dessicated_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_Dessicated_GreatDevourer</texPath>
 					<drawSize>1.5</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
 					<drawSize>2.5</drawSize>
 					<shadowData>
 						<volume>(0.3, 0.3, 0.3)</volume>
@@ -1379,13 +1366,13 @@
 					</shadowData>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_Dessicated_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_Dessicated_GreatDevourer</texPath>
 					<drawSize>2.5</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
 					<drawSize>3.5</drawSize>
 					<shadowData>
 						<volume>(0.4, 0.4, 0.4)</volume>
@@ -1393,7 +1380,7 @@
 					</shadowData>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_Dessicated_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_Dessicated_GreatDevourer</texPath>
 					<drawSize>3.5</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
@@ -1402,6 +1389,12 @@
 
 
 	<ThingDef ParentName="AnimalThingBase">
+		<!-- LONGSHADE_BEDAZZLE_CONTENT_1 part 6: texPaths below repointed off Alpha
+		     Animals' own AA_GroundRunner textures onto this def's own RM_Groundrunner
+		     path. No owned render exists yet (3 jobs QUEUED in
+		     infrastructure/artpipe/pending/ under RM_Groundrunner_{east,north,south},
+		     not yet rendered) — intentionally magenta until that job clears. BLOCKED,
+		     art owed. Never repoint back at AA_ art to hide the magenta. -->
 		<defName>RM_Groundrunner</defName>
 		<label>groundrunner</label>
 		<description>A strange chimera between a bear and mole, groundrunners were used as walking heavy tools by desert prospectors when they hit rock that plasteel can't break, and for hauling large boulders their owners can't lift.\n\nDue to their domesticated origins, they are surprisingly docile and easy to tame. Their incredible strength and sharp claws allow them to break rocks with relative ease. But out here, those claws are usually reserved for ripping apart anything foolish enough to corner one.</description>
@@ -1532,22 +1525,22 @@
 		<alternateGraphicChance>1</alternateGraphicChance>
 		<alternateGraphics>
 			<li>
-				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner</texPath>
 			</li>
 			<li>
-				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunnerW</texPath>
+				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_GroundrunnerW</texPath>
 			</li>
 			<li>
-				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner2</texPath>
+				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner2</texPath>
 			</li>
 			<li>
-				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner3</texPath>
+				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner3</texPath>
 			</li>
 			<li>
-				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner4</texPath>
+				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner4</texPath>
 			</li>
 			<li>
-				<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner5</texPath>
+				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner5</texPath>
 			</li>
 		</alternateGraphics>
 		<wildGroupSize>
@@ -1557,31 +1550,31 @@
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner</texPath>
 					<drawSize>1.0</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_Dessicated_GroundRunner</texPath>
+					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Dessicated_Groundrunner</texPath>
 					<drawSize>1.0</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner</texPath>
 					<drawSize>1.8</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_Dessicated_GroundRunner</texPath>
+					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Dessicated_Groundrunner</texPath>
 					<drawSize>1.8</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner</texPath>
+					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner</texPath>
 					<drawSize>2.5</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GroundRunner/AA_Dessicated_GroundRunner</texPath>
+					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Dessicated_Groundrunner</texPath>
 					<drawSize>2.5</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
@@ -1590,6 +1583,13 @@
 
 
 	<ThingDef ParentName="AnimalThingBase">
+		<!-- LONGSHADE_BEDAZZLE_CONTENT_1 part 6: texPaths below repointed off Alpha
+		     Animals' own AA_MatureFleshbeast textures onto this def's own
+		     RM_MatureFleshbeast path. No owned render exists yet (3 jobs QUEUED in
+		     infrastructure/artpipe/pending/ under
+		     RM_MatureFleshbeast_{east,north,south}, not yet rendered) — intentionally
+		     magenta until that job clears. BLOCKED, art owed. Never repoint back at
+		     AA_ art to hide the magenta. -->
 		<defName>RM_MatureFleshbeast</defName>
 		<label>mature fleshbeast</label>
 		<description>The unwanted result of a genetic experiment gone wrong, fleshbeasts are usually miserable, weak creatures that ooze pus and struggle to keep breathing for longer than a few days. Sometimes, however, a fleshbeast manages to survive, and even thrive - released into the wild, or simply stronger than average, growing into a pulsating, fleshy behemoth with a ravenous appetite.\n\nOut in the deep desert a mature fleshbeast will tear into anything it can catch, and rumor holds the biggest of them are cousins to something far larger sleeping under the dunes.</description>
@@ -1662,14 +1662,14 @@
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_MatureFleshbeast/AA_MatureFleshbeast</texPath>
+					<texPath>Things/Pawn/Animal/RM_MatureFleshbeast/RM_MatureFleshbeast</texPath>
 					<drawSize>6</drawSize>
 					<shadowData>
 						<volume>(0.30, 0.25, 0.20)</volume>
 					</shadowData>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_MatureFleshbeast/AA_Dessicated_MatureFleshbeast</texPath>
+					<texPath>Things/Pawn/Animal/RM_MatureFleshbeast/RM_Dessicated_MatureFleshbeast</texPath>
 					<drawSize>6</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>

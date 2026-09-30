@@ -6,7 +6,8 @@
 
   Puts the campaign's Long Shade fauna roster onto RM_LongShade, adding onto the
   two native creatures src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml
-  ships on its own (JOE_Landopus, JOE_Cephalope — non-Star-Wars donor fauna,
+  ships on its own (JOE_Landopus, RM_Qorrax — renamed from JOE_Cephalope,
+  LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified — non-Star-Wars donor fauna,
   already this mod's own def, kept there per §7 Q9). The Star Wars cast reaches
   RM_LongShade HERE, never in the LongShade mod itself — same shape as
   WildAnimals_Greentide.xml / WildAnimals_Pyrelands.xml.
@@ -41,9 +42,10 @@
       edit that file directly). Blurrg stays OUT — its home is the Leaning
       Scrub sitting, not here.
   Net: 35 canon rows (51 original minus the 14 that tier-moved minus Kreetle
-  and Gizka) + RSW_GlitterBird (the whale's commensal, unaffected by this
-  sitting) + RSW_Dewback = 37 rows in the Add block below (MEASURED via
-  python xml.etree against this file as written).
+  and Gizka) + RSW_Dewback = 36 rows in the Add block below (MEASURED via
+  python xml.etree against this file as written). RSW_GlitterBird, which stood
+  here unaffected by the 2026-09-27 sitting, LEFT this file at
+  LONGSHADE_BEDAZZLE_CONTENT_1 part 4 — merged into the inline RM_Pirrik.
 
   🔑 SOURCE OF TRUTH (AT AUTHORING, 2026-09-24, since amended above): every
   surviving weight below is a verbatim copy of the original transplant off
@@ -127,15 +129,13 @@
         <RSW_Runyip>0.1</RSW_Runyip>
         <RSW_Voorpak>0.05</RSW_Voorpak>
         <RSW_Horax>0.01</RSW_Horax>
-        <!-- DESERT_GLITTER_BIRDS_COMMENSALS_1: the whale's (now RM_Gloomcast's)
-             shadow commensal. Higher than the host's own 0.015 — several
-             birds per whale is the point — but still low; without a live
-             gloomcast nearby it just wanders like any other small flier
-             (RM_JobGiver_FollowShadowCaster degrades to vanilla wander when
-             no host is found on the map). Cross-mod host reference is fine —
-             this row lives in the SW-tier patch, reading an RM-tier host def
-             it does not need loaded to no-op safely. -->
-        <RSW_GlitterBird>0.2</RSW_GlitterBird>
+        <!-- LONGSHADE_BEDAZZLE_CONTENT_1 part 4: RSW_GlitterBird REMOVED from
+             this Add block — it and the sitting's own "pirrik" filler were one
+             creature (Q11a: "glitter-bird" is descriptive English, not canon
+             Star Wars IP, so it belongs in the RM_ tier, not here). Merged
+             into RM_Pirrik, now inline on RM_LongShade itself alongside the
+             biome's other invented-name rows, carrying the same
+             RM_ShadowFollowerExtension wiring. See RM_LongShade_Fillers.xml. -->
         <!-- LONGSHADE_RULED_CONTENT_1 Q8: Dewback IN as herd/mount stock.
              moveSpeed slowed 4.7->4.4 via rosters/desert.json
              stat_adjustments (BiomeFaunaStatAdjustments_Generated.xml), not

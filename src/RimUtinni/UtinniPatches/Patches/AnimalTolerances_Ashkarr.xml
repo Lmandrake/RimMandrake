@@ -10297,37 +10297,37 @@
     </nomatch>
   </Operation>
 
-  <!-- cephalope (JOE_Cephalope) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -1.1..75.3 -->
+  <!-- qorrax (renamed from JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -1.1..75.3 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases/ComfyTemperatureMin</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases/ComfyTemperatureMin</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases/ComfyTemperatureMin</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases/ComfyTemperatureMin</xpath>
             <value><ComfyTemperatureMin>-1.1</ComfyTemperatureMin></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases</xpath>
             <value><ComfyTemperatureMin>-1.1</ComfyTemperatureMin></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases/ComfyTemperatureMax</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases/ComfyTemperatureMax</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases/ComfyTemperatureMax</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases/ComfyTemperatureMax</xpath>
             <value><ComfyTemperatureMax>75.3</ComfyTemperatureMax></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases</xpath>
             <value><ComfyTemperatureMax>75.3</ComfyTemperatureMax></value>
           </nomatch>
         </li>
       </operations>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Qorrax"]</xpath>
       <value>
         <statBases>
           <ComfyTemperatureMin>-1.1</ComfyTemperatureMin>
