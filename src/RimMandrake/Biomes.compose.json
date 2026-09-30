@@ -28,6 +28,7 @@
     {"key": "EnvironmentalHazards", "source": "EnvironmentalHazards", "group": "engine", "wave": 2, "label": "Environmental Hazards", "blurb": "Shared hazard engine: configurable terrain, gas and weather mechanics used across biomes."},
 
     {"key": "BlueDesert", "source": "BlueDesert", "group": "biome", "wave": 2, "label": "Blue Desert", "blurb": "A plateau of hydrocarbon ice where warmth is detonation."},
+    {"key": "Cauldron", "source": "Cauldron", "group": "biome", "wave": 0, "label": "The Cauldron", "blurb": "A wet-black forest in permanent dusk over ground that breathes gas."},
     {"key": "Contagion", "source": "Contagion", "group": "biome", "wave": 0, "label": "The Contagion", "blurb": "A red storm-roofed valley running an unchecked mutation engine."},
     {"key": "FeverWood", "source": "FeverWood", "group": "biome", "wave": 2, "label": "Fever Wood", "blurb": "A hot, still, tree-canopied swamp."},
     {"key": "FloodedCanyon", "source": "FloodedCanyon", "group": "biome", "wave": 0, "label": "Flooded Canyon", "blurb": "Canyons that periodically flood from wall to wall."},
@@ -39,7 +40,6 @@
     {"key": "LongShade", "source": "LongShade", "group": "biome", "wave": 2, "label": "Long Shade", "blurb": "A dayside desert band of long shadows."},
     {"key": "Miasma", "source": "Miasma", "group": "biome", "wave": 0, "label": "The Miasma", "blurb": "A salt-crusted, stilt-rooted mangal forest in brackish channels."},
     {"key": "NightsideIce", "source": "NightsideIce", "group": "biome", "wave": 2, "label": "Nightside Ice", "blurb": "Dirty young ice on the highest ground of the deep night."},
-    {"key": "PoisonForest", "source": "PoisonForest", "group": "biome", "wave": 0, "label": "Poison Forest", "blurb": "A wet-black forest in permanent dusk over ground that breathes gas."},
     {"key": "Pyrelands", "source": "Pyrelands", "group": "biome", "wave": 2, "label": "Pyrelands", "blurb": "A hot savanna that burns on a cycle of its own."},
     {"key": "RustCathedral", "source": "RustCathedral", "group": "biome", "wave": 0, "label": "The Rust Cathedral", "blurb": "A mechanoid-garrisoned plateau of deck plate and mathematical walls."},
     {"key": "Stillsand", "source": "Stillsand", "group": "biome", "wave": 2, "label": "Stillsand", "blurb": "A corrugated ochre plain of extreme desert."},
