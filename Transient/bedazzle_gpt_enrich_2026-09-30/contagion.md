@@ -1,0 +1,93 @@
+# GPT enrichment consult: The Contagion
+
+Asked 2026-09-30 via codex exec (gpt-5.6-sol, xhigh). Advice only: nothing here is ruled.
+
+The priority order below starts with the empty gods mark, then strengthens discovery, sound, and the Burn/Bloom gameplay loop.
+
+### 1. The Rite of Refusal — Let people interpret the Burn as divine rejection
+
+The Rust Cathedral teaches that the gods refuse to recognize unfinished life. During a Burn, worshippers expose an unsterilized native corpse or Contagion mulch upon a white cairn until it blanches clean. Players hear wet tissue crackle beneath prayer rattles; success grants ritual certainty and sterile mulch, while an interrupted rite leaves infectious remains.
+
+- **Marks:** Relationship to the gods, unique resources, weather
+- **Build:** `RitualPatternDef`, `PreceptDef`, cairn `ThingDef`, thoughts and history events; small C# outcome worker checking Burn duration and exposure
+- **Why here:** It makes the biome’s existing UV cage a subject of theology without claiming the gods caused it or resurrecting god-mid-birth.
+
+### 2. Cloudschool — Make weather mastery something colonists discover
+
+At first, the player receives no countdown: only sinking Gawpsacks and rattling Rattlegropes. Colonists can study both, compare scorched husks, and unlock successive field discoveries: a crude Burn vane, accurate short-range forecasting, sunlight counters for tanks, and improved Cloud Repulsor calibration. Each breakthrough should feel like learning the valley’s language.
+
+- **Marks:** Discoverable technology, unique mechanic, weather
+- **Build:** Study interactions or Anomaly-style study comps, hidden `ResearchProjectDef`s, observation records in a `GameComponent`; small C#
+- **Why here:** The technology comes from reading this organism’s distributed eyes and nerves, not from generic meteorology.
+
+### 3. The Storm Throat — Give the biome a living, directional mix
+
+Replace one continuous rain loop with overlapping local voices: Skinflaps slapping overhead, Sloshbellies knocking internally, distant Meltgut digestion, wet Gawpsack impacts, and thunder rolling between peaks. Before a Burn, rattles converge and the bass pressure drops. During the Burn, use sizzling tissue, snapping vegetation and frantic shelter noises—never silence.
+
+- **Marks:** Interesting soundscape, weather, surprising creatures
+- **Build:** Layered `SoundDef`/`SubSoundDef` sustainers selected by nearby fauna and weather state; small C# `MapComponent`
+- **Why here:** The landscape is one malfunctioning body, so its soundscape should resemble anatomy under a thunderstorm.
+
+### 4. The Dive — Make every Burn reorganize the map’s life
+
+When a tear approaches, UV-shy natives visibly race, crawl or flop toward roofs, red water, dense Eyebark or goo pockets. Gawpsacks lower without despawning; Skinflaps drape over branches. Scaldhides and Crisplings move in the opposite direction. Colonists who have not learned Cloudschool must decide whether to follow the animals.
+
+- **Marks:** Unique mechanic, weather, surprising creatures
+- **Build:** Burn-response `DefModExtension`, custom shelter scoring and `JobDriver`; Harmony insertion into animal job selection; large C#
+- **Why here:** No other biome turns clear weather into a simultaneous ecological evacuation.
+
+### 5. The Breathing Scarline — Let Bloom and Burn leave history on the ground
+
+The infection front should migrate slowly across long-lived maps. Blooms advance Lashgrass, Meatvine and halfmade growth into damp shelter. Burns bleach exposed cells into sterile crust; Toothmoss later grinds that crust back into usable soil. Old colonies accumulate pale lobes, red advances and charred retreat lines.
+
+- **Marks:** Unique mechanic, weather, unique resources
+- **Build:** XML terrain/filth transitions plus a budgeted daily `MapComponent` sampling a limited number of cells; large C#
+- **Why here:** The Contagion is uniquely an organism trapped in a repeating advance-and-sterilize cycle.
+
+### 6. Burnglass — Turn gallium and red sap into a local material culture
+
+Combine Scorchpod gallium, red sap and sterilized mulch into translucent violet Burnglass. It becomes the lens material for sunlight tanks, Burn vanes, Sunbeam servicing and Cloud Repulsor components. Panels brighten as they receive direct sky exposure and craze when used too long during a Burn.
+
+- **Marks:** Unique resources, discoverable technology
+- **Build:** Mostly XML items, recipes and costs; small C# exposure/condition comp for active lenses
+- **Why here:** All three ingredients exist only because the weapon, storm and sterilizing sun meet on these peaks.
+
+### 7. Draftprints — Make every Unfinished specimen meaningfully novel
+
+Sampling an Unfinished before it dissolves produces a labeled Draftprint recording its rolled limbs, extreme stat and failure. The Helix requests particular combinations—“eyeburst, asymmetric locomotion, excessive clotting”—rather than generic meat. Draftprints can guide Wombpod gestation toward a chosen Grown limb, but never remove that limb’s bargain or danger.
+
+- **Marks:** Unique resources, discoverable technology, surprising creatures
+- **Build:** Dynamic `ThingComp` data, inspect strings, sample `ThingDef`, Helix contract `QuestNode`s; small C#
+- **Why here:** Only the Contagion generates valuable organisms faster than it can finish them.
+
+### 8. The Coalescence Remembers Meals — Give the giant readable mutations
+
+As the continuous organism absorbs Unfinished, retain two or three visible “meal memories.” Pillar limbs signal a crushing sweep, Bellows telegraph knockback, and exposed Eyebursts improve detection. Limbs surface and submerge between attacks rather than assembling into a clean anatomy. Players can read what it ate—and therefore what it can do.
+
+- **Marks:** GIANT beast, unique mechanic, soundscape
+- **Build:** Absorption-memory comp, Pawn RenderNode overlays, keyed verbs and distinct audio tells; large C#
+- **Why here:** Its boss vocabulary is literally composed from the valley’s abandoned drafts.
+
+### 9. The Purple Runway — Make the gravship hardpoint matter during flight operations
+
+A fitted Cloud Repulsor punches open a circular Burn around a gravship during launch and landing. UV-shy creatures pile visibly at its shadow edge while Scaldhides approach the exposed hull. The violet beam narrows as capacitors overheat, giving crews a readable loading deadline rather than permanent safety.
+
+- **Marks:** Gravship touch, weather, unique mechanic
+- **Build:** Gravship facility comp, radial exposure controller and runtime beam flecks; Harmony hooks around launch/landing states; large C#
+- **Why here:** Only this biome makes clearing the weather both a landing aid and an ecological emergency.
+
+### 10. Bodyprints — Never let dissolution erase the story
+
+Native corpses pass through visible phases: recognizable carcass, collapsed skin, then a glossy anatomical print stained into the ground. Bloody Mess must physically reach and consume the remains; otherwise the print persists long enough for one final sample. Blisterfloats leaving the map deposit burst husks at the ridge rather than simply disappearing.
+
+- **Marks:** Surprising creatures, unique mechanic, soundscape
+- **Build:** XML corpse/filth defs and a small C# dissolution comp with absorption and edge-husk handling
+- **Why here:** Reabsorption is the Contagion’s defining metabolism, and readable remains satisfy it better than ordinary rot.
+
+All adjustable systems should ship with real Mod Settings: Burn warning time, scarline rate, dissolution duration, audio density, Draftprint rarity and gravship runway duration.
+
+## Top 3
+
+1. **The Dive** — It converts the biome’s strongest fiction into an immediate, map-wide player event.
+2. **The Rite of Refusal** — It fills the only empty bedazzle mark while deepening the Rust Cathedral–Helix conflict.
+3. **Cloudschool** — It turns environmental tells into earned mastery and connects weather, resources and existing devices.

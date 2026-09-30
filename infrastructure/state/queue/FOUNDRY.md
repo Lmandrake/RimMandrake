@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T05:25:46Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-30T07:36:01Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1162,7 +1162,7 @@ summary:  Five organs, one machine:
 prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
 
 ## CAULDRON_FULL_RENAME_1 Full rename PoisonForest -> Cauldron everywhere down to defNames incl. frozen RUT_ twin and soils (owner-typed 2026-09-28); live-tile shortHash check gates defName changes
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1187,6 +1187,15 @@ target:   v1
 kind:     task
 summary:  1. The Stall and the Gale (names RULED 2026-09-21, WeatherDefs at last;
 prose:    infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md
+
+## DEEPFIRE_FLOOR_PAINT_1 Deepfire floors: grid, postfixes, clustering, beauty hooks
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 6)
+prose:    infrastructure/state/items/DEEPFIRE_FLOOR_PAINT_1.md
 
 ## SOLAR_HEAT_EXPOSURE_1 Planet-wide sun heat: sun exposure feeds VANILLA heat (no new heat kind), per-biome heat kind (overhead sun / low sun / steam), directional shade grid, sun-cost pathing, rest-dash-rest animal behaviour, dash-radius ring; Long Shade is first consumer
 state:    doing  (BLOCKED)
@@ -1241,6 +1250,24 @@ target:   v1
 kind:     task
 summary:  (no items/WARCASKET_CASK_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARCASKET_CASK_ART_1.md
+
+## FORGE_LAVA_TERRAIN_1 RM_TheForge generates no lava at all (live 2026-09-30: 0 lava cells), so the six-phase cycle's freeze/crust/melt never fire; give the biome open lava fields via its terrain gen
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/FORGE_LAVA_TERRAIN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FORGE_LAVA_TERRAIN_1.md
+
+## BRIDGE_MOD_DEBUGACTIONS_NOOP_1 rimworld/execute_debug_action returns success in 1 ms but never runs our mods' [DebugAction] methods (Forge cycle report/advance: 0 log lines); vanilla actions work
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  (no items/BRIDGE_MOD_DEBUGACTIONS_NOOP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BRIDGE_MOD_DEBUGACTIONS_NOOP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1826,16 +1853,6 @@ blocked:  Remaining parts need design calls (gas grid, falter tell foreknowledge
 summary:  Five organs, one machine:
 prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
 
-## CAULDRON_FULL_RENAME_1 Full rename PoisonForest -> Cauldron everywhere down to defNames incl. frozen RUT_ twin and soils (owner-typed 2026-09-28); live-tile shortHash check gates defName changes
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  RUT_PoisonForest has 546 live tiles; owner call on renaming the campaign twin (same as CRACKEDLANDS_FULL_RENAME_1)
-summary:  - Scope is EVERYTHING the census names, including defNames and the soils
-prose:    infrastructure/state/items/CAULDRON_FULL_RENAME_1.md
-
 ## FORGE_CYCLE_MECHANICS_1 Build the Forge fire-and-water grand cycle: gas-wash ignition, boiling rain + FlowWorks flooding, steam plumes + temporary basalt/pumice freeze, floatstone growth phase, glowing cracks, melt-back - extends FORGE_MECHANICS_1's F1 pulse, coordinate
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1948,16 +1965,6 @@ thin:     no ## verify
 summary:  1. Build a real FlowWorks canal on a live map (quicktest fine; bridge work —
 prose:    infrastructure/state/items/SWALE_CANAL_ART_REFERENCE_1.md
 
-## DEEPFIRE_FLOOR_PAINT_1 Deepfire floors: grid, postfixes, clustering, beauty hooks
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 6)
-prose:    infrastructure/state/items/DEEPFIRE_FLOOR_PAINT_1.md
-
 ## DEEPFIRE_FIRSTCOAT_BONUS_1 Deepfire first-coat quality/beauty bonus
 state:    proposed
 row:      unassigned
@@ -2027,3 +2034,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WARCASKET_WASTE_RUN_REMAINDER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARCASKET_WASTE_RUN_REMAINDER_1.md
+
+## CONTAGION_GPT_ENRICHMENT_1 Contagion enrichment (GPT consult 2026-09-30, owner-picked by card): Draftprints (Helix buys scans of Unfinished, you assume the risks), The Dive (map-wide flight to shelter before a Burn), Bodyprints (corpses fade to visible prints, no vanishing)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Draftprints. The owner typed this note on the card: "I like the helix offering to purchase
+prose:    infrastructure/state/items/CONTAGION_GPT_ENRICHMENT_1.md
+
+## WASTELAND_GPT_ENRICHMENT_1 Wasteland enrichment (GPT consult 2026-09-30, owner-picked by card): named storms (Deadlight Halo, Cinderwire Storm), Middenshell Procession, Sealed Cask Bay (ship), Rite of Tipping (paid dumping)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Named storms. These give the two already-ruled storms their identities; the pass extends their
+prose:    infrastructure/state/items/WASTELAND_GPT_ENRICHMENT_1.md
+
+## BLUEDESERT_GPT_ENRICHMENT_1 Blue Desert enrichment (GPT consult 2026-09-30, owner-picked by card): blue-ice heat sink, the line gives back slowly (staged ablation salvage), Carbon Garden hydrocarbon plants only, the vhaulk road
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BLUEDESERT_GPT_ENRICHMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLUEDESERT_GPT_ENRICHMENT_1.md
