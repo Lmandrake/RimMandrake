@@ -109,7 +109,7 @@
         </capacities>
         <power>16</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
         <chanceFactor>1</chanceFactor>
         <!-- Venom on the bite, per §1a: "venom on bite for large prey" —
              carried as a bespoke bite DamageDef rather than the generic

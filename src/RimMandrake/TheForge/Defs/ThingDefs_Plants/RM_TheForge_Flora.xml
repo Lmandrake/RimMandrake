@@ -166,7 +166,7 @@
        Plain Plant thingClass, not flash flora: it grows on the frozen crust,
        not in the rain window. Can grow on bare rock (fertilityMin 0,
        fertilitySensitivity 0) and in the dark. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_FloatstoneGarden</defName>
     <label>floatstone garden</label>
     <description>When the melt freezes over and the plumes stand tall, the crust blooms. A floatstone garden starts as a knot of glass threads and whirls itself outward into a lace-walled globe, chamber over chamber, light enough that a grown one strains at its own root. Caught ripe, it is the most beautiful quarry on the planet. Left standing, it tears free ahead of the melt and drifts away over the seams -- the one form the lava never gets back.</description>

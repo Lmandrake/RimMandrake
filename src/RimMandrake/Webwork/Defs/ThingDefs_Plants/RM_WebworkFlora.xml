@@ -39,7 +39,7 @@
 
   <!-- ===================== THE THICKET — the green half (5 rows) ===================== -->
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Kollavane</defName>
     <label>kollavane</label>
     <description>Not one tree but a standing braid of dozens — pale green whips fused into a dark trunk, new shoots erupting from the base while the crown's older wood dies black. It is visibly several ages at once. The thicket's body: the young whip-masses are what the nest is woven from, and its churn-dead wood is the biome's only timber — nobody fells a living one, they salvage what the braid discarded.</description>
@@ -74,7 +74,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Vessark</defName>
     <label>vessark</label>
     <description>A muscular grey-green cable as thick as a leg, coiled around kollavane braids and around its own kind, bark scarred where it constricts. Never freestanding — it is always on something. The churn made legible: where vessark wins, a braid dies and a gap opens; where it loses, a path closes.</description>
@@ -101,7 +101,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Tavrosk</defName>
     <label>tavrosk</label>
     <description>A squat tree that is mostly trunk — a glossy, distended bole streaked with dried amber runs where old taps wept, under a mean little crown. It looks kept, like a barrel someone owns. Its sweet volatile sap is tapped as drink, trade good, and still-burner fuel.</description>
@@ -135,7 +135,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Dulloth</defName>
     <label>dulloth</label>
     <description>Broad rigid leaves the size of doors, held flat and level, meeting neighbouring dulloth pane-to-pane with almost no gap. From below it is a ceiling; from above, a sealed floor of dark green. The canopy sealer — the reason the gloom is total. Cutting dulloth is how a clearing is made.</description>
@@ -166,7 +166,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Brimlock</defName>
     <label>brimlock</label>
     <description>A leaning trunk swollen into a drum-tight bladder, its skin stretched and traced with dark water-veins, faintly translucent where the sun ever reaches it. It audibly sloshes when struck. The drunk river, held in flesh — cut one and water runs out, the only water a traveller will find in this jungle.</description>
@@ -202,7 +202,7 @@
 
   <!-- ===================== THE PLUMBING — the stolen river (3 rows) ===================== -->
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Threllick</defName>
     <label>threllick</label>
     <description>A dense mat of interlaced surface roots, grey-brown and slick, running in visible strands between the thicket's trunks. It is the ground over most of the biome — you walk on it, and it is why walking is hard. The stolen river's first plumbing: every plant here is plumbed into it.</description>
@@ -229,7 +229,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Sellith</defName>
     <label>sellith</label>
     <description>A pale green weed that grows only along the silk irrigation gutters, rooted into the drip, hanging in neat fringes under the lines. Its shape is the web's shape — it never occurs except in runs. The gutter-weed: a sellith run overhead means a live gutter, means stolen water moving.</description>
@@ -256,7 +256,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Varrisk</defName>
     <label>varrisk</label>
     <description>A dull green sedge standing in oddly even stands — spaced, aligned, unmistakably planted rather than grown. Dry-country foliage, waxed against the heat. The reach: the irrigated lowland cover at the end of the plumbing. Where varrisk stands, silk water reaches; where it stops, the desert has won.</description>
@@ -285,7 +285,7 @@
 
   <!-- ===================== THE NIGHTMARE PLANTS (3 rows) ===================== -->
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Kessaroth</defName>
     <label>kessaroth</label>
     <description>A low plant that is mostly trap: two ribbed, in-curved jaw-leaves held sprung and open, dull green outside, bone-pale within — the biome's palette in a mouth. A swallowed bulge shows in the stem of a fed one. The free tier's snap-trap; being held in this biome is the real danger. The snap-trigger/immobilize hazard mechanism is a follow-on build.</description>
@@ -312,7 +312,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Norrveth</defName>
     <label>norrveth</label>
     <description>A leafless dark wand, chest high, ringed at intervals with collars of translucent needle-spikes that shiver when anything passes. Spent collars leave bare rings — a norrveth's history is written on its stem. Disturbed, it flings a collar of glassy needles; the needle-cast fragmentation hazard is a follow-on build.</description>
@@ -339,7 +339,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Sorrivel</defName>
     <label>sorrivel</label>
     <description>A single heavy bell-flower, wine-dark and wet-looking, bowed to head height on a bent stalk, dripping a syrup whose sweetness carries absurdly far. Nothing about it is pale. The bait — the plantation's lure crop, sown by the spiders themselves. A sorrivel in bloom means you are standing in a larder. Deliberately deceptive: it must read as attractive, not valuable.</description>
@@ -368,7 +368,7 @@
 
   <!-- ===================== THE WHITE HALF AND THE MARGIN (5 rows) ===================== -->
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Pellareth</defName>
     <label>pellareth</label>
     <description>Great strangely pale flowers on grey stalks, bone-white and slightly glowing in the gloom, growing in runs and arcs that are never random — the white traces the web. Withered heads go grey and papery but stand. Fresh blooms mean an active line; withered runs mean the safe path. The fresh/withered route-signal state machine is a follow-on build.</description>
@@ -395,7 +395,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Ruddreth</defName>
     <label>ruddreth</label>
     <description>A squat rosette of rust-red blooms — the only warm colour in the biome — growing in a ring on darkened, grease-stained ground. It is never anywhere clean. The nest-bloom: it grows only on hide-rot, so a ring of ruddreth is a nest read at a distance, before a single silk structure is seen. Information, not food — not edible, not valuable.</description>
@@ -422,7 +422,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Fellome</defName>
     <label>fellome</label>
     <description>Strings of fat pale pods hanging from a modest scrambling vine, heaviest along the web-lines where the pollen-dusted owners pass. The pods are dusty with sticky pollen. The plantation's gleanings — the spiders sow as they hunt, and fellome is the accidental crop: good calories, everywhere, free. Foraging the Webwork is gleaning someone's fields.</description>
@@ -452,7 +452,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Grennick</defName>
     <label>grennick</label>
     <description>A dense dark turf whose leading edge is abrupt — a clean line of new green over burned or open ground, visibly further along every time you look. Behind the line, threllick and the thicket follow. The margin's advancing front as a plant, the groundcover of the shipped front-creep mechanism (RM_MapComponent_FrontCreep) — it regrows into an untrimmed light-moat.</description>
@@ -479,7 +479,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Brennoth</defName>
     <label>brennoth</label>
     <description>A knotted waist-high scrub of the margins and clearings, varnish-shiny with dry resin, always carrying dead grey wood among the live. It looks like kindling because it is. The margin's tinder: it burns hot, fast and clean — the fuel that makes a burn-ring cheap to cut and keep, and the reason a careless fire at the margin runs.</description>
@@ -521,6 +521,12 @@
       <MarketValue>1.2</MarketValue>
       <Mass>0.02</Mass>
       <Flammability>0.8</Flammability>
+      <!-- LOAD_ERRORS_FAUNA_FLORA_1: the <nutrition> field inside <ingestible>
+           below is not a real IngestibleProperties field in 1.6 (XML error,
+           separate class) and is silently dropped, which is why ConfigErrors
+           reads Nutrition==0 despite this being real intended food. The real
+           nutrition value is this Nutrition STAT. -->
+      <Nutrition>0.05</Nutrition>
     </statBases>
     <stackLimit>75</stackLimit>
     <ingestible>

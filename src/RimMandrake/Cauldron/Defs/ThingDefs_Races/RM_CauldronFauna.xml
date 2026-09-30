@@ -389,7 +389,7 @@
       <baseHealthScale>1.2</baseHealthScale>
       <foodType>VegetarianRoughAnimal</foodType>
       <predator>false</predator>
-      <trainability>Simple</trainability>
+      <trainability>None</trainability>
       <lifeExpectancy>25</lifeExpectancy>
       <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
       <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
@@ -480,7 +480,7 @@
       <baseHealthScale>0.6</baseHealthScale>
       <foodType>OmnivoreAnimal</foodType>
       <predator>false</predator>
-      <trainability>Simple</trainability>
+      <trainability>None</trainability>
       <lifeExpectancy>8</lifeExpectancy>
       <manhunterOnDamageChance>0</manhunterOnDamageChance>
       <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
