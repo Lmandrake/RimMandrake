@@ -1,6 +1,6 @@
 """Regenerate the current debug map as each given biome and census it: weather, wild pawns by kind,
 plants by def, and new Player.log errors during generation. Run under Windows python.exe from the repo root.
-usage: python.exe src/RimMandrake/bridgetools/prove_biome_quicktest.py OUT.json BIOME [BIOME ...]"""
+usage: python.exe src/RimMandrake/bridgetools/prove_biome_quicktest.py OUT.json BIOME[@tempC] [BIOME[@tempC] ...]"""
 import sys, json, time, collections, os, re
 sys.path.insert(0, r"src\RimMandrake\Utils")
 import rimbridge_client as rb
@@ -39,8 +39,10 @@ out_path, biomes = sys.argv[1], sys.argv[2:]
 results = {}
 tile = call("jawa/map_info").get("tile")
 for b in biomes:
+    b, _, temp = b.partition("@")
     r = {"biome": b}; since = log_size()
-    w = call("jawa/world_tile_set", tiles=str(tile), biome=b); r["tile_set"] = w.get("success"), (w.get("message") or "")[:200]
+    kw = {"temperature": float(temp)} if temp else {}
+    w = call("jawa/world_tile_set", tiles=str(tile), biome=b, **kw); r["tile_set"] = w.get("success"), (w.get("message") or "")[:200]
     call("jawa/world_commit")
     g = call("rimworld/execute_debug_action", path=r"Actions\Regenerate Current Map"); r["regen"] = g.get("success"), (g.get("message") or "")[:200]
     time.sleep(5); r["playing"] = wait_playing()
@@ -53,6 +55,6 @@ for b in biomes:
     tl = th.get("things") or th.get("results") or []
     r["plants"] = dict(collections.Counter(x.get("defName") or x.get("def") for x in tl).most_common(30))
     r["errors"] = new_errors(since)
-    results[b] = r
+    results[b + ("@" + temp if temp else "")] = r
     print(b, r["mapBiome"], "wild", sum(r["wild"].values()), "plants", sum(r["plants"].values()), "errors", len(r["errors"]), flush=True)
     json.dump(results, open(out_path, "w"), indent=1)
