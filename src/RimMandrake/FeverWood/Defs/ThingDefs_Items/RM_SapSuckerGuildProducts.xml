@@ -46,6 +46,7 @@
     <defName>RM_ThornbugNectar</defName>
     <label>thornbug nectar</label>
     <description>Sweet, thick nectar wept by a calm thornbug — the dairy the arboreal cantons run on. A frightened herd dries up for days; every raid on the guild costs nectar before it costs blood.</description>
+    <tickerType>Rare</tickerType>
     <graphicData>
       <texPath>Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
@@ -103,6 +104,7 @@
     <defName>RM_DrommathSap</defName>
     <label>drommath sap</label>
     <description>A thin trickle of sugar-sap, drawn off a swelling drommath without pushing it to burst. Renewable, for as long as the animal is left alone.</description>
+    <tickerType>Rare</tickerType>
     <graphicData>
       <texPath>Things/Item/Resource/RM_DrommathSap/RM_DrommathSap</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
@@ -137,6 +139,7 @@
     <defName>RM_DrommathBurstSap</defName>
     <label>burst drommath sap</label>
     <description>A gluttonous payout of sap, all at once, from a drommath burst rather than milked — this animal will never yield again. Worth far more than a season of the trickle it used to give.</description>
+    <tickerType>Rare</tickerType>
     <graphicData>
       <texPath>Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>

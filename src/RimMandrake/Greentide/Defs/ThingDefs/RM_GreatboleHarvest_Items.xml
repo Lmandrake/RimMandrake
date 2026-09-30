@@ -29,6 +29,7 @@
     <defName>RM_GreatboleFruit</defName>
     <label>greatbole fruit</label>
     <description>A single fruit from a greatbole, the size of a person's torso and the deep purple of a healing bruise. It rots quickly once fallen and cannot be carried alongside anything else — one is already an armful.</description>
+    <tickerType>Rare</tickerType>
     <thingCategories>
       <li>PlantFoodRaw</li>
     </thingCategories>
@@ -80,6 +81,7 @@
       <graphicClass>Graphic_StackCount</graphicClass>
       <color>(140, 70, 150)</color>
     </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
     <ingestible>
       <foodType>Meal, Processed, VegetableOrFruit</foodType>
       <preferability>MealSimple</preferability>
