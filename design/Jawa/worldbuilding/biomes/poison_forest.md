@@ -135,6 +135,8 @@ and heavy — this is a forest of ambushers and grazers-on-mineral, not of chase
 
 **No grazers in the ordinary sense.** There is no grass and no fodder. Herbivory
 here means rasping crust off stone or drinking sap that would kill anything else.
+The owner-ruled imports (see §6) are the deliberate exception and are not to be
+cut back out.
 
 ## 4b. Weather
 
@@ -184,7 +186,11 @@ Def work beyond `PoisonForestSpores` is unblocked.
 - ⛔ **No lush flora** (standing ban: lush belongs only to the water-high biomes).
 - ⛔ **No instantly-nameable Earth organisms** (standing recognizability ban).
 - ⛔ **No open grazing herbivore body plans** — there is nothing to graze.
-- ⛔ **Nothing fast.** No sprinters, no pursuit predators.
+  *Owner ruling on the Cauldron cast (`CAULDRON_RULED_CONTENT_1`, "wire and keep"):
+  Lylek, Plasmorph, LuciferBug, Radyak, RipperHound, Skalder and Silooth are wired
+  into the biome and stay, overriding this line for those seven.*
+- ⛔ **Nothing fast.** No sprinters, no pursuit predators. *(RipperHound, ban 9 at
+  spd 5.0, is wired and kept by the same ruling.)*
 
 ## 7. Uniquely available
 
@@ -228,6 +234,7 @@ the planet's exact opposite: wet, dark, chemical, patient, and quietly busy.
 growths · dark red/purple/black crust phototrophs · plated, shelled or waxed slow
 animals · eye-heavy or eyeless vibration-sensing fauna · toxic-meat game.
 **Barred on sight:** anything green · conventional trees · grazers · sprinters ·
-anything volcanic · anything instantly nameable · lush water-lovers.
+anything volcanic · anything instantly nameable · lush water-lovers — except the
+seven owner-ruled imports wired by `CAULDRON_RULED_CONTENT_1`.
 Alpha Biomes' chemical and fungal flora are the natural donor pool — every candidate
 must clear §6 before admission.

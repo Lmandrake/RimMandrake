@@ -39,16 +39,24 @@
         RM_PoisonForestFlora.xml) per §7 Q13 ("content wired into two biome
         mods: duplicate, then diverge" — RM_TwistingThornwood's species is
         also wired into RUT_CrackedLands, which keeps using the frozen
-        original). The 7 Alpha Biomes rows stay inline unchanged.
+        original). The 7 Alpha Biomes AB_ rows were RETIRED by
+        CAULDRON_RULED_CONTENT_1 (2026-09-29): diverged into owned RM_
+        defs (RM_CrystalFlower, RM_BloodBouquet, RM_RavenNettle,
+        RM_RedBugloss, RM_GiantAgariTox, RM_KeeningCordax,
+        RM_GiantToxicFlower) at the same weights, plus RM_Xithess.
+      - wildAnimals (CAULDRON_RULED_CONTENT_1): +3 owned natives (RM_Vexxiss,
+        RM_Zisska, RM_Eskith) and +4 owner-ruled Alpha Animals imports
+        (Plasmorph, LuciferBug, Radyak, RipperHound). The imports override
+        the frozen sheet's no-grazer and ban-9 lines on purpose. Lylek,
+        Skalder (RSW_ ports) and Silooth (donor) ride the Utinni patch.
 
     Everything else — texture, terrain (Marsh/Riverbank), weather, diseases —
     is the twin's content unchanged.
 
-    ⚠️ NOT donor-free: texture (Biomes/PoisonForest, BiomesPlus) and the 7
-    remaining wildPlants rows (Alpha Biomes) carry no MayRequire, inherited
-    unchanged from the frozen campaign twin — not this build's scope to fix,
-    see About.xml for the disclosure. The 13 wildAnimals rows keep their
-    original MayRequire gates and degrade gracefully without them.
+    ⚠️ Not fully donor-free: the texture (Biomes/PoisonForest, BiomesPlus) is
+    still the donor's, see About.xml. wildPlants are now all owned (no Alpha
+    Biomes rows remain). The donor wildAnimals rows all carry MayRequire
+    gates and degrade gracefully without them.
   -->
 
   <BiomeDef>
@@ -139,18 +147,29 @@
       <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - medium, keep -->
       <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - giant, keep -->
       <AA_Wildpod MayRequire="sarg.alphaanimals">0.05</AA_Wildpod>  <!-- wildpod - giant, keep -->
+      <!-- CAULDRON_RULED_CONTENT_1: three owned natives (one home each). -->
+      <RM_Vexxiss>0.02</RM_Vexxiss>  <!-- vexxiss - the armoured living boiler-mound; shear-only vexxith -->
+      <RM_Zisska>0.5</RM_Zisska>  <!-- zisska - herd rasper, toxic prized meat, steel on butcher -->
+      <RM_Eskith>0.4</RM_Eskith>  <!-- eskith - silent-flock small bird -->
+      <!-- CAULDRON_RULED_CONTENT_1: owner-ruled donor imports (Alpha Animals, Q9 inline). Wired and kept on purpose:
+           overrides the frozen sheet's no-grazer / ban-9 lines. Do not "fix" them back out. -->
+      <AA_Plasmorph MayRequire="sarg.alphaanimals">0.1</AA_Plasmorph>  <!-- plasmorph -->
+      <AA_LuciferBug MayRequire="sarg.alphaanimals">0.15</AA_LuciferBug>  <!-- lucifer bug -->
+      <AA_Radyak MayRequire="sarg.alphaanimals">0.1</AA_Radyak>  <!-- radyak -->
+      <AA_RipperHound MayRequire="sarg.alphaanimals">0.08</AA_RipperHound>  <!-- ripper hound -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
       <RM_TwistingThornwood>0.6</RM_TwistingThornwood>  <!-- twisting thornwood - tree -->
-      <AB_CrystalFlower>0.5</AB_CrystalFlower>  <!-- crystal flower -->
+      <RM_CrystalFlower>0.5</RM_CrystalFlower>  <!-- crystal flower -->
       <RM_TreeMartyr>0.5</RM_TreeMartyr>  <!-- martyr tree - tree -->
-      <AB_BloodBouquet>0.4</AB_BloodBouquet>  <!-- blood bouquet -->
-      <AB_RavenNettle>0.4</AB_RavenNettle>  <!-- raven nettle -->
-      <AB_GiantAgariTox>0.3</AB_GiantAgariTox>  <!-- agaritox - tree -->
-      <AB_RedBugloss>0.3</AB_RedBugloss>  <!-- red bugloss -->
-      <AB_KeeningCordax>0.2</AB_KeeningCordax>  <!-- keening cordax - tree -->
-      <AB_GiantToxicFlower>0.08</AB_GiantToxicFlower>  <!-- giant toxic flower -->
+      <RM_BloodBouquet>0.4</RM_BloodBouquet>  <!-- blood bouquet -->
+      <RM_RavenNettle>0.4</RM_RavenNettle>  <!-- raven nettle -->
+      <RM_GiantAgariTox>0.3</RM_GiantAgariTox>  <!-- agaritox - tree -->
+      <RM_RedBugloss>0.3</RM_RedBugloss>  <!-- red bugloss -->
+      <RM_KeeningCordax>0.2</RM_KeeningCordax>  <!-- keening cordax - tree -->
+      <RM_GiantToxicFlower>0.08</RM_GiantToxicFlower>  <!-- giant toxic flower -->
+      <RM_Xithess>0.35</RM_Xithess>  <!-- xithess - filter-frond, vent-chemistry yield -->
       <RM_DarkCrust>0.25</RM_DarkCrust>  <!-- vein moss - phototroph film -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>

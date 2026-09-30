@@ -204,7 +204,7 @@
     {
       "def": "AA_RipperHound",
       "disposition": "homeless-reserve",
-      "reason": "ban 9: spd 5.0 (MEASURED); recognizability (hound)"
+      "reason": "ban 9: spd 5.0 (MEASURED); recognizability (hound). OVERRIDDEN by owner ruling (CAULDRON_RULED_CONTENT_1, wire and keep): wired into RM_PoisonForest and kept; see the import row in fauna. Do not evict."
     },
     {
       "def": "AA_BoulderMit",
