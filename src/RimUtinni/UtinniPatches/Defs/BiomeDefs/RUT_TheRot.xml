@@ -125,13 +125,13 @@
     </terrainsByFertility>
     <baseWeatherCommonalities>
       <Clear>8</Clear>
-      <RUT_SheenFall MayRequire="mandrake.rut.rotsporekit">10</RUT_SheenFall>
+      <RM_SheenFall MayRequire="mandrake.rm.therot">10</RM_SheenFall>
       <DryThunderstorm>1</DryThunderstorm>
-      <RUT_SheenStorm MayRequire="mandrake.rut.rotsporekit">10</RUT_SheenStorm>
-      <RUT_SheenMist MayRequire="mandrake.rut.rotsporekit">10</RUT_SheenMist>
+      <RM_SheenStorm MayRequire="mandrake.rm.therot">10</RM_SheenStorm>
+      <RM_SheenMist MayRequire="mandrake.rm.therot">10</RM_SheenMist>
     </baseWeatherCommonalities>
     <biomeMapConditions>
-      <li MayRequire="mandrake.rm.biomes,mandrake.rut.rotsporekit">RUT_SheenExposureLock</li>
+      <li MayRequire="mandrake.rm.biomes,mandrake.rm.therot">RM_SheenExposureLock</li>
     </biomeMapConditions>
     <wildAnimals>
       <RSW_FungalWeevil MayRequire="mandrake.rsw.swbestiary">0.4</RSW_FungalWeevil>  <!-- fungal weevil - ingest-strange, import -->
@@ -181,33 +181,33 @@
       <AB_GlowingAgarilux>1</AB_GlowingAgarilux>  <!-- glowing agarilux -->
       <AB_LilacBeacon>0.5</AB_LilacBeacon>  <!-- lilac beacon -->
       <AB_WitchesOyster>0.5</AB_WitchesOyster>  <!-- witches' oyster -->
-      <RUT_Dewshrooms MayRequire="mandrake.rut.rotsporekit">0.5</RUT_Dewshrooms>  <!-- dewshrooms - RUT_ (raided, FUNGALFOREST_RAID_MERGE_1) -->
-      <RUT_FruitingBodies MayRequire="mandrake.rut.rotsporekit">0.5</RUT_FruitingBodies>  <!-- mold fruiting bodies - RUT_ (raided) -->
-      <RUT_Nuitae MayRequire="mandrake.rut.rotsporekit">0.5</RUT_Nuitae>  <!-- nuitae - RUT_ (raided) -->
-      <RUT_Wrinklecap MayRequire="mandrake.rut.rotsporekit">0.5</RUT_Wrinklecap>  <!-- wrinklecap - RUT_ (raided) -->
-      <RUT_Arpeau MayRequire="mandrake.rut.rotsporekit">0.4</RUT_Arpeau>  <!-- arpeau - tree - RUT_ (raided) -->
+      <RM_Dewshrooms MayRequire="mandrake.rm.therot">0.5</RM_Dewshrooms>  <!-- dewshrooms - RUT_ (raided, FUNGALFOREST_RAID_MERGE_1) -->
+      <RM_FruitingBodies MayRequire="mandrake.rm.therot">0.5</RM_FruitingBodies>  <!-- mold fruiting bodies - RUT_ (raided) -->
+      <RM_Nuitae MayRequire="mandrake.rm.therot">0.5</RM_Nuitae>  <!-- nuitae - RUT_ (raided) -->
+      <RM_Wrinklecap MayRequire="mandrake.rm.therot">0.5</RM_Wrinklecap>  <!-- wrinklecap - RUT_ (raided) -->
+      <RM_Arpeau MayRequire="mandrake.rm.therot">0.4</RM_Arpeau>  <!-- arpeau - tree - RUT_ (raided) -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-20: RUT_Nogtyl moved OUT to
            the_miasma and RUT_RustPuff moved OUT to the_contagion. Both rulings landed in
            rosters/the_rot.json and reached the game only through BiomeFlora_Ashkarr.xml's
            now-retired replace operation; transplanted here by
            BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
       <AB_RecurvedStropharia>0.3</AB_RecurvedStropharia>  <!-- recurved stropharia -->
-      <RUT_FlakespireFungus MayRequire="mandrake.rut.rotsporekit">0.3</RUT_FlakespireFungus>  <!-- flakespire fungus - tree - RUT_ (raided) -->
-      <RUT_Pusmelon MayRequire="mandrake.rut.rotsporekit">0.3</RUT_Pusmelon>  <!-- pusmelon - RUT_ (raided) -->
-      <RUT_Sagecrust MayRequire="mandrake.rut.rotsporekit">0.3</RUT_Sagecrust>  <!-- sagecrust - RUT_ (raided) -->
+      <RM_FlakespireFungus MayRequire="mandrake.rm.therot">0.3</RM_FlakespireFungus>  <!-- flakespire fungus - tree - RUT_ (raided) -->
+      <RM_Pusmelon MayRequire="mandrake.rm.therot">0.3</RM_Pusmelon>  <!-- pusmelon - RUT_ (raided) -->
+      <RM_Sagecrust MayRequire="mandrake.rm.therot">0.3</RM_Sagecrust>  <!-- sagecrust - RUT_ (raided) -->
       <AB_ArbuscularMycorrhiza>0.2</AB_ArbuscularMycorrhiza>  <!-- arbuscular mycorrhiza -->
       <AB_SlimyPholiota>0.2</AB_SlimyPholiota>  <!-- slimy pholiota -->
-      <RUT_BleedingTooth MayRequire="mandrake.rut.rotsporekit">0.2</RUT_BleedingTooth>  <!-- bleeding tooth - RUT_ (raided) -->
-      <RUT_Brightbell MayRequire="mandrake.rut.rotsporekit">0.2</RUT_Brightbell>  <!-- shinebell - RUT_ (raided); was BMT_Brightbells, a defName that never existed in the donor (real donor defName is singular BMT_Brightbell) - fixed on ingest -->
-      <RUT_CrimsonCap MayRequire="mandrake.rut.rotsporekit">0.2</RUT_CrimsonCap>  <!-- crimson cap - RUT_ (raided) -->
-      <RUT_GreyLady MayRequire="mandrake.rut.rotsporekit">0.2</RUT_GreyLady>  <!-- Grey Lady - RUT_ (raided) -->
-      <RUT_Shinecap MayRequire="mandrake.rut.rotsporekit">0.2</RUT_Shinecap>  <!-- shine cap - tree - RUT_ (raided) -->
-      <RUT_VioletWimple MayRequire="mandrake.rut.rotsporekit">0.2</RUT_VioletWimple>  <!-- violet wimple - RUT_ (raided) -->
-      <RUT_MortalMorelPlant MayRequire="mandrake.rut.rotsporekit">0.15</RUT_MortalMorelPlant>  <!-- mortal morel - RUT_ (raided) -->
+      <RM_BleedingTooth MayRequire="mandrake.rm.therot">0.2</RM_BleedingTooth>  <!-- bleeding tooth - RUT_ (raided) -->
+      <RM_Brightbell MayRequire="mandrake.rm.therot">0.2</RM_Brightbell>  <!-- shinebell - RUT_ (raided); was BMT_Brightbells, a defName that never existed in the donor (real donor defName is singular BMT_Brightbell) - fixed on ingest -->
+      <RM_CrimsonCap MayRequire="mandrake.rm.therot">0.2</RM_CrimsonCap>  <!-- crimson cap - RUT_ (raided) -->
+      <RM_GreyLady MayRequire="mandrake.rm.therot">0.2</RM_GreyLady>  <!-- Grey Lady - RUT_ (raided) -->
+      <RM_Shinecap MayRequire="mandrake.rm.therot">0.2</RM_Shinecap>  <!-- shine cap - tree - RUT_ (raided) -->
+      <RM_VioletWimple MayRequire="mandrake.rm.therot">0.2</RM_VioletWimple>  <!-- violet wimple - RUT_ (raided) -->
+      <RM_MortalMorelPlant MayRequire="mandrake.rm.therot">0.15</RM_MortalMorelPlant>  <!-- mortal morel - RUT_ (raided) -->
       <AB_AgaricusDomeCap>0.1</AB_AgaricusDomeCap>  <!-- agaricus domecap -->
       <AB_DribblingCap>0.1</AB_DribblingCap>  <!-- dribbling cap -->
-      <RUT_Skulltop MayRequire="mandrake.rut.rotsporekit">0.1</RUT_Skulltop>  <!-- skulltop - tree - RUT_ (raided) -->
-      <RUT_BlastpodShroom MayRequire="mandrake.rut.rotsporekit">0.05</RUT_BlastpodShroom>  <!-- blastpod shroom - RUT_ (raided); wild-only per owner ruling 2026-09-06, no sow tags -->
+      <RM_Skulltop MayRequire="mandrake.rm.therot">0.1</RM_Skulltop>  <!-- skulltop - tree - RUT_ (raided) -->
+      <RM_BlastpodShroom MayRequire="mandrake.rm.therot">0.05</RM_BlastpodShroom>  <!-- blastpod shroom - RUT_ (raided); wild-only per owner ruling 2026-09-06, no sow tags -->
       <AB_AgariluxPrime>0.01</AB_AgariluxPrime>  <!-- Agarilux Prime -->
     </wildPlants>
     <wildPlantRegrowDays>25</wildPlantRegrowDays>
@@ -235,8 +235,8 @@
         <warmTerrains>
           <li>AB_MycoticGrass</li>
           <li>AB_MycoticSoilRich</li>
-          <li MayRequire="mandrake.rut.rotsporekit">RUT_MycelialSoil</li>
-          <li MayRequire="mandrake.rut.rotsporekit">RUT_MycelialMatting</li>
+          <li MayRequire="mandrake.rm.therot">RM_MycelialSoil</li>
+          <li MayRequire="mandrake.rm.therot">RM_MycelialMatting</li>
         </warmTerrains>
       </li>
     </modExtensions>

@@ -282,7 +282,7 @@
       <RM_Thrannock>4</RM_Thrannock>  <!-- thrannock - the flotsam yard itself -->
       <RM_Pallasheen>1</RM_Pallasheen>  <!-- pallasheen - the loam prospector's tell -->
       <RM_Wessaline>1</RM_Wessaline>  <!-- wessaline - the salt-pan skin -->
-      <RUT_Nogtyl MayRequire="mandrake.rut.rotsporekit">0.4</RUT_Nogtyl>  <!-- nogtyl - cross-mod, THEROT_RM_MOD_BUILD_1 owns updating this MayRequire -->
+      <RM_Nogtyl MayRequire="mandrake.rm.therot">0.4</RM_Nogtyl>  <!-- nogtyl - cross-mod, THEROT_RM_MOD_BUILD_1 owns updating this MayRequire -->
     </wildPlants>
     <wildPlantRegrowDays>13</wildPlantRegrowDays>
   </BiomeDef>
