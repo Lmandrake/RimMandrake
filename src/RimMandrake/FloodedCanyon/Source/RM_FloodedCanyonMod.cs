@@ -75,6 +75,10 @@ namespace RimMandrake.FloodedCanyon
         // weather commonality, not a setting.
         public static bool peakstormBiasEnabled = true;
 
+        // §5 — chimes staged by distance-to-flood (three rings across the
+        // lead time). Off = the single chime at the start of the lead time.
+        public static bool chimeStagingEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -95,6 +99,7 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref muttavaqWaterWakeEnabled, "muttavaqWaterWakeEnabled", true, true);
             Scribe_Values.Look(ref muttavaqDigInEnabled, "muttavaqDigInEnabled", true, true);
             Scribe_Values.Look(ref peakstormBiasEnabled, "peakstormBiasEnabled", true, true);
+            Scribe_Values.Look(ref chimeStagingEnabled, "chimeStagingEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -121,6 +126,10 @@ namespace RimMandrake.FloodedCanyon
                 "Applies the flood cycle to EVERY map's biome, not only the flooded "
                 + "canyon — the mechanic without the biome.");
 
+            list.CheckboxLabeled("Chimes ring in stages as the water nears", ref chimeStagingEnabled,
+                "The first chime rings at the full warning lead time, then again at half "
+                + "of it, then once more just before the water arrives. Off means one "
+                + "chime only.");
             list.CheckboxLabeled("Floods follow the peakstorm light", ref peakstormBiasEnabled,
                 "When the far skyline flickers with a storm on the peaks, the next flood "
                 + "may come sooner — within a day or so. The chime still rings first. "
