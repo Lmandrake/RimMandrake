@@ -82,6 +82,17 @@ namespace RimMandrake.DivingInteraction
         private const float SeepApronRadius = 3.4f;
         private const int ElderSize = 7;
 
+        // SEA_DIVE_LIVE_ERRORS_1, 2026-09-30. RM_PlaceSeaDiveExit (order 400)
+        // runs long before this step (880), and the exit is an edifice
+        // (BuildingProperties.isEdifice defaults true) with destroyable=false.
+        // Live, the basin carve landed on it: "Tried to destroy non-destroyable
+        // thing RM_SeaDiveExit" x9 (one per cell of its 3x3) and the exit was
+        // left standing in a brine pool. Every paint/destroy below now skips
+        // this keep-out (the exit's footprint plus a walkable apron), the
+        // basin is chosen clear of it, and only destroyable edifices are
+        // ever destroyed.
+        private const int ExitKeepOutPad = 2;
+
         // GREYSEA_RULED_CONTENT_1, Q4-Q8 (question card 2026-09-27) — Route B
         // of the_grey_deep_flora_pass_2026-09-27.md's understorey: the two
         // species `wildPlants` commonality cannot express (RM_Rimebeard
@@ -109,13 +120,14 @@ namespace RimMandrake.DivingInteraction
             ThingDef elder = Named<ThingDef>("RM_BrineElder");
             ThingDef chimney = Named<ThingDef>("RM_SaltChimney");
 
-            IntVec3 basin = FindBasinCell(map);
+            List<CellRect> keepOut = ExitKeepOut(map);
+            IntVec3 basin = FindBasinCell(map, keepOut);
             if (basin.IsValid && poolDeep != null && poolShallow != null)
             {
-                CarveBasin(map, basin, poolDeep, poolShallow, jacket);
+                CarveBasin(map, basin, poolDeep, poolShallow, jacket, keepOut);
                 if (elder != null)
                 {
-                    PlaceElder(map, basin, elder);
+                    PlaceElder(map, basin, elder, keepOut);
                 }
 
                 ThingDef stillbloom = Named<ThingDef>("RM_Stillbloom");
@@ -147,11 +159,11 @@ namespace RimMandrake.DivingInteraction
             {
                 if (apron != null)
                 {
-                    PaintApron(map, c.Position, apron);
+                    PaintApron(map, c.Position, apron, keepOut);
                 }
                 if (channel != null && basin.IsValid)
                 {
-                    CarveChannel(map, c.Position, basin, channel);
+                    CarveChannel(map, c.Position, basin, channel, keepOut);
                 }
             }
         }
@@ -166,30 +178,130 @@ namespace RimMandrake.DivingInteraction
         // this runs, so the basin is read off the map's own shape rather than
         // dropped at random — which is what makes "follow the channel
         // downhill and you arrive at the thing that kills you" true.
-        private static IntVec3 FindBasinCell(Map map)
+        //
+        // SEA_DIVE_LIVE_ERRORS_1: the lowest cell whose whole jacket ring
+        // clears the dive exit's keep-out. On a 50x50 floor the strict margin
+        // leaves an 18x18 window the exit can sit in the middle of, so a
+        // second pass relaxes the margin to the pool's own edge (the jacket
+        // ring may then be clipped by the map edge, which InBounds already
+        // handles); failing both, the candidate farthest from the exit is
+        // taken and the per-cell keep-out checks below protect the exit.
+        private static IntVec3 FindBasinCell(Map map, List<CellRect> keepOut)
         {
             MapGenFloatGrid elevation = MapGenerator.Elevation;
-            IntVec3 best = IntVec3.Invalid;
-            float bestVal = float.MaxValue;
-            int margin = Mathf.RoundToInt(JacketRingOuter) + 4;
+            int strict = Mathf.RoundToInt(JacketRingOuter) + 4;
+            int relaxed = Mathf.CeilToInt(PoolMarginRadius) + 2;
 
+            foreach (int margin in new[] { strict, relaxed })
+            {
+                IntVec3 best = IntVec3.Invalid;
+                float bestVal = float.MaxValue;
+                foreach (IntVec3 c in map.AllCells)
+                {
+                    if (!InsideMargin(map, c, margin) || KeepOutDistance(c, keepOut) <= JacketRingOuter)
+                    {
+                        continue;
+                    }
+                    float v = elevation[c];
+                    if (v < bestVal)
+                    {
+                        bestVal = v;
+                        best = c;
+                    }
+                }
+                if (best.IsValid)
+                {
+                    return best;
+                }
+            }
+
+            IntVec3 far = IntVec3.Invalid;
+            float farDist = -1f;
             foreach (IntVec3 c in map.AllCells)
             {
-                if (c.x < margin || c.z < margin || c.x >= map.Size.x - margin || c.z >= map.Size.z - margin)
+                if (!InsideMargin(map, c, strict))
                 {
                     continue;
                 }
-                float v = elevation[c];
-                if (v < bestVal)
+                float d = KeepOutDistance(c, keepOut);
+                if (d > farDist)
                 {
-                    bestVal = v;
-                    best = c;
+                    farDist = d;
+                    far = c;
                 }
+            }
+            return far;
+        }
+
+        private static bool InsideMargin(Map map, IntVec3 c, int margin)
+        {
+            return c.x >= margin && c.z >= margin && c.x < map.Size.x - margin && c.z < map.Size.z - margin;
+        }
+
+        private static List<CellRect> ExitKeepOut(Map map)
+        {
+            List<CellRect> rects = new List<CellRect>();
+            ThingDef exitDef = Named<ThingDef>("RM_SeaDiveExit");
+            if (exitDef == null)
+            {
+                return rects;
+            }
+            foreach (Thing exit in map.listerThings.ThingsOfDef(exitDef))
+            {
+                rects.Add(exit.OccupiedRect().ExpandedBy(ExitKeepOutPad));
+            }
+            return rects;
+        }
+
+        // Euclidean distance from a cell to the nearest keep-out rect (0 inside
+        // one); float.MaxValue when there is no exit at all.
+        private static float KeepOutDistance(IntVec3 c, List<CellRect> keepOut)
+        {
+            float best = float.MaxValue;
+            foreach (CellRect r in keepOut)
+            {
+                int dx = Mathf.Max(r.minX - c.x, 0, c.x - r.maxX);
+                int dz = Mathf.Max(r.minZ - c.z, 0, c.z - r.maxZ);
+                best = Mathf.Min(best, Mathf.Sqrt(dx * dx + dz * dz));
             }
             return best;
         }
 
-        private static void CarveBasin(Map map, IntVec3 centre, TerrainDef deep, TerrainDef shallow, ThingDef jacket)
+        private static bool Protected(IntVec3 c, List<CellRect> keepOut)
+        {
+            foreach (CellRect r in keepOut)
+            {
+                if (r.Contains(c))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Clears a formation out of the way. Never touches the keep-out and
+        // never calls Destroy on a destroyable=false edifice (the engine logs
+        // an error and refuses). Returns false when the cell must be left alone.
+        private static bool TryClearCell(Map map, IntVec3 c, List<CellRect> keepOut)
+        {
+            if (Protected(c, keepOut))
+            {
+                return false;
+            }
+            Building edifice = c.GetEdifice(map);
+            if (edifice == null)
+            {
+                return true;
+            }
+            if (!edifice.def.destroyable)
+            {
+                return false;
+            }
+            edifice.Destroy();
+            return true;
+        }
+
+        private static void CarveBasin(Map map, IntVec3 centre, TerrainDef deep, TerrainDef shallow, ThingDef jacket, List<CellRect> keepOut)
         {
             foreach (IntVec3 c in GenRadial.RadialCellsAround(centre, JacketRingOuter, useCenter: true))
             {
@@ -204,15 +316,17 @@ namespace RimMandrake.DivingInteraction
                     // Formations scattered at 860-876 may already stand here.
                     // The basin wins: a pool with a salt pillar in the middle
                     // of it is not a pool.
-                    c.GetEdifice(map)?.Destroy();
-                    map.terrainGrid.SetTerrain(c, d <= PoolDeepRadius ? deep : shallow);
+                    if (TryClearCell(map, c, keepOut))
+                    {
+                        map.terrainGrid.SetTerrain(c, d <= PoolDeepRadius ? deep : shallow);
+                    }
                     continue;
                 }
 
                 // The jacket ring: scattered, never a solid wall, so the pool
                 // has an approach and the "harvest happens at their shores"
                 // ruling stays playable.
-                if (jacket != null && c.GetEdifice(map) == null && Rand.Chance(JacketChance)
+                if (jacket != null && !Protected(c, keepOut) && c.GetEdifice(map) == null && Rand.Chance(JacketChance)
                     && GenSpawn.CanSpawnAt(jacket, c, map))
                 {
                     GenSpawn.Spawn(jacket, c, map);
@@ -220,12 +334,24 @@ namespace RimMandrake.DivingInteraction
             }
         }
 
-        private static void PlaceElder(Map map, IntVec3 basin, ThingDef elder)
+        private static void PlaceElder(Map map, IntVec3 basin, ThingDef elder, List<CellRect> keepOut)
         {
             CellRect rect = CellRect.CenteredOn(basin, ElderSize / 2);
             if (!rect.InBounds(map))
             {
                 return;
+            }
+            // GenSpawn.Spawn wipes whatever the footprint holds, so an Elder
+            // overlapping the exit or any indestructible edifice is skipped
+            // outright rather than spawned on top of it.
+            foreach (IntVec3 c in rect)
+            {
+                Building edifice = c.GetEdifice(map);
+                if (Protected(c, keepOut) || (edifice != null && !edifice.def.destroyable))
+                {
+                    Log.Warning("[RM_DivingInteraction] Grey Sea Elder not placed: its footprint at " + basin + " overlaps the dive exit or an indestructible edifice.");
+                    return;
+                }
             }
             foreach (IntVec3 c in rect)
             {
@@ -234,11 +360,11 @@ namespace RimMandrake.DivingInteraction
             GenSpawn.Spawn(elder, basin, map, Rot4.North);
         }
 
-        private static void PaintApron(Map map, IntVec3 centre, TerrainDef apron)
+        private static void PaintApron(Map map, IntVec3 centre, TerrainDef apron, List<CellRect> keepOut)
         {
             foreach (IntVec3 c in GenRadial.RadialCellsAround(centre, SeepApronRadius, useCenter: true))
             {
-                if (!c.InBounds(map) || c.GetTerrain(map).IsWater)
+                if (!c.InBounds(map) || c.GetTerrain(map).IsWater || Protected(c, keepOut))
                 {
                     continue;
                 }
@@ -346,7 +472,7 @@ namespace RimMandrake.DivingInteraction
         // IS the low point, so downhill and towards-the-basin are the same
         // direction, and a line is legible from the air in a way a
         // meandering gradient walk is not.
-        private static void CarveChannel(Map map, IntVec3 from, IntVec3 to, TerrainDef channel)
+        private static void CarveChannel(Map map, IntVec3 from, IntVec3 to, TerrainDef channel, List<CellRect> keepOut)
         {
             foreach (IntVec3 c in GenSight.PointsOnLineOfSight(from, to))
             {
@@ -359,13 +485,16 @@ namespace RimMandrake.DivingInteraction
                 {
                     return;
                 }
-                c.GetEdifice(map)?.Destroy();
-                map.terrainGrid.SetTerrain(c, channel);
+                // The channel passes AROUND the exit's keep-out: those cells
+                // are skipped, not the rest of the run.
+                if (TryClearCell(map, c, keepOut))
+                {
+                    map.terrainGrid.SetTerrain(c, channel);
+                }
 
                 IntVec3 side = c + (Rand.Bool ? IntVec3.East : IntVec3.North);
-                if (side.InBounds(map) && !side.GetTerrain(map).IsWater)
+                if (side.InBounds(map) && !side.GetTerrain(map).IsWater && TryClearCell(map, side, keepOut))
                 {
-                    side.GetEdifice(map)?.Destroy();
                     map.terrainGrid.SetTerrain(side, channel);
                 }
             }
