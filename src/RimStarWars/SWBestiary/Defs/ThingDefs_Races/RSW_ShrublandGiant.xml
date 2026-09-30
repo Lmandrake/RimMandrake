@@ -15,9 +15,10 @@
   authored for it (checked this pass: no RSW_Mastmot.xml, no *.png under any
   Mastmot texture path) - so this reskins the sibling that actually landed,
   `RSW_Fambaa` (already-ported, "ours"-status, Wave C), same
-  RSW_ShadeWhale/RSW_WraidAlpha precedent: same body, same art, a retint, zero
-  new PNGs. Fambaa's own art already ships a distinct juvenile facing set
-  (`Fambaa_j_*`), which is exactly "large young" made visible for free.
+  RSW_ShadeWhale/RSW_WraidAlpha precedent: same body. Art is the thunderstep's
+  OWN painted render (`Textures/Things/Pawn/Animal/RSW_ShrublandGiant/`,
+  LEANINGSCRUB_ART_WIRING_1); all three life stages share it, scaled by drawSize.
+  Only the dessicated (corpse) graphics still use Fambaa's.
 
   Re-purposed from Fambaa's amphibian-swamp profile to this biome's actual
   role: the water-seeking/amphibious pathfinding extension, the Water
@@ -219,8 +220,7 @@
         <label>thunderstep calf</label>
         <labelPlural>thunderstep calves</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Fambaa/Fambaa_j</texPath>
-          <color>(168, 158, 128)</color> <!-- warm dust-khaki, reskin over the shared Fambaa art - arid_shrubland.md §9 "walking hills with lit flanks", zero new PNGs -->
+          <texPath>Things/Pawn/Animal/RSW_ShrublandGiant/RSW_ShrublandGiant</texPath>
           <drawSize>2.0</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -234,8 +234,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Fambaa/Fambaa</texPath>
-          <color>(168, 158, 128)</color>
+          <texPath>Things/Pawn/Animal/RSW_ShrublandGiant/RSW_ShrublandGiant</texPath>
           <drawSize>4.0</drawSize>
           <shadowData>
             <volume>(0.7, 0.6, 0.4)</volume>
@@ -249,8 +248,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Fambaa/Fambaa</texPath>
-          <color>(168, 158, 128)</color>
+          <texPath>Things/Pawn/Animal/RSW_ShrublandGiant/RSW_ShrublandGiant</texPath>
           <drawSize>8.0</drawSize>
           <shadowData>
             <volume>(1, 0.8, 0.5)</volume>

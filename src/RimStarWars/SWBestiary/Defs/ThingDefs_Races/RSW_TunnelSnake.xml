@@ -24,8 +24,10 @@
   `Klorslug` itself to `RUT_Greentide` ("the Gnawers", row 177, status keep)
   - so this def does NOT place Klorslug in a second biome. It only reuses
   the body/art ASSET the same way RSW_ShadeWhale reused RSW_Horax's while
-  Horax stayed placed in the desert: a new defName, a retint, zero new PNGs,
-  no double-booked species identity.
+  Horax stayed placed in the desert: a new defName, no double-booked species
+  identity. Live art is the yanker's OWN painted render
+  (`Textures/Things/Pawn/Animal/RSW_TunnelSnake/`, LEANINGSCRUB_ART_WIRING_1);
+  only the dessicated (corpse) graphics still use Klorslug's.
 
   fleshType/bloodDef/leatherDef/specificMeatDef all stay Insectile, matching
   the reused art (an insectoid vermiform, not a reptile) - "snake-analog" is
@@ -226,8 +228,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Klorslug/Klorslug_j</texPath>
-          <color>(110, 95, 78)</color> <!-- dusty umber-grey, reskin over the shared Klorslug art - reads as lurking in venomvine's near-black shadow, zero new PNGs -->
+          <texPath>Things/Pawn/Animal/RSW_TunnelSnake/RSW_TunnelSnake</texPath>
           <drawSize>1.0</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -237,8 +238,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Klorslug/Klorslug</texPath>
-          <color>(110, 95, 78)</color>
+          <texPath>Things/Pawn/Animal/RSW_TunnelSnake/RSW_TunnelSnake</texPath>
           <drawSize>1.7</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -248,8 +248,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Klorslug/Klorslug</texPath>
-          <color>(110, 95, 78)</color>
+          <texPath>Things/Pawn/Animal/RSW_TunnelSnake/RSW_TunnelSnake</texPath>
           <drawSize>2.7</drawSize>
           <shadowData>
             <volume>(0.4, 0.6, 0.33)</volume>

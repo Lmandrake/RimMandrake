@@ -10,8 +10,8 @@
                    RM_VenomVenom-anything: RM_VenomvineVenom is already a HEDIFF
                    in mandrake.rm.environmentalhazards.
 
-  Art queued in artpipe (leaningscrub_bedazzle_cast.csv: RM_VisslerArm; RM_RawVenom
-  is not in that list - it is unrendered and shows a placeholder until art exists).
+  Art: RM_VisslerArm is wired. RM_RawVenom is in no artpipe list and has no
+  render - it shows a placeholder until art exists.
 -->
 <Defs>
 

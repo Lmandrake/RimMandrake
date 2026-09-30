@@ -14,8 +14,7 @@
   design proposals; FOUNDRY calibrates.
 
   Art: each texPath is a Graphic_Random FOLDER (Things/Plant/RM_<Name>/) whose
-  render is queued in artpipe (leaningscrub_bedazzle_cast.csv) and not yet
-  wired - a missing-texture placeholder until it is. Expected, not a defect.
+  render is wired as <Name>_a.png (LEANINGSCRUB_ART_WIRING_1).
 -->
 <Defs>
 
