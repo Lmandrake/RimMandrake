@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ColdSinkRack.xml                  BLUEDESERT_GPT_ENRICHMENT_1 §1
+
+  The blue-ice heat sink: a powerless rack loaded with RM_BlueIce that holds
+  an enclosed room at its target temperature by melting the ice
+  (Source/RM_ColdSink.cs). It draws nothing while the room is at or below
+  target, so beside powered coolers it idles and in a blackout it takes over,
+  and the room warms by degrees as the store runs down. The melt becomes
+  RM_BlueIceMeltwaterCan (5 blocks -> 3 cans).
+
+  energyPerSecond -12 against the vanilla Cooler's -21 (RimSage, Core
+  Cooler def, 2026-09-30); coldPerBlock 500 = about one game hour of full
+  draw per block, so a full 30-block rack is about 30 hours at full draw.
+  INVENTED tuning; the Mod Settings capacity slider scales coldPerBlock.
+
+  ART OWED: Things/Building/RM_ColdSinkRack/RM_ColdSinkRack. ONE greyscale
+  texture: RM_Building_ColdSinkRack tints it deep blue -> clouding -> white
+  by how much ice is left, so no per-stage textures are needed.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ColdSinkRack</defName>
+    <label>blue-ice cold rack</label>
+    <description>An open steel rack packed with blocks of blue ice. It needs no power: while the room is warmer than its setting, the ice slowly soaks up the heat and melts, so a hold stays cold through a blackout and warms by degrees instead of all at once. The blocks cloud from deep blue to white as the cold runs out, the rack groans as they settle, and the melt drips into sealed cans of clean water. It does nothing outdoors.</description>
+    <thingClass>RimMandrake.BlueDesert.RM_Building_ColdSinkRack</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RM_ColdSinkRack/RM_ColdSinkRack</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.2,1.2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <tickerType>Rare</tickerType>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <statBases>
+      <WorkToBuild>900</WorkToBuild>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Mass>25</Mass>
+    </statBases>
+    <costList>
+      <Steel>45</Steel>
+    </costList>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <designationCategory>Temperature</designationCategory>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelCapacity>30</fuelCapacity>
+        <fuelConsumptionRate>0</fuelConsumptionRate>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <initialFuelPercent>0</initialFuelPercent>
+        <autoRefuelPercent>0.5</autoRefuelPercent>
+        <fuelFilter>
+          <thingDefs>
+            <li>RM_BlueIce</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelLabel>Blue ice</fuelLabel>
+        <fuelGizmoLabel>Blue ice</fuelGizmoLabel>
+        <showFuelGizmo>true</showFuelGizmo>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <drawOutOfFuelOverlay>false</drawOutOfFuelOverlay>
+      </li>
+      <li Class="CompProperties_TempControl">
+        <energyPerSecond>-12</energyPerSecond>
+        <defaultTargetTemperature>-5</defaultTargetTemperature>
+      </li>
+      <li Class="RimMandrake.BlueDesert.CompProperties_ColdSink">
+        <energyPerSecond>-12</energyPerSecond>
+        <coldPerBlock>500</coldPerBlock>
+        <blocksPerCan>5</blocksPerCan>
+        <cansPerMelt>3</cansPerMelt>
+        <meltwaterDef>RM_BlueIceMeltwaterCan</meltwaterDef>
+        <groanMtbTicks>5000</groanMtbTicks>
+        <groanSound>RM_ColdSinkGroan</groanSound>
+        <dripSound>RM_ColdSinkDrip</dripSound>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

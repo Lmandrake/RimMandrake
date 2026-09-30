@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BlueIceRecipes.xml                BLUEDESERT_GPT_ENRICHMENT_1 §1
+
+  The fast way to turn blue ice into water: melt it over a fire. Same yield as
+  the heat-sink rack (5 blocks -> 3 cans), but the ice's cold is wasted, so
+  the rack stays the better use of a block you do not need to drink today.
+-->
+<Defs>
+
+  <RecipeDef>
+    <defName>RM_MeltBlueIce</defName>
+    <label>melt blue ice</label>
+    <description>Melt blue-ice blocks down into sealed cans of clean meltwater.</description>
+    <jobString>Melting blue ice.</jobString>
+    <workAmount>600</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_BlueIce</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_BlueIce</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BlueIceMeltwaterCan>3</RM_BlueIceMeltwaterCan>
+    </products>
+    <recipeUsers>
+      <li>Campfire</li>
+      <li>FueledStove</li>
+      <li>ElectricStove</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>
