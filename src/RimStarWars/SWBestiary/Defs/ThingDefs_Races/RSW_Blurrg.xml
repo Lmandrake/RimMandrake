@@ -27,9 +27,8 @@
   heavier, meaner animal - donor MoveSpeed 5.0 / MarketValue 700, bodySize 2.5, healthScale
   3.5, CaravanRidingSpeedFactor 1.5 (canon: outran AT-RTs; Dromedary 1.3 is the vanilla mount).
 
-  ART: the rsw_blurrg_v1_{south,east,north} renders are wired at
-  src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/RSW_Blurrg/. They show NO forelimbs,
-  which is wrong on canon (two short two-clawed arms); a canon regen is owed. The donor's art lives
+  ART: the canon rsw_blurrg_v2_{south,east,north} renders (two short two-clawed forelimbs) are
+  wired at src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/RSW_Blurrg/. The donor's art lives
   in its AssetBundle and is deliberately not reused. Canon: design/RimStarWars/canon_references/blurrg/
   (canon gives the blurrg two short clawed arms - the body below keeps them).
 -->
