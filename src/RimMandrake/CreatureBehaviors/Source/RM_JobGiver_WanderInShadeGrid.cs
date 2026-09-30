@@ -59,7 +59,11 @@ namespace RimMandrake.CreatureBehaviors
 			}
 			RM_ShadeSeekingWanderExtension ext = pawn.def?.GetModExtension<RM_ShadeSeekingWanderExtension>();
 			float minShade = ext?.minShadeToPrefer ?? 0.5f;
-			return cell.Standable(pawn.Map) && grid.ShadeAt(cell) >= minShade;
+			// PERCEIVED shade, not grid shade (LONGSHADE_BEDAZZLE_MECHANICS_1
+			// part 2): a lying mirrak reads as shade to a shade-seeker's eyes,
+			// which is how it eats. Identical to grid.ShadeAt on any map with
+			// no false-shade pawn on it.
+			return cell.Standable(pawn.Map) && RM_ShadePerception.PerceivedShadeAt(pawn.Map, cell) >= minShade;
 		}
 	}
 }
