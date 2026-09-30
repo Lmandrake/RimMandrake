@@ -148,7 +148,11 @@
     </thingCategories>
     <designationCategory>Temperature</designationCategory>
     <techLevel>Neolithic</techLevel>
-    <constructEffect>ConstructDirt</constructEffect>
+    <!-- constructEffect NOT declared: madeFromStuff (stuffCategories above)
+         already picks its own construct animation per stuff (e.g. Fabric's
+         own stuffProps.constructEffect), which always overrides a def-level
+         one anyway (ThingDef.ConfigErrors "madeFromStuff but has a defined
+         constructEffect"). -->
     <building>
       <destroySound>BuildingDestroyed_Soft_Small</destroySound>
     </building>
@@ -204,7 +208,7 @@
     </thingCategories>
     <designationCategory>Temperature</designationCategory>
     <techLevel>Neolithic</techLevel>
-    <constructEffect>ConstructDirt</constructEffect>
+    <!-- constructEffect NOT declared: see RM_ShadeTent above. -->
     <building>
       <destroySound>BuildingDestroyed_Soft_Small</destroySound>
     </building>
