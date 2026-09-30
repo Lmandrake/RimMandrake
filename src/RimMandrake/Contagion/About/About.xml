@@ -40,7 +40,7 @@ generates).
 
 `CONTAGION_GENOME_ORGAN_GROWING_1` (2026-09-26) added the mod's first real
 mechanic: a colonist can be operated on (`RM_ExtractGenomeSample`, a Medicine
-surgical bill) to draw a genome sample, then carry it to a live `AA_RedGoo` —
+surgical bill) to draw a genome sample, then carry it to a live `RM_BloodyMess` —
 the roster's own "the body" — and inject it (a right-click interaction,
 `RM_InjectGenomeSample`). The amoeba gestates for 4 in-game days
 (`RM_AmoebaGestation`), then dies producing 2-4 ordinary vanilla organs
@@ -50,9 +50,8 @@ batch per amoeba, per the owner's ruling. Gated by its own Mod Settings
 toggle, default on.
 
 `CONTAGION_UNFINISHED_SPAWNER_1` (2026-09-26) added the mod's second mechanic:
-`AA_RedGoo` periodically buds a short-lived `RM_TheUnfinished` chimera nearby
-(`CompSpawnerUnfinished`, patched onto the donor the same way the genome comps
-above are). Each Unfinished rolls 1-3 random vanilla `Hediff_AddedPart` limbs
+`RM_BloodyMess` periodically buds a short-lived `RM_TheUnfinished` chimera nearby
+(`CompSpawnerUnfinished`, declared on that def). Each Unfinished rolls 1-3 random vanilla `Hediff_AddedPart` limbs
 from a small pool (claw/spike/fang/stump/vestigial wing/useless jaw — some
 armed, some not) onto random un-missing body parts, a rare (12%) "rolled a
 monster" combat buff, and a vanilla severity-per-day hediff randomised to kill

@@ -8,10 +8,10 @@ namespace RimMandrake.Contagion
     // CONTAGION_GENOME_ORGAN_GROWING_1 — the mechanism the item asked for:
     // "inject the genome of a colonist into one of the amoeba-like entities
     // within the contagion to produce a plethora of organs and limbs from
-    // that individual." Host = AA_RedGoo (Alpha Animals' Contagion "body"
-    // roster row, §4 of the_contagion.md: "the weapon's tissue... buds new
-    // forms every Bloom" — the one roster entry that reads as amoeba-like
-    // rather than insect/reptile/bird-like). Consumable per owner ruling
+    // that individual." Host = RM_BloodyMess, the Contagion's "body" roster
+    // row (§4 of the_contagion.md: "the weapon's tissue... buds new forms
+    // every Bloom"), our own port of the donor AA_RedGoo per the grotesque
+    // cast bible. The Wombpod's harvested sac hatches one. Consumable per owner ruling
     // 2026-09-22: the host dies producing exactly one batch.
     //
     // CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1: the batch pool now includes
@@ -20,10 +20,9 @@ namespace RimMandrake.Contagion
     // of v1 until the limb mechanism existed.
     public static class AmoebaHostUtility
     {
-        // AA_OcularJelly/etc. are all sarg.alphaanimals defNames; RedGoo is
-        // the one named "the body" in the sheet's own ruled table. Looked up
-        // by string so this mod carries no hard Alpha Animals dependency.
-        public const string HostDefName = "AA_RedGoo";
+        // Our own race (Defs/ThingDefs_Races/RM_ContagionFauna.xml); matched
+        // by defName string so the check stays a cheap comparison.
+        public const string HostDefName = "RM_BloodyMess";
 
         private static readonly IntRange OrganCountRange = new IntRange(2, 4);
 

@@ -2,7 +2,7 @@ using Verse;
 
 namespace RimMandrake.Contagion
 {
-    // CONTAGION_GENOME_ORGAN_GROWING_1. Lives on the host amoeba (AA_RedGoo)
+    // CONTAGION_GENOME_ORGAN_GROWING_1. Lives on the host amoeba (RM_BloodyMess)
     // between injection and completion. Severity climbs via the standard
     // HediffCompProperties_SeverityPerDay comp declared on the HediffDef
     // (RM_AmoebaGestation.xml) — this class only carries the injected

@@ -25,7 +25,7 @@ namespace RimMandrake.Contagion
         // option simply never appears.
         public static bool genomeOrganGrowingEnabled = true;
 
-        // CONTAGION_UNFINISHED_SPAWNER_1: master toggle for AA_RedGoo's
+        // CONTAGION_UNFINISHED_SPAWNER_1: master toggle for RM_BloodyMess's
         // CompSpawnerUnfinished. Off degrades gracefully — the comp's CompTick
         // simply never spawns; any Unfinished already on the map keep living
         // out their (short) lives normally.
@@ -87,7 +87,7 @@ namespace RimMandrake.Contagion
                 "Amoeba genome/organ growing enabled",
                 ref genomeOrganGrowingEnabled,
                 "Lets a colonist extract a genome sample and inject it into a Contagion "
-                + "amoeba (AA_RedGoo), which gestates a one-time batch of organs matched "
+                + "amoeba (the bloody mess), which gestates a one-time batch of organs matched "
                 + "to that colonist and dies producing it. Off removes the surgery recipe "
                 + "and the injection option entirely.");
 
@@ -95,7 +95,7 @@ namespace RimMandrake.Contagion
             list.CheckboxLabeled(
                 "The Unfinished spawner enabled",
                 ref unfinishedSpawnerEnabled,
-                "Lets the Contagion's red goo (AA_RedGoo) periodically bud a short-lived "
+                "Lets the Contagion's bloody mess periodically bud a short-lived "
                 + "Unfinished chimera nearby — random-limb, days-long-lived, dissolving to "
                 + "goo on death. Off stops new ones from budding; any already alive keep "
                 + "living out their (short) lives normally.");

@@ -7,9 +7,9 @@ using Verse;
 namespace RimMandrake.Contagion
 {
     // CONTAGION_UNFINISHED_SPAWNER_1. Declared directly on RM_TheUnfinished's
-    // own ThingDef (this is OUR race, not a donor's, so no patch is needed —
-    // contrast CompProperties_SpawnerUnfinished below, which IS patched onto
-    // the donor AA_RedGoo). Fires once per pawn at spawn and rolls:
+    // own ThingDef (this is OUR race, so no patch is needed; the same holds
+    // for CompProperties_SpawnerUnfinished below, declared on RM_BloodyMess).
+    // Fires once per pawn at spawn and rolls:
     //
     //   1. A random subset of "attempted limb" Hediff_AddedPart hediffs onto
     //      random un-missing leaf body parts — vanilla's own bionic/prosthetic

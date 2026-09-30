@@ -11,7 +11,7 @@ namespace RimMandrake.Contagion
     // FloatMenuMakerMap.Init() auto-registers every non-abstract subclass via
     // reflection, so no Harmony hook or manual registration is needed. This
     // is the "how the creature is made a vessel" answer from the item's
-    // question 4: a right-click interaction on a live AA_RedGoo while
+    // question 4: a right-click interaction on a live RM_BloodyMess while
     // carrying a genome sample, not a building.
     public class FloatMenuOptionProvider_InjectGenomeSample : FloatMenuOptionProvider
     {
