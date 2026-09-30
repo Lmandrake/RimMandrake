@@ -19,14 +19,12 @@
   Copied from infrastructure/artpipe/_artsrc/RM_Middenbeetle_* into
   Textures/Things/Pawn/Animal/RM_Gripper/ this pass.
 
-  Stealing behavior: the ruling calls it "part of the def, not just flavor",
-  but no JobGiver/WorkGiver for animal item-theft exists anywhere in this
-  mod's live C#, and authoring one is outside both this item's scope and
-  WASTELAND_MECHANICS_BUILD_1's (neither lists it). Flavor-only this wave,
-  same deferral shape as RM_ContagionFauna.xml's Doublemaw infection-bite —
-  followed up as WASTELAND_GRIPPER_STEAL_BEHAVIOR_1 (filed alongside this
-  build). herdAnimal marks its caravan-line travel; no theft mechanic is
-  wired.
+  Stealing behavior (WASTELAND_GRIPPER_STEAL_BEHAVIOR_1): RM_CompGripperThief
+  below + Defs/ThinkTreeDefs/RM_GripperTheft.xml + Source/RM_GripperTheft.cs.
+  A wild gripper spawns holding a scrap of junk, steals small unforbidden
+  items it can reach (swapping its scrap for anything worth more), scurries
+  off, and lets go of its haul when hurt or killed. Tamed grippers never
+  steal. Toggles and rate live in Wasteland's Mod Settings.
 -->
 <Defs>
 
@@ -84,6 +82,21 @@
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>
+    <comps>
+      <li Class="RimMandrake.Wasteland.RM_CompProperties_GripperThief">
+        <searchRadius>20</searchRadius>
+        <maxCarryMass>3</maxCarryMass>
+        <maxUnitsTaken>10</maxUnitsTaken>
+        <dropOnHarmChance>0.5</dropOnHarmChance>
+        <startingJunkChance>1</startingJunkChance>
+        <startingJunk>
+          <Steel>2~5</Steel>
+          <Silver>5~20</Silver>
+          <Cloth>3~10</Cloth>
+          <ComponentIndustrial>1~1</ComponentIndustrial>
+        </startingJunk>
+      </li>
+    </comps>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Gripper</defName>

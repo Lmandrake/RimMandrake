@@ -46,6 +46,7 @@
     <Compile Include="RM_MapComponent_WastelandStorms.cs" />
     <Compile Include="RM_CompAmbientDose.cs" />
     <Compile Include="RM_CompProcessorGatherable.cs" />
+    <Compile Include="RM_GripperTheft.cs" />
   </ItemGroup>
 
   <ItemGroup>
