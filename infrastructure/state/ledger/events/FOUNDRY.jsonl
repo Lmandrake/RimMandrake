@@ -1394,3 +1394,17 @@
 {"seat":"FOUNDRY","event":"close","id":"WARCASKET_CASK_BAY_AND_SARCOPHAGI_1","sha":"27adad24d","ts":"2026-09-30T04:59:14Z"}
 {"seat":"FOUNDRY","event":"file","id":"WARCASKET_CASK_ART_1","title":"Art for RM_CaskBay (building) and RM_HalfExtractedCore (item); texPaths wired under Warcasket/Textures, no render exists","kind":"task","target":"v1","needs":"offline","caused_by":"WARCASKET_CASK_BAY_AND_SARCOPHAGI_1","for":"FOUNDRY","ts":"2026-09-30T04:59:16Z"}
 {"seat":"FOUNDRY","event":"file","id":"WARCASKET_WASTE_RUN_REMAINDER_1","title":"Cask-bay follow-ons: five waste-run destinations, Stenchlands cask item, Junker pawnkind wearing the warcasket, what the half-extracted core is for","kind":"task","target":"v1","needs":"owner","caused_by":"WARCASKET_CASK_BAY_AND_SARCOPHAGI_1","for":"FOUNDRY","ts":"2026-09-30T04:59:17Z"}
+{"seat":"FOUNDRY","event":"claim","id":"WARCASKET_CASK_ART_1","ts":"2026-09-30T04:59:53Z"}
+{"seat":"FOUNDRY","event":"start","id":"WARCASKET_CASK_ART_1","ts":"2026-09-30T04:59:54Z"}
+{"seat":"FOUNDRY","event":"block","id":"WARCASKET_CASK_ART_1","reason":"Jobs queued; waiting on daemon renders, then wire","ts":"2026-09-30T05:00:44Z"}
+{"seat":"FOUNDRY","event":"unblock","id":"BLURRG_CANON_REGEN_1","ts":"2026-09-30T05:02:37Z"}
+{"seat":"FOUNDRY","event":"close","id":"BLURRG_CANON_REGEN_1","sha":"f94585748","ts":"2026-09-30T05:02:38Z"}
+{"seat":"FOUNDRY","event":"unblock","id":"RM_RAWVENOM_ART_1","ts":"2026-09-30T05:02:41Z"}
+{"seat":"FOUNDRY","event":"close","id":"RM_RAWVENOM_ART_1","sha":"f94585748","ts":"2026-09-30T05:02:45Z"}
+{"seat":"FOUNDRY","event":"unblock","id":"FORGE_MISSING_ART_1","ts":"2026-09-30T05:02:49Z"}
+{"seat":"FOUNDRY","event":"note","id":"FORGE_MISSING_ART_1","text":"Three of four wired at f94585748. RM_CinderCrust still has no identity written; this item stays open for it.","ts":"2026-09-30T05:02:54Z"}
+{"seat":"FOUNDRY","event":"block","id":"FORGE_MISSING_ART_1","reason":"RM_CinderCrust identity unwritten (design line owed before art)","ts":"2026-09-30T05:02:58Z"}
+{"seat":"FOUNDRY","event":"note","id":"SOLAR_HEAT_EXPOSURE_1","text":"Tranche 2 landed fe6c8561a: shade-patch graph (lazy, <=1 rebuild per 2000-tick grid recompute, only on shade-effective heat maps), sun-escape + rest/rim-pause/dash job givers ahead of eat/sleep (tamed/drafted/manhunter/flee keep precedence), dash range from tranche-1 heat model capped 24 cells, drafted-pawn return ring, settings incl. strictness slider; selftest 28/28. Known gap: wild animals may still pick a sleep spot in sun. Offline spec complete. Owed: Long Shade quicktest (behaviour, no think loops, graph cost on full map), owner-watched strictness sitting.","ts":"2026-09-30T05:03:11Z"}
+{"seat":"FOUNDRY","event":"block","id":"SOLAR_HEAT_EXPOSURE_1","reason":"Offline build complete; needs Long Shade quicktest (game-up) + owner-watched strictness sitting","ts":"2026-09-30T05:03:13Z"}
+{"seat":"FOUNDRY","event":"note","id":"LONGSHADE_BEDAZZLE_MECHANICS_1","text":"SOLAR_HEAT_EXPOSURE_1 shade-patch graph landed fe6c8561a - Swimmer's road / Crawler Road prerequisite now exists.","ts":"2026-09-30T05:03:16Z"}
+{"seat":"FOUNDRY","event":"unblock","id":"LONGSHADE_BEDAZZLE_MECHANICS_1","ts":"2026-09-30T05:03:27Z"}
