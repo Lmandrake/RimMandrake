@@ -2,7 +2,7 @@
 <Defs>
 
   <!--
-    CONTAGION_GENOME_ORGAN_GROWING_1. Lives on the AA_RedGoo host between
+    CONTAGION_GENOME_ORGAN_GROWING_1. Lives on the RM_BloodyMess host between
     injection and completion. Severity climbs via HediffCompProperties_
     SeverityPerDay at 0.25/day = 4 days total — an expedition timescale
     (find the amoeba, inject, come back later), not an industry cycle. The

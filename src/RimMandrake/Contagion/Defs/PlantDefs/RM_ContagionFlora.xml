@@ -86,13 +86,13 @@
 
   <!--
     Wombpod: the in-world organ of the genome loop. Harvest yields RM_WombpodSac, which hatches
-    (vanilla CompHatcher) into an AA_RedGoo, the amoeba host AmoebaHostUtility.IsEligibleHost
+    (vanilla CompHatcher) into an RM_BloodyMess, the amoeba host AmoebaHostUtility.IsEligibleHost
     accepts. The float-menu injection then works on that pawn unchanged; no C# is added here.
   -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Wombpod</defName>
     <label>wombpod</label>
-    <description>Translucent gestation pods the goo grows in sheltered hollows, each with something part-made floating in it. Cutting one open frees a sac that will hatch into a red goo amoeba, the host a genome sample can be injected into. Never food.</description>
+    <description>Translucent gestation pods the goo grows in sheltered hollows, each with something part-made floating in it. Cutting one open frees a sac that will hatch into a bloody mess, the host a genome sample can be injected into. Never food.</description>
     <statBases>
       <MaxHitPoints>35</MaxHitPoints>
       <Flammability>0.5</Flammability>
