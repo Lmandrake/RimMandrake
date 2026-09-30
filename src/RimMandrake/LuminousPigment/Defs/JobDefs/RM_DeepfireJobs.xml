@@ -13,4 +13,12 @@
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
+  <!-- DEEPFIRE_FLOOR_PAINT_1: the floor-cell branch (one coat per cell). -->
+  <JobDef>
+    <defName>RM_ApplyDeepfireFloor</defName>
+    <driverClass>RimMandrake.LuminousPigment.JobDriver_ApplyDeepfireFloor</driverClass>
+    <reportString>applying deepfire to the floor.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
 </Defs>

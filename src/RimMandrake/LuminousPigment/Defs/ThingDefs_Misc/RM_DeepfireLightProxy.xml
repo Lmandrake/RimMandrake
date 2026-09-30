@@ -7,7 +7,8 @@
   gates on parent.Spawned, so an UNSPAWNED proxy structurally cannot light
   map.glowGrid. This def is the SPAWNED, invisible, unselectable 1x1 Thing
   MapComponent_DeepfireLights.cs spawns one of per registered light (a coated
-  wall/furniture/item cell, spec §3.6's clustering is a later step).
+  wall/furniture/item, or one per 3x3 cluster of coated floor cells / 1x1
+  buildings — spec §3.6, DEEPFIRE_FLOOR_PAINT_1).
 
   🔴 category Item / altitudeLayer Item, NOT Building — MEASURED live
   2026-09-29: the first shape (ParentName="BuildingBase", category Building,
@@ -52,6 +53,13 @@
     <tradeability>None</tradeability>
     <neverMultiSelect>true</neverMultiSelect>
     <tickerType>Never</tickerType>
+    <!-- DEEPFIRE_FLOOR_PAINT_1, spec §3.6 "Lights are never saved": every
+         proxy is rebuilt on load (CompDeepfire.PostSpawnSetup for things,
+         MapComponent_DeepfireLights.FinalizeInit for the floor grid). A
+         saveable proxy survived the save AND got a fresh twin on load, so
+         each save/load cycle doubled the lights (Map.ExposeData only skips
+         things whose def.isSaveable is false, RimSage Verse/Map.cs). -->
+    <isSaveable>false</isSaveable>
     <statBases>
       <Flammability>0</Flammability>
       <Beauty>0</Beauty>

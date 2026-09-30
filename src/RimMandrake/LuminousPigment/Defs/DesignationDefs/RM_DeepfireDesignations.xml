@@ -15,4 +15,13 @@
     <targetType>Thing</targetType>
   </DesignationDef>
 
+  <!-- DEEPFIRE_FLOOR_PAINT_1: floors have no comps, so a floor order is a
+       CELL designation (DesignationManager indexes Cell- and Thing-typed
+       defs separately; one def cannot serve both). -->
+  <DesignationDef>
+    <defName>RM_ApplyDeepfireFloorDesignation</defName>
+    <texturePath>UI/Designators/Paint_Bottom</texturePath>
+    <targetType>Cell</targetType>
+  </DesignationDef>
+
 </Defs>

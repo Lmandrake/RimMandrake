@@ -75,6 +75,12 @@
     <Compile Include="Designator_Deepfire.cs" />
     <Compile Include="WorkGiver_ApplyDeepfire.cs" />
     <Compile Include="JobDriver_ApplyDeepfire.cs" />
+    <!-- DEEPFIRE_FLOOR_PAINT_1, spec §10 step 6: floor grid + 3x3 clustering,
+         terrain/beauty Harmony hooks, the floor-cell job, dev proof actions. -->
+    <Compile Include="MapComponent_DeepfireLights.Clusters.cs" />
+    <Compile Include="DeepfireFloorPatches.cs" />
+    <Compile Include="DeepfireFloorJobs.cs" />
+    <Compile Include="DeepfireFloorDebugActions.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -17,6 +17,10 @@ namespace RimMandrake.LuminousPigment
         public static DesignationDef RM_ApplyDeepfireDesignation;
         public static JobDef RM_ApplyDeepfire;
 
+        // DEEPFIRE_FLOOR_PAINT_1: the floor-cell branch.
+        public static DesignationDef RM_ApplyDeepfireFloorDesignation;
+        public static JobDef RM_ApplyDeepfireFloor;
+
         static DeepfireDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(DeepfireDefOf));
