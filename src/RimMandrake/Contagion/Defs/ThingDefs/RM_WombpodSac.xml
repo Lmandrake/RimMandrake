@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_NEW_SPECIES_FLORA_1. The Wombpod harvest. A vanilla CompHatcher turns it into the
+    AA_RedGoo amoeba host of the genome loop (AmoebaHostUtility.HostDefName). The hatcher is
+    gated on the donor mod because the host is that mod's PawnKindDef; without it the sac is
+    inert, exactly as the genome loop's injection already is. The icon reuses the Wombpod plant
+    texture as a placeholder, so a dedicated item icon is a fair follow-on.
+  -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_WombpodSac</defName>
+    <label>wombpod sac</label>
+    <description>A translucent sac cut from a wombpod, something part-made turning slowly inside. Left alone it hatches into a red goo amoeba, the host a genome sample can be injected into.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>Things/Plant/RM_Wombpod/RM_Wombpod</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.6, 0.6)</drawSize>
+    </graphicData>
+    <stackLimit>5</stackLimit>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Mass>0.4</Mass>
+      <Flammability>0.5</Flammability>
+      <MarketValue>15</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>None</tradeability>
+    <comps>
+      <li Class="CompProperties_Hatcher" MayRequire="sarg.alphaanimals">
+        <hatcherDaystoHatch>3</hatcherDaystoHatch>
+        <hatcherPawn>AA_RedGoo</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

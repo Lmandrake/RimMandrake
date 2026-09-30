@@ -147,6 +147,11 @@
       <RM_Meltgut>0.1</RM_Meltgut>  <!-- meltgut - the-undertaker -->
       <RM_Scaldhide>0.1</RM_Scaldhide>  <!-- scaldhide - the-basker -->
       <RM_Gnashling>0.1</RM_Gnashling>  <!-- gnashling - the-pickers -->
+      <RM_Skinflap>1.2</RM_Skinflap>  <!-- skinflap - goo-bud flyer, the Bloom's confetti -->
+      <RM_Sloshbelly>0.25</RM_Sloshbelly>  <!-- sloshbelly - the cistern -->
+      <RM_Crispling>0.3</RM_Crispling>  <!-- crispling - the burn-line scavenger -->
+      <RM_Danglemaw>0.12</RM_Danglemaw>  <!-- danglemaw - the ambusher -->
+      <RM_Gorekite>0.08</RM_Gorekite>  <!-- gorekite - apex of the canopy air -->
       <RM_SparkleechGrub>0.05</RM_SparkleechGrub>  <!-- sparkleech grub - the-thieves (grub) -->
     </wildAnimals>
     <coastalWildAnimals />
@@ -161,6 +166,9 @@
       <AB_BloodBouquet>0.3</AB_BloodBouquet>  <!-- blood bouquet -->
       <RUT_RustPuff MayRequire="mandrake.rut.rotsporekit">0.3</RUT_RustPuff>  <!-- rust puff -->
       <AB_AlienTree_Polluted>0.15</AB_AlienTree_Polluted>  <!-- mutated ocular tree - tree -->
+      <RM_Meatvine>0.35</RM_Meatvine>  <!-- meatvine - infection-front vine -->
+      <RM_Toothmoss>0.3</RM_Toothmoss>  <!-- toothmoss - burn-line carpet -->
+      <RM_Wombpod>0.2</RM_Wombpod>  <!-- wombpod - genome-loop host source -->
     </wildPlants>
     <wildPlantRegrowDays>25</wildPlantRegrowDays>
   </BiomeDef>
