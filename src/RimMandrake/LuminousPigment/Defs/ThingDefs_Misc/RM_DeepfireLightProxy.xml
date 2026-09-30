@@ -10,19 +10,31 @@
   wall/furniture/item, or one per 3x3 cluster of coated floor cells / 1x1
   buildings — spec §3.6, DEEPFIRE_FLOOR_PAINT_1).
 
-  🔴 category Item / altitudeLayer Item, NOT Building — MEASURED live
-  2026-09-29: the first shape (ParentName="BuildingBase", category Building,
-  altitudeLayer Building, fillPercent 0) DESTROYED the wall it was spawned on
-  top of. GenSpawn.Spawn's default WipeMode.Vanish calls
+  🔴 altitudeLayer Item, NOT Building — MEASURED live 2026-09-29: the first
+  shape (ParentName="BuildingBase", category Building, altitudeLayer
+  Building, fillPercent 0) DESTROYED the wall it was spawned on top of.
+  GenSpawn.Spawn's default WipeMode.Vanish calls
   GenSpawn.SpawningWipes(newDef, oldDef) (RimSage-verified, Verse/GenSpawn.cs),
   which wipes on `thingDef2.blocksAltitudes.Contains(thingDef.altitudeLayer)` —
   BuildingBase's own inherited `blocksAltitudes` blocks the Building layer
   regardless of fillPercent, so a fillPercent-0 Building-layer thing spawned
-  on an occupied cell still wiped the occupant. Moved to the `Item` category/
-  layer, the same shape this repo's own BuriedCache.xml precedent
-  (MovingDunes) already uses for an invisible marker meant to coexist with
-  whatever occupies its cell — RE-VERIFIED live afterward: a proxy now spawns
-  on a Steel wall's own cell and the wall survives.
+  on an occupied cell still wiped the occupant. On the Item layer a proxy
+  spawned on a Steel wall's own cell leaves the wall standing (RE-VERIFIED
+  live 2026-09-29).
+
+  🔴 category Ethereal, NOT Item (DEEPFIRE_PROXY_BLOCKS_STORAGE_1). An
+  Item-category proxy (a) made GenSpawn.Spawn DeSpawn and re-place an
+  existing item when the cell was already at GetMaxItemsAllowedInCell, and
+  (b) counted in GridsUtility.GetItemCount, so StoreUtility's
+  NoStorageBlockersIn read the cell as full — every coated 3x3 floor block in
+  a stockpile lost a storage cell (RimSage Verse/GenSpawn.cs Spawn,
+  Verse/GridsUtility.cs, RimWorld/StoreUtility.cs). Changing ONLY the
+  category keeps the wall safe: SpawningWipes' only category-sensitive rules
+  are the early returns for Attachment/Mote/Filth/Projectile/Plant/
+  PsychicEmitter, the Item-vs-Impassable rule (we are Standable), IsEdifice
+  (no `building`) and BlocksPlanting (fillPercent 0, no blockPlants). The
+  altitude rules — the ones that wiped the wall — see the same Item layer as
+  before. Same shape as RM_DeepfireWornLightProxy below.
 
   glowRadius/glowColor on the XML comp are placeholders only: every spawn
   immediately overrides CompGlower.GlowRadius/GlowColor at runtime
@@ -37,10 +49,11 @@
     <label>deepfire light (internal)</label>
     <description>Internal marker thing that carries a Deepfire glow light. If you can see or select this, something is wrong — report it.</description>
     <thingClass>ThingWithComps</thingClass>
-    <category>Item</category>
+    <category>Ethereal</category>
     <drawerType>None</drawerType>
     <altitudeLayer>Item</altitudeLayer>
     <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
     <size>(1,1)</size>
     <rotatable>false</rotatable>
     <selectable>false</selectable>
@@ -49,7 +62,6 @@
     <alwaysHaulable>false</alwaysHaulable>
     <designateHaulable>false</designateHaulable>
     <drawGUIOverlay>false</drawGUIOverlay>
-    <stackLimit>1</stackLimit>
     <tradeability>None</tradeability>
     <neverMultiSelect>true</neverMultiSelect>
     <tickerType>Never</tickerType>
