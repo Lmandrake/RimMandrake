@@ -40,12 +40,30 @@
         <li>RM_SeaFloorHabitat</li>
       </tileMutators>
     </pocketMapProperties>
+    <!-- SEA_DIVE_FLOOR_TERRAIN_1, 2026-09-30: habitat bands on the sediment
+         floor (GenStep_SeaFloorTerrain / RM_SeaFloorBandsExtension). Nested
+         hot-spring patches: a boiling shallow core (RUT_ScaldWaterOceanShallow,
+         burns, avoidWander, tag RM_CrowncarpetBed) ringed by the cool mat margin
+         (RUT_ScaldMargin, burn 0, tag RUT_ScaldMarginMat). Both are walkable
+         shallow water; both are RM_Crowncarpet habitat, which is why Plants is
+         listed below. -->
+    <modExtensions>
+      <li Class="RimMandrake.DivingInteraction.RM_SeaFloorBandsExtension">
+        <baseTerrain>RM_SeaFloorGround</baseTerrain>
+        <noiseFrequency>0.08</noiseFrequency>
+        <bands>
+          <li><terrain>RUT_ScaldWaterOceanShallow</terrain><share>0.05</share></li>
+          <li><terrain>RUT_ScaldMargin</terrain><share>0.12</share></li>
+        </bands>
+      </li>
+    </modExtensions>
     <genSteps>
       <li>ElevationFertility</li>
       <li>RM_SeaFloorTerrain</li>
       <li>RM_PlaceSeaDiveExit</li>
       <li>RM_SeaFloorFauna</li>
       <li>Animals</li>
+      <li>Plants</li>
       <li>RockChunks</li>
       <li>Fog</li>
     </genSteps>
@@ -181,6 +199,25 @@
          listed ONLY here — the ice-bedrock base it paints over is also
          Chill-specific (GenStep_SeaFloorTerrain.cs's own branch), and this
          step's own IsChillSeabedMap guard would no-op elsewhere anyway. -->
+    <!-- SEA_DIVE_FLOOR_TERRAIN_1, 2026-09-30: habitat bands on the ice
+         bedrock (GenStep_SeaFloorTerrain / RM_SeaFloorBandsExtension). Nested
+         propane pools: a liquid core (RM_TheChillDeep, Impassable, tag
+         RM_TheChillBed) ringed by frozen crust (RM_SolidPropane, standable,
+         tag RM_TheChillShelf) — the bed/shelf habitats RM_TheChillFlora.xml's
+         ten species are gated on, which is why Plants is listed below. The
+         liquid core is the only bed-tagged terrain in src, so bed species grow
+         in pools the crew walks around; the GenStep's walkability pass keeps
+         every walkable cell reachable. -->
+    <modExtensions>
+      <li Class="RimMandrake.DivingInteraction.RM_SeaFloorBandsExtension">
+        <baseTerrain>RM_ChillIceBedrock</baseTerrain>
+        <noiseFrequency>0.08</noiseFrequency>
+        <bands>
+          <li><terrain>RM_TheChillDeep</terrain><share>0.05</share></li>
+          <li><terrain>RM_SolidPropane</terrain><share>0.15</share></li>
+        </bands>
+      </li>
+    </modExtensions>
     <genSteps>
       <li>ElevationFertility</li>
       <li>RM_SeaFloorTerrain</li>
@@ -188,6 +225,7 @@
       <li>RM_SeaFloorFauna</li>
       <li>RM_ChillRimeTerraces</li>
       <li>Animals</li>
+      <li>Plants</li>
       <li>RockChunks</li>
       <li>Fog</li>
     </genSteps>
