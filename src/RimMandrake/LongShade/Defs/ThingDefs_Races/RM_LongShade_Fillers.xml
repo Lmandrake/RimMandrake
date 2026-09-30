@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LongShade_Fillers.xml                  LONGSHADE_BEDAZZLE_CONTENT_1 part 2
+
+  The four free-tier hole-fillers the 2026-09-27 sitting's Q4 ruled: owner,
+  typed, "Fill gaps in the animal and plant roster creatively and show me what
+  you make for review." (long_shade_bedazzle_2026-09-27.md, §2c + Rulings Q4).
+  Art went to a review sheet (Transient/desert_fillout_art_review/) and came
+  back ruled 2026-09-27/28: sollak/gennok/tebbra IMPROVE (redo landed as the
+  "_b" set, used here), dakkra KEEP (original set used as-is).
+
+  A fifth filler this same sitting ruled, pirrik, is NOT here — it duplicates
+  the already-built RSW_GlitterBird (DESERT_GLITTER_BIRDS_COMMENSALS_1), so
+  the two are merged into one RM_Pirrik def in RM_LongShade_Gloomcast.xml's
+  neighbour file instead of authored fresh here (part 4 of this same item).
+
+  Bands (long_shade_bedazzle_review_2026-09-29.md "Roster gaps"):
+    sollak  - huge-herd / mobile shade wall (bs ~4.0, the only one of the four
+              over bs 2 — "leggy tower-shouldered giant; standing herds shade
+              each other")
+    gennok  - herd / draught endurer (bs ~2.4, "slow strong endurer that
+              navigates patch to patch, never sprints")
+    tebbra  - herd-small (bs ~0.35, "quick close-country grazer confined to
+              dense-patch hills")
+    dakkra  - burst-predator, the free tier's only bearer of
+              RM_CompHeatBurstPredator (shipped, DESERT_BURST_PREDATOR_FLAGSHIP_1)
+              — "bursts from shadow, grabs, retreats to cool"; RSW_WraidAlpha
+              is the wiring template, comp defaults left as shipped (12
+              trigger cells / 0.5 fatigue+retreat thresholds / 20 search
+              radius / 60 tick interval) rather than re-tuned, since nothing
+              in the ruling asks for a different feel and the shipped
+              defaults are already sized for "a real dash, not a lunge".
+
+  All four carry RM_ShadeSeekingWanderExtension (shipped, defaults) per the
+  sitting's own framing that every free-tier creature answers the shade
+  economy somehow. Bodies are vanilla (QuadrupedAnimalWithHooves for the two
+  grazers/endurer, QuadrupedAnimalWithPawsAndTail for tebbra and dakkra,
+  matching this same file's RM_Vosska/RM_Ulgga precedent of never pulling in
+  a cross-mod BodyDef) — no new BodyDef authored, none of the four needs a
+  body shape vanilla doesn't already have. No eggs: all four are live-birth
+  like RM_Thurra/RM_Groundrunner in the neighbour file, not egg-layers.
+
+  Art: RM_Sollak/RM_Gennok/RM_Tebbra wired from the ruled "_b" redo renders
+  (infrastructure/artpipe/_artsrc/RM_{Sollak,Gennok,Tebbra}_b_{east,north,south}/
+  in the main checkout — never committed to this worktree's git history, read
+  and copied cross-tree); RM_Dakkra wired from its original KEEP render
+  (_artsrc/RM_Dakkra_{east,north,south}/). All three facings present for all
+  four creatures.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sollak</defName>
+    <label>sollak</label>
+    <description>A leggy, tower-shouldered giant that never hurries and never has to: a standing herd of sollak is its own patch of shade, each animal shading the next, and nothing that lives out on the open sand challenges one on purpose. They cross the widest gaps this desert has by simply outlasting the heat that would kill anything smaller.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <MarketValue>500</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>95</ComfyTemperatureMax>
+      <FilthRate>20</FilthRate>
+      <Wildness>0.55</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>front hooves</label>
+        <capacities>
+          <li>Poke</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadeSeekingWanderExtension" />
+    </modExtensions>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <packAnimal>true</packAnimal>
+      <baseBodySize>4.0</baseBodySize>
+      <baseHealthScale>2.4</baseHealthScale>
+      <baseHungerRate>0.6</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <trainability>Intermediate</trainability>
+      <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <lifeExpectancy>30</lifeExpectancy>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sollak</defName>
+    <label>sollak</label>
+    <race>RM_Sollak</race>
+    <combatPower>220</combatPower>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <wildGroupSize>
+      <min>3</min>
+      <max>7</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sollak/RM_Sollak</texPath>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sollak/RM_Sollak</texPath>
+          <drawSize>3.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sollak/RM_Sollak</texPath>
+          <drawSize>4.4</drawSize>
+          <shadowData>
+            <volume>(0.7, 0.55, 0.55)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gennok</defName>
+    <label>gennok</label>
+    <description>A slow, strong endurer bred for one job: cover ground that would kill a faster animal. A gennok never sprints and rarely needs to — it simply keeps moving, patch to patch, long after anything chasing it has had to stop and find shade.</description>
+    <statBases>
+      <MoveSpeed>2.8</MoveSpeed>
+      <MarketValue>320</MarketValue>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <FilthRate>14</FilthRate>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>hooves</label>
+        <capacities>
+          <li>Poke</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadeSeekingWanderExtension" />
+    </modExtensions>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <packAnimal>true</packAnimal>
+      <baseBodySize>2.4</baseBodySize>
+      <baseHealthScale>1.6</baseHealthScale>
+      <baseHungerRate>0.45</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <trainability>Advanced</trainability>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <lifeExpectancy>22</lifeExpectancy>
+      <gestationPeriodDays>11</gestationPeriodDays>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.45</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gennok</defName>
+    <label>gennok</label>
+    <race>RM_Gennok</race>
+    <combatPower>110</combatPower>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <wildGroupSize>
+      <min>4</min>
+      <max>8</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gennok/RM_Gennok</texPath>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gennok/RM_Gennok</texPath>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gennok/RM_Gennok</texPath>
+          <drawSize>2.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Tebbra</defName>
+    <label>tebbra</label>
+    <description>A quick, close-country grazer that keeps to the dense scatter of a good patch and never ventures far from it. Tebbra move in tight little herds, always within a few bounds of the nearest shade, and rely on speed rather than size to get there before anything catches them in the open.</description>
+    <statBases>
+      <MoveSpeed>5.2</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>85</ComfyTemperatureMax>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadeSeekingWanderExtension" />
+    </modExtensions>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <lifeExpectancy>7</lifeExpectancy>
+      <gestationPeriodDays>4.5</gestationPeriodDays>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.2222</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Tebbra</defName>
+    <label>tebbra</label>
+    <race>RM_Tebbra</race>
+    <combatPower>15</combatPower>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <wildGroupSize>
+      <min>3</min>
+      <max>6</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Tebbra/RM_Tebbra</texPath>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Tebbra/RM_Tebbra</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Tebbra/RM_Tebbra</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <ThingDef ParentName="AnimalThingBase">
+    <!-- DESERT_BURST_PREDATOR_FLAGSHIP_1's free-tier bearer — RSW_WraidAlpha
+         (src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_WraidAlpha.xml)
+         is the wiring template for RM_CompProperties_HeatBurstPredator; body
+         and stats are this creature's own, not a reskin (unlike WraidAlpha's
+         Wraid reuse) since the free tier can't carry a cross-mod BodyDef. -->
+    <defName>RM_Dakkra</defName>
+    <label>dakkra</label>
+    <description>A close, low ambusher that lies coiled in a shadow patch waiting for something to overextend, then bursts out at a speed nothing in the open can match. The burst runs it hot fast — it has to reach shade again before its own heat catches up, or the same speed that let it hunt starts to fail it.</description>
+    <statBases>
+      <MoveSpeed>4.6</MoveSpeed>
+      <MarketValue>380</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>85</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.35</ArmorRating_Heat>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>1.7</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadeSeekingWanderExtension" />
+    </modExtensions>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HeatBurstPredator">
+        <hediffDef>RM_HeatDrivenBurst</hediffDef>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>2.0</maxPreyBodySize>
+      <baseBodySize>1.6</baseBodySize>
+      <baseHealthScale>1.4</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <trainability>Intermediate</trainability>
+      <manhunterOnDamageChance>0.6</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.08</manhunterOnTameFailChance>
+      <lifeExpectancy>16</lifeExpectancy>
+      <gestationPeriodDays>8</gestationPeriodDays>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.4</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Dakkra</defName>
+    <label>dakkra</label>
+    <race>RM_Dakkra</race>
+    <combatPower>160</combatPower>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dakkra/RM_Dakkra</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dakkra/RM_Dakkra</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dakkra/RM_Dakkra</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.35, 0.35)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+  <!-- ============== pirrik — LONGSHADE_BEDAZZLE_CONTENT_1 part 4 ==============
+       RSW_GlitterBird (src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/
+       RSW_GlitterBird.xml, DELETED this pass) and the sitting's own "pirrik"
+       filler were one creature — the sheet's name for a tiny shadow commensal
+       that lives its whole life in the gloomcast's shade. Q11a: "glitter-bird"
+       is descriptive English, not canon Star Wars IP, so it belongs in the
+       RM_ tier, cast inline, not behind the Utinni patch layer. This def
+       carries the donor's shadow-follow wiring (RM_ShadowFollowerExtension,
+       unchanged) but is otherwise built fresh: vanilla "Bird" body (matching
+       this file's RM_Ossik, not the donor's cross-mod RSW_FlyingAvian) and
+       the sheet's own pirrik art (real renders, not a Whisperbird reskin) —
+       no flying animation flip-book frames exist for this art, so none are
+       declared; "never block flight waiting on frames" (CLAUDE.md) — the
+       MaxFlightTime/FlightCooldown stat pair alone is what makes it a real
+       flyer. Wired inline on RM_LongShade at the donor's old 0.2 weight
+       (WildAnimals_LongShade.xml's Add block no longer carries this row). -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Pirrik</defName>
+    <label>pirrik</label>
+    <description>A palm-sized flier with plumage that throws back what little light reaches the shade it lives in — a scatter of colour with no source of its own. It is born, feeds, breeds and dies inside the moving shadow of a single gloomcast, never landing on open sand: leaving the shadow even for a moment, in this light, is not a risk this bird is built to survive. When its gloomcast dies, so, eventually, does it.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <FilthRate>4</FilthRate>
+      <Wildness>0.4</Wildness>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RM_EggPirrikUnfertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RM_EggPirrikFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>6</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>2~3</eggCountRange>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadowFollowerExtension">
+        <searchRadius>60</searchRadius>
+      </li>
+    </modExtensions>
+    <race>
+      <body>Bird</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.8</baseHealthScale>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Bird</leatherDef>
+      <petness>0.15</petness>
+      <roamMtbDays>5</roamMtbDays>
+      <trainability>None</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <flightStartChanceOnJobStart>0.08</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.8</leaveMapOnFleeChance>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.12</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Pirrik</defName>
+    <label>pirrik</label>
+    <labelPlural>pirriks</labelPlural>
+    <race>RM_Pirrik</race>
+    <combatPower>50</combatPower>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <wildGroupSize>1~2</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>pirrik chick</label>
+        <labelPlural>pirrik chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Pirrik/RM_Pirrik</texPath>
+          <drawSize>0.42</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Pirrik/RM_Pirrik</texPath>
+          <drawSize>0.85</drawSize>
+          <shadowData>
+            <volume>(0.18, 0.18, 0.18)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Pirrik/RM_Pirrik</texPath>
+          <drawSize>0.95</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.25, 0.25)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

@@ -12,7 +12,8 @@
 
   Star Wars-tier fauna (51 rows) reaches `RM_LongShade` through
   UtinniPatches/Patches/WildAnimals_LongShade.xml, the way the Pyrelands and the
-  Greentide already do it. `JOE_Landopus`/`JOE_Cephalope` (this file's own native rows)
+  Greentide already do it. `JOE_Landopus`/`RM_Qorrax` (renamed from `JOE_Cephalope`, LONGSHADE_BEDAZZLE_CONTENT_1
+  part 3, Q7 ratified; this file's own native rows)
   stay cast inline on the new def too, MayRequire-guarded there since they now cross a
   mod boundary. `RUT_Vorrel` (the plant; its row here dangled and was removed 2026-09-25) moved and was renamed `RM_Vorrel` per
   §7 Q8 — its own five files used to live in `mandrake.rut.ashkarrflora`, now in
@@ -290,7 +291,7 @@
       <RSW_GreatDevourer MayRequire="mandrake.rsw.swbestiary">0.5</RSW_GreatDevourer>  <!-- great devourer - relative of the sarlacc, import -->
       <RSW_Groundrunner MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Groundrunner>  <!-- groundrunner - desert, import -->
       <RSW_MatureFleshbeast MayRequire="mandrake.rsw.swbestiary">0.5</RSW_MatureFleshbeast>  <!-- mature fleshbeast - desert, immature sarlacc, import -->
-      <JOE_Cephalope>0.5</JOE_Cephalope>  <!-- cephalope - sand burrower & swimmer, already absorbed & mod already retired (STAT_NORM_WAVE2_RETIRE_1) -->
+      <RM_Qorrax>0.5</RM_Qorrax>  <!-- qorrax (renamed from JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified) - sand burrower & swimmer, already absorbed & mod already retired (STAT_NORM_WAVE2_RETIRE_1) -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

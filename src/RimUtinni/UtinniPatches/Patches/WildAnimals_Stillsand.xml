@@ -5,7 +5,7 @@
   ============================================================================
 
   Puts the campaign's Extreme Desert Star-Wars fauna/flora/pack-animals onto
-  RM_Stillsand, plus JOE_Cephalope (see below). Same shape as
+  RM_Stillsand, plus RM_Qorrax (renamed from JOE_Cephalope, see below). Same shape as
   WildAnimals_Pyrelands.xml / WildAnimals_FeverWood.xml.
 
   WHY THIS FILE HAS TO EXIST. §7 Q11a (owner, 2026-09-22): a genuinely canon
@@ -61,7 +61,7 @@
     RSW_GraniteSlug 0.1, RSW_Scurrier 0.1, RSW_Gizka 0.01,
     RSW_GreaterKraytDragon 0.001
 
-  1 wildAnimals row with no MayRequire — JOE_Cephalope 0.5. Flagged, not an
+  1 wildAnimals row with no MayRequire — RM_Qorrax (renamed from JOE_Cephalope) 0.5. Flagged, not an
   RSW_/SW_/RUT_ name, but its ThingDef/PawnKindDef live in THIS SAME MOD
   (Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml), not in a
   RimMandrake mod — wiring it inline on RM_Stillsand would give a
@@ -107,13 +107,14 @@
     </match>
   </Operation>
 
-  <!-- JOE_Cephalope — no MayRequire, see header. -->
+  <!-- RM_Qorrax (renamed from JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1 part 3,
+       Q7 ratified) — no MayRequire, see header. -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildAnimals</xpath>
       <value>
-        <JOE_Cephalope>0.5</JOE_Cephalope>
+        <RM_Qorrax>0.5</RM_Qorrax>
       </value>
     </match>
   </Operation>

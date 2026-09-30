@@ -27,15 +27,22 @@ row): "the Long Shade", off `RUT_Desert`'s sheet identity, design/Jawa/worldbuil
 biomes/desert.md (FROZEN, BIOME_FREEZE_FABLE_REVIEW_1).
 
 RM tier: this def names no other franchise or campaign and is playable standalone
-on any generated RimWorld planet, terrain + 16 native creatures + 5 native plants
+on any generated RimWorld planet, terrain + 21 native creatures + 5 native plants
 only. LONGSHADE_RULED_CONTENT_1 (2026-09-27 sitting) moved 14 invented-name
 animals and the ultracactus in from the Utinni patch layer, RENAMED off their
 RSW_ defNames — this mod carries no Star Wars reference of any kind any more.
-Native wild fauna: JOE_Landopus, JOE_Cephalope (absorbed non-Star-Wars donor
-fauna, own defs, §7 Q9), plus RM_Bokka, RM_Ossik, RM_Kudda, RM_Thurra,
-RM_Vosska, RM_Khorrak, RM_Ommok, RM_Ulgga, RM_Jellypot, RM_TruffleMole,
-RM_GreatDevourer, RM_Groundrunner, RM_MatureFleshbeast and RM_Gloomcast (the
-former shade whale, RULED name — Q5). Native flora: RM_Vorrel (the desert's
+LONGSHADE_BEDAZZLE_CONTENT_1 (part 2) added five more: the Q4-ruled fillers
+RM_Sollak, RM_Gennok, RM_Tebbra and RM_Dakkra, plus (part 4) RM_Pirrik — the
+merge of the sitting's own "pirrik" filler with RSW_GlitterBird, which is
+retired and deleted, since "glitter-bird" is descriptive English, not canon
+Star Wars IP (Q11a), and so belongs cast inline here rather than behind the
+Utinni patch layer. Native wild fauna: JOE_Landopus, RM_Qorrax (renamed from
+JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified; absorbed
+non-Star-Wars donor fauna, own defs, §7 Q9), plus RM_Bokka, RM_Ossik, RM_Kudda,
+RM_Thurra, RM_Vosska, RM_Khorrak, RM_Ommok, RM_Ulgga, RM_Jellypot,
+RM_TruffleMole, RM_GreatDevourer, RM_Groundrunner, RM_MatureFleshbeast,
+RM_Gloomcast (the former shade whale, RULED name — Q5), RM_Sollak, RM_Gennok,
+RM_Tebbra, RM_Dakkra and RM_Pirrik. Native flora: RM_Vorrel (the desert's
 cycle plant, moved and renamed here from mandrake.rut.ashkarrflora per §7 Q8),
 RM_Leachmoss and RM_Venomvine (mandrake.rm.environmentalhazards,
 MayRequire-guarded), RM_Ultracactus (Q2: "not canon, I made it") and
@@ -47,13 +54,14 @@ plants (mandrake.rsw.swbestiary, MayRequire-guarded) stay wired inline at
 their existing weights, same shape as every other RimMandrake biome mod's
 still-open wildPlants MayRequire gap (§7, item 4).
 
-The remaining `RSW_`/`SW_`-tier and campaign-tier creatures (37 rows: the
-canon Star Wars cast, the whale's own commensal, and Dewback — herd/mount
-stock added this same sitting, Q8) are OUT of this def by design (§7 Q11/Q12:
-RimMandrake never names Star Wars) and ride
+The remaining `RSW_`/`SW_`-tier and campaign-tier creatures (36 rows: the
+canon Star Wars cast and Dewback — herd/mount stock added this same sitting,
+Q8; the whale's own commensal LEFT this Add block at
+LONGSHADE_BEDAZZLE_CONTENT_1 part 4, merged into the inline RM_Pirrik) are OUT
+of this def by design (§7 Q11/Q12: RimMandrake never names Star Wars) and ride
 src/RimUtinni/UtinniPatches/Patches/WildAnimals_LongShade.xml as a
 PatchOperationAdd onto RM_LongShade, MayRequire="mandrake.rsw.swbestiary" —
-this mod alone, with nothing else loaded, keeps its own 16 creatures plus
+this mod alone, with nothing else loaded, keeps its own 21 creatures plus
 whatever the Mod Settings screen leaves enabled from the shared shade-grid /
 contact-venom kits (mandrake.rm.creaturebehaviors, mandrake.rm.environmentalhazards
 — loadAfter only, no hard dependency; both already ship their own global toggles

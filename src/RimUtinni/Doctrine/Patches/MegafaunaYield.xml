@@ -2689,27 +2689,27 @@
     <mods><li>Cephaloids</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- JOE_Cephalope MeatAmount: bodySize 1.20, base 168, yields 202 -->
+        <!-- RM_Qorrax MeatAmount (renamed from JOE_Cephalope): bodySize 1.20, base 168, yields 202 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases/MeatAmount</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases/MeatAmount</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases/MeatAmount</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases/MeatAmount</xpath>
             <value><MeatAmount>168</MeatAmount></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases</xpath>
             <value><MeatAmount>168</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- JOE_Cephalope BoneAmount: bodySize 1.20, base 60, yields 72 -->
+        <!-- RM_Qorrax BoneAmount (renamed from JOE_Cephalope): bodySize 1.20, base 60, yields 72 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases/BoneAmount</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases/BoneAmount</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases/BoneAmount</xpath>
             <value><BoneAmount>60</BoneAmount></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="JOE_Cephalope"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_Qorrax"]/statBases</xpath>
             <value><BoneAmount>60</BoneAmount></value>
           </nomatch>
         </li>

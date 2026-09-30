@@ -13,7 +13,8 @@
     fixed only in the RM_ copy: all 13 `wildAnimals` rows, all 3 `wildPlants` rows and all 5
     `allowedPackAnimals` rows below carry Star Wars names and belong behind the Utinni
     patch layer (Q11a), not inline on an RM_-tier def — see
-    `src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml`. `JOE_Cephalope` (below,
+    `src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml`. `RM_Qorrax` (renamed
+    from `JOE_Cephalope`, LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified; below,
     no MayRequire) also moved to that patch in the RM_ copy: its own ThingDef lives in this
     same mod's `Absorbed_Cephaloids_Defs.xml`, an undeclared hard Utinni dependency the
     RimMandrake tier may not carry inline.
@@ -190,7 +191,7 @@
            (Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml) and joe.cephaloids
            was already removed from ModsConfig.xml that day - only the biome wiring
            was ever owed, so no MayRequire guard is needed. -->
-      <JOE_Cephalope>0.5</JOE_Cephalope>  <!-- cephalope - sand burrower & swimmer, dune_sea + deep_desert -->
+      <RM_Qorrax>0.5</RM_Qorrax>  <!-- qorrax (renamed from JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified) - sand burrower & swimmer, dune_sea + deep_desert -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

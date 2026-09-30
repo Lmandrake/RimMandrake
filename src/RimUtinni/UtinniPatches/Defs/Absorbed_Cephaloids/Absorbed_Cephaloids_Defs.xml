@@ -61,7 +61,7 @@
 		<comps>
 		<li Class="CompProperties_Hatcher">
 			<hatcherDaystoHatch>12.5</hatcherDaystoHatch>
-			<hatcherPawn>JOE_Cephalope</hatcherPawn>
+			<hatcherPawn>RM_Qorrax</hatcherPawn>
 		</li>
 		</comps>
 	</ThingDef>
@@ -457,8 +457,19 @@
 	</PawnKindDef>
 
 	<ThingDef ParentName="AnimalThingBase">
-		<defName>JOE_Cephalope</defName>
-		<label>cephalope</label>
+		<!-- LONGSHADE_BEDAZZLE_CONTENT_1 part 3: renamed JOE_Cephalope -> RM_Qorrax
+		     (Q7 ruling, long_shade_bedazzle_2026-09-27.md, ratified). Shared by
+		     RM_LongShade and RM_Stillsand (this creature is terrain-bound across
+		     both deserts, not a single-biome native) plus five other Utinni-tier
+		     biomes via Absorbed_Cephaloids_Patches.xml — every defName reference
+		     across those files renamed in the same pass. bodyGraphicData below
+		     repointed to this mod's own new RM_Qorrax renders (KEEP, 3 facings);
+		     dessicatedBodyGraphicData/swimmingGraphicData stay on the pre-existing
+		     donor-absorbed "cephalope" texture folder in this same mod's own
+		     Textures/ (not a cross-mod donor dependency — no new art was owed for
+		     those two states). -->
+		<defName>RM_Qorrax</defName>
+		<label>qorrax</label>
 		<description>Descended from squid this tentacled monstrosity is like a spider the size of a deer. Fast and aggressive with a lethal bite delivered by venomous beak. An internal shell protects their vital organs.</description>
 		<statBases>
 			<MoveSpeed>8.8</MoveSpeed>
@@ -580,10 +591,10 @@
 	</ThingDef>
 
 	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>JOE_Cephalope</defName>
-		<label>cephalope</label>
-		<labelPlural>cephalopes</labelPlural>
-		<race>JOE_Cephalope</race>
+		<defName>RM_Qorrax</defName>
+		<label>qorrax</label>
+		<labelPlural>qorraxes</labelPlural>
+		<race>RM_Qorrax</race>
 		<combatPower>250</combatPower>
 		<ecoSystemWeight>0.5</ecoSystemWeight>
 		<wildGroupSize>1~3</wildGroupSize>
@@ -597,7 +608,7 @@
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/cephalope/cephalope</texPath>
+					<texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax</texPath>
 					<drawSize>0.8</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
@@ -612,7 +623,7 @@
 			</li>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/cephalope/cephalope</texPath>
+					<texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax</texPath>
 					<drawSize>1.8</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
@@ -627,7 +638,7 @@
 			</li>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/cephalope/cephalope</texPath>
+					<texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax</texPath>
 					<drawSize>3.8</drawSize>
 					<shadowData>
 						<volume>(0.3, 0.4, 0.3)</volume>

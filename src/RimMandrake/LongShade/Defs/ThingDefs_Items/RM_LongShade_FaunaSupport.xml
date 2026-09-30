@@ -331,4 +331,42 @@
 		</filth>
 	</ThingDef>
 
+
+	<!-- RM_Pirrik's own eggs — LONGSHADE_BEDAZZLE_CONTENT_1 part 4. RSW_GlitterBird's
+	     eggs (RSW_EggGlitterBird{Un}Fertilized) retired with that def; these are
+	     new, not renamed, since nothing else referenced the old egg defNames. -->
+	<ThingDef ParentName="EggFertBase">
+		<defName>RM_EggPirrikFertilized</defName>
+		<label>pirrik egg (fert.)</label>
+		<description>A fertilized pirrik egg. If all goes well, it should hatch into a chick.</description>
+		<possessionCount>1</possessionCount>
+		<graphicData>
+			<color>(226,214,150)</color>
+			<drawSize>0.5</drawSize>
+		</graphicData>
+		<statBases>
+			<MarketValue>20.0</MarketValue>
+		</statBases>
+		<comps>
+			<li Class="CompProperties_Hatcher">
+				<hatcherDaystoHatch>6</hatcherDaystoHatch>
+				<hatcherPawn>RM_Pirrik</hatcherPawn>
+			</li>
+		</comps>
+	</ThingDef>
+
+
+	<ThingDef ParentName="EggUnfertBase">
+		<defName>RM_EggPirrikUnfertilized</defName>
+		<label>pirrik egg (unfert.)</label>
+		<description>An unfertilized pirrik egg. It can be eaten raw, but it's much better cooked.</description>
+		<graphicData>
+			<color>(226,214,150)</color>
+			<drawSize>0.5</drawSize>
+		</graphicData>
+		<statBases>
+			<MarketValue>20.0</MarketValue>
+		</statBases>
+	</ThingDef>
+
 </Defs>
