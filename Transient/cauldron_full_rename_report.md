@@ -1,6 +1,6 @@
 # CAULDRON_FULL_RENAME_1 — report
 
-Status: rename executed, verification in progress (selftests running)
+Status: DONE. Pushed to origin/main at 6581ca97021ae7410c3dc3f708bc4bcbdbad6e82.
 
 ## Task
 Rename src/RimMandrake/PoisonForest/ (Poison Forest / PoisonGround biome mod)
@@ -121,10 +121,32 @@ Result:
 - New token `RM_Cauldron` / `mandrake.rm.cauldron` / `RimMandrake.Cauldron`:
   present everywhere expected.
 
+## Final verification
+- `run_selftests.py`: **76/78 passed**, 1 unmeasured (needs a Windows-side
+  bridgetools build, unrelated), 1 FAILED — `selftest_deployed_biome_refs.py`,
+  confirmed the same PRE-EXISTING failure (TheRot/WeepingStones/Contagion/
+  Miasma/TheForge donor MayRequire dangling refs) named in the task brief.
+  Zero mentions of "Cauldron" or "PoisonForest" anywhere in its output.
+- Caught and fixed one self-inflicted issue before push: the additive edit to
+  `PyrelandsTuning.cs` changed source compiled into a DIFFERENT mod's DLL
+  (`FireEcologyHook.dll`, Pyrelands) without rebuilding it.
+  `DLL_SOURCE_STAMP_GUARD_1`'s push hook caught it; rebuilt and re-verified
+  clean (`dll_source_stamp.py check --range origin/main..HEAD` — no output).
+- Rebase onto `origin/main` was clean, no conflicts, did not touch
+  `src/RimMandrake/Cauldron/Source/` — no DLL rebuild owed from the rebase
+  itself.
+- Landed as 3 commits: `730615038` (bulk rename), `0997562c3` (old-path
+  deletion — a `git commit <pathspec>` only commits paths matching the
+  pathspec, so the old `src/RimMandrake/PoisonForest/` deletion staged by
+  `git mv` needed a follow-up commit), `6581ca970` (FireEcologyHook rebuild).
+  Pushed; `git merge-base --is-ancestor HEAD origin/main` confirms all three
+  are published.
+
 ## Unverified / risks
-- `run_selftests.py` full run not yet confirmed complete (background, >120s).
 - No live/bridge verification performed (forbidden by task scope) — build and
   static checks only.
 - The ~90-file "not swept" prose/CSV corpus (see exception 5) still says
   "poison forest"/"PoisonForest" in various forms; harmless to load/build but
   not literally zero per the item's stated criterion.
+- The RUT_PoisonForest defName rename decision (owner call) is still owed —
+  same as CRACKEDLANDS_FULL_RENAME_1, which is still open/blocked on it.
