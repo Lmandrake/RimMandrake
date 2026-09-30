@@ -138,9 +138,9 @@ SERVER_CMD = ("MEM_MAX=16G /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude
 # REP's amber — the owner's choice, so the colours he knows survive the rename.
 #
 # The model is per-seat and rides the commandline (owner, 2026-08-28: "Do it").
-# Per Agent_Policy.md's ladder and each seat's own file: BENCH runs FABLE
-# (design judgment with the owner — BENCH.md names it), FOUNDRY defaults to
-# Sonnet and self-escalates per item. The `--model` FLAG outranks every settings
+# Per Agent_Policy.md's ladder (owner, 2026-09-29): BENCH runs Opus (it
+# orchestrates and backgrounds design to Opus subagents), FOUNDRY defaults to
+# Sonnet and self-escalates per item. Fable is off the ladder. The `--model` FLAG outranks every settings
 # file including a /model saved default, which is the point: opening the tab is
 # the whole startup, and a seat never inherits whatever model the last session
 # left behind. In-session /model still switches live when an item needs more.
@@ -157,7 +157,7 @@ SERVER_CMD = ("MEM_MAX=16G /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude
 # that is NOT a Claude seat: bare capitalised name, no AGENT_SEAT export, no
 # LAUNCH. `{label}` is interpolated. The model field is ignored for those.
 SEATS = {
-    "BENCH":   ("#7BC96F", "claude-fable-5", "green — with the owner, permanent bench", None, None),
+    "BENCH":   ("#7BC96F", "opus", "green — with the owner, permanent bench", None, None),
     "FOUNDRY": ("#E5A03C", "sonnet", "amber — the autonomous queue window", None, None),
     # ⭐ ARTIST IS NOT A CLAUDE SEAT. The override routes build() to the daemon
     # commandline: the tile is the artpipe daemon's live console
@@ -172,13 +172,13 @@ SEATS = {
     # strip, not as a voice. It spawns sessions on demand; it never holds a role.
     "SERVER":  ("#FFFFFF", None, "white — the standalone `claude remote-control` server, NOT a seat",
                 None, SERVER_CMD),
-    "HESTIA":  ("#FFC83D", "claude-fable-5", "gold-amber — the Hestia project, not a seat here",
+    "HESTIA":  ("#FFC83D", "opus", "gold-amber — the Hestia project, not a seat here",
                 ("/mnt/d/Luke/dev/Hestia", r"D:\Luke\dev\Hestia"), None),
     # EMERGENCY was a hand-made profile (guid in STALE_GUIDS) until 2026-09-19, when
     # the `--remote-control` change had to reach it too; folded in like Artist was.
     # A Claude window over the whole dev tree, not a seat of this project — same
     # non-seat mechanics as HESTIA (no AGENT_SEAT), just a different home.
-    "EMERGENCY": ("#FF4444", "claude-fable-5", "red — the floating emergency window, not a seat here",
+    "EMERGENCY": ("#FF4444", "opus", "red — the floating emergency window, not a seat here",
                   ("/mnt/d/Luke/dev", r"D:\Luke\dev"), None),
 }
 

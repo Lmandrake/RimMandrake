@@ -36,18 +36,18 @@ log once, screenshot once. Catches NREs, missing/magenta art, eaten defs.
 screenshot/atlas, per `prove-art-missing-before-generating`. A human never
 hunts magenta squares.
 
-## L3 — Fable evaluation (new class of testing; reserved for Fable-grade judgment)
+## L3 — Opus evaluation (new class of testing; reserved for Opus-grade judgment)
 
 Art quality, style coherence with the shipping game, thematic concepts — calls
 beyond FOUNDRY's grade that still need no human. **This is an AUTOMATED cycle
-with the bridge in Fable's own hands** (owner, 2026-09-01): a Fable seat takes
+with the bridge in the evaluator's own hands** (owner, 2026-09-01): an Opus agent takes
 the bridge (`rimflow bridge take`/`release`, like anyone), stages the scene on
 a throwaway map, `jawa/clear_ui` + screenshot, judges, and returns graded
 verdicts as data — no human in the loop and no hand-built inputs. Anything
 mechanical found mixed into an L3 request gets pushed back down to L2.
 
-**L3 is also the default pre-human gate:** content reaches L4 only after a
-Fable pass — **unless the owner is asking to help**, in which case he is never
+**L3 is also the default pre-human gate:** content reaches L4 only after an
+Opus pass — **unless the owner is asking to help**, in which case he is never
 gated out; his offer of eyes beats the ladder.
 
 ## L4 — Human (the owner) — reserved, and staged as REVIEW ENVIRONMENTS

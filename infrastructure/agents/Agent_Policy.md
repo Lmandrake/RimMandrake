@@ -4,14 +4,17 @@
 says which model does what; every other doc points here. The routing axis is
 measured, not argued.
 
-## 🔴 The seat models — owner, 2026-09-02
+## 🔴 The seat models — owner, 2026-09-29 (replaces the 2026-09-02 Fable ladder)
 
-> **BENCH runs on Opus and orchestrates. Design work is backgrounded to a Fable
-> subagent, as standard. Subagents step down to lesser models as appropriate.**
+> The owner asked for **Opus 5.5 for design work and complex code generation, Sonnet 5.5 for
+> well-defined coding tasks with checkable outcomes, and the most recent Haiku only for
+> OS-level searches.** Fable is dropped from the ladder entirely (decision taken by question
+> card, 2026-09-29).
 
-BENCH does not do design in-window and does not grind: it holds the owner's
-attention, spawns, and keeps the conclusion. FOUNDRY runs on Sonnet and escalates
-per item.
+BENCH runs on Opus 5.5 and orchestrates. It does not do design in-window and does not grind:
+it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the
+conclusion. FOUNDRY runs on Sonnet 5.5 and escalates to Opus per item when the work is complex
+code generation or has no checkable outcome.
 
 ## The one question
 
@@ -27,7 +30,8 @@ loud, and dangerous exactly where it is silent.
 
 | Who catches a wrong answer | Use |
 |---|---|
-| A **compiler, selftest, validator or hook**, before anyone reads it | **haiku** |
+| It is an **OS-level search** (grep, glob, file inventory) whose result is re-checked | **haiku** |
+| A **compiler, selftest, validator or hook**, before anyone reads it | **sonnet** |
 | **Another agent**, who will re-derive it before acting | **sonnet** |
 | **Nobody** — it becomes a recorded fact other work cites | **opus** |
 | **Only the owner's eye** — art, the world, prose he reads | **opus**, and it goes to him |
@@ -36,12 +40,14 @@ loud, and dangerous exactly where it is silent.
 
 ## The ladder
 
-| | Context | For |
+| | Alias | For |
 |---|---|---|
-| **Fable 5** | 1M | **Design, always as a backgrounded subagent**: design judgment, decision drafting, synthesis across contradictory evidence, the skill-curation session. Never a window |
-| **Opus 5** (+fast mode) | 1M | **BENCH's window** — the orchestrator. Also per-item escalation: Harmony/C#, bridge writes, the frozen world, multi-file forensics. Fast mode for interactive latency, same model |
-| **Sonnet 5** | 1M | FOUNDRY's default: patches, defs, deploys, quicktests, log triage, interpretive sweeps, first drafts |
-| **Haiku 4.5** | 200K | Disposable subagents: greps, censuses, existence checks, inventories. Never a window |
+| **Opus 5.5** (+fast mode) | `opus` | **Design** — design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation — always as a backgrounded subagent from BENCH. **Complex code generation** — Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world. **BENCH's window**, the orchestrator |
+| **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome** — patches, defs, deploys, quicktests, fixes a selftest or validator proves. Log triage, interpretive sweeps, first drafts. FOUNDRY's default |
+| **Haiku 4.5** (most recent Haiku) | `haiku` | **OS-level searches only** — greps, globs, censuses, existence checks, inventories. Never a window, never writing code |
+
+Fable is not on the ladder (owner, 2026-09-29). The aliases resolve to these versions on the
+Anthropic API (Claude Code model-config docs, checked 2026-09-29).
 
 Escalate the **model**, never the ceremony: a hard problem gets a smarter model on
 the same short leash. Put `model: opus` on an item you already know is hard;
@@ -59,10 +65,12 @@ candidate narrowing only, never conclusions, never writing —
 
 | Job | Model |
 |---|---|
-| Grep, glob, inventory, "does X exist", fixed-shape census | **haiku** |
+| OS-level search: grep, glob, inventory, "does X exist", fixed-shape census | **haiku** |
+| Well-defined coding a compiler, selftest or validator will check | **sonnet** |
 | Sweep where the agent must interpret or classify | **sonnet** |
 | Fan-out whose returns will contradict; adversarial refutation | **sonnet** |
-| **Design** — a spec, a roster, a taxonomy, anything the owner reads as design | **fable**, backgrounded |
+| **Design** — a spec, a roster, a taxonomy, anything the owner reads as design | **opus**, backgrounded |
+| **Complex code generation** — a new system, Harmony/C#, cross-file changes with no test to catch them | **opus** |
 | Anything acted on **without re-deriving it** | **opus** — and ask why it is a subagent |
 
 A subagent's return is EVIDENCE, never a finding — it carries CONFIRMED/UNCERTAIN
@@ -92,5 +100,5 @@ and the window decides what is true. Never spawn a duplicate for "reliability".
 > tool returns success and you cannot see the effect · you would have to invent a
 > defName, field or namespace.
 
-Escalating is a success; record it. Stamp the model on closes (`model=sonnet-5` in
+Escalating is a success; record it. Stamp the model on closes (`model=sonnet-5.5` in
 the `note`) so the ledger can answer accepted-work rate per model.

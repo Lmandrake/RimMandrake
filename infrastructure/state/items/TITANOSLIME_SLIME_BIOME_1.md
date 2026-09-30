@@ -93,7 +93,7 @@ Titanoslime variant needs to widen.
 - This is fresh creative content — per this repo's design/build split, FOUNDRY
   files and researches the engine feasibility (done above) but does not
   design the creature itself in-window; that's this item's `for: BENCH`,
-  `kind: design`, backgrounded to a Fable subagent.
+  `kind: design`, backgrounded to an Opus subagent.
 
 ## design — DONE 2026-09-20 (Fable pass, backgrounded from BENCH)
 

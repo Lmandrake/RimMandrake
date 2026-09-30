@@ -14,7 +14,7 @@ is getting the right thing in front of the person deciding.
 "Don't use humans where a screenshot will do." The ladder in
 `infrastructure/VALIDATION_LADDER.md` binds every review: machine checks first
 (art presence, def resolution, log errors — never a human hunting magenta),
-**Fable evaluation** for art quality and thematic judgment beyond FOUNDRY's
+**Opus evaluation** for art quality and thematic judgment beyond FOUNDRY's
 grade, and the owner ONLY for gameplay, fun, overall thematic coherence and UI.
 Anytime an agent can review something, it just does.
 
