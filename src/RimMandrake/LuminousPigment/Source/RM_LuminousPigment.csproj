@@ -96,6 +96,9 @@
     <Compile Include="DeepfireCombatPatches.cs" />
     <Compile Include="DeepfireStylingStationPatches.cs" />
     <Compile Include="DeepfireWornGlowDebugActions.cs" />
+    <!-- DEEPFIRE_PROXY_BLOCKS_STORAGE_1: proof actions for the Ethereal
+         static proxy (no item displacement, storage not blocked). -->
+    <Compile Include="DeepfireProxyStorageDebugActions.cs" />
   </ItemGroup>
 
   <ItemGroup>

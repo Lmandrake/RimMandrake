@@ -9,9 +9,10 @@ namespace RimMandrake.LuminousPigment
     // pawn. Reuses this class's `entries` table and the LightEntry shape;
     // what differs from SetLight is the proxy and how it moves:
     //
-    //  - The proxy is RM_DeepfireWornLightProxy, category ETHEREAL, not the
-    //    Item-category RM_DeepfireLightProxy. A pawn walks through
-    //    stockpiles; an Item-category proxy (a) makes GenSpawn.Spawn move an
+    //  - The proxy is RM_DeepfireWornLightProxy, category ETHEREAL (the
+    //    static RM_DeepfireLightProxy is Ethereal too since
+    //    DEEPFIRE_PROXY_BLOCKS_STORAGE_1). A pawn walks through
+    //    stockpiles; an Item-category proxy would (a) make GenSpawn.Spawn move an
     //    existing item aside when the cell is already at its item limit, and
     //    (b) counts in GridsUtility.GetItemCount, so the cell reads full
     //    (RimSage Verse/GenSpawn.cs Spawn, Verse/GridsUtility.cs). An
