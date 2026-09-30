@@ -49,7 +49,7 @@
         </capacities>
         <power>2</power>
         <cooldownTime>1.6</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>

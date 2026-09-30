@@ -55,6 +55,12 @@
       <MarketValue>2.4</MarketValue>
       <Mass>0.02</Mass>
       <Flammability>0.5</Flammability>
+      <!-- LOAD_ERRORS_FAUNA_FLORA_1: the <nutrition> field inside <ingestible>
+           below is not a real IngestibleProperties field in 1.6 (XML error,
+           separate class) and is silently dropped, which is why ConfigErrors
+           reads Nutrition==0 despite this being real intended food. The real
+           nutrition value is this Nutrition STAT. -->
+      <Nutrition>0.05</Nutrition>
     </statBases>
     <stackLimit>75</stackLimit>
     <comps>
@@ -107,6 +113,10 @@
       <MarketValue>1.0</MarketValue>
       <Mass>0.02</Mass>
       <Flammability>0.5</Flammability>
+      <!-- LOAD_ERRORS_FAUNA_FLORA_1: see RM_ThornbugNectar above — the
+           <nutrition> field inside <ingestible> is invalid in 1.6; this is
+           the real nutrition value. -->
+      <Nutrition>0.04</Nutrition>
     </statBases>
     <stackLimit>75</stackLimit>
     <comps>
@@ -139,6 +149,10 @@
       <MarketValue>1.0</MarketValue>
       <Mass>0.02</Mass>
       <Flammability>0.5</Flammability>
+      <!-- LOAD_ERRORS_FAUNA_FLORA_1: see RM_ThornbugNectar above — the
+           <nutrition> field inside <ingestible> is invalid in 1.6; this is
+           the real nutrition value. -->
+      <Nutrition>0.04</Nutrition>
     </statBases>
     <stackLimit>75</stackLimit>
     <comps>

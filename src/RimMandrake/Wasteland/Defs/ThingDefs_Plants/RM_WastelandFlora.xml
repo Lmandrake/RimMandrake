@@ -125,7 +125,7 @@
        ====================================================================== -->
 
   <!-- ============== Scumgrass (port of RG_Plant_ToxiGrass) ============== -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Scumgrass</defName>
     <label>scumgrass</label>
     <description>A wiry tussock of grease-slicked grass that grows where cleaner plants die — dull grey-green blades with an oily sheen, tips crusted white with salt. The biome's default green: sparse but firmly rooted, and grazing animals eat it without complaint.</description>
@@ -148,7 +148,7 @@
   </ThingDef>
 
   <!-- ============== Tall Scumgrass (port of RG_Plant_TallToxiGrass) ============== -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_TallScumgrass</defName>
     <label>tall scumgrass</label>
     <description>The same wiry, grease-slicked grass where the ground is richest — which here means worst. Waist-high, sight-blocking, salt crust heavier at the tips.</description>
@@ -276,7 +276,7 @@
        0.02 wildPlants fallback row stays (see RM_Wasteland_Biome.xml).
        Dies in ~8 days as the fall compacts — growDays 1.5 x
        lifespanDaysPerGrowDays 5.5. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Cinderfelt</defName>
     <label>cinderfelt</label>
     <description>A felt-grey mat that grows only on fresh ash fall. After every storm the flats grow a grey pelt, and where the felt is thickest, the fall was heaviest — which is where the survey, and the dose, is. Fast-growing, short-lived; it dies as the fall compacts.</description>

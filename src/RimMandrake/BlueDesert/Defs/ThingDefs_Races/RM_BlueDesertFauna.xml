@@ -627,7 +627,7 @@
         </capacities>
         <power>5</power>
         <cooldownTime>2.0</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>

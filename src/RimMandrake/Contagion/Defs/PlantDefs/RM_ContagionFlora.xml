@@ -8,7 +8,7 @@
   -->
 
   <!-- Meatvine: twitching muscle vine, no yield, an ugly-environment contributor. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Meatvine</defName>
     <label>meatvine</label>
     <description>A vine of twitching muscle tissue, anchored at both ends and flexing slowly like something testing a limb it has not finished growing. The goo trying out reach.</description>
@@ -46,7 +46,7 @@
   </ThingDef>
 
   <!-- Toothmoss: burn-line carpet of grinding teeth; walking it is slow. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Toothmoss</defName>
     <label>toothmoss</label>
     <description>A carpet of small grinding teeth at the scorch margin, wearing themselves down chewing the sterilized matter back into soil the goo can take. Walking it is slow, and it crunches.</description>
@@ -89,7 +89,7 @@
     (vanilla CompHatcher) into an AA_RedGoo, the amoeba host AmoebaHostUtility.IsEligibleHost
     accepts. The float-menu injection then works on that pawn unchanged; no C# is added here.
   -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Wombpod</defName>
     <label>wombpod</label>
     <description>Translucent gestation pods the goo grows in sheltered hollows, each with something part-made floating in it. Cutting one open frees a sac that will hatch into a red goo amoeba, the host a genome sample can be injected into. Never food.</description>
@@ -146,7 +146,7 @@
        Tapped by the Sparkleech; the Danglemaw hangs from it. Poor-yield wood harvest,
        long growDays. Art: RM_Eyebark_v2 IMPROVE pass (owner: "hang droopily downward
        like a willow"), validated pass, supersedes the v1 render. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Eyebark</defName>
     <label>eyebark</label>
     <description>A gnarled alien tree whose red-brown bark is studded with dozens of working eyes, set in welted sockets up the trunk and along the boughs, all open and tracking. Its canopy hangs in long limp curtains of wet dark-red foliage, boughs bowed under the weight. The peaks' dominant organism -- the Sparkleech taps it, the Danglemaw hangs from it.</description>
@@ -207,7 +207,7 @@
 
   <!-- Lashgrass: ground cover of fine red filaments that flinch away from footsteps
        in a spreading wave - the ground telling everything where you are. No yield. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Lashgrass</defName>
     <label>lashgrass</label>
     <description>Fine red filaments carpeting the ground, flinching away from footsteps in a spreading wave. It tells everything in the valley exactly where you are.</description>
@@ -247,7 +247,7 @@
 
   <!-- Bleedleaf: low shrub whose leaves wet through with red at the veins and drip;
        "not even 100% carbon based" (donor's own phrase, kept). No yield. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Bleedleaf</defName>
     <label>bleedleaf</label>
     <description>A low shrub whose leaves wet through with red at the veins and drip -- not even 100% carbon based, whatever it is made of.</description>
@@ -285,7 +285,7 @@
 
   <!-- Gorestalk: tall red columns like stood-up entrails, faintly peristaltic -
        knife country's set dressing, tall enough to block sight lines. No yield. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Gorestalk</defName>
     <label>gorestalk</label>
     <description>Tall red columns standing like stood-up entrails, faintly peristaltic. They grow thick enough in the knife country to block a sightline entirely.</description>
@@ -333,7 +333,7 @@
        is added to RM_ContagionSkyExtension's existing <tellRattlers> list in
        RM_Contagion.xml, which RM_MapComponent_ContagionSky.cs already consumes -
        no new C# added by this port. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Rattlegrope</defName>
     <label>rattlegrope</label>
     <description>A knot of tentacular limbs that gropes slowly at the air, blue nodules at each tip. It rattles before a Burn comes through -- one of the valley's two tells that the sky is about to clear.</description>
@@ -376,7 +376,7 @@
   <!-- Sapblister: a swollen globular plant whose skin blisters weep red sap - the
        sheet's insect repellent and wound-sealant. Harvest yields RM_RedSap, an item,
        never food. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Sapblister</defName>
     <label>sapblister</label>
     <description>A swollen globular plant whose skin blisters weep a red sap, thick enough to keep insects at bay and to seal a wound. Not food, whatever else it is good for.</description>
@@ -425,7 +425,7 @@
        spined stalk; its armored seed-fist breaks off, rolls to the burn line and
        dies there as fertilizer. Harvest yields RM_SeedFistFertilizer, an item,
        never food. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_BloodyFist</defName>
     <label>bloody fist</label>
     <description>A clenched knuckle of dark red blooms on a spined stalk. Its armored seed-fist breaks off when ripe, rolls to the burn line and dies there -- fertilizer for whatever grows back after the next Burn.</description>
@@ -474,7 +474,7 @@
        PLANT, alien on BOTH halves, never a half oak. Art: RM_HalfmadeTree, generated
        fresh through the pipeline (not the retired halfalientree_v1 render), validated
        pass. Poor-yield wood harvest, matching the donor's own halved-value shape. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_HalfmadeTree</defName>
     <label>halfmade tree</label>
     <description>The infection front made visible: half of this tree is one alien plant, and the other half is a second, different alien wrongness overwriting the first -- pulsating red structures eating into gnarled dark growth, neither half anything a person would call a tree back home. It advances in a Bloom and burns back in a Burn.</description>
@@ -531,7 +531,7 @@
 
   <!-- blighted halfmade tree: the variant (plain-modifier form) - the downslope
        front-line texture, further gone, barely a plant at all. -->
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_HalfmadeTreeBlighted</defName>
     <label>blighted halfmade tree</label>
     <description>A halfmade tree further gone: the infection has all but finished overwriting it, and what's left barely reads as a plant at all. Downslope, front-line texture -- the leading edge of the Bloom.</description>

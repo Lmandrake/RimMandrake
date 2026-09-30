@@ -30,7 +30,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_VauliskLure</defName>
     <label>lit lamp-bladder</label>
     <description>A hoolimbre bladder, or so it reads at range: a swollen gold shape holding steady light in the dark between two skylight shafts. Look longer and the wrongness surfaces — the glow never dims, never brightens, never breathes the way every real lamp in this sea breathes. No piip sparks around it. It is not a plant at all.</description>

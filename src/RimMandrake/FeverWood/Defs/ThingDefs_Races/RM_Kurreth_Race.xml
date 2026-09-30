@@ -51,7 +51,7 @@
         </capacities>
         <power>11</power>
         <cooldownTime>1.8</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
         <chanceFactor>1</chanceFactor>
       </li>
     </tools>
@@ -164,7 +164,7 @@
         </capacities>
         <power>16</power>
         <cooldownTime>2.2</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
         <chanceFactor>1</chanceFactor>
       </li>
     </tools>

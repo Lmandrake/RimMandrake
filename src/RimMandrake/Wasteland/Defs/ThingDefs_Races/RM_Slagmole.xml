@@ -38,7 +38,7 @@
         </capacities>
         <power>9</power>
         <cooldownTime>2.0</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
       </li>
       <li>
         <label>digging claw</label>
@@ -47,7 +47,7 @@
         </capacities>
         <power>9</power>
         <cooldownTime>2.0</cooldownTime>
-        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>

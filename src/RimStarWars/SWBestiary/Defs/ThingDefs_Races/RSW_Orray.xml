@@ -85,7 +85,7 @@
         </capacities>
         <power>28</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
         <chanceFactor>0.7</chanceFactor>
         <surpriseAttack>
           <extraMeleeDamages>

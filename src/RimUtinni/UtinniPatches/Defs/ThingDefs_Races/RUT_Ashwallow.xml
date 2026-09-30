@@ -108,7 +108,7 @@
       <baseHungerRate>0.4</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
       <leatherDef>Leather_Plain</leatherDef>
-      <trainability>Minimal</trainability>
+      <trainability>None</trainability>
       <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
       <gestationPeriodDays>10</gestationPeriodDays>

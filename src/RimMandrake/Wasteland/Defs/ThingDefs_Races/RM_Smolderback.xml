@@ -37,7 +37,7 @@
         </capacities>
         <power>8</power>
         <cooldownTime>2.2</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>

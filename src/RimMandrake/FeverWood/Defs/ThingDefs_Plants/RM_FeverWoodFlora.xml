@@ -62,7 +62,7 @@
        a per-species heartwood choice into RM_LivingBoleBiomeExtension's
        C# is a follow-on, out of this item's own def-authoring scope. -->
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Thulvane</defName>
     <label>thulvane</label>
     <description>A colossal fused column of a tree, its base so broad it reads as several trunks grown together, rising past sight so its crown is simply a permanent green ceiling. Bark in wet vertical plates, black in the grooves, permanently damp. The biome's structural unit — the ceiling, the interlock that keeps anything from falling, and the body colonists mine rooms into.</description>
@@ -93,7 +93,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Skethral</defName>
     <label>skethral</label>
     <description>Shorter and wider than a thulvane, and visibly reaching: its heavy limbs grow horizontally toward its neighbours and fuse where they meet, so two skethrals read as one arch. Bark smooth and pale at the joins, scarred where limbs have knitted. This is the tree that grows the boughway roads — the in-fiction reason the crown is interlocked at all.</description>
@@ -124,7 +124,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Varnoth</defName>
     <label>varnoth</label>
     <description>Rooted in a mirror pool itself, on a tripod of prop-roots clear of the surface, its trunk leaning out over the water. Its lower bark is stained and polished to a wet black by the pool. Nothing grows beneath it. Its timber is the best in the biome — and it stands inside the reach, so reward and hazard are the same object.</description>
@@ -160,7 +160,7 @@
 
   <!-- ===================== THE CROWN — 8 plants, on bough-soil ===================== -->
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Plennith</defName>
     <label>plennith</label>
     <description>A dense low mat of overlapping grey-green scales lying directly along bark and bough, thickening into a spongy bed that visibly holds silt and rot. Reads as a surface, never as a plant. This is what makes the bough-soil — the crown's fertility is biological, not geological, and where plennith has run, other things can grow.</description>
@@ -187,7 +187,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Ossagrel</defName>
     <label>ossagrel</label>
     <description>A thick segmented cane clamped along a bough, each joint swollen and split, weeping clear syrup that glazes and crusts below it. The whole plant looks over-full, and the bark under it is sugared and crawling. The host the crown's sap-suckers drink from, and the sugar line for stills and nectar-liquor.</description>
@@ -232,6 +232,12 @@
       <MarketValue>1.1</MarketValue>
       <Mass>0.02</Mass>
       <Flammability>0.6</Flammability>
+      <!-- LOAD_ERRORS_FAUNA_FLORA_1: the <nutrition> field inside <ingestible>
+           below is not a real IngestibleProperties field in 1.6 (XML error,
+           separate class) and is silently dropped, which is why ConfigErrors
+           reads Nutrition==0 despite this being real intended food. The real
+           nutrition value is this Nutrition STAT. -->
+      <Nutrition>0.05</Nutrition>
     </statBases>
     <stackLimit>75</stackLimit>
     <comps>
@@ -250,7 +256,7 @@
     </thingCategories>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Cistrel</defName>
     <label>cistrel</label>
     <description>A tight rosette of stiff waxy leaves forming a cup at chest height, holding clear standing water you can see into — the only water on this map that is not black. Outer leaves rust-red, inner pale. The only safe water in the Fever Wood, where people and tame animals drink.</description>
@@ -277,7 +283,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Maulith</defName>
     <label>maulith</label>
     <description>A crossbeam of stiff branches carrying a dense curtain of flat ribbon-leaves that falls to the walkway below, so the plant is a room with walls. Leaves olive above, silver-backed and always moving slightly. The concealment plant of the crown, and the boughway's privacy screen. Ribbon-leaf is cordage.</description>
@@ -308,7 +314,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Verrow</defName>
     <label>verrow</label>
     <description>Few fronds, held high and thin, with heavy dull-skinned gourds hanging well below them on long stalks — the fruit is the visual mass, not the leaves. The crown's staple food, reachable from a boughway without climbing. Free calories that draw the crown's grazers, and then the things that wait for grazers.</description>
@@ -342,7 +348,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Nubrith</defName>
     <label>nubrith</label>
     <description>A low leathery dome on a squat stalk, glowing a steady warm amber downward onto the deck. The only natural light in the crown — deliberately warm, sitting beside the Wildsteam's steam-lamp gold rather than fighting it. A leaf that glows, not a mushroom.</description>
@@ -375,7 +381,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Halquin</defName>
     <label>halquin</label>
     <description>Two broad blade-leaves lying flat and opposite against the trunk like a pressed specimen, dark and leathery, with a swollen joint between them that beads resin. The medicine — the resin is the biome's herbal medicine line, gathered by scraping, a safe patient crown-side income.</description>
@@ -406,7 +412,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Ammeth</defName>
     <label>ammeth</label>
     <description>One stiff flat fan of fused leaf held in a single plane from a short base, so it reads as a panel from one side and a line edge-on — the only plant here whose silhouette changes with facing. Waxy, rain-shedding, pale underneath. Roofing and decking; the cheapest building material in the biome, cut but never felled.</description>
@@ -439,7 +445,7 @@
 
   <!-- ===================== THE POOL MARGIN — 4 plants ===================== -->
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Claithe</defName>
     <label>claithe</label>
     <description>A flat rosette of blunt grey leaves over a broad pale root-plate that lifts clear of the mud, caked in grey clay it has bound out of the water. The potter's clay is harvested from its root-plate — a raw-terrain resource turned into a plant you can find, judge and farm at the water's edge.</description>
@@ -490,7 +496,7 @@
     </thingCategories>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Corvath</defName>
     <label>corvath</label>
     <description>A single thick dark-purple spike standing alone out of the mud, glossy and swollen, obviously better fed than anything around it. Always solitary — never more than a few at one pool. It grows only where the thing below has fed. A pool ringed with corvath is an occupied pool: the botanical tell that makes the pools readable. Worthless by design — its whole value is as information.</description>
@@ -517,7 +523,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Sodderel</defName>
     <label>sodderel</label>
     <description>A lopsided spar of a tree, half its limbs already dead and black with water, leaning permanently toward the pool. Living growth only on the high side. It looks like a wreck and is not one — this is the biome's ordinary construction wood, since the towers cannot be felled and varnoth is lethal to reach. It reads as naturally half-dead, not diseased.</description>
@@ -548,7 +554,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Seepril</defName>
     <label>seepril</label>
     <description>A low dull barrel of a stem sitting in its own iridescent slick, the rainbow film spreading a cell or two around its base. Leafless above; just the barrel and the sheen. The seep-oils gather around it — perfume, lubricant, fuel. Its rainbow is the planet's honest register: just oil, just useful.</description>
@@ -607,7 +613,7 @@
 
   <!-- ===================== THE GROUND — 3 plants, thinness is the point ===================== -->
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Skimmel</defName>
     <label>skimmel</label>
     <description>A continuous pale-green film lying perfectly flat over the mud, indistinguishable from firm ground until it is stepped on. Its only tell is that it is too even — no texture, no debris, and it never grows on ground that is actually solid. Disguises the sink-mud beneath it. ⚠️ Deliberately deceptive to the eye — do not "fix" this into looking safer or less like ground.</description>
@@ -634,7 +640,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Wanlith</defName>
     <label>wanlith</label>
     <description>Sparse colourless stalks a knee high, translucent and unbranched, standing in loose groups. Almost no biomass. Reads as absence — the visual proof that the floor is starved of light. The ground's baseline cover, deliberately worth almost nothing.</description>
@@ -661,7 +667,7 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBase">
+  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Tullick</defName>
     <label>tullick</label>
     <description>A tight low whorl of dull ribbed leaves with the ground visibly domed beneath it by the tuber below. The ground's one real reward — a bulk starch for the people working the causeway. Digging it churns the mud around it, an honest small cost.</description>

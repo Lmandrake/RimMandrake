@@ -102,7 +102,7 @@
         </capacities>
         <power>9</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
@@ -240,7 +240,7 @@
         </capacities>
         <power>2</power>
         <cooldownTime>1.4</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
@@ -433,7 +433,7 @@
         </capacities>
         <power>7</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>

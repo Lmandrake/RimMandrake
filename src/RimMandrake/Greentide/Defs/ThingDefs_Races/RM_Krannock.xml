@@ -132,7 +132,7 @@
         </capacities>
         <power>11</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
