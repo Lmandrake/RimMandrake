@@ -70,13 +70,8 @@
     dandelions/fuzzballs) are explicitly still owed (§"Owed" — NEW-ART ledger),
     not invented here.
 
-    Weather: ONLY Clear authored. The sheet names three more (The Haze, ice-sand
-    drift re-skinning BlueSnow, ice fog re-skinning Blue Fogstorm/Purple Fog)
-    but its own "Owed" section lists all three as still needing an "engine
-    feasibility pass" — they do not exist as WeatherDefs yet, ours or the
-    donor's re-skinned. Same restraint RUT_NightsideIce applied to its own
-    margin events (ablation drift, rime-fall, thaw pulse): named in the sheet,
-    not invented in this def. Zeroed explicitly rather than left absent, so a
+    Weather: Clear plus the three ruled weathers (The Haze, ice-sand drift, ice fog), see
+    baseWeatherCommonalities below. Unwanted vanilla weathers are zeroed explicitly, so a
     later MayRequire audit sees a deliberate 0, not a silent gap.
 
     Terrain: Ice (vanilla), matching the sheet's own "the ground is ancient
