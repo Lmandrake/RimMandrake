@@ -215,7 +215,7 @@ the `JOE_Cephalope` rename · the filler sets `RM_Sollak`/`_b`, `RM_Gennok`/`_b`
 and the dead sandcrawler (the `RSW_DeadCrawler` plan built from `CrustySandcrawlerHull` walls).
 The Crawler Road build places them, and neither needs a job.
 
-## 4. Queued art: 23 subjects (12 faced sets + 11 singles), 47 job files
+## 4. Queued art: 23 subjects (12 faced sets + 11 singles), 47 job files: FILED, 0 refused
 
 **CSV:** `infrastructure/artpipe/art_lists/longshade_bedazzle_cast.csv`. Channel codex,
 transparent, `reference` empty on every row (these are fresh designs, never reskins), with a
@@ -251,7 +251,7 @@ and the daemon claiming one counts as success. The filing result is in §5.
 
 ## 5. Handoff notes (observed; nothing filed)
 
-- **Filing result:** (pending)
+- **Filing result:** `fill_queue.py` reported 47 jobs filed, 0 duplicates refused and 0 row errors. The pending/ `*.json` glob then counted 46 of ours in `pending/` plus 1 already claimed into `active/` by the daemon: 47 of 47.
 - `RM_TruffleMole`, `RM_GreatDevourer`, `RM_Groundrunner` and `RM_MatureFleshbeast` still carry
   donor description text (the "truffle pigs of Earth", Alpha Animals lore). The new art is drawn
   as our own animals, so the def pass should rewrite the descriptions to match.

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-30T03:04:28Z",
+  "drawsize": 0.7,
+  "facing": null,
+  "facings": [],
+  "id": "RM_DewfringeSprig",
+  "priority": 70,
+  "prompt": "RimWorld game item icon: a dewfringe sprig \u2014 a small loose handful of pale hair-fine filaments cut from the rim of a shadow, bundled at the base with a twist of fibre, beaded along its length with tiny clear dew droplets. Single item, centered, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "LONGSHADE_BEDAZZLE_CONTENT_1",
+  "style_notes": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose overhead, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground \u2014 the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked; never lush and never green in quantity (the only greens here are pale and sparse); realistic painted natural-history illustration, matte surface texture, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is DEW-SILVER: pale silver-green filaments, glassy dew beads catching apricot highlights; the dew line's only green, pale and sparse; item icon, drawSize ~0.7"
+}
