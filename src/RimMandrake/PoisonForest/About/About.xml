@@ -32,18 +32,24 @@ RM_TreeMartyr, RM_DarkCrust — the frozen twin's own RUT_-prefixed copies stay
 in place unchanged, serving the live campaign world and RUT_CrackedLands,
 which still shares RM_TwistingThornwood's species; this mod's copies are its
 own, per the "duplicate, then diverge" rule for content wired into two biome
-mods), 13 non-Star-Wars fauna rows inline, and a Mod Settings screen with the
+mods), 21 non-Star-Wars fauna rows inline, and a Mod Settings screen with the
 standard worldgen-rarity master toggle (MOD_OPTIONS_RETROFIT_1 doctrine —
 defaults = shipped behavior, 0 = never generates).
 
-⚠️ Unlike the fully donor-free mods, this one is NOT donor-free: six wildPlants
-entries (AB_CrystalFlower, AB_BloodBouquet, AB_RavenNettle, AB_GiantAgariTox,
-AB_RedBugloss, AB_KeeningCordax, AB_GiantToxicFlower — Alpha Biomes) and
-the world-map texture (Biomes/PoisonForest, BiomesPlus) carry no MayRequire,
-inherited unchanged from the frozen campaign twin — not this build's scope to
-fix. Alpha Biomes is required for full flora variety; the inline fauna rows
-(Genetic Rim, Alpha Animals, Alpha Memes, Horrors) are individually
-MayRequire'd and degrade gracefully without them.
+CAULDRON_RULED_CONTENT_1: the seven Alpha Biomes wildPlants this biome once
+named (crystal flower, blood bouquet, raven nettle, red bugloss, giant agaritox,
+keening cordax, giant toxic flower) are now owned RM_ defs, so wildPlants no
+longer depends on Alpha Biomes; RM_Xithess (a filter-frond with a vent-chemistry
+yield) joins them. Three owned natives are added (RM_Vexxiss, RM_Zisska,
+RM_Eskith, with RM_Vexxith shear material and RM_ZisskaMeat) and four Alpha
+Animals imports (Plasmorph, Lucifer bug, Radyak, Ripper hound), each
+MayRequire'd. Not yet built (needs C#): the vexxiss's wild-shear job and
+fire-warden behaviour, the growth-scaled metal second yield on both trees.
+
+⚠️ Not fully donor-free: the world-map texture (Biomes/PoisonForest, BiomesPlus)
+carries no MayRequire, inherited unchanged from the frozen campaign twin. The
+inline fauna rows (Genetic Rim, Alpha Animals, Alpha Memes, Horrors) are
+individually MayRequire'd and degrade gracefully without them.
 
 NOT in this mod: the Star Wars-tier fauna (Neebray, Mynock, GraniteSlug,
 RSW_Screecher, RSW_VentStalker) that inhabit this biome in the campaign —

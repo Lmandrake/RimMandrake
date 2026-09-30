@@ -201,4 +201,320 @@
     </lifeStages>
   </PawnKindDef>
 
+  <!--
+    CAULDRON_RULED_CONTENT_1 (2026-09-29): the three ruled natives below.
+    Text and frames from design/Jawa/worldbuilding/biomes/
+    cauldron_bedazzle_cast_2026-09-28.md section 3. All three are invented
+    names, so they live in this RM tier and are wired inline in
+    RM_PoisonForest.xml (Q11a). One home each (the Cauldron only).
+    Art: Textures/Things/Pawn/Animal/RM_<Name>/ (south/east/north, Graphic_Multi).
+
+    RM_Vexxiss: NO CompProperties_Explosive and no explosion of any kind (owner
+    ruling, "too many exploding giant beasts"): the Suush comp above is
+    deliberately NOT copied. Shearing yields RM_Vexxith through vanilla
+    CompProperties_Shearable, which works on a LIVING TAMED animal only
+    (CompShearable needs a faction); a corpse yields nothing of it. Wild-vexxiss
+    shearing, vent inhaling, gas-tap prying, the fire-warden attack and the
+    water-poisoning touch are BEHAVIOURS and need C#:
+    CAULDRON_MECHANICS_BUILD_1. Not stubbed here.
+
+    RM_Zisska: mineral-rasper. foodType is VegetarianRoughAnimal, so in the
+    game it eats plants (vein moss, the crust film, is the nearest thing to
+    what the description says). The rasp-stone-off-rock behaviour is a
+    follow-on. Meat is the owner-ruled toxic prized meat, RM_ZisskaMeat
+    (Defs/ThingDefs_Items), plus a trace of steel as the concentrated metal.
+
+    RM_Eskith: ground bird-adjacent, no flight stats (a drummer, not a flier).
+    Its silence-before-a-vent-bloom tell is behaviour: CAULDRON_MECHANICS_BUILD_1.
+  -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vexxiss</defName>
+    <label>vexxiss</label>
+    <description>The ground here talks all day -- rush and groan and gurgle, the slow engine of the forest's chemistry -- and the vexxiss is the one thing that walks like it belongs in the machine. A hill of slag that moves: plates of smelter-scab and old bark grown together, crystal fans standing down the spine like vents on a boiler, no eyes anywhere on it because it has never needed to see anything. It drinks the ground's breath straight from the wellheads, it hates fire the way a lung hates smoke, and the crews that shear its plates say the trick is not the climbing. The trick is doing it without warming the shears.</description>
+    <statBases>
+      <MoveSpeed>1.4</MoveSpeed>
+      <Mass>3000</Mass>
+      <Flammability>0</Flammability>
+      <MeatAmount>900</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Sharp>0.9</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.6</ArmorRating_Blunt>
+      <ArmorRating_Heat>2.0</ArmorRating_Heat>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>front leg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>26</power>
+        <cooldownTime>2.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontLegs</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>6.0</baseBodySize>
+      <baseHealthScale>8.0</baseHealthScale>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>80</lifeExpectancy>
+      <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>1.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <shearIntervalDays>60</shearIntervalDays>
+        <woolAmount>12</woolAmount>
+        <woolDef>RM_Vexxith</woolDef>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vexxiss</defName>
+    <label>vexxiss</label>
+    <race>RM_Vexxiss</race>
+    <combatPower>600</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>3.0</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Zisska</defName>
+    <label>zisska</label>
+    <description>Low and broad as a dropped shield, plated like the stones it eats. The zisska spends its life nose-down against rock and old trunks, rasping off the mineral rings the forest paints on everything that stands still -- and everything it rasps stays in it. The Farmers of other countries would call it livestock. Here the butchers wear gloves to the elbow, and the meat is worth the gloves.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <Mass>60</Mass>
+      <Flammability>0.4</Flammability>
+      <MeatAmount>70</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Sharp>0.35</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>1.0</baseBodySize>
+      <baseHealthScale>1.2</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Simple</trainability>
+      <lifeExpectancy>25</lifeExpectancy>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <herdAnimal>true</herdAnimal>
+      <specificMeatDef>RM_ZisskaMeat</specificMeatDef>
+      <butcherProducts>
+        <Steel>3</Steel>
+      </butcherProducts>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Zisska</defName>
+    <label>zisska</label>
+    <race>RM_Zisska</race>
+    <combatPower>40</combatPower>
+    <wildGroupSize>3~6</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zisska/RM_Zisska</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zisska/RM_Zisska</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zisska/RM_Zisska</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Eskith</defName>
+    <label>eskith</label>
+    <description>Knee-high, quick-footed, feet feathered out into wide soft pads that read the ground the way ears read air. Eskith talk in knocks -- a drummed code sent through the rock, felt in your boot soles under the engine's rumble. The forest is never quiet, so nobody listens for sound here; they listen for the drumming. When the eskith stop answering each other, the old hands are already walking for the roof.</description>
+    <statBases>
+      <MoveSpeed>4.6</MoveSpeed>
+      <Mass>5</Mass>
+      <Flammability>0.7</Flammability>
+      <MeatAmount>14</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Simple</trainability>
+      <lifeExpectancy>8</lifeExpectancy>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <herdAnimal>true</herdAnimal>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Eskith</defName>
+    <label>eskith</label>
+    <race>RM_Eskith</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>3~7</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Eskith/RM_Eskith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Eskith/RM_Eskith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Eskith/RM_Eskith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
 </Defs>
