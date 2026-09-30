@@ -1,0 +1,44 @@
+home map None tile 40823 biome AB_GallatrossGraveyard
+settings before: requireGravEngine=True seaFloorBandsEnabled=True
+
+=== TheScald (RM_TheScald)
+hatch spawn: {'success': True, 'thingsPlaced': 1, 'failed': 0}
+EnterPortal: {'success': True, 'accepted': True, 'reason': None, 'error': None}
+pocket map 1 {'mapId': 1, 'tile': -1, 'biome': 'RM_TheScald'}
+exits 1 exit terrain ['RM_SeaFloorGround']
+map biome RM_TheScald size 50 50 cellsRead 2500
+terrain: {"RM_SeaFloorGround": 2076, "RUT_ScaldMargin": 299, "RUT_ScaldWaterOceanShallow": 125}
+plants: {}
+
+=== GreySea (RM_GreySea)
+hatch spawn: {'success': True, 'thingsPlaced': 1, 'failed': 0}
+EnterPortal: {'success': True, 'accepted': True, 'reason': None, 'error': None}
+pocket map 2 {'mapId': 2, 'tile': -1, 'biome': 'RM_GreySea'}
+exits 1 exit terrain ['RM_SeaFloorGround']
+map biome RM_GreySea size 50 50 cellsRead 2500
+terrain: {"RM_SeaFloorGround": 2196, "RM_BrinePoolShallow": 136, "RM_BrinePoolDeep": 97, "RM_BrineChannel": 43, "RM_ChimneySeepFloor": 28}
+plants: {"RM_Rimebeard": 23, "RM_Stillbloom": 5}
+
+=== TwilightSea (RM_TwilightSea)
+hatch spawn: {'success': True, 'thingsPlaced': 1, 'failed': 0}
+EnterPortal: {'success': True, 'accepted': True, 'reason': None, 'error': None}
+pocket map 3 {'mapId': 3, 'tile': -1, 'biome': 'RM_TwilightSea'}
+exits 1 exit terrain ['RM_SeaFloorGround']
+map biome RM_TwilightSea size 50 50 cellsRead 2500
+terrain: {"RM_SeaFloorGround": 2500}
+plants: {}
+
+=== TheChill (RM_TheChill)
+hatch spawn: {'success': True, 'thingsPlaced': 1, 'failed': 0}
+EnterPortal: {'success': True, 'accepted': True, 'reason': None, 'error': None}
+pocket map 4 {'mapId': 4, 'tile': -1, 'biome': 'RM_TheChill'}
+exits 1 exit terrain ['RM_ChillIceBedrock']
+map biome RM_TheChill size 50 50 cellsRead 2500
+terrain: {"RM_ChillIceBedrock": 1979, "RM_SolidPropane": 375, "RM_TheChillDeep": 125, "RM_ChillRimeTerrace": 21}
+plants: {}
+
+VERDICTS:
+  TheScald     FAIL (habitat present, no tag-gated plant grew)
+  GreySea      PASS
+  TwilightSea  PASS
+  TheChill     FAIL (habitat present, no tag-gated plant grew)
