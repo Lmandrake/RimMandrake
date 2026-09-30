@@ -70,6 +70,11 @@ namespace RimMandrake.FloodedCanyon
         public static bool muttavaqWaterWakeEnabled = true;
         public static bool muttavaqDigInEnabled = true;
 
+        // §5 — Peakstorm Light pulls the next flood forward (the chime
+        // follows the storm on the peaks). The weather itself is a biome
+        // weather commonality, not a setting.
+        public static bool peakstormBiasEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -89,6 +94,7 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref floodRecutSeamCount, "floodRecutSeamCount", 4, true);
             Scribe_Values.Look(ref muttavaqWaterWakeEnabled, "muttavaqWaterWakeEnabled", true, true);
             Scribe_Values.Look(ref muttavaqDigInEnabled, "muttavaqDigInEnabled", true, true);
+            Scribe_Values.Look(ref peakstormBiasEnabled, "peakstormBiasEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -114,6 +120,11 @@ namespace RimMandrake.FloodedCanyon
             list.CheckboxLabeled("Run the flood cycle in other biomes too", ref featureInOtherBiomes,
                 "Applies the flood cycle to EVERY map's biome, not only the flooded "
                 + "canyon — the mechanic without the biome.");
+
+            list.CheckboxLabeled("Floods follow the peakstorm light", ref peakstormBiasEnabled,
+                "When the far skyline flickers with a storm on the peaks, the next flood "
+                + "may come sooner — within a day or so. The chime still rings first. "
+                + "Never within half a flood period of the last one.");
 
             list.Label("Days between floods: " + floodPeriodDays.ToString("0"));
             floodPeriodDays = list.Slider(floodPeriodDays, 6f, 60f);

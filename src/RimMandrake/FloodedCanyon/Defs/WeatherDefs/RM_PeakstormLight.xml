@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_PeakstormLight.xml   CRACKEDLANDS_MECHANICS_BUILD_1 §5 (mark 8, the herald sky)
+
+  "Clear and dry here while the northern skyline flickers with the
+  Contagion's storm (sky color + distant strike SFX; ZERO precipitation by
+  construction - ban 5)."
+
+  ZERO PRECIPITATION BY CONSTRUCTION: no rainRate / snowRate (WeatherDef
+  defaults both to 0), no overlay/workers, and the only event maker is
+  RM_WeatherEvent_DistantFlicker - a subclass of vanilla
+  WeatherEvent_LightningFlash (read via RimSage 2026-09-29) at reduced
+  brightness. The base class's FireEvent plays SoundDefOf.Thunder_OffMap:
+  the distant strike, and nothing strikes the map (no
+  WeatherEvent_LightningStrike maker here, unlike vanilla DryThunderstorm).
+
+  Sky: Clear's own colour sets with a faint cold cast at dusk/night, so the
+  day reads clear and the flicker carries the storm.
+
+  Flood coupling (RM_MapComponent_CanyonFlood): while this weather stands,
+  the flood clock may pull its next flood forward (setting
+  "peakstormBiasEnabled") - the chime follows the storm on the peaks.
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RM_PeakstormLight</defName>
+    <label>peakstorm light</label>
+    <description>Clear and dry overhead, while the far skyline flickers and grumbles with a storm on the peaks upstream. Nothing falls here. The water it is making will arrive later, down the canyons.</description>
+    <ambientSounds>
+      <li>Ambient_Wind_Clear</li>
+    </ambientSounds>
+    <durationRange>10000~30000</durationRange>
+    <eventMakers>
+      <li>
+        <averageInterval>900</averageInterval>
+        <eventClass>RimMandrake.FloodedCanyon.RM_WeatherEvent_DistantFlicker</eventClass>
+      </li>
+    </eventMakers>
+    <favorability>Neutral</favorability>
+    <isBad>false</isBad>
+    <perceivePriority>1</perceivePriority>
+    <repeatable>true</repeatable>
+    <skyColorsDay>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.718,0.745,0.757)</shadow>
+      <overlay>(1,1,1)</overlay>
+      <saturation>1.2</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.80,0.64,0.50)</sky>
+      <shadow>(0.93,0.90,0.94)</shadow>
+      <overlay>(0.78,0.78,0.82)</overlay>
+      <saturation>1.15</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.44,0.52,0.64)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.58,0.58,0.64)</overlay>
+      <saturation>1.15</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.44,0.52,0.64)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.58,0.58,0.64)</overlay>
+      <saturation>1.15</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

@@ -57,6 +57,7 @@
     <Compile Include="RM_ExplosiveGrowthBridge.cs" />
     <Compile Include="RM_FossilStrata.cs" />
     <Compile Include="RM_CompPanSleeper.cs" />
+    <Compile Include="RM_WeatherEvent_DistantFlicker.cs" />
     <Compile Include="Debug\RM_FloodedCanyonDebugActions.cs" />
   </ItemGroup>
 
