@@ -9,6 +9,7 @@ namespace RimMandrake.Warcasket
         public static HediffDef RM_TerrainImmersionHazard;
         public static HediffDef RM_WarcasketBreach;
         public static StatDef RM_HazardousTerrainProtection;
+        public static JobDef RM_CrackSarcophagus;
 
         static RM_WarcasketDefOf()
         {

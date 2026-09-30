@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WARCASKET_CASK_BAY_AND_SARCOPHAGI_1 - the lead-lined cask bay.
+
+  What the owner approved ("7) yrs", WASTELAND_BEDAZZLE_SITTING_1 turn 2,
+  2026-09-28), BENCH's slate item 7 verbatim: "The lead-lined cask bay
+  (gravship touch) - a shielded hardpoint that lets the ship haul the
+  Throat's casks, unlocking your own authored waste-run dilemma (the five
+  destinations, each a moral verdict)." A gravship hazmat hold, not a
+  crafting bench.
+
+  - Gravship hardpoint: terrainAffordanceNeeded Substructure (the vanilla
+    Odyssey affordance GravshipHull / fuel tanks use), Odyssey build tab,
+    BasicGravtech - it can only stand on a ship, so it always flies with it.
+  - Cask cargo only: Biotech's Wastepack (which vanilla shelves refuse),
+    RM_HalfExtractedCore, and the RM_HazardCasks category.
+  - Shielded: RM_CompCaskShielding (RM_CaskBay.cs) holds each stored
+    cask's dissolution clock at zero and silences core dose; Mod Settings
+    "Cask bay shielding". preventDeteriorationOnTop also stops weather
+    deterioration from bursting a wastepack.
+  - The five destinations (wasteland.md §10) are campaign quest work, not
+    this building.
+
+  ART: none generated (searched 2026-09-29). texPath is this mod's own
+  path, BLOCKED until a render lands there.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_CaskBay</defName>
+    <label>lead-lined cask bay</label>
+    <description>A shielded cargo hardpoint bolted into a gravship's substructure: thick lead-lined walls around racks sized for waste casks and fuel cores. Toxic wastepacks locked inside never dissolve and never leak, and a hot reactor core stops dosing the crew. It is how a ship carries the worst thing on the planet somewhere else, and every place it could go is a choice somebody will have to answer for.</description>
+    <thingClass>Building_Storage</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RM_CaskBay/RM_CaskBay</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <canOverlapZones>false</canOverlapZones>
+    <surfaceType>Item</surfaceType>
+    <tickerType>Rare</tickerType>
+    <drawerType>MapMeshOnly</drawerType>
+    <designationCategory>Odyssey</designationCategory>
+    <uiOrder>2400</uiOrder>
+    <terrainAffordanceNeeded>Substructure</terrainAffordanceNeeded>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <researchPrerequisites>
+      <li>BasicGravtech</li>
+    </researchPrerequisites>
+    <costList>
+      <Steel>150</Steel>
+      <Plasteel>40</Plasteel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <WorkToBuild>4000</WorkToBuild>
+      <Mass>60</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <inspectorTabs>
+      <li>ITab_Storage</li>
+    </inspectorTabs>
+    <building>
+      <preventDeteriorationOnTop>true</preventDeteriorationOnTop>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <maxItemsInCell>3</maxItemsInCell>
+      <blueprintClass>Blueprint_Storage</blueprintClass>
+      <fixedStorageSettings>
+        <filter>
+          <thingDefs>
+            <li>Wastepack</li>
+            <li>RM_HalfExtractedCore</li>
+          </thingDefs>
+          <categories>
+            <li>RM_HazardCasks</li>
+          </categories>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <thingDefs>
+            <li>Wastepack</li>
+            <li>RM_HalfExtractedCore</li>
+          </thingDefs>
+          <categories>
+            <li>RM_HazardCasks</li>
+          </categories>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <li Class="RimMandrake.Warcasket.RM_CompProperties_CaskShielding" />
+    </comps>
+  </ThingDef>
+
+</Defs>

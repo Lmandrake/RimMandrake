@@ -21,12 +21,28 @@ namespace RimMandrake.Warcasket
         // a saved map simply stops accruing/decays as normal.
         public static bool terrainImmersionEnabled = true;
 
+        // WARCASKET_CASK_BAY_AND_SARCOPHAGI_1 (RM_Sarcophagus.cs). Off: a dead
+        // wearer's sarcophagus suit is never sealed and no crack-open option
+        // is offered; the suit strips like any apparel.
+        public static bool sarcophagiEnabled = true;
+
+        // RM_CompCaskShielding (RM_CaskBay.cs). Off: the cask bay is ordinary
+        // cask-only storage; stored wastepacks dissolve and cores dose as
+        // they would anywhere.
+        public static bool caskBayShieldingEnabled = true;
+
+        // RM_CompCoreDose. Off: a half-extracted core is inert cargo.
+        public static bool coreDoseEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
             Scribe_Values.Look(ref compoundFailureEnabled, "compoundFailureEnabled", true);
             Scribe_Values.Look(ref terrainImmersionEnabled, "terrainImmersionEnabled", true);
+            Scribe_Values.Look(ref sarcophagiEnabled, "sarcophagiEnabled", true);
+            Scribe_Values.Look(ref caskBayShieldingEnabled, "caskBayShieldingEnabled", true);
+            Scribe_Values.Look(ref coreDoseEnabled, "coreDoseEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -57,6 +73,26 @@ namespace RimMandrake.Warcasket
                   + "floor, which stays reachable only through a gravship. Off: deep water is ordinary "
                   + "terrain again for everyone; nothing already accrued is affected beyond continuing to "
                   + "decay normally.");
+
+                list.Gap();
+                list.CheckboxLabeled("Warcasket sarcophagi", ref sarcophagiEnabled,
+                    "Shipped default: ON. A sarcophagus-variant warcasket (the adjusted warcasket) seals "
+                  + "onto its wearer at death: ordinary stripping leaves it on the body, and a colonist "
+                  + "must crack it open (right-click the corpse) to recover the suit, its welded tools "
+                  + "and the half-extracted core. Off: the suit strips like any apparel and no salvage "
+                  + "is added.");
+
+                list.Gap();
+                list.CheckboxLabeled("Cask bay shielding", ref caskBayShieldingEnabled,
+                    "Shipped default: ON. The lead-lined cask bay (a gravship hardpoint) stops stored "
+                  + "toxic wastepacks from dissolving and stored half-extracted cores from dosing anyone. "
+                  + "Off: the bay is ordinary cask-only storage.");
+
+                list.Gap();
+                list.CheckboxLabeled("Half-extracted core dose", ref coreDoseEnabled,
+                    "Shipped default: ON. A loose half-extracted core doses nearby pawns with toxic "
+                  + "buildup (toxic resistance and a warcasket's toxin rating both apply). Off: the "
+                  + "core is inert cargo.");
             }
 
             list.End();

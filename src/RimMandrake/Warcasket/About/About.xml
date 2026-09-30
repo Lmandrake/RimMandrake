@@ -46,11 +46,12 @@ doctrine):
      chance once two or more stack, damaging the suit and injuring the wearer with a tendable
      RM_WarcasketBreach hediff — not flavor text, an actual risk that scales with how compound the
      threat gets and how damaged the suit already is.
-  2. RM_WarcasketJunker — a Junker-adjusted variant carrying RM_JunkerSarcophagusExtension, a
-     marker+metadata ModExtension a biome's own cast can hook a corpse-interaction onto ("a dead
-     Junker in an adjusted warcasket is a sealed salvage-within-salvage: suit, tools, and the
-     half-extracted core still in its grips" — wasteland.md §7). This mod builds only the suit-side
-     hook; the corpse mechanism itself belongs to whoever owns that biome's cast.
+  2. RM_WarcasketJunker — a Junker-adjusted variant, and warcasket sarcophagi (wasteland.md §7: "a
+     dead Junker in an adjusted warcasket is a sealed salvage-within-salvage: suit, tools, and the
+     half-extracted core still in its grips"). The suit seals onto its wearer at death, so ordinary
+     stripping leaves it on the body; a colonist cracks it open from the corpse's right-click menu
+     to recover the suit, the welded tooling and RM_HalfExtractedCore, a reactor core that doses
+     everyone near it until it is locked in a cask bay.
   3. Terrain-survival wiring: RM_HazardousTerrainProtection (a summed apparel stat, same shape as
      this repo's RM_WetBulbProtection) and RM_MapComponent_HazardousTerrainImmersion, a general
      hazard engine (not warcasket-specific — any apparel granting the stat helps, on any map) that
@@ -64,8 +65,9 @@ doctrine):
      safely at the edge or wade the shallows and margins of a hostile sea or brine pool; it never
      lets them dive to, or return from, the floor beneath one.
 
-NOT in this mod: the cask-bay crafting building the sitting approved conceptually, and the
-Junker corpse-interaction mechanism itself (the loot, the half-extracted core item, the
-interaction verb) — both are a biome cast's own scope. See WARCASKET_CASK_BAY_AND_SARCOPHAGI_1.
+  4. RM_CaskBay — the lead-lined cask bay the sitting approved (BENCH slate item 7, owner "yrs"):
+     "a shielded hardpoint that lets the ship haul the Throat's casks". A cask-only storage building
+     that needs gravship substructure, so it flies with the ship; while shielding is on, stored
+     toxic wastepacks never dissolve and stored cores give off no dose.
   </description>
 </ModMetaData>
