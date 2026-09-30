@@ -76,6 +76,17 @@ namespace RimMandrake.CreatureBehaviors
 		private RM_SunPathCustomizer pathCustomizer;
 		private readonly List<RM_SunPathCustomizer> retiredCustomizers = new List<RM_SunPathCustomizer>();
 
+		// SHADE_GEAR_FAMILY_1 (RM_ShadeGear.cs). gearShade: pitched gear
+		// (tent footprints, shield lees), kind-resolved, rebuilt with the rest
+		// of the grid. parasolShade: the one cell each parasol's shadow falls
+		// on, refreshed every ParasolRefreshTicks because its wearer moves.
+		private const int ParasolRefreshTicks = 250;
+		private float[] gearShade;
+		private float[] parasolShade;
+		private readonly List<int> parasolTouched = new List<int>();
+		private readonly HashSet<Thing> gearThings = new HashSet<Thing>();
+		private bool recomputeRequested;
+
 		public RM_MapComponent_ShadeGrid(Map map)
 			: base(map)
 		{
@@ -129,10 +140,63 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return; // mod option: shade grid disabled — ShadeAt reports full sun everywhere
 			}
-			if (Find.TickManager.TicksGame % RecomputeIntervalTicks == 0)
+			int now = Find.TickManager.TicksGame;
+			if (recomputeRequested || now % RecomputeIntervalTicks == 0)
 			{
 				Recompute();
 			}
+			else if (now % ParasolRefreshTicks == 0)
+			{
+				RefreshParasolLayer();
+			}
+		}
+
+		/// <summary>The heat kind gear effectiveness is read under: the
+		/// biome's, or overhead on a biome with no sun heat (ordinary shade —
+		/// what the creature shade consumers read there).</summary>
+		public RM_HeatKind GearKind => HeatExtension?.heatKind ?? RM_HeatKind.overhead;
+
+		/// <summary>RM_CompShadeGear: a tent or shield appeared. Recomputed
+		/// on the next tick rather than waiting for the coarse interval.</summary>
+		public void RegisterGear(Thing t)
+		{
+			if (t != null && gearThings.Add(t))
+			{
+				recomputeRequested = true;
+			}
+		}
+
+		public void UnregisterGear(Thing t)
+		{
+			if (t != null && gearThings.Remove(t))
+			{
+				recomputeRequested = true;
+			}
+		}
+
+		/// <summary>Shade 0..1 from shade gear alone at this cell (pitched and
+		/// parasol), already scaled by the heat kind.</summary>
+		public float GearShadeAt(IntVec3 cell)
+		{
+			if (!Ready(cell) || gearShade == null)
+			{
+				return 0f;
+			}
+			int i = map.cellIndices.CellToIndex(cell);
+			float p = parasolShade != null ? parasolShade[i] : 0f;
+			return Mathf.Max(gearShade[i], p);
+		}
+
+		/// <summary>SHADE_GEAR_FAMILY_1: exposure for this pawn where it
+		/// stands, including the shade of a parasol it is wearing.</summary>
+		public float ExposureFor(Pawn pawn)
+		{
+			float ex = ExposureAt(pawn.Position);
+			if (ex <= 0f)
+			{
+				return 0f;
+			}
+			return RM_SunHeatMath.WithCover(ex, RM_ShadeGear.WornCover(pawn, GearKind, out _));
 		}
 
 		/// <summary>
@@ -148,7 +212,16 @@ namespace RimMandrake.CreatureBehaviors
 				return 0f;
 			}
 			int i = map.cellIndices.CellToIndex(cell);
-			return Mathf.Max(roofShade[i], castShade[i]);
+			float s = Mathf.Max(roofShade[i], castShade[i]);
+			if (gearShade != null)
+			{
+				s = Mathf.Max(s, gearShade[i]);
+			}
+			if (parasolShade != null)
+			{
+				s = Mathf.Max(s, parasolShade[i]);
+			}
+			return s;
 		}
 
 		/// <summary>1 under any roof, else 0.</summary>
@@ -177,7 +250,13 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return 0f;
 			}
-			return exposure[map.cellIndices.CellToIndex(cell)];
+			int i = map.cellIndices.CellToIndex(cell);
+			float ex = exposure[i];
+			if (parasolShade != null && HeatExtension.heatKind != RM_HeatKind.ambient)
+			{
+				ex = RM_SunHeatMath.WithCover(ex, parasolShade[i]);
+			}
+			return ex;
 		}
 
 		/// <summary>The shared per-map path-cost customizer, or null when sun
@@ -208,7 +287,11 @@ namespace RimMandrake.CreatureBehaviors
 				roofShade = new float[n];
 				thickRoof = new bool[n];
 				castShade = new float[n];
+				gearShade = new float[n];
+				parasolShade = new float[n];
+				parasolTouched.Clear();
 			}
+			recomputeRequested = false;
 			System.Array.Clear(castShade, 0, n);
 			ResolveSun();
 			int width = map.Size.x;
@@ -234,7 +317,145 @@ namespace RimMandrake.CreatureBehaviors
 					castShade[i] = RingShadeAt(cell);
 				}
 			}
+			BuildGearLayer();
+			RefreshParasolLayer();
 			RebuildHeatLayers();
+		}
+
+		/// <summary>SHADE_GEAR_FAMILY_1: tent footprints and shield lees, at
+		/// their kind-resolved depth (0 under ambient heat, so nothing is
+		/// written there at all).</summary>
+		private void BuildGearLayer()
+		{
+			System.Array.Clear(gearShade, 0, gearShade.Length);
+			if (gearThings.Count == 0)
+			{
+				return;
+			}
+			RM_HeatKind kind = GearKind;
+			int width = map.Size.x;
+			int height = map.Size.z;
+			List<Thing> gone = null;
+			foreach (Thing t in gearThings)
+			{
+				if (t == null || !t.Spawned || t.Map != map)
+				{
+					(gone ??= new List<Thing>()).Add(t);
+					continue;
+				}
+				RM_CompProperties_ShadeGear p = t.def.GetCompProperties<RM_CompProperties_ShadeGear>();
+				float depth = RM_ShadeGear.DepthOf(t, p, kind);
+				if (depth <= 0f)
+				{
+					continue;
+				}
+				CellRect r = t.OccupiedRect();
+				if (p.mode == RM_ShadeGearMode.footprint)
+				{
+					RM_SunHeatMath.FillRect(gearShade, width, height, r.minX, r.minZ, r.maxX, r.maxZ, depth);
+					continue;
+				}
+				// lee: along the sun when there is one, else away from the
+				// panel's face (its rotation is the way the face looks).
+				float dx, dz, len;
+				if (directional)
+				{
+					dx = sunShadowDir.x;
+					dz = sunShadowDir.y;
+					len = RM_SunHeatMath.ShadowLength(p.leeHeight, sunLengthPerHeight, MaxCastCells);
+				}
+				else
+				{
+					IntVec3 away = t.Rotation.Opposite.FacingCell;
+					dx = away.x;
+					dz = away.z;
+					len = p.fallbackLeeCells;
+				}
+				// At least one cell of lee, however high the sun: a panel you
+				// stand behind always has a behind.
+				len = Mathf.Max(len, 1f);
+				foreach (IntVec3 c in r)
+				{
+					RM_SunHeatMath.CastInto(gearShade, width, height, c.x, c.z, dx, dz, len, ShadowTipShade, depth);
+				}
+			}
+			if (gone != null)
+			{
+				foreach (Thing t in gone)
+				{
+					gearThings.Remove(t);
+				}
+			}
+		}
+
+		/// <summary>SHADE_GEAR_FAMILY_1: each parasol also shades, weakly, the
+		/// one cell its shadow falls on (along the sun, else the way its
+		/// wearer faces). The wearer's own cover is read live in ExposureFor.</summary>
+		private void RefreshParasolLayer()
+		{
+			if (parasolShade == null)
+			{
+				return;
+			}
+			for (int k = 0; k < parasolTouched.Count; k++)
+			{
+				parasolShade[parasolTouched[k]] = 0f;
+			}
+			parasolTouched.Clear();
+			if (!RM_CreatureBehaviorsSettings.shadeGridEnabled || !RM_CreatureBehaviorsSettings.parasolShadeEnabled)
+			{
+				return;
+			}
+			RM_HeatKind kind = GearKind;
+			if (kind == RM_HeatKind.ambient)
+			{
+				return;
+			}
+			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+			for (int k = 0; k < pawns.Count; k++)
+			{
+				Pawn pawn = pawns[k];
+				if (pawn.apparel == null)
+				{
+					continue;
+				}
+				float cover = RM_ShadeGear.WornCover(pawn, kind, out Apparel best);
+				if (cover <= 0f || best == null)
+				{
+					continue;
+				}
+				float adj = cover * best.def.GetCompProperties<RM_CompProperties_ShadeGear>().adjacentFactor;
+				float dx, dz;
+				if (directional)
+				{
+					dx = sunShadowDir.x;
+					dz = sunShadowDir.y;
+				}
+				else
+				{
+					IntVec3 f = pawn.Rotation.FacingCell;
+					dx = f.x;
+					dz = f.z;
+				}
+				if (!RM_SunHeatMath.AdjacentShadowCell(pawn.Position.x, pawn.Position.z, dx, dz, out int ax, out int az))
+				{
+					continue;
+				}
+				IntVec3 cell = new IntVec3(ax, 0, az);
+				if (!cell.InBounds(map))
+				{
+					continue;
+				}
+				int i = map.cellIndices.CellToIndex(cell);
+				if (adj > parasolShade[i])
+				{
+					if (parasolShade[i] == 0f)
+					{
+						parasolTouched.Add(i);
+					}
+					parasolShade[i] = adj;
+				}
+			}
 		}
 
 		/// <summary>Picks the sun vector for this recompute: pinned sun, else
@@ -292,7 +513,7 @@ namespace RimMandrake.CreatureBehaviors
 			for (int i = 0; i < n; i++)
 			{
 				// outdoors=true here: the enclosed-room test is live in ExposureAt.
-				float ex = RM_SunHeatMath.Exposure(ext.heatKind, true, roofShade[i], thickRoof[i], castShade[i]);
+				float ex = RM_SunHeatMath.Exposure(ext.heatKind, true, roofShade[i], thickRoof[i], castShade[i], gearShade[i]);
 				exposure[i] = ex;
 				if (wantPath)
 				{
@@ -339,6 +560,10 @@ namespace RimMandrake.CreatureBehaviors
 				Thing thing = thingList[i];
 				if (thing is Building)
 				{
+					if (thing.def.HasComp(typeof(RM_CompShadeGear)))
+					{
+						continue; // shade gear casts through BuildGearLayer, by heat kind
+					}
 					float h = thing.def.staticSunShadowHeight;
 					if (thing.def.fillPercent >= ShadeCastingFillPercentThreshold)
 					{
@@ -388,7 +613,8 @@ namespace RimMandrake.CreatureBehaviors
 			for (int i = 0; i < thingList.Count; i++)
 			{
 				Thing thing = thingList[i];
-				if (thing is Building && thing.def.fillPercent >= ShadeCastingFillPercentThreshold)
+				if (thing is Building && thing.def.fillPercent >= ShadeCastingFillPercentThreshold
+					&& !thing.def.HasComp(typeof(RM_CompShadeGear)))
 				{
 					return true;
 				}

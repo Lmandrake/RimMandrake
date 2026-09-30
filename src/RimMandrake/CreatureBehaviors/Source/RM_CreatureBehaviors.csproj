@@ -160,6 +160,7 @@
     <Compile Include="RM_SunHeatExtension.cs" />
     <Compile Include="RM_SunHeatPatches.cs" />
     <Compile Include="RM_Gizmo_SunLoad.cs" />
+    <Compile Include="RM_ShadeGear.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
