@@ -13,6 +13,13 @@ namespace RimMandrake.FloodedCanyon
 
         public static GameConditionDef RM_CanyonFlood;
 
+        // CRACKEDLANDS_RULED_CONTENT_1's wall-face mineables
+        // (Defs/ThingDefs_Buildings/RM_FossilSeams.xml), placed by
+        // RM_FossilStrata (CRACKEDLANDS_MECHANICS_BUILD_1 §3).
+        public static ThingDef RM_FossilSeam_Impression;
+        public static ThingDef RM_FossilSeam_Skeleton;
+        public static ThingDef RM_FossilSeam_Unique;
+
         static RM_FloodedCanyonDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_FloodedCanyonDefOf));

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FloodedCanyon_FossilStrata.xml   CRACKEDLANDS_MECHANICS_BUILD_1 §3
+
+  GenStepDef for RM_GenStep_FossilStrata (Source/RM_FossilStrata.cs).
+  Registration is the separate Patches/RM_FloodedCanyon_FossilStrata_Register.xml.
+
+  order 250: after RocksFromGrid (200), Terrain (210) and RemoveTinyIslands
+  (240) - the wall faces exist - and before the critical/non-critical
+  structure passes (400+) and ruins (750), so a structure that later clears
+  rock simply clears a seam like any other wall cell.
+
+  Biome-gated inside the class (RM_FloodedCanyon, or every biome when the
+  "fossil seams in other biomes" setting is on); a no-op everywhere else.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_GenStep_FossilStrata</defName>
+    <order>250</order>
+    <genStep Class="RimMandrake.FloodedCanyon.RM_GenStep_FossilStrata" />
+  </GenStepDef>
+
+</Defs>

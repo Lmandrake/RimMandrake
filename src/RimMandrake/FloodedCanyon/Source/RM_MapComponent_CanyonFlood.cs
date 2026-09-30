@@ -80,6 +80,10 @@ namespace RimMandrake.FloodedCanyon
         {
         }
 
+        // Read by RM_CompPanSleeper: a muttavaq never digs in while the
+        // wall is standing.
+        public bool IsFlooding => phase == Phase.Flooding;
+
         private bool Active =>
             RM_FloodedCanyonSettings.floodCycleEnabled
             && (map.Biome == RM_FloodedCanyonDefOf.RM_FloodedCanyon || RM_FloodedCanyonSettings.featureInOtherBiomes);
@@ -99,6 +103,17 @@ namespace RimMandrake.FloodedCanyon
         {
             phase = Phase.Flooding;
             StartFlood(Find.TickManager.TicksGame);
+        }
+
+        // Test surface: end a standing flood on the next tick, so the recede
+        // (soil conversion + CRACKEDLANDS_MECHANICS_BUILD_1's fresh fossil
+        // seams) can be read without waiting out floodDurationHours.
+        public void DebugRecedeSoon()
+        {
+            if (phase == Phase.Flooding)
+            {
+                floodEndTick = Find.TickManager.TicksGame;
+            }
         }
 
         public string DebugStateReport()
@@ -276,6 +291,17 @@ namespace RimMandrake.FloodedCanyon
         {
             TerrainDef floodTerrain = TerrainDefOf.WaterMovingShallow;
             TerrainDef soilTerrain = TerrainDefOf.SoilRich;
+
+            // CRACKEDLANDS_MECHANICS_BUILD_1 §3: the flood re-cuts the ledger.
+            // The whole wetted footprint (both halves) is the wall line the
+            // water scoured; a few natural-rock cells touching it become
+            // fresh fossil seams. Taken before the lists are cleared below.
+            if (RM_FloodedCanyonSettings.floodRecutSeamsEnabled)
+            {
+                List<IntVec3> wetted = new List<IntVec3>(activeFloodCells);
+                wetted.AddRange(raisedFillCells);
+                RM_FossilStrata.RecutAlong(map, wetted, RM_FloodedCanyonSettings.floodRecutSeamCount);
+            }
 
             for (int i = 0; i < activeFloodCells.Count; i++)
             {

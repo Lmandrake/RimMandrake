@@ -45,5 +45,33 @@ namespace RimMandrake.FloodedCanyon
             if (comp == null) { Log.Error("[RMFloodedCanyonDebug] no RM_MapComponent_CanyonFlood on this map."); return; }
             Log.Message("[RMFloodedCanyonDebug] " + comp.DebugStateReport());
         }
+
+        [DebugAction(CAT, "Recede flood NOW (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void RecedeNow()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return;
+            RM_MapComponent_CanyonFlood comp = map.GetComponent<RM_MapComponent_CanyonFlood>();
+            if (comp == null) { Log.Error("[RMFloodedCanyonDebug] no RM_MapComponent_CanyonFlood on this map."); return; }
+            comp.DebugRecedeSoon();
+            Log.Message("[RMFloodedCanyonDebug] recede armed for next tick. " + comp.DebugStateReport());
+        }
+
+        // CRACKEDLANDS_MECHANICS_BUILD_1 verify: a STATE read of the seams on
+        // the map (count per tier), so "fresh seams after a recede" is a
+        // before/after number, never a screenshot hunt.
+        [DebugAction(CAT, "Report fossil seams (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ReportSeams()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return;
+            int imp = map.listerThings.ThingsOfDef(RM_FloodedCanyonDefOf.RM_FossilSeam_Impression).Count;
+            int skel = map.listerThings.ThingsOfDef(RM_FloodedCanyonDefOf.RM_FossilSeam_Skeleton).Count;
+            int uniq = map.listerThings.ThingsOfDef(RM_FloodedCanyonDefOf.RM_FossilSeam_Unique).Count;
+            Log.Message("[RMFloodedCanyonDebug] fossil seams: impression=" + imp + " skeleton=" + skel
+                + " unique=" + uniq + " biome=" + map.Biome.defName);
+        }
     }
 }
