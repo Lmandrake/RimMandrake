@@ -51,6 +51,12 @@ content def in any mod opts in through XML alone.
      already proves) fires one plain survival-reads letter, once per save. The Utinni
      layer replaces the letter's label/text wholesale to speak in the campaign
      Narrator's voice instead — flavor only, no new machinery. BIOME_ARRIVAL_NARRATION_1.
+  9. Shade gear (Defs/ThingDefs_Buildings/RM_ShadeGear.xml) — RM_Parasol (utility apparel),
+     RM_ShadeTent (minifiable 3x3 awning), RM_SunShield (standing lee panel). Stuffable;
+     mirrak hide casts deepest. Their shade feeds Creature Behaviors' shade grid and sun
+     heat through RM_CompProperties_ShadeGear, scaled by each biome's heat kind (overhead /
+     low sun / ambient, where no shade helps). Toggles: Creature Behaviors settings.
+     SHADE_GEAR_FAMILY_1.
 
 Live proof is OWED: this mod has not yet been loaded in a running game.
 

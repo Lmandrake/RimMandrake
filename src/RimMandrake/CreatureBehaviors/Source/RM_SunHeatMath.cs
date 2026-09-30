@@ -134,7 +134,88 @@ namespace RimMandrake.CreatureBehaviors
         public static void CastInto(float[] grid, int width, int height, int cx, int cz,
             float dirX, float dirZ, float length, float tipShade)
         {
-            if (length <= 0f)
+            // Half-cell steps so a diagonal shadow leaves no gaps (the depth
+            // overload below holds the one implementation).
+            CastInto(grid, width, height, cx, cz, dirX, dirZ, length, tipShade, 1f);
+        }
+
+        // ── SHADE_GEAR_FAMILY_1: carried and pitched shade ──────────────
+        // Parasol, shade tent and sun shield all feed the SAME exposure rule
+        // above: their shade is one more cover term. What differs per biome
+        // is only how much of each piece's shade counts, by heat kind.
+
+        /// <summary>How much of a gear piece's shade counts under this heat
+        /// kind: overheadFactor under overhead sun, lowSunFactor under a low
+        /// sun, and always 0 under ambient heat (steam, volcanic), where no
+        /// shade of any kind helps.</summary>
+        public static float GearKindFactor(RM_HeatKind kind, float overheadFactor, float lowSunFactor)
+        {
+            switch (kind)
+            {
+                case RM_HeatKind.ambient:
+                    return 0f;
+                case RM_HeatKind.lowSun:
+                    return Clamp01(lowSunFactor);
+                default:
+                    return Clamp01(overheadFactor);
+            }
+        }
+
+        /// <summary>The shade (0..1) a gear piece casts under this heat kind:
+        /// (its own depth + its stuff's shade-cloth bonus, clamped to 1) ×
+        /// the kind factor. Mirrak hide carries the biggest bonus, so it casts
+        /// the deepest shade.</summary>
+        public static float GearDepth(RM_HeatKind kind, float baseDepth, float stuffBonus,
+            float overheadFactor, float lowSunFactor)
+        {
+            return Clamp01(baseDepth + stuffBonus) * GearKindFactor(kind, overheadFactor, lowSunFactor);
+        }
+
+        /// <summary>Exposure with a gear cover term (already kind-resolved by
+        /// GearDepth). Under ambient heat the gear term is ignored, exactly as
+        /// roofs and cast shade are.</summary>
+        public static float Exposure(RM_HeatKind kind, bool outdoors, float roofShade, bool thickRoof,
+            float castShade, float gearShade)
+        {
+            float ex = Exposure(kind, outdoors, roofShade, thickRoof, castShade);
+            return kind == RM_HeatKind.ambient ? ex : WithCover(ex, gearShade);
+        }
+
+        /// <summary>Exposure after one more cover (0..1): covers combine by
+        /// the deepest, never by sum — two parasols are not better than one.</summary>
+        public static float WithCover(float exposure, float cover)
+        {
+            float cap = 1f - Clamp01(cover);
+            return exposure < cap ? exposure : cap;
+        }
+
+        /// <summary>Writes `depth` into every cell of an inclusive rectangle
+        /// (a shade tent's footprint), keeping the max of what is there.</summary>
+        public static void FillRect(float[] grid, int width, int height, int minX, int minZ, int maxX, int maxZ, float depth)
+        {
+            if (depth <= 0f)
+            {
+                return;
+            }
+            for (int z = Math.Max(0, minZ); z <= Math.Min(height - 1, maxZ); z++)
+            {
+                for (int x = Math.Max(0, minX); x <= Math.Min(width - 1, maxX); x++)
+                {
+                    int i = z * width + x;
+                    if (depth > grid[i])
+                    {
+                        grid[i] = depth;
+                    }
+                }
+            }
+        }
+
+        /// <summary>A shadow cast along the sun (CastInto's shape) whose full
+        /// body is `depth` rather than 1 — a sun shield's lee.</summary>
+        public static void CastInto(float[] grid, int width, int height, int cx, int cz,
+            float dirX, float dirZ, float length, float tipShade, float depth)
+        {
+            if (depth <= 0f || length <= 0f)
             {
                 return;
             }
@@ -145,7 +226,7 @@ namespace RimMandrake.CreatureBehaviors
             }
             dirX /= norm;
             dirZ /= norm;
-            // Half-cell steps so a diagonal shadow leaves no gaps.
+            float d = Clamp01(depth);
             int steps = (int)Math.Ceiling(length * 2f);
             int lastIdx = -1;
             for (int s = 1; s <= steps; s++)
@@ -169,12 +250,29 @@ namespace RimMandrake.CreatureBehaviors
                 lastIdx = idx;
                 float frac = t / length;
                 float v = frac <= 0.75f ? 1f : 1f - (1f - tipShade) * ((frac - 0.75f) / 0.25f);
-                v = Clamp01(v);
+                v = Clamp01(v) * d;
                 if (v > grid[idx])
                 {
                     grid[idx] = v;
                 }
             }
+        }
+
+        /// <summary>The one cell a parasol weakly shades besides its wearer:
+        /// one step along the shadow direction (rounded to the 8-neighbour
+        /// grid). Returns false when there is no direction.</summary>
+        public static bool AdjacentShadowCell(int cx, int cz, float dirX, float dirZ, out int x, out int z)
+        {
+            float norm = (float)Math.Sqrt(dirX * dirX + dirZ * dirZ);
+            x = cx;
+            z = cz;
+            if (norm < 1e-4f)
+            {
+                return false;
+            }
+            x = cx + (int)Math.Round(dirX / norm);
+            z = cz + (int)Math.Round(dirZ / norm);
+            return x != cx || z != cz;
         }
 
         public static float Clamp01(float v)

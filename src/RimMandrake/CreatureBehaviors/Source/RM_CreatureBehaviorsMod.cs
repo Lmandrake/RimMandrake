@@ -248,6 +248,10 @@ namespace RimMandrake.CreatureBehaviors
     //      falls back to the old radius-2 ring round every caster.
     //      sunPathingEnabled / sunPathCostMultiplier — undrafted pawns
     //      route shade-to-shade. sunLoadBarEnabled — the inspect bar.
+    //  40. Shade gear (SHADE_GEAR_FAMILY_1, RM_ShadeGear.cs) — one toggle
+    //      per piece: parasolShadeEnabled / shadeTentEnabled /
+    //      sunShieldEnabled. Off: that piece casts no shade into the grid
+    //      and is ordinary gear (still craftable, still wearable/buildable).
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -320,6 +324,9 @@ namespace RimMandrake.CreatureBehaviors
         public static bool sunPathingEnabled = true;
         public static float sunPathCostMultiplier = 1f;
         public static bool sunLoadBarEnabled = true;
+        public static bool parasolShadeEnabled = true;
+        public static bool shadeTentEnabled = true;
+        public static bool sunShieldEnabled = true;
 
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 2400f;
@@ -393,6 +400,9 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sunPathingEnabled, "sunPathingEnabled", true);
             Scribe_Values.Look(ref sunPathCostMultiplier, "sunPathCostMultiplier", 1f);
             Scribe_Values.Look(ref sunLoadBarEnabled, "sunLoadBarEnabled", true);
+            Scribe_Values.Look(ref parasolShadeEnabled, "parasolShadeEnabled", true);
+            Scribe_Values.Look(ref shadeTentEnabled, "shadeTentEnabled", true);
+            Scribe_Values.Look(ref sunShieldEnabled, "sunShieldEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -670,6 +680,19 @@ namespace RimMandrake.CreatureBehaviors
                     "Shows a bar when you select one creature on a sun-heat map: how close it is to "
                   + "heatstroke, and how much the sun is adding where it stands.");
             }
+            list.GapLine();
+
+            list.Label("Shade gear — how well each piece works depends on the land's kind of heat: "
+                     + "overhead sun, low sun, or steam and volcanic heat (where no shade helps).");
+            list.CheckboxLabeled("Parasols cast shade", ref parasolShadeEnabled,
+                "On: a parasol shades the colonist carrying it, and a little of the cell beside them. "
+                + "Strong under an overhead sun, weak under a low one. Off: it is just something to carry.");
+            list.CheckboxLabeled("Shade tents cast shade", ref shadeTentEnabled,
+                "On: a pitched shade tent shades the ground under it. Strong under an overhead sun, "
+                + "weak under a low one. Off: it casts no shade.");
+            list.CheckboxLabeled("Sun shields cast shade", ref sunShieldEnabled,
+                "On: a standing sun shield throws shade on its far side from the sun. The one piece "
+                + "that works under a low sun; only modest under an overhead one. Off: it casts no shade.");
 
             list.End();
             lastContentHeight = list.CurHeight + 12f;

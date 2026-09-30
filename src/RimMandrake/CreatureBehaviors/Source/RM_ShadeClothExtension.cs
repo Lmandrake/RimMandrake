@@ -9,10 +9,9 @@ namespace RimMandrake.CreatureBehaviors
     /// deeper shade, by <see cref="shadeBonus"/> added to the caster's own
     /// shade value (clamped to 1).
     ///
-    /// Nothing in this assembly reads it yet, deliberately: the shade-casting
-    /// gear (parasol, shade tent, sun shield) and the grid's stuffed-caster
-    /// read are SHADE_GEAR_FAMILY_1's scope. The marker ships now so the hide
-    /// def is complete and that item reads a field rather than a defName.
+    /// Read by RM_ShadeGear.StuffBonus (SHADE_GEAR_FAMILY_1): a parasol,
+    /// shade tent or sun shield made from this stuff casts
+    /// shadeDepth + shadeBonus, before the heat-kind factor.
     /// </summary>
     public class RM_ShadeClothExtension : DefModExtension
     {

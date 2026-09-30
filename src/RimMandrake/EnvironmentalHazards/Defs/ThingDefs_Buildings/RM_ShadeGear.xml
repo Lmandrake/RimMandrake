@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ShadeGear.xml                       EnvironmentalHazards - SHADE_GEAR_FAMILY_1
+
+  The owner's words (longshade_shade_ideation_2026-09-29.md, volley turn 4):
+  "Parisols, shade tents, simple shields you can stand behind. But again, this
+  MUST be applied on other biomes where heat is extreme too... and there shade
+  won't help you (in steam) or sideways shade (deep desert)."
+
+  Three cross-biome pieces. The mechanics are NOT here: each carries
+  RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear, and its shade goes
+  into RM_MapComponent_ShadeGrid and from there into sun heat through the same
+  exposure rule roofs and cast shadows use (RM_ShadeGear.cs,
+  RM_SunHeatMath.GearDepth). How much of each piece's shade counts is set by
+  the biome's heat kind (RM_SunHeatExtension):
+
+                  overhead   lowSun   ambient (steam / volcanic)
+    parasol       1.0        0.35     0
+    shade tent    1.0        0.3      0
+    sun shield    0.5        1.0      0
+
+  Depth = shadeDepth + the stuff's RM_ShadeClothExtension.shadeBonus, clamped
+  to 1. Mirrak hide (LongShade, RM_Leather_Mirrak) carries +0.3, the deepest.
+  All numbers are INVENTED first values; the selftest
+  (Utils/selftest_sun_heat.py) reads them from THIS file.
+
+  Placement follows the sibling scald wrap (TerminalBiomes RM_ScaldGear.xml):
+  Neolithic, no research, tailoring benches or a crafting spot for the
+  parasol; the tent and shield are built from the Temperature tab.
+
+  ART IS OWED (queued by LONGSHADE_BEDAZZLE_SITTING_1, infrastructure/artpipe/
+  pending/RM_Parasol*.json, RM_ShadeTent.json, RM_SunShield_*.json). The
+  texPaths below are this mod's own, and resolve once the renders land in
+  EnvironmentalHazards/Textures at those paths. No donor art.
+
+  Mod Settings: Creature Behaviors entry 40, one toggle per piece.
+-->
+<Defs>
+
+  <!-- ============================================================
+       RM_Parasol — utility-layer apparel. Shades its wearer, and weakly
+       the one cell its shadow falls on.
+       ============================================================ -->
+  <ThingDef ParentName="ApparelMakeableBase">
+    <defName>RM_Parasol</defName>
+    <label>parasol</label>
+    <description>A broad, shallow canopy of stretched cloth or hide on thin ribs and a long pole, carried open overhead. Under a high sun it is a patch of shade that walks with you, and a little of it falls on whoever keeps close. Under a low sun the light comes in underneath it and it does little. Against steam or volcanic heat it does nothing at all.\n\nIt is only as good as its canopy: mirrak hide casts the deepest shade.</description>
+    <graphicData>
+      <texPath>Things/Item/Equipment/RM_ShadeGear/RM_Parasol</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <techLevel>Neolithic</techLevel>
+    <costStuffCount>20</costStuffCount>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <costList>
+      <WoodLog>4</WoodLog>
+    </costList>
+    <tradeability>Sellable</tradeability>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <WorkToMake>1800</WorkToMake>
+      <Mass>1.2</Mass>
+      <Flammability>1</Flammability>
+      <EquipDelay>1</EquipDelay>
+      <StuffEffectMultiplierArmor>0</StuffEffectMultiplierArmor>
+      <StuffEffectMultiplierInsulation_Cold>0</StuffEffectMultiplierInsulation_Cold>
+      <StuffEffectMultiplierInsulation_Heat>0</StuffEffectMultiplierInsulation_Heat>
+    </statBases>
+    <thingCategories>
+      <li>ApparelUtility</li>
+    </thingCategories>
+    <apparel>
+      <countsAsClothingForNudity>false</countsAsClothingForNudity>
+      <careIfWornByCorpse>false</careIfWornByCorpse>
+      <bodyPartGroups>
+        <li>Waist</li>
+      </bodyPartGroups>
+      <!-- Utility layer, drawn as a pack (no body-type suffix): the worn set
+           is s/e/n at wornGraphicPath_<facing>. -->
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/RM_ParasolWorn/RM_ParasolWorn</wornGraphicPath>
+      <layers>
+        <li>Belt</li>
+      </layers>
+      <tags>
+        <li>Tribal</li>
+      </tags>
+      <canBeDesiredForIdeo>false</canBeDesiredForIdeo>
+    </apparel>
+    <recipeMaker>
+      <recipeUsers Inherit="False">
+        <li>ElectricTailoringBench</li>
+        <li>HandTailoringBench</li>
+        <li>CraftingSpot</li>
+      </recipeUsers>
+      <useIngredientsForColor>true</useIngredientsForColor>
+    </recipeMaker>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear">
+        <mode>wearer</mode>
+        <shadeDepth>0.75</shadeDepth>
+        <overheadFactor>1</overheadFactor>
+        <lowSunFactor>0.35</lowSunFactor>
+        <adjacentFactor>0.4</adjacentFactor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ============================================================
+       RM_ShadeTent — a cheap, minifiable 3x3 awning. Shades its footprint.
+       The tool for the Long Carry.
+       ============================================================ -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ShadeTent</defName>
+    <label>shade tent</label>
+    <description>A low, open-sided awning of stretched cloth or hide on four slim poles, pegged down with guy-ropes. It shades the ground under it and nothing else, and it can be packed up and carried out to wherever the work is: the dead lying in the open, the salvage in the sun. Strong under a high sun, weak under a low one, and useless in steam or volcanic heat.\n\nMirrak hide makes the deepest shade.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_ShadeGear/RM_ShadeTent</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.1</fillPercent>
+    <canOverlapZones>true</canOverlapZones>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>600</WorkToBuild>
+      <Mass>6</Mass>
+      <Flammability>1</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <costStuffCount>35</costStuffCount>
+    <costList>
+      <WoodLog>15</WoodLog>
+    </costList>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsTemperature</li>
+    </thingCategories>
+    <designationCategory>Temperature</designationCategory>
+    <techLevel>Neolithic</techLevel>
+    <constructEffect>ConstructDirt</constructEffect>
+    <building>
+      <destroySound>BuildingDestroyed_Soft_Small</destroySound>
+    </building>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear">
+        <mode>footprint</mode>
+        <shadeDepth>0.85</shadeDepth>
+        <overheadFactor>1</overheadFactor>
+        <lowSunFactor>0.3</lowSunFactor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ============================================================
+       RM_SunShield — a standing 2x1 panel. Throws a lee shadow along the
+       sun: the one piece that works under a low sun.
+       ============================================================ -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SunShield</defName>
+    <label>sun shield</label>
+    <description>A tall panel of stretched hide on a lashed frame, braced upright by two splayed legs. Stand behind it and you stand in its shadow, which lies on the far side from the sun and runs longer the lower the sun is. It is the one piece of shade gear that works when the sun sits low on the horizon; under a high sun its shadow is short and it helps only a little. In steam or volcanic heat it does nothing.\n\nMirrak hide makes the deepest shade.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_ShadeGear/RM_SunShield</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(2,1)</size>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>30</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <canOverlapZones>true</canOverlapZones>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <WorkToBuild>450</WorkToBuild>
+      <Mass>4</Mass>
+      <Flammability>1</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <costStuffCount>25</costStuffCount>
+    <costList>
+      <WoodLog>10</WoodLog>
+    </costList>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsTemperature</li>
+    </thingCategories>
+    <designationCategory>Temperature</designationCategory>
+    <techLevel>Neolithic</techLevel>
+    <constructEffect>ConstructDirt</constructEffect>
+    <building>
+      <destroySound>BuildingDestroyed_Soft_Small</destroySound>
+    </building>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear">
+        <mode>lee</mode>
+        <shadeDepth>0.85</shadeDepth>
+        <overheadFactor>0.5</overheadFactor>
+        <lowSunFactor>1</lowSunFactor>
+        <leeHeight>1.5</leeHeight>
+        <fallbackLeeCells>2</fallbackLeeCells>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

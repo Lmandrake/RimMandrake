@@ -42,6 +42,10 @@ namespace RimMandrake.CreatureBehaviors
     [StaticConstructorOnStartup]
     public static class RM_SunHeatPatches
     {
+        /// <summary>Worn shade at or above this and sun pathing leaves the
+        /// pawn's routes alone.</summary>
+        private const float CarriedShadeSkipsDetour = 0.7f;
+
         private static readonly Dictionary<Map, RM_MapComponent_ShadeGrid> heatMaps =
             new Dictionary<Map, RM_MapComponent_ShadeGrid>();
 
@@ -130,7 +134,9 @@ namespace RimMandrake.CreatureBehaviors
         public static float SunOffsetFor(Pawn pawn, RM_MapComponent_ShadeGrid grid)
         {
             RM_SunHeatExtension ext = grid.HeatExtension;
-            float exposure = grid.ExposureAt(pawn.Position);
+            // ExposureFor = the cell's exposure (roof, cast, pitched shade gear,
+            // a neighbour's parasol) plus the pawn's own worn parasol.
+            float exposure = grid.ExposureFor(pawn);
             if (ext == null || exposure <= 0f)
             {
                 return 0f;
@@ -175,6 +181,13 @@ namespace RimMandrake.CreatureBehaviors
                 }
                 RM_MapComponent_ShadeGrid grid = ActiveGridFor(___pawn);
                 RM_SunPathCustomizer customizer = grid?.PathCustomizer;
+                // SHADE_GEAR_FAMILY_1: a pawn carrying its own deep shade (a
+                // parasol under an overhead sun) has no reason to detour.
+                if (customizer != null
+                    && RM_ShadeGear.WornCover(___pawn, grid.GearKind, out _) >= CarriedShadeSkipsDetour)
+                {
+                    return;
+                }
                 if (customizer != null)
                 {
                     __result.customizer = customizer;

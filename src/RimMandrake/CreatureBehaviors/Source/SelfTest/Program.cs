@@ -12,6 +12,12 @@
 // the vanilla Heatstroke path sun heat feeds, so "sun vs shade vs roofed"
 // is asserted as the Heatstroke gain each actually produces.
 //
+// SHADE_GEAR_FAMILY_1: the parasol, shade tent and sun shield, with their
+// numbers READ from the shipped EnvironmentalHazards RM_ShadeGear.xml and
+// mirrak hide's bonus from LongShade's RM_LongShade_Mirrak.xml — each piece
+// cuts sun heat on the kinds it is for, the shield wins under a low sun,
+// nothing helps under ambient heat, and mirrak hide casts deepest.
+//
 // NOT covered, and why: anything that needs a live Map — the room test
 // (UsesOutdoorTemperature), roof/thing scans, the Harmony postfixes and the
 // NativeArray customizer. Those are the quicktest criteria on the item.
@@ -211,10 +217,183 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                     + before + " -> " + g[2 * w + 9] + ")");
             });
 
+            // ── SHADE_GEAR_FAMILY_1 — numbers read from the shipped XML ──
+            Dictionary<string, GearSpec> gear = null;
+            float mirrakBonus = -1f;
+            Case("shade gear: shipped defs found and read", () =>
+            {
+                gear = ReadGear(out mirrakBonus);
+                Assert(gear.ContainsKey("RM_Parasol") && gear.ContainsKey("RM_ShadeTent") && gear.ContainsKey("RM_SunShield"),
+                    "missing a piece; found " + string.Join(",", gear.Keys));
+                Assert(gear["RM_Parasol"].mode == "wearer" && gear["RM_ShadeTent"].mode == "footprint"
+                    && gear["RM_SunShield"].mode == "lee", "a piece has the wrong mode");
+                Assert(mirrakBonus > 0f, "mirrak hide carries no shade-cloth bonus (" + mirrakBonus + ")");
+            });
+
+            if (gear != null)
+            {
+                foreach (string piece in new[] { "RM_Parasol", "RM_ShadeTent", "RM_SunShield" })
+                {
+                    GearSpec g = gear[piece];
+                    Case(piece + ": cuts sun heat on the right kinds, nothing on ambient", () =>
+                    {
+                        float openO = FeltWithGear(RM_HeatKind.overhead, g, 0f);
+                        float cutO = openO - FeltWithGear(RM_HeatKind.overhead, g, 0f, true);
+                        float cutL = FeltWithGear(RM_HeatKind.lowSun, g, 0f) - FeltWithGear(RM_HeatKind.lowSun, g, 0f, true);
+                        float cutA = FeltWithGear(RM_HeatKind.ambient, g, 0f) - FeltWithGear(RM_HeatKind.ambient, g, 0f, true);
+                        Assert(cutO > 0f, "no relief under overhead sun");
+                        Assert(cutL > 0f, "no relief under low sun");
+                        Assert(cutA == 0f, "relief under ambient heat (" + cutA + " C)");
+                        if (g.mode == "lee")
+                        {
+                            Assert(cutL > cutO, "the shield is not better under a low sun (low " + cutL + ", overhead " + cutO + ")");
+                        }
+                        else
+                        {
+                            Assert(cutO > cutL, piece + " is not better under an overhead sun (overhead " + cutO + ", low " + cutL + ")");
+                        }
+                        Console.WriteLine("  " + piece + ": felt -" + cutO.ToString("0.0") + "C overhead, -"
+                            + cutL.ToString("0.0") + "C low sun, -" + cutA.ToString("0.0") + "C ambient");
+                    });
+
+                    Case(piece + ": mirrak hide casts deeper shade than plain cloth", () =>
+                    {
+                        foreach (RM_HeatKind k in new[] { RM_HeatKind.overhead, RM_HeatKind.lowSun })
+                        {
+                            float plain = RM_SunHeatMath.GearDepth(k, g.depth, 0f, g.overhead, g.lowSun);
+                            float hide = RM_SunHeatMath.GearDepth(k, g.depth, mirrakBonus, g.overhead, g.lowSun);
+                            Assert(hide > plain, k + ": mirrak " + hide + " not deeper than plain " + plain);
+                            Assert(FeltWithGear(k, g, mirrakBonus, true) < FeltWithGear(k, g, 0f, true),
+                                k + ": mirrak did not cool more than plain cloth");
+                        }
+                        Assert(RM_SunHeatMath.GearDepth(RM_HeatKind.ambient, g.depth, mirrakBonus, g.overhead, g.lowSun) == 0f,
+                            "mirrak hide gave shade under ambient heat");
+                    });
+                }
+
+                Case("parasol under overhead sun: the wearer stops gaining Heatstroke faster", () =>
+                {
+                    GearSpec g = gear["RM_Parasol"];
+                    float open = HeatstrokeStep(FeltWithGear(RM_HeatKind.overhead, g, 0f), HumanSafeMax);
+                    float under = HeatstrokeStep(FeltWithGear(RM_HeatKind.overhead, g, 0f, true), HumanSafeMax);
+                    Assert(under < open, "parasol did not slow Heatstroke (" + under + " vs " + open + ")");
+                });
+
+                Case("shade tent footprint: its cells and only its cells", () =>
+                {
+                    const int w = 10, h = 10;
+                    float[] grid = new float[w * h];
+                    RM_SunHeatMath.FillRect(grid, w, h, 3, 3, 5, 5, 0.85f);
+                    Assert(grid[4 * w + 4] == 0.85f && grid[3 * w + 3] == 0.85f && grid[5 * w + 5] == 0.85f, "footprint cell unshaded");
+                    Assert(grid[2 * w + 4] == 0f && grid[4 * w + 6] == 0f, "tent shaded outside its footprint");
+                });
+
+                Case("sun shield lee: away from the sun, depth-scaled; parasol neighbour along the shadow", () =>
+                {
+                    const int w = 20, h = 20;
+                    float[] grid = new float[w * h];
+                    RM_SunHeatMath.CastInto(grid, w, h, 10, 10, 0f, 1f, 3f, 0.6f, 0.5f);
+                    Assert(grid[11 * w + 10] == 0.5f, "lee cell not at the panel's depth (" + grid[11 * w + 10] + ")");
+                    Assert(grid[9 * w + 10] == 0f, "shade on the sun side of the panel");
+                    Assert(RM_SunHeatMath.AdjacentShadowCell(5, 5, 0.9f, 0.1f, out int ax, out int az) && ax == 6 && az == 5,
+                        "parasol neighbour not one step along the shadow");
+                    Assert(!RM_SunHeatMath.AdjacentShadowCell(5, 5, 0f, 0f, out _, out _), "neighbour chosen with no direction");
+                });
+            }
+
             foreach (string p in Pass) Console.WriteLine("PASS " + p);
             foreach (string f in Fail) Console.WriteLine("FAIL " + f);
             Console.WriteLine(Pass.Count + "/" + (Pass.Count + Fail.Count) + " passed");
             return Fail.Count == 0 ? 0 : 1;
+        }
+
+        private sealed class GearSpec
+        {
+            public string mode;
+            public float depth, overhead, lowSun;
+        }
+
+        /// <summary>Felt temperature on an open, unroofed cell, optionally
+        /// with the piece in use: worn (parasol), stood under (tent), or stood
+        /// in the lee cell one step behind the panel (shield) — each through
+        /// the same RM_SunHeatMath calls RM_MapComponent_ShadeGrid makes.</summary>
+        private static float FeltWithGear(RM_HeatKind kind, GearSpec g, float stuffBonus, bool withGear = false)
+        {
+            float ex = RM_SunHeatMath.Exposure(kind, true, 0f, false, 0f);
+            if (withGear)
+            {
+                float d = RM_SunHeatMath.GearDepth(kind, g.depth, stuffBonus, g.overhead, g.lowSun);
+                if (g.mode == "wearer")
+                {
+                    ex = RM_SunHeatMath.WithCover(ex, d);
+                }
+                else if (g.mode == "footprint")
+                {
+                    float[] t = new float[9];
+                    RM_SunHeatMath.FillRect(t, 3, 3, 0, 0, 2, 2, d);
+                    ex = RM_SunHeatMath.Exposure(kind, true, 0f, false, 0f, t[4]);
+                }
+                else
+                {
+                    float[] t = new float[5 * 5];
+                    RM_SunHeatMath.CastInto(t, 5, 5, 2, 1, 0f, 1f, 3f, 0.6f, d);
+                    ex = RM_SunHeatMath.Exposure(kind, true, 0f, false, 0f, t[2 * 5 + 2]);
+                }
+            }
+            return OutdoorC + RM_SunHeatMath.HeatOffset(ex, 30f, 1f, 1f, 70f);
+        }
+
+        private static string FindModsRoot()
+        {
+            string dir = AppDomain.CurrentDomain.BaseDirectory;
+            while (!string.IsNullOrEmpty(dir))
+            {
+                string cand = System.IO.Path.Combine(dir, "src", "RimMandrake");
+                if (System.IO.Directory.Exists(System.IO.Path.Combine(cand, "EnvironmentalHazards")))
+                {
+                    return cand;
+                }
+                dir = System.IO.Path.GetDirectoryName(dir.TrimEnd('\\', '/'));
+            }
+            throw new Exception("src/RimMandrake not found above " + AppDomain.CurrentDomain.BaseDirectory);
+        }
+
+        private static float F(System.Xml.XmlNode n, string name, float dflt)
+        {
+            System.Xml.XmlNode c = n.SelectSingleNode(name);
+            return c == null ? dflt : float.Parse(c.InnerText, System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>The three pieces' RM_CompProperties_ShadeGear, and mirrak
+        /// hide's shadeBonus, read from the shipped def files.</summary>
+        private static Dictionary<string, GearSpec> ReadGear(out float mirrakBonus)
+        {
+            string root = FindModsRoot();
+            var doc = new System.Xml.XmlDocument();
+            doc.Load(System.IO.Path.Combine(root, "EnvironmentalHazards", "Defs", "ThingDefs_Buildings", "RM_ShadeGear.xml"));
+            var result = new Dictionary<string, GearSpec>();
+            foreach (System.Xml.XmlNode def in doc.SelectNodes("/Defs/ThingDef"))
+            {
+                System.Xml.XmlNode comp = def.SelectSingleNode("comps/li[contains(@Class,'RM_CompProperties_ShadeGear')]");
+                if (comp == null)
+                {
+                    continue;
+                }
+                // Defaults mirror RM_CompProperties_ShadeGear's field initialisers.
+                result[def.SelectSingleNode("defName").InnerText] = new GearSpec
+                {
+                    mode = comp.SelectSingleNode("mode")?.InnerText ?? "footprint",
+                    depth = F(comp, "shadeDepth", 0.8f),
+                    overhead = F(comp, "overheadFactor", 1f),
+                    lowSun = F(comp, "lowSunFactor", 0.3f),
+                };
+            }
+            var hide = new System.Xml.XmlDocument();
+            hide.Load(System.IO.Path.Combine(root, "LongShade", "Defs", "ThingDefs_Races", "RM_LongShade_Mirrak.xml"));
+            System.Xml.XmlNode ext = hide.SelectSingleNode(
+                "/Defs/ThingDef[defName='RM_Leather_Mirrak']/modExtensions/li[contains(@Class,'RM_ShadeClothExtension')]");
+            mirrakBonus = ext == null ? -1f : F(ext, "shadeBonus", 0.25f);
+            return result;
         }
 
         /// <summary>8-connected Dijkstra with vanilla step costs (13 cardinal,
