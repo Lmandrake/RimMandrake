@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T02:27:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T02:54:03Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -993,3 +993,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WASTELAND_MIDDENSHELL_FOOTPRINT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WASTELAND_MIDDENSHELL_FOOTPRINT_1.md
+
+## LONGSHADE_SHADE_EXTRAS_1 Long Shade deferred small ideas for owner ruling later: empty patch, tollok ticks, stampede for your roof, lure awnings, mirror field, harrok, Jawa clan towing the crawler
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LONGSHADE_SHADE_EXTRAS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LONGSHADE_SHADE_EXTRAS_1.md
