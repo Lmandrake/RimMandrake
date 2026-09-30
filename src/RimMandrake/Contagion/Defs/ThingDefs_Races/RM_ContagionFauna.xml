@@ -30,9 +30,8 @@
   metamorphosis comp exists in this mod's live C# to reuse for the grub
   transform. Each is noted at its own def below rather than silently dropped.
 
-  Flight: OUT OF SCOPE for this wave (item's own exclusion list). Blisterfloat
-  and Sparkleech are ruled flyers in the cast bible but ship here with no
-  MaxFlightTime/FlightCooldown — filed as a follow-on item.
+  Flight: Blisterfloat, Sparkleech, Skinflap and Gorekite carry MaxFlightTime/
+  FlightCooldown plus the race flight flags (CONTAGION_FLYER_WIRING_1).
 -->
 <Defs>
 
@@ -254,7 +253,7 @@
   </PawnKindDef>
 
   <!-- ======================================================================
-       BLISTERFLOAT (RM_Blisterfloat) — the sower — flyer per the cast bible (MaxFlightTime 15/FlightCooldown 8, canLeaveMapFlying true); flight statBases are OUT OF SCOPE for this wave (filed as a follow-on item) and are deliberately NOT set here.
+       BLISTERFLOAT (RM_Blisterfloat) — the sower — flyer per the cast bible (MaxFlightTime 15/FlightCooldown 8, canLeaveMapFlying true); flight stat set by CONTAGION_FLYER_WIRING_1.
        ====================================================================== -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Blisterfloat</defName>
@@ -268,6 +267,8 @@
       <ComfyTemperatureMin>0</ComfyTemperatureMin>
       <ComfyTemperatureMax>60</ComfyTemperatureMax>
       <Wildness>1.0</Wildness>
+      <MaxFlightTime>15</MaxFlightTime>
+      <FlightCooldown>8</FlightCooldown>
     </statBases>
     <tools>
       <li>
@@ -291,6 +292,9 @@
       <trainability>None</trainability>
       <lifeExpectancy>10</lifeExpectancy>
       <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <flightSpeedFactor>1.8</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
       <lifeStageAges>
         <li>
           <def>AnimalBaby</def>
@@ -676,7 +680,7 @@
   </PawnKindDef>
 
   <!-- ======================================================================
-       SPARKLEECH (RM_Sparkleech) — the thieves (adult) — flyer per the cast bible (MaxFlightTime 10/FlightCooldown 5); flight statBases deliberately NOT set this wave (follow-on item). The donor's grub-to-adult metamorphosis special is NOT wired here (no such mechanism exists in this mod's live C#, and building one is beyond a def-port pass) — RM_Sparkleech and RM_SparkleechGrub ship as two independently-spawned roster rows, matching the donor's own two-ThingDef shape, without the growth-transform behaviour.
+       SPARKLEECH (RM_Sparkleech) — the thieves (adult) — flyer per the cast bible (MaxFlightTime 10/FlightCooldown 5); flight stat set by CONTAGION_FLYER_WIRING_1. The donor's grub-to-adult metamorphosis special is NOT wired here (no such mechanism exists in this mod's live C#, and building one is beyond a def-port pass) — RM_Sparkleech and RM_SparkleechGrub ship as two independently-spawned roster rows, matching the donor's own two-ThingDef shape, without the growth-transform behaviour.
        ====================================================================== -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Sparkleech</defName>
@@ -690,6 +694,8 @@
       <ComfyTemperatureMin>0</ComfyTemperatureMin>
       <ComfyTemperatureMax>60</ComfyTemperatureMax>
       <Wildness>1.0</Wildness>
+      <MaxFlightTime>10</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown>
     </statBases>
     <tools>
       <li>
@@ -713,6 +719,8 @@
       <trainability>None</trainability>
       <lifeExpectancy>3</lifeExpectancy>
       <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <flightStartChanceOnJobStart>0.15</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.2</flightSpeedFactor>
       <lifeStageAges>
         <li>
           <def>AnimalBaby</def>
@@ -1743,7 +1751,7 @@
   <!-- ======================================================================
        SKINFLAP (RM_Skinflap) - goo-bud line (CONTAGION_NEW_SPECIES_FLORA_1): dissolves to goo at death, no corpse
        ====================================================================== -->
-  <!-- TODO CONTAGION_FLYER_WIRING_1: flight STAT is set (MaxFlightTime>0); flying-animation frames are a separate optional system and are not authored. Verify CanEverFly by a Pawn_FlightTracker state read, never a live visual hunt. -->
+  <!-- Flight stat set (MaxFlightTime>0); flying-animation frames are a separate optional system and are not authored. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Skinflap</defName>
     <label>skinflap</label>
@@ -1830,7 +1838,7 @@
   <!-- ======================================================================
        GOREKITE (RM_Gorekite) - goo-bud line (CONTAGION_NEW_SPECIES_FLORA_1): dissolves to goo at death, no corpse
        ====================================================================== -->
-  <!-- TODO CONTAGION_FLYER_WIRING_1: flight STAT is set (MaxFlightTime>0); flying-animation frames are a separate optional system and are not authored. Verify CanEverFly by a Pawn_FlightTracker state read, never a live visual hunt. -->
+  <!-- Flight stat set (MaxFlightTime>0); flying-animation frames are a separate optional system and are not authored. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Gorekite</defName>
     <label>gorekite</label>
