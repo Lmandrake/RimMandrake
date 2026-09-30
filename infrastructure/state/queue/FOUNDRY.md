@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-29T16:44:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T00:52:13Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1116,6 +1116,24 @@ kind:     task
 summary:  CRACKEDLANDSRULEDCONTENT1 — roster surgery, five new natives, fossils, the wax suit
 prose:    infrastructure/state/items/CRACKEDLANDS_RULED_CONTENT_1.md
 
+## CAULDRON_RULED_CONTENT_1 Build the Cauldron ruled cast: wire all 7 imports, four new natives (Vexxiss/Zisska/Eskith/Xithess), vexxith shear material (acid+temperature immune), diverge 7 AB_ flora onto validated art, slow-iron trees
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Wire all 7 owner-ruled imports (owner, turn 4: "Wire and keep."): Lylek,
+prose:    infrastructure/state/items/CAULDRON_RULED_CONTENT_1.md
+
+## LEANINGSCRUB_RULED_CONTENT_1 Build the Leaning Scrub ruled cast: 4 fills + 9 menagerie + 4 fuzz flora + venomvine five-form showpiece + tamed-only Blurrg port chain + regen-all-donor-art + wire 5 existing RUT_ renders
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Four fills (mixed registers ruled): RMFuzzrunner (tunnel-hare prey
+prose:    infrastructure/state/items/LEANINGSCRUB_RULED_CONTENT_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1712,16 +1730,6 @@ thin:     no ## spec, no ## criteria
 summary:  CRACKEDLANDSMECHANICSBUILD1 — the Swale, surveys, fossils-in-the-walls, the giants' behaviors, the soundscape
 prose:    infrastructure/state/items/CRACKEDLANDS_MECHANICS_BUILD_1.md
 
-## CAULDRON_RULED_CONTENT_1 Build the Cauldron ruled cast: wire all 7 imports, four new natives (Vexxiss/Zisska/Eskith/Xithess), vexxith shear material (acid+temperature immune), diverge 7 AB_ flora onto validated art, slow-iron trees
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Wire all 7 owner-ruled imports (owner, turn 4: "Wire and keep."): Lylek,
-prose:    infrastructure/state/items/CAULDRON_RULED_CONTENT_1.md
-
 ## CAULDRON_MECHANICS_BUILD_1 Build the Cauldron mechanics: engine-underfoot soundscape + falter tell, four ratified weathers, flammable vent gas w/ toxic smoke + gas-tap scaffolds, filter-works fluid conversion, vexxiss behaviors, Oomo dislike content
 state:    proposed
 row:      unassigned
@@ -1781,16 +1789,6 @@ kind:     task
 thin:     no ## verify
 summary:  - Art exists and is validated — do not queue any art. The render is the
 prose:    infrastructure/state/items/OGLEKNOT_CREATURE_BUILD_1.md
-
-## LEANINGSCRUB_RULED_CONTENT_1 Build the Leaning Scrub ruled cast: 4 fills + 9 menagerie + 4 fuzz flora + venomvine five-form showpiece + tamed-only Blurrg port chain + regen-all-donor-art + wire 5 existing RUT_ renders
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Four fills (mixed registers ruled): RMFuzzrunner (tunnel-hare prey
-prose:    infrastructure/state/items/LEANINGSCRUB_RULED_CONTENT_1.md
 
 ## LEANINGSCRUB_MECHANICS_BUILD_1 Build the Leaning Scrub mechanics: Stall+Gale wind calendar, the Lean scent/fire axis, vaporator + V-blight, smother-craft, calling-pyre + fire-stamping giants, ripple concealment, rich soundscape, inhabited injections - warning-instrument theme trimmed by owner ruling
 state:    proposed
@@ -1872,16 +1870,6 @@ thin:     no ## spec, no ## criteria
 summary:  Scope
 prose:    infrastructure/state/items/CONTAGION_FLORA_PORT_1.md
 
-## CONTAGION_NEW_SPECIES_FLORA_1 Contagion: 5 new goo-bud species + 3 new flora (Skinflap/Gorekite/Danglemaw/Crispling/Sloshbelly + Meatvine/Toothmoss/Wombpod) per cast bible Parts 2
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## criteria
-summary:  Scope
-prose:    infrastructure/state/items/CONTAGION_NEW_SPECIES_FLORA_1.md
-
 ## CONTAGION_FLYER_WIRING_1 Contagion: flight statBases for Blisterfloat/Sparkleech/Skinflap/Gorekite per cast bible Part 4
 state:    proposed
 row:      unassigned
@@ -1921,16 +1909,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WASTELAND_GRIPPER_STEAL_BEHAVIOR_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WASTELAND_GRIPPER_STEAL_BEHAVIOR_1.md
-
-## MOEVENTS_FINDMOD_RETIRED_1 Two FindMod patches name retired Mo'Events (Continued); selftest_retired_mods fails
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  MOEVENTSFINDMODRETIRED1
-prose:    infrastructure/state/items/MOEVENTS_FINDMOD_RETIRED_1.md
 
 ## ROTSPOREKIT_MAYREQUIRE_ORPHANED_1 Retiring RotSporeKit orphaned ~30 MayRequire-gated rows in 6 live biome files (RM_ equivalents exist, need repointing)
 state:    proposed

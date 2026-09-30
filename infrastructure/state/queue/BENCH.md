@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T00:36:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T00:52:13Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -389,7 +389,7 @@ needs:    offline
 target:   v1
 kind:     task
 blocked:  Owner-gated: runs only after flora, fauna and biomes are fixed (the bedazzle program is that work). (on BAROQUE_BEDAZZLE_PROGRAM_1)
-summary:  (no items/DESIGN_MATERIALS_REVIEW_1.md yet — write one when you have something to say)
+summary:  This has never been done before: one balance pass over the whole materials economy, so the world
 prose:    infrastructure/state/items/DESIGN_MATERIALS_REVIEW_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
@@ -971,5 +971,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## verify
-summary:  A design pitch pass per biome (Fable, backgrounded): new invented flora in each
+summary:  A design pitch pass per biome (Opus, backgrounded): new invented flora in each
 prose:    infrastructure/state/items/BEDAZZLE_FLORA_EXPANSION_1.md

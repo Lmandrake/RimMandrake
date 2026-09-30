@@ -1258,3 +1258,14 @@
 {"seat":"FOUNDRY","event":"unblock","id":"FEVERWOOD_SAP_SUCKER_TUNING_1","ts":"2026-09-29T16:22:56Z"}
 {"seat":"FOUNDRY","event":"note","id":"FEVERWOOD_SAP_SUCKER_TUNING_1","text":"Decision taken by question card, 2026-09-29: FOUNDRY does a full tuning pass on its own judgment (match similar existing Fever Wood creatures/products for consistency, flag anything genuinely novel separately) -- ship it, let playtesting surface issues rather than holding for a dedicated sitting. NOT YET EXECUTED -- still needs the actual tuning pass across RM_SapSuckerGuild.xml/RM_SapSuckerGuild_Hediffs.xml/RM_SapSuckerGuildProducts.xml, plus items 2-4 from the spec (mishandled-trigger hook, alarm-responder tag once Silloch is built, bespoke art for Vaulm/Ollareth/Drommath). RimSage lead on item 2: the manhunter-on-fail roll lives in Verse/AI/Pawn_MindState.cs around line 708 (Rand.Chance(PawnUtility.GetManhunterOnTameFailChance(pawn)), gated on !InMentalState && Faction==null) -- confirms a real engine hook exists separate from combat damage; the containing method name was not resolved this pass, whoever picks this up should finish that lookup before wiring.","ts":"2026-09-29T16:22:57Z"}
 {"seat":"FOUNDRY","event":"close","id":"FEVERWOOD_TENTACLE_SETPIECE_TUNING_1","sha":"f7c70d660","reason":"Great Emergence set-piece (distinct large-pool+many-limbs+eye event, replaces ordinary-roll Bloom, ~1/50 once eligible) and Uranium free-tier suppression (craft/haul/dump, reuses blockedUntilTick to dampen Corvath too) both built, validated, and built clean.","ts":"2026-09-29T16:44:22Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-30T00:39:03Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LEANINGSCRUB_RULED_CONTENT_1","ts":"2026-09-30T00:39:37Z"}
+{"seat":"FOUNDRY","event":"start","id":"LEANINGSCRUB_RULED_CONTENT_1","ts":"2026-09-30T00:39:38Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CAULDRON_RULED_CONTENT_1","ts":"2026-09-30T00:39:39Z"}
+{"seat":"FOUNDRY","event":"start","id":"CAULDRON_RULED_CONTENT_1","ts":"2026-09-30T00:39:40Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MOEVENTS_FINDMOD_RETIRED_1","ts":"2026-09-30T00:39:41Z"}
+{"seat":"FOUNDRY","event":"start","id":"MOEVENTS_FINDMOD_RETIRED_1","ts":"2026-09-30T00:39:42Z"}
+{"seat":"FOUNDRY","event":"close","id":"MOEVENTS_FINDMOD_RETIRED_1","sha":"06d08564b","ts":"2026-09-30T00:46:23Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CONTAGION_NEW_SPECIES_FLORA_1","ts":"2026-09-30T00:46:27Z"}
+{"seat":"FOUNDRY","event":"start","id":"CONTAGION_NEW_SPECIES_FLORA_1","ts":"2026-09-30T00:46:29Z"}
+{"seat":"FOUNDRY","event":"close","id":"CONTAGION_NEW_SPECIES_FLORA_1","sha":"3e217f4ff","ts":"2026-09-30T00:52:13Z"}
