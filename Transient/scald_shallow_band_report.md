@@ -1,6 +1,6 @@
 # SCALD_CROWNCARPET_NO_HABITAT_1 — shallow water band fix
 
-Status: fix landed, committing
+Status: DONE — pushed to main at ca774b8b9
 
 ## Problem
 MEASURED live: regenerated RM_TheScald map (250x250) has RUT_ScaldWaterOceanDeep
