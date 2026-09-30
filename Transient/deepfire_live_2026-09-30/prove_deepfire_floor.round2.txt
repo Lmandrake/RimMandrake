@@ -1,0 +1,38 @@
+make_empty_room: {"success": true, "rect": {"x": 59, "z": 59, "w": 8, "h": 8}, "wallDef": "Wall", "floorDef": "WoodPlankFloor", "doorAt": {"x": 65, "z": 59}, "cellsWalled": 28, "cellsFloored": 64, "ticksGame": 1, "operation": {"OperationId": "op_6211b7791d6240c3a1fb8158eadc3752", "CapabilityId": "extension.global/gl
+Deepfire dev actions: ['T: Floor: coat 6x6 from cell', 'T: Floor: designate 6x6 from cell', 'T: Floor: remove floor 6x6 from cell', 'T: Floor: report 6x6 from cell', 'T: Floor: strip coats 6x6 from cell', 'T: Floor: vanilla-paint 6x6 red from cell']
+== 0 baseline ==
+  [baseline] {"rect": [60, 60, 6, 6], "floorCellsInRect": 36, "coatedInRect": 0, "coatSumInRect": 0, "coatedOnMap": 0, "floorLights": 0, "clusteredBuildingLights": 0, "totalLights": 0, "floorLightList": [], "center": [63, 63], "centerGroundGlow": 0, "centerVisual": [0, 0, 0], "centerTerrain": "WoodPlankFloor", "centerColorDef": "", "centerCellBeauty": 0, "roomId": 39, "roomCells": 36, "roomOutdoors": false, "roomCoatedCells": 0, "roomBeauty": 0, "roomDeepfireBonus": 0}
+  PASS  baseline: 36 floor cells, 0 coated, 0 floor proxies  floor=36 coated=0 lights=0
+  PASS  baseline: room is the 36-cell interior  roomCells=36 outdoors=False
+== 1 coat ==
+  PASS  coat: 36 added  {"action": "coat", "added": 36, "refused": 0}
+  [coated] {"rect": [60, 60, 6, 6], "floorCellsInRect": 36, "coatedInRect": 36, "coatSumInRect": 36, "coatedOnMap": 36, "floorLights": 4, "clusteredBuildingLights": 0, "totalLights": 4, "floorLightList": ["61,61 coats=1 radius=2.5 color=51, 37, 26, 255", "64,61 coats=1 radius=2.5 color=51, 37, 26, 255", "61,64 coats=1 radius=2.5 color=51, 37, 26, 255", "64,64 coats=1 radius=2.5 color=51, 37, 26, 255"], "center": [63, 63], "centerGroundGlow": 0.0565, "centerVisual": [4, 3, 2], "centerTerrain": "WoodPlankFloor", "centerColorDef": "", "centerCellBeauty": 0.5, "roomId": 39, "roomCells": 36, "roomOutdoors": false, "roomCoatedCells": 36, "roomBeauty": 6.4737, "roomDeepfireBonus": 6}
+  PASS  coat: grid holds 36 coated cells (1 coat each)  
+  PASS  coat: EXACTLY 4 floor proxies (one per 3x3 block)  floorLights=4 list=['61,61 coats=1 radius=2.5 color=51, 37, 26, 255', '64,61 coats=1 radius=2.5 color=51, 37, 26, 255', '61,64 coats=1 radius=2.5 color=51, 37, 26, 255', '64,64 coats=1 radius=2.5 color=51, 37, 26, 255']
+  PASS  coat: centre glow rose above baseline and is > 0  0.0000 -> 0.0565
+  PASS  coat: CellBeauty at centre +0.5  0.0000 -> 0.5000
+  PASS  coat: room line = +6 (36 coated cells)  bonus=6 coatedInRoom=36
+  PASS  coat: room Beauty rises by 18/CellCountCurve(n) + 6  0.0000 -> 6.4737 (rise 6.4737, expected 6.4737)
+== 2 vanilla paint red ==
+  PASS  paint: Structure_Red found and 36 cells painted  {"action": "paintRed", "colorDefFound": true, "painted": 36}
+  [red] {"rect": [60, 60, 6, 6], "floorCellsInRect": 36, "coatedInRect": 36, "coatSumInRect": 36, "coatedOnMap": 36, "floorLights": 4, "clusteredBuildingLights": 0, "totalLights": 4, "floorLightList": ["64,64 coats=1 radius=2.5 color=53, 22, 25, 255", "61,64 coats=1 radius=2.5 color=53, 22, 25, 255", "61,61 coats=1 radius=2.5 color=53, 22, 25, 255", "64,61 coats=1 radius=2.5 color=53, 22, 25, 255"], "center": [63, 63], "centerGroundGlow": 0.0565, "centerVisual": [4, 1, 2], "centerTerrain": "WoodPlankFloor", "centerColorDef": "Structure_Red", "centerCellBeauty": 0.5, "roomId": 39, "roomCells": 36, "roomOutdoors": false, "roomCoatedCells": 36, "roomBeauty": 6.4737, "roomDeepfireBonus": 6}
+  PASS  paint: colour def at centre is Structure_Red  Structure_Red
+  PASS  paint: coats kept, still 4 proxies  coated=36 lights=4
+  PASS  paint: visual glow at centre is red-dominant  rgb=[4, 1, 2] (was [4, 3, 2])
+== 3 strip coats (remove deepfire) ==
+  PASS  strip: 36 stripped  {"action": "strip", "stripped": 36}
+  [stripped] {"rect": [60, 60, 6, 6], "floorCellsInRect": 36, "coatedInRect": 0, "coatSumInRect": 0, "coatedOnMap": 0, "floorLights": 0, "clusteredBuildingLights": 0, "totalLights": 0, "floorLightList": [], "center": [63, 63], "centerGroundGlow": 0, "centerVisual": [0, 0, 0], "centerTerrain": "WoodPlankFloor", "centerColorDef": "Structure_Red", "centerCellBeauty": 0, "roomId": 39, "roomCells": 36, "roomOutdoors": false, "roomCoatedCells": 0, "roomBeauty": 0, "roomDeepfireBonus": 0}
+  PASS  strip: grid zero, 0 floor proxies  coated=0 lights=0
+  PASS  strip: room Beauty back to baseline  0.0000 vs baseline 0.0000
+  PASS  strip: room line gone  
+== 4 re-coat, then remove the floor ==
+  [recoated] {"rect": [60, 60, 6, 6], "floorCellsInRect": 36, "coatedInRect": 36, "coatSumInRect": 36, "coatedOnMap": 36, "floorLights": 4, "clusteredBuildingLights": 0, "totalLights": 4, "floorLightList": ["61,61 coats=1 radius=2.5 color=53, 22, 25, 255", "64,61 coats=1 radius=2.5 color=53, 22, 25, 255", "64,64 coats=1 radius=2.5 color=53, 22, 25, 255", "61,64 coats=1 radius=2.5 color=53, 22, 25, 255"], "center": [63, 63], "centerGroundGlow": 0.0565, "centerVisual": [4, 1, 2], "centerTerrain": "WoodPlankFloor", "centerColorDef": "Structure_Red", "centerCellBeauty": 0.5, "roomId": 39, "roomCells": 36, "roomOutdoors": false, "roomCoatedCells": 36, "roomBeauty": 6.4737, "roomDeepfireBonus": 6}
+  PASS  recoat: 36 coated, 4 proxies  
+  PASS  remove floor: 36 cells lost their floor  {"action": "removeFloor", "removed": 36}
+  [floor removed] {"rect": [60, 60, 6, 6], "floorCellsInRect": 0, "coatedInRect": 0, "coatSumInRect": 0, "coatedOnMap": 0, "floorLights": 0, "clusteredBuildingLights": 0, "totalLights": 0, "floorLightList": [], "center": [63, 63], "centerGroundGlow": 0, "centerVisual": [0, 0, 0], "centerTerrain": "AB_FineSand", "centerColorDef": "", "centerCellBeauty": -3, "roomId": 39, "roomCells": 36, "roomOutdoors": false, "roomCoatedCells": 0, "roomBeauty": -2.8421, "roomDeepfireBonus": 0}
+  PASS  remove floor: grid zero, 0 floor proxies, no floor left  coated=0 lights=0 floorCells=0
+  PASS  remove floor: room line gone  
+== 5 log ==
+  PASS  no LuminousPigment/Deepfire Error-type lines logged (new) during the proof  []
+
+22/22 passed

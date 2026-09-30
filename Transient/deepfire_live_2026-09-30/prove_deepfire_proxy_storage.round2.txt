@@ -1,0 +1,29 @@
+make_empty_room: {"success": true, "rect": {"x": 59, "z": 59, "w": 8, "h": 8}, "wallDef": "Wall", "floorDef": "WoodPlankFloor", "doorAt": {"x": 64, "z": 59}, "cellsWalled": 28, "cellsFloored": 64, "ticksGame": 1355, "operation": {"OperationId": "op_c5370d1b6bab43a0b931199ccc3fe4c2", "CapabilityId": "extension.global
+Deepfire dev actions: ['T: FirstCoat: coat thing at cell', 'T: FirstCoat: destroy thing at cell', 'T: FirstCoat: remove coats at cell', 'T: FirstCoat: report thing at cell', 'T: FirstCoat: spawn art Legendary at cell', 'T: FirstCoat: spawn art Normal at cell', 'T: FirstCoat: spawn wall at cell', 'T: Floor: coat 6x6 from cell', 'T: Floor: designate 6x6 from cell', 'T: Floor: remove floor 6x6 from cell', 'T: Floor: report 6x6 from cell', 'T: Floor: strip coats 6x6 from cell', 'T: Floor: vanilla-paint 6x6 red from cell', 'T: Proxy: clear placed items', 'T: Proxy: stockpile + items 6x6 from cell', 'T: Proxy: storage report 6x6 from cell']
+== 0 stockpile + items ==
+  PASS  stock: 36 stockpile cells, 36 Steel stacks placed on their own cells  {"action": "stock", "zoneCells": 36, "items": 36}
+  [stocked] {"proxyCategory": "Ethereal", "floorLights": 0, "coatedInRect": 0, "tracked": 36, "displaced": 0, "lost": 0, "proxyCellsInRect": 0, "proxiesSeenInGrid": 0, "maxItemCountOnProxyCell": 0, "proxyCellsValidStorage": 0, "emptyCellsInRect": 0, "emptyCellsValidStorage": 0}
+  PASS  stock: no floor proxies yet, nothing displaced  
+== 1 coat under the items ==
+  PASS  coat: 36 added  {"action": "coat", "added": 36, "refused": 0}
+  [coated] {"proxyCategory": "Ethereal", "floorLights": 4, "coatedInRect": 36, "tracked": 36, "displaced": 0, "lost": 0, "proxyCellsInRect": 4, "proxiesSeenInGrid": 4, "maxItemCountOnProxyCell": 1, "proxyCellsValidStorage": 0, "emptyCellsInRect": 0, "emptyCellsValidStorage": 0}
+  PASS  coat: proxy def is category Ethereal  Ethereal
+  PASS  coat: EXACTLY 4 floor proxies (DEEPFIRE_FLOOR_PAINT_1 count unchanged)  floorLights=4 inRect=4
+  PASS  coat: the proxies are really spawned in the thing grid  seen=4
+  PASS  coat: 0 of 36 Steel stacks displaced or lost  tracked=36 displaced=0 lost=0
+  PASS  coat: a proxy cell counts only the Steel (GetItemCount 1)  max=1
+== 2 empty the stockpile ==
+  PASS  clear: 36 destroyed  {"action": "clear", "destroyed": 36}
+  [emptied] {"proxyCategory": "Ethereal", "floorLights": 4, "coatedInRect": 36, "tracked": 0, "displaced": 0, "lost": 0, "proxyCellsInRect": 4, "proxiesSeenInGrid": 4, "maxItemCountOnProxyCell": 0, "proxyCellsValidStorage": 4, "emptyCellsInRect": 36, "emptyCellsValidStorage": 36}
+  PASS  storage: all 4 proxy cells accept a WoodLog  valid=4 of 4
+  PASS  storage: all 36 empty cells accept a WoodLog  empty=36 valid=36
+  PASS  storage: still 4 proxies  
+== 3 wall survives its own proxy ==
+  PASS  wall: spawned  {"action": "spawnWall", "found": true, "thingId": 18070, "def": "Wall", "isArt": false, "coats": 0, "bonusApplied": false, "quality": "", "beauty": 0}
+  PASS  wall: coated to 1  {"action": "coat", "found": true, "thingId": 18070, "def": "Wall", "isArt": false, "coats": 1, "bonusApplied": true, "quality": "", "beauty": 3}
+  PASS  wall: still standing after its proxy spawned  {"action": "report", "found": true, "thingId": 18070, "def": "Wall", "isArt": false, "coats": 1, "bonusApplied": true, "quality": "", "beauty": 3}
+  PASS  wall: a clustered building proxy was added  0 -> 1
+== 4 log ==
+  PASS  no LuminousPigment/Deepfire Error-type lines logged (new) during the proof  []
+
+17/17 passed
