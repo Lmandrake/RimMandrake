@@ -6,8 +6,15 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards</displayName>
+    </li>
+  </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.environmentalhazards</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>Ludeon.RimWorld.Anomaly</li>
     <li>sarg.alphabiomes</li>
@@ -40,13 +47,15 @@ reactions, warm-reactive cold wax, butane gut, burner halo VFX) and the
 warm-detonation threshold slider, all defaulting to the shipped behavior
 (MOD_OPTIONS_RETROFIT_1).
 
-⚠️ Not entirely donor-free: three `wildPlants` rows (Alpha Biomes' `AB_ToxiGrass`/
-`AB_CrystalHorn`, and `PoisonPlantTallGrass`) are inherited unguarded from the
-frozen campaign twin, same shape as the twin's own authoring — that ban-1
-tension (this biome's own sheet forbids water-based flora) stays open for the
-owner and is not resolved by this build. `AA_Thunderbeast` (Alpha Animals,
-`sarg.alphaanimals`) ships inline, `MayRequire`-gated, matching how every other
-sibling RM_ biome mod ships its own non-Star-Wars donor rows directly (Q9).
+Weather: the Haze (a mild hydrocarbon-film exposure on unroofed pawns, via
+Environmental Hazards' shared exposure carrier), ice-sand drift on the sand grid,
+and ice fog (half accuracy, range capped at 22.9 cells) join Clear. The vhaulk's
+cistern detonates only on a heat-family death, and any EMP hit sets a living one
+off. Every one of these has its own Mod Settings switch.
+
+`AA_Thunderbeast` (Alpha Animals, `sarg.alphaanimals`) ships inline,
+`MayRequire`-gated, matching how every other sibling RM_ biome mod ships its own
+non-Star-Wars donor rows directly (Q9).
 
 NOT in this mod: `Vapaad`, a genuinely canon Star Wars creature (Vaapad) the
 campaign roster also ratifies for this biome — that rides a Utinni patch onto

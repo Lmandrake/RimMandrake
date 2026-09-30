@@ -45,8 +45,18 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <!-- BLUEDESERT_MECHANICS_BUILD_1 §4: Mod Settings register a gate with the
+       shared EnvironmentalHazards RM_MechanicGates registry (the Haze
+       carrier condition's class lives there), so this compiles against that
+       assembly and About.xml declares mandrake.rm.environmentalhazards.
+       Same recipe as RM_LeaningScrub.csproj. -->
+  <PropertyGroup Condition="'$(EnvironmentalHazardsDll)' == ''">
+    <EnvironmentalHazardsDll>$(MSBuildThisFileDirectory)..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</EnvironmentalHazardsDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="RM_BlueDesertMod.cs" />
+    <Compile Include="RM_BlueDesertWeatherTable.cs" />
     <Compile Include="BlueDesertLife.cs" />
     <Compile Include="RM_VhaulkDetonation.cs" />
   </ItemGroup>
@@ -74,6 +84,10 @@
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.EnvironmentalHazards">
+      <HintPath>$(EnvironmentalHazardsDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

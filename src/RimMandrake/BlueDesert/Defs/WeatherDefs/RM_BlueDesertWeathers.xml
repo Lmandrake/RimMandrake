@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BlueDesertWeathers.xml     BLUEDESERT_MECHANICS_BUILD_1 §4 (tranche 1)
+
+  The three ruled weathers (the_blue_desert.md §4b + its 2026-09-24 engine
+  amendment). They join vanilla Clear on RM_BlueDesert's
+  baseWeatherCommonalities, replacing the shipped "Clear 100" block.
+
+  - RM_IceSandDrift: the "snow" is ice sand. Rides Odyssey's sand grid
+    (WeatherDef.sandRate -> SteadyEnvironmentEffects.AddFallenSandAt, Perlin
+    patchy, erodes at -1/180 per steady pass once sandRate is 0 — RimSage,
+    decompiled 1.6). sandRate 1.6 and moveSpeedMultiplier 0.8 are vanilla
+    Sandstorm's own figures; temperatureRange is left at the -999~999
+    default (Sandstorm's 10~999 would forbid it at −42 °C).
+    OWED, not here: the blue-white tint. The sand layer draws the global
+    MatBases.Sand (SectionLayer_Sand), so tinting it per-biome needs a
+    Harmony patch and this mod carries no Harmony — see the item report.
+  - RM_Haze: cryogenic hydrocarbon precipitation. No rain, no snow (bans
+    7 / "the snow is sand"): rainRate/snowRate 0, the gentle-snow overlay
+    for the settling veil only. Its exposure hediff (RM_HazeFilm) is carried
+    by the permanent RM_BlueDesertHazeCarrier condition
+    (GameConditionDefs/RM_BlueDesertHaze.xml).
+  - RM_IceFog: BlindFog-verbatim severity — accuracyMultiplier 0.5,
+    maxRangeCap 22.9, the FogBlind overlay — re-hued bright blue-white, plus
+    a moveSpeedMultiplier slow (0.85, this build's INVENTED figure; the
+    sheet names the slow, not a number). BlindFog's own arrival letter is
+    NOT copied: it is routine weather here, not an event.
+
+  No commonalityRainfallFactor on any of the three: the biome's rainfall is
+  zero, and a vanilla rainfall curve (SnowGentle's, BlindFog's) evaluates to
+  0 there, which would silently delete the weather from the rotation.
+  canOccurAsRandomForcedEvent false keeps them out of other biomes' forced-
+  weather incidents. Sky colours are this build's own INVENTED tuning toward
+  §9's "bright, blue-white" palette.
+-->
+<Defs>
+
+  <!-- ═══ ice-sand drift ═══ -->
+  <WeatherDef>
+    <defName>RM_IceSandDrift</defName>
+    <label>ice-sand drift</label>
+    <description>Wind lifts the plain's ice sand and lays it down again somewhere else. It piles in patches, buries paths, slows everyone down and throws off aim. It wears away again once the wind drops.</description>
+    <isBad>true</isBad>
+    <favorability>Neutral</favorability>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <perceivePriority>1</perceivePriority>
+    <accuracyMultiplier>0.8</accuracyMultiplier>
+    <moveSpeedMultiplier>0.8</moveSpeedMultiplier>
+    <sandRate>1.6</sandRate>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <preventSkygaze>true</preventSkygaze>
+    <windSpeedFactor>1.5</windSpeedFactor>
+    <windSpeedOffset>1.25</windSpeedOffset>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_SandHard</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.82,0.88,0.96)</sky>
+      <shadow>(0.92,0.93,0.96)</shadow>
+      <overlay>(0.74,0.80,0.90)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.90,0.94,1.0)</sky>
+      <shadow>(0.92,0.93,0.96)</shadow>
+      <overlay>(0.62,0.68,0.80)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.32,0.40,0.52)</sky>
+      <shadow>(0.92,0.93,0.96)</shadow>
+      <overlay>(0.46,0.52,0.62)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.30,0.38,0.50)</sky>
+      <shadow>(0.92,0.93,0.96)</shadow>
+      <overlay>(0.44,0.50,0.60)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <!-- ═══ the Haze ═══ -->
+  <WeatherDef>
+    <defName>RM_Haze</defName>
+    <label>the Haze</label>
+    <description>A fine hydrocarbon condensate settles out of the sky like slow snow that never lies. Anyone out under open sky takes a thin chilling film on skin and lungs; a roof keeps it off and it wears off indoors.</description>
+    <isBad>true</isBad>
+    <favorability>Neutral</favorability>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <perceivePriority>1</perceivePriority>
+    <accuracyMultiplier>0.9</accuracyMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <windSpeedFactor>0.8</windSpeedFactor>
+    <ambientSounds>
+      <li>Ambient_Wind_Clear</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_SnowGentle</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.78,0.84,0.96)</sky>
+      <shadow>(0.93,0.94,0.97)</shadow>
+      <overlay>(0.70,0.78,0.92)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.84,0.88,1.0)</sky>
+      <shadow>(0.93,0.94,0.97)</shadow>
+      <overlay>(0.60,0.66,0.82)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.30,0.38,0.54)</sky>
+      <shadow>(0.93,0.94,0.97)</shadow>
+      <overlay>(0.44,0.50,0.64)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.28,0.36,0.52)</sky>
+      <shadow>(0.93,0.94,0.97)</shadow>
+      <overlay>(0.42,0.48,0.62)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <!-- ═══ ice fog ═══ -->
+  <WeatherDef>
+    <defName>RM_IceFog</defName>
+    <label>ice fog</label>
+    <description>Diamond dust hangs in the air at forty below and glows faintly. Ranged weapons lose half their accuracy and most of their reach, and everyone moves a little slower.</description>
+    <isBad>true</isBad>
+    <favorability>Neutral</favorability>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <perceivePriority>1</perceivePriority>
+    <accuracyMultiplier>0.5</accuracyMultiplier>
+    <maxRangeCap>22.9</maxRangeCap>
+    <moveSpeedMultiplier>0.85</moveSpeedMultiplier>
+    <preventsShuttleLaunch>true</preventsShuttleLaunch>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <windSpeedFactor>0.5</windSpeedFactor>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_FogBlind</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.90,0.94,1.0)</sky>
+      <shadow>(0.93,0.94,0.97)</shadow>
+      <overlay>(0.80,0.86,0.96)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1.0,1.0,1.0)</sky>
+      <shadow>(0.93,0.94,0.97)</shadow>
+      <overlay>(0.70,0.76,0.88)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.40,0.48,0.60)</sky>
+      <shadow>(0.93,0.94,0.97)</shadow>
+      <overlay>(0.56,0.62,0.72)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.38,0.46,0.58)</sky>
+      <shadow>(0.93,0.94,0.97)</shadow>
+      <overlay>(0.54,0.60,0.70)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

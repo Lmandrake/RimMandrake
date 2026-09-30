@@ -1,3 +1,4 @@
+using RimMandrake.EnvironmentalHazards;
 using UnityEngine;
 using Verse;
 
@@ -39,6 +40,13 @@ namespace RimMandrake.BlueDesert
         public static bool vhaulkHeatGateEnabled = true;
         public static bool vhaulkEmpTrapEnabled = true;
 
+        // BLUEDESERT_MECHANICS_BUILD_1 §4. ruledWeathersEnabled drives
+        // RM_BlueDesertWeatherTable (biome-local commonality, live);
+        // hazeExposureEnabled is the RM_MechanicGates predicate behind
+        // RM_BlueDesertHazeCarrier's gate key.
+        public static bool ruledWeathersEnabled = true;
+        public static bool hazeExposureEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -51,6 +59,8 @@ namespace RimMandrake.BlueDesert
             Scribe_Values.Look(ref warmDetonationThresholdC, "warmDetonationThresholdC", 5f);
             Scribe_Values.Look(ref vhaulkHeatGateEnabled, "vhaulkHeatGateEnabled", true);
             Scribe_Values.Look(ref vhaulkEmpTrapEnabled, "vhaulkEmpTrapEnabled", true);
+            Scribe_Values.Look(ref ruledWeathersEnabled, "ruledWeathersEnabled", true);
+            Scribe_Values.Look(ref hazeExposureEnabled, "hazeExposureEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -84,6 +94,12 @@ namespace RimMandrake.BlueDesert
               + "kinetic or cold kill leaves the carcass intact. Off: any death detonates it.");
             list.CheckboxLabeled("Vhaulk: EMP detonates it alive", ref vhaulkEmpTrapEnabled,
                 "On: any EMP hit on a living vhaulk sets it off at once. Off: EMP does nothing to it.");
+            list.CheckboxLabeled("Blue Desert weathers", ref ruledWeathersEnabled,
+                "The Haze, ice-sand drift and ice fog in the Blue Desert's weather rotation. Off: "
+              + "the Blue Desert is always clear. Takes effect at the next weather change.");
+            list.CheckboxLabeled("Haze film exposure", ref hazeExposureEnabled,
+                "Colonists outdoors during the Haze pick up a mild chilling film. Off: nobody new "
+              + "picks it up.");
 
             list.Label("Warm-detonation threshold: " + warmDetonationThresholdC.ToString("0") + " °C");
             warmDetonationThresholdC = list.Slider(warmDetonationThresholdC, -1f, 15f);
@@ -99,6 +115,19 @@ namespace RimMandrake.BlueDesert
         public RM_BlueDesertMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_BlueDesertSettings>();
+
+            RM_MechanicGates.Register(
+                HazeExposureGateKey,
+                () => RM_BlueDesertSettings.masterEnabled && RM_BlueDesertSettings.hazeExposureEnabled);
+        }
+
+        // Must match RM_BlueDesertHazeCarrier's RM_MechanicGateExtension.gateKey.
+        public const string HazeExposureGateKey = "bluedesert.hazeExposure";
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            RM_BlueDesertWeatherTable.Apply();
         }
 
         public override string SettingsCategory()

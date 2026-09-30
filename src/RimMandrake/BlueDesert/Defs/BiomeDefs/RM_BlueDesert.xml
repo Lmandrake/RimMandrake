@@ -157,8 +157,20 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+    <!-- BLUEDESERT_MECHANICS_BUILD_1 §4: the three ruled weathers
+         (WeatherDefs/RM_BlueDesertWeathers.xml) replace the shipped
+         "Clear 100". Clear stays the common state (§4b). The 60/15/15/10
+         split is this build's INVENTED tuning. Mod Settings'
+         "Blue Desert weathers" off zeroes the three at runtime
+         (RM_BlueDesertWeatherTable), leaving Clear alone. -->
+    <biomeMapConditions>
+      <li>RM_BlueDesertHazeCarrier</li>
+    </biomeMapConditions>
     <baseWeatherCommonalities>
-      <Clear>100</Clear>
+      <Clear>60</Clear>
+      <RM_Haze>15</RM_Haze>
+      <RM_IceSandDrift>15</RM_IceSandDrift>
+      <RM_IceFog>10</RM_IceFog>
       <Fog>0</Fog>
       <Rain>0</Rain>
       <DryThunderstorm>0</DryThunderstorm>
