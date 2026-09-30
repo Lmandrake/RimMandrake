@@ -43,6 +43,7 @@ import time
 
 sys.path.insert(0, r"src\RimMandrake\Utils")
 import rimbridge_client as rb
+import deepfire_log_check
 
 TAG = "[DeepfireGods] "
 CATEGORY = "Deepfire"
@@ -189,7 +190,7 @@ if st.get("programState") != "Playing":
     print("not Playing:", st.get("programState"))
     sys.exit(2)
 
-call("jawa/drain_log", errorsOnly=True)  # discard errors that predate this proof
+LOG_BASE = deepfire_log_check.baseline(call, ("Ninefold",))  # errors already in the buffer do not count
 
 room = call("jawa/make_empty_room", rect="%d,%d,8,8" % (X - 1, Z - 1),
             wallDef="Wall", stuffDef="WoodLog", floorDef="WoodPlankFloor")
@@ -286,10 +287,8 @@ else:
     check("LightsOut: proxy has no consume status (glow postfix leaves it alone)", lo.get("proxyCanConsume") is None)
 
 print("== 10 log ==")
-logs = call("jawa/drain_log", errorsOnly=True)
-text = json.dumps(logs)
-bad = [k for k in ("LuminousPigment", "Deepfire", "Ninefold") if k in text]
-check("no LuminousPigment/Deepfire/Ninefold errors logged during the proof", not bad, text[:600] if bad else "")
+new_errors = deepfire_log_check.new_mod_errors(call, LOG_BASE, ("Ninefold",))
+check("no LuminousPigment/Deepfire/Ninefold Error-type lines logged (new) during the proof", not new_errors, json.dumps(new_errors[:5]))
 
 failed = [n for n, ok in results if not ok]
 print("\n%d/%d passed, %d UNMEASURED" % (len(results) - len(failed), len(results), len(unmeasured)))

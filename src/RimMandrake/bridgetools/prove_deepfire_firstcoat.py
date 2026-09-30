@@ -46,6 +46,7 @@ import time
 
 sys.path.insert(0, r"src\RimMandrake\Utils")
 import rimbridge_client as rb
+import deepfire_log_check
 
 TAG = "[DeepfireFirstCoat] "
 CATEGORY = "Deepfire"
@@ -131,7 +132,7 @@ if st.get("programState") != "Playing":
     print("not Playing:", st.get("programState"))
     sys.exit(2)
 
-call("jawa/drain_log", errorsOnly=True)  # discard errors that predate this proof
+LOG_BASE = deepfire_log_check.baseline(call)  # errors already in the buffer do not count
 
 actions = find_actions()
 print("FirstCoat dev actions:", sorted(actions))
@@ -193,10 +194,8 @@ check("reapply: coats=1, Beauty rise matches step 5 exactly (no double-count)",
 run(actions, "destroy thing")
 
 print("== 8 log ==")
-logs = call("jawa/drain_log", errorsOnly=True)
-text = json.dumps(logs)
-bad = [k for k in ("LuminousPigment", "Deepfire", "FirstCoat") if k in text]
-check("no LuminousPigment/Deepfire/FirstCoat errors logged during the proof", not bad, text[:600] if bad else "")
+new_errors = deepfire_log_check.new_mod_errors(call, LOG_BASE)
+check("no LuminousPigment/Deepfire/FirstCoat Error-type lines logged (new) during the proof", not new_errors, json.dumps(new_errors[:5]))
 
 failed = [n for n, ok in results if not ok]
 print("\n%d/%d passed" % (len(results) - len(failed), len(results)))

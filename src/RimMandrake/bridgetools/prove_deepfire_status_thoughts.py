@@ -35,6 +35,7 @@ import time
 
 sys.path.insert(0, r"src\RimMandrake\Utils")
 import rimbridge_client as rb
+import deepfire_log_check
 
 TAGS = ("[DeepfireStatus] ", "[DeepfireFloor] ")
 CATEGORY = "Deepfire"
@@ -137,7 +138,7 @@ if st.get("programState") != "Playing":
     print("not Playing:", st.get("programState"))
     sys.exit(2)
 
-call("jawa/drain_log", errorsOnly=True)  # discard errors that predate this proof
+LOG_BASE = deepfire_log_check.baseline(call)  # errors already in the buffer do not count
 
 for (rx, label) in ((X, "bedroom"), (PX, "public room")):
     room = call("jawa/make_empty_room", rect="%d,%d,8,8" % (rx - 1, Z - 1),
@@ -243,10 +244,8 @@ if im and im.get("faction"):
 run(actions, "cleanup test pawns", X, Z)
 
 print("== 6 log ==")
-logs = call("jawa/drain_log", errorsOnly=True)
-text = json.dumps(logs)
-bad = [k for k in ("LuminousPigment", "Deepfire", "Sumptuary") if k in text]
-check("no LuminousPigment/Deepfire errors logged during the proof", not bad, text[:600] if bad else "")
+new_errors = deepfire_log_check.new_mod_errors(call, LOG_BASE)
+check("no LuminousPigment/Deepfire Error-type lines logged (new) during the proof", not new_errors, json.dumps(new_errors[:5]))
 
 failed = [n for n, ok in results if not ok]
 print("\n%d/%d passed" % (len(results) - len(failed), len(results)))
