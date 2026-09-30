@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T05:25:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T05:30:43Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -278,6 +278,15 @@ target:   v1
 kind:     design
 summary:  (no items/WASTELAND_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WASTELAND_BEDAZZLE_SITTING_1.md
+
+## STILLSAND_BEDAZZLE_SITTING_1 Stillsand bedazzle sitting - program row 9: score against the nine-mark bar (09-27 sitting + roster fill-out done), fill gaps, four-turn volley to the bar, ticket + commission
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/STILLSAND_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STILLSAND_BEDAZZLE_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
