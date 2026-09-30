@@ -610,7 +610,97 @@ sheet and the ruling both demand it.
 
 ## 3. Huge skeletons and barren tracks
 
-pending
+*"Barren tracks of apparent nothingness"* reads two ways, and both are built here: the **tracts**
+(the vast empty expanse is itself the feature) and the **tracks** (the marks in the sand that say
+what passed). Either way, **the emptiness does the work**.
+
+### 3.1 The giant skeletons: landmark, shelter, loot, and a record of what hunts here
+
+**What the player sees.** A ribcage the size of a sandcrawler stands out of a dune: a row of
+bone-white arcs, half buried, each throwing a hard black shadow stripe. A skull lies further on,
+jaw in the sand, big enough to walk into. It is the one vertical for kilometres
+(dune_sea §9: *"a single vertical is an event"*). Luke passed one in the first film, and this is
+that image.
+
+**What the player hears.** The **bone harp** (§2.1 layer 4): wind across the ribs makes a hollow
+note. It moans in the hiss and howls in the gale, and you can find a skeleton with your eyes shut.
+
+**What it does:**
+
+- **Shelter, striped.** Ribs cast lee stripes (partial cover, about 0.5, glare-floored on sand).
+  **The skull is a real room**: its dome is a cast-shade pocket that fully counts. Under the low
+  sun, a skull is the best shade on open sand. It is also where the biome's small life waits out
+  the light, and where the ollim grows (deep_desert §4b: *"it grows among the true bones of vast
+  creatures"*). A bone field carries one tower ollim, a scatter of kneel ollims, and the loomma
+  tenants living in their shade.
+- **Loot.** Deconstruct (slowly) for **giant bone**, one material that waits on
+  `DESIGN_MATERIALS_REVIEW_1` (the stack already has several bone stuffs; do not add a family).
+  A krayt skeleton gives a **skull** (`ProcessKraytDragonSkull`) and sometimes a **pearl in the
+  gizzard stones** (the apex lens, §2.4). The veessa (fill-out) mill the bone fields, and a field
+  with no veessa in it has something worse in it (their own description).
+- **A record of what hunts here.** Each skeleton's **species** is a readable warning. Fresh krayt
+  bones mean krayts come to this tile. An oommok's mirror-plated skeleton is the one place its
+  shed plate can be salvaged. A skeleton with a disturbed-sand funnel in its ribs was taken from
+  below.
+- **Your kills become the map's history.** A giant's corpse in the Stillsand **does not rot** (the
+  sheet's law). It mummifies, and over about a season it **becomes a skeleton building** where it
+  fell: krayt, muurrok, war wyrm, oommok, guzzka. The krayt you killed in year one is the
+  landmark, the shade and the bone harp of year three. The biome keeps score.
+- **The dunes cover and uncover them.** Skeletons sit partly under drift, and the dunes engine's
+  migration buries a ribcage to its top arcs and later strips it clean. A gale can uncover one
+  that was never there (§2.2's emergence).
+
+**Mechanism.** Skeleton `Building` defs (multi-cell, `staticSunShadowHeight` per piece, a harp
+sustainer, deconstruct yields), one per giant, from the shipped `RM_TitanicCreatures` footprint
+plumbing. They are placed by a Stillsand genstep: **zero to two per map**, sparse, often with an
+ollim. A corpse comp on giant races (a `ThingComp` on the Corpse) converts the desiccated corpse
+into its skeleton after N days. The unplaced **`RSW_KraytGraveyard`** mutator is upgraded from
+loose skulls to one real krayt skeleton plus its scatter, and its `biomeWhitelist` names vanilla
+`ExtremeDesert`, so it is also re-pointed at `RM_Stillsand`. **Build:** **XML** plus a **small
+C#** corpse-to-skeleton comp and genstep; the art bill is one skeleton set per giant.
+**Tier:** RM skeletons (oommok, muurrok, guzzka, war-free generic giants); RSW skeletons (krayt,
+greater krayt, war wyrm). **Admission test:** **giant** and **a line**, and never more than two.
+
+### 3.2 The tracks: the sand remembers, until the wind decides it doesn't
+
+**What the player sees.** Marks in the sand, each a different signature:
+
+| track | signature | what it tells you |
+|---|---|---|
+| boots, hooves, pads | ordinary footprint filth, **kept for days** in still air | who walked here and which way |
+| **crawler treads** | two broad parallel ribbons | a sandcrawler passed: a Jawa camp, a trade circuit, or a dead crawler at the end |
+| **the swimmer wake** | a trough with a low ridge, running straight or curving | something under the sand went this way. **A wake that ends at a darker patch** = something was taken there (`RM_Filth_DisturbedSand`) |
+| drag marks | a smeared line toward a funnel, or downwind in a gale | a loss, and where it ended |
+| **oommok prints** | house-sized pits in a slow line, a day apart | the giant's road, so you can follow its shadow |
+| eruption scar | a crater ring of blown sand | a mound went off here, and busters may still be below |
+| glasscrust scar | a crushed frosted line that lasts **years** (the fill-out's own glasscrust: *"the sand remembers"*) | the oldest route on the map: tribal paths, the old caravan line |
+
+**What the player feels.** The map is a **page**, and reading it is the scavenger skill. A wake
+that ends in a funnel near your fishing spot is a warning written in the sand. A crawler track
+leads to salvage. A crushed glasscrust line leads to where people used to go, and the gale wipes
+the whole page clean (§2.2), so every storm resets the map's memory.
+
+**Mechanism.** Track filth defs with long lifespans in this biome; wake and drag already ship or
+are part of the kit (§2.1). **The dunes engine is the eraser**: a cell whose sand depth changes
+past a threshold clears its track filth. Tracks survive in still sand and die on moving crests,
+which is exactly where you would expect them to last. **Build:** **XML** filths plus a **small C#**
+hook in the engine's deposit step. **Tier:** RM (crawler tread is RSW flavour). **Admission test:**
+**lines**, and nothing but.
+
+### 3.3 The tract: apparent nothingness, made load-bearing
+
+**The empty expanse is a feature, in three ways:**
+
+- **Nothing hides, including you.** *"You can see anything coming from an hour away. So can it."*
+  (dune_sea §7). Every raid, caravan and wandering giant that enters a Stillsand map is announced
+  **hours early**: a dust plume on the map edge and a letter, *"Dust on the horizon, bearing
+  north-west."* In return, raids here see you too. They arrive knowing your layout and pick the
+  side without a wall. Small C#: an incident pre-hook in the biome that delays arrival and paints
+  the plume.
+- **The mirage** (§4): the empty flat lies back at you. It shows water that is not there.
+- **The distances are real.** No roads (the tribes' ruling), so the deep sand's pathCost 300 makes
+  a map crossing a genuine expedition, sized by water, heat and wake-risk. The emptiness is the
+  map's measure, and droids, gales and giants' shadows are how you shorten it.
 
 ## 4. More ideas
 
