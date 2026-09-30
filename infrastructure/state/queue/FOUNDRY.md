@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T01:12:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T01:35:54Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1116,6 +1116,15 @@ kind:     task
 summary:  CRACKEDLANDSRULEDCONTENT1 — roster surgery, five new natives, fossils, the wax suit
 prose:    infrastructure/state/items/CRACKEDLANDS_RULED_CONTENT_1.md
 
+## CAULDRON_MECHANICS_BUILD_1 Build the Cauldron mechanics: engine-underfoot soundscape + falter tell, four ratified weathers, flammable vent gas w/ toxic smoke + gas-tap scaffolds, filter-works fluid conversion, vexxiss behaviors, Oomo dislike content
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Five organs, one machine:
+prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -1712,16 +1721,6 @@ thin:     no ## spec, no ## criteria
 summary:  CRACKEDLANDSMECHANICSBUILD1 — the Swale, surveys, fossils-in-the-walls, the giants' behaviors, the soundscape
 prose:    infrastructure/state/items/CRACKEDLANDS_MECHANICS_BUILD_1.md
 
-## CAULDRON_MECHANICS_BUILD_1 Build the Cauldron mechanics: engine-underfoot soundscape + falter tell, four ratified weathers, flammable vent gas w/ toxic smoke + gas-tap scaffolds, filter-works fluid conversion, vexxiss behaviors, Oomo dislike content
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  Five organs, one machine:
-prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
-
 ## CAULDRON_FULL_RENAME_1 Full rename PoisonForest -> Cauldron everywhere down to defNames incl. frozen RUT_ twin and soils (owner-typed 2026-09-28); live-tile shortHash check gates defName changes
 state:    proposed
 row:      unassigned
@@ -1892,32 +1891,22 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ROTSPOREKIT_MAYREQUIRE_ORPHANED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ROTSPOREKIT_MAYREQUIRE_ORPHANED_1.md
 
-## BLURRG_RSW_PORT_1 Port RSW_Blurrg (tamed-only) with canon entry and art; Leaning Scrub ruled content names it
+## RM_RAWVENOM_ART_1 RM_RawVenom item art missing everywhere; drop-in path LeaningScrub/Textures/Things/Item/Resource/RM_RawVenom.png
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BLURRG_RSW_PORT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BLURRG_RSW_PORT_1.md
+summary:  (no items/RM_RAWVENOM_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RM_RAWVENOM_ART_1.md
 
-## LEANINGSCRUB_ART_WIRING_1 Wire art for 27 Leaning Scrub subjects (thunderstep, yanker, scrap-nest bird, RM_RawVenom, venomvine split, zellik/dustflutter flight frames); check artpipe done/ first
+## BLURRG_ART_JOB_FIX_1 Pending artpipe jobs rsw_blurrg_v1_* say no forelimbs (canon: two short clawed arms) and drawsize 1.0 vs def adult 2.4; fix before the daemon runs them
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LEANINGSCRUB_ART_WIRING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LEANINGSCRUB_ART_WIRING_1.md
-
-## CAULDRON_TREE_METAL_YIELD_1 C# comp for the metal second yield on the two Cauldron trees; stubs are commented in defs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CAULDRON_TREE_METAL_YIELD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CAULDRON_TREE_METAL_YIELD_1.md
+summary:  (no items/BLURRG_ART_JOB_FIX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLURRG_ART_JOB_FIX_1.md
