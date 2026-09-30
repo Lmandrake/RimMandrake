@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Offline, no-game selftest for SOLAR_HEAT_EXPOSURE_1 (sun heat in
+    mandrake.rm.creaturebehaviors). Same shape as
+    SeaShores/Source/SelfTest: compile the REAL production file
+    (RM_SunHeatMath.cs, deliberately System.Math only) straight in, rather
+    than reimplementing it. Assembly-CSharp is referenced only to read
+    vanilla's own HediffGiver_Heat.TemperatureOverageAdjustmentCurve, so the
+    heat-increment case runs against the real curve.
+
+    NOT the mod build (RM_CreatureBehaviors.csproj one directory up lists
+    its files explicitly and never mentions this folder).
+
+    Run via src/RimMandrake/Utils/selftest_sun_heat.py, or directly
+    (Windows path; dotnet.exe cannot take /mnt/d):
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\CreatureBehaviors\Source\SelfTest\RimMandrakeCreatureBehaviors.SunHeat.SelfTest.csproj -c Release
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeCreatureBehaviors.SunHeat.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.CreatureBehaviors.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <DebugType>none</DebugType>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\RM_SunHeatMath.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>
