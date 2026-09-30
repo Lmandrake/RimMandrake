@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T02:54:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T03:05:35Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -278,15 +278,6 @@ target:   v1
 kind:     design
 summary:  (no items/WASTELAND_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WASTELAND_BEDAZZLE_SITTING_1.md
-
-## LONGSHADE_BEDAZZLE_SITTING_1 Long Shade bedazzle sitting - program row 8: score against the nine-mark bar (09-27 sitting covered movements 1-2 + part of 3), fill gaps, four-turn volley to the bar, ticket + commission
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/LONGSHADE_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1000,6 +991,6 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LONGSHADE_SHADE_EXTRAS_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## verify
+summary:  LONGSHADESHADEEXTRAS1 — Long Shade small ideas, deferred for the owner
 prose:    infrastructure/state/items/LONGSHADE_SHADE_EXTRAS_1.md
