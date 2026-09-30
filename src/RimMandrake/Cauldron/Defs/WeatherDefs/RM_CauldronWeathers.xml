@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_CauldronWeathers.xml     CAULDRON_MECHANICS_BUILD_1 part 2 (tranche 1)
+
+  The four weathers ratified by owner card 2026-09-12 (poison_forest.md §4b):
+  scatter-dusk (the standing state) · vent bloom · vapour bank · dewfall.
+  They replace the donor Fog 90 block on RM_Cauldron's
+  baseWeatherCommonalities.
+
+  Sheet laws these defs obey:
+    - never rain, never snow: every rainRate/snowRate/sandRate is 0. Dewfall
+      is condensation, not precipitation.
+    - no direct sunlight cues (§6): every shadow colour sits near white
+      (vanilla Fog's 0.92 register), so nothing casts a hard shadow in any
+      weather here.
+    - no green (§6): the vent bloom uses vanilla's grey WeatherOverlay_GrayPallFog,
+      not the green NoxiousHaze overlay the Miasma borrowed.
+    - no calm: every weather carries wind (windSpeedFactor >= 0.5; none is 0).
+
+  Vent bloom's harm is NOT vanilla doToxicBuildup (left false on purpose: no
+  double-tax with vanilla toxic buildup). Its stacking RM_VentMetalLoad hediff
+  is applied by RimMandrake.Cauldron.RM_MapComponent_VentBloomExposure,
+  outdoors + unroofed only, gated by the mod-settings toggle.
+
+  Sky colours, durations, accuracy and wind figures are this build's own
+  INVENTED tuning; the sheet names the weathers and behaviours, not numbers.
+  canOccurAsRandomForcedEvent=false on all four keeps them from being rolled
+  by some other biome's "force a random weather" incident.
+-->
+<Defs>
+
+  <!-- ═══ scatter-dusk: the standing state (the "clear" of this biome) ═══ -->
+  <WeatherDef>
+    <defName>RM_ScatterDusk</defName>
+    <label>scatter-dusk</label>
+    <description>The Cauldron's standing weather: an even, sourceless twilight with no sun to cast a shadow. The ground breathes a steady draught of metal-rich air.</description>
+    <isBad>false</isBad>
+    <favorability>Neutral</favorability>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <repeatable>true</repeatable>
+    <windSpeedFactor>1.0</windSpeedFactor>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <ambientSounds>
+      <li>Ambient_Wind_Clear</li>
+    </ambientSounds>
+    <skyColorsDay>
+      <sky>(0.66,0.62,0.70)</sky>
+      <shadow>(0.92,0.92,0.94)</shadow>
+      <overlay>(0.62,0.60,0.66)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.58,0.52,0.62)</sky>
+      <shadow>(0.92,0.92,0.94)</shadow>
+      <overlay>(0.54,0.50,0.58)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.34,0.32,0.40)</sky>
+      <shadow>(0.92,0.92,0.94)</shadow>
+      <overlay>(0.44,0.42,0.50)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.30,0.28,0.36)</sky>
+      <shadow>(0.92,0.92,0.94)</shadow>
+      <overlay>(0.40,0.38,0.46)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <!-- ═══ vent bloom: the signature hazard ═══ -->
+  <WeatherDef>
+    <defName>RM_VentBloom</defName>
+    <label>vent bloom</label>
+    <description>The ground exhales hard. A grey, metal-heavy breath pours up out of the vents and the fronds shed into it. Anyone outdoors and under open sky slowly takes on a metal load; a roof keeps it off.</description>
+    <isBad>true</isBad>
+    <favorability>Bad</favorability>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <durationRange>20000~60000</durationRange>
+    <perceivePriority>2</perceivePriority>
+    <doToxicBuildup>false</doToxicBuildup>
+    <windSpeedFactor>1.6</windSpeedFactor>
+    <accuracyMultiplier>0.8</accuracyMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_GrayPallFog</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.56,0.54,0.58)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.52,0.50,0.54)</overlay>
+      <saturation>0.7</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.50,0.46,0.52)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.46,0.42,0.48)</overlay>
+      <saturation>0.7</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.30,0.29,0.33)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.40,0.38,0.42)</overlay>
+      <saturation>0.7</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.26,0.25,0.29)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.36,0.34,0.38)</overlay>
+      <saturation>0.7</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <!-- ═══ vapour bank: chemical fog off the vents ═══ -->
+  <WeatherDef>
+    <defName>RM_VapourBank</defName>
+    <label>vapour bank</label>
+    <description>Chemical fog rolls off the vents and closes the sightlines. Condensate beads on everything. Ranged weapons lose most of their accuracy.</description>
+    <isBad>true</isBad>
+    <favorability>Neutral</favorability>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <perceivePriority>1</perceivePriority>
+    <windSpeedFactor>0.5</windSpeedFactor>
+    <accuracyMultiplier>0.5</accuracyMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.72,0.70,0.76)</sky>
+      <shadow>(0.94,0.94,0.95)</shadow>
+      <overlay>(0.66,0.64,0.70)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.66,0.62,0.70)</sky>
+      <shadow>(0.94,0.94,0.95)</shadow>
+      <overlay>(0.58,0.55,0.62)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.36,0.36,0.42)</sky>
+      <shadow>(0.94,0.94,0.95)</shadow>
+      <overlay>(0.48,0.47,0.52)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.32,0.32,0.38)</sky>
+      <shadow>(0.94,0.94,0.95)</shadow>
+      <overlay>(0.44,0.43,0.48)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <!-- ═══ dewfall: the only "precipitation" — condensation, not rain ═══ -->
+  <WeatherDef>
+    <defName>RM_Dewfall</defName>
+    <label>dewfall</label>
+    <description>Nothing falls from the sky here. Instead the air lets go of what it carries: dew beads out of nowhere onto every surface, and every wet surface is a dosed one.</description>
+    <isBad>false</isBad>
+    <favorability>Neutral</favorability>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <windSpeedFactor>0.5</windSpeedFactor>
+    <accuracyMultiplier>0.9</accuracyMultiplier>
+    <rainRate>0</rainRate>
+    <snowRate>0</snowRate>
+    <sandRate>0</sandRate>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <skyColorsDay>
+      <sky>(0.70,0.72,0.78)</sky>
+      <shadow>(0.93,0.93,0.95)</shadow>
+      <overlay>(0.64,0.66,0.72)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.60,0.60,0.68)</sky>
+      <shadow>(0.93,0.93,0.95)</shadow>
+      <overlay>(0.56,0.56,0.64)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.34,0.35,0.42)</sky>
+      <shadow>(0.93,0.93,0.95)</shadow>
+      <overlay>(0.46,0.47,0.54)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.30,0.31,0.38)</sky>
+      <shadow>(0.93,0.93,0.95)</shadow>
+      <overlay>(0.42,0.43,0.50)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

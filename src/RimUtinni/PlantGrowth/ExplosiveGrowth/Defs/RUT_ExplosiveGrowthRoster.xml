@@ -69,6 +69,7 @@
     <noSoakBiomes>
       <li>PoisonForest</li>
       <li>RM_PoisonForest</li>
+      <li>RM_Cauldron</li>  <!-- CAULDRON_FULL_RENAME_1: RM_PoisonForest -> RM_Cauldron; old name kept, RUT_PoisonForest not renamed (live tiles) -->
       <li>RUT_PoisonForest</li>
       <li>RUT_ExtremeDesert</li>
     </noSoakBiomes>

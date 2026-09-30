@@ -436,7 +436,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `greentide_tree_roster_2026-09-22.md` | Greentide flora roster — 15 invented trees + 7 invented understory plants, 2026-09-22 | — |
 | `lantern_deeps_flora_names.md` | Lantern Deeps — flora names (second proposal) | — |
 | `nightside_ice.md` | The Nightside Ice — biome definition sheet | — |
-| `poison_forest.md` | The Poison Forest — biome definition sheet | — |
+| `cauldron.md` | The Cauldron (formerly Poison Forest) — biome definition sheet | — |
 | `rot_flora_fauna_names.md` | The Rot — flora and fauna names and regen briefs | — |
 | `sweetline_guardian_spec.md` | Sweetline guardian — generic guardian species spec | — |
 | `terminator_sea.md` | The Terminator Sea — biome definition sheet | — |

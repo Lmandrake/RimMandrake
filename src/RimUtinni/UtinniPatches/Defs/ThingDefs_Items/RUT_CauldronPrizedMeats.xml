@@ -19,7 +19,7 @@
   forward), already live in this exact mod for VAEWaste_ToxicMeat — zero new
   C#. The prized half is `preferability RawTasty` (rather than the vanilla
   meat generator's default RawBad) plus a positive taste thought
-  (RUT_PoisonForestMeatThoughts.xml) and an above-market MarketValue,
+  (RUT_CauldronMeatThoughts.xml) and an above-market MarketValue,
   instead of the VAEWaste precedent's negative "disgusting" thought — this
   biome's meat is a bragging-rights delicacy, not a last resort.
 
@@ -27,7 +27,7 @@
   (RimWorld/ThingDefGenerator_Meat.cs) only auto-generates a race's meat def
   when `race.specificMeatDef == null` — so a hand-authored meat ThingDef plus
   `<race><specificMeatDef>` on the race (see
-  Patches/PoisonForest_ToxicPrizedMeat.xml, same folder) is the only route;
+  Patches/Cauldron_ToxicPrizedMeat.xml, same folder) is the only route;
   patching a "Meat_Neebray"-style node directly would silently do nothing,
   because no such XML node exists to patch (RimWorld generates it at
   load time, after patches resolve). Shape follows this mod family's own
@@ -69,8 +69,8 @@
       <preferability>RawTasty</preferability>
       <ingestEffect>EatMeat</ingestEffect>
       <ingestSound>RawMeat_Eat</ingestSound>
-      <specialThoughtDirect>RUT_AtePoisonForestMeatDirect</specialThoughtDirect>
-      <specialThoughtAsIngredient>RUT_AtePoisonForestMeatAsIngredient</specialThoughtAsIngredient>
+      <specialThoughtDirect>RUT_AteCauldronMeatDirect</specialThoughtDirect>
+      <specialThoughtAsIngredient>RUT_AteCauldronMeatAsIngredient</specialThoughtAsIngredient>
       <outcomeDoers>
         <li Class="VanillaAnimalsExpandedWaste.IngestionOutcomeDoer_Toxic">
           <severity>0.05</severity>
@@ -113,8 +113,8 @@
       <preferability>RawTasty</preferability>
       <ingestEffect>EatMeat</ingestEffect>
       <ingestSound>RawMeat_Eat</ingestSound>
-      <specialThoughtDirect>RUT_AtePoisonForestMeatDirect</specialThoughtDirect>
-      <specialThoughtAsIngredient>RUT_AtePoisonForestMeatAsIngredient</specialThoughtAsIngredient>
+      <specialThoughtDirect>RUT_AteCauldronMeatDirect</specialThoughtDirect>
+      <specialThoughtAsIngredient>RUT_AteCauldronMeatAsIngredient</specialThoughtAsIngredient>
       <outcomeDoers>
         <li Class="VanillaAnimalsExpandedWaste.IngestionOutcomeDoer_Toxic">
           <severity>0.05</severity>
@@ -157,8 +157,8 @@
       <preferability>RawTasty</preferability>
       <ingestEffect>EatMeat</ingestEffect>
       <ingestSound>RawMeat_Eat</ingestSound>
-      <specialThoughtDirect>RUT_AtePoisonForestMeatDirect</specialThoughtDirect>
-      <specialThoughtAsIngredient>RUT_AtePoisonForestMeatAsIngredient</specialThoughtAsIngredient>
+      <specialThoughtDirect>RUT_AteCauldronMeatDirect</specialThoughtDirect>
+      <specialThoughtAsIngredient>RUT_AteCauldronMeatAsIngredient</specialThoughtAsIngredient>
       <outcomeDoers>
         <li Class="VanillaAnimalsExpandedWaste.IngestionOutcomeDoer_Toxic">
           <severity>0.05</severity>
@@ -201,8 +201,8 @@
       <preferability>RawTasty</preferability>
       <ingestEffect>EatMeat</ingestEffect>
       <ingestSound>RawMeat_Eat</ingestSound>
-      <specialThoughtDirect>RUT_AtePoisonForestMeatDirect</specialThoughtDirect>
-      <specialThoughtAsIngredient>RUT_AtePoisonForestMeatAsIngredient</specialThoughtAsIngredient>
+      <specialThoughtDirect>RUT_AteCauldronMeatDirect</specialThoughtDirect>
+      <specialThoughtAsIngredient>RUT_AteCauldronMeatAsIngredient</specialThoughtAsIngredient>
       <outcomeDoers>
         <li Class="VanillaAnimalsExpandedWaste.IngestionOutcomeDoer_Toxic">
           <severity>0.05</severity>

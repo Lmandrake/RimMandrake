@@ -375,7 +375,7 @@
        permanently inert here — a real functional gap the item's own §7 found.
        These two unconditional ops (no PatchOperationFindMod gate needed — both
        targets are our own defs, always present once their mod is active) give
-       RUT_PoisonForest and its RimMandrake successor RM_PoisonForest the same
+       RUT_PoisonForest and its RimMandrake successor RM_Cauldron the same
        ScatterShrines suppression/replacement every other Ash'karr biome gets,
        per biome_mod_architecture.md §5 step 4 ("anything that must keep working
        on the live world gets a second op for RM_<Biome> beside the RUT_ one"). -->
@@ -404,25 +404,25 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]/preventGenSteps</xpath>
+    <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]/preventGenSteps</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]</xpath>
       <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
     </nomatch>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]/preventGenSteps</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]/preventGenSteps</xpath>
       <value><li>ScatterShrines</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]/extraGenSteps</xpath>
+    <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]/extraGenSteps</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]</xpath>
       <value><extraGenSteps><li>RUT_ScatterShrinesRare</li></extraGenSteps></value>
     </nomatch>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="RM_PoisonForest"]/extraGenSteps</xpath>
+      <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]/extraGenSteps</xpath>
       <value><li>RUT_ScatterShrinesRare</li></value>
     </match>
   </Operation>

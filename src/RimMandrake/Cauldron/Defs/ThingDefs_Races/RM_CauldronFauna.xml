@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_CauldronFauna.xml            SUUSH_CAULDRON_DRIFTER_1, new 2026-09-26
+
+  The Suush — owner's ask, verbatim (infrastructure/state/items/
+  SUUSH_CAULDRON_DRIFTER_1.md): "an Aerofleet-like creature ... that floats
+  around the Cauldron feasting on the strange chemistry of its roiling
+  atmosphere and that detonates when you shoot it ... a floating spherical
+  entity with hanging 'gathering tentacles' like a jellyfish. Make it both
+  disturbing and beautiful. Size 2 cells. Docile, tamable, bizarre."
+
+  Grounding, per the item's own research: the real AA_Aerofleet (already
+  resident in this biome's own wildAnimals list below) floats via Vanilla
+  Expanded Framework's class-side CompFloating — a donor dependency. This
+  build takes the item's own steer ("prefer our own floating comp over
+  taking a new dependency for a brand-new creature") and goes one further:
+  it uses CORE 1.6's own native flight system (CLAUDE.md "If it flies in the
+  fiction, it flies in the game" / MaxFlightTime+FlightCooldown+race flags —
+  the SAME mechanism vanilla's Chicken/Duck/Goose/Sparrow already use, MEASURED
+  against the decompiled engine this pass) rather than either a donor comp OR
+  new bespoke C#. No new class was written for flight.
+
+  MECHANISM 1 — floats continuously, not the ground-walk-then-occasional-
+  flight of a normal flyer:
+    - <MaxFlightTime>600</MaxFlightTime> (statBases, seconds): flight lasts
+      10 real-world minutes before a forced landing, effectively "always
+      airborne" at normal play timescales.
+    - <FlightCooldown>1</FlightCooldown>: if it ever does land, it can take
+      off again almost immediately.
+    - <flightStartChanceOnJobStart>1.0</flightStartChanceOnJobStart>: it
+      rolls to fly at EVERY job start (Pawn_FlightTracker.Notify_JobStarted,
+      MEASURED from RimWorld/Pawn_FlightTracker.cs) — combined with the above,
+      it reads as continuously drifting rather than a bird that occasionally
+      takes wing.
+    - <canFlyIntoMap>true</canFlyIntoMap>: arrives already floating.
+    - <canLeaveMapFlying>false</canLeaveMapFlying>: it is a Cauldron resident,
+      not a migrating bird — it does not fly itself off the map.
+    - <body>Bird</body>: reusing vanilla's own bird body (rather than
+      inventing one, or borrowing the Anomaly Nociosphere body, which is built
+      for a doesntMove=true stationary entity and risks losing the "Moving"
+      capacity entirely) — this is the exact body type Chicken/Duck/Goose
+      already prove compatible with these same flight fields. The body is
+      never rendered (art is the full custom sprite below), so its "wings"
+      internally cost nothing visually on a limbless jellyfish silhouette.
+
+  MECHANISM 2 — feeds on the atmosphere, not on plants (the item's own
+  explicit "not VegetarianRoughAnimal" steer):
+    - <foodType>None</foodType>. RaceProperties.EatsFood => foodType !=
+      FoodTypeFlags.None (MEASURED, Verse/RaceProperties.cs:293) — with
+      foodType None the Suush never gets a Food need at all: no hunger, no
+      foraging, no colonist ever has to feed it. This is the existing vanilla
+      pattern the item asked for ("whatever food route expresses 'grazes the
+      air' ... don't invent a whole new atmosphere-feeding system") rather
+      than a bespoke gas-metabolism mechanic. It also means WorkGiver_Tame's
+      "bring food first" gate (which checks RaceProps.EatsFood) is skipped —
+      taming it needs no bait, matching "it eats the air, not anything you
+      carry."
+
+  MECHANISM 3 — detonates when SHOT, not merely when killed (the item's own
+  distinction: "he said shot, not killed ... CompExplosive's territory"):
+    - CompProperties_Explosive (vanilla core, no new C#) with
+      startWickOnDamageTaken listing Bullet and Bomb — ranged gunfire and
+      explosive damage starts the fuse immediately, before the creature is
+      anywhere near dead, which is the "nastier" reading the item asked for.
+      Melee damage (Cut/Stab/Blunt/Bite/Scratch) does NOT trigger this path.
+    - explodeOnKilled is ALSO set true as a backstop: however it actually
+      dies, it goes up (CompExplosive.PostDestroy, DestroyMode.KillFinalize —
+      MEASURED, fires generically for Pawns same as any ThingWithComps).
+    - postExplosionGasType ToxGas: what actually detonates is the roiling
+      chemistry it has been gorging on all along — ties the explosion back
+      to mechanism 2's fiction rather than being a generic bomb.
+    - Default startWickHitPointsPercent (0.2) is left in place as a second,
+      redundant trigger; Thing.HitPoints tracking on a Pawn is not guaranteed
+      to reflect body-part health the same way a building's does, so the
+      dinfo.Def match above is the mechanism actually relied on, not this
+      fallback.
+
+  TAMING — verified against the engine, not assumed (item's own instruction):
+    TameUtility.CanTame (RimWorld/TameUtility.cs, MEASURED) gates on
+    RaceProps.Animal + Faction null + StatDefOf.Wildness < 1 + not a Dryad +
+    no Scaria. It does NOT read RaceProps.trainability at all.
+    Pawn_TrainingTracker.CanAssignToTrain (MEASURED) confirms trainability
+    only gates TRICK training (Obedience etc.) — Tameness training itself has
+    no trainability requirement, which is how vanilla's own trainability:None
+    animals (turkeys) are tameable. So the Suush keeps trainability None
+    (matching the Aerofleet precedent, and fitting "mindless drifting
+    gasbag") while Wildness 0.5 (statBases) keeps it genuinely, moderately
+    tameable — bizarre wildlife, not a starting pet.
+
+  DOCILE: predator false, manhunterOnDamageChance 0, manhunterOnTameFailChance
+  0, no <tools> at all (it has no attack verbs whatsoever) — "the least
+  threatening thing on the map" per the item's own framing.
+
+  CAST: solitary (wildGroupSize 1, herdAnimal false) — a single drifting
+  oddity, not a herd; this build's own judgment call, not an owner ruling,
+  and reversible without ceremony as a fresh Draft-tier decision.
+
+  Art: cauldron_suush_{north,east,south} — QUEUED and VALIDATED (pass) before
+  this build started (infrastructure/artpipe/done/, registry.jsonl), deployed
+  unchanged to Textures/Things/Pawn/Animal/RM_Suush/ below. West mirrors east
+  automatically (Graphic_Multi).
+
+  Franchise-free (Q11a): "Suush" and "the Cauldron" are invented names, so
+  this stays RM tier — wired directly into RM_Cauldron.xml's own
+  <wildAnimals>, no Utinni patch layer, no MayRequire.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Suush</defName>
+    <label>suush</label>
+    <description>A translucent globe drifting a few feet off the ground, lit faintly from within by whatever it has most recently digested. A curtain of long, fine gathering tentacles hangs beneath it, combing the roiling gas for the chemistry it lives on. It never comes down, never attacks, and never seems to notice you. It is also, entirely, a bag of the same volatile vapor the Cauldron breathes -- and pays no mind at all to what happens if something punctures it.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <Mass>18</Mass>
+      <Flammability>0.6</Flammability>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Heat>0</ArmorRating_Heat>
+      <Wildness>0.5</Wildness>
+      <MaxFlightTime>600</MaxFlightTime>
+      <FlightCooldown>1</FlightCooldown>
+    </statBases>
+    <race>
+      <body>Bird</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>1.3</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <foodType>None</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+      <flightStartChanceOnJobStart>1.0</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>false</canLeaveMapFlying>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>2.9</explosiveRadius>
+        <startWickOnDamageTaken>
+          <li>Bullet</li>
+          <li>Bomb</li>
+        </startWickOnDamageTaken>
+        <chanceToStartFire>0.5</chanceToStartFire>
+        <postExplosionGasType>ToxGas</postExplosionGasType>
+        <explodeOnKilled>true</explodeOnKilled>
+        <drawWick>true</drawWick>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Suush</defName>
+    <label>suush</label>
+    <race>RM_Suush</race>
+    <combatPower>15</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Suush/RM_Suush</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Suush/RM_Suush</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Suush/RM_Suush</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!--
+    CAULDRON_RULED_CONTENT_1 (2026-09-29): the three ruled natives below.
+    Text and frames from design/Jawa/worldbuilding/biomes/
+    cauldron_bedazzle_cast_2026-09-28.md section 3. All three are invented
+    names, so they live in this RM tier and are wired inline in
+    RM_Cauldron.xml (Q11a). One home each (the Cauldron only).
+    Art: Textures/Things/Pawn/Animal/RM_<Name>/ (south/east/north, Graphic_Multi).
+
+    RM_Vexxiss: NO CompProperties_Explosive and no explosion of any kind (owner
+    ruling, "too many exploding giant beasts"): the Suush comp above is
+    deliberately NOT copied. Shearing yields RM_Vexxith through vanilla
+    CompProperties_Shearable, which works on a LIVING TAMED animal only
+    (CompShearable needs a faction); a corpse yields nothing of it. Wild-vexxiss
+    shearing, vent inhaling and gas-tap prying are BEHAVIOURS still owed by
+    CAULDRON_MECHANICS_BUILD_1 (vent inhaling and prying need the part-3 vent
+    and scaffold defs first). The fire-warden attack and the water-poisoning
+    touch are built: RimMandrake.Cauldron.RM_CompVexxissBehaviour
+    (Source/RM_CompVexxissBehaviour.cs), with giveNonToolUserBeatFireVerb so
+    the animal owns vanilla's beat-fire verb. Both are Mod Settings toggles.
+
+    RM_Zisska: mineral-rasper. foodType is VegetarianRoughAnimal, so in the
+    game it eats plants (vein moss, the crust film, is the nearest thing to
+    what the description says). The rasp-stone-off-rock behaviour is a
+    follow-on. Meat is the owner-ruled toxic prized meat, RM_ZisskaMeat
+    (Defs/ThingDefs_Items), plus a trace of steel as the concentrated metal.
+
+    RM_Eskith: ground bird-adjacent, no flight stats (a drummer, not a flier).
+    Its silence-before-a-vent-bloom tell is behaviour: CAULDRON_MECHANICS_BUILD_1.
+  -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vexxiss</defName>
+    <label>vexxiss</label>
+    <description>The ground here talks all day -- rush and groan and gurgle, the slow engine of the forest's chemistry -- and the vexxiss is the one thing that walks like it belongs in the machine. A hill of slag that moves: plates of smelter-scab and old bark grown together, crystal fans standing down the spine like vents on a boiler, no eyes anywhere on it because it has never needed to see anything. It drinks the ground's breath straight from the wellheads, it hates fire the way a lung hates smoke, and the crews that shear its plates say the trick is not the climbing. The trick is doing it without warming the shears.</description>
+    <statBases>
+      <MoveSpeed>1.4</MoveSpeed>
+      <Mass>3000</Mass>
+      <Flammability>0</Flammability>
+      <MeatAmount>900</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Sharp>0.9</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.6</ArmorRating_Blunt>
+      <ArmorRating_Heat>2.0</ArmorRating_Heat>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>front leg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>26</power>
+        <cooldownTime>2.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontLegs</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>6.0</baseBodySize>
+      <baseHealthScale>8.0</baseHealthScale>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>80</lifeExpectancy>
+      <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <herdAnimal>false</herdAnimal>
+      <giveNonToolUserBeatFireVerb>true</giveNonToolUserBeatFireVerb>  <!-- fire warden: owns vanilla's beat-fire verb -->
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>1.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>4</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <shearIntervalDays>60</shearIntervalDays>
+        <woolAmount>12</woolAmount>
+        <woolDef>RM_Vexxith</woolDef>
+      </li>
+      <!-- CAULDRON_MECHANICS_BUILD_1 part 5: fire warden + poisons water on touch.
+           Radii/intervals are INVENTED tuning. Swap targets are vanilla's own
+           toxic-water terrains (Odyssey's toxic-lake set). -->
+      <li Class="RimMandrake.Cauldron.RM_CompProperties_VexxissBehaviour">
+        <fireScanRadius>14</fireScanRadius>
+        <igniterChaseRadius>30</igniterChaseRadius>
+        <waterPoisonRadius>1.5</waterPoisonRadius>
+        <waterSwaps>
+          <li><from>WaterShallow</from><to>ToxicWaterShallow</to></li>
+          <li><from>WaterDeep</from><to>ToxicWaterDeep</to></li>
+          <li><from>WaterMovingShallow</from><to>ToxicWaterMovingShallow</to></li>
+          <li><from>WaterMovingChestDeep</from><to>ToxicWaterMovingChestDeep</to></li>
+          <li><from>WaterOceanShallow</from><to>ToxicWaterOceanShallow</to></li>
+          <li><from>WaterOceanDeep</from><to>ToxicWaterOceanDeep</to></li>
+        </waterSwaps>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vexxiss</defName>
+    <label>vexxiss</label>
+    <race>RM_Vexxiss</race>
+    <combatPower>600</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>3.0</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vexxiss/RM_Vexxiss</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Zisska</defName>
+    <label>zisska</label>
+    <description>Low and broad as a dropped shield, plated like the stones it eats. The zisska spends its life nose-down against rock and old trunks, rasping off the mineral rings the forest paints on everything that stands still -- and everything it rasps stays in it. The Farmers of other countries would call it livestock. Here the butchers wear gloves to the elbow, and the meat is worth the gloves.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <Mass>60</Mass>
+      <Flammability>0.4</Flammability>
+      <MeatAmount>70</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Sharp>0.35</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>1.0</baseBodySize>
+      <baseHealthScale>1.2</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Simple</trainability>
+      <lifeExpectancy>25</lifeExpectancy>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <herdAnimal>true</herdAnimal>
+      <specificMeatDef>RM_ZisskaMeat</specificMeatDef>
+      <butcherProducts>
+        <Steel>3</Steel>
+      </butcherProducts>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Zisska</defName>
+    <label>zisska</label>
+    <race>RM_Zisska</race>
+    <combatPower>40</combatPower>
+    <wildGroupSize>3~6</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zisska/RM_Zisska</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zisska/RM_Zisska</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zisska/RM_Zisska</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Eskith</defName>
+    <label>eskith</label>
+    <description>Knee-high, quick-footed, feet feathered out into wide soft pads that read the ground the way ears read air. Eskith talk in knocks -- a drummed code sent through the rock, felt in your boot soles under the engine's rumble. The forest is never quiet, so nobody listens for sound here; they listen for the drumming. When the eskith stop answering each other, the old hands are already walking for the roof.</description>
+    <statBases>
+      <MoveSpeed>4.6</MoveSpeed>
+      <Mass>5</Mass>
+      <Flammability>0.7</Flammability>
+      <MeatAmount>14</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Simple</trainability>
+      <lifeExpectancy>8</lifeExpectancy>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <herdAnimal>true</herdAnimal>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Eskith</defName>
+    <label>eskith</label>
+    <race>RM_Eskith</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>3~7</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Eskith/RM_Eskith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Eskith/RM_Eskith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Eskith/RM_Eskith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

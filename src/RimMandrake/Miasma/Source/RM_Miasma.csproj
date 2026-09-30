@@ -2,7 +2,7 @@
 
   <!--
     MIASMA_RM_MOD_BUILD_1. Same recipe as
-    src/RimMandrake/PoisonForest/Source/RM_PoisonForest.csproj — copy that
+    src/RimMandrake/Cauldron/Source/RM_Cauldron.csproj — copy that
     header if this one goes stale.
 
     Harmony IS referenced, for ONE patch only:

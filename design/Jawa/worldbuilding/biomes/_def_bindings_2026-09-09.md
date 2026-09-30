@@ -29,7 +29,7 @@ ground**; the tile column sums to 21,872.
 | `RUT_CrackedLands` | 970 | `the_cracked_lands.md` | **YES** — §10 "The bestiary sorts — a fauna divided by TIME, not space" | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml` |
 | `RUT_AridShrubland` | 628 | `arid_shrubland.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_AridShrubland.xml` |
 | `RM_TwilightSea` | 607 | `terminator_sea.md` (surface); `the_twilight_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TwilightSea.xml` |
-| `RUT_PoisonForest` | 546 | `poison_forest.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PoisonForest.xml` |
+| `RUT_PoisonForest` | 546 | `cauldron.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PoisonForest.xml` (defName rename BLOCKED — live tiles, `CAULDRON_FULL_RENAME_1`) |
 | `RM_GreySea` | 472 | `terminator_sea.md` (surface); `the_grey_deep.md` (bottom) — **both claim it, see flag below** | no on either | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_GreySea.xml` |
 | `RM_TheScald` | 312 | `the_scald.md` | no | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml` |
 | `RUT_RustCathedral` | 236 | `the_rust_cathedral.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_RustCathedral.xml` |
