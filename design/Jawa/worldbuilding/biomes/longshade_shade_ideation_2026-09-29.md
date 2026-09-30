@@ -399,12 +399,157 @@ Jawa idea here.
 
 ## 3. Golden hour
 
-pending
+**IN (owner, turn 2): "A perpetual beautiful sunset."** The sheet's own §9 line: *"a sunset
+that has been going on for a million years."*
+
+### 3.1 How — one comp does sky, glow and shadow (MEASURED via RimSage)
+
+Vanilla `CompAffectsSky` (Verse) exposes three virtuals that `SkyManager` reads every tick
+from any spawned thing carrying it: `LerpFactor` (how strongly it overrides), `SkyTarget`
+(glow + a full `SkyColorSet` — sky, **shadow colour**, overlay, saturation — + sun-shine
+size/intensity), and `OverrideShadowVector`. Vanilla uses it for animated flashes; a
+subclass with `LerpFactor => 1` forever is a **permanent sky**. So:
+
+- **`RM_CompGoldenHour`** on one invisible, unselectable map-anchor thing that the biome's
+  map-gen places (or the permanent condition spawns): `SkyTarget` = low amber glow (~0.55–0.65,
+  enough to work and grow by — tune against plant growth), sky colour warm apricot → rose at
+  the overlay, **shadow colour a cool violet-blue** (the sheet's warm/cool split: *"amber,
+  ochre, rust against long cool blue shadows"*), and `OverrideShadowVector` = one long fixed
+  vector. ~60 lines.
+- **Why a comp, not only a GameCondition:** the ruled path (§10 / review slate #4) was a
+  permanent `GameConditionDef` overriding `SkyTarget` (`RUT_MiasmaWeatherLock` shape). That
+  gives colour and glow but **not the shadow vector** — `GetOverridenShadowVector` reads only
+  WeatherEvents and `CompAffectsSky` things. The comp gives all three and is the piece §1.3
+  needs anyway. Keep the condition as the *carrier* if it is convenient (it shows in the
+  condition list as "Golden hour — the sun does not move here"), with the comp doing the work.
+- **Shadow geometry becomes gameplay.** Every building, rock and tree with
+  `staticSunShadowHeight` prints a long shadow along the pinned vector, and the directional
+  grid (§1.3) scores mechanical shade along the same line. **What you see is what shelters
+  you.** A player can read a patch off the screen, plan a wall to throw a strip of shade, and
+  predict where the dew line will form. Tall thin structures out-shade squat ones — the
+  sheet's "leggy" logic applied to architecture.
+- **Per-map orientation.** The vector's *direction* is fixed per tile from its position on the
+  planet (sunward is always one way on a tidally locked world) — so shadows on every Long
+  Shade map point away from the substellar point. Consistent planet-wide, varied per map by
+  terrain alone. Arc (60–88°) sets length: nearer the terminator, longer shadows.
+
+### 3.2 Beautiful, not just orange
+
+- **Two-tone world.** Lit faces warm, shadows cool violet; the shipped
+  `RM_GlowMultiplierOverrideExtension`/`BiomeGlowPatches` handle glow variants; the colour
+  work is the `SkyColorSet`.
+- **Sun glare on the horizon edge.** `lightsourceShineSize/Intensity` in the SkyTarget draw
+  the sun's shine; a low large soft value reads as a sun sitting on the horizon.
+- **Dust-lit air.** A permanent low-alpha warm overlay (vanilla `SkyOverlay`, the shape
+  weather uses) with slow drifting motes in the light and none in the shade — the air itself
+  shows where the sun reaches. Small C# (overlay whose alpha keys to camera-cell `ShadeAt`).
+- **Silhouettes at the rim.** Leggy animals standing at a patch edge read as silhouettes
+  against the lit ground — nothing needed beyond §1's pre-dash pause and good art.
+- **Terrain art.** Hardpan pale gold in light; deep sand ochre; dew-line fringe the only pale
+  green (ban 8 ceiling, Q10).
+
+### 3.3 What golden hour does to other systems
+
+- **Smoke calendar (ruled #2):** haze lowers LerpFactor's glow and **lengthens the vector** —
+  the sheet's "a smoke event is shade for everybody" becomes literal: every shadow on the map
+  grows, patches merge, gaps close, the herds cross. One number drives it.
+- **Never a night.** Ban 1 satisfied by construction; the clock still turns for needs and
+  seasons, the light does not.
+- **Colonist mood:** a small permanent "endless sunset" thought for newcomers that fades —
+  beauty first, then the realisation it never ends. XML.
+- **`ARTIST_BIOME_INSPIRATION_MOD_1` hook (one line, filed separately):** the Long Shade's
+  subject is *the light itself* — an inspired artist here paints "the sunset that never
+  ends", and the golden-hour anchor is the natural place for that mod's trigger to read.
 
 ## 4. Wild cards
 
-pending
+Bold, and each checked against the other ten biomes' marquees.
 
+**W1. Carry your own shade.** A colonist-worn parasol-frame / shade cape (apparel) and a
+two-pawn **carried awning** that casts a moving 3×5 patch. Crossing parties dash under it;
+hauling salvage from the gap graves (D1) becomes a formation. *Only here:* you become a
+gloomcast. Small C# (a `CompShadowCaster` on apparel/pawn — **`RM_Comp_ShadowCaster` already
+ships** for the gloomcast; this puts it on a colonist). Echo: pirrik follows the gloomcast's
+shadow — here *you* are the caster. Tier: RM.
+
+**W2. Shadow-shrinking predators — the harrok.** *(new, RM, harrok)* A lean, very tall,
+stilt-legged thing that stands motionless in the open and **is its own shade** — it survives
+in the sun by being a pole. Hunts by standing at a spot where its long shadow falls across a
+rim, so anything resting in that sliver of shade is resting under it. Ban 3 safe (it never
+moves to hunt). *Only here:* a predator whose ambush is its shadow. Small C# (it registers as
+a shade-caster by height; ambush comp). ⚠️ Echo: mirrak (F1) is the *fake* shadow; harrok is
+the *real* shadow with a mouth above it — pick one if the owner wants only one.
+
+**W3. The mirror field (N6), as a puzzle map.** A large mirror array whose frozen angles
+decide the local shade map; repairing/rotating mirrors re-lights and un-lights patches. The
+herds re-route live. A whole map section is a solvable lock. Big. Tier: RM. No other biome
+edits its own light.
+
+**W4. Shade debt — the colony that becomes the harbour, sued for it.** Once the harbour
+ladder peaks (ruled #1), herder clans whose route ran through the patch you built on arrive
+to demand passage through your yard — a shade right-of-way, as old as the routes. Grant it
+(goodwill, traffic, their dung and trade) or wall it (raids). Small–medium (incident + faction
+logic). Tier: Utinni (herder clans). Distinct from the Twilight's permits (you *grant* here,
+you are not granted).
+
+**W5. The skellok — the shadow-ferrying swarm.** *(new, RM, skellok)* Tiny flat insects that
+never enter the light — they **lay themselves down in a line** to make a strip of dark for
+each other and roll forward like a carpet, a centimetre of shade on the move. A colony of
+them is a slow-crawling dark streak across the pavement. Harmless; eaten by everything;
+their dried carpets are a prized dye (the only black pigment on the dayside). Small (a
+wandering filth-trail creature; dye item). *Only here:* shade built out of bodies at insect
+scale — the sheet's "herd is infrastructure" at its smallest. Tier: RM.
+
+**W6. The noon stone — the one place the sun is directly overhead.** Somewhere a sinkhole or
+shaft lets light fall straight down into a deep canyon — the only place in the whole biome
+with **no shadow at all**, a disc of white heat in a bowl of rock. Nothing goes there; so
+what dies there is perfectly preserved, and the heat does odd things to materials left in it
+(smelts, cures, bleaches). A kiln the planet built. Small–medium (a map feature + a
+"sun-forge" recipe usable only on those cells). Tier: RM. ⚠️ Echo check vs the Forge — the
+Forge's discoverable tech is heat-industry; keep this a **single natural curio** (bleaching
+hides white — a cosmetic material — and curing the vorrel), not an industry.
+
+**W7. The long listeners — signalling as gameplay.** §4 "nobody commits without asking":
+animals challenge-and-answer across the gaps before running. Give it sound and a readout —
+the calls travel far, and a colonist with Animals skill can **read the calls** to know which
+patch holds a predator before crossing. A player can also *mimic* a call to hold a herd in
+place or send it on. Small–medium. Tier: RM. Also answers mark 7 (soundscape) with the
+biome's own voice.
 ## 5. Recommended shortlist
 
-pending
+**The package: "the light is the law, and the shade is where everything is kept."** The dash
+spine makes the open lethal and legible; golden hour makes the shade *visible and
+directional*; everything else is a reason to cross the light or a lie about where the shade
+is. Ranked — each depends on the ones above it.
+
+| # | idea | one line | size | tier |
+|---|---|---|---|---|
+| **1** | **§1 Strict dash + directional shade** (sun-load, patch graph, sun-cost pathing, rest/dash jobs, grid cast along the pinned vector) | Every creature — colonists included — rests, dashes, rests, and the shadows it runs between are the ones on screen. | ~470 lines C#, one FOUNDRY item | RM |
+| **2** | **§3 Golden hour** (`RM_CompGoldenHour`: sky, violet shadows, pinned vector) | A sunset that never ends, and the shadow it throws is the map. Shares its vector with #1, so build together. | ~60 lines + art tuning | RM |
+| **3** | **F1 The mirrak** | The shadow that is an animal — it preys on the dash itself; tell by its shadow pointing the wrong way. | small C# + one creature | RM |
+| **4** | **S1+S2 The swimmer's crossing and the rooting** | One juvenile sarlacc migrates in toward water; kill it on the way or let it root and own a well with a mouth, forever. | small (incident + one seep hook) | RSW |
+| **5** | **N2 The wreck road** + **N3 crawler shade** | A patch-chain built of dead vehicles across a gap, and the biggest harbour a dead crawler — strip them and you break the road. | small / XML | RM + RSW |
+| **6** | **D1 The gap graves** + **W1 carry your own shade** | Unlooted dead lie in the sun because nothing can go get them — except a colonist dashing, or a party under a carried awning. | small each | RM |
+| **7** | **I1 The besieged moisture farm** | The harbour ladder happening to somebody else: a family pinned indoors while the whole biome occupies their yard. | small–medium | RM + RSW dressing |
+| **8** | **D2 The still gnomons** | The only biome where a shadow is a coordinate — dig where it ends. | small | RM |
+
+**Why this set.** #1–#2 answer the owner's condition and are the only large build; #3–#8 are
+all small, all sit on #1's grid, and each is a *different reason the shade matters*: a lie
+(#3), a migrating horror (#4), salvage-vs-route (#5), a reason to cross (#6), people (#7),
+treasure (#8). None echoes another biome's marquee (checked: Stillsand busters/buried
+record/eggs, Leaning Scrub vaporator economy, Twilight skylights/permits, Forge heat
+industry, Cauldron, Blue Desert, Cracked Lands, Flooded Canyon).
+
+**Runners-up worth a card row:** F3 the stampede for your roof (the harbour ladder's violent
+rung — nearly free once #1 exists), F2 the tollok (makes built shade worth more than wild),
+I5 the Jawa crawler that comes back, W2 the harrok (if the owner prefers a real-shadow
+predator over the fake one), W3 the mirror field (the boldest).
+
+**Interaction with the ruled marquees (not re-argued):** the harbour ladder (#1 ruled) gains
+its violent rung (F3) and its NPC mirror (I1); the smoke calendar (#2 ruled) lengthens the
+pinned vector and closes the gaps; the dew line (#3 ruled) becomes directional — dew forms
+on the lee strip's edge, so walls placed across the vector make farmland.
+
+**Owed before any build:** canon sweep of mirrak/tollok/harrok/skellok (Wookieepedia probe
+failed this pass); `RM_Hardpan` (review slate #6) if S1's hard-ground refuge is to exist; a
+perf check of a directional full-map recompute every 2000 ticks.
