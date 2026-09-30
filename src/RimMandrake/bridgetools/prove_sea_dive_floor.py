@@ -40,6 +40,9 @@ def call(n, **a):
     return r if isinstance(r, dict) else {"raw": r}
 
 def xz(pos):
+    if isinstance(pos, dict):
+        if pos.get("x") is not None: return int(pos["x"]), int(pos["z"])
+        pos = pos.get("position")
     # list_pawns/list_things report {x, z}; some tools report IntVec3.ToString() "(x, y, z)".
     if isinstance(pos, dict): return int(pos.get("x", 0)), int(pos.get("z", 0))
     q = [int(v) for v in str(pos).strip("() ").split(",")]
@@ -86,11 +89,12 @@ try:
         call("jawa/world_tile_set", tiles=str(home_tile), biome=biome); call("jawa/world_commit")
         if call("jawa/map_info").get("mapBiome") != biome:
             verdicts[sea] = "UNMEASURED (parent map biome did not change)"; continue
-        pawn = colonists[i]; px, pz = xz(pawn.get("position"))
+        pawn = colonists[i]
+        px, pz = (int(pawn["x"]), int(pawn["z"])) if pawn.get("x") is not None else xz(pawn)
         sp = call("jawa/spawn_batch", ops="RM_SeaDiveHatch:%d,%d" % (px + 2, pz))
         print("hatch spawn:", {k: sp.get(k) for k in ("success", "thingsPlaced", "failed")})
         hatches = [th for th in (call("jawa/list_things", defName="RM_SeaDiveHatch").get("things") or [])]
-        hatch = min(hatches, key=lambda th: abs(xz(th.get("position"))[0] - px - 2) + abs(xz(th.get("position"))[1] - pz)) if hatches else None
+        hatch = min(hatches, key=lambda th: abs(xz(th)[0] - px - 2) + abs(xz(th)[1] - pz)) if hatches else None
         if not hatch:
             verdicts[sea] = "UNMEASURED (hatch did not spawn)"; continue
         before = loaded_maps()
