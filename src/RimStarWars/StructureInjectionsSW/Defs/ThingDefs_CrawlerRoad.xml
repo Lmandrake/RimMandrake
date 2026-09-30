@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ThingDefs_CrawlerRoad.xml     LONGSHADE_BEDAZZLE_MECHANICS_1 part 4 (tranche 2)
+
+  The Star Wars half of the Long Shade's Crawler Road
+  (longshade_shade_ideation_2026-09-29.md §6.4, owner: "Cool inhabited vision";
+  cast bible §2D: both hulks are canon vehicles, so RSW tier). The road itself
+  is mandrake.rm.longshade's RM_GenStep_CrawlerRoad; Patches/CrawlerRoad_LongShade.xml
+  here adds these two links to it and ends it at the dead sandcrawler
+  (RSW_GenStep_CrawlerRoadTerminus, the shipped dead_crawler.txt plan, centred on
+  the road's last stop through GenStep_RimplacePlan.anchorThingDef).
+
+  Same shape as RM_WreckedCart: shade (staticSunShadowHeight), salvage
+  (deconstruct returns the costList) and minifiable (building.alwaysUninstallable),
+  so stripping a link breaks the crossing and reinstalling one mends it.
+  Art: artpipe jobs of the same names, finished 2026-09-30, 512x256 on a 4x2
+  footprint, the AncientPodCar convention (art drawn for the quad it fills).
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RSW_WreckedSkiff</defName>
+    <label>wrecked skiff</label>
+    <description>A repulsor cargo skiff lying tilted on the sand, one deck rail torn away, its lift pods long dead and the steering post snapped off at the base. The khaki paint is flaking off grey gunmetal. It throws a long shadow, and there is still plate and wiring in it worth pulling, if you are willing to lose the shadow.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <staticSunShadowHeight>1.0</staticSunShadowHeight>
+    <size>(4,2)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <graphicData>
+      <texPath>Things/Building/CrawlerRoad/RSW_WreckedSkiff</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4.4,2.2)</drawSize>
+    </graphicData>
+    <building>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <deconstructible>true</deconstructible>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+      <alwaysUninstallable>true</alwaysUninstallable>
+    </building>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <killedLeavings>
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+    </killedLeavings>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <statBases>
+      <MaxHitPoints>450</MaxHitPoints>
+      <WorkToBuild>2400</WorkToBuild>
+      <Mass>90</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>-6</Beauty>
+    </statBases>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <tickerType>Never</tickerType>
+  </ThingDef>
+
+  <ThingDef>
+    <defName>RSW_CrawlerTreadWreck</defName>
+    <label>crawler tread section</label>
+    <description>A length of sandcrawler tread lying on its side, torn from the hull it once carried. Plates are missing and the drive wheels show through, rusted to the colour of the dunes. It stands higher than a man and throws the deepest shadow on the road. Stripping it yields a great deal of steel, and leaves a gap nothing on foot can cross.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <passability>PassThroughOnly</passability>
+    <pathCost>60</pathCost>
+    <fillPercent>0.6</fillPercent>
+    <staticSunShadowHeight>1.3</staticSunShadowHeight>
+    <size>(4,2)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <graphicData>
+      <texPath>Things/Building/CrawlerRoad/RSW_CrawlerTreadWreck</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4.4,2.2)</drawSize>
+    </graphicData>
+    <building>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <deconstructible>true</deconstructible>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+      <alwaysUninstallable>true</alwaysUninstallable>
+    </building>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <costList>
+      <Steel>110</Steel>
+    </costList>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <killedLeavings>
+      <ChunkSlagSteel>4</ChunkSlagSteel>
+    </killedLeavings>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <statBases>
+      <MaxHitPoints>700</MaxHitPoints>
+      <WorkToBuild>3200</WorkToBuild>
+      <Mass>140</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>-6</Beauty>
+    </statBases>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <tickerType>Never</tickerType>
+  </ThingDef>
+
+  <!-- The road's terminus: the shipped dead sandcrawler plan, centred on the
+       road's last stop. Never listed in any generator; RM_GenStep_CrawlerRoad
+       runs it directly after spawning the RM_CrawlerRoadTerminus marker. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_CrawlerRoadTerminus</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/dead_crawler.txt</planFile>
+      <centerOnMap>false</centerOnMap>
+      <anchorThingDef>RM_CrawlerRoadTerminus</anchorThingDef>
+    </genStep>
+    <order>951</order>
+  </GenStepDef>
+
+</Defs>

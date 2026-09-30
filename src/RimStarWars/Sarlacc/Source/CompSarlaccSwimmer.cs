@@ -167,10 +167,18 @@ namespace RimMandrake.StarWars.Sarlacc
             {
                 return;
             }
+            // Tranche 2: the disturbed-sand decal (a funnel fed by a wake that
+            // ends), a mandrake.rm.creaturebehaviors kit def; plain sand when
+            // that mod is absent.
+            ThingDef sign = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Filth_DisturbedSand");
+            if (sign != null)
+            {
+                FilthMaker.TryMakeFilth(parent.Position, parent.Map, sign, 1);
+            }
             ThingDef sand = DefDatabase<ThingDef>.GetNamedSilentFail("Filth_Sand");
             if (sand != null)
             {
-                FilthMaker.TryMakeFilth(parent.Position, parent.Map, sand, 4);
+                FilthMaker.TryMakeFilth(parent.Position, parent.Map, sand, sign != null ? 2 : 4);
             }
             if (prey.Faction != Faction.OfPlayer)
             {
@@ -199,11 +207,34 @@ namespace RimMandrake.StarWars.Sarlacc
             }
         }
 
-        private void RootHere(bool foundSeep)
+        /// <summary>Fraction of the starting reserve band's top still held,
+        /// 0..1 — the swimmer's water, shown on its inspect pane.</summary>
+        public float ReserveFraction => Props.startingReserveRange.max > 0f
+            ? UnityEngine.Mathf.Clamp01(reserve / Props.startingReserveRange.max)
+            : 0f;
+
+        public override string CompInspectStringExtra()
+        {
+            if (!parent.Spawned || reserve < 0f)
+            {
+                return null;
+            }
+            return "Water reserve: " + ReserveFraction.ToStringPercent();
+        }
+
+        /// <summary>LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2, the swimmer's
+        /// road: root where it stands now, because it has reached the dew ring
+        /// it swam for. Returns the anchored sarlacc, or null.</summary>
+        public Thing RootAtDewRing()
+        {
+            return RootHere(foundSeep: true, dewRing: true);
+        }
+
+        private Thing RootHere(bool foundSeep, bool dewRing = false)
         {
             if (Props.anchoredDef == null || !parent.Spawned)
             {
-                return;
+                return null;
             }
             Map map = parent.Map;
             IntVec3 pos = parent.Position;
@@ -211,7 +242,9 @@ namespace RimMandrake.StarWars.Sarlacc
             GenSpawn.Spawn(anchored, pos, map);
             if (RSW_SarlaccSettings.rootingMessagesEnabled)
             {
-                string reason = foundSeep
+                string reason = dewRing
+                    ? "reached the dew ring it swam for and rooted in the middle of the shade"
+                    : foundSeep
                     ? "found a buried seep and anchored"
                     : "ran out of its birth-water reserve and rooted where it stood";
                 Messages.Message(
@@ -220,6 +253,7 @@ namespace RimMandrake.StarWars.Sarlacc
                     MessageTypeDefOf.NeutralEvent);
             }
             parent.Destroy(DestroyMode.Vanish);
+            return anchored;
         }
     }
 }

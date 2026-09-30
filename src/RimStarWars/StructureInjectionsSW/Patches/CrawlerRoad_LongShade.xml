@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CrawlerRoad_LongShade.xml     LONGSHADE_BEDAZZLE_MECHANICS_1 part 4 (tranche 2)
+
+  Gives the Long Shade's Crawler Road (mandrake.rm.longshade,
+  RM_GenStep_CrawlerRoad) its Star Wars links and its dead-sandcrawler
+  terminus. PatchOperationConditional, never a MayRequire on <Operation>
+  (inert in 1.6): with the Long Shade absent the xpaths match nothing and
+  nothing happens; the defs named are this mod's own.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GenStepDef[defName="RM_GenStep_CrawlerRoad"]/genStep/linkDefs</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/GenStepDef[defName="RM_GenStep_CrawlerRoad"]/genStep/linkDefs</xpath>
+      <value>
+        <li>RSW_WreckedSkiff</li>
+        <li>RSW_CrawlerTreadWreck</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GenStepDef[defName="RM_GenStep_CrawlerRoad"]/genStep/terminusStep</xpath>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/GenStepDef[defName="RM_GenStep_CrawlerRoad"]/genStep</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/GenStepDef[defName="RM_GenStep_CrawlerRoad"]/genStep</xpath>
+        <value>
+          <terminusStep>RSW_GenStep_CrawlerRoadTerminus</terminusStep>
+        </value>
+      </match>
+    </nomatch>
+  </Operation>
+
+</Patch>

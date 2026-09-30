@@ -214,6 +214,10 @@
            layer, per Q11a: "glitter-bird" is descriptive English, not canon
            Star Wars IP. -->
       <RM_Pirrik>0.2</RM_Pirrik>
+      <!-- LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2: the mirrak, the false-shadow
+           ambusher (RM_LongShade_Mirrak.xml), wired once its art landed. 0.05 is
+           the dakkra's weight, the other rare ambusher; a first value. -->
+      <RM_Mirrak>0.05</RM_Mirrak>
       <!-- The 36 remaining canon Star Wars rows (§7 Q11/Q12) ride
            WildAnimals_LongShade.xml as a PatchOperationAdd instead of living
            here — see this file's header. -->
@@ -230,6 +234,14 @@
            here — see this file's header. -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
+
+    <!-- LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2: the Crawler Road (§6.4) and the
+         Long Carry's sun graves (§6.5). Named here only, so they run on this biome
+         alone. RM_LongShade_GenSteps.xml; toggles in this mod's settings. -->
+    <extraGenSteps>
+      <li>RM_GenStep_CrawlerRoad</li>
+      <li>RM_GenStep_SunGraves</li>
+    </extraGenSteps>
 
     <allowedPackAnimals>
       <li MayRequire="mandrake.rsw.swbestiary">RSW_Bantha</li>

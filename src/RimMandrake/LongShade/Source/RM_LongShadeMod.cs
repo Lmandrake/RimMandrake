@@ -43,11 +43,21 @@ namespace RimMandrake.LongShade
 
         public static bool dewfringeShadeLineGateEnabled = true;
 
+        /// <summary>LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2 (§6.4): lay the Crawler Road
+        /// at map generation. Map-generation only.</summary>
+        public static bool crawlerRoadEnabled = true;
+
+        /// <summary>LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2 (§6.5): lay the Long Carry's
+        /// sun graves at map generation. Map-generation only.</summary>
+        public static bool sunGravesEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref modEnabled, "modEnabled", true);
             Scribe_Values.Look(ref dewfringeShadeLineGateEnabled, "dewfringeShadeLineGateEnabled", true);
+            Scribe_Values.Look(ref crawlerRoadEnabled, "crawlerRoadEnabled", true);
+            Scribe_Values.Look(ref sunGravesEnabled, "sunGravesEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -66,6 +76,23 @@ namespace RimMandrake.LongShade
               + "rules like any other plant and can spread across open ground, breaking the "
               + "design's own 'pale, rim-only, never green in quantity' ceiling — provided as "
               + "an escape hatch, not the intended way to play.");
+            list.GapLine();
+
+            // LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2: this biome's own map
+            // generation, so its switches live here (they read Creature
+            // Behaviors' shade-patch graph but are not kit mechanics).
+            list.Label("Map generation (affects only maps generated after the change)");
+            list.CheckboxLabeled("The Crawler Road", ref crawlerRoadEnabled,
+                "MAP GENERATION. Across the widest gap in a Long Shade map's shade, a line of wrecked "
+              + "machines, each about one dash from the next, so the wrecks' shadows make a crossing. "
+              + "With the Star Wars layer it ends at a dead sandcrawler. The wrecks can be stripped "
+              + "for salvage or uninstalled and moved, which breaks the crossing; reinstalling one "
+              + "mends it. Needs Creature Behaviors' sun heat. Off: no road is laid on new maps.");
+            list.CheckboxLabeled("The Long Carry (sun graves)", ref sunGravesEnabled,
+                "MAP GENERATION. A few travellers and their pack animals lie dead out on the open sand, "
+              + "still carrying their load, too far from shade to walk out and back bare-headed but "
+              + "within reach under a parasol. Salvage and something to read; they point nowhere. "
+              + "Needs Creature Behaviors' sun heat and shade gear. Off: no graves on new maps.");
             list.GapLine();
 
             list.Label("Shade-seeking wander and contact venom");

@@ -21,7 +21,7 @@
                                     small thing steps into its "shadow"; eats the
                                     kill where it fell.
   Kill sign (owner's condition on the item: nothing "disappears spontaneously"):
-  a disturbed patch of sand under the victim at the seizure, the victim's own
+  a drag mark (RM_Filth_DragMark) under the victim at the seizure, the victim's own
   blood from the strike, and the corpse, eaten in place — never carried off.
   A player's own pawn seized also raises a message naming the mirrak.
 
@@ -29,11 +29,11 @@
   vanilla think tree never hunts; it eats carrion (CarnivoreAnimal includes
   corpses) and whatever it seizes.
 
-  NOT YET WIRED into RM_LongShade's wildAnimals: its art is still in the artpipe
-  queue (infrastructure/artpipe/pending/RM_Mirrak_{east,north,south}.json,
-  2026-09-30), and a roster row now would put a magenta creature on the map.
-  Wiring is one line in RM_LongShade.xml the day the render lands at
-  Textures/Things/Pawn/Animal/RM_Mirrak/.
+  Wired into RM_LongShade's wildAnimals at 0.05 (the dakkra's weight, the
+  other rare ambusher; a first value) by LONGSHADE_BEDAZZLE_MECHANICS_1
+  tranche 2, once its art landed (artpipe RM_Mirrak_{south,east,north},
+  Textures/Things/Pawn/Animal/RM_Mirrak/). Its seizure lays
+  RM_Filth_DragMark (mandrake.rm.creaturebehaviors) under the victim.
 
   Mirrak hide (RM_Leather_Mirrak) is the deepest shade cloth: it carries
   RM_ShadeClothExtension for SHADE_GEAR_FAMILY_1's shade-casting gear to read
@@ -123,6 +123,8 @@
         <maxPreyBodySize>1.2</maxPreyBodySize>
         <strikeRangeCells>1.9</strikeRangeCells>
         <strikeDamageRange>14~22</strikeDamageRange>
+        <seizeFilth>RM_Filth_DragMark</seizeFilth>
+        <seizeFilthCount>1</seizeFilthCount>
       </li>
     </comps>
     <race>
@@ -148,7 +150,9 @@
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
     </race>
-    <!-- no tradeTags until its art lands: a trader must not offer a magenta animal -->
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
