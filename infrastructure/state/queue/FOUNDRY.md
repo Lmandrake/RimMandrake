@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T07:49:16Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-30T11:43:43Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1161,14 +1161,14 @@ kind:     task
 summary:  Five organs, one machine:
 prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
 
-## CAULDRON_FULL_RENAME_1 Full rename PoisonForest -> Cauldron everywhere down to defNames incl. frozen RUT_ twin and soils (owner-typed 2026-09-28); live-tile shortHash check gates defName changes
-state:    doing
+## SWALE_CANAL_ART_REFERENCE_1 Swale art from live reference: build a real FlowWorks canal in game, screenshot it, spec the RM_Swale art from the shots (owner-typed on the sheet 2026-09-29); current Swale art stands as placeholder until then
+state:    doing  (BLOCKED)
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
 kind:     task
-summary:  - Scope is EVERYTHING the census names, including defNames and the soils
-prose:    infrastructure/state/items/CAULDRON_FULL_RENAME_1.md
+summary:  1. Build a real FlowWorks canal on a live map (quicktest fine; bridge work —
+prose:    infrastructure/state/items/SWALE_CANAL_ART_REFERENCE_1.md
 
 ## FORGE_CYCLE_MECHANICS_1 Build the Forge fire-and-water grand cycle: gas-wash ignition, boiling rain + FlowWorks flooding, steam plumes + temporary basalt/pumice freeze, floatstone growth phase, glowing cracks, melt-back - extends FORGE_MECHANICS_1's F1 pulse, coordinate
 state:    doing  (BLOCKED)
@@ -1187,24 +1187,6 @@ target:   v1
 kind:     task
 summary:  1. The Stall and the Gale (names RULED 2026-09-21, WeatherDefs at last;
 prose:    infrastructure/state/items/LEANINGSCRUB_MECHANICS_BUILD_1.md
-
-## DEEPFIRE_FLOOR_PAINT_1 Deepfire floors: grid, postfixes, clustering, beauty hooks
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 6)
-prose:    infrastructure/state/items/DEEPFIRE_FLOOR_PAINT_1.md
-
-## WASTELAND_MIDDENSHELL_FOOTPRINT_1 Middenshell ruled 20 cells wide; engine building/pawn footprint tops out near 4x4 - pick shrink, multi-part, or terrain-feature form
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  (no items/WASTELAND_MIDDENSHELL_FOOTPRINT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WASTELAND_MIDDENSHELL_FOOTPRINT_1.md
 
 ## SOLAR_HEAT_EXPOSURE_1 Planet-wide sun heat: sun exposure feeds VANILLA heat (no new heat kind), per-biome heat kind (overhead sun / low sun / steam), directional shade grid, sun-cost pathing, rest-dash-rest animal behaviour, dash-radius ring; Long Shade is first consumer
 state:    doing  (BLOCKED)
@@ -1260,14 +1242,32 @@ kind:     task
 summary:  (no items/WARCASKET_CASK_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARCASKET_CASK_ART_1.md
 
-## FORGE_LAVA_TERRAIN_1 RM_TheForge generates no lava at all (live 2026-09-30: 0 lava cells), so the six-phase cycle's freeze/crust/melt never fire; give the biome open lava fields via its terrain gen
+## SCALD_CROWNCARPET_NO_HABITAT_1 RM_TheScald generates ~no plants: its only wild plant (crowncarpet) grows only on a shallow margin terrain that map generation never lays down (live 2026-09-30c: 1 plant, an anima tree). Give the biome that margin terrain or the plant a habitat it actually gets
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/FORGE_LAVA_TERRAIN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FORGE_LAVA_TERRAIN_1.md
+summary:  (no items/SCALD_CROWNCARPET_NO_HABITAT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_CROWNCARPET_NO_HABITAT_1.md
+
+## SEA_DIVE_FLOOR_TERRAIN_1 Gravship dive floors ignore the seas' terrain bands: GenStep_SeaFloorTerrain paints one constant terrain (RM_SeaFloorGround / RM_ChillIceBedrock) on every cell, so floor flora habitat tags never exist on the map a player dives to; make it read each sea's terrainsByFertility (or a per-sea floor band)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/SEA_DIVE_FLOOR_TERRAIN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEA_DIVE_FLOOR_TERRAIN_1.md
+
+## DEEPFIRE_DODGE_PROOF_TWINS_1 prove_deepfire_worn_glow.py dodge pairs are not skill-matched (1/20 coated pawn had higher base MeleeDodge); give twins identical Melee skill/traits, then rerun
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  (no items/DEEPFIRE_DODGE_PROOF_TWINS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEPFIRE_DODGE_PROOF_TWINS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1853,6 +1853,16 @@ blocked:  Remaining parts need design calls (gas grid, falter tell foreknowledge
 summary:  Five organs, one machine:
 prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
 
+## SWALE_CANAL_ART_REFERENCE_1 Swale art from live reference: build a real FlowWorks canal in game, screenshot it, spec the RM_Swale art from the shots (owner-typed on the sheet 2026-09-29); current Swale art stands as placeholder until then
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+blocked:  Waiting on the RM_Swale_v2 render and its review
+summary:  1. Build a real FlowWorks canal on a live map (quicktest fine; bridge work —
+prose:    infrastructure/state/items/SWALE_CANAL_ART_REFERENCE_1.md
+
 ## FORGE_CYCLE_MECHANICS_1 Build the Forge fire-and-water grand cycle: gas-wash ignition, boiling rain + FlowWorks flooding, steam plumes + temporary basalt/pumice freeze, floatstone growth phase, glowing cracks, melt-back - extends FORGE_MECHANICS_1's F1 pulse, coordinate
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1955,66 +1965,6 @@ thin:     no ## verify, no ## criteria
 summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
 
-## SWALE_CANAL_ART_REFERENCE_1 Swale art from live reference: build a real FlowWorks canal in game, screenshot it, spec the RM_Swale art from the shots (owner-typed on the sheet 2026-09-29); current Swale art stands as placeholder until then
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Build a real FlowWorks canal on a live map (quicktest fine; bridge work —
-prose:    infrastructure/state/items/SWALE_CANAL_ART_REFERENCE_1.md
-
-## DEEPFIRE_FIRSTCOAT_BONUS_1 Deepfire first-coat quality/beauty bonus
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 7)
-prose:    infrastructure/state/items/DEEPFIRE_FIRSTCOAT_BONUS_1.md
-
-## DEEPFIRE_WORN_GLOW_1 Deepfire worn-item glow + darkness-targeting combat tradeoff
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 8)
-prose:    infrastructure/state/items/DEEPFIRE_WORN_GLOW_1.md
-
-## DEEPFIRE_STATUS_THOUGHTS_1 Deepfire status engine: room-stat thoughts + comp-based detection
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 9)
-prose:    infrastructure/state/items/DEEPFIRE_STATUS_THOUGHTS_1.md
-
-## DEEPFIRE_GOD_BRIDGE_DELTAS_1 Deepfire remaining god deltas + statue extension + LightsOut check
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 10)
-prose:    infrastructure/state/items/DEEPFIRE_GOD_BRIDGE_DELTAS_1.md
-
-## DEEPFIRE_MOD_SETTINGS_1 Deepfire painting Mod Settings + cold-load validation
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 12)
-prose:    infrastructure/state/items/DEEPFIRE_MOD_SETTINGS_1.md
-
 ## ROTSPOREKIT_MAYREQUIRE_ORPHANED_1 Retiring RotSporeKit orphaned ~30 MayRequire-gated rows in 6 live biome files (RM_ equivalents exist, need repointing)
 state:    proposed
 row:      unassigned
@@ -2101,6 +2051,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FORGE_GPT_ENRICHMENT_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Floatstone keelwork. Pearl-white, spun-sugar floatstone braces threaded through a gravship
 prose:    infrastructure/state/items/FORGE_GPT_ENRICHMENT_1.md
+
+## CONTAGION_GROWN_LIMBS_BUILD_1 Build the grown limbs the owner keeps on design/Jawa/worldbuilding/biomes/contagion_grown_limbs_2026-09-30.md (Pillar Arm + Lash first; Monstrous sample grade from Coalescence drops; removal-spawns-Unfinished comp)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CONTAGION_GROWN_LIMBS_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CONTAGION_GROWN_LIMBS_BUILD_1.md
