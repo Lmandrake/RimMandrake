@@ -332,11 +332,31 @@
     <throwFleckChance>0.45</throwFleckChance>
     <traversedThought>HotSpring</traversedThought>
     <avoidWander>true</avoidWander>
+    <!-- SCALD_CROWNCARPET_NO_HABITAT_1, 2026-09-30: RM_CrowncarpetBed added,
+         per the_scald_underwater_flora_pass_2026-09-27.md's own "one-line
+         fix" ("Remedy on our side of the fence: add RM_CrowncarpetBed to
+         RUT_ScaldWaterOceanShallow's tags in TerminalBiomes... no
+         LuminousPigment edit"). This is this def's own OceanShallow floor
+         terrain (the dive-layer the gravship's sea-floor map generates
+         with via terrainsByFertility/RM_SeaShoreExtension) — a diver
+         otherwise saw the fauna roster swimming over bare glowing water
+         with nowhere for the biome's one wild plant to grow. Deliberately
+         NOT added to the sibling RUT_ScaldWaterShallow/Deep/MovingShallow/
+         MovingChestDeep terrains (this file's other TerrainDefs): crowncarpet's
+         own header explains RUT_ScaldMarginMat (not the generic Water tag
+         shared by every boil terrain) was chosen so the mat would not
+         wild-spawn across the whole boil. RM_CrowncarpetBed on this one
+         shallow-shore terrain is narrower still and matches the plant's own
+         shipped description ("thick and unbroken where the water boils") —
+         a sessile mat, not the "macro-life"/"swims the roiling surface"
+         ban 4 is aimed at (walkers, sails); the design pass reads ban 4 the
+         same way. -->
     <tags>
       <li>Water</li>
       <li>Ocean</li>
       <li>RUT_ScaldShallow</li>
       <li>RM_WaterAgitationLight</li>
+      <li>RM_CrowncarpetBed</li>
     </tags>
   </TerrainDef>
 
