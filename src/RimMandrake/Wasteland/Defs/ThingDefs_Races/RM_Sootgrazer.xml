@@ -8,8 +8,7 @@
 
   Authority: cast bible §3. Behavior/mechanic (same terrain-gated gatherable
   comp family as the Sloghog, producing RM_SootBrick) is
-  WASTELAND_MECHANICS_BUILD_1's scope; this def lands with a named stub
-  point. Item RM_SootBrick itself IS this item's scope (§4) and ships
+  WASTELAND_MECHANICS_BUILD_1's scope; that item wired the comp below. Item RM_SootBrick itself IS this item's scope (§4) and ships
   alongside.
 -->
 <Defs>
@@ -69,9 +68,22 @@
     <tradeTags>
       <li>AnimalFarm</li>
     </tradeTags>
-    <!-- WASTELAND_MECHANICS_BUILD_1 STUB POINT: same gatherable comp family
-         as RM_Sloghog, gated on ash-family/polluted terrain, producing
-         RM_SootBrick. Deliberately unset. -->
+    <!-- WASTELAND_MECHANICS_BUILD_1 §2: same processor comp as the Sloghog.
+         Feed ground = polluted/toxic cells OR drifted ash fall at least 0.1
+         deep (the MovingDunes sand grid the ash storm lays). -->
+    <comps>
+      <li Class="RimMandrake.Wasteland.RM_CompProperties_ProcessorGatherable">
+        <milkDef>RM_SootBrick</milkDef>
+        <milkIntervalDays>3</milkIntervalDays>
+        <milkAmount>5</milkAmount>
+        <milkFemaleOnly>false</milkFemaleOnly>
+        <offFeedRateFactor>0.35</offFeedRateFactor>
+        <feedsOnPollution>true</feedsOnPollution>
+        <feedSandDepth>0.1</feedSandDepth>
+        <unpolluteChancePerDay>0.15</unpolluteChancePerDay>
+        <fullnessLabel>Soot brick press</fullnessLabel>
+      </li>
+    </comps>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Sootgrazer</defName>

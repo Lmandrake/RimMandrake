@@ -9,8 +9,7 @@
 
   Authority: cast bible §3. Behavior/mechanic (CompHasGatherableBodyResource
   subclass gated on polluted terrain, producing RM_ContaminantBezoar) is
-  WASTELAND_MECHANICS_BUILD_1's scope, not this item's — this def lands with
-  no comp wired and a named stub point below for that item to fill in. Item
+  WASTELAND_MECHANICS_BUILD_1's scope; that item wired the comp below. Item
   RM_ContaminantBezoar itself IS this item's scope (§4) and ships alongside.
 -->
 <Defs>
@@ -71,12 +70,22 @@
     <tradeTags>
       <li>AnimalFarm</li>
     </tradeTags>
-    <!-- WASTELAND_MECHANICS_BUILD_1 STUB POINT: a CompProperties_<TBD gatherable
-         subclass> goes here, producing RM_ContaminantBezoar, gated on standing
-         on polluted terrain when Biotech pollution is present (else on time),
-         crib CompMilkable's shape. Deliberately unset — no such C# class
-         exists in this mod yet; adding a <comps> block referencing one would
-         fail to load. -->
+    <!-- WASTELAND_MECHANICS_BUILD_1 §2: the processor comp (a CompMilkable
+         subclass, collected by the vanilla milking job). Full rate on
+         polluted/toxic ground, 35% off it; occasionally un-pollutes the cell
+         it stands on. Toggles in Mod Settings. -->
+    <comps>
+      <li Class="RimMandrake.Wasteland.RM_CompProperties_ProcessorGatherable">
+        <milkDef>RM_ContaminantBezoar</milkDef>
+        <milkIntervalDays>5</milkIntervalDays>
+        <milkAmount>1</milkAmount>
+        <milkFemaleOnly>false</milkFemaleOnly>
+        <offFeedRateFactor>0.35</offFeedRateFactor>
+        <feedsOnPollution>true</feedsOnPollution>
+        <unpolluteChancePerDay>0.25</unpolluteChancePerDay>
+        <fullnessLabel>Bezoar growth</fullnessLabel>
+      </li>
+    </comps>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Sloghog</defName>
