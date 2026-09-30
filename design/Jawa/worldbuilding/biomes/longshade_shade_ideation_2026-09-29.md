@@ -847,3 +847,28 @@ clear and haze lengths; the cache is a vanilla buried/minable container. Depends
 Every beat above sits on the one build (§1 + §3). That is why it is ranked first: without the
 strict dash and the pinned shadow, every other item on this list is scenery; with them, each
 is a different reason to step out of the shade.
+
+## Rulings — volley turn 4 (2026-09-29, owner typed)
+
+- 🔴 **Heat is ONE kind, planet-wide.** *"If we implement the heat load, then places like the
+  Deep Desert and volcanic biomes should absolutely roast you similarly. It can't be a new
+  "kind" of heat."* ⇒ The dash spine's heat load is **not** a new Long Shade hediff. Sun
+  exposure feeds the game's existing heat (the vanilla temperature/Heatstroke path), so
+  apparel, comfort range and heatstroke all keep meaning what they mean. The same mechanism
+  runs on every extreme-heat biome, not just this one. §1's "reuse the shade-driven hediff comp"
+  plan must be re-pointed at vanilla heat before it is built.
+- **1 Law of the Light: IN.** **2 Mirrak: IN.** **4 Crawler Road: IN** (*"Cool inhabited vision"*).
+- **3 Swimmer's road: IN, with a condition.** *"we can't have animals "disappear spontaneously."
+  There needs to be SOME kind of indication of what happened to them."* Every loss to the
+  swimmer (and by the same logic to the mirrak) must leave a readable sign: a wake that ends,
+  a drag mark, remains, a disturbed patch, a message.
+- **5 Long Carry: IN, and widened to shade GEAR.** *"Actual shadow-casting gear doubles down on
+  the idea of heat building up… Parisols, shade tents, simple shields you can stand behind. But
+  again, this MUST be applied on other biomes where heat is extreme too... and there shade won't
+  help you (in steam) or sideways shade (deep desert)."* ⇒ Parasols, shade tents and portable
+  sun-shields become a cross-biome gear family. How well each piece works depends on the biome's
+  kind of heat:
+  - overhead sun here, so parasols and tents work;
+  - a low sun in the deep desert, so a shield you stand behind works and overhead shade does not;
+  - steam/volcanic heat, where shade does nothing and only insulation and escape help.
+- **6 gnomon line, 7 farm on the horizon, 8 smaller ideas:** not yet ruled.
