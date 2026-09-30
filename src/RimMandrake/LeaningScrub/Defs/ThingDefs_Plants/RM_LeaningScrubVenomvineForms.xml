@@ -12,9 +12,8 @@
   Every form carries the same gateKey as the thicket, so leaningscrub's
   venomvine-passability Mod Setting governs all five.
 
-  Art: each texPath is a Graphic_Random folder whose render is queued in
-  artpipe; not yet wired (placeholder until then). RM_CrownVenomvine is a 512
-  canvas.
+  Art: each texPath is a Graphic_Random folder holding its wired render
+  (LEANINGSCRUB_ART_WIRING_1). RM_CrownVenomvine is a 512 canvas.
 -->
 <Defs>
 

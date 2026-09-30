@@ -12,10 +12,10 @@
   bespoke behaviour (wind, ambush, lure, glide, denning) is
   LEANINGSCRUB_MECHANICS_BUILD_1's and is marked STUB per def below.
 
-  Art: every texPath below points at art that is QUEUED in artpipe
-  (infrastructure/artpipe/art_lists/leaningscrub_bedazzle_cast.csv) and not
-  yet rendered - the def loads and shows a missing-texture placeholder until
-  the daemon's output is wired. Expected, not a defect.
+  Art: every animal's east/north/south renders are wired under
+  Textures/Things/Pawn/Animal/RM_<Name>/ (LEANINGSCRUB_ART_WIRING_1). Zellik
+  and Dustflutter have no flying flip-book frames yet; they fly with the
+  grounded sprite.
 
   One home each (owner law 2026-09-21): every species here is wired into
   RM_LeaningScrub and nowhere else.
