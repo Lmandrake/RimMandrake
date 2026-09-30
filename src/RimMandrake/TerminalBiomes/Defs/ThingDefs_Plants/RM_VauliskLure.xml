@@ -80,7 +80,6 @@
            glow IS the tell (design §D4b). -->
       <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_VaeuliskLure">
         <revealRadius>1.9</revealRadius>
-        <checkIntervalTicks>30</checkIntervalTicks>
         <revealPawnKindDefName>RM_Vaulisk</revealPawnKindDefName>
         <dragCells>2</dragCells>
       </li>

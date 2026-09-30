@@ -99,7 +99,7 @@
       <li>
         <label>cardiac arrest</label>
         <minSeverity>0.85</minSeverity>
-        <lethal>true</lethal>
+        <lifeThreatening>true</lifeThreatening>
         <capMods>
           <li>
             <capacity>BloodPumping</capacity>

@@ -72,7 +72,6 @@
     <ingestible>
       <preferability>DesperateOnly</preferability>
       <foodType>VegetableOrFruit</foodType>
-      <nutrition>0.05</nutrition>
     </ingestible>
     <thingCategories>
       <li>Foods</li>
@@ -128,7 +127,6 @@
     <ingestible>
       <preferability>DesperateOnly</preferability>
       <foodType>VegetableOrFruit</foodType>
-      <nutrition>0.04</nutrition>
     </ingestible>
     <thingCategories>
       <li>Foods</li>
@@ -164,7 +162,6 @@
     <ingestible>
       <preferability>DesperateOnly</preferability>
       <foodType>VegetableOrFruit</foodType>
-      <nutrition>0.04</nutrition>
     </ingestible>
     <thingCategories>
       <li>Foods</li>

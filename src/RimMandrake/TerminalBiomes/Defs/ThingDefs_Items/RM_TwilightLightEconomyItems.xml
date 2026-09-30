@@ -66,36 +66,16 @@
     <tradeTags>
       <li>RM_TwilightLightEconomy</li>
     </tradeTags>
+    <costList>
+      <Steel>20</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
     <recipeMaker>
       <researchPrerequisite>RM_TwilightChainCraft</researchPrerequisite>
       <workAmount>1600</workAmount>
       <recipeUsers>
         <li>TableMachining</li>
       </recipeUsers>
-      <ingredients>
-        <li>
-          <filter>
-            <thingDefs>
-              <li>Steel</li>
-            </thingDefs>
-          </filter>
-          <count>20</count>
-        </li>
-        <li>
-          <filter>
-            <thingDefs>
-              <li>ComponentIndustrial</li>
-            </thingDefs>
-          </filter>
-          <count>1</count>
-        </li>
-      </ingredients>
-      <fixedIngredientFilter>
-        <thingDefs>
-          <li>Steel</li>
-          <li>ComponentIndustrial</li>
-        </thingDefs>
-      </fixedIngredientFilter>
       <displayPriority>230</displayPriority>
     </recipeMaker>
   </ThingDef>

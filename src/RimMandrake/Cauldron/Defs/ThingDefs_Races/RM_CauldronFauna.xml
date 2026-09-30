@@ -370,6 +370,9 @@
       <ArmorRating_Blunt>0.3</ArmorRating_Blunt>
       <Wildness>0.75</Wildness>
     </statBases>
+    <butcherProducts>
+      <Steel>3</Steel>
+    </butcherProducts>
     <tools>
       <li>
         <label>head</label>
@@ -395,9 +398,6 @@
       <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
       <herdAnimal>true</herdAnimal>
       <specificMeatDef>RM_ZisskaMeat</specificMeatDef>
-      <butcherProducts>
-        <Steel>3</Steel>
-      </butcherProducts>
       <lifeStageAges>
         <li>
           <def>AnimalBaby</def>

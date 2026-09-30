@@ -139,7 +139,6 @@
       <foodType>VegetarianRoughAnimal</foodType>
       <leatherDef>Leather_Heavy</leatherDef>
       <trainability>None</trainability>
-      <wildness>0.9</wildness>
       <roamMtbDays>40</roamMtbDays>
       <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
       <lifeExpectancy>400</lifeExpectancy>
