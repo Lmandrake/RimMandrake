@@ -39,8 +39,9 @@ A SECOND REAL FINDING, this one about the terminator biome roster itself,
 not the walk doc: `PlantGrowthConfig.cs`'s own comment says the sole
 confirmed terminator biome, `"PoisonForest"`, comes from "Advanced Biomes
 (Continued)". This repo also ships its OWN biome of a very similar name --
-`src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_PoisonForest.xml` -- but
-its `defName` is `RUT_PoisonForest`, confirmed by direct read, NOT
+`src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Cauldron.xml` -- but
+its `defName` is `RUT_Cauldron` (renamed from `RUT_PoisonForest`,
+CAULDRON_FULL_RENAME_1, 2026-09-30), confirmed by direct read, NOT
 `PoisonForest`. Different string, no fuzzy match in
 `DefDatabase<BiomeDef>.GetNamedSilentFail`. Neither `UtinniPatches`
 (`mandrake.rut.patches`) nor any packageId recognisable as "Advanced
@@ -187,7 +188,7 @@ def boot_config_and_terminator_roster(t):
                     "TerminatorBiomeCount = %d, expected 0 on this "
                     "environment -- 'PoisonForest' resolves to nothing "
                     "here (see module docstring: it is not the same "
-                    "defName as our own RUT_PoisonForest, and neither "
+                    "defName as our own RUT_Cauldron, and neither "
                     "UtinniPatches nor its third-party namesake is in "
                     "the minimal list)" % terminator)
             if WARNING_LOG_TAG not in joined:

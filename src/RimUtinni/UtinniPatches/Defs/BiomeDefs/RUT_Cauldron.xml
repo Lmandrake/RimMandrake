@@ -2,9 +2,14 @@
 <Defs>
 
   <!--
-    RUT_PoisonForest                               UtinniPatches - authored 2026-09-09
+    RUT_Cauldron                                    UtinniPatches - authored 2026-09-09
     BIOME_OWNERSHIP_WAVE_1. Full sheet: design/Jawa/worldbuilding/biomes/
-    poison_forest.md (FROZEN).
+    cauldron.md (FROZEN).
+
+    CAULDRON_FULL_RENAME_1 (2026-09-30): renamed from RUT_PoisonForest to
+    RUT_Cauldron by question-card decision — the 546 live world tiles ride to
+    the paint-once-at-the-end repaint (CLAUDE.md: a biome on 0 tiles
+    mid-migration is expected, not a defect). No other field changed.
 
     MEASURED live on V26 (sheet SS2, owner accepted 2026-09-08): 557 tiles, arc
     envelope 56-115, core p10/p90 82-107, median 91.3 — straddling the terminator.
@@ -27,7 +32,7 @@
     SS5).
 
     wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
-    BiomeFlora_Ashkarr.xml against rosters/poison_forest.json.
+    BiomeFlora_Ashkarr.xml against rosters/cauldron.json.
 
     NOT this pass's scope: the vent-gas WeatherDef itself (SS Owed); capped
     wellheads/gas-tap scaffold structures (SS8).
@@ -40,13 +45,13 @@
     phototroph flora), both wired into wildAnimals/wildPlants below.
 
     FROZEN 2026-09-25 (POISONFOREST_RM_MOD_BUILD_1) — carrying the world until
-    the terminal paint; content lives in mandrake.rm.poisonforest from here on;
+    the terminal paint; content lives in mandrake.rm.cauldron from here on;
     do not edit here.
 
   -->
 
   <BiomeDef>
-    <defName>RUT_PoisonForest</defName>
+    <defName>RUT_Cauldron</defName>
     <generatesNaturally>false</generatesNaturally>
     <label>the Cauldron</label>
     <description>A low, wet-black forest standing in permanent dusk over ground that breathes. The light never changes and casts nothing you could call a shadow; trunks weep a grey metallic sweat that hardens into scabs and crystal fans. Nearly everything alive here is either sealed against the vented metal-rich gas or has processed the load and become toxic itself -- and nothing is fast, because a chemosynthetic budget is thin.</description>

@@ -3,7 +3,7 @@
   <!--
     POLLUTED_LANDS_FLORA_PORT_1 — the 5 Polluted-Lands-lineage plants worth keeping when
     `biomesteam.biomespollutedlands` leaves the load: the two owner-named favourite trees
-    (biome_flora_rosters.md: "his three named favourites all have a home… in PoisonForest,
+    (biome_flora_rosters.md: "his three named favourites all have a home… in the Cauldron,
     where the rest of the Polluted Lands trees live") plus their two Thorn-family
     companions (RUT_CrackedLands) and the one-plant RUT_Scarlands roster (cutting it
     outright would leave that biome plantless, which nobody ruled).
@@ -16,7 +16,7 @@
     Dropped on ingest, same rationale as the RotSporeKit raid:
     - `BMT_PollutedLands_*` abstract parents and their `<pollution>PollutedOnly</pollution>`
       field — that gates wild spawning on Biotech's runtime "Polluted" tile state (an
-      event-driven mechanic), which is NOT what Ash'karr's Wasteland/PoisonForest/
+      event-driven mechanic), which is NOT what Ash'karr's Wasteland/Cauldron/
       CrackedLands/Scarlands themes mean by "poisoned ground". Keeping it would make these
       plants effectively never spawn wild. Plain vanilla PlantBase/TreeBase/BushBase used
       instead (RUT_Dewshrooms precedent).
@@ -28,7 +28,7 @@
       tree in our rosters already yields.
   -->
 
-  <!-- ============== Twisting Thornwood (tree) — RUT_CrackedLands, RUT_PoisonForest ============== -->
+  <!-- ============== Twisting Thornwood (tree) — RUT_CrackedLands, RUT_Cauldron ============== -->
   <ThingDef ParentName="TreeBase">
     <defName>RUT_TwistingThornwood</defName>
     <label>twisting thornwood</label>
@@ -64,7 +64,7 @@
     </plant>
   </ThingDef>
 
-  <!-- ============== Martyr tree — RUT_PoisonForest ============== -->
+  <!-- ============== Martyr tree — RUT_Cauldron ============== -->
   <ThingDef ParentName="TreeBase">
     <defName>RUT_TreeMartyr</defName>
     <label>martyr tree</label>
@@ -154,10 +154,10 @@
     </plant>
   </ThingDef>
 
-  <!-- ============== Dark crust phototroph — RUT_PoisonForest ==============
+  <!-- ============== Dark crust phototroph — RUT_Cauldron ==============
        COMMISSION_LEDGER_CLEANUP_1 (poison_forest sheet slug
        `dark-crust-phototroph-flora-black-purple-red-films-on-starwa`).
-       poison_forest.md §4: "Photosynthesis is possible here — and it is
+       cauldron.md §4: "Photosynthesis is possible here — and it is
        comprehensively beaten. The phototrophs are a tiny, marginal,
        crowded-out minority, and crucially they are not green... black, deep
        purple and blood-red — dark films and crusts on the starward faces of

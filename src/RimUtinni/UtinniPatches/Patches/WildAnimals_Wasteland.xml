@@ -99,7 +99,7 @@
         <RSW_Maligoat>0.4</RSW_Maligoat>  <!-- maligoat - wretched-herd, keep -->
         <!-- MULTI-HOMED ON PURPOSE - owner approved 2026-09-22 (BIOME_SPECIFIC_FAUNA_LAW_1):
              the screecher is a real flier (MaxFlightTime 35.0) that MIGRATES in from the
-             wetter RUT_PoisonForest to lay in the heat. Do not "fix" it by cutting either
+             wetter RUT_Cauldron to lay in the heat. Do not "fix" it by cutting either
              home. -->
         <RSW_Screecher>0.4</RSW_Screecher>  <!-- screecher - wretched-pack, import; hot end of the migration -->
         <RSW_Excretor>0.15</RSW_Excretor>  <!-- excretor - refiner-herd, new-def (COMMISSION_LEDGER_CLEANUP_1 / WASTELAND_EXCRETOR_BEZOAR_1) -->
