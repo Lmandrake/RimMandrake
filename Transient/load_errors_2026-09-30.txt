@@ -1,0 +1,457 @@
+Cold load 2026-09-30 23:09, full list (612 mods), deploy of origin/main 7443a66d7. Unique error lines (RM_LiquidProperties notices dropped):
+
+Exception loading from System.Xml.XmlElement: System.MissingMethodException: Default constructor not found for type System.String
+      at System.RuntimeType.CreateInstanceMono (System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00076] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.RuntimeType.CreateInstanceSlow (System.Boolean publicOnly, System.Boolean wrapExceptions, System.Boolean skipCheckThis, System.Boolean fillCache) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.RuntimeType.CreateInstanceDefaultCtor (System.Boolean publicOnly, System.Boolean skipCheckThis, System.Boolean fillCache, System.Boolean wrapExceptions, System.Threading.StackCrawlMark& stackMark) [0x00027] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00020] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.Activator.CreateInstance (System.Type type) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0045c] in <61e4173561894da49d210260257b5097>:0 
+      at Verse.DirectXmlToObject.ObjectFromXmlReflection[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+      at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0060e] in <61e4173561894da49d210260257b5097>:0 
+    Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-00000206F9DE3050.dll
+    Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-00000206FB623240.dll
+XML error: <drawStyleCategory>Wall</drawStyleCategory> doesn't correspond to any field in type BuildingProperties. Context: <building><isInert>true</isInert><isPlaceOverableWall>true</isPlaceOverableWall><ai_chillDestination>false</ai_chillDestination><supportsWallAttachments>true</supportsWallAttachments><isStuffableAirtight>false</isStuffableAirtight><blueprintGraphicData><texPath>Things/Buildin
+[Def Error]: BoneWall
+[Def Error]: AM_Entrance_LargeElevator
+[Def Error]: AM_Entrance_UndergroundGarage
+[Def Error]: Prj_SW_Electricgryllotalpa
+[Def Error]: WeatheredBasalt
+[Def Error]: PassableBasalt
+Exception loading def from file RSW_Shokk_FeraliskBrood.xml: System.ArgumentNullException: Value cannot be null.
+    Parameter name: s
+    [Ref ACEF8EE]
+     [0x00006] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.Single.Parse (System.String s, System.IFormatProvider provider) [0x00003] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at Verse.ParseHelper.ParseFloat (System.String str) [0x00006] in <61e4173561894da49d210260257b5097>:0 
+      at Verse.ParseHelper.FromString[T] (System.String str) [0x00009] in <61e4173561894da49d210260257b5097>:0 
+      at RimWorld.PawnGenOption.LoadDataFromXmlCustom (System.Xml.XmlNode xmlRoot) [0x00020] in <61e4173561894da49d210260257b5097>:0 
+    (wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndAddCustomLoadableToList_RimWorld_PawnGenOption(object,int,System.Xml.XmlNode,System.Type)
+    (wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndSetListField_RimWorld_PawnGenOption(object,System.Reflection.FieldInfo,System.Xml.XmlNode,System.Type)
+    (wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndAddComplexTypeToList_SharedBody(object,int,System.Xml.XmlNode,System.Type)
+    (wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndSetListField_RimWorld_PawnGroupMaker(object,System.Reflection.FieldInfo,System.Xml.XmlNode,System.Type)
+XML error: <wildness>0.65</wildness> doesn't correspond to any field in type RaceProperties. Context: <race><renderTree>Animal</renderTree><thinkTreeMain>Animal</thinkTreeMain><thinkTreeConstant>AnimalConstant</thinkTreeConstant><hasGenders>true</hasGenders><nameGenerator>NamerAnimalGenericMale</nameGenerator><nameGeneratorFemale>NamerAnimalGenericFemale</nameGeneratorFemale><trainability>None</tr
+[Def Error]: RUT_Radiothermal
+XML error: <soundCall>Muffalo_Call</soundCall> doesn't correspond to any field in type RaceProperties. Context: <race><renderTree>Animal</renderTree><thinkTreeMain>Animal</thinkTreeMain><thinkTreeConstant>AnimalConstant</thinkTreeConstant><hasGenders>true</hasGenders><nameGenerator>NamerAnimalGenericMale</nameGenerator><nameGeneratorFemale>NamerAnimalGenericFemale</nameGeneratorFemale><trainabilit
+[Def Error]: RUT_SlimeGrazer
+XML error: <coverEffectiveness>0.5</coverEffectiveness> doesn't correspond to any field in type ThingDef. Context: <ThingDef ParentName="BuildingBase"><category>Building</category><thingClass>RimMandrake.FlowWorks.Drilling.Building_LiquidDrill</thingClass><soundImpactDefault>BulletImpact_Metal</soundImpactDefault><selectable>true</selectable><drawerType>MapMeshOnly</drawerType><altitudeLayer>Build
+[Def Error]: RM_LiquidDrill
+XML error: <coverEffectiveness>0.6</coverEffectiveness> doesn't correspond to any field in type ThingDef. Context: <ThingDef ParentName="BuildingBase"><category>Building</category><thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass><soundImpactDefault>BulletImpact_Metal</soundImpactDefault><selectable>true</selectable><drawerType>MapMeshOnly</drawerType><altitudeLayer>Bui
+[Def Error]: RM_LiquidTank
+XML error: <lethal>true</lethal> doesn't correspond to any field in type HediffStage. Context: <li><label>cardiac arrest</label><minSeverity>0.85</minSeverity><lethal>true</lethal><capMods><li><capacity>BloodPumping</capacity><setMax>0.0</setMax></li></capMods></li>
+[Def Error]: RM_OllathrixVenom
+XML error: <nutrition>0.05</nutrition> doesn't correspond to any field in type IngestibleProperties. Context: <ingestible><preferability>DesperateOnly</preferability><foodType>VegetableOrFruit</foodType><nutrition>0.05</nutrition></ingestible>
+[Def Error]: RM_TavroskLiquor
+XML error: <letterLabel>Undersurge</letterLabel> doesn't correspond to any field in type GameConditionDef. Context: <GameConditionDef><defName>RM_GameCondition_Undersurge</defName><label>undersurge</label><description>The Twilight Sea's floor current runs deep and fast. The channels have widened onto the banks, and everything the river usually leaves alone is, for now, within its reach.</descripti
+XML error: <displayOrder>10</displayOrder> doesn't correspond to any field in type GameConditionDef. Context: <GameConditionDef><defName>RM_GameCondition_Undersurge</defName><label>undersurge</label><description>The Twilight Sea's floor current runs deep and fast. The channels have widened onto the banks, and everything the river usually leaves alone is, for now, within its reach.</description><co
+[Def Error]: RM_GameCondition_Undersurge
+[Def Error]: RUT_SteamCatch
+XML error: <nutritionInterval>0.9</nutritionInterval> doesn't correspond to any field in type IngestibleProperties. Context: <ingestible><preferability>RawBad</preferability><foodType>Plant</foodType><nutritionInterval>0.9</nutritionInterval><canAutoSelectAsFoodForCaravan>true</canAutoSelectAsFoodForCaravan></ingestible>
+[Def Error]: RM_PitchpearlBeads
+XML error: <nutritionInterval>0.9</nutritionInterval> doesn't correspond to any field in type IngestibleProperties. Context: <ingestible><preferability>RawBad</preferability><foodType>Fluid</foodType><nutritionInterval>0.9</nutritionInterval><canAutoSelectAsFoodForCaravan>true</canAutoSelectAsFoodForCaravan></ingestible>
+[Def Error]: RM_StonewaterIce
+XML error: <nutritionInterval>0.9</nutritionInterval> doesn't correspond to any field in type IngestibleProperties. Context: <ingestible><preferability>RawTasty</preferability><foodType>Fluid</foodType><nutritionInterval>0.9</nutritionInterval><canAutoSelectAsFoodForCaravan>true</canAutoSelectAsFoodForCaravan></ingestible>
+[Def Error]: RM_MeltedWater
+XML error: <ingredients><li><filter><thingDefs><li>Steel</li></thingDefs></filter><count>20</count></li><li><filter><thingDefs><li>ComponentIndustrial</li></thingDefs></filter><count>1</count></li></ingredients> doesn't correspond to any field in type RecipeMakerProperties. Context: <recipeMaker><researchPrerequisite>RM_TwilightChainCraft</researchPrerequisite><workAmount>1600</workAmount><recipeU
+XML error: <fixedIngredientFilter><thingDefs><li>Steel</li><li>ComponentIndustrial</li></thingDefs></fixedIngredientFilter> doesn't correspond to any field in type RecipeMakerProperties. Context: <recipeMaker><researchPrerequisite>RM_TwilightChainCraft</researchPrerequisite><workAmount>1600</workAmount><recipeUsers><li>TableMachining</li></recipeUsers><ingredients><li><filter><thingDefs><li>Steel<
+[Def Error]: RM_TetherChain
+XML error: <checkIntervalTicks>30</checkIntervalTicks> doesn't correspond to any field in type RM_CompProperties_VaeuliskLure. Context: <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_VaeuliskLure"><revealRadius>1.9</revealRadius><checkIntervalTicks>30</checkIntervalTicks><revealPawnKindDefName>RM_Vaulisk</revealPawnKindDefName><dragCells>2</dragCells></li>
+[Def Error]: RM_VauliskLure
+XML error: <wildness>0.9</wildness> doesn't correspond to any field in type RaceProperties. Context: <race><renderTree>Animal</renderTree><thinkTreeMain>Animal</thinkTreeMain><thinkTreeConstant>AnimalConstant</thinkTreeConstant><hasGenders>true</hasGenders><nameGenerator>NamerAnimalGenericMale</nameGenerator><nameGeneratorFemale>NamerAnimalGenericFemale</nameGeneratorFemale><trainability>None</tra
+[Def Error]: RM_Oommok
+XML error: <fixedIngredientFilter><thingDefs><li>RM_FossilImpression</li><li>RM_FossilDeepStratum</li></thingDefs></fixedIngredientFilter> doesn't correspond to any field in type RecipeMakerProperties. Context: <recipeMaker><workSpeedStat>GeneralLaborSpeed</workSpeedStat><workSkill>Artistic</workSkill><unfinishedThingDef>UnfinishedSculpture</unfinishedThingDef><effectWorking>Sculpt</effectWorking>
+XML error: <ingredients><li><filter><thingDefs><li>RM_FossilImpression</li><li>RM_FossilDeepStratum</li></thingDefs></filter><count>1</count></li></ingredients> doesn't correspond to any field in type RecipeMakerProperties. Context: <recipeMaker><workSpeedStat>GeneralLaborSpeed</workSpeedStat><workSkill>Artistic</workSkill><unfinishedThingDef>UnfinishedSculpture</unfinishedThingDef><effectWorking>
+XML error: <products><RM_FossilDisplaySlab>1</RM_FossilDisplaySlab></products> doesn't correspond to any field in type RecipeMakerProperties. Context: <recipeMaker><workSpeedStat>GeneralLaborSpeed</workSpeedStat><workSkill>Artistic</workSkill><unfinishedThingDef>UnfinishedSculpture</unfinishedThingDef><effectWorking>Sculpt</effectWorking><soundWorking>Recipe_Sculpt</soundWorking><recipeUsers><li>T
+[Def Error]: RM_FossilDisplaySlab
+XML error: <fixedIngredientFilter><thingDefs><li>RM_FossilSkeleton</li></thingDefs></fixedIngredientFilter> doesn't correspond to any field in type RecipeMakerProperties. Context: <recipeMaker><workSpeedStat>GeneralLaborSpeed</workSpeedStat><workSkill>Artistic</workSkill><unfinishedThingDef>UnfinishedSculpture</unfinishedThingDef><effectWorking>Sculpt</effectWorking><soundWorking>Recipe_Sculpt</so
+XML error: <ingredients><li><filter><thingDefs><li>RM_FossilSkeleton</li></thingDefs></filter><count>1</count></li></ingredients> doesn't correspond to any field in type RecipeMakerProperties. Context: <recipeMaker><workSpeedStat>GeneralLaborSpeed</workSpeedStat><workSkill>Artistic</workSkill><unfinishedThingDef>UnfinishedSculpture</unfinishedThingDef><effectWorking>Sculpt</effectWorking><soundWor
+XML error: <products><RM_FossilDisplayMount>1</RM_FossilDisplayMount></products> doesn't correspond to any field in type RecipeMakerProperties. Context: <recipeMaker><workSpeedStat>GeneralLaborSpeed</workSpeedStat><workSkill>Artistic</workSkill><unfinishedThingDef>UnfinishedSculpture</unfinishedThingDef><effectWorking>Sculpt</effectWorking><soundWorking>Recipe_Sculpt</soundWorking><recipeUsers><li
+[Def Error]: RM_FossilDisplayMount
+Exception loading def from file RM_FactionDef_KurrethSwarm.xml: System.ArgumentNullException: Value cannot be null.
+    Parameter name: s
+    [Ref ACEF8EE] Duplicate stacktrace, see ref for original
+    XML error: <nutrition>0.05</nutrition> doesn't correspond to any field in type IngestibleProperties. Context: <ingestible><preferability>DesperateOnly</preferability><foodType>VegetableOrFruit</foodType><nutrition>0.05</nutrition></ingestible>
+    
+    Possible Matches:
+    [Source: RimMandrake: Baroque Biomes]
+    [File: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimMandrake.Biomes\Biomes\Webwork\Defs\ThingDefs_Plants\RM_WebworkFlora.xml]
+    [Source: RimMandrake: Baroque Biomes]
+    [File: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimMandrake.Biomes\Biomes\FeverWood\Defs\ThingDefs_Items\RM_SapSuckerGuildProducts.xml]
+    [Source: RimMandrake: Baroque Biomes]
+    [File: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimMandrake.Biomes\Biomes\FeverWood\Defs\ThingDefs_Plants\RM_FeverWoodFlora.xml]
+[Def Error]: RM_ThornbugNectar
+XML error: <nutrition>0.04</nutrition> doesn't correspond to any field in type IngestibleProperties. Context: <ingestible><preferability>DesperateOnly</preferability><foodType>VegetableOrFruit</foodType><nutrition>0.04</nutrition></ingestible>
+[Def Error]: RM_DrommathSap
+[Def Error]: RM_DrommathBurstSap
+[Def Error]: RM_OssagrelSap
+XML error: <butcherProducts><Steel>3</Steel></butcherProducts> doesn't correspond to any field in type RaceProperties. Context: <race><renderTree>Animal</renderTree><thinkTreeMain>Animal</thinkTreeMain><thinkTreeConstant>AnimalConstant</thinkTreeConstant><hasGenders>true</hasGenders><nameGenerator>NamerAnimalGenericMale</nameGenerator><nameGeneratorFemale>NamerAnimalGenericFemale</nameGeneratorFem
+[Def Error]: RM_Zisska
+XML error: <specialTrainables><li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li></specialTrainables> doesn't correspond to any field in type PawnKindDef. Context: <PawnKindDef ParentName="AnimalKindBase"><defName>RSW_TunnelSnake</defName><label>yanker</label><race>RSW_TunnelSnake</race><combatPower>190</combatPower><ecoSystemWeight>0.35</ecoSystemWeight><wildGroupSize>1</wildGroupSize><spe
+[Def Error]: RSW_TunnelSnake
+[Def Error]: PassableVacstone
+Could not resolve cross-reference: No Verse.SoundDef named Recipe_Butcher found to give to Verse.RecipeDef RM_ButcherGreatboleFruit (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Ingest_Vegetable found to give to RimWorld.IngestibleProperties RimWorld.IngestibleProperties (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Pawn_Insect_Ambient found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Warg_Eat found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Muffalo_Eat found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_SmallBite_HitPawn found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_SmallBite_HitBuilding found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Pawn_Melee_SmallBite_Miss found to give to Verse.RaceProperties Verse.RaceProperties (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Pawn_Dog_Wounded found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+Could not resolve cross-reference: No Verse.SoundDef named Pawn_Squirrel_Call found to give to Verse.LifeStageAge Verse.LifeStageAge (using undefined sound instead)
+Could not resolve cross-reference: No Verse.BodyPartGroupDef named HindlegsFrontClaws found to give to Verse.Tool kick
+Could not resolve cross-reference: No Verse.ThingDef named RM_Dorvel found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RM_Skelver found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RawVegetables found to give to RimWorld.PlantProperties RimWorld.PlantProperties
+Could not resolve cross-reference: No Verse.ThingDef named RM_Korveth found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RM_SumpMouse found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.ThingDef named RM_Brindeth found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RM_Brommet found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.ThingDef named RM_Soffeth found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RM_Dredgel found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.ThingDef named RM_Tolleth found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RM_Skarrid found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.ThingDef named RM_Velloch found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RM_Skellarn found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.ThingDef named RM_Mirrelin found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RM_Pallick found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.KeyBindingDef named Misc13 found to give to Verse.ThingDef RUT_DigShaft
+Could not resolve cross-reference: No Verse.BodyPartGroupDef named FrontLegs found to give to Verse.Tool front leg
+Could not resolve cross-reference: No Verse.TrainabilityDef named Simple found to give to Verse.RaceProperties Verse.RaceProperties
+Could not resolve cross-reference: No Verse.BodyDef named Rat found to give to Verse.RaceProperties Verse.RaceProperties
+Could not resolve cross-reference: No RimWorld.ThoughtDef named AteUltracactus found to give to RimWorld.IngestibleProperties RimWorld.IngestibleProperties
+Could not resolve cross-reference: No Verse.ThingDef named RM_GreatDevourerEggUnfertilized found to give to RimWorld.CompProperties_EggLayer RimWorld.CompProperties_EggLayer
+Could not resolve cross-reference: No Verse.ThingDef named RM_GreatDevourerEggFertilized found to give to RimWorld.CompProperties_EggLayer RimWorld.CompProperties_EggLayer
+Could not resolve cross-reference: No Verse.EffecterDef named Butcher found to give to Verse.RecipeDef RM_ButcherGreatboleFruit
+Could not resolve cross-reference: No Verse.ThingDef named RM_GreatboleFruitSteak4 found to give to Verse.ThingDefCountClass (1x null)
+Could not resolve cross-reference: No Verse.ThingDef named RM_RoyalRind1 found to give to Verse.ThingDefCountClass (1x null)
+Could not resolve cross-reference: No Verse.ThingDef named RM_GreatboleSeed1 found to give to Verse.ThingDefCountClass (1x null)
+Could not resolve cross-reference: No RimWorld.SkillDef named Tailoring found to give to Verse.RecipeMakerProperties Verse.RecipeMakerProperties
+Could not resolve cross-reference to Verse.ThingDef named TableTailor (wanter=recipeUsers)
+Could not resolve cross-reference: No RimWorld.SkillDef named Tailoring found to give to Verse.SkillRequirement null-skill-requirement
+Could not resolve cross-reference: No Verse.PawnKindDef named li found to give to RimWorld.PawnGenOption (null w=0.00 c=null)
+Could not resolve cross-reference to Verse.ThingDef named EmptyAICore (wanter=thingDefs)
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Sagecrust found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named RUT_Dewshrooms found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No RimWorld.StatDef named HungerRateMultiplier found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No Verse.ThingDef named RUT_DeadCreep found to give to RimMandrake.EnvironmentalHazards.RM_GenStep_EdgeBandFilth RimMandrake.EnvironmentalHazards.RM_GenStep_EdgeBandFilth
+Could not resolve cross-reference: No Verse.ThingDef named RUT_FoundrySalvageCache found to give to RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker
+Could not resolve cross-reference: No Verse.ThingDef named RUT_FoundryTowerEntrance found to give to RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker
+Could not resolve cross-reference: No Verse.TrainabilityDef named Minimal found to give to Verse.RaceProperties Verse.RaceProperties
+Could not resolve cross-reference: No Verse.BodyPartGroupDef named FrontLeftFoot found to give to Verse.Tool left forehoof
+Could not resolve cross-reference: No Verse.BodyPartGroupDef named FrontRightFoot found to give to Verse.Tool right forehoof
+Could not resolve cross-reference: No Verse.BodyPartGroupDef named FrontLeftFoot found to give to Verse.Tool forehoof
+Could not resolve cross-reference: No Verse.BodyPartGroupDef named FrontRightFoot found to give to Verse.Tool forehoof
+Could not resolve cross-reference: No Verse.ThingDef named RM_RadioactiveSuppressant5 found to give to Verse.ThingDefCountClass (1x null)
+Could not resolve cross-reference: No Verse.BodyPartGroupDef named Jaw found to give to Verse.Tool throat jaw
+Could not resolve cross-reference: No Verse.BodyPartGroupDef named Tail found to give to Verse.Tool tail stinger
+Could not resolve cross-reference: No Verse.ThingDef named RUT_TibannaGas found to give to RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas
+Config error in TargetedInsultingSpree: label contains illegal character(s): "[]{}". This can cause issues during grammar resolution. If this was intended, you can use the "ignoreIllegalLabelCharacterConfigError" flag.
+Config error in Utinni Shellmandrake.rut.menushell: defName Utinni Shellmandrake.rut.menushell should only contain letters, numbers, underscores, or dashes.
+Config error in Eclipse: world-targeting incident has a biome restriction list
+Config error in RUT_ComplexStructures: LandmarkDef RUT_ComplexStructures has no mutators with a chance of 1 or higher.
+Config error in RSW_ToxinDependence: needClass is null
+Exception in ConfigErrors() of RM_TheSump: System.NullReferenceException: Object reference not set to an instance of an object
+    [Ref 50CAEF97]
+      at RimWorld.BiomeDef+<ConfigErrors>d__109.MoveNext () [0x000ed] in <61e4173561894da49d210260257b5097>:0 
+      at Verse.DefDatabase`1[T].ErrorCheckAllDefs () [0x00065] in <61e4173561894da49d210260257b5097>:0 
+    
+    Possible Matches:
+    [Source: RimMandrake: Baroque Biomes]
+    [File: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimMandrake.Biomes\Biomes\TheSump\Defs\BiomeDefs\RM_TheSump_Biome.xml]
+    [Source: RimMandrake: Baroque Biomes]
+    [File: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimMandrake.Biomes\Biomes\TheSump\Defs\IncidentDefs\RUT_TarPitBelch.xml]
+    [Source: RimUtinni Patches (Jawa campaign)]
+    [File: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeArrivalLetters_TheSump.xml]
+Config error in SolarFlare: world-targeting incident has a biome restriction list
+Exception in ConfigErrors() of CannibalPirate: System.NullReferenceException: Object reference not set to an instance of an object
+    [Ref 35D201A7]
+      at Verse.Find.get_FactionManager () [0x00005] in <61e4173561894da49d210260257b5097>:0 
+      at Worldbuilder.IdeoUtility_IsMemeAllowedFor_Patch.Postfix (RimWorld.FactionDef faction, System.Boolean& __result) [0x00011] in <78e2a0b7c4cd464fafacf54dc8a1a418>:0 
+      at RimWorld.IdeoUtility.IsMemeAllowedFor (RimWorld.MemeDef meme, RimWorld.FactionDef faction) [0x0014c] in <61e4173561894da49d210260257b5097>:0 
+        - POSTFIX WorldbuilderMod: Void Worldbuilder.IdeoUtility_IsMemeAllowedFor_Patch:Postfix(FactionDef faction, Boolean& __result)
+      at RimWorld.FactionDef.<ConfigErrors>b__150_0 (RimWorld.MemeDef x) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+      at Verse.GenCollection.FirstOrDefault[T] (System.Collections.Generic.List`1[T] list, System.Predicate`1[T] predicate) [0x00011] in <61e4173561894da49d210260257b5097>:0 
+      at RimWorld.FactionDef+<ConfigErrors>d__150.MoveNext () [0x001b3] in <61e4173561894da49d210260257b5097>:0 
+      at Verse.DefDatabase`1[T].ErrorCheckAllDefs () [0x00065] in <61e4173561894da49d210260257b5097>:0 
+    
+    Possible Matches:
+Config error in RM_Dunes_Sand: depositFilthChance is set but depositFilthDef is null — no filth can be laid.
+Config error in AM_AncientLogisticsSystem: Hyperweave tradeability doesn't allow traders to sell this thing
+Config error in RUT_Slough_GelatinousBreach: LandmarkDef RUT_Slough_GelatinousBreach has no mutators with a chance of 1 or higher.
+Exception in ConfigErrors() of PirateYttakin: System.NullReferenceException: Object reference not set to an instance of an object
+    [Ref 35D201A7] Duplicate stacktrace, see ref for original
+    
+    Possible Matches:
+    [Source: Biotech]
+    [File: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Biotech\Defs\FactionDefs\Factions_Misc.xml]
+    [Source: Biotech]
+    [File: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Biotech\Defs\PawnKindDefs_Humanlikes\PawnKinds_Yttakin.xml]
+    [Source: Biotech]
+    [File: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Biotech\Defs\RulePackDefs\RulePacks_Namers_Faction.xml]
+    [Source: GravTide]
+    [File: C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3779600989\Defs\MaritimeOperations\Operations.xml]
+Config error in Aurora: world-targeting incident has a biome restriction list
+Config error in guy762_bowcaster_ceremonial: verb 2: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+Config error in guy762_hvyrepeater_massdriver: verb 1: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+Config error in guy762_lgtrepeater_onderon: verb 1: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+Config error in RUT_GaslightLamp: Refuelable component set to consume fuel per tick, but parent tickertype is Never instead of Normal
+Config error in RUT_BrineDeposit_Tekk: claimable item is compressible; faction will be unset after load
+Config error in RUT_BrineDeposit_Drazz: claimable item is compressible; faction will be unset after load
+Config error in RUT_BrineDeposit_BrinePlate: claimable item is compressible; faction will be unset after load
+Config error in RUT_Ashwallow: animal has trainability = null
+Config error in RUT_Radiothermal: has tool with linkedBodyPartsGroup FrontLeftLeg but body QuadrupedAnimalWithPawsAndTail has no parts with that group.
+Config error in RUT_Radiothermal: has tool with linkedBodyPartsGroup FrontRightLeg but body QuadrupedAnimalWithPawsAndTail has no parts with that group.
+Config error in ModernFixtures: same research view coords and tab as RR_Furniture: 0, 0(RUT_Tree_Hearth)
+Config error in AdvancedShowers: same research view coords and tab as VCE_StewCooking: 2, 0(RUT_Tree_Hearth)
+Config error in RR_Furniture: same research view coords and tab as ModernFixtures: 0, 0(RUT_Tree_Hearth)
+Config error in VCE_StewCooking: same research view coords and tab as AdvancedShowers: 2, 0(RUT_Tree_Hearth)
+Config error in RR_LateralThinking: researchViewX and/or researchViewY not set
+Config error in RR_Organization: researchViewX and/or researchViewY not set
+Config error in RM_TarShallow: RM_TarShallow makes terrain filth and also accepts it.
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+Config error in RM_Slime_Mud: RM_Slime_Mud makes terrain filth and also accepts it.
+Config error in RM_Slime_Liquid: RM_Slime_Liquid makes terrain filth and also accepts it.
+Config error in RM_SeaDiveHatch: impassable, player-buildable building that can be shot/seen over.
+Config error in RM_Kollavane: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Vessark: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Tavrosk: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Dulloth: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Brimlock: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Threllick: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Sellith: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Varrisk: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Kessaroth: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Norrveth: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Sorrivel: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Pellareth: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Ruddreth: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Fellome: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Grennick: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Brennoth: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_TavroskLiquor: Nutrition == 0 but preferability is DesperateOnly instead of NeverForNutrition
+Config error in RM_Ollathrix: has tool with linkedBodyPartsGroup Teeth but body BeetleLikeWithClaw has no parts with that group.
+Config error in RM_Quarrok: has tool with linkedBodyPartsGroup Teeth but body BeetleLikeWithClaw has no parts with that group.
+Config error in RM_Vennick: has tool with linkedBodyPartsGroup Teeth but body BeetleLike has no parts with that group.
+Config error in RM_Cravvet: has tool with linkedBodyPartsGroup Teeth but body TurtleLike has no parts with that group.
+Config error in RM_Scumgrass: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_TallScumgrass: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Cinderfelt: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Gravelgut: has tool with linkedBodyPartsGroup Teeth but body TurtleLike has no parts with that group.
+Config error in RM_Grimewing: has tool with linkedBodyPartsGroup Teeth but body Bird has no parts with that group.
+Config error in RM_Gripper: has tool with linkedBodyPartsGroup FrontLeftPaw but body BeetleLikeWithClaw has no parts with that group.
+Config error in RM_Gristleswarm: has tool with linkedBodyPartsGroup Teeth but body BeetleLike has no parts with that group.
+Config error in RM_SootGristleswarm: has tool with linkedBodyPartsGroup Teeth but body BeetleLike has no parts with that group.
+Config error in RM_Slagmole: has tool with linkedBodyPartsGroup FrontLeftPaw but body QuadrupedAnimalWithClawsTailAndJowl has no parts with that group.
+Config error in RM_Slagmole: has tool with linkedBodyPartsGroup FrontRightPaw but body QuadrupedAnimalWithClawsTailAndJowl has no parts with that group.
+Config error in RM_Smolderback: has tool with linkedBodyPartsGroup Teeth but body TurtleLike has no parts with that group.
+Config error in RM_FloatstoneGarden: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Julmox: animal has trainability = null
+Config error in RM_SlackwaxTimber: is equipment but has no verbs or tools
+Config error in RM_TarspoolStalk: CompRottable needs tickerType Rare or Normal, has Never
+Config error in RM_PitchpearlBeads: CompRottable needs tickerType Rare or Normal, has Never
+Config error in RM_PitchpearlBeads: ingestible preferability > DesperateOnlyForHumanlikes but socialPropernessMatters=false. This will cause bugs wherein wardens will look in prison cells for food to give to prisoners and so will repeatedly pick up and drop food inside the cell.
+Config error in RM_StonewaterIce: CompRottable needs tickerType Rare or Normal, has Never
+Config error in RM_StonewaterIce: ingestible preferability > DesperateOnlyForHumanlikes but socialPropernessMatters=false. This will cause bugs wherein wardens will look in prison cells for food to give to prisoners and so will repeatedly pick up and drop food inside the cell.
+Config error in RM_MeltedWater: ingestible preferability > DesperateOnlyForHumanlikes but socialPropernessMatters=false. This will cause bugs wherein wardens will look in prison cells for food to give to prisoners and so will repeatedly pick up and drop food inside the cell.
+Config error in RM_TetherChain: has a recipeMaker but no costList or costStuffCount.
+Config error in RM_VauliskLure: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Tarnn: Beauty stat base is defined, but Things of category Pawn cannot have beauty.
+Config error in RM_Nizzek: has tool with linkedBodyPartsGroup FrontLeftPaw but body Bird has no parts with that group.
+Config error in RM_Nizzek: has tool with linkedBodyPartsGroup FrontRightPaw but body Bird has no parts with that group.
+Config error in RM_DeltaSilt: CompRottable needs tickerType Rare or Normal, has Never
+Config error in RM_GreatDevourer: eggFertilizedDef is null
+Config error in RM_FrenzyDose: has duplicate thingCategory Drugs.
+Config error in RM_GreatboleFruit: CompRottable needs tickerType Rare or Normal, has Never
+Config error in RM_GreatboleFruitSteak: ingestible preferability > DesperateOnlyForHumanlikes but socialPropernessMatters=false. This will cause bugs wherein wardens will look in prison cells for food to give to prisoners and so will repeatedly pick up and drop food inside the cell.
+Config error in RM_BrakkelFruit: has duplicate thingCategory PlantFoodRaw.
+Config error in RM_TumbelGourd: has duplicate thingCategory PlantFoodRaw.
+Config error in RM_SarquinSap: has duplicate thingCategory PlantFoodRaw.
+Config error in RM_WollickTuber: has duplicate thingCategory PlantFoodRaw.
+Config error in RM_Krannock: has tool with linkedBodyPartsGroup Teeth but body BeetleLikeWithClaw has no parts with that group.
+Config error in RM_Tarruq: has tool with linkedBodyPartsGroup FrontLeftPaw but body Monkey has no parts with that group.
+Config error in RM_Tarruq: has tool with linkedBodyPartsGroup FrontRightPaw but body Monkey has no parts with that group.
+Config error in RM_ThornbugNectar: CompRottable needs tickerType Rare or Normal, has Never
+Config error in RM_ThornbugNectar: Nutrition == 0 but preferability is DesperateOnly instead of NeverForNutrition
+Config error in RM_DrommathSap: CompRottable needs tickerType Rare or Normal, has Never
+Config error in RM_DrommathSap: Nutrition == 0 but preferability is DesperateOnly instead of NeverForNutrition
+Config error in RM_DrommathBurstSap: CompRottable needs tickerType Rare or Normal, has Never
+Config error in RM_DrommathBurstSap: Nutrition == 0 but preferability is DesperateOnly instead of NeverForNutrition
+Config error in RM_SekkulaathCream: CompRottable needs tickerType Rare or Normal, has Never
+Config error in RM_SeveredTentacleFlesh: CompRottable needs tickerType Rare or Normal, has Never
+Config error in RM_Thulvane: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Skethral: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Varnoth: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Plennith: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Ossagrel: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_OssagrelSap: CompRottable needs tickerType Rare or Normal, has Never
+Config error in RM_OssagrelSap: Nutrition == 0 but preferability is DesperateOnly instead of NeverForNutrition
+Config error in RM_Cistrel: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Maulith: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Verrow: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Nubrith: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Halquin: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Ammeth: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Claithe: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Corvath: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Sodderel: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Seepril: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Skimmel: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Wanlith: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Tullick: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Kurreth: has tool with linkedBodyPartsGroup Teeth but body BeetleLikeWithClaw has no parts with that group.
+Config error in RM_KurrethQueen: has tool with linkedBodyPartsGroup Teeth but body BeetleLikeWithClaw has no parts with that group.
+Config error in RM_Meatvine: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Toothmoss: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Wombpod: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Eyebark: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Lashgrass: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Bleedleaf: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Gorestalk: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Rattlegrope: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Sapblister: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_BloodyFist: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_HalfmadeTree: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_HalfmadeTreeBlighted: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+Config error in RM_Sunbeam: is smeltable but does not give anything for smelting.
+Config error in RM_Blisterfloat: has tool with linkedBodyPartsGroup FrontLeftPaw but body Bird has no parts with that group.
+Config error in RM_Scorchpod: has tool with linkedBodyPartsGroup FrontLeftPaw but body TurtleLike has no parts with that group.
+Config error in RM_Bloodlurk: has tool with linkedBodyPartsGroup FrontLeftPaw but body QuadrupedAnimalWithClawsTailAndJowl has no parts with that group.
+Config error in RM_Bloodlurk: has tool with linkedBodyPartsGroup FrontRightPaw but body QuadrupedAnimalWithClawsTailAndJowl has no parts with that group.
+Config error in RM_Sparkleech: has tool with linkedBodyPartsGroup Teeth but body Bird has no parts with that group.
+Config error in RM_Scaldhide: has tool with linkedBodyPartsGroup Teeth but body TurtleLike has no parts with that group.
+Config error in RM_Shambles: has tool with linkedBodyPartsGroup FrontLeftPaw but body QuadrupedAnimalWithHoovesAndHump has no parts with that group.
+Config error in RM_Eyestinger: has tool with linkedBodyPartsGroup FrontLeftPaw but body QuadrupedAnimalWithClawsTailAndJowl has no parts with that group.
+Config error in RM_Skinflap: has tool with linkedBodyPartsGroup FrontLeftPaw but body Bird has no parts with that group.
+Config error in RM_Gorekite: has tool with linkedBodyPartsGroup FrontLeftPaw but body Bird has no parts with that group.
+Config error in RM_Zisska: animal has trainability = null
+Config error in RM_Eskith: animal has trainability = null
+Config error in RM_Vrisk: has tool with linkedBodyPartsGroup Teeth but body Bird has no parts with that group.
+Config error in RM_ShadeTent: madeFromStuff but has a defined constructEffect (which will always be overridden by stuff's construct animation).
+Config error in RM_SunShield: madeFromStuff but has a defined constructEffect (which will always be overridden by stuff's construct animation).
+Config error in RSW_Nizzek: has tool with linkedBodyPartsGroup FrontLeftPaw but body Bird has no parts with that group.
+Config error in RSW_Nizzek: has tool with linkedBodyPartsGroup FrontRightPaw but body Bird has no parts with that group.
+Config error in RSW_Orray: has tool with linkedBodyPartsGroup Teeth but body RSW_Orray has no parts with that group.
+Config error in Frame_RM_ShadeTent: madeFromStuff but has a defined constructEffect (which will always be overridden by stuff's construct animation).
+Config error in Frame_RM_SunShield: madeFromStuff but has a defined constructEffect (which will always be overridden by stuff's construct animation).
+Config error in Techprint_RR_lighting: description has trailing whitespace
+Could not execute post-long-event action. Exception: System.Collections.Generic.KeyNotFoundException: The given key '-1§Vanilla' was not present in the dictionary.
+    [Ref 1A206835]
+     [0x00010] in <51fded79cd284d4d911c5949aff4cb21>:0 
+     [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at VBE.ModCompat.LoadRimThemesImages () [0x002ae] in <93e469b1367b46ccbec8b054e26aae25>:0 
+      at VBE.VBEMod.Initialize () [0x00076] in <93e469b1367b46ccbec8b054e26aae25>:0 
+      at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 
+    [Biomes! Core v2.6.2.0] Initialized
+    <color=#FFA500FF>[Map Mode Framework]</color> Assembly for Geological Landforms loaded. Will load compatibility patches.
+    <color=#FFA500FF>[Map Mode Framework]</color> Assembly for ReGrowth 2 loaded. Will load compatibility patches.
+    <color=#FFA500FF>[Map Mode Framework]</color> Loading assemblies of patched mods done. Total assemblies loaded: 2
+Could not execute post-long-event action. Exception: System.ArgumentException: An item with the same key has already been added. Key: Sandstone
+    [Ref 85D06BBD]
+     [0x00006] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.Collections.Generic.Dictionary`2[TKey,TValue].TryInsert (TKey key, TValue value, System.Collections.Generic.InsertionBehavior behavior) [0x0015a] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.Collections.Generic.Dictionary`2[TKey,TValue].Add (TKey key, TValue value) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at Quarry.QuarryUtility.BuildStoneDict () [0x0018a] in <8d7acb6fb6354353aa653e574b599318>:0 
+      at Quarry.QuarryMod.BuildDictionary () [0x00023] in <8d7acb6fb6354353aa653e574b599318>:0 
+      at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 
+    startIndex: 63
+    endIndex: 75
+    Start: newobj System.Void System.Text.StringBuilder::.ctor()
+    End:callvirt virtual System.String System.Object::ToString() [Label14]
+Failed to find any textures at Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow while constructing Multi(initPath=Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery while constructing Multi(initPath=Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture while constructing Multi(initPath=Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_FleetFlier/RUT_FleetFlier while constructing Multi(initPath=Things/Pawn/Animal/RUT_FleetFlier/RUT_FleetFlier, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_Karrobel/RUT_Karrobel while constructing Multi(initPath=Things/Pawn/Animal/RUT_Karrobel/RUT_Karrobel, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_MortuaryCrawler/RUT_MortuaryCrawler while constructing Multi(initPath=Things/Pawn/Animal/RUT_MortuaryCrawler/RUT_MortuaryCrawler, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_VWake/RUT_VWake while constructing Multi(initPath=Things/Pawn/Animal/RUT_VWake/RUT_VWake, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_Radiothermal/RUT_Radiothermal while constructing Multi(initPath=Things/Pawn/Animal/RUT_Radiothermal/RUT_Radiothermal, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper while constructing Multi(initPath=Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_SlimeGrazer/RUT_SlimeGrazer while constructing Multi(initPath=Things/Pawn/Animal/RUT_SlimeGrazer/RUT_SlimeGrazer, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_Drazzik/RM_Drazzik while constructing Multi(initPath=Things/Pawn/Animal/RM_Drazzik/RM_Drazzik, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_Guzzka/RM_Guzzka while constructing Multi(initPath=Things/Pawn/Animal/RM_Guzzka/RM_Guzzka, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_MirrorGiant/RM_MirrorGiant while constructing Multi(initPath=Things/Pawn/Animal/RM_MirrorGiant/RM_MirrorGiant, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_Ruukka/RM_Ruukka while constructing Multi(initPath=Things/Pawn/Animal/RM_Ruukka/RM_Ruukka, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_Oorrik/RM_Oorrik while constructing Multi(initPath=Things/Pawn/Animal/RM_Oorrik/RM_Oorrik, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite while constructing Multi(initPath=Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_DustHusk/RM_DustHusk while constructing Multi(initPath=Things/Pawn/Animal/RM_DustHusk/RM_DustHusk, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_Vekka/RM_Vekka while constructing Multi(initPath=Things/Pawn/Animal/RM_Vekka/RM_Vekka, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_Vozzik/RM_Vozzik while constructing Multi(initPath=Things/Pawn/Animal/RM_Vozzik/RM_Vozzik, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_LivingBolt/RUT_LivingBolt while constructing Multi(initPath=Things/Pawn/Animal/RUT_LivingBolt/RUT_LivingBolt, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/Miasma/WardenMother/WardenMother while constructing Multi(initPath=Things/Pawn/Animal/Miasma/WardenMother/WardenMother, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer while constructing Multi(initPath=Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner while constructing Multi(initPath=Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_MatureFleshbeast/RM_MatureFleshbeast while constructing Multi(initPath=Things/Pawn/Animal/RM_MatureFleshbeast/RM_MatureFleshbeast, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Item/Apparel/Duster/Duster while constructing Multi(initPath=Things/Item/Apparel/Duster/Duster, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RM_Krannock/RM_Krannock while constructing Multi(initPath=Things/Pawn/Animal/RM_Krannock/RM_Krannock, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/Titanoslime/RM_Titanoslime while constructing Multi(initPath=Things/Pawn/Animal/Titanoslime/RM_Titanoslime, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Building/RM_ShadeGear/RM_SunShield while constructing Multi(initPath=Things/Building/RM_ShadeGear/RM_SunShield, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RSW_Ossik/RSW_Ossik while constructing Multi(initPath=Things/Pawn/Animal/RSW_Ossik/RSW_Ossik, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RSW_Kudda/RSW_Kudda while constructing Multi(initPath=Things/Pawn/Animal/RSW_Kudda/RSW_Kudda, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RSW_Ikee/RSW_Ikee while constructing Multi(initPath=Things/Pawn/Animal/RSW_Ikee/RSW_Ikee, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RSW_Thurra/RSW_Thurra while constructing Multi(initPath=Things/Pawn/Animal/RSW_Thurra/RSW_Thurra, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RSW_Vosska/RSW_Vosska while constructing Multi(initPath=Things/Pawn/Animal/RSW_Vosska/RSW_Vosska, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak while constructing Multi(initPath=Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RSW_Ommok/RSW_Ommok while constructing Multi(initPath=Things/Pawn/Animal/RSW_Ommok/RSW_Ommok, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RSW_Ulgga/RSW_Ulgga while constructing Multi(initPath=Things/Pawn/Animal/RSW_Ulgga/RSW_Ulgga, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik while constructing Multi(initPath=Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RSW_Zhakka/RSW_Zhakka while constructing Multi(initPath=Things/Pawn/Animal/RSW_Zhakka/RSW_Zhakka, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at swanimals/DesertPort/Zakkro/Zakkro while constructing Multi(initPath=swanimals/DesertPort/Zakkro/Zakkro, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_GreentideAnt/RUT_GreentideAnt while constructing Multi(initPath=Things/Pawn/Animal/RUT_GreentideAnt/RUT_GreentideAnt, color=RGBA(0.471, 0.431, 0.392, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Building/RM_ShadeGear/RM_SunShield while constructing Multi(initPath=Things/Building/RM_ShadeGear/RM_SunShield, color=RGBA(0.824, 0.922, 1.000, 0.600), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+System.ArgumentNullException: Value cannot be null.
+    Parameter name: key
+    [Ref 20F80A1E]
+     [0x00006] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.Collections.Generic.Dictionary`2[TKey,TValue].TryInsert (TKey key, TValue value, System.Collections.Generic.InsertionBehavior behavior) [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.Collections.Generic.Dictionary`2[TKey,TValue].Add (TKey key, TValue value) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at RimWorld.BiomeDef.CommonalityOfAnimal (Verse.PawnKindDef animalDef) [0x0003d] in <61e4173561894da49d210260257b5097>:0 
+      at RimWorld.BiomeDef+<get_AllWildAnimals>d__94.MoveNext () [0x00049] in <61e4173561894da49d210260257b5097>:0 
+      at GiddyUp.MountUtility.BuildAnimalBiomeCache () [0x00035] in /home/runner/work/GiddyUp2/GiddyUp2/mod/Source/Core/MountUtility.cs:51 
+    [Giddy-Up] An error occured calling AllWildAnimals. This may happen if a mod has malformed PawnKindDef when the game is trying to process the def database for the first time. Skipping...
+    System.ArgumentException: An item with the same key has already been added. Key: RSW_VentStalker
+    [Ref 3FE3C1A0]
+System.ArgumentException: An item with the same key has already been added. Key: RSW_VentStalker
+    [Ref 3FE3C1A0]
+     [0x00006] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.Collections.Generic.Dictionary`2[TKey,TValue].TryInsert (TKey key, TValue value, System.Collections.Generic.InsertionBehavior behavior) [0x0015a] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at System.Collections.Generic.Dictionary`2[TKey,TValue].Add (TKey key, TValue value) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+      at RimWorld.BiomeDef.CommonalityOfAnimal (Verse.PawnKindDef animalDef) [0x000b2] in <61e4173561894da49d210260257b5097>:0 
+      at RimWorld.BiomeDef+<get_AllWildAnimals>d__94.MoveNext () [0x00049] in <61e4173561894da49d210260257b5097>:0 
+      at GiddyUp.MountUtility.BuildAnimalBiomeCache () [0x00035] in /home/runner/work/GiddyUp2/GiddyUp2/mod/Source/Core/MountUtility.cs:51 
+    Failed to find any textures at Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow while constructing Multi(initPath=Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+    Failed to find any textures at Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow while constructing Multi(initPath=Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+    Failed to find any textures at Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery while constructing Multi(initPath=Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+    Failed to find any textures at Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery while constructing Multi(initPath=Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at Things/Pawn/Animal/RUT_GreentideAnt/RUT_GreentideAnt while constructing Multi(initPath=Things/Pawn/Animal/RUT_GreentideAnt/RUT_GreentideAnt, color=RGBA(0.314, 0.314, 0.314, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+System.Exception: Wrong null argument: brtrue NULL
+    [Ref A3C4372C]
+      at HarmonyLib.MethodCreatorTools+<>c__DisplayClass12_0.<EmitCodes>b__0 (HarmonyLib.CodeInstruction codeInstruction) [0x00155] in <024a0e6ec8c2437ead047b6279389c23>:0 
+      at HarmonyLib.CollectionExtensions.Do[T] (System.Collections.Generic.IEnumerable`1[T] sequence, System.Action`1[T] action) [0x00014] in <024a0e6ec8c2437ead047b6279389c23>:0 
+      at HarmonyLib.MethodCreatorTools.EmitCodes (HarmonyLib.MethodCreator _, HarmonyLib.Emitter emitter, System.Collections.Generic.List`1[T] codeInstructions) [0x0000d] in <024a0e6ec8c2437ead047b6279389c23>:0 
+      at HarmonyLib.MethodCreator.CreateReplacement () [0x008ca] in <024a0e6ec8c2437ead047b6279389c23>:0 
+      at HarmonyLib.PatchFunctions.UpdateWrapper (System.Reflection.MethodBase original, HarmonyLib.PatchInfo patchInfo) [0x0007c] in <024a0e6ec8c2437ead047b6279389c23>:0 
+      at HarmonyLib.PatchProcessor.Patch () [0x0013c] in <024a0e6ec8c2437ead047b6279389c23>:0 
+      at HarmonyLib.Harmony.Patch (System.Reflection.MethodBase original, HarmonyLib.HarmonyMethod prefix, HarmonyLib.HarmonyMethod postfix, HarmonyLib.HarmonyMethod transpiler, HarmonyLib.HarmonyMethod finalizer) [0x0002a] in <024a0e6ec8c2437ead047b6279389c23>:0 
+      at AlienRace.AlienHarmony.Patch (System.Reflection.MethodBase original, HarmonyLib.HarmonyMethod prefix, HarmonyLib.HarmonyMethod postfix, HarmonyLib.HarmonyMethod transpiler, HarmonyLib.HarmonyMethod finalizer) [0x000ab] in C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\AlienRaces\So
+    Alien race successfully completed 278 patches (50 pre, 81 post, 147 trans) with harmony.
+    [LoadTracer] ctor 1282/1569: AlienRace.RaceSettings [AlienRace]
+Error in static constructor of JumppackForMeleeAI.JumppackForMeleeAI: System.TypeInitializationException: The type initializer for 'JumppackForMeleeAI.JumppackForMeleeAI' threw an exception. ---> HarmonyLib.HarmonyException: Patching exception in method virtual Verse.AI.Job RimWorld.JobGiver_AIFightEnemy::TryGiveJob(Verse.Pawn pawn) ---> System.InvalidProgramException: Invalid IL code in (wrapper 
+    
+    
+    [Ref 1548B61A]
+      at HarmonyLib.PatchFunctions.UpdateWrapper (System.Reflection.MethodBase original, HarmonyLib.PatchInfo patchInfo) [0x000c2] in <024a0e6ec8c2437ead047b6279389c23>:0 
+      at HarmonyLib.PatchClassProcessor.ProcessPatchJob (HarmonyLib.PatchJobs`1+Job[T] job) [0x000f8] in <024a0e6ec8c2437ead047b6279389c23>:0 
+       --- End of inner exception stack trace ---
+    [Ref B334752]
+      at HarmonyLib.PatchClassProcessor.ReportException (System.Exception exception, System.Reflection.MethodBase original) [0x0013c] in <024a0e6ec8c2437ead047b6279389c23>:0 
+      at HarmonyLib.PatchClassProcessor.Patch () [0x00096] in <024a0e6ec8c2437ead047b6279389c23>:0 
+    JumppackForMeleeAI.JumppackForMeleeAI..cctor()
+       --- End of inner exception stack trace ---
