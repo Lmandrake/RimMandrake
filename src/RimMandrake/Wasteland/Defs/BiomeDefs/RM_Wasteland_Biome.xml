@@ -121,7 +121,7 @@
       <SnowGentle>1.5</SnowGentle>
       <SnowHard>1</SnowHard>
       <GrayPall MayRequire="Ludeon.RimWorld.Anomaly">1</GrayPall>
-      <ToxRain MayRequire="Ludeon.RimWorld.Biotech">4</ToxRain>
+      <ToxRain MayRequire="Ludeon.RimWorld.Biotech">0</ToxRain>  <!-- owner 2026-09-30 by question card: no rain of any kind here, toxic included -->
       <Rain>0</Rain>
       <RainyThunderstorm>0</RainyThunderstorm>
       <!-- WASTELAND_MECHANICS_BUILD_1 §4 (wasteland.md §4b): ash storms and
