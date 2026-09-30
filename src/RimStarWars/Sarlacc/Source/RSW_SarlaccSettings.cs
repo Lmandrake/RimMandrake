@@ -43,6 +43,11 @@ namespace RimMandrake.StarWars.Sarlacc
         /// water terrain around a breached cistern. See MapComponent_SarlaccBreachFlood.</summary>
         public static bool breachFloodVisualEnabled = true;
 
+        /// <summary>LONGSHADE_BEDAZZLE_MECHANICS_1 part 3 (tranche 1): every swallow leaves a
+        /// readable sign — a disturbed patch of sand where the prey went under, and a
+        /// message naming what was taken (vanilla already messages for the player's own).</summary>
+        public static bool takeSignsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -53,6 +58,7 @@ namespace RimMandrake.StarWars.Sarlacc
             Scribe_Values.Look(ref changedReturnHediffsEnabled, "changedReturnHediffsEnabled", true);
             Scribe_Values.Look(ref secondHediffChance, "secondHediffChance", 0.2f);
             Scribe_Values.Look(ref breachFloodVisualEnabled, "breachFloodVisualEnabled", true);
+            Scribe_Values.Look(ref takeSignsEnabled, "takeSignsEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -77,6 +83,13 @@ namespace RimMandrake.StarWars.Sarlacc
             list.CheckboxLabeled("Anchored sarlaccs strike", ref anchoredTitheEnabled,
                 "An anchored sarlacc rarely strikes whatever stands beside its mouth. Off: it is "
               + "inert scenery.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Swallows leave a sign", ref takeSignsEnabled,
+                "When a swimmer swallows anything, the sand where it went under is left churned "
+              + "and a message names what was taken, so nothing on the map simply vanishes. Off: "
+              + "only your own colonists' and animals' swallows are announced (the base game's "
+              + "own message), and wild prey goes under without a trace until it is spat out.");
             list.GapLine();
 
             list.Label("Changed on return");
