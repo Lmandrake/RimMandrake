@@ -658,7 +658,7 @@ into its skeleton after N days. The unplaced **`RSW_KraytGraveyard`** mutator is
 loose skulls to one real krayt skeleton plus its scatter, and its `biomeWhitelist` names vanilla
 `ExtremeDesert`, so it is also re-pointed at `RM_Stillsand`. **Build:** **XML** plus a **small
 C#** corpse-to-skeleton comp and genstep; the art bill is one skeleton set per giant.
-**Tier:** RM skeletons (oommok, muurrok, guzzka, war-free generic giants); RSW skeletons (krayt,
+**Tier:** RM skeletons (oommok, muurrok, guzzka, vozzik); RSW skeletons (krayt,
 greater krayt, war wyrm). **Admission test:** **giant** and **a line**, and never more than two.
 
 ### 3.2 The tracks: the sand remembers, until the wind decides it doesn't
@@ -704,8 +704,75 @@ hook in the engine's deposit step. **Tier:** RM (crawler tread is RSW flavour). 
 
 ## 4. More ideas
 
-pending
+Every idea is checked against the other biomes' packages. None of these is used elsewhere:
+
+- **Long Shade:** dash law, golden hour, mirrak, swimmer's road, Crawler Road, Long Carry / gap
+  graves, heliograph farm, gnomon line;
+- **Leaning Scrub:** wind calendar, moisture farming;
+- **Blue Desert:** silence-then-boom;
+- **Cracked Lands:** survey, water-wake sleepers;
+- **Cauldron:** fluid conversion;
+- **Forge:** giant-on-the-clock.
+
+Each idea has a pitch, a build size and a tier. None puts a resident on the surface.
+
+| # | idea | pitch | build | tier |
+|---|---|---|---|---|
+| 1 | ⭐ **Droids are invisible to the food web** | deep_desert §4's *"campaign-defining consequence"*, made real: sand swimmers never strike a pawn with no water in it (mechanoids, droids). A Jawa clan that fields droids can fish, haul and cross ground nothing alive can cross. The gale's static (#8) is their one weather | small C# (a target filter in the sand-swim kit) | RM filter; SW droids ride it |
+| 2 | ⭐ **The water appraisal: travel thirsty** | swimmers and the muurrok pick the **wettest** body (hydration × body size). A well-watered caravan draws strikes and a lean one slips through. Water cools you (§2.7), and water makes you prey. It is the biome's cruellest arithmetic | small C# (appraisal weight in the kit; reads DBH thirst if live, else body size + carried water items) | RM |
+| 3 | ⭐ **The mirage** | on a high-sun tile the far edge of the map shimmers with **water that is not there**. A heat-struck pawn can break into *"chasing the water"*: it walks toward the mirage until rescued or collapsed. The heat-shimmer also cuts long-range accuracy in full sun | small C# (a MentalStateDef + a GameCondition + an edge overlay) | RM |
+| 4 | **Glare-blind, and sun goggles** | the sand's glare (§2.7) blinds as it bakes. Unprotected eyes in full glare slowly take a **sight** debuff. The lens chain's **sun goggles** (biosilica or sun-glass; the Tusken eye-piece look) cure it. A tiny item with an iconic silhouette | XML + small C# (a hediff from glare exposure) | RM; Tusken-look apparel RSW |
+| 5 | **Fulgurites** | the Stillsand's one dry thunderstorm fuses sand where lightning strikes: glassy root-shaped **fulgurite** tubes lie at each strike point. They are free lens-chain glass, a sign of where the sky hit, and a reason to walk out after a storm | small C# (a strike hook on sand spawns the item) | RM |
+| 6 | **The ground opens (sinkholes)** | glasscrust can roof a void. A breach, an eruption or a gale collapses it and a **pocket cave** opens in open sand, a precious cave with no rock (§2.6). Sometimes it opens under a building | small C# (a collapse event + a small cave genstep) | RM |
+| 7 | **Dust devils** | a single spinning column wanders across the flat: a moving vertical line. It lifts light items, scours sand off a cache for a moment, scatters stockpiles, and spooks animals. It is rare and brief, and it announces itself on the hiss | small-medium C# (a moving Thing with flecks and a scour radius) | RM |
+| 8 | **Gale static** | the dune gale's dust carries charge: sparks on metal, brief EMP-style stuns on turrets and droids, and comms letters garbled. It balances #1, because the droid's road closes in the storm | small C# (a GameCondition worker) | RM |
+| 9 | **The thumper (the ground-caller)** | our own sand hammer (not the Workshop mod's code): a staked drum that **draws swimmers to it**. Bait a krayt away from your walls, or call one to hunt it for its pearl. It is also the Long Hunger's owed v2 summon (accumulated vibration) and the drazzik's lie, made by hand | small C# (a comp that emits vibration and calls wakes) | RM thumper; RUT Groundcaller v2 |
+| 10 | **The krayt horn** | Obi-Wan's call: routs lesser predators and tribal raiders, and risks summoning the real thing (§2.5). It is the Tatooine tool everyone knows | small | RSW |
+| 11 | **The wringing still** | the solar still's grimmest input: **the dead**. A corpse in the still gives water. Outsiders are sickened (mood); Sun-Debt colonists call it *drawing*, and it is logged on the Debt (§2.3). It is how the desert has always drunk | XML (recipe + thoughts) on §2.4's still | RM still; Sun-Debt thoughts Utinni |
+| 12 | **The sun lance** | a lens-chain turret: a heliostat mirror array that focuses the fixed sun on one target. It heats, never ignites (no-fire ban), and it is useless in the gale or in shade. It is Archimedes' mirror in a biome where the sun never sets. ⚠️ Kept distinct from the Long Shade's heliograph: that one talks and this one burns | medium C# (a custom verb scaled by elevation) | RM |
+| 13 | **The glass sea, native** | the unplaced `RUT_GlassSea` mutator (*"fused sand, mirror-flat… Solar output soars; so does exposure"*) becomes a Stillsand landmark tile: a quarry of ready sun-glass and the worst glare on the planet. It is a line on the world map | XML (whitelist and placement at the painting pass) | Utinni mutator; RM glass |
+| 14 | **The dunes take the ship** (review #2, still unruled) | a landed gravship is the biggest windbreak for a thousand km. The dunes engine banks sand up the hull, and the landing thump is the loudest drum on the map (raising eruption and krayt odds). The ship becomes part of the buried record unless you dig it out | small C# on the engine + incident weights | RM |
+| 15 | **Singing dunes as an early warning** | booming (§2.1 layer 3) is only triggered by moving slip faces, so **a dune singing near your base means that dune is marching on you**. The creep of the dunes engine gets a voice before it gets your wall | rides §2.1's hook | RM |
+| 16 | **The mummified caravan** | the buried record's signature find: a whole caravan, pack beasts and riders, desiccated, standing where the dune took it, revealed by a gale. Its packs are intact, and its water skins are the most valuable thing in it. ⚠️ Distinct from the Long Shade's gap graves (a lone fallen traveller that points to a gnomon): this is a mass burial the wind returns, and it points nowhere | XML set piece in the gale's emergence table | RM |
 
 ## 5. Recommended package, ranked
 
-pending
+The spine: **the sand swims, the sky is fixed, the big things come as events, and the rock holds
+the treasure.** The ranking puts what the owner ruled first, and within that, what makes other
+things possible. The review's unbuilt debt is folded in where it belongs, not left as a separate
+list.
+
+| rank | package | what's in it | build | why here |
+|---|---|---|---|---|
+| **0** | **Presentation-and-debt wave** (no ruling needed) | wire the six finished render sets (oommok, siidda, shade mite, ruukka, oorrik, mound); build the nine ruled fill-out defs (soorrak, gaanok, liikka, duumma, veessa, loomma, hourbloom, kneel ollim, glasscrust); file vaalok; move the qorrax inline; eemmok rename or rule "shade mite"; the "drageye" card | XML + art wiring | the biome's face is magenta today; every idea below lands on this cast |
+| **1** | **The sand-swim kit + the Listening** (ruled) | `RM_CompSandSwim` (submerge, wake, rumble, breach, signs) on vekka, qorrax, drazzik, duumma, stalker, sarlacc swimmer; the sound bed (hiss, saltation, singing dunes, bone harps); **sand fishing wired into `RM_Stillsand`** (+ crawler/pearl tier move to `RM_`); the geophone; piinnok if admitted | medium C# + XML | *"The sand swimmer mod is. Major player here."* Everything else uses the swim: the krayt, the muurrok, droids, appraisal |
+| **2** | **Heat and sun from latitude** (ruled) | `RM_PinnedSunExtension` on `RM_Stillsand` from the tile's arc; clamp raised to about 85°; kind-from-elevation; sin(elev) irradiance; **sand glare** floor; heatOffset 55; the cooling-draught hediff; the dunes-engine wind locked to the substellar bearing | XML + four small C# additions | cheap, ruled twice (sun angle, overheating); fixes the sheet's broken first ban; gives solar 100% uptime for free |
+| **3** | **Krayt attacks and the event ladder** (ruled) | krayts (and war wyrm) to incident-only; the krayt attack; the **muurrok** (RM, the free tier's leviathan); the sarlacc-roots incident; the Debt-weighted odds; the krayt horn; the Long Hunger live-fired and its Groundcaller v2 as the thumper | small C# each on the kit | *"Attacks by the mighty krayt dragon. And others."* Needs rank 1's swim |
+| **4** | **The rare rock and its precious cave** (ruled) | the rock genstep (shade-face mouth, yardang grain); the precious table; **`STILLSAND_CAVERN_AUTHORING_1` gets its item file** and its placement; **the guzzka finally spawns**; the greater-krayt den quest; sinkhole caves | small–medium C# + XML + the cavern item's own scope | clears the biggest wired-nowhere debt (the guzzka), and it is the heat's real counter (rank 2) |
+| **5** | **The dune gale** (ruled) | WeatherDef/condition; ×20 transport through the engine's own per-weather override; sun-off; abrasion; carry with signs; one emergence; seeding; gale static | medium (several small C#) | the dunes engine's showcase, and it doubles as the engine's owed live test (`MOVING_DUNES_BUILD_1` run sheet, shader gate) |
+| **6** | **Sand → glass → lens** (ruled) | sieve, sun furnace, sun glass (one stuff, waiting on `DESIGN_MATERIALS_REVIEW_1`), lens bench, pearl/krayt lenses, **solar still**, **solar oven**, goggles; the **ship lens array** row for `BIOME_SHIP_CONTRIBUTIONS_1` | mostly XML + small C# | answers the tech MISS and the ship MISS in one chain; biosilica finally has a use |
+| **7** | **Skeletons and tracks** (ruled by *"Huge skeletons on the sand"*) | skeleton buildings (0–2 per map) with bone harps; corpse-to-skeleton over a season; the krayt graveyard re-pointed at `RM_Stillsand`; track filths erased by the engine; horizon warnings | XML + small C# + a skeleton art set per giant | the poster image; it rides ranks 1, 3 and 5 for its content |
+| **8** | **The Return** (ruled) | the Sun-Debt ritual at a debt stone; the Debt counter weighting ranks 3 and 5; bloom-on-pour (RM) | XML + small C# | needs the still (6) and the event ladder (3) for its ledger to mean anything |
+| **9** | **The next slate, for the owner to pick from §4** | recommended first: droids invisible (#1), the water appraisal (#2), the mirage (#3), fulgurites (#5), the thumper (#9) | small each | the five that most change how you *play* the empty map |
+
+**What the package does to the scorecard (review §4):**
+
+| mark | before | after |
+|---|---|---|
+| 2 tech | MISS | the lens chain (6) + the geophone (1) |
+| 6 ship | MISS | the lens array (6); the dunes take the ship (§4 #14, if ruled) |
+| 7 sound | MISS | the Listening (1) |
+| 8 weather | MISS | the dune gale (5) + the fixed sky (2) |
+| 9 gods | PARTIAL | the Return (8) |
+| 5 giant | caveat | the event ladder (3) + skeletons (7) |
+
+The result is **nine marks hit**. Not one rank adds a visible resident to the surface. Everything
+is under the sand, inside the rock, in the sky, or arrives, acts, and leaves a skeleton.
+
+**Cards this doc raises for the owner (each one word):**
+
+1. Krayts and war wyrm → incident-only here?
+2. Heat kind follows the sun angle (a roof counts under a high sun)?
+3. Drift-shovelling yields glass sand (reverses "dig vanishes")? *Recommend: no.*
+4. The muurrok as the free tier's leviathan?
+5. Admit the piinnok as the Listening's living geophone?
