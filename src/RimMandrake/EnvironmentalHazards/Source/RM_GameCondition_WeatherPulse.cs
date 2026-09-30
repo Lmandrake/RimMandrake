@@ -31,6 +31,44 @@ namespace RimMandrake.EnvironmentalHazards
         private int burstWeatherEndTick;
         private int ticksUntilScaldDamage;
 
+        // FORGE_CYCLE_MECHANICS_1: read-only state + seams for a subclass
+        // that drives the pulse as part of a longer cycle (TheForge's
+        // RM_GameCondition_ForgeCycle). Default behaviour is unchanged: a
+        // plain RM_GameCondition_WeatherPulse rolls its MTB bursts exactly
+        // as before.
+        public bool InBurst => inBurst;
+
+        public int BurstEndTick => burstWeatherEndTick;
+
+        protected WeatherPulseExtension PulseExtension => ExtensionInt;
+
+        /// <summary>Whether the random MTB burst roll may run this tick.
+        /// A cycle subclass narrows it to its own quiet phase.</summary>
+        protected virtual bool AllowRandomBurstNow()
+        {
+            return true;
+        }
+
+        /// <summary>Weather to force while NOT bursting. Null keeps the
+        /// extension's baseWeather.</summary>
+        protected virtual WeatherDef NonBurstWeatherOverride()
+        {
+            return null;
+        }
+
+        /// <summary>Start (or restart) a burst of an exact length instead
+        /// of a rolled one. Runs the same flash-window start as a rolled
+        /// burst.</summary>
+        public void ForceBurst(int durationTicks)
+        {
+            WeatherPulseExtension ext = ExtensionInt;
+            if (ext == null || ext.burstWeather == null)
+            {
+                return;
+            }
+            StartBurst(ext, durationTicks);
+        }
+
         private WeatherPulseExtension ExtensionInt
         {
             get { return def != null ? def.GetModExtension<WeatherPulseExtension>() : null; }
@@ -93,18 +131,26 @@ namespace RimMandrake.EnvironmentalHazards
                 return; // mod option: never start a new burst while off (see StartBurst's own note)
             }
 
-            if (Rand.MTBEventOccurs(ext.burstMtbHours, TicksPerHour, 1f))
+            if (AllowRandomBurstNow() && Rand.MTBEventOccurs(ext.burstMtbHours, TicksPerHour, 1f))
             {
-                StartBurst(ext);
+                StartBurst(ext, -1);
             }
         }
 
-        private void StartBurst(WeatherPulseExtension ext)
+        private void StartBurst(WeatherPulseExtension ext, int forcedTicks)
         {
             inBurst = true;
             int nowTick = Find.TickManager.TicksGame;
-            int burstMinutes = ext.burstDurationMinutesRange.RandomInRange;
-            int burstTicks = Mathf.Max(1, Mathf.RoundToInt(burstMinutes * (TicksPerHour / 60f)));
+            int burstTicks;
+            if (forcedTicks > 0)
+            {
+                burstTicks = forcedTicks;
+            }
+            else
+            {
+                int burstMinutes = ext.burstDurationMinutesRange.RandomInRange;
+                burstTicks = Mathf.Max(1, Mathf.RoundToInt(burstMinutes * (TicksPerHour / 60f)));
+            }
             burstWeatherEndTick = nowTick + burstTicks;
             ticksUntilScaldDamage = ext.scaldDamageIntervalTicks;
 
@@ -218,7 +264,11 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 return null;
             }
-            return inBurst && ext.burstWeather != null ? ext.burstWeather : ext.baseWeather;
+            if (inBurst && ext.burstWeather != null)
+            {
+                return ext.burstWeather;
+            }
+            return NonBurstWeatherOverride() ?? ext.baseWeather;
         }
 
         public override void ExposeData()
