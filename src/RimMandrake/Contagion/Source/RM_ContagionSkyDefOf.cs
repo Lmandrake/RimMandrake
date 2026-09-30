@@ -10,6 +10,7 @@ namespace RimMandrake.Contagion
         public static WeatherDef RM_ContagionBloom;
         public static WeatherDef RM_ContagionBurn;
         public static GameConditionDef RM_ContagionBurnCondition;
+        public static GameConditionDef RM_RepulsorClearSky;
         public static HediffDef RM_BurnDose;
 
         static RM_ContagionSkyDefOf()

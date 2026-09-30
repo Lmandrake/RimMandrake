@@ -42,6 +42,12 @@ namespace RimMandrake.Contagion
         // Multiplier on the Burn's damage to natives and dose to visitors.
         public static float burnDamageFactor = 1f;
 
+        // CONTAGION_MECHANICS_BUILD_1 Parts 3/4 — the Helix devices.
+        // Repulsor off: the device is inert furniture (no warmup, no effect).
+        public static bool cloudRepulsorEnabled = true;
+        // Sunbeam damage multiplier against Contagion natives (1 = no bonus).
+        public static float sunbeamNativeFactor = 6f;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -52,6 +58,8 @@ namespace RimMandrake.Contagion
             Scribe_Values.Look(ref burnTellsEnabled, "burnTellsEnabled", true, true);
             Scribe_Values.Look(ref burnFrequency, "burnFrequency", 1f, true);
             Scribe_Values.Look(ref burnDamageFactor, "burnDamageFactor", 1f, true);
+            Scribe_Values.Look(ref cloudRepulsorEnabled, "cloudRepulsorEnabled", true, true);
+            Scribe_Values.Look(ref sunbeamNativeFactor, "sunbeamNativeFactor", 6f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -100,6 +108,16 @@ namespace RimMandrake.Contagion
             burnFrequency = list.Slider(burnFrequency, 0.1f, 4f);
             list.Label("Burn damage: " + burnDamageFactor.ToString("0.00") + "x (0 = weather only, no harm)");
             burnDamageFactor = list.Slider(burnDamageFactor, 0f, 3f);
+
+            list.GapLine();
+            list.CheckboxLabeled(
+                "Cloud Repulsor enabled",
+                ref cloudRepulsorEnabled,
+                "The Helix device: once warmed up and powered it forces the Burn on a "
+                + "Contagion map (its harm still follows the Burn settings above), and holds "
+                + "the sky clear of rain and fog anywhere else. Off: the device does nothing.");
+            list.Label("Sunbeam vs Contagion natives: " + sunbeamNativeFactor.ToString("0.0") + "x (1 = no bonus)");
+            sunbeamNativeFactor = list.Slider(sunbeamNativeFactor, 1f, 12f);
 
             list.End();
         }
