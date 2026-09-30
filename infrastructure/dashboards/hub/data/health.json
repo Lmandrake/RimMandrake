@@ -1,28 +1,28 @@
 {
- "generatedAt": "2026-09-27T18:45:00Z",
+ "generatedAt": "2026-09-30T01:35:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 917801,
-  "sha256_12": "7ba5172f9e96"
+  "bytes": 956078,
+  "sha256_12": "b29ad0b54af5"
  },
- "head": "4124f049e",
+ "head": "ccdfb81ef",
  "counts": {
-  "red": 27,
-  "blue": 1632,
+  "red": 22,
+  "blue": 1625,
   "green": 1836,
-  "grey": 571,
+  "grey": 722,
   "unmeasured": 0,
-  "total": 4066
+  "total": 4205
  },
  "loc": {
-  "red": 6792,
-  "blue": 519022,
-  "green": 399907,
-  "grey": 257401,
+  "red": 4510,
+  "blue": 516309,
+  "green": 400373,
+  "grey": 288480,
   "unmeasured": 0,
-  "total": 1183122
+  "total": 1209672
  },
- "reviewEntries": 3829,
+ "reviewEntries": 3911,
  "recidivists": [
   {
    "path": "src/RimUtinni/Doctrine/About/About.xml",
@@ -35,8 +35,23 @@
    "cycles": 4
   },
   {
+   "path": "src/RimStarWars/Armoury/Patches/Armour_Leather.xml",
+   "loc": 3095,
+   "cycles": 4
+  },
+  {
    "path": "src/RimMandrake/Utils/artpipe/common.py",
    "loc": 460,
+   "cycles": 4
+  },
+  {
+   "path": "src/RimMandrake/EnvironmentalHazards/About/About.xml",
+   "loc": 85,
+   "cycles": 4
+  },
+  {
+   "path": "src/RimUtinni/PyrelandsMechanics/About/About.xml",
+   "loc": 35,
    "cycles": 4
   },
   {
@@ -45,37 +60,22 @@
    "cycles": 3
   },
   {
-   "path": "src/RimUtinni/ShokkweaveEconomy/About/About.xml",
-   "loc": 68,
+   "path": "src/RimMandrake/Utils/install_wt_seat_profiles.py",
+   "loc": 378,
    "cycles": 3
   },
   {
-   "path": "src/RimUtinni/StructureInjectionsRUT/Source/WarLab/WarLabCraterMutation.cs",
-   "loc": 129,
-   "cycles": 2
+   "path": "src/RimMandrake/Greentide/About/About.xml",
+   "loc": 133,
+   "cycles": 3
   },
   {
-   "path": "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_SandSwimmer_Items.xml",
-   "loc": 84,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimStarWars/JawaRules/Source/JawaRules.csproj",
-   "loc": 77,
-   "cycles": 2
-  },
-  {
-   "path": "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Sando.xml",
-   "loc": 454,
-   "cycles": 1
-  },
-  {
-   "path": "src/RimMandrake/Utils/artpipe/mock_codex_worker.py",
-   "loc": 401,
-   "cycles": 1
+   "path": "src/RimMandrake/ShipVermin/About/About.xml",
+   "loc": 96,
+   "cycles": 3
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 4066 files (1836 clean, 571 dirty, 0 unmeasured)."
+ "headline": "OK: measured 4205 files (1836 clean, 722 dirty, 0 unmeasured)."
 }
