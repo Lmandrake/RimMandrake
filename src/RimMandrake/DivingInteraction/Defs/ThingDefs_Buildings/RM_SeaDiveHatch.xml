@@ -45,6 +45,12 @@
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <fillPercent>0.5</fillPercent>
     <passability>Impassable</passability>
+    <!-- A sealed portal, not a wall: impassable on foot by design (entry is
+         via the MapPortal interaction, not walking through), and fillPercent
+         0.5 is a deliberate half-height render, not a defect — the exact
+         case ThingDef's own disableImpassableShotOverConfigError flag exists
+         to silence (Verse/ThingDef.cs ConfigErrors). -->
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
     <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
     <costList>
       <Steel>150</Steel>
