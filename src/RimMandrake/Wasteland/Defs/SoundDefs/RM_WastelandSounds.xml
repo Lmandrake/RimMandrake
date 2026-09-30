@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WASTELAND_GPT_ENRICHMENT_1 — SoundDefs for the named storms (§1) and the Middenshell
+  Procession (§2). No new audio: every grain is a vanilla clip path, verified against
+  the decompiled 1.6 SoundDefs it is borrowed from (Tick_Tiny -> UI/TickTiny,
+  EmpDisabled -> Misc/EMPDisabled, SpacedroneIdle_Ambience ->
+  Ambience/Spacedrone_Ambience_Loop_01a, UndercaveRumble ->
+  Ambience/Undercave/Collapsing/Rumble). Pitch and volume make them ours.
+-->
+<Defs>
+
+  <!-- Deadlight halo: the dosimeter click, repeated faster and faster. -->
+  <SoundDef>
+    <defName>RM_Storm_DosimeterClick</defName>
+    <maxSimultaneous>2</maxSimultaneous>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>UI/TickTiny</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>14~22</volumeRange>
+        <pitchRange>1.6~2.3</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- Cinderwire warning: crawling static. -->
+  <SoundDef>
+    <defName>RM_Storm_CinderwireCrackle</defName>
+    <maxSimultaneous>2</maxSimultaneous>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Misc/EMPDisabled</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>8~14</volumeRange>
+        <pitchRange>0.7~1.2</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- Cinderwire warning: the deep electrical whine (sustainer, warning phase only). -->
+  <SoundDef>
+    <defName>RM_Storm_CinderwireWhine</defName>
+    <sustain>True</sustain>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Ambience/Spacedrone_Ambience_Loop_01a</clipPath>
+          </li>
+        </grains>
+        <volumeRange>16</volumeRange>
+        <pitchRange>0.45~0.5</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- Middenshell Procession omen: the crust trembling, hours before it arrives. -->
+  <SoundDef>
+    <defName>RM_Middenshell_Tremor</defName>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Ambience/Undercave/Collapsing/Rumble</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>14~22</volumeRange>
+        <pitchRange>0.55~0.7</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- Middenshell Procession: the grind of a step (played at the body, map-positioned). -->
+  <SoundDef>
+    <defName>RM_Middenshell_Grind</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Ambience/Undercave/Collapsing/Rumble</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>10~16</volumeRange>
+        <pitchRange>0.4~0.5</pitchRange>
+        <distRange>20~70</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>

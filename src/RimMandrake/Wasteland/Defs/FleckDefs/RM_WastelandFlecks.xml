@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WASTELAND_GPT_ENRICHMENT_1 — flecks for the named storms (§1). Every texPath is a
+  VANILLA Core mote texture (verified against the decompiled 1.6 defs: ThrownDebris ->
+  Things/Mote/ThrownDebris, HeatGlow -> Things/Mote/FireGlow), so nothing here is
+  owed art.
+-->
+<Defs>
+
+  <!-- Cinderwire warning: loose scraps lifting and hanging in the air. -->
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RM_Fleck_LevitatingScrap</defName>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.4</fadeInTime>
+    <solidTime>2.2</solidTime>
+    <fadeOutTime>0.8</fadeOutTime>
+    <fleckSystemClass>FleckSystemThrown</fleckSystemClass>
+    <graphicData>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>Mote</shaderType>
+      <texPath>Things/Mote/ThrownDebris</texPath>
+      <color>(0.55,0.58,0.62)</color>
+    </graphicData>
+  </FleckDef>
+
+  <!-- Deadlight halo: the sickly light rimming every pawn under open sky. Tinted per
+       storm by RM_StormPhaseExtension.rimColor. -->
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RM_Fleck_DeadlightRim</defName>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0.5</fadeInTime>
+    <solidTime>0.6</solidTime>
+    <fadeOutTime>0.6</fadeOutTime>
+    <fleckSystemClass>FleckSystemThrown</fleckSystemClass>
+    <graphicData>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>MoteGlow</shaderType>
+      <texPath>Things/Mote/FireGlow</texPath>
+    </graphicData>
+  </FleckDef>
+
+</Defs>

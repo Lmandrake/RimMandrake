@@ -125,7 +125,8 @@
       <Rain>0</Rain>
       <RainyThunderstorm>0</RainyThunderstorm>
       <!-- WASTELAND_MECHANICS_BUILD_1 §4 (wasteland.md §4b): ash storms and
-           radiation halos everywhere in the biome. RM_WastelandPlasmaStorm is
+           deadlight halos (RM_WastelandRadiationHalo) everywhere in the biome.
+           RM_WastelandPlasmaStorm (the cinderwire storm) is
            deliberately NOT listed — terminator families only (§6 ban 7), and
            that gate is still an owed design call. -->
       <RM_WastelandAshStorm>3</RM_WastelandAshStorm>
