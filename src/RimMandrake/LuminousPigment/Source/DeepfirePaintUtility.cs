@@ -37,6 +37,30 @@ namespace RimMandrake.LuminousPigment
         public const float FirstCoatBeautyFlat = 3f;
         public const float FirstCoatBeautyPct = 0.25f;
         public const int FirstCoatBeautySizeCap = 4;
+
+        // DEEPFIRE_WORN_GLOW_1 (spec §3.4, §7 keys wornLightTickInterval,
+        // glowTargetFactor, glowDodgePenalty). Settings wiring is
+        // DEEPFIRE_MOD_SETTINGS_1's.
+        public const int WornLightTickInterval = 15;     // cell-change poll for a glowing pawn's proxy
+        public const int WornRescanInterval = 250;       // backstop sweep (load, missed notifies, death)
+        public const int LacquerWorkTicks = 1000;        // "1000 ticks" at the press / styling station
+        public const float LacquerArtisticXP = 100f;     // same as the designator job (paint's own skill)
+        public const float GlowTargetFactor = 1.25f;     // ranged: x factorFromTargetSize in the dark
+        public const float TargetSizeFactorMin = 0.5f;   // vanilla ShotReport clamp (RimSage Verse/ShotReport.cs)
+        public const float TargetSizeFactorMax = 2f;
+        public const float GlowDodgePenalty = 0.08f;     // melee: final MeleeDodgeChance offset in the dark
+
+        // "Dark without our light" (spec §3.4): sky glow <= 0.35 outdoors,
+        // and the ground glow from every OTHER light < 0.3 (GlowGrid's
+        // GameGlowLitThreshold). The last three mirror private GlowGrid /
+        // ComputeGlowGridsJob constants (RimSage Verse/GlowGrid.cs,
+        // Verse/Glow/ComputeGlowGridsJob.cs SetGlowFromDist) so our own
+        // light's contribution at its centre cell can be subtracted.
+        public const float DarkSkyGlowMax = 0.35f;
+        public const float DarkGroundGlowMax = 0.3f;
+        public const float GroundGlowFactor = 3.6f;
+        public const float MaxNonOverlitGroundGlow = 0.5f;
+        public const float GlowFalloffLerp = 0.4f;
     }
 
     public static class DeepfireColorUtility

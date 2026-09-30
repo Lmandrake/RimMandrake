@@ -75,4 +75,44 @@
     </comps>
   </ThingDef>
 
+  <!-- DEEPFIRE_WORN_GLOW_1, spec §3.4: the MOVING per-pawn light
+       (MapComponent_DeepfireLights.Worn.cs). category Ethereal, NOT Item:
+       it follows a pawn through stockpiles, and an Item-category thing both
+       makes GenSpawn.Spawn shove an existing item aside on a full cell and
+       counts in GridsUtility.GetItemCount (RimSage Verse/GenSpawn.cs,
+       Verse/GridsUtility.cs). Ethereal + Standable + fillPercent 0 + not an
+       edifice trips no GenSpawn.SpawningWipes rule, so it wipes nothing it
+       spawns on (vanilla's own Ethereal markers, Ethereal_Various.xml, use
+       the same category). Moved by Position every 15 ticks, never respawned. -->
+  <ThingDef>
+    <defName>RM_DeepfireWornLightProxy</defName>
+    <label>deepfire worn light (internal)</label>
+    <description>Internal marker thing that carries the glow of a pawn's deepfire-lacquered gear. If you can see or select this, something is wrong — report it.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Ethereal</category>
+    <drawerType>None</drawerType>
+    <altitudeLayer>Item</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>false</selectable>
+    <useHitPoints>false</useHitPoints>
+    <destroyable>true</destroyable>
+    <alwaysHaulable>false</alwaysHaulable>
+    <designateHaulable>false</designateHaulable>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <tradeability>None</tradeability>
+    <neverMultiSelect>true</neverMultiSelect>
+    <tickerType>Never</tickerType>
+    <isSaveable>false</isSaveable>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1.5</glowRadius>
+        <glowColor>(255,255,255,0)</glowColor>
+        <overlightRadius>0</overlightRadius>
+      </li>
+    </comps>
+  </ThingDef>
+
 </Defs>
