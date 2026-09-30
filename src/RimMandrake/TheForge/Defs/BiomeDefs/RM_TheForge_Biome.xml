@@ -163,6 +163,67 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+    <!-- FORGE_LAVA_TERRAIN_1: open lava at map generation. Owner-typed design
+         authority: "The open lava is horrible, hot, deadly." The Forge cycle
+         (RM_ForgePulse's freezableTerrains) crusts and melts LavaDeep only, so
+         this is the terrain laid here. Mechanism is vanilla Odyssey's own:
+         LavaField's BiomeDef uses exactly this terrainPatchMakers shape
+         (Perlin 0.035/1.5/6, LavaDeep above 0.9, VolcanicRock rim).
+         GenStep_Terrain -> MapGenUtility.TerrainFrom applies patch makers
+         before rock/gravel/fertility bands and destroys any rock edifice on a
+         cell whose terrain has supportsRock=false, so lava cuts through the
+         massif as it does on a vanilla lava field. Heat, ignition and burns
+         are TerrainDef-driven (SteadyEnvironmentEffects heatPerTick,
+         HediffGiver_Terrain burnDamage/ignitePawnsIntervalTicks) - no GenStep
+         or MapComponent is needed. isPond is false on purpose: a
+         preventsPondGeneration mutator must not erase the Forge's lava.
+         Coverage (offline Perlin approximation, 12 seeds on a 250x250 map):
+         ~9% LavaDeep (range ~5.5-14%) plus ~5% walkable CooledLava banks;
+         vanilla LavaField's 0.9 threshold gives ~2%. -->
+    <terrainPatchMakers>
+      <!-- Lava fields: pools and lakes of open lava, CooledLava shore. -->
+      <li>
+        <perlinFrequency>0.035</perlinFrequency>
+        <perlinLacunarity>1.5</perlinLacunarity>
+        <perlinOctaves>6</perlinOctaves>
+        <isPond>false</isPond>
+        <thresholds>
+          <li>
+            <terrain>CooledLava</terrain>
+            <min>0.55</min>
+            <max>0.7</max>
+          </li>
+          <li>
+            <terrain>LavaDeep</terrain>
+            <min>0.7</min>
+            <max>999</max>
+          </li>
+        </thresholds>
+      </li>
+      <!-- Lava seams: a thin band around zero of a low-frequency Perlin traces
+           winding contour lines - rivers of lava. Gated to fertility <= 0.65
+           so the seams break over the fertile ground: impassable lava must
+           never cut the map into sealed pieces, and the gaps are the crossings. -->
+      <li>
+        <perlinFrequency>0.012</perlinFrequency>
+        <perlinLacunarity>2</perlinLacunarity>
+        <perlinOctaves>4</perlinOctaves>
+        <maxFertility>0.65</maxFertility>
+        <isPond>false</isPond>
+        <thresholds>
+          <li>
+            <terrain>LavaDeep</terrain>
+            <min>-0.025</min>
+            <max>0.025</max>
+          </li>
+          <li>
+            <terrain>CooledLava</terrain>
+            <min>-0.045</min>
+            <max>0.045</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
     <baseWeatherCommonalities>
       <Clear>40</Clear>
       <AB_VolcanicAsh MayRequire="sarg.alphabiomes">20</AB_VolcanicAsh>
