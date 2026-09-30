@@ -100,9 +100,13 @@ namespace RimMandrake.LuminousPigment
             if (!CanAddFloorCoat(c)) return false;
             EnsureGrid();
             int i = map.cellIndices.CellToIndex(c);
-            if (floorCoats[i] == 0) coatedFloorCells++;
+            bool firstCoat = floorCoats[i] == 0;
+            if (firstCoat) coatedFloorCells++;
             floorCoats[i]++;
             AfterFloorChanged(c);
+            // DEEPFIRE_GOD_BRIDGE_DELTAS_1, spec §5.2 "first coat on any
+            // building/floor/item".
+            if (firstCoat) DeepfireGodDeltas.OnFirstFloorCoat(map.terrainGrid.TopTerrainAt(c));
             return true;
         }
 

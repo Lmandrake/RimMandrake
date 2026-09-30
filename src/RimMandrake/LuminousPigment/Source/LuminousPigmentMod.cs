@@ -29,8 +29,9 @@ namespace RimMandrake.LuminousPigment
     // proxy-glower quicktest first. Their settings ship with that follow-on;
     // a toggle for a mechanism that does not exist yet would be a stub,
     // which the standing Mod Settings rule forbids -- same reasoning also
-    // keeps godDeltaIshko/godDeltaStatue and Cuisine's per-family weight
-    // sliders and effectScale out of this pass (unwired numbers).
+    // keeps Cuisine's per-family weight sliders and effectScale out of this
+    // pass (unwired numbers). The god numbers are all wired
+    // (DEEPFIRE_GOD_BRIDGE_DELTAS_1).
     public class LuminousPigmentSettings : ModSettings
     {
         public static bool shoreMatsEnabled = true;
@@ -68,12 +69,15 @@ namespace RimMandrake.LuminousPigment
             return arr;
         }
 
-        // Gods (spec §7 "Gods" group) -- only the two constants this build's
-        // two wired deltas actually use (dish-eaten Small, vermilion-III
-        // Medium reused for Ishko's penalty).
+        // Gods (spec §5.2 / §7 "Gods" group), every one read live by
+        // DeepfireGodDeltas / the dish and vermilion hooks. Defaults are
+        // Ninefold's EventMagnitude Small 3 / Medium 8 / Large 15.
         public static bool godsReact = true;
-        public static float godDeltaLike = 3f;
-        public static float godDeltaAdore = 8f;
+        public static float godDeltaLike = 3f;           // Small: every god, first coat; a dish eaten
+        public static float godDeltaAdore = 8f;          // Medium: the trio's first coat; worn-coat Ishko; sold; vermilion
+        public static float godDeltaIshko = 3f;          // Small: Ishko's dislike of a plain first coat
+        public static float godDeltaStatue = 15f;        // Large: a god's own statue coated
+        public static int godDeltaDiminishAfter = 10;    // first-coat events per def before deltas shrink to 1
 
         // Status -- the purple engine (spec §7 "Status" group)
         public static bool statusEnabled = true;
@@ -117,6 +121,9 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref godsReact, "godsReact", true);
             Scribe_Values.Look(ref godDeltaLike, "godDeltaLike", 3f);
             Scribe_Values.Look(ref godDeltaAdore, "godDeltaAdore", 8f);
+            Scribe_Values.Look(ref godDeltaIshko, "godDeltaIshko", 3f);
+            Scribe_Values.Look(ref godDeltaStatue, "godDeltaStatue", 15f);
+            Scribe_Values.Look(ref godDeltaDiminishAfter, "godDeltaDiminishAfter", 10);
 
             Scribe_Values.Look(ref statusEnabled, "statusEnabled", true);
             Scribe_Values.Look(ref displayCap, "displayCap", 6);
@@ -210,10 +217,17 @@ namespace RimMandrake.LuminousPigment
             list.CheckboxLabeled("Gods react to deepfire", ref godsReact,
                 "Off: no Ninefold satiation deltas from deepfire at all. Inert with Ninefold absent " +
                 "regardless of this setting.");
-            list.Label("Small reaction (a dish eaten): " + godDeltaLike.ToString("0.#"));
+            list.Label("Liking (every god on a first coat, a dish eaten): " + godDeltaLike.ToString("0.#"));
             godDeltaLike = list.Slider(godDeltaLike, 0f, 20f);
-            list.Label("Medium reaction (the vermilion cannot be hidden): " + godDeltaAdore.ToString("0.#"));
+            list.Label("Adoration (Mob'Unloo, Rekko, Zizzik on a first coat; Mob'Unloo on a sale; "
+                + "Ishko's anger at worn gear and the vermilion): " + godDeltaAdore.ToString("0.#"));
             godDeltaAdore = list.Slider(godDeltaAdore, 0f, 30f);
+            list.Label("Ishko's dislike of a first coat: " + godDeltaIshko.ToString("0.#"));
+            godDeltaIshko = list.Slider(godDeltaIshko, 0f, 20f);
+            list.Label("A god's own statue coated: " + godDeltaStatue.ToString("0.#"));
+            godDeltaStatue = list.Slider(godDeltaStatue, 0f, 40f);
+            list.Label("Full reactions per kind of thing painted, then just 1: " + godDeltaDiminishAfter.ToString());
+            godDeltaDiminishAfter = Mathf.RoundToInt(list.Slider(godDeltaDiminishAfter, 1f, 50f));
             list.GapLine();
 
             list.Label("STATUS (the purple engine)");

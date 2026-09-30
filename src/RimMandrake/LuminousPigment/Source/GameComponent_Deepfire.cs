@@ -48,15 +48,47 @@ namespace RimMandrake.LuminousPigment
             Instance?.impressedQuadrum.Clear();
         }
 
+        // DEEPFIRE_GOD_BRIDGE_DELTAS_1, spec §5.2 anti-pinning: first-coat god
+        // events counted per def key (DeepfireGodDeltas.KeyFor) per game.
+        private Dictionary<string, int> godCoatEvents = new Dictionary<string, int>();
+
+        // Returns the count BEFORE this event, then records it. No game ->
+        // 0 (undiminished; the bridge no-ops without a game anyway).
+        public static int NoteGodCoatEvent(string defKey)
+        {
+            GameComponent_Deepfire gc = Instance;
+            if (gc == null) return 0;
+            gc.godCoatEvents.TryGetValue(defKey, out int prior);
+            gc.godCoatEvents[defKey] = prior + 1;
+            return prior;
+        }
+
+        public static int GodCoatEventsFor(string defKey)
+        {
+            GameComponent_Deepfire gc = Instance;
+            if (gc == null) return 0;
+            gc.godCoatEvents.TryGetValue(defKey, out int n);
+            return n;
+        }
+
+        // Dev proof only: forget one def's count so a proof measures the
+        // undiminished event.
+        public static void ResetGodCoatEvents(string defKey)
+        {
+            Instance?.godCoatEvents.Remove(defKey);
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref matSeen, "rmDeepfireMatSeen", false);
             Scribe_Values.Look(ref chillMessageShown, "rmDeepfireChillMessageShown", false);
             Scribe_Collections.Look(ref impressedQuadrum, "rmDeepfireImpressedQuadrum", LookMode.Value, LookMode.Value);
-            if (Scribe.mode == LoadSaveMode.PostLoadInit && impressedQuadrum == null)
+            Scribe_Collections.Look(ref godCoatEvents, "rmDeepfireGodCoatEvents", LookMode.Value, LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                impressedQuadrum = new Dictionary<int, int>();
+                if (impressedQuadrum == null) impressedQuadrum = new Dictionary<int, int>();
+                if (godCoatEvents == null) godCoatEvents = new Dictionary<string, int>();
             }
         }
     }

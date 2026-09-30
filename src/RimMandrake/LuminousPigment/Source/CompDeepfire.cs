@@ -130,6 +130,9 @@ namespace RimMandrake.LuminousPigment
             {
                 DeepfireFirstCoatBonus.Apply(parent);
                 bonusApplied = true;
+                // DEEPFIRE_GOD_BRIDGE_DELTAS_1, spec §5.2: the gods react to
+                // the act, once per thing (the same bonusApplied latch).
+                DeepfireGodDeltas.OnFirstCoat(parent);
             }
         }
 
