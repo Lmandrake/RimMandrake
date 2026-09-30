@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T02:06:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T02:27:14Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -980,6 +980,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ARTIST_BIOME_INSPIRATION_MOD_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  It is a design idea for later, not scheduled. A design pass should weigh three variants:
 prose:    infrastructure/state/items/ARTIST_BIOME_INSPIRATION_MOD_1.md
+
+## WASTELAND_MIDDENSHELL_FOOTPRINT_1 Middenshell ruled 20 cells wide; engine building/pawn footprint tops out near 4x4 - pick shrink, multi-part, or terrain-feature form
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WASTELAND_MIDDENSHELL_FOOTPRINT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WASTELAND_MIDDENSHELL_FOOTPRINT_1.md
