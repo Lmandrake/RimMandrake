@@ -50,7 +50,7 @@
         the frozen sheet's no-grazer and ban-9 lines on purpose. Lylek,
         Skalder (RSW_ ports) and Silooth (donor) ride the Utinni patch.
 
-    Everything else — texture, terrain (Marsh/Riverbank), weather, diseases —
+    Everything else — texture, terrain (Marsh/Riverbank), diseases —
     is the twin's content unchanged.
 
     ⚠️ Not fully donor-free: the texture (Biomes/PoisonForest, BiomesPlus) is
@@ -123,8 +123,15 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+    <!-- CAULDRON_MECHANICS_BUILD_1 part 2: the four ruled weathers
+         (Defs/WeatherDefs/RM_CauldronWeathers.xml) replace the donor Fog 90
+         block. Weights are INVENTED tuning: scatter-dusk is the standing state. -->
     <baseWeatherCommonalities>
-      <Fog>90</Fog>
+      <RM_ScatterDusk>60</RM_ScatterDusk>
+      <RM_VapourBank>20</RM_VapourBank>
+      <RM_Dewfall>12</RM_Dewfall>
+      <RM_VentBloom>8</RM_VentBloom>
+      <Fog>0</Fog>
       <Clear>0</Clear>
       <DryThunderstorm>1</DryThunderstorm>
       <Rain>0</Rain>
