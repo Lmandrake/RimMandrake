@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T11:43:43Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-30T13:37:20Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1242,6 +1242,15 @@ kind:     task
 summary:  (no items/WARCASKET_CASK_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARCASKET_CASK_ART_1.md
 
+## CONTAGION_GPT_ENRICHMENT_1 Contagion enrichment (GPT consult 2026-09-30, owner-picked by card): Draftprints (Helix buys scans of Unfinished, you assume the risks), The Dive (map-wide flight to shelter before a Burn), Bodyprints (corpses fade to visible prints, no vanishing)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Draftprints. The owner typed this note on the card: "I like the helix offering to purchase
+prose:    infrastructure/state/items/CONTAGION_GPT_ENRICHMENT_1.md
+
 ## SCALD_CROWNCARPET_NO_HABITAT_1 RM_TheScald generates ~no plants: its only wild plant (crowncarpet) grows only on a shallow margin terrain that map generation never lays down (live 2026-09-30c: 1 plant, an anima tree). Give the biome that margin terrain or the plant a habitat it actually gets
 state:    doing
 row:      unassigned
@@ -1252,7 +1261,7 @@ summary:  (no items/SCALD_CROWNCARPET_NO_HABITAT_1.md yet — write one when you
 prose:    infrastructure/state/items/SCALD_CROWNCARPET_NO_HABITAT_1.md
 
 ## SEA_DIVE_FLOOR_TERRAIN_1 Gravship dive floors ignore the seas' terrain bands: GenStep_SeaFloorTerrain paints one constant terrain (RM_SeaFloorGround / RM_ChillIceBedrock) on every cell, so floor flora habitat tags never exist on the map a player dives to; make it read each sea's terrainsByFertility (or a per-sea floor band)
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1260,14 +1269,14 @@ kind:     task
 summary:  (no items/SEA_DIVE_FLOOR_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEA_DIVE_FLOOR_TERRAIN_1.md
 
-## DEEPFIRE_DODGE_PROOF_TWINS_1 prove_deepfire_worn_glow.py dodge pairs are not skill-matched (1/20 coated pawn had higher base MeleeDodge); give twins identical Melee skill/traits, then rerun
-state:    doing
+## SUBSTRUCTURE_PROPS_LAYER_OOB_1 Live 2026-09-30b: 'Could not regenerate layer RimWorld.SectionLayer_SubstructureProps: IndexOutOfRangeException' during the sea-dive proof run (pocket maps 50x50); find whether our dive maps or the gravship hatch trigger it (Transient/sea_dive_floor_live_2026-09-30b.txt + Player.log)
+state:    doing  (BLOCKED)
 row:      unassigned
-needs:    bridge
+needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/DEEPFIRE_DODGE_PROOF_TWINS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEEPFIRE_DODGE_PROOF_TWINS_1.md
+summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1943,6 +1952,36 @@ blocked:  Jobs queued; waiting on daemon renders, then wire
 summary:  (no items/WARCASKET_CASK_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARCASKET_CASK_ART_1.md
 
+## CONTAGION_GPT_ENRICHMENT_1 Contagion enrichment (GPT consult 2026-09-30, owner-picked by card): Draftprints (Helix buys scans of Unfinished, you assume the risks), The Dive (map-wide flight to shelter before a Burn), Bodyprints (corpses fade to visible prints, no vanishing)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Stopped for handoff 2026-09-30; not started - pick up fresh
+summary:  1. Draftprints. The owner typed this note on the card: "I like the helix offering to purchase
+prose:    infrastructure/state/items/CONTAGION_GPT_ENRICHMENT_1.md
+
+## SEA_DIVE_FLOOR_TERRAIN_1 Gravship dive floors ignore the seas' terrain bands: GenStep_SeaFloorTerrain paints one constant terrain (RM_SeaFloorGround / RM_ChillIceBedrock) on every cell, so floor flora habitat tags never exist on the map a player dives to; make it read each sea's terrainsByFertility (or a per-sea floor band)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Scald/Chill floor plants unmeasured: needs a dive from a real Scald/Chill-temperature tile
+summary:  (no items/SEA_DIVE_FLOOR_TERRAIN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEA_DIVE_FLOOR_TERRAIN_1.md
+
+## SUBSTRUCTURE_PROPS_LAYER_OOB_1 Live 2026-09-30b: 'Could not regenerate layer RimWorld.SectionLayer_SubstructureProps: IndexOutOfRangeException' during the sea-dive proof run (pocket maps 50x50); find whether our dive maps or the gravship hatch trigger it (Transient/sea_dive_floor_live_2026-09-30b.txt + Player.log)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Stopped for handoff 2026-09-30; not started - pick up fresh
+summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -1984,16 +2023,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WARCASKET_WASTE_RUN_REMAINDER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARCASKET_WASTE_RUN_REMAINDER_1.md
-
-## CONTAGION_GPT_ENRICHMENT_1 Contagion enrichment (GPT consult 2026-09-30, owner-picked by card): Draftprints (Helix buys scans of Unfinished, you assume the risks), The Dive (map-wide flight to shelter before a Burn), Bodyprints (corpses fade to visible prints, no vanishing)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Draftprints. The owner typed this note on the card: "I like the helix offering to purchase
-prose:    infrastructure/state/items/CONTAGION_GPT_ENRICHMENT_1.md
 
 ## WASTELAND_GPT_ENRICHMENT_1 Wasteland enrichment (GPT consult 2026-09-30, owner-picked by card): named storms (Deadlight Halo, Cinderwire Storm), Middenshell Procession, Sealed Cask Bay (ship), Rite of Tipping (paid dumping)
 state:    proposed

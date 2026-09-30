@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T11:43:43Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-30T13:37:20Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1003,3 +1003,13 @@ kind:     task
 thin:     no ## verify
 summary:  1. Leaning Scrub GPT enrichment cards. GPT's answer is in the committed consult folder
 prose:    infrastructure/state/items/BEDAZZLE_ENRICHMENT_REVIEW_REST_1.md
+
+## CHILL_WALKABLE_BED_TERRAIN_1 The Chill's six bed plants can only grow on liquid propane (the only RM_TheChillBed terrain), which the dive crew cannot stand in to harvest - rule a walkable bed terrain for the Chill floor, or accept them as unharvestable pool flora
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CHILL_WALKABLE_BED_TERRAIN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CHILL_WALKABLE_BED_TERRAIN_1.md
