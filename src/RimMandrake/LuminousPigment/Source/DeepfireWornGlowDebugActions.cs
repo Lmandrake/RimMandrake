@@ -117,11 +117,32 @@ namespace RimMandrake.LuminousPigment
                 bool dark = DeepfireDarkness.IsGlowingInDark(coated);
                 string readout = rc.GetTextReadout();
                 bool line = readout.Contains(Patch_ShotReport_GetTextReadout.LineLabel.CapitalizeFirst());
+
+                // DEEPFIRE_DODGE_PROOF_TWINS_1: compare the SAME pawn's
+                // MeleeDodgeChance coated vs stripped, not two independently
+                // generated twins. `coated` and `plain` are both random
+                // colonists (PawnGenerator) -- their Melee skill level,
+                // passion and traits (Nimble etc.) are NOT matched, so the
+                // "plain" twin's base dodge can legitimately sit above the
+                // coated twin's regardless of the coat. Live 2026-09-30: 1/20
+                // pairs read dodgeCoated 0.02 > dodgePlain 0, which is a
+                // skill mismatch, not the -0.08 penalty failing to apply (it
+                // applied and was explained in 20/20). Reading the coat's
+                // effect off ONE pawn, before and after stripping it, makes
+                // every other factor (skill, passion, traits, body size,
+                // apparel, health) identical by construction.
                 float dodgeC = coated.GetStatValue(StatDefOf.MeleeDodgeChance);
-                float dodgeP = plain.GetStatValue(StatDefOf.MeleeDodgeChance);
                 string expl = StatDefOf.MeleeDodgeChance.Worker.GetExplanationFull(
                     StatRequest.For(coated), ToStringNumberSense.Absolute, dodgeC) ?? "";
                 bool explained = expl.Contains(Patch_ShotReport_GetTextReadout.LineLabel.CapitalizeFirst());
+                // GetStatValue is cached per-thing and nothing else dirties
+                // that cache mid-tick (see jawa/stat_cache_bust's own
+                // comment on why TryClearCache/ClearCacheForThing exist), so
+                // stripping the coat and re-reading without clearing the
+                // cache would silently hand back the pre-strip value.
+                ParkaOf(coated)?.GetComp<CompDeepfire>()?.RemoveAllCoats();
+                StatDefOf.MeleeDodgeChance.Worker.ClearCacheForThing(coated);
+                float dodgeStripped = coated.GetStatValue(StatDefOf.MeleeDodgeChance);
 
                 // DEEPFIRE_LIVE_FAILURES_1: vanilla factorFromTargetSize is
                 // Clamp(target.BodySize, 0.5, 2) (RimSage Verse/ShotReport.cs),
@@ -137,12 +158,12 @@ namespace RimMandrake.LuminousPigment
                 if (rc.AimOnTargetChance / sizeC > rp.AimOnTargetChance / sizeP) coatedHigher++;
                 if (line) readoutLines++;
                 if (dark) darkCount++;
-                if (dodgeC < dodgeP || dodgeP <= 0f) dodgeLower++;
+                if (dodgeC < dodgeStripped || dodgeStripped <= 0f) dodgeLower++;
                 if (explained) dodgeExplained++;
                 rows.Add(string.Format(inv,
-                    "{{\"coatedAim\":{0:0.####},\"plainAim\":{1:0.####},\"coatedTotal\":{2:0.####},\"plainTotal\":{3:0.####},\"dark\":{4},\"line\":{5},\"dodgeCoated\":{6:0.####},\"dodgePlain\":{7:0.####},\"dodgeExplained\":{8},\"coatedSize\":{9:0.##},\"plainSize\":{10:0.##},\"coatedSizeFactor\":{11:0.####}}}",
+                    "{{\"coatedAim\":{0:0.####},\"plainAim\":{1:0.####},\"coatedTotal\":{2:0.####},\"plainTotal\":{3:0.####},\"dark\":{4},\"line\":{5},\"dodgeCoated\":{6:0.####},\"dodgeStripped\":{7:0.####},\"dodgeExplained\":{8},\"coatedSize\":{9:0.##},\"plainSize\":{10:0.##},\"coatedSizeFactor\":{11:0.####}}}",
                     rc.AimOnTargetChance, rp.AimOnTargetChance, rc.TotalEstimatedHitChance, rp.TotalEstimatedHitChance,
-                    B(dark), B(line), dodgeC, dodgeP, B(explained), coated.BodySize, plain.BodySize,
+                    B(dark), B(line), dodgeC, dodgeStripped, B(explained), coated.BodySize, plain.BodySize,
                     Patch_ShotReport_HitReportFor.FactorFromTargetSize(ref rc)));
 
                 coated.Destroy();
