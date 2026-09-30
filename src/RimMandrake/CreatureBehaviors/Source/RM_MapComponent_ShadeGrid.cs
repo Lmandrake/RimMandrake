@@ -3,6 +3,7 @@ using RimWorld;
 using Unity.Collections;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace RimMandrake.CreatureBehaviors
 {
@@ -87,6 +88,16 @@ namespace RimMandrake.CreatureBehaviors
 		private readonly HashSet<Thing> gearThings = new HashSet<Thing>();
 		private bool recomputeRequested;
 
+		// SOLAR_HEAT_EXPOSURE_1 §5: the shade-patch graph (RM_ShadePatchGraph),
+		// built lazily from the exposure layer. It is built only when a hop,
+		// escape or ring asks for it, and only after the grid has recomputed
+		// since the last build. On a map with no sun heat it is never built.
+		private int gridVersion;
+		private int patchGraphVersion = -1;
+		private RM_ShadePatchGraph patchGraph;
+		private bool[] patchShadeMask;
+		private bool[] patchWalkMask;
+
 		public RM_MapComponent_ShadeGrid(Map map)
 			: base(map)
 		{
@@ -112,6 +123,62 @@ namespace RimMandrake.CreatureBehaviors
 		public bool IsDirectional => directional;
 
 		public Vector2 SunShadowDirection => sunShadowDir;
+
+		/// <summary>Bumped on every Recompute, so a consumer can tell that
+		/// what it derived from the grid is stale.</summary>
+		public int GridVersion => gridVersion;
+
+		/// <summary>True when shade hopping and the dash ring can run here: a
+		/// sun-heat map whose heat kind shade can help against.</summary>
+		public bool ShadeHopsApply => SunHeatActive && exposure != null
+		                              && HeatExtension.heatKind != RM_HeatKind.ambient;
+
+		/// <summary>The shade-patch graph for the current grid, or null where
+		/// hopping does not apply. The first call after a recompute rebuilds
+		/// it, which is O(cells) at most once per recompute interval.</summary>
+		public RM_ShadePatchGraph PatchGraph
+		{
+			get
+			{
+				if (!ShadeHopsApply)
+				{
+					return null;
+				}
+				if (patchGraph == null || patchGraphVersion != gridVersion)
+				{
+					BuildPatchGraph();
+				}
+				return patchGraph;
+			}
+		}
+
+		private void BuildPatchGraph()
+		{
+			RM_SunHeatExtension ext = HeatExtension;
+			int n = map.cellIndices.NumGridCells;
+			if (patchShadeMask == null || patchShadeMask.Length != n)
+			{
+				patchShadeMask = new bool[n];
+				patchWalkMask = new bool[n];
+			}
+			PathGrid pg = map.pathing.Normal.pathGrid;
+			float thr = ext.shadeExposureMax;
+			foreach (IntVec3 c in map.AllCells)
+			{
+				int i = map.cellIndices.CellToIndex(c);
+				bool walk = pg.Walkable(c);
+				patchWalkMask[i] = walk;
+				// An enclosed room is sheltered whatever the kind (ExposureAt's
+				// live room test). Only a roofed, walkable, exposed cell can be
+				// in one, so only those pay for the room lookup.
+				patchShadeMask[i] = walk && (exposure[i] <= thr
+					|| (map.roofGrid.Roofed(c) && !c.UsesOutdoorTemperature(map)));
+			}
+			int capCells = Mathf.CeilToInt(Mathf.Max(ext.maxDashCells, ext.ringMaxCells));
+			patchGraph = RM_ShadePatchGraph.Build(map.Size.x, map.Size.z, patchShadeMask, patchWalkMask,
+				capCells * RM_ShadePatchGraph.CardinalCost, ext.minPatchCells);
+			patchGraphVersion = gridVersion;
+		}
 
 		public override void FinalizeInit()
 		{
@@ -320,6 +387,7 @@ namespace RimMandrake.CreatureBehaviors
 			BuildGearLayer();
 			RefreshParasolLayer();
 			RebuildHeatLayers();
+			gridVersion++;
 		}
 
 		/// <summary>SHADE_GEAR_FAMILY_1: tent footprints and shield lees, at

@@ -55,5 +55,44 @@ namespace RimMandrake.CreatureBehaviors
         public float substellarLongitude = 0f;
         public float minElevationDegrees = 5f;
         public float maxElevationDegrees = 60f;
+
+        // ── §5 shade hopping / §6 dash ring (RM_ShadeHop.cs) ───────────
+        /// <summary>A cell with exposure at or below this counts as shade in
+        /// the patch graph.</summary>
+        public float shadeExposureMax = 0.35f;
+
+        /// <summary>Shade groups smaller than this are flecks, not patches.</summary>
+        public int minPatchCells = 2;
+
+        /// <summary>Heatstroke severity a wild animal will accept on one dash
+        /// (visible heatstroke starts at 0.04). Its current severity is
+        /// subtracted, so an animal that is already hot stays put.</summary>
+        public float dashHeatstrokeBudget = 0.008f;
+
+        public float minDashCells = 3f;
+        public float maxDashCells = 24f;
+
+        /// <summary>Chance per decision that a cool animal in shade moves on
+        /// rather than resting.</summary>
+        public float hopChance = 0.35f;
+
+        public IntRange restTicks = new IntRange(600, 1500);
+        public IntRange rimPauseTicks = new IntRange(45, 120);
+
+        /// <summary>§6 ring: the Heatstroke a drafted colonist may take before
+        /// it is back in shade (just short of visible), and the ring's cap.</summary>
+        public float ringHeatstrokeBudget = 0.035f;
+        public float ringMaxCells = 60f;
+    }
+
+    /// <summary>
+    /// On a race ThingDef, this is optional and tunes §5 shade hopping for one species.
+    /// exempt: the species ignores shade hopping, such as a native sun-lover.
+    /// rangeFactor: scales its dash range.
+    /// </summary>
+    public class RM_SunDashExtension : DefModExtension
+    {
+        public bool exempt;
+        public float rangeFactor = 1f;
     }
 }

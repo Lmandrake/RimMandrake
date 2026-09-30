@@ -40,4 +40,14 @@
     <reportString>filter-feeding.</reportString>
   </JobDef>
 
+  <!-- SOLAR_HEAT_EXPOSURE_1 section 5 - driven by RM_JobDriver_ShadeDash, requested
+       by RM_JobGiver_SunEscape and RM_JobGiver_ShadeHop on sun-heat maps: walk to the
+       rim of a shade patch, pause facing the next one, then sprint across the sun. -->
+  <JobDef>
+    <defName>RM_ShadeDash</defName>
+    <driverClass>RimMandrake.CreatureBehaviors.RM_JobDriver_ShadeDash</driverClass>
+    <reportString>dashing for shade.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
 </Defs>
