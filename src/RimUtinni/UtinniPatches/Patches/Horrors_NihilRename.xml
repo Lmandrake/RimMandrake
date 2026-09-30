@@ -15,13 +15,9 @@
   style figure who alone knew how to produce and control the Nameless, living
   weapons that consume Force-sensitives with fear and hallucination. That
   pairing (a raiding faction wielding a named cosmic-horror weapon) is the
-  reason this is the stronger of the donor's two possible landings - see
-  MoEventsAbomination_YuuzhanVongRename.xml for why "the Nihil" was NOT also
-  used there: two different FactionDefs in the same campaign both labelled
-  "the Nihil" would be its own proper-noun collision.
+  reason this is the stronger of the donor's two possible landings.
 
-  TEXT ONLY. defName MO_AbominationFaction is unaffected here (different
-  file); defName Horrors, its mechanics (raid tuning, faction relations,
+  TEXT ONLY. defName Horrors, its mechanics (raid tuning, faction relations,
   hostility) are UNCHANGED. This patches label/description/leaderTitle/
   pawnSingular/pawnsPlural strings only.
 
