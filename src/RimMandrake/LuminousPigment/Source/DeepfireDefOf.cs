@@ -25,6 +25,10 @@ namespace RimMandrake.LuminousPigment
         public static ThingDef RM_DeepfireWornLightProxy;
         public static JobDef RM_LacquerWornItem;
 
+        // DEEPFIRE_STATUS_THOUGHTS_1: the room-stat reactions.
+        public static ThoughtDef RM_DeepfireBedroom;
+        public static HistoryEventDef RM_ImpressedByDeepfire;
+
         static DeepfireDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(DeepfireDefOf));
