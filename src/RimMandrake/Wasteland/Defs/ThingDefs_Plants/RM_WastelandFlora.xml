@@ -271,11 +271,11 @@
   <!-- ============== Cinderfelt — NEW, the fresh-ash-fall marker mat ==============
        Wiring per cast bible §6: not a standing wildPlants weight in the
        biome's normal sense — it germinates from the ash storm's own
-       aftermath. WASTELAND_MECHANICS_BUILD_1 owns the storm post-effect/
-       MapComponent that seeds it on fresh-fall terrain; this pass ships the
-       def plus the bible's own 0.02 wildPlants fallback row (see
-       RM_Wasteland_Biome.xml) so it is never dead content while that wiring
-       lands. dies in ~8 days as the fall compacts — short lifespanDaysPerGrowDays. -->
+       aftermath: RM_MapComponent_WastelandStorms (WASTELAND_MECHANICS_BUILD_1)
+       seeds it on the storm's fresh fall when the storm ends. The bible's
+       0.02 wildPlants fallback row stays (see RM_Wasteland_Biome.xml).
+       Dies in ~8 days as the fall compacts — growDays 1.5 x
+       lifespanDaysPerGrowDays 5.5. -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_Cinderfelt</defName>
     <label>cinderfelt</label>

@@ -69,6 +69,10 @@
         <degreeWeight>1.0</degreeWeight>
         <rainfallDivisor>150</rainfallDivisor>
       </li>
+      <!-- WASTELAND_MECHANICS_BUILD_1: opts this biome's maps into the storm
+           layer (RM_MapComponent_WastelandStorms returns at once on any map
+           whose biome lacks this). -->
+      <li Class="RimMandrake.Wasteland.RM_WastelandStormBiomeExtension" />
     </modExtensions>
 
     <diseases>
@@ -120,6 +124,12 @@
       <ToxRain MayRequire="Ludeon.RimWorld.Biotech">4</ToxRain>
       <Rain>0</Rain>
       <RainyThunderstorm>0</RainyThunderstorm>
+      <!-- WASTELAND_MECHANICS_BUILD_1 §4 (wasteland.md §4b): ash storms and
+           radiation halos everywhere in the biome. RM_WastelandPlasmaStorm is
+           deliberately NOT listed — terminator families only (§6 ban 7), and
+           that gate is still an owed design call. -->
+      <RM_WastelandAshStorm>3</RM_WastelandAshStorm>
+      <RM_WastelandRadiationHalo>2</RM_WastelandRadiationHalo>
     </baseWeatherCommonalities>
 
     <!-- WASTELAND_RULED_CONTENT_1 — full RM_ donor replacement (cast bible
@@ -164,7 +174,7 @@
       <Plant_TreePolux>0.1</Plant_TreePolux>  <!-- polux tree — vanilla, unchanged -->
       <RM_VaultRoot>0.08</RM_VaultRoot>  <!-- vault-root tree - sequestration tree, unchanged -->
       <RM_Wartshrub>0.08</RM_Wartshrub>  <!-- port of VRE_PoluxBush -->
-      <RM_Cinderfelt>0.02</RM_Cinderfelt>  <!-- new: fresh-ash-fall marker mat; token fallback row until the storm-germination wiring (WASTELAND_MECHANICS_BUILD_1) lands, per cast bible §6 -->
+      <RM_Cinderfelt>0.02</RM_Cinderfelt>  <!-- new: fresh-ash-fall marker mat; mainly germinated by the ash storm (RM_MapComponent_WastelandStorms, WASTELAND_MECHANICS_BUILD_1); this token row stays so it also shows when storm germination is toggled off, per cast bible §6 -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>

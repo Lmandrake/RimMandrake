@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <!--
+    WASTELAND_MECHANICS_BUILD_1 §4 — storm exhumation REUSES the MovingDunes
+    mechanism (owner-ruled at WASTELAND_BEDAZZLE_SITTING_1; "no new mutator-churn
+    tooling"). This file only BINDS the Wasteland into that engine, the way
+    MovingDunes' own header says data packs do ("an ash field drifts grey on the
+    same machinery. Biomes opt in one at a time"):
+
+      1. adds a grey-ash RM_DuneMaterialDef (RM_Dunes_WastelandAsh),
+      2. binds RM_Wasteland to it with DuneFieldExtension,
+      3. gives the two fall-bearing storms a DuneWeatherExtension so a blow
+         visibly re-deals the field.
+
+    The ash storm's own sandRate lays the fall (Odyssey's sand grid); MovingDunes
+    drifts it, buries loose gear under deep drift, and returns it when the wind
+    shifts and the drift erodes — the exhumation lottery. The Cinderfelt
+    germination on that fresh fall is this mod's own C#
+    (RM_MapComponent_WastelandStorms).
+
+    Guard: every type named below (RM_DuneMaterialDef, DuneFieldExtension,
+    DuneWeatherExtension) lives in the MovingDunes assembly, so a def or
+    extension naming them without that mod loaded would be DISCARDED at load.
+    Hence the whole binding is added BY PATCH, inside PatchOperationFindMod on
+    the mod's <name> ("Moving Dunes", its About.xml) — never a top-level
+    MayRequire, which is inert on an <Operation>. Absent MovingDunes, nothing
+    is added and the storms still dose, pollute and seed; they just do not drift.
+    The biome and weather defs targeted are this mod's own, so the xpaths
+    always match when the FindMod matches.
+  -->
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Moving Dunes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs</xpath>
+          <value>
+            <RimMandrake.MovingDunes.RM_DuneMaterialDef>
+              <defName>RM_Dunes_WastelandAsh</defName>
+              <label>settled fallout ash</label>
+              <description>Centuries of deposition: fine, grey, radiologically live ash. Lifts in any real wind, banks against anything that stands, and gives back what it buried when the wind turns.</description>
+              <tint>(0.62,0.62,0.60)</tint>
+              <tintMode>MaterialColor</tintMode>
+              <crestShading>0.2</crestShading>
+              <slabSize>0.05</slabSize>
+              <hopRange>2~7</hopRange>
+              <erodeMinDepth>0.1</erodeMinDepth>
+              <windSpeedThreshold>0.7</windSpeedThreshold>
+              <shadowRange>4</shadowRange>
+              <attemptsPerCellPerDay>5</attemptsPerCellPerDay>
+              <stormTransportFactor>6</stormTransportFactor>
+              <ambientDecayFactor>0</ambientDecayFactor>
+              <influxLossRatio>0.9</influxLossRatio>
+              <influxPerDay>10</influxPerDay>
+              <weatherInfluxFactor>5</weatherInfluxFactor>
+              <maxTotalMassFraction>0.3</maxTotalMassFraction>
+              <burialDepth>0.55</burialDepth>
+              <revealDepth>0.25</revealDepth>
+              <minBurialMarketValue>5</minBurialMarketValue>
+              <maxCachesPerMap>400</maxCachesPerMap>
+              <plantChokeDepth>0.5</plantChokeDepth>
+              <plantChokeDays>4</plantChokeDays>
+              <plantChokeSampleFraction>0.125</plantChokeSampleFraction>
+              <depositFilthDef>Filth_Ash</depositFilthDef>
+              <depositFilthChance>0.01</depositFilthChance>
+              <windShiftMeanDays>5</windShiftMeanDays>
+              <windShiftBigChance>0.3</windShiftBigChance>
+            </RimMandrake.MovingDunes.RM_DuneMaterialDef>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAddModExtension">
+          <xpath>Defs/BiomeDef[defName="RM_Wasteland"]</xpath>
+          <value>
+            <li Class="RimMandrake.MovingDunes.DuneFieldExtension">
+              <material>RM_Dunes_WastelandAsh</material>
+            </li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAddModExtension">
+          <xpath>Defs/WeatherDef[defName="RM_WastelandAshStorm"]</xpath>
+          <value>
+            <li Class="RimMandrake.MovingDunes.DuneWeatherExtension">
+              <transportFactor>6</transportFactor>
+              <influxFactor>5</influxFactor>
+            </li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAddModExtension">
+          <xpath>Defs/WeatherDef[defName="RM_WastelandPlasmaStorm"]</xpath>
+          <value>
+            <li Class="RimMandrake.MovingDunes.DuneWeatherExtension">
+              <transportFactor>8</transportFactor>
+              <influxFactor>6</influxFactor>
+            </li>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

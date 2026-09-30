@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WastelandStorms.xml                  RimMandrake: Wasteland
+
+  WASTELAND_MECHANICS_BUILD_1 §4 — the three storms (wasteland.md §4b).
+  Effects ride RM_WeatherDoseExtension, read by RM_MapComponent_WastelandStorms
+  ONLY on a map whose biome carries RM_WastelandStormBiomeExtension.
+
+  - Ash storm: everywhere in the biome. sandRate > 0 lays Odyssey sand-grid
+    depth, which MovingDunes (bound by Patches/RM_Wasteland_MovingDunesBinding.xml)
+    skins as grey ash, drifts, buries and — on the wind shifts after — exhumes.
+    That is the owner-ruled exhumation reuse; nothing here re-implements it.
+    Also lays Biotech pollution and seeds the Cinderfelt on its fresh fall.
+  - Radiation halo: dose only, gentle, long.
+  - Plasma storm: 🔴 TERMINATOR FAMILIES ONLY (sheet §6 ban 7). This def ships
+    UNWIRED — it is deliberately absent from RM_Wasteland's
+    baseWeatherCommonalities, because one BiomeDef spans all three families and
+    nothing yet tells a map it sits in a terminator pocket. How that gate is
+    decided is an owed design call (item remaining list), not a guess made here.
+
+  Labels: "radiation halo" and "plasma storm" are WORKING labels — the
+  player-facing names are owed by the owner (wasteland.md Owed).
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RM_WastelandAshStorm</defName>
+    <label>ash storm</label>
+    <description>Centuries of settled fallout picked up and re-dealt: blinding, abrasive and radiologically live. Anyone caught outside takes a dose; the fall poisons the ground it lands on, and when it passes the drifts have moved — something is buried, something else uncovered. Re-survey after every storm.</description>
+    <durationRange>15000~40000</durationRange>
+    <temperatureRange>-999~999</temperatureRange>
+    <favorability>VeryBad</favorability>
+    <isBad>true</isBad>
+    <perceivePriority>2</perceivePriority>
+    <accuracyMultiplier>0.7</accuracyMultiplier>
+    <moveSpeedMultiplier>0.8</moveSpeedMultiplier>
+    <preventSkygaze>true</preventSkygaze>
+    <preventsShuttleLaunch>true</preventsShuttleLaunch>
+    <windSpeedFactor>1.6</windSpeedFactor>
+    <windSpeedOffset>1.25</windSpeedOffset>
+    <sandRate>1.2</sandRate>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_SandHard</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.62,0.62,0.60)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.55,0.55,0.53)</overlay>
+      <saturation>0.55</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.75,0.72,0.70)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.48)</overlay>
+      <saturation>0.55</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.30,0.31,0.32)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.4,0.4,0.4)</overlay>
+      <saturation>0.55</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.30,0.31,0.32)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.4,0.4,0.4)</overlay>
+      <saturation>0.55</saturation>
+    </skyColorsNightMid>
+    <modExtensions>
+      <li Class="RimMandrake.Wasteland.RM_WeatherDoseExtension">
+        <airborneToxicFactor>1.0</airborneToxicFactor>
+        <fallCellsPerDay>900</fallCellsPerDay>
+        <aftermathPlant>RM_Cinderfelt</aftermathPlant>
+        <aftermathSeedFraction>0.35</aftermathSeedFraction>
+      </li>
+    </modExtensions>
+  </WeatherDef>
+
+  <WeatherDef>
+    <defName>RM_WastelandRadiationHalo</defName>
+    <label>radiation halo</label>
+    <description>An auroral glow hangs over the ground, lit from inside by the fallout it stirs. Less violent than an ash storm, but the ambient dose is raised for as long as it lasts — anyone under open sky soaks it up.</description>
+    <durationRange>20000~50000</durationRange>
+    <temperatureRange>-999~999</temperatureRange>
+    <favorability>Bad</favorability>
+    <isBad>true</isBad>
+    <perceivePriority>1</perceivePriority>
+    <windSpeedFactor>0.8</windSpeedFactor>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fallout</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.72,0.86,0.70)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.8,0.65)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.75,0.9,0.72)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.72,0.58)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.36,0.52,0.40)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.62,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.32,0.48,0.38)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.45,0.58,0.46)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+    <modExtensions>
+      <li Class="RimMandrake.Wasteland.RM_WeatherDoseExtension">
+        <airborneToxicFactor>0.6</airborneToxicFactor>
+      </li>
+    </modExtensions>
+  </WeatherDef>
+
+  <WeatherDef>
+    <defName>RM_WastelandPlasmaStorm</defName>
+    <label>plasma storm</label>
+    <description>Charged fallout whipped past threshold until the wind itself is radioactive and electric. Lightning strikes, the ground takes a heavy fall, and anyone outside takes a severe dose. Found only in the terminator pockets.</description>
+    <durationRange>10000~25000</durationRange>
+    <temperatureRange>-999~999</temperatureRange>
+    <favorability>VeryBad</favorability>
+    <isBad>true</isBad>
+    <perceivePriority>3</perceivePriority>
+    <accuracyMultiplier>0.6</accuracyMultiplier>
+    <moveSpeedMultiplier>0.75</moveSpeedMultiplier>
+    <preventSkygaze>true</preventSkygaze>
+    <preventsShuttleLaunch>true</preventsShuttleLaunch>
+    <windSpeedFactor>2.0</windSpeedFactor>
+    <windSpeedOffset>1.5</windSpeedOffset>
+    <sandRate>1.6</sandRate>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+    </ambientSounds>
+    <eventMakers>
+      <li>
+        <averageInterval>900</averageInterval>
+        <eventClass>WeatherEvent_LightningFlash</eventClass>
+      </li>
+      <li>
+        <averageInterval>900</averageInterval>
+        <eventClass>WeatherEvent_LightningStrike</eventClass>
+      </li>
+    </eventMakers>
+    <overlayClasses>
+      <li>WeatherOverlay_SandHard</li>
+      <li>WeatherOverlay_Fallout</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.66,0.62,0.78)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.55,0.5,0.68)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.78,0.66,0.82)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.45,0.62)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.34,0.30,0.46)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.42,0.38,0.55)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.30,0.27,0.42)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.4,0.36,0.52)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsNightMid>
+    <modExtensions>
+      <li Class="RimMandrake.Wasteland.RM_WeatherDoseExtension">
+        <airborneToxicFactor>2.5</airborneToxicFactor>
+        <fallCellsPerDay>1800</fallCellsPerDay>
+        <aftermathPlant>RM_Cinderfelt</aftermathPlant>
+        <aftermathSeedFraction>0.25</aftermathSeedFraction>
+      </li>
+    </modExtensions>
+  </WeatherDef>
+
+</Defs>
