@@ -422,13 +422,14 @@
     </plant>
   </ThingDef>
 
-  <ThingDef ParentName="PlantBaseNonEdible">
+  <ThingDef ParentName="PlantBase">
     <defName>RM_Fellome</defName>
     <label>fellome</label>
     <description>Strings of fat pale pods hanging from a modest scrambling vine, heaviest along the web-lines where the pollen-dusted owners pass. The pods are dusty with sticky pollen. The plantation's gleanings — the spiders sow as they hunt, and fellome is the accidental crop: good calories, everywhere, free. Foraging the Webwork is gleaning someone's fields.</description>
     <statBases>
       <MaxHitPoints>30</MaxHitPoints>
       <Flammability>0.3</Flammability>
+      <Nutrition>0.10</Nutrition>
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Fellome/RM_Fellome_a</texPath>
