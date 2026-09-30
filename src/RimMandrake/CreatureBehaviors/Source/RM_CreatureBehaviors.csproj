@@ -148,6 +148,13 @@
     <Compile Include="RM_MapComponent_SightBlockGrid.cs" />
     <Compile Include="RM_SightBlockPatches.cs" />
     <Compile Include="RM_SightBlockProbe.cs" />
+    <!-- LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 1: golden hour (pinned sun) + mirrak (false shade) -->
+    <Compile Include="RM_PinnedSunExtension.cs" />
+    <Compile Include="RM_MapComponent_PinnedSun.cs" />
+    <Compile Include="RM_PinnedSunPatches.cs" />
+    <Compile Include="RM_FalseShade.cs" />
+    <Compile Include="RM_CompFalseShadeAmbusher.cs" />
+    <Compile Include="RM_ShadeClothExtension.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

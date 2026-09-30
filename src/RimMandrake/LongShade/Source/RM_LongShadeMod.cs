@@ -79,6 +79,16 @@ namespace RimMandrake.LongShade
             list.Label("Turning either off there also turns it off here — this mod loads "
               + "after both and adds no second, possibly-disagreeing switch of its own "
               + "(biome_mod_architecture.md §6b-3).");
+            list.GapLine();
+
+            // LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 1 — same §6b-3 rule: the
+            // mechanisms are Creature Behaviors kit pieces, so their switches
+            // live on that mod's screen; this biome only carries the data.
+            list.Label("Golden hour and the mirrak");
+            list.Label("The perpetual sunset (a fixed sky and shadows that never move) and the "
+              + "mirrak's false-shade ambush are Creature Behaviors mechanisms this biome uses. "
+              + "Switch them there: \"Pinned sun (golden hour)\" with its sky-strength dial, and "
+              + "\"False-shade ambush (the mirrak)\".");
 
             list.End();
         }

@@ -238,6 +238,33 @@
       <li MayRequire="mandrake.rsw.swbestiary">RSW_Jamel</li>
       <li MayRequire="mandrake.rsw.swbestiary">RSW_Falumpaset</li>
     </allowedPackAnimals>
+
+    <!-- LONGSHADE_BEDAZZLE_MECHANICS_1 part 1 — the golden hour (owner: "I like
+         the golden hour concept. A perpetual beautiful sunset."). A pinned sun:
+         one fixed sunset sky that never turns to night, and one fixed shadow
+         vector every rock, wall and tree renders along, pointing away from the
+         substellar point (Ash'karr's is 0,0). The same vector is exposed to the
+         directional shade grid (SOLAR_HEAT_EXPOSURE_1) so the rendered shadows
+         and the mechanical shade agree. Mechanism and toggle live in
+         mandrake.rm.creaturebehaviors (RM_MapComponent_PinnedSun,
+         "Pinned sun (golden hour)" in its Mod Settings). Colours and glow are
+         first values — tuned by looking, in game, with the owner. -->
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_PinnedSunExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <substellarLatitude>0</substellarLatitude>
+        <substellarLongitude>0</substellarLongitude>
+        <minElevationDegrees>2</minElevationDegrees>
+        <maxElevationDegrees>30</maxElevationDegrees>
+        <glow>0.8</glow>
+        <skyColor>(1, 0.80, 0.62)</skyColor>
+        <shadowColor>(0.52, 0.48, 0.72)</shadowColor>
+        <overlayColor>(1, 0.86, 0.70)</overlayColor>
+        <saturation>1.1</saturation>
+        <lightsourceShineSize>2.5</lightsourceShineSize>
+        <lightsourceShineIntensity>0.8</lightsourceShineIntensity>
+        <shadowStrength>1</shadowStrength>
+      </li>
+    </modExtensions>
   </BiomeDef>
 
 </Defs>

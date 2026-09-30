@@ -225,6 +225,19 @@ namespace RimMandrake.CreatureBehaviors
     //      tagged commensal stops tracking the nearest shadow-caster host
     //      and falls through to ordinary vanilla wander — it never seeks
     //      the host out, but nothing stops it standing near one by chance.
+    //  37. pinnedSunEnabled / pinnedSunSkyStrength — RM_MapComponent_PinnedSun
+    //      + RM_PinnedSunPatches (LONGSHADE_BEDAZZLE_MECHANICS_1 part 1, the
+    //      golden hour). Only a biome carrying RM_PinnedSunExtension is
+    //      affected. Off: the sky turns day-to-night like anywhere else and
+    //      shadows swing with the real sun again (the live event expires on
+    //      the next check). The dial scales how strongly the pinned sky paints
+    //      over the weather's own; at 0 the colours are vanilla but the
+    //      shadow vector stays pinned.
+    //  38. falseShadeAmbushEnabled — RM_CompFalseShadeAmbusher +
+    //      RM_MapComponent_FalseShade (LONGSHADE_BEDAZZLE_MECHANICS_1 part 2,
+    //      the mirrak). Off: a false-shade ambusher never strikes and no
+    //      longer reads as shade to shade-seekers — it is a slow, flat
+    //      carrion-eater from then on.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -288,6 +301,12 @@ namespace RimMandrake.CreatureBehaviors
         public static bool sightBlockRangedFire = true;
         public static int sightBlockCellsNeeded = 1;
         public static bool shadowFollowEnabled = true;
+        public static bool pinnedSunEnabled = true;
+        public static float pinnedSunSkyStrength = 1f;
+        public static bool falseShadeAmbushEnabled = true;
+
+        private static Vector2 scrollPosition;
+        private static float lastContentHeight = 2400f;
 
         public override void ExposeData()
         {
@@ -349,12 +368,18 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sightBlockRangedFire, "sightBlockRangedFire", true);
             Scribe_Values.Look(ref sightBlockCellsNeeded, "sightBlockCellsNeeded", 1);
             Scribe_Values.Look(ref shadowFollowEnabled, "shadowFollowEnabled", true);
+            Scribe_Values.Look(ref pinnedSunEnabled, "pinnedSunEnabled", true);
+            Scribe_Values.Look(ref pinnedSunSkyStrength, "pinnedSunSkyStrength", 1f);
+            Scribe_Values.Look(ref falseShadeAmbushEnabled, "falseShadeAmbushEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls: the screen outgrew one window height (38 mechanisms).
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(lastContentHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            list.Begin(viewRect);
 
             list.Label("This is a toolkit other creatures use for behavior. Turning a piece "
                      + "off only matters for a race that actually uses it.");
@@ -584,8 +609,23 @@ namespace RimMandrake.CreatureBehaviors
                 "On: a tagged small commensal actively tracks and follows the nearest large "
               + "shadow-casting host creature, staying in its moving shadow. Off: it stops seeking "
               + "one out and just wanders normally — nothing stops it standing near a host by chance.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Pinned sun (golden hour)", ref pinnedSunEnabled,
+                "On: a biome built with a pinned sun (the Long Shade) keeps one fixed sunset sky "
+              + "forever — no night — and every shadow on the map points the same way and never "
+              + "moves. Off: the sky turns from day to night like anywhere else and shadows swing "
+              + "with the real sun again.");
+            list.Label("Golden-hour sky strength: " + pinnedSunSkyStrength.ToStringPercent());
+            pinnedSunSkyStrength = list.Slider(pinnedSunSkyStrength, 0f, 1f);
+            list.CheckboxLabeled("False-shade ambush (the mirrak)", ref falseShadeAmbushEnabled,
+                "On: a flat ambusher lying in the open looks like shade to animals looking for "
+              + "shade, and seizes whatever lies down in it. Off: it never strikes and nothing "
+              + "mistakes it for shade — it just scavenges the dead.");
 
             list.End();
+            lastContentHeight = list.CurHeight + 12f;
+            Widgets.EndScrollView();
         }
     }
 

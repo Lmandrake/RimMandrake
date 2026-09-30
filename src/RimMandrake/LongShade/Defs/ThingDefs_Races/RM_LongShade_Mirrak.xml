@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LongShade_Mirrak.xml        LONGSHADE_BEDAZZLE_MECHANICS_1 part 2 (tranche 1)
+                                 + LONGSHADE_BEDAZZLE_CONTENT_1 part 7 (the def)
+
+  The mirrak — "the shadow that points the wrong way"
+  (design/Jawa/worldbuilding/biomes/longshade_shade_ideation_2026-09-29.md §6.2;
+  owner, volley turn 4: "2 Mirrak: IN"). A flat ambush predator that lies in the
+  open looking like a shadow. Every real shadow on a Long Shade map is combed one
+  way by the pinned sun (RM_PinnedSunExtension on RM_LongShade); the mirrak's
+  "shadow" is its back, so it lies at whatever angle the animal lies — that
+  mismatch is how a player learns to spot one.
+
+  Mechanics (all mandrake.rm.creaturebehaviors, toggled there as
+  falseShadeAmbushEnabled):
+    RM_FalseShadeExtension          while it lies still, its cells read as shade
+                                    to shade-SEEKERS (RM_ShadePerception), never
+                                    to the shade grid — its body cools nobody.
+    CompProperties_FalseShadeAmbusher
+                                    lies still on open ground; seizes whatever
+                                    small thing steps into its "shadow"; eats the
+                                    kill where it fell.
+  Kill sign (owner's condition on the item: nothing "disappears spontaneously"):
+  a disturbed patch of sand under the victim at the seizure, the victim's own
+  blood from the strike, and the corpse, eaten in place — never carried off.
+  A player's own pawn seized also raises a message naming the mirrak.
+
+  Ban 3 (no pursuit predators): predator=false and MoveSpeed 1.6, so the
+  vanilla think tree never hunts; it eats carrion (CarnivoreAnimal includes
+  corpses) and whatever it seizes.
+
+  NOT YET WIRED into RM_LongShade's wildAnimals: its art is still in the artpipe
+  queue (infrastructure/artpipe/pending/RM_Mirrak_{east,north,south}.json,
+  2026-09-30), and a roster row now would put a magenta creature on the map.
+  Wiring is one line in RM_LongShade.xml the day the render lands at
+  Textures/Things/Pawn/Animal/RM_Mirrak/.
+
+  Mirrak hide (RM_Leather_Mirrak) is the deepest shade cloth: it carries
+  RM_ShadeClothExtension for SHADE_GEAR_FAMILY_1's shade-casting gear to read
+  (that item owns the casting; this def only marks the material). It uses the
+  shared vanilla leather texture, tinted by its stuff colour, so it needs no art.
+-->
+<Defs>
+
+  <ThingDef ParentName="LeatherBase">
+    <defName>RM_Leather_Mirrak</defName>
+    <label>mirrak hide</label>
+    <description>Flat, matte, near-black hide that seems to swallow the light that falls on it. Stretched overhead it throws a deeper shade than any other cloth — the predator that imitates shade makes the best shade there is.</description>
+    <graphicData>
+      <color>(40,34,58)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>3.2</MarketValue>
+      <StuffPower_Armor_Sharp>0.6</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.16</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>20</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(40,34,58)</color>
+      <commonality>0.02</commonality>
+      <statFactors>
+        <MaxHitPoints>1.1</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadeClothExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <shadeBonus>0.3</shadeBonus>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Mirrak</defName>
+    <label>mirrak</label>
+    <description>A dark oblong on the open ground, about the size of the shadow a boulder would throw — except there is no boulder. The mirrak is a wafer-flat ambusher that lies pressed to the sand in full light, its matte back exactly the colour of the long shadows around it. Anything overheated enough to run for the nearest shade and small enough to fit finds the dark closing over it like a book.\n\nEvery real shadow here points the same way. A mirrak's points whichever way the animal lies.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <MarketValue>260</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <ArmorRating_Heat>0.4</ArmorRating_Heat>
+      <FilthRate>1</FilthRate>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>slit mouth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_FalseShadeExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <perceivedShade>0.9</perceivedShade>
+        <radius>1.5</radius>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.CompProperties_FalseShadeAmbusher" MayRequire="mandrake.rm.creaturebehaviors">
+        <maxPreyBodySize>1.2</maxPreyBodySize>
+        <strikeRangeCells>1.9</strikeRangeCells>
+        <strikeDamageRange>14~22</strikeDamageRange>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>1.0</baseBodySize>
+      <baseHealthScale>1.1</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>RM_Leather_Mirrak</leatherDef>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <lifeExpectancy>20</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <!-- no tradeTags until its art lands: a trader must not offer a magenta animal -->
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Mirrak</defName>
+    <label>mirrak</label>
+    <race>RM_Mirrak</race>
+    <combatPower>90</combatPower>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Mirrak/RM_Mirrak</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Mirrak/RM_Mirrak</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Mirrak/RM_Mirrak</texPath>
+          <drawSize>2.0</drawSize>
+          <!-- no shadowData: a creature that IS a shadow casts none -->
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
