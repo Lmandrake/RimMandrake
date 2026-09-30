@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T01:35:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T02:06:54Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -973,3 +973,13 @@ kind:     task
 thin:     no ## verify
 summary:  A design pitch pass per biome (Opus, backgrounded): new invented flora in each
 prose:    infrastructure/state/items/BEDAZZLE_FLORA_EXPANSION_1.md
+
+## ARTIST_BIOME_INSPIRATION_MOD_1 New mod idea (owner, 2026-09-29): artists above ~10 skill get an inspirational biome that boosts art made there, maybe a hated biome too, or an unpredictable inspiration that changes once used (more Jawa) - design later
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ARTIST_BIOME_INSPIRATION_MOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARTIST_BIOME_INSPIRATION_MOD_1.md
