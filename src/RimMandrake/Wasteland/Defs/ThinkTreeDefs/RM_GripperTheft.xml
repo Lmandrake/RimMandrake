@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GripperTheft.xml                     RimMandrake: Wasteland
+
+  WASTELAND_GRIPPER_STEAL_BEHAVIOR_1 — the gripper steals (owner, Wasteland
+  art-sheet ruling 2026-09-29: "This beast is capable of stealing. ... Always
+  carrying something."). C#: Source/RM_GripperTheft.cs.
+
+  Splice point: Core's Animal think tree carries
+  <li Class="ThinkNode_SubtreesByTag"><insertTag>Animal_PreWander</insertTag></li>
+  after needs/mating/trained work and before idle wandering, so a gripper only
+  goes stealing when it has nothing better to do. The splice reaches every
+  animal; the per-race gate is RM_CompGripperThief on the race (the job giver
+  returns nothing without it), and it only fires for a pawn with no faction.
+  The MTB node reads the rate from Mod Settings.
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_GripperSteal</defName>
+    <driverClass>RimMandrake.Wasteland.RM_JobDriver_GripperSteal</driverClass>
+    <reportString>stealing TargetA.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <ThinkTreeDef>
+    <defName>RM_GripperTheft</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>45</insertPriority>
+    <thinkRoot Class="RimMandrake.Wasteland.RM_ThinkNode_GripperTheftChance">
+      <subNodes>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Misc</tagToGive>
+          <subNodes>
+            <li Class="RimMandrake.Wasteland.RM_JobGiver_GripperSteal" />
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

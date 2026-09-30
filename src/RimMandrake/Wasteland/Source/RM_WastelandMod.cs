@@ -16,8 +16,9 @@ namespace RimMandrake.Wasteland
     // WASTELAND_MECHANICS_BUILD_1 layer — storm dose / ash-fall pollution /
     // cinderfelt germination (RM_MapComponent_WastelandStorms), ambient dose and
     // radiothermal heat (RM_CompAmbientDose, RM_CompRadiothermalHeat), and the
-    // processor animals (RM_CompProcessorGatherable). Each of those reads its
-    // toggle below at runtime.
+    // processor animals (RM_CompProcessorGatherable), and the gripper's theft
+    // (RM_GripperTheft.cs, WASTELAND_GRIPPER_STEAL_BEHAVIOR_1). Each of those
+    // reads its toggle below at runtime.
     // ════════════════════════════════════════════════════════════════════
     public class RM_WastelandSettings : ModSettings
     {
@@ -37,6 +38,11 @@ namespace RimMandrake.Wasteland
         public static bool processorGatherEnabled = true;
         public static bool processorUnpolluteEnabled = true;
 
+        // WASTELAND_GRIPPER_STEAL_BEHAVIOR_1 — wild grippers steal (RM_GripperTheft.cs).
+        public static bool gripperTheftEnabled = true;
+        public static bool gripperSpawnsCarrying = true;
+        public static float gripperTheftMtbHours = 3f;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -51,6 +57,9 @@ namespace RimMandrake.Wasteland
             Scribe_Values.Look(ref radiothermalHeatEnabled, "radiothermalHeatEnabled", true);
             Scribe_Values.Look(ref processorGatherEnabled, "processorGatherEnabled", true);
             Scribe_Values.Look(ref processorUnpolluteEnabled, "processorUnpolluteEnabled", true);
+            Scribe_Values.Look(ref gripperTheftEnabled, "gripperTheftEnabled", true);
+            Scribe_Values.Look(ref gripperSpawnsCarrying, "gripperSpawnsCarrying", true);
+            Scribe_Values.Look(ref gripperTheftMtbHours, "gripperTheftMtbHours", 3f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -100,6 +109,19 @@ namespace RimMandrake.Wasteland
               + "or ash-covered ground; collected by the milking job.");
             list.CheckboxLabeled("Processor animals clean pollution", ref processorUnpolluteEnabled,
                 "Processor animals occasionally un-pollute the cell they stand on.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Grippers steal", ref gripperTheftEnabled,
+                "Wild grippers pick up small unforbidden items they can reach, swapping "
+              + "whatever scrap they hold for anything worth more, and scurry off with it. "
+              + "A hurt gripper may drop its haul; a dead one always does. Tamed grippers "
+              + "never steal. Off: grippers are ordinary beetles and carry nothing new.");
+            list.CheckboxLabeled("Grippers spawn carrying scrap", ref gripperSpawnsCarrying,
+                "A newly arrived wild gripper already holds a scrap of junk (steel, silver, "
+              + "cloth, a component).");
+            list.Label("Gripper theft attempts: about every "
+                     + gripperTheftMtbHours.ToString("0.#") + " hours per idle gripper");
+            gripperTheftMtbHours = list.Slider(gripperTheftMtbHours, 0.5f, 24f);
 
             list.End();
         }
