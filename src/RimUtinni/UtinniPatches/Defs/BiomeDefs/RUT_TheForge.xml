@@ -170,7 +170,11 @@
       <Plant_Fireweed>0.9</Plant_Fireweed>  <!-- fireweed -->
       <Plant_MagmaCactus>0.7</Plant_MagmaCactus>  <!-- magma cactus -->
       <RUT_FireLavender>0.6</RUT_FireLavender>  <!-- fire lavender -->
-      <RUT_Sagecrust>0.4</RUT_Sagecrust>  <!-- sagecrust -->
+      <RM_Sagecrust>0.4</RM_Sagecrust>  <!-- sagecrust — LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: repointed from
+           RUT_Sagecrust (RotSporeKit, retired/not in the canonical mod list) to its
+           mandrake.rm.therot equivalent; this row had no MayRequire and dangled a
+           cross-reference on every load. Overlaps ROTSPOREKIT_MAYREQUIRE_ORPHANED_1,
+           which owns the fuller retirement sweep. -->
       <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass>  <!-- primordial grass -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11: AG_Gamma, AG_Septimum and
            AB_GiantGamma all moved OUT of here to forsaken_crags ("to crags" / "elsewhere,
