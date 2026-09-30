@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  BLURRG_RSW_PORT_1 - Blurrg creature port (MLIE_FAUNA_ABSORPTION_1 pattern, self-contained).
+  Ported from mlie.starwarsanimalcollection's `Blurrg` ThingDef/PawnKindDef
+  (Races_Animal_SW.xml), renamed under the RSW_ tier prefix. This one file carries
+  everything the port needs that was not already absorbed: the BodyDef (RSW_Blurrg),
+  the two eggs (RSW_EggBlurrg{,Un}Fertilized), the ThingDef and the PawnKindDef.
+  Already-absorbed parts are referenced, not redefined: RSW_SW_Club, RSW_SW_Claw,
+  RSW_SWTailAttackTool, RSW_SWLeft/RightArmClawAttackTool (RSW_MlieWaveB_BodyParts.xml),
+  RSW_SW_Spur (RSW_MlieWaveB_Abilities.xml), RSW_Leather_Saurian / RSW_Saurian_Meat
+  (RSW_MlieWaveB_Resources.xml), RSW_Pawn_Blurrg_* (SoundDefs_SWBestiary.xml).
+
+  TAMED-ONLY (ruling: leaningscrub_bedazzle_cast_2026-09-29.md section 8). There is NO
+  <wildBiomes> block - the donor's five biome rows were dropped - and this def must
+  never be added to any biome <wildAnimals> roster. It arrives by trade, scenario or
+  quest. The donor's trainability None became Advanced so it can actually be tamed and
+  trained (specialTrainables carries the Odyssey spur, as the Dewback does).
+
+  Values baked in, because the campaign patches that normalised the donor def key on
+  the donor defName `Blurrg` and never touch this one: BeastNorm_Law3.xml (bite power
+  37.5 / cooldown 2.37, manhunterOnDamageChance 0.9, manhunterOnTameFailChance 0.4) and
+  MegafaunaYield.xml (MeatAmount 350). BoneAmount 125 is NOT baked - it is a modded
+  StatDef and belongs in the generated doctrine patch, not in a def.
+
+  Mount sizing, scaled from vanilla Dromedary (MoveSpeed 4.3, MarketValue 300,
+  CaravanRidingSpeedFactor 1.3, bodySize 2.1, healthScale 1.6): the blurrg is the faster,
+  heavier, meaner animal - donor MoveSpeed 5.0 / MarketValue 700, bodySize 2.5, healthScale
+  3.5, CaravanRidingSpeedFactor 1.5 (canon: outran AT-RTs; Dromedary 1.3 is the vanilla mount).
+
+  ART IS BLOCKED. texPath Things/Pawn/Animal/RSW_Blurrg/RSW_Blurrg is wired
+  (Graphic_Multi, _south/_east/_north) but the PNGs do not exist yet; the artpipe jobs
+  rsw_blurrg_v1_{south,east,north} are queued and pending. Drop-in path:
+  src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/RSW_Blurrg/. The donor's art lives
+  in its AssetBundle and is deliberately not reused. Canon: design/RimStarWars/canon_references/blurrg/
+  (canon gives the blurrg two short clawed arms - the body below keeps them).
+-->
+<Defs>
+  <BodyDef>
+    <defName>RSW_Blurrg</defName>
+    <label>bipedal reptilian animal</label>
+    <corePart>
+      <def>Body</def>
+      <height>Middle</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>Tail</def>
+          <coverage>0.10</coverage>
+          <parts>
+            <li>
+              <def>RSW_SW_Club</def>
+              <coverage>0.20</coverage>
+              <groups>
+                <li>RSW_SWTailAttackTool</li>
+              </groups>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Spine</def>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Stomach</def>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Heart</def>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>left lung</customLabel>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Lung</def>
+          <customLabel>right lung</customLabel>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>left kidney</customLabel>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Kidney</def>
+          <customLabel>right kidney</customLabel>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Liver</def>
+          <coverage>0.02</coverage>
+          <depth>Inside</depth>
+        </li>
+        <li>
+          <def>Neck</def>
+          <coverage>0.2</coverage>
+          <height>Top</height>
+          <parts>
+            <li>
+              <def>Head</def>
+              <coverage>0.75</coverage>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>Skull</def>
+                  <coverage>0.25</coverage>
+                  <depth>Inside</depth>
+                  <parts>
+                    <li>
+                      <def>Brain</def>
+                      <coverage>0.7</coverage>
+                      <depth>Inside</depth>
+                    </li>
+                  </parts>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>left eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Eye</def>
+                  <customLabel>right eye</customLabel>
+                  <coverage>0.12</coverage>
+                </li>
+                <li>
+                  <def>Nose</def>
+                  <coverage>0.1</coverage>
+                </li>
+                <li>
+                  <def>AnimalJaw</def>
+                  <customLabel>hinged lower jaw</customLabel>
+                  <coverage>0.26</coverage>
+                  <groups>
+                    <li>Teeth</li>
+                  </groups>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Shoulder</def>
+          <customLabel>left shoulder</customLabel>
+          <coverage>0.1</coverage>
+          <parts>
+            <li>
+              <def>Arm</def>
+              <customLabel>left arm</customLabel>
+              <coverage>0.85</coverage>
+              <parts>
+                <li>
+                  <def>Humerus</def>
+                  <customLabel>left humerus</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Radius</def>
+                  <customLabel>left radius</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Hand</def>
+                  <customLabel>left clawed paw</customLabel>
+                  <coverage>0.25</coverage>
+                  <height>Bottom</height>
+                  <parts>
+                    <li>
+                      <def>RSW_SW_Claw</def>
+                      <customLabel>left claws</customLabel>
+                      <coverage>0.1</coverage>
+                      <groups>
+                        <li>RSW_SWLeftArmClawAttackTool</li>
+                      </groups>
+                    </li>
+                  </parts>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Shoulder</def>
+          <customLabel>right shoulder</customLabel>
+          <coverage>0.1</coverage>
+          <parts>
+            <li>
+              <def>Arm</def>
+              <customLabel>right arm</customLabel>
+              <coverage>0.85</coverage>
+              <parts>
+                <li>
+                  <def>Humerus</def>
+                  <customLabel>right humerus</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Radius</def>
+                  <customLabel>right radius</customLabel>
+                  <coverage>0.1</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>Hand</def>
+                  <customLabel>right clawed paw</customLabel>
+                  <coverage>0.25</coverage>
+                  <height>Bottom</height>
+                  <parts>
+                    <li>
+                      <def>RSW_SW_Claw</def>
+                      <customLabel>right claws</customLabel>
+                      <coverage>0.1</coverage>
+                      <groups>
+                        <li>RSW_SWRightArmClawAttackTool</li>
+                      </groups>
+                    </li>
+                  </parts>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear left leg</customLabel>
+          <coverage>0.1</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear left paw</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Leg</def>
+          <customLabel>rear right leg</customLabel>
+          <coverage>0.1</coverage>
+          <height>Bottom</height>
+          <parts>
+            <li>
+              <def>Paw</def>
+              <customLabel>rear right paw</customLabel>
+              <coverage>0.15</coverage>
+            </li>
+          </parts>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggBlurrgFertilized</defName>
+    <label>blurrg egg (fert.)</label>
+    <description>A fertilized blurrg egg. If all goes well, it should hatch into a baby blurrg. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.75</Nutrition>
+      <MarketValue>40.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>15</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Blurrg</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggBlurrgUnFertilized</defName>
+    <label>blurrg egg (unfert.)</label>
+    <description>An unfertilized blurrg egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggSaurian</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.75</Nutrition>
+      <MarketValue>40.0</MarketValue>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Blurrg</defName>
+    <label>blurrg</label>
+    <description>Blurrgs are two-legged, non-sentient reptiles used as beasts of burden and mounts on a number of worlds across the galaxy. A blurrg has two short arms ending in two clawed fingers, a thick tail that helps it balance, and hip joints set unusually high on its body. Its large mouth holds many sharp teeth that can chew through most materials, including grasses and weeds, but it is not strictly a herbivore and will eat other organisms, even its own kind. Fast, strong and ill-tempered when provoked, a blurrg answers to whoever broke it.</description>
+    <statBases>
+      <MoveSpeed>5.0</MoveSpeed>
+      <MarketValue>700</MarketValue>
+      <MeatAmount>350</MeatAmount>
+      <ComfyTemperatureMin>-8</ComfyTemperatureMin>
+      <FilthRate>10</FilthRate>
+      <CaravanRidingSpeedFactor>1.5</CaravanRidingSpeedFactor>
+      <Wildness>0.40</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3.6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWLeftArmClawAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claws</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3.6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWRightArmClawAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>37.5</power>
+        <cooldownTime>2.37</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggBlurrgUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggBlurrgFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>3~6</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Blurrg</body>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseBodySize>2.5</baseBodySize>
+      <baseHealthScale>3.5</baseHealthScale>
+      <foodType>OmnivoreAnimal, VegetarianRoughAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Saurian</leatherDef>
+      <specificMeatDef>RSW_Saurian_Meat</specificMeatDef>
+      <petness>0.40</petness>
+      <roamMtbDays>4</roamMtbDays>
+      <trainability>Advanced</trainability>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+      </specialTrainables>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <manhunterOnTameFailChance>0.4</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.9</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>40</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.55</minAge>
+          <soundWounded>RSW_Pawn_Blurrg_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Blurrg_Death</soundDeath>
+          <soundCall>RSW_Pawn_Blurrg_Call</soundCall>
+          <soundAngry>RSW_Pawn_Blurrg_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>PredatorLarge_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Blurrg</defName>
+    <label>blurrg</label>
+    <race>RSW_Blurrg</race>
+    <combatPower>270</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <abilities>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">RSW_SW_Spur</li>
+    </abilities>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RSW_Blurrg/RSW_Blurrg</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RSW_Blurrg/RSW_Blurrg</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RSW_Blurrg/RSW_Blurrg</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.4</drawSize>
+          <shadowData>
+            <volume>(1.0, 0.75, 0.75)</volume>
+            <offset>(0,0,-0.35)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
