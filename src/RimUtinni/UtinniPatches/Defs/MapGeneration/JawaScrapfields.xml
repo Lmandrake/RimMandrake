@@ -103,7 +103,11 @@
   <GenStepDef>
     <defName>RUT_Jawa_ScatterScrapfields</defName>
     <order>960</order>
-    <genStep Class="GenStep_ScatterThings">
+    <!-- MAPGEN_SCATTER_NRE_1: stock GenStep_ScatterThings NREs when an item it
+         scatters fails to place (thing.Map null in the filth loop). This
+         subclass (UtinniPatches Source) lays filth only around a spawned chunk;
+         every field below is read exactly as the stock class reads it. -->
+    <genStep Class="RimMandrake.Utinni.UtinniPatches.RUT_GenStep_ScatterThingsPlacedFilth">
       <thingDef>ChunkSlagSteel</thingDef>
       <allowInWaterBiome>false</allowInWaterBiome>
       <!-- 🔴 isJunk REMOVED 2026-08-14 — it silently zeroed this entire step.

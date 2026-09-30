@@ -43,12 +43,12 @@
   colour, zero yield — the shore shows you what the sea is made of and makes
   you dive for it.
 
-  SCOPE: registered globally onto Base_Player (the Scald wreck-scatter
-  pattern, RUT_ScaldWreckScatter_Register.xml — read its header), and scoped
+  SCOPE: listed on the RM_SeaCoast tile mutator's extraGenSteps
+  (Patches/RM_GreySeaShoreScatter_Register.xml — read its header), and scoped
   by the terrain tag RM_GreySaltCrust, which only RM_SaltCrustShore carries
-  and which only the Grey Sea's own shore lays. A map beside any other sea
-  has no cell with that tag and the step is a silent no-op there, which is
-  the correct behaviour.
+  and which only the Grey Sea's own shore lays. A coast beside any other
+  modded sea has no cell with that tag; warnOnFail false keeps that no-op
+  silent.
   ============================================================================
 -->
 <Defs>
@@ -90,6 +90,7 @@
     <order>968</order>
     <genStep Class="GenStep_ScatterThings">
       <thingDef>RM_SaltDomeShore</thingDef>
+      <warnOnFail>false</warnOnFail>
       <allowInWaterBiome>true</allowInWaterBiome>
       <spotMustBeStandable>true</spotMustBeStandable>
       <clusterSize>4</clusterSize>

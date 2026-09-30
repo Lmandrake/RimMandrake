@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_WastelandBrine_ScatterRegister.xml   RimMandrake: Wasteland
-
-  WASTELAND_RM_MOD_BUILD_1 step 2 — renamed copy of
-  src/RimUtinni/UtinniPatches/Patches/RUT_WastelandBrineScatter_Register.xml
-  (FISH_BESTIARY_BUILD_1 wave 2), RUT_ -> RM_. Registers this mod's own three
-  GenStepDefs onto Base_Player; franchise-free and campaign-free, so it moves
-  unchanged into this mod rather than needing a second Utinni-side op (unlike
-  the world-live constants named in the item's §7). See the source file's own
-  header for why the Tekk/Drazz half needs its own MayRequire="Ludeon.RimWorld.
-  Odyssey" Operation, separate from BrinePlate's unconditional one.
+  RM_WastelandBrine_ScatterRegister.xml
+  MAPGEN_SCATTER_NRE_1 (2026-09-30): registers the three RM_ Wasteland brine-deposit scatters (RM_WastelandBrine_Scatter.xml) on its OWN biome(s)
+  via BiomeDef.extraGenSteps, which Verse.MapGenerator.GenerateMap appends
+  only when map.Biome is that biome (decompiled 1.6, MapGenerator.cs). It
+  used to be added to the global Base_Player genSteps and relied on a
+  terrain-tag validator to no-op elsewhere; that ran the step on every player
+  map and logged "could not find cell" (or "no filthDef configured") on each.
+  extraGenSteps applies to every map generator on that biome, not only
+  Base_Player; the RM_WastelandBrineShallow terrain validator still confines placement.
+  Nested Conditionals: skip if the biome is not loaded; append to an existing
+  extraGenSteps node, else create one.
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
-    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
-      <value>
-        <li>RM_ScatterWastelandBrineTekk</li>
-        <li>RM_ScatterWastelandBrineDrazz</li>
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
-      <value>
-        <li>RM_ScatterWastelandBrinePlate</li>
-      </value>
+    <xpath>/Defs/BiomeDef[defName="RM_Wasteland"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RM_Wasteland"]/extraGenSteps</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RM_Wasteland"]/extraGenSteps</xpath>
+        <value>
+          <li MayRequire="Ludeon.RimWorld.Odyssey">RM_ScatterWastelandBrineTekk</li>
+          <li MayRequire="Ludeon.RimWorld.Odyssey">RM_ScatterWastelandBrineDrazz</li>
+          <li>RM_ScatterWastelandBrinePlate</li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RM_Wasteland"]</xpath>
+        <value>
+          <extraGenSteps>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">RM_ScatterWastelandBrineTekk</li>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">RM_ScatterWastelandBrineDrazz</li>
+            <li>RM_ScatterWastelandBrinePlate</li>
+          </extraGenSteps>
+        </value>
+      </nomatch>
     </match>
   </Operation>
 

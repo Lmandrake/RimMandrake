@@ -1,64 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ============================================================================
-  RUT_WastelandBrineScatter_Register.xml  UtinniPatches · authored 2026-09-18
-  ============================================================================
-  FISH_BESTIARY_BUILD_1 wave 2 — the registration half. RUT_WastelandBrineScatter.xml
-  declares three GenStepDefs; a GenStepDef on its own runs on no map, the same
-  fact RUT_ScaldWreckScatter_Register.xml (this same mod) already documents.
-
-  SCOPE: Base_Player, GLOBAL — same justification RUT_ScaldWreckScatter_Register.xml
-  already gives for its own three wreck GenStepDefs: each scatter step's OWN
-  terrain validator (terrainValidationAllowed -> RUT_WastelandBrineShallow) already
-  confines it to cells carrying that tag, and only the two RUT_WastelandBrine*
-  shallow terrains (RUT_WastelandBrineWater.xml) carry it — nowhere else in the
-  load order does. Registering onto Base_Player is still correct: the player's
-  own settled map is where a brine-deposit scatter should visibly land.
-
-  Target: Core/Defs/MapGeneration/BasePlayerMapGenerator.xml, MapGeneratorDef
-  ParentName="MapCommonBase" Name="Base_Player", <genSteps> a plain list of
-  GenStepDef names.
-
-  🔴 CORRECTED (FOUNDRY code review, 2026-09-18): two of the three GenStepDefs
-  ARE cross-mod-gated, so this patch is split into two Operations rather than
-  one. RUT_Jawa_ScatterWastelandBrineTekk/Drazz's own thingDef (RUT_BrineDeposit_
-  Tekk/Drazz) sets mineableThing to RUT_Tekk/RUT_Drazz, both
-  MayRequire="Ludeon.RimWorld.Odyssey" ThingDefs (RUT_WastelandBrine_Items.xml) —
-  so both the deposit ThingDefs and their GenStepDefs now carry that same
-  MayRequire (RUT_WastelandBrineDeposits.xml / RUT_WastelandBrineScatter.xml).
-  Adding a <li> naming either GenStepDef unconditionally, as this patch
-  originally did, would have added a name to Base_Player's genSteps list that
-  resolves to nothing without Odyssey — a dangling cross-reference at load.
-  RUT_Jawa_ScatterWastelandBrinePlate has no such gate (its thingDef's
-  mineableThing is RUT_BrinePlate, an ungated ResourceBase def) and keeps its
-  own unconditional Operation.
-  ============================================================================
+  RUT_WastelandBrineScatter_Register.xml
+  MAPGEN_SCATTER_NRE_1 (2026-09-30): registers the three RUT_ Wasteland brine-deposit scatters (RUT_WastelandBrineScatter.xml) on its OWN biome(s)
+  via BiomeDef.extraGenSteps, which Verse.MapGenerator.GenerateMap appends
+  only when map.Biome is that biome (decompiled 1.6, MapGenerator.cs). It
+  used to be added to the global Base_Player genSteps and relied on a
+  terrain-tag validator to no-op elsewhere; that ran the step on every player
+  map and logged "could not find cell" (or "no filthDef configured") on each.
+  extraGenSteps applies to every map generator on that biome, not only
+  Base_Player; the RUT_WastelandBrineShallow terrain validator still confines placement.
+  Nested Conditionals: skip if the biome is not loaded; append to an existing
+  extraGenSteps node, else create one.
 -->
 <Patch>
 
-  <!-- Tekk/Drazz GenStepDefs are themselves MayRequire="Ludeon.RimWorld.Odyssey"
-       (RUT_WastelandBrineScatter.xml, since their own thingDef's mineableThing
-       points at the Odyssey-gated RUT_Tekk/RUT_Drazz ThingDefs) - added
-       separately from BrinePlate's so this patch never adds a <li> naming a
-       GenStepDef that does not exist without Odyssey active. -->
-  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
-    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
-      <value>
-        <li>RUT_Jawa_ScatterWastelandBrineTekk</li>
-        <li>RUT_Jawa_ScatterWastelandBrineDrazz</li>
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
-      <value>
-        <li>RUT_Jawa_ScatterWastelandBrinePlate</li>
-      </value>
+    <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]/extraGenSteps</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]/extraGenSteps</xpath>
+        <value>
+          <li MayRequire="Ludeon.RimWorld.Odyssey">RUT_Jawa_ScatterWastelandBrineTekk</li>
+          <li MayRequire="Ludeon.RimWorld.Odyssey">RUT_Jawa_ScatterWastelandBrineDrazz</li>
+          <li>RUT_Jawa_ScatterWastelandBrinePlate</li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RUT_Wasteland"]</xpath>
+        <value>
+          <extraGenSteps>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">RUT_Jawa_ScatterWastelandBrineTekk</li>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">RUT_Jawa_ScatterWastelandBrineDrazz</li>
+            <li>RUT_Jawa_ScatterWastelandBrinePlate</li>
+          </extraGenSteps>
+        </value>
+      </nomatch>
     </match>
   </Operation>
 
