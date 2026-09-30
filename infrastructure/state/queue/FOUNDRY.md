@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T07:36:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T07:49:16Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1197,6 +1197,15 @@ kind:     task
 summary:  Spec row (verbatim, deepfireluminouspigmentspec.md §10 step 6)
 prose:    infrastructure/state/items/DEEPFIRE_FLOOR_PAINT_1.md
 
+## WASTELAND_MIDDENSHELL_FOOTPRINT_1 Middenshell ruled 20 cells wide; engine building/pawn footprint tops out near 4x4 - pick shrink, multi-part, or terrain-feature form
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  (no items/WASTELAND_MIDDENSHELL_FOOTPRINT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WASTELAND_MIDDENSHELL_FOOTPRINT_1.md
+
 ## SOLAR_HEAT_EXPOSURE_1 Planet-wide sun heat: sun exposure feeds VANILLA heat (no new heat kind), per-biome heat kind (overhead sun / low sun / steam), directional shade grid, sun-cost pathing, rest-dash-rest animal behaviour, dash-radius ring; Long Shade is first consumer
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1259,15 +1268,6 @@ target:   v1
 kind:     task
 summary:  (no items/FORGE_LAVA_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FORGE_LAVA_TERRAIN_1.md
-
-## BRIDGE_MOD_DEBUGACTIONS_NOOP_1 rimworld/execute_debug_action returns success in 1 ms but never runs our mods' [DebugAction] methods (Forge cycle report/advance: 0 log lines); vanilla actions work
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  (no items/BRIDGE_MOD_DEBUGACTIONS_NOOP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BRIDGE_MOD_DEBUGACTIONS_NOOP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -2061,6 +2061,46 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BLUEDESERT_GPT_ENRICHMENT_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Blue-ice heat sink. Loading blue ice into a rack holds a room cold through a power failure. The
 prose:    infrastructure/state/items/BLUEDESERT_GPT_ENRICHMENT_1.md
+
+## GRAVSHIP_ACOUSTIC_SCANNER_1 Gravship acoustic scanner (owner, 2026-09-30, from the Cracked Lands Belly Sounder): grounded ship fires a sounding pulse that reveals broad bands of hidden things, with a per-biome payload in EVERY biome
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  - A ship-mounted acoustic scanner. When the grounded gravship fires a sounding pulse, dust jumps
+prose:    infrastructure/state/items/GRAVSHIP_ACOUSTIC_SCANNER_1.md
+
+## CRACKEDLANDS_GPT_ENRICHMENT_1 Cracked Lands enrichment (GPT consult 2026-09-30, owner-picked by card): Ledges of Mercy, five beats before water, Peakstorm light, three-height flora, the recede feast, floodline salvage claim; acoustic scanner's Cracked Lands payload
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Ledges of Mercy. Map generation places high ledges bearing worn figures, old offerings, and
+prose:    infrastructure/state/items/CRACKEDLANDS_GPT_ENRICHMENT_1.md
+
+## CAULDRON_GPT_ENRICHMENT_1 Cauldron enrichment (GPT consult 2026-09-30, owner-picked by card): four-stroke weather cycle, vexxiss warden of the breath, vexxith closed loop, assay forestry, condensate gardens
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Four-stroke weather cycle. The four ratified weathers become recognizable phases of one engine:
+prose:    infrastructure/state/items/CAULDRON_GPT_ENRICHMENT_1.md
+
+## FORGE_GPT_ENRICHMENT_1 Forge enrichment (GPT consult 2026-09-30, owner-picked by card): floatstone keelwork, spunstone bonding, four voices of the Forge, white plume fronts, sky pastures, dhokkur ways, dhuvvox clock
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FORGE_GPT_ENRICHMENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FORGE_GPT_ENRICHMENT_1.md
