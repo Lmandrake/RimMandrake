@@ -55,6 +55,7 @@
     <Compile Include="RM_WindCalendar.cs" />
     <Compile Include="RM_TwitcherLash.cs" />
     <Compile Include="RM_SmotherCraft.cs" />
+    <Compile Include="RM_TheLean.cs" />
   </ItemGroup>
 
   <ItemGroup>
