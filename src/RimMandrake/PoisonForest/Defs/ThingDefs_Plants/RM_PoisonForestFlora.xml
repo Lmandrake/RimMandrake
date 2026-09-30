@@ -39,10 +39,15 @@
     <defName>RM_TwistingThornwood</defName>
     <label>twisting thornwood</label>
     <description>A tree the Cauldron has wrung into a corkscrew, its trunk armoured in hard grey thorns and weeping the forest's metallic sweat from every split in the bark. The wood inside is dense and slow-grown, and cutting it is a long, ugly job: the thorns fight back, and the sweat dries into the grain like solder.</description>
-    <!-- METAL SECOND YIELD (owner-ruled, both trees): a growth-scaled steel/metal
-         drop beside the wood. Vanilla plants have exactly one harvestedThingDef and
-         no second-yield field, and Plant only ticks TickLong, so this needs a C#
-         comp, not built (no C# this pass). Follow-on: CAULDRON_TREE_METAL_YIELD_1. -->
+    <!-- METAL SECOND YIELD (owner-ruled, both trees; CAULDRON_TREE_METAL_YIELD_1):
+         steel beside the wood, scaled by growth. See RM_CompMetalYield. -->
+    <comps>
+      <li Class="RimMandrake.PoisonForest.RM_CompProperties_MetalYield">
+        <metalDef>Steel</metalDef>
+        <countAtMinGrowth>2</countAtMinGrowth>
+        <countAtFullGrowth>12</countAtFullGrowth>
+      </li>
+    </comps>
     <minifiedDef IsNull="True" />
     <statBases>
       <MaxHitPoints>210</MaxHitPoints>
@@ -80,10 +85,15 @@
     <defName>RM_TreeMartyr</defName>
     <label>martyr tree</label>
     <description>A large yucca-related plant adapted to poisoned soils. It yields a small amount of fibrous material that can be used like wood.</description>
-    <!-- METAL SECOND YIELD (owner-ruled, both trees): a growth-scaled metal drop
-         alongside the wood needs a C# comp (plants tick via TickLong only) and is
-         NOT built here; follow-on CAULDRON_TREE_METAL_YIELD_1. Only the steep
-         harvestWork below is XML-only and is live. -->
+    <!-- METAL SECOND YIELD (owner-ruled, both trees; CAULDRON_TREE_METAL_YIELD_1):
+         steel beside the wood, scaled by growth. See RM_CompMetalYield. -->
+    <comps>
+      <li Class="RimMandrake.PoisonForest.RM_CompProperties_MetalYield">
+        <metalDef>Steel</metalDef>
+        <countAtMinGrowth>1</countAtMinGrowth>
+        <countAtFullGrowth>6</countAtFullGrowth>
+      </li>
+    </comps>
     <minifiedDef IsNull="True" />
     <statBases>
       <MaxHitPoints>200</MaxHitPoints>
