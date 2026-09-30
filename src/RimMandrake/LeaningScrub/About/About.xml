@@ -53,10 +53,14 @@ behavior, MOD_OPTIONS_RETROFIT_1 doctrine):
      every stand on this biome specifically, without touching that kit's
      own global switch for any other consumer of the same plant.
 
-NOT in this mod: the campaign's tree-guardian creature
-(SHRUBLAND_TREE_GUARDIAN_1), the Stall/Gale wind WeatherDefs, the vaporator
-desertification mechanic and the canopy-concealment stat — all unbuilt,
-named in the source sheet's own "Owed" section, and land here later when
-built.
+Also ships the wind calendar (LEANINGSCRUB_MECHANICS_BUILD_1): every
+ordinary day on the plain carries wind, broken only by the Stall (dead calm;
+small wild animals hold still) and the Gale (hearing and speech lost
+outdoors, wind turbines surge with a breakdown risk, raids weigh heavier
+among threats). Each effect has its own switch in Mod Settings.
+
+NOT in this mod yet: the campaign's tree-guardian creature
+(SHRUBLAND_TREE_GUARDIAN_1), the vaporator desertification mechanic and the
+canopy-concealment stat.
   </description>
 </ModMetaData>

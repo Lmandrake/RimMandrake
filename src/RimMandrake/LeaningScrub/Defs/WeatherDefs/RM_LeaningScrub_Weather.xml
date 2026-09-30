@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LeaningScrub_Weather.xml     LEANINGSCRUB_MECHANICS_BUILD_1 part 1 (the wind calendar)
+
+  Four owned WeatherDefs. The sheet's ban 5 - every ordinary day carries wind,
+  calm only as the Stall - is enforced by the biome running its OWN two ordinary
+  weathers (RM_ScrubWind replaces Clear, RM_ScrubWindFog replaces Fog) instead of
+  the stock ones. windSpeedOffset > 0 makes WindManager remap the map's wind into
+  [offset, max], so an ordinary scrub day can never fall calm.
+
+  The Stall and the Gale are the names RULED 2026-09-21. Their effects are C#
+  keyed on these defs (RM_WindCalendar.cs), each gated in Mod Settings:
+    Stall - windSpeedFactor 0 (true calm), no ambient sound (the plain goes
+            quiet because the wind does); small wild animals hold still.
+    Gale  - wind pinned high; hearing/speech penalty outdoors (RM_GaleDeafened),
+            wind turbines surge past rated output with a breakdown risk, and
+            raids weigh heavier among threats while it blows.
+  Sky colours are vanilla Clear's / Fog's, unchanged.
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RM_ScrubWind</defName>
+    <label>steady wind</label>
+    <description>The ordinary day on the plain: the wind never stops, and every stand of fuzz leans the same way under it.</description>
+    <repeatable>true</repeatable>
+    <favorability>Good</favorability>
+    <perceivePriority>0</perceivePriority>
+    <windSpeedOffset>0.5</windSpeedOffset>
+    <ambientSounds>
+      <li>Ambient_Wind_Clear</li>
+    </ambientSounds>
+    <skyColorsDay>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.718,0.745,0.757)</shadow>
+      <overlay>(1,1,1)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.858,0.650,0.423)</sky>
+      <shadow>(0.955,0.886,0.914)</shadow>
+      <overlay>(0.8,0.8,0.8)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.482,0.603,0.682)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.482,0.603,0.682)</sky>
+      <shadow>(0.85, 0.85, 0.85)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <WeatherDef>
+    <defName>RM_ScrubWindFog</defName>
+    <label>wind-fog</label>
+    <description>Fog riding in on the wind from the darkward horizon, fattening the fuzz as it passes. It reduces the accuracy of ranged weapons, and it never lies still.</description>
+    <isBad>true</isBad>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <accuracyMultiplier>0.5</accuracyMultiplier>
+    <windSpeedOffset>0.4</windSpeedOffset>
+    <commonalityRainfallFactor>
+      <points>
+        <li>(0, 0)</li>
+        <li>(1300, 1)</li>
+      </points>
+    </commonalityRainfallFactor>
+    <ambientSounds>
+      <li>Ambient_Wind_Fog</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.8,0.8,0.8)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.7,0.7,0.7)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.35,0.40,0.45)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.5,0.5,0.5)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <WeatherDef>
+    <defName>RM_Stall</defName>
+    <label>the Stall</label>
+    <description>The wind dies. Every stand of fuzz straightens and goes still, the plain goes silent, and every small thing under the canopy holds its breath - because in the Stall, whatever moves is seen.</description>
+    <favorability>Neutral</favorability>
+    <perceivePriority>2</perceivePriority>
+    <durationRange>5000~15000</durationRange>
+    <windSpeedFactor>0</windSpeedFactor>
+    <skyColorsDay>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.718,0.745,0.757)</shadow>
+      <overlay>(1,1,1)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.858,0.650,0.423)</sky>
+      <shadow>(0.955,0.886,0.914)</shadow>
+      <overlay>(0.8,0.8,0.8)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.482,0.603,0.682)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.482,0.603,0.682)</sky>
+      <shadow>(0.85, 0.85, 0.85)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>1.25</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+  <WeatherDef>
+    <defName>RM_Gale</defName>
+    <label>the Gale</label>
+    <description>The wind rises until the whole canopy whites out, flattened silver. Nobody outdoors hears much or is heard, wind turbines spin past their rating, and raiders have learned to ride in under the noise.</description>
+    <isBad>true</isBad>
+    <favorability>Bad</favorability>
+    <perceivePriority>2</perceivePriority>
+    <durationRange>10000~40000</durationRange>
+    <moveSpeedMultiplier>0.9</moveSpeedMultiplier>
+    <accuracyMultiplier>0.8</accuracyMultiplier>
+    <windSpeedFactor>1.5</windSpeedFactor>
+    <windSpeedOffset>1.5</windSpeedOffset>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+    </ambientSounds>
+    <skyColorsDay>
+      <sky>(1,1,1)</sky>
+      <shadow>(0.718,0.745,0.757)</shadow>
+      <overlay>(1,1,1)</overlay>
+      <saturation>1.1</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.858,0.650,0.423)</sky>
+      <shadow>(0.955,0.886,0.914)</shadow>
+      <overlay>(0.8,0.8,0.8)</overlay>
+      <saturation>1.1</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.482,0.603,0.682)</sky>
+      <shadow>(0.92,0.92,0.92)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>1.1</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.482,0.603,0.682)</sky>
+      <shadow>(0.85, 0.85, 0.85)</shadow>
+      <overlay>(0.6,0.6,0.6)</overlay>
+      <saturation>1.1</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

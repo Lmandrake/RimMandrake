@@ -143,9 +143,15 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+    <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 1: ban 5 (every ordinary day carries
+         wind) - the stock Clear 30 / Fog 45 are replaced by the owned windy twins
+         RM_ScrubWind / RM_ScrubWindFog (Defs/WeatherDefs/RM_LeaningScrub_Weather.xml),
+         and the Stall and the Gale take their share from them. -->
     <baseWeatherCommonalities>
-      <Clear>30</Clear>
-      <Fog>45</Fog>
+      <RM_ScrubWind>28</RM_ScrubWind>
+      <RM_ScrubWindFog>40</RM_ScrubWindFog>
+      <RM_Stall>3</RM_Stall>
+      <RM_Gale>7</RM_Gale>
       <DryThunderstorm>1</DryThunderstorm>
       <SnowGentle>0</SnowGentle>
       <SnowHard>0</SnowHard>
