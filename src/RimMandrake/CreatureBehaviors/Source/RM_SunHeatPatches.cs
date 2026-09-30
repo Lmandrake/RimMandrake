@@ -33,7 +33,9 @@ namespace RimMandrake.CreatureBehaviors
     //    Drafted pawns go where the player sends them.
     //
     // §6 LEGIBILITY. Postfix on Pawn.GetGizmos adds the sun-load bar
-    //    (RM_Gizmo_SunLoad) for a selected pawn on a sun-heat map.
+    //    (RM_Gizmo_SunLoad) for a selected pawn on a sun-heat map, and a
+    //    postfix on Pawn.DrawExtraSelectionOverlays draws the back-to-shade
+    //    ring round a selected drafted pawn (RM_DashRing, RM_ShadeHop.cs).
     //
     // All three are inert on every map whose biome carries no
     // RM_SunHeatExtension (only those maps are registered) and when the
@@ -58,6 +60,8 @@ namespace RimMandrake.CreatureBehaviors
                 nameof(Postfix_GenerateNewPathRequest), "sun-cost pathing");
             TryPatch(harmony, AccessTools.Method(typeof(Pawn), nameof(Pawn.GetGizmos)),
                 nameof(Postfix_GetGizmos), "sun-load bar");
+            TryPatch(harmony, AccessTools.Method(typeof(Pawn), nameof(Pawn.DrawExtraSelectionOverlays)),
+                nameof(Postfix_DrawExtraSelectionOverlays), "back-to-shade ring");
         }
 
         private static void TryPatch(Harmony harmony, MethodInfo target, string postfix, string what)
@@ -196,6 +200,23 @@ namespace RimMandrake.CreatureBehaviors
             catch (Exception e)
             {
                 Log.ErrorOnce("[RM CreatureBehaviors] sun-cost pathing: " + e, 0x5A17E48);
+            }
+        }
+
+        /// <summary>§6: the drafted-pawn back-to-shade ring (RM_DashRing).</summary>
+        public static void Postfix_DrawExtraSelectionOverlays(Pawn __instance)
+        {
+            if (heatMaps.Count == 0)
+            {
+                return;
+            }
+            try
+            {
+                RM_DashRing.Draw(__instance);
+            }
+            catch (Exception e)
+            {
+                Log.ErrorOnce("[RM CreatureBehaviors] back-to-shade ring: " + e, 0x5A17E49);
             }
         }
 

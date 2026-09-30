@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SOLAR_HEAT_EXPOSURE_1 section 5: rest, dash, rest (RM_ShadeHop.cs).
+     Both job givers return no job at their first check on any map whose biome
+     carries no RM_SunHeatExtension (or whose heat is ambient), and for anything
+     that is not a wild animal outside a mental state, so they are safe to
+     insert globally.
+     Animal_PreMain: after Downed, Burning, both MentalState subtrees,
+     ReactToCloseMeleeThreat, ForcedGoto, RopedPawn and LordDuty, and before
+     SatisfyBasicNeeds. An animal caught in open sun sprints for shade first.
+     Animal_PreWander: just before every vanilla wander node. insertPriority 10
+     puts it ahead of RM_ThinkTree_ShadeSeekingWander (the default 0), so on a
+     sun-heat map the strict hop wins and on every other map that tree runs
+     as before. -->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_SunEscape</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <insertPriority>10</insertPriority>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_SunEscape" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_ShadeHop</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>10</insertPriority>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_ShadeHop" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

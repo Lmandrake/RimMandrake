@@ -18,6 +18,12 @@
 // cuts sun heat on the kinds it is for, the shield wins under a low sun,
 // nothing helps under ambient heat, and mirrak hide casts deepest.
 //
+// SOLAR_HEAT_EXPOSURE_1 tranche 2 (§5/§6), REAL from RM_ShadePatchGraph.cs:
+// patch labelling (flecks dropped), rims, the distance-to-shade field, edges
+// between patches (cost, cap, walls cut them), the dash-range math driven
+// by vanilla's Heatstroke curve (bigger = further, already hot = nowhere,
+// the strictness dial), and the §6 go-and-return ring.
+//
 // NOT covered, and why: anything that needs a live Map — the room test
 // (UsesOutdoorTemperature), roof/thing scans, the Harmony postfixes and the
 // NativeArray customizer. Those are the quicktest criteria on the item.
@@ -300,6 +306,118 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                     Assert(!RM_SunHeatMath.AdjacentShadowCell(5, 5, 0f, 0f, out _, out _), "neighbour chosen with no direction");
                 });
             }
+
+            // ── tranche 2: shade-patch graph, dash range, ring ──────────
+            Case("patch graph: two patches across 5 sun cells, one edge at the rim-to-rim cost", () =>
+            {
+                // 12 x 3 strip: shade at x=0..2 and x=8..11, sun between.
+                const int w = 12, h = 3;
+                bool[] sh = new bool[w * h], wk = new bool[w * h];
+                for (int i = 0; i < w * h; i++) { wk[i] = true; int x = i % w; sh[i] = x <= 2 || x >= 8; }
+                var g = RM_ShadePatchGraph.Build(w, h, sh, wk, 400, 2);
+                Assert(g.PatchCount == 2, "patches " + g.PatchCount);
+                Assert(g.EdgeCount == 1, "edges " + g.EdgeCount);
+                var e = g.patches[g.patchOf[0]].edges[0];
+                Assert(e.cost == 60, "hop cost " + e.cost + ", expected 6 cardinal steps = 60");
+                Assert(e.fromCell % w == 2 && e.toCell % w == 8, "hop does not run rim to rim (" + e.fromCell % w + " -> " + e.toCell % w + ")");
+                Assert(g.distToShade[1 * w + 5] == 30 && g.distToShade[1 * w + 1] == 0, "distance field wrong");
+                Assert(g.patches[0].rim.Count == 3 && g.patches[1].rim.Count == 3, "rim is not the sun-facing column");
+            });
+
+            Case("patch graph: the cap cuts a long hop; a wall cuts any hop", () =>
+            {
+                const int w = 30, h = 3;
+                bool[] sh = new bool[w * h], wk = new bool[w * h];
+                for (int i = 0; i < w * h; i++) { wk[i] = true; int x = i % w; sh[i] = x == 0 || x == 29; }
+                Assert(RM_ShadePatchGraph.Build(w, h, sh, wk, 200, 1).EdgeCount == 0, "a 28-cell hop passed a 20-cell cap");
+                Assert(RM_ShadePatchGraph.Build(w, h, sh, wk, 400, 1).EdgeCount == 1, "a 28-cell hop failed a 40-cell cap");
+                for (int z = 0; z < h; z++) wk[z * w + 15] = false;
+                var walled = RM_ShadePatchGraph.Build(w, h, sh, wk, 400, 1);
+                Assert(walled.EdgeCount == 0, "a hop went through a wall");
+                Assert(walled.distToShade[1 * w + 20] == 90, "distance leaked through the wall (" + walled.distToShade[1 * w + 20] + ")");
+            });
+
+            Case("patch graph: flecks under minPatchCells are open sun", () =>
+            {
+                const int w = 10, h = 10;
+                bool[] sh = new bool[w * h], wk = new bool[w * h];
+                for (int i = 0; i < w * h; i++) wk[i] = true;
+                sh[5 * w + 5] = true;                          // a one-cell fleck
+                for (int x = 0; x < 3; x++) sh[0 * w + x] = true; // a 3-cell patch
+                var g = RM_ShadePatchGraph.Build(w, h, sh, wk, 400, 2);
+                Assert(g.PatchCount == 1, "fleck counted as a patch");
+                Assert(g.patchOf[5 * w + 5] == RM_ShadePatchGraph.NoPatch && g.distToShade[5 * w + 5] > 0, "fleck cell is shade");
+            });
+
+            Case("patch graph: diagonal steps cost 14, and every edge is symmetric", () =>
+            {
+                const int w = 9, h = 9;
+                bool[] sh = new bool[w * h], wk = new bool[w * h];
+                for (int i = 0; i < w * h; i++) wk[i] = true;
+                sh[0] = sh[1] = sh[w] = sh[w + 1] = true;                       // 2x2 at a corner
+                sh[8 * w + 8] = sh[8 * w + 7] = sh[7 * w + 8] = sh[7 * w + 7] = true; // 2x2 at the far corner
+                var g = RM_ShadePatchGraph.Build(w, h, sh, wk, 400, 2);
+                Assert(g.EdgeCount == 1, "edges " + g.EdgeCount);
+                var a0 = g.patches[0].edges[0]; var b0 = g.patches[1].edges[0];
+                Assert(a0.cost == 6 * 14 && b0.cost == a0.cost, "diagonal hop cost " + a0.cost + " / " + b0.cost);
+                Assert(a0.fromCell == b0.toCell && a0.toCell == b0.fromCell, "edge ends are not mirrored");
+            });
+
+            Case("dash range: bigger animals dash further, a hot one goes nowhere, cool = the cap", () =>
+            {
+                // Outdoor 30 C, safe max 40 C (an animal whose comfortable max is 30).
+                Func<float, float, int> range = (bodySize, alreadyHot) =>
+                {
+                    float f = RM_SunHeatMath.BodySizeFactor(bodySize, 0.5f, 0.25f, 2.5f);
+                    float felt = 30f + RM_SunHeatMath.HeatOffset(1f, 30f, 1f, f, 70f);
+                    float curved = HediffGiver_Heat.TemperatureOverageAdjustmentCurve.Evaluate(Math.Max(0f, felt - 40f));
+                    int ticks = RM_DashMath.ToleratedTicks(felt, 40f, curved, 0.012f - alreadyHot);
+                    // Ticks per cell rise as size falls: 10 at size 1, like a smallish animal.
+                    float tpc = RM_DashMath.TicksPerCell(10f / (float)Math.Sqrt(Math.Max(0.2f, bodySize)), 0.75f);
+                    return RM_DashMath.DashRangeCost(ticks, tpc, 1f, 3f, 40f);
+                };
+                int small = range(0.3f, 0f), mid = range(1f, 0f), big = range(3f, 0f);
+                Console.WriteLine("  dash range, cells: size 0.3 = " + small / 10f + ", size 1 = " + mid / 10f + ", size 3 = " + big / 10f);
+                Assert(small < mid && mid <= big, "range not rising with size: " + small + " " + mid + " " + big);
+                Assert(small >= 30 && big <= 400, "range escaped its [3, 40] cell clamp");
+                Assert(range(1f, 0.02f) == 0, "an animal past its heatstroke budget still dashes");
+                Assert(RM_DashMath.ToleratedTicks(35f, 40f, 0f, 0.012f) == int.MaxValue, "a cool sun limited the dash");
+                Assert(RM_DashMath.DashRangeCost(int.MaxValue, 7.5f, 1f, 3f, 40f) == 400, "cool sun did not give the cap");
+            });
+
+            Case("dash range: the strictness dial scales it, and the step matches vanilla's heat giver", () =>
+            {
+                int full = RM_DashMath.DashRangeCost(1200, 10f, 1f, 3f, 40f);
+                int half = RM_DashMath.DashRangeCost(1200, 10f, 0.5f, 3f, 40f);
+                Assert(full == 400, "1200 ticks at 10/cell is 120 cells, clamped to 40 (" + full + ")");
+                Assert(RM_DashMath.DashRangeCost(200, 10f, 1f, 3f, 40f) == 200 && RM_DashMath.DashRangeCost(200, 10f, 0.5f, 3f, 40f) == 100,
+                    "dial did not halve a 20-cell dash");
+                Assert(half <= full, "a stricter dial dashed further");
+                Assert(RM_DashMath.DashRangeCost(10, 10f, 1f, 3f, 40f) == 30, "min clamp not applied");
+                Assert(Math.Abs(RM_DashMath.SeverityPerInterval(0f) - 0.000375f) < 1e-9f, "floor step is not vanilla's 0.000375");
+                Assert(Math.Abs(RM_DashMath.SeverityPerInterval(25f) - 25f * 6.45E-05f) < 1e-9f, "step is not curve x 6.45e-5");
+                Assert(RM_DashMath.ToleratedTicks(60f, 40f, 20f, 0f) == 0, "no budget still tolerated sun");
+            });
+
+            Case("ring: from shade, reach a sun cell only if there and back fits the range", () =>
+            {
+                // 41 x 1 corridor: shade at x=0, sun beyond. From x=0 with a
+                // 100 range (10 cells), the reachable sun cells are x <= 5.
+                const int w = 41, h = 1;
+                bool[] sh = new bool[w * h], wk = new bool[w * h];
+                for (int i = 0; i < w; i++) wk[i] = true;
+                sh[0] = true;
+                var g = RM_ShadePatchGraph.Build(w, h, sh, wk, 600, 1);
+                var cells = new List<int>();
+                g.ReachableWithReturn(0, 100, cells);
+                int far = 0; foreach (int c in cells) far = Math.Max(far, c);
+                Assert(cells.Contains(5) && !cells.Contains(6) && far == 5, "ring edge at x=" + far + ", expected 5");
+                // A pawn standing out at x=4 has used its outbound leg already.
+                g.ReachableWithReturn(4, 100, cells);
+                Assert(cells.Contains(0) && cells.Contains(5) && !cells.Contains(8), "ring from x=4 wrong");
+                g.ReachableWithReturn(0, 0, cells);
+                Assert(cells.Count == 0, "no budget still drew a ring");
+            });
 
             foreach (string p in Pass) Console.WriteLine("PASS " + p);
             foreach (string f in Fail) Console.WriteLine("FAIL " + f);

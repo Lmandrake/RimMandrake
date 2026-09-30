@@ -252,6 +252,13 @@ namespace RimMandrake.CreatureBehaviors
     //      per piece: parasolShadeEnabled / shadeTentEnabled /
     //      sunShieldEnabled. Off: that piece casts no shade into the grid
     //      and is ordinary gear (still craftable, still wearable/buildable).
+    //  41. Shade hopping (SOLAR_HEAT_EXPOSURE_1 §5/§6, RM_ShadeHop.cs) —
+    //      sun-heat maps only, and never where shade does not help (steam,
+    //      volcanic). shadeHopEnabled — wild animals rest in shade, pause at
+    //      its edge and sprint to the next patch instead of ambling in the
+    //      sun. Off: they wander as vanilla does (sun pathing still applies).
+    //      shadeHopRangeMultiplier — how far they will dash (the strictness
+    //      dial). dashRingEnabled — the drafted-pawn "back to shade" ring.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -327,6 +334,9 @@ namespace RimMandrake.CreatureBehaviors
         public static bool parasolShadeEnabled = true;
         public static bool shadeTentEnabled = true;
         public static bool sunShieldEnabled = true;
+        public static bool shadeHopEnabled = true;
+        public static float shadeHopRangeMultiplier = 1f;
+        public static bool dashRingEnabled = true;
 
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 2400f;
@@ -403,6 +413,9 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref parasolShadeEnabled, "parasolShadeEnabled", true);
             Scribe_Values.Look(ref shadeTentEnabled, "shadeTentEnabled", true);
             Scribe_Values.Look(ref sunShieldEnabled, "sunShieldEnabled", true);
+            Scribe_Values.Look(ref shadeHopEnabled, "shadeHopEnabled", true);
+            Scribe_Values.Look(ref shadeHopRangeMultiplier, "shadeHopRangeMultiplier", 1f);
+            Scribe_Values.Look(ref dashRingEnabled, "dashRingEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -679,6 +692,19 @@ namespace RimMandrake.CreatureBehaviors
                 list.CheckboxLabeled("  Sun load bar", ref sunLoadBarEnabled,
                     "Shows a bar when you select one creature on a sun-heat map: how close it is to "
                   + "heatstroke, and how much the sun is adding where it stands.");
+                list.CheckboxLabeled("  Animals hop shade to shade", ref shadeHopEnabled,
+                    "On: wild animals do not stroll in the open sun. They rest in shade, stop at its edge, "
+                  + "then sprint to the next patch of shade they can reach before the heat gets to them. "
+                  + "Big animals dash further than small ones. Off: they wander as normal.");
+                if (shadeHopEnabled)
+                {
+                    list.Label("    How far they will dash: " + shadeHopRangeMultiplier.ToStringPercent()
+                             + " (lower is stricter)");
+                    shadeHopRangeMultiplier = list.Slider(shadeHopRangeMultiplier, 0.25f, 2f);
+                }
+                list.CheckboxLabeled("  Back-to-shade ring", ref dashRingEnabled,
+                    "Draws a line on the ground around a selected drafted colonist, showing how far they "
+                  + "can go and still get back into shade before heatstroke sets in.");
             }
             list.GapLine();
 
