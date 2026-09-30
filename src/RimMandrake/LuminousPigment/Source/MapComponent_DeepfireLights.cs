@@ -34,10 +34,11 @@ namespace RimMandrake.LuminousPigment
     //    every 250 ticks on its own (CompPostTick -> Apply()), so a plain
     //    "move this key's proxy to the pawn's CURRENT cell" here is enough
     //    to track a moving pawn at that cadence with NO extra polling built
-    //    in this class. A tight, continuously-tracked per-pawn light (15-
-    //    tick worn-item movement, the lacquer gizmo/JobDriver, the styling-
-    //    station checkbox, the darkness-targeting combat hooks) is spec §10
-    //    step 8 -- explicitly out of scope here; filed separately.
+    //    in this class.
+    //  - worn/equipped gear (DEEPFIRE_WORN_GLOW_1, spec §10 step 8,
+    //    MapComponent_DeepfireLights.Worn.cs): one MOVING Ethereal proxy per
+    //    glowing pawn, polled every 15 ticks and moved by Position, not
+    //    respawned.
     public partial class MapComponent_DeepfireLights : MapComponent
     {
         private class LightEntry
@@ -187,6 +188,7 @@ namespace RimMandrake.LuminousPigment
             base.MapRemoved();
             entries.Clear();
             ClearClusterState();
+            ClearWornState();
             if (cachedMap == map)
             {
                 cachedMap = null;

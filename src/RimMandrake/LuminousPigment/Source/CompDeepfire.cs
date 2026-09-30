@@ -63,6 +63,37 @@ namespace RimMandrake.LuminousPigment
             RefreshLight();
         }
 
+        // DEEPFIRE_WORN_GLOW_1, spec §3.4: worn/equipped gear lights its
+        // wearer through ONE per-pawn proxy (MapComponent_DeepfireLights.Worn.cs).
+        // ThingWithComps forwards Notify_Equipped/Unequipped to every comp for
+        // both apparel (Pawn_ApparelTracker) and equipment
+        // (Pawn_EquipmentTracker) -- RimSage Verse/ThingWithComps.cs. The item
+        // itself is despawned while worn, so its own thing-light is already
+        // gone via PostDeSpawn.
+        public override void Notify_Equipped(Pawn pawn)
+        {
+            base.Notify_Equipped(pawn);
+            if (coats > 0) MapComponent_DeepfireLights.MarkWornDirty(pawn);
+        }
+
+        public override void Notify_Unequipped(Pawn pawn)
+        {
+            base.Notify_Unequipped(pawn);
+            if (coats > 0) MapComponent_DeepfireLights.MarkWornDirty(pawn);
+        }
+
+        public override void Notify_WearerDied()
+        {
+            base.Notify_WearerDied();
+            if (coats > 0) MapComponent_DeepfireLights.MarkWornDirty(WornGlowUtility.WearerOf(parent));
+        }
+
+        private void RefreshWearer()
+        {
+            Pawn wearer = WornGlowUtility.WearerOf(parent);
+            if (wearer != null) MapComponent_DeepfireLights.MarkWornDirty(wearer);
+        }
+
         public void AddCoat()
         {
             if (!CanAddCoat) return;
@@ -114,7 +145,12 @@ namespace RimMandrake.LuminousPigment
 
         public void RefreshLight()
         {
-            if (parent?.Spawned != true) return;
+            if (parent == null) return;
+            if (!parent.Spawned)
+            {
+                RefreshWearer(); // worn/equipped: the wearer's proxy carries it
+                return;
+            }
             MapComponent_DeepfireLights mc = MapComponent_DeepfireLights.Get(parent.Map);
             if (mc == null) return;
 

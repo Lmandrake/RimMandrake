@@ -21,4 +21,13 @@
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
+  <!-- DEEPFIRE_WORN_GLOW_1, spec §3.4: lacquer a WORN/EQUIPPED item at a
+       powered deepfire press or an Ideology styling station. -->
+  <JobDef>
+    <defName>RM_LacquerWornItem</defName>
+    <driverClass>RimMandrake.LuminousPigment.JobDriver_LacquerWornItem</driverClass>
+    <reportString>lacquering TargetC with deepfire.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
 </Defs>

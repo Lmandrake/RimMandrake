@@ -21,6 +21,10 @@ namespace RimMandrake.LuminousPigment
         public static DesignationDef RM_ApplyDeepfireFloorDesignation;
         public static JobDef RM_ApplyDeepfireFloor;
 
+        // DEEPFIRE_WORN_GLOW_1: the moving per-pawn proxy and the lacquer job.
+        public static ThingDef RM_DeepfireWornLightProxy;
+        public static JobDef RM_LacquerWornItem;
+
         static DeepfireDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(DeepfireDefOf));

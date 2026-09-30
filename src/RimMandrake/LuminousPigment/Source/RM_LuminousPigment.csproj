@@ -87,6 +87,15 @@
     <Compile Include="DeepfireFirstCoatBonus.cs" />
     <Compile Include="RM_StatPart_Deepfire.cs" />
     <Compile Include="DeepfireFirstCoatDebugActions.cs" />
+    <!-- DEEPFIRE_WORN_GLOW_1, spec §10 step 8: worn-item glow (moving
+         per-pawn proxy), the lacquer gizmo/job, the styling-station
+         checkbox, the darkness-targeting combat hooks, dev proof actions. -->
+    <Compile Include="DeepfireWornGlow.cs" />
+    <Compile Include="MapComponent_DeepfireLights.Worn.cs" />
+    <Compile Include="JobDriver_LacquerWornItem.cs" />
+    <Compile Include="DeepfireCombatPatches.cs" />
+    <Compile Include="DeepfireStylingStationPatches.cs" />
+    <Compile Include="DeepfireWornGlowDebugActions.cs" />
   </ItemGroup>
 
   <ItemGroup>

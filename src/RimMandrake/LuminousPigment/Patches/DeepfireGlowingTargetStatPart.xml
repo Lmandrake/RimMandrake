@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DeepfireGlowingTargetStatPart.xml      LuminousPigment · DEEPFIRE_WORN_GLOW_1
+  Spec §3.4 melee half: RM_StatPart_GlowingTarget on MeleeDodgeChance
+  (-0.08 on the FINAL dodge chance while the pawn glows in the dark; see
+  Source/DeepfireCombatPatches.cs for why it inverts the stat's
+  postProcessCurve). Vanilla MeleeDodgeChance (Core Stats_Pawns_Combat.xml,
+  RimSage-read) has NO <parts> element, so the Conditional creates one
+  first; if another mod already added it, the nomatch branch is skipped.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/StatDef[defName="MeleeDodgeChance"]/parts</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/StatDef[defName="MeleeDodgeChance"]</xpath>
+      <value>
+        <parts />
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/StatDef[defName="MeleeDodgeChance"]/parts</xpath>
+    <value>
+      <li Class="RimMandrake.LuminousPigment.RM_StatPart_GlowingTarget">
+        <penalty>0.08</penalty>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>
