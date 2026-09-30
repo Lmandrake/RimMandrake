@@ -55,6 +55,13 @@ namespace RimMandrake.Contagion
         // RM_BurnDose severity added to a non-native caught in the open, per
         // 250 ticks, before the Mod Settings damage factor.
         public float visitorDosePerInterval = 0.02f;
+
+        // Part 2 — the Coalescence. Null = this biome never grows one.
+        public ThingDef coalescenceDef;
+        // A "long Bloom": ticks since the last Burn ended before one can form.
+        public int coalescenceLongBloomTicks = 90000;
+        // Mean days to form once the Bloom is long enough.
+        public float coalescenceMtbDays = 0.5f;
     }
 
     public static class RM_ContagionSky

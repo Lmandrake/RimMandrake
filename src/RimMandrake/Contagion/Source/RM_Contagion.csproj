@@ -65,6 +65,8 @@
     <!-- CONTAGION_MECHANICS_BUILD_1 Parts 3/4: Cloud Repulsor, Sunbeam -->
     <Compile Include="CompCloudRepulsor.cs" />
     <Compile Include="DamageWorker_RM_UV.cs" />
+    <!-- CONTAGION_MECHANICS_BUILD_1 Part 2: the Coalescence -->
+    <Compile Include="Building_RM_Coalescence.cs" />
   </ItemGroup>
 
   <ItemGroup>

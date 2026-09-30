@@ -82,6 +82,12 @@ multiplier, default 6x, against Contagion natives) and the `RM_CloudRepulsor`
 it forces the Burn on a Contagion map and holds the sky clear of rain and fog
 anywhere else, drawing a violet beam while live.
 
+The Coalescence (Part 2, `RM_Coalescence`): after a long Bloom the Contagion
+can gather into one stationary giant organism that pulls in and absorbs the
+Unfinished, grows through three staged forms, and emits manhunter Unfinished.
+Any Burn — natural or Repulsor-forced — collapses it into slime and genome
+samples. Mod Settings toggle, default on.
+
 Zero Star Wars content lives in this biome's roster at all — the twin's own
 `wildAnimals` carries no `RSW_`/`SW_`/`mlie.*` row, so no Utinni patch is needed
 for fauna (unlike most sibling RM_ biome mods, there is no `WildAnimals_Contagion.xml`).

@@ -64,7 +64,24 @@ the Bloom is Neutral so it is not).
 
 ## Part 5 Limbs
 
-## Part 2 Coalescence
+## Part 2 Coalescence — BUILT (v1, stationary)
+- `Defs/ThingDefs/RM_Coalescence.xml` + `Building_RM_Coalescence`: one continuous,
+  faction-less, stationary organism-building (3x3, 1400 HP, not claimable). It never
+  moves, so it can never leave the storm shadow. Mass from absorbed Unfinished (wild ones
+  within 18 cells are walked to it and despawn into it) + 1 per 6000 ticks passively;
+  stages at mass 0/6/15 swap the graphic (draw 3.5/4.5/5.5). Emits manhunter
+  RM_TheUnfinished on a stage clock (5000/3000/1800 ticks), capped at 2/4/6 live
+  manhunters. ANY Burn (condition active, natural or Repulsor-forced) collapses it:
+  slime + sourceless RM_GenomeSample x (2 + 2·stage + mass/4, max 14) — these gestate
+  unmatched organs in the existing loop.
+- Formation: `RM_MapComponent_ContagionSky.TryFormCoalescence` — biome extension names
+  `coalescenceDef`; after 1.5 days since the last Burn, MTB 0.5 day, one per map, outside
+  the home area, ThreatBig letter.
+- Art: artpipe coalescence_stage1 + stage2_v2 + stage3_v2 (512) copied from `_artsrc`.
+- Mod Settings: Coalescence on/off. Settings screen now scrolls.
+- Deviations to note: it is a building, not a pawn (no "heavy AI" — it does not hunt or
+  roam); the "mulch" half of the death bonanza is not built because no Contagion mulch
+  item exists.
 
 ## Remaining
 - Ambient soundscape beyond vanilla rain/wind/thunder, the Rattlegrope rattle sound, a
