@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-30T03:04:28Z",
+  "drawsize": 1.5,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_ParasolWorn_east",
+  "priority": 70,
+  "prompt": "RimWorld game worn-apparel overlay sprite: the same desert sun parasol held open overhead, drawn ALONE with no person \u2014 the broad canopy disc above, the pole dropping to where a hand would hold it at shoulder height, sized to sit over a standing colonist's head. Transparent everywhere except the parasol.",
+  "reference": null,
+  "rimflow_item_id": "SHADE_GEAR_FAMILY_1",
+  "style_notes": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose overhead, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground \u2014 the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked; realistic painted illustration of a worn, practical, hand-made desert object, matte surfaces, believable materials and construction, no outlines, no text or logos; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is NEUTRAL CLOTH: pale warm grey-cream canopy for stuff tinting, dark wood pole; overhead worn layer drawn over the pawn; south shows the canopy's underside and pole from the front, east shows it in profile tilted slightly back; north facing is a true rear view: only the canopy's top and the pole from behind"
+}

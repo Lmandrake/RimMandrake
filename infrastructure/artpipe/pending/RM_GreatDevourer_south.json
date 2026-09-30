@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-30T03:04:28Z",
+  "derive_from": "RM_GreatDevourer_east",
+  "drawsize": 3.5,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_GreatDevourer_south",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the great devourer, a long heavy armoured desert worm \u2014 a thick body sheathed in a chain of overlapping dusty plates, a blunt front end that opens into a wide ring-mouth fringed with rasping teeth, and soft pale joints showing between the plates where it is easily killed. It gorges on small prey and ignores anything large. Its own design, not an Alpha Animals worm. No nameable Earth centipede, earthworm or sandworm read.",
+  "reference": null,
+  "rimflow_item_id": "LONGSHADE_BEDAZZLE_CONTENT_1",
+  "style_notes": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose overhead, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground \u2014 the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; familiar body architecture but never a nameable Earth animal; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is BONE-PLATE AND BRUISE: pale bone-cream plates edged in bruise-purple, raw pink at the soft joints; bs 2.5, drawSize ~3.5; a gorger of small things, never a pursuer; replaces Alpha Animals donor art (the free mod must stand alone); north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the tapering plated tail end and ridged back from behind, the mouth hidden"
+}

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-30T03:04:29Z",
+  "drawsize": 1.5,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Filth_DragMark",
+  "priority": 70,
+  "prompt": "RimWorld game ground decal (filth) sprite, top-down: a drag mark in the sand \u2014 a smeared trough where something heavy was hauled away, two shallow furrow edges, a few scuffed hoof and claw prints at the margin, a thin dried rust-brown smear along the trough. Transparent everywhere except the disturbed sand; flat, no raised objects.",
+  "reference": null,
+  "rimflow_item_id": "LONGSHADE_BEDAZZLE_MECHANICS_1",
+  "style_notes": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose overhead, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground \u2014 the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked; realistic painted illustration of a worn, practical, hand-made desert object, matte surfaces, believable materials and construction, no outlines, no text or logos; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is CHURNED OCHRE: darker turned-over ochre sand against the lit surface, a dried rust-brown smear; Graphic_Random master; the readable sign an animal was taken (owner condition: animals never vanish without a trace)"
+}
