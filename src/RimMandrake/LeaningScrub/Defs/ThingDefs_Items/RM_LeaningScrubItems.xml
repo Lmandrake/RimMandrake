@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LeaningScrubItems.xml                   LEANINGSCRUB_RULED_CONTENT_1
+
+  Two raw items the ruled cast owes:
+    RM_VisslerArm  the shed arm of RM_Vissler (butcher product of the animal).
+                   STUB: the "hunter's lure" use is LEANINGSCRUB_MECHANICS_BUILD_1;
+                   here it is an ordinary trade good.
+    RM_RawVenom    the harvest of RM_DrippingVenomvine. Named RM_RawVenom, NOT
+                   RM_VenomVenom-anything: RM_VenomvineVenom is already a HEDIFF
+                   in mandrake.rm.environmentalhazards.
+
+  Art queued in artpipe (leaningscrub_bedazzle_cast.csv: RM_VisslerArm; RM_RawVenom
+  is not in that list - it is unrendered and shows a placeholder until art exists).
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_VisslerArm</defName>
+    <label>vissler arm</label>
+    <description>The shed arm of a vissler: a curled, jointed whip of lichen-grey plates, the ember glow at its joints fading toward the broken end. It keeps twitching for a while after it is cut. Hunters buy them.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_VisslerArm</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>4</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>AnimalProductRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_RawVenom</defName>
+    <label>raw venom</label>
+    <description>Amber venom scraped in thick beads from the canes of an overproducing venomvine stand. Unrefined and dangerous to handle bare-handed; whatever is made from it starts here.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_RawVenom</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>6</MarketValue>
+      <Mass>0.1</Mass>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

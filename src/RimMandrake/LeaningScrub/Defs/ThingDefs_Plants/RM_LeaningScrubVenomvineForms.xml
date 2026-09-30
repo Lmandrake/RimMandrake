@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LeaningScrubVenomvineForms.xml          LEANINGSCRUB_RULED_CONTENT_1
+
+  The four new forms of the venomvine showpiece (the fifth, RM_VenomvineThicket,
+  already ships in mandrake.rm.environmentalhazards). Each is a sibling of the
+  thicket: same near-black register, its own accent, its own texPath. Reuses
+  the shared kit's existing comps (CompProperties_ContactVenom,
+  RM_CompProperties_BodySizeBarrier, RM_MechanicGateExtension) - NO new C#.
+  Descriptions are the bible's (section 6).
+
+  Every form carries the same gateKey as the thicket, so leaningscrub's
+  venomvine-passability Mod Setting governs all five.
+
+  Art: each texPath is a Graphic_Random folder whose render is queued in
+  artpipe; not yet wired (placeholder until then). RM_CrownVenomvine is a 512
+  canvas.
+-->
+<Defs>
+
+  <!-- Harvest gives RM_RawVenom (RM_LeaningScrubItems.xml). Whether harvesting leaves the stand standing, and any harvest-side venom exposure, is LEANINGSCRUB_MECHANICS_BUILD_1. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_DrippingVenomvine</defName>
+    <label>dripping venomvine</label>
+    <description>Some stands make more venom than their thorns can hold. A dripping stand hangs it in amber beads along every cane, and the harvest is real money for whoever works bare-headed under a plant that sweats poison.</description>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_DrippingVenomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestedThingDef>RM_RawVenom</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <harvestWork>250</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- STUB: the lash (strike-once, then recovery droop) is a MAP COMPONENT owned by LEANINGSCRUB_MECHANICS_BUILD_1 - never a plant CompTick (plants only TickLong). Until it lands this is the base thicket in the twitcher palette. The recovery-droop retint is a follow-on art derive. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_TwitcherVenomvine</defName>
+    <label>twitcher venomvine</label>
+    <description>A twitcher stand strikes once at whatever comes close - one whip-crack of a cane, fast as a snake - and then spends an hour drooping, visibly spent, earning the next one.</description>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_TwitcherVenomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>1400</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- STUB: the crawl-through gate is the existing body-size barrier with a wider free-pass band (passFreelyBodySize 1.0 lets humanlike bodies thread; the huge band stays blocked). A dedicated crawl job/graphic is LEANINGSCRUB_MECHANICS_BUILD_1. Thorns are worn blunt, so no ContactVenom comp. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_HollowVenomvine</defName>
+    <label>hollow venomvine</label>
+    <description>Old stands die from the inside and stand anyway: tubes of grey cane, galleries wide enough that the runway nations thread them like streets - and a person the Jawas' size can crawl where the streets go.</description>
+    <statBases>
+      <MaxHitPoints>350</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_HollowVenomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>900</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>1.0</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>150</threadMoveCost>
+        <trappedMoveCost>250</trappedMoveCost>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- STUB: the wind-keyed dustflutter mobbing is LEANINGSCRUB_MECHANICS_BUILD_1 and is keyed on the wind dropping, never on day/night. Rare landmark: single stand, no clustering. Art is a 512 canvas. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_CrownVenomvine</defName>
+    <label>crown venomvine</label>
+    <description>Rarest of all: a stand that crowns. It climbs past man-height-and-more into a single black column and flowers at the top - the only flower this plain owns - and when the wind drops, the dustflutters mob it in a grey cloud you can see from a day's walk.</description>
+    <statBases>
+      <MaxHitPoints>800</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_CrownVenomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>20</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>0</wildClusterRadius>
+      <wildClusterWeight>1</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>1.0~1.0</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>2200</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

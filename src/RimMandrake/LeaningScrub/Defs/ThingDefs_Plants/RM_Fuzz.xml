@@ -16,11 +16,8 @@
   B deletes that biome def outright. See RM_LeaningScrub_Biome.xml's own
   header for the full reasoning.
 
-  Art: zero PNGs exist for this defName anywhere (MEASURED, same as the
-  original) — expected, not a defect. The existing artpipe job
-  (infrastructure/artpipe/pending/rutfuzz_v1.json) targets the OLD texPath
-  inside mandrake.rut.ashkarrflora and does not benefit this def; a fresh
-  art job for Things/Plant/RM_Fuzz is separate, later, unfiled work.
+  Art: the finished rutfuzz_v1 render is wired at Textures/Things/Plant/
+  RM_Fuzz/RM_Fuzz_a.png (LEANINGSCRUB_RULED_CONTENT_1).
 -->
 <Defs>
 
