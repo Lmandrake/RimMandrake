@@ -1118,6 +1118,7 @@ copied verbatim from the donor mods' own Textures trees.
   </FactionDef>
   <NeedDef>
     <defName>RSW_ToxinDependence</defName>
+    <needClass>RimMandrake.StarWars.SWBestiary.RSW_Need_ToxinDependence</needClass>
     <label>toxin dependence</label>
     <description>This creature's metabolism runs on ingested toxins and will not function without them. Deprived of polluted food and water it weakens, and in time it dies of the cleanliness.</description>
     <listPriority>45</listPriority>
@@ -1128,6 +1129,7 @@ copied verbatim from the donor mods' own Textures trees.
   </NeedDef>
   <HediffDef>
     <defName>RSW_ToxinDependence</defName>
+    <hediffClass>RimMandrake.StarWars.SWBestiary.RSW_Hediff_ToxinDependence</hediffClass>
     <label>toxin dependence</label>
     <description>A body rebuilt around toxic intake. While the creature can keep feeding on polluted matter it is perfectly well; cut off from it, the withdrawal is slow, painful and eventually fatal.</description>
     <chemicalNeed>RSW_ToxinDependence</chemicalNeed>

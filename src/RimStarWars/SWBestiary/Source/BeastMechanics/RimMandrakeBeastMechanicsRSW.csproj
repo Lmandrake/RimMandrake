@@ -66,6 +66,7 @@
     <Compile Include="CompAbilityEffect_FuelSpew.cs" />
     <Compile Include="RSW_BeastMechanicsDefOf.cs" />
     <Compile Include="RSW_BeastMechanicsSettings.cs" />
+    <Compile Include="ToxinDependence.cs" />
   </ItemGroup>
 
   <ItemGroup>

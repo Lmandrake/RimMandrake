@@ -38,12 +38,18 @@ namespace RimMandrake.StarWars.SWBestiary
         // CompProperties_Spawner this flag does not reach.
         public static bool scrapHoardingEnabled = true;
 
+        // The mutagenic norphea's toxin dependence (ToxinDependence.cs): the
+        // need rises on polluted ground or with toxic buildup and falls
+        // elsewhere, with a lethal withdrawal stage. Off: the need is held full.
+        public static bool toxinDependenceEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref metalEatingEnabled, "metalEatingEnabled", true);
             Scribe_Values.Look(ref innateAbilitiesEnabled, "innateAbilitiesEnabled", true);
             Scribe_Values.Look(ref scrapHoardingEnabled, "scrapHoardingEnabled", true);
+            Scribe_Values.Look(ref toxinDependenceEnabled, "toxinDependenceEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -69,6 +75,13 @@ namespace RimMandrake.StarWars.SWBestiary
                 "Scrap-hoarding birds",
                 ref scrapHoardingEnabled,
                 "Scrap-nest birds build nests in the wild and carry loose scrap, components and precious metals back to them. They never take from inside your base. Off: they forage and fly like any other bird, and existing nests still slowly accumulate scrap on their own.");
+
+            list.Gap();
+
+            list.CheckboxLabeled(
+                "Toxin-dependent creatures",
+                ref toxinDependenceEnabled,
+                "The mutagenic norphea needs polluted ground or toxic buildup to stay well, and sickens and can die in withdrawal on clean land. Off: its dependence is always satisfied.");
 
             list.End();
         }
