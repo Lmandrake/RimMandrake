@@ -67,6 +67,9 @@ namespace RimMandrake.FloodedCanyon
         private int lastRecedeTick = -1;
         private bool peakstormPulledThisCycle;
 
+        // Next chime stage to ring while Warned (RingChime staging).
+        private int chimeStage;
+
         // Cells this cycle's flood is currently standing on, to convert
         // back to soil at recede time (only if still ours — see header).
         // NON-EXCAVATED cells only: an excavated one is never written here.
@@ -124,11 +127,14 @@ namespace RimMandrake.FloodedCanyon
         {
             return string.Format(
                 "phase={0} nextFloodTick={1} floodEndTick={2} nowTick={3} activeFloodCells={4} "
-                + "raisedFillCells={5} active={6} flowWorksEngine={7} explosiveGrowth={8}",
+                + "raisedFillCells={5} active={6} flowWorksEngine={7} explosiveGrowth={8} "
+                + "chimeStage={9} lastRecedeTick={10} peakstormPulled={11} weather={12}",
                 phase, nextFloodTick, floodEndTick, Find.TickManager.TicksGame,
                 activeFloodCells.Count, raisedFillCells.Count, Active,
                 Excavation != null ? "present" : "ABSENT",
-                RM_ExplosiveGrowthBridge.Available ? "present" : "ABSENT (flood soaks nothing)");
+                RM_ExplosiveGrowthBridge.Available ? "present" : "ABSENT (flood soaks nothing)",
+                chimeStage, lastRecedeTick, peakstormPulledThisCycle,
+                map.weatherManager.curWeather?.defName ?? "null");
         }
 
         public override void FinalizeInit()
@@ -163,12 +169,21 @@ namespace RimMandrake.FloodedCanyon
                     }
                     if (now >= nextFloodTick - HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours))
                     {
-                        RingChime();
+                        RingChime(0);
+                        chimeStage = 1;
                         phase = Phase.Warned;
                     }
                     break;
 
                 case Phase.Warned:
+                    // CRACKEDLANDS_MECHANICS_BUILD_1 §5: the chimes are staged
+                    // by distance-to-flood — later rings as the water nears.
+                    if (RM_FloodedCanyonSettings.chimeStagingEnabled && chimeStage < ChimeStageFractions.Length
+                        && now >= nextFloodTick - (int)(HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours) * ChimeStageFractions[chimeStage]))
+                    {
+                        RingChime(chimeStage);
+                        chimeStage++;
+                    }
                     if (now >= nextFloodTick)
                     {
                         StartFlood(now);
@@ -238,15 +253,29 @@ namespace RimMandrake.FloodedCanyon
             nextFloodTick = Find.TickManager.TicksGame + System.Math.Max(2500, periodTicks + jitter);
         }
 
-        private void RingChime()
+        // Fraction of the chime lead time still left when each stage rings:
+        // stage 0 at the full lead (the first chime, unchanged), then as the
+        // water comes down the lines — half the lead, then the last moments.
+        private static readonly float[] ChimeStageFractions = { 1f, 0.5f, 0.15f };
+
+        private static readonly string[] ChimeStageMessages =
+        {
+            "The water chimes are ringing — a flood is coming down the canyon.",
+            "The chimes are ringing lower down the lines — the flood is closer.",
+            "The nearest chimes are ringing — the water is almost here. Get off the canyon floor.",
+        };
+
+        private void RingChime(int stage)
         {
             // "the water chimes ring... tones rolling up through the stone
-            // ahead of any sound of water" (source sheet), generalized to a
-            // reused vanilla notification cue rather than commissioning new
-            // audio for v1 (same call the sibling WeatherSuite mod made
-            // reusing an existing texture for its instrument mast).
+            // ahead of any sound of water" (source sheet). STAGED by
+            // distance-to-flood (CRACKEDLANDS_MECHANICS_BUILD_1 §5). The
+            // bespoke 3–4 chime tones are owed audio; until they exist every
+            // stage reuses the vanilla TinyBell cue — the staging, messages
+            // and timing are the mechanism, the tone per stage is the art.
+            stage = UnityEngine.Mathf.Clamp(stage, 0, ChimeStageMessages.Length - 1);
             Messages.Message(
-                "The water chimes are ringing — a flood is coming down the canyon.",
+                ChimeStageMessages[stage],
                 new TargetInfo(map.Center, map),
                 MessageTypeDefOf.ThreatBig);
             SoundDefOf.TinyBell.PlayOneShotOnCamera(map);
@@ -472,6 +501,7 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref nextFloodTick, "nextFloodTick", -1);
             Scribe_Values.Look(ref floodEndTick, "floodEndTick", -1);
             Scribe_Values.Look(ref lastRecedeTick, "lastRecedeTick", -1);
+            Scribe_Values.Look(ref chimeStage, "chimeStage", 0);
             Scribe_Values.Look(ref peakstormPulledThisCycle, "peakstormPulledThisCycle", false);
             Scribe_Collections.Look(ref activeFloodCells, "activeFloodCells", LookMode.Value);
             Scribe_Collections.Look(ref raisedFillCells, "raisedFillCells", LookMode.Value);
