@@ -91,10 +91,11 @@ log errors. Exit 0/1/2 same convention as prove_deepfire_floor.py.
   automatically on build).
 
 ## Land
-- [ ] commit(s)
-- [ ] rebase onto origin/main
-- [ ] push
-- [ ] ancestry confirmed
+- [x] commit `438da2071` (pre-rebase)
+- [x] rebase onto origin/main (clean, no conflicts; rebuilt DLL after — no diff, confirming
+      no concurrent commit touched this mod's Source/)
+- [x] push origin HEAD:main
+- [x] ancestry confirmed: `git merge-base --is-ancestor d49dc88e5 origin/main` → 0
 
 ## Result
-(fill at end: sha)
+Landed at `d49dc88e5ef8444ba21ee1db7d971cd1033074b8` on origin/main.
