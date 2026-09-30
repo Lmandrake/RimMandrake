@@ -34,6 +34,11 @@ namespace RimMandrake.BlueDesert
         public static bool burnerHaloEnabled = true;
         public static float warmDetonationThresholdC = 5f;
 
+        // BLUEDESERT_MECHANICS_BUILD_1 §1 (RM_VhaulkDetonation.cs). Both
+        // also sit under nativeDetonationsEnabled.
+        public static bool vhaulkHeatGateEnabled = true;
+        public static bool vhaulkEmpTrapEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -44,6 +49,8 @@ namespace RimMandrake.BlueDesert
             Scribe_Values.Look(ref butaneGutEnabled, "butaneGutEnabled", true);
             Scribe_Values.Look(ref burnerHaloEnabled, "burnerHaloEnabled", true);
             Scribe_Values.Look(ref warmDetonationThresholdC, "warmDetonationThresholdC", 5f);
+            Scribe_Values.Look(ref vhaulkHeatGateEnabled, "vhaulkHeatGateEnabled", true);
+            Scribe_Values.Look(ref vhaulkEmpTrapEnabled, "vhaulkEmpTrapEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -72,6 +79,11 @@ namespace RimMandrake.BlueDesert
               + "Off: foreign grazers can eat the flora safely.");
             list.CheckboxLabeled("Burner halo VFX", ref burnerHaloEnabled,
                 "The krissek's blue-fire halo while it runs, hunts or fights. Off: no halo.");
+            list.CheckboxLabeled("Vhaulk: only fire detonates the cistern", ref vhaulkHeatGateEnabled,
+                "On: the vhaulk explodes only when fire, a burn, heatstroke or lightning kills it; a "
+              + "kinetic or cold kill leaves the carcass intact. Off: any death detonates it.");
+            list.CheckboxLabeled("Vhaulk: EMP detonates it alive", ref vhaulkEmpTrapEnabled,
+                "On: any EMP hit on a living vhaulk sets it off at once. Off: EMP does nothing to it.");
 
             list.Label("Warm-detonation threshold: " + warmDetonationThresholdC.ToString("0") + " °C");
             warmDetonationThresholdC = list.Slider(warmDetonationThresholdC, -1f, 15f);

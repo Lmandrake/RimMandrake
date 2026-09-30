@@ -945,9 +945,9 @@
        ================================================================= -->
 
   <!-- ============== VHAULK — the colossus (GIANT, mark 5) ============== -->
-  <!-- 🔴 STUB HOOKUP POINT for BLUEDESERT_MECHANICS_BUILD_1 §1 (see this
-       def's own RM_VhaulkCharge hediff, HediffDefs/RM_BlueDesertCharges.xml,
-       for the detonation-gating stub) and §1's valve-tap-alive harvest
+  <!-- Detonation gating (heat-only + EMP-on-hit) lives on this def's
+       RM_VhaulkCharge hediff, HediffDefs/RM_BlueDesertCharges.xml.
+       🔴 STUB HOOKUP POINT for BLUEDESERT_MECHANICS_BUILD_1 §1's valve-tap-alive harvest
        (work-giver operation at a valve body part). Body reuses
        QuadrupedAnimalWithHoovesAndHump (the dorrak's own Hump-as-gut
        compromise, bible §1: "the cosmetic-label compromise does not stretch
