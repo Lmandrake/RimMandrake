@@ -2206,7 +2206,7 @@
       <foodType>OmnivoreRoughAnimal</foodType>
       <predator>false</predator>
       <trainability>None</trainability>
-      <lifeExpectancy>8</lifeExpectancy>
+      <lifeExpectancy>3</lifeExpectancy>
       <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
       <lifeStageAges>
         <li>
@@ -2222,6 +2222,10 @@
           <minAge>0.4</minAge>
         </li>
       </lifeStageAges>
+      <deathAction Class="DeathActionProperties_Vanish">
+        <filth>Filth_Slime</filth>
+        <filthCountRange>1~2</filthCountRange>
+      </deathAction>
     </race>
     <tradeTags>
       <li>AnimalUncommon</li>
