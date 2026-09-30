@@ -564,15 +564,119 @@ here adds a build line that §1–§5 did not price, unless it says so.
 
 ### 6.1 The Law of the Light (§1 dash + §3 golden hour, one build)
 
-pending
+**What you see.** You land and the sky does not change. It is the colour of the last ten
+minutes before dusk — apricot at the horizon, rose overhead — and it stays. Every rock throws
+a violet shadow four times its height, all parallel, all pointing the same way, like the map
+was combed. In the lee of each one, something is lying down. At the edge of the nearest
+shadow a sollak stands with its forelegs in the light and its body in the dark, head up,
+facing the next rock thirty cells out. It stands there a long time. Then the whole herd goes
+at once — a flat-out sprint across the gold, dust lit behind them — and lands in the next
+shadow and drops, flanks heaving. The last calf is two strides behind. It makes it.
+
+**What you hear.** In the open, the shimmer (review slate #3): a dry rising hiss that is not
+insects and not wind — the sound of exposure — climbing the longer the camera sits on lit
+ground. Pan into a shadow and it cuts to near-silence and one drip from the dew line. Across
+the gaps, calls: challenge, answer, and then the run.
+
+**What you feel.** Your first colonist sent to haul something from 40 cells out comes back
+with a **heat-laden** icon, walking slowly, and spends an hour lying in the shade of the
+cargo pod. You realise the rule applies to you. Every work order on this map is now a route.
+
+**Improvements over §1.**
+- 🔑 **Show the budget.** A pawn's inspect pane shows sun-load as a bar, and when a colonist
+  is drafted, a faint arc on the ground marks **how far they can go and still get back to
+  shade** — their dash radius, computed from the patch graph. The single UI element that
+  makes the law legible. Small C# (a `DrawRadiusRing` on the selected pawn's reachable set).
+- **Size classes the player can read.** Three named bands in descriptions: *close-country*
+  (hill small life, never leaves the dense patches), *gap-runner* (herds and colonists),
+  *open-walker* (gloomcast, dewback — can stand in the light for hours). The sheet's "the
+  landscape is sorted by size" becomes vocabulary.
+- **The memorable moment:** the herd at the rim, deciding — and the player's colonist
+  standing beside it, also deciding.
+
+**Honest feasibility.** Unchanged from §1.4 (~470 lines) + §3.1 (~60) + ~40 for the radius
+ring. The ring and the sun-load bar are the cheapest parts and the most important for feel.
 
 ### 6.2 The mirrak — the shadow that points the wrong way
 
-pending
+**What you see.** A dark oblong on the pavement, midway between two patches, about the size
+of a shadow a boulder would throw. But there is no boulder. And it lies at an angle to every
+other shadow on the map — because every real shadow here is combed by the pinned sun, and
+this one was laid down by an animal. A tebbra, overheated and out of range of anything else,
+veers for it, sprints the last ten cells, drops into the dark — and the dark closes over it
+like a book.
+
+**What you hear.** Nothing, which is wrong: every real patch has a drip, a rustle, a call.
+The mirrak's patch is silent.
+
+**What you feel.** Suspicion of every shadow, for the rest of the game. The player starts
+checking angles.
+
+**Improvements.**
+- 🔑 **The haze unmasks them.** During the ruled smoke calendar's haze act (#2), every real
+  shadow on the map **lengthens** with the pinned vector. A mirrak's does not — it is a back,
+  not a shadow. So the haze, the biome's season of relief, is also the one time you can see
+  every false shadow at once: short dark ovals among long violet strips. Hunting season for
+  mirrak hide. Zero extra code — it falls out of §1.3 + ruled #2.
+- **Mirrak hide** — a black, flat, matte leather that absorbs light: an item that, made into
+  a roof-cloth or awning, casts *deeper* shade (higher `ShadeAt` under it). The predator
+  that imitates shade becomes the best shade material. Small (a stuff with a shade-bonus stat
+  the grid reads for stuffed casters).
+- **It is the tell for N1.** A perfect-looking shadow with no dew halo, no tenants and no
+  sound — the animals knew.
+- **The memorable moment:** your own colonist, overheated, sprinting for "that shadow there",
+  and you noticing the angle one second too late.
+
+**Honest feasibility.** Small C#: ambush comp (the shipped `RM_CompAquaticAmbusher` shape),
+a `RM_FalseShadeExtension` the dash job giver treats as shade and the grid does not, and art
+for a flat creature (one sprite set; rotation must follow the creature, not the sun — which is
+the point). ⚠️ The dash job must be willing to target it; otherwise it never eats.
 
 ### 6.3 The swimmer's road — one young sarlacc, one journey, one well
 
-pending
+**What you see.** A letter from nobody: *"A sarlacc swimmer has come up out of the deep
+desert, following water."* On the map edge, the soft sand is moving — a low wake, like
+something just under the skin of the dune. It goes the way everything here goes: rim to rim.
+It stops at the edge of every shadow (you can see the sand settle), and whatever is standing
+on the dew line there stops standing. It is heading somewhere. You open the patch overlay and
+trace its line — and it is heading for **the biggest dew ring on the map, which is the one
+your walls make.**
+
+**What you hear.** A low, dry grinding under the sand, audible only when the camera is near
+the wake; the shimmer goes quiet around it, as if the light itself is holding its breath.
+
+**What you feel.** A slow-motion siege by one individual. You have days. You can see the
+route.
+
+**Improvements.**
+- 🔑 **It is going to your house.** The swimmer targets the **largest dew-ring on soft sand**
+  (patch graph + rim cells). The harbour law (ruled #1) says your base is the biggest shade —
+  so its dew line is the biggest ring. The player's choices are real and geographic: **lay
+  hardpan** (the owed `RM_Hardpan` terrain, or paved floor — a swimmer cannot cross it) as a
+  moat around your walls; **offer it a better ring** — build a shade wall out in the soft sand
+  far from home and let it root there; or **meet it in the gap**, where it is at its weakest
+  because every metre costs it water.
+- **Its water shows.** The swimmer visibly slows as its reserve drops (the shipped comp
+  already spends it per metre and strike); a player who reads it can let the gap wear it
+  down — the biome fighting on your side.
+- **The rooting.** If it reaches a ring, every tenant of that patch leaves in the same second —
+  herds, the dakkra, the pirrik — a silent evacuation — and the dew line goes dark and wet.
+  The mouth opens in the centre of the shade. It is yours now: a permanent well that takes a
+  life at its rim once in a long while, the shipped Rite of Offering's altar, and a source of
+  sarlacc pearls. **One per map, ever** — the incident will not fire while a swimmer or an
+  anchored sarlacc of its making lives there (one at a time, as the owner said).
+- **Droids walk past it** (S3) — a clan's droids become the only safe crew for work around the
+  mouth. Already true of the shipped comp.
+- **The memorable moment:** the silent evacuation of a whole patch, all at once, and then the
+  sand in the middle of the shade starting to sink.
+
+**Honest feasibility.** Small: one `IncidentDef` + worker (spawn one `RSW_SarlaccSwimmer` at
+a soft-sand edge, gated one-per-map), one hook letting `CompSarlaccSwimmer`'s rooting test
+accept a dew-ring rim cell as a seep, and a destination bias (target the largest ring). The
+evacuation falls out of §1 (an anchored mouth flags its patch as predator-held). RSW tier —
+canon creature, `RimStarWars/Sarlacc`. ⚠️ Sarlacc home is the deep desert; the carve-out
+("young versions … migrate") must be stated in both biome docs, as the screecher precedent
+does for multi-homing.
 
 ### 6.4 The Crawler Road — salvage that is also the only way across
 
