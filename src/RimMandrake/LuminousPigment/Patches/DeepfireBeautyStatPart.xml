@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DeepfireBeautyStatPart.xml             LuminousPigment · DEEPFIRE_FIRSTCOAT_BONUS_1
+  Spec §3.5 "everything else" (walls, furniture, apparel, weapons, not art
+  items, not floors). Appends RM_StatPart_Deepfire to vanilla StatDef
+  "Beauty"'s own parts list (confirmed via RimSage: it already carries
+  StatPart_Quality then StatPart_ContentsBeauty, so PatchOperationAdd is
+  safe and this new part runs LAST, after quality scaling has already been
+  folded into the running value; see the class comment in
+  Source/RM_StatPart_Deepfire.cs for why that matters).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Core</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/StatDef[defName="Beauty"]/parts</xpath>
+      <value>
+        <li Class="RimMandrake.LuminousPigment.RM_StatPart_Deepfire">
+          <beautyFlat>3</beautyFlat>
+          <beautyPct>0.25</beautyPct>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

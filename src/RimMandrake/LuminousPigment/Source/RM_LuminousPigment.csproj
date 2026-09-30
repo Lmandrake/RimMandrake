@@ -81,6 +81,12 @@
     <Compile Include="DeepfireFloorPatches.cs" />
     <Compile Include="DeepfireFloorJobs.cs" />
     <Compile Include="DeepfireFloorDebugActions.cs" />
+    <!-- DEEPFIRE_FIRSTCOAT_BONUS_1, spec §10 step 7: first-coat quality
+         bump (art items) + RM_StatPart_Deepfire on Beauty (everything
+         else), dev proof actions. -->
+    <Compile Include="DeepfireFirstCoatBonus.cs" />
+    <Compile Include="RM_StatPart_Deepfire.cs" />
+    <Compile Include="DeepfireFirstCoatDebugActions.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -20,6 +20,15 @@ namespace RimMandrake.LuminousPigment
 
         public int coats;
 
+        // DEEPFIRE_FIRSTCOAT_BONUS_1, spec §3.5: "Applied once, on the first
+        // coat only... Scribed so removal-and-reapply cannot farm it."
+        // RemoveAllCoats() below deliberately does NOT reset this -- the
+        // quality bump it gates (DeepfireFirstCoatBonus.Apply) is permanent
+        // and cumulative, unlike the Beauty StatPart bonus (RM_StatPart_Deepfire),
+        // which is stateless and re-derives from `coats > 0` every time it's
+        // asked for, so it needs no flag of its own.
+        public bool bonusApplied;
+
         public CompProperties_Deepfire Props => (CompProperties_Deepfire)props;
 
         public bool CanAddCoat => coats < MaxCoats;
@@ -40,6 +49,7 @@ namespace RimMandrake.LuminousPigment
         {
             base.PostExposeData();
             Scribe_Values.Look(ref coats, "deepfireCoats", 0);
+            Scribe_Values.Look(ref bonusApplied, "deepfireBonusApplied", false);
         }
 
         // ThingWithComps.Notify_ColorChanged() (Verse/ThingWithComps.cs)
@@ -56,11 +66,45 @@ namespace RimMandrake.LuminousPigment
         public void AddCoat()
         {
             if (!CanAddCoat) return;
+
+            bool firstCoat = coats == 0 && !bonusApplied;
+
+            // DEEPFIRE_FIRSTCOAT_BONUS_1, spec §3.5: "Stacks split before the
+            // bump (AllowStackWith needs equal quality)." The quality bump
+            // is cumulative, so bumping a stacked art item's shared Thing
+            // would either bump the whole stack at once or desync it from
+            // CompQuality.AllowStackWith. Split one unit off, place it
+            // (so it is Spawned before its own AddCoat runs and can light
+            // normally), and let its own fresh CompDeepfire (stackCount 1,
+            // coats 0, bonusApplied false) take the coat instead -- the rest
+            // of the original stack is untouched. In practice every
+            // CompArt/CompQuality def this mod's injector targets ships
+            // stackLimit 1 already, so this branch is a defensive guard, not
+            // an expected path.
+            if (firstCoat && parent.stackCount > 1 && DeepfireFirstCoatBonus.IsArtItem(parent))
+            {
+                Thing split = parent.SplitOff(1);
+                if (parent.Spawned && parent.Map != null)
+                {
+                    GenPlace.TryPlaceThing(split, parent.Position, parent.Map, ThingPlaceMode.Near);
+                }
+                split.TryGetComp<CompDeepfire>()?.AddCoat();
+                return;
+            }
+
             coats++;
             RefreshLight();
+
+            if (firstCoat)
+            {
+                DeepfireFirstCoatBonus.Apply(parent);
+                bonusApplied = true;
+            }
         }
 
-        // Spec §3.3: "clears coats (no refund)".
+        // Spec §3.3: "clears coats (no refund)". bonusApplied is untouched
+        // (see its own comment) -- stripping the coating never un-bumps an
+        // art item's quality, and never re-arms the one-time bump either.
         public void RemoveAllCoats()
         {
             if (coats == 0) return;
