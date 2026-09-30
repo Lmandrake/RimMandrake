@@ -1,6 +1,6 @@
 # CAULDRON_FULL_RENAME_1 — RUT_PoisonForest → RUT_Cauldron finishing pass
 
-Status: DONE.
+Status: DONE. Pushed to origin/main at 1effd8831c09da23372c4bf9a14bc4f1d5db4503.
 
 ## Task
 Finish the Cauldron rename by renaming the frozen campaign twin `RUT_PoisonForest`
