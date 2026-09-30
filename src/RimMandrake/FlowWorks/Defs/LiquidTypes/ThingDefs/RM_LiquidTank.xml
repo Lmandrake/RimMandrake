@@ -44,7 +44,6 @@
     <altitudeLayer>Building</altitudeLayer>
     <passability>Impassable</passability>
     <fillPercent>1.0</fillPercent>
-    <coverEffectiveness>0.6</coverEffectiveness>
     <pathCost>50</pathCost>
     <useHitPoints>true</useHitPoints>
     <selectable>true</selectable>

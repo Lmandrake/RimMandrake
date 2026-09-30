@@ -227,7 +227,6 @@
     <ingestible>
       <preferability>RawBad</preferability>
       <foodType>Plant</foodType>
-      <nutritionInterval>0.9</nutritionInterval>
       <canAutoSelectAsFoodForCaravan>true</canAutoSelectAsFoodForCaravan>
     </ingestible>
     <comps>
@@ -263,7 +262,6 @@
     <ingestible>
       <preferability>RawBad</preferability>
       <foodType>Fluid</foodType>
-      <nutritionInterval>0.9</nutritionInterval>
       <canAutoSelectAsFoodForCaravan>true</canAutoSelectAsFoodForCaravan>
     </ingestible>
     <comps>
@@ -300,7 +298,6 @@
     <ingestible>
       <preferability>RawTasty</preferability>
       <foodType>Fluid</foodType>
-      <nutritionInterval>0.9</nutritionInterval>
       <canAutoSelectAsFoodForCaravan>true</canAutoSelectAsFoodForCaravan>
     </ingestible>
   </ThingDef>

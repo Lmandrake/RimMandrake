@@ -45,6 +45,22 @@
   (infrastructure/artpipe/pending/, filed via fill_queue.py against this
   sitting's CSV, appended). texPaths below point at where that art will
   land; texPath-only warnings are expected until the daemon runs them.
+
+  🔴 LOAD_ERRORS_DEF_FIELDS_1 (2026-09-30): the original recipeMaker blocks
+  below also carried <fixedIngredientFilter>/<ingredients>/<products>
+  gating each recipe on a specific harvested fossil item (RM_FossilImpression
+  or RM_FossilDeepStratum for the slab; RM_FossilSkeleton for the mount) —
+  RecipeMakerProperties has none of those three fields, so the whole block
+  silently failed to parse and both defs threw a [Def Error] on every load.
+  Removed rather than promoted to a hand-authored RecipeDef: this def is
+  ALSO madeFromStuff (costStuffCount + stuffCategories), and a hand-written
+  RecipeDef would have to hand-replicate RecipeDefGenerator's stuff-cost
+  plumbing to keep that working, which is new mechanism, not a load fix.
+  Net effect of this fix: both pieces now build from plain stuff (Steel/
+  Wood/Stone) like any vanilla sculpture — the "must be built FROM a
+  harvested fossil" gate from the design doc above is NOT currently
+  enforced. Re-adding it needs a bespoke RecipeDef (or a small
+  ThingComp/PostLoad check) from whoever next owns FloodedCanyon fossils.
 -->
 <Defs>
 
@@ -80,26 +96,6 @@
         <li>TableSculpting</li>
       </recipeUsers>
       <displayPriority>240</displayPriority>
-      <fixedIngredientFilter>
-        <thingDefs>
-          <li>RM_FossilImpression</li>
-          <li>RM_FossilDeepStratum</li>
-        </thingDefs>
-      </fixedIngredientFilter>
-      <ingredients>
-        <li>
-          <filter>
-            <thingDefs>
-              <li>RM_FossilImpression</li>
-              <li>RM_FossilDeepStratum</li>
-            </thingDefs>
-          </filter>
-          <count>1</count>
-        </li>
-      </ingredients>
-      <products>
-        <RM_FossilDisplaySlab>1</RM_FossilDisplaySlab>
-      </products>
     </recipeMaker>
   </ThingDef>
 
@@ -137,24 +133,6 @@
         <li>TableSculpting</li>
       </recipeUsers>
       <displayPriority>241</displayPriority>
-      <fixedIngredientFilter>
-        <thingDefs>
-          <li>RM_FossilSkeleton</li>
-        </thingDefs>
-      </fixedIngredientFilter>
-      <ingredients>
-        <li>
-          <filter>
-            <thingDefs>
-              <li>RM_FossilSkeleton</li>
-            </thingDefs>
-          </filter>
-          <count>1</count>
-        </li>
-      </ingredients>
-      <products>
-        <RM_FossilDisplayMount>1</RM_FossilDisplayMount>
-      </products>
     </recipeMaker>
   </ThingDef>
 

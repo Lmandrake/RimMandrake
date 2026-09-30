@@ -28,9 +28,7 @@
     <description>The Twilight Sea's floor current runs deep and fast. The channels have widened onto the banks, and everything the river usually leaves alone is, for now, within its reach.</description>
     <conditionClass>RimMandrake.TerminalBiomes.RM_GameCondition_Undersurge</conditionClass>
     <letterText>The current has widened onto the banks — the sennefan have all snapped to alignment, and the murrol are already gone upstream.</letterText>
-    <letterLabel>Undersurge</letterLabel>
     <letterDef>NeutralEvent</letterDef>
-    <displayOrder>10</displayOrder>
   </GameConditionDef>
 
 </Defs>

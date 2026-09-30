@@ -130,7 +130,6 @@
       <foodType>OmnivoreRoughAnimal</foodType>
       <leatherDef>Leather_Heavy</leatherDef>
       <trainability>None</trainability>
-      <wildness>0.65</wildness>
       <roamMtbDays>25</roamMtbDays>
       <manhunterOnDamageChance>0.08</manhunterOnDamageChance>
       <lifeExpectancy>22</lifeExpectancy>

@@ -222,9 +222,6 @@
     <combatPower>190</combatPower> <!-- TUNNELSNAKE_VIOLATES_SIZE_LADDER_1: was 320 at bs 2.0, scaled down with baseHealthScale -->
     <ecoSystemWeight>0.35</ecoSystemWeight>
     <wildGroupSize>1</wildGroupSize>
-    <specialTrainables>
-      <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
-    </specialTrainables>
     <lifeStages>
       <li>
         <bodyGraphicData>
