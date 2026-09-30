@@ -1,0 +1,185 @@
+using System;
+
+namespace RimMandrake.CreatureBehaviors
+{
+    // ════════════════════════════════════════════════════════════════════
+    // SOLAR_HEAT_EXPOSURE_1 — the pure arithmetic of sun heat.
+    //
+    // No Verse/Unity dependency on purpose (System.Math only): the offline
+    // selftest (Source/SelfTest, run by Utils/selftest_sun_heat.py) compiles
+    // this exact file and checks sun vs shade vs roofed, the three heat
+    // kinds, the body-size term, the path cost and the directional cast.
+    // Every live caller (RM_MapComponent_ShadeGrid, RM_SunHeatPatches)
+    // routes through these functions, so what the selftest checks is what
+    // the game runs.
+    // ════════════════════════════════════════════════════════════════════
+    public enum RM_HeatKind
+    {
+        /// <summary>The Long Shade: roofs AND cast (lee) shade both protect.</summary>
+        overhead,
+
+        /// <summary>The Deep Desert: only a vertical caster's lee shadow
+        /// protects. A constructed roof overhead gives nothing; being inside
+        /// rock (a thick natural roof) still counts, because that is walls,
+        /// not overhead shade.</summary>
+        lowSun,
+
+        /// <summary>Steam and volcanic heat: shade does nothing. Only
+        /// insulation (vanilla comfortable range) or leaving the open air —
+        /// an enclosed room — helps.</summary>
+        ambient,
+    }
+
+    public static class RM_SunHeatMath
+    {
+        /// <summary>A PathGridJob custom cost at or above this makes the cell
+        /// impassable (decompiled 1.6 PathGridJob: custom[index] >= 10000).
+        /// Sun cost is always kept well under it.</summary>
+        public const int ImpassableCustomCost = 10000;
+
+        public const int MaxSunPathCost = 2000;
+
+        /// <summary>0 (fully sheltered) .. 1 (full sun) for one cell.
+        /// outdoors: the cell's room uses outdoor temperature — an enclosed
+        /// room is never exposed, whatever the kind (that is vanilla's own
+        /// "leaving" the open air). roofShade: 1 under any roof, else 0.
+        /// thickRoof: the roof is natural overhead rock. castShade: 0..1 from
+        /// the directional grid.</summary>
+        public static float Exposure(RM_HeatKind kind, bool outdoors, float roofShade, bool thickRoof, float castShade)
+        {
+            if (!outdoors)
+            {
+                return 0f;
+            }
+            float cover;
+            switch (kind)
+            {
+                case RM_HeatKind.ambient:
+                    cover = 0f;
+                    break;
+                case RM_HeatKind.lowSun:
+                    cover = Math.Max(thickRoof ? 1f : 0f, castShade);
+                    break;
+                default:
+                    cover = Math.Max(roofShade, castShade);
+                    break;
+            }
+            return Clamp01(1f - Clamp01(cover));
+        }
+
+        /// <summary>Body-size factor on sun heat: (1 / bodySize)^exponent,
+        /// clamped to [minFactor, maxFactor]. Size 1 = 1×; a small animal
+        /// heats faster, a megafauna slower — the whole of "dash range is a
+        /// function of size" (§1.2).</summary>
+        public static float BodySizeFactor(float bodySize, float exponent, float minFactor, float maxFactor)
+        {
+            if (bodySize <= 0.01f)
+            {
+                bodySize = 0.01f;
+            }
+            float f = (float)Math.Pow(1.0 / bodySize, exponent);
+            if (f < minFactor) { f = minFactor; }
+            if (f > maxFactor) { f = maxFactor; }
+            return f;
+        }
+
+        /// <summary>Degrees C added to what the pawn feels (its
+        /// AmbientTemperature), which is the ONLY input the vanilla
+        /// comfort/Heatstroke path reads. exposure × baseOffset × strength ×
+        /// body-size factor, capped at maxOffset.</summary>
+        public static float HeatOffset(float exposure, float baseOffsetC, float strength, float bodySizeFactor, float maxOffsetC)
+        {
+            if (exposure <= 0f || baseOffsetC <= 0f || strength <= 0f)
+            {
+                return 0f;
+            }
+            float off = Clamp01(exposure) * baseOffsetC * strength * bodySizeFactor;
+            return off > maxOffsetC ? maxOffsetC : off;
+        }
+
+        /// <summary>Per-cell path cost offset (PathGridJob adds it to the
+        /// cell's move cost; vanilla cardinal step is 13). exposure ×
+        /// costPerCell × strength, rounded, clamped to [0, MaxSunPathCost].</summary>
+        public static ushort PathCost(float exposure, float costPerCell, float strength)
+        {
+            float c = Clamp01(exposure) * costPerCell * strength;
+            if (c <= 0f)
+            {
+                return 0;
+            }
+            int i = (int)Math.Round(c);
+            if (i > MaxSunPathCost) { i = MaxSunPathCost; }
+            return (ushort)i;
+        }
+
+        /// <summary>Shadow length in cells for a caster of the given height
+        /// (staticSunShadowHeight scale: a rock or wall is 1.0) under a sun
+        /// whose ground shadow is lengthPerHeight cells per unit height.</summary>
+        public static float ShadowLength(float casterHeight, float lengthPerHeight, float maxCells)
+        {
+            float l = casterHeight * lengthPerHeight;
+            if (l < 0f) { l = 0f; }
+            return l > maxCells ? maxCells : l;
+        }
+
+        /// <summary>
+        /// Casts one caster's shadow into a row-major grid (index = z * width
+        /// + x, the same layout as CellIndices), marching from the caster
+        /// along (dirX, dirZ) — the way shadows fall, away from the sun — for
+        /// `length` cells. Full shade (1) along the body of the shadow, easing
+        /// to tipShade at the far end. Keeps the max of what is already
+        /// there, so overlapping shadows never lighten each other. The caster
+        /// cell itself is not written (a rock is not standing room).
+        /// </summary>
+        public static void CastInto(float[] grid, int width, int height, int cx, int cz,
+            float dirX, float dirZ, float length, float tipShade)
+        {
+            if (length <= 0f)
+            {
+                return;
+            }
+            float norm = (float)Math.Sqrt(dirX * dirX + dirZ * dirZ);
+            if (norm < 1e-4f)
+            {
+                return;
+            }
+            dirX /= norm;
+            dirZ /= norm;
+            // Half-cell steps so a diagonal shadow leaves no gaps.
+            int steps = (int)Math.Ceiling(length * 2f);
+            int lastIdx = -1;
+            for (int s = 1; s <= steps; s++)
+            {
+                float t = s * 0.5f;
+                int x = (int)Math.Round(cx + dirX * t);
+                int z = (int)Math.Round(cz + dirZ * t);
+                if (x < 0 || z < 0 || x >= width || z >= height)
+                {
+                    return;
+                }
+                if (x == cx && z == cz)
+                {
+                    continue;
+                }
+                int idx = z * width + x;
+                if (idx == lastIdx)
+                {
+                    continue;
+                }
+                lastIdx = idx;
+                float frac = t / length;
+                float v = frac <= 0.75f ? 1f : 1f - (1f - tipShade) * ((frac - 0.75f) / 0.25f);
+                v = Clamp01(v);
+                if (v > grid[idx])
+                {
+                    grid[idx] = v;
+                }
+            }
+        }
+
+        public static float Clamp01(float v)
+        {
+            return v < 0f ? 0f : (v > 1f ? 1f : v);
+        }
+    }
+}

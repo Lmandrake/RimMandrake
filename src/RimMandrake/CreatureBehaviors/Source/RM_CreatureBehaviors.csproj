@@ -155,6 +155,11 @@
     <Compile Include="RM_FalseShade.cs" />
     <Compile Include="RM_CompFalseShadeAmbusher.cs" />
     <Compile Include="RM_ShadeClothExtension.cs" />
+    <!-- SOLAR_HEAT_EXPOSURE_1 tranche 1: heat kinds, directional grid, sun heat, sun pathing, sun-load bar -->
+    <Compile Include="RM_SunHeatMath.cs" />
+    <Compile Include="RM_SunHeatExtension.cs" />
+    <Compile Include="RM_SunHeatPatches.cs" />
+    <Compile Include="RM_Gizmo_SunLoad.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
@@ -176,6 +181,15 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- SOLAR_HEAT_EXPOSURE_1: RM_Gizmo_SunLoad draws with Widgets.Label/Text.Anchor. -->
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="0Harmony">
