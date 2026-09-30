@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BlueDesertSounds.xml     BLUEDESERT_MECHANICS_BUILD_1 §5 (tranche 1)
+
+  "Vanilla SFX reuse/retint FIRST (artpipe is images; audio is a new pipeline
+  ask — scope small)." RM_PhaseCrack is the one audio MECHANIC: the crack a
+  warming charge-plant makes one long tick before it detonates
+  (CompPlantCharge.PlayCrackCue, BlueDesertLife.cs). It reuses vanilla's
+  GestatorGlassShattered clip folder (Defs/Core/SoundDefs/
+  Building_Oneshots_Misc.xml, RimSage-read 2026-09-29) pitched UP and made
+  shorter-reaching — a brittle crack rather than a shatter. Pitch and volume
+  are this build's INVENTED retint; a bespoke clip is owed audio, not here.
+
+  The weather ambients reuse vanilla wind loops on the WeatherDefs
+  themselves (Ambient_Wind_Clear / _Storm / _Fog). Virr-field whistling and
+  ossivel choirs need new clips and are NOT here.
+-->
+<Defs>
+
+  <SoundDef>
+    <defName>RM_PhaseCrack</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Buildings/GestatorGlassShattering</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>55~70</volumeRange>
+        <distRange>20~45</distRange>
+        <pitchRange>1.35~1.6</pitchRange>
+        <repeatMode>NeverTwice</repeatMode>
+        <canVacuumDampen>false</canVacuumDampen>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>
