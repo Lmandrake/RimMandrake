@@ -59,6 +59,7 @@
     <Compile Include="RM_BlueDesertWeatherTable.cs" />
     <Compile Include="BlueDesertLife.cs" />
     <Compile Include="RM_VhaulkDetonation.cs" />
+    <Compile Include="RM_BlueIceThaw.cs" />
   </ItemGroup>
 
   <ItemGroup>

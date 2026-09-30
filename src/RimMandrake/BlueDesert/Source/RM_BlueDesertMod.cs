@@ -47,6 +47,9 @@ namespace RimMandrake.BlueDesert
         public static bool ruledWeathersEnabled = true;
         public static bool hazeExposureEnabled = true;
 
+        // BLUEDESERT_MECHANICS_BUILD_1 §3 (RM_BlueIceThaw.cs).
+        public static bool thawRollEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -61,6 +64,7 @@ namespace RimMandrake.BlueDesert
             Scribe_Values.Look(ref vhaulkEmpTrapEnabled, "vhaulkEmpTrapEnabled", true);
             Scribe_Values.Look(ref ruledWeathersEnabled, "ruledWeathersEnabled", true);
             Scribe_Values.Look(ref hazeExposureEnabled, "hazeExposureEnabled", true);
+            Scribe_Values.Look(ref thawRollEnabled, "thawRollEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -100,6 +104,9 @@ namespace RimMandrake.BlueDesert
             list.CheckboxLabeled("Haze film exposure", ref hazeExposureEnabled,
                 "Colonists outdoors during the Haze pick up a mild chilling film. Off: nobody new "
               + "picks it up.");
+            list.CheckboxLabeled("Blue-ice thaw finds", ref thawRollEnabled,
+                "Every few blue-ice blocks mined, the warmed face may give up old fallen debris "
+              + "(metal, wreckage). Off: blue ice mines cleanly with no roll.");
 
             list.Label("Warm-detonation threshold: " + warmDetonationThresholdC.ToString("0") + " °C");
             warmDetonationThresholdC = list.Slider(warmDetonationThresholdC, -1f, 15f);

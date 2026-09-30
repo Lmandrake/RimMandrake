@@ -19,13 +19,14 @@
   authored by no one would be a silent-guess violation of the same kind this
   repo's CLAUDE.md warns against elsewhere.
 
-  The thaw-roll comp (mechanics item §3: "every N blocks cut rolls nothing /
-  a fallen-debris find / a release") is that item's C# — this wall mines
-  cleanly to the item with no roll today. 🔴 STUB HOOKUP POINT for that item:
-  attach the roll comp to THIS ThingDef (RM_BlueIceMineable), same shape as
-  RUT_GreatboleHeartwood's own MapComponent-watches-mined-cells option, or a
-  ThingComp on this def akin to CompProperties_PlantCharge's placement in
-  BlueDesertLife.cs.
+  The thaw roll (mechanics item §3: "every N blocks cut rolls nothing / a
+  fallen-debris find / a release") is RimMandrake.BlueDesert.
+  CompProperties_BlueIceThaw below (Source/RM_BlueIceThaw.cs), DEBRIS-ONLY
+  as the item rules: the release table joins when HORRORS_RAIDING_FACTION_1
+  lands. blocksPerRoll 3, debrisChance 0.35 and the debris table are this
+  build's INVENTED tuning toward §5's "the fallen" (meteoritic metal, crashed
+  wreckage); the freeze-dried orbital dead are §8's ablation-line incident
+  family, not this roll, so the two never double-author "the fallen".
 
   ART: no separate wall-face texture was commissioned (art commission table,
   bluedesert_bedazzle_cast_2026-09-28.md §7: only the item icon, "mineable
@@ -58,6 +59,34 @@
       <veinMineable>false</veinMineable>
       <mineableScatterCommonality>0</mineableScatterCommonality>
     </building>
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_BlueIceThaw">
+        <blocksPerRoll>3</blocksPerRoll>
+        <debrisChance>0.35</debrisChance>
+        <debris>
+          <li>
+            <thing>Steel</thing>
+            <count>15~40</count>
+            <weight>4</weight>
+          </li>
+          <li>
+            <thing>ChunkSlagSteel</thing>
+            <count>1~1</count>
+            <weight>3</weight>
+          </li>
+          <li>
+            <thing>ComponentIndustrial</thing>
+            <count>1~3</count>
+            <weight>2</weight>
+          </li>
+          <li>
+            <thing>Plasteel</thing>
+            <count>5~15</count>
+            <weight>1</weight>
+          </li>
+        </debris>
+      </li>
+    </comps>
   </ThingDef>
 
 </Defs>
