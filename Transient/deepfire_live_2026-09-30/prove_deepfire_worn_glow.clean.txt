@@ -1,0 +1,29 @@
+WornGlow dev actions: ['T: WornGlow: 20 hit-report pairs at cell', 'T: WornGlow: cleanup test pawns', 'T: WornGlow: report styler', 'T: WornGlow: report walker', 'T: WornGlow: roof dark strip east of cell', 'T: WornGlow: spawn coated walker at cell', "T: WornGlow: strip walker's coats", 'T: WornGlow: styling lacquer setup at cell', 'T: WornGlow: walker walk 30 east']
+== 0 roofed dark strip ==
+  PASS  baseline: walk start is dark (< 0.3) under the roof  {"action": "roofStrip", "cells": 252, "baselineGlow": 0}
+== 1 coated walker ==
+  PASS  walker: coats 3, tracked, proxy on its cell, glow > 0.3, glowing in the dark  {"action": "reportWalker", "found": true, "spawned": true, "ticks": 3785, "x": 40, "z": 60, "tracked": true, "proxyX": 40, "proxyZ": 60, "groundGlow": 0.5, "skyGlow": 0.856, "roofed": true, "glowingInDark": true, "wornLights": 1, "job": "", "coats": 3}
+== 2 walk 30 cells, sample every 15 ticks on the poll tick ==
+  PASS  walk ordered  {"action": "walk", "found": true, "ordered": true, "destX": 70, "destZ": 60}
+  FAIL  walk: >= 10 samples and >= 25 cells travelled  7 samples, 30 cells
+  PASS  walk: proxy on the pawn's cell, cell roofed (no sky), GroundGlowAt > 0.3 at EVERY sample  0 bad: []
+== 3 strip coats ==
+  PASS  strip: untracked, glow < 0.3, not glowing in the dark  {"action": "stripWalker", "found": true, "spawned": true, "ticks": 3885, "x": 70, "z": 60, "tracked": false, "proxyX": -1000, "proxyZ": -1000, "groundGlow": 0, "skyGlow": 0.8604, "roofed": true, "glowingInDark": false, "wornLights": 0, "job": "Wait_Combat", "coats": 0}
+== 4 20 hit-report pairs ==
+    first rows: [{"coatedAim": 0.509, "plainAim": 0.3258, "coatedTotal": 0.509, "plainTotal": 0.3258, "dark": true, "line": true, "dodgeCoated": 0, "dodgePlain": 0, "dodgeExplained": true}, {"coatedAim": 0.509, "plainAim": 0.4072, "coatedTotal": 0.509, "plainTotal": 0.4072, "dark": true, "line": true, "dodgeCoated": 0, "dodgePlain": 0, "dodgeExplained": true}, {"coatedAim": 0.509, "plainAim": 0.4072, "coatedTotal": 0.509, "plainTotal": 0.4072, "dark": true, "line": true, "dodgeCoated": 0, "dodgePlain": 0.0404, "dodgeExplained": true}]
+  PASS  pairs: coated twin glowing in the dark in all 20  {"action": "hitPairs", "pairs": 20, "coatedHigher": 18, "readoutLines": 20, "darkCount": 20, "dodgeLowerOrZero": 20, "dodgeExplained": 20}
+  FAIL  pairs: coated AimOnTargetChance > plain twin's in all 20  
+  PASS  pairs: 'Glowing in the dark' line in the hit readout in all 20  
+  PASS  pairs: coated MeleeDodgeChance lower (or both floored at 0) in all 20  
+  PASS  pairs: dodge stat explanation names the line in all 20  
+== 5 styling station lacquer ==
+  PASS  styling: lacquer job queued, parka 0 coats, 3 deepfire on map  {"action": "stylingSetup", "found": true, "queued": true, "coats": 0, "deepfireOnMap": 3, "job": "RM_LacquerWornItem", "queuedJobs": 0, "ticks": 3885}
+  PASS  styling: parka reads coats 1  {"action": "reportStyler", "found": true, "queued": true, "coats": 1, "deepfireOnMap": 0, "job": "Wait_Wander", "queuedJobs": 0, "ticks": 5135}
+  PASS  styling: the 3 deepfire were consumed  {"action": "reportStyler", "found": true, "queued": true, "coats": 1, "deepfireOnMap": 0, "job": "Wait_Wander", "queuedJobs": 0, "ticks": 5135}
+== 6 cleanup + log ==
+  FAIL  no LuminousPigment/Deepfire/WornGlow errors logged during the proof  {"success": true, "message": "50 message(s) of 1000 in the buffer.", "totalInBuffer": 1000, "messages": [{"type": "Warning", "text": "Tried to calculate chance for father with gender \"Female\".", "repeats": 3}, {"type": "Warning", "text": "Tried to calculate chance for mother with gender \"Male\".", "repeats": 1}, {"type": "Warning", "text": "Tried to calculate chance for father with gender \"Female\".", "repeats": 4}, {"type": "Warning", "text": "Tried to calculate chance for mother with gender \"Male\".", "repeats": 1}, {"type": "Warning", "text": "Tried to calculate chance for father with 
+
+12/15 passed
+  FAILED: walk: >= 10 samples and >= 25 cells travelled
+  FAILED: pairs: coated AimOnTargetChance > plain twin's in all 20
+  FAILED: no LuminousPigment/Deepfire/WornGlow errors logged during the proof
