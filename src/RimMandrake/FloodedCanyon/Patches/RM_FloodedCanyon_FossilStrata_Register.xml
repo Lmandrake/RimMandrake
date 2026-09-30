@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FloodedCanyon_FossilStrata_Register.xml   CRACKEDLANDS_MECHANICS_BUILD_1 §3
+
+  Adds RM_GenStep_FossilStrata to Core's abstract MapCommonBase genSteps
+  list (Defs/Core/MapGeneration/CommonMapGenerator.xml, read via RimSage
+  2026-09-29). Patches apply to the XML before inheritance resolves, so every
+  MapGeneratorDef whose ParentName is MapCommonBase - Base_Player, the
+  faction-base, encounter and escape-ship generators - inherits the step.
+  The step is biome-gated inside its class, so this is inert on any biome
+  but the Cracked Lands unless its setting says otherwise.
+
+  Conditional, not a bare Add: an absent list must not error.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+      <value>
+        <li>RM_GenStep_FossilStrata</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

@@ -52,6 +52,24 @@ namespace RimMandrake.FloodedCanyon
         public static bool growthCouplingEnabled = true;
         public static float soakDecayDays = 4f;
 
+        // CRACKEDLANDS_MECHANICS_BUILD_1 §3 — fossils in the walls.
+        // WORLDGEN-AFFECTING: the seeding runs once, when a map is generated,
+        // so these three only change maps generated afterwards.
+        public static bool fossilSeamsEnabled = true;
+        public static bool fossilSeamsInOtherBiomes = false;
+        public static float fossilSeamDensity = 1f;
+
+        // §3 — the flood re-cuts the ledger: fresh seams along the wetted
+        // wall line at every recede. Runs wherever the flood cycle runs.
+        public static bool floodRecutSeamsEnabled = true;
+        public static int floodRecutSeamCount = 4;
+
+        // §4 — the muttavaq: the flood wakes it (water reaching its pan), and
+        // at the dry it digs in and seals where it stands. Off = the stock
+        // behaviour the content def ships alone (sleeps until damaged).
+        public static bool muttavaqWaterWakeEnabled = true;
+        public static bool muttavaqDigInEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -64,12 +82,24 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref floodDamageEnabled, "floodDamageEnabled", true, true);
             Scribe_Values.Look(ref growthCouplingEnabled, "growthCouplingEnabled", true, true);
             Scribe_Values.Look(ref soakDecayDays, "soakDecayDays", 4f, true);
+            Scribe_Values.Look(ref fossilSeamsEnabled, "fossilSeamsEnabled", true, true);
+            Scribe_Values.Look(ref fossilSeamsInOtherBiomes, "fossilSeamsInOtherBiomes", false, true);
+            Scribe_Values.Look(ref fossilSeamDensity, "fossilSeamDensity", 1f, true);
+            Scribe_Values.Look(ref floodRecutSeamsEnabled, "floodRecutSeamsEnabled", true, true);
+            Scribe_Values.Look(ref floodRecutSeamCount, "floodRecutSeamCount", 4, true);
+            Scribe_Values.Look(ref muttavaqWaterWakeEnabled, "muttavaqWaterWakeEnabled", true, true);
+            Scribe_Values.Look(ref muttavaqDigInEnabled, "muttavaqDigInEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls: the CRACKEDLANDS_MECHANICS_BUILD_1 toggles pushed the
+            // page past a settings window's height. viewHeight is measured
+            // from the previous frame's listing (CurHeight), so it self-fits.
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            list.Begin(viewRect);
 
             list.Label("Biome rarity: " + RarityLabel());
             list.Label("At 0 the flooded canyon never generates on a new planet. "
@@ -105,9 +135,40 @@ namespace RimMandrake.FloodedCanyon
                 + "without it this does nothing. The growth multiplier is that mod's setting.");
             list.Label("Ground stays soaked for: " + soakDecayDays.ToString("0.0") + " days after the water recedes");
             soakDecayDays = list.Slider(soakDecayDays, 1f, 10f);
+            list.GapLine();
 
+            list.CheckboxLabeled("Fossil seams in the canyon walls (worldgen)", ref fossilSeamsEnabled,
+                "Seeds fossil-bearing strata into the rock wall faces of newly generated "
+                + "Cracked Lands maps — common impressions low on the faces, rarer "
+                + "articulated seams, deep-stratum seams only well inside the walls. "
+                + "Affects maps generated afterwards, never an existing one.");
+            list.CheckboxLabeled("Fossil seams in other biomes too (worldgen)", ref fossilSeamsInOtherBiomes,
+                "Seeds the same strata into the walls of every newly generated map, "
+                + "not only the Cracked Lands.");
+            list.Label("Fossil seam density: " + fossilSeamDensity.ToString("0.0") + "x");
+            fossilSeamDensity = list.Slider(fossilSeamDensity, 0f, 4f);
+            list.CheckboxLabeled("The flood cuts fresh fossil seams", ref floodRecutSeamsEnabled,
+                "When the water recedes, a few rock wall cells along the wetted line "
+                + "turn into freshly exposed fossil seams — walls near the water line "
+                + "are worth walking after every flood.");
+            list.Label("Fresh seams per flood: " + floodRecutSeamCount);
+            floodRecutSeamCount = Mathf.RoundToInt(list.Slider(floodRecutSeamCount, 0f, 20f));
+            list.GapLine();
+
+            list.CheckboxLabeled("The flood wakes a sleeping muttavaq", ref muttavaqWaterWakeEnabled,
+                "A muttavaq asleep under its pan wakes when water reaches it. Off means "
+                + "it only wakes when hurt.");
+            list.CheckboxLabeled("A muttavaq digs back in at the dry", ref muttavaqDigInEnabled,
+                "After the flood is gone and its ground has dried, an awake muttavaq "
+                + "seals itself in where it stands and sleeps until the next flood.");
+
+            viewHeight = list.CurHeight + 24f;
             list.End();
+            Widgets.EndScrollView();
         }
+
+        private static Vector2 scrollPosition = Vector2.zero;
+        private static float viewHeight = 1200f;
 
         private static string RarityLabel()
         {
