@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T02:54:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T03:15:43Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1162,7 +1162,7 @@ summary:  Five organs, one machine:
 prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
 
 ## CAULDRON_FULL_RENAME_1 Full rename PoisonForest -> Cauldron everywhere down to defNames incl. frozen RUT_ twin and soils (owner-typed 2026-09-28); live-tile shortHash check gates defName changes
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -1170,14 +1170,14 @@ kind:     task
 summary:  - Scope is EVERYTHING the census names, including defNames and the soils
 prose:    infrastructure/state/items/CAULDRON_FULL_RENAME_1.md
 
-## FORGE_RULED_CONTENT_1 Build the Forge ruled cast: wire all waiting (Tibidee/ColossalAerofleet/fleet-flier art/FlashFlora), four admitted natives (Dhokkur/Julmox/Jossur/Dhuvvox), floatstone material (spun-glass pumice, non-flammable, beautiful walls)
+## FORGE_CYCLE_MECHANICS_1 Build the Forge fire-and-water grand cycle: gas-wash ignition, boiling rain + FlowWorks flooding, steam plumes + temporary basalt/pumice freeze, floatstone growth phase, glowing cracks, melt-back - extends FORGE_MECHANICS_1's F1 pulse, coordinate
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  1. Wire in all waiting (owner, turn 2: "Wire in all waiting."): Tibidee and
-prose:    infrastructure/state/items/FORGE_RULED_CONTENT_1.md
+summary:  The pulse becomes a six-phase grand cycle:
+prose:    infrastructure/state/items/FORGE_CYCLE_MECHANICS_1.md
 
 ## LEANINGSCRUB_MECHANICS_BUILD_1 Build the Leaning Scrub mechanics: Stall+Gale wind calendar, the Lean scent/fire axis, vaporator + V-blight, smother-craft, calling-pyre + fire-stamping giants, ripple concealment, rich soundscape, inhabited injections - warning-instrument theme trimmed by owner ruling
 state:    doing  (BLOCKED)
@@ -1772,6 +1772,16 @@ blocked:  Remaining parts need design calls (gas grid, falter tell foreknowledge
 summary:  Five organs, one machine:
 prose:    infrastructure/state/items/CAULDRON_MECHANICS_BUILD_1.md
 
+## CAULDRON_FULL_RENAME_1 Full rename PoisonForest -> Cauldron everywhere down to defNames incl. frozen RUT_ twin and soils (owner-typed 2026-09-28); live-tile shortHash check gates defName changes
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  RUT_PoisonForest has 546 live tiles; owner call on renaming the campaign twin (same as CRACKEDLANDS_FULL_RENAME_1)
+summary:  - Scope is EVERYTHING the census names, including defNames and the soils
+prose:    infrastructure/state/items/CAULDRON_FULL_RENAME_1.md
+
 ## LEANINGSCRUB_MECHANICS_BUILD_1 Build the Leaning Scrub mechanics: Stall+Gale wind calendar, the Lean scent/fire axis, vaporator + V-blight, smother-craft, calling-pyre + fire-stamping giants, ripple concealment, rich soundscape, inhabited injections - warning-instrument theme trimmed by owner ruling
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -1813,26 +1823,6 @@ kind:     task
 thin:     no ## verify
 summary:  1. Build a real FlowWorks canal on a live map (quicktest fine; bridge work —
 prose:    infrastructure/state/items/SWALE_CANAL_ART_REFERENCE_1.md
-
-## FORGE_CYCLE_MECHANICS_1 Build the Forge fire-and-water grand cycle: gas-wash ignition, boiling rain + FlowWorks flooding, steam plumes + temporary basalt/pumice freeze, floatstone growth phase, glowing cracks, melt-back - extends FORGE_MECHANICS_1's F1 pulse, coordinate
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  The pulse becomes a six-phase grand cycle:
-prose:    infrastructure/state/items/FORGE_CYCLE_MECHANICS_1.md
-
-## OGLEKNOT_CREATURE_BUILD_1 Build RM_Ogleknot: the Contagion's eye-knot creature wearing the already-validated rejected-Ikee render (art exists, wire by texPath, queue nothing); small skitterer, Contagion register
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  - Art exists and is validated — do not queue any art. The render is the
-prose:    infrastructure/state/items/OGLEKNOT_CREATURE_BUILD_1.md
 
 ## DEEPFIRE_FLOOR_PAINT_1 Deepfire floors: grid, postfixes, clustering, beauty hooks
 state:    proposed
@@ -1970,8 +1960,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SOLAR_HEAT_EXPOSURE_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Sun exposure feeds vanilla heat. A pawn standing in unshaded sun on a sun-heat map takes
 prose:    infrastructure/state/items/SOLAR_HEAT_EXPOSURE_1.md
 
 ## SHADE_GEAR_FAMILY_1 Shade gear family, cross-biome: parasols, shade tents, stand-behind sun shields; effectiveness set by each biome's heat kind (overhead/low sun/steam where shade does nothing)
@@ -1980,8 +1970,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SHADE_GEAR_FAMILY_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  - Parasol: an apparel/utility item that shades its wearer and, weakly, one adjacent cell.
 prose:    infrastructure/state/items/SHADE_GEAR_FAMILY_1.md
 
 ## LONGSHADE_BEDAZZLE_MECHANICS_1 Long Shade bedazzle mechanics: golden-hour perpetual sunset + pinned sun angle, mirrak false-shadow ambusher, swimmer's road (one young sarlacc, visible signs of every loss), Crawler Road wreck line, Long Carry sun graves
@@ -1990,8 +1980,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LONGSHADE_BEDAZZLE_MECHANICS_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Golden hour (owner: "I like the golden hour concept. A perpetual beautiful sunset.").
 prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_MECHANICS_1.md
 
 ## LONGSHADE_BEDAZZLE_CONTENT_1 Long Shade bedazzle content: wire the finished-but-unwired art (7 magenta creatures + vorrel family), five filler defs, qorrax rename, glitter-bird/pirrik dedupe, gloomcast own art, AA texture deps, mirrak def, maidenbloom + review-gated fills
@@ -2000,6 +1990,36 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LONGSHADE_BEDAZZLE_CONTENT_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  1. Wire the finished-but-unwired art. RMOssik, RMKudda, RMThurra, RMVosska,
 prose:    infrastructure/state/items/LONGSHADE_BEDAZZLE_CONTENT_1.md
+
+## JOSSUR_FLIGHT_FRAMES_1 Flight flip-book frames for RM_Jossur (optional; flight stat already set)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/JOSSUR_FLIGHT_FRAMES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/JOSSUR_FLIGHT_FRAMES_1.md
+
+## FLOATSTONE_WALL_ATLAS_1 Wall/linked atlas art for RM_Floatstone building stone
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLOATSTONE_WALL_ATLAS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLOATSTONE_WALL_ATLAS_1.md
+
+## FORGE_MISSING_ART_1 No render anywhere: RM_CinderCrust (identity unwritten), RUT_TibannaGas, RUT_FoundryTowerEntrance, RUT_FoundrySalvageCache
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FORGE_MISSING_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FORGE_MISSING_ART_1.md
