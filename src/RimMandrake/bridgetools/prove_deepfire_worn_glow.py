@@ -28,10 +28,12 @@ takes its indoor branch. (The outdoor branch -- sky glow <= 0.35 -- is not exerc
   3  strip its coats -> untracked, no worn light, glow at its cell back under 0.3.
   4  20 fresh coated/uncoated baseliner-adult pairs, symmetric about one rifle shooter under
      a roof: every pair -> coated twin glowingInDark, its AimOnTargetChance per unit of its
-     own clamped body size > the plain twin's,
-     its hit readout carries the "Glowing in the dark" line, its MeleeDodgeChance is lower
-     than the twin's (or both are 0 -- the dodge curve floors low-skill pawns) and its stat
-     explanation names the line.
+     own clamped body size > the plain twin's, its hit readout carries the "Glowing in the
+     dark" line, its stat explanation names the line, and its MeleeDodgeChance while coated
+     is lower than the SAME pawn's own MeleeDodgeChance once its coat is stripped (or both
+     are 0 -- the dodge curve floors low-skill pawns). DEEPFIRE_DODGE_PROOF_TWINS_1: the
+     dodge compare used to read the coated twin against the plain twin, which isn't
+     skill-matched -- fixed to compare one pawn against itself before/after RemoveAllCoats.
   5  styling station + 3 deepfire + an uncoated colonist -> the lacquer job is queued via
      the dialog's own Accept entry point; step ticks until done -> parka coats 1 and the
      3 deepfire are consumed.
