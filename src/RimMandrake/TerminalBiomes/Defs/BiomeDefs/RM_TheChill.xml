@@ -126,10 +126,31 @@
       <Clear>14</Clear>
       <Fog>6</Fog>
     </baseWeatherCommonalities>
+    <!-- SEA_FLOOR_SINGLE_BAND_1, 2026-09-30: the same single-band defect
+         SCALD_CROWNCARPET_NO_HABITAT_1 found and fixed on RM_TheScald.xml
+         (ca774b8b9) — the one band below gave every non-rock cell
+         RM_TheChillDeep unconditionally, so RM_SolidPropane (this def's own
+         waterShallowTerrain, RM_TheChillTerrains.xml) could never be
+         selected by MapGenUtility.TerrainFrom(). Two bands now, deep-first.
+
+         🔴 Splitting the band ALONE does not unblock the ten-species Chill
+         flora roster below (wildTerrainTags RM_TheChillBed/RM_TheChillShelf,
+         per RM_TheChillFlora.xml's own header). Those two tags previously
+         existed ONLY on FlowWorks' RM_PropaneDeep/RM_PropaneShallow
+         (RM_Propane.xml, CHILL_FLORA_BUILD_1's own manual-patch comment) —
+         this def's OWN RM_TheChillDeep/RM_SolidPropane (the terrain this
+         terrainsByFertility split actually selects) carried no such tags at
+         all. Added here too (RM_TheChillTerrains.xml, this same commit) so
+         the habitat tag actually sits on the terrain this band split picks. -->
     <terrainsByFertility>
       <li>
         <terrain>RM_TheChillDeep</terrain>
         <min>-999</min>
+        <max>0.6</max>
+      </li>
+      <li>
+        <terrain>RM_SolidPropane</terrain>
+        <min>0.6</min>
         <max>999</max>
       </li>
     </terrainsByFertility>

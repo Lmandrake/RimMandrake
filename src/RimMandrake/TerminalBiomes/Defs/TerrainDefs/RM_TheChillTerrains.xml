@@ -62,8 +62,18 @@
     <waterBodyType>None</waterBodyType>
     <canFreeze>false</canFreeze>
     <avoidWander>true</avoidWander>
+    <!-- SEA_FLOOR_SINGLE_BAND_1, 2026-09-30: RM_TheChillBed added.
+         RM_TheChillFlora.xml's own header names this tag as the deep-floor
+         half of its wildTerrainTags convention ("RM_TheChillBed = deep
+         floor, RM_TheChillShelf = shallow floor") and six of its ten
+         plants carry it, but until now the tag existed only on FlowWorks'
+         RM_PropaneDeep (RM_Propane.xml, CHILL_FLORA_BUILD_1's manual-patch
+         comment) — a shore-edge terrain, not this def, which is what
+         RM_TheChill.xml's terrainsByFertility split (this same commit)
+         actually selects for the dive floor's deep cells. -->
     <tags>
       <li>Water</li>
+      <li>RM_TheChillBed</li>
     </tags>
   </TerrainDef>
 
@@ -77,8 +87,13 @@
     <waterBodyType>None</waterBodyType>
     <canFreeze>false</canFreeze>
     <pathCost>12</pathCost>
+    <!-- SEA_FLOOR_SINGLE_BAND_1, 2026-09-30: RM_TheChillShelf added — the
+         shallow-floor half of the same tag pair, see RM_TheChillDeep's own
+         comment above. Four of the ten RM_TheChillFlora.xml plants
+         (Slackwax, Ghostpane, Keelgrass, Skyharp) need it. -->
     <tags>
       <li>Water</li>
+      <li>RM_TheChillShelf</li>
     </tags>
   </TerrainDef>
 
