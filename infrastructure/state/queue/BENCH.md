@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T07:36:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-30T07:49:16Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -984,16 +984,6 @@ thin:     no ## verify
 summary:  It is a design idea for later, not scheduled. A design pass should weigh three variants:
 prose:    infrastructure/state/items/ARTIST_BIOME_INSPIRATION_MOD_1.md
 
-## WASTELAND_MIDDENSHELL_FOOTPRINT_1 Middenshell ruled 20 cells wide; engine building/pawn footprint tops out near 4x4 - pick shrink, multi-part, or terrain-feature form
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WASTELAND_MIDDENSHELL_FOOTPRINT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WASTELAND_MIDDENSHELL_FOOTPRINT_1.md
-
 ## LONGSHADE_SHADE_EXTRAS_1 Long Shade deferred small ideas for owner ruling later: empty patch, tollok ticks, stampede for your roof, lure awnings, mirror field, harrok, Jawa clan towing the crawler
 state:    proposed
 row:      unassigned
@@ -1003,3 +993,13 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  LONGSHADESHADEEXTRAS1 — Long Shade small ideas, deferred for the owner
 prose:    infrastructure/state/items/LONGSHADE_SHADE_EXTRAS_1.md
+
+## BEDAZZLE_ENRICHMENT_REVIEW_REST_1 Owner review later: GPT enrichment cards for Leaning Scrub and Long Shade, plus the Stillsand turn-3 development and its five open questions
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BEDAZZLE_ENRICHMENT_REVIEW_REST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BEDAZZLE_ENRICHMENT_REVIEW_REST_1.md
