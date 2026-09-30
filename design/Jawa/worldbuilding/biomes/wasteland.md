@@ -352,7 +352,8 @@ Junkers refuse and refute all of it.
 
 ## Owed
 
-- **Names, owner's pick:** the halo-storm and plasma-storm player-facing names. (The
+- **Names:** the halo storm is the **Deadlight Halo** and the plasma storm the **Cinderwire
+  Storm** (owner-picked by question card 2026-09-30, `WASTELAND_GPT_ENRICHMENT_1`). (The
   Stenchlands (Throat → Pit → Stenchlands), the excretors, the radiothermal solitary and
   the brine-battery creatures were all named at the 2026-09-28/2026-09-29 sittings — see
   the amendment blocks and the cast bible.)

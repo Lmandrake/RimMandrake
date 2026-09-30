@@ -48,6 +48,11 @@ namespace RimMandrake.Wasteland
         public static bool middenshellGrabEnabled = true;
         public static int middenshellStepTicks = 400;
 
+        // WASTELAND_GPT_ENRICHMENT_1 §1 — named storms (RM_NamedStorms.cs).
+        public static bool namedStormPhasesEnabled = true;
+        public static float namedStormWarningFactor = 1f;
+        public static bool cinderwireEmpEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -68,6 +73,9 @@ namespace RimMandrake.Wasteland
             Scribe_Values.Look(ref middenshellEnabled, "middenshellEnabled", true);
             Scribe_Values.Look(ref middenshellGrabEnabled, "middenshellGrabEnabled", true);
             Scribe_Values.Look(ref middenshellStepTicks, "middenshellStepTicks", 400);
+            Scribe_Values.Look(ref namedStormPhasesEnabled, "namedStormPhasesEnabled", true);
+            Scribe_Values.Look(ref namedStormWarningFactor, "namedStormWarningFactor", 1f);
+            Scribe_Values.Look(ref cinderwireEmpEnabled, "cinderwireEmpEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -89,7 +97,7 @@ namespace RimMandrake.Wasteland
               + "until a GenStep_ScatterThings subclass reads it.");
             list.GapLine();
 
-            list.Label("Storms (ash storm, radiation halo, plasma storm). The weathers still occur "
+            list.Label("Storms (ash storm, deadlight halo, cinderwire storm). The weathers still occur "
                      + "when these are off; only their effects stop. Not worldgen-affecting.");
             list.CheckboxLabeled("Storm dose", ref stormDoseEnabled,
                 "While a Wasteland storm runs, unroofed pawns build toxic buildup (the vanilla "
@@ -101,6 +109,17 @@ namespace RimMandrake.Wasteland
             list.CheckboxLabeled("Cinderfelt germination", ref cinderfeltGerminationEnabled,
                 "When an ash storm ends, cinderfelt grows on part of its fresh fall and dies "
               + "in about eight days. Off: cinderfelt appears only at its token wild weight.");
+            list.CheckboxLabeled("Named storm warnings", ref namedStormPhasesEnabled,
+                "The deadlight halo and the cinderwire storm arrive with a quiet warning (doubled "
+              + "shadows, quickening dosimeter clicks, a sickly rim-light; crawling static, "
+              + "levitating scraps and a rising whine) before their dose, fall, EMP and lightning "
+              + "begin. Off: they strike at once and the cues are skipped.");
+            list.Label("Storm warning length: " + namedStormWarningFactor.ToStringPercent()
+                     + " (100% = about one in-game hour)");
+            namedStormWarningFactor = list.Slider(namedStormWarningFactor, 0.25f, 3f);
+            list.CheckboxLabeled("Cinderwire EMP pulses", ref cinderwireEmpEnabled,
+                "Once a cinderwire storm breaks, EMP pulses strike random open ground, stunning "
+              + "powered buildings and mechanoids caught in them.");
             list.GapLine();
 
             list.CheckboxLabeled("Ambient dose creatures", ref ambientDoseEnabled,

@@ -89,6 +89,13 @@ namespace RimMandrake.Wasteland
             {
                 return;
             }
+            // WASTELAND_GPT_ENRICHMENT_1 §1: a named storm's quiet warning holds the
+            // dose and fall until RM_MapComponent_StormPhases hands off.
+            RM_MapComponent_StormPhases phases = map.GetComponent<RM_MapComponent_StormPhases>();
+            if (phases != null && phases.IsHolding(cur))
+            {
+                return;
+            }
             if (doseTick)
             {
                 DoStormDose(ext);

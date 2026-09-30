@@ -18,8 +18,12 @@
     nothing yet tells a map it sits in a terminator pocket. How that gate is
     decided is an owed design call (item remaining list), not a guess made here.
 
-  Labels: "radiation halo" and "plasma storm" are WORKING labels — the
-  player-facing names are owed by the owner (wasteland.md Owed).
+  Names (WASTELAND_GPT_ENRICHMENT_1 §1, owner-picked by question card 2026-09-30):
+  RM_WastelandRadiationHalo is the DEADLIGHT HALO and RM_WastelandPlasmaStorm the
+  CINDERWIRE STORM. defNames unchanged. Both run RM_WeatherWorker_NamedStorm and
+  carry RM_StormPhaseExtension: a quiet warning phase (Source/RM_NamedStorms.cs)
+  holds the dose and fall, then hands off. The Cinderwire's lightning moved out of
+  <eventMakers> into that controller so its warning is genuinely quiet.
 -->
 <Defs>
 
@@ -81,8 +85,9 @@
 
   <WeatherDef>
     <defName>RM_WastelandRadiationHalo</defName>
-    <label>radiation halo</label>
-    <description>An auroral glow hangs over the ground, lit from inside by the fallout it stirs. Less violent than an ash storm, but the ambient dose is raised for as long as it lasts — anyone under open sky soaks it up.</description>
+    <label>deadlight halo</label>
+    <description>It arrives quietly. Shadows deepen and double, dosimeters click faster and faster, and a sickly light rims every living thing under the open sky. Then the auroral glow settles over the ground, lit from inside by the fallout it stirs. Less violent than an ash storm, but the ambient dose is raised for as long as it lasts — anyone under open sky soaks it up.</description>
+    <workerClass>RimMandrake.Wasteland.RM_WeatherWorker_NamedStorm</workerClass>
     <durationRange>20000~50000</durationRange>
     <temperatureRange>-999~999</temperatureRange>
     <favorability>Bad</favorability>
@@ -97,25 +102,25 @@
     </overlayClasses>
     <skyColorsDay>
       <sky>(0.72,0.86,0.70)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
+      <shadow>(0.55,0.62,0.55)</shadow>
       <overlay>(0.7,0.8,0.65)</overlay>
       <saturation>0.9</saturation>
     </skyColorsDay>
     <skyColorsDusk>
       <sky>(0.75,0.9,0.72)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
+      <shadow>(0.55,0.62,0.55)</shadow>
       <overlay>(0.6,0.72,0.58)</overlay>
       <saturation>0.9</saturation>
     </skyColorsDusk>
     <skyColorsNightEdge>
       <sky>(0.36,0.52,0.40)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
+      <shadow>(0.55,0.62,0.55)</shadow>
       <overlay>(0.5,0.62,0.5)</overlay>
       <saturation>0.9</saturation>
     </skyColorsNightEdge>
     <skyColorsNightMid>
       <sky>(0.32,0.48,0.38)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
+      <shadow>(0.55,0.62,0.55)</shadow>
       <overlay>(0.45,0.58,0.46)</overlay>
       <saturation>0.9</saturation>
     </skyColorsNightMid>
@@ -123,13 +128,28 @@
       <li Class="RimMandrake.Wasteland.RM_WeatherDoseExtension">
         <airborneToxicFactor>0.6</airborneToxicFactor>
       </li>
+      <li Class="RimMandrake.Wasteland.RM_StormPhaseExtension">
+        <warningTicks>2500</warningTicks>
+        <warningMessage>Deadlight halo coming: the shadows are doubling, dosimeters are clicking faster, and a sickly light rims everyone outside. Get under a roof before it settles.</warningMessage>
+        <unleashedMessage>The deadlight halo has settled. Anyone under open sky is taking a dose until it lifts.</unleashedMessage>
+        <clickSound>RM_Storm_DosimeterClick</clickSound>
+        <clickIntervalStartTicks>240</clickIntervalStartTicks>
+        <clickIntervalEndTicks>12</clickIntervalEndTicks>
+        <clickIntervalStormTicks>45</clickIntervalStormTicks>
+        <rimFleck>RM_Fleck_DeadlightRim</rimFleck>
+        <rimColor>(0.62,0.95,0.35,0.55)</rimColor>
+        <rimScale>1.7</rimScale>
+        <rimIntervalTicks>90</rimIntervalTicks>
+        <rimWholeStorm>true</rimWholeStorm>
+      </li>
     </modExtensions>
   </WeatherDef>
 
   <WeatherDef>
     <defName>RM_WastelandPlasmaStorm</defName>
-    <label>plasma storm</label>
-    <description>Charged fallout whipped past threshold until the wind itself is radioactive and electric. Lightning strikes, the ground takes a heavy fall, and anyone outside takes a severe dose. Found only in the terminator pockets.</description>
+    <label>cinderwire storm</label>
+    <description>Charged fallout whipped past threshold until the wind itself is radioactive and electric. It announces itself: static crawls over the ground, loose scraps lift and hang in the air, and a deep electrical whine builds. Then it breaks — EMP pulses, plasma lightning, a heavy burying fall, and a severe dose for anyone outside. Found only in the terminator pockets.</description>
+    <workerClass>RimMandrake.Wasteland.RM_WeatherWorker_NamedStorm</workerClass>
     <durationRange>10000~25000</durationRange>
     <temperatureRange>-999~999</temperatureRange>
     <favorability>VeryBad</favorability>
@@ -145,16 +165,6 @@
     <ambientSounds>
       <li>Ambient_Wind_Storm</li>
     </ambientSounds>
-    <eventMakers>
-      <li>
-        <averageInterval>900</averageInterval>
-        <eventClass>WeatherEvent_LightningFlash</eventClass>
-      </li>
-      <li>
-        <averageInterval>900</averageInterval>
-        <eventClass>WeatherEvent_LightningStrike</eventClass>
-      </li>
-    </eventMakers>
     <overlayClasses>
       <li>WeatherOverlay_SandHard</li>
       <li>WeatherOverlay_Fallout</li>
@@ -189,6 +199,23 @@
         <fallCellsPerDay>1800</fallCellsPerDay>
         <aftermathPlant>RM_Cinderfelt</aftermathPlant>
         <aftermathSeedFraction>0.25</aftermathSeedFraction>
+      </li>
+      <li Class="RimMandrake.Wasteland.RM_StormPhaseExtension">
+        <warningTicks>2500</warningTicks>
+        <warningMessage>Cinderwire storm building: static is crawling over the ground, loose scraps are lifting into the air, and a deep electrical whine is rising. EMP, plasma lightning and a burying fall follow. Get people and powered gear under cover.</warningMessage>
+        <unleashedMessage>The cinderwire storm has broken: EMP pulses and plasma lightning are striking, and the fall is burying the ground.</unleashedMessage>
+        <warningSustainer>RM_Storm_CinderwireWhine</warningSustainer>
+        <clickSound>RM_Storm_CinderwireCrackle</clickSound>
+        <clickIntervalStartTicks>180</clickIntervalStartTicks>
+        <clickIntervalEndTicks>25</clickIntervalEndTicks>
+        <staticFleck>ElectricalSpark</staticFleck>
+        <staticPerSecond>14</staticPerSecond>
+        <scrapFleck>RM_Fleck_LevitatingScrap</scrapFleck>
+        <scrapPerSecond>6</scrapPerSecond>
+        <empRadius>4.9</empRadius>
+        <empIntervalTicks>1200~2400</empIntervalTicks>
+        <lightningStrikeIntervalTicks>600~1200</lightningStrikeIntervalTicks>
+        <lightningFlashIntervalTicks>600~1200</lightningFlashIntervalTicks>
       </li>
     </modExtensions>
   </WeatherDef>

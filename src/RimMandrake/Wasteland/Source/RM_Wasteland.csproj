@@ -48,6 +48,7 @@
     <Compile Include="RM_CompProcessorGatherable.cs" />
     <Compile Include="RM_GripperTheft.cs" />
     <Compile Include="RM_Middenshell.cs" />
+    <Compile Include="RM_NamedStorms.cs" />
   </ItemGroup>
 
   <ItemGroup>
