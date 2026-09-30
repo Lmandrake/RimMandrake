@@ -276,7 +276,7 @@
       <growDays>4</growDays>
       <lifespanDaysPerGrowDays>6</lifespanDaysPerGrowDays>
       <visualSizeRange>0.7~1.0</visualSizeRange>
-      <maxMeshCount>2</maxMeshCount>
+      <maxMeshCount>4</maxMeshCount>
       <wildOrder>2</wildOrder>
       <topWindExposure>0.4</topWindExposure>
       <interferesWithRoof>false</interferesWithRoof>

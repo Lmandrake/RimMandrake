@@ -204,7 +204,7 @@
     <plant>
       <growDays>6</growDays>
       <harvestWork>40</harvestWork>
-      <maxMeshCount>3</maxMeshCount>
+      <maxMeshCount>4</maxMeshCount>
       <visualSizeRange>0.5~0.9</visualSizeRange>
       <topWindExposure>0</topWindExposure>
       <wildOrder>1</wildOrder>

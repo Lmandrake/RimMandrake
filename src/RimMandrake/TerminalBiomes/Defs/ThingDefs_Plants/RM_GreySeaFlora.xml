@@ -488,7 +488,7 @@
     <plant>
       <growDays>28</growDays>
       <harvestWork>320</harvestWork>
-      <maxMeshCount>3</maxMeshCount>
+      <maxMeshCount>4</maxMeshCount>
       <visualSizeRange>0.4~1.0</visualSizeRange>
       <!-- "Juveniles settle in cracks between salt blocks": pods breed
            beside pods, and the floor's cracks are between the

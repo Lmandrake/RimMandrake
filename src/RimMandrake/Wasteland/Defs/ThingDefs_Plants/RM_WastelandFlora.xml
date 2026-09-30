@@ -229,7 +229,7 @@
       <harvestedThingDef>RawVegetables</harvestedThingDef>
       <harvestTag>Standard</harvestTag>
       <harvestMinGrowth>0.5</harvestMinGrowth>
-      <maxMeshCount>2</maxMeshCount>
+      <maxMeshCount>4</maxMeshCount>
       <visualSizeRange>0.5~0.9</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
       <wildOrder>3</wildOrder>

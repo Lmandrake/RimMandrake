@@ -82,7 +82,7 @@
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>10</growDays>
       <dieIfLeafless>false</dieIfLeafless>
-      <maxMeshCount>3</maxMeshCount>
+      <maxMeshCount>4</maxMeshCount>
       <visualSizeRange>0.5~0.9</visualSizeRange>
       <topWindExposure>0</topWindExposure>
       <harvestTag>Standard</harvestTag>
