@@ -1740,4 +1740,425 @@
     </lifeStages>
   </PawnKindDef>
 
+  <!-- ======================================================================
+       SKINFLAP (RM_Skinflap) - goo-bud line (CONTAGION_NEW_SPECIES_FLORA_1): dissolves to goo at death, no corpse
+       ====================================================================== -->
+  <!-- TODO CONTAGION_FLYER_WIRING_1: flight STAT is set (MaxFlightTime>0); flying-animation frames are a separate optional system and are not authored. Verify CanEverFly by a Pawn_FlightTracker state read, never a live visual hunt. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Skinflap</defName>
+    <label>skinflap</label>
+    <description>A sheet of loose wet skin that flies: no body to speak of, just the flap, slapping itself through the air between canopy layers and draping over branches to dry. It soaks spore-rich rain through its underside and drips. Harmless, numerous, and unforgettable.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed><Mass>1.5</Mass><MeatAmount>0</MeatAmount><LeatherAmount>0</LeatherAmount><ComfyTemperatureMin>0</ComfyTemperatureMin><ComfyTemperatureMax>60</ComfyTemperatureMax><Wildness>1.0</Wildness><MaxFlightTime>12</MaxFlightTime><FlightCooldown>4</FlightCooldown>
+    </statBases>
+    <tools>
+      <li><label>flap</label><capacities><li>Blunt</li></capacities><power>1</power><cooldownTime>2</cooldownTime><linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup></li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.05</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <flightStartChanceOnJobStart>0.4</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.3</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.6</minAge></li>
+      </lifeStageAges>
+      <deathAction Class="DeathActionProperties_Vanish">
+        <filth>Filth_Slime</filth>
+        <filthCountRange>2~4</filthCountRange>
+      </deathAction>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Skinflap</defName>
+    <label>skinflap</label>
+    <race>RM_Skinflap</race>
+    <combatPower>5</combatPower>
+    <wildGroupSize>6~12</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skinflap/RM_Skinflap</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skinflap/RM_Skinflap</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.65</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>0.65</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skinflap/RM_Skinflap</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>0.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ======================================================================
+       GOREKITE (RM_Gorekite) - goo-bud line (CONTAGION_NEW_SPECIES_FLORA_1): dissolves to goo at death, no corpse
+       ====================================================================== -->
+  <!-- TODO CONTAGION_FLYER_WIRING_1: flight STAT is set (MaxFlightTime>0); flying-animation frames are a separate optional system and are not authored. Verify CanEverFly by a Pawn_FlightTracker state read, never a live visual hunt. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gorekite</defName>
+    <label>gorekite</label>
+    <description>A stretched hide the size of a tent riding the storm shear, trailing one long wet grasper. Its shadow crossing yours is the only warning before it drops and smothers. It hunts everything caught in the open under the Bloom.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed><Mass>90</Mass><MeatAmount>0</MeatAmount><LeatherAmount>0</LeatherAmount><ComfyTemperatureMin>0</ComfyTemperatureMin><ComfyTemperatureMax>60</ComfyTemperatureMax><Wildness>1.0</Wildness><MaxFlightTime>20</MaxFlightTime><FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li><label>grasper</label><capacities><li>Blunt</li></capacities><power>18</power><cooldownTime>2</cooldownTime><linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup></li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>1.6</baseBodySize>
+      <baseHealthScale>1.6</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <flightStartChanceOnJobStart>0.2</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.8</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.3</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.6</minAge></li>
+      </lifeStageAges>
+      <deathAction Class="DeathActionProperties_Vanish">
+        <filth>Filth_Slime</filth>
+        <filthCountRange>2~4</filthCountRange>
+      </deathAction>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gorekite</defName>
+    <label>gorekite</label>
+    <race>RM_Gorekite</race>
+    <combatPower>110</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>2.0</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gorekite/RM_Gorekite</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gorekite/RM_Gorekite</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>1.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gorekite/RM_Gorekite</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.3</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>2.3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ======================================================================
+       DANGLEMAW (RM_Danglemaw) - goo-bud line (CONTAGION_NEW_SPECIES_FLORA_1): dissolves to goo at death, no corpse
+       ====================================================================== -->
+  <!-- v1 ships as a slow high-damage lurker; true ambush-from-canopy behaviour is C# and is not built here. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Danglemaw</defName>
+    <label>danglemaw</label>
+    <description>A mouth on a tendon: a muscular cord anchored in the Eyebark canopy with a free-hanging jaw at the end of it, slack until something walks underneath. Shelter from the sky under the trees is not safe from this.</description>
+    <statBases>
+      <MoveSpeed>1.0</MoveSpeed><Mass>40</Mass><MeatAmount>0</MeatAmount><LeatherAmount>0</LeatherAmount><ComfyTemperatureMin>0</ComfyTemperatureMin><ComfyTemperatureMax>60</ComfyTemperatureMax><Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li><label>jaw</label><capacities><li>Bite</li></capacities><power>22</power><cooldownTime>2</cooldownTime><linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup></li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>1.0</baseBodySize>
+      <baseHealthScale>1.2</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>15</lifeExpectancy>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.3</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.6</minAge></li>
+      </lifeStageAges>
+      <deathAction Class="DeathActionProperties_Vanish">
+        <filth>Filth_Slime</filth>
+        <filthCountRange>2~4</filthCountRange>
+      </deathAction>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Danglemaw</defName>
+    <label>danglemaw</label>
+    <race>RM_Danglemaw</race>
+    <combatPower>70</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>0.9</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>1.3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.7</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>1.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ======================================================================
+       CRISPLING (RM_Crispling) - goo-bud line (CONTAGION_NEW_SPECIES_FLORA_1): dissolves to goo at death, no corpse
+       ====================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Crispling</defName>
+    <label>crispling</label>
+    <description>A hunched picker crusted in its own char. It lets the Burn cook its back to a shell, then walks the scorch line eating what did not dive fast enough. The crust turns heat and light; the underside is soft.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed><Mass>12</Mass><MeatAmount>0</MeatAmount><LeatherAmount>0</LeatherAmount><ComfyTemperatureMin>0</ComfyTemperatureMin><ComfyTemperatureMax>90</ComfyTemperatureMax><Wildness>1.0</Wildness><ArmorRating_Heat>0.7</ArmorRating_Heat><ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+    </statBases>
+    <tools>
+      <li><label>claw</label><capacities><li>Scratch</li></capacities><power>5</power><cooldownTime>2</cooldownTime><linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup></li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>8</lifeExpectancy>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.3</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.6</minAge></li>
+      </lifeStageAges>
+      <deathAction Class="DeathActionProperties_Vanish">
+        <filth>Filth_Slime</filth>
+        <filthCountRange>2~4</filthCountRange>
+      </deathAction>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Crispling</defName>
+    <label>crispling</label>
+    <race>RM_Crispling</race>
+    <combatPower>25</combatPower>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Crispling/RM_Crispling</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>0.55</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Crispling/RM_Crispling</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Crispling/RM_Crispling</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.95</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>0.95</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ======================================================================
+       SLOSHBELLY (RM_Sloshbelly) - goo-bud line (CONTAGION_NEW_SPECIES_FLORA_1): dissolves to goo at death, no corpse
+       ====================================================================== -->
+  <!-- Red-water yield on puncture/butchery rides WATER_KINDS_TAXONOMY_1 and is NOT authored here; the goo-corpse vanishes, so nothing is butcherable yet. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sloshbelly</defName>
+    <label>sloshbelly</label>
+    <description>A tick the size of a dog, swollen tight with red water, its skin stretched to translucency. It sloshes audibly when it walks, and the natives puncture it to drink. It burrows shallow where the Burn passes.</description>
+    <statBases>
+      <MoveSpeed>1.8</MoveSpeed><Mass>25</Mass><MeatAmount>0</MeatAmount><LeatherAmount>0</LeatherAmount><ComfyTemperatureMin>0</ComfyTemperatureMin><ComfyTemperatureMax>60</ComfyTemperatureMax><Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li><label>bite</label><capacities><li>Bite</li></capacities><power>3</power><cooldownTime>2</cooldownTime><linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup></li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>0.6</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>10</lifeExpectancy>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.3</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.6</minAge></li>
+      </lifeStageAges>
+      <deathAction Class="DeathActionProperties_Vanish">
+        <filth>Filth_Slime</filth>
+        <filthCountRange>2~4</filthCountRange>
+      </deathAction>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sloshbelly</defName>
+    <label>sloshbelly</label>
+    <race>RM_Sloshbelly</race>
+    <combatPower>10</combatPower>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sloshbelly/RM_Sloshbelly</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>0.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sloshbelly/RM_Sloshbelly</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>0.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sloshbelly/RM_Sloshbelly</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
 </Defs>
