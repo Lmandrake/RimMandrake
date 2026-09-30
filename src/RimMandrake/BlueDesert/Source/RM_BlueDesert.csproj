@@ -61,6 +61,9 @@
     <Compile Include="RM_VhaulkDetonation.cs" />
     <Compile Include="RM_BlueIceThaw.cs" />
     <Compile Include="RM_MurrekDrift.cs" />
+    <Compile Include="RM_ColdSink.cs" />
+    <Compile Include="RM_AblationSalvage.cs" />
+    <Compile Include="RM_VhaulkRoad.cs" />
   </ItemGroup>
 
   <ItemGroup>

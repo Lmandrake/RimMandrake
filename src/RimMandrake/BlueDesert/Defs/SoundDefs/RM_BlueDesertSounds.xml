@@ -37,4 +37,109 @@
     </subSounds>
   </SoundDef>
 
+  <!-- BLUEDESERT_GPT_ENRICHMENT_1. Same vanilla-reuse law as RM_PhaseCrack:
+       every clip folder below is RimSage-verified (2026-09-30) against Core
+       or Anomaly SoundDefs; pitch/volume are this build's INVENTED retint.
+       Anomaly clips are safe to name: every DLC is a shipping prerequisite
+       (owner, 2026-09-26). Bespoke clips are owed audio, not here. -->
+
+  <!-- §1 the cold rack settling as its blocks melt (Anomaly's undercave
+       collapse rumble, pitched up and small). -->
+  <SoundDef>
+    <defName>RM_ColdSinkGroan</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Ambience/Undercave/Collapsing/Rumble</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>14~20</volumeRange>
+        <distRange>6~22</distRange>
+        <pitchRange>1.3~1.6</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- §1 melt dripping into a can (Anomaly's undercave drip). -->
+  <SoundDef>
+    <defName>RM_ColdSinkDrip</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>2</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Ambience/Undercave/Drip</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>14~20</volumeRange>
+        <distRange>4~16</distRange>
+        <pitchRange>0.8~1.2</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- §2 the ablation line's first sign: a distant crack heard map-wide
+       (the gestator-glass clip RM_PhaseCrack uses, pitched far DOWN). -->
+  <SoundDef>
+    <defName>RM_AblationDistantCrack</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <onCamera>true</onCamera>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Buildings/GestatorGlassShattering</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>18~26</volumeRange>
+        <pitchRange>0.4~0.55</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- §2 the ice giving way over the find (the undercave rumble at its own
+       pitch, placed at the spot). -->
+  <SoundDef>
+    <defName>RM_AblationIceGives</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Ambience/Undercave/Collapsing/Rumble</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>30~40</volumeRange>
+        <distRange>20~70</distRange>
+        <pitchRange>0.85~1.0</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- §4 a vhaulk's cistern seams booming at long intervals (off-map
+       thunder, pitched down, placed at the animal). -->
+  <SoundDef>
+    <defName>RM_VhaulkSeamBoom</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Ambience/Thunder/OffMap</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>30~42</volumeRange>
+        <distRange>25~90</distRange>
+        <pitchRange>0.5~0.65</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
 </Defs>

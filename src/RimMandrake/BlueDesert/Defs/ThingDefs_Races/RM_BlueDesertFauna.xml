@@ -1018,6 +1018,33 @@
     <butcherProducts>
       <RM_ColdWax>80</RM_ColdWax>
     </butcherProducts>
+    <!-- BLUEDESERT_GPT_ENRICHMENT_1 §4, the vhaulk road
+         (Source/RM_VhaulkRoad.cs): rime road under its feet (temporary
+         terrain, TerrainDefs/RM_BlueDesertTerrain.xml), flora cropped flat
+         without damage, frost in its wake, seam booms, an arrival letter and
+         a walk-off with a letter after stayDays. Touches none of the ruled
+         detonation gates on RM_VhaulkCharge. Tuning INVENTED. -->
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_VhaulkRoad">
+        <roadTerrain>RM_RimeRoad</roadTerrain>
+        <roadOnTerrains>
+          <li>Ice</li>
+        </roadOnTerrains>
+        <roadRadius>1.5</roadRadius>
+        <roadDays>2~3</roadDays>
+        <cropRadius>2.9</cropRadius>
+        <cropToGrowth>0.08</cropToGrowth>
+        <stepIntervalTicks>60</stepIntervalTicks>
+        <frostChancePerStep>0.5</frostChancePerStep>
+        <boomMtbHours>5</boomMtbHours>
+        <boomSound>RM_VhaulkSeamBoom</boomSound>
+        <stayDays>2~5</stayDays>
+        <arrivalLetterLabel>The mountain walks in</arrivalLetterLabel>
+        <arrivalLetterText>A vhaulk has come onto the plateau: a grazing colossus that crosses the ice slowly, pressing a road flat behind it and cropping every field it passes. Left alone it will move on in a few days. The old warnings say do not still the mountain; fire or an ion weapon will set its cistern off.</arrivalLetterText>
+        <departureLetterLabel>The mountain moves on</departureLetterLabel>
+        <departureLetterText>The vhaulk has walked off the edge of the plateau. Its rime road still runs across the ice to where it left, and will for a few days more.</departureLetterText>
+      </li>
+    </comps>
     <modExtensions>
       <li Class="RimMandrake.BlueDesert.RM_HydrocarbonNativeExtension" />
     </modExtensions>

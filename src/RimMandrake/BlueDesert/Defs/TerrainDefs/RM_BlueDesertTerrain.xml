@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BlueDesertTerrain.xml             BLUEDESERT_GPT_ENRICHMENT_1 §4
+
+  RM_RimeRoad: the ice a vhaulk's pillar feet press flat as it walks
+  (Source/RM_VhaulkRoad.cs). TEMPORARY terrain, the same layer vanilla floods,
+  lava and ThinIce use (ThinIce is also ParentName="Ice"; RimSage, Core
+  TerrainDef, 2026-09-30): it sits above the real ice and is removed on a
+  schedule by Map.tempTerrain, so the plateau underneath is never rewritten.
+
+  Easier walking than raw ice (pathCost 4 vs Ice's 14): the road is a real
+  path for a few days. Reuses vanilla's own Ice texture, tinted pale, so it
+  needs no new art (a bespoke rime-road texture would be nicer, not owed).
+-->
+<Defs>
+
+  <TerrainDef ParentName="Ice">
+    <defName>RM_RimeRoad</defName>
+    <label>rime road</label>
+    <description>Blue ice pressed flat and pale by something enormous walking over it. It is smooth, hard and easy going, and the wind will scour it away in a few days.</description>
+    <color>(0.86, 0.92, 1.0)</color>
+    <pathCost>4</pathCost>
+    <renderPrecedence>352</renderPrecedence>
+    <temporary>true</temporary>
+    <tempTerrain>
+      <removedByExplosions>true</removedByExplosions>
+    </tempTerrain>
+  </TerrainDef>
+
+</Defs>
