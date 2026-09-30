@@ -238,6 +238,16 @@ namespace RimMandrake.CreatureBehaviors
     //      the mirrak). Off: a false-shade ambusher never strikes and no
     //      longer reads as shade to shade-seekers — it is a slow, flat
     //      carrion-eater from then on.
+    //  39. Sun heat (SOLAR_HEAT_EXPOSURE_1) — only a biome carrying
+    //      RM_SunHeatExtension is affected; every other map is untouched.
+    //      sunHeatEnabled (master) / sunHeatStrength — standing in the sun
+    //      adds degrees to what a pawn feels, feeding vanilla comfort and
+    //      Heatstroke. Off: no sun heat, no sun pathing, no bar anywhere.
+    //      directionalShadeEnabled — shadows are cast along the sun vector
+    //      (pinned sun, else the heat biome's own geometry). Off: the grid
+    //      falls back to the old radius-2 ring round every caster.
+    //      sunPathingEnabled / sunPathCostMultiplier — undrafted pawns
+    //      route shade-to-shade. sunLoadBarEnabled — the inspect bar.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -304,6 +314,12 @@ namespace RimMandrake.CreatureBehaviors
         public static bool pinnedSunEnabled = true;
         public static float pinnedSunSkyStrength = 1f;
         public static bool falseShadeAmbushEnabled = true;
+        public static bool sunHeatEnabled = true;
+        public static float sunHeatStrength = 1f;
+        public static bool directionalShadeEnabled = true;
+        public static bool sunPathingEnabled = true;
+        public static float sunPathCostMultiplier = 1f;
+        public static bool sunLoadBarEnabled = true;
 
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 2400f;
@@ -371,6 +387,12 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref pinnedSunEnabled, "pinnedSunEnabled", true);
             Scribe_Values.Look(ref pinnedSunSkyStrength, "pinnedSunSkyStrength", 1f);
             Scribe_Values.Look(ref falseShadeAmbushEnabled, "falseShadeAmbushEnabled", true);
+            Scribe_Values.Look(ref sunHeatEnabled, "sunHeatEnabled", true);
+            Scribe_Values.Look(ref sunHeatStrength, "sunHeatStrength", 1f);
+            Scribe_Values.Look(ref directionalShadeEnabled, "directionalShadeEnabled", true);
+            Scribe_Values.Look(ref sunPathingEnabled, "sunPathingEnabled", true);
+            Scribe_Values.Look(ref sunPathCostMultiplier, "sunPathCostMultiplier", 1f);
+            Scribe_Values.Look(ref sunLoadBarEnabled, "sunLoadBarEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -622,6 +644,32 @@ namespace RimMandrake.CreatureBehaviors
                 "On: a flat ambusher lying in the open looks like shade to animals looking for "
               + "shade, and seizes whatever lies down in it. Off: it never strikes and nothing "
               + "mistakes it for shade — it just scavenges the dead.");
+            list.GapLine();
+
+            list.Label("Sun heat — only on biomes built with it (the Long Shade, the deep desert, "
+                     + "and the steam and volcanic lands). Everywhere else nothing changes.");
+            list.CheckboxLabeled("Sun heat", ref sunHeatEnabled,
+                "On: standing in the open sun adds to the temperature a creature feels, so it gets hot, "
+              + "then heatstroke, exactly as it would in a heat wave. Clothing, comfort range and "
+              + "heatstroke work as normal. Smaller creatures heat faster. Off: none of the sun-heat "
+              + "features below run.");
+            if (sunHeatEnabled)
+            {
+                list.Label("  Sun heat strength: " + sunHeatStrength.ToStringPercent());
+                sunHeatStrength = list.Slider(sunHeatStrength, 0f, 3f);
+                list.CheckboxLabeled("  Shadows fall one way", ref directionalShadeEnabled,
+                    "On: every rock, wall and big tree throws its shadow along the sun, longer the lower "
+                  + "the sun is — the shade you see is the shade that counts. Off: shade is a small ring "
+                  + "around each object instead.");
+                list.CheckboxLabeled("  Walk shade to shade", ref sunPathingEnabled,
+                    "On: creatures and colonists (unless drafted) prefer routes through shade, even if longer. "
+                  + "Does nothing where shade does not help (steam and volcanic lands).");
+                list.Label("  How much they avoid the sun: " + sunPathCostMultiplier.ToStringPercent());
+                sunPathCostMultiplier = list.Slider(sunPathCostMultiplier, 0f, 3f);
+                list.CheckboxLabeled("  Sun load bar", ref sunLoadBarEnabled,
+                    "Shows a bar when you select one creature on a sun-heat map: how close it is to "
+                  + "heatstroke, and how much the sun is adding where it stands.");
+            }
 
             list.End();
             lastContentHeight = list.CurHeight + 12f;
