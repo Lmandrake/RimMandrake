@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WASTELAND_MIDDENSHELL_FOOTPRINT_1 — the Middenshell's map-wide roll. Biome-gated twice
+  (allowedBiomes here, and RM_IncidentWorker_MiddenshellArrives.CanFireNowSub), gated on the
+  Mod Settings toggle, and refused while one is already alive on the map. Never <wildAnimals>.
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RM_MiddenshellArrives</defName>
+    <label>middenshell arrives</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <allowedBiomes>
+      <li>RM_Wasteland</li>
+    </allowedBiomes>
+    <workerClass>RimMandrake.Wasteland.RM_IncidentWorker_MiddenshellArrives</workerClass>
+    <baseChance>0.6</baseChance>
+    <minRefireDays>20</minRefireDays>
+    <letterDef>NeutralEvent</letterDef>
+    <letterLabel>Middenshell</letterLabel>
+    <letterText>Something the size of a hill has crawled onto the map: a middenshell, twenty paces across, wearing a shell of everything it ever ate.\n\nIt is not hostile. But it does not stop, it flattens whatever lies in its path, its tentacles drag in objects near it, and standing close to it doses you.</letterText>
+  </IncidentDef>
+
+</Defs>

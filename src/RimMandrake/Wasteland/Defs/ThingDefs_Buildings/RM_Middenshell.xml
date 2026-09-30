@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WASTELAND_MIDDENSHELL_FOOTPRINT_1 — the Middenshell, TWENTY CELLS WIDE (owner ruling
+  2026-09-30: "Yes it can make 20 wide. Just do it.").
+
+  A Building, not a pawn: a pawn occupies one cell and Large Pawns (the TitanicCreatures
+  engine's footprint source) stops at 4x4, while a building's footprint is def.size with no
+  engine cap (largest vanilla single-Thing precedent: Ideology's ArchonexusCore, 11x11). It
+  walks by the Odyssey gravship relocation route (DeSpawn WillReplace + GenSpawn.Spawn one cell
+  over) — Source/RM_Middenshell.cs has the whole account.
+
+  fillPercent < 1 on purpose: Fillage Full would make it a fog blocker (ThingDef.MakeFog), and
+  the 400 interior cells would fog over and hide it. Art: artpipe RM_Middenshell_v2_* (the
+  owner's tubeworm regen, WASTELAND_BEDAZZLE_SITTING_1), three facings at 512.
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RM_Middenshell</defName>
+    <label>middenshell</label>
+    <description>A colossal, ancient excretor twenty paces across — the sloghog's deep-time cousin grown into geography. A soft tube body lives inside a long irregular shell of accreted minerals fused into scavenged debris, hull scraps and its own vitrified bezoars: centuries of everything it ate, worn as architecture.\n\nIt is never hostile. It does not fight and barely notices you. But it crawls, slowly and without stopping, and whatever lies in its path is flattened or swallowed. Now and then a scaled tentacle lashes out and drags a nearby object — a crate, a door, a wall — into the shell. It will not touch a gravship.\n\nStanding near it is a dose: the ground it concentrates leaks off the shell as toxic buildup.\n\nKilled, its shell hardens where it falls into a quarry of contaminant and vitrified bezoars, and the dose stays with the stone.</description>
+    <thingClass>RimMandrake.Wasteland.Building_Middenshell</thingClass>
+    <category>Building</category>
+    <size>(20,20)</size>
+    <rotatable>true</rotatable>
+    <passability>Impassable</passability>
+    <fillPercent>0.75</fillPercent>
+    <seeThroughFog>true</seeThroughFog>
+    <altitudeLayer>Building</altitudeLayer>
+    <tickerType>Normal</tickerType>
+    <drawerType>RealtimeOnly</drawerType>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <canOverlapZones>false</canOverlapZones>
+    <preventSkyfallersLandingOn>true</preventSkyfallersLandingOn>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
+    <graphicData>
+      <texPath>Things/Building/RM_Middenshell/RM_Middenshell</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(22,22)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>30000</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-40</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <repairable>false</repairable>
+      <claimable>false</claimable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <!-- The aura: same comp family as the Smolderback, measured from the body's edge. -->
+      <li Class="RimMandrake.Wasteland.RM_CompProperties_AmbientDose">
+        <radius>8</radius>
+        <toxicFactor>1.2</toxicFactor>
+        <edgeFactor>0.25</edgeFactor>
+        <doseRoomWhenIndoors>false</doseRoomWhenIndoors>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.Wasteland.RM_MiddenshellExtension">
+        <turnChancePerStep>0.04</turnChancePerStep>
+        <tentacleRange>9</tentacleRange>
+        <tentacleIntervalTicks>900~2100</tentacleIntervalTicks>
+        <crushPawnDamage>12</crushPawnDamage>
+        <seamDef>RM_MiddenshellSeam</seamDef>
+        <vitrifiedSeamDef>RM_MiddenshellVitrifiedSeam</vitrifiedSeamDef>
+        <vitrifiedChance>0.12</vitrifiedChance>
+        <carcassAlongFactor>1</carcassAlongFactor>
+        <carcassAcrossFactor>0.6</carcassAcrossFactor>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ============== The carcass quarry: mined like resource rock ============== -->
+  <ThingDef ParentName="RockBase">
+    <defName>RM_MiddenshellSeam</defName>
+    <saveCompressible>false</saveCompressible>
+    <label>middenshell carcass</label>
+    <description>Hardened shell of a dead middenshell: fused slag, debris and layered metal-salt contamination, set like stone. Mined for contaminant bezoars. Working it doses the miner.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Rock</li>
+        <li>MapEdge</li>
+      </linkFlags>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(150,142,120)</color>
+      <colorTwo>(92,104,70)</colorTwo>
+    </graphicData>
+    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>1200</MaxHitPoints>
+    </statBases>
+    <building>
+      <isNaturalRock>false</isNaturalRock>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_ContaminantBezoar</mineableThing>
+      <mineableYield>2</mineableYield>
+      <veinMineable>false</veinMineable>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.Wasteland.RM_MiddenshellSeamMarker" />
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_MiddenshellVitrifiedSeam</defName>
+    <saveCompressible>false</saveCompressible>
+    <label>vitrified middenshell seam</label>
+    <description>A glassy black-green seam in a dead middenshell's shell, where its bezoars fused under their own heat. Mined for vitrified bezoars — the richest prize in the Wasteland. Working it doses the miner.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Rock</li>
+        <li>MapEdge</li>
+      </linkFlags>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(46,62,48)</color>
+      <colorTwo>(170,200,70)</colorTwo>
+    </graphicData>
+    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
+    <statBases>
+      <MaxHitPoints>1600</MaxHitPoints>
+    </statBases>
+    <building>
+      <isNaturalRock>false</isNaturalRock>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_VitrifiedBezoar</mineableThing>
+      <mineableYield>1</mineableYield>
+      <veinMineable>false</veinMineable>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.Wasteland.RM_MiddenshellSeamMarker" />
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
