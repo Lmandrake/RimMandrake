@@ -33,10 +33,9 @@
   defs need three GenStepDefs. Each is independently terrain-validated
   against the same RUT_ScaldShallow tag, so all three only ever land on the
   Scald's own shallow water — nowhere else in the mod list carries that tag.
-  This is also why the registration patch (RUT_ScaldWreckScatter_Register.xml)
-  can safely add all three to the GLOBAL Base_Player genSteps list rather
-  than needing a biome-scoped gate: the tag itself is the scope, per the
-  spec's own design (§S6: "TAG-based, not defName-based").
+  The registration patch (RUT_ScaldWreckScatter_Register.xml) lists all three
+  on the Scald BiomeDefs' extraGenSteps (RM_TheScald, RUT_TheScald), so they
+  run only on Scald maps; the tag then picks the shallow cells within them.
 
   ===========================================================================
   TUNING — ALL THREE VALUES INVENTED, stated plainly (no source names a wreck

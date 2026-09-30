@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ============================================================================
-  RUT_ContagionRingScatter_Register.xml  UtinniPatches · FORGE_MECHANICS_1 F5
-  ============================================================================
-  RUT_ContagionRingScatter.xml declares one GenStepDef; a GenStepDef on its
-  own runs on no map (same fact RUT_ScaldWreckScatter_Register.xml's own
-  header documents for this exact file family). This is that registration.
-
-  Scope: Base_Player, GLOBAL — same target and same xpath shape as
-  RUT_ScaldWreckScatter_Register.xml. Safe everywhere, not just the Forge:
-  RM_GenStep_EdgeBandFilth's own Generate() no-ops silently on any map whose
-  Biome isn't in its configured `biomes` list (RUT_TheForge only, this
-  instance) — registering it globally costs nothing on every other biome's
-  map generation beyond one Biome-equality check.
-
-  No MayRequire needed on the PatchOperation itself: RUT_ContagionRingScatter
-  is this same mod's own def, MayRequire-gated on itself (this file's
-  sibling), always loaded together with this patch.
-
-  Core/Defs/MapGeneration/BasePlayerMapGenerator.xml, MapGeneratorDef
-  ParentName="MapCommonBase" Name="Base_Player", <genSteps> is a plain list
-  of GenStepDef names — same citation the wreck-scatter registration and
-  JawaResource_Scrapfields.xml both already give.
-  ============================================================================
+  RUT_ContagionRingScatter_Register.xml
+  MAPGEN_SCATTER_NRE_1 (2026-09-30): registers RUT_ContagionRingScatter (RM_GenStep_EdgeBandFilth) on its OWN biome(s)
+  via BiomeDef.extraGenSteps, which Verse.MapGenerator.GenerateMap appends
+  only when map.Biome is that biome (decompiled 1.6, MapGenerator.cs). It
+  used to be added to the global Base_Player genSteps and relied on a
+  terrain-tag validator to no-op elsewhere; that ran the step on every player
+  map and logged "could not find cell" (or "no filthDef configured") on each.
+  extraGenSteps applies to every map generator on that biome, not only
+  Base_Player; the class also checks its own <biomes> list (RUT_TheForge).
+  Nested Conditionals: skip if the biome is not loaded; append to an existing
+  extraGenSteps node, else create one.
 -->
 <Patch>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
-      <value>
-        <li>RUT_ContagionRingScatter</li>
-      </value>
+    <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]/extraGenSteps</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]/extraGenSteps</xpath>
+        <value>
+          <li MayRequire="mandrake.rm.biomes">RUT_ContagionRingScatter</li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RUT_TheForge"]</xpath>
+        <value>
+          <extraGenSteps>
+            <li MayRequire="mandrake.rm.biomes">RUT_ContagionRingScatter</li>
+          </extraGenSteps>
+        </value>
+      </nomatch>
     </match>
   </Operation>
 

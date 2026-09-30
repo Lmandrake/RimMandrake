@@ -83,6 +83,7 @@
          RUT_HolyFlame_Revered ideoligion precept can grant its memory
          thought. See the .cs file's own header for the mechanism. -->
     <Compile Include="RUT_CompUseEffect_HolyFlame.cs" />
+    <Compile Include="RUT_GenStep_ScatterThingsPlacedFilth.cs" />
   </ItemGroup>
 
   <ItemGroup>
