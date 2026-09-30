@@ -89,26 +89,20 @@
   by rage"), Wildness 1.0, untrainable, lifeExpectancy in centuries (320,
   concrete number per the brief).
 
-  WAKE-COMP DECISION — flagged and skipped, per the brief. The bible's real
-  wake mechanism (`CompWaterWakeTrigger` family scaled to giant size,
-  FlowWorks depth edits on its feeding trail) is explicitly "the mechanics
-  item's C#, not this document's" — CRACKEDLANDS_MECHANICS_BUILD_1's scope.
-  Shipped here: stock `CompProperties_CanBeDormant` (startsDormant true) only,
-  same as the brief asked. As an INTERIM, testable trigger only — same
-  posture RUT_SealedSleeper.xml's header used while its own real wake comp
-  was being built — added stock `CompProperties_WakeUpDormant` with
-  `wakeUpOnDamage=true` so a quicktest can wake and inspect one without the
-  real C# landing first; this is NOT the bible's water-wake mechanism and
-  should be left alongside it, not replaced, once RM_CompWaterWakeTrigger
-  (or its giant-scale equivalent) exists. `receivesSignals=true` set on the
-  ThingDef per CompProperties_CanBeDormant.ConfigErrors (required whenever
-  jobDormancy is false).
+  WAKE / DIG-IN: CRACKEDLANDS_MECHANICS_BUILD_1 §4 built the water wake and
+  the dig-in at the dry as `RM_CompPanSleeper` (Source/RM_CompPanSleeper.cs,
+  the RM_-tier member of the CompWaterWakeTrigger family), on top of stock
+  `CompProperties_CanBeDormant` (startsDormant, jobDormancy, freezeNeeds).
+  Stock `CompProperties_WakeUpDormant` (wakeUpOnDamage) stays alongside it.
+  The FlowWorks depth edits on its feeding trail (the walking weir) are NOT
+  built yet — a later tranche of that item. `receivesSignals=true` kept
+  (harmless; it was required while jobDormancy was false).
 
   CRACK-WAX YIELD: mirrors RUT_SealedSleeper.xml's own mechanism exactly —
   a `butcherProducts` shorthand entry, scaled up from the sleeper's 2 to 200
   ("the planet's largest single crack-wax deposit... a fortune in crack-wax
   and meat"). The sheet's actual "wake sheds a ground-drop" behaviour is the
-  wake comp's job (owed, see above) — this butcherProducts line is the
+  RM_CompPanSleeper's wakeDrop (see above) — this butcherProducts line is the
   always-available second source, same "second, always-available source"
   role RUT_CrackWax.xml's own header describes for the sleeper.
 
@@ -452,15 +446,34 @@
     <comps>
       <li Class="CompProperties_CanBeDormant">
         <startsDormant>true</startsDormant>
+        <!-- CRACKEDLANDS_MECHANICS_BUILD_1 §4: jobDormancy is what makes the
+             stock dormancy HOLD a pawn asleep (ToSleep starts
+             Wait_AsleepDormancy; without it a "dormant" animal wanders).
+             freezeNeeds: it sleeps for years — Need.IsFrozen honours this
+             list, so it does not starve or tire under its pan. -->
+        <jobDormancy>true</jobDormancy>
+        <freezeNeeds>
+          <li>Food</li>
+          <li>Rest</li>
+        </freezeNeeds>
       </li>
       <li Class="CompProperties_WakeUpDormant">
-        <!-- INTERIM trigger only, see header: the bible's real wake
-             mechanism (CompWaterWakeTrigger scaled to a giant, terrain
-             writes on its feeding trail) is CRACKEDLANDS_MECHANICS_BUILD_1's
-             C#, not built here. wakeUpOnDamage lets a quicktest wake one
-             without that comp landing first; keep alongside it, don't
-             replace, once it exists. -->
+        <!-- Kept alongside the water wake below, as its header asked:
+             damage still wakes it. -->
         <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+      <li Class="RimMandrake.FloodedCanyon.CompProperties_PanSleeper">
+        <!-- CRACKEDLANDS_MECHANICS_BUILD_1 §4 (Source/RM_CompPanSleeper.cs):
+             the flood wakes it when water reaches its pan; at the dry it
+             digs in and seals where it stands. wakeDropCount is a
+             CALIBRATION pick, not a ruled number: the bible says only "the
+             sleeper's wake-drop scaled up"; kept well under the 200 a kill
+             yields so killing one asleep stays the rich, shameful option. -->
+        <wakeRadius>2.9</wakeRadius>
+        <checkIntervalTicks>500</checkIntervalTicks>
+        <dryHoursToDigIn>12</dryHoursToDigIn>
+        <wakeDropDefName>RUT_CrackWax</wakeDropDefName>
+        <wakeDropCount>10~30</wakeDropCount>
       </li>
     </comps>
     <race>
@@ -515,8 +528,8 @@
       <!-- Mirrors RUT_SealedSleeper.xml's own butcherProducts mechanism,
            scaled up from its 2 per the bible's "same drop scaled up" /
            "planet's largest single crack-wax deposit" — see header. The
-           sheet's ground-drop-on-wake behaviour is the wake comp's job,
-           not built here.
+           sheet's ground-drop-on-wake behaviour is RM_CompPanSleeper's
+           wakeDrop, in comps above.
 
            BAROQUE_CORPSE_MARKETVALUE_CRASH_1: RUT_CrackWax is defined ONLY
            in mandrake.rut.patches (UtinniPatches, RUT_CrackedLandsItems.xml)
