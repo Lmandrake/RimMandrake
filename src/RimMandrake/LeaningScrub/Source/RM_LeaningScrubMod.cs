@@ -8,13 +8,13 @@ namespace RimMandrake.LeaningScrub
     // MOD SETTINGS — MOD_OPTIONS_RETROFIT_1 doctrine, biome_mod_architecture.md
     // §6a's template. Precedent: RM_FloodedCanyonMod.cs / RM_GreentideMod.cs.
     //
-    // This mod ships no mechanic of its own: both mechanics its biome def
-    // touches (the venomvine thicket's body-size barrier, the giant's
-    // parental-enrage mental state) already live in shared RimMandrake
-    // libraries (mandrake.rm.environmentalhazards, mandrake.rm.creaturebehaviors)
-    // and are wired by direct def reference, not by C# this mod owns. Only
-    // ONE of those two is a real behaviour switch a biome-specific screen can
-    // usefully offer: the barrier. Per §6b point 1 ("a mechanic is gated at
+    // Its own mechanics (LEANINGSCRUB_MECHANICS_BUILD_1) each carry a switch
+    // below. Two further mechanics its biome def touches (the venomvine
+    // thicket's body-size barrier, the giant's parental-enrage mental state)
+    // live in shared RimMandrake libraries (mandrake.rm.environmentalhazards,
+    // mandrake.rm.creaturebehaviors) and are wired by direct def reference.
+    // Of those two, the barrier is the one a biome-specific screen can
+    // usefully offer. Per §6b point 1 ("a mechanic is gated at
     // the comp/MapComponent/patch level... test a settings-derived
     // predicate"), this mod registers a gate key with the shared
     // RM_MechanicGates registry that EnvironmentalHazards' own
@@ -38,17 +38,42 @@ namespace RimMandrake.LeaningScrub
         // consumer of the same plant.
         public static bool venomvinePassabilityEnabled = true;
 
+        // ── LEANINGSCRUB_MECHANICS_BUILD_1 part 1: the Stall and the Gale ──
+        // The weathers themselves are defs and always run; these gate only
+        // what they DO beyond wind, sound and sky (RM_WindCalendar.cs).
+        public static bool stallFreezeEnabled = true;
+        public static float stallFreezeMaxBodySize = 0.5f;
+        public static bool galeDeafenEnabled = true;
+        public static bool galeTurbineSurgeEnabled = true;
+        public static float galeTurbineSurgeFactor = 1.3f;
+        public static float galeTurbineBreakdownMtbDays = 3f;
+        public static bool galeRaidWeightingEnabled = true;
+        public static float galeRaidWeightFactor = 2f;
+
+        private static Vector2 scroll;
+        private static float viewHeight = 900f;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref modEnabled, "modEnabled", true, true);
             Scribe_Values.Look(ref venomvinePassabilityEnabled, "venomvinePassabilityEnabled", true, true);
+            Scribe_Values.Look(ref stallFreezeEnabled, "stallFreezeEnabled", true, true);
+            Scribe_Values.Look(ref stallFreezeMaxBodySize, "stallFreezeMaxBodySize", 0.5f, true);
+            Scribe_Values.Look(ref galeDeafenEnabled, "galeDeafenEnabled", true, true);
+            Scribe_Values.Look(ref galeTurbineSurgeEnabled, "galeTurbineSurgeEnabled", true, true);
+            Scribe_Values.Look(ref galeTurbineSurgeFactor, "galeTurbineSurgeFactor", 1.3f, true);
+            Scribe_Values.Look(ref galeTurbineBreakdownMtbDays, "galeTurbineBreakdownMtbDays", 3f, true);
+            Scribe_Values.Look(ref galeRaidWeightingEnabled, "galeRaidWeightingEnabled", true, true);
+            Scribe_Values.Look(ref galeRaidWeightFactor, "galeRaidWeightFactor", 2f, true);
         }
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, viewHeight);
+            Widgets.BeginScrollView(inRect, ref scroll, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            list.Begin(viewRect);
 
             list.CheckboxLabeled("Mod enabled", ref modEnabled,
                 "Turns off this mod's own settings-driven behaviour. The leaning "
@@ -63,7 +88,33 @@ namespace RimMandrake.LeaningScrub
                 + "Environmental Hazards kit's own global switch for the same plant "
                 + "elsewhere.");
 
+            list.GapLine();
+            list.Label("The Stall and the Gale (the wind calendar). The two weathers always run; "
+                + "these switch off what they do beyond wind, sound and sky.");
+            list.CheckboxLabeled("Stall: small wild animals hold still", ref stallFreezeEnabled,
+                "While the Stall holds, wild animals no bigger than the size below stop wandering "
+                + "and wait where they are. Fleeing, feeding and hunting are unaffected.");
+            list.Label("Largest body size that freezes: " + stallFreezeMaxBodySize.ToString("0.00"));
+            stallFreezeMaxBodySize = list.Slider(stallFreezeMaxBodySize, 0.1f, 2f);
+            list.CheckboxLabeled("Gale: hearing and speech penalty outdoors", ref galeDeafenEnabled,
+                "Pawns standing unroofed in the Gale lose hearing and talking capacity; it fades "
+                + "within about an hour indoors or after the Gale passes.");
+            list.CheckboxLabeled("Gale: wind turbines surge and can break down", ref galeTurbineSurgeEnabled,
+                "Wind turbines produce more than their rating while the Gale blows, and each running "
+                + "turbine risks a breakdown.");
+            list.Label("Turbine surge output: x" + galeTurbineSurgeFactor.ToString("0.00"));
+            galeTurbineSurgeFactor = list.Slider(galeTurbineSurgeFactor, 1f, 2f);
+            list.Label("Turbine breakdown, mean days between (0 = never): " + galeTurbineBreakdownMtbDays.ToString("0.0"));
+            galeTurbineBreakdownMtbDays = list.Slider(galeTurbineBreakdownMtbDays, 0f, 20f);
+            list.CheckboxLabeled("Gale: raids ride the wind", ref galeRaidWeightingEnabled,
+                "While the Gale blows, a threat that fires is more likely to be a raid than any "
+                + "other threat. It does not add threats.");
+            list.Label("Raid weight during the Gale: x" + galeRaidWeightFactor.ToString("0.0"));
+            galeRaidWeightFactor = list.Slider(galeRaidWeightFactor, 1f, 5f);
+
+            viewHeight = list.CurHeight + 20f;
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

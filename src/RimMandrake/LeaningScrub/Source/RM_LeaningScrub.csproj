@@ -51,6 +51,8 @@
 
   <ItemGroup>
     <Compile Include="RM_LeaningScrubMod.cs" />
+    <Compile Include="RM_LeaningScrubDefOf.cs" />
+    <Compile Include="RM_WindCalendar.cs" />
   </ItemGroup>
 
   <ItemGroup>

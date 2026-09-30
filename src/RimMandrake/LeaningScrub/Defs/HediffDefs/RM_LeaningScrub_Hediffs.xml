@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LeaningScrub_Hediffs.xml     LEANINGSCRUB_MECHANICS_BUILD_1 part 1 (the Gale)
+
+  RM_GaleDeafened: the Gale's "hearing/speech shot". Applied (and topped back up
+  to 1) by RM_MapComponent_WindCalendar to every pawn standing unroofed while the
+  Gale blows; it fades within about an hour once they are indoors or the Gale ends
+  (severityPerDay -24 = -1 per 2500 ticks; Hediff.ShouldRemove at severity 0).
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_GaleDeafened</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>gale-deafened</label>
+    <description>Out in the Gale, the roar of the wind drowns out almost everything - you cannot hear much, and you cannot make yourself heard.</description>
+    <defaultLabelColor>(0.75, 0.8, 0.85)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-24</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Hearing</capacity>
+            <offset>-0.5</offset>
+          </li>
+          <li>
+            <capacity>Talking</capacity>
+            <offset>-0.35</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>
