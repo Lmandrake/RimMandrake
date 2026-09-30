@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_VenomvineThicket_Smotherable.xml   LEANINGSCRUB_MECHANICS_BUILD_1 part 4
+
+  The shared thicket (RM_VenomvineThicket, mandrake.rm.environmentalhazards - a
+  declared hard dependency of this mod, so no FindMod guard) joins the four
+  forms this mod ships as a stand the smother-craft can claim.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/ThingDef[defName="RM_VenomvineThicket"]/comps</xpath>
+    <value>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>40</yieldCount>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>

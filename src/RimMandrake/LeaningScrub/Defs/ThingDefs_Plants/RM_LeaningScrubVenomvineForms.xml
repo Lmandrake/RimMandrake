@@ -9,6 +9,9 @@
   RM_CompProperties_BodySizeBarrier, RM_MechanicGateExtension) - NO new C#.
   Descriptions are the bible's (section 6).
 
+  Every form (and, by patch, the thicket) carries RM_CompProperties_Smotherable:
+  the smother-craft claim (LEANINGSCRUB_MECHANICS_BUILD_1 part 4).
+
   Every form carries the same gateKey as the thicket, so leaningscrub's
   venomvine-passability Mod Setting governs all five.
 
@@ -65,6 +68,9 @@
         <blockBodySize>1.5</blockBodySize>
         <threadMoveCost>300</threadMoveCost>
         <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>30</yieldCount>
       </li>
     </comps>
     <modExtensions>
@@ -128,6 +134,9 @@
         <recoveryTicks>2500</recoveryTicks>
         <minGrowth>0.5</minGrowth>
       </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>40</yieldCount>
+      </li>
     </comps>
     <modExtensions>
       <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
@@ -175,6 +184,9 @@
         <blockBodySize>1.5</blockBodySize>
         <threadMoveCost>150</threadMoveCost>
         <trappedMoveCost>250</trappedMoveCost>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>25</yieldCount>
       </li>
     </comps>
     <modExtensions>
@@ -230,6 +242,9 @@
         <blockBodySize>1.5</blockBodySize>
         <threadMoveCost>300</threadMoveCost>
         <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>120</yieldCount>
       </li>
     </comps>
     <modExtensions>

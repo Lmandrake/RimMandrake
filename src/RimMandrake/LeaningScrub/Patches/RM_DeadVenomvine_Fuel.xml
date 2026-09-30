@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DeadVenomvine_Fuel.xml       LEANINGSCRUB_MECHANICS_BUILD_1 part 4
+
+  Dead venomvine burns wherever wood burns: every refuelable whose fuel filter
+  names WoodLog (Core's campfire, fueled stove/smithy, wood-fired generator, and
+  any mod building written the same way) also accepts RM_DeadVenomvine.
+  Core always supplies at least one match, so this never no-ops silently.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/ThingDef/comps/li[@Class="CompProperties_Refuelable"]/fuelFilter/thingDefs[li="WoodLog"]</xpath>
+    <value>
+      <li>RM_DeadVenomvine</li>
+    </value>
+  </Operation>
+
+</Patch>

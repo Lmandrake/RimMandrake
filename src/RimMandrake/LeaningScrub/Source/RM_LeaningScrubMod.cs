@@ -55,6 +55,11 @@ namespace RimMandrake.LeaningScrub
         public static float twitcherLashDamageFactor = 1f;
         public static float twitcherLashRecoveryFactor = 1f;
 
+        // ── part 4: the smother-craft (RM_SmotherCraft.cs) ──
+        public static bool smotherCraftEnabled = true;
+        public static float smotherDays = 30f;
+        public static float smotherYieldFactor = 1f;
+
         private static Vector2 scroll;
         private static float viewHeight = 900f;
 
@@ -74,6 +79,9 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref twitcherLashEnabled, "twitcherLashEnabled", true, true);
             Scribe_Values.Look(ref twitcherLashDamageFactor, "twitcherLashDamageFactor", 1f, true);
             Scribe_Values.Look(ref twitcherLashRecoveryFactor, "twitcherLashRecoveryFactor", 1f, true);
+            Scribe_Values.Look(ref smotherCraftEnabled, "smotherCraftEnabled", true, true);
+            Scribe_Values.Look(ref smotherDays, "smotherDays", 30f, true);
+            Scribe_Values.Look(ref smotherYieldFactor, "smotherYieldFactor", 1f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -128,6 +136,16 @@ namespace RimMandrake.LeaningScrub
             twitcherLashDamageFactor = list.Slider(twitcherLashDamageFactor, 0.25f, 3f);
             list.Label("Lash recovery time: x" + twitcherLashRecoveryFactor.ToString("0.00"));
             twitcherLashRecoveryFactor = list.Slider(twitcherLashRecoveryFactor, 0.25f, 4f);
+
+            list.GapLine();
+            list.CheckboxLabeled("Smother-craft", ref smotherCraftEnabled,
+                "Right-click a venomvine stand to throw a smother-blanket over it; after the claim "
+                + "time the stand dies back to dead venomvine, a fuel that burns wherever wood does. "
+                + "Off: no new claims, and claims already laid wait until it is back on.");
+            list.Label("Claim time: " + smotherDays.ToString("0") + " days");
+            smotherDays = list.Slider(smotherDays, 1f, 120f);
+            list.Label("Dead venomvine yield: x" + smotherYieldFactor.ToString("0.00"));
+            smotherYieldFactor = list.Slider(smotherYieldFactor, 0.25f, 3f);
 
             viewHeight = list.CurHeight + 20f;
             list.End();
