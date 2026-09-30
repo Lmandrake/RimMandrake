@@ -26,6 +26,12 @@
         <degreeWeight>1.4</degreeWeight>
         <rainfallDivisor>220</rainfallDivisor>
       </li>
+      <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - the Greentide: the_greentide.md "roiling, ground-hugging, HOT fog"; low offset because its own temperature band already runs hot.
+           heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <heatKind>ambient</heatKind>
+        <heatOffsetC>8</heatOffsetC>
+      </li>
     </modExtensions>
 
     <animalDensity>3.2</animalDensity>

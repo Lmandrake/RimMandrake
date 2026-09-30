@@ -264,6 +264,12 @@
         <lightsourceShineIntensity>0.8</lightsourceShineIntensity>
         <shadowStrength>1</shadowStrength>
       </li>
+      <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "overhead" - the Long Shade: owner ruling, longshade_shade_ideation_2026-09-29.md "overhead sun here, so parasols and tents work".
+           heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <heatKind>overhead</heatKind>
+        <heatOffsetC>30</heatOffsetC>
+      </li>
     </modExtensions>
   </BiomeDef>
 
