@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T14:55:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T15:11:58Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2611,16 +2611,6 @@ thin:     no ## verify, no ## criteria
 summary:  1. Tracks (parent §7) — blocked on FOOTPRINTTRACKGRID1 (proposed, unbuilt when the
 prose:    infrastructure/state/items/STILLSAND_SKELETONS_REMAINDER_1.md
 
-## SHADEGRID_BRIDGE_READER_1 Bridge tool to read the shade grid and pinned sun (sun elevation, heat kind, exposure per cell, sky glow)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  Add a read-only jawa/ tool (rimbridge-companion skill). Given a cell list, it returns the sun elevation,
-prose:    infrastructure/state/items/SHADEGRID_BRIDGE_READER_1.md
-
 ## STILLSAND_DUNE_GALE_LIVE_1 Stillsand dune gale: live proof (mass delta, sun off, one emergence, carry letters, dust devil) + water skins, track-grid hook, hiss
 state:    proposed
 row:      unassigned
@@ -2851,16 +2841,6 @@ thin:     no ## spec, no ## verify
 summary:  LONGSHADEENRICHMENTQUICKTEST1 — prove the Long Shade enrichment in game
 prose:    infrastructure/state/items/LONGSHADE_ENRICHMENT_QUICKTEST_1.md
 
-## RUST_CATHEDRAL_HUM_UNMAINTAINED_1 Rust Cathedral hum PerTick sustainers never maintained: silent two ticks after start
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  - Maintain every live layer on every tick, the same fix as the proximity soundscape. Rebuild the
-prose:    infrastructure/state/items/RUST_CATHEDRAL_HUM_UNMAINTAINED_1.md
-
 ## LIVE_ROUND2_FIXES_PROOF_1 Prove the three live-round-2 fixes in game (beam, soorrak loop log, rimplace stuff)
 state:    proposed
 row:      unassigned
@@ -2918,7 +2898,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
-summary:  Owner, typed 2026-10-01: free tier gets its own invented cryptid; the Star Wars tier keeps "the Forsakens", w…
+summary:  Owner, typed 2026-10-01: free tier gets its own invented cryptid; the Star Wars layer only adds a whisper tha…
 prose:    infrastructure/state/items/ABYSS_FREE_CRYPTID_1.md
 
 ## ABYSS_LIGHTFALL_BROOD_WRECK_1 Lightfall's bottom: the dragons' brood and the wreck that repairs your ship
