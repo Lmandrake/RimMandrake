@@ -1032,33 +1032,42 @@ def furnace_warmth(t):
     x, z = t.anchor
     with _comp(t, "furnacebeast_warmth", shows=["pyre_furnacebeast_warmth"]):
         _set(t, {"furnaceThermalEnabled": True})
-        bid = _spawn_wild(t, "RUT_FurnaceBeast", x, z)
         # CompFurnaceWarmthAura: radius = 4.9 x Lerp(0.35, 1, charge); a fresh beast's charge is
-        # 0, so its aura reaches 1.7 cells. The colonist stands adjacent (x+1).
-        col = t.spawn_pawn("Colonist", beyond=[(x - 2, z), (x - 2, z)])
-        samples, near = [], None
-        for _ in range(8 if _live(t) else 0):
-            b = _pawn_row(t, bid) or {}
-            if b.get("x") is not None:
-                t.bridge_call("jawa/order_pawn", pawnId=col, x=b["x"] + 1, z=b["z"], waitTicks=60)
+        # 0, so its aura reaches 1.7 cells, and a wild beast wanders off a colonist walking after
+        # it (run 7: 6-10 cells apart in 7 of 8 samples). Both stand in a 2x1 pen (a 4x3
+        # make_empty_room), so they are never more than 1 cell apart.
+        pen = t.bridge_call("jawa/make_empty_room", rect="%d,%d,4,3" % (x - 1, z - 1),
+                            stuffDef="Steel")
+        if _live(t):
+            _ok(pen, "make_empty_room")
+        bid = _spawn_wild(t, "RUT_FurnaceBeast", x, z)
+        r = t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=x + 1, z=z, faction="player",
+                          count=1)
+        col = (((r or {}).get("pawns") or [{}])[0]).get("id")
+        if col:
+            t.session.track("pawn", col, x=x + 1, z=z)
+        samples = []
+        for _ in range(4 if _live(t) else 0):
             _wait(t, 90)
             near = _pawn_row(t, col, health=True) or {}
             b = _pawn_row(t, bid) or {}
             d = None
             if b.get("x") is not None and near.get("x") is not None:
                 d = ((b["x"] - near["x"]) ** 2 + (b["z"] - near["z"]) ** 2) ** 0.5
-            samples.append({"dist": d, "warm": _has_hediff(near, "RM_FurnaceWarmth")})
-            if samples[-1]["warm"]:
-                break
-        _note(t, "colonist-to-beast distance / warmth samples", samples)
+            samples.append({"beast": (b.get("x"), b.get("z")),
+                            "colonist": (near.get("x"), near.get("z")),
+                            "dist": d, "warm": _has_hediff(near, "RM_FurnaceWarmth")})
+        _note(t, "colonist-to-beast distance / warmth samples (pen)", samples)
         if _live(t):
+            if not col:
+                _fail("could not spawn the test colonist: %r" % r)
             if not any(sm["warm"] for sm in samples):
                 close = [sm for sm in samples if sm["dist"] is not None and sm["dist"] <= 1.7]
-                if not close:
-                    _unmeasured(t, "the colonist never got within the uncharged aura (1.7 cells) "
-                                   "of the beast: %r" % samples)
-                _fail("colonist within %.1f cells of the furnace-beast never gained RM_FurnaceWarmth"
-                      % min(sm["dist"] for sm in close))
+                if len(close) < 2:
+                    _unmeasured(t, "the pen did not hold the colonist within the uncharged aura "
+                                   "(1.7 cells) for two samples: %r" % samples)
+                _fail("colonist held within %.1f cells of the furnace-beast for %d ticks never "
+                      "gained RM_FurnaceWarmth" % (max(sm["dist"] for sm in close), 90 * len(close)))
         t.bridge_call("jawa/order_pawn", pawnId=col, x=x + 25, z=z, waitTicks=900)
         _wait(t, 600)
         away = _pawn_row(t, col, health=True)
@@ -1090,8 +1099,10 @@ def furnace_room(t):
         rooms = [t.bridge_call("jawa/room_get", x=c[0], z=c[1]) for c in (ca, cb)]
         beast = _pawn_row(t, bid) or {}
         amb = [tv(t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c)) for c in (ca, cb)]
-        for c in (ca, cb):
-            t.bridge_call("jawa/room_heat", x=c[0], z=c[1], mode="set", value=10.0)
+        heat = [t.bridge_call("jawa/room_heat", x=c[0], z=c[1], mode="set", value=10.0)
+                for c in (ca, cb)]
+        if _live(t):
+            _note(t, "room_heat set 10 C (A, B)", heat)
         series = []
         for _ in range(10):
             _wait(t, 250)

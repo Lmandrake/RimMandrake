@@ -161,6 +161,23 @@ reached a verdict for a stated reason:
 - embergrass_regrows UNMEASURED (calibrating: 256 / 0 / 0 / 0); fulgurite UNMEASURED
   (expected 0.00 fulgurite: 16 sand cells).
 
+### Run 7 (`Transient/northstar/Pyrelands_20261001T210923Z.json`)
+
+PASS=0 FAIL=2 UNMEASURED=18 (state PASSes await the judge).
+- scorchfruit_spoils_fast **PASS** in the sealed room: "spoils in 3.5 / 3 / 2.5 / 2 / 1.5 /
+  1 / 0.5 days" at days 0.5..3.5, destroyed at rot (rotDestroys) by day 4.5.
+- firehawk_carries_ember **PASS**: `RM_FireHawkCarryEmber` at the first 60-tick sample (16 fires
+  alive). Run 6's FAIL was sampling too sparse (300 ticks), not the mod.
+- scorchfruit_fire_born **FAIL (finding)**: 0 ScorchFruit in a burned, freshly grassed 24x24
+  soil cohort after 11,600 ticks; scorch_fruit_seed FAIL the same way (runs 4-7, two pads).
+- furnacebeast_warmth FAIL — **harness**: the wild beast wandered 6-10 cells away from the
+  colonist chasing it; the one 0.0-cell sample was read on arrival, before an aura tick. Now
+  both stand in a 2x1 steel pen and are sampled 4 x 90 ticks; < 2 close samples = UNMEASURED.
+- furnacebeast_heats_room UNMEASURED: control room stayed 56.6-57.1 C while room A started at
+  17.8 C — the `room_heat set 10` did not take on room B this time. Its result is now recorded.
+- burrowers_dive PASS; regrow UNMEASURED (calibrating 256/0/0/0); fulgurite UNMEASURED
+  (0 sand cells left: 24 fires, expected 0.00).
+
 ## Findings about the mod
 
 (filled at the end)
