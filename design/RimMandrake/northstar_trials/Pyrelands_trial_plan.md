@@ -167,6 +167,64 @@ with the instrument named. **UNMEASURED** means nobody has looked yet.
    - toggle on → effect;
    - always restore.
 
+### 2.3a Predicate hardening (folded from the GPT review, binding on the bars above)
+
+- **No self-referential allowlist** (GPT #7, #8). The expected flora and fauna are the
+  **immutable manifests in §1.3**, checked into the trial spec: 3 plants and 15 kinds. The live
+  `get_def` read-back must **equal** the manifest. A mismatch is its own FAIL, whatever the census
+  finds, so an injector cannot become "allowed" by patching the def.
+- **Cell-for-cell coverage** (GPT #10). Coverage = plantable cells **occupied by** a roster plant /
+  plantable cells. Exclude ruin footprints (`RM_FE_ScorchRuins`), probe cells and setup cells.
+  ⚖ Also record the **largest connected bare plantable region**, and propose a hard ceiling after
+  the first runs.
+- **Cohorts, not counts** (GPT #9, #11).
+  - Bars 3 and 5 track a **fixed cell cohort**: two separate 20×20 patches.
+  - Pre-clear: set every cohort cell to `RM_FE_Ground_Soil` and remove any ash.
+  - Bar 3 records per-cell before/after terrain *transitions*.
+  - Bar 5 counts only roster plants **spawned after the burn** (ThingID not in the pre-burn set)
+    inside the cohort minus a 2-cell edge band. It records terrain, light and growth factor at
+    each sample.
+  - The 30 °C control site is **budgeted** (§4) and replicated.
+- **Attributable harvest and ingest** (GPT #12):
+  - empty the area and inventories first;
+  - force the harvest and ingest jobs;
+  - assert job completion;
+  - the yield ThingID is created by that harvest and consumed by that ingest;
+  - the food delta is measured across that ingest only.
+- **Rot by `CompRottable`, not by disappearance** (GPT #13):
+  - the stack sits forbidden, in a fenced cell with no pawns in reach and no fire;
+  - read rot progress and stage over time;
+  - a vanilla reference food sits beside it.
+
+  Testing at the campaign temperature is **kept**, because that is what the player lives in. The
+  reference food separates the temperature effect from the intrinsic spoil time.
+- **Ash from zero** (GPT #14):
+  - destroy all `RM_FE_Filth_LooseAsh` first;
+  - colonists' Cleaning work is disabled;
+  - no fire exists on the map;
+  - count the delta of **new ThingIDs**.
+
+  Screenshots are taken with `jawa/screenshot_mode` (UI hidden) at a fixed camera, zoom and hour.
+  ⚖ Report the deposition rate with a confidence interval across 3 windows.
+- **Weather visuals** (GPT #15, #16):
+  - read the **runtime** overlay, sky and particle values of the current weather, not only the def;
+  - capture **3 settled frames** per weather at an identical camera, hour and UI state;
+  - add a quantitative check: mean RGB of the sky/overlay region differs by ≥ ⚖ between the pair;
+  - then the judge;
+  - then the owner [H] at first GREEN.
+
+  Vanilla `Rain` is forced only as a **visual reference**, which is valid because it is a control
+  and not a claim about the biome.
+- **Isolation for every controlled bar** (GPT #18). During bars 1–10, these are **all OFF**:
+  `burnLineEnabled`, `fireHawkSpreadEnabled`, `fireClockEnabled`, `furnaceWorldMigrationEnabled`,
+  `burrowOnFireEnabled`, `furnaceThermalEnabled` and `fulguriteEnabled`. So is the storyteller.
+  Those mechanics get their own bars and arms (§2.4) on fresh fixtures.
+- **Statistics** (GPT #17). Purity (foreign = 0) stays deterministic and hard. Distribution shape:
+  pool ≥ 150 wild animals, then report a multinomial goodness-of-fit against commonality-implied
+  proportions (χ², with CIs per kind). It is ⚖ reporting-only until the owner rules a threshold,
+  because the engine's body-size-weighted density makes raw commonality an imperfect expectation
+  (**UNMEASURED**: read `GenStep_Animals`/`WildAnimalSpawner` via RimSage before the first run).
+
 ### 2.4 Proposed bar-text changes (for the owner — the hashed section is not edited here)
 
 None of the ten needs rewording to be testable. The predicates above quantify "within days" and
@@ -217,10 +275,13 @@ site, not the mod.
   accepts that biometransitions is present. On the full list, bars 1, 2 and 4 are censused **only
   on the interior tile of a ≥ 2-ring Pyrelands patch**, and bleed is diagnosed with the quadrant
   split. ⛔ Never run `start_debug_game_ready` on the full list (skill §1: it has crashed the
-  process). The full-list site comes from a full-list boot to menu, then **loading the trial-site
-  save** made on the tier (§3.4). **UNMEASURED:** whether a tier-made save loads cleanly on the full
-  list. If not, the full-list site is made from a campaign-independent new colony built through the
-  menu. That needs the owner present (owned by the full-list child item).
+  process). ⛔ Also **do not** satisfy GREEN-full by loading a tier-made save, because that
+  re-tests nothing about full-list mapgen (GPT #19). **Route:** boot the full list to menu, then
+  load a **scratch full-list save**. That is never the campaign save
+  (`CANONICAL_ASHKARR_START_2026-09-12.rws`), which nobody writes. Re-tile a 2-ring patch in that
+  game, then `world_tile_map_generate` → **a fresh map generated under the full list**.
+  **UNMEASURED:** whether such a scratch save exists. If none does, making one through the menu is
+  a one-time owner-present step and a hard prerequisite of that child item.
 - `modcheck run` **rewrites the live `ModsConfig.xml`** (CLAUDE.md). The trial never calls it.
   The driver applies the tier with `modset_builder.py --tier pyrelands --apply`, with the game
   closed and only under the bridge lock.
@@ -295,9 +356,15 @@ the campaign world. The site is a **scratch quicktest world** on the `pyrelands`
    afterwards (CLAUDE.md: `save_game` has written the wrong slot). Then
    **`load_game_ready` that save**. This is the one reliable entry path, and it cures the
    "pure-black generated map" render. Every [V] bar is captured only on the **reloaded** site.
-10. Do steps 2–9 for **K = 3** tiles. Sites 2 and 3 can come from the same quicktest world: three
-    separated tiles, three maps, one map current at a time. Reloading site *k* for the fire bars
-    reuses the fixture. A changed def fingerprint invalidates all fixtures.
+10. Do steps 1–9 for **each** site in its **own fresh quicktest world**, one map per fixture
+    (GPT #6). Three maps in one world share an RNG stream and retained components. Cost ≈ 1.5–2
+    min per site. The **animal census** keeps adding sites until **≥ 150 wild animals** are pooled
+    or 10 sites exist (GPT #17). The behaviour bars use site 1's fixture. A changed def fingerprint
+    or a changed tier manifest invalidates every fixture.
+11. **Choose the tile from raw fields only.** Pick candidates with `jawa/world_tile_export` (raw
+    `Tile` fields), never a reader that touches the lazy `MinTemperature`/`MaxTemperature`
+    caches. Then verify the outdoor temperature on **≥ 20 random unroofed, non-burning cells**,
+    not 3 (GPT #5).
 
 **UNMEASURED:** whether `world_tile_map_generate` on a re-tiled scratch tile honours
 `extraGenSteps` (`RM_FE_ScorchRuins`) and `preventGenSteps`. The census reads the log for the
@@ -372,8 +439,33 @@ genstep's line as a by-product.
 
 ### 3.8 Pre-flight script — refuses a dirty site
 
-`northstar_driver` runs `preflight(pyrelands)` and **exits non-zero naming the first failed
-precondition**. In order:
+Split into three gates (GPT #1). Each **evaluates every check and reports all failures
+together**, rather than stopping at the first (GPT #20).
+
+- **Gate A, session:** after the cold load and before the quicktest. Items 1–7 and 12 below.
+- **Gate B, site:** after every fixture reload. Items 8–11.
+- **Gate C, post-flight:** after the run, and inside the outermost `finally`. Settings files are
+  restored byte-exact, weather is unlocked, the storyteller is restored, the bridge is released,
+  and the tier is restored with the game closed.
+
+**Unexpected dialogs are a refusal, not something to close.** Only a named benign list (the log
+window, the "new colony" letter) is auto-closed. Anything else → screenshot, title, refuse.
+
+**The mod set must match exactly** (GPT #2). The tier's resolved ordered packageId list from
+`modset_builder --tier pyrelands` (plan output) is stored as the **manifest**. `jawa/mod_inventory`
+must equal it in the same order. Any extra active mod or duplicate id is a refusal. Record the game
+build and each mod's About version.
+
+**Freshness from runtime, not mtimes** (GPT #3): record the game process start time and each
+loaded assembly's MVID or file hash and path (driver requirement). Compare against the deployed
+files' hashes; mtimes are advisory only.
+
+**Settings isolation** (GPT #4): before the run, snapshot the raw `Mod_*` settings XML files in the
+Config folder, and restore them byte-exact in Gate C. A separate RimWorld profile is rejected below.
+After a toggle whose runtime effect is not proven dynamic, regenerate or reload the map before
+asserting.
+
+Checks:
 
 1. The bridge lock is held by this seat (`rimflow bridge who`).
 2. `Player.log` was opened after the newest deploy mtime.
@@ -413,7 +505,7 @@ All of it runs under Windows `python.exe` (the bridge is unreachable from WSL), 
 | 7 | Post-flight: restore defaults, release the bridge, `judge` pass over screenshots (`claude -p`, ≤ 180 s each × ~10) | ~5–15 min, offline |
 | 8 | Report → `Transient/modcheck/Pyrelands_<ts>.html` and summary JSON | < 1 min |
 
-**≈ 25–45 min for a minimal-list GREEN attempt.** The full-list rung adds one ~15 min cold load
+**≈ 25–45 min for a minimal-list GREEN attempt; ≈ 40–60 min after the GPT-review hardening (§8).** The full-list rung adds one ~15 min cold load
 (MEASURED 2026-09-07 on 599 mods).
 
 ---
@@ -502,14 +594,54 @@ Listed here, not built here:
     `modcheck.judge`/`report` consume it unchanged.
 11. **Pre-flight framework.** It runs §3.8-style checks from a per-biome spec and writes them into
     evidence.
-12. **Platform.** Pure python.exe-safe: no WSL paths, `tr -d '\r'`-safe outputs. Never touches
+13. **Added by the GPT review (§8). Each may need a companion `[Tool]`, so check the live tool
+    list first:**
+    - loaded-assembly identity (MVID or file hash and path per `ModContentPack`), plus the game
+      process start time;
+    - per-thing `CompRottable` progress and stage;
+    - open-dialog titles and types, to refuse on the unexpected rather than close blindly;
+    - a ThingID-set diff helper for "new things since mark";
+    - cell-for-cell plant occupancy with largest-connected-bare-region;
+    - a runtime readout of the current weather's overlays, sky colours and particle settings;
+    - raw-field tile export for cache-safe tile choice;
+    - byte-exact snapshot and restore of the Config `Mod_*` files.
+14. **Platform.** Pure python.exe-safe: no WSL paths, `tr -d '\r'`-safe outputs. Never touches
     `ModsConfig.xml` except through `modset_builder --apply` with the game closed.
 
 ---
 
 ## 8. GPT review
 
-*(filled after the Codex review — see below)*
+**Reviewer:** Codex CLI (`codex.exe exec -s read-only`), 2026-09-30. Prompt:
+`Transient/northstar_trials_gpt/pyrelands.prompt.md`. Answer:
+`Transient/northstar_trials_gpt/pyrelands.answer.md`. It made 20 findings: 16 are accepted and
+folded in, 4 are accepted in part, and none is rejected outright.
+
+| # | finding | verdict | where folded / why not |
+|---|---|---|---|
+| 1 | pre-flight required site state before a site exists | **accepted** | §3.8 gates A/B/C |
+| 2 | mod set not exact (extras, order, versions) | **accepted** | §3.8 manifest equality |
+| 3 | freshness via mtimes/srchash unproven at runtime | **accepted** | §3.8 + driver req: loaded-assembly MVID/hash/path, process start |
+| 4 | settings poisoned in the real Config; isolated profile | **partial** | Snapshot and byte-exact restore of `Mod_*` XML, plus map regen after non-dynamic toggles: **accepted**. A separate RimWorld profile (`-savedatafolder`) is **rejected**: the game must launch via Steam (memory: bare exe breaks Harmony), and changing the owner's Steam launch options is his. |
+| 5 | climate caches / mean≠midsummer / 3 cells | **accepted** | §3.4 step 11; date and hour recorded throughout |
+| 6 | sites not independent | **partial** | One fresh world per site: **accepted**. Recording the mapgen RNG state is **rejected**, because no bridge call exposes it. The fixture save is the reproduction. |
+| 7 | self-referential flora allowlist; coverage denominator | **accepted** | §2.3a |
+| 8 | self-referential fauna allowlist; `spawnedTick` rule wrong; small N | **accepted** | §2.3a; the census is at tick 0 before any tick, and pooled N ≥ 150 |
+| 9 | ash ladder pre-existing rungs / probabilistic floor burn | **accepted** | §2.3a cohort transitions |
+| 10 | bar 4 not cell-for-cell | **accepted** | §2.3a |
+| 11 | regrowth counts survivors/other species | **accepted** | §2.3a; control budgeted |
+| 12 | harvest/ingest not attributable | **accepted** | §2.3a |
+| 13 | disappearance ≠ rot; heat confounds | **partial** | `CompRottable` progress and a reference food: **accepted**. Moving the test to a cool temperature is **rejected**: the bar is about the player's experience at the biome's real heat, and the reference food separates the two effects. |
+| 14 | ash from fire/cleaners; luminance confounds | **accepted** | §2.3a |
+| 15 | weather def diff may be inert; single still | **accepted** | §2.3a |
+| 16 | BlackRain vs Rain control validity | **partial** | Multi-frame and quantitative checks: **accepted**. Rain stays as a forced *visual control*. The bar asks whether black rain reads as black rain, so a known ordinary rain is the right comparator. |
+| 17 | K=3 underpowered | **accepted** | §3.4 step 10 + §2.3a statistics |
+| 18 | isolation incomplete | **accepted** | §2.3a all ignition/migration mechanics off for controlled bars |
+| 19 | tier save on full list tests nothing | **accepted** | §3.1 full-list route |
+| 20 | blind modal closing; first-failure stop | **accepted** | §3.8 |
+
+**Effect on the wall-clock (§4):** per-site fresh worlds and pooled animals add about 10–15 min.
+The minimal-list attempt is now **≈ 40–60 min**.
 
 ---
 
