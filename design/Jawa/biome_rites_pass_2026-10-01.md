@@ -164,15 +164,12 @@ from the war. The plants run on hydrocarbon plumbing and go off as an explosive 
 burn, and ion detonates a living vhaulk. Silence and then a boom. Source:
 `design/Jawa/worldbuilding/biomes/the_blue_desert.md`, `bluedesert_bedazzle_review_2026-09-28.md`.
 
-> 🔴 **A ruling this section may collide with.** On 2026-09-28 the owner ruled the Blue Desert's
-> gods mark as **biome-local lore: no campaign ideoligion defs, no precepts, no rituals**
-> (`the_blue_desert.md` header (4); review §5 Q3). R1 (2026-10-01) says biomes teach rites, and
-> those rites live in `mandrake.rut.rites`, not the biome mod, so they need not touch the Blue
-> Desert mod at all. Whether R1 reopens Q3 for this biome is the owner's call. Both rites below
-> are pitched on the reading that it does. If it does not, strike §3 and the Blue Desert answers
-> "none", which §(e) allows.
+Rites are allowed in every biome (owner ruling, 2026-10-01), the Blue Desert included. Its rites live
+in `mandrake.rut.rites`, not the biome mod.
 
 ### 3.1 The Returned (Ta'Baa, consolation)
+
+_Status: ruled-kept (card, 2026-10-01)._
 
 - **Needs:** a freeze-dried body that the ablation line has given up, carried back to the ship and
   sealed in a sarcophagus aboard (not buried), so that it leaves with the clan on the next launch.
@@ -191,23 +188,29 @@ burn, and ion detonates a living vhaulk. Silence and then a boom. Source:
 - **Inscription:** *"I went higher than any of us. The ice brought me back. Take me with you when
   you go."*
 
-### 3.2 The Silent Crossing (Ishko, feeding)
+### 3.2 The Charged Reed (Ishko, feeding)
 
-- **Needs:** a ripe whistle-reed or floss field (one whose charge is near its peak), crossed on
-  foot by the whole party, with no fire, no ion weapon and no powered light carried.
+_Status: ruled, reworked from its pitch (card, 2026-10-01)._
+
+- **Needs:** the party walks to the live, charged heart of a ripe whistle-reed or floss field and
+  cuts one charged reed without setting it off. No fire, ion weapon or powered light may be carried
+  by anyone present. If anyone sparks, the field may go, which keeps the biome's silence-then-boom.
 - **Found:** a Rakatan Warning panel at a quarry mouth whose last line is in a second, later hand.
   It can be studied only in the Haze, when the field's charge sits low.
-- **God:** Ishko, feeding by a threat passed undetected. He is pleased when danger goes by without
-  noticing the clan. This differs from the Dark Vigil: the Vigil offers stillness in a sealed dark,
-  while this offers a whole party moving through a live danger without waking it. Darkness here is
-  the ordinary nightside, so the rite never reads the Abyss's absolute-darkness gate.
-- **Outcomes:** Poor, the field stirs, and its reeds whistle the party's line on the map, the
-  readable sign. Fair, the party is through, unmarked. Good, plus Ishko's satiation rises and the
-  dovvik trails show as safe paths for a day. Excellent, plus "we crossed without a sound" for all.
-  If any participant carried fire or ion, the rite fails and the field may go: the Blue Desert's
-  own silence-then-boom is the teeth. Ninefold: Ishko up.
-- **Inscription:** *"The ones who dug walked here without fire. Carry nothing that sparks. Do not
-  speak until the reeds are behind you."*
+- **God:** Ishko, feeding by a danger passed undetected. He is pleased when a live danger is
+  reached, handled and left without ever noticing the clan. This differs from the Dark Vigil: the
+  Vigil offers stillness in a sealed dark, while this offers a party working at the heart of a live
+  charge. Darkness here is the ordinary nightside, so the rite never reads the Abyss's
+  absolute-darkness gate.
+- **The holy object:** the cut reed becomes a reed whistle, a readable warning item. It sounds when
+  danger is near, and its quality and range scale with the outcome tier below.
+- **Outcomes:** Poor, the reed is cut but spoiled: a short-range whistle, and the field stirs and
+  whistles the party's line on the map (the readable sign). Fair, a clean cut and a whistle of
+  ordinary range. Good, plus a longer range, and Ishko's satiation rises. Excellent, plus the
+  whistle sounds earlier and the party's "we cut it and it never knew" is shared by all. Any spark
+  fails the rite and the field may go. Ninefold: Ishko up.
+- **Inscription:** *"The ones who dug cut one reed from the heart of the field and carried nothing
+  that sparks. Keep it. It will sing before the ground does."*
 
 ## 4. The Cracked Lands (Flooded Canyon, `RM_FloodedCanyon`)
 
@@ -346,6 +349,8 @@ which also keeps hard ban 4. Source: `design/Jawa/worldbuilding/biomes/the_forge
 
 ### 6.2 The Flawed Masterwork (Ozzik, feeding)
 
+_Status: ruled-kept, pending a buildability check: can the gods' engine damp the knock-on to Sh'kaar and Zizzik for one call? Item `FLAWED_MASTERWORK_ENGINE_CHECK_1`._
+
 - **Needs:** an item of masterwork or legendary quality finished at a vent forge or vent smelter,
   and its maker scratching one small, deliberate flaw into it in front of the clan.
 - **Found:** a tower tender's tool rack in a foundry tower (F4), where every tool bears the same
@@ -376,18 +381,18 @@ aground on purpose"*. It is already in the register (B6), PITCHED, god unassigne
 
 ### 7.1 The Calling-Pyre (Zizzik, settlement)
 
+_Status: ruled (card, 2026-10-01): MERGED with the controlled waking (register B4). The calling-pyre is the controlled waking's Leaning Scrub form. The controlled waking stays a general rite and still needs forms in other biomes._
+
 - **Needs:** the colony's own field of dry fuzz or scrub, thunderstep herds on the map, and enemies
   present or arriving. The organiser sets the field alight on purpose. It is a last rite: it
   summons the herds onto everyone, the clan included.
 - **Found:** a charred stake ring on the plain, the stakes still leaning with the wind, one of them
   carved. It can be studied only in the Gale, when the stakes hum.
-- **God:** Zizzik, settlement (the bank spent). The register already carries **the controlled
-  waking** (B4): Zizzik's slumber bank is a thing to manage, *when, not whether*, and spending it
-  at a chosen moment is the only control the clan has. The calling-pyre is that waking given its
-  place: the clan picks the moment the catastrophe falls, and makes sure it falls on the enemy too.
-  Pyrrhic victories are his. 🔑 **Owner to rule:** whether the calling-pyre IS the controlled
-  waking's ritual form (one rite, two register rows merged), or a separate rite. This pass assumes
-  merged.
+- **God:** Zizzik, settlement (the bank spent). This is **the controlled waking** (register B4) in its Leaning Scrub form: Zizzik's slumber bank is a
+  thing to manage, *when, not whether*, and spending it at a chosen moment is the only control the
+  clan has. The pyre spends the bank on the player's schedule and points the disaster at the enemy:
+  the clan picks the moment the catastrophe falls, and makes sure it falls on them too. Pyrrhic
+  victories are his.
 - **Outcomes:** Poor, the herds come and stamp the colony harder than the enemy (the stamped ground
   and the prints show it). Fair, the herds break the attack, and the clan pays in fields. Good,
   plus Zizzik's slumber bank is spent and his next waking will be gentle. Excellent, plus an art
@@ -489,6 +494,8 @@ pours, pays or owes the sun. Source: `design/Jawa/worldbuilding/biomes/stillsand
 
 ### 9.2 The Unspilled March (Oomo, feeding)
 
+_Status: ruled-kept, as the Tribes' Return's opposite (card, 2026-10-01)._
+
 - **Needs:** a mirage showing water on the horizon, and a party walking toward it carrying full
   water and drinking none of it until the mirage recedes.
 - **Found:** a ring of sealed, still-full water jars half buried on a glasscrust line, the oldest
@@ -562,7 +569,7 @@ so. Source: `design/Jawa/worldbuilding/biomes/warscar_turn3_development_2026-09-
 | 2.2 | Wasteland | The Salted Keeping | Ozzik | venting | a vitrified crater; the colony's finest thing |
 | 2.3 | Wasteland | The Inherited Wreck | Rekko | settlement | a failed expedition's wreck in the hot ground |
 | 3.1 | Blue Desert | The Returned | Ta'Baa | consolation | a body the ablation line gave up |
-| 3.2 | Blue Desert | The Silent Crossing | Ishko | feeding | a ripe reed field; no fire, ion or light |
+| 3.2 | Blue Desert | The Charged Reed | Ishko | feeding | a ripe reed field's charged heart; no fire, ion or light |
 | 4.1 | Cracked Lands | The Chime Vigil | Oomo | warding | the chime window, on a refuge ledge |
 | 4.2 | Cracked Lands | The Mud Claim | Rekko | feeding | the salvage-strike window after a recede |
 | 5.1 | Cauldron | The Filtered Cup | Oomo | consolation | first water from a filter converter |
@@ -603,26 +610,22 @@ Every biome carries two or three, and no biome repeats a kind.
 - **Ozzik:** the Salted Keeping vents by humility and keeps the item, the Unburdening (B4/B5)
   vents by destroying wealth, and the Lightless Burial (B2) vents by laying grief down. They are
   three acts, not one.
-- **Zizzik:** the Calling-Pyre is pitched as the ritual form of the controlled waking (B4). If the
-  owner keeps them separate, the Calling-Pyre stays settlement and the waking needs its own
-  condition.
+- **Zizzik:** the Calling-Pyre is the controlled waking (B4) in its Leaning Scrub form: one rite,
+  one register row. The waking still needs forms in other biomes.
 - **Ohm:** the machine-funeral (B4, a machine's end) is not the Deserter's Welcome (a machine's
   return).
 - **Oomo, Stillsand:** the Unspilled March sits beside the Sun-Debt's Return (B6) and is its
   opposite: it carries water, it does not pour or pay. It is not a Salvation copy of the Return.
 - **Sh'kaar, Long Shade:** the Shade Tithe is slate 2's own name, so this pass keeps it. Revering
   the Holy Flame (B6) is a different faith's precept and is untouched.
-- **Leaning Scrub:** the B6 row "the calling-pyre, unassigned" is this pass's 7.1, now assigned.
+- **Leaning Scrub:** the B6 row "the calling-pyre, unassigned" is this pass's 7.1, merged into B4's controlled waking.
 - **The Watch** (B6, RULED OUT) has no successor here. The Vindication Walk is a daytime walk
   toward home, not a night stood facing out.
 
-### Rule these first
+### Rulings (cards, 2026-10-01, 13:43 to 14:03 PDT)
 
-1. **The Blue Desert (§3).** The 2026-09-28 Q3 ruling (biome-local lore, no rituals) against R1.
-   Strike §3, or let R1 reopen it.
-2. **The Calling-Pyre (§7.1).** Is it the controlled waking's ritual form, so two register rows
-   merge? It is the one rite here that summons a catastrophe onto the colony on purpose.
-3. **The Flawed Masterwork (§6.2).** A rite that feeds the trap god on purpose, made safe by his
-   own folk gesture. It needs Ninefold to damp the amplifier per call, which is UNMEASURED.
-4. **The Unspilled March (§9.2).** A Salvation water rite placed beside the Tribes' Return as its
-   opposite. Two faiths, one water: is that the right neighbour, or too close?
+1. **Rites are allowed everywhere** (typed): the Blue Desert carries rites. The Returned (§3.1) is kept.
+2. **The Charged Reed** (§3.2): Ishko, a charged reed cut and carried as a warning whistle.
+3. **The Calling-Pyre** (§7.1) merged into the controlled waking (B4); register is one row.
+4. **The Flawed Masterwork** (§6.2) kept, pending `FLAWED_MASTERWORK_ENGINE_CHECK_1`.
+5. **The Unspilled March** (§9.2) kept as the Tribes' Return's opposite.

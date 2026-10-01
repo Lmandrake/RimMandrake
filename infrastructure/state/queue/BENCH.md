@@ -1079,3 +1079,13 @@ kind:     task
 thin:     no ## verify
 summary:  Movements 1-2 done. Next: the owner's turn-1 card (§7), then the volley, then ticket-out
 prose:    infrastructure/state/items/NIGHTSIDEICE_BEDAZZLE_SITTING_1.md
+
+## FLAWED_MASTERWORK_ENGINE_CHECK_1 Can Ninefold damp Ozzik's knock-on to Sh'kaar and Zizzik for one call?
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FLAWEDMASTERWORKENGINECHECK1 — can Ninefold damp Ozzik's knock-on for one call?
+prose:    infrastructure/state/items/FLAWED_MASTERWORK_ENGINE_CHECK_1.md

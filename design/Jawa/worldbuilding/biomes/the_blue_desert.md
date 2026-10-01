@@ -35,8 +35,8 @@ kill leaves the cistern intact — the richest harvest, earned the hard way.
 (3) **The three donor water-plants are CUT** (`AB_ToxiGrass`, `AB_CrystalHorn`,
 `PoisonPlantTallGrass` off this biome's rows; CrystalHorn keeps its Propane
 Lakes home) — hard ban 1 stands with no grandfather clause.
-(4) **Mark 9 (the gods) is BIOME-LOCAL LORE** — no campaign ideoligion defs, no
-precepts, no rituals. The Rakatan Warnings/script/tableaus carry the layer: the
+(4) **Mark 9 (the gods): rites are allowed in every biome** (owner, 2026-10-01); the
+Blue Desert's rites live in `mandrake.rut.rites` (`design/Jawa/biome_rites_pass_2026-10-01.md` §3). The Rakatan Warnings/script/tableaus carry the layer: the
 discovery ladder's final tier IS the reading (and the warnings include *do not
 still the mountain*).
 (5) **Tameability relaxed** — the all-untameable stance is no longer a wall; the
