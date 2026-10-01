@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="RM_DuneMaterialDef.cs" />
     <Compile Include="DuneFieldExtension.cs" />
+    <Compile Include="DuneWindBearing.cs" />
     <Compile Include="DuneFieldRegistry.cs" />
     <Compile Include="MovingDunesMod.cs" />
     <Compile Include="MovingDunesSettings.cs" />

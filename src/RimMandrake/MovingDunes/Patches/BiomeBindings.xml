@@ -64,6 +64,12 @@
       <value>
         <li Class="RimMandrake.MovingDunes.DuneFieldExtension">
           <material>RM_Dunes_Sand</material>
+          <!-- STILLSAND_WIND_SUN_BEARING_1: "a wind that has never once changed its mind". The wind
+               keeps the tile-to-substellar bearing (0, 0, the same point as the biome's pinned sun),
+               blowing along the shadows, so crests, lees and shadows all point one way. -->
+          <lockBearingToSubstellar>true</lockBearingToSubstellar>
+          <substellarLatitude>0</substellarLatitude>
+          <substellarLongitude>0</substellarLongitude>
         </li>
       </value>
     </match>
