@@ -12,7 +12,8 @@ namespace RimMandrake.Stillsand
     // The biome itself reuses vanilla Core's BiomeWorker_ExtremeDesert unchanged,
     // so there is no placement score to gate. The one mechanic this assembly
     // owns besides the sand-buster eruption is the zuurrik blood-waker
-    // (STILLSAND_BEDAZZLE_CONTENT_1), which has a toggle and a threshold. Defaults
+    // (STILLSAND_BEDAZZLE_CONTENT_1), which has a toggle and a threshold, and the
+    // rock-and-cave gen steps (STILLSAND_PRECIOUS_CAVES_1, RM_PreciousCaveSettings). Defaults
     // are the shipped behaviour; all-off leaves the biome whole (the zuurrik
     // def is then simply never woken).
     // ════════════════════════════════════════════════════════════════════
@@ -29,6 +30,7 @@ namespace RimMandrake.Stillsand
             base.ExposeData();
             Scribe_Values.Look(ref zuurrikEnabled, "zuurrikEnabled", true);
             Scribe_Values.Look(ref zuurrikBloodThreshold, "zuurrikBloodThreshold", 8);
+            RM_PreciousCaveSettings.Expose(); // STILLSAND_PRECIOUS_CAVES_1
         }
 
         public void DoWindowContents(Rect inRect)
@@ -51,6 +53,7 @@ namespace RimMandrake.Stillsand
             list.Label("The biome itself reuses vanilla Core's BiomeWorker_ExtremeDesert unchanged, "
               + "so there is no natural-placement score of this mod's own to toggle. The event "
               + "creatures (muurrok, krayt attack) have their own panel: \"Stillsand: event creatures\".");
+            RM_PreciousCaveSettings.Draw(list); // STILLSAND_PRECIOUS_CAVES_1
 
             list.End();
         }

@@ -15,10 +15,15 @@
       <packageId>mandrake.rm.creaturebehaviors</packageId>
       <displayName>RimMandrake: Creature Behaviors</displayName>
     </li>
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards Kit</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.environmentalhazards</li>
     <li>Dubwise.DubsBadHygiene.Lite</li>
   </loadAfter>
   <description>STILLSAND_RM_MOD_BUILD_1 — RimMandrake tier standalone build of the Extreme
