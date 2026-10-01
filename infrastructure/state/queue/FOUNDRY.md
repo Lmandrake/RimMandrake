@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T19:02:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T20:22:32Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -2910,3 +2910,653 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  The ticket-out audit found these §5 12 pre-ticket lines carried by no item. This is the Abyss's slice of them…
 prose:    infrastructure/state/items/ABYSS_FREE_TIER_BODY_1.md
+
+## NORTHSTAR_EVERYWHERE_PROGRAM_1 North-star scripts for every mod; new-content pause until done
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  Every mod gets a first north-star script (validation.py + driver plan) centred on its intended function, run…
+prose:    infrastructure/state/items/NORTHSTAR_EVERYWHERE_PROGRAM_1.md
+
+## ABYSS_FIRST_SCRIPT_1 First north-star script: Abyss
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Abyss (src/RimMandrake/Abyss/): a validation.py + driver plan centred on the mod'…
+prose:    infrastructure/state/items/ABYSS_FIRST_SCRIPT_1.md
+
+## ACOUSTIC_SCANNER_FIRST_SCRIPT_1 First north-star script: AcousticScanner
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for AcousticScanner (src/RimMandrake/AcousticScanner/): a validation.py + driver plan…
+prose:    infrastructure/state/items/ACOUSTIC_SCANNER_FIRST_SCRIPT_1.md
+
+## ASSAILANT_SALVAGE_FIRST_SCRIPT_1 First north-star script: AssailantSalvage
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for AssailantSalvage (src/RimMandrake/AssailantSalvage/): a validation.py + driver pl…
+prose:    infrastructure/state/items/ASSAILANT_SALVAGE_FIRST_SCRIPT_1.md
+
+## BLUE_DESERT_FIRST_SCRIPT_1 First north-star script: BlueDesert
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for BlueDesert (src/RimMandrake/BlueDesert/): a validation.py + driver plan centred o…
+prose:    infrastructure/state/items/BLUE_DESERT_FIRST_SCRIPT_1.md
+
+## CAULDRON_FIRST_SCRIPT_1 First north-star script: Cauldron
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Cauldron (src/RimMandrake/Cauldron/): a validation.py + driver plan centred on th…
+prose:    infrastructure/state/items/CAULDRON_FIRST_SCRIPT_1.md
+
+## CONTAGION_FIRST_SCRIPT_1 First north-star script: Contagion
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Contagion (src/RimMandrake/Contagion/): a validation.py + driver plan centred on…
+prose:    infrastructure/state/items/CONTAGION_FIRST_SCRIPT_1.md
+
+## CREATURE_BEHAVIORS_FIRST_SCRIPT_1 First north-star script: CreatureBehaviors
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for CreatureBehaviors (src/RimMandrake/CreatureBehaviors/): a validation.py + driver…
+prose:    infrastructure/state/items/CREATURE_BEHAVIORS_FIRST_SCRIPT_1.md
+
+## DIVING_INTERACTION_FIRST_SCRIPT_1 First north-star script: DivingInteraction
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for DivingInteraction (src/RimMandrake/DivingInteraction/): a validation.py + driver…
+prose:    infrastructure/state/items/DIVING_INTERACTION_FIRST_SCRIPT_1.md
+
+## ENVIRONMENTAL_HAZARDS_FIRST_SCRIPT_1 First north-star script: EnvironmentalHazards
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for EnvironmentalHazards (src/RimMandrake/EnvironmentalHazards/): a validation.py + d…
+prose:    infrastructure/state/items/ENVIRONMENTAL_HAZARDS_FIRST_SCRIPT_1.md
+
+## EXPLOSIVE_GROWTH_FIRST_SCRIPT_1 First north-star script: ExplosiveGrowth
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for ExplosiveGrowth (src/RimMandrake/ExplosiveGrowth/): a validation.py + driver plan…
+prose:    infrastructure/state/items/EXPLOSIVE_GROWTH_FIRST_SCRIPT_1.md
+
+## FEVER_WOOD_FIRST_SCRIPT_1 First north-star script: FeverWood
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for FeverWood (src/RimMandrake/FeverWood/): a validation.py + driver plan centred on…
+prose:    infrastructure/state/items/FEVER_WOOD_FIRST_SCRIPT_1.md
+
+## FLOODED_CANYON_FIRST_SCRIPT_1 First north-star script: FloodedCanyon
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for FloodedCanyon (src/RimMandrake/FloodedCanyon/): a validation.py + driver plan cen…
+prose:    infrastructure/state/items/FLOODED_CANYON_FIRST_SCRIPT_1.md
+
+## GELATINOUS_SLIME_FIRST_SCRIPT_1 First north-star script: GelatinousSlime
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for GelatinousSlime (src/RimMandrake/GelatinousSlime/): a validation.py + driver plan…
+prose:    infrastructure/state/items/GELATINOUS_SLIME_FIRST_SCRIPT_1.md
+
+## GRAVSHIP_LANDING_FIRST_SCRIPT_1 First north-star script: GravshipLanding
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for GravshipLanding (src/RimMandrake/GravshipLanding/): a validation.py + driver plan…
+prose:    infrastructure/state/items/GRAVSHIP_LANDING_FIRST_SCRIPT_1.md
+
+## GREENTIDE_FIRST_SCRIPT_1 First north-star script: Greentide
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Greentide (src/RimMandrake/Greentide/): a validation.py + driver plan centred on…
+prose:    infrastructure/state/items/GREENTIDE_FIRST_SCRIPT_1.md
+
+## HOSTILE_FLORA_FIRST_SCRIPT_1 First north-star script: HostileFlora
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for HostileFlora (src/RimMandrake/HostileFlora/): a validation.py + driver plan centr…
+prose:    infrastructure/state/items/HOSTILE_FLORA_FIRST_SCRIPT_1.md
+
+## LEANING_SCRUB_FIRST_SCRIPT_1 First north-star script: LeaningScrub
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for LeaningScrub (src/RimMandrake/LeaningScrub/): a validation.py + driver plan centr…
+prose:    infrastructure/state/items/LEANING_SCRUB_FIRST_SCRIPT_1.md
+
+## LONG_SHADE_FIRST_SCRIPT_1 First north-star script: LongShade
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for LongShade (src/RimMandrake/LongShade/): a validation.py + driver plan centred on…
+prose:    infrastructure/state/items/LONG_SHADE_FIRST_SCRIPT_1.md
+
+## LORE_STAGES_FIRST_SCRIPT_1 First north-star script: LoreStages
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for LoreStages (src/RimMandrake/LoreStages/): a validation.py + driver plan centred o…
+prose:    infrastructure/state/items/LORE_STAGES_FIRST_SCRIPT_1.md
+
+## LUMINOUS_PIGMENT_FIRST_SCRIPT_1 First north-star script: LuminousPigment
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for LuminousPigment (src/RimMandrake/LuminousPigment/): a validation.py + driver plan…
+prose:    infrastructure/state/items/LUMINOUS_PIGMENT_FIRST_SCRIPT_1.md
+
+## MIASMA_FIRST_SCRIPT_1 First north-star script: Miasma
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Miasma (src/RimMandrake/Miasma/): a validation.py + driver plan centred on the mo…
+prose:    infrastructure/state/items/MIASMA_FIRST_SCRIPT_1.md
+
+## MOVING_DUNES_FIRST_SCRIPT_1 First north-star script: MovingDunes
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for MovingDunes (src/RimMandrake/MovingDunes/): a validation.py + driver plan centred…
+prose:    infrastructure/state/items/MOVING_DUNES_FIRST_SCRIPT_1.md
+
+## NIGHTSIDE_ICE_FIRST_SCRIPT_1 First north-star script: NightsideIce
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for NightsideIce (src/RimMandrake/NightsideIce/): a validation.py + driver plan centr…
+prose:    infrastructure/state/items/NIGHTSIDE_ICE_FIRST_SCRIPT_1.md
+
+## OASIS_MAKER_FIRST_SCRIPT_1 First north-star script: OasisMaker
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for OasisMaker (src/RimMandrake/OasisMaker/): a validation.py + driver plan centred o…
+prose:    infrastructure/state/items/OASIS_MAKER_FIRST_SCRIPT_1.md
+
+## PROXIMITY_HATCH_FIRST_SCRIPT_1 First north-star script: ProximityHatch
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for ProximityHatch (src/RimMandrake/ProximityHatch/): a validation.py + driver plan c…
+prose:    infrastructure/state/items/PROXIMITY_HATCH_FIRST_SCRIPT_1.md
+
+## PYRINTH_FIRST_SCRIPT_1 First north-star script: Pyrinth
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Pyrinth (src/RimMandrake/Pyrinth/): a validation.py + driver plan centred on the…
+prose:    infrastructure/state/items/PYRINTH_FIRST_SCRIPT_1.md
+
+## RUST_CATHEDRAL_FIRST_SCRIPT_1 First north-star script: RustCathedral
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for RustCathedral (src/RimMandrake/RustCathedral/): a validation.py + driver plan cen…
+prose:    infrastructure/state/items/RUST_CATHEDRAL_FIRST_SCRIPT_1.md
+
+## SCARLANDS_FIRST_SCRIPT_1 First north-star script: Scarlands
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Scarlands (src/RimMandrake/Scarlands/): a validation.py + driver plan centred on…
+prose:    infrastructure/state/items/SCARLANDS_FIRST_SCRIPT_1.md
+
+## SHIP_VERMIN_FIRST_SCRIPT_1 First north-star script: ShipVermin
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for ShipVermin (src/RimMandrake/ShipVermin/): a validation.py + driver plan centred o…
+prose:    infrastructure/state/items/SHIP_VERMIN_FIRST_SCRIPT_1.md
+
+## STILLSAND_FIRST_SCRIPT_1 First north-star script: Stillsand
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Stillsand (src/RimMandrake/Stillsand/): a validation.py + driver plan centred on…
+prose:    infrastructure/state/items/STILLSAND_FIRST_SCRIPT_1.md
+
+## TERMINAL_BIOMES_FIRST_SCRIPT_1 First north-star script: TerminalBiomes
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for TerminalBiomes (src/RimMandrake/TerminalBiomes/): a validation.py + driver plan c…
+prose:    infrastructure/state/items/TERMINAL_BIOMES_FIRST_SCRIPT_1.md
+
+## THE_BAZAAR_FIRST_SCRIPT_1 First north-star script: TheBazaar
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for TheBazaar (src/RimMandrake/TheBazaar/): a validation.py + driver plan centred on…
+prose:    infrastructure/state/items/THE_BAZAAR_FIRST_SCRIPT_1.md
+
+## THE_FORGE_FIRST_SCRIPT_1 First north-star script: TheForge
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for TheForge (src/RimMandrake/TheForge/): a validation.py + driver plan centred on th…
+prose:    infrastructure/state/items/THE_FORGE_FIRST_SCRIPT_1.md
+
+## THE_ROT_FIRST_SCRIPT_1 First north-star script: TheRot
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for TheRot (src/RimMandrake/TheRot/): a validation.py + driver plan centred on the mo…
+prose:    infrastructure/state/items/THE_ROT_FIRST_SCRIPT_1.md
+
+## THE_SUMP_FIRST_SCRIPT_1 First north-star script: TheSump
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for TheSump (src/RimMandrake/TheSump/): a validation.py + driver plan centred on the…
+prose:    infrastructure/state/items/THE_SUMP_FIRST_SCRIPT_1.md
+
+## TITANIC_CREATURES_FIRST_SCRIPT_1 First north-star script: TitanicCreatures
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for TitanicCreatures (src/RimMandrake/TitanicCreatures/): a validation.py + driver pl…
+prose:    infrastructure/state/items/TITANIC_CREATURES_FIRST_SCRIPT_1.md
+
+## WARCASKET_FIRST_SCRIPT_1 First north-star script: Warcasket
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Warcasket (src/RimMandrake/Warcasket/): a validation.py + driver plan centred on…
+prose:    infrastructure/state/items/WARCASKET_FIRST_SCRIPT_1.md
+
+## WASTELAND_FIRST_SCRIPT_1 First north-star script: Wasteland
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Wasteland (src/RimMandrake/Wasteland/): a validation.py + driver plan centred on…
+prose:    infrastructure/state/items/WASTELAND_FIRST_SCRIPT_1.md
+
+## WEBWORK_FIRST_SCRIPT_1 First north-star script: Webwork
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Webwork (src/RimMandrake/Webwork/): a validation.py + driver plan centred on the…
+prose:    infrastructure/state/items/WEBWORK_FIRST_SCRIPT_1.md
+
+## WEEPING_STONES_FIRST_SCRIPT_1 First north-star script: WeepingStones
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for WeepingStones (src/RimMandrake/WeepingStones/): a validation.py + driver plan cen…
+prose:    infrastructure/state/items/WEEPING_STONES_FIRST_SCRIPT_1.md
+
+## BACTA_FIRST_SCRIPT_1 First north-star script: Bacta
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Bacta (src/RimStarWars/Bacta/): a validation.py + driver plan centred on the mod'…
+prose:    infrastructure/state/items/BACTA_FIRST_SCRIPT_1.md
+
+## BRAIN_WORMS_FIRST_SCRIPT_1 First north-star script: BrainWorms
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for BrainWorms (src/RimStarWars/BrainWorms/): a validation.py + driver plan centred o…
+prose:    infrastructure/state/items/BRAIN_WORMS_FIRST_SCRIPT_1.md
+
+## GIZKA_STOWAWAY_FIRST_SCRIPT_1 First north-star script: GizkaStowaway
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for GizkaStowaway (src/RimStarWars/GizkaStowaway/): a validation.py + driver plan cen…
+prose:    infrastructure/state/items/GIZKA_STOWAWAY_FIRST_SCRIPT_1.md
+
+## GRAFFITI_IMPERIAL_FIRST_SCRIPT_1 First north-star script: GraffitiImperial
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for GraffitiImperial (src/RimStarWars/GraffitiImperial/): a validation.py + driver pl…
+prose:    infrastructure/state/items/GRAFFITI_IMPERIAL_FIRST_SCRIPT_1.md
+
+## SARLACC_FIRST_SCRIPT_1 First north-star script: Sarlacc
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Sarlacc (src/RimStarWars/Sarlacc/): a validation.py + driver plan centred on the…
+prose:    infrastructure/state/items/SARLACC_FIRST_SCRIPT_1.md
+
+## SHOKK_FIRST_SCRIPT_1 First north-star script: Shokk
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for Shokk (src/RimStarWars/Shokk/): a validation.py + driver plan centred on the mod'…
+prose:    infrastructure/state/items/SHOKK_FIRST_SCRIPT_1.md
+
+## TROPHY_CRAFT_FIRST_SCRIPT_1 First north-star script: TrophyCraft
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for TrophyCraft (src/RimStarWars/TrophyCraft/): a validation.py + driver plan centred…
+prose:    infrastructure/state/items/TROPHY_CRAFT_FIRST_SCRIPT_1.md
+
+## DROID_REPAIR_JOBS_FIRST_SCRIPT_1 First north-star script: DroidRepairJobs
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for DroidRepairJobs (src/RimUtinni/DroidRepairJobs/): a validation.py + driver plan c…
+prose:    infrastructure/state/items/DROID_REPAIR_JOBS_FIRST_SCRIPT_1.md
+
+## EGG_RECKONING_FIRST_SCRIPT_1 First north-star script: EggReckoning
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for EggReckoning (src/RimUtinni/EggReckoning/): a validation.py + driver plan centred…
+prose:    infrastructure/state/items/EGG_RECKONING_FIRST_SCRIPT_1.md
+
+## FUNGAL_SOIL_TRADE_FIRST_SCRIPT_1 First north-star script: FungalSoilTrade
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for FungalSoilTrade (src/RimUtinni/FungalSoilTrade/): a validation.py + driver plan c…
+prose:    infrastructure/state/items/FUNGAL_SOIL_TRADE_FIRST_SCRIPT_1.md
+
+## GREENTIDE_RAID_ANT_FIRST_SCRIPT_1 First north-star script: GreentideRaidAnt
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for GreentideRaidAnt (src/RimUtinni/GreentideRaidAnt/): a validation.py + driver plan…
+prose:    infrastructure/state/items/GREENTIDE_RAID_ANT_FIRST_SCRIPT_1.md
+
+## KYBER_TRADE_PLOT_FIRST_SCRIPT_1 First north-star script: KyberTradePlot
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for KyberTradePlot (src/RimUtinni/KyberTradePlot/): a validation.py + driver plan cen…
+prose:    infrastructure/state/items/KYBER_TRADE_PLOT_FIRST_SCRIPT_1.md
+
+## PROPANE_LAKE_MECHANICS_FIRST_SCRIPT_1 First north-star script: PropaneLakeMechanics
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for PropaneLakeMechanics (src/RimUtinni/PropaneLakeMechanics/): a validation.py + dri…
+prose:    infrastructure/state/items/PROPANE_LAKE_MECHANICS_FIRST_SCRIPT_1.md
+
+## PYRELANDS_MECHANICS_FIRST_SCRIPT_1 First north-star script: PyrelandsMechanics
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for PyrelandsMechanics (src/RimUtinni/PyrelandsMechanics/): a validation.py + driver…
+prose:    infrastructure/state/items/PYRELANDS_MECHANICS_FIRST_SCRIPT_1.md
+
+## RIVER_COLORS_FIRST_SCRIPT_1 First north-star script: RiverColors
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for RiverColors (src/RimUtinni/RiverColors/): a validation.py + driver plan centred o…
+prose:    infrastructure/state/items/RIVER_COLORS_FIRST_SCRIPT_1.md
+
+## RUST_CATHEDRAL_ROACHES_FIRST_SCRIPT_1 First north-star script: RustCathedralRoaches
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for RustCathedralRoaches (src/RimUtinni/RustCathedralRoaches/): a validation.py + dri…
+prose:    infrastructure/state/items/RUST_CATHEDRAL_ROACHES_FIRST_SCRIPT_1.md
+
+## SCARLANDS_LADDER_FIRST_SCRIPT_1 First north-star script: ScarlandsLadder
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for ScarlandsLadder (src/RimUtinni/ScarlandsLadder/): a validation.py + driver plan c…
+prose:    infrastructure/state/items/SCARLANDS_LADDER_FIRST_SCRIPT_1.md
+
+## SCAVENGER_EVENTS_FIRST_SCRIPT_1 First north-star script: ScavengerEvents
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for ScavengerEvents (src/RimUtinni/ScavengerEvents/): a validation.py + driver plan c…
+prose:    infrastructure/state/items/SCAVENGER_EVENTS_FIRST_SCRIPT_1.md
+
+## SHIP_SHIELDS_FIRST_SCRIPT_1 First north-star script: ShipShields
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for ShipShields (src/RimUtinni/ShipShields/): a validation.py + driver plan centred o…
+prose:    infrastructure/state/items/SHIP_SHIELDS_FIRST_SCRIPT_1.md
+
+## SHOKKWEAVE_ECONOMY_FIRST_SCRIPT_1 First north-star script: ShokkweaveEconomy
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for ShokkweaveEconomy (src/RimUtinni/ShokkweaveEconomy/): a validation.py + driver pl…
+prose:    infrastructure/state/items/SHOKKWEAVE_ECONOMY_FIRST_SCRIPT_1.md
+
+## WILDSTEAM_EGG_BOUNTY_FIRST_SCRIPT_1 First north-star script: WildsteamEggBounty
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  First north-star script for WildsteamEggBounty (src/RimUtinni/WildsteamEggBounty/): a validation.py + driver…
+prose:    infrastructure/state/items/WILDSTEAM_EGG_BOUNTY_FIRST_SCRIPT_1.md
+
+## ART_OVERRIDE_FAMILY_SCRIPT_1 One parametrized north-star script for the 48 *ArtOverride mods
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  The 48 ArtOverride mods (list: src//ArtOverride) only retexture a creature. ONE parametrized script covers th…
+prose:    infrastructure/state/items/ART_OVERRIDE_FAMILY_SCRIPT_1.md
+
+## NORTHSTAR_COVERAGE_AUDIT_1 Audit the 55 existing validation.py files for coverage of intended function
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  55 mods already carry a validation.py (git ls-files 'src//validation.py'). For each, compare its bars to the…
+prose:    infrastructure/state/items/NORTHSTAR_COVERAGE_AUDIT_1.md
+
+## NORTHSTAR_ADVERSARIAL_REVIEW_1 Standing: periodic adversarial and GPT review of north-star scripts
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  A standing item the owner triggers. An adversarial agent (and a GPT consult via the Codex CLI route) tries to…
+prose:    infrastructure/state/items/NORTHSTAR_ADVERSARIAL_REVIEW_1.md
