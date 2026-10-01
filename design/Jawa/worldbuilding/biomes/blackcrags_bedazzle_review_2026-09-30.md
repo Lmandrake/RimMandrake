@@ -572,3 +572,14 @@ Card items 5-8 were not answered at turn 1; turn 2 rulings are in section 8.
 | 8. Lightfall's bottom | His words, typed: *"You draft three items. Then ask gpt to make three unrelated ideas. Make them spectacular."* Six options, not yet written here. | Noted on `BLACKCRAGS_BEDAZZLE_SITTING_1`. |
 
 Still open: the cryptid "Forsakens" naming, and the Lightfall options.
+
+## 9. Lightfall ruling (owner, 2026-10-01 07:42 PDT)
+
+| Card item | Ruling | How recorded |
+|---|---|---|
+| Lightfall's bottom, Claude's options | **The Brood.** The ghorrumak storm dragons nest at Lightfall's bottom among giant bones; steal an egg past a sleeping brood-mother, the storms follow you home, hatch your own dragon. Not picked: the Sink, the Lowered, the Mercy Engine, the Lantern Tide. | Decision taken by question card. `ABYSS_LIGHTFALL_BROOD_WRECK_1` (links `ABYSS_DONOR_BEASTS_FREED_1`, `ABYSS_DARK_BUILD_1`). |
+| GPT's option E, The Ship in the Wall | **Kept, reshaped, and merged into the Brood's lair.** His words, typed: *"Improve the crashed ship. You can’t have two ships but you can cannibalize that one to improve yours. A rich haul. But only then do they discover that their ship only wants certain parts. It likes what it is and doesn’t want deep redesign. Just repair. This is a chance to restore much of its glory. While the sleeping dragons threaten to pummel you."* The wreck is a salvage site, not a second ship. | His typed word. Same item, `ABYSS_LIGHTFALL_BROOD_WRECK_1`. |
+| Housekeeping confirmation | "Those two beasts" are the ghorrumak and the nighthrumbo (confirmed by question card, 07:32). "Fully regenerate" means the existing donor-bodied art does not count; new art is owed under the new names. | Note on `ABYSS_DONOR_BEASTS_FREED_1`. |
+
+Still open: the free-tier cryptid (`ABYSS_FREE_CRYPTID_1`).
+

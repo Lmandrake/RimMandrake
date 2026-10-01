@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T14:44:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T14:55:06Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2019,6 +2019,16 @@ blocked:  Stopped for handoff 2026-09-30; not started - pick up fresh
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
+## WARSCAR_AEROSOL_SCREEN_1 Warscar projectors and aerosol screen: lift ShipShields particulate core to RM, broad polluted-biome screen balanced by cost, live/dead rings, salvageable working generators, ship wakes the line, glower shielding
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  11-point build; depends on WARSCAR_RAINBOW_POOLS_1 and WARSCAR_OLD_TONGUE_1; needs split a-d (see Transient/worker_notes_WARSCAR_AEROSOL_SCREEN_1.md)
+summary:  1. Lift the core to RM. The particulate effect in src/RimUtinni/ShipShields/
+prose:    infrastructure/state/items/WARSCAR_AEROSOL_SCREEN_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -2040,16 +2050,6 @@ kind:     build
 thin:     no ## verify
 summary:  1. TrackGrid (a MapComponent): one compact record per cell (direction 3 bits, size class 2,
 prose:    infrastructure/state/items/FOOTPRINT_TRACK_GRID_1.md
-
-## WARSCAR_AEROSOL_SCREEN_1 Warscar projectors and aerosol screen: lift ShipShields particulate core to RM, broad polluted-biome screen balanced by cost, live/dead rings, salvageable working generators, ship wakes the line, glower shielding
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  1. Lift the core to RM. The particulate effect in src/RimUtinni/ShipShields/
-prose:    infrastructure/state/items/WARSCAR_AEROSOL_SCREEN_1.md
 
 ## WARSCAR_FREE_TIER_BODY_1 Warscar free-tier body: chatrak (+ chatrak plate leather), totchak body, tetchik, wreck-lichen; pallbearer and scar roach to RM (save-checked); glower art wired; Soil band dropped; label Warscar
 state:    proposed
@@ -2920,3 +2920,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Owner, typed 2026-10-01: free tier gets its own invented cryptid; the Star Wars tier keeps "the Forsakens", w…
 prose:    infrastructure/state/items/ABYSS_FREE_CRYPTID_1.md
+
+## ABYSS_LIGHTFALL_BROOD_WRECK_1 Lightfall's bottom: the dragons' brood and the wreck that repairs your ship
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  One place, two halves, both at the bottom of Lightfall.
+prose:    infrastructure/state/items/ABYSS_LIGHTFALL_BROOD_WRECK_1.md
