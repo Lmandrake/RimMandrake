@@ -589,5 +589,4 @@ Still open: the free-tier cryptid (`ABYSS_FREE_CRYPTID_1`).
 |---|---|---|
 | Cryptid name, all tiers | His words, typed: *"Forsaken actually came from Forsaken Crags from the donor mod, so we should not use it here"*. The cryptid is the **Nhaleth** in the free tier AND the Star Wars tier; the Star Wars layer only adds the Sith whisper (never Rakata). The "Utinni renames them back to the Forsakens" design is deleted. | His typed word. `ABYSS_FREE_CRYPTID_1`, spec `abyss_free_cryptid_2026-10-01.md`; sheet `abyss.md` ban 7 and §8 now say Nhaleth. |
 | The droid's story | The free-mod droid who told the story of the Forsakens tells of the Nhaleth instead. | Decision taken by question card. `CastRoster_DROIDS.xml` line ~657 edited; deploy of `mandrake.rm.inhabited` owed. |
-
-Still open: the remaining "Forsaken" uses for the Rakata ancients and the vaults (asked separately).
+| Forsaken and Forgotten for the Rakata | His words, typed (08:09 PDT): *"I chose Forsaken and Forgotten myself, independent of the mod. It was NOT part of them. So we keep those for the Rakatan."* The ancients and the vaults keep Forsaken and Forgotten. Docs claiming the name came from the donor biome are corrected: the owner chose it himself. | His typed word. Corrected in `03_deep_history.md` and `what_the_machines_are.md`. |
