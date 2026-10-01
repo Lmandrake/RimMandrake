@@ -13,7 +13,7 @@
         mod's own RimMandrake.Contagion.RM_BiomeWorker_Contagion (§5 step 2 — a
         donor type in workerClass is a hard dependency the RimMandrake tier may
         not assume). The new worker's placement ranges are [INVENTED], same
-        footing as the sibling Forsaken Crags/Blue Desert mods' own worker
+        footing as the sibling Abyss/Blue Desert mods' own worker
         ranges — no worldgen run has been done for this mod and the campaign
         world is frozen and hand-authored, so one never will be for Ash'karr.
       - RUT_Sytheclaw gains an explicit MayRequire="mandrake.rut.patches": it

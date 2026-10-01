@@ -102,7 +102,7 @@ temp/rainfall whitelisting — so you tune their frequency through **Choose Biom
 | **Mycotic Jungle** | `AB_MycoticJungle` | mycotic jungle | jungle variant near water | movementDifficulty 1, forageability 0.5; giant mushrooms, mycotic soil |
 | **Tar Pits** | `AB_TarPits` | tar pits | volcanic/arid exotic | movementDifficulty 4; tar lakes + fertile patches; bumbledrone hives; **tar = harvestable exotic** |
 | **Propane Lakes** | `AB_PropaneLakes` | propane lakes | alien fuel terrain | `canAutoChoose=false` (won't self-place — must be seeded); flammable propane lakes/solids |
-| **Rocky Crags / Forsaken Crags** | `AB_RockyCrags` (label "forsaken crags") | forsaken crags | arid alien badland | movementDifficulty 1, forageability 0.5; forsaken sand/rock, rose-quartz stone |
+| **Rocky Crags / Abyss** | `AB_RockyCrags` (label "Abyss") | Abyss | arid alien badland | movementDifficulty 1, forageability 0.5; forsaken sand/rock, rose-quartz stone |
 | **Gallatross Graveyard** | `AB_GallatrossGraveyard` | gallatross graveyard | arid exotic | forageability 0.5; giant-creature bone terrain |
 | **Ocular Forest** | `AB_OcularForest` | ocular forest | alien, low value | forageability 0.1 (near-barren for forage); eye-creature biome |
 | **Gelatinous Superorganism** | `AB_GelatinousSuperorganism` | gelatinous superorganism | ✅ **KEPT AS PAINTED — owner ruled 2026-08-20, the cut is REVERSED.** ~~🚫 CUT from roster (user 2026-08-04)~~ — wrong genre; salvage its mineable nutrient blocks → re-home as *strange growths inside caverns* (Biomes! Caverns / CaveBiome) | movementDifficulty 4; slime terrain (`AB_Slime`, `AB_RichSlime`) |

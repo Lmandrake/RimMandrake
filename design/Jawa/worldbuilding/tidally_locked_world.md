@@ -47,7 +47,7 @@ and the hunt loses you. And the price is not a number:
 ⭐ **A refuge you cannot farm is the perfect hiding place**, because staying is
 its own punishment and nobody has to author a timer.
 
-### 2. It explains the forsaken crags
+### 2. It explains the Abyss
 
 `AB_RockyCrags` carries a **hardcoded 0.34 sun-glow multiplier** and can never
 roll clear weather — I had recorded that as a biome quirk. **It is not a quirk any
@@ -432,7 +432,7 @@ have._
 > weird dark-terminator terrain."*
 
 ⭐ **The nightside is no longer one thing. It has a gradient**, and that fixes a
-problem I had not flagged: **a hemisphere of nothing but forsaken crags would be
+problem I had not flagged: **a hemisphere of nothing but Abyss would be
 monotonous.** A graded dark side has internal structure, and it gives the player
 **landmarks in the dark**, which is exactly what a dark map needs most.
 

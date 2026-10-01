@@ -619,7 +619,7 @@ injection (`wasteland.md` §10) fished up a piece at a time.
 Every ruling in `_fish_assignment_proposal.md` §3 is untouched: the Grey Sea
 (surface and deep), the Twilight *surface*, the Propane Lakes (creatures, never
 fishTypes), the Contagion, the Rot, the Slime, the Scarlands, the Sump, the Fever
-Wood, the Poison Forest, the Forsaken Crags, the Fall Line, the Lantern Deeps, and
+Wood, the Poison Forest, the Abyss, the Fall Line, the Lantern Deeps, and
 every dry biome. The Miasma stays a fauna register (nursery juveniles as
 `wildAnimals`, ruled) — ⚑ one note for the Greentide/Miasma dual-placement
 precedent: `RUT_LungerFry` (§2C.rare) is a *fish item*, not a juvenile creature,

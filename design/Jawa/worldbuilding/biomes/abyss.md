@@ -1,4 +1,4 @@
-# The Forsaken Crags — definition sheet
+# The Abyss — definition sheet
 
 > 🧊 **FROZEN — `BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07.** The rulings in this
 > sheet are frozen: **amendments add detail; they never change a ruling.** The
@@ -10,7 +10,7 @@ _Owner + BENCH, 2026-09-06, written in conversation over two passes. First rung 
 dryland ladder. Thematic handle: **the Dark that seeps like cold** — and its image:
 **obsidian teeth in a fog that light cannot cross, lit only by what grows.**_
 
-🔑 **This sheet defines the def `AB_RockyCrags`** — Alpha Biomes' "Forsaken Crags." The
+🔑 **This sheet defines the def `AB_RockyCrags`** — Alpha Biomes' "Abyss." The
 donor's content is **incorporated wholesale, then bent to this world** (owner's ruling):
 its perpetual-dark mechanic, its two-toned bioluminescent flora, and its thirteen-species
 nocturnal fauna suite are the starting roster, re-grounded in the atmospheric physics below.

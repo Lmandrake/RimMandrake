@@ -2,7 +2,7 @@
 
   <!--
     BAROQUE_BIOMES_COMPOSE_1 — the settings shell of "RimMandrake: Baroque
-    Biomes" (spec §5). Same recipe as the ForsakenCrags biome csproj.
+    Biomes" (spec §5). Same recipe as the Abyss biome csproj.
 
     This folder is NOT a mod (no About/): deploy_custom_mods.py (compose biomes)
     copies ../Assemblies/RimMandrake.Biomes.dll (+ .srchash) into the composed

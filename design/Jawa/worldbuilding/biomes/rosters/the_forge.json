@@ -43,18 +43,18 @@
     },
     {
       "def": "AB_GiantGamma",
-      "disposition": "move:forsaken_crags",
-      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-11 (move); to crags. Was a duplicate listing — already resident at forsaken_crags — so this is the eviction half only, no roster add needed"
+      "disposition": "move:abyss",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-11 (move); to crags. Was a duplicate listing — already resident at abyss — so this is the eviction half only, no roster add needed"
     },
     {
       "def": "AG_Gamma",
-      "disposition": "move:forsaken_crags",
-      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-11 (move); to crags. flora_move_mapping.md's 'already in forsaken_crags' claim was MEASURED FALSE (audit 2026-09-12) — AG_Gamma did not previously exist there; added to forsaken_crags.json in this same change rather than dropped. Target confirmed by climate (crags median -10.5/max 30.9 C fits the gamma family's 0-58 C growth band far better than the Forge's 42-56 C floor) and by the gamma/septimum family already resident there (AB_GiantGamma, AB_GiantSeptimum, AB_ToxicGamma)"
+      "disposition": "move:abyss",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-11 (move); to crags. flora_move_mapping.md's 'already in abyss' claim was MEASURED FALSE (audit 2026-09-12) — AG_Gamma did not previously exist there; added to abyss.json in this same change rather than dropped. Target confirmed by climate (crags median -10.5/max 30.9 C fits the gamma family's 0-58 C growth band far better than the Forge's 42-56 C floor) and by the gamma/septimum family already resident there (AB_GiantGamma, AB_GiantSeptimum, AB_ToxicGamma)"
     },
     {
       "def": "AG_Septimum",
-      "disposition": "move:forsaken_crags",
-      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-11 (move); elsewhere, not heat resistant. flora_move_mapping.md's 'already in forsaken_crags' claim was MEASURED FALSE (audit 2026-09-12) — AG_Septimum did not previously exist there; added to forsaken_crags.json in this same change rather than dropped. Same reasoning as AG_Gamma (its law entry in this file was itself 'as AG_Gamma') — same family, same growth band, its Giant sibling AB_GiantSeptimum already lives at forsaken_crags"
+      "disposition": "move:abyss",
+      "reason": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; owner review 2026-09-11 (move); elsewhere, not heat resistant. flora_move_mapping.md's 'already in abyss' claim was MEASURED FALSE (audit 2026-09-12) — AG_Septimum did not previously exist there; added to abyss.json in this same change rather than dropped. Same reasoning as AG_Gamma (its law entry in this file was itself 'as AG_Gamma') — same family, same growth band, its Giant sibling AB_GiantSeptimum already lives at abyss"
     },
     {
       "def": "Dewback",

@@ -61,7 +61,7 @@ stale, offline dump), not guessed from the summary count.
   AFTER the already-inherited 3-stage vanilla `AnimalThingBase` list
   (Baby, Juvenile, Adult, also ascending) — 5 stages total, going up then
   back down to 0. FIXED: added `Inherit="False"` to all 7, the same pattern
-  already used in this repo (`ThingDefs_ForsakenCrags.xml`,
+  already used in this repo (`ThingDefs_Abyss.xml`,
   `RUT_LivingBolt.xml`, `RUT_CathedralRoach.xml`). `validate_patch.py`: 0
   errors, 0 warnings.
 

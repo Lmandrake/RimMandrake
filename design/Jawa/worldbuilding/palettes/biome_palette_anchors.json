@@ -132,7 +132,7 @@
    ],
    "note": "Flora lives in wreck shade — the family is char/heat-blued greys, not the white flats."
   },
-  "forsaken_crags": {
+  "abyss": {
    "family": [
     "#101208",
     "#2b2c16",
@@ -143,7 +143,7 @@
    "accent": "#4f9fe8",
    "accentLabel": "glow-blue darklight (gamma flora)",
    "accentDerivation": "prose+art",
-   "sheet": "design/Jawa/worldbuilding/biomes/forsaken_crags.md §9",
+   "sheet": "design/Jawa/worldbuilding/biomes/abyss.md §9",
    "derivedFrom": [
     "§9: “obsidian black, glow-blue, lamp-yellow, hydrocarbon-frost grey on the rime faces”",
     "§9: “blue darklight gammas against yellow giant flora, a harbor-at-night palette”"

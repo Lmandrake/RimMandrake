@@ -177,7 +177,7 @@
            which owns the fuller retirement sweep. -->
       <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass>  <!-- primordial grass -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11: AG_Gamma, AG_Septimum and
-           AB_GiantGamma all moved OUT of here to forsaken_crags ("to crags" / "elsewhere,
+           AB_GiantGamma all moved OUT of here to abyss ("to crags" / "elsewhere,
            not heat resistant") — this biome's 42-56 C floor is above their optimal band
            (opt max 42 C, MEASURED plant_pool.csv) and AB_GiantGamma was already resident
            at the crags. The ruling landed in rosters/the_forge.json and reached the game

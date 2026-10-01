@@ -120,7 +120,7 @@
   <ThingDef ParentName="ThingBaseWolf">
     <defName>RSW_Skarnix</defName>
     <label>skarnix</label>
-    <description>A cat-large ambush stalker of the Forsaken Crags, its head crowded with a one-sided cluster of eyes. Skarnix will not cross firelight or a heated space - a lit camp neutralises it without a fight. Solitary and untameable.</description>
+    <description>A cat-large ambush stalker of the Abyss, its head crowded with a one-sided cluster of eyes. Skarnix will not cross firelight or a heated space - a lit camp neutralises it without a fight. Solitary and untameable.</description>
     <race>
       <thinkTreeMain>Animal</thinkTreeMain>
       <thinkTreeConstant>AnimalConstant</thinkTreeConstant>

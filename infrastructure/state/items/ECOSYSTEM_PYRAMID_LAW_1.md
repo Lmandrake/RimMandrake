@@ -24,7 +24,7 @@ Full output: `Transient/ecosystem_pyramid_sweep_20260920.txt`.
 | `RUT_RustCathedral` | **0.0%** | 1 | roster is one large animal |
 | `RUT_TheScald` | **0.0%** | 2 | both large |
 | `RUT_NightsideIce` | **16.7%** | 6 | |
-| `RUT_ForsakenCrags` | **33.3%** | 14 | 🔴 the worst real roster |
+| `RUT_Abyss` | **33.3%** | 14 | 🔴 the worst real roster |
 | `RM_TheRot` | 35.9% | 8 | |
 | `RUT_Webwork` | 36.4% | 4 | |
 | `RUT_TheForge` | 43.4% | 6 | |
@@ -41,7 +41,7 @@ Passing, for contrast: `RUT_Slime` 91.1%, `RUT_FeverWood` 80.7%, `RUT_PoisonFore
 RustCathedral has ONE animal, TheScald has two, NightsideIce six with commonalities
 summing under 0.02. A roster that small cannot express a pyramid; calling it a
 violation would be reading a ratio off almost no data. The genuine offenders are
-**ForsakenCrags, TheRot, Webwork, TheForge, WeepingStones and Desert**.
+**Abyss, TheRot, Webwork, TheForge, WeepingStones and Desert**.
 
 ## What needs him
 
@@ -100,7 +100,7 @@ named but never wired) — no megafauna cut anywhere, same shape as the Gizka fi
 | `RUT_RustCathedral` | 0.0% | **92.5%** | wired `RUT_CathedralRoach` (0.12) + `GR_Mecharat` (0.5) — both already ruled in `rosters/the_rust_cathedral.json` fauna, never wired. Mynock deliberately NOT added: that same roster rules it "homeless-reserve" |
 | `RUT_TheScald` | 0.0% | **96.6%** | wired `RSW_Faa` (0.5) + `RSW_Mee` (0.5) — both already ruled in `rosters/the_scald.json` fauna, never wired |
 | `RUT_NightsideIce` | 16.7% | **68.8%** | wired `AA_ShockGoat` (0.03) — already ruled "visitor" in `rosters/nightside_ice.json`, never wired; the roster's other two unwired visitors (Tauntaun, Wampa) are LARGE and left out on purpose |
-| `RUT_ForsakenCrags` | 33.3% | **55.6%** | boosted `AA_DuskRat` 0.5→1.5, `AA_Murkling` 0.5→1.0 (no unwired small fauna existed in this biome's own roster to draw on instead) |
+| `RUT_Abyss` | 33.3% | **55.6%** | boosted `AA_DuskRat` 0.5→1.5, `AA_Murkling` 0.5→1.0 (no unwired small fauna existed in this biome's own roster to draw on instead) |
 | `RM_TheRot` | 35.9% | **57.6%** | wired `AA_AngelMoth` (0.5) + `Snoruuk` (0.5) — both already ruled in `rosters/the_rot.json` fauna, never wired |
 | `RUT_Webwork` | 36.4% | **58.8%** | boosted `Kreetle` 0.2→0.8 (the roster's two unwired entries, AA_Feralisk/GR_Chickenspider, are bodySize 1.0/1.1 — LARGE, so left out) |
 | `RUT_TheForge` | 43.4% | **56.1%** | wired `AA_CrescendoAnole` (0.5) — already ruled in `rosters/the_forge.json` fauna, never wired |
@@ -108,7 +108,7 @@ named but never wired) — no megafauna cut anywhere, same shape as the Gizka fi
 | `RUT_Desert` | 45.0% | **52.8%** | wired `JOE_Landopus` (0.5, this mod's own def, no MayRequire needed) + boosted `Kreetle` 0.8→1.3, `Scavrat` 0.6→1.0, `Sketto` 0.4→0.8, `WompRat` 0.4→0.7, `Rat` 0.1→0.2 |
 
 Files touched (all in `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/`): `RUT_RustCathedral.xml`,
-`RUT_TheScald.xml`, `RUT_NightsideIce.xml`, `RUT_ForsakenCrags.xml`, `RUT_TheRot.xml`,
+`RUT_TheScald.xml`, `RUT_NightsideIce.xml`, `RUT_Abyss.xml`, `RUT_TheRot.xml`,
 `RUT_Webwork.xml`, `RUT_TheForge.xml`, `RUT_WeepingStones.xml`, `RUT_Desert.xml`.
 `validate_patch.py` against the live def dump: 0 errors, 0 warnings on all 9. Deployed via
 `deploy_custom_mods.py --mod UtinniPatches --apply` (9 files, verified in sync).

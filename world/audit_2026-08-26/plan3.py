@@ -91,7 +91,7 @@ for rn,count,ln in NIGHT:
             add('P2-nightscars','TerraformingScar',ch,'scar chain across '+rn)
             lmk('P2-nightscars','TerraformingScar',[ch[len(ch)//2]],1,'the chain head in '+rn)
 
-# ---------------- P3  WITHER + THE FORSAKEN CRAGS: canyon shapes
+# ---------------- P3  WITHER + THE ABYSS: canyon shapes
 for rn in ('Wither','The Verge','South Crags','Scour'):
     pool=[t for t in T if REG.get(t)==rn and scar_ok(t)]
     if pool:

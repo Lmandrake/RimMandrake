@@ -90,7 +90,7 @@ All RULED, list empty, chemistry as cited by each roster:
 | the_sump | tar, and it entombs |
 | the_fever_wood black mirrors | kept empty by the deep thing; their emptiness is the biome's evidence |
 | poison_forest | all standing water carries the metal load; everything poisons |
-| forsaken_crags (36 water tiles) | permanent Dark + etchfall acid; ban 6 forbids the sun-fed chain a fishery needs |
+| abyss (36 water tiles) | permanent Dark + etchfall acid; ban 6 forbids the sun-fed chain a fishery needs |
 | fall_line | ban 5: no water beyond a wreck condenser's output |
 | the_lantern_deeps | no water body anywhere in the frozen sheet — crystal cavern layer; nothing owed |
 
@@ -103,7 +103,7 @@ wreck_fields: sheet unruled, no ruling possible (roster verbatim).
 
 Donor mods' **own live fishTypes** stand on defs our rulings declare fishless, and
 Odyssey's Earth-named set fails recognizability everywhere: the item names
-VCEF's own bindings to the Forsaken Crags (DuskySprat/ForsakenAnglerfish) and the
+VCEF's own bindings to the Abyss (DuskySprat/ForsakenAnglerfish) and the
 Rot (Jellyfungus), and vanilla IceSheet's salmon/cod/frostfish. ⚑ Proposed: one
 strip-patch sweep emptying `fishTypes` on every live BiomeDef bound to a ruled
 no-fish water. Which no-fish waters' live defs actually carry fishTypes today is

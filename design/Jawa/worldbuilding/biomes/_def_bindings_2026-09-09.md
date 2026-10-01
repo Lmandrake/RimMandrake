@@ -24,7 +24,7 @@ ground**; the tile column sums to 21,872.
 | `RUT_TheRot` | 2204 | `the_rot.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheRot.xml`, FROZEN 2026-09-24 (`THEROT_RM_MOD_BUILD_1`) — carries the world until Phase B's repaint; content lives in `src/RimMandrake/TheRot/Defs/BiomeDefs/RM_TheRot_Biome.xml` (`mandrake.rm.therot`) now — CORRECTED: this row previously named both the def and the file path `RM_TheRot`, which does not exist under RimUtinni; the live file is `RUT_TheRot.xml` and the live defName is still `RUT_TheRot` |
 | `RUT_Wasteland` | 1853 | `wasteland.md` | no (§10 = "Campaign hooks") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Wasteland.xml`, FROZEN 2026-09-24 (`WASTELAND_RM_MOD_BUILD_1`) — carries the world until Phase B's repaint; content lives in `src/RimMandrake/Wasteland/Defs/BiomeDefs/RM_Wasteland_Biome.xml` (`mandrake.rm.wasteland`) now |
 | `RUT_NightsideIce` | 1506 | `nightside_ice.md` | no (§10 = "The door — occupied") | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_NightsideIce.xml`, FROZEN 2026-09-24 (`NIGHTSIDEICE_RM_MOD_BUILD_1`) — carries the world until Phase B's repaint; content lives in `src/RimMandrake/NightsideIce/Defs/BiomeDefs/RM_NightsideIce.xml` (`mandrake.rm.nightsideice`) now |
-| `RUT_ForsakenCrags` | 1135 | `forsaken_crags.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_ForsakenCrags.xml` |
+| `RUT_Abyss` | 1135 | `abyss.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Abyss.xml` |
 | `RUT_BlueDesert` | 1029 | `the_blue_desert.md` | no | FROZEN 2026-09-25 (`BLUEDESERT_RM_MOD_BUILD_1`) at `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_BlueDesert.xml` — carries the world unchanged until the terminal paint. Content (4 `wildAnimals` + 6 `wildPlants` rows) now lives in `mandrake.rm.bluedesert` (`src/RimMandrake/BlueDesert/Defs/BiomeDefs/RM_BlueDesert.xml`); `Vapaad` rides `WildAnimals_BlueDesert.xml` |
 | `RUT_CrackedLands` | 970 | `the_cracked_lands.md` | **YES** — §10 "The bestiary sorts — a fauna divided by TIME, not space" | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_CrackedLands.xml` |
 | `RUT_AridShrubland` | 628 | `arid_shrubland.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_AridShrubland.xml` |
@@ -117,7 +117,7 @@ tolerances/sowTags/texPath; it is the `POOL` constant read by
 narrative-category keys, holding **20** distinct BiomeDef defName keys, all of
 them painted `RUT_*`/`ZBiome_Grasslands` defs: `RUT_AridShrubland,
 RUT_Contagion, RUT_CrackedLands, RUT_Desert, RUT_ExtremeDesert, RUT_FeverWood,
-RUT_ForsakenCrags, RUT_Greentide, RUT_Miasma, RUT_Cauldron, RUT_Scarlands,
+RUT_Abyss, RUT_Greentide, RUT_Miasma, RUT_Cauldron, RUT_Scarlands,
 RUT_Slime, RUT_Sump, RUT_TheForge, RM_TheRot, RUT_Umbra, RUT_Wasteland,
 RUT_Webwork, RUT_WeepingStones, ZBiome_Grasslands`. The other **7** painted
 defs are in the module's own `PLANTLESS` set on purpose — `RUT_NightsideIce,

@@ -66,7 +66,7 @@ owner has ruled the misses acceptable or filled.
 | 8 | Long Shade | 1 | 2026-09-27 sitting covered movements 1–2 + part of 3; this pass runs the full volley to the bar |
 | 9 | Stillsand | 1 | same — sitting + fill-out done; volley to the bar owed |
 | 10 | Warscar | 1 | |
-| 11 | **Black Crags** (was Forsaken Crags) | 1 | 🔴 RENAME ruled 2026-09-27, owner-typed — execute at its sitting (live-tile check) |
+| 11 | **Abyss** (was Abyss) | 1 | 🔴 RENAME ruled 2026-09-27, owner-typed — execute at its sitting (live-tile check) |
 
 ## Grandfathered — already bedazzled, gate still applies
 
@@ -91,5 +91,5 @@ it files only what the owner rules missing.
 - Eleven biomes each have a closed bedazzle-sitting child item recording the
   full four-movement ritual, and score 9/9 on the bar (or carry the owner's
   explicit waiver per miss).
-- Both renames executed (Cauldron, Black Crags) with live-tile checks logged.
+- Both renames executed (Cauldron, Abyss) with live-tile checks logged.
 - No grandfathered biome shipped without its gate review recorded.

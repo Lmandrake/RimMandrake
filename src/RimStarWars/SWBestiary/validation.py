@@ -108,8 +108,8 @@ CORE_SPECIES = ["RSW_Bantha", "RSW_Jerba", "RSW_Baseopsis"]
 
 # One representative species per absorption wave the walk doc never covers.
 NEWLY_ABSORBED_SPECIES = [
-    "RSW_Cindermare",    # Livestock / ForsakenCrags
-    "RSW_Skarnix",        # Livestock / ForsakenCrags -- CompLightAversion
+    "RSW_Cindermare",    # Livestock / Abyss
+    "RSW_Skarnix",        # Livestock / Abyss -- CompLightAversion
     "RSW_Karrask",        # Livestock
     "RSW_Onnik",          # LIVESTOCK_STARTER_TRIO_1 -- CompKilnBelly
     "RSW_Reefback",       # SeaBeasts / Colossi

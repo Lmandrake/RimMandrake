@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Apply the Forsaken Crags sheet to the map: (1) LIGHTFALL, the one massive terminator
-chasm (site+name owner-ratified, forsaken_crags.md §3, LIGHTFALL_CHASM_AUTHORING_1) on
+"""Apply the Abyss sheet to the map: (1) LIGHTFALL, the one massive terminator
+chasm (site+name owner-ratified, abyss.md §3, LIGHTFALL_CHASM_AUTHORING_1) on
 the arc-90 spine, deepest at tile 9023; (2) the 'obsidian teeth' density -- Cliffs/Chasm/
 Cavern/JaggedRocks across the crags so the hilliest biome reads dense, denser in the deep
 regions, hash-gapped (~45%, anti-bullseye, deterministic). Skips tiles already carrying a

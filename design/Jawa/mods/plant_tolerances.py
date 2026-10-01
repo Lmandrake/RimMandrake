@@ -137,8 +137,8 @@ REPICK_LIMIT = 30.0   # beyond this much extension past a DONOR bound, the plant
 # 🔴 FOUND 2026-09-20 (PLANT_TOLERANCE_VERIFY_STALE_CLIMATE_KEYS_1): `biome_climate.json`'s
 # keys are frozen at their 2026-09-09 extraction time — several predate the tier rename
 # (`Desert`, `Wasteland`, `AridShrubland`, `Scarlands`, ...) and one predates a later
-# rebrand (`AB_RockyCrags` is now `RM_ForsakenCrags`, FORSAKENCRAGS_RM_MOD_BUILD_1
-# 2026-09-25 — was `RUT_ForsakenCrags`, still frozen and world-carrying with identical
+# rebrand (`AB_RockyCrags` is now `RM_Abyss`, FORSAKENCRAGS_RM_MOD_BUILD_1
+# 2026-09-25 — was `RUT_Abyss`, still frozen and world-carrying with identical
 # content). `FAMILIES` below keys by whatever
 # a biome's def is called TODAY, so a bare `clim.get(defName)` misses every one of those and
 # `verify()`'s dead-row check was silently inspecting zero rows. Never rename the frozen

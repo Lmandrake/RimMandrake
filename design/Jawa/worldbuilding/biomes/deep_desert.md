@@ -15,7 +15,7 @@
 
 _Owner + BENCH, 2026-09-05, in conversation. Canon anchor: `hydrology_and_fire_ecology.md`
 R-H6d, which names the deep desert **the dayside terminus** and the exact conjugate of the
-forsaken crags — there the danger is presence, here it is **absence**; there the fear is
+Abyss — there the danger is presence, here it is **absence**; there the fear is
 that you are not alone, here it is that **you will run out**._
 
 ## 0. Where it is

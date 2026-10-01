@@ -2,7 +2,7 @@
 
 Owner-approved design row from `FORSAKEN_CRAGS_FAUNA_1` (closed), with a
 correction the owner made at ruling time (recorded verbatim in
-`design/Jawa/worldbuilding/review/forsaken_crags_fauna_sheet.decisions.json`):
+`design/Jawa/worldbuilding/review/abyss_fauna_sheet.decisions.json`):
 *"a livestock animal genetically modified by the Helix faction — origin and
 biome follow Helix, not 'general'."* The design row's original "biome left
 general" framing (FOUNDRY's own placeholder, written before the ruling) is

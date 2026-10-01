@@ -628,7 +628,7 @@ numbered.
 
 **Ruled:** the per-tile neighbour analysis wins over the cluster-spec table in
 `FUNGALFOREST_RAID_MERGE_1.md`. The 16 **South Crags sector 9** tiles go to
-**BiomeGRimond (Blue Desert)** / **AB_RockyCrags (Forsaken Crags)** — whichever
+**BiomeGRimond (Blue Desert)** / **AB_RockyCrags (Abyss)** — whichever
 actually surrounds each — **not** to Wasteland.
 
 🔑 **The principle: a merged tile must be continuous with its new biome.** That
@@ -647,7 +647,7 @@ biome, broken by closest temp/rain match. No separate ruling owed.
 | 352 | `AB_MycoticJungle` — the Rot |
 | 53 | `Desert` |
 | 8 | `BiomeGRimond` — the Blue Desert |
-| 8 | `AB_RockyCrags` — the Forsaken Crags |
+| 8 | `AB_RockyCrags` — the Abyss |
 | 4 | `RUT_NightsideIce` |
 
 Zero unreachable or all-water-bounded tiles.

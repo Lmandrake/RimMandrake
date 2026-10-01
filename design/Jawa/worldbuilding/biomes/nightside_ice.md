@@ -15,7 +15,7 @@ handle: **the drain of the atmosphere** — and its image: **dirty white ice on 
 ground of the night, under the aurora, with something moving inside it.**_
 
 🔑 **Read against `the_blue_desert.md`, `the_propane_lakes.md`, `the_lantern_deeps.md`,
-`forsaken_crags.md`.** This sheet is the deep night's **uplands**; the pans and lows are
+`abyss.md`.** This sheet is the deep night's **uplands**; the pans and lows are
 theirs. The physics the first pass reasoned from — the antistellar point as the
 **fractional distillation column the size of a hemisphere**, freezing the atmosphere out in
 order of freezing point — has since been made literal by the phase-line sheets, and this
@@ -91,7 +91,7 @@ this sheet. Move it fifty degrees dayward and the ice softens, the pans empty, a
 is nothing left.
 
 ⚠️ A first-pass claim is struck: *"`AB_RockyCrags` is the dominant terrain past θ 130"* —
-the crags are twilight (arc 100–116 at p10–p90, tailing to 121; `forsaken_crags.md`); the deep night is the Blue
+the crags are twilight (arc 100–116 at p10–p90, tailing to 121; `abyss.md`); the deep night is the Blue
 Desert, this highland, the caverns' former ground, and the propane country.
 
 ## 3. Driving forces

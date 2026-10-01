@@ -6,8 +6,8 @@ scald_melt,Scald meltwater / peak runoff,peaks above RUT_TheScald,yes,mineral tr
 red_water,Red water,AB_OcularForest (the Contagion),yes,spores + alien toxins,after one day sunned,sunning->potable; descent->sterile (feeds dayside rivers R-H7),the_contagion.md
 slime_flood,Slime floodwater,AB_GelatinousSuperorganism,yes,organic load; potable floodwater,yes as-is,drains fast; slime WATER counts toxic for distillation->clean,the_slime.md
 sheen_milk,The Sheen / milk ponds,AB_MycoticJungle (the Rot),NO — fungal reproductive emission,biological; reclaims into milk ponds,no,reclaim->milk ponds (not-water),the_rot.md
-rime_etchfall,Hydrocarbon rime / etchfall,AB_RockyCrags (Forsaken Crags),NO — chemical frost,corrosive hydrocarbon condensate,no,warm pulse->melt-trickle (the twilight's ONLY liquid water),forsaken_crags.md
-crags_trickle,Melt-trickle,AB_RockyCrags warm pulses,yes,thin; the twilight's only liquid water,yes (scarce),refreeze->rime,forsaken_crags.md
+rime_etchfall,Hydrocarbon rime / etchfall,AB_RockyCrags (Abyss),NO — chemical frost,corrosive hydrocarbon condensate,no,warm pulse->melt-trickle (the twilight's ONLY liquid water),abyss.md
+crags_trickle,Melt-trickle,AB_RockyCrags warm pulses,yes,thin; the twilight's only liquid water,yes (scarce),refreeze->rime,abyss.md
 waste_brine,Hypersaline brine pools,Wasteland,yes,dead-river concentrate; radiologically live,no,sequestration->brine batteries (locks contamination),wasteland.md
 poison_standing,Poison-forest standing water,PoisonForest,yes,heavy-metal load,never,condensate above it -> potable,poison_forest.md
 night_ice,Nightside ice,RUT_NightsideIce,yes (frozen),atmospheric frost layers; particulates,not unfiltered,melt+filter->potable,nightside_ice.md

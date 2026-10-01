@@ -44,7 +44,7 @@ genetics are bioweapon residue). The night-side creatures are the war's
 cold-adapted escapees — things the weapon made, or made from, that walked into
 the dark where nothing hunts them [owner 2026-09-04, the full Anomaly weld:
 this content is load-bearing canon, not garnish]. Do not weld this to the
-forsaken crags — the crags read as chemistry that was always here; two alien
+Abyss — the crags read as chemistry that was always here; two alien
 facts are richer than one explained one.
 
 ## The Doctrine of the Unwritten [owner 2026-09-04]

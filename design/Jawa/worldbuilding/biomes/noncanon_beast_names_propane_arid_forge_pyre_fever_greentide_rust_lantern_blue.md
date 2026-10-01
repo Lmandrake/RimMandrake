@@ -369,7 +369,7 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `AA_AuroraSylph` | Aurora sylph | the_propane_lakes | NONCANON | batch 3 · auvenn |
 | `AA_Barbslinger` | barbslinger | the_pyrelands | NONCANON | batch 3 · ekkrai (as RUT_Barbslinger) |
 | `AA_BedBug` | bedbug | poison_forest | NONCANON | batch 2 · tsikka |
-| `AA_Behemoth` | Behemoth | forsaken_crags | NONCANON | batch 1 · ghorrumak |
+| `AA_Behemoth` | Behemoth | abyss | NONCANON | batch 1 · ghorrumak |
 | `AA_BloodShrimp` | blood shrimp | the_contagion | NONCANON | batch 1 · zhirrik |
 | `AA_BoulderMit` | bouldermit | dune_sea_deep_desert, nightside_ice | NONCANON | port-named · RSW_Korrum korrum |
 | `AA_Bumbledrone` | bumbledrone | the_sump | NONCANON | SUCCESSOR RM_Thrummel (Sump card ruling 7, 2026-09-24) |
@@ -377,19 +377,19 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `AA_BumbledroneQueen` | bumbledrone queen | the_sump | NONCANON | SUCCESSOR RM_ThrummelBroodmother (Sump card ruling 7) |
 | `AA_Cactipine` | cactipine | arid_shrubland | NONCANON | port-named · RSW_Spinerat chikka |
 | `AA_ColossalAerofleet` | colossal aerofleet | the_forge, the_grey_sea, the_twilight_sea | NONCANON | batch 1 · greater bulloo — same flag 2 |
-| `AA_CrepuscularBeetle` | Crepuscular Beetle | forsaken_crags | NONCANON | batch 1 · brekkug |
+| `AA_CrepuscularBeetle` | Crepuscular Beetle | abyss | NONCANON | batch 1 · brekkug |
 | `AA_CrescendoAnole` | crescendo anole | the_forge | NONCANON | batch 3 · jibbur |
 | `AA_CrystalMit` | crystalmit | poison_forest | NONCANON | batch 2 · skixxet |
-| `AA_DarkVandal` | dark vandal | forsaken_crags | NONCANON | batch 1 · gruzzak |
+| `AA_DarkVandal` | dark vandal | abyss | NONCANON | batch 1 · gruzzak |
 | `AA_DecayDrake` | decay drake | poison_forest, the_miasma, the_slime | NONCANON | batch 1 · mubbrak |
 | `AA_DesertAve` | desert ave | desert | NONCANON | port-named · RSW_Sandstrider ossik |
 | `AA_Drainer` | drainer | the_contagion | NONCANON | batch 1 · fezzira |
 | `AA_DrainerLarva` | drainer larva | the_contagion | NONCANON | batch 1 · fezzira larva |
 | `AA_Dunealisk` | dunealisk | dune_sea_deep_desert | NONCANON | DEAD — -lisk clade cut (7bad94185); stale roster row (batch 2) |
-| `AA_DuskProwler` | dusk prowler | forsaken_crags | NONCANON | batch 1 · shekkur |
+| `AA_DuskProwler` | dusk prowler | abyss | NONCANON | batch 1 · shekkur |
 | `AA_Feralisk` | feralisk | the_webwork | NONCANON | DEAD — -lisk clade cut (WYYYSCHOKK_FERALISK_MERGE_1); stale roster row |
 | `AA_FrostboundBehemoth` | frostbound behemoth | the_propane_lakes | NONCANON | batch 3 · haummon |
-| `AA_Frostling` | frostling | forsaken_crags | NONCANON | batch 1 · thrizzik |
+| `AA_Frostling` | frostling | abyss | NONCANON | batch 1 · thrizzik |
 | `AA_Frostmite` | frostmite | the_propane_lakes | NONCANON | batch 3 · veezim |
 | `AA_FungalHusk` | fungal husk | the_contagion | NONCANON | batch 1 · ghuvva |
 | `AA_GiantCrownedSilkie` | giant crowned silkie | poison_forest | NONCANON | batch 2 · ithessa |
@@ -406,13 +406,13 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `AA_MatureFleshbeast` | mature fleshbeast | desert | NONCANON | batch 2 · vukkoroth (as RSW_MatureFleshbeast) |
 | `AA_Metallovore` | metallovore | the_forge | NONCANON | batch 3 · dhommur |
 | `AA_Mime` | mime | the_slime | NONCANON | batch 1 · hennul |
-| `AA_Murkling` | murkling | forsaken_crags, the_cracked_lands | NONCANON | batch 1 · kessik |
+| `AA_Murkling` | murkling | abyss, the_cracked_lands | NONCANON | batch 1 · kessik |
 | `AA_Needlepost` | needlepost | arid_shrubland, the_greentide | NONCANON | port-named · RSW_Barbthorn skorra |
 | `AA_Needleroll` | needleroll | desert, dune_sea_deep_desert | NONCANON | port-named · RSW_Spineroller kudda |
-| `AA_NightAve` | night ave | forsaken_crags | NONCANON | batch 1 · zekkra |
-| `AA_NightMule` | nightmule | forsaken_crags | NONCANON | batch 1 · hulggar |
-| `AA_NightRam` | nightram | forsaken_crags | NONCANON | batch 1 · dhukkor |
-| `AA_Nightling` | nightling | forsaken_crags | NONCANON | batch 1 · vrakka |
+| `AA_NightAve` | night ave | abyss | NONCANON | batch 1 · zekkra |
+| `AA_NightMule` | nightmule | abyss | NONCANON | batch 1 · hulggar |
+| `AA_NightRam` | nightram | abyss | NONCANON | batch 1 · dhukkor |
+| `AA_Nightling` | nightling | abyss | NONCANON | batch 1 · vrakka |
 | `AA_OcularJelly` | ocular jelly | poison_forest, the_contagion | NONCANON | batch 1 · ozhilla |
 | `AA_OcularNightling` | ocular nightling | the_contagion | NONCANON | batch 1 · gollivra |
 | `AA_OvergrownColossus` | overgrown colossus | the_slime | NONCANON | batch 1 · thummorak |
@@ -426,9 +426,9 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `AA_RipperHound` | ripper hound | poison_forest | NONCANON | batch 2 · tharrix |
 | `AA_RoughPlatedMonitor` | rough-plated monitor | the_contagion | NONCANON | batch 1 · brossak |
 | `AA_SandLion` | sand lion | desert, dune_sea_deep_desert | NONCANON | batch 2 · shakkir (as RSW_SandLion; vekka flag) |
-| `AA_SandProwler` | sand prowler | desert, forsaken_crags | NONCANON | port-named · RSW_Dunestalker vosska |
+| `AA_SandProwler` | sand prowler | desert, abyss | NONCANON | port-named · RSW_Dunestalker vosska |
 | `AA_SandSquid` | sand squid | desert, the_cracked_lands | NONCANON | port-named · RSW_Sandmaw ommok |
-| `AA_ShadowCharger` | shadow charger | forsaken_crags | NONCANON | batch 1 · korrag |
+| `AA_ShadowCharger` | shadow charger | abyss | NONCANON | batch 1 · korrag |
 | `AA_ShockGoat` | shock goat | nightside_ice | NONCANON | batch 1 · zhissa |
 | `AA_Skyeel` | arcturan sky eel | the_propane_lakes | NONCANON | batch 3 · hoozan |
 | `AA_Slurrypede` | slurrypede | nightside_ice, the_miasma, the_propane_lakes | NONCANON | batch 1 · thollum |
@@ -441,7 +441,7 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `AA_TetraSlug` | tetra slug | dune_sea_deep_desert, nightside_ice | NONCANON | port-named · RSW_Voltmaw vozzik |
 | `AA_Thermadon` | thermadon | the_miasma | NONCANON | batch 2 · skondu |
 | `AA_Thunderbeast` | thunderbeast | the_blue_desert | NONCANON | batch 3 · yuddra |
-| `AA_Thunderox` | thunderox | forsaken_crags | NONCANON | batch 1 · bhoruk |
+| `AA_Thunderox` | thunderox | abyss | NONCANON | batch 1 · bhoruk |
 | `AG_OcularSlinger` | ocular slinger | the_contagion | NONCANON | batch 1 · pellorax |
 | `AM_Dryad_Corruptor` | corruptor dryad | poison_forest | NONCANON | batch 2 · tessik |
 | `AM_Dryad_Ocular` | ocular dryad | poison_forest | NONCANON | batch 2 · eyed tessik |
@@ -456,7 +456,7 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `GR_Mantistanis` | None | the_pyrelands | NONCANON | batch 3 · rovvai (as RUT_Emberscythe) |
 | `GR_Mechachicken` | mecha-chicken | the_rust_cathedral | NONCANON | CUT — owner card 2026-09-10 (cathedral mech-vermin trim) |
 | `GR_Mecharat` | mecha-rat | the_rust_cathedral | NONCANON | batch 3 · zikkin |
-| `GR_Nighthrumbo` | nighthrumbo | forsaken_crags | NONCANON | batch 1 · zhurrak |
+| `GR_Nighthrumbo` | nighthrumbo | abyss | NONCANON | batch 1 · zhurrak |
 | `JOE_Cephalope` | cephalope | desert, dune_sea_deep_desert | NONCANON | batch 2 · qorrax |
 | `JOE_Landopus` | landopus | desert | NONCANON | batch 2 · ippok |
 | `JOE_Nautilant` | nautilant | the_scald | NONCANON | SEA BATCH — blocked on TERMINALBIOMES_RM_MOD_BUILD_1 |
@@ -515,7 +515,7 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `VFEI2_Megathrips` | megathrips | the_fever_wood | NONCANON | batch 3 · narrith |
 | `VFEI2_Swarmling` | swarmlings | the_greentide, the_miasma, wasteland | NONCANON | batch 2 · nunda |
 | `Visceral` | visceral | poison_forest | NONCANON | batch 2 · krexxa |
-| `AA_Darkbeast` | darkbeast | forsaken_crags | NONCANON* | batch 1 · ulkhorr |
+| `AA_Darkbeast` | darkbeast | abyss | NONCANON* | batch 1 · ulkhorr |
 | `AA_FireWasp` | fire wasp | the_pyrelands | NONCANON* | batch 3 · izzai (as RUT_FireWasp) |
 | `AA_GreatDevourer` | great devourer | desert | NONCANON* | batch 2 · hakkro (as RSW_GreatDevourer) |
 | `GR_Spidercat` | spidercat | wasteland | NONCANON* | batch 2 · khiffet |

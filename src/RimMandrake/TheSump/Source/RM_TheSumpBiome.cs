@@ -6,7 +6,7 @@ namespace RimMandrake.TheSump
 {
     // ════════════════════════════════════════════════════════════════════
     // BIOME PLACEMENT — the thing XML cannot do. Same reasoning as the
-    // sibling Miasma/PoisonForest/ForsakenCrags/Greentide workers: BiomeDef
+    // sibling Miasma/PoisonForest/Abyss/Greentide workers: BiomeDef
     // has no temperature/rainfall/elevation field, RimWorld scores every
     // BiomeDef's workerClass per tile and keeps the highest, so a biome with
     // no worker never generates anywhere.

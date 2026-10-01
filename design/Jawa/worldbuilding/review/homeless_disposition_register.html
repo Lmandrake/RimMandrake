@@ -349,7 +349,7 @@ body.grid .row.sel-tint{border-color:currentColor}
   .biomeovr{font-size:10px;color:var(--accent)}
 </style>
 <script id="RENDER">
-  window.BIOME_KEYS = ["arid_shrubland", "desert", "dune_sea_deep_desert", "fall_line", "forsaken_crags", "poison_forest", "the_contagion", "the_cracked_lands", "the_fever_wood", "the_forge", "the_greentide", "the_miasma", "the_pyrelands", "the_rot", "the_rust_cathedral", "the_scarlands", "the_sump", "the_webwork", "wasteland", "weeping_stones", "wreck_fields"];
+  window.BIOME_KEYS = ["arid_shrubland", "desert", "dune_sea_deep_desert", "fall_line", "abyss", "poison_forest", "the_contagion", "the_cracked_lands", "the_fever_wood", "the_forge", "the_greentide", "the_miasma", "the_pyrelands", "the_rot", "the_rust_cathedral", "the_scarlands", "the_sump", "the_webwork", "wasteland", "weeping_stones", "wreck_fields"];
   window.itemBody = it => {
     const d = (typeof DEC === 'object' && DEC[it.id]) || {};
     let h = '<div class="effect">' + esc(it.effect || '') + '</div>';

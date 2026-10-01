@@ -170,7 +170,7 @@ You adopted the rejigger, so the *world* is canon and the *doc* is stale — but
 confirm those three shortfalls were rejigger decisions, not losses. **C2 ·**
 `the_one_map.md`'s water-body figure ("three bodies ≥8") predates the lake — now four,
 12 puddles. **C3 ·** README grammar table's crags count (fixed tonight) had a sibling:
-`forsaken_crags.md` self-flags its hilliness split as stale (9.2pp off). **C4 ·** the
+`abyss.md` self-flags its hilliness split as stale (9.2pp off). **C4 ·** the
 `unused_mutators_census.md` counts are from a superseded CSV (6,710 vs tonight's
 14,290 mutator-bearing tiles) — mark it superseded in place. → **Corrective:** one
 doc-sync pass, ~30 minutes, cite tonight's exports.

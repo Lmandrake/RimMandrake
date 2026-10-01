@@ -28,7 +28,7 @@ from the donor list remain painted") was therefore never met.
   commit (`RUT_Desert`, `RUT_ExtremeDesert`, `RUT_AridShrubland`, `RUT_Wasteland`,
   `RUT_PoisonForest`, `RUT_Scarlands`, `RUT_Contagion`, `RUT_Webwork`, `RUT_Slime`,
   `RM_TheRot`, `RUT_TheForge` (LavaField/Volcano/AB_PyroclasticConflagration),
-  `RUT_RustCathedral`, `RUT_Umbra`, `RUT_CrackedLands`, `RUT_ForsakenCrags`,
+  `RUT_RustCathedral`, `RUT_Umbra`, `RUT_CrackedLands`, `RUT_Abyss`,
   `RUT_FeverWood`, `RUT_Greentide`, `RUT_Miasma`, `RUT_Sump`, `RUT_WeepingStones`;
   `ZBiome_Grasslands` → `RM_FE_Pyrelands` rides `PYRELANDS_WORLD_SWITCH_1`;
   `BiomeGRimond` is already switched).
@@ -71,7 +71,7 @@ six donors the message did not name. **Nothing was excluded as unresolved.**
 | Desert | 2390 | RUT_Desert | 2390 | commit msg |
 | AB_MycoticJungle | 2204 | RM_TheRot | 2204 | commit msg |
 | Wasteland | 1853 | RUT_Wasteland | 1853 | commit msg |
-| AB_RockyCrags | 1135 | RUT_ForsakenCrags | 1135 | `RUT_ForsakenCrags.xml` header |
+| AB_RockyCrags | 1135 | RUT_Abyss | 1135 | `RUT_Abyss.xml` header |
 | ZBiome_Badlands | 970 | RUT_CrackedLands | 970 | commit msg |
 | AridShrubland | 628 | RUT_AridShrubland | 628 | commit msg |
 | PoisonForest | 546 | RUT_PoisonForest | 546 | commit msg |
@@ -152,7 +152,7 @@ signal. `painted_defs()` unions the live tile CSV (correctly all-`RUT_` now) wit
 20 of those 22 roster files still name the OLD DONOR bare defName**
 (`arid_shrubland.json`→`AridShrubland`, `desert.json`→`Desert`,
 `dune_sea_deep_desert.json`→`ExtremeDesert`, `fall_line.json`→ all three,
-`forsaken_crags.json`→`AB_RockyCrags`, `poison_forest.json`→`PoisonForest`, etc. —
+`abyss.json`→`AB_RockyCrags`, `poison_forest.json`→`PoisonForest`, etc. —
 only `the_lantern_deeps.json` and `the_propane_lakes.json` already carry a `RUT_`
 name). That's why the run's 4 non-empty biome buckets were `AridShrubland` 256,
 `Desert` 232, `ExtremeDesert` 198 (all bare donor names, now painted on **zero**
@@ -204,7 +204,7 @@ recommended in 2026-09-07; not attempted here (design authoring, not bookkeeping
 **Renamed 19 stale roster `defNames` entries to their `RUT_` successors** (pure key
 rename, nothing else touched — checked with a post-edit grep sweep, clean):
 `arid_shrubland.json`→`RUT_AridShrubland`, `desert.json`→`RUT_Desert`,
-`dune_sea_deep_desert.json`→`RUT_ExtremeDesert`, `forsaken_crags.json`→`RUT_ForsakenCrags`,
+`dune_sea_deep_desert.json`→`RUT_ExtremeDesert`, `abyss.json`→`RUT_Abyss`,
 `poison_forest.json`→`RUT_PoisonForest`, `the_contagion.json`→`RUT_Contagion`,
 `the_cracked_lands.json`→`RUT_CrackedLands`, `the_fever_wood.json`→`RUT_FeverWood`,
 `the_forge.json`→`RUT_TheForge` (its 3-donor list `AB_PyroclasticConflagration`/

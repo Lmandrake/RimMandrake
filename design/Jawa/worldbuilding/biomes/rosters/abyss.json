@@ -23,7 +23,7 @@
     }
   ],
   "defNames": [
-    "RM_ForsakenCrags"
+    "RM_Abyss"
   ],
   "evictions": [
     {
@@ -297,12 +297,12 @@
     {
       "commonality": 0.5,
       "def": "AG_Gamma",
-      "law": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; the_forge → forsaken_crags; owner review 2026-09-11 'to crags'. Corrects flora_move_mapping.md's false 'already in forsaken_crags' claim (MEASURED FALSE, audit 2026-09-12) — the base gamma joins its Giant/Toxic siblings already here; commonality carried over from the_forge.json unchanged"
+      "law": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; the_forge → abyss; owner review 2026-09-11 'to crags'. Corrects flora_move_mapping.md's false 'already in abyss' claim (MEASURED FALSE, audit 2026-09-12) — the base gamma joins its Giant/Toxic siblings already here; commonality carried over from the_forge.json unchanged"
     },
     {
       "commonality": 0.25,
       "def": "AG_Septimum",
-      "law": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; the_forge → forsaken_crags; owner review 2026-09-11 'elsewhere, not heat resistant'. Corrects flora_move_mapping.md's false 'already in forsaken_crags' claim (MEASURED FALSE, audit 2026-09-12) — the base septimum joins AB_GiantSeptimum already here; commonality carried over from the_forge.json unchanged"
+      "law": "SHEET_ORPHAN_CONSUMPTION_1: owner ruling 2026-09-20, flora move approved; the_forge → abyss; owner review 2026-09-11 'elsewhere, not heat resistant'. Corrects flora_move_mapping.md's false 'already in abyss' claim (MEASURED FALSE, audit 2026-09-12) — the base septimum joins AB_GiantSeptimum already here; commonality carried over from the_forge.json unchanged"
     }
   ],
   "flora_purged": [
@@ -312,38 +312,38 @@
     }
   ],
   "law_sources": [
-    "forsaken_crags.md §4/§5/§6 (frozen; donor roster incorporated wholesale, then bent — owner's ruling)",
+    "abyss.md §4/§5/§6 (frozen; donor roster incorporated wholesale, then bent — owner's ruling)",
     "FORSAKEN_CRAGS_FAUNA_1 (Cindermare/Skarnix wild, Tellurox livestock-excluded)",
     "_assignment_prep.md §9 (BINDING)",
     "owner cards 2026-09-09"
   ],
   "new_defs": [
     {
-      "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 — ruled wild resident; AUTHORED as an RSW_ def in src/RimStarWars/SWBestiary/Defs/Livestock (FORSAKEN_CRAGS_PREDATORS_BUILD_1, closed 2026-09-02); its spawn patch ForsakenCrags_WildSpawns.xml retargeted from donor AB_RockyCrags to RM_ForsakenCrags at FORSAKENCRAGS_RM_MOD_BUILD_1, 2026-09-25",
+      "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 — ruled wild resident; AUTHORED as an RSW_ def in src/RimStarWars/SWBestiary/Defs/Livestock (FORSAKEN_CRAGS_PREDATORS_BUILD_1, closed 2026-09-02); its spawn patch Abyss_WildSpawns.xml retargeted from donor AB_RockyCrags to RM_Abyss at FORSAKENCRAGS_RM_MOD_BUILD_1, 2026-09-25",
       "kind": "creature",
       "mechanic_load": "per FORSAKEN_CRAGS_FAUNA_1",
       "name": "Cindermare"
     },
     {
-      "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 — ruled wild resident; AUTHORED as an RSW_ def in src/RimStarWars/SWBestiary/Defs/Livestock (FORSAKEN_CRAGS_PREDATORS_BUILD_1, closed 2026-09-02); its spawn patch ForsakenCrags_WildSpawns.xml retargeted from donor AB_RockyCrags to RM_ForsakenCrags at FORSAKENCRAGS_RM_MOD_BUILD_1, 2026-09-25",
+      "from_sheet": "FORSAKEN_CRAGS_FAUNA_1 — ruled wild resident; AUTHORED as an RSW_ def in src/RimStarWars/SWBestiary/Defs/Livestock (FORSAKEN_CRAGS_PREDATORS_BUILD_1, closed 2026-09-02); its spawn patch Abyss_WildSpawns.xml retargeted from donor AB_RockyCrags to RM_Abyss at FORSAKENCRAGS_RM_MOD_BUILD_1, 2026-09-25",
       "kind": "creature",
       "mechanic_load": "per FORSAKEN_CRAGS_FAUNA_1",
       "name": "Skarnix"
     },
     {
-      "from_sheet": "forsaken_crags §4 / Owed",
+      "from_sheet": "abyss §4 / Owed",
       "kind": "creature",
       "mechanic_load": "art only — rat-analog, anything but a rat; the name stays (owner: the name IS the joke)",
       "name": "dusk rat art redo"
     },
     {
-      "from_sheet": "forsaken_crags §4 owner ruling",
+      "from_sheet": "abyss §4 owner ruling",
       "kind": "creature",
       "mechanic_load": "C#: trailing particle halo where the Dark cannot form",
       "name": "darkbeast Dark-halo behaviour"
     }
   ],
-  "sheet": "forsaken_crags",
+  "sheet": "abyss",
   "stat_adjustments": [],
   "tiles": 1170
 }

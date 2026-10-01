@@ -10,7 +10,7 @@ _Owner + BENCH, 2026-09-05, written in conversation over three passes. The ladde
 the first truly dead ground. Thematic handle: **no outlet** — and its image: **a just-lost
 sunset, flickering with wrathful lightning.**_
 
-🔑 **Read against `forsaken_crags.md` where the regions overlap** (Gray Crags, Sunreach,
+🔑 **Read against `abyss.md` where the regions overlap** (Gray Crags, Sunreach,
 Nightspill): the interleave ruling (owner, 2026-09-06) is crag = the standing relief that
 shatters the wind, wasteland = the drained flat between — no border drawn, no tile churn,
 and never regularized into bullseye rings.
@@ -130,7 +130,7 @@ def scatters instead of ringing:
 ## 3. Driving forces
 
 **Concentration without circulation.** Cold, dark (past arc ~95), bone-dry, and chemically
-loaded. 🔑 Canon 2026-09-06 (`forsaken_crags.md` §3): the crag country kills the wind's
+loaded. 🔑 Canon 2026-09-06 (`abyss.md` §3): the crag country kills the wind's
 coherence — laminar flow shatters to turbulence in the crags, so what escapes nightward
 over the dark scour carries nothing. Rot runs slow to nothing — without desiccation needing to occur (owner's ruling).
 The Hadley downdraft keeps the dark scour under hard, dry, cold outflow; the basins bake

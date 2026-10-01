@@ -528,7 +528,7 @@
   "AA_MegaLouse": [
    "arid_shrubland",
    "desert",
-   "forsaken_crags",
+   "abyss",
    "poison_forest",
    "the_cracked_lands",
    "the_scarlands",
@@ -564,7 +564,7 @@
   "AA_Ravager": [
    "arid_shrubland",
    "desert",
-   "forsaken_crags",
+   "abyss",
    "the_cracked_lands",
    "the_scarlands"
   ],
@@ -616,7 +616,7 @@
    "the_forge"
   ],
   "BMT_BarbedPangolin": [
-   "forsaken_crags"
+   "abyss"
   ],
   "BMT_Basilisk": [
    "the_fever_wood",
@@ -652,7 +652,7 @@
    "the_forge"
   ],
   "BMT_FamineLocust": [
-   "forsaken_crags",
+   "abyss",
    "the_scarlands"
   ],
   "BMT_FenridStoat": [
@@ -662,7 +662,7 @@
    "the_scarlands"
   ],
   "BMT_FreezerFrog": [
-   "forsaken_crags",
+   "abyss",
    "nightside_ice",
    "the_propane_lakes"
   ],
@@ -694,11 +694,11 @@
    "the_forge"
   ],
   "BMT_Megaphorid": [
-   "forsaken_crags",
+   "abyss",
    "the_scarlands"
   ],
   "BMT_Megaroach": [
-   "forsaken_crags",
+   "abyss",
    "the_rust_cathedral"
   ],
   "BMT_MetalloSnail": [
@@ -726,7 +726,7 @@
    "the_rot"
   ],
   "BMT_Swarmcaller": [
-   "forsaken_crags",
+   "abyss",
    "the_rot",
    "the_scarlands"
   ],
@@ -910,7 +910,7 @@
    "the_cracked_lands"
   ],
   "GR_Chickenlizard": [
-   "forsaken_crags"
+   "abyss"
   ],
   "GR_Chickenlope": [
    "desert",
@@ -924,7 +924,7 @@
    "the_rot"
   ],
   "GR_Elasmobearium": [
-   "forsaken_crags"
+   "abyss"
   ],
   "GR_FleshGrowth": [
    "desert"
@@ -965,11 +965,11 @@
    "the_sump"
   ],
   "GR_Muffalopede": [
-   "forsaken_crags",
+   "abyss",
    "the_forge"
   ],
   "GR_Muffalorat": [
-   "forsaken_crags",
+   "abyss",
    "the_propane_lakes"
   ],
   "GR_Needlechicken": [
@@ -983,7 +983,7 @@
    "desert"
   ],
   "GR_ParagonIguana": [
-   "forsaken_crags",
+   "abyss",
    "the_propane_lakes"
   ],
   "GR_ParagonInsectoid": [
@@ -1002,13 +1002,13 @@
    "poison_forest"
   ],
   "GR_Snakecat": [
-   "forsaken_crags"
+   "abyss"
   ],
   "GR_Spiderhorse": [
    "wasteland"
   ],
   "GR_Spidersnake": [
-   "forsaken_crags",
+   "abyss",
    "the_propane_lakes"
   ],
   "GR_Squirralope": [
@@ -1034,7 +1034,7 @@
    "the_rot"
   ],
   "GR_Thrumbospider": [
-   "forsaken_crags"
+   "abyss"
   ],
   "GR_Wolfhorse": [
    "the_forge"
@@ -1685,7 +1685,7 @@
   },
   {
    "def": "MA_PlastemmothAlpha",
-   "sheet": "forsaken_crags",
+   "sheet": "abyss",
    "ruling": "creature_recognizability_rule.md retirement",
    "reason": "Mythic Ages 0% recognizability survival — retirement ruled (prep §10.4)"
   },
@@ -1829,7 +1829,7 @@
   },
   {
    "def": "Rat",
-   "sheet": "forsaken_crags",
+   "sheet": "abyss",
    "ruling": "owner card Earth-five + ubiquity §9",
    "reason": "Earth five — appears nowhere (owner card 2026-09-09); the sheet's 'vanilla Rat at 0.101 rides the dusk-rat ruling' resolves as: the dusk rat keeps the niche and the name-joke, the vanilla Rat goes. Register shows no live crags residency (MEASURED) — the 0.101 sits in the donor XML; the generator's wholesale replace removes it"
   },

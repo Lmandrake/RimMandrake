@@ -252,7 +252,7 @@ This is the layer that makes the **Giddy-Up + Large Pawns + Bantha-caravan** sta
 | **Dewback** | SW Animal Collection | Riding + light freight reptile, heat-immune. | Tusken (signature), Compact patrols | The iconic desert mount. Pairs with the reptile-clade heat-tolerance fiction. Giddy-Up mount. |
 | **Tauntaun** | SW Animal Collection | Cold-biome mount (Glowforest / cavern / polluted-cold tiles). | Compact, cavern settlements | Its niche is the *cold* tiles — a mount that works where the dewback can't. Gives the dark/cavern refuge tiles their own rideable animal. |
 | **Kaadu** ⚠ | SW Animal Collection | Fast wetland/river runner. | Homestead Defense League (river corridor) | Ties to the water-ecology layer (§13): a river-valley animal, abundant where it's wet. |
-| **Varactyl** ⚠ | SW Animal Collection | Large climbing/riding lizard, forsaken-crags terrain. | Compact, wealthy Tusken | The prestige mount — big, colorful, expensive. A Varactyl string signals a rich clan. |
+| **Varactyl** ⚠ | SW Animal Collection | Large climbing/riding lizard, abyss terrain. | Compact, wealthy Tusken | The prestige mount — big, colorful, expensive. A Varactyl string signals a rich clan. |
 | **Ronto** ⚠ | SW Animal Collection | Heavy pack beast. | Jawa clans (canon Jawa animal!), Compact | **Canon-perfect for the player faction** — Ronto are literally the beasts Jawas drive in the films. Make this a starting-plausible Jawa freight animal. |
 | **Nerf** ⚠ | SW Animal Collection | Herd meat/leather/milk animal ("nerf-herder"). | Homestead Defense League | The Compact's honest livestock. **This is the one the grazer guardrail exists for** — a nerf herd is the textbook ranchable printer, so it belongs to the *NPC* economy you trade with, not a player barn. |
 | **Massiff** | SW Animal Collection | Small vicious guard-reptile. | Tusken (camp guards), bounty hunters | The Tusken watchdog. Cheap, mean, everywhere in Sand-People fiction. |
@@ -268,7 +268,7 @@ The Salacious-Crumb category's big brother: creatures kept not for utility but t
 | **Reek** | SW Animal Collection | Horned arena charger, herbivore-but-deadly. | Cartel arena | The "looks like livestock, fights like a threat" animal. |
 | **Nexu** | SW Animal Collection | Fast, vicious arena cat. | Cartel arena, exotic-pet buyers | The feline apex of the spectacle tier. |
 | **Wampa** | SW Animal Collection | Cold-biome ambush predator. | (wild threat; trophy trade) | Belongs to the Glowforest/cavern/cold tiles as a wild ④-threat more than a kept animal — its "trade" is the pelt and the story. |
-| **Krayt Dragon** + **Greater Krayt Dragon** | SW Animal Collection | The desert apex. | (wild; the pearl is the trade) | Deep-desert / forsaken-crags apex. Not kept — *hunted*. The gut-pearl is the exotic-treasure payoff, tying to the bestiary's `krayt dragon` = thrumbolizard elder-form ruling (real Krayt + wild krayt-kin both exist). |
+| **Krayt Dragon** + **Greater Krayt Dragon** | SW Animal Collection | The desert apex. | (wild; the pearl is the trade) | Deep-desert / abyss apex. Not kept — *hunted*. The gut-pearl is the exotic-treasure payoff, tying to the bestiary's `krayt dragon` = thrumbolizard elder-form ruling (real Krayt + wild krayt-kin both exist). |
 | **Varactyl / Reek / Nexu as "tamed prestige"** | — | — | Cartel bosses, wealthy Galactic Empire officers | The common thread: a tamed arena-tier animal on a leash is a *status display*, and its market price should be absurd (d20 roll 17-tier). |
 
 ### 10.3 The small canon fauna (vermin, pets, ambient life)

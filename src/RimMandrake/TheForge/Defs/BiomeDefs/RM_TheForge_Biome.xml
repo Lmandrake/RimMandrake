@@ -34,7 +34,7 @@
 
       - foragedFood: the frozen twin's "AB_RawBrownBarrelCactus" is an Alpha
         Biomes donor-only ThingDef. Reused vanilla "RawAgave" instead — the
-        same vanilla-safe substitute ForsakenCrags/FloodedCanyon/Pyrelands
+        same vanilla-safe substitute Abyss/FloodedCanyon/Pyrelands
         already use for a hot/arid RM_ biome's foraging.
 
     terrainsByFertility keeps the frozen twin's three AB_ terrain bands

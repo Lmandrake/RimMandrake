@@ -110,7 +110,7 @@ is the Star Wars cast and this campaign's wiring, and nothing else.
 ## ✅ Phase A is FILED — 23 items, all for FOUNDRY (2026-09-21)
 
 One item per MOD, not per biome, because the build is per mod:
-`STILLSAND` · `LONGSHADE` · `THEROT` · `WASTELAND` · `NIGHTSIDEICE` · `FORSAKENCRAGS` ·
+`STILLSAND` · `LONGSHADE` · `THEROT` · `WASTELAND` · `NIGHTSIDEICE` · `ABYSS` ·
 `BLUEDESERT` · `FLOODEDCANYON` · `LEANINGSCRUB` · `POISONFOREST` · `RUSTCATHEDRAL` ·
 `GREENTIDE` · `WEEPINGSTONES` · `PYRELANDS` · `CONTAGION` · `WEBWORK` ·
 `GELATINOUSSLIME` · `MIASMA` · `THEFORGE` · `FEVERWOOD` · `THESUMP` — each

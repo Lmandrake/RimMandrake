@@ -334,7 +334,7 @@ border:
 | deeper | **mycotic jungle** | fungal, lightless, feeding on what the seam drops |
 | deeper still, in **patches only** | **gelatinous superorganism** | the end state — not plants any more |
 | **well past** it, in the deep cold | **propane lakes** (R-H6b) · **crystalline caverns** · **glowing landscapes** (R-H6c) | not life at all — the exhaust, condensed; and the last light on the planet |
-| **the end of the world** | **the forsaken crags** (R-H6d) | total darkness. A different chemistry, and it does not want us |
+| **the end of the world** | **the Abyss** (R-H6d) | total darkness. A different chemistry, and it does not want us |
 
 **What unifies them is decomposition, not darkness.** Each of these biomes speaks
 of decay, of limited-but-available moisture, and of **extremely rapid
@@ -488,17 +488,17 @@ The glow is the final thing that pushes back, and past it nothing does.
   crags. Deciding which is worth doing deliberately — DECIDE owes it, and either
   answer is good.
 
-## R-H6d · The forsaken crags — the conjugate of the deep desert
+## R-H6d · The Abyss — the conjugate of the deep desert
 
 **Owner's ruling, 2026-08-15.** Past the last glow, **total and utter darkness
-descends**: the forsaken crags. `AB_RockyCrags` (Alpha Biomes), which already
+descends**: the Abyss. `AB_RockyCrags` (Alpha Biomes), which already
 carries a **hard-coded 0.34 sun-glow multiplier and can never roll clear weather**
 (`tidally_locked_world.md` §2).
 
 🔴 **They are the exact conjugate of the deep desert**, and stating it that way is
 the design:
 
-| | **deep desert** — dayside terminus | **forsaken crags** — nightside terminus |
+| | **deep desert** — dayside terminus | **Abyss** — nightside terminus |
 |---|---|---|
 | what kills you | **absence.** No water, no shade, nothing there | **presence.** Something is there and it is hostile |
 | the danger | emptiness | occupancy |

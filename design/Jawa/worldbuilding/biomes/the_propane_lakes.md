@@ -92,8 +92,8 @@ physical** — surges in electrical circuits, and ⭐ **the electrojet tap** (§
 
 🔴 **Umbra is the crags' tholin factory** (owner-ratified cross-flow): auroral and particle
 chemistry in a hydrocarbon atmosphere manufactures the fractal organics that fill the
-Forsaken Crags with the Dark. The Dark is aurora-ash, blown toward the terminator
-(`forsaken_crags.md` §3).
+Abyss with the Dark. The Dark is aurora-ash, blown toward the terminator
+(`abyss.md` §3).
 
 ### Ignition has an engine
 
@@ -278,7 +278,7 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
   and the faction/canon docs (the dynamo, the Cathedral as remnant, mutual learning).
 - `MECHANOID_BIOME_PRESENCE_REVIEW_1` — the allowed map; this biome and the Cathedral by
   ruling.
-- **The Frostling** → `forsaken_crags.md` roster (moved back).
+- **The Frostling** → `abyss.md` roster (moved back).
 - **Engine feasibility pass:** aurora weather with radiation + GIC surge events; the tap
   building; fuel-snow weather; the lake terrain (flammable, off-gassing into saturation);
   the crater event (map permanence — the biggest single engine question on the ladder).

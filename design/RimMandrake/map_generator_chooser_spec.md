@@ -229,7 +229,7 @@ no thicket away from the fort (sheet:6.6) · bucket 250 (as plan 3).
 | same landform every time | seeds 1-8 on each of the four sheets ⇒ ≥4 distinct ids, or a `sheet_narrow` warning naming the surviving count; a run that gives 1 id and no warning FAILS |
 | premise with no consequence | `deletions` empty, <3, untagged, or lacking a `premise`-sourced entry ⇒ REJECT |
 | hydrology without cause | `kind≠none` and empty cause, or cause naming neither landform nor a history word ⇒ REJECT; `river`/`delta`/`coast_inlet` on a tile without the fact ⇒ REJECT |
-| banned landform leaks | 1,000 seeds on `deep_desert.md` ⇒ 0 Oasis/Lake/Coast plans; 0 Caldera on `forsaken_crags.md` |
+| banned landform leaks | 1,000 seeds on `deep_desert.md` ⇒ 0 Oasis/Lake/Coast plans; 0 Caldera on `abyss.md` |
 | nondeterminism | same inputs twice ⇒ identical bytes |
 | anchor off-composition | position not in the rule-3 row, or `cell_frac` within 0.12 of an edge ⇒ REJECT |
 | road in a no-roads biome | `history` matching `road` on a sheet whose field 6 or 8 says `no roads` ⇒ REJECT |

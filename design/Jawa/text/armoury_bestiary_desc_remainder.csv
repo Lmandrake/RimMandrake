@@ -703,7 +703,7 @@ SWBestiary,PawnKindDef,RSW_BovineBeetleLarvae,bovine beetle grub,STRUCTURAL (no 
 SWBestiary,PawnKindDef,RSW_BovineBeetlePupa,Bovine pupa,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_BunkerBug,bunkerbug,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_CaveLemming,cave lemming,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
-SWBestiary,PawnKindDef,RSW_Cindermare,cindermare,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_ForsakenCrags.xml
+SWBestiary,PawnKindDef,RSW_Cindermare,cindermare,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_Abyss.xml
 SWBestiary,PawnKindDef,RSW_ColoClawFish,colo claw fish,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Colo.xml
 SWBestiary,PawnKindDef,RSW_ColonyPustuleHornet,pustule hornet,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_ColonyPustuleHornetQueen,pustule queen,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
@@ -790,7 +790,7 @@ SWBestiary,PawnKindDef,RSW_ShatterjawBeetleLarvae,shatterjaw grub,STRUCTURAL (no
 SWBestiary,PawnKindDef,RSW_ShatterjawBeetlePupa,shatterjaw pupa,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_SiltLamprey,silt lamprey,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Swarm.xml
 SWBestiary,PawnKindDef,RSW_SiltLampreyJuv,young silt lamprey,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_NurseryJuveniles.xml
-SWBestiary,PawnKindDef,RSW_Skarnix,skarnix,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_ForsakenCrags.xml
+SWBestiary,PawnKindDef,RSW_Skarnix,skarnix,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/Livestock/PawnKindDefs/PawnKindDefs_Abyss.xml
 SWBestiary,PawnKindDef,RSW_SmogMoth,smog moth,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_SmogMothLarvae,smog caterpillar,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_SmogPupa,smog pupa,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml

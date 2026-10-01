@@ -75,7 +75,7 @@ names this arc explicitly as "with the owner" — do not close this item on a
 solo authoring pass. Leave `doing` until the owner has ruled the open calls in
 `dungeons_arc_spec.md` §2.7.
 
-⛔ **Do not weld this to the forsaken crags.** `03_deep_history.md`: "the crags
+⛔ **Do not weld this to the Abyss.** `03_deep_history.md`: "the crags
 read as chemistry that was always here; two alien facts are richer than one
 explained one."
 

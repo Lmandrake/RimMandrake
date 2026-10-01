@@ -13,7 +13,7 @@
     "AridShrubland": {"sheet": "arid_shrubland", "median": 19.7, "p10": -0.8, "p90": 32.1, "floor": null, "max": 59.4,
       "form": "canonical",
       "verbatim": "temp p10/median/p90 **−0.8 / 19.7 / 32.1 °C**, tail max 59.4 °C"},
-    "AB_RockyCrags": {"sheet": "forsaken_crags", "median": -10.5, "p10": -18.6, "p90": 0.2, "floor": null, "max": 30.9,
+    "AB_RockyCrags": {"sheet": "abyss", "median": -10.5, "p10": -18.6, "p90": 0.2, "floor": null, "max": 30.9,
       "form": "canonical",
       "verbatim": "Temp p10/median/p90 −18.6/−10.5/0.2 °C, max 30.9 °C."},
     "RUT_NightsideIce": {"sheet": "nightside_ice", "median": -33.4, "p10": -45.8, "p90": -22.0, "floor": null, "max": 0.0,

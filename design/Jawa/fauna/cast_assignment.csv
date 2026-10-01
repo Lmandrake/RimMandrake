@@ -149,22 +149,22 @@ RUT_FeverWood,Whisperbird,whisperbird,Star Wars Animal Collection (Continued),cr
 RUT_FeverWood,RSW_JewelBeetle,jewel beetle,RimMandrake: SW — Bestiary,crown-grazer,2.45,0.2,,,,import,"the_fever_wood: §4 harmony guild; slow non-predator bs 2.45 spd 3.1 (MEASURED); bark-working beetle body; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_JewelBeetle to the already-ported, already-wired RSW_ name (RUT_FeverWood at 0.2)",0
 RUT_FeverWood,RSW_AcidSlug,acid slug,RimMandrake: SW — Bestiary,ground-slow,4.0,0.05,,,,keep,"the_fever_wood: §4 the ground is for the brave; spd 1.5 (MEASURED) — waits; trace, the floor stays mostly empty; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_AcidSlug to the already-ported, already-wired RSW_ name (RUT_FeverWood at 0.05)",0
 RUT_FeverWood,Fambaa,fambaa,Star Wars Animal Collection (Continued),the-terribly-lost,6,0.02,,,0.717,import,"the_fever_wood: §4 big animals wander in, drink at the mirrors, and are subtracted — trace commonality IS the ambient tragedy",0
-RUT_ForsakenCrags,AA_Behemoth,Behemoth,Alpha Animals,,8,0.5,,,0.867,import,"forsaken_crags: owner review 2026-09 (round2 move mapping): crag, 16 squares",0
-RUT_ForsakenCrags,AA_DuskRat,dusk rat,Alpha Animals,small,0.15000000596046448,0.5,,,0.554,keep,"forsaken_crags: §4 owner's ruling: the dusk rat stays, the art goes — behavior-named exemption (§6 ban 8); sprite is a placeholder in violation until redo",0
-RUT_ForsakenCrags,AA_Murkling,murkling,Alpha Animals,small,0.3499999940395355,0.5,,,0.409,keep,forsaken_crags: donor family §4 (murkling scavenger packs); §9 trim satisfied — the crags are its named home,0
-RUT_ForsakenCrags,AA_NightMule,nightmule,Alpha Animals,large,2.799999952316284,0.5,,,0.47,keep,"forsaken_crags: donor family §4 (nightmule) — the domestic line; legal here at −10 °C median (MEASURED §0), unlike the nightside",0
-RUT_ForsakenCrags,GR_Nighthrumbo,nighthrumbo,Vanilla Genetics Expanded,,3,0.5,,,0.675,import,forsaken_crags: owner review 2026-09 (round2 move mapping): Crags,0
-RUT_ForsakenCrags,AA_CrepuscularBeetle,Crepuscular Beetle,Alpha Animals,large,3,0.35,,,0.758,keep,forsaken_crags: donor family §4 (crepuscular beetle),0
-RUT_ForsakenCrags,AA_DuskProwler,dusk prowler,Alpha Animals,medium-pred,1.5,0.2,,,0.621,keep,forsaken_crags: donor family §4 (dusk prowler),0
-RUT_ForsakenCrags,AA_NightAve,night ave,Alpha Animals,medium,1.100000023841858,0.2,,,0.578,keep,forsaken_crags: donor family §4 (night ave),0
-RUT_ForsakenCrags,AA_Nightling,nightling,Alpha Animals,medium-apex,1,0.2,,,0.575,keep,forsaken_crags: donor family §4: quill-throwing apex predator; nocturnal-to-the-bone suite is the population (owner's wholesale ruling),0
-RUT_ForsakenCrags,AA_DarkVandal,dark vandal,Alpha Animals,medium,1.2000000476837158,0.15,,,0.58,keep,forsaken_crags: donor family §4 (dark vandal),0
-RUT_ForsakenCrags,AA_NightRam,nightram,Alpha Animals,large,2.5,0.09,,,0.463,keep,forsaken_crags: donor family §4 (nightram),0
-RUT_ForsakenCrags,AA_ShadowCharger,shadow charger,Alpha Animals,large,2.5,0.09,,,0.463,keep,forsaken_crags: donor family §4 (shadow charger),0
-RUT_ForsakenCrags,AA_Thunderox,thunderox,Alpha Animals,large,2.5,0.09,,,0.463,keep,forsaken_crags: donor family §4 (thunderox),0
-RUT_ForsakenCrags,AA_SandProwler,sand prowler,Alpha Animals,medium-pred,2,0.075,,,0.6,keep,"forsaken_crags: donor family §4 (sand prowler); terrain-hiding graphic (register special, MEASURED)",0
-RUT_ForsakenCrags,AA_Frostling,frostling,Alpha Animals,medium-pred,1.5,0.05,,,0.621,import,forsaken_crags: sheet Owed: owner 2026-09-06 moved the Frostling back from the propane lakes — the Nightling's polar cousin; spd 6.0 pred (MEASURED) legal — crags carry no speed ban,0
-RUT_ForsakenCrags,AA_Darkbeast,darkbeast,Alpha Animals,medium,1.5,0.005,,,0.488,keep,"forsaken_crags: §4 owner's ruling: wears a trailing halo of Dark — EM particle interaction; kept at trace, the moving knot of blindness",0
+RUT_Abyss,AA_Behemoth,Behemoth,Alpha Animals,,8,0.5,,,0.867,import,"abyss: owner review 2026-09 (round2 move mapping): crag, 16 squares",0
+RUT_Abyss,AA_DuskRat,dusk rat,Alpha Animals,small,0.15000000596046448,0.5,,,0.554,keep,"abyss: §4 owner's ruling: the dusk rat stays, the art goes — behavior-named exemption (§6 ban 8); sprite is a placeholder in violation until redo",0
+RUT_Abyss,AA_Murkling,murkling,Alpha Animals,small,0.3499999940395355,0.5,,,0.409,keep,abyss: donor family §4 (murkling scavenger packs); §9 trim satisfied — the crags are its named home,0
+RUT_Abyss,AA_NightMule,nightmule,Alpha Animals,large,2.799999952316284,0.5,,,0.47,keep,"abyss: donor family §4 (nightmule) — the domestic line; legal here at −10 °C median (MEASURED §0), unlike the nightside",0
+RUT_Abyss,GR_Nighthrumbo,nighthrumbo,Vanilla Genetics Expanded,,3,0.5,,,0.675,import,abyss: owner review 2026-09 (round2 move mapping): Crags,0
+RUT_Abyss,AA_CrepuscularBeetle,Crepuscular Beetle,Alpha Animals,large,3,0.35,,,0.758,keep,abyss: donor family §4 (crepuscular beetle),0
+RUT_Abyss,AA_DuskProwler,dusk prowler,Alpha Animals,medium-pred,1.5,0.2,,,0.621,keep,abyss: donor family §4 (dusk prowler),0
+RUT_Abyss,AA_NightAve,night ave,Alpha Animals,medium,1.100000023841858,0.2,,,0.578,keep,abyss: donor family §4 (night ave),0
+RUT_Abyss,AA_Nightling,nightling,Alpha Animals,medium-apex,1,0.2,,,0.575,keep,abyss: donor family §4: quill-throwing apex predator; nocturnal-to-the-bone suite is the population (owner's wholesale ruling),0
+RUT_Abyss,AA_DarkVandal,dark vandal,Alpha Animals,medium,1.2000000476837158,0.15,,,0.58,keep,abyss: donor family §4 (dark vandal),0
+RUT_Abyss,AA_NightRam,nightram,Alpha Animals,large,2.5,0.09,,,0.463,keep,abyss: donor family §4 (nightram),0
+RUT_Abyss,AA_ShadowCharger,shadow charger,Alpha Animals,large,2.5,0.09,,,0.463,keep,abyss: donor family §4 (shadow charger),0
+RUT_Abyss,AA_Thunderox,thunderox,Alpha Animals,large,2.5,0.09,,,0.463,keep,abyss: donor family §4 (thunderox),0
+RUT_Abyss,AA_SandProwler,sand prowler,Alpha Animals,medium-pred,2,0.075,,,0.6,keep,"abyss: donor family §4 (sand prowler); terrain-hiding graphic (register special, MEASURED)",0
+RUT_Abyss,AA_Frostling,frostling,Alpha Animals,medium-pred,1.5,0.05,,,0.621,import,abyss: sheet Owed: owner 2026-09-06 moved the Frostling back from the propane lakes — the Nightling's polar cousin; spd 6.0 pred (MEASURED) legal — crags carry no speed ban,0
+RUT_Abyss,AA_Darkbeast,darkbeast,Alpha Animals,medium,1.5,0.005,,,0.488,keep,"abyss: §4 owner's ruling: wears a trailing halo of Dark — EM particle interaction; kept at trace, the moving knot of blindness",0
 RUT_Greentide,Gizka,gizka,Star Wars Animal Collection (Continued),floor-vermin,0.18000000715255737,1.0,,,0.555,keep,the_greentide: §4 fruit strategy — free calories breed vermin; SW icon (KOTOR),0
 RUT_Greentide,Clodhopper,clodhopper,Star Wars Animal Collection (Continued),floor-vermin,0.5,0.7,,,0.572,keep,the_greentide: §4 everything eats everything — small hopper prey base,0
 RUT_Greentide,Whisperbird,whisperbird,Star Wars Animal Collection (Continued),flier,0.4000000059604645,0.7,,,0.56,keep,"the_greentide: §4 The Fliers — absolutely everywhere, screaming; R17",0

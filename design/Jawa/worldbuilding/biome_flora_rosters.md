@@ -222,7 +222,7 @@ original commissioning snapshot, kept for provenance, not the live state.
 | 0.05 | **kabbrik pod** |  | `RUT_BlastpodShroom` · RimUtinni: Rot Spore Kit |
 | 0.01 | **grath elder** |  | `AB_AgariluxPrime` · Alpha Biomes |
 
-### `RUT_ForsakenCrags` — 1,135 tiles · -24 … 31 °C (median -11) · plantDensity 0.5
+### `RUT_Abyss` — 1,135 tiles · -24 … 31 °C (median -11) · plantDensity 0.5
 
 *was 8 inherited plants → now **8** assigned*
 

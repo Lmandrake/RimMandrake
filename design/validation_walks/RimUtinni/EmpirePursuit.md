@@ -10,7 +10,7 @@ list: minimal+harmony     # Odyssey is an owned DLC (always available, not a mod
 status-hint: Forked ScenPart from "Ruthless Faction Pursuit" (workshop 3621784437,
 Matathias, GPLv3) — endless timed pursuit raids from a chosen faction, with a
 Jawa-specific "survey shadow" that multiplies the raid/warning delay 4x on poorly-
-surveyed biomes (Forsaken Crags today).
+surveyed biomes (Abyss today).
 
 ## must be true
 - `ScenPartDef_RuthlessPursuit` (class `RuthlessPursuingMechanoids.ScenPartDef_RuthlessPursuit`)
@@ -18,7 +18,7 @@ surveyed biomes (Forsaken Crags today).
   read directly off the def by `ScenPart_RuthlessPursuingMechanoids.ShadowMultiplier(map)` —
   returns `shadowDef.surveyShadowMultiplier` when `map.Biome` is in the list, else `1f`.
 - The shipped `ScenPartDef RUT_RuthlessPursuingMechanoids` sets `surveyShadowMultiplier=4`
-  and `surveyShadowBiomes` = [`AB_RockyCrags`] ("Forsaken Crags").
+  and `surveyShadowBiomes` = [`AB_RockyCrags`] ("Abyss").
 - `StartTimers` multiplies both the raid timer and the warning timer by `ShadowMultiplier(map)`
   before scheduling — a map on `AB_RockyCrags` gets ~4x the mean 156h(±36h) raid delay and
   48h(±12h) warning delay every other biome gets (`FirstRaidDelayHoursDef`/`WarningDelayHoursDef`
