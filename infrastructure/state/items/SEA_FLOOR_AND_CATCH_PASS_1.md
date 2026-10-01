@@ -1,37 +1,27 @@
 # SEA_FLOOR_AND_CATCH_PASS_1 — a sea is a floor you visit and a catch you pull
 
-## 🔴🔴 ENTRY MECHANISM SUPERSEDED — owner, 2026-09-26
+## 🔴🔴 The floor is entered by gravship only — owner, 2026-09-26
 
 > *"Please update ALL diving discussions to require the ship to move the player onto the
 > sea floor and to leave again. You can't 'dive' as an individual pawn nor return as one.
 > It's ship or nothing."*
 
-**The gravship is the sole way down and the sole way back.** Every line below about
-`RM_DiveEligible`, tagging a sea's shallows, or sending a colonist to "Dive to hunt" /
-"Dive to commune" / "Dive down" is **DEAD** and must not be built. ⛔ That tag, the
-float-menu provider and both JobDrivers are **deleted from the code**, not deprecated.
+**The gravship is the sole way down and the sole way back.** The live mechanism is
+**`RM_SeaDiveHatch`**, a `MapPortal` subclass that picks its pocket-map generator from the
+parent map's sea biome and is buildable only on a map carrying a real `GravEngine`
+(`PlaceWorker_NeedsGravEngine`) — i.e. aboard a gravship. The hatch resolves the sea from the
+map's biome by itself, so no per-sea terrain tagging or wiring exists. What a sea owes is floor
+CONTENT.
 
-✅ Live mechanism: **`RM_SeaDiveHatch`**, a `MapPortal` subclass that picks its pocket-map
-generator from the parent map's sea biome and is buildable only on a map carrying a real
-`GravEngine` (`PlaceWorker_NeedsGravEngine`) — i.e. aboard a gravship.
-
-⇒ **Step 2 below ("Wire the diving hook per sea") is VOID.** Per-sea terrain tagging buys
-nothing now; the hatch resolves the sea from the map's biome by itself. What the other three
-seas actually owe is floor CONTENT, not a dive hook.
-
-⇒ **The `## verify` bar changes too:** "a `RM_DiveEligible` floor a pawn can reach" is no
-longer the test. The test is that the ship's hatch opens that sea's floor map and the floor
-is populated.
-
-🔑 **Second ruling the same day, and it widens this item:** *"All the fishables should also
-be alive and moving around in the depths (this is true for ALL seas)."* ⇒ every catch entry
-in every sea owes a LIVING counterpart on the floor map. A catch item with no creature
-swimming down there is unfinished, not a finished species. That is a bigger job than this
-item's original two-defs-per-species line and should be sized honestly.
+🔑 **Second ruling the same day:** *"All the fishables should also be alive and moving around
+in the depths (this is true for ALL seas)."* ⇒ every catch entry in every sea owes a LIVING
+counterpart on the floor map. A catch item with no creature swimming down there is unfinished,
+not a finished species. That is a bigger job than a two-defs-per-species line and should be
+sized honestly.
 
 ⚠️ **UNMEASURED, and nobody may assume it:** the seas are `impassable=true`, so whether a
-gravship can travel to and hold station over a sea tile is an open ENGINE question. The
-hatch enforces ship-only at construction time precisely so that this was not guessed.
+gravship can travel to and hold station over a sea tile is an open ENGINE question. The hatch
+enforces ship-only at construction time precisely so that this was not guessed.
 
 ---
 
@@ -57,6 +47,7 @@ registers on 7 waters, 4 prize items, 6 rare-catch tables, six waves done, every
 already ruled 2026-09-18. Do **not** re-derive a catch design; the gap his ruling names is the
 **floor** half.
 
+
 ## what exists — MEASURED 2026-09-22 (parsed, not grepped)
 
 | sea | terrain | floor animals | catch table |
@@ -71,19 +62,12 @@ is one of its fish species**. The Scald has 5 catches and 4 floor animals with *
 overlap** — its eesh, muddal, karrash, saal and bladderboil exist only as items you pull out,
 never as something swimming. That is exactly the gap he is naming.
 
-## 🛑 STOPPED ON THE MAC — owner's call 2026-09-22, needs `game-up`
+## ✅ Shore question — answered
 
-**He stopped this item mid-sitting.** It moves to the Windows Desktop, and the thing to do
-there FIRST is *look up how a SHORE map depicts ocean water* — i.e. which terrains a coastal
-LAND map actually generates at its sea edge. His reason: until that is known we should not
-continue trying to rule these biomes, because every remaining decision depends on it.
-
-🔑 **Why that one lookup gates everything.** Step 1 below assumes a sea is fished from a map
-generated ON the sea tile. If instead the catch is consumed from an adjacent coastal land map —
-where shallow ocean water already generates — then the "no shore" blocker is measuring a map no
-player ever sees, and the shore work in step 1/2 is partly or wholly unnecessary. ⛔ Do not
-author shallow terrain, dive tagging or catch tables for the three unbuilt seas until that is
-settled either way.
+**He stopped this item on the Mac 2026-09-22** pending one lookup: *how a SHORE map depicts
+ocean water* — because every remaining decision depended on it. It is answered by the Desktop
+section below: the catch is consumed from the LAND map's own biome, the shore is the `Coast`
+tile mutator, and our sea defs never triggered it. Step 1 is re-scoped there and built.
 
 ### ✅ Shore audit — step 1's deliverable, MEASURED on the Mac 2026-09-22 (parsed, not grepped)
 
@@ -114,23 +98,6 @@ answer.
 - 🔴 **`RUT_GreySea`, `RUT_TwilightSea` and `RUT_PropaneLake` have NO shallow terrain def of
   any kind.** Whatever the shore needs per sea, it is new terrain defs.
 
-> 🔴 **CORRECTED 2026-09-26 (BENCH).** This section previously claimed all three Scald
-> terrains were "already tagged `RM_DiveEligible`" by
-> `src/RimMandrake/DivingInteraction/Patches/RM_ScaldDiveEligibleTerrain.xml`. **That file is
-> gone from `src/` — `DivingInteraction` has no `Patches/` directory in the repo.**
-> The `RM_DiveEligible` tag itself is retired: the shore pawn-dive mechanism was deleted from
-> `src/` under the owner's SHIP-ONLY ruling. Diving is by gravship and nothing else. The
-> tagging claims are removed here rather than struck through, per the standing rule that
-> inaccurate material is deleted, not superseded in place.
->
-> 🔴 **RE-CORRECTED 2026-09-26.** The sentence above previously read "does not exist and never
-> did". It did exist, and it is **still live in the DEPLOYED mod**, which is what the game
-> loads: `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\DivingInteraction\Patches\RM_ScaldDiveEligibleTerrain.xml`,
-> dated 2026-09-24, still tagging three `RUT_ScaldWater*` terrains `RM_DiveEligible`. Two more
-> deleted-from-repo files are live there too — `Defs/JobDefs/RM_DivingJobDefs.xml` and
-> `Defs/ThoughtDefs/RM_DivingThoughtDefs.xml`. Deleting a file from `src/` does not remove it
-> from the game folder; that needs `deploy_custom_mods.py --prune`. Item:
-> `DIVING_STALE_DEPLOYED_FILES_1`.
 
 ### ⛔ And one thing step 1 must not do: scatter the margin procedurally
 
@@ -142,19 +109,7 @@ why the def deliberately does not place itself. A `terrainPatchMakers` block on 
 actively create the hazard that file was written to avoid. (The Grey and Twilight Seas are not
 lethal, so this constraint is not obviously theirs.)
 
-**✅ ANSWERED 2026-09-23 from the decompiled engine (section below): the catch is consumed from the LAND map's
-own biome, the shore is the `Coast` tile mutator, and our sea defs never trigger it. Step 1 is re-scoped there.**
-
-⚠️ All four are `impassable=true`. The floor is reached **by gravship and by nothing else**
-(owner ruling, SHIP-ONLY, 2026-09-26). There is no per-sea shore wiring to do, because there
-is no shore dive.
-
-> 🔴 **CORRECTED 2026-09-26 (BENCH).** This paragraph previously said the floor is reached by
-> a generic shore dive — "makes any `RM_DiveEligible`+Standable terrain a place a colonist can
-> be sent" — and concluded "the mechanism his ruling needs is shipped, it needs wiring per
-> sea, not inventing." **Every part of that is now false.** `RM_DiveEligible`, its float-menu
-> provider and both JobDrivers were deleted from `src/`. Building from that sentence
-> resurrects retired code.
+⚠️ All four are `impassable=true`. The floor is reached by gravship and by nothing else.
 
 ## 🔴 Two measured blockers this pass must NOT pretend to solve
 
@@ -226,6 +181,7 @@ is a look problem, not a mechanism problem. ✅ Before commissioning any, apply 
 check-for-existing-art rule in CLAUDE.md: search `infrastructure/artpipe/done/` and `_artsrc/`
 for these three subjects first.
 
+
 ## ✅ Desktop answer — where a sea's catch is consumed, and what a shore map generates (MEASURED, RimSage, 2026-09-23)
 
 **A sea's catch is consumed from the LAND map, and only ever the land map's own BiomeDef is consulted.**
@@ -263,8 +219,6 @@ for these three subjects first.
   for exactly this; (c) the catch tables go on the **land biomes' `fishTypes.saltwater_*`** (Long Shade, Stillsand,
   Nightside Ice, whichever borders which sea), keyed by which sea the coast faces — the sea BiomeDefs' own `fishTypes`
   can stay as documentation but bind nothing.
-- ⛔ STALE: "The floor half (diving) is unaffected: `RM_DiveEligible` terrain lives on the land
-  map already." The floor half IS affected — entry moved to the ship's hatch and that tag is gone.
 
 ## ✅ (a)–(c) BUILT 2026-09-24 — `mandrake.rm.seashores`, commit `fb352d7c6` (authored, NOT live-proven)
 
@@ -295,51 +249,43 @@ Build `0 errors 0 warnings`, `validate_patch.py` clean on 7 files, selftest 8/8,
 on. ⛔ **Owed:** enable `mandrake.rm.seashores` in the live list + deploy (game-down window: a DLL cannot be written
 while it runs); live proof on a land tile beside the Scald (`jawa/world_tile_map_generate`) — the healer's log line,
 water on the map, a fishing zone accepted, a catch from the Scald's table. The Grey Sea and Propane Lake still have
-no catch table to serve (step 5), and the floor/diving half (steps 2, 4) is untouched.
+no catch table to serve (step 4), and the floor-residents half (steps 3, 4) is untouched.
+
+
 
 ## spec
 
 Work per sea, in this order — cheapest and most decisive first.
 
-1. ✅ DONE — see the (a)–(c) section above; the shore is laid by `RM_SeaCoast` on the LAND map. Original text:
-   Shore audit, all four seas. For each, determine whether any *shallow* water terrain is
-   generated or paintable. The Scald's answer is known (none, and a cove is owed). Record the
-   other three. ⛔ A sea with no shore cannot be fished regardless of its table, so this gates
-   every catch claim.
-2. ⛔ **VOID — do not do this step** (owner 2026-09-26, ship-only diving; the hatch resolves
-   the sea from the map's biome and needs no terrain tag). Struck text: **Wire the diving hook
-   per sea.** Tag each sea's floor-reachable terrain `RM_DiveEligible`
-   so "the floor" is a place a colonist can actually be, per
-   `mandrake.rm.divinginteraction`. ⚠️ The Scald's boiling SURFACE stays no-swim (ban 4 in
-   `the_scald.md`, superseded only as far as the DEEP interaction) — copy that shape, do not
-   widen it.
-3. ✅ **DONE, do not redo** — the three scalefish catches are built as `RSW_MeeCatch`/
+1. ✅ DONE — the shore is laid by `RM_SeaCoast` on the LAND map (the (a)–(c) section above).
+   A sea with no shore cannot be fished regardless of its table, so this gated every catch claim.
+2. ✅ **DONE, do not redo** — the three scalefish catches are built as `RSW_MeeCatch`/
    `RSW_FaaCatch`/`RSW_LaaCatch` and wired into `RUT_Greentide`'s freshwater bands (see above).
    The residue is item-scale icon art, and correcting the `RUT_` prefix inside
    `FISH_BESTIARY_BUILD_1`'s verify clause so it names what shipped.
-4. **Author the remaining floor residents** for the two seas that already have catch tables
+3. **Author the remaining floor residents** for the two seas that already have catch tables
    (Scald, Twilight Sea), one animal per catch species, one swarm creature per shoal species,
    per the ruling above. Reuse `RSW_`/`RUT_` defs where the species exists; new defs where it
    does not. `SeaBeasts_Swarm.xml` is the file to grow, not a new one.
-5. **The Grey Sea and Propane Lake need both halves.** They have no catch table at all. The
+4. **The Grey Sea and Propane Lake need both halves.** They have no catch table at all. The
    commission doc's register system is the template — do not invent a parallel one. ⚠️ The
    Propane Lake is *propane, not water*: whether "fishing" is even the right verb there is a
    design question, not a default. Ask rather than assume.
-6. Only then: `TERMINALBIOMES_RM_MOD_BUILD_1` carries all four into one mod with a per-biome
+5. Only then: `TERMINALBIOMES_RM_MOD_BUILD_1` carries all four into one mod with a per-biome
    settings toggle, so land this before or with that build, not after.
 
 ## verify
 
-Each of the four seas: a stated shore verdict; a floor a gravship can reach and land on; and
-for every species in its catch table, either a floor animal or a recorded reason it is
-catch-only. *(Corrected 2026-09-26 — this bar read "a `RM_DiveEligible` floor a pawn can
-reach", which gates closure on the deleted shore-dive mechanism and can never be satisfied.)* `validate_patch.py` clean on every touched file. ⛔ **No live-verified claim** while
-`QUICKTEST_RIVER_WATER_MISSING_1` stands — say "authored, not live-proven" and mean it.
+Each of the four seas: a stated shore verdict; a floor the gravship's `RM_SeaDiveHatch` opens
+and that is populated; and for every species in its catch table, either a floor animal or a
+recorded reason it is catch-only. `validate_patch.py` clean on every touched file. ⛔ **No
+live-verified claim** while `QUICKTEST_RIVER_WATER_MISSING_1` stands — say "authored, not
+live-proven" and mean it.
 
 ## criteria
 
-Diving a sea shows you the animals its fish descriptions promised, and fishing its shore pulls
-out the same creatures you swam past.
+Descending to a sea by gravship hatch shows you the animals its fish descriptions promised, and
+fishing its shore pulls out the same creatures you swam past.
 
 ## Watch out
 
@@ -351,7 +297,8 @@ out the same creatures you swam past.
   into `fishTypes` makes a net produce a bare `Pawn`. The floor half of this pass creates
   exactly the conditions for that mistake — one species, two defs, one an animal and one an
   item. Keep them straight, and name them so they cannot be confused.
-- ⚠️ Whether `<wildAnimals>` actually spawn on an `impassable=true` water biome is **not
-  measurable from the Mac** (no RimSage, no def dump). All four seas already wire 2–4 animals,
-  so somebody bet yes, but that is a bet and not a measurement. Settle it on the Desktop before
-  authoring a large floor roster.
+- ⚠️ **Open engine question:** whether `<wildAnimals>` spawn on an `impassable=true` water biome.
+  Measured from the decompiled engine 2026-09-26: `impassable` is not read by the spawners; the
+  gates are `animalDensity > 0` and, for ongoing spawns, a walkable cell that can reach the map
+  edge. `RM_PropaneLake`/`RUT_PropaneLake` leave `animalDensity` unset (0), so their roster is
+  dead until `PROPANELAKE_ANIMALDENSITY_ZERO_1` lands.
