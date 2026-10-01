@@ -33,4 +33,56 @@
     <resourceReadoutPriority>Middle</resourceReadoutPriority>
   </ThingDef>
 
+  <ThingDef ParentName="LeatherBase">
+    <defName>RM_ChatrakPlate</defName>
+    <label>chatrak plate</label>
+    <description>Scutes cut from a chatrak's back and cured hard. Heavy and unevenly pocked, it will not take dye, but it is the one light-armour leather that turns bullets. Balanced by its weight and by how rarely a chatrak is brought down.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(92,106,128)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>7.5</MarketValue>
+      <Mass>0.2</Mass>
+      <StuffPower_Armor_Sharp>1.5</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.4</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>0.8</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>8</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <categories>
+        <li>Leathery</li>
+      </categories>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.6</MaxHitPoints>
+      </statFactors>
+      <color>(92,106,128)</color>
+      <allowColorGenerators>false</allowColorGenerators>
+    </stuffProps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_WreckLichenScrapings</defName>
+    <label>wreck-lichen scrapings</label>
+    <description>Rust-orange crust scraped off a wreck. Ground and boiled it is a dye base; dry, it burns poorly and smokes.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_WreckLichenScrapings/RM_WreckLichenScrapings</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>1.8</MarketValue>
+      <Mass>0.05</Mass>
+      <Flammability>0.8</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+  </ThingDef>
+
 </Defs>

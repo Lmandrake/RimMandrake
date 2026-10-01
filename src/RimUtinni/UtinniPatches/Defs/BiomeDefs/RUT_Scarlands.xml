@@ -5,8 +5,9 @@
     FROZEN — SCARLANDS_STANDALONE_MOD_1: carrying the world until the
     terminal paint; content lives in mandrake.rm.warscar; do not edit here.
     (RUT_Glower/RUT_GlowerCrust and RUT_ScorchedStars stay live too — their
-    RM_ duplicates are separate defs, not renames. RUT_ScarRoach and
-    RUT_MortuaryCrawler are untouched in their own mods. mandrake.rut.
+    RM_ duplicates are separate defs, not renames. RUT_ScarRoach stays
+    as a hidden alias (its RM_ScarRoach successor lives in mandrake.rm.warscar);
+    RUT_MortuaryCrawler is retired, replaced by RM_Pallbearer. mandrake.rut.
     scarlandsladder is untouched — see mandrake.rm.warscar's own About.xml
     for why it was NOT absorbed.)
 
@@ -69,7 +70,7 @@
     COMMISSION_LEDGER_CLEANUP_1 build pass (2026-09-24): RUT_Glower
     (RUT_ScarlandsFlora.xml) wired into wildPlants — also corrected the
     ban-3 paragraph above, which still said the Glower PlantDef was not yet
-    authored. RUT_MortuaryCrawler (RUT_MortuaryCrawler.xml) wired into
+    authored. RUT_MortuaryCrawler (since replaced by RM_Pallbearer) wired into
     wildAnimals alongside (not replacing) the AA_Helixien interim — same
     "wired alongside" precedent RSW_ShadeWhale/RSW_WraidAlpha used.
 
@@ -201,9 +202,9 @@
       <RSW_Korrum MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Korrum>  <!-- korrum - boulder-shelled giant crab (bodySize 4.00), import; owner 2026-09-22 on the identity sheet: "This is good for Scarlands". ⚠️ Wired at 0.05, NOT the roster's 0.5: this roster is the thinnest we have (8 species, total commonality 1.51) and the weakest pyramid (53.0% small, ECOSYSTEM_PYRAMID_LAW_1), so 0.5 would make a mountain-sized crab a quarter of all sightings and drop the biome to ~40% small. 0.05 leaves the ratio where it was. The roster's 0.5 was a round2-mapping placeholder, not an ecology call. -->
       <SW_Electricgryllotalpa MayRequire="who.vfee.isopodageneline">0.15</SW_Electricgryllotalpa>  <!-- Electricgryllotalpa - weapon-descendant, keep -->
       <RG_Rimclaw MayRequire="regrowth.botr.core">0.1</RG_Rimclaw>  <!-- rimclaw - weapon-descendant, keep -->
-      <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>  <!-- helixien - mortuary-guild, adjust-keep (interim; RUT_MortuaryCrawler below is the dedicated body, COMMISSION_LEDGER_CLEANUP_1) -->
+      <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>  <!-- helixien - mortuary-guild, adjust-keep (interim; RM_Pallbearer below is the dedicated body) -->
       <SW_Juggernautbeetles MayRequire="who.vfee.isopodageneline">0.05</SW_Juggernautbeetles>  <!-- Juggernautbeetles - weapon-descendant, keep -->
-      <RUT_MortuaryCrawler>0.06</RUT_MortuaryCrawler>  <!-- mortuary crawler - mortuary-guild dedicated body, COMMISSION_LEDGER_CLEANUP_1 (2026-09-24); own-mod def, no MayRequire; wired below AA_Helixien's own commonality, not replacing it -->
+      <RM_Pallbearer MayRequire="mandrake.rm.warscar">0.06</RM_Pallbearer>  <!-- pallbearer: RUT_MortuaryCrawler retired, WARSCAR_FREE_TIER_BODY_1 (moved to RM tier) -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
