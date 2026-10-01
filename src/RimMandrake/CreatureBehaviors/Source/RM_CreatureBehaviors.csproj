@@ -166,6 +166,7 @@
     <Compile Include="RM_ShadePatchGraph.cs" />
     <Compile Include="RM_ShadeHop.cs" />
     <Compile Include="RM_GlareBlind.cs" />
+    <Compile Include="RM_Mirage.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

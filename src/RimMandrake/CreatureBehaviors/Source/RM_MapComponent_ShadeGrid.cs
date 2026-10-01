@@ -461,6 +461,8 @@ namespace RimMandrake.CreatureBehaviors
 			RefreshParasolLayer();
 			RebuildHeatLayers();
 			gridVersion++;
+			// STILLSAND_MIRAGE_CONDITION_1: hold or end the mirage to match the sun.
+			RM_Mirage.Sync(map, this);
 		}
 
 		/// <summary>SHADE_GEAR_FAMILY_1: tent footprints and shield lees, at

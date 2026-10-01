@@ -522,6 +522,49 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(gog.SelectSingleNode("//ThingDef[defName='RM_SunGoggles']/apparel/layers/li[.='EyeCover']") != null, "goggles not eyes-layer");
             });
 
+            // ── STILLSAND_MIRAGE_CONDITION_1 ────────────────────────────
+            Case("mirage: held only at/above the sun threshold", () =>
+            {
+                Assert(RM_SunHeatMath.MirageActive(60f, 45f), "60 deg no mirage");
+                Assert(RM_SunHeatMath.MirageActive(45f, 45f), "45 deg no mirage");
+                Assert(!RM_SunHeatMath.MirageActive(30f, 45f), "30 deg mirage");
+                Assert(!RM_SunHeatMath.MirageActive(float.NaN, 45f), "unknown sun mirage");
+                Assert(!RM_SunHeatMath.MirageActive(80f, -1f), "threshold off still mirage");
+            });
+
+            Case("mirage: the band lies on the sun-ward edge, opposite the shadows", () =>
+            {
+                // Shadow vector = -(sin b, cos b) for sun bearing b from north.
+                Assert(RM_SunHeatMath.MirageEdge(0f, -1f) == 0, "sun north -> not north edge");
+                Assert(RM_SunHeatMath.MirageEdge(-1f, 0f) == 1, "sun east -> not east edge");
+                Assert(RM_SunHeatMath.MirageEdge(0f, 1f) == 2, "sun south -> not south edge");
+                Assert(RM_SunHeatMath.MirageEdge(1f, 0f) == 3, "sun west -> not west edge");
+                Assert(RM_SunHeatMath.MirageEdge(-0.9f, -0.4f) == 1, "sun ENE -> not east edge");
+                Assert(RM_SunHeatMath.MirageEdge(0f, 0f) == 0, "no direction -> not north");
+            });
+
+            Case("mirage: heat shimmer cuts accuracy only in full sun (shipped factors)", () =>
+            {
+                string root = FindModsRoot();
+                var patch = new System.Xml.XmlDocument();
+                patch.Load(System.IO.Path.Combine(root, "CreatureBehaviors", "Patches", "RM_Mirage_ThinkTree.xml"));
+                System.Xml.XmlNode lng = patch.SelectSingleNode("//Operation[contains(xpath,'ShootingAccuracyFactor_Long')]/nomatch/value/parts/li");
+                System.Xml.XmlNode med = patch.SelectSingleNode("//Operation[contains(xpath,'ShootingAccuracyFactor_Medium')]/nomatch/value/parts/li");
+                Assert(lng != null && med != null, "shimmer stat parts not patched on Medium and Long");
+                float fl = F(lng, "factor", 1f), fm = F(med, "factor", 1f);
+                Assert(fl < fm && fm < 1f, "long " + fl + " not harsher than medium " + fm);
+                Assert(RM_SunHeatMath.MirageShimmerFactor(1f, 0.6f, fl) == fl, "full sun not cut");
+                Assert(RM_SunHeatMath.MirageShimmerFactor(0.35f, 0.6f, fl) == 1f, "sand shade cut");
+                var biome = new System.Xml.XmlDocument();
+                biome.Load(System.IO.Path.Combine(root, "Stillsand", "Defs", "BiomeDefs", "RM_Stillsand_Biome.xml"));
+                System.Xml.XmlNode ext = biome.SelectSingleNode("//li[contains(@Class,'RM_SunHeatExtension')]");
+                Assert(ext.SelectSingleNode("mirageCondition")?.InnerText == "RM_Mirage", "Stillsand does not name RM_Mirage");
+                Assert(ext.SelectSingleNode("mirageMentalState")?.InnerText == "RM_ChasingWater", "Stillsand does not name RM_ChasingWater");
+                var think = patch.SelectSingleNode("//Operation[contains(xpath,'MentalStateNonCritical')]");
+                Assert(think != null && think.SelectSingleNode("order")?.InnerText == "Prepend"
+                       && think.SelectSingleNode("value/li/state")?.InnerText == "RM_ChasingWater", "think-tree node missing");
+            });
+
             foreach (string p in Pass) Console.WriteLine("PASS " + p);
             foreach (string f in Fail) Console.WriteLine("FAIL " + f);
             Console.WriteLine(Pass.Count + "/" + (Pass.Count + Fail.Count) + " passed");

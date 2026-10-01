@@ -277,6 +277,12 @@ namespace RimMandrake.CreatureBehaviors
     //      glareBlindEnabled — off: nobody gains it; one already carried still
     //      decays away. glareBlindRateMultiplier — how fast full glare blinds.
     //      Immunity (a gene, or eye protection) is never a setting.
+    //  45. The mirage (STILLSAND_MIRAGE_CONDITION_1, RM_Mirage.cs) — only a biome
+    //      whose RM_SunHeatExtension names a mirageCondition, under a high sun.
+    //      mirageEnabled — off: the condition ends on the next recompute, no
+    //      shimmer band, no accuracy cut, no new "chasing the water" breaks (one
+    //      already running ends on its own). mirageBreakChanceMultiplier — how
+    //      often a heat-struck pawn breaks (0 = never; band and shimmer stay).
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -363,6 +369,8 @@ namespace RimMandrake.CreatureBehaviors
         public static float sandGlareStrength = 1f;
         public static bool glareBlindEnabled = true;
         public static float glareBlindRateMultiplier = 1f;
+        public static bool mirageEnabled = true;
+        public static float mirageBreakChanceMultiplier = 1f;
 
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 2400f;
@@ -450,6 +458,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sandGlareStrength, "sandGlareStrength", 1f);
             Scribe_Values.Look(ref glareBlindEnabled, "glareBlindEnabled", true);
             Scribe_Values.Look(ref glareBlindRateMultiplier, "glareBlindRateMultiplier", 1f);
+            Scribe_Values.Look(ref mirageEnabled, "mirageEnabled", true);
+            Scribe_Values.Look(ref mirageBreakChanceMultiplier, "mirageBreakChanceMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -761,6 +771,17 @@ namespace RimMandrake.CreatureBehaviors
                 {
                     list.Label("    How fast glare blinds: " + glareBlindRateMultiplier.ToStringPercent());
                     glareBlindRateMultiplier = list.Slider(glareBlindRateMultiplier, 0f, 3f);
+                }
+                list.CheckboxLabeled("  The mirage", ref mirageEnabled,
+                    "On a land built with it (the Stillsand), under a high sun: the far edge of the map "
+                  + "shimmers with water that is not there, the shimmer spoils long shots taken from full "
+                  + "sun, and someone suffering heatstroke may set off walking for the water. They stay on "
+                  + "the map: they come to, collapse, or stop when a drafted friend reaches them, and you "
+                  + "get a letter either way. Off: none of it.");
+                if (mirageEnabled)
+                {
+                    list.Label("    How often the heat-struck chase the water: " + mirageBreakChanceMultiplier.ToStringPercent());
+                    mirageBreakChanceMultiplier = list.Slider(mirageBreakChanceMultiplier, 0f, 3f);
                 }
             }
             list.GapLine();

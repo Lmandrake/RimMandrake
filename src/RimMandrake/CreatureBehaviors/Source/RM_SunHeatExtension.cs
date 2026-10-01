@@ -1,3 +1,4 @@
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.CreatureBehaviors
@@ -93,6 +94,30 @@ namespace RimMandrake.CreatureBehaviors
         /// <summary>Severity gained per day spent in full glare, before the
         /// hediff's own decay and the Mod Settings rate dial.</summary>
         public float glareBlindSeverityPerDay = 4f;
+
+        // ── STILLSAND_MIRAGE_CONDITION_1: the mirage (RM_Mirage.cs) ──────
+        /// <summary>The permanent GameCondition (class RM_GameCondition_Mirage)
+        /// held on this map while the sun stands at or above
+        /// mirageMinElevationDegrees. Null = no mirage here.</summary>
+        public GameConditionDef mirageCondition;
+
+        public float mirageMinElevationDegrees = 45f;
+
+        /// <summary>The "chasing the water" state a heat-struck pawn can break
+        /// into (class RM_MentalState_ChasingWater).</summary>
+        public MentalStateDef mirageMentalState;
+
+        /// <summary>Heatstroke severity at or above which a pawn standing in
+        /// full sun may break.</summary>
+        public float mirageHeatstrokeMin = 0.2f;
+
+        /// <summary>Mean days between breaks for one such pawn, before the
+        /// Mod Settings dial.</summary>
+        public float mirageBreakMtbDays = 1.5f;
+
+        /// <summary>Exposure at or above which a pawn is "in full sun" for the
+        /// break and for the heat-shimmer accuracy cut.</summary>
+        public float mirageFullSunExposureMin = 0.6f;
 
         // ── §5 shade hopping / §6 dash ring (RM_ShadeHop.cs) ───────────
         /// <summary>A cell with exposure at or below this counts as shade in

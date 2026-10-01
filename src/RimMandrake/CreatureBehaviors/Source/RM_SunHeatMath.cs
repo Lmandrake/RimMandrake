@@ -336,6 +336,42 @@ namespace RimMandrake.CreatureBehaviors
             return severityPerDay * strength * intervalTicks / 60000f;
         }
 
+        // ── STILLSAND_MIRAGE_CONDITION_1 ────────────────────────────────
+
+        /// <summary>The mirage runs only on a map whose sun stands at or above
+        /// the threshold. Unknown (NaN) elevation or a negative threshold: no
+        /// mirage.</summary>
+        public static bool MirageActive(float elevationDeg, float minElevationDeg)
+        {
+            return minElevationDeg >= 0f && !float.IsNaN(elevationDeg) && elevationDeg >= minElevationDeg;
+        }
+
+        /// <summary>The map edge the mirage lies on: the sun-ward one, opposite
+        /// the shadow direction. 0 north (+z), 1 east (+x), 2 south, 3 west
+        /// (Rot4's numbering). No direction: north.</summary>
+        public static int MirageEdge(float shadowDirX, float shadowDirZ)
+        {
+            float x = -shadowDirX;
+            float z = -shadowDirZ;
+            if (Math.Abs(x) < 1e-4f && Math.Abs(z) < 1e-4f)
+            {
+                return 0;
+            }
+            if (Math.Abs(x) >= Math.Abs(z))
+            {
+                return x > 0f ? 1 : 3;
+            }
+            return z > 0f ? 0 : 2;
+        }
+
+        /// <summary>Heat shimmer on a long-range accuracy factor: the shipped
+        /// factor for a shooter standing in full sun (exposure at or above
+        /// the threshold), 1 otherwise.</summary>
+        public static float MirageShimmerFactor(float exposure, float fullSunMin, float factor)
+        {
+            return exposure >= fullSunMin ? Clamp01(factor) : 1f;
+        }
+
         public static float Clamp01(float v)
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);
