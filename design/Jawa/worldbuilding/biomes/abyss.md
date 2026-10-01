@@ -185,8 +185,8 @@ _Names owner-ratified 2026-09-06._
    through the Dark violates the pursuit ruling.
 6. 🔴 **No sun-dependent resident life** — a def needing real sky light to live here is a
    violation; growth runs on glow flora or technology.
-7. 🔴 **The Forsakens never appear** — no faction, no pawns, no structure attributable to
-   them with certainty. Cryptid only (§8); an on-screen Forsaken is a violation.
+7. 🔴 **The Nhaleth never appear** — no faction, no pawns, no structure attributable to
+   them with certainty. Cryptid only (§8); an on-screen Nhaleth is a violation.
 8. 🔴 **The recognizability rule applies**; the Star Wars icon carve-out protects icons;
    the dusk rat is admitted under the behavior-named exemption pending its art redo.
 
@@ -208,9 +208,9 @@ _Names owner-ratified 2026-09-06._
 
 ## 8. Inhabited objects
 
-### The Forsakens — the whispered visitors (owner's ruling, 2026-09-06)
+### The Nhaleth — the whispered visitors (owner's ruling, 2026-09-06; named 2026-10-01)
 
-An **unnamed race that comes here FOR the condition** — the Dark is rare in the galaxy, and
+A **race, the Nhaleth, that comes here FOR the condition** — the Dark is rare in the galaxy, and
 they seek it. They are visitors, not residents: not organized or present enough to even
 mention, and **not seen in living memory**. They are this planet's Loch Ness monster, its
 Bigfoot — sworn to by nobody credible, believed by everybody a little.
@@ -218,7 +218,9 @@ Bigfoot — sworn to by nobody credible, believed by everybody a little.
 But some of the creatures do seem uniquely, suspiciously adapted to this one biome, *as
 though placed*. And the fear that dares not say itself aloud: **that they are the Zabraks —
 the "Nightbrothers" — bringing this strangeness with their twisted Sith associations.**
-These rumors are merely whispered, to ensure they do not come to pass.
+These rumors are merely whispered, to ensure they do not come to pass. (The Sith whisper is
+the Star Wars layer's addition; the cryptid is the Nhaleth in every tier. Spec:
+`abyss_free_cryptid_2026-10-01.md`.)
 
 ### Everything else
 

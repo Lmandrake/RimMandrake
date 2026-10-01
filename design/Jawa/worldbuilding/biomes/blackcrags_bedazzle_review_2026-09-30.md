@@ -107,7 +107,7 @@ no def.
   This is a defect in a shipped mechanic, not a missing feature: the evidence is a defName
   mismatch, not a tile count. Live confirmation is **UNMEASURED** because the game is down.
 - **Gods.** None. Lightfall exists as a named landmark on tile 9023 (campaign; `RUT_Lightfall`,
-  authored 2026-09-12), and *"what waits at the bottom is unwritten"*. The Forsakens are a
+  authored 2026-09-12), and *"what waits at the bottom is unwritten"*. The Nhaleth are a
   cryptid by ban 7, and the Nightbrother (Zabrak) whisper is campaign lore. No precept, ritual or
   relic touches the biome.
 
@@ -583,3 +583,11 @@ Still open: the cryptid "Forsakens" naming, and the Lightfall options.
 
 Still open: the free-tier cryptid (`ABYSS_FREE_CRYPTID_1`).
 
+## 10. Cryptid naming rulings (owner, 2026-10-01 07:48 PDT)
+
+| Card item | Ruling | How recorded |
+|---|---|---|
+| Cryptid name, all tiers | His words, typed: *"Forsaken actually came from Forsaken Crags from the donor mod, so we should not use it here"*. The cryptid is the **Nhaleth** in the free tier AND the Star Wars tier; the Star Wars layer only adds the Sith whisper (never Rakata). The "Utinni renames them back to the Forsakens" design is deleted. | His typed word. `ABYSS_FREE_CRYPTID_1`, spec `abyss_free_cryptid_2026-10-01.md`; sheet `abyss.md` ban 7 and §8 now say Nhaleth. |
+| The droid's story | The free-mod droid who told the story of the Forsakens tells of the Nhaleth instead. | Decision taken by question card. `CastRoster_DROIDS.xml` line ~657 edited; deploy of `mandrake.rm.inhabited` owed. |
+
+Still open: the remaining "Forsaken" uses for the Rakata ancients and the vaults (asked separately).
