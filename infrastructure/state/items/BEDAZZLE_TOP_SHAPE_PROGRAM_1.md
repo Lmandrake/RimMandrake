@@ -38,3 +38,26 @@ running on FOUNDRY.
 - Both sea floor passes closed; each sea species has a floor def and a catch def.
 - Each of the 11 has a recorded rite answer in the register.
 - The (c) backlog is built or explicitly dropped.
+
+## Ruling 2026-10-01 (owner, typed): track (a) order and the GPT-ideas step
+
+Owner, typed: *"Option 1 and always ask gpt for skillful enhancement that is different than the other biomes. We’re looking for unique contributions not just pattern replication across everywhere. Maybe ask it for five ideas each time to get diversity and insist they are different than each other and from other biomes. Ask it to do deep research on other games like rimworld and other mod contents too."*
+
+Option 1 = grandfathered biomes go worst first, one full sitting each, in the order of
+`design/Jawa/worldbuilding/biomes/grandfathered_bedazzle_scores_2026-10-01.md` ("Recommended sitting order"):
+
+| # | Biome | # | Biome |
+|---|---|---|---|
+| 1 | Nightside Ice | 7 | Rust Cathedral |
+| 2 | Lantern Deeps | 8 | The Rot |
+| 3 | Pyrelands | 9 | Fever Wood |
+| 4 | The Sump | 10 | Weeping Stones |
+| 5 | Webwork | 11 | Gelatinous Slime |
+| 6 | Greentide | 12 | Miasma |
+
+**REQUIRED STEP in every bedazzle sitting from now on (movement step, not optional):** a GPT consult through
+`/mnt/c/Users/Mandrake/.codex/.sandbox-bin/codex.exe exec --skip-git-repo-check -s read-only -o <out.md> - < prompt.md`
+asking for **FIVE** ideas. The five must differ from each other AND from every other biome's content (give GPT the
+other biomes' mechanics so it can check). GPT must do deep research on other games like RimWorld and on other mods'
+content. Goal: unique contributions, never pattern replication across biomes. The consult output is cited in the sitting.
+Cleanup fallout of the scores is filed as `BIOME_TIER_CLEANUP_1` (FOUNDRY).
