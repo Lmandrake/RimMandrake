@@ -793,6 +793,14 @@ peer commit landing in that window is on HEAD, was never in `todo`, was never pu
 `origin/main..HEAD` is NOT that proof. Capture your sha with `git rev-parse HEAD` *before*
 syncing. Fix owed: `SHARED_SYNC_DROPS_PEER_COMMITS_1`.
 
+🔴 **When the shared tree is behind origin and won't sync, publish from a SPARSE private worktree** (2026-10-01).
+Peers' dirty files can block `shared_sync.py` for days. A full `git worktree add` then fails with write errors
+on `/mnt/d`, so use `git worktree add --no-checkout --detach <wt> origin/main; git sparse-checkout set --no-cone <dirs>; git checkout`.
+Read docs from `git show origin/main:<path>`, never from the stale disk. ⚠️ The artpipe daemon reads the SHARED
+tree's `infrastructure/artpipe/pending/`, so jobs committed only in a worktree never generate: copy them there too.
+⚠️ A worktree commit can fail on the health publisher's `index.lock`, and `merge-base --is-ancestor HEAD origin/main`
+still passes because HEAD is the base. Check `git log -1 --format=%s` first.
+
 ⚠️ **A REFUSED merge is not harmless**: git's internal restore_state() stashes, hard-resets
 and re-applies, and if a peer holds `index.lock` the re-apply fails — that erased 215 files'
 edits 2026-09-25 07:54 with nothing in the reflog. The same hook refuses whole-tree
