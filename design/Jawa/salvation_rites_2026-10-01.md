@@ -139,9 +139,43 @@ Unburdening, the Named Grief, the Dedication.
 | The pool rites, wind-hour | unassigned | — | Weeping Stones | PITCHED | `design/Jawa/worldbuilding/biomes/weeping_stones.md` §4; `weeping_stones_shine_options_2026-09-24.md` option 4 |
 | The rite of offering and forgetting | Deep Desert Tribes | settlement | sarlacc habitat | DRAFT | `design/Jawa/worldbuilding/sarlacc_native_habitat_draft.md` §3.1 |
 
-**Count (by hand from the tables above, not an instrument): 77 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 9. **68 are the Salvation's** (B1 to B5; the Unburdening appears in both B4 and
-B5, so 67 distinct). B6's 9 are other faiths' rites or unassigned biome pitches, one ruled out.
+### B7. Found rites of the other ten biomes (PITCHED, owner to rule)
+
+Pitched 2026-10-01 by `design/Jawa/biome_rites_pass_2026-10-01.md`, which has each rite's
+condition, inscription site, outcomes and draft inscription. Status of every row: **pitched, owner
+to rule**.
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Sunning | Oomo | feeding | a Burn; red water in the open | Contagion, burn-shelter wall at a valley mouth | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §1.1 |
+| The Unfinished Laid Down | Rekko | consolation | an undissolved Unfinished at the burn line | Contagion, a half-transformed tree at the front | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §1.2 |
+| The Kept Mistake | Zizzik | warding | a broken thing left before a Bloom sortie | Contagion, the rim boulder among aerofleet husks | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §1.3 |
+| The Storm's Receipt | Mob'Unloo | feeding | a fresh storm-exhumation site | Wasteland, a cargo plate the storm turned up | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §2.1 |
+| The Salted Keeping | Ozzik | venting | a vitrified crater; the colony's finest thing buried | Wasteland, fused into a crater rim | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §2.2 |
+| The Inherited Wreck | Rekko | settlement | a failed expedition's wreck in the hot ground | Wasteland, the dead crew's log panel | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §2.3 |
+| The Returned | Ta'Baa | consolation | a body the ablation line gave up, sealed aboard | Blue Desert, a returned hull's hatch | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §3.1 (Q3 collision) |
+| The Silent Crossing | Ishko | feeding | a ripe reed field; no fire, ion or light carried | Blue Desert, a Rakatan Warning panel | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §3.2 (Q3 collision) |
+| The Chime Vigil | Oomo | warding | the chime window, on a refuge ledge | Cracked Lands, chime-tenders' marks | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §4.1 |
+| The Mud Claim | Rekko | feeding | the salvage-strike window after a recede | Cracked Lands, a flood-turned hull | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §4.2 |
+| The Filtered Cup | Oomo | consolation | first water from a filter converter | Cauldron, a spent cartridge housing in a ruin | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §5.1 |
+| The Engine Hour | Ohm | feeding | the ground loud, not a bloom's silence | Cauldron, a capped wellhead's housing | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §5.2 |
+| The Capping | Zizzik | starving | an uncapped vent; no flame in radius | Cauldron, a blown capping collar | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §5.3 |
+| The Anvil Gift | Sh'kaar | venting | a lava lake or crater; a weapon given | Forge, an obsidian slab on a crater lip | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §6.1 |
+| The Flawed Masterwork | Ozzik | feeding | a masterwork made at a vent forge | Forge, a tender's tool rack in a foundry tower | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §6.2 |
+| The Calling-Pyre | Zizzik | settlement | own field fired; herds and enemies present | Leaning Scrub, a charred stake ring | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §7.1 (assigns the B6 row; may merge with the controlled waking, B4) |
+| The Stall-Hold | Ishko | feeding | a Stall; everyone still in the open | Leaning Scrub, a sweetline tree's hide | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §7.2 |
+| The Shade Tithe | Sh'kaar | warding | golden hour; a new roof raised; no Searing | Long Shade, under Shipfall Commons' oldest roof | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §8.1 |
+| The Shadow Walk | Ta'Baa | feeding | a gloomcast crossing the map | Long Shade, a midden in a shadespire's lee | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §8.2 |
+| The Last Track | Ohm | consolation | a crawler tread ending at a dead crawler | Stillsand, the dead crawler's dash | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §9.1 |
+| The Unspilled March | Oomo | feeding | a mirage on the horizon | Stillsand, sealed jars on a glasscrust line | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §9.2 |
+| The Deserter's Welcome | Ohm | feeding | a hospice waking (day 7+) | Warscar, a campaign-tier old-tongue chassis plate | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §10.1 |
+| The Vindication Walk | Ta'Baa | consolation | a Settling; ends when wind lifts the prints | Warscar, chalk inside a firing slit | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §10.2 |
+
+**Count (by hand from the tables above, not an instrument): 100 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 9 + B7 23. **91 are the Salvation's** (B1 to B5 and B7; the Unburdening appears
+in both B4 and B5, so 90 distinct). B6's 9 are other faiths' rites or unassigned biome pitches,
+one ruled out. B6's calling-pyre row is the same rite as B7's Calling-Pyre, now pitched as
+Zizzik's.
 
 ## (c) The four Abyss rites
 
