@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T06:35:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T06:46:04Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2411,3 +2411,83 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  PYRELANDSSHIPREADINESS1 — the SHIPPED rung for Pyrelands: art, review, settings, deploy
 prose:    infrastructure/state/items/PYRELANDS_SHIP_READINESS_1.md
+
+## FLOWWORKS_NORTHSTAR_TRIAL_1 FlowWorks north-star trial: VALIDATED -> WIRED -> GREEN-minimal -> GREEN-full -> SHIPPED
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     trial
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FLOWWORKSNORTHSTARTRIAL1
+prose:    infrastructure/state/items/FLOWWORKS_NORTHSTAR_TRIAL_1.md
+
+## FLOWWORKS_NORTHSTAR_WIRE_1 FlowWorks north star WIRED: rewrite validation.py, every bar and toggle claimed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     trial
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FLOWWORKSNORTHSTARWIRE1
+prose:    infrastructure/state/items/FLOWWORKS_NORTHSTAR_WIRE_1.md
+
+## FLOWWORKS_NORTHSTAR_SITE_PREP_1 FlowWorks trial site: golden save, manifest, preflight that refuses a dirty site
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     trial
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FLOWWORKSNORTHSTARSITEPREP1
+prose:    infrastructure/state/items/FLOWWORKS_NORTHSTAR_SITE_PREP_1.md
+
+## FLOWWORKS_NORTHSTAR_BASELINE_RUN_1 FlowWorks trial: first live BASELINE run on the minimal tier, timed, verify recorded
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     trial
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FLOWWORKSNORTHSTARBASELINERUN1
+prose:    infrastructure/state/items/FLOWWORKS_NORTHSTAR_BASELINE_RUN_1.md
+
+## FLOWWORKS_NORTHSTAR_GREEN_MINIMAL_1 FlowWorks north star GREEN on the minimal tier
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     trial
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FLOWWORKSNORTHSTARGREENMINIMAL1
+prose:    infrastructure/state/items/FLOWWORKS_NORTHSTAR_GREEN_MINIMAL_1.md
+
+## FLOWWORKS_NORTHSTAR_GREEN_FULL_1 FlowWorks north star GREEN on the full mod list
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     trial
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FLOWWORKSNORTHSTARGREENFULL1
+prose:    infrastructure/state/items/FLOWWORKS_NORTHSTAR_GREEN_FULL_1.md
+
+## FLOWWORKS_NORTHSTAR_SHIP_1 FlowWorks SHIPPED: settings superb, art complete, code review CLEAN, deployed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     trial
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FLOWWORKSNORTHSTARSHIP1
+prose:    infrastructure/state/items/FLOWWORKS_NORTHSTAR_SHIP_1.md
+
+## PITS_STALE_DEPLOY_COLLISION_1 Stale mandrake.rm.pits active on the live list beside FlowWorks: 22 of 22 defNames collide
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     trial
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  PITSSTALEDEPLOYCOLLISION1
+prose:    infrastructure/state/items/PITS_STALE_DEPLOY_COLLISION_1.md
