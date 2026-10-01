@@ -486,7 +486,7 @@
       <baseHealthScale>1.4</baseHealthScale>
       <baseHungerRate>0.12</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
-      <useMeatFrom>Turtle</useMeatFrom>
+      <useMeatFrom>SeaTurtle</useMeatFrom>
       <trainability>None</trainability>
       <manhunterOnDamageChance>0</manhunterOnDamageChance>
       <roamMtbDays>6</roamMtbDays>
@@ -739,7 +739,7 @@
       <baseHealthScale>0.5</baseHealthScale>
       <baseHungerRate>0.1</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
-      <useMeatFrom>Turtle</useMeatFrom>
+      <useMeatFrom>SeaTurtle</useMeatFrom>
       <trainability>Intermediate</trainability>
       <manhunterOnDamageChance>0</manhunterOnDamageChance>
       <roamMtbDays>6</roamMtbDays>
