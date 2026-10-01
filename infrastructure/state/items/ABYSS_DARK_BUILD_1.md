@@ -7,7 +7,7 @@ Biome: the Abyss (`RM_Abyss` in `src/RimMandrake/Abyss/`, composed into `mandrak
 Owner chose the full spine by question card 2026-09-30 (decision taken by question card): report §5 items 1-3.
 1. **The Dark is real air**: blinds and swallows lamplight; **heat opens clear pockets**, so a warm base sees and a cold one is blind. Fighting here gets harder. Ships with a **strength slider** in Mod Settings (0 = off, graceful degrade).
 2. **The Unveiling**: rarely the Dark lifts entirely for a few hours (sheet 4b, owner-authored weather); reveals what the Dark hides (durrgak rings etc., report §5 item 2).
-3. **Storm call**: thunder in the storms is sometimes the freed storm giant calling. It is our own new creature under `ABYSS_DONOR_BEASTS_FREED_1` (new name, fresh art, no `AA_Behemoth`, no `crags_ghorrumak_*` art: owner, "Fully regenerate"). Alien megafauna, never a dragon, no fire breath (`ABYSS_LIGHTFALL_BROOD_WRECK_1`). The freed giant and the freed quill predator are wired by that item.
+3. **Storm call**: thunder in the storms is sometimes the freed storm giant calling. It is our own new creature under `ABYSS_DONOR_BEASTS_FREED_1` (`RM_Summ`, owner-named; fresh art, no `AA_Behemoth`, no `crags_ghorrumak_*` art: owner, "Fully regenerate"). Alien megafauna, never a dragon, no fire breath (`ABYSS_LIGHTFALL_BROOD_WRECK_1`). The freed giant and the freed quill predator are wired by that item.
 Heat is the ONE vanilla heat (owner 2026-09-29): no new hediff. Search src/ before inventing: `RM_CompPlantPredator`, light/lamp aversion `CompLightAversion` and `SOLAR_HEAT_EXPOSURE_1` are neighbours. Etchfall/gust/turbine/lamp-crop items (report §5 items 4, 7, 8, 10) were NOT ruled on at turn 1; do not build them from this item.
 
 ## criteria

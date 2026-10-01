@@ -97,7 +97,7 @@ plus `git ls-files src` for PNGs. Each subject searched by current, alternate an
 | gharrek, durrgak, krizzak, etchcap | + krovvak, gillfan, dhagga, cairn, drekkis, lightthief, etchhollow | 0 everywhere, **listed** |
 | tholin, gill-ash, fold-lamp, great bone, egg, wreck, rumor sites | + heaterlamp, bonefield, giantbone, broodegg, gravshipwreck, rescueship, stonecircle | 0 everywhere, **listed** |
 | brood-mother | brood | only `rm_thrummelbroodmother_*` (another biome's creature), **listed** |
-| the two new names | rukkadh, grokkath, khaggar, tukkrag, gekkor, drokkat | 0, **listed** |
+| the two names (owner-chosen) | summ, drokattak | 0, **listed** |
 | ghorrumak, zhurrakor | + behemoth, nighthrumbo | `crags_ghorrumak_*`, `crags_zhurrakor_*` done (3 facings each), approved 2026-09-06 (`art_review_2026-09-06.decisions.json`). 🔴 **Does NOT count:** donor-bodied, and the owner ruled "fully regenerate" (review §9). **Fresh jobs listed.** |
 | cindermare, skarnix | — | 0 in artpipe, but **shipped PNGs exist**: `src/RimStarWars/SWBestiary/Textures/Things/Pawn/Animal/{Cindermare,Skarnix}/*.png`. No ruling on either. **Reused** (move with the defs), 0 jobs |
 | the 12 other `crags_*` sets | vrakk, dhukk, hulggarok, zekkra, kessik, brekkugar, korrag, bhoruk, gruzz, shekkur, ulkhorr, thrizzik | done, 3 facings each, unwired. **Reused** (`ABYSS_FREE_TIER_BODY_1` wires them), 0 jobs. ⚠ `crags_kessik_east` also has a `failed/` entry; the `done/` copy is the live one |
@@ -177,13 +177,13 @@ Every creature is single-homed in the Abyss.
 
 ### 4C. The freed beasts (free, `RM_`, `ABYSS_DONOR_BEASTS_FREED_1`)
 
-Names are proposals (§5), **owner to confirm**.
+Names are the owner's (§5, 2026-10-01 10:24 PDT). Stage labels are plain-English proposals, **owner to confirm**.
 
-**The storm giant** · proposed **rukkadh** · `RM_Rukkadh` · bs ~8 (the donor's value was
+**The storm giant (wild form of the Summ family)** · **Summ** · `RM_Summ` · bs ~8 (the donor's value was
 UNMEASURED; 8 is proposed)
 - *Plain:* a vast, low, many-legged grazer of the deep crags whose voice is the thunder.
 - *Behaviour:* it feeds on the charge the Dark carries; in a Witchfire storm, the roll you hear a
-  few seconds before a flash with no lightning is a rukkadh calling (`ABYSS_DARK_BUILD_1`). One may
+  few seconds before a flash with no lightning is a summ calling (`ABYSS_DARK_BUILD_1`). One may
   come down and cross the map in the storm. It regenerates. **UV-sensitive** (it suffers in
   daylight off the Abyss) and **sees in darkness and the Dark unimpaired**. Wild, it is a passing
   terror; tamed (§4D), it is bane and boon.
@@ -192,11 +192,11 @@ UNMEASURED; 8 is proposed)
   neck and chest that faintly glow a storm-violet when charged, tiny deep-set eyes adapted to the
   dark, hide like wet-dark basalt with pale lichen-grey plating. No wings, no fire, no scales in
   a heraldic pattern. Anchor **basalt and storm-violet**. 1024, faced.
-- *Juvenile:* `RM_Rukkadh_Juvenile`, the hatchling's life stage: oversized head and throat-sac
+- *Juvenile:* `RM_Summ_Juvenile`, the hatchling's life stage: oversized head and throat-sac
   buds, soft pale hide not yet plated, already hungry and hostile. Anchor **pale ash and
   violet**. 512, faced.
 
-**The quill predator** · proposed **tukkrag** · `RM_Tukkrag` · bs ~3
+**The quill predator** · **Drokattak** · `RM_Drokattak` · bs ~3
 - *Plain:* a heavy, low-slung night hunter whose back is a crown of long sensory quills.
 - *Behaviour:* in the Dark it hunts by feel: its quills pick up the tremor of anything moving,
   and it **raises them in a clattering hackle** before it lunges and pins. It does not throw them
@@ -206,14 +206,14 @@ UNMEASURED; 8 is proposed)
 
 ### 4D. The Brood and the Ship in the Wall (campaign, `RUT_`, `ABYSS_LIGHTFALL_BROOD_WRECK_1`)
 
-- **The brood-mother** · `RUT_RukkadhBroodMother` (PawnKind on the `RM_Rukkadh` race, much larger
-  draw size). *Plain:* the oldest rukkadh, asleep coiled round her clutch among giant bones.
+- **The brood-mother, "Summ the All-Render"** · `RUT_SummAllRender` (PawnKind on the `RM_Summ` race, much larger
+  draw size). *Plain:* the oldest of the Summ, asleep coiled round her clutch among giant bones.
   *Behaviour:* light and noise from egg theft and salvage feed one **wake meter**; her stirring
   and a low rumble are the readable signs; **past the greed line she wakes and is essentially
   unkillable**: you flee. *Art:* the species, but ancient: plating grown into a ridged shell
   scarred white, throat-sacs vast and dark, lichen and grain crusted on her back so she reads as
   part of the cavern floor until she moves. Anchor **bone-white scar on black**. 1024, faced.
-- **The egg** · `RUT_RukkadhEgg`. A leathery, heavy egg the size of a barrel, dark violet veins
+- **The egg** · `RUT_SummEgg`. A leathery, heavy egg the size of a barrel, dark violet veins
   under a grey grain-dusted shell, a faint inner pulse of light. Its inspect text must say plainly
   why it has not bonded when no great bone is aboard. Anchor **grey and pulse-violet**. 256
   single.
@@ -231,7 +231,7 @@ UNMEASURED; 8 is proposed)
   and says so in plain words. *Art:* the hull section as a map building, 1024 single (torn plating,
   a dead running light, grain drifted into the seams, faded rescue stripes); a debris pile 512
   single. Anchor **faded rescue orange on grey**.
-- **The tamed beast, bane and boon:** the hatchling raised is the `RM_Rukkadh` race. Very hungry
+- **The tamed beast, bane and boon:** the hatchling raised is the `RM_Summ` race. Very hungry
   and very aggressive (it kills wildlife indiscriminately and semi-randomly), deeply tough and
   powerful, UV-sensitive, sees in the dark. Its art is the species set above; no extra job.
 
@@ -275,13 +275,12 @@ cindermare) or with `korrum`; and nothing echoing the old names (ghorrumak, zhur
 list, and nothing else. Wookieepedia search API (`list=search&srsearch=`; probe `mynock` returns
 *Mynock, Mynock/Legends, Ord Mynock*): **0 results** for every candidate.
 
-| beast | proposed | alternates | why |
-|---|---|---|---|
-| the storm giant (ex-ghorrumak) | **rukkadh** (*ROOK-kahd*) | grokkath, khaggar | a rolled *r*, a hard stop, and a breathy *-dh* like thunder dying in the rocks |
-| the quill predator (ex-nighthrumbo/zhurrakor) | **tukkrag** (*TUK-rag*) | gekkor, drokkat | a dry double stop, the sound of quills clattering up |
+| beast | owner's name | stage labels (plain English; owner to confirm) |
+|---|---|---|
+| the storm giant and its family | **Summ** (his words: *"Summ the All-Render, with the lesser forms of it other Summ creatures."*) | wild adult: "summ" (`RM_Summ`) · egg: "summ egg" (`RUT_SummEgg`) · young: "summ hatchling" (`RM_Summ_Juvenile`) · the great one at Lightfall's bottom: **"Summ the All-Render"** (`RUT_SummAllRender`) · tamed: "summ", bane and boon |
+| the quill predator | **Drokattak** (his word) | "drokattak" (`RM_Drokattak`) |
 
-DefNames follow the names: `RM_Rukkadh`, `RM_Rukkadh_Juvenile`, `RUT_RukkadhBroodMother`,
-`RUT_RukkadhEgg`, `RM_Tukkrag`. **If he picks an alternate, the CSV ids change before filing.**
+DefNames: `RM_Summ`, `RM_Summ_Juvenile`, `RUT_SummAllRender`, `RUT_SummEgg`, `RM_Drokattak`.
 
 ## 6. Lore for his pen
 
@@ -289,10 +288,10 @@ Drafts only, as Warscar §6 did. **Each is marked for his pen: accept, rewrite o
 
 ### 6A. The storm giant's biology (`ABYSS_LIGHTFALL_BROOD_WRECK_1` owes "why it nests here, why the storms answer it") — DRAFT, FOR HIS PEN
 
-> The rukkadh grazes on the Dark itself. The Dark holds a charge, and the rukkadh's throat-sacs
+> The summ grazes on the Dark itself. The Dark holds a charge, and the summ's throat-sacs
 > gather it as it feeds, until the beast is heavy with it and must call it out: that is the
 > thunder. The Witchfire storms gather where the most charge has been drawn down, so a storm does
-> not bring the rukkadh; the rukkadh brings the storm. They nest at Lightfall's bottom because the
+> not bring the summ; the summ brings the storm. They nest at Lightfall's bottom because the
 > Dark is thickest there and has never once lifted, and an egg must lie a year in perfect dark to
 > hatch. Sunlight burns them. They see by the faint glow of their own throats.
 
@@ -343,11 +342,11 @@ skarnix, the lamp crop via `giantgamma_v1`).
 | KRIZZAK | `RM_Krizzak_Flying_1..5` | 256 | s,e,n ×5 | 15 | plum and lamp-amber |
 | ETCHCAP | `RM_Etchcap` / `RM_EtchcapCap` | 256 | single | 2 | black and violet |
 | ETCHFALL | `RM_Tholin` / `RM_Filth_Tholin` | 256 | single | 2 | rust-brown and tar |
-| FREED | `RM_Rukkadh` | 1024 | s,e,n | 3 | basalt and storm-violet |
-| FREED | `RM_Rukkadh_Juvenile` | 512 | s,e,n | 3 | pale ash and violet |
-| FREED | `RM_Tukkrag` | 512 | s,e,n | 3 | ochre and banded bone |
-| LIGHTFALL | `RUT_RukkadhBroodMother` | 1024 | s,e,n | 3 | bone-white scar on black |
-| LIGHTFALL | `RUT_RukkadhEgg` | 256 | single | 1 | grey and pulse-violet |
+| FREED | `RM_Summ` | 1024 | s,e,n | 3 | basalt and storm-violet |
+| FREED | `RM_Summ_Juvenile` | 512 | s,e,n | 3 | pale ash and violet |
+| FREED | `RM_Drokattak` | 512 | s,e,n | 3 | ochre and banded bone |
+| LIGHTFALL | `RUT_SummAllRender` | 1024 | s,e,n | 3 | bone-white scar on black |
+| LIGHTFALL | `RUT_SummEgg` | 256 | single | 1 | grey and pulse-violet |
 | LIGHTFALL | `RUT_GreatBone` | 1024×512 | single | 1 | old amber ivory |
 | LIGHTFALL | `RUT_BroodBone` | 256 | single | 1 | pale bone plank |
 | LIGHTFALL | `RUT_BroodRibArch` | 1024×512 | single | 1 | grey chalk bone |
@@ -364,7 +363,7 @@ skarnix, the lamp crop via `giantgamma_v1`).
 - The krizzak's flight frames follow the Locust count (5). If the def pass chooses 8 (the
   Chicken/Sparrow count), add three frames × 3 directions.
 - The brood-mother shares the species' anatomy; if her accepted east master drifts from
-  `RM_Rukkadh`'s, re-cut from the species master rather than re-generating both.
+  `RM_Summ`'s, re-cut from the species master rather than re-generating both.
 - The great bone is drawn standing in a cradle so it reads aboard a ship deck; if the build makes
   it a wall-mounted fitting instead, re-cut.
 - The cindermare and skarnix move with their shipped single PNGs; faced sets in this register are
