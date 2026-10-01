@@ -99,7 +99,6 @@
     <ingestible>
       <foodType>VegetableOrFruit</foodType>
       <tasteThought>AteRawFood</tasteThought>
-      <specialThoughtAsIngredient>AteUltracactus</specialThoughtAsIngredient>
     </ingestible>
     <comps>
       <li Class="CompProperties_Rottable">

@@ -86,7 +86,7 @@
         </capacities>
         <power>6</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftFoot</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
       </li>
       <li>
         <label>forehoof</label>
@@ -95,7 +95,7 @@
         </capacities>
         <power>6</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>FrontRightFoot</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
