@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-10-01T01:08:37Z",
+  "derive_from": "RM_LensBench_east",
+  "drawsize": 3.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_LensBench_south",
+  "priority": 55,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game workbench sprite, three-quarter top-down: a lens-grinding bench \u2014 a long heavy worktable with a hand-cranked grinding wheel, a polishing lap, small racks of clear lenses and glass blanks, a magnifier on an arm. 3x1 workbench.",
+  "reference": null,
+  "rimflow_item_id": "STILLSAND_GLASS_LENS_CHAIN_1",
+  "style_notes": "stillsand register: the deep desert under a fixed white sun that never sets: bleached bone, pale gold and old-ivory sand, hard-edged black shade with no penumbra; light the subject with one hard white key from high front-top and crisp dark undersides, but bake NO cast shadow onto the ground (the engine draws shadows along the pinned sun); no rain, nothing wet-slicked, no lush green; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is PATINA BRASS AND BONE: bone-pale tabletop, patinated brass fittings, clear glass blanks; 3x1 workbench; vanilla bench facings"
+}

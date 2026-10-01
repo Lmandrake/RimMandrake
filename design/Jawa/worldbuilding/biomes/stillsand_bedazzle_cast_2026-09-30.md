@@ -154,7 +154,7 @@ eruption scar, glasscrust scar, crawler tread (RSW).
 **Skipped, art already in the game:** `RM_FE_Fulgurite`'s mechanism (only its art is re-made);
 krayt corpses (`*_Dessicated`); `RSW_KraytDragonSkull`, `RSW_KraytPearl`; the krayt SoundDefs.
 
-## 6. Queued art
+## 6. Queued art: FILED 2026-09-30, 61 jobs, 0 refused
 
 **CSV:** `infrastructure/artpipe/art_lists/stillsand_bedazzle_cast.csv`. Channel codex,
 transparent, `reference` empty on every row (fresh designs, never reskins; the fulgurite's photo
