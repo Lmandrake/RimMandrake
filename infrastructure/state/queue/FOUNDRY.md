@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:43:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:52:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1295,15 +1295,6 @@ target:   v1
 kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
-
-## LEANINGSCRUB_GPT_ENRICHMENT_1 Leaning Scrub enrichment (GPT consult 2026-09-30, owner-picked by card): venomvine as distinct rooms (five forms + more to pitch), runway bloom, named sweetline trees
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Venomvine as distinct rooms, and MORE forms than five. Owner typed: "I really like the
-prose:    infrastructure/state/items/LEANINGSCRUB_GPT_ENRICHMENT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
