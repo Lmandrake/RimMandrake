@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- FOOTPRINT_TRACK_GRID_1: the dirty flag RM_SectionLayer_TrackPrints listens to.
+       RM_MapComponent_TrackGrid raises it per written or cleared cell, so only the
+       sections that changed rebuild. -->
+  <MapMeshFlagDef>
+    <defName>RM_TrackPrints</defName>
+  </MapMeshFlagDef>
+</Defs>
