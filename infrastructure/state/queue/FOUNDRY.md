@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:04:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:15:03Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1295,15 +1295,6 @@ target:   v1
 kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
-
-## STILLSAND_DUNE_GALE_1 Stillsand dune gale: the biome's own storm on the dunes engine (dunes march, sun off, abrasion, carry-and-return), gale static, one emergence incl. the mummified caravan, dust devils, tracks wiped
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. RMDuneGale WeatherDef plus a GameConditionDef for its duration: rare (a few a year), one
-prose:    infrastructure/state/items/STILLSAND_DUNE_GALE_1.md
 
 ## STILLSAND_LOAD_DEF_ERRORS_1 Stillsand/Contagion load-time def errors: RM_KneelOllim discarded (TreeCategory Standard), loomma severityRange, trainability, meat, FrontLegs, Lashgrass texture
 state:    doing
