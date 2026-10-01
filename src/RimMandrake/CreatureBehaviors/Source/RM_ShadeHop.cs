@@ -132,6 +132,14 @@ namespace RimMandrake.CreatureBehaviors
             {
                 return true;
             }
+            // LONGSHADE_GPT_ENRICHMENT_1 §2: a giant's moving shadow is real
+            // shade, though the patch graph (rebuilt every 2000 ticks) never
+            // holds it: an animal standing in it is sheltered, not "caught in
+            // the open", so it rests there instead of sprinting away.
+            if (grid.MovingShadeAt(pawn.Position) >= 1f - grid.HeatExtension.shadeExposureMax)
+            {
+                return true;
+            }
             RM_MapComponent_FalseShade fs = Lures(map);
             return fs != null && fs.FalseShadeAt(pawn.Position) >= 1f - grid.HeatExtension.shadeExposureMax;
         }
