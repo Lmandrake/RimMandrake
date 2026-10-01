@@ -71,26 +71,23 @@ namespace RimMandrake.StructureInjections
             // never touched by this).
             if (!RM_StructureInjectionsSettings.enabled) return;
 
+            // `def` is null when this GenStep is an inline option of a
+            // GenStep_RandomSelector (every whisper row): only a GenStepDef's
+            // OWN genStep gets its def back-filled, and the selector calls
+            // option.genStep.Generate directly. Reading def.modContentPack
+            // there was RIMPLACE_GENSTEP_NRE_1 (Generate IL 0x35, reached
+            // through GenStep_RandomSelector).
+            string label = def?.defName ?? "(inline GenStep_RandomSelector option)";
+
             if (string.IsNullOrEmpty(planFile))
             {
                 Log.Error("[RimMandrake.StructureInjections] GenStep_RimplacePlan on " +
-                          def.defName + " has no planFile.");
+                          label + " has no planFile.");
                 return;
             }
 
-            var modRoot = def.modContentPack?.RootDir;
-            if (string.IsNullOrEmpty(modRoot))
-            {
-                Log.Error("[RimMandrake.StructureInjections] GenStepDef " + def.defName +
-                          " has no owning modContentPack; cannot resolve planFile.");
-                return;
-            }
-            var path = Path.Combine(modRoot, planFile);
-            if (!File.Exists(path))
-            {
-                Log.Error("[RimMandrake.StructureInjections] plan file not found: " + path);
-                return;
-            }
+            var path = ResolvePlanPath(label);
+            if (path == null) return;
 
             RimplacePlan plan;
             try
@@ -112,7 +109,7 @@ namespace RimMandrake.StructureInjections
                 if (anchorDef == null)
                 {
                     Log.Error("[RimMandrake.StructureInjections] GenStep_RimplacePlan on " +
-                              def.defName + " has anchorThingDef '" + anchorThingDef +
+                              label + " has anchorThingDef '" + anchorThingDef +
                               "' but no such ThingDef exists.");
                     return;
                 }
@@ -126,7 +123,7 @@ namespace RimMandrake.StructureInjections
                 if (found == null)
                 {
                     Log.Warning("[RimMandrake.StructureInjections] GenStep_RimplacePlan on " +
-                                def.defName + ": no '" + anchorThingDef + "' found on the map " +
+                                label + ": no '" + anchorThingDef + "' found on the map " +
                                 "(anchor mutator generated with none, or this GenStepDef's order " +
                                 "runs before the anchor's own) — plan " + (planFile ?? "(debug)") +
                                 " NOT applied (a ring built around the wrong point would be worse " +
@@ -153,6 +150,39 @@ namespace RimMandrake.StructureInjections
             }
 
             ApplyPlan(map, plan, dx, dz, planFile ?? "(debug)");
+        }
+
+        // planFile is relative to the owning mod's root. With a def, that is
+        // def.modContentPack. Without one (an inline selector option), the
+        // owner is unknowable from here, so look for the file under every
+        // running mod's root; template names are unique across our mods, and
+        // more than one hit is refused rather than guessed.
+        private string ResolvePlanPath(string label)
+        {
+            var modRoot = def?.modContentPack?.RootDir;
+            if (!string.IsNullOrEmpty(modRoot))
+            {
+                var own = Path.Combine(modRoot, planFile);
+                if (File.Exists(own)) return own;
+                Log.Error("[RimMandrake.StructureInjections] plan file not found: " + own);
+                return null;
+            }
+
+            var hits = LoadedModManager.RunningMods
+                .Where(m => !string.IsNullOrEmpty(m.RootDir))
+                .Select(m => Path.Combine(m.RootDir, planFile))
+                .Where(File.Exists)
+                .Distinct()
+                .ToList();
+            if (hits.Count == 1) return hits[0];
+            if (hits.Count == 0)
+                Log.Error("[RimMandrake.StructureInjections] GenStep_RimplacePlan on " + label +
+                          ": plan file '" + planFile + "' not found under any running mod.");
+            else
+                Log.Error("[RimMandrake.StructureInjections] GenStep_RimplacePlan on " + label +
+                          ": plan file '" + planFile + "' found in " + hits.Count +
+                          " running mods (" + string.Join(", ", hits) + "); refusing to guess.");
+            return null;
         }
 
         // Shared by Generate() (production path, driven off a GenStepDef's
