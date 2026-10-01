@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-01T00:06:32Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Hazebell",
+  "priority": 60,
+  "prompt": "RimWorld game plant sprite: the hazebell, a hand-high transparent cup-shaped plant closed like a bud of nine glassy lobes on a short fractal stem, refraction highlights on every lobe edge, the ground readable through the body. Single organism, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "BLUEDESERT_GPT_ENRICHMENT_1",
+  "style_notes": "carbon garden flora, CLOSED state (default graphic); blue desert phase-line register: glass-clear and grey with glacial blue-white refraction highlights and frost sparkle, starlit cold light, no warm colour"
+}
