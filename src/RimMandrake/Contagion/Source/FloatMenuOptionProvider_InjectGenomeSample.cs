@@ -44,7 +44,7 @@ namespace RimMandrake.Contagion
             {
                 return null;
             }
-            Thing sample = actor.inventory.innerContainer.FirstOrDefault(t => t.def == RM_ContagionDefOf.RM_GenomeSample);
+            Thing sample = AmoebaHostUtility.FindSampleToInject(actor);
             if (sample == null)
             {
                 return null;

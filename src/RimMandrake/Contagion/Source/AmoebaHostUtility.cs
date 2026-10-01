@@ -20,6 +20,35 @@ namespace RimMandrake.Contagion
     // of v1 until the limb mechanism existed.
     public static class AmoebaHostUtility
     {
+        // The sample an inject job uses: a carried Monstrous sample first, so
+        // a Normal one can never be spent ahead of it. The float menu and the
+        // job driver both call this, so they always agree.
+        public static Thing FindSampleToInject(Pawn actor)
+        {
+            if (actor?.inventory == null)
+            {
+                return null;
+            }
+            Thing normal = null;
+            foreach (Thing t in actor.inventory.innerContainer)
+            {
+                if (t.def != RM_ContagionDefOf.RM_GenomeSample)
+                {
+                    continue;
+                }
+                CompGenomeSample comp = t.TryGetComp<CompGenomeSample>();
+                if (comp != null && comp.monstrous)
+                {
+                    return t;
+                }
+                if (normal == null)
+                {
+                    normal = t;
+                }
+            }
+            return normal;
+        }
+
         // Our own race (Defs/ThingDefs_Races/RM_ContagionFauna.xml); matched
         // by defName string so the check stays a cheap comparison.
         public const string HostDefName = "RM_BloodyMess";
@@ -92,7 +121,10 @@ namespace RimMandrake.Contagion
                 List<ThingDef> limbPool = new List<ThingDef>
                 {
                     RM_OrganDefOf.RM_PillarArmItem,
-                    RM_OrganDefOf.RM_LashItem
+                    RM_OrganDefOf.RM_LashItem,
+                    RM_OrganDefOf.RM_EyeburstItem,
+                    RM_OrganDefOf.RM_CaudalSpringItem,
+                    RM_OrganDefOf.RM_BellowsItem
                 }.Where(d => d != null).ToList();
                 if (limbPool.Count > 0)
                 {
@@ -167,6 +199,10 @@ namespace RimMandrake.Contagion
         // CONTAGION_GROWN_LIMBS_BUILD_1
         public static ThingDef RM_PillarArmItem;
         public static ThingDef RM_LashItem;
+        // CONTAGION_GROWN_LIMBS_REST_1
+        public static ThingDef RM_EyeburstItem;
+        public static ThingDef RM_CaudalSpringItem;
+        public static ThingDef RM_BellowsItem;
 
         static RM_OrganDefOf()
         {
