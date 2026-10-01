@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:33:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:43:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1296,6 +1296,15 @@ kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
+## LEANINGSCRUB_GPT_ENRICHMENT_1 Leaning Scrub enrichment (GPT consult 2026-09-30, owner-picked by card): venomvine as distinct rooms (five forms + more to pitch), runway bloom, named sweetline trees
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Venomvine as distinct rooms, and MORE forms than five. Owner typed: "I really like the
+prose:    infrastructure/state/items/LEANINGSCRUB_GPT_ENRICHMENT_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -2042,16 +2051,6 @@ thin:     no ## verify
 summary:  1. Floatstone keelwork. Pearl-white, spun-sugar floatstone braces threaded through a gravship
 prose:    infrastructure/state/items/FORGE_GPT_ENRICHMENT_1.md
 
-## LEANINGSCRUB_GPT_ENRICHMENT_1 Leaning Scrub enrichment (GPT consult 2026-09-30, owner-picked by card): venomvine as distinct rooms (five forms + more to pitch), runway bloom, named sweetline trees
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Venomvine as distinct rooms, and MORE forms than five. Owner typed: "I really like the
-prose:    infrastructure/state/items/LEANINGSCRUB_GPT_ENRICHMENT_1.md
-
 ## LONGSHADE_GPT_ENRICHMENT_1 Long Shade enrichment (GPT consult 2026-09-30, owner-picked by card): ship becomes a refuge, gloomcast moves shade, camera-keyed heat soundscape, lee-side middens, shade gear learned by study
 state:    proposed
 row:      unassigned
@@ -2761,3 +2760,43 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CAULDRONENRICHMENTLIVEPROOF1 — live proof of the offline Cauldron enrichment
 prose:    infrastructure/state/items/CAULDRON_ENRICHMENT_LIVE_PROOF_1.md
+
+## LEANINGSCRUB_SWEETLINE_VISITORS_1 Sweetline travellers camp and pilgrims leave tokens: who, mapgen or incident, token def
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  LEANINGSCRUBSWEETLINEVISITORS1 — travellers camp under sweetline trees, pilgrims leave tokens
+prose:    infrastructure/state/items/LEANINGSCRUB_SWEETLINE_VISITORS_1.md
+
+## LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1 Shed vissler arms draw real scavengers: which species, food or lure job
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  LEANINGSCRUBVISSLERARMSCAVENGERS1 — shed vissler arms draw real scavengers
+prose:    infrastructure/state/items/LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1.md
+
+## LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1 Runway bloom visuals: ribbonwhip sway and burrower exit holes (which species burrow?)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  LEANINGSCRUBRUNWAYBLOOMVISUALS1 — ribbonwhip sway and burrower exit holes
+prose:    infrastructure/state/items/LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1.md
+
+## LEANINGSCRUB_ENRICHMENT_QUICKTEST_1 Quicktest-prove dripping regrow, crown mob, runway bloom, named sweetline trees by state read
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     verify
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  LEANINGSCRUBENRICHMENTQUICKTEST1 — quicktest-prove the Leaning Scrub enrichment on a Scrub map
+prose:    infrastructure/state/items/LEANINGSCRUB_ENRICHMENT_QUICKTEST_1.md
