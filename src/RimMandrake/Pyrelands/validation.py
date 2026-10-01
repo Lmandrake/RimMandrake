@@ -847,10 +847,22 @@ def scorchfruit_fire_born(t):
     try:
         with _comp(t, "scorchfruit_fire_born", shows=["pyre_scorchfruit_fire_born"]):
             _isolate(t)
+            # Burn half first: a burned cohort with no fruit fails the bar whatever the census.
+            _firebreak(t, rect)
+            _soil(t, rect)
+            _plants(t, "RM_FE_Plant_EmberGrass", rect)
+            _fire(t, rect)
+            _wait(t, 11600)
+            n = _count(t, "RM_FE_Plant_ScorchFruit", _rs(rect))
+            _note(t, "ScorchFruit inside the burned cohort", n)
             if _live(t):
+                if n < 1:
+                    _fail("no ScorchFruit spawned inside the burned cohort %s" % _rs(rect))
                 gen = _GEN.get("scorchfruit")
                 if gen is None:
-                    _unmeasured(t, "the gen census (plant_census) did not record ScorchFruit")
+                    _unmeasured(t, "%d ScorchFruit in the burned cohort, but the fresh-site census "
+                                   "(plant_census) did not run, so 'never on unburned land' is "
+                                   "unmeasured" % n)
                 # The site's only fires are this suite's pads (the site recipe isolates every
                 # natural igniter), so a ScorchFruit outside every fire pad grew on unburned land.
                 wild = [c for c in gen if not any(abs(c[0] - px) <= 18 and abs(c[1] - pz) <= 18
@@ -859,15 +871,6 @@ def scorchfruit_fire_born(t):
                 if wild:
                     _fail("ScorchFruit on unburned land (outside every fire pad) at the census: %r"
                           % wild)
-            _firebreak(t, rect)
-            _soil(t, rect)
-            _plants(t, "RM_FE_Plant_EmberGrass", rect)
-            _fire(t, rect)
-            _wait(t, 11600)
-            n = _count(t, "RM_FE_Plant_ScorchFruit", _rs(rect))
-            _note(t, "ScorchFruit inside the burned cohort", n)
-            if _live(t) and n < 1:
-                _fail("no ScorchFruit spawned inside the burned cohort %s" % _rs(rect))
             t.screenshot(rect=rect)
     finally:
         _extinguish(t)
@@ -939,11 +942,14 @@ def scorchfruit_spoils(t):
     try:
         with _comp(t, "scorchfruit_spoils_fast", shows=["pyre_scorchfruit_spoils_fast"]):
             _isolate(t)
-            # Plan 2.3a: the stack sits in a fenced cell no pawn can reach. Run 5 left it in the
-            # open and a wild grazer ate it at day 2 (it read "spoils in 2.5 days" at 1.5).
-            ring = [(cx, z - 3) for cx in range(x - 5, x + 6)] + [(cx, z + 5) for cx in range(x - 5, x + 6)] \
-                + [(x - 5, cz) for cz in range(z - 2, z + 5)] + [(x + 5, cz) for cz in range(z - 2, z + 5)]
-            t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % c for c in ring), stuff="Steel")
+            # Plan 2.3a: the stack sits in a fenced cell no pawn can reach. In the open a wild
+            # grazer ate it at day 2 (runs 5 and 6, steel ring included). A sealed room (player
+            # door: animals cannot open it) held three stacks untouched (probe 2026-10-01).
+            # Unrefrigerated: the room tracks the site's own ~45-58 C.
+            room = t.bridge_call("jawa/make_empty_room", rect="%d,%d,11,9" % (x - 5, z - 3),
+                                 stuffDef="Steel")
+            if _live(t):
+                _ok(room, "make_empty_room")
             t.bridge_call("jawa/spawn_batch", ops="RM_FE_ScorchFruitYield:%d,%d,10;Meat_Human:%d,%d,10"
                           % (x, z, x + 2, z))
             _plants(t, "RM_FE_Plant_ScorchFruit", (x - 3, z + 3, 3, 1))
@@ -1002,8 +1008,8 @@ def firehawk(t):
             _fire(t, (x - 2, z - 2, 4, 4), size=0.5)
             hawk = _spawn_wild(t, "RUT_FireHawk", x + 8, z)
             seen = []
-            for _ in range(20):
-                _wait(t, 300)
+            for _ in range(100):          # every 60 ticks: a sortie is short and was missable at 300
+                _wait(t, 60)
                 j = _job_of(t, hawk)
                 seen.append((j, _count(t, "Fire", _rs(rect))))
                 if j == FIRE_HAWK_JOB:
@@ -1012,7 +1018,7 @@ def firehawk(t):
             if _live(t) and not any(s_[1] for s_ in seen):
                 _unmeasured(t, "no fire was alive beside the hawk at any sample: %r" % seen)
             if _live(t) and FIRE_HAWK_JOB not in [s_[0] for s_ in seen]:
-                _fail("no %s job observed in 6000 ticks beside a live fire (job state read only)"
+                _fail("no %s job in 100 samples over 6000 ticks beside a live fire (job state read only)"
                       % FIRE_HAWK_JOB)
             t.screenshot(rect=rect)
     finally:
