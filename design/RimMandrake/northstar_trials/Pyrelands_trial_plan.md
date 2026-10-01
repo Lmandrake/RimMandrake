@@ -37,12 +37,10 @@ with the instrument named. **UNMEASURED** means nobody has looked yet.
 - ⇒ **The dev folder `src/RimMandrake/Pyrelands/` is still the source.** The thing deployed and
   tested is the composed `mandrake.rm.biomes`. Every list, deploy check and fingerprint in this plan
   targets `mandrake.rm.biomes`, never `mandrake.rm.pyrelands`.
-- ⚠️ **Three things are stale and must be fixed in rung W, outside the hashed section:**
-  1. The walk header's `subject:` line says packageId `mandrake.rm.pyrelands`.
-  2. The walk's `list:` line says `minimal+mandrake.rm.pyrelands+mandrake.rut.patches`.
-  3. The `validation.py` docstring describes the pre-fold world.
+- The walk header's `subject:`, `deps:` and `list:` lines name the composed `mandrake.rm.biomes`
+  packaging (fixed at validation, `PYRELANDS_NORTHSTAR_VALIDATE_1`). ⚠️ Still stale, for rung W: the
+  `validation.py` docstring describes the pre-fold world.
 
-  `modcheck run Pyrelands` built from that `list:` would ask for a packageId that no longer exists.
   The modcheck key stays `Pyrelands`, because the dev folder still exists, so no `rename-key` is
   needed. 🔴 **MEASURED** (`modcheck/runner.py` `compose_test_list` + `_package_id`): `modcheck run`
   takes the packageId from the **dev folder's** `About/About.xml` (`mandrake.rm.pyrelands`). It
@@ -59,9 +57,9 @@ with the instrument named. **UNMEASURED** means nobody has looked yet.
 
 | rung | state | evidence |
 |---|---|---|
-| **DRAFT** | ✅ 10 bars drafted | **MEASURED** with `modcheck.northstar.parse()` on origin's walk: 10 must-show ids, 0 cannot-show |
-| **VALIDATED** | ❌ **Effectively DRAFT** — the header says VALIDATED but the hash does not match | **MEASURED** with `northstar.parse()`: recorded hash `90a286aa83f1`, current hash `15e3d4df4583`, reason "section edited since validation". Bisected per commit: `7690c96fb` (2026-09-17, owner validates 2 bars) → `1cbb4e7dc` → `f5ce015e7` all hash `90a286…`. Then `b3457a829` (the same day, 18:43) added 8 fire-ecology bars, and its own message says "reverts to DRAFT by hash until the owner re-validates the full ten". **The owner has validated only 2 of the 10 bars** (plant and animal distribution). The local shared-tree copy gives the same result: DRAFT, 10 bars. Origin's header line is a stale declaration, not a validation. |
-| **WIRED** | ❌ 0 of 10 | **MEASURED**: `validation.py` passes no `shows=` to any component. It has 3 chains and 6 components, all toggle-floor checks |
+| **DRAFT** | ✅ superseded by VALIDATED | — |
+| **VALIDATED** | ✅ **19 must-show + 1 cannot-show**, hash `eca2fe9b0bd5` | Rewritten comprehensively from the 10 earlier bars, §2.4's proposals and three further shipped mechanics; reviewed by GPT as the owner's proxy (§8a). Validated on the owner's typed word *"Use gpt to review instead."* (2026-10-01). Checked with `northstar.parse()`: VALIDATED, hash matches. |
+| **WIRED** | ❌ 0 of 19 | **MEASURED**: `validation.py` passes no `shows=` to any component. It has 3 chains and 6 components, all toggle-floor checks |
 | **GREEN minimal** | ❌ never | **MEASURED** (`Transient/modcheck/Pyrelands_summary.json`, 2026-09-13): 3 of 6 components passed, on a **plain quicktest map, not a Pyrelands map**. The failures were `ash_ladder_escalation`, `ashfall_accumulates` and `biome_def_wiring`. §2.3 shows that all three are suite bugs |
 | **GREEN full** | ❌ never | — |
 | **SHIPPED** | ❌ | §5 |
@@ -225,28 +223,28 @@ with the instrument named. **UNMEASURED** means nobody has looked yet.
   because the engine's body-size-weighted density makes raw commonality an imperfect expectation
   (**UNMEASURED**: read `GenStep_Animals`/`WildAnimalSpawner` via RimSage before the first run).
 
-### 2.4 Proposed bar-text changes (for the owner — the hashed section is not edited here)
+### 2.4 Bars beyond the original ten (now in the validated checklist)
 
-None of the ten needs rewording to be testable. The predicates above quantify "within days" and
-"densely" without touching the prose. Proposed **additions**, all owner-ruled content already in
-code:
+The validated `## north star` section is the authority for bar text; this table only says how each
+added bar is tested. Every one below is to be proven by a state or job read, with a screenshot where
+the judge needs one.
 
-- `pyre_mapgen_log_clean` — generating a Pyrelands map logs no `CommonalityOfAnimal` NRE and no
-  unresolved cross-reference. Its only allowed errors are the 4 documented `burnedDef is flammable`
-  config errors. *(This is walk step 1, promoted.)*
-- `pyre_burn_line_present` — somewhere on a Pyrelands map a standing burn line exists and moves
-  (sheet §5 "the burn exists somewhere, always"; `MapComponent_BurnLine`).
-- `pyre_firehawk_carries_ember` — fire-hawks carry burning twigs ahead of the fire and start new
-  fires (`CompFireHawkSpread`, `JobDriver_RUT_FireHawkCarryEmber`). ⚠️ Prove it by a **job/state
-  read**: a `JobDef` of `RUT_FireHawkCarryEmber` observed, and a new Fire within N cells. **Never**
-  by a flight or screenshot hunt (flyer ruling, said three times).
-- `pyre_furnacebeast_warmth` — a furnace-beast warms the cells and pawns near it (`CompFurnaceWarmthAura`,
-  hediff `RM_FurnaceWarmth`).
-- `pyre_burrowers_dive` — burrow-on-fire animals go under ahead of the flame (`RM_Burrowed`).
-- `pyre_no_ordinary_rain` — the weather table holds no ordinary rain ([O]/[D]; sheet §6 ban 2).
+| bar id | route |
+|---|---|
+| `pyre_mapgen_log_clean` | [L] Player.log since mapgen mark: no `CommonalityOfAnimal` NRE, no unresolved cross-reference; the 4 documented `burnedDef is flammable` load-time config errors are outside the window (walk step 1, promoted). |
+| `pyre_burn_line_present` | [L+V] `MapComponent_BurnLine` state read: an active front exists at gen; screenshot of the front and its scorched trail. Needs `burnLineEnabled` ON on its own fixture (it is OFF for bars 1–10, §2.3a). |
+| `pyre_scorchfruit_fire_born` | [L] after a controlled burn, ScorchFruit spawns inside the burned cohort; gen census (bar 1) finds none on unburned land. |
+| `pyre_ruins_scorched` | [L+V] a fixture whose mapgen placed a ruin: the ruin footprint carries ash terrain / scorch; screenshot. UNMEASURED: how often a 250×250 site gets a ruin — force one if the genstep allows. |
+| `pyre_fulgurite_after_lightning` | [L] force dry-lightning strikes on sand cells (n large enough at 0.35/strike); ≥ 1 `RM_FE_Fulgurite` at an impact cell. |
+| `pyre_firehawk_carries_ember` | [L] job read: `RUT_FireHawkCarryEmber` observed, and a new Fire within N cells of the drop. **Never** a flight or screenshot hunt (flyer ruling). |
+| `pyre_furnacebeast_warmth` | [L] pawn within the aura radius gains `RM_FurnaceWarmth`; it is removed after the pawn walks out. |
+| `pyre_furnacebeast_heats_room` | [L] two matched enclosed rooms at the same start temperature, one holding a furnace-beast; the room temperature delta after a settle. |
+| `pyre_burrowers_dive` | [L] fire reaches a burrow-on-fire grazer: `RM_Burrowed` hediff present while the fire passes, health intact afterwards. |
+| `pyre_cannot_ordinary_rain` (cannot show) | [O]/[D] the post-patch weather table holds no ordinary rain (sheet §6 ban 2); plus the weather never reads as vanilla `Rain` in a long weather run. |
 
-Also propose **one `### cannot show`** line: `pyre_cannot_vanilla_fauna` — "a hare, rat, gazelle or
-any other vanilla-Earth animal on a Pyrelands map". This catches the Replace op silently failing.
+`pyre_cannot_vanilla_fauna`, proposed here earlier, was **cut** on the GPT review (§8a #19): the
+validated animal-distribution bar already forbids every non-roster animal, and its census is checked
+against the immutable 15-kind manifest (§2.3a), so a failed Replace op fails that bar.
 
 ---
 
@@ -514,15 +512,15 @@ All of it runs under Windows `python.exe` (the bridge is unreachable from WSL), 
 
 | gap | state | owner of the fix |
 |---|---|---|
-| **Re-validation of all 10 bars** (plus the §2.4 additions if he takes them) | owner's word needed; only 2 are validated | BENCH card → `modcheck validate Pyrelands --owner-said` |
-| `shows=` wiring + suite fixes §2.3 | 0/10 | FOUNDRY |
+| ~~Re-validation~~ | ✅ done 2026-10-01: 19 + 1 bars, hash `eca2fe9b0bd5` (§1.2) | — |
+| `shows=` wiring + suite fixes §2.3 | 0/19 | FOUNDRY |
 | **Art: `RUT_Ashwallow` has NO texture** | **MEASURED**: texPath `Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow`. No file in the repo, no folder in the deployed `UtinniPatches/Textures/…/Pyrelands/`, no artpipe job found. It renders as the missing-texture error. | art queue (search `_artsrc`/`done` first, per the art-reuse rule) |
 | **Art: `RUT_Emberscythe` on PLACEHOLDER vanilla Megascarab art** | **MEASURED** (its XML says "Art: PLACEHOLDER"). `emberscythe_v1_{east,north,south}` already sit in `infrastructure/artpipe/done/`, so check whether the owner ruled on them before queuing any regen | art |
 | Art: Barbslinger scorpion redesign | open, `BARBSLINGER_SCORPION_REDESIGN_1` | art |
 | Art: FireHawk flight flip-book | frames exist (`FireHawk_Flying_1..5_*`, MEASURED in the repo). The live visual check needs the owner present (`FIREHAWK_FLIGHT_BEHAVIOR_1`) | joint session |
 | **Code review** | **MEASURED** `code_review_status.py check`: Pyrelands `Source/` has 6 DIRTY .cs files (`RM_PyrelandsMod.cs`, `RM_JobGiver_BurrowOnFire.cs`, `RM_JobDriver_Burrow.cs`, `RM_BurrowOnFireExtension.cs`, `PyrelandsTuning.cs`, `PyrelandsMechanicsDefOf.cs`); the other 20 are CLEAN. `validation.py` is CLEAN (it will dirty on wiring). The 8 PyrelandsMechanics .cs are CLEAN. `BiomesShell/RM_BiomesMod.cs` is DIRTY. UtinniPatches' Pyrelands XML is UNMEASURED (the tool covers code) | `DIRTY_CODE_REVIEW_STANDING_LOOP_1` |
 | **Mod Settings "superb"** | 20+ toggles and sliders exist (MEASURED). Owed: the per-biome toggle gates **worldgen only** (Wave 0 note in `RM_BiomesMod.cs`); one-line mechanic gating on `RM_BiomesSettings.Enabled("Pyrelands")` is still owed. Also needed: confirm every toggle is labelled, with worldgen-affecting ones marked as such (`MOD_OPTIONS_RETROFIT_1`) | FOUNDRY |
-| Packaging header/`list:` stale (§1.1) | stale | rung W |
+| `validation.py` docstring stale (§1.1) | stale | rung W |
 | `PATCH_MAYREQUIRE_GUARD_INERT_1` instance in `WildAnimals_Pyrelands.xml` | inert guard ×2 | note on that item |
 
 ⛔ **Not gaps:** 0 world tiles on Ash'karr (expected until the one painting pass), and missing DLC
@@ -644,6 +642,33 @@ folded in, 4 are accepted in part, and none is rejected outright.
 The minimal-list attempt is now **≈ 40–60 min**.
 
 ---
+
+## 8a. GPT review of the checklist (owner's proxy)
+
+The owner, asked to validate the bars, typed: *"Use gpt to review instead."* **Reviewer:** Codex CLI
+(`codex.exe exec -s read-only`), 2026-10-01. Prompt:
+`Transient/northstar_trials_gpt/pyrelands_checklist.prompt.md`. Answer:
+`Transient/northstar_trials_gpt/pyrelands_checklist.answer.md`. Verdict: "validate with the listed
+edits". 23 points: 12 accepted, 3 accepted in part, none rejected outright, 7 plain "OK" with no change asked, and the verdict.
+
+| # | point | verdict | why |
+|---|---|---|---|
+| 1 | plant bar names mod provenance, overlaps fire-born | **accepted** | now names the three species, nothing else |
+| 2 | animal bar overlaps the vanilla-fauna cannot-show | **partial** | wording kept; the "15-species" count **rejected**, because a roster size is a number that moves and does not belong in binding prose |
+| 3 | log/config language is not player evidence | **accepted** | "no error message on screen" during map generation |
+| 4 | "own"/"stock" describe provenance | **accepted** | |
+| 5, 11, 13, 16, 17, 18, 20 | OK | — | unchanged |
+| 6 | "within days" has no deadline | **partial** | made falsifiable ("a few days … about a week"); GPT's hard **day 3 / day 7** is **rejected**: those are §2.3a's ⚖ calibrating thresholds, and binding them in prose before the first run measures growth at ~50 °C would hard-code an unmeasured number |
+| 7 | movement cannot be judged from one image | **accepted** | front plus scorched trail; movement stays a state read in the test |
+| 8 | fire-born overlap | **accepted** | |
+| 9 | "fill hunger" ambiguous | **accepted** | "raises the food meter" |
+| 10 | export claim false with refrigeration | **accepted** | "unrefrigerated"; days match the measured XML (4 and 1.1) |
+| 12 | "sometimes" unfalsifiable | **accepted** | at least one strike site after a storm |
+| 14 | warmth bar joins two effects | **accepted** | split |
+| 15 | burrow bar carries an above-ground control | **partial** | control dropped from the prose; the test (§2.4) still runs it, because it proves the burrow is what saves the animal |
+| 19, 22 | cut `pyre_cannot_vanilla_fauna` | **accepted** | redundant with the validated animal-distribution bar (§2.4) |
+| 21 | missing room-heating bar after the split | **accepted** | `pyre_furnacebeast_heats_room` added |
+| 23 | verdict | — | edits folded, then validated |
 
 ## 9. Tickets
 
