@@ -1,0 +1,237 @@
+{
+ "success": true,
+ "count": 23,
+ "letters": [
+  {
+   "label": {
+    "RawText": "Ozzik the Shamed",
+    "Length": 16,
+    "StrippedLength": 16
+   },
+   "defName": "NeutralEvent",
+   "arrivalTick": 0,
+   "lookTargets": null
+  },
+  {
+   "label": {
+    "RawText": "Propagandist role deactivated",
+    "Length": 29,
+    "StrippedLength": 29
+   },
+   "defName": "NeutralEvent",
+   "arrivalTick": 1,
+   "lookTargets": null
+  },
+  {
+   "label": {
+    "RawText": "Master Stylist role deactivated",
+    "Length": 31,
+    "StrippedLength": 31
+   },
+   "defName": "NeutralEvent",
+   "arrivalTick": 1,
+   "lookTargets": null
+  },
+  {
+   "label": {
+    "RawText": "Foul-Mouthed Bootlegger role deactivated",
+    "Length": 40,
+    "StrippedLength": 40
+   },
+   "defName": "NeutralEvent",
+   "arrivalTick": 1,
+   "lookTargets": null
+  },
+  {
+   "label": {
+    "RawText": "Inhabitants abandoned",
+    "Length": 21,
+    "StrippedLength": 21
+   },
+   "defName": "NegativeEvent",
+   "arrivalTick": 1,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Area revealed",
+    "Length": 13,
+    "StrippedLength": 13
+   },
+   "defName": "NeutralEvent",
+   "arrivalTick": 1,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Area revealed",
+    "Length": 13,
+    "StrippedLength": 13
+   },
+   "defName": "NeutralEvent",
+   "arrivalTick": 1,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Area revealed",
+    "Length": 13,
+    "StrippedLength": 13
+   },
+   "defName": "NeutralEvent",
+   "arrivalTick": 1,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Death: Haruka (hen)",
+    "Length": 19,
+    "StrippedLength": 19
+   },
+   "defName": "Death",
+   "arrivalTick": 1,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Roof collapse",
+    "Length": 13,
+    "StrippedLength": 13
+   },
+   "defName": "NegativeEvent",
+   "arrivalTick": 1,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Rock island",
+    "Length": 11,
+    "StrippedLength": 11
+   },
+   "defName": "NeutralEvent",
+   "arrivalTick": 120,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Taken under: Cassandra",
+    "Length": 22,
+    "StrippedLength": 22
+   },
+   "defName": "NegativeEvent",
+   "arrivalTick": 317,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Death: Cassandra (hen)",
+    "Length": 22,
+    "StrippedLength": 22
+   },
+   "defName": "Death",
+   "arrivalTick": 317,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Taken under: Victor",
+    "Length": 19,
+    "StrippedLength": 19
+   },
+   "defName": "NegativeEvent",
+   "arrivalTick": 906,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Death: Victor (rooster)",
+    "Length": 23,
+    "StrippedLength": 23
+   },
+   "defName": "Death",
+   "arrivalTick": 906,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Dune gale",
+    "Length": 9,
+    "StrippedLength": 9
+   },
+   "defName": "NegativeEvent",
+   "arrivalTick": 5385,
+   "lookTargets": null
+  },
+  {
+   "label": {
+    "RawText": "A caravan the dune took",
+    "Length": 23,
+    "StrippedLength": 23
+   },
+   "defName": "NeutralEvent",
+   "arrivalTick": 5386,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "A sealed cache",
+    "Length": 14,
+    "StrippedLength": 14
+   },
+   "defName": "NeutralEvent",
+   "arrivalTick": 11386,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Krayt dragon",
+    "Length": 12,
+    "StrippedLength": 12
+   },
+   "defName": "ThreatBig",
+   "arrivalTick": 15000,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "A line of glare",
+    "Length": 15,
+    "StrippedLength": 15
+   },
+   "defName": "ThreatSmall",
+   "arrivalTick": 15000,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Man in black (relationship)",
+    "Length": 27,
+    "StrippedLength": 27
+   },
+   "defName": "PositiveEvent",
+   "arrivalTick": 19592,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Taken under: Perroford",
+    "Length": 22,
+    "StrippedLength": 22
+   },
+   "defName": "NegativeEvent",
+   "arrivalTick": 25955,
+   "lookTargets": "Verse.LookTargets"
+  },
+  {
+   "label": {
+    "RawText": "Death: Perroford",
+    "Length": 16,
+    "StrippedLength": 16
+   },
+   "defName": "Death",
+   "arrivalTick": 25955,
+   "lookTargets": "Verse.LookTargets"
+  }
+ ],
+ "ticksGame": 27277
+}
