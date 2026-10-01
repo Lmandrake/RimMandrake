@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_GHARREK_BUILD_1 + ABYSS_DURRGAK_BUILD_1. Spec: design/Jawa/worldbuilding/biomes/
+  blackcrags_bedazzle_review_2026-09-30.md section 4 rows 1 and 2. RM_ tier, invented, one home (the Abyss).
+
+  ART IS A PLACEHOLDER: vanilla Iguana (gharrek) and Squirrel (durrgak) sprites tinted to the
+  Abyss palette. Bespoke art is owed (3 facings each).
+
+  gharrek: dormant in the still (RM_GharrekDormant hediff), opens and feeds on every gust
+  (CompRM_Gharrek reading RM_MapComponent_Gust). Penned, it gives gill-ash (RM_GillAsh) like a
+  boomalope gives chemfuel; it only fattens in gusts because that is the only time it eats.
+  durrgak: wild ones lay out rings of RM_DurrgakCairn (CompRM_Durrgak); tamed ones tidy through
+  vanilla's Haul training (trainability Advanced, body size >= 0.4). The description never says who.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gharrek</defName>
+    <label>gharrek</label>
+    <description>A flat, many-gilled crawler that clings in the lee of the crags. In the still it lies shut and cold, nearly invisible on the black stone. When a gust hits, every gharrek on the map opens at once and feeds on the stirred air: a sudden carpet of fluttering gill-fans and a faint chemical glow. Then they shut again. Harmless. Penned ones give a little gill-ash, and fatten only in the wind.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <Mass>6</Mass>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <Wildness>0.4</Wildness>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+    </statBases>
+    <tools>
+      <li>
+        <label>gill-rasp</label>
+        <capacities><li>Scratch</li></capacities>
+        <power>2</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>RM_GillAsh</milkDef>
+        <milkIntervalDays>6</milkIntervalDays>
+        <milkAmount>4</milkAmount>
+        <milkFemaleOnly>false</milkFemaleOnly>
+      </li>
+      <li Class="RimMandrake.Abyss.CompProperties_RM_Gharrek" />
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <hediffGiverSets><li>OrganicStandard</li></hediffGiverSets>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Simple</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <herdAnimal>true</herdAnimal>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gharrek</defName>
+    <label>gharrek</label>
+    <race>RM_Gharrek</race>
+    <combatPower>20</combatPower>
+    <wildGroupSize>3~6</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Iguana</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.6</drawSize>
+          <color>(52,40,66)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>0.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Iguana</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+          <color>(52,40,66)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>0.9</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Iguana</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+          <color>(52,40,66)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>1.1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <HediffDef>
+    <defName>RM_GharrekDormant</defName>
+    <label>dormant</label>
+    <description>Plates shut, cold and still, waiting for the wind.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <tendable>false</tendable>
+    <stages>
+      <li>
+        <statFactors>
+          <MoveSpeed>0.05</MoveSpeed>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GillAsh</defName>
+    <label>gill-ash</label>
+    <description>A grey, faintly oily ash shed by penned gharreks. It is the crags' feedstock for chemfuel.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(110,104,118)</color>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>1.6</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>1.5</Flammability>
+    </statBases>
+    <thingCategories><li>ResourcesRaw</li></thingCategories>
+    <comps>
+      <li Class="CompProperties_Flammable" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Durrgak</defName>
+    <label>durrgak</label>
+    <description>A slow, long-fingered digger that arranges things. It drags obsidian shards into rings and rows, caches what it finds in neat piles, and lines its den with dropped steel. It is shy. The Jawa say it learned it from someone. Tamed, it tidies, hauling small things at a crawl.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <Mass>28</Mass>
+      <MarketValue>180</MarketValue>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>fingers</label>
+        <capacities><li>Scratch</li></capacities>
+        <power>4</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.Abyss.CompProperties_RM_Durrgak" />
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <bloodDef>Filth_Blood</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <hediffGiverSets><li>OrganicStandard</li></hediffGiverSets>
+      <baseBodySize>0.7</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Advanced</trainability>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <lifeExpectancy>22</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.3</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.8</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalUncommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Durrgak</defName>
+    <label>durrgak</label>
+    <race>RM_Durrgak</race>
+    <combatPower>45</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.7</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+          <color>(70,66,74)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
+          <drawSize>0.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+          <color>(70,66,74)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
+          <drawSize>1.1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+          <color>(70,66,74)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
+          <drawSize>1.4</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_DurrgakCairn</defName>
+    <label>stone cairn</label>
+    <description>A knee-high stack of obsidian shards, set down with care. It stands in a ring or a row with others like it. Nothing about it says who made it.</description>
+    <graphicData>
+      <texPath>Things/Item/Chunk/ChunkSlag</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(40,38,46)</color>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.15</fillPercent>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+</Defs>

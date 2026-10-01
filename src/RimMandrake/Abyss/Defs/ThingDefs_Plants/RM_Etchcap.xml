@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_ETCHCAP_BUILD_1. Spec: design/Jawa/worldbuilding/biomes/blackcrags_bedazzle_review_2026-09-30.md
+  section 4 row F1. RM_ tier, invented.
+
+  Growth restriction is pure XML: the plant's wildTerrainTags names RM_EtchHollow, and only the
+  RM_EtchHollow terrain carries that tag (PlantUtility.CanEverPlantAt checks plant.WildTerrainTags
+  against terrain.tags; Building_PlantGrower cells bypass it, so a sown tray still works).
+  The hollows are a static terrain feature scattered by the biome's terrainPatchMakers; the
+  grain mechanics are not ruled and arrive with ABYSS_DARK_BUILD_1.
+
+  ART IS A PLACEHOLDER: the plant reuses
+  the vanilla Bryolux sprite tinted black-violet, the item reuses RawFungus. Bespoke art owed.
+  The gourmet meal-ingredient mood multiplier is not built: the cap is a lavish-grade raw
+  ingredient (RawTasty) and a high-value trade good; a bespoke lavish recipe is owed.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Etchcap</defName>
+    <label>etchcap</label>
+    <description>A dense black-and-violet cap that grows only in the etch-hollows, the low cells where the Dark's collapse-grain settles. It takes no light; it lives on the grain. Slow, low-yielding, and prized: whoever eats one does not forget it.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+      <Nutrition>0.3</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Bryolux</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(60,36,86)</color>
+    </graphicData>
+    <ingestible />
+    <fillPercent>0.15</fillPercent>
+    <pathCost>14</pathCost>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>14</growDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_EtchcapCap</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <harvestWork>260</harvestWork>
+      <harvestAfterGrowth>0.4</harvestAfterGrowth>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>40</wildClusterWeight>
+      <purpose>Food</purpose>
+      <sowMinSkill>6</sowMinSkill>
+      <wildTerrainTags>
+        <li>RM_EtchHollow</li>
+      </wildTerrainTags>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <minGrowthTemperature>-10</minGrowthTemperature>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_EtchcapCap</defName>
+    <label>etchcap</label>
+    <description>The harvested cap of an etchcap: dense, black-and-violet, smelling of struck flint. A delicacy, and a trade good off-world.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/PlantFoodRaw/RawFungus</texPath>
+      <color>(70,42,96)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>9</MarketValue>
+      <Nutrition>0.08</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>Fungus</foodType>
+      <preferability>RawTasty</preferability>
+    </ingestible>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Fungus</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>40</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

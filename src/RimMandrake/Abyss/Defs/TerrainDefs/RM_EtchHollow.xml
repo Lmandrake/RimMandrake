@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ABYSS_ETCHCAP_BUILD_1: the etch-hollow, a static low-cell terrain where the Dark's grain settles.
+     Placeholder texture: vanilla Soil tinted black-violet. Bespoke terrain art owed. -->
+<Defs>
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_EtchHollow</defName>
+    <label>etch-hollow</label>
+    <description>A low, grain-dusted hollow in the black stone, where collapse-grain settles and etchcaps grow.</description>
+    <texturePath>Terrain/Surfaces/Soil</texturePath>
+    <color>(58,44,72)</color>
+    <edgeType>FadeRough</edgeType>
+    <categoryType>Soil</categoryType>
+    <renderPrecedence>345</renderPrecedence>
+    <pathCost>2</pathCost>
+    <statBases>
+      <Beauty>1</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <scatterType>Rocky</scatterType>
+    <fertility>0.4</fertility>
+    <tags>
+      <li>RM_EtchHollow</li>
+    </tags>
+    <affordances>
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+    </affordances>
+  </TerrainDef>
+</Defs>

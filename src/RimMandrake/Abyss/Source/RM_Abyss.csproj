@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="RM_AbyssMod.cs" />
     <Compile Include="RM_AbyssBiome.cs" />
+    <Compile Include="RM_AbyssLife.cs" />
   </ItemGroup>
 
   <ItemGroup>

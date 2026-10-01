@@ -90,6 +90,19 @@
         <max>999</max>
       </li>
     </terrainsByFertility>
+    <!-- ABYSS_ETCHCAP_BUILD_1: etch-hollows, the static low cells etchcaps are restricted to. -->
+    <terrainPatchMakers>
+      <li>
+        <perlinFrequency>0.045</perlinFrequency>
+        <thresholds>
+          <li>
+            <terrain>RM_EtchHollow</terrain>
+            <min>0.68</min>
+            <max>0.80</max>
+          </li>
+        </thresholds>
+      </li>
+    </terrainPatchMakers>
     <baseWeatherCommonalities>
       <Clear>0</Clear>
       <AB_ForsakenNight MayRequire="sarg.alphabiomes">70</AB_ForsakenNight>
@@ -111,6 +124,9 @@
       <AA_SandProwler MayRequire="sarg.alphaanimals">0.075</AA_SandProwler>  <!-- sand prowler - medium-pred, keep -->
       <AA_Frostling MayRequire="sarg.alphaanimals">0.05</AA_Frostling>  <!-- frostling - medium-pred, import -->
       <AA_Darkbeast MayRequire="sarg.alphaanimals">0.005</AA_Darkbeast>  <!-- darkbeast - medium, keep -->
+      <!-- ABYSS_GHARREK_BUILD_1 / ABYSS_DURRGAK_BUILD_1: owned RM_ fill creatures, element form, no MayRequire (ours) -->
+      <RM_Gharrek>0.6</RM_Gharrek>  <!-- gharrek - gust-feeder, base of the web -->
+      <RM_Durrgak>1.2</RM_Durrgak>  <!-- durrgak - the placer -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
@@ -122,6 +138,7 @@
       <AB_GiantStikehr>0.3</AB_GiantStikehr>  <!-- giant stikehr -->
       <AG_Septimum>0.25</AG_Septimum>  <!-- septimum -->
       <AB_GiantSeptimum>0.2</AB_GiantSeptimum>  <!-- giant septimum - tree -->
+      <RM_Etchcap>0.25</RM_Etchcap>  <!-- ABYSS_ETCHCAP_BUILD_1: grows only on RM_EtchHollow terrain -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
   </BiomeDef>
