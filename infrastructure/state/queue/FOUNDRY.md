@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T06:34:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T06:35:30Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2331,3 +2331,63 @@ kind:     build
 thin:     no ## verify
 summary:  What is still owed:
 prose:    infrastructure/state/items/STILLSAND_SAND_SWIM_REMAINDER_1.md
+
+## PYRELANDS_NORTHSTAR_TRIAL_1 Pyrelands north-star trial: carry the biome template to SHIPPED (parent; depends on BIOME_MOD_UNIFICATION_1)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  PYRELANDSNORTHSTARTRIAL1 — carry Pyrelands up the north-star ladder to SHIPPED (the biome template)
+prose:    infrastructure/state/items/PYRELANDS_NORTHSTAR_TRIAL_1.md
+
+## PYRELANDS_NORTHSTAR_WIRING_1 Wire every Pyrelands bar with shows= and fix suite bugs (composed mandrake.rm.biomes packaging)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  PYRELANDSNORTHSTARWIRING1 — wire every Pyrelands bar to a test (shows=)
+prose:    infrastructure/state/items/PYRELANDS_NORTHSTAR_WIRING_1.md
+
+## MODCHECK_COMPOSED_BIOMES_LIST_1 modcheck builds a test list from the retired dev packageId for composed biomes (no closure, biome silently absent)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  MODCHECKCOMPOSEDBIOMESLIST1 — modcheck cannot build a test list for a biome inside mandrake.rm.biomes
+prose:    infrastructure/state/items/MODCHECK_COMPOSED_BIOMES_LIST_1.md
+
+## PYRELANDS_GREEN_MINIMAL_1 Pyrelands north star GREEN on the pyrelands tier (pre-flight gates, 2-ring scratch sites, K-pooled census)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  PYRELANDSGREENMINIMAL1 — Pyrelands north star GREEN on the minimal tier
+prose:    infrastructure/state/items/PYRELANDS_GREEN_MINIMAL_1.md
+
+## PYRELANDS_GREEN_FULL_1 Pyrelands north star GREEN on the full list (fresh full-list mapgen on a scratch save, never quicktest)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  PYRELANDSGREENFULL1 — Pyrelands north star GREEN on the full mod list
+prose:    infrastructure/state/items/PYRELANDS_GREEN_FULL_1.md
+
+## PYRELANDS_SHIP_READINESS_1 Pyrelands SHIPPED rung: Ashwallow/Emberscythe art, code review CLEAN, settings gate mechanics, composed deploy
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  PYRELANDSSHIPREADINESS1 — the SHIPPED rung for Pyrelands: art, review, settings, deploy
+prose:    infrastructure/state/items/PYRELANDS_SHIP_READINESS_1.md
