@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_MIRAGE_CONDITION_1. Two vanilla Core defs, patched rather than replaced.
+
+  1. MentalStateNonCritical gets one node, prepended: a pawn in RM_ChasingWater walks for the
+     mirage (RM_JobGiver_ChaseMirage, a plain Goto that never exits the map), else wanders.
+     No other mental state is touched (ThinkNode_ConditionalMentalState is a def-identity test).
+  2. Heat shimmer: RM_StatPart_MirageShimmer on the pawn accuracy factors ShotReport applies by
+     distance (Medium at 25 cells, Long at 40+). It is 1 unless the shooter stands in full sun
+     on a map holding the mirage. Neither StatDef has its own parts list (RimSage, 1.6), so the
+     list is added whole unless an earlier patch already made one.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThinkTreeDef[defName="MentalStateNonCritical"]/thinkRoot/subNodes</xpath>
+    <order>Prepend</order>
+    <value>
+      <li Class="ThinkNode_ConditionalMentalState">
+        <state>RM_ChasingWater</state>
+        <subNodes>
+          <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_ChaseMirage" />
+          <li Class="JobGiver_WanderAnywhere">
+            <maxDanger>Deadly</maxDanger>
+          </li>
+        </subNodes>
+      </li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/StatDef[defName="ShootingAccuracyFactor_Medium"]/parts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/StatDef[defName="ShootingAccuracyFactor_Medium"]/parts</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_StatPart_MirageShimmer">
+          <factor>0.85</factor>
+        </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/StatDef[defName="ShootingAccuracyFactor_Medium"]</xpath>
+      <value>
+        <parts>
+          <li Class="RimMandrake.CreatureBehaviors.RM_StatPart_MirageShimmer">
+            <factor>0.85</factor>
+          </li>
+        </parts>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/StatDef[defName="ShootingAccuracyFactor_Long"]/parts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/StatDef[defName="ShootingAccuracyFactor_Long"]/parts</xpath>
+      <value>
+        <li Class="RimMandrake.CreatureBehaviors.RM_StatPart_MirageShimmer">
+          <factor>0.7</factor>
+        </li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/StatDef[defName="ShootingAccuracyFactor_Long"]</xpath>
+      <value>
+        <parts>
+          <li Class="RimMandrake.CreatureBehaviors.RM_StatPart_MirageShimmer">
+            <factor>0.7</factor>
+          </li>
+        </parts>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>

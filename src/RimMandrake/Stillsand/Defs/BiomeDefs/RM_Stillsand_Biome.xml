@@ -234,6 +234,13 @@
         <glareBlindHediff>RM_GlareBlind</glareBlindHediff>
         <glareBlindExposureMin>0.6</glareBlindExposureMin>
         <glareBlindSeverityPerDay>4</glareBlindSeverityPerDay>
+        <!-- STILLSAND_MIRAGE_CONDITION_1: under a sun at 45 deg or higher the far edge shows water. -->
+        <mirageCondition>RM_Mirage</mirageCondition>
+        <mirageMinElevationDegrees>45</mirageMinElevationDegrees>
+        <mirageMentalState>RM_ChasingWater</mirageMentalState>
+        <mirageHeatstrokeMin>0.2</mirageHeatstrokeMin>
+        <mirageBreakMtbDays>1.5</mirageBreakMtbDays>
+        <mirageFullSunExposureMin>0.6</mirageFullSunExposureMin>
       </li>
       <!-- STILLSAND_SUN_FROM_LATITUDE_1 §1-2: the pinned sky. Ends the day-night cycle. Elevation from the
            tile (same geometry as above), clamp lifted to 85 so near the substellar point shadows shrink to
