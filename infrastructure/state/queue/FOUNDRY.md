@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T06:01:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T06:05:55Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2322,3 +2322,13 @@ kind:     task
 thin:     no ## verify
 summary:  - RMChotrix: RM tier, Warscar only, bodySize ~0.9, one or two per map. A lean, low scavenger that
 prose:    infrastructure/state/items/WARSCAR_CHOTRIX_BUILD_1.md
+
+## REPO_RENAME_SYMLINK_RETIRE_1 Retire the Rimworld -> RimMandrake symlink: repoint every old-path reference, then remove the link
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     chore
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  REPORENAMESYMLINKRETIRE1 — retire the Rimworld - RimMandrake symlink
+prose:    infrastructure/state/items/REPO_RENAME_SYMLINK_RETIRE_1.md
