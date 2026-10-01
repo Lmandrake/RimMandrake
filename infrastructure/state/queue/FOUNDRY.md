@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:52:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:55:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1259,15 +1259,6 @@ target:   v1
 kind:     task
 summary:  - A ship-mounted acoustic scanner. When the grounded gravship fires a sounding pulse, dust jumps
 prose:    infrastructure/state/items/GRAVSHIP_ACOUSTIC_SCANNER_1.md
-
-## FORGE_GPT_ENRICHMENT_1 Forge enrichment (GPT consult 2026-09-30, owner-picked by card): floatstone keelwork, spunstone bonding, four voices of the Forge, white plume fronts, sky pastures, dhokkur ways, dhuvvox clock
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Floatstone keelwork. Pearl-white, spun-sugar floatstone braces threaded through a gravship
-prose:    infrastructure/state/items/FORGE_GPT_ENRICHMENT_1.md
 
 ## CONTAGION_GROWN_LIMBS_BUILD_1 Build the grown limbs the owner keeps on design/Jawa/worldbuilding/biomes/contagion_grown_limbs_2026-09-30.md (Pillar Arm + Lash first; Monstrous sample grade from Coalescence drops; removal-spawns-Unfinished comp)
 state:    doing
