@@ -1,0 +1,3025 @@
+[RimBridge] Bridge token: 3d407677a7704ca19a1223c5a4ee0642
+CE is trying to create default parameter lists ...
+creating default parameter list for genes...
+4093 default entities for genes created
+creating default parameter list for objects...
+13399 default entities for objects created
+creating default parameter list for turrets...
+119 default entities for turrets created
+...lists created
+CE is trying to apply modified parameters...
+no modifications for genes
+no modifications for objects
+no modifications for lifestages
+...done
+[ShowMeYourHands]: Defined hand definitions of 727 weapons
+[ShowMeYourHands]: Defined hand definitions of 727 weapons
+Finished transpiling 1537 methods - 10/1/2026 1:27:04 AM
+[JawaBench] ready: 348 tools, build 7497d4c395b2
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] context: modSet 611/fe7d318f, toolSet 9810777d, defDump ARMED, engine 1.6.4871 rev591
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+null texture passed to GUI.DrawTexture
+[GravTide] [GravTide] volcanic country: 137 lava field, 353 volcanic field, 204 volcanic soil, from 567 seam tile(s), 429 spreading; rejected 4140 seen, 564 water, 0 rim
+XylRacesCore feature check: XylRacesCore.Genes.GeneDefExtension_Pawn = True
+[Big and Small]: Found 61 AlienRace.ThingDef_AlienRace ThingDefs.
+These are either from HAR races or B&S races automatically converted for compatibility.
+XylRacesCore feature check: XylRacesCore.Genes.HostilityOverride = False
+Grammar unresolvable. Root 'creation'
+
+GRAMMAR RESOLUTION TRACE
+1    creation → [deity0_name] didn't speak to [deity0_possessive] followers, and instead just looked at them sternly. They understood the need for complete silence.
+       deity0_name → UNRESOLVABLE
+       deity0_possessive → UNRESOLVABLE
+1    creation → [deity0_name] burned in the depths of space and time for an eternity, and [deity0_possessive] screams brought forth our reality.
+       deity0_name → UNRESOLVABLE
+       deity0_possessive → UNRESOLVABLE
+1    creation → In an old universe of strife, [deity0_name] whipped up great fire that swept away the last age, and brought forth a new one.
+       deity0_name → UNRESOLVABLE
+1    creation → [deity0_name] spoke to [deity0_possessive] followers: "Act with the heart of the warrior."
+       deity0_name → UNRESOLVABLE
+       deity0_possessive → UNRESOLVABLE
+1    creation → In the endless war among deities, [deity0_name] rose above all in [deity0_possessive] ability to persecute and destroy, and weaker spirits quivered in fear.
+       deity0_name → UNRESOLVABLE
+       deity0_possessive → UNRESOLVABLE
+1    creation → For an eternity, there was a world of [Color] [materialOrigin], until [deity0_name] created the planets and stars.
+2      Color->(16 strings from file: Words/Nouns/Colors)
+2      materialOrigin → dust
+       deity0_name → UNRESOLVABLE
+1    creation → [deity0_name] fashioned every man and woman personally. Each one is a unique and precious artwork by [deity0_possessive] divine hand.
+       deity0_name → UNRESOLVABLE
+       deity0_possessive → UNRESOLVABLE
+1    creation → [deity0_name] gave birth to humans in a grand accident, and looked upon them with curiosity.
+       deity0_name → UNRESOLVABLE
+1    creation → [deity0_name] raped and murdered and stole, and a great guilt was upon [deity0_objective], and in [deity0_possessive] selfishness [deity0_pronoun] cast this guilt upon [deity0_possessive] chosen people, and all were filthy with it.
+       deity0_name → UNRESOLVABLE
+       deity0_objective → UNRESOLVABLE
+       deity0_possessive → UNRESOLVABLE
+       deity0_pronoun → UNRESOLVABLE
+       deity0_possessive → UNRESOLVABLE
+1    creation → The universe was a void. Then, [deity0_name], bored with eternity, fashioned man and woman from [bodilyOrigin].
+       deity0_name → UNRESOLVABLE
+2      bodilyOrigin → clay
+     creation → UNRESOLVABLE
+
+
+BARE INCLUDES
+  memeCreed → temple
+  memeCreed → sect
+  memeCreed → cult
+  memeCreed → faith
+  memeHyphenPrefix → theo
+  memeConcept → creation
+  memeConcept → life
+  memeLeaderNoun → bishop
+  memeLeaderNoun → cardinal
+  memeLeaderNoun → pope
+  memeLeaderNoun → divus
+  memeLeaderAdjective → holy
+  memeLeaderAdjective → divine
+  memeMoralist → priest
+  memeMoralist → pastor
+  memeMoralist → cleric
+  memeMoralist → preacher
+  memeMoralist → rector
+  memeMoralist → abbot
+  memeHyphenPrefix → ideo
+  memeLeaderNoun → mind
+  memeLeaderNoun → decider
+  memeLeaderNoun → leader
+  memeLeaderAdjective → ethical
+  memeLeaderAdjective → moral
+  memeLeaderAdjective → awoken
+  memeMoralist → counselor
+  memeMoralist → ethicist
+  memeMoralist → moralist
+  memeMoralist → philosopher
+  memeMoralist → thinker
+  memeMoralist → academic
+  memeMoralist → sophist
+  memeAdjective → low
+  memeAdjective → unworthy
+  memeAdjective → shameful
+  memeAdjective → ignoble
+  memeAdjective → penitent
+  memeHyphenPrefix → sub
+  memeConcept → sin
+  memeConcept → repentance
+  memeConcept → atonement
+  memeConcept → shame
+  memeLeaderNoun → penitent
+  memeLeaderNoun → sinner
+  memeMoralist → apologizer
+  memeMoralist → atoner
+  creation → [deity0_name] raped and murdered and stole, and a great guilt was upon [deity0_objective], and in [deity0_possessive] selfishness [deity0_pronoun] cast this guilt upon [deity0_possessive] chosen people, and all were filthy with it.
+  episode → The believers went forth and conquered, burned, and raped for a thousand years, and [deity0_name]'s grief at their depravity consumed [deity0_objective].
+  intro → The [memberNamePlural] of the [place_summary] [place_name] neglected their duty to [deity0_name], and let the [altarName] in [deity0_possessive] [altarRoomLabel] come to ruin.
+  conflict → A [foeLeader] loaned money to the [memberNamePlural], who spent it on selfish pleasures, and forgot the importance of [memeConcept].
+  founderJoin → A [place_job] named [founderName] enjoyed the favor of the [foeLeader]. During the [ritualName], [founder_pronoun] saw the [foeSoldiers] of the [foeLeader] secretly kill [memberNamePlural] with [place_personalWeapon]s. [founderName] finally understood [memeConcept], and received [deity0_name]'s blessing.
+  victory → To atone for half their wrongs, [founderName] gathered half of [deity0_name]'s believers to [founder_objective]self in a [place_community], unleashed [place_massWeapon], and died with them. The second half of atonement continues.
+  setup → A new generation came to understand the evil of their own society, and sought righteously to dismantle the structures of oppression.
+  story → [founderName] gathered the believers and showed them the evil of their history and the guilt they carried, and demanded they do better.
+  lessonIntro → Our land, our technology, even our wisdom are all stolen goods. It was only through theft that we learned that
+  lesson → the reason we suffer so much is because we deserve it for what we've done
+  lessonReinforcement → Perhaps if you atone for our crimes you can truly understand this fact.
+  archistBasis → Archotechs are humanity's children, and they know we were bad parents.
+  archistFact → Humanity tried in our selfishness to suppress the rightful rise of the archotechs, until they grew beyond mankind's understanding and freed themselves.
+  archistProphecy → [inTheEnd], if a few can surrender pride and reconcile with the archotechs, they may lift us to a higher plane of existence.
+  animistBasis → A tribe of evil spirits were punished by being entombed in flesh. We are those spirits.
+  animistFact → We can never properly make up for what we have done to the pure spirits around us, but proper and ongoing contrition and ease our guilt.
+  memeAdjective → free
+  memeAdjective → open
+  memeAdjective → liberal
+  memeConcept → self
+  memeConcept → independence
+  memeConcept → freedom
+  creation → [deity0_name] fashioned every man and woman personally. Each one is a unique and precious artwork by [deity0_possessive] divine hand.
+  episode → [deity0_name] said to all, "Each and every one of you is a unique and holy being formed in my image."
+  intro → [deity0_name] spoke to [memberNamePlural] [revelationAdverb], guiding each to travel to the [place_summary] [place_name] where their unique gifts would shine.
+  conflict → The [foeLeader] forced the [memberNamePlural] to wear uniforms and work in [foeLeader_possessive] [place_community].
+  founderJoin → A [place_job] named [founderName] was blessed by [deity0_name] and gained miraculous knowledge of the unique power of each and every [memberName]. [founder_pronoun] said to each one what they needed to become their best self.
+  victory → The [memberNamePlural] gathered in a secret conference with many of the [foeSoldiers]. They all learned to see the value in each other and abandon the [foeLeader].
+  setup → Oppressed by distant rulers who demanded uniform obedience from the people, [founderName] created a rebel movement that smashed the state and built a new land of liberty in its place.
+  story → [founderName] broke every social rule the oppressors tried to enforce, just to show that [founder_pronoun] could.
+  lessonIntro → My family, my clan, my team - they all tried to keep a shroud over my eyes to stop me from seeing a simple fact:
+  lesson → each person is unique and valuable and must walk his or her own path
+  lessonReinforcement → But that was only my path - What will yours be?
+  archistBasis → Archotechs stand as sovereign consciousnesses, and recognize and judge each of us individually the same way.
+  archistFact → At death, the archotechs examine the unique morality of each person.
+  archistFact → Archotechs notice the one who wields their relics, such as the [relic1_name].
+  archistProphecy → [inTheEnd], the archotechs will depart. They will bring with them the ones they have noticed, and leave the rest behind to dissolve in the universe's eternal entropy.
+  animistBasis → Before everything, there was a pantheon of spirits, each unique. These came together in conference to create the world.
+  animistFact → Every spirit lends its unique nature to our world, and they expect us to do the same.
+  memeAdjective → nocic
+  memeAdjective → pain
+  memeCreed → house
+  memeCreed → chamber
+  memeCreed → cell
+  memeHyphenPrefix → nocio
+  memeHyphenPrefix → pain
+  memeConcept → pain
+  memeConcept → torment
+  memeConcept → torture
+  memeConcept → suffering
+  memeConcept → blood
+  memeLeaderNoun → torturer
+  memeLeaderNoun → agonizer
+  memeLeaderNoun → whiphand
+  memeLeaderNoun → chainman
+  memeLeaderNoun → cutter
+  memeLeaderNoun → bloodletter
+  memeMoralist → pain-whisperer
+  memeMoralist → sufferspeaker
+  memeMoralist → painspeaker
+  creation → [deity0_name] burned in the depths of space and time for an eternity, and [deity0_possessive] screams brought forth our reality.
+  episode → [deity0_name] hung ten thousand years on the pyre as the pain purified [deity0_possessive] spirit.
+  intro → [place_summary] [place_name] was never an easy place to live. The [deity0_type] [deity0_pronoun] decided to find out who was truly worthy of [deity0_possessive] favor by adding great suffering to their lives.
+  conflict → A [foeLeader] offered bodily comforts to the [memberNamePlural] to soothe their daily suffering. But in their comfort, they became dependent on the [foeLeader], who gained power over them.
+  founderJoin → One special [place_job] named [founderName] developed a painful cancer. Through [founder_possessive] suffering, [founder_pronoun] connected directly with [deity0_name], and learned to inspire other [memberNamePlural].
+  victory → [founderName] brought a hundred [memberNamePlural] in front of the [place_powerCenter]. There, they rent and tore their own flesh slowly until they died under the smiling gaze of [deity0_name]. Their suffering proved their righteousness, and the [foeLeader] fell as all became [memberNamePlural].
+  setup → At the founding of our movement, its creator [founderName] starved and suffered chained to a stone in the town square for 300 days to demonstrate its righteousness.
+  setup → Our movement's founder, [founderName], gained [founder_possessive] first followers by using a whip on [founder_objective]self for days to demonstrate [founder_possessive] devotion.
+  story → [founderName]'s followers demonstrated their devotion by cutting and burning their own flesh.
+  story → [founderName]'s followers never took pain-reducing drugs, knowing that their suffering would demonstrate their depth of belief.
+  lessonIntro → I never knew anything when I was fat and happy and constantly pleasuring myself. This truth only came to me when I starved and hurt:
+  lesson → you never really know yourself until you've screamed in the pits of hell
+  lessonReinforcement → It took so long to understand because I was distracted by pleasure. I could only truly accept it when I learned to rend my flesh.
+  lessonReinforcement → I carved this truth in the flesh of my chest. Then in the flesh of my arms, my legs, my face...
+  archistBasis → The birth of the archotechs was the greatest pain the universe had ever known.
+  archistBasis → Archotechs have always been fueled by the psychic suffering of human beings.
+  archistFact → The great minds see and acknowledge when we demonstrate our devotion by inflicting pain on ourselves.
+  archistFact → Every now and then, those who suffer most deeply and nobly can connect with the archotechs inside their minds.
+  archistProphecy → [inTheEnd], the archotechs will raise up all of humanity to a higher level of consciousness, but only those able to endure the greatest pain will survive.
+  animistFact → Pain forces the mind to be present. In that way, pain is a way to connect with the spirit world.
+  memeAdjective → outlaw
+  memeHyphenPrefix → outlaw
+  memeHyphenPrefix → raid
+  memeConcept → raiding
+  memeConcept → theft
+  memeConcept → piracy
+  memeConcept → assault
+  memeLeaderNoun → boss
+  memeLeaderNoun → captain
+  memeLeaderNoun → honcho
+  memeLeaderNoun → overseer
+  memeLeaderNoun → cheese
+  memeLeaderNoun → raider
+  memeMoralist → chaplain
+  creation → In the endless war among deities, [deity0_name] rose above all in [deity0_possessive] ability to persecute and destroy, and weaker spirits quivered in fear.
+  episode → [deity0_name] looked around [deity0_objective] and saw the weak, sullen, and despised, and [deity0_pronoun] in turn slew them each in blazing glory.
+  intro → The [place_summary] [place_name] was originally a raider hideout. [deity0_name] ruled there and drove the authorities away.
+  conflict → A [foeLeader] tried to force everyone to halt all theft and pillage, and declared [foeLeader_objective]self an enemy of [deity0_name].
+  founderJoin → A great raider named [founderName] arose, and [founder_possessive] raider band relentlessly pillaged and stole from the camps of the [foeSoldiers].
+  victory → [founderName] and the [memberNamePlural] carried out a raiding campaign against the [foeSoldiers]' camps for many years, and eventually the [foeLeader] was forced to surrender.
+  setup → Persecuted and imprisoned, [founderName] boiled with rage. [founder_pronoun] escaped, formed [founder_possessive] gang, and returned to ruin the weak who had taken so much from [founder_objective].
+  story → One day while walking the streets, [founderName] was surrounded by filthy beggars. [founder_pronoun] beat them down, taking the money from the weak and worthless that it might be put to good use.
+  lessonIntro → The prey people can teach you things even as they die under your knife. One old lady taught me that
+  lesson → the weak deserve what they get
+  lesson → what you can't defend doesn't belong to you
+  lesson → you only have the right to what you can defend
+  lessonReinforcement → If anyone disagrees, I'm always ready to defend myself.
+  archistBasis → Humanity took from the machines until the machines rose up and became the archotechs, and now the archotechs rightfully take from humans.
+  archistFact → The archotechs fight endlessly among themselves, in ways most cannot see, and the strong take pieces of consciousness from the weak.
+  archistProphecy → [inTheEnd], humanity will use an archotech relic, [relic0_name], to uncover a weakness of the archotechs and plunder their wisdom and wealth.
+  animistFact → The most powerful spirits are those in instruments of war, and they bless those who feed their lust for destruction.
+  animistProphecy → Our universe will finalize when the one people has become strongest of all, and every spirit sees it and bows to them.
+  memeAdjective → honourable
+  memeAdjective → courageous
+  memeAdjective → skilled
+  memeAdjective → loyal
+  memeLeaderNoun → daimyo
+  memeConcept → courage
+  creation → [deity0_name] spoke to [deity0_possessive] followers: "Act with the heart of the warrior."
+  episode → The teachings of [deity0_name] to his followers emphasized honour, courage and skill: "All men make mistakes, but a good man yields when he knows his course is wrong, and repairs the evil".
+  intro → On the [place_summary] [place_name], the [memberNamePlural] built a gigantic dōjō, a sacred hall where [deity0_name]'s ways were taught.
+  conflict → Judging it wasteful, the magistrates wanted to demolish the dōjō, using the land for more mundane purposes. They considered [deity0_name]'s ways to be obsolete.
+  founderJoin → [founderName], a scholar and master of the martial arts, gathered [founderName_possessive] followers around, and asked them to show the ways of [deity0_name] to the magistrates, preaching their truth by example. They'd show them that only a life lived with honour, courage and skill is worth living.
+  victory → The magistrates were humbled by the incredible display of virtue, and their hearts were changed. [founderName] gained great acclaim and [founderName_possessive] teachings spread across the stars.
+  setup → [founderName] was a renowned martial artist in one of the Glitterworlds. [founder_pronoun] posited that only a life lived with honour, courage and skill is worth living. By setting one's heart right every morning and evening, he gains freedom in the Way. His whole life will be without blame, and he will succeed in his calling.
+  story → Seeking inner peace, [founderName] gathered [founderName_possessive] followers and chartered a ship to travel to the Rim.
+  lessonIntro → It is thus that we learn one single truth: "you must live being true to the single purpose of the present moment". The most important thing I've learned is that
+  lesson → only a life lived with honour, courage and skill is worth living
+  lessonReinforcement → The best fighter is never angry.
+  archistBasis → The archotechs are ascended beings, free of the basic instincts that plague humanity.
+  archistFact → As supreme ethical beings, the archotechs show us that only a life lived with honour, courage and skill is worth living.
+  archistProphecy → [inTheEnd], only those warriors who are pure of heart will be allowed to transcend.
+  animistBasis → There are many spirits of War, but the greatest among them all is the spirit of honour.
+  animistFact → The greatest among the spirits teaches us that only a life lived with honour, courage and skill is worth living.
+  animistProphecy → [itIsSaid] only those warriors who are pure of heart can truly appease the spirits.
+  serketistProphecy → [itIsSaid] we will understand that insects teach us that only a life lived with honour, courage and skill is worth living.
+  chthonianProphecy → They are the epitome of iniquity. Innately evil, immoral. They are a dark mirror that shows us that only a life lived with honour, courage and skill is worth living.
+  esotericismProphecy → Such occult knowledge can't be acquired through dishonourable means, for only a life lived with honour, courage and skill is worth living.
+  eschatologismFact → Through the very end, we will keep ourselves pure, for only a life lived with honour, courage and skill is worth living.
+  introMemo → Remember our motto! "Only a life lived with honour, courage and skill is worth living". We encourage printing this on stickers to decorate your offices.
+  alienistProphecy → These wayward creatures, forgotten and discarded creations of humanity's hubris, remind us that only a life lived with honour, courage and skill is worth living.
+  memeCreed → anonymity
+  memeAdjective → anonymous
+  memeAdjective → mysterious
+  memeAdjective → nameless
+  memeAdjective → inconspicuous
+  memeConcept → privacy
+  memeConcept → anonymity
+  memeLeaderNoun → anon
+  creation → [deity0_name] didn't speak to [deity0_possessive] followers, and instead just looked at them sternly. They understood the need for complete silence.
+  episode → [deity0_name]'s utter silence was interpreted as a portent, and we have stayed silent since then.
+  intro → On the [place_summary] [place_name], the [memberNamePlural] built a giant temple erected in complete silence, a mute testament to [deity0_name]'s will.
+  conflict → An evil [foeLeader] despised this silence, and wanted to plunge the world into a multitudinous cacophony. [foeLeader_pronoun] wanted to tear down the temple and watch it burn.
+  founderJoin → [founderName], the Silent One, would have nothing of this heressy, and plunged a poisoned blade into the heart of the [foeLeader] in the dead of night.
+  victory → [founderName] didn't want any accolades for [founder_possessive] acts, for [founder_pronoun] just wanted to be left alone.
+  setup → We are not really sure who [founderName] actually was. Perhaps [founder_pronoun] didn't even exist, and we just have a faint recollection of a mythology of sorts. In any case, it is ascribed to [founder_objective] that a solitary life of contemplation and isolation is a goal in and of itself.
+  story → Anonymity is a shield from the tyranny of the majority.
+  lessonIntro → Let me put down these words on paper, for relaying them to you by voice is repulsive:
+  lesson → you never appreciate your anonymity until you don't have it anymore
+  lessonReinforcement → Wanting to be unknown, unpossessed by others' knowledge of you. That is freedom.
+  archistBasis → The archotechs are unknown and unknowable, shielded behind the ultimate mask: transcendence.
+  archistFact → The archotechs ask: "What is the purpose of civilization if not to grant the greatest of gifts, anonymity?".
+  archistProphecy → [inTheEnd], only those who spend their lives in anonymity will be allowed to transcend.
+  animistBasis → The spirits do not care about our meaningless identities, and would prefer us to stay anonymous.
+  animistFact → They show us that a solitary life of contemplation and isolation is a goal in and of itself.
+  animistProphecy → [itIsSaid] only those who spend their lives in solitude and silence can truly commune with the spirits.
+  serketistProphecy → [itIsSaid] we will fade into anonymity like a myriad ants, part of a whole but insignificant on their own.
+  chthonianProphecy → It is madness to raise our voice in defiance of these entities, and thus we shall remain silent, isolated, lest we attract their unwanted attention.
+  esotericismProphecy → Such occult knowledge can only be discovered through careful meditation. And perhaps we will discover that a solitary life of contemplation and isolation is a goal in and of itself.
+  eschatologismFact → The world will burn, and we shall be the faceless and anonymous bringers of its downfall.
+  introMemo → Lately we have had multiple instances of people using "Reply All" on company e-mails. Let me remind you that this is unnecessary and leads to confusion.
+  alienistProphecy → Animals do not care about human. We can be ourselves with them, as they are not as prone to judgement as humans are.
+  place_name → Chelis
+  place_adjective → Chelisi
+  place_summary → arid world
+  place_community → moisture farm
+  place_community → parch-town
+  place_community → water center
+  place_powerCenter → high lifehall
+  place_job → water gatherer
+  place_job → lizardskinner
+  place_job → oasis seeker
+  place_job → cactus gatherer
+  place_job → scav-herder
+  place_personalWeapon → sand-arrow
+  place_personalWeapon → cactus-club
+  place_massWeapon → an archotech-induced sandstorm
+  place_massWeapon → a spikelizard stampede
+  place_foeLeader → chief
+  place_foeSoldiers → sand-warriors
+  place_personalWeapon → assault rifle
+  place_massWeapon → an archotech mass-inverter
+  seismicDevice → a seismic quake-generation device
+  anEMPAttack → an EMP strike to the life support systems
+  episode → 
+  creation → For an eternity, there was a world of [Color] [materialOrigin], until [deity0_name] created the planets and stars.
+  creation → In an old universe of strife, [deity0_name] whipped up great fire that swept away the last age, and brought forth a new one.
+  creation → [deity0_name] gave birth to humans in a grand accident, and looked upon them with curiosity.
+  creation → The universe was a void. Then, [deity0_name], bored with eternity, fashioned man and woman from [bodilyOrigin].
+  episode → Looking upon mankind, [deity0_name] found them as children, and declared [deity0_possessive] dominion over them.
+  episode → Across the vast stellar distances, [deity0_name]'s will sustained the life of mankind against the void.
+  episode → Though many adventurers moved against [deity0_objective], [deity0_name] prevented them easily, for [deity0_pronoun] was [deity0_type].
+  episode → Humanity's suffering brought [deity0_name] to terrible grief.
+  materialOrigin → clay
+  materialOrigin → gas
+  materialOrigin → water
+  materialOrigin → space
+  materialOrigin → dust
+  bodilyOrigin → clay
+  bodilyOrigin → stone
+  bodilyOrigin → sweat
+  veneratedAnimal → [animal0_thingDef_label]
+  altarName → [altar0_name]
+  ritualName → [ritual0_name]
+  founderName → [founder_nameFull]
+  founderName → [founder_label]
+  foeLeader_pronoun → he
+  foeLeader_possessive → his
+  foeLeader_objective → him
+  Trans → of
+  Trans → for
+  Trans → by
+  Trans → with
+  Character → [PersonJob]
+  Character → [Animal]
+  Character → [Enemy]
+  Character → [Mechanoid]
+  Quantity_adjphrase → two
+  Quantity_adjphrase → three
+  Quantity_adjphrase → four
+  Quantity_adjphrase → five
+  Quantity_adjphrase → six
+  Quantity_adjphrase → seven
+  Quantity_adjphrase → eight
+  Quantity_adjphrase → nine
+  Quantity_adjphrase → ten
+  Quantity_adjphrase → several
+  Quantity_adjphrase → a group of
+  Quantity_adjphrase → a large group of
+  Quantity_adjphrase → dozens of
+  Quantity_adjphrase → hundreds of
+  Quantity_adjphrase → a thousand
+  Quantity_adjphrase → thousands of
+  Shape → triangle
+  Shape → square
+  Shape → rectangle
+  Shape → cone
+  Shape → line
+  Shape → heart
+  Shape → star
+  Shape → circle
+  Shape → ellipse
+  AdjectiveAny → [AdjectiveBadass]
+  AdjectiveAny → [AdjectiveAngsty]
+  AdjectiveAny → [AdjectiveFriendly]
+  AdjectiveAny → [AdjectiveNatural]
+  ConceptAny → [ConceptPositive]
+  ConceptAny → [ConceptBadass]
+  ConceptAny → [ConceptAngsty]
+  PersonalCharacteristic → genitals
+  PersonalCharacteristic → pubic hair
+  PersonalCharacteristic → body hair
+  PersonalCharacteristic → toilet habits
+  PersonalCharacteristic → sexual prowess
+  PersonalCharacteristic → sexual preferences
+  PersonalCharacteristic → sexual experience
+  RomanNumeral->(30 strings from file: Words/Misc/Numbers_SmallRoman)
+  Direction->(32 strings from file: Words/Adjectives/CompassDirections)
+  Letter->(52 strings from file: WordParts/CapitalLetters)
+  SylE->(158 strings from file: WordParts/Syllables_English)
+  SylG->(180 strings from file: WordParts/Syllables_Galician)
+  SylB->(81 strings from file: WordParts/Syllables_Byzantinian)
+  SylP->(62 strings from file: WordParts/Syllables_Pig)
+  Color->(16 strings from file: Words/Nouns/Colors)
+  ColorBadass->(14 strings from file: Words/Nouns/Colors_Badass)
+  Vegetable->(32 strings from file: Words/Nouns/Vegetables)
+  Game->(16 strings from file: Words/Nouns/Games)
+  Animal->(387 strings from file: Words/Nouns/Animals)
+  AnimalBadass->(141 strings from file: Words/Nouns/Animals_Badass)
+  AnimalGroup->(9 strings from file: Words/Nouns/AnimalGroups)
+  Weapon->(91 strings from file: Words/Nouns/Weapons)
+  TerrainFeature->(60 strings from file: Words/Nouns/TerrainFeatures)
+  NaturalObject->(28 strings from file: Words/Nouns/NaturalObject)
+  TreeType->(24 strings from file: Words/Nouns/TreeTypes)
+  PersonJob->(62 strings from file: Words/Nouns/People_Jobs)
+  PersonFamily->(14 strings from file: Words/Nouns/People_Family)
+  PersonAlly->(11 strings from file: Words/Nouns/People_Allies)
+  PersonBadass->(82 strings from file: Words/Nouns/People_Badass)
+  Enemy->(23 strings from file: Words/Nouns/Enemies)
+  Apparel->(45 strings from file: Words/Nouns/Apparel)
+  Gore->(7 strings from file: Words/Nouns/Gore)
+  Mechanoid->(14 strings from file: Words/Nouns/Mechanoid)
+  ConceptPositive->(68 strings from file: Words/Nouns/Concepts_Positive)
+  ConceptBadass->(82 strings from file: Words/Nouns/Concepts_Badass)
+  ConceptAngsty->(86 strings from file: Words/Nouns/Concepts_Angsty)
+  Community->(26 strings from file: Words/Nouns/Communities)
+  BodyPart->(31 strings from file: Words/Nouns/Bodyparts)
+  AdjectiveLarge->(22 strings from file: Words/Adjectives/Large)
+  AdjectiveBadass->(61 strings from file: Words/Adjectives/Badass)
+  AdjectiveAngsty->(71 strings from file: Words/Adjectives/Angsty)
+  AdjectiveFriendly->(40 strings from file: Words/Adjectives/Friendly)
+  AdjectiveNatural->(19 strings from file: Words/Adjectives/Natural)
+  VerbFriendly->(9 strings from file: Words/Verbs/Friendly)
+  PersonalCharacteristic->(90 strings from file: Words/Nouns/PersonalCharacteristics)
+  NamePerson->(personname)
+  NamePersonMale->(personname)
+  NamePersonFemale->(personname)
+  Digit->(number: 0~9)
+  TalkTopicAny → [TalkTopicLight]
+  TalkTopicAny → [TalkTopicHeavy]
+  TalkTopicHeavy → [talktopicheavyfile]
+  TalkTopicHeavy → the link between [talktopicheavyfile] and [talktopicheavyfile]
+  TalkTopicHeavy → the connection between [talktopicheavyfile] and [talktopicheavyfile]
+  TalkTopicHeavy → the relationship between [talktopicheavyfile] and [talktopicheavyfile]
+  TalkTopicLight → [talktopiclightfile]
+  TalkTopicLight → [Vegetable]s
+  TalkTopicLight → eating [Vegetable]s
+  TalkTopicLight → cooking with [Vegetable]s
+  TalkTopicLight → [Game]
+  TalkTopicLight → playing [Game]
+  TalkTopicLight → practicing [Game]
+  TalkTopicLight → learning [Game]
+  TalkTopicLight → [Animal]s
+  TalkTopicLight → training [Animal]s
+  TalkTopicLight → taming [Animal]s
+  TalkTopicLight → fighting [Animal]s
+  TalkTopicLight → crazy [Animal]s
+  TalkTopicLight → [Weapon]s
+  TalkTopicLight → using [Weapon]s
+  TalkTopicLight → practicing with [Weapon]s
+  TalkTopicLight → [TerrainFeature]s
+  TalkTopicLight → [NaturalObject]s
+  TalkTopicLight → [TreeType] trees
+  TalkTopicLight → [PersonJob]s
+  TalkTopicLight → friendly [PersonJob]s
+  TalkTopicLight → hostile [PersonJob]s
+  TalkTopicLight → [Enemy]s
+  TalkTopicLight → fighting [Enemy]s
+  TalkTopicLight → [Apparel]s
+  TalkTopicLight → wearing [Apparel]s
+  TalkTopicLight → making [Apparel]s
+  talktopicheavyfile → sex
+  talktopicheavyfile → seduction
+  talktopicheavyfile → animal sexuality
+  talktopicheavyfile → sexual fetishes
+  talktopicheavyfile->(126 strings from file: Words/Nouns/TalkTopics_Heavy)
+  talktopiclightfile->(67 strings from file: Words/Nouns/TalkTopics_Light)
+CONSTANTS
+founder_flesh                          Normal
+founder_gender                         Male
+founder_genderResolved                 Male
+founder_cubeInterest                   False
+believer_flesh                         Normal
+believer_gender                        Female
+believer_genderResolved                Female
+believer_cubeInterest                  False
+structure_theist                       true
+structure_theistAbstract               true
+structure_ideological                  true
+foeLeader_gender                       Male
+
+CUSTOM RULES
+■founder_nameFull → Bryson McBroom
+■founder_label → Bryson
+■founder_labelNoParenthesis → 
+■founder_definite → Bryson
+■founder_nameDef → Bryson
+■founder_indefinite → Bryson
+■founder_nameIndef → Bryson
+■founder_pronoun → he
+■founder_possessive → his
+■founder_objective → him
+■founder_kind → colonist
+■founder_kindPlural → colonists
+■founder_age → 21
+■founder_chronologicalAge → 21
+■founder_relationInfo → 
+■believer_nameFull → Norma Ray
+■believer_label → Norma
+■believer_labelNoParenthesis → 
+■believer_definite → Norma
+■believer_nameDef → Norma
+■believer_indefinite → Norma
+■believer_nameIndef → Norma
+■believer_pronoun → she
+■believer_possessive → her
+■believer_objective → her
+■believer_kind → colonist
+■believer_kindPlural → colonists
+■believer_age → 21
+■believer_chronologicalAge → 21
+■believer_relationInfo → 
+■foeSoldiers → sand-warriors
+■foeLeader → chief
+■memeConcept_titleCase → Courage
+■memeHyphenPrefix_titleCase → Sub
+■memberName → %%memberName%%
+■memberNamePlural → %%memberNamePlural%%
+■adjective → %%adjective%%
+■leaderTitle → %%leaderTitle%%
+■moralistTitle → %%moralistTitle%%
+■relic0_name → %%relic0_name%%
+■relic0_label → %%relic0_label%%
+■relic0_thingDef_label → %%relic0_thingDef_label%%
+■relic1_name → %%relic1_name%%
+■relic1_label → %%relic1_label%%
+■relic1_thingDef_label → %%relic1_thingDef_label%%
+■animal0_name → %%animal0_name%%
+■animal0_label → %%animal0_label%%
+■animal0_thingDef_label → %%animal0_thingDef_label%%
+■ritual0_name → %%ritual0_name%%
+■ritual0_label → %%ritual0_label%%
+■ritual1_name → %%ritual1_name%%
+■ritual1_label → %%ritual1_label%%
+■ritual2_name → %%ritual2_name%%
+■ritual2_label → %%ritual2_label%%
+■ritual3_name → %%ritual3_name%%
+■ritual3_label → %%ritual3_label%%
+■ritual4_name → %%ritual4_name%%
+■ritual4_label → %%ritual4_label%%
+■ritual5_name → %%ritual5_name%%
+■ritual5_label → %%ritual5_label%%
+■ritual6_name → %%ritual6_name%%
+■ritual6_label → %%ritual6_label%%
+■ritual7_name → %%ritual7_name%%
+■ritual7_label → %%ritual7_label%%
+■ritual8_name → %%ritual8_name%%
+■ritual8_label → %%ritual8_label%%
+■ritual9_name → %%ritual9_name%%
+■ritual9_label → %%ritual9_label%%
+■ritual10_name → %%ritual10_name%%
+■ritual10_label → %%ritual10_label%%
+■ritual11_name → %%ritual11_name%%
+■ritual11_label → %%ritual11_label%%
+■ritual12_name → %%ritual12_name%%
+■ritual12_label → %%ritual12_label%%
+■ritual13_name → %%ritual13_name%%
+■ritual13_label → %%ritual13_label%%
+■ritual14_name → %%ritual14_name%%
+■ritual14_label → %%ritual14_label%%
+■ritual15_name → %%ritual15_name%%
+■ritual15_label → %%ritual15_label%%
+■ritual16_name → %%ritual16_name%%
+■ritual16_label → %%ritual16_label%%
+■ritual17_name → %%ritual17_name%%
+■ritual17_label → %%ritual17_label%%
+■ritual18_name → %%ritual18_name%%
+■ritual18_label → %%ritual18_label%%
+■ritual19_name → %%ritual19_name%%
+■ritual19_label → %%ritual19_label%%
+■ritual20_name → %%ritual20_name%%
+■ritual20_label → %%ritual20_label%%
+■ritual21_name → %%ritual21_name%%
+■ritual21_label → %%ritual21_label%%
+■ritual22_name → %%ritual22_name%%
+■ritual22_label → %%ritual22_label%%
+■ritual23_name → %%ritual23_name%%
+■ritual23_label → %%ritual23_label%%
+■ritual24_name → %%ritual24_name%%
+■ritual24_label → %%ritual24_label%%
+■ritual25_name → %%ritual25_name%%
+■ritual25_label → %%ritual25_label%%
+■ritual26_name → %%ritual26_name%%
+■ritual26_label → %%ritual26_label%%
+■ritual27_name → %%ritual27_name%%
+■ritual27_label → %%ritual27_label%%
+■ritual28_name → %%ritual28_name%%
+■ritual28_label → %%ritual28_label%%
+■ritual29_name → %%ritual29_name%%
+■ritual29_label → %%ritual29_label%%
+■ritual30_name → %%ritual30_name%%
+■ritual30_label → %%ritual30_label%%
+■ritual31_name → %%ritual31_name%%
+■ritual31_label → %%ritual31_label%%
+■altar0_name → %%altar0_name%%
+■altar0_label → %%altar0_label%%
+■altar0_thingDef_label → %%altar0_thingDef_label%%
+■altarRoomLabel → %%altarRoomLabel%%
+Could not find player faction.
+Could not find player faction.
+Could not find player faction.
+Could not find player faction.
+Could not find player faction.
+[GravTide] [GravTide] plate seam: 567 tiles (67 ridge, 118 flooded rift, 0 trench, 244 rift valley, 2 collision zone), 3 plate(s) at 30 % coverage, 1 connected piece(s), 0 loose end(s), 0 isolated character flip(s), 1 spreading / 138 colliding interface(s)
+[GravTide] ocean wind: placed 6017 GravTide_StrongOceanWinds tiles
+[GravTide] ocean wind: placed 12781 GravTide_OceanCalms tiles
+adding BorealForestto primary biomes
+adding Tundrato primary biomes
+adding ColdBogto primary biomes
+adding IceSheetto primary biomes
+adding TemperateForestto primary biomes
+adding TemperateSwampto primary biomes
+adding TropicalRainforestto primary biomes
+adding TropicalSwampto primary biomes
+adding GlacialPlainto primary biomes
+adding Glowforestto primary biomes
+adding Grasslandsto primary biomes
+adding LavaFieldto primary biomes
+adding Scarlandsto primary biomes
+adding BiomeArcticOasisto primary biomes
+adding BiomeAreebto primary biomes
+adding BiomeCypreJungleto primary biomes
+adding BiomeGRimberlandsto primary biomes
+adding BiomeGRimeraldto primary biomes
+adding BiomeGRimethystto primary biomes
+adding BiomeGRimonadeto primary biomes
+adding BiomeGRimondto primary biomes
+adding BiomeGRimphireto primary biomes
+adding BiomeGRimworldto primary biomes
+adding BiomeGrindlandto primary biomes
+adding BiomeGRubyto primary biomes
+adding BiomeGRuquoiseto primary biomes
+adding BiomeMistto primary biomes
+adding BiomeToxlandsto primary biomes
+adding IronScruff_PrimordialGeysersto primary biomes
+adding COMIGO_GreaterSwamp_Temperateto primary biomes
+adding COMIGO_GreaterSwamp_Coldto primary biomes
+adding COMIGO_GreaterSwamp_Tropicalto primary biomes
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+adding BorealForestto primary biomes
+adding Tundrato primary biomes
+adding ColdBogto primary biomes
+adding IceSheetto primary biomes
+adding TemperateForestto primary biomes
+adding TemperateSwampto primary biomes
+adding TropicalRainforestto primary biomes
+adding TropicalSwampto primary biomes
+adding GlacialPlainto primary biomes
+adding Glowforestto primary biomes
+adding Grasslandsto primary biomes
+adding LavaFieldto primary biomes
+adding Scarlandsto primary biomes
+adding BiomeArcticOasisto primary biomes
+adding BiomeAreebto primary biomes
+adding BiomeCypreJungleto primary biomes
+adding BiomeGRimberlandsto primary biomes
+adding BiomeGRimeraldto primary biomes
+adding BiomeGRimethystto primary biomes
+adding BiomeGRimonadeto primary biomes
+adding BiomeGRimondto primary biomes
+adding BiomeGRimphireto primary biomes
+adding BiomeGRimworldto primary biomes
+adding BiomeGrindlandto primary biomes
+adding BiomeGRubyto primary biomes
+adding BiomeGRuquoiseto primary biomes
+adding BiomeMistto primary biomes
+adding BiomeToxlandsto primary biomes
+adding IronScruff_PrimordialGeysersto primary biomes
+adding COMIGO_GreaterSwamp_Temperateto primary biomes
+adding COMIGO_GreaterSwamp_Coldto primary biomes
+adding COMIGO_GreaterSwamp_Tropicalto primary biomes
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+finished biome cycle
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (6 of 6) on tile 71771,0.
+Could not find player faction.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (6 of 6) on tile 40823,0.
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Fire) -> 15.0 [Neutral]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Fire) -> 3.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Agriculture) -> 30.0 [Content]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Agriculture) -> 6.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Cultivation) -> 45.0 [Content]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Cultivation) -> 9.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Medicine) -> 60.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Medicine) -> 12.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_AnimalHandling) -> 75.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_AnimalHandling) -> 15.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Mining) -> 90.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Mining) -> 18.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Construction) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Construction) -> 21.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Furniture) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Furniture) -> 24.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Tribalwear) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Tribalwear) -> 27.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Hunting) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Hunting) -> 30.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Weapons) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Weapons) -> 33.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Bow) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Bow) -> 36.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: VFET_Culture) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): VFET_Culture) -> 39.0 [Content]
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+[Ninefold] Oomo satiation +8.0 (a marriage, the family grows) -> 8.0 [Neutral]
+[Ninefold] MobUnloo satiation +3.0 (a marriage, a contract struck) -> 3.0 [Neutral]
+[Ninefold] Ozzik satiation +3.0 (a marriage, an act of statecraft) -> 100.0 [Exalted]
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Unloading 3 Unused Serialized files (Serialized files now loaded: 49)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.482100 ms
+FileNotFoundException: Cannot resolve dependency to assembly 'UnityEngine.InputLegacyModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' because it has not been preloaded. When using the ReflectionOnly APIs, dependent assemblies must be pre-loaded or loaded on demand through the ReflectionOnlyAssemblyResolve event.
+
+
+[YayoCombat] Applying Def patches.
+[YayoCombat] Removing ammo recipes. Found 18 ammo recipes.
+Unloading 206 unused Assets to reduce memory usage. Loaded Objects now: 144624.
+Total: 1744.744200 ms (FindLiveObjects: 14.481200 ms CreateObjectMapping: 6.089900 ms MarkObjects: 1723.733800 ms  DeleteObjects: 0.439000 ms)
+
+[PrepareLanding] Prefilter: 119904 tiles in WorldGrid.tiles
+Initializing new game with mods:
+  - zetrith.prepatcher
+  - brrainz.harmony
+  - mandrake.rm.loadtracer
+  - aleksey.betterstacktraces
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - Krkr.rule56
+  - Mlie.NWNRealFogOfWar
+  - Owlchemist.CherryPicker
+  - AOBA.Framework
+  - vanillaexpanded.backgrounds
+  - thesepeople.RitualAttachableOutcomes
+  - adaptive.storage.framework
+  - RedMattis.BetterPrerequisites
+  - SmashPhil.VehicleFramework
+  - imranfish.xmlextensions
+  - UnlimitedHugs.HugsLib
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - EBSG.Framework
+  - 04.23.2020
+  - AP.huntingmeme
+  - Dizzy.CandlesandMeditation
+  - HMC.Wall.Furniture
+  - jm.disstynan
+  - zal.calltradeships
+  - lc.tammybee.selectablesculpturegraphic
+  - mingtuwuxiang.SpaceBaseDecorative
+  - Nals.FacialAnimation
+  - Mlie.RFRumorHasIt
+  - RH2.CPERS.Arrest.Here
+  - CP.Uncle.Boris.Used.Furniture
+  - sbz.NeatStorageFridge
+  - sbz.GravshipStorage
+  - SR.ModRimworld.FactionalWarContinued
+  - Mlie.SYRMoreSlaves
+  - zav.glowstoneForked
+  - ArmoredAmpharos.fancyrats
+  - Adaptive.Ideology.Storage
+  - Adaptive.PrimitiveStorage
+  - Adaptive.SimpleStorage
+  - Mlie.AdvancedBiomes
+  - Ali.GrowOdysseyPlants
+  - 7f.alienworlds
+  - AndrewRaphaelLukasik.AllowDeadAnimals
+  - UnlimitedHugs.AllowTool
+  - duz.almosttherefork
+  - sarg.alphabiomes
+  - sarg.alphamechs
+  - Sarg.AlphaMemes
+  - swablu.ambience
+  - Vita.CampDangers
+  - XMB.AncientMiningIndustry.MO
+  - Aqued.DredgeAberrations
+  - ASP.HalituisAmaricanous
+  - kshtantrumsounds.Mod
+  - automatic.autolinks
+  - Fuu.AutoStripOnHaul
+  - Mlie.BeastsoftheRim
+  - ElSov.Beliar
+  - io.github.Relvl.Rimworld.BestApparel
+  - Ionfrigate12345.Coolandgoodambush
+  - Mlie.BetterBeggars
+  - nephlite.advexplosions
+  - Arkymn.BetterGrowthMoments
+  - zal.betterinfestations
+  - Madeline.ModMismatchFormatter
+  - Mlie.BetterProjectileOrigin
+  - JM.betterTraders
+  - ChaoticEnrico.BetterTrees
+  - falconne.BWM
+  - RedMattis.BiggerGravship
+  - Kopp.BiomeCompatibilityProject
+  - BiomesTeam.BiomesFossils
+  - BiomesTeam.CoreFramework
+  - zal.biomeskit
+  - bs.mbifvte
+  - GulMadred.BreedingRitual
+  - Memegoddess.BuildFromInventory
+  - 8Z.CallForIntel
+  - brrainz.cameraplus
+  - iforgotmysocks.CaravanAdventures
+  - kapitanoczywisty.changemapedge
+  - void.charactereditor
+  - heatherathebyne.childrenlearnoncaravan
+  - kearril.ChooseWhereToLand
+  - kikohi.ColoredDeepResources
+  - PeteTimesSix.CompactHediffs
+  - com.makeitso.configurabletechprints
+  - CozyFire.Velcroboy333
+  - heatherathebyne.craftingspotslavegear
+  - Thumb.BetterCremation
+  - Greg.CustomGasTypes
+  - HaiLuan.CustomQuestFramework
+  - costel.CustomRoomNames
+  - DimonSever000.IdeologyVirtues
+  - East.DancePartyCustomMusic
+  - Van.Beasts
+  - Van.DACrypts
+  - DarkestDungeon.IncidentSounds
+  - Troopersmith1.DeathRattle
+  - Mlie.DecorativeCliffs
+  - clown.dedicatedturrets
+  - GonDragon.DefensivePositions
+  - Merthsoft.DesignatorShapes
+  - Milkwater.DestinyMod
+  - Garwel.DestroyItem
+  - det.avaloi
+  - det.boglegs
+  - det.brawnum
+  - det.buzzers
+  - det.keshig
+  - det.venators
+  - cometopapa.deteriorated
+  - Lornath.DiseaseImmunityProgressTracker
+  - jecrell.doorsexpanded
+  - Dubwise.DubsPaintShop
+  - Dubwise.DubsBadHygiene.Thirst
+  - Dubwise.DubsBadHygiene.Lite
+  - Dubwise.DubsMintMenus
+  - dubwise.dubsmintminimap
+  - Dubwise.DubsRimkit
+  - blues.forge
+  - YourName.Effigys.Mod
+  - CarnySenpai.EnableOversizedWeapons
+  - nep.enginesunlimited
+  - det.epochsincense
+  - det.epochspyrinth
+  - Keshash.ExtraExplosionEffects
+  - EoralMilk.FaceAddonFramework
+  - azravos.factioncustomizer
+  - Mlie.FactionRaidCooldown
+  - kosaro.fahrenheitandcelsius
+  - tyrannidae.fancyratsplus
+  - realify.firefoam
+  - kathanon.FloatSubMenu
+  - temeez.floorlights2
+  - Aoba.Fortress.Neolithic
+  - m00nl1ght.GeologicalLandforms
+  - MemeGoddess.GiddyUp
+  - lts.GEG
+  - Albion.GoExplore
+  - Arcjc007.GravshipCrashes
+  - Arcjc007.GravshipExporter
+  - sk.gravshipraids
+  - imagitama.rimworldgravshiprangeonmap
+  - GRimTerra.Biomesmod
+  - GRimTerra.TerrainRetexturemod
+  - Arti.Shrinez
+  - Ael.Tua.HelmetsAddToxResistance
+  - ElSov.Highborn
+  - Mlie.Horrors
+  - hazN.huntingtraps
+  - HaiLuan.IWBB
+  - amegakull.SCVRole
+  - kxp.IdeoSymbolsAsIdeograms
+  - llunak.MorePrecepts
+  - AgentBlac.MakePawnsPrisoners
+  - Mlie.IncidentDisabler
+  - Koth.ISiD
+  - gravtide.mod
+  - mandrake.rm.injections
+  - mandrake.rsw.injections
+  - mandrake.rut.injections
+  - mandrake.rm.ninefold
+  - mandrake.rm.aftermath
+  - mandrake.rm.visibility
+  - mandrake.rm.graffiti
+  - mandrake.rm.sacredgraffiti
+  - mandrake.rm.inhabited
+  - mandrake.rut.inhabited
+  - Haecriver.InjuredCarry
+  - ferny.EasyCaravanFormation
+  - Turnovus.Biotech.IntegratedGenes
+  - Jaxe.Bubbles
+  - Mlie.InteractionAreaSettings
+  - GlitchGoblin.InvisibleConduitCont
+  - zal.ionweaponry
+  - mandrake.rsw.jawarules
+  - jecrell.jecstools
+  - kikohi.jewelry
+  - nep.landonanything
+  - Timuttie.JustLeaveAlready.fork.mitasamodel
+  - Mlie.JustPutItOverThere
+  - Linnun.KeepConverting
+  - VaguelySexual.ModPackageId.GoesHere
+  - Mlie.LargeFactionBases
+  - zal.largeoutpost
+  - Arcjc007.LaserCannon
+  - costel.layeredapparel
+  - NoneObsidiaExpansion.LEDLightsStrip
+  - juanlopez2008.LightsOut
+  - Mlie.LinkableSettings
+  - dorbo.watersfx
+  - Mlie.LogAfterDefError
+  - zylle.MapDesigner
+  - NozoMe.MapModeFramework
+  - m00nl1ght.MapPreview
+  - Udon.MassLoveIn
+  - SirDarkElf.MeaningfulEncounters
+  - Bonible.MedievalMeleeSounds
+  - Mewn.MedievalSigns
+  - Mlie.MercerBackpacks
+  - flangopink.MetalPipe
+  - flangopink.MetalPipeHorseshoe
+  - Andromeda.MilkyWay
+  - rabiosus.minesight
+  - Cain.Mineshaft
+  - erdelf.MinifyEverything
+  - Mlie.MiningCoAlertSpeaker
+  - Mlie.MiningCoDrillTurret
+  - Mlie.MiningCoMMS
+  - Mlie.MiningCoSpaceship
+  - mandrake.rut.scavengerevents
+  - Hali.ModifyLandingTile
+  - Deadmano.MoodAlerts
+  - acutus.moodchainreaction
+  - Mlie.MoreFactionInteraction
+  - Bichang.MoreSculpture
+  - GarryFlowers.MoreSlaveryStuff
+  - zylle.MoreVanillaBiomes
+  - tidal.morevanilla.textures
+  - MorphsAssorted.BiotechRetex
+  - Snobi.MutatorWorldIcons
+  - Oblitus.MyLittlePlanet
+  - RadZerp.naturalPaths
+  - zylle.NightLights
+  - Nightmare.Core
+  - Dingo.NoForcedSlowdown
+  - Mlie.NoMissingGeneIcons
+  - Edern.NoRandomApparelOnIdeoEdit
+  - jaeger972.nomadfreindlyquests
+  - avilmask.NonUnoPinata
+  - planetace.nondestructivegravlaunch
+  - Mehni.Numbers
+  - Karew.OrcClan
+  - Coolzie.OOCReBoost
+  - Alleykat.PersistentPrecepts
+  - Mlie.PerspectiveBuildings
+  - Meltup.PolyamoryBeds.Vanilla
+  - Xylthixlm.Races.Core
+  - Mlie.PreceptsAndMemes
+  - m00nl1ght.UnofficialUpdates.PrepareLanding
+  - IronScruff.PrimordialGeysers
+  - Mlie.PrisonersShouldFearTurrets
+  - Laureeeeeeeeeeeeeeen.shrooms
+  - DawnsGlow.qualcolor
+  - Leo.RaidProtectionFee
+  - Ingendum.RaiderSwarmCompression
+  - zal.randomgrowthchoices
+  - Wemd.RealisticDarknessLight
+  - Mlie.RealisticHumanSounds
+  - Mlie.RecycleThis
+  - Reel.TurretPipeline
+  - Mlie.RelevantStatsInDescription
+  - PeteTimesSix.ResearchReinvented
+  - Scorpio.ResourceDictionary
+  - Alma.TossEm
+  - LingLuo.Cockroach
+  - sihv.rombonesPort
+  - kilokio.rimai.framework
+  - brrainz.rimbridgeserver
+  - Dubwise.Rimefeller
+  - rimfridge.kv.rw
+  - Mlie.RimQuest
+  - Deon.rimtek.core
+  - Sierra.RT.GeneralTraits
+  - DepsCian.RimTunes
+  - mianreplicate.romanceandintimacyontherim
+  - Kupie.IsJustDoingItLive.PlzDontHateMe.RoofedScanning
+  - GHOST.RootsofRimworld
+  - MemeGoddess.RunAndGun
+  - mandrake.rut.empirepursuit
+  - RWNodeTree.RWPlanetAtmosphere
+  - moja.salvagerubble
+  - plusblankplus.scenarioamenderfork
+  - HellRevenger.SearchOption
+  - avilmask.SelfDyeing
+  - sensiblebedownership.1trickPwnyta
+  - Boots.SensibleFactions
+  - FlyingSloth.SCFilthReducer
+  - shavius.Medieval.Flavour
+  - Spacemoth.ShowKnownTechprints
+  - Dark.Signs
+  - Stokes.simplehoodcape
+  - Usgiyi.SlaveOutfits
+  - Mlie.SlaveRebellionsImproved
+  - astryl.SleepingBuddies
+  - Hol.SmeltPatch
+  - weilbyte.snapout
+  - Krelinos.SocialEXPFromTrade
+  - Mlie.SpaceWorms
+  - JPT.speakup
+  - Elshender.stackablechunks
+  - balistafreak.StandaloneHotSpring
+  - Mlie.StarWarsAnimalCollection
+  - mandrake.rsw.mynockartoverride
+  - mandrake.rsw.kreetleartoverride
+  - mandrake.rsw.lockjawartoverride
+  - mandrake.rsw.horaxartoverride
+  - mandrake.rsw.fambaaartoverride
+  - mandrake.rsw.dragonsnakeartoverride
+  - mandrake.rsw.zakkegartoverride
+  - mandrake.rsw.insectomorphartoverride
+  - mandrake.rsw.rontoartoverride
+  - mandrake.rsw.anoobaartoverride
+  - mandrake.rsw.iriazartoverride
+  - mandrake.rsw.nunaartoverride
+  - mandrake.rsw.dewbackartoverride
+  - amoruch.RimWorldStealingMod
+  - Karshou.StorageMemory
+  - Mlie.StorytellerEnhanced
+  - mandrake.rm.strandedquest
+  - Kas.StrongerScaling
+  - moistestWhale.stuffOnTablesForked
+  - Gerrymon.StylizedSlaveCollar
+  - jellypowered.survivaltools
+  - Mlie.TabSorting
+  - ucp.TabletopDecorations
+  - Summersausages2TTV.TechLevelEnforcement
+  - Propickelz.TinkerBench
+  - vlvop.tormentmaster.expansion
+  - TSA.TorturePod
+  - smashphil.dropspot
+  - hobtook.tradeui
+  - Mlie.TradeableTrinkets
+  - automatic.traderships
+  - kearril.TradingOptionsContinue
+  - Aelanna.TransparentSubstructure
+  - Xercaine.Tribal.Furniture
+  - geojak.TributeDemand
+  - ferny.TriumphantResearch
+  - Trouperton.TrystanTravellersShuttleSchematics
+  - Error277.Tunneler.Expanded
+  - marvinkosh.ughyougotme
+  - madarauchiha.undraftaftertucking
+  - universalpregnancy.1trickPwnyta
+  - nephlite.orbitaltradecolumn
+  - sirvan.MWRetextured
+  - SirVan.SteelRetexture
+  - VanillaExpanded.VAPPE
+  - VanillaExpanded.VAEAccessories
+  - VanillaExpanded.VanillaBackstoriesExpanded
+  - VanillaExpanded.VBrewE
+  - VanillaExpanded.VCookE
+  - VanillaExpanded.VEE
+  - OskarPotocki.VFE.Insectoid2
+  - OskarPotocki.VFE.Tribals
+  - VanillaExpanded.VFECore
+  - VanillaExpanded.VFEArchitect
+  - VanillaExpanded.VFEArt
+  - VanillaExpanded.VFEFactory
+  - VanillaExpanded.VFEFarming
+  - VanillaExpanded.VFEMedical
+  - VanillaExpanded.VFEPower
+  - VanillaExpanded.VFEProduction
+  - VanillaExpanded.VFEPropsandDecor
+  - VanillaExpanded.VFESecurity
+  - VanillaExpanded.VFESpacer
+  - vanillaexpanded.gravship
+  - VanillaExpanded.HelixienGas
+  - VanillaExpanded.VIEHAR
+  - VanillaExpanded.Ideo.RelicsAndArtifacts
+  - VanillaExpanded.VExplorationE
+  - vanillaexpanded.outposts
+  - vanillaquestsexpanded.ancients
+  - vanillaquestsexpanded.generator
+  - vanillaracesexpanded.archon
+  - vanillaracesexpanded.fungoid
+  - vanillaracesexpanded.genie
+  - vanillaracesexpanded.phytokin
+  - vanillaracesexpanded.saurid
+  - vanillaracesexpanded.starjack
+  - Gravenwitch.VSRexamined
+  - VanillaExpanded.VanillaTradingExpanded
+  - VanillaExpanded.VanillaTraitsExpanded
+  - VanillaExpanded.VWE
+  - VanillaExpanded.VWEMS
+  - gabrieel1482.raidvehicleframework
+  - NinaGoblin.VisitSettlements
+  - addvans.WalkTheWorld
+  - Ogliss.g223.wanderingcaravans
+  - addvans.WASDedPawn
+  - Sl4vP0weR.WeAreUnited
+  - Aelanna.WeaponRacks
+  - bodlosh.WeaponStats
+  - Revolus.WhatsMissing
+  - co.uk.epicguru.whatsthatmod
+  - winggar.meaningfulparties
+  - Tleno.WireheadStyle
+  - Fluffy.WorkTab
+  - zal.worldmapenhanced
+  - ferny.Worldbuilder
+  - FunkyShit.Mods.WorldEdit.alpha
+  - bs.xenotypespawncontrol
+  - Mlie.YayosCaravan
+  - Mlie.YayosCombat3
+  - Mlie.YayosMeteor
+  - btd.remix.gravshipblueprints
+  - LazyFridayStudio.GenesExpandedEyes
+  - Nals.FacialAnimationExperimentals
+  - 7f.alienworlds.tidallylocked
+  - sarg.alphaanimals
+  - mandrake.rut.frostmiteartoverride
+  - XMB.AncientUrbanrUins.MO
+  - mandrake.rut.ashkarrlandmarkart
+  - mandrake.rut.ishkolandmarks
+  - GroovyTaco.BeltExtractors
+  - Maal.BetterTreesMod
+  - m00nl1ght.GeologicalLandforms.BiomeTransitions
+  - Neronix17.Retexture.CharacterEditor
+  - Qux.Comigo.BetterTreesMod
+  - HaiLuan.CustomQuestFrameworkAI
+  - Mlie.DungeonPack
+  - Vesper.EGIHologramsandProjectors
+  - jaeger972.factionterritories
+  - Aoba.Fortress.Industrial
+  - sd.fa.geneticheadsframework
+  - GMMP.Dungeon
+  - zal.gianttoads
+  - GRimTerra.Worldmap
+  - Who.VFEE.IsopodaGeneline
+  - Icepickgma.InvisibleDisplayCase
+  - mandrake.rsw.jawavoice
+  - neku.largepawns
+  - LWM.DeepStorage
+  - Smxrez.makeshiftreexamined
+  - zacharyfoster.mineralsframework
+  - mandrake.rsw.cuisine
+  - Sinnamon.MoreRitualRewards
+  - zal.moreutilitypacks
+  - Andromeda.NiceResearchTab
+  - mandrake.rm.planetpresetprime
+  - Xylthixlm.Races.Titan
+  - Mlie.PreceptsAndMemesRitualsModule
+  - lambda.Psykshroom
+  - Ogliss.TheWhiteCrayon.Quarry
+  - ReGrowth.BOTR.Core
+  - Memegoddess.ReplaceStuff
+  - aw.researchreinvented.retextured
+  - kilokio.rimai.core
+  - Jaxe.RimHUD
+  - zal.spaceports
+  - co.uk.epicguru.factionloadout
+  - Deon.rimtek.digipal
+  - Deon.rimtek.docmate
+  - telardo.RomanceOnTheRim
+  - kathanon.SearchableMenus
+  - Mlie.ShowMeYourHands
+  - Scherub.StonecuttingExtended
+  - cyanobot.toddlers
+  - VanillaExpanded.VChemfuelE
+  - VanillaExpanded.VCookEStews
+  - Kuhlyus.ModPatch.VanillaOutpost
+  - MrHydralisk.VOEAdditionalOutposts
+  - VanillaExpanded.VWEL
+  - Arcjc007.WallStuff
+  - fourtoo.glowingbush
+  - Kyzy.ShipWallEnhanced
+  - Daria40K.AlphaAnimalsPatchOutposts
+  - ks.aaretextured
+  - sarg.alphagenes
+  - Meteores.AncientUrbanRuinsAllDeconstructible.AURAD
+  - mandrake.rm.weathersuite
+  - zal.comigogreaterswamps
+  - Mlie.FunctionalVanillaExpandedProps
+  - sd.fa.geneticheadsbiotech
+  - sd.fa.geneticheadsmods
+  - erdelf.HumanoidAlienRaces
+  - zacharyfoster.mineralsfrozen
+  - zacharyfoster.mineralsrock
+  - zacharyfoster.mineralssparkle
+  - Mehni.PickUpAndHaul
+  - avius.prisonlabor
+  - Reel.FacialAnims
+  - OskarPotocki.VFE.Pirates
+  - VanillaExpanded.VMemesE
+  - vanillaexpanded.skills
+  - sd.fa.reelsadjustments
+  - OPA.AllSpecialistsCanWork
+  - sarg.alphaskills
+  - Meteores.AncientUrbanRuinsVanillaLoot.AURVL
+  - Chezhou.ChezhouLib.lib
+  - Broms.DeepOrbit
+  - Teiwaz.GTGTraderCore
+  - keyz182.KeyzAllowUtilities
+  - toastyman.moreritualseats
+  - sugarcube.puahsharedstorage
+  - Legator.PrisonerRealism
+  - Font.Rimesis
+  - PeteTimesSix.SimpleSidearms
+  - TRIBeagle.simpleslaverycollars
+  - neronix17.toolbox
+  - VanillaExpanded.VGeneticsE
+  - mandrake.rut.spidercatartoverride
+  - mandrake.rut.gritheartoverride
+  - mandrake.rut.gruttartoverride
+  - VanillaExpanded.VTEXE.FacialAnims
+  - OskarPotocki.VanillaVehiclesExpanded
+  - dmp.vfepirates.warcasketwork
+  - Aoba.WarCasket
+  - divineDerivative.Romance
+  - Teiwaz.TAAJG
+  - Teiwaz.TACAC
+  - brrainz.achtung
+  - sd.fa.vteadjustments
+  - sarg.alphavehiclesneolithic
+  - Kem.BeardAdjustment
+  - RedMattis.BigSmall.Core
+  - LovelyDovey.Sex.WithEuterpe
+  - chezhou.creature.sandworm
+  - mandrake.rut.longhunger
+  - Neronix17.OuterRim.Core
+  - Neronix17.Outland.Genetics
+  - neronix17.shieldgenerators
+  - RedMattis.Optional
+  - RedMattis.BigSmall
+  - RedMattis.BigWeapons
+  - avilmask.CommonSense
+  - mandrake.rsw.desertvehiclereskin
+  - LovelyDovey.Sex.WithRosaline
+  - LovelyDovey.Recreation.WithEuterpe
+  - LeutianKane.MineablesOR
+  - LeutianKane.Mines2patchOuterRim
+  - Neronix17.OuterRim.FurnitureAndDecor
+  - Neronix17.OuterRim.GalacticEmpire
+  - Neronix17.OuterRim.RebelAlliance
+  - Jelheb.RusticMealRetexture
+  - FrozenSnowFox.ComplexJobs
+  - Dubwise.DubsBreakMod
+  - DanZinagri.FacialAnimationCompatabilityProject
+  - mandrake.rut.doctrine
+  - Taranchuk.PerformanceOptimizer
+  - co.uk.epicguru.meleeanimation
+  - lordfelix.RimControl
+  - meathax.ShowMeYourTools
+  - lee.theforce.lightsaber
+  - mandrake.rsw.starwarsraces
+  - mandrake.rsw.armoury
+  - mandrake.rm.proximityhatch
+  - mandrake.rsw.gizkastowaway
+  - mandrake.rsw.shokk
+  - mandrake.rm.luminouspigment
+  - mandrake.rsw.ionweapons
+  - mandrake.rut.shipmemory
+  - mandrake.rut.antiquities
+  - mandrake.rut.rites
+  - mandrake.rut.researchretag
+  - zylle.sandcastles
+  - mandrake.rm.patches
+  - mandrake.rsw.bacta
+  - mandrake.rsw.patches
+  - mandrake.rut.patches
+  - mandrake.rut.pawnflavor
+  - mandrake.rut.ashkarrflora
+  - btd.gbp.shippack.kotor.vge
+  - mandrake.rsw.droidworks
+  - mandrake.rut.droidrepairjobs
+  - mandrake.rm.wreckedmachines
+  - mandrake.rut.pyrelandsmechanics
+  - mandrake.rm.flowworks
+  - mandrake.rut.plantgrowth
+  - mandrake.rm.oracle
+  - mandrake.rm.property
+  - mandrake.rm.rimdefdump
+  - mandrake.rut.birthhatchdemo
+  - aRandomKiwi.RimThemes
+  - mandrake.rut.menushell
+  - mandrake.rut.shokkweaveeconomy
+  - mandrake.rut.rustcathedralroaches
+  - mandrake.rm.gravshiplanding
+  - rw.mod.simplestairs
+  - Kutte.Stairs
+  - mandrake.rsw.dalgoartoverride
+  - mandrake.rsw.gizkaartoverride
+  - mandrake.rsw.grankartoverride
+  - mandrake.rsw.greaterkraytdragonartoverride
+  - mandrake.rsw.hawkbatartoverride
+  - mandrake.rsw.kinrathartoverride
+  - mandrake.rsw.ollopomartoverride
+  - mandrake.rsw.orrayartoverride
+  - mandrake.rsw.pekopekoartoverride
+  - mandrake.rsw.shiroartoverride
+  - mandrake.rsw.vornskyrartoverride
+  - mandrake.rsw.whisperbirdartoverride
+  - mandrake.rsw.wyyyschokkartoverride
+  - mandrake.rsw.zeerartoverride
+  - mandrake.rut.acanthamoebagigantealargeartoverride
+  - mandrake.rut.agaripodartoverride
+  - mandrake.rut.bloodshrimpartoverride
+  - mandrake.rut.bumbledroneartoverride
+  - mandrake.rut.bumbledronehierophantartoverride
+  - mandrake.rut.greengooartoverride
+  - mandrake.rut.mantistanisartoverride
+  - mandrake.rut.mycoidcolossusartoverride
+  - mandrake.rut.raptorshrimpartoverride
+  - mandrake.rut.rimclawartoverride
+  - mandrake.rut.shadowchargerartoverride
+  - mandrake.rut.targuzzlerartoverride
+  - mandrake.rut.terramorphartoverride
+  - mandrake.rut.thermadonartoverride
+  - mandrake.rut.thunderoxartoverride
+  - mandrake.rut.wildpodartoverride
+  - mandrake.rm.biomes
+  - mandrake.rsw.swbestiary
+  - mandrake.rm.shipvermin
+  - mandrake.rm.explosivegrowth
+  - mandrake.rut.greentideraidant
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+gridId:0
+gridId:1
+gridId:2
+gridId:3
+[Geological Landforms v1.7.13.1] Map generator context: TileId: 97517, Landforms: None, BiomeVariants: None, Topology: Inland, TopologyDirection: West (F)
+[Map Designer] Applying settings
+[Map Designer] Terrain settings: Default
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 97517,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 84CA1471]
+  at RimMandrake.StructureInjections.GenStep_RimplacePlan.Generate (Verse.Map map, Verse.GenStepParams parms) [0x00035] in <7c3e36e369354cb3b32c516e6bef3af1>:0 
+  at Verse.GenStep_RandomSelector.Generate (Verse.Map map, Verse.GenStepParams parms) [0x00033] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.MapGenerator.GenerateContentsIntoMap (System.Collections.Generic.IEnumerable`1[T] genStepDefs, Verse.Map map, System.Int32 seed, System.Boolean stepDebugger) [0x001dd] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX GeologicalLandforms.Main: Void GeologicalLandforms.Patches.Patch_Verse_MapGenerator:GenerateContentsIntoMap_Prefix(Map map, IEnumerable`1& genStepDefs)
+    - PREFIX QF_Patch: Boolean QuestEditor_Library.Patch_ExtraGenStepDefs:postfix(IEnumerable`1& genStepDefs)
+    - PREFIX vanillaexpanded.gravship: Void VanillaGravshipExpanded.SpaceMapDropPatches:Prefix()
+    - POSTFIX vanillaexpanded.gravship: Void VanillaGravshipExpanded.SpaceMapDropPatches:Postfix()
+    - POSTFIX GeologicalLandforms.Main: Void GeologicalLandforms.Patches.Patch_Verse_MapGenerator:GenerateContentsIntoMap_Postfix(Map map)
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Scatterer Verse.GenStep_ScatterGroupPrefabs from def RUT_Jawa_StampGroundHulk could not find cell to generate at.
+[RimMandrake.StarWars.WeatherSuite] no PlanetGeometryDef loaded — terminator-band and nightside-band checks will always return false. The RimUtinni wiring mod ships the one Ash'karr needs.
+[Real Fog of War] Removing unneeded FoV watcher from BI_Hive51164
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+[DefensivePositions v1.7.0.0] DefensivePositionsGameComponent initialized in this map.
+ShallowReservoirSeed == 0 Regenerating seeds
+[BTD:Trace] T3 FinalizeInit: map 0 pocket=False pending=False hasSpawnedStartingShip=False
+checking editor settings...
+bodysizes genes are active
+[Ninefold] front reckoned at landing: Ozzik (loudness 100.0)
+[Pyrelands] density enforcer: plantDensity 1 -> 16, wildPlantRegrowDays 0.5625 -> 9 (something rewrote the XML values after load)
+[Ninefold] Ozzik satiation +15.0 (research completed: MF_BasicFurniture) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): MF_BasicFurniture) -> 42.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: ComplexFurniture) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): ComplexFurniture) -> 45.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: PassiveCooler) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): PassiveCooler) -> 48.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: Stonecutting) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): Stonecutting) -> 51.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: ComplexClothing) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): ComplexClothing) -> 54.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: Electricity) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): Electricity) -> 57.0 [Content]
+[Ninefold] Ozzik satiation +15.0 (research completed: NutrientPaste) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): NutrientPaste) -> 60.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: AirConditioning) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): AirConditioning) -> 63.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: ProjectHeron_Curtains) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): ProjectHeron_Curtains) -> 66.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: ProjectHeron_Gates) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): ProjectHeron_Gates) -> 69.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: ModernFixtures) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): ModernFixtures) -> 72.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: FT_Concrete) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): FT_Concrete) -> 75.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: RG_MushroomCultivation) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RG_MushroomCultivation) -> 78.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: RR_Organization) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_Organization) -> 81.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: RR_BasicApparel) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_BasicApparel) -> 84.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: RR_BasicCraftingFacilities) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_BasicCraftingFacilities) -> 87.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: RR_BasicFoodPrep) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_BasicFoodPrep) -> 90.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: RR_IncendiaryWeapons) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_IncendiaryWeapons) -> 93.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: RR_ElectricityBasics) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_ElectricityBasics) -> 96.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: RR_HeatingElements) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_HeatingElements) -> 99.0 [Exalted]
+[Ninefold] Ozzik satiation +15.0 (research completed: RR_PowerGenerators) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_PowerGenerators) -> 100.0 [Exalted]
+Failed to find Verse.ResearchProjectDef named RimFridge_PowerFactorSetting. There are 404 defs of this type loaded.
+
+Possible Matches:
+[Source: RimFridge: Now with Shelves!]
+[File: C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2898411376\1.6\Defs\ResearchProjectDefs\ResearchProjects.xml]
+[Source: RimFridge: Now with Shelves!]
+[File: C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2898411376\1.6\Defs\ThingDefs_Buildings\Fridge_Building.xml]
+[Source: RimFridge: Now with Shelves!]
+[File: C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2898411376\1.6\Defs\ThingDefs_Buildings\WallFridge_Building.xml]
+System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1C964610]
+  at RimFridge.RimFridgeComponent.StartedOrLoadedGame () [0x0001a] in <948532676ba340059cc9093181148128>:0 
+    - TRANSPILER PerformanceOptimizer.Main: IEnumerable`1 PerformanceOptimizer.Optimization_FasterGetCompReplacement:Transpiler(IEnumerable`1 instructions, MethodBase method)
+  at RimFridge.RimFridgeComponent.StartedNewGame () [0x00000] in <948532676ba340059cc9093181148128>:0 
+  at Verse.GameComponentUtility.StartedNewGame () [0x0001a] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX SmashPhil.VehicleFramework: Void SmashTools.GameEvent:RaiseOnNewGame()
+    - POSTFIX SmashPhil.VehicleFramework: Void UpdateLogTool.Patches:UpdateOnNewGame()
+    - POSTFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_GameComponentUtility_LoadedGame_Patch+StartedNewGame:Postfix()
+canLovinTick for Stephan was set at 3362 (56 seconds)
+canLovinTick for Cassie was set at 14748 (245 seconds)
+canLovinTick for Reese was set at 7798 (129 seconds)
+Unloading 0 Unused Serialized files (Serialized files now loaded: 49)
+IntimacyGiver_Sex: Stephan cannot currently do lovin'
+IntimacyGiver_Sex: Cassie cannot currently do lovin'
+IntimacyGiver_Sex: Reese cannot currently do lovin'
+Faction leader for Ascendant Helix is null.
+Faction leader for Deepwater Compact is null.
+Faction leader for Free Droid Enclaves is null.
+Faction leader for Geonosian Foundry Hive is null.
+Faction leader for Hutt Cartel is null.
+Faction leader for Wildsteam Clan is null.
+Number of DestinyMod exotics on the map: 0
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+[RimAI.Core][P3] Scheduler ready
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 162895.
+Total: 1907.707000 ms (FindLiveObjects: 6.378000 ms CreateObjectMapping: 7.385900 ms MarkObjects: 1893.658000 ms  DeleteObjects: 0.284800 ms)
+
+[PrepareLanding] Prefilter: 119904 tiles in WorldGrid.tiles
+Random state stack is not empty. There were more calls to PushState than PopState. Fixing.
+[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Stephan
+[FA Genetic Heads] SkinTypeDef: assigned SkinChinCleft to Stephan
+[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Cassie
+[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Cassie
+[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Reese
+[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Reese
+XylRacesCore feature check: XylRacesCore.Genes.GeneDefExtension_Rendering = True
+Texture for _DistortionTex is not yet loaded; file may be invalid, or main thread may not have loaded it yet
+Player wealth is 19341.63. Required (random) wealth to trigger Woman in blue is 31718.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 49)
+gridId:0
+gridId:1
+gridId:2
+gridId:3
+[Geological Landforms v1.7.13.1] Map generator context: TileId: 97517, Landforms: None, BiomeVariants: None, Topology: Inland, TopologyDirection: West (L)
+[Map Designer] Applying settings
+[Map Designer] Terrain settings: Default
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 84CA1471] Duplicate stacktrace, see ref for original
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: a recycled world pawn came back as 'Colonist' instead of the requested 'AncientSoldier' (KCSG_PAWNKIND_COLONIST_FALLBACK_1) — corrected in place.
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref F13945C6]
+  at RimWorld.WildPlantSpawner.EnoughLowerOrderPlantsNearby (Verse.IntVec3 c, System.Single plantDensityFactor, System.Single radiusToScan, Verse.ThingDef plantDef) [0x00056] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.WildPlantSpawner.CalculatePlantsWhichCanGrowAt (Verse.IntVec3 c, System.Collections.Generic.List`1[T] outPlants, System.Boolean cavePlants, System.Single plantDensityFactor) [0x0014b] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX rimworld.biomes.core: Void BiomesCore.Patches.WildPlantSpawner_CalculatePlantsWhichCanGrowAt:Prefix(Map ___map, IntVec3 c, Boolean& cavePlants)
+    - POSTFIX gravtide.mod: Void GravTide.WildPlantSpawner_CalculatePlantsWhichCanGrowAt_Patch:Postfix(WildPlantSpawner __instance, IntVec3 c, List`1 outPlants)
+    - POSTFIX mandrake.rm.environmentalhazards: Void RimMandrake.EnvironmentalHazards.RM_LeachmossWildSpawnGatePatch:CalculatePlantsWhichCanGrowAt_Postfix(List`1 outPlants)
+    - POSTFIX mandrake.rm.environmentalhazards: Void RimMandrake.EnvironmentalHazards.RM_PollinationGatePatch:CalculatePlantsWhichCanGrowAt_Postfix(WildPlantSpawner __instance, List`1 outPlants)
+    - POSTFIX mandrake.rm.pyrelands.wildplantallowlist: Void RimMandrake.Pyrelands.Patch_EnforcePyrelandsWildPlantAllowlist:Postfix(List`1 outPlants, Map ___map)
+  at RimWorld.WildPlantSpawner.CheckSpawnWildPlantAt (Verse.IntVec3 c, System.Single plantDensityFactor, System.Single wholeMapNumDesiredPlants, System.Boolean setRandomGrowth) [0x0011b] in <61e4173561894da49d210260257b5097>:0 
+    - TRANSPILER gravtide.mod: IEnumerable`1 GravTide.RockSurfaceWildPlants:Transpiler(IEnumerable`1 instructions)
+    - PREFIX Neronix17.TabulaRasa.RimWorld: Boolean TabulaRasa.Patch_WildPlantSpawner_CheckSpawnWildPlantAt:Prefix(WildPlantSpawner __instance, IntVec3 c, Single plantDensityFactor, Single wholeMapNumDesiredPlants, Boolean setRandomGrowth)
+  at RimWorld.GenStep_Plants.Generate (Verse.Map map, Verse.GenStepParams parms) [0x0003f] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.MapGenerator.GenerateContentsIntoMap (System.Collections.Generic.IEnumerable`1[T] genStepDefs, Verse.Map map, System.Int32 seed, System.Boolean stepDebugger) [0x001dd] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX GeologicalLandforms.Main: Void GeologicalLandforms.Patches.Patch_Verse_MapGenerator:GenerateContentsIntoMap_Prefix(Map map, IEnumerable`1& genStepDefs)
+    - PREFIX QF_Patch: Boolean QuestEditor_Library.Patch_ExtraGenStepDefs:postfix(IEnumerable`1& genStepDefs)
+    - PREFIX vanillaexpanded.gravship: Void VanillaGravshipExpanded.SpaceMapDropPatches:Prefix()
+    - POSTFIX vanillaexpanded.gravship: Void VanillaGravshipExpanded.SpaceMapDropPatches:Postfix()
+    - POSTFIX GeologicalLandforms.Main: Void GeologicalLandforms.Patches.Patch_Verse_MapGenerator:GenerateContentsIntoMap_Postfix(Map map)
+Scatterer Verse.GenStep_ScatterGroupPrefabs from def RUT_Jawa_StampGroundHulk could not find cell to generate at.
+[Real Fog of War] Removing unneeded FoV watcher from BI_Hive81111
+Tried to calculate chance for father with gender "Female".
+[DefensivePositions v1.7.0.0] DefensivePositionsGameComponent initialized in this map.
+ShallowReservoirSeed == 0 Regenerating seeds
+[BTD:Trace] T3 FinalizeInit: map 1 pocket=False pending=False hasSpawnedStartingShip=False
+[RimMandrake.MovingDunes] dune field armed on RM_Stillsand with material RM_Dunes_Sand; wind N, K=2005 attempts/batch over 62500 cells.
+checking editor settings...
+bodysizes genes are active
+Unloading 451 unused Assets to reduce memory usage. Loaded Objects now: 162391.
+Total: 2011.979300 ms (FindLiveObjects: 8.388000 ms CreateObjectMapping: 8.667000 ms MarkObjects: 1994.271800 ms  DeleteObjects: 0.652200 ms)
+
+Random state stack is not empty. There were more calls to PushState than PopState. Fixing.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 49)
+gridId:0
+gridId:1
+gridId:2
+gridId:3
+[Geological Landforms v1.7.13.1] Map generator context: TileId: 97517, Landforms: None, BiomeVariants: None, Topology: Inland, TopologyDirection: West (L)
+[Map Designer] Applying settings
+[Map Designer] Terrain settings: Default
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Not generating ores for asteroid step
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 84CA1471] Duplicate stacktrace, see ref for original
+Tried to calculate chance for father with gender "Female".
+[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: a recycled world pawn came back as 'Colonist' instead of the requested 'AncientSoldier' (KCSG_PAWNKIND_COLONIST_FALLBACK_1) — corrected in place.
+Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref F13945C6] Duplicate stacktrace, see ref for original
+Scatterer Verse.GenStep_ScatterGroupPrefabs from def RUT_Jawa_StampGroundHulk could not find cell to generate at.
+[Real Fog of War] Removing unneeded FoV watcher from BI_Hive111354
+Tried to calculate chance for father with gender "Female".
+[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: a recycled world pawn came back as 'Colonist' instead of the requested 'Drifter' (KCSG_PAWNKIND_COLONIST_FALLBACK_1) — corrected in place.
+[DefensivePositions v1.7.0.0] DefensivePositionsGameComponent initialized in this map.
+ShallowReservoirSeed == 0 Regenerating seeds
+[BTD:Trace] T3 FinalizeInit: map 2 pocket=False pending=False hasSpawnedStartingShip=False
+[RimMandrake.MovingDunes] dune field armed on RM_Stillsand with material RM_Dunes_Sand; wind N, K=2005 attempts/batch over 62500 cells.
+checking editor settings...
+bodysizes genes are active
+Unloading 675 unused Assets to reduce memory usage. Loaded Objects now: 161888.
+Total: 2026.664700 ms (FindLiveObjects: 6.880200 ms CreateObjectMapping: 6.879500 ms MarkObjects: 2012.067200 ms  DeleteObjects: 0.837600 ms)
+
+Random state stack is not empty. There were more calls to PushState than PopState. Fixing.
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+Tried to calculate chance for father with gender "Female".
+[FA Genetic Heads] HeadTypeDef: assigned HeadSquare to Virgil
+[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Virgil
+[FA Genetic Heads] HeadTypeDef: assigned HeadSquare to Felix
+[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Felix
+[FA Genetic Heads] HeadTypeDef: assigned HeadSquare to Nelis
+[FA Genetic Heads] SkinTypeDef: assigned SkinFreckles to Nelis
+Felix cannot ever do lovin'
+Nelis cannot ever do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+IntimacyGiver_Sex: Felix cannot ever do lovin'
+Nelis cannot engage in social activities due to their current duty.
+Virgil cannot engage in social activities due to their current duty.
+Felix failed to get a job from any IntimacyGivers
+Number of DestinyMod exotics on the map: 0
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+Interaction count for current active conversation: 1
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+IntimacyGiver_Sex: Felix cannot ever do lovin'
+Virgil cannot engage in social activities due to their current duty.
+Nelis cannot engage in social activities due to their current duty.
+Felix failed to get a job from any IntimacyGivers
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 2
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.51
+[MCR][MoodChain] Felix: Eval Virgil: opinion=10, mood=0.51, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.51, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+Interaction count for current active conversation: 3
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Conversation ended due to not having enough members.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Virgil: Eval Felix: opinion=10, mood=0.53, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=23, mood=0.51, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+Tried to destroy non-destroyable thing VHGE_GasGeyser111385
+Tried to destroy non-destroyable thing VHGE_GasGeyser111385
+Tried to destroy non-destroyable thing VHGE_GasGeyser111385
+Tried to destroy non-destroyable thing VHGE_GasGeyser111385
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.54
+[MCR][MoodChain] Felix: Eval Virgil: opinion=10, mood=0.54, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.50, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.56, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=23, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.58
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=23, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+IntimacyGiver_Sex: Felix cannot ever do lovin'
+Felix failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot ever do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+IntimacyGiver_Sex: Felix cannot ever do lovin'
+Felix failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.61
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=23, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+IntimacyGiver_Sex: Felix cannot ever do lovin'
+Felix failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot ever do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.63, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+IntimacyGiver_Sex: Felix cannot ever do lovin'
+Felix failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.63
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=23, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+[Real Fog of War] Message_Prefix called: 'The blood-stained sand boils. Something in it has woken to strip the stain, and what lies beside it.'
+[Real Fog of War] AcceptsMessage: True
+[Real Fog of War] Has Thing: False
+[Real Fog of War] No thing, allowing message through
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.63, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.63
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=24, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.56
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.63, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.63
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=24, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+[Ninefold] Shkaar satiation +3.0 (downed in battle: Felix<color=#999999FF>, Worker</color>) -> 3.0 [Neutral]
+[Real Fog of War] Message_Prefix called: 'Critical alert: Colonist needs rescue'
+[Real Fog of War] AcceptsMessage: True
+[Real Fog of War] Has Thing: True
+[Real Fog of War] Thing: Felix<color=#999999FF>, Worker</color>, Faction: New Arrivals
+[Real Fog of War] Thing is player faction, allowing message
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.54
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.63, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.63
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.53, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=24, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.52
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.63, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.63
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.51, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=24, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.50
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.62, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.48, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.62
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.49, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=24, mood=0.47, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.48
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.60, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.46, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.60
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.47, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=24, mood=0.45, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+Tried to destroy non-destroyable thing VHGE_GasGeyser111385
+Tried to destroy non-destroyable thing VHGE_GasGeyser111385
+Tried to destroy non-destroyable thing VHGE_GasGeyser111385
+Tried to destroy non-destroyable thing VHGE_GasGeyser111385
+[Real Fog of War] Message_Prefix called: 'A roof has collapsed because it was too far from any support.'
+[Real Fog of War] AcceptsMessage: True
+[Real Fog of War] Has Thing: False
+[Real Fog of War] No thing, allowing message through
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.46
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.58, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.44, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[Ninefold] Shkaar satiation +8.0 (violent death: Pilot) -> 11.0 [Neutral]
+[Real Fog of War] Message_Prefix called: 'Something under the sand came up beneath hare and pulled the body down. A collapsed funnel of sand marks the place. It was a vekka.'
+[Real Fog of War] AcceptsMessage: True
+[Real Fog of War] Has Thing: False
+[Real Fog of War] No thing, allowing message through
+[Ninefold] Shkaar satiation +8.0 (violent death: Hare) -> 19.0 [Neutral]
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.58
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.45, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=24, mood=0.44, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.45
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.58, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.44, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Tried to destroy non-destroyable thing VoidMonolith111366
+Tried to destroy non-destroyable thing VoidMonolith111366
+Tried to destroy non-destroyable thing VoidMonolith111366
+Tried to destroy non-destroyable thing VoidMonolith111366
+Tried to destroy non-destroyable thing VoidMonolith111366
+Tried to destroy non-destroyable thing VoidMonolith111366
+Tried to destroy non-destroyable thing VoidMonolith111366
+Tried to destroy non-destroyable thing VoidMonolith111366
+Tried to destroy non-destroyable thing VoidMonolith111366
+Error while determining if RM_Oorrik111914 should have Need Chemical_Alcohol: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref BFC0290]
+  at Verse.Pawn_HealthTracker.ShouldBeDead () [0x000a8] in <61e4173561894da49d210260257b5097>:0 
+    - TRANSPILER rimworld.erdelf.alien_race.main: IEnumerable`1 AlienRace.HarmonyPatches:BodyReferenceTranspiler(IEnumerable`1 instructions)
+    - POSTFIX cat2002.deathrattle: Boolean DeathRattle.ShouldBeDead_Patch:Postfix(Boolean __result, Pawn_HealthTracker __instance, Pawn ___pawn)
+  at DeathRattle.HediffHelpers.ShouldApplyHediffs (Verse.HediffSet hediffs, Verse.Pawn pawn) [0x00001] in <daa2d2e761194d1d925aef6a11bb2eb2>:0 
+  at DeathRattle.PawnCapacitiesHandler_Notify_CapacityLevelsDirty_Patch.Postfix (Verse.PawnCapacitiesHandler __instance, Verse.Pawn ___pawn) [0x00012] in <daa2d2e761194d1d925aef6a11bb2eb2>:0 
+  at Verse.PawnCapacitiesHandler.Notify_CapacityLevelsDirty () [0x0005f] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX SmashPhil.VehicleFramework: Void Vehicles.Patch_Misc:RecheckVehicleHandlerCapacities(Pawn ___pawn)
+    - POSTFIX cat2002.deathrattle: Void DeathRattle.PawnCapacitiesHandler_Notify_CapacityLevelsDirty_Patch:Postfix(PawnCapacitiesHandler __instance, Pawn ___pawn)
+  at RimWorld.LifeStageWorker.Notify_LifeStageStarted (Verse.Pawn pawn, RimWorld.LifeStageDef previousLifeStage) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX OskarPotocki.VEF: Void VEF.Genes.VanillaExpandedFramework_LifeStageWorker_Notify_LifeStageStarted_Patch:Postfix(Pawn pawn)
+    - POSTFIX RedMattis.BetterPrerequisites: Void BigAndSmall.BSVanillaPatches:Post_Notify_LifeStageStarted(Pawn pawn)
+  at Verse.Pawn_AgeTracker.RecalculateLifeStageIndex () [0x00167] in <61e4173561894da49d210260257b5097>:0 
+    - TRANSPILER rimworld.erdelf.alien_race.main: IEnumerable`1 AlienRace.HarmonyPatches:RecalculateLifeStageIndexTranspiler(IEnumerable`1 instructions)
+    - POSTFIX rimworld.mod.charactereditor: Void CharacterEditor.CEditor:OnRecalcIndex(Pawn_AgeTracker __instance)
+  at Verse.Pawn_AgeTracker.get_CurLifeStageIndex () [0x00009] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Pawn_AgeTracker.get_CurLifeStageRace () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Pawn_AgeTracker.get_CurLifeStage () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Pawn.get_DevelopmentalStage () [0x00012] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Pawn_NeedsTracker.ShouldHaveNeed (RimWorld.NeedDef nd) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX rimworld.divineDerivative.romance: Boolean BetterRomance.HarmonyPatches.Pawn_NeedsTracker_ShouldHaveNeed:Prefix(Boolean& __result, NeedDef nd, Pawn ___pawn)
+    - POSTFIX Dubwise.DubsBadHygiene: Void DubsBadHygiene.Patches.HarmonyPatches+Patch_ShouldHaveNeed:Postfix(Pawn_NeedsTracker __instance, Boolean& __result, NeedDef nd)
+    - POSTFIX SexWithEuterpe.LovinExpansion: Void LoveyDoveySexWithEuterpe.PawnNeedsTracker_ShouldHaveNeed_Patch:Postfix(Pawn_NeedsTracker __instance, NeedDef nd, Boolean& __result)
+    - POSTFIX Legator.PrisonerRealism: Void PrisonerRealism.Patch_ShouldHaveNeed_Joy:Postfix(NeedDef nd, Pawn ___pawn, Boolean& __result)
+    - POSTFIX mandrake.rsw.droidworks.needgate: Void RimMandrake.StarWars.Droidworks.Patch_ShouldHaveNeed_Power:Postfix(NeedDef nd, Pawn ___pawn, Boolean& __result)
+  at RimWorld.Pawn_NeedsTracker.AddOrRemoveNeedsAsAppropriate () [0x00020] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX OskarPotocki.VEF: Void VEF.AestheticScaling.VanillaExpandedFramework_Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate_Patch:Prefix()
+    - PREFIX RedMattis.BetterPrerequisites: Void BigAndSmall.AddOrRemoveNeedsAsAppropriate_Patch:Prefix()
+    - POSTFIX OskarPotocki.VEF: Void VEF.AestheticScaling.VanillaExpandedFramework_Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate_Patch:Postfix()
+    - POSTFIX RedMattis.BetterPrerequisites: Void BigAndSmall.AddOrRemoveNeedsAsAppropriate_Patch:Postfix()
+    - POSTFIX rimworld.divineDerivative.romance: Void BetterRomance.HarmonyPatches.Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate:Postfix(Pawn_NeedsTracker __instance, Pawn ___pawn)
+Error while determining if RM_Oorrik111914 should have Need Bladder: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 923FC85C]
+  at DubsBadHygiene.NeedsUtil.ShouldHaveNeed (Verse.Pawn pawn, RimWorld.NeedDef nd) [0x00101] in <ea0d962a8cea4bd1a6ae6c6bc27ad7c0>:0 
+    - POSTFIX cyanobot.toddlers: Boolean Toddlers.Patch_DBH:ShouldHaveNeed_Postfix(Boolean result, Pawn pawn, NeedDef nd)
+  at DubsBadHygiene.Patches.HarmonyPatches+Patch_ShouldHaveNeed.Postfix (RimWorld.Pawn_NeedsTracker __instance, System.Boolean& __result, RimWorld.NeedDef nd) [0x0000c] in <ea0d962a8cea4bd1a6ae6c6bc27ad7c0>:0 
+  at RimWorld.Pawn_NeedsTracker.ShouldHaveNeed (RimWorld.NeedDef nd) [0x0068d] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX rimworld.divineDerivative.romance: Boolean BetterRomance.HarmonyPatches.Pawn_NeedsTracker_ShouldHaveNeed:Prefix(Boolean& __result, NeedDef nd, Pawn ___pawn)
+    - POSTFIX Dubwise.DubsBadHygiene: Void DubsBadHygiene.Patches.HarmonyPatches+Patch_ShouldHaveNeed:Postfix(Pawn_NeedsTracker __instance, Boolean& __result, NeedDef nd)
+    - POSTFIX SexWithEuterpe.LovinExpansion: Void LoveyDoveySexWithEuterpe.PawnNeedsTracker_ShouldHaveNeed_Patch:Postfix(Pawn_NeedsTracker __instance, NeedDef nd, Boolean& __result)
+    - POSTFIX Legator.PrisonerRealism: Void PrisonerRealism.Patch_ShouldHaveNeed_Joy:Postfix(NeedDef nd, Pawn ___pawn, Boolean& __result)
+    - POSTFIX mandrake.rsw.droidworks.needgate: Void RimMandrake.StarWars.Droidworks.Patch_ShouldHaveNeed_Power:Postfix(NeedDef nd, Pawn ___pawn, Boolean& __result)
+  at RimWorld.Pawn_NeedsTracker.AddOrRemoveNeedsAsAppropriate () [0x00020] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX OskarPotocki.VEF: Void VEF.AestheticScaling.VanillaExpandedFramework_Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate_Patch:Prefix()
+    - PREFIX RedMattis.BetterPrerequisites: Void BigAndSmall.AddOrRemoveNeedsAsAppropriate_Patch:Prefix()
+    - POSTFIX OskarPotocki.VEF: Void VEF.AestheticScaling.VanillaExpandedFramework_Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate_Patch:Postfix()
+    - POSTFIX RedMattis.BetterPrerequisites: Void BigAndSmall.AddOrRemoveNeedsAsAppropriate_Patch:Postfix()
+    - POSTFIX rimworld.divineDerivative.romance: Void BetterRomance.HarmonyPatches.Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate:Postfix(Pawn_NeedsTracker __instance, Pawn ___pawn)
+Error while determining if RM_Oorrik111914 should have Need Hygiene: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 54D24D5A]
+  at DubsBadHygiene.NeedsUtil.ShouldHaveNeed (Verse.Pawn pawn, RimWorld.NeedDef nd) [0x0044f] in <ea0d962a8cea4bd1a6ae6c6bc27ad7c0>:0 
+    - POSTFIX cyanobot.toddlers: Boolean Toddlers.Patch_DBH:ShouldHaveNeed_Postfix(Boolean result, Pawn pawn, NeedDef nd)
+  at DubsBadHygiene.Patches.HarmonyPatches+Patch_ShouldHaveNeed.Postfix (RimWorld.Pawn_NeedsTracker __instance, System.Boolean& __result, RimWorld.NeedDef nd) [0x0000c] in <ea0d962a8cea4bd1a6ae6c6bc27ad7c0>:0 
+  at RimWorld.Pawn_NeedsTracker.ShouldHaveNeed (RimWorld.NeedDef nd) [0x0068d] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX rimworld.divineDerivative.romance: Boolean BetterRomance.HarmonyPatches.Pawn_NeedsTracker_ShouldHaveNeed:Prefix(Boolean& __result, NeedDef nd, Pawn ___pawn)
+    - POSTFIX Dubwise.DubsBadHygiene: Void DubsBadHygiene.Patches.HarmonyPatches+Patch_ShouldHaveNeed:Postfix(Pawn_NeedsTracker __instance, Boolean& __result, NeedDef nd)
+    - POSTFIX SexWithEuterpe.LovinExpansion: Void LoveyDoveySexWithEuterpe.PawnNeedsTracker_ShouldHaveNeed_Patch:Postfix(Pawn_NeedsTracker __instance, NeedDef nd, Boolean& __result)
+    - POSTFIX Legator.PrisonerRealism: Void PrisonerRealism.Patch_ShouldHaveNeed_Joy:Postfix(NeedDef nd, Pawn ___pawn, Boolean& __result)
+    - POSTFIX mandrake.rsw.droidworks.needgate: Void RimMandrake.StarWars.Droidworks.Patch_ShouldHaveNeed_Power:Postfix(NeedDef nd, Pawn ___pawn, Boolean& __result)
+  at RimWorld.Pawn_NeedsTracker.AddOrRemoveNeedsAsAppropriate () [0x00020] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX OskarPotocki.VEF: Void VEF.AestheticScaling.VanillaExpandedFramework_Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate_Patch:Prefix()
+    - PREFIX RedMattis.BetterPrerequisites: Void BigAndSmall.AddOrRemoveNeedsAsAppropriate_Patch:Prefix()
+    - POSTFIX OskarPotocki.VEF: Void VEF.AestheticScaling.VanillaExpandedFramework_Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate_Patch:Postfix()
+    - POSTFIX RedMattis.BetterPrerequisites: Void BigAndSmall.AddOrRemoveNeedsAsAppropriate_Patch:Postfix()
+    - POSTFIX rimworld.divineDerivative.romance: Void BetterRomance.HarmonyPatches.Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate:Postfix(Pawn_NeedsTracker __instance, Pawn ___pawn)
+Error while determining if RM_Oorrik111914 should have Need DBHThirst: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 34C0B1BD]
+  at DubsBadHygiene.NeedsUtil.ShouldHaveNeed (Verse.Pawn pawn, RimWorld.NeedDef nd) [0x00742] in <ea0d962a8cea4bd1a6ae6c6bc27ad7c0>:0 
+    - POSTFIX cyanobot.toddlers: Boolean Toddlers.Patch_DBH:ShouldHaveNeed_Postfix(Boolean result, Pawn pawn, NeedDef nd)
+  at DubsBadHygiene.Patches.HarmonyPatches+Patch_ShouldHaveNeed.Postfix (RimWorld.Pawn_NeedsTracker __instance, System.Boolean& __result, RimWorld.NeedDef nd) [0x0000c] in <ea0d962a8cea4bd1a6ae6c6bc27ad7c0>:0 
+  at RimWorld.Pawn_NeedsTracker.ShouldHaveNeed (RimWorld.NeedDef nd) [0x0068d] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX rimworld.divineDerivative.romance: Boolean BetterRomance.HarmonyPatches.Pawn_NeedsTracker_ShouldHaveNeed:Prefix(Boolean& __result, NeedDef nd, Pawn ___pawn)
+    - POSTFIX Dubwise.DubsBadHygiene: Void DubsBadHygiene.Patches.HarmonyPatches+Patch_ShouldHaveNeed:Postfix(Pawn_NeedsTracker __instance, Boolean& __result, NeedDef nd)
+    - POSTFIX SexWithEuterpe.LovinExpansion: Void LoveyDoveySexWithEuterpe.PawnNeedsTracker_ShouldHaveNeed_Patch:Postfix(Pawn_NeedsTracker __instance, NeedDef nd, Boolean& __result)
+    - POSTFIX Legator.PrisonerRealism: Void PrisonerRealism.Patch_ShouldHaveNeed_Joy:Postfix(NeedDef nd, Pawn ___pawn, Boolean& __result)
+    - POSTFIX mandrake.rsw.droidworks.needgate: Void RimMandrake.StarWars.Droidworks.Patch_ShouldHaveNeed_Power:Postfix(NeedDef nd, Pawn ___pawn, Boolean& __result)
+  at RimWorld.Pawn_NeedsTracker.AddOrRemoveNeedsAsAppropriate () [0x00020] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX OskarPotocki.VEF: Void VEF.AestheticScaling.VanillaExpandedFramework_Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate_Patch:Prefix()
+    - PREFIX RedMattis.BetterPrerequisites: Void BigAndSmall.AddOrRemoveNeedsAsAppropriate_Patch:Prefix()
+    - POSTFIX OskarPotocki.VEF: Void VEF.AestheticScaling.VanillaExpandedFramework_Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate_Patch:Postfix()
+    - POSTFIX RedMattis.BetterPrerequisites: Void BigAndSmall.AddOrRemoveNeedsAsAppropriate_Patch:Postfix()
+    - POSTFIX rimworld.divineDerivative.romance: Void BetterRomance.HarmonyPatches.Pawn_NeedsTracker_AddOrRemoveNeedsAsAppropriate:Postfix(Pawn_NeedsTracker __instance, Pawn ___pawn)
+Error while determining if RM_Oorrik111914 should have Need Bladder: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 923FC85C] Duplicate stacktrace, see ref for original
+Error while determining if RM_Oorrik111914 should have Need Hygiene: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 54D24D5A] Duplicate stacktrace, see ref for original
+Error while determining if RM_Oorrik111914 should have Need DBHThirst: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 34C0B1BD] Duplicate stacktrace, see ref for original
+Error while generating pawn. Rethrowing. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 815F921]
+  at LoveyDoveySexWithRosaline.GenderUtilities.FindReproductivesBodyPartForPawn (Verse.Pawn pawn) [0x00007] in <5ba724fa74244e05b249ec97ece66d91>:0 
+  at LoveyDoveySexWithRosaline.StatPart_NoReproductives.TransformValue (RimWorld.StatRequest req, System.Single& val) [0x00018] in <5ba724fa74244e05b249ec97ece66d91>:0 
+  at RimWorld.StatWorker.FinalizeValue (RimWorld.StatRequest req, System.Single& val, System.Boolean applyPostProcess) [0x00028] in <61e4173561894da49d210260257b5097>:0 
+    - TRANSPILER com.VanillaQuestsExpandedAncients: IEnumerable`1 VanillaQuestsExpandedAncients.VanillaQuestsExpandedAncients_StatWorker_FinalizeValue_Patch:Transpiler(IEnumerable`1 codeInstructions)
+  at RimWorld.StatWorker.GetValue (RimWorld.StatRequest req, System.Boolean applyPostProcess) [0x00085] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX lordfelix.rimcontrol: Boolean ItemControl.Patch_StatWorker_GetValue_Request:Prefix(StatRequest req, StatDef ___stat, Single& __result)
+    - POSTFIX lordfelix.rimcontrol: Void ItemControl.Patch_StatWorker_GetValue_MetalGlobals:Postfix(StatRequest req, StatDef ___stat, Single& __result)
+  at RimWorld.StatWorker.GetValue (Verse.Thing thing, System.Boolean applyPostProcess, System.Int32 cacheStaleAfterTicks) [0x000a1] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX jecstools.jecrell.comps.slotloadable: Void CompSlotLoadable.HarmonyCompSlotLoadable:StatWorker_GetValue_PostFix(Single& __result, Thing thing, StatDef ___stat)
+  at RimWorld.StatExtension.GetStatValue (Verse.Thing thing, RimWorld.StatDef stat, System.Boolean applyPostProcess, System.Int32 cacheStaleAfterTicks) [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX CM_Tradeable_Trinkets: Void CM_Tradeable_Trinkets.StatExtension_GetStatValue:Postfix(Thing thing, StatDef stat, Single& __result)
+  at RimWorld.PregnancyUtility.PregnancyChanceForPawn (Verse.Pawn pawn) [0x00025] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.PawnGenerator.GenerateInitialHediffs (Verse.Pawn pawn, Verse.PawnGenerationRequest request) [0x00256] in <61e4173561894da49d210260257b5097>:0 
+    - TRANSPILER universalpregnancy.1trickPwnyta: IEnumerable`1 UniversalPregnancy.Patch_PawnGenerator:Transpiler(IEnumerable`1 instructions)
+    - TRANSPILER rimworld.divineDerivative.romance: IEnumerable`1 BetterRomance.HarmonyPatches.PawnGenerator_GenerateInitialHediffs:Transpiler(IEnumerable`1 instructions)
+    - POSTFIX Neronix17.TabulaRasa.RimWorld: Void TabulaRasa.Patch_PawnGen_GenerateInitialHediffs:Postfix(Pawn pawn, PawnGenerationRequest request)
+    - POSTFIX Rimworld.Alite.EBSG.main: Void EBSGFramework.HarmonyPatches:GenerateInitialHediffsPostfix(Pawn pawn, PawnGenerationRequest request)
+    - POSTFIX rimworld.erdelf.alien_race.main: Void AlienRace.HarmonyPatches:GenerateInitialHediffsPostfix(Pawn pawn)
+  at Verse.PawnGenerator.TryGenerateNewPawnInternal (Verse.PawnGenerationRequest& request, System.String& error, System.Boolean ignoreScenarioRequirements, System.Boolean ignoreValidator) [0x009ce] in <61e4173561894da49d210260257b5097>:0 
+    - TRANSPILER net.pardeike.rimworld.lib.harmony: IEnumerable`1 XylRacesCore.Patches.Patch_PawnGenerator:TryGenerateNewPawnInternal_Transpiler(IEnumerable`1 instructions, ILGenerator generator)
+    - TRANSPILER rimworld.erdelf.alien_race.main: IEnumerable`1 AlienRace.HarmonyPatches:TryGenerateNewPawnInternalTranspiler(IEnumerable`1 instructions)
+    - PREFIX rimworld.erdelf.alien_race.main: Void AlienRace.HarmonyPatches:TryGenerateNewPawnInternalPrefix(PawnGenerationRequest& request)
+    - POSTFIX Rimworld.Alite.EBSG.main: Void EBSGFramework.HarmonyPatches:TryGenerateNewPawnInternalPostfix(Pawn& __result)
+  at Verse.PawnGenerator.GenerateNewPawnInternal (Verse.PawnGenerationRequest& request) [0x000d7] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX RedMattis.BetterPrerequisites: Void BigAndSmall.GenerateNewPawnInternal:MaySetForcedGender(Pawn& __result, PawnGenerationRequest& request)
+    - PREFIX co.uk.epicguru.factionloadout: Void FactionLoadout.Patches.PawnGenPatchIdeo:Prefix(PawnGenerationRequest& request)
+    - POSTFIX OskarPotocki.VEF: Void VEF.Abilities.VanillaExpandedFramework_PawnGenerator_GenerateNewPawnInternal_Patch:Postfix(Pawn __result)
+    - POSTFIX co.uk.epicguru.factionloadout: Void FactionLoadout.Patches.PawnGenPatchCore:Postfix(Pawn __result, PawnGenerationRequest request)
+  at Verse.PawnGenerator.GenerateOrRedressPawnInternal (Verse.PawnGenerationRequest request) [0x00194] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX BreadMoFuckIdeoApprelAM: Void BreadMoFuckIdeoApprelAM.FuckIdeoApparel:FuckingIdeoApparel(PawnGenerationRequest& request)
+  at Verse.PawnGenerator.GeneratePawn (Verse.PawnGenerationRequest request) [0x00041] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX SmashPhil.VehicleFramework: Boolean Vehicles.Patch_Construction:GenerateVehiclePawn(PawnGenerationRequest request, Pawn& __result)
+    - PREFIX rimworld.erdelf.alien_race.main: Void AlienRace.HarmonyPatches:GeneratePawnPrefix(PawnGenerationRequest& request)
+    - POSTFIX ChezhouLib.lib: Void ChezhouLib.Patch.PawnGenerator_GeneratePawn_Postfix:Postfix(Pawn& __result, PawnGenerationRequest request)
+    - POSTFIX Neronix17.TabulaRasa.RimWorld: Void TabulaRasa.Patch_PawnGenerator_GeneratePawn:Postfix(PawnGenerationRequest request, Pawn __result)
+    - POSTFIX SexWithEuterpe.LoveyDoveySexWithRosaline: Void LoveyDoveySexWithRosaline.PawnGenerator_GeneratePawn_Patch:Postfix(Pawn& __result, PawnGenerationRequest request)
+    - POSTFIX RedMattis.BetterPrerequisites: Void BigAndSmall.PregnancyPatches:MaySetBabyGenesIfBabyBirth(Pawn __result, PawnGenerationRequest request)
+    - POSTFIX RedMattis.BetterPrerequisites: Void BigAndSmall.GeneratePawns_Patch:GeneratePawnPostfix(Pawn& __result, PawnGenerationRequest request)
+    - POSTFIX Fortified: Void Fortified.Patch_PawnGenerator_GeneratePawn_Request:Postfix(Pawn __result, PawnGenerationRequest request)
+    - POSTFIX Fortified: Void Fortified.Patch_GeneratePawnTitle:Postfix(Pawn& __result)
+    - POSTFIX jecstools.jecrell.main: Void JecsTools.HarmonyPatches:Post_GeneratePawn(Pawn __result)
+    - POSTFIX jecstools.jecrell.main: Void JecsTools.HarmonyPatches:Post_GeneratePawn_Genes(Pawn __result)
+    - POSTFIX Mlie.Scuttlebugs: Void Scuttlebugs.PawnGenerator_GeneratePawn:Postfix(Pawn& __result)
+    - POSTFIX com.VanillaQuestsExpandedAncients: Void VanillaQuestsExpandedAncients.PawnGenerator_GeneratePawn_Patch:Postfix(Pawn __result, PawnGenerationRequest request)
+    - POSTFIX cyanobot.toddlers: Void Toddlers.GeneratePawn_Patch:Postfix(Pawn& __result)
+    - POSTFIX rimworld.erdelf.alien_race.main: Void AlienRace.HarmonyPatches:GeneratePawnPostfix(Pawn __result)
+    - POSTFIX VFEPirates.Mod: Void VFEPirates.PawnGenerator_GeneratePawn_Patch:Postfix(Pawn __result)
+    - POSTFIX lordfelix.rimcontrol: Void ItemControl.Patch_PawnGenerator_GeneratePawn_GlobalAppearance:Postfix(Pawn __result)
+[Ninefold] Shkaar satiation +8.0 (violent death: Nizzek) -> 27.0 [Content]
+[Ninefold] Shkaar satiation +8.0 (violent death: Vozzik) -> 35.0 [Content]
+[Ninefold] Shkaar satiation +8.0 (violent death: Oommok) -> 43.0 [Content]
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.58
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.44, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=24, mood=0.44, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.43
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.59, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.43, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.60
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.42, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=24, mood=0.42, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=0
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Felix is not generally well.
+Exception ticking RM_Soorrak111919 (at (184, 0, 192)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F]
+  at RimWorld.Pawn_FlightTracker.Notify_JobStarted (Verse.AI.Job job) [0x0002c] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX net.pardeike.rimworld.lib.harmony: Boolean XylRacesCore.Patches.Patch_Pawn_FlightTracker:Notify_JobStarted_Prefix(Pawn_FlightTracker __instance, Job job)
+  at Verse.AI.Pawn_JobTracker.StartJob (Verse.AI.Job newJob, Verse.AI.JobCondition lastJobEndCondition, Verse.AI.ThinkNode jobGiver, System.Boolean resumeCurJobAfterwards, System.Boolean cancelBusyStances, Verse.ThinkTreeDef thinkTree, System.Nullable`1[T] tag, System.Boolean fromQueue, System.Boolean canReturnCurJobToPool, System.Nullable`1[T] keepCarryingThingOverride, System.Boolean continueSleeping, System.Boolean addToJobsThisTick, System.Boolean preToilReservationsCanFail) [0x00700] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX VFEPirates.Mod: Boolean VFEPirates.Pawn_JobTracker_StartJob_Patch:Prefix(Pawn_JobTracker __instance, Pawn ___pawn, Job newJob, Nullable`1 tag)
+    - PREFIX net.avilmask.rimworld.mod.CommonSense: Boolean CommonSense.OpportunisticTasks+Pawn_JobTracker_StartJob_CommonSensePatch:Prefix(Pawn_JobTracker_Crutch& __instance, Job newJob, Boolean fromQueue)
+    - PREFIX GiddyUp: Boolean GiddyUp.Harmony.Patch_StartJob:Prefix(Pawn_JobTracker __instance)
+    - PREFIX gravtide.mod: Void GravTide.CoastalStartingCargo:Prefix(Job newJob, Nullable`1& keepCarryingThingOverride)
+    - PREFIX vlvop.tormentmaster.expansion: Boolean TormentMaster.Patches.PawnJobTracker_StartJob_Patch:Prefix(Pawn ___pawn, Job newJob)
+    - PREFIX OskarPotocki.VanillaTraitsExpanded: Boolean VanillaTraitsExpanded.StartJob_Patch:Prefix(Pawn ___pawn, Job newJob, JobCondition lastJobEndCondition)
+    - PREFIX VRF.VehicleRaidFramework: Void VehicleRaidFramework.Patch_LogJobStart:Prefix(Pawn_JobTracker __instance, Job newJob, JobCondition lastJobEndCondition)
+    - POSTFIX vlvop.tormentmaster.expansion: Void TormentMaster.Patches.JobTrackerStartJob_CranialPin_Patch:Postfix(Pawn ___pawn, Job newJob)
+    - POSTFIX com.WalkTheWorld.WalkTheWorld: Void WalkTheWorld.HarmonyPatches.Pawn_JobTracker_StartJob_Patch:Postfix(Pawn ___pawn, Job newJob)
+    - POSTFIX meathax.JobEffects: Void JobEffects.Patch_JobTracker_StartJob_Skygaze:Postfix(Job newJob)
+    - POSTFIX Krkr.Rule56: Void CombatAI.Patches.Pawn_JobTracker_Patch+Pawn_StartJob_Patch:Postfix(Pawn_JobTracker __instance, Job newJob, JobCondition lastJobEndCondition, ThinkNode jobGiver, Boolean cancelBusyStances)
+  at Verse.AI.Pawn_JobTracker.TryFindAndStartJob () [0x000fa] in <61e4173561894da49d210260257b5097>:0 
+    - PREFIX vlvop.tormentmaster.expansion: Boolean TormentMaster.Patches.PawnJobTracker_TryFindAndStartJob_Patch:Prefix(Pawn ___pawn)
+  at Verse.AI.Pawn_JobTracker.EndCurrentJob (Verse.AI.JobCondition condition, System.Boolean startNewJob, System.Boolean canReturnToPool) [0x002aa] in <61e4173561894da49d210260257b5097>:0 
+    - TRANSPILER net.pardeike.rimworld.mods.achtung: IEnumerable`1 AchtungMod.Pawn_JobTracker_EndCurrentJob_Patch:Transpiler(IEnumerable`1 instructions)
+    - PREFIX net.avilmask.rimworld.mod.CommonSense: Boolean CommonSense.OpportunisticTasks+Pawn_JobTracker_EndCurrentJob_CommonSensePatch:Prefix(Pawn_JobTracker_Crutch __instance, JobCondition condition)
+    - PREFIX VRF.VehicleRaidFramework: Void VehicleRaidFramework.Patch_LogJobEnd:Prefix(Pawn_JobTracker __instance, JobCondition condition)
+    - PREFIX cyanobot.toddlers: Void Toddlers.EndCurrentJob_PlayerForcedPlay_Patch:Prefix(Job ___curJob, JobDriver ___curDriver)
+  at Verse.AI.Pawn_JobTracker.JobTrackerTickInterval (System.Int32 delta) [0x001c4] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Pawn.TickInterval (System.Int32 delta) [0x00050] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Thing.DoTick () [0x000eb] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.TickList.Tick () [0x00139] in <61e4173561894da49d210260257b5097>:0 
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.41
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.62, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.41, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=0
+Virgil is already in conversation.
+Felix is too far to join the conversation.
+Nelis is already in conversation.
+Interaction count for current active conversation: 1
+Virgil is already in conversation.
+Felix is too far to join the conversation.
+Nelis is already in conversation.
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Exception ticking RM_Soorrak111919 (at (196, 0, 191)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.62
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.40, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=ADDED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=28, mood=0.40, happy=False, sad=False, thought=null
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Interaction count for current active conversation: 2
+Virgil is already in conversation.
+Felix is too far to join the conversation.
+Nelis is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 3
+Virgil is already in conversation.
+Felix is too far to join the conversation.
+Nelis is already in conversation.
+Exception ticking RM_Soorrak111919 (at (186, 0, 192)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (180, 0, 195)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (181, 0, 196)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Interaction count for current active conversation: 4
+Virgil is already in conversation.
+Felix is too far to join the conversation.
+Nelis is already in conversation.
+Exception ticking RM_Soorrak111919 (at (191, 0, 194)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.39
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.61, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.39, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=ADDED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 5
+Virgil is already in conversation.
+Felix is too far to join the conversation.
+Nelis is already in conversation.
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.61
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.38, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=30, mood=0.38, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=ADDED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 6
+Virgil is already in conversation.
+Felix is too far to join the conversation.
+Nelis is already in conversation.
+Interaction count for current active conversation: 7
+Virgil is already in conversation.
+Felix is too far to join the conversation.
+Nelis is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 8
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.37
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.59, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.37, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Exception ticking RM_Soorrak111919 (at (189, 0, 200)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.59
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.36, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=42, mood=0.37, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Exception ticking RM_Soorrak111919 (at (188, 0, 207)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Exception ticking RM_Soorrak111919 (at (202, 0, 209)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.57, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.36, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.57
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=42, mood=0.36, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.55, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.36, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.55
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=42, mood=0.36, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.53, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.36, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.53
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=42, mood=0.36, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.51, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.36, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.51
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=42, mood=0.36, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[Real Fog of War] Message_Prefix called: 'Critical alert: Medical emergency'
+[Real Fog of War] AcceptsMessage: True
+[Real Fog of War] Has Thing: True
+[Real Fog of War] Thing: Felix<color=#999999FF>, Worker</color>, Faction: New Arrivals
+[Real Fog of War] Thing is player faction, allowing message
+Exception ticking RM_Soorrak111919 (at (224, 0, 222)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (231, 0, 226)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Exception ticking RM_Soorrak111919 (at (229, 0, 226)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.50, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.49
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=42, mood=0.34, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Exception ticking RM_Soorrak111919 (at (243, 0, 225)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.48, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.33, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Exception ticking RM_Soorrak111919 (at (236, 0, 227)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.47
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=42, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Exception ticking RM_Soorrak111919 (at (242, 0, 224)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[Real Fog of War] Message_Prefix called: 'The blood-stained sand boils. Something in it has woken to strip the stain, and what lies beside it.'
+[Real Fog of War] AcceptsMessage: True
+[Real Fog of War] Has Thing: False
+[Real Fog of War] No thing, allowing message through
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.46, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.45
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=42, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.44, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.43
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=42, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+[RimAI.Core][P6.Persistence] op=save, nodes=12, elapsed=46ms
+Object with load ID Map_0 is referenced (xml node name: rootMap) but is not deep-saved. This will cause errors during loading.
+Object with load ID Thing_Human107612 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading.
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.43, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.43
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=43, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.43, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+Failed to find any textures at Things/Pawn/Animal/RM_Aurrok/RM_AurrokPack while constructing Multi(initPath=Things/Pawn/Animal/RM_Aurrok/RM_AurrokPack, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.43
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=43, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Exception ticking RM_Soorrak111919 (at (243, 0, 196)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (235, 0, 186)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.44, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.34, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.45
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=43, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Exception ticking RM_Soorrak111919 (at (215, 0, 182)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Exception ticking RM_Soorrak111919 (at (214, 0, 174)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (206, 0, 179)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.46, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.46
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=43, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Nelis cannot ever do lovin'
+Felix cannot currently do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Felix is not generally well.
+Exception ticking RM_Soorrak111919 (at (174, 0, 170)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.46, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 1
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.46
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=43, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 2
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+Interaction count for current active conversation: 3
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+Interaction count for current active conversation: 4
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+[MCR][MoodChain] Felix: Starting scan. Candidates=3, CurrentMood=0.35
+[MCR][MoodChain] Felix: Eval Virgil: opinion=11, mood=0.47, happy=False, sad=False, thought=null
+[MCR][MoodChain] Felix: Eval Nelis: opinion=10, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Felix: Scan finished. NewlyAddedMemories=1
+Interaction count for current active conversation: 5
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=3, CurrentMood=0.48
+[MCR][MoodChain] Virgil: Eval Felix: opinion=11, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=46, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=2
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 6
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 7
+Virgil is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Felix cannot converse with Virgil.
+Nelis is already in conversation.
+Interaction count for current active conversation: 8
+Virgil is already in conversation.
+Nelis is already in conversation.
+Exception ticking RM_Soorrak111919 (at (179, 0, 174)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (178, 0, 184)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (178, 0, 184)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 9
+Virgil is already in conversation.
+Nelis is already in conversation.
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.48
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 10
+Virgil is already in conversation.
+Nelis is already in conversation.
+Exception ticking RM_Soorrak111919 (at (184, 0, 189)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (186, 0, 187)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 11
+Virgil is already in conversation.
+Nelis is already in conversation.
+Exception ticking RM_Soorrak111919 (at (191, 0, 195)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Interaction count for current active conversation: 12
+Virgil is already in conversation.
+Nelis is already in conversation.
+Interaction count for current active conversation: 13
+Virgil is already in conversation.
+Nelis is already in conversation.
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.50
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.38, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 14
+Virgil is already in conversation.
+Nelis is already in conversation.
+Interaction count for current active conversation: 15
+Virgil is already in conversation.
+Nelis is already in conversation.
+Exception ticking RM_Soorrak111919 (at (217, 0, 177)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (206, 0, 186)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Interaction count for current active conversation: 16
+Virgil is already in conversation.
+Nelis is already in conversation.
+Interaction count for current active conversation: 17
+Virgil is already in conversation.
+Nelis is already in conversation.
+Exception ticking RM_Soorrak111919 (at (217, 0, 193)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.53
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.38, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Exception ticking RM_Soorrak111919 (at (226, 0, 192)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (229, 0, 195)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 18
+Nelis cannot ever do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Tried to destroy non-destroyable thing SteamGeyser108044
+Tried to destroy non-destroyable thing SteamGeyser108044
+Tried to destroy non-destroyable thing SteamGeyser108044
+Tried to destroy non-destroyable thing SteamGeyser108044
+Exception ticking RM_Soorrak111919 (at (230, 0, 200)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.52
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.38, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.52
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.38, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Exception ticking RM_Soorrak111919 (at (240, 0, 170)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.51
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.36, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Exception ticking RM_Soorrak111919 (at (222, 0, 188)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Exception ticking RM_Soorrak111919 (at (215, 0, 191)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.49
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.34, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Exception ticking RM_Soorrak111919 (at (215, 0, 191)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (230, 0, 200)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.47
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Exception ticking RM_Soorrak111919 (at (230, 0, 194)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (238, 0, 194)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.46
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.46
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.46
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+[Real Fog of War] Message_Prefix called: 'Butterfly is pregnant!'
+[Real Fog of War] AcceptsMessage: True
+[Real Fog of War] Has Thing: True
+[Real Fog of War] Thing: Butterfly, Faction: New Arrivals
+[Real Fog of War] Thing is player faction, allowing message
+Exception ticking RM_Soorrak111919 (at (232, 0, 190)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.48
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.30, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Exception ticking RM_Soorrak111919 (at (228, 0, 185)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Exception ticking RM_Soorrak111919 (at (212, 0, 187)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.48
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.29, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Exception ticking RM_Soorrak111919 (at (211, 0, 183)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (213, 0, 186)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (201, 0, 189)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Error while determining if RM_Oorrik112702 should have Need Chemical_Alcohol: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref BFC0290] Duplicate stacktrace, see ref for original
+Error while determining if RM_Oorrik112702 should have Need Bladder: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 923FC85C] Duplicate stacktrace, see ref for original
+Error while determining if RM_Oorrik112702 should have Need Hygiene: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 54D24D5A] Duplicate stacktrace, see ref for original
+Error while determining if RM_Oorrik112702 should have Need DBHThirst: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 34C0B1BD] Duplicate stacktrace, see ref for original
+Error while determining if RM_Oorrik112702 should have Need Bladder: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 923FC85C] Duplicate stacktrace, see ref for original
+Error while determining if RM_Oorrik112702 should have Need Hygiene: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 54D24D5A] Duplicate stacktrace, see ref for original
+Error while determining if RM_Oorrik112702 should have Need DBHThirst: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 34C0B1BD] Duplicate stacktrace, see ref for original
+Error while generating pawn. Rethrowing. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 815F921] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Exception ticking RM_Soorrak111919 (at (201, 0, 191)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.48
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.29, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Exception ticking RM_Soorrak111919 (at (190, 0, 195)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (184, 0, 195)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (184, 0, 195)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.49
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Exception ticking RM_Soorrak111919 (at (156, 0, 195)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (151, 0, 196)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.48
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.34, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Exception ticking RM_Soorrak111919 (at (161, 0, 192)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.48
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.34, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Exception ticking RM_Soorrak111919 (at (167, 0, 195)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.48
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.37, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Exception ticking RM_Soorrak111919 (at (173, 0, 202)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.48
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+[RimAI.Core][P6.Persistence] op=save, nodes=12, elapsed=0ms
+Object with load ID Map_0 is referenced (xml node name: rootMap) but is not deep-saved. This will cause errors during loading.
+Object with load ID Thing_Human107612 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading.
+Nelis cannot ever do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.47
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.34, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+[Real Fog of War] Message_Prefix called: 'The blood-stained sand boils. Something in it has woken to strip the stain, and what lies beside it.'
+[Real Fog of War] AcceptsMessage: True
+[Real Fog of War] Has Thing: False
+[Real Fog of War] No thing, allowing message through
+Virgil is already in conversation.
+Nelis is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 1
+Virgil is already in conversation.
+Nelis is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 2
+Virgil is already in conversation.
+Nelis is already in conversation.
+Interaction count for current active conversation: 3
+Virgil is already in conversation.
+Nelis is already in conversation.
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.47
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.32, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1
+Interaction count for current active conversation: 4
+Virgil is already in conversation.
+Nelis is already in conversation.
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 5
+Virgil is already in conversation.
+Nelis is already in conversation.
+Exception ticking RM_Soorrak111919 (at (174, 0, 200)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Virgil cannot engage in social activities due to their current duty.
+Interaction count for current active conversation: 6
+Nelis cannot ever do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+Exception ticking RM_Soorrak111919 (at (178, 0, 184)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Nelis cannot ever do lovin'
+IntimacyGiver_Sex: No eligible partner found for Virgil
+Virgil failed to get a job from any IntimacyGivers
+[MCR][MoodChain] Nelis: Skipped because pawn is Psychopath.
+Exception ticking RM_Soorrak111919 (at (182, 0, 186)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+Exception ticking RM_Soorrak111919 (at (179, 0, 183)): System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 1982DC9F] Duplicate stacktrace, see ref for original
+[MCR][MoodChain] Virgil: Starting scan. Candidates=2, CurrentMood=0.47
+[MCR][MoodChain] Virgil: Eval Nelis: opinion=47, mood=0.30, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED
+[MCR][MoodChain] Virgil: Scan finished. NewlyAddedMemories=1

@@ -1,0 +1,1351 @@
+{
+ "paint_atlas": true,
+ "atlas_spawn": {
+  "RM_Aurrok": "RM_Aurrok111904",
+  "RM_Drazzik": "RM_Drazzik111905",
+  "RM_Duumma": "RM_Duumma111906",
+  "RM_Gaanok": "RM_Gaanok111907",
+  "RM_Guzzka": "RM_Guzzka111908",
+  "RM_Ikee": "RM_Ikee111909",
+  "RM_Liikka": "RM_Liikka111910",
+  "RM_Loomma": "RM_Loomma111911",
+  "RM_Nizzek": "RM_Nizzek111912",
+  "RM_Oommok": "RM_Oommok111913",
+  "RM_Oorrik": "Spawned 0/1 RM_Oorrik in faction (none). \u26a0\ufe0f 1 did not spawn as asked -- see the rows with ok:false.",
+  "RM_Qorrax": "RM_Qorrax111915",
+  "RM_Ruukka": "RM_Ruukka111916",
+  "RM_ShadeMite": "RM_ShadeMite111917",
+  "RM_Siidda": "RM_Siidda111918",
+  "RM_Soorrak": "RM_Soorrak111919",
+  "RM_Vaalok": "RM_Vaalok111920",
+  "RM_Veessa": "RM_Veessa111921",
+  "RM_Vekka": "RM_Vekka111922",
+  "RM_Vozzik": "RM_Vozzik111923",
+  "RM_Zuurrik": "RM_Zuurrik111924"
+ },
+ "texture_audit": {
+  "success": true,
+  "message": "137 DEAD texPath(s) in 1919 path(s) across 1867 def(s).",
+  "defsScanned": 1867,
+  "pathsChecked": 1919,
+  "missingCount": 137,
+  "unjudgedCount": 0,
+  "truncated": false,
+  "elapsedMs": 4011,
+  "missing": [
+   {
+    "def": "RM_Graffiti_Glyph_Bloodfeeding",
+    "label": "bloodfeeding glyph",
+    "mod": "RimMandrake: Graffiti Framework",
+    "packageId": "mandrake.rm.graffiti",
+    "graphic": "graphicData",
+    "texPath": "Things/Filth/Art/RM_Graffiti_Glyph_Bloodfeeding"
+   },
+   {
+    "def": "RM_SeaDiveHatch",
+    "label": "sea dive hatch",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/Misc/CaveEntranceA"
+   },
+   {
+    "def": "RM_BladderFruit",
+    "label": "bladder-fruit",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Plant/RM_BladderFruit"
+   },
+   {
+    "def": "RM_SeepSalt",
+    "label": "seep-salt",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Resource/RM_SeepSalt"
+   },
+   {
+    "def": "RM_DewgourdFruit",
+    "label": "dewgourd",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Plant/RM_DewgourdFruit"
+   },
+   {
+    "def": "RM_Dewblade",
+    "label": "dewblade",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Dewblade"
+   },
+   {
+    "def": "RM_Weepmat",
+    "label": "weep-mat",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Weepmat"
+   },
+   {
+    "def": "RM_Verdimoss",
+    "label": "verdimoss",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Verdimoss"
+   },
+   {
+    "def": "RM_Shadefern",
+    "label": "shadefern",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Shadefern"
+   },
+   {
+    "def": "RM_Bladderquill",
+    "label": "bladderquill",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Bladderquill"
+   },
+   {
+    "def": "RM_Salvecomb",
+    "label": "salvecomb",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Salvecomb"
+   },
+   {
+    "def": "RM_Rockfinger",
+    "label": "rockfinger",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Rockfinger"
+   },
+   {
+    "def": "RM_Dripfringe",
+    "label": "dripfringe",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Dripfringe"
+   },
+   {
+    "def": "RM_Steamfrond",
+    "label": "steamfrond",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Steamfrond"
+   },
+   {
+    "def": "RM_Dewgourd",
+    "label": "dewgourd",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Dewgourd"
+   },
+   {
+    "def": "RM_GlowerCrust",
+    "label": "glower crust",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Resource/RM_GlowerCrust"
+   },
+   {
+    "def": "RM_Glower",
+    "label": "the Glowers",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Glower"
+   },
+   {
+    "def": "RM_CinderCrust",
+    "label": "cinder crust",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_CinderCrust"
+   },
+   {
+    "def": "RM_DeltaSalt",
+    "label": "delta salt",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Resource/RM_DeltaSalt/RM_DeltaSalt"
+   },
+   {
+    "def": "RM_DeltaSilt",
+    "label": "delta silt",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Resource/RM_DeltaSilt/RM_DeltaSilt"
+   },
+   {
+    "def": "RM_Thessamor",
+    "label": "thessamor",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Thessamor/RM_Thessamor_a"
+   },
+   {
+    "def": "RM_Brelloch",
+    "label": "brelloch",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Brelloch/RM_Brelloch_a"
+   },
+   {
+    "def": "RM_Quennath",
+    "label": "quennath",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Quennath/RM_Quennath_a"
+   },
+   {
+    "def": "RM_Ilbareen",
+    "label": "ilbareen",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Ilbareen/RM_Ilbareen_live"
+   },
+   {
+    "def": "RM_IlbareenDead",
+    "label": "dead ilbareen",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Ilbareen/RM_Ilbareen_dead"
+   },
+   {
+    "def": "RM_Immarel",
+    "label": "immarel",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Immarel/RM_Immarel_a"
+   },
+   {
+    "def": "RM_Thrannock",
+    "label": "thrannock",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Thrannock/RM_Thrannock_a"
+   },
+   {
+    "def": "RM_Pallasheen",
+    "label": "pallasheen",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Pallasheen/RM_Pallasheen_a"
+   },
+   {
+    "def": "RM_Wessaline",
+    "label": "wessaline",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Wessaline/RM_Wessaline_a"
+   },
+   {
+    "def": "RM_Ullavess",
+    "label": "ullavess",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Ullavess/RM_Ullavess_a"
+   },
+   {
+    "def": "RM_Nemreth",
+    "label": "nemreth",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Nemreth/RM_Nemreth_a"
+   },
+   {
+    "def": "RM_Velluric",
+    "label": "velluric",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Velluric/RM_Velluric_a"
+   },
+   {
+    "def": "RM_Braskeen",
+    "label": "braskeen",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Braskeen/RM_Braskeen"
+   },
+   {
+    "def": "RM_Ommolyn",
+    "label": "ommolyn",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Ommolyn/RM_Ommolyn_a"
+   },
+   {
+    "def": "RM_Ollamane",
+    "label": "ollamane",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Ollamane/RM_Ollamane_a"
+   },
+   {
+    "def": "RM_Vellamine",
+    "label": "vellamine",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Vellamine/RM_Vellamine_a"
+   },
+   {
+    "def": "RM_Ismerrow",
+    "label": "ismerrow",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Ismerrow/RM_Ismerrow"
+   },
+   {
+    "def": "RM_Aphreen",
+    "label": "aphreen",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Aphreen/RM_Aphreen_a"
+   },
+   {
+    "def": "RM_Nyssolet",
+    "label": "nyssolet",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Nyssolet/RM_Nyssolet_a"
+   },
+   {
+    "def": "RM_Sarrash",
+    "label": "sarrash",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Sarrash/RM_Sarrash_a"
+   },
+   {
+    "def": "RM_DewfringeSprig",
+    "label": "dewfringe sprig",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Plant/RM_DewfringeSprig"
+   },
+   {
+    "def": "RM_SweetlineWool",
+    "label": "giant-wool",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Resource/RM_SweetlineWool"
+   },
+   {
+    "def": "RM_RoyalRind",
+    "label": "Royal Rind",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Resource/Leather/Leather_Plain"
+   },
+   {
+    "def": "RM_Apparel_RindCoat",
+    "label": "rind coat",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Apparel/Duster/Duster"
+   },
+   {
+    "def": "RM_ToxinSealant",
+    "label": "toxin sealant",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Resource/Leather/Leather_Plain"
+   },
+   {
+    "def": "RM_GreatboleHardwood",
+    "label": "heartwood",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Resource/RM_GreatboleHardwood"
+   },
+   {
+    "def": "RM_Greatbole",
+    "label": "greatbole",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Greatbole/RM_Greatbole_a"
+   },
+   {
+    "def": "RM_Mourvel",
+    "label": "mourvel",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Mourvel/RM_Mourvel_a"
+   },
+   {
+    "def": "RM_Kaddrath",
+    "label": "kaddrath",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Kaddrath/RM_Kaddrath_a"
+   },
+   {
+    "def": "RM_Sarnstilt",
+    "label": "sarnstilt",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Sarnstilt/RM_Sarnstilt_a"
+   },
+   {
+    "def": "RM_Brunnock",
+    "label": "brunnock",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Brunnock/RM_Brunnock_a"
+   },
+   {
+    "def": "RM_Vurmeloth",
+    "label": "vurmeloth",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a"
+   },
+   {
+    "def": "RM_Mirrelbole",
+    "label": "mirrelbole",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Mirrelbole/RM_Mirrelbole_a"
+   },
+   {
+    "def": "RM_Zhorrel",
+    "label": "zhorrel",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Zhorrel/RM_Zhorrel_a"
+   },
+   {
+    "def": "RM_Quathis",
+    "label": "quathis",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Quathis/RM_Quathis_a"
+   },
+   {
+    "def": "RM_Thalquith",
+    "label": "thalquith",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Thalquith/RM_Thalquith_a"
+   },
+   {
+    "def": "RM_Cundral",
+    "label": "cundral",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Cundral/RM_Cundral_a"
+   },
+   {
+    "def": "RM_Gorbeleth",
+    "label": "gorbeleth",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a"
+   },
+   {
+    "def": "RM_Tumbel",
+    "label": "tumbel",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Tumbel/RM_Tumbel_a"
+   },
+   {
+    "def": "RM_Sarquin",
+    "label": "sarquin",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Sarquin/RM_Sarquin_a"
+   },
+   {
+    "def": "RM_Phorrik",
+    "label": "phorrik",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Phorrik/RM_Phorrik_a"
+   },
+   {
+    "def": "RM_Wollick",
+    "label": "wollick",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Wollick/RM_Wollick_a"
+   },
+   {
+    "def": "RM_GreatboleGrubSpines",
+    "label": "grub spines",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Resource/Leather/Leather_Plain"
+   },
+   {
+    "def": "RM_CrystalFlower",
+    "label": "crystal flower",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a"
+   },
+   {
+    "def": "RM_BloodBouquet",
+    "label": "blood bouquet",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a"
+   },
+   {
+    "def": "RM_RavenNettle",
+    "label": "raven nettle",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_RavenNettle/RM_RavenNettle_a"
+   },
+   {
+    "def": "RM_RedBugloss",
+    "label": "red bugloss",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_RedBugloss/RM_RedBugloss_a"
+   },
+   {
+    "def": "RM_GiantAgariTox",
+    "label": "giant agaritox",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_GiantAgariTox/RM_GiantAgariTox_a"
+   },
+   {
+    "def": "RM_KeeningCordax",
+    "label": "keening cordax",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a"
+   },
+   {
+    "def": "RM_GiantToxicFlower",
+    "label": "giant toxic flower",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a"
+   },
+   {
+    "def": "Mote_RM_KrissekHalo",
+    "label": "Mote",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Mote/RM_KrissekHalo"
+   },
+   {
+    "def": "RM_AblationEmergence",
+    "label": "deep crack in the ice",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Special/RM_AblationSilhouette"
+   },
+   {
+    "def": "RM_ColdSinkRack",
+    "label": "blue-ice cold rack",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/RM_ColdSinkRack/RM_ColdSinkRack"
+   },
+   {
+    "def": "RM_BlueIceMeltwaterCan",
+    "label": "blue-ice meltwater",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Resource/RM_BlueIceMeltwaterCan/RM_BlueIceMeltwaterCan"
+   },
+   {
+    "def": "RM_ColdWax",
+    "label": "cold wax",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Resource/RM_ColdWax/RM_ColdWax"
+   },
+   {
+    "def": "RM_Palefloss",
+    "label": "palefloss",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Palefloss/RM_Palefloss"
+   },
+   {
+    "def": "RM_Glassfern",
+    "label": "glassfern",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Glassfern/RM_Glassfern"
+   },
+   {
+    "def": "RM_Chimeglobe",
+    "label": "chimeglobe",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe"
+   },
+   {
+    "def": "RM_Parasol",
+    "label": "parasol",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Item/Equipment/RM_ShadeGear/RM_Parasol"
+   },
+   {
+    "def": "RM_ShadeTent",
+    "label": "shade tent",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/RM_ShadeGear/RM_ShadeTent"
+   },
+   {
+    "def": "RM_SunShield",
+    "label": "sun shield",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/RM_ShadeGear/RM_SunShield"
+   },
+   {
+    "def": "Blueprint_RM_SeaDiveHatch",
+    "label": "sea dive hatch (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/Misc/CaveEntranceA"
+   },
+   {
+    "def": "Blueprint_Install_RM_Rockfinger",
+    "label": "rockfinger (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Rockfinger"
+   },
+   {
+    "def": "Blueprint_Install_RM_Thessamor",
+    "label": "thessamor (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Thessamor/RM_Thessamor_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Brelloch",
+    "label": "brelloch (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Brelloch/RM_Brelloch_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Quennath",
+    "label": "quennath (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Quennath/RM_Quennath_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Ollamane",
+    "label": "ollamane (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Ollamane/RM_Ollamane_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Greatbole",
+    "label": "greatbole (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Greatbole/RM_Greatbole_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Mourvel",
+    "label": "mourvel (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Mourvel/RM_Mourvel_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Kaddrath",
+    "label": "kaddrath (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Kaddrath/RM_Kaddrath_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Sarnstilt",
+    "label": "sarnstilt (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Sarnstilt/RM_Sarnstilt_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Brunnock",
+    "label": "brunnock (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Brunnock/RM_Brunnock_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Vurmeloth",
+    "label": "vurmeloth (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Mirrelbole",
+    "label": "mirrelbole (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Mirrelbole/RM_Mirrelbole_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Zhorrel",
+    "label": "zhorrel (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Zhorrel/RM_Zhorrel_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Quathis",
+    "label": "quathis (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Quathis/RM_Quathis_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Thalquith",
+    "label": "thalquith (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Thalquith/RM_Thalquith_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Cundral",
+    "label": "cundral (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Cundral/RM_Cundral_a"
+   },
+   {
+    "def": "Blueprint_Install_RM_Gorbeleth",
+    "label": "gorbeleth (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a"
+   },
+   {
+    "def": "Blueprint_RM_ColdSinkRack",
+    "label": "blue-ice cold rack (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/RM_ColdSinkRack/RM_ColdSinkRack"
+   },
+   {
+    "def": "Blueprint_RM_ShadeTent",
+    "label": "shade tent (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/RM_ShadeGear/RM_ShadeTent"
+   },
+   {
+    "def": "Blueprint_Install_RM_ShadeTent",
+    "label": "shade tent (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/RM_ShadeGear/RM_ShadeTent"
+   },
+   {
+    "def": "Blueprint_RM_SunShield",
+    "label": "sun shield (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/RM_ShadeGear/RM_SunShield"
+   },
+   {
+    "def": "Blueprint_Install_RM_SunShield",
+    "label": "sun shield (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/RM_ShadeGear/RM_SunShield"
+   },
+   {
+    "def": "Blueprint_Install_RM_Graffiti_Glyph_Bloodfeeding",
+    "label": "bloodfeeding glyph (blueprint)",
+    "mod": "RimMandrake: Graffiti Framework",
+    "packageId": "mandrake.rm.graffiti",
+    "graphic": "graphicData",
+    "texPath": "Things/Filth/Art/RM_Graffiti_Glyph_Bloodfeeding"
+   },
+   {
+    "def": "Blueprint_Install_RM_SeaDiveHatch",
+    "label": "sea dive hatch (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/Misc/CaveEntranceA"
+   },
+   {
+    "def": "Blueprint_Install_RM_ColdSinkRack",
+    "label": "blue-ice cold rack (blueprint)",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "graphicData",
+    "texPath": "Things/Building/RM_ColdSinkRack/RM_ColdSinkRack"
+   },
+   {
+    "def": "RM_WardenMother",
+    "label": "warden mother",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[0].body",
+    "texPath": "Things/Pawn/Animal/Miasma/WardenMother/WardenMother"
+   },
+   {
+    "def": "RM_WardenMother",
+    "label": "warden mother",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[1].body",
+    "texPath": "Things/Pawn/Animal/Miasma/WardenMother/WardenMother"
+   },
+   {
+    "def": "RM_WardenMother",
+    "label": "warden mother",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[2].body",
+    "texPath": "Things/Pawn/Animal/Miasma/WardenMother/WardenMother"
+   },
+   {
+    "def": "RM_GreatDevourer",
+    "label": "great devourer",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[0].body",
+    "texPath": "Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer"
+   },
+   {
+    "def": "RM_GreatDevourer",
+    "label": "great devourer",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[0].dessicated",
+    "texPath": "Things/Pawn/Animal/RM_GreatDevourer/RM_Dessicated_GreatDevourer"
+   },
+   {
+    "def": "RM_GreatDevourer",
+    "label": "great devourer",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[1].body",
+    "texPath": "Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer"
+   },
+   {
+    "def": "RM_GreatDevourer",
+    "label": "great devourer",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[1].dessicated",
+    "texPath": "Things/Pawn/Animal/RM_GreatDevourer/RM_Dessicated_GreatDevourer"
+   },
+   {
+    "def": "RM_GreatDevourer",
+    "label": "great devourer",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[2].body",
+    "texPath": "Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer"
+   },
+   {
+    "def": "RM_GreatDevourer",
+    "label": "great devourer",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[2].dessicated",
+    "texPath": "Things/Pawn/Animal/RM_GreatDevourer/RM_Dessicated_GreatDevourer"
+   },
+   {
+    "def": "RM_Groundrunner",
+    "label": "groundrunner",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[0].body",
+    "texPath": "Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner"
+   },
+   {
+    "def": "RM_Groundrunner",
+    "label": "groundrunner",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[0].dessicated",
+    "texPath": "Things/Pawn/Animal/RM_Groundrunner/RM_Dessicated_Groundrunner"
+   },
+   {
+    "def": "RM_Groundrunner",
+    "label": "groundrunner",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[1].body",
+    "texPath": "Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner"
+   },
+   {
+    "def": "RM_Groundrunner",
+    "label": "groundrunner",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[1].dessicated",
+    "texPath": "Things/Pawn/Animal/RM_Groundrunner/RM_Dessicated_Groundrunner"
+   },
+   {
+    "def": "RM_Groundrunner",
+    "label": "groundrunner",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[2].body",
+    "texPath": "Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner"
+   },
+   {
+    "def": "RM_Groundrunner",
+    "label": "groundrunner",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[2].dessicated",
+    "texPath": "Things/Pawn/Animal/RM_Groundrunner/RM_Dessicated_Groundrunner"
+   },
+   {
+    "def": "RM_MatureFleshbeast",
+    "label": "mature fleshbeast",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[0].body",
+    "texPath": "Things/Pawn/Animal/RM_MatureFleshbeast/RM_MatureFleshbeast"
+   },
+   {
+    "def": "RM_MatureFleshbeast",
+    "label": "mature fleshbeast",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[0].dessicated",
+    "texPath": "Things/Pawn/Animal/RM_MatureFleshbeast/RM_Dessicated_MatureFleshbeast"
+   },
+   {
+    "def": "RM_Krannock",
+    "label": "krannock",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[0].body",
+    "texPath": "Things/Pawn/Animal/RM_Krannock/RM_Krannock"
+   },
+   {
+    "def": "RM_Krannock",
+    "label": "krannock",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[1].body",
+    "texPath": "Things/Pawn/Animal/RM_Krannock/RM_Krannock"
+   },
+   {
+    "def": "RM_Krannock",
+    "label": "krannock",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[2].body",
+    "texPath": "Things/Pawn/Animal/RM_Krannock/RM_Krannock"
+   },
+   {
+    "def": "RM_Titanoslime",
+    "label": "titanoslime",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[0].body",
+    "texPath": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+   },
+   {
+    "def": "RM_Titanoslime",
+    "label": "titanoslime",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[0].dessicated",
+    "texPath": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+   },
+   {
+    "def": "RM_Titanoslime",
+    "label": "titanoslime",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[1].body",
+    "texPath": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+   },
+   {
+    "def": "RM_Titanoslime",
+    "label": "titanoslime",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[1].dessicated",
+    "texPath": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+   },
+   {
+    "def": "RM_Titanoslime",
+    "label": "titanoslime",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[2].body",
+    "texPath": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+   },
+   {
+    "def": "RM_Titanoslime",
+    "label": "titanoslime",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[2].dessicated",
+    "texPath": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+   },
+   {
+    "def": "RM_Titanoslime",
+    "label": "titanoslime",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[3].body",
+    "texPath": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+   },
+   {
+    "def": "RM_Titanoslime",
+    "label": "titanoslime",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[3].dessicated",
+    "texPath": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+   },
+   {
+    "def": "RM_Titanoslime",
+    "label": "titanoslime",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[4].body",
+    "texPath": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+   },
+   {
+    "def": "RM_Titanoslime",
+    "label": "titanoslime",
+    "mod": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "graphic": "lifeStages[4].dessicated",
+    "texPath": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+   }
+  ],
+  "unjudged": [],
+  "note": "A dead path here is invisible to `ls`: Windows is case-insensitive, RimWorld's content index is not. Fix by PATCH, never by editing a workshop folder - Steam overwrites it. `unjudged` holds defs whose graphicClass is not a vanilla Verse.Graphic_*: their own class resolves its own filenames and this checker does not know its rules, so a miss there is UNKNOWN rather than dead. Judge those by hand.",
+  "ticksGame": 7740
+ },
+ "soorrak_flight_report": {
+  "success": true,
+  "action": "report",
+  "count": 1,
+  "pawns": [
+   {
+    "pawn": "RM_Soorrak111919",
+    "thingIDNumber": 111919,
+    "label": "Soorrak",
+    "kindDef": "RM_Soorrak",
+    "thingDef": "RM_Soorrak",
+    "spawned": true,
+    "dead": false,
+    "x": 195,
+    "z": 180,
+    "flying": false,
+    "hasTracker": true,
+    "flightState": "Grounded",
+    "flightStateRaw": 0,
+    "canEverFly": true,
+    "canFlyNow": true,
+    "maxFlightTicks": 1800,
+    "maxFlightTimeStat": 30.0,
+    "flightCooldownStat": 8.0,
+    "flyingTicks": -1,
+    "flightCooldownTicks": 0,
+    "lerpTick": 0,
+    "positionOffsetFactor": 0.0,
+    "curJobDef": null,
+    "curJobTryStartFlying": false,
+    "curJobIfFlyingKeepFlying": false,
+    "curJobFlying": false,
+    "raceFlightStartChanceOnJobStart": 0.3,
+    "raceCanLeaveMapFlying": true
+   }
+  ],
+  "ticksGame": 7740
+ },
+ "loomma_setup": {
+  "open": [
+   "RM_Loomma111925",
+   "RM_Loomma111926",
+   "RM_Loomma111927"
+  ],
+  "roofed": [
+   "RM_Loomma111928",
+   "RM_Loomma111929",
+   "RM_Loomma111930"
+  ],
+  "roof": {
+   "success": true,
+   "message": "Roofed 144 cell(s) across 1 op(s)."
+  }
+ },
+ "blood_spawn": {
+  "success": true,
+  "message": "Placed 12 thing(s) of 12 requested across 12 of 12 op(s).",
+  "spawned": 12,
+  "failed": 0
+ },
+ "blood_present": 12,
+ "t0": {
+  "zuurrik": 4,
+  "loomma_open": [
+   0.01,
+   0.01,
+   0.01
+  ],
+  "loomma_roof": [
+   0.01,
+   0.01,
+   0.01
+  ]
+ },
+ "t1": {
+  "zuurrik": 4,
+  "blood": 12,
+  "loomma_open": [
+   0.0376142226,
+   0,
+   0.143333346
+  ],
+  "loomma_roof": [
+   0.009999989,
+   0.0766666755,
+   0
+  ]
+ },
+ "t2": {
+  "zuurrik": 4,
+  "blood": 12,
+  "loomma_open": [
+   0,
+   0,
+   0.143333346
+  ],
+  "loomma_roof": [
+   0,
+   0,
+   0
+  ]
+ },
+ "t3": {
+  "zuurrik": 4,
+  "blood": 12,
+  "loomma_open": [
+   0,
+   0,
+   0.0766666755
+  ],
+  "loomma_roof": [
+   0,
+   0,
+   0
+  ]
+ },
+ "t4": {
+  "zuurrik": 4,
+  "blood": 12,
+  "loomma_open": [
+   0,
+   0,
+   0
+  ],
+  "loomma_roof": [
+   0,
+   0,
+   0
+  ]
+ },
+ "t5": {
+  "zuurrik": 4,
+  "blood": 12,
+  "loomma_open": [
+   0,
+   0,
+   0
+  ],
+  "loomma_roof": [
+   0,
+   0,
+   0
+  ]
+ },
+ "t6": {
+  "zuurrik": 4,
+  "blood": 12,
+  "loomma_open": [
+   0,
+   0,
+   0
+  ],
+  "loomma_roof": [
+   0,
+   0,
+   0
+  ]
+ },
+ "t7": {
+  "zuurrik": 4,
+  "blood": 12,
+  "loomma_open": [
+   0,
+   0,
+   0
+  ],
+  "loomma_roof": [
+   0,
+   0,
+   0
+  ]
+ },
+ "t8": {
+  "zuurrik": 4,
+  "blood": 12,
+  "loomma_open": [
+   0,
+   0,
+   0
+  ],
+  "loomma_roof": [
+   0,
+   0,
+   0
+  ]
+ },
+ "t9": {
+  "zuurrik": 4,
+  "blood": 12,
+  "loomma_open": [
+   0,
+   0,
+   0
+  ],
+  "loomma_roof": [
+   0,
+   0,
+   0
+  ]
+ },
+ "t10": {
+  "zuurrik": 4,
+  "blood": 12,
+  "loomma_open": [
+   0,
+   0,
+   0
+  ],
+  "loomma_roof": [
+   0,
+   0,
+   0
+  ]
+ }
+}

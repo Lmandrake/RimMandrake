@@ -1,0 +1,607 @@
+{
+ "paint": true,
+ "spawned": {
+  "vM": [
+   "RM_Vekka111843"
+  ],
+  "mech": [
+   "Mech_Militor111844"
+  ],
+  "vF": [
+   "RM_Vekka111846"
+  ],
+  "hare": [
+   "Hare111847"
+  ],
+  "vL": [
+   "RM_Vekka111848"
+  ],
+  "chick": [
+   "Chicken111849"
+  ]
+ },
+ "pre": {
+  "vM": {
+   "hediffs": [
+    "Scratch",
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 23,
+    "z": 25
+   }
+  },
+  "vF": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 23,
+    "z": 34
+   }
+  },
+  "vL": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 22,
+    "z": 48
+   }
+  },
+  "mech": {
+   "dead": false,
+   "downed": false,
+   "x": 29,
+   "z": 20,
+   "inj": []
+  }
+ },
+ "t0": {
+  "orders": {
+   "mech": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   },
+   "hare": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   },
+   "chick": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   }
+  },
+  "vM": {
+   "hediffs": [
+    "Scratch",
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 23,
+    "z": 26
+   }
+  },
+  "mech": {
+   "dead": false,
+   "downed": false,
+   "x": 30,
+   "z": 19,
+   "inj": []
+  },
+  "vF": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 28,
+    "z": 30
+   }
+  },
+  "hare": {
+   "dead": false,
+   "downed": false,
+   "x": 31,
+   "z": 29,
+   "inj": [
+    "Heatstroke@None"
+   ]
+  },
+  "vL": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 27,
+    "z": 46
+   }
+  },
+  "chick": {
+   "dead": false,
+   "downed": false,
+   "x": 30,
+   "z": 46,
+   "inj": [
+    "Heatstroke@None"
+   ]
+  }
+ },
+ "t1": {
+  "orders": {
+   "mech": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   },
+   "hare": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   },
+   "chick": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   }
+  },
+  "vM": {
+   "hediffs": [
+    "Scratch",
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 22,
+    "z": 31
+   }
+  },
+  "mech": {
+   "dead": false,
+   "downed": false,
+   "x": 30,
+   "z": 19,
+   "inj": []
+  },
+  "vF": {
+   "hediffs": [
+    "RM_SandSwimmer"
+   ],
+   "pos": {
+    "x": 31,
+    "z": 28
+   }
+  },
+  "hare": {
+   "dead": false,
+   "downed": false,
+   "x": 32,
+   "z": 28,
+   "inj": [
+    "Heatstroke@None"
+   ]
+  },
+  "vL": {
+   "hediffs": [
+    "RM_SandSwimmer"
+   ],
+   "pos": {
+    "x": 29,
+    "z": 46
+   }
+  },
+  "chick": {
+   "dead": false,
+   "downed": false,
+   "x": 31,
+   "z": 46,
+   "inj": [
+    "Heatstroke@None"
+   ]
+  }
+ },
+ "t2": {
+  "orders": {
+   "mech": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   },
+   "hare": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   },
+   "chick": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   }
+  },
+  "vM": {
+   "hediffs": [
+    "Scratch",
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 31,
+    "z": 21
+   }
+  },
+  "mech": {
+   "dead": false,
+   "downed": false,
+   "x": 31,
+   "z": 19,
+   "inj": []
+  },
+  "vF": {
+   "hediffs": [
+    "RM_SandSwimmer"
+   ],
+   "pos": {
+    "x": 39,
+    "z": 30
+   }
+  },
+  "hare": {
+   "dead": false,
+   "downed": false,
+   "x": 41,
+   "z": 31,
+   "inj": [
+    "Heatstroke@None"
+   ]
+  },
+  "vL": {
+   "hediffs": [
+    "RM_SandSwimmer"
+   ],
+   "pos": {
+    "x": 30,
+    "z": 46
+   }
+  },
+  "chick": {
+   "dead": true,
+   "downed": false,
+   "x": 31,
+   "z": 46,
+   "inj": [
+    "Heatstroke@None",
+    "MissingBodyPart@neck",
+    "ClinicalDeathAsphyxiation@None",
+    "MissingBodyPart@head",
+    "MissingBodyPart@skull",
+    "Coma@None",
+    "MissingBodyPart@brain",
+    "MissingBodyPart@left eye",
+    "MissingBodyPart@right eye",
+    "MissingBodyPart@beak",
+    "Scratch@body",
+    "Scratch@left leg"
+   ]
+  }
+ },
+ "t3": {
+  "orders": {
+   "mech": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   },
+   "hare": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   },
+   "chick": {
+    "success": false,
+    "accepted": null,
+    "message": "No spawned thing on this map with id 'Chicken111849'.",
+    "interruptibleBefore": null
+   }
+  },
+  "vM": {
+   "hediffs": [
+    "Scratch",
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 26,
+    "z": 23
+   }
+  },
+  "mech": {
+   "dead": false,
+   "downed": false,
+   "x": 36,
+   "z": 17,
+   "inj": []
+  },
+  "vF": {
+   "hediffs": [
+    "RM_SandSwimmer"
+   ],
+   "pos": {
+    "x": 40,
+    "z": 31
+   }
+  },
+  "hare": {
+   "dead": true,
+   "downed": false,
+   "x": 41,
+   "z": 31,
+   "inj": [
+    "Heatstroke@None",
+    "Bite@body"
+   ]
+  },
+  "vL": {
+   "hediffs": [
+    "RM_SandSwimmer"
+   ],
+   "pos": {
+    "x": 33,
+    "z": 43
+   }
+  },
+  "chick": {
+   "dead": true,
+   "downed": false,
+   "x": 31,
+   "z": 46,
+   "inj": [
+    "Heatstroke@None",
+    "MissingBodyPart@neck",
+    "ClinicalDeathAsphyxiation@None",
+    "MissingBodyPart@head",
+    "MissingBodyPart@skull",
+    "Coma@None",
+    "MissingBodyPart@brain",
+    "MissingBodyPart@left eye",
+    "MissingBodyPart@right eye",
+    "MissingBodyPart@beak",
+    "Scratch@body",
+    "Scratch@left leg"
+   ]
+  }
+ },
+ "t4": {
+  "orders": {
+   "mech": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   },
+   "hare": {
+    "success": false,
+    "accepted": null,
+    "message": "No spawned thing on this map with id 'Hare111847'.",
+    "interruptibleBefore": null
+   },
+   "chick": {
+    "success": false,
+    "accepted": null,
+    "message": "No spawned thing on this map with id 'Chicken111849'.",
+    "interruptibleBefore": null
+   }
+  },
+  "vM": {
+   "hediffs": [
+    "Scratch",
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 25,
+    "z": 25
+   }
+  },
+  "mech": {
+   "dead": false,
+   "downed": false,
+   "x": 36,
+   "z": 17,
+   "inj": []
+  },
+  "vF": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 40,
+    "z": 32
+   }
+  },
+  "hare": {
+   "dead": true,
+   "downed": false,
+   "x": 41,
+   "z": 31,
+   "inj": [
+    "Heatstroke@None",
+    "Bite@body"
+   ]
+  },
+  "vL": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 33,
+    "z": 43
+   }
+  },
+  "chick": {
+   "dead": true,
+   "downed": false,
+   "x": 31,
+   "z": 46,
+   "inj": [
+    "Heatstroke@None",
+    "MissingBodyPart@neck",
+    "ClinicalDeathAsphyxiation@None",
+    "MissingBodyPart@head",
+    "MissingBodyPart@skull",
+    "Coma@None",
+    "MissingBodyPart@brain",
+    "MissingBodyPart@left eye",
+    "MissingBodyPart@right eye",
+    "MissingBodyPart@beak",
+    "Scratch@body",
+    "Scratch@left leg"
+   ]
+  }
+ },
+ "t5": {
+  "orders": {
+   "mech": {
+    "success": true,
+    "accepted": true,
+    "message": null,
+    "interruptibleBefore": true
+   },
+   "hare": {
+    "success": false,
+    "accepted": null,
+    "message": "No spawned thing on this map with id 'Hare111847'.",
+    "interruptibleBefore": null
+   },
+   "chick": {
+    "success": false,
+    "accepted": null,
+    "message": "No spawned thing on this map with id 'Chicken111849'.",
+    "interruptibleBefore": null
+   }
+  },
+  "vM": {
+   "hediffs": [
+    "Scratch",
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 24,
+    "z": 23
+   }
+  },
+  "mech": {
+   "dead": false,
+   "downed": false,
+   "x": 36,
+   "z": 17,
+   "inj": []
+  },
+  "vF": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 40,
+    "z": 32
+   }
+  },
+  "hare": {
+   "dead": true,
+   "downed": false,
+   "x": 41,
+   "z": 31,
+   "inj": [
+    "Heatstroke@None",
+    "Bite@body"
+   ]
+  },
+  "vL": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 33,
+    "z": 43
+   }
+  },
+  "chick": {
+   "dead": true,
+   "downed": false,
+   "x": 31,
+   "z": 46,
+   "inj": [
+    "Heatstroke@None",
+    "MissingBodyPart@neck",
+    "ClinicalDeathAsphyxiation@None",
+    "MissingBodyPart@head",
+    "MissingBodyPart@skull",
+    "Coma@None",
+    "MissingBodyPart@brain",
+    "MissingBodyPart@left eye",
+    "MissingBodyPart@right eye",
+    "MissingBodyPart@beak",
+    "Scratch@body",
+    "Scratch@left leg"
+   ]
+  }
+ },
+ "filth": [],
+ "letters": [
+  [
+   "Ozzik the Shamed",
+   0
+  ],
+  [
+   "Pitiless Doctor role deactivated",
+   1
+  ],
+  [
+   "Master Stylist role deactivated",
+   1
+  ],
+  [
+   "Nurse role deactivated",
+   1
+  ],
+  [
+   "Inhabitants abandoned",
+   1
+  ],
+  [
+   "Roof collapse",
+   601
+  ],
+  [
+   "Taken under: Pilot",
+   7088
+  ],
+  [
+   "Death: Pilot (rooster)",
+   7088
+  ]
+ ]
+}

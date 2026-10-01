@@ -1,0 +1,15 @@
+swarm [('RM_Zuurrik112470', 211, 176), ('RM_Zuurrik112471', 219, 179), ('RM_Zuurrik112472', 217, 187)]
+hares ['Hare112703', 'Hare112704', 'Hare112705'] [([], False), ([], False), ([], False)]
+t 0 [(['Heatstroke'], False), (['Heatstroke'], False), (['Heatstroke'], False)] [('RM_Zuurrik111924', 198, 215), ('RM_Zuurrik112470', 210, 173), ('RM_Zuurrik112471', 219, 179), ('RM_Zuurrik112472', 218, 189)]
+t 1 [(['Heatstroke'], False), (['Heatstroke'], False), 'absent'] [('RM_Zuurrik111924', 193, 218), ('RM_Zuurrik112470', 210, 169), ('RM_Zuurrik112471', 218, 179), ('RM_Zuurrik112472', 218, 189)]
+t 2 ['absent', 'absent', 'absent'] [('RM_Zuurrik111924', 192, 217), ('RM_Zuurrik112470', 210, 169), ('RM_Zuurrik112471', 216, 184), ('RM_Zuurrik112472', 220, 194)]
+get True
+set off {"success": true, "action": "set", "field": "zuurrikEnabled", "fieldKind": "instance", "valueBefore": "True", "valueAfter": "False", "ticksGame": 28672}
+after kill [('RM_Zuurrik111924', 192, 217)]
+off t 0 [('RM_Zuurrik111924', 188, 209)]
+off t 1 [('RM_Zuurrik111924', 186, 206)]
+off t 2 [('RM_Zuurrik111924', 189, 209)]
+set on {"success": true, "action": "set", "field": "zuurrikEnabled", "fieldKind": "instance", "valueBefore": "False", "valueAfter": "True", "ticksGame": 30000}
+on t 0 [('RM_Zuurrik111924', 188, 205), ('RM_Zuurrik112781', 126, 119), ('RM_Zuurrik112782', 128, 117), ('RM_Zuurrik112783', 126, 121)]
+on t 1 [('RM_Zuurrik111924', 213, 199), ('RM_Zuurrik112781', 121, 118), ('RM_Zuurrik112782', 128, 117), ('RM_Zuurrik112783', 121, 116)]
+on t 2 [('RM_Zuurrik111924', 219, 188), ('RM_Zuurrik112781', 121, 119), ('RM_Zuurrik112782', 125, 117), ('RM_Zuurrik112783', 118, 119)]
