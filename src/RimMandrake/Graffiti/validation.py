@@ -157,6 +157,9 @@ def forced_paint_job(t):
             if not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
                 raise ExpectationFailed(
                     "jawa/ordered_job RM_PaintGraffitiJob was not accepted and running: %r" % r)
+            # the paused site makes the tool's own waitTicks a no-op (ticksElapsed 0, MEASURED live
+            # 2026-10-01), so advance the clock ourselves
+            t.wait_ticks(600)
             after = len(_marks_in(t, rect))
             if after <= before:
                 raise ExpectationFailed(
