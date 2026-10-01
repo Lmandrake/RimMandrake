@@ -10722,3 +10722,47 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_DuskRat_east", "notes": "", "target": "RM_DuskRat/east", "ts": 1790881188.4422264}
 {"by": "fill_queue", "event": "registered", "source": "ABYSS_FREE_TIER_BODY_1", "target": "RM_DuskRat/north", "ts": 1790881188.443814}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_DuskRat_north", "notes": "", "target": "RM_DuskRat/north", "ts": 1790881188.4618125}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Sohl/south", "ts": 1790892445.1146824}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Sohl_south", "notes": "", "target": "RM_Sohl/south", "ts": 1790892445.1379802}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Sohl/east", "ts": 1790892445.1395855}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Sohl_east", "notes": "", "target": "RM_Sohl/east", "ts": 1790892445.1619868}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Sohl/north", "ts": 1790892445.1633854}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Sohl_north", "notes": "", "target": "RM_Sohl/north", "ts": 1790892445.1828961}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Sohl_Dormant", "ts": 1790892445.1850386}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Sohl_Dormant", "notes": "", "target": "RM_Sohl_Dormant", "ts": 1790892445.2050827}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Shivven/south", "ts": 1790892445.206986}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Shivven_south", "notes": "", "target": "RM_Shivven/south", "ts": 1790892445.2252088}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Shivven/east", "ts": 1790892445.2272205}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Shivven_east", "notes": "", "target": "RM_Shivven/east", "ts": 1790892445.2477005}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Shivven/north", "ts": 1790892445.2490833}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Shivven_north", "notes": "", "target": "RM_Shivven/north", "ts": 1790892445.2671156}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_ShivvenTell", "ts": 1790892445.2688985}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_ShivvenTell", "notes": "", "target": "RM_ShivvenTell", "ts": 1790892445.2858284}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Frissim/south", "ts": 1790892445.2877514}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Frissim_south", "notes": "", "target": "RM_Frissim/south", "ts": 1790892445.307636}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Frissim/east", "ts": 1790892445.309387}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Frissim_east", "notes": "", "target": "RM_Frissim/east", "ts": 1790892445.3293211}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Frissim/north", "ts": 1790892445.330814}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Frissim_north", "notes": "", "target": "RM_Frissim/north", "ts": 1790892445.349393}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Wyrmlet/south", "ts": 1790892445.3508663}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Wyrmlet_south", "notes": "", "target": "RM_Wyrmlet/south", "ts": 1790892445.3696826}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Wyrmlet/east", "ts": 1790892445.3718488}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Wyrmlet_east", "notes": "", "target": "RM_Wyrmlet/east", "ts": 1790892445.387605}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Wyrmlet/north", "ts": 1790892445.3899202}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Wyrmlet_north", "notes": "", "target": "RM_Wyrmlet/north", "ts": 1790892445.405851}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Dhorrumak/south", "ts": 1790892445.407476}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Dhorrumak_south", "notes": "", "target": "RM_Dhorrumak/south", "ts": 1790892445.423946}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Dhorrumak/east", "ts": 1790892445.4253998}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Dhorrumak_east", "notes": "", "target": "RM_Dhorrumak/east", "ts": 1790892445.4415689}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Dhorrumak/north", "ts": 1790892445.4431753}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Dhorrumak_north", "notes": "", "target": "RM_Dhorrumak/north", "ts": 1790892445.4653003}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Hessarund", "ts": 1790892445.467152}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Hessarund", "notes": "", "target": "RM_Hessarund", "ts": 1790892445.4852917}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Hoarfrost_CrystalGarden", "ts": 1790892445.4867673}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Hoarfrost_CrystalGarden", "notes": "", "target": "RM_Hoarfrost_CrystalGarden", "ts": 1790892445.5041623}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Hoarfrost_FrostFlower", "ts": 1790892445.5057635}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Hoarfrost_FrostFlower", "notes": "", "target": "RM_Hoarfrost_FrostFlower", "ts": 1790892445.5217202}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Hoarfrost_DepthHoarColumn", "ts": 1790892445.5238264}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Hoarfrost_DepthHoarColumn", "notes": "", "target": "RM_Hoarfrost_DepthHoarColumn", "ts": 1790892445.543337}
+{"by": "fill_queue", "event": "registered", "source": "NIGHTSIDEICE_BEDAZZLE_SITTING_1", "target": "RM_Hoarfrost_BladeGrowth", "ts": 1790892445.5457616}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Hoarfrost_BladeGrowth", "notes": "", "target": "RM_Hoarfrost_BladeGrowth", "ts": 1790892445.5653281}
