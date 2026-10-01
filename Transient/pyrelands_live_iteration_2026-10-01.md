@@ -55,6 +55,51 @@ fire (none) and all seven isolation toggles restored to their shipped ON before 
 **Site recipe gap for whoever owns `northstar_site.py`: name the player faction at site
 creation, or every run past day 4.3 will hop maps.**
 
+### Run 2 — stopped: one-tick-per-frame waits
+
+`t.wait_ticks` drives `rimworld/step_game_ticks`, one tick per Unity frame: MEASURED ~53
+ticks/s (3,170 ticks per wall minute). The suite needs ~760k ticks (7-day regrow, 4.5-day
+rot), i.e. ~4 hours. Added `_wait()`: waits > 5,000 ticks run at Ultrafast and poll the real
+clock (`Session._ticks`), pause ~400 ticks short and finish exactly with `step_game_ticks`;
+a 60 s clock stall raises. MEASURED ~400 ticks/s. Also added a per-component `[pyre]`
+progress line on stderr (the driver prints only at the very end).
+
+### Run 3 — REFUSED by pre-flight `no_modal`
+
+`Dialog_NamePlayerSettlement` (the site settlement's own naming prompt) was open. Answered
+it the same way (Randomize + OK): settlement "Pandale". `_on_site()` now closes any
+`NamePlayer*` dialog.
+
+### Run 4 — first end-to-end run (results `Transient/northstar/Pyrelands_20261001T184744Z.json`)
+
+Driver: NOT GREEN, PASS=0 FAIL=9 UNMEASURED=11. State-PASS bars are reported UNMEASURED by
+the driver until `judge_cli.py` grades their screenshots (by design).
+
+| bar | state verdict | reason |
+|---|---|---|
+| mapgen_log_clean | PASS | Player.log scan clean |
+| plant_distribution_correct | **FAIL (finding)** | `Plant_TreeAnima` x1 on the site; wildPlants == manifest; probe saw Plant_Grass |
+| animal_distribution_correct | UNMEASURED | census clean (17 wild, 5 kinds, none foreign); `wildAnimals` read-back not serialisable |
+| grass_chokes_ground | PASS | |
+| ruins_scorched | UNMEASURED | no RM_FE_ScorchRuins on this site; no tool forces the genstep |
+| burn_line_present | UNMEASURED | 0 fires; site recipe holds burnLine OFF through gen |
+| fulgurite_armed_only / biome_def_wiring (toggle floor) | PASS | |
+| ground_ash_ladder | FAIL — **harness** | extinguished at 3,000 ticks; `Fire.TryBurnFloor` needs a fire alive 7,500 ticks (decompiled `RimWorld.Fire.TicksToBurnFloor`). Now waits 8,000 |
+| ash_dusting / ashfall_accumulates (toggle floor) | PASS | |
+| scorch_fruit_seed (toggle floor) | FAIL — likely finding | 0 ScorchFruit in a 24x24 fully-grassed burn: the postfix takes its ONE roll on the fire's first tick and needs a plant-free standable cell in 3x3, but the burning grass still stands then. Evidence (rect vs whole-map count, cap 40) added |
+| ashfall_darkens_drifts, cinderfall_distinct, blackrain_reads, cannot_ordinary_rain | PASS | |
+| scorchfruit_fire_born | FAIL — **harness** | "gen" ScorchFruit = 9 were fruit from runs 1-2's burns. Now: a ScorchFruit at the census outside every suite fire pad is on unburned land (the site's only fires are the pads) |
+| scorchfruit_produces | FAIL — **harness** | harvest made yield; food read 0.200 -> 0.200 because the game is paused (no ticks ran for the ingest). Now polls food every 150 ticks for 1,500 |
+| scorchfruit_spoils_fast | UNMEASURED | yield stack gone by day 0.5 (eaten/hauled?). Per-sample whole-map + nearby yield readings added |
+| firehawk_carries_ember, burrowers_dive | FAIL — **harness** | `map_fire` refused all cells: the pads sat on deep ash from run 2's burns (non-flammable). Pads are now re-laid to RM_FE_Ground_Soil first |
+| furnacebeast_warmth | FAIL — **harness** | colonist at 3 cells; an uncharged beast's aura is 4.9 x 0.35 = 1.7 cells (`CompFurnaceWarmthAura`). Colonist now adjacent |
+| furnacebeast_heats_room | PASS | matched rooms set to 10 C |
+| embergrass_regrows | FAIL -> now UNMEASURED | 0 of 256 regrew in 7 days, but the plan marks this threshold CALIBRATING (never gates), so the gate I had added is removed; the numbers are reported |
+| fulgurite_after_lightning | FAIL | 0 fulgurite after 20,000 ticks of DryThunderstorm (301 fires: strikes landed). Sand-cell count now recorded to tell probability from defect |
+
+Also: the results JSON keeps only ~300 chars of each component's evidence, so `_note()` now
+echoes every evidence record to stderr (`[pyre-note]`).
+
 ## Findings about the mod
 
 (filled at the end)
