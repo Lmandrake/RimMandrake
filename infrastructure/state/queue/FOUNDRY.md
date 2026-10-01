@@ -1296,6 +1296,15 @@ kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
+## STILLSAND_SUN_FROM_LATITUDE_1 Stillsand sun from latitude: pinned sky from the tile, cover follows sun angle (overhead >~55 deg), sin(elev) heat, sand glare, race-gated glare-blind + sun goggles (Jawa immune), the mirage, wind locked to the sun bearing
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. Pin the sky from the tile. Add RMPinnedSunExtension to RMStillsand with elevation
+prose:    infrastructure/state/items/STILLSAND_SUN_FROM_LATITUDE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -2092,16 +2101,6 @@ thin:     no ## verify
 summary:  1. Wire the six finished-but-unwired render sets. Each def's texPath resolves nowhere today:
 prose:    infrastructure/state/items/STILLSAND_BEDAZZLE_CONTENT_1.md
 
-## STILLSAND_SUN_FROM_LATITUDE_1 Stillsand sun from latitude: pinned sky from the tile, cover follows sun angle (overhead >~55 deg), sin(elev) heat, sand glare, race-gated glare-blind + sun goggles (Jawa immune), the mirage, wind locked to the sun bearing
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  1. Pin the sky from the tile. Add RMPinnedSunExtension to RMStillsand with elevation
-prose:    infrastructure/state/items/STILLSAND_SUN_FROM_LATITUDE_1.md
-
 ## STILLSAND_EVENT_CREATURES_1 Stillsand event creatures: krayt attack incident on top of wild krayts, the muurrok (RM leviathan, mirror-crest beam on an animal-safe Verb_ShootBeam copy), sarlacc comes to root, greater krayt den quest, krayt horn
 state:    proposed
 row:      unassigned
@@ -2411,6 +2410,56 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  PYRELANDSSHIPREADINESS1 — the SHIPPED rung for Pyrelands: art, review, settings, deploy
 prose:    infrastructure/state/items/PYRELANDS_SHIP_READINESS_1.md
+
+## STILLSAND_GLARE_BLIND_GOGGLES_1 Stillsand glare-blind (race-gated by RM_GlareAdapted gene, Jawa immune) + RM_SunGoggles + Armoury goggle tag patch: parent spec items 6-7
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  6. Glare-blind, race-gated (slate IN). Owner, typed: "the sun protection for the eyes is great
+prose:    infrastructure/state/items/STILLSAND_GLARE_BLIND_GOGGLES_1.md
+
+## STILLSAND_MIRAGE_CONDITION_1 Stillsand mirage: high-sun GameCondition (false-water band, long-range accuracy malus) + 'chasing the water' MentalStateDef that always leaves the pawn on the map with a letter: parent spec item 8
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  8. The mirage (slate IN). On a tile with sun elevation above a threshold, a GameCondition
+prose:    infrastructure/state/items/STILLSAND_MIRAGE_CONDITION_1.md
+
+## STILLSAND_WIND_SUN_BEARING_1 Pin MovingDunes wind to the tile-to-substellar bearing (DuneFieldExtension.lockBearingToSubstellar) so crests, lees, shadows and wind point one way: parent spec item 9
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify, no ## criteria
+summary:  9. One bearing for everything. Pin the dunes engine's wind to the same tile-to-substellar
+prose:    infrastructure/state/items/STILLSAND_WIND_SUN_BEARING_1.md
+
+## STILLSAND_STILL_COOLING_DRAUGHT_1 Still-water cooling draught: drinking it gives ComfyTemperatureMax +8 C for ~6 h (XML on the still's output): parent spec item 10
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify, no ## criteria
+summary:  10. Cooling draught: a drink of still water gives a hediff of ComfyTemperatureMax +8 °C for
+prose:    infrastructure/state/items/STILLSAND_STILL_COOLING_DRAUGHT_1.md
+
+## STILLSAND_SUN_LIVE_VERIFY_1 Live-verify Stillsand sun from latitude on quicktest maps at two latitudes: no night, shadow length by latitude, roof protects above 55 deg only, far-ring heatstroke within an hour, solar panels full output
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  STILLSANDSUNLIVEVERIFY1 — live check of the Stillsand's latitude sun
+prose:    infrastructure/state/items/STILLSAND_SUN_LIVE_VERIFY_1.md
 
 ## FLOWWORKS_NORTHSTAR_TRIAL_1 FlowWorks north-star trial: VALIDATED -> WIRED -> GREEN-minimal -> GREEN-full -> SHIPPED
 state:    proposed
