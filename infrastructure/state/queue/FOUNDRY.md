@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T20:27:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T20:47:06Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -3570,3 +3570,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  northstardriver writes its results JSON but does not record the run in the modcheck status registry, so modch…
 prose:    infrastructure/state/items/NORTHSTAR_DRIVER_RECORD_STATUS_1.md
+
+## BIOME_TIER_CLEANUP_1 Biome tier cleanup: move twin-only features to RM_, scrub Star Wars IP, move RUT_ defs out of free mods
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  BIOMETIERCLEANUP1 — tier cleanup found by the grandfathered bedazzle scoring
+prose:    infrastructure/state/items/BIOME_TIER_CLEANUP_1.md
