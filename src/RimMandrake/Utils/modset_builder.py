@@ -473,6 +473,46 @@ TIERS["greentideant"] = {
     "dlc": True,
 }
 
+# PYRELANDS_GREEN_MINIMAL_1 / Pyrelands_trial_plan.md §3.1. Pyrelands ships COMPOSED in
+# mandrake.rm.biomes, so that (never mandrake.rm.pyrelands) is what loads. swbestiary is
+# load-bearing: WildAnimals_Pyrelands.xml adds seven RSW_ keys under a MayRequire on a
+# top-level <Operation>, which the engine ignores, so without it GenStep_Animals NREs.
+# `forbid` (tier_guard) refuses the tier, plan or apply, if any of these lands in the
+# resolved closure (neighbour bleed / plantDensity rewrite / flora injection).
+# ⚠️ sarg.alphabiomes is NOT forbiddable although §3.1 once listed it: the composed
+# mandrake.rm.biomes About.xml hard-depends on it (MEASURED 2026-10-01 over the
+# installed set). Plant purity is then guarded by WildPlantAllowlist + bar 1.
+TIERS["pyrelands"] = {
+    "why": "PYRELANDS_NORTHSTAR_TRIAL_1: the composed Baroque Biomes + the Utinni "
+           "fauna/mechanics patch closure for the Pyrelands north-star trial, with "
+           "biome transitions, Map Designer and flora injectors kept off the list.",
+    "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches",
+             "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics"],
+    "forbid": ["m00nl1ght.geologicallandforms",
+               "m00nl1ght.geologicallandforms.biometransitions",
+               "zylle.mapdesigner",
+               "kopp.biomecompatibilityproject",
+               "noxilie.regrow.wmb.alphabiomes"],
+    "dlc": True,
+}
+
+
+def resolve_tier(name, installed):
+    """(ordered packageIds, missing, refusals) for a tier -- the exact list --apply
+    writes. `refusals` is tier_guard's list (forbidden mod in the closure, a DLC
+    missing); non-empty means the tier is refused. Also the manifest a pre-flight
+    compares the running list against (preflight_pyrelands.py)."""
+    t = TIERS[name]
+    want = list(t["want"])
+    if t["dlc"]:
+        want += [p for p in installed if p.startswith("ludeon.rimworld")]
+    else:
+        want += [CORE]
+    want += [HARMONY]
+    pids, missing = close_over(want, installed)
+    ordered = order(pids, installed)
+    return ordered, missing, tier_guard(t, ordered)
+
 
 def read_about(path):
     try:
@@ -729,15 +769,7 @@ def main():
         ap.error("give --tier, --list or --restore")
 
     t = TIERS[a.tier]
-    want = list(t["want"])
-    if t["dlc"]:
-        want += [p for p in installed if p.startswith("ludeon.rimworld")]
-    else:
-        want += [CORE]
-    want += [HARMONY]
-
-    pids, missing = close_over(want, installed)
-    ordered = order(pids, installed)
+    ordered, missing, refusals = resolve_tier(a.tier, installed)
 
     print("\ntier '%s': %s\n" % (a.tier, t["why"]))
     for i, pid in enumerate(ordered, 1):
@@ -745,7 +777,6 @@ def main():
     if missing:
         print("\n  ! NOT INSTALLED (tier is incomplete): %s" % missing)
         return 1
-    refusals = tier_guard(t, ordered)
     if refusals:
         for r in refusals:
             print("\n  REFUSING tier '%s': %s" % (a.tier, r))

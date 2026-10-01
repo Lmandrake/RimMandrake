@@ -263,10 +263,14 @@ site, not the mod.
 - **Exclude explicitly:**
   - `m00nl1ght.geologicallandforms` and its `biometransitions` module (neighbour bleed);
   - `zylle.mapdesigner` (rewrites `plantDensity`);
-  - `kopp.biomecompatibilityproject`, `sarg.alphabiomes` and any mod whose `AdditionalWildPlants`
-    injects flora.
+  - `kopp.biomecompatibilityproject` and any mod whose `AdditionalWildPlants` injects flora.
 
-  The pre-flight asserts their absence through `jawa/mod_inventory`.
+  The pre-flight asserts their absence through `jawa/mod_inventory`, and `modset_builder` refuses
+  the tier if its closure ever pulls one in (the tier's `forbid` list).
+  ⚠️ `sarg.alphabiomes` **cannot** be excluded: the composed `mandrake.rm.biomes` About.xml
+  hard-depends on it (**MEASURED** 2026-10-01, `modset_builder.resolve_tier` over the installed
+  set: a 20-mod closure). Its flora is kept off the map by `WildPlantAllowlist`
+  (`wildPlantAllowlistEnabled`, ON by default), and bar 1's purity census is the check.
 - **Why the swbestiary entry is load-bearing:** §1.3's inert `MayRequire`. Without it, seven
   wildAnimals keys dangle and GenStep_Animals NREs.
 - The **full-list** rung (GREEN full) instead uses `ModsConfig.FULL.LATEST.xml` (614 mods) and
