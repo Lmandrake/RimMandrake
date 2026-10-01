@@ -207,7 +207,7 @@ creatures.
 Then the three unruled marks (6, 7, 9) and the PARTIAL (2) come from §5 and §6.
 
 
-## 5. GPT consult: five ideas
+## 5. GPT consult: five ideas (none taken, owner turn 1; kept as the record of the consult)
 
 Consult: `Transient/bedazzle_gpt_enrich_2026-10-01/nightsideice.md` (prompt beside it), run
 2026-10-01 under the owner's new standing rule: exactly five ideas, each different from the others
@@ -241,7 +241,7 @@ only ever been *fed*, so his rite here is a new kind for him. No kind repeats in
 **Not taken: a burial in the ice for Rekko** (the scores doc's seed). The Abyss's Lightless Burial
 already lays the dead down in the deep dark, so a second burial rite would be the same act.
 
-### R1. The Cold Ledger, for Mob'Unloo: consolation
+### R1. The Cold Ledger, for Mob'Unloo: consolation (RULED-KEPT, owner turn 1)
 
 - **Grounding:** *"an unpaid debt follows you past death"*; a settled ghost is *"a balanced
   ledger"* (§2.0b ④). The dead here are perfectly kept, so their debts are too.
@@ -258,7 +258,7 @@ already lays the dead down in the deep dark, so a second burial rite would be th
 - **Collision check:** the Blind Offering (Abyss) is an item taken in the dark by an unseen hand;
   here nothing is taken, and the payment is on display. New kind for Mob'Unloo.
 
-### R2. The Exchange at the Crack, for Mob'Unloo: feeding
+### R2. The Exchange at the Crack, for Mob'Unloo: feeding (NOT TAKEN, owner turn 1)
 
 - **Grounding:** *"Enemies are just another commodity"*; *"captured body = captured value"*
   (§2.0b ④). The larder is a store, and stores can trade.
@@ -276,7 +276,7 @@ already lays the dead down in the deep dark, so a second burial rite would be th
 - **Collision check:** the Storm's Receipt (Wasteland) is counting finds; this is a trade with
   beasts. Same god and kind, a different act.
 
-### R3. The Cold Hearth, for Ishko: warding
+### R3. The Cold Hearth, for Ishko: warding (NOT TAKEN, owner turn 1)
 
 - **Grounding:** stillness and *"the prepared dark"*; attrition defence; to stay unseen (§2.0b ①).
   On this hemisphere, unseen means **cold**.
@@ -344,3 +344,13 @@ Name: **hessarund**, or GPT's **vhal**?
   you for a season. Hypothermia is the price.
 - **None for now.**
 
+## 8. Turn 1 rulings (owner, 2026-10-01 14:06 PDT)
+
+| Card item | Ruling | How recorded |
+|---|---|---|
+| 1. Build first | **Slate rows 0 and 1 together:** the eviction housekeeping (the six `AA_` rows out of `RM_NightsideIce.xml`; Tauntaun and Wampa wired onto `RM_NightsideIce` through `WildAnimals_NightsideIce.xml` at 0.03), the heat dial and the shivven breach loop. Then, in order: thaw/calving (2), sky (3), sohl (4), larder (5), apex ladder (6), ice forms (7), art (8). | Decision taken by question card. `NIGHTSIDEICE_HEAT_DIAL_BUILD_1` (FOUNDRY) carries rows 0 and 1. Rows 2-8 are the ordered backlog in `NIGHTSIDEICE_BEDAZZLE_SITTING_1`, not yet filed as items. |
+| 2. The giant | **Only a landform.** A mineable living ridge that yields catalyst crust and has no behaviour. Not taken: the bargaining ridge (Vhal) and the heat-creeping ridge. Name stays **hessarund** (`RM_Hessarund`). The giant mark stays thin by his choice. | Decision taken by question card. Folded into the ice-forms and art rows, no item of its own. |
+| 3. New marks | His words, typed: *"I don’t like any of these. We should likely just pass this. Home for now."* None of the Breath-Choir, the Witness Method, the kesshet or the Keel-Press is taken. Ship, sound and learned tech stay unfilled for this biome by his choice: passed, not gaps to re-pitch. GPT's five ideas in §5 stay as the record of the consult, marked not taken. | His typed word. Noted on `NIGHTSIDEICE_BEDAZZLE_SITTING_1`. |
+| 4. Rites | **The Cold Ledger only** (Mob'Unloo, consolation), ruled-kept and added to the register of `design/Jawa/salvation_rites_2026-10-01.md` (B7). Not taken: the Exchange at the Crack, the Cold Hearth (marked in §6). | Decision taken by question card. |
+
+Still open: the art commission for the ratified cast (slate row 8).

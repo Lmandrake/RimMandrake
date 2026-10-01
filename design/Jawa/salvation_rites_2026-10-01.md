@@ -168,6 +168,7 @@ to rule**.
 | The Unspilled March | Oomo | feeding | a mirage on the horizon | Stillsand, sealed jars on a glasscrust line | ruled-kept | `biome_rites_pass_2026-10-01.md` §9.2 |
 | The Deserter's Welcome | Ohm | feeding | a hospice waking (day 7+) | Warscar, a campaign-tier old-tongue chassis plate | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §10.1 |
 | The Vindication Walk | Ta'Baa | consolation | a Settling; ends when wind lifts the prints | Warscar, chalk inside a firing slit | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §10.2 |
+| The Cold Ledger | Mob'Unloo | consolation | a frozen dead man's debt, a ledger tablet calved from the ice | Nightside Ice, a calved body carrying a tablet | ruled-kept (owner, 2026-10-01, question card) | `design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md` §6 R1 |
 
 **Count (by hand from the tables above, not an instrument): 98 rows.** B1 5 + B2 5 + B3 23 +
 B4 7 + B5 28 + B6 8 + B7 22. **89 are the Salvation's** (B1 to B5 and B7; the Unburdening appears
