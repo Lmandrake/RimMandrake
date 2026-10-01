@@ -93,9 +93,10 @@ def mock_config(ids):
     return p
 
 
-def open_session(args):
+def open_session(args, plan=None):
     if args.mock:
         game = MockGame(faults=[f for f in (args.fault or "").split(",") if f])
+        game.ext = getattr(plan, "mock_extension", None)   # a plan may bring its own in-memory mod model
         return FastSession(transport=MockTransport(game), strict=False), game
     return FastSession(pipeline=args.pipeline, strict=False), None
 
@@ -116,7 +117,7 @@ def cmd_preflight(args):
 
 def cmd_run(args):
     plan = load_plan(args.plan) if args.plan else None
-    s, game = open_session(args)
+    s, game = open_session(args, plan)
     mod = args.mod or (getattr(plan, "MOD", None) if plan else None) or "adhoc"
     exp, why = expected_bars(mod)
     doc = {"mod": mod, "mode": "mock" if args.mock else "live", "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),

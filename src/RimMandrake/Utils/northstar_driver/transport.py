@@ -177,9 +177,15 @@ class MockGame(object):
         if "pause_lies" in self.faults:
             self.ticks += 60
 
+    ext = None      # optional per-mod extension: ext(game, tool, params) -> result, or None to fall through
+
     def handle(self, tool, p):
         p = p or {}
         self._tick()
+        if self.ext is not None:
+            r = self.ext(self, tool, p)
+            if r is not None:
+                return r
         if tool == "rimbridge/ping":
             return {"success": True, "pong": True}
         if tool == "rimbridge/get_bridge_status":
