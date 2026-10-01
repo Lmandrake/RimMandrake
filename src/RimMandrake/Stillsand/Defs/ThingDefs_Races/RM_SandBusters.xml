@@ -252,7 +252,9 @@
       </li>
     </tools>
     <race>
-      <body>Rat</body>
+      <!-- QuadrupedAnimalWithPaws is vanilla Rat's own body; there is no BodyDef named "Rat", and a null body
+           NREd every RM_Oorrik spawn in Pawn_HealthTracker.ShouldBeDead (body.corePart). -->
+      <body>QuadrupedAnimalWithPaws</body>
       <herdAnimal>false</herdAnimal>
       <predator>true</predator>
       <!-- Grain pole of §6's bimodal law (matches this mod's own drageye (ikee) at 0.15). -->
