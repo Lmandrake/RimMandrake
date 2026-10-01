@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T07:53:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T07:59:29Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1296,14 +1296,14 @@ kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
-## STILLSAND_WIND_SUN_BEARING_1 Pin MovingDunes wind to the tile-to-substellar bearing (DuneFieldExtension.lockBearingToSubstellar) so crests, lees, shadows and wind point one way: parent spec item 9
+## STILLSAND_STILL_COOLING_DRAUGHT_1 Still-water cooling draught: drinking it gives ComfyTemperatureMax +8 C for ~6 h (XML on the still's output): parent spec item 10
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-summary:  9. One bearing for everything. Pin the dunes engine's wind to the same tile-to-substellar
-prose:    infrastructure/state/items/STILLSAND_WIND_SUN_BEARING_1.md
+summary:  10. Cooling draught: a drink of still water gives a hediff of ComfyTemperatureMax +8 °C for
+prose:    infrastructure/state/items/STILLSAND_STILL_COOLING_DRAUGHT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -2381,16 +2381,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  PYRELANDSSHIPREADINESS1 — the SHIPPED rung for Pyrelands: art, review, settings, deploy
 prose:    infrastructure/state/items/PYRELANDS_SHIP_READINESS_1.md
 
-## STILLSAND_STILL_COOLING_DRAUGHT_1 Still-water cooling draught: drinking it gives ComfyTemperatureMax +8 C for ~6 h (XML on the still's output): parent spec item 10
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify, no ## criteria
-summary:  10. Cooling draught: a drink of still water gives a hediff of ComfyTemperatureMax +8 °C for
-prose:    infrastructure/state/items/STILLSAND_STILL_COOLING_DRAUGHT_1.md
-
 ## STILLSAND_SUN_LIVE_VERIFY_1 Live-verify Stillsand sun from latitude on quicktest maps at two latitudes: no night, shadow length by latitude, roof protects above 55 deg only, far-ring heatstroke within an hour, solar panels full output
 state:    proposed
 row:      unassigned
@@ -2650,3 +2640,13 @@ kind:     task
 thin:     no ## verify
 summary:  1. Krayt den (RSW): a greater krayt, or its old den with skull and pearl (RSWKraytDragonSkull,
 prose:    infrastructure/state/items/STILLSAND_CAVE_TIER_ROWS_1.md
+
+## STILLSAND_SUN_GOGGLES_ART_1 Wire the sun goggles' own icon and worn art when it lands
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  When the art lands, copy it into src/RimMandrake/Stillsand/Textures/ (icon at a Things/Item/Apparel/... path;…
+prose:    infrastructure/state/items/STILLSAND_SUN_GOGGLES_ART_1.md
