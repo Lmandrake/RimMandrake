@@ -103,8 +103,9 @@ EXISTING_TOOLS = (            # MEASURED: [Tool] names in JawaBench.BridgeTools 
 )
 P_B3_TOOLS = ("jawa/flowworks_excavation_drive", "jawa/flowworks_excavation_report",
               "jawa/canal_cell_report", "jawa/mod_settings_field")
-# Not built yet. The response shape given here is the CONTRACT the tool must meet;
-# FakeFlowWorksGame implements exactly this shape and nothing else.
+# Built 2026-10-01 (JawaBenchFlowWorksNorthstarTools.cs + type_probe identity), not yet deployed
+# or live-proven; callers still gate on the LIVE tool list. The response shape given here is the
+# CONTRACT the tool meets; FakeFlowWorksGame implements exactly this shape and nothing else.
 NEEDED_TOOLS = {
     "jawa/flowworks_body_report":
         "{x,z} -> success, classified (bool; the call itself classifies via RM_LiquidStock.BodyAt, "

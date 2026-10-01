@@ -40,7 +40,7 @@ The ladder every trial climbs:
 | Depth/fill primitive, pulse flow, confinement | yes | **yes** — `RM_MapComponent_Excavation`, pulse every `pulseIntervalTicks` = 250, `flowPerPulse` = 1 |
 | Stock, limited/limitless (sticky), recession, refill, rain fill (roof blocks it), edge sinks | yes | **yes** — `RM_LiquidStock`, `RM_LiquidBody`; a body is classified ONCE on first contact and never re-argued |
 | Per-fluid viscosity in the depth engine | yes ("water almost at once, tar creeping") | **no** — `RM_MapComponent_Excavation` has no viscosity/`ticksPerTile` read; viscosity exists only on the legacy `Flood_FlowWorks` release |
-| Per-body fluid type | yes (item `[F]`) | **no** — `ActiveFluid` is ONE `FluidDef` per map, defaulting to water, with no UI and no bridge setter |
+| Per-body fluid type | yes (item `[F]`) | **no** — `ActiveFluid` is ONE `FluidDef` per map, defaulting to water, with no UI; the bridge setter `jawa/flowworks_set_active_fluid` changes the whole map's fluid, never one body's |
 | Ignition / burning canals | yes | partial — `LiquidIgnition.cs` exists; `liquidIgnitionEnabled` **defaults false**, so the defense bars test a non-default setting |
 | Superdeep capture, ladder | yes | **yes** — `Building_SuperdeepPit` (inherits `Building_OpenPit` despawn-into-container), `RM_Ladder` |
 | Pawn draw offset by depth, walls 20% over head | yes (third card round) | **no** |
@@ -502,9 +502,9 @@ Not built here. FlowWorks needs:
    `roof_rect`, `clear_rect`, `things_in(rect)`.
 3. **FlowWorks primitives:** `dig(cells, levels)`, `fill(cells, F)`, `excavation_read(cells)` (one call
    for many cells — the current report tool is one cell per call; a rect variant is wanted),
-   `set_active_fluid(map, defName)` (**new JawaBench tool needed**: `ActiveFluid` setter via reflection),
-   `ignite_cell(cell)`, `body_report(cell)` (stock, capacity, limitless, cell count — **new tool**:
-   no bridge read of `RM_LiquidBody` exists).
+   `set_active_fluid(map, defName)` (`jawa/flowworks_set_active_fluid`: refuses after first
+   classification or any fill), `ignite_cell(cell)`, `body_report(cell)` (`jawa/flowworks_body_report`:
+   stock, capacity, limitless, cell count; classifies on call unless `classify=false`).
 4. **Tick control:** `step(ticks)` paused-to-paused; `step_until(predicate, budget, every=PULSE)`
    returning `NOT_SETTLED` on budget; `settle(plot)` per §2.2.
 5. **Settings:** `settings_snapshot(types)`, `set(type, field, value)` with read-back, a context manager
@@ -517,9 +517,9 @@ Not built here. FlowWorks needs:
    value, luma/variance gate, and `diptych(before, after, labels)` composition into one PNG.
 9. **Isolation:** `ring_clean(rect)`, `reload_save(name)` with save-slot stat check.
 10. **Log:** `log_since(mark)` and `log_mark()` to scope Player.log/`drain_log` checks to one bar.
-11. **Engine internals (new JawaBench reads, reflection-coupled like the existing FlowWorks tools):**
-    `next_pulse_tick(map)`, `rain_accumulator(map)`, `body_report` (above).
-12. **Process identity:** `loaded_assembly(type)` → path, MVID, file hash (extend `jawa/type_probe`).
+11. **Engine internals (JawaBench reads, reflection-coupled like the existing FlowWorks tools):**
+    `next_pulse_tick(map)`, `rain_accumulator(map)` (both in `jawa/flowworks_engine_state`), `body_report` (above).
+12. **Process identity:** `loaded_assembly(type)` → path, MVID, file hash, file MVID (`jawa/type_probe`).
 13. **Session hygiene:** `autosave(off)` with read-back; `save_copy(golden, work)` + read-only golden;
     `pawn_roster()` and `despawn_all_except(test_pawns)`; `render_profile()`.
 14. **Step contract:** every `step()` returns `{tick_before, tick_after, paused, map_id, pulses}` and the
