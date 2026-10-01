@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T06:05:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T06:13:19Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1260,6 +1260,15 @@ kind:     task
 summary:  - A ship-mounted acoustic scanner. When the grounded gravship fires a sounding pulse, dust jumps
 prose:    infrastructure/state/items/GRAVSHIP_ACOUSTIC_SCANNER_1.md
 
+## CONTAGION_GROWN_LIMBS_BUILD_1 Build the grown limbs the owner keeps on design/Jawa/worldbuilding/biomes/contagion_grown_limbs_2026-09-30.md (Pillar Arm + Lash first; Monstrous sample grade from Coalescence drops; removal-spawns-Unfinished comp)
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  Scope built (Pillar Arm + Lash, offline-checkable)
+prose:    infrastructure/state/items/CONTAGION_GROWN_LIMBS_BUILD_1.md
+
 ## SCALD_CROWNCARPET_NO_HABITAT_1 RM_TheScald generates ~no plants: its only wild plant (crowncarpet) grows only on a shallow margin terrain that map generation never lays down (live 2026-09-30c: 1 plant, an anima tree). Give the biome that margin terrain or the plant a habitat it actually gets
 state:    doing
 row:      unassigned
@@ -2053,16 +2062,6 @@ thin:     no ## verify
 summary:  1. Floatstone keelwork. Pearl-white, spun-sugar floatstone braces threaded through a gravship
 prose:    infrastructure/state/items/FORGE_GPT_ENRICHMENT_1.md
 
-## CONTAGION_GROWN_LIMBS_BUILD_1 Build the grown limbs the owner keeps on design/Jawa/worldbuilding/biomes/contagion_grown_limbs_2026-09-30.md (Pillar Arm + Lash first; Monstrous sample grade from Coalescence drops; removal-spawns-Unfinished comp)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CONTAGION_GROWN_LIMBS_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CONTAGION_GROWN_LIMBS_BUILD_1.md
-
 ## LEANINGSCRUB_GPT_ENRICHMENT_1 Leaning Scrub enrichment (GPT consult 2026-09-30, owner-picked by card): venomvine as distinct rooms (five forms + more to pitch), runway bloom, named sweetline trees
 state:    proposed
 row:      unassigned
@@ -2082,26 +2081,6 @@ kind:     task
 thin:     no ## verify
 summary:  1. Ship becomes a refuge (Shipfall Commons). After landing, the shade grid sees the gravship's
 prose:    infrastructure/state/items/LONGSHADE_GPT_ENRICHMENT_1.md
-
-## CHILL_CRYOPONICS_GROWER_1 Fully enclosed cryoponics grower for the Chill's six propane-bed plants (owner ruling 2026-09-30)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  - A buildable, fully enclosed grower (hydroponics-style BuildingPlantGrower) that can grow the six
-prose:    infrastructure/state/items/CHILL_CRYOPONICS_GROWER_1.md
-
-## CHILL_FLOOR_GROWING_BED_1 Normal growing bed placeable only on the Chill floor, for the six bed plants (owner ruling 2026-09-30)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  CHILLFLOORGROWINGBED1 — a normal growing bed placeable only on the Chill floor
-prose:    infrastructure/state/items/CHILL_FLOOR_GROWING_BED_1.md
 
 ## STILLSAND_BEDAZZLE_CONTENT_1 Stillsand presentation wave: wire 6 finished render sets, build the 9 ruled fill-out defs, wire this commission's creature art (vozzik/vekka/drazzik/nizzek/guzzka/aurrok/biosilica), vaalok/qorrax/eemmok rows, catches to RM_
 state:    proposed
@@ -2322,6 +2301,26 @@ kind:     task
 thin:     no ## verify
 summary:  - RMChotrix: RM tier, Warscar only, bodySize ~0.9, one or two per map. A lean, low scavenger that
 prose:    infrastructure/state/items/WARSCAR_CHOTRIX_BUILD_1.md
+
+## CONTAGION_GROWN_LIMBS_REST_1 Build Eyeburst, Caudal Spring, Bellows (sheet contagion_grown_limbs_2026-09-30.md); needs owner rulings and two abilities
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CONTAGION_GROWN_LIMBS_REST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CONTAGION_GROWN_LIMBS_REST_1.md
+
+## CONTAGION_GROWN_LIMBS_ART_1 Art for Pillar Arm and Lash (replace Anomaly placeholder textures) plus item icons; check _artsrc and artpipe done first
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CONTAGION_GROWN_LIMBS_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CONTAGION_GROWN_LIMBS_ART_1.md
 
 ## REPO_RENAME_SYMLINK_RETIRE_1 Retire the Rimworld -> RimMandrake symlink: repoint every old-path reference, then remove the link
 state:    proposed
