@@ -41,7 +41,7 @@ ground**; the tile column sums to 21,872.
 | `RUT_Slime` | 96 | `the_slime.md` | no | FROZEN 2026-09-25 (`GELATINOUSSLIME_RM_MOD_BUILD_1`) at `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml` — carries the world unchanged until the terminal paint. The survivor `RM_GelatinousSlime` (`src/RimMandrake/GelatinousSlime/Defs/BiomeDefs/GelatinousSlime.xml`) does NOT inherit this twin's content — it ships its own separate, richer, donor-free flora/fauna/kit (§10 ruled no donor merge, twice over) |
 | `RUT_Miasma` | 93 | `the_miasma.md` | no | FROZEN 2026-09-25 (`MIASMA_RM_MOD_BUILD_1`) at `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Miasma.xml` — carries the world unchanged until the terminal paint. Content (11 inline `wildAnimals` + 4 `wildPlants` rows, plus its six-mechanic kit) now lives in `mandrake.rm.miasma` (`src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml`); the 17 genuine Star Wars `wildAnimals` rows ride `WildAnimals_Miasma.xml` as a Utinni patch instead |
 | `RUT_Scarlands` | 90 | `the_scarlands.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Scarlands.xml` |
-| `RM_PropaneLake` | 57 | `the_propane_lakes.md` (the lake proper; `RUT_Umbra` is the cap it sits under) | no | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_PropaneLake.xml` — 3 `wildAnimals` + 6 `wildPlants` rows since `BLUE_DESERT_LIFE_AUTHORING_1` (done 2026-09-21; re-read 2026-09-23) |
+| `RM_TheChill` | 57 | `the_propane_lakes.md` (the lake proper; `RUT_Umbra` is the cap it sits under) | no | own def file: `src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheChill.xml` — 3 `wildAnimals` + 6 `wildPlants` rows since `BLUE_DESERT_LIFE_AUTHORING_1` (done 2026-09-21; re-read 2026-09-23) |
 | `RUT_TheForge` | 44 | `the_forge.md` — one sheet, one massif | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_TheForge.xml` |
 | `RUT_FeverWood` | 43 | `the_fever_wood.md` | no | own def file: `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_FeverWood.xml` |
 | `RUT_Sump` | 41 | `the_sump.md` | no | FROZEN 2026-09-25 (`THESUMP_RM_MOD_BUILD_1`) at `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Sump.xml` — carries the world unchanged until the terminal paint. Content (4 `wildAnimals` + 1 `wildPlants` row, plus its S1-S6 kit) now lives in `mandrake.rm.thesump` (`src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml`); `RSW_Hssiss` rides `WildAnimals_Sump.xml` as a Utinni patch instead |
@@ -58,7 +58,7 @@ declare `wildAnimals` directly in their own
 `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/<def>.xml`; no patch file
 wholesale-replaces any of them. `ZBiome_Grasslands` is the sole donor def and
 has no local override. Two of the 26 declare an EMPTY `<wildAnimals />` —
-`RUT_BlueDesert` (1,029 tiles) and `RM_PropaneLake` (57) — so 1,086 painted
+`RUT_BlueDesert` (1,029 tiles) and `RM_TheChill` (57) — so 1,086 painted
 tiles currently have no cast.
 
 🔑 **How each row's def was established.** The row's SHEET was looked up in
@@ -122,7 +122,7 @@ RUT_Slime, RUT_Sump, RUT_TheForge, RM_TheRot, RUT_Umbra, RUT_Wasteland,
 RUT_Webwork, RUT_WeepingStones, ZBiome_Grasslands`. The other **7** painted
 defs are in the module's own `PLANTLESS` set on purpose — `RUT_NightsideIce,
 RUT_BlueDesert, RUT_RustCathedral, RM_TwilightSea, RM_GreySea, RM_TheScald,
-RM_PropaneLake`. 20 + 7 = 27: **there is no flora gap.** ⚠️ FOUNDRY was
+RM_TheChill`. 20 + 7 = 27: **there is no flora gap.** ⚠️ FOUNDRY was
 mid-edit on this file when it was measured, so re-measure before acting on the
 weights; the key SET is what matters here. (`PLANTLESS` also now carries
 `RM_NightsideIce` — `NIGHTSIDEICE_RM_MOD_BUILD_1`'s new standalone mod's own
