@@ -35,6 +35,13 @@ namespace RimMandrake.Cauldron
         public static bool vexxissAttacksIgniter = true;
         public static bool vexxissPoisonsWater = true;
 
+        // CAULDRON_GPT_ENRICHMENT_1: assay grade inspect line (part 4), the
+        // poisoned-water warning letter (part 2), nettles colonizing poisoned
+        // shorelines (part 5).
+        public static bool assayGradeEnabled = true;
+        public static bool vexxissWaterLetter = true;
+        public static bool condensateGardensEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -46,6 +53,9 @@ namespace RimMandrake.Cauldron
             Scribe_Values.Look(ref vexxissFireWardenEnabled, "vexxissFireWardenEnabled", true, true);
             Scribe_Values.Look(ref vexxissAttacksIgniter, "vexxissAttacksIgniter", true, true);
             Scribe_Values.Look(ref vexxissPoisonsWater, "vexxissPoisonsWater", true, true);
+            Scribe_Values.Look(ref assayGradeEnabled, "assayGradeEnabled", true, true);
+            Scribe_Values.Look(ref vexxissWaterLetter, "vexxissWaterLetter", true, true);
+            Scribe_Values.Look(ref condensateGardensEnabled, "condensateGardensEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -54,7 +64,7 @@ namespace RimMandrake.Cauldron
             list.Begin(inRect);
 
             list.Label("Biome rarity: " + RarityLabel());
-            list.Label("At 0 the Poison Forest never generates on a new planet. "
+            list.Label("At 0 the Cauldron never generates on a new planet. "
                        + "The default places a scattering of cold, permanently dim, "
                        + "toxin-laced forest patches. Affects planets generated "
                        + "afterwards, never one that already exists.");
@@ -69,6 +79,10 @@ namespace RimMandrake.Cauldron
             {
                 list.Label("Metal yield: " + metalYieldFactor.ToString("0.0") + "x (default 1.0x)");
                 metalYieldFactor = list.Slider(metalYieldFactor, 0.1f, 3f);
+                list.CheckboxLabeled("  ...and show an assay grade",
+                    ref assayGradeEnabled,
+                    "The inspect pane of a thornwood or martyr tree reads its grade (unripe, trace, fair, "
+                    + "rich, lode) and roughly how much metal it would give if cut now.");
             }
 
             list.GapLine();
@@ -98,6 +112,20 @@ namespace RimMandrake.Cauldron
                 ref vexxissPoisonsWater,
                 "Water cells a vexxiss stands in, and the cells touching it, turn to toxic water. "
                 + "Off: water is left alone.");
+            if (vexxissPoisonsWater)
+            {
+                list.CheckboxLabeled("  ...and warn me when it does",
+                    ref vexxissWaterLetter,
+                    "A letter when a vexxiss starts turning water toxic on a map where you have colonists. "
+                    + "At most one per animal per day.");
+            }
+
+            list.GapLine();
+            list.CheckboxLabeled("Nettles colonize poisoned shorelines",
+                ref condensateGardensEnabled,
+                "Raven nettles grow up along the banks of toxic water: some when the map is made, more "
+                + "over the following weeks wherever a shore turns toxic. Off: nettles grow only as ordinary "
+                + "wild plants. Affects maps made afterwards for the first part; the spread applies at once.");
 
             list.End();
         }
@@ -123,7 +151,7 @@ namespace RimMandrake.Cauldron
 
         public override string SettingsCategory()
         {
-            return "Poison Forest";
+            return "The Cauldron";
         }
 
         public override void DoSettingsWindowContents(Rect inRect)
