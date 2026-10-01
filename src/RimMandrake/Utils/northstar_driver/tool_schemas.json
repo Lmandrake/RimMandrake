@@ -1,0 +1,4292 @@
+{
+ "_source": "census file Transient/bench_tools_dump.json (a live --list-tools capture), snapshot written 2026-10-01; +44 tools from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
+ "tools": {
+  "deepfire/add_coat": {
+   "parameters": [
+    "thing"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "deepfire/comp_coats": {
+   "parameters": [
+    "thing"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "deepfire/debug_workgiver": {
+   "parameters": [
+    "thing"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "deepfire/designate": {
+   "parameters": [
+    "thing"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "deepfire/force_apply_job": {
+   "parameters": [
+    "pawn",
+    "thing"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "deepfire/glow_at": {
+   "parameters": [
+    "x",
+    "z"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "deepfire/paint_building": {
+   "parameters": [
+    "colorDef",
+    "thing"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "deepfire/remove_coats": {
+   "parameters": [
+    "thing"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/alerts_list": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/animal_bond": {
+   "parameters": [
+    "animal",
+    "chance",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/animal_resource_force": {
+   "parameters": [
+    "doer",
+    "eggAction",
+    "gatherNow",
+    "mode",
+    "pawn",
+    "targetFullness",
+    "withMale"
+   ],
+   "required": []
+  },
+  "jawa/animal_stats": {
+   "parameters": [
+    "animalsOnly",
+    "defs",
+    "extraStats",
+    "includeTools",
+    "limit",
+    "offset"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/animal_train": {
+   "parameters": [
+    "complete",
+    "pawn",
+    "trainable",
+    "trainer"
+   ],
+   "required": []
+  },
+  "jawa/animal_train_wanted": {
+   "parameters": [
+    "pawn",
+    "trainable",
+    "wanted"
+   ],
+   "required": []
+  },
+  "jawa/animal_trainable_visibility": {
+   "parameters": [
+    "pawn",
+    "trainables"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/anomaly_codex_discover": {
+   "parameters": [
+    "discoveredDefName",
+    "discoveredThing",
+    "entry"
+   ],
+   "required": []
+  },
+  "jawa/anomaly_containment": {
+   "parameters": [
+    "anomalyKnowledgeAmount",
+    "containmentMode",
+    "forceStudy",
+    "studier",
+    "studyAmount",
+    "studyEnabled",
+    "thing"
+   ],
+   "required": []
+  },
+  "jawa/anomaly_knowledge": {
+   "parameters": [
+    "amount",
+    "category"
+   ],
+   "required": []
+  },
+  "jawa/anomaly_monolith_get": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/anomaly_monolith_set": {
+   "parameters": [
+    "levelDef",
+    "silent"
+   ],
+   "required": []
+  },
+  "jawa/artifact_transfer": {
+   "parameters": [
+    "geneSource",
+    "iconDef",
+    "ideo",
+    "inheritable",
+    "kind",
+    "mode",
+    "path",
+    "pawn",
+    "xenotypeName"
+   ],
+   "required": []
+  },
+  "jawa/autosave_now": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/av_effect": {
+   "parameters": [
+    "at",
+    "def",
+    "durationTicks",
+    "ignorePrefsVolume",
+    "magnitude",
+    "mode"
+   ],
+   "required": []
+  },
+  "jawa/battery_set": {
+   "parameters": [
+    "mode",
+    "thing",
+    "value"
+   ],
+   "required": []
+  },
+  "jawa/bill_add": {
+   "parameters": [
+    "giverId",
+    "qualityMax",
+    "qualityMin",
+    "recipe",
+    "repeatCount",
+    "repeatMode",
+    "storeMode",
+    "storeTargetId",
+    "suspended",
+    "targetCount"
+   ],
+   "required": []
+  },
+  "jawa/bill_add_legacy": {
+   "parameters": [
+    "recipeDefName",
+    "repeatCount",
+    "repeatMode",
+    "suspended",
+    "targetCount",
+    "thingId"
+   ],
+   "required": [
+    "recipeDefName",
+    "thingId"
+   ]
+  },
+  "jawa/bill_list": {
+   "parameters": [
+    "thingId"
+   ],
+   "required": [
+    "thingId"
+   ]
+  },
+  "jawa/bill_remove": {
+   "parameters": [
+    "billIndex",
+    "confirmRemove",
+    "thingId"
+   ],
+   "required": [
+    "billIndex",
+    "thingId"
+   ]
+  },
+  "jawa/biome_art_audit": {
+   "parameters": [
+    "onlyInUse"
+   ],
+   "required": []
+  },
+  "jawa/biome_probe": {
+   "parameters": [
+    "animals",
+    "biomes",
+    "find",
+    "limit",
+    "plants",
+    "topN"
+   ],
+   "required": []
+  },
+  "jawa/blueprint_place": {
+   "parameters": [
+    "def",
+    "faction",
+    "ignoreValidity",
+    "rot",
+    "stuff",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "jawa/bridge_arg_report": {
+   "parameters": [
+    "action",
+    "limit"
+   ],
+   "required": []
+  },
+  "jawa/build_batch": {
+   "parameters": [
+    "faction",
+    "hitPoints",
+    "ops",
+    "quality",
+    "readBack",
+    "refuseIfDisplaces",
+    "stuff",
+    "wipeExisting"
+   ],
+   "required": []
+  },
+  "jawa/build_check": {
+   "parameters": [
+    "def",
+    "godMode",
+    "limit",
+    "rect",
+    "rot",
+    "stuff"
+   ],
+   "required": []
+  },
+  "jawa/canal_cell_report": {
+   "parameters": [
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ]
+  },
+  "jawa/canal_dig": {
+   "parameters": [
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ]
+  },
+  "jawa/caravan_create": {
+   "parameters": [
+    "destTile",
+    "dryRun",
+    "faction",
+    "layerId",
+    "pawns",
+    "startTile"
+   ],
+   "required": [
+    "pawns"
+   ]
+  },
+  "jawa/caravan_form_exit": {
+   "parameters": [
+    "destTile",
+    "directionTile",
+    "dryRun",
+    "exitTile",
+    "faction",
+    "pawns"
+   ],
+   "required": [
+    "pawns"
+   ]
+  },
+  "jawa/cathedral_attitude_set_stage": {
+   "parameters": [
+    "stage"
+   ],
+   "required": [
+    "stage"
+   ],
+   "source": "csharp"
+  },
+  "jawa/cell_temperature": {
+   "parameters": [
+    "cell",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/clear_area": {
+   "parameters": [
+    "dryRun",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/clear_ui": {
+   "parameters": [
+    "all",
+    "clearSelection",
+    "devWindows"
+   ],
+   "required": []
+  },
+  "jawa/clear_xenogenes": {
+   "parameters": [
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/colony_found": {
+   "parameters": [
+    "dryRun",
+    "faction",
+    "layerId",
+    "name",
+    "tile"
+   ],
+   "required": []
+  },
+  "jawa/configure_bill": {
+   "parameters": [
+    "billIndex",
+    "giverId",
+    "qualityMax",
+    "qualityMin",
+    "recipeDef",
+    "repeatCount",
+    "repeatMode",
+    "storeMode",
+    "storeTargetId",
+    "suspended",
+    "targetCount"
+   ],
+   "required": []
+  },
+  "jawa/connect_cells": {
+   "parameters": [
+    "dryRun",
+    "faction",
+    "from",
+    "mode",
+    "stuff",
+    "thing",
+    "to"
+   ],
+   "required": []
+  },
+  "jawa/container_fill": {
+   "parameters": [
+    "clear",
+    "items",
+    "thing"
+   ],
+   "required": []
+  },
+  "jawa/damage": {
+   "parameters": [
+    "allowColonists",
+    "amount",
+    "armorPenetration",
+    "bodyPart",
+    "damageDef",
+    "thingId",
+    "x",
+    "z"
+   ],
+   "required": [
+    "damageDef"
+   ]
+  },
+  "jawa/debug_action_yielders": {
+   "parameters": [
+    "limit",
+    "maxMillis",
+    "query",
+    "resumeFromType"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/debug_actions": {
+   "parameters": [
+    "allowedNowOnly",
+    "limit",
+    "maxMillis",
+    "query",
+    "resumeFromType"
+   ],
+   "required": []
+  },
+  "jawa/debug_settings": {
+   "parameters": [
+    "action",
+    "field",
+    "value"
+   ],
+   "required": []
+  },
+  "jawa/depth_grid_set": {
+   "parameters": [
+    "depth",
+    "grid",
+    "rect",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "jawa/designate_batch": {
+   "parameters": [
+    "action",
+    "designation",
+    "limit",
+    "onThings",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/destroy_batch": {
+   "parameters": [
+    "categories",
+    "category",
+    "rects"
+   ],
+   "required": [
+    "rects"
+   ]
+  },
+  "jawa/destroy_bulk": {
+   "parameters": [
+    "dryRun",
+    "filter"
+   ],
+   "required": []
+  },
+  "jawa/difficulty_tune": {
+   "parameters": [
+    "adaptationEffectFactor",
+    "allowBigThreats",
+    "colonistMoodOffset",
+    "threatScale",
+    "tradePriceFactorLoss"
+   ],
+   "required": []
+  },
+  "jawa/dlc_status": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/do_bill_now": {
+   "parameters": [
+    "billGiverId",
+    "jobTag",
+    "pawnId",
+    "queue",
+    "timeoutSeconds",
+    "waitTicks",
+    "workGiverDef"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/drain_log": {
+   "parameters": [
+    "contains",
+    "errorsOnly",
+    "limit"
+   ],
+   "required": []
+  },
+  "jawa/droid_format_tier": {
+   "parameters": [
+    "action",
+    "pawn",
+    "tier"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/explosion_at": {
+   "parameters": [
+    "applyDamageToNeighbors",
+    "armorPenetration",
+    "at",
+    "chanceToStartFire",
+    "damAmount",
+    "damType",
+    "radius"
+   ],
+   "required": []
+  },
+  "jawa/export_things": {
+   "parameters": [
+    "filterCap",
+    "includeItems",
+    "includePawns",
+    "limit",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/faction_create": {
+   "parameters": [
+    "allowDuplicate",
+    "allowHidden",
+    "defName",
+    "dryRun"
+   ],
+   "required": []
+  },
+  "jawa/faction_flags_set": {
+   "parameters": [
+    "defeated",
+    "dryRun",
+    "faction",
+    "hidden",
+    "temporary"
+   ],
+   "required": [
+    "faction"
+   ]
+  },
+  "jawa/faction_goodwill_check": {
+   "parameters": [
+    "faction",
+    "goodwillChange",
+    "other"
+   ],
+   "required": [
+    "faction",
+    "other"
+   ]
+  },
+  "jawa/faction_goodwill_situations": {
+   "parameters": [
+    "faction"
+   ],
+   "required": []
+  },
+  "jawa/faction_ideo_get": {
+   "parameters": [
+    "factionDefName"
+   ],
+   "required": [
+    "factionDefName"
+   ]
+  },
+  "jawa/faction_ideo_set": {
+   "parameters": [
+    "confirmReplace",
+    "factionDefName"
+   ],
+   "required": [
+    "factionDefName"
+   ]
+  },
+  "jawa/faction_leader_get": {
+   "parameters": [
+    "factions",
+    "includeHidden"
+   ],
+   "required": []
+  },
+  "jawa/faction_name_get": {
+   "parameters": [
+    "includeHidden",
+    "limit"
+   ],
+   "required": []
+  },
+  "jawa/faction_name_set": {
+   "parameters": [
+    "action",
+    "defNames",
+    "dryRun",
+    "names",
+    "onlyGenerated",
+    "protectPlayer"
+   ],
+   "required": []
+  },
+  "jawa/faction_relations_get": {
+   "parameters": [
+    "faction",
+    "includeDefeated",
+    "includeHidden",
+    "includeNeutral",
+    "other"
+   ],
+   "required": []
+  },
+  "jawa/faction_relations_set": {
+   "parameters": [
+    "both",
+    "clampGoodwillToKind",
+    "dryRun",
+    "faction",
+    "goodwill",
+    "kind",
+    "other",
+    "sendLetter"
+   ],
+   "required": [
+    "faction",
+    "other"
+   ]
+  },
+  "jawa/faction_territory_settings": {
+   "parameters": [
+    "impassableHillinessOffset",
+    "includeWaterTiles",
+    "persist",
+    "radiusSteps",
+    "regenerate",
+    "roadMovementDifficultyPercent",
+    "settlementUncontestedRange",
+    "terrainDifficultyImpactPercent",
+    "variationSteps"
+   ],
+   "required": []
+  },
+  "jawa/fire_incident": {
+   "parameters": [
+    "dryRun",
+    "faction",
+    "incidentDef",
+    "points"
+   ],
+   "required": [
+    "incidentDef"
+   ]
+  },
+  "jawa/fire_quest": {
+   "parameters": [
+    "accept",
+    "dryRun",
+    "points",
+    "questDef"
+   ],
+   "required": [
+    "questDef"
+   ]
+  },
+  "jawa/fire_raid": {
+   "parameters": [
+    "arrivalMode",
+    "dryRun",
+    "faction",
+    "friendly",
+    "points",
+    "spawnCenter",
+    "strategy"
+   ],
+   "required": []
+  },
+  "jawa/fix_floating_roofs": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/flowworks_body_report": {
+   "parameters": [
+    "classify",
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ],
+   "source": "csharp"
+  },
+  "jawa/flowworks_engine_state": {
+   "parameters": [],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/flowworks_excavation_drive": {
+   "parameters": [
+    "deepenLevels",
+    "setFill",
+    "x",
+    "z"
+   ],
+   "required": [
+    "deepenLevels",
+    "setFill",
+    "x",
+    "z"
+   ],
+   "source": "csharp"
+  },
+  "jawa/flowworks_excavation_report": {
+   "parameters": [
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ],
+   "source": "csharp"
+  },
+  "jawa/flowworks_set_active_fluid": {
+   "parameters": [
+    "allowAfterClassification",
+    "fluidDefName"
+   ],
+   "required": [
+    "fluidDefName"
+   ],
+   "source": "csharp"
+  },
+  "jawa/flowworks_spawn_flood": {
+   "parameters": [
+    "fluidDefName",
+    "volume",
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ],
+   "source": "csharp"
+  },
+  "jawa/forecast_incidents": {
+   "parameters": [
+    "currentMapOnly",
+    "numTestDays"
+   ],
+   "required": []
+  },
+  "jawa/frame_finish": {
+   "parameters": [
+    "thing",
+    "worker"
+   ],
+   "required": []
+  },
+  "jawa/game_condition": {
+   "parameters": [
+    "action",
+    "condition",
+    "durationTicks",
+    "permanent",
+    "worldWide"
+   ],
+   "required": []
+  },
+  "jawa/gene_random_set": {
+   "parameters": [
+    "dryRun",
+    "pawn",
+    "seed"
+   ],
+   "required": []
+  },
+  "jawa/gene_reimplant": {
+   "parameters": [
+    "caster",
+    "dryRun",
+    "force",
+    "recipient"
+   ],
+   "required": []
+  },
+  "jawa/gene_resource_poke": {
+   "parameters": [
+    "applyStatFactor",
+    "mode",
+    "offset",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/get_def": {
+   "parameters": [
+    "defName",
+    "defType"
+   ],
+   "required": [
+    "defName"
+   ]
+  },
+  "jawa/get_defs": {
+   "parameters": [
+    "deep",
+    "defs",
+    "fields",
+    "limit"
+   ],
+   "required": [
+    "defs"
+   ]
+  },
+  "jawa/get_gravship_substructure": {
+   "parameters": [
+    "engine",
+    "maxCells"
+   ],
+   "required": []
+  },
+  "jawa/get_roof_batch": {
+   "parameters": [
+    "rects"
+   ],
+   "required": [
+    "rects"
+   ]
+  },
+  "jawa/get_terrain_batch": {
+   "parameters": [
+    "layer",
+    "mapId",
+    "rects"
+   ],
+   "required": [
+    "rects"
+   ]
+  },
+  "jawa/get_terrain_layers": {
+   "parameters": [
+    "limit",
+    "onlyFoundation",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/glow_at": {
+   "parameters": [
+    "cells",
+    "mapId",
+    "rect"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/grant_ability": {
+   "parameters": [
+    "ability",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/grant_xp": {
+   "parameters": [
+    "direct",
+    "ignoreLearnRate",
+    "pawn",
+    "skill",
+    "xp"
+   ],
+   "required": []
+  },
+  "jawa/gravship_land": {
+   "parameters": [
+    "rot",
+    "skipCutscene",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "jawa/gravship_launch": {
+   "parameters": [
+    "dryRun",
+    "expectEngineId",
+    "quality",
+    "targetTile"
+   ],
+   "required": [
+    "targetTile"
+   ]
+  },
+  "jawa/gravship_launch_check": {
+   "parameters": [
+    "expectEngineId",
+    "targetTile"
+   ],
+   "required": [
+    "targetTile"
+   ]
+  },
+  "jawa/gravship_status": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/harmony_patches": {
+   "parameters": [
+    "methodName",
+    "typeName"
+   ],
+   "required": [
+    "typeName"
+   ]
+  },
+  "jawa/hot_reload_defs": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/ideo_create": {
+   "parameters": [
+    "description",
+    "disallowedMemes",
+    "dryRun",
+    "faction",
+    "forcedMemes",
+    "hidden",
+    "name"
+   ],
+   "required": [
+    "faction"
+   ]
+  },
+  "jawa/ideo_development": {
+   "parameters": [
+    "addPoints",
+    "dryRun",
+    "ideo",
+    "reform"
+   ],
+   "required": [
+    "ideo"
+   ]
+  },
+  "jawa/ideo_of": {
+   "parameters": [
+    "believers",
+    "ideo",
+    "limit",
+    "precepts"
+   ],
+   "required": []
+  },
+  "jawa/ideo_precept_edit": {
+   "parameters": [
+    "action",
+    "dryRun",
+    "ideo",
+    "precept"
+   ],
+   "required": [
+    "ideo"
+   ]
+  },
+  "jawa/ideo_ritual_obligation": {
+   "parameters": [
+    "dryRun",
+    "expires",
+    "ideo",
+    "ritual",
+    "sendLetter"
+   ],
+   "required": [
+    "ideo",
+    "ritual"
+   ]
+  },
+  "jawa/ideo_ritual_obligation_remove": {
+   "parameters": [
+    "action",
+    "ideo",
+    "obligationId",
+    "ritual"
+   ],
+   "required": []
+  },
+  "jawa/ideo_role_assign": {
+   "parameters": [
+    "action",
+    "addThoughts",
+    "dryRun",
+    "pawn",
+    "role"
+   ],
+   "required": [
+    "pawn",
+    "role"
+   ]
+  },
+  "jawa/ideo_set_primary": {
+   "parameters": [
+    "dryRun",
+    "faction",
+    "ideo"
+   ],
+   "required": [
+    "faction",
+    "ideo"
+   ]
+  },
+  "jawa/ideo_style": {
+   "parameters": [
+    "action",
+    "category",
+    "clearPrimaryFactionColor",
+    "color",
+    "dryRun",
+    "icon",
+    "ideo",
+    "priority"
+   ],
+   "required": [
+    "ideo"
+   ]
+  },
+  "jawa/incident_parms_preview": {
+   "parameters": [
+    "category",
+    "incidentDef",
+    "listCategories"
+   ],
+   "required": []
+  },
+  "jawa/incident_queue_clear": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/incident_schedule": {
+   "parameters": [
+    "absoluteFireTick",
+    "delayTicks",
+    "faction",
+    "incidentDef",
+    "points",
+    "retryDurationTicks"
+   ],
+   "required": [
+    "incidentDef"
+   ]
+  },
+  "jawa/inhabited_settlement_create": {
+   "parameters": [
+    "manifest",
+    "tile"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/inspect_string": {
+   "parameters": [
+    "defName",
+    "limit",
+    "rect",
+    "thingIds"
+   ],
+   "required": []
+  },
+  "jawa/instant_recruit": {
+   "parameters": [
+    "audiovisual",
+    "pawn",
+    "recruiter"
+   ],
+   "required": []
+  },
+  "jawa/inventory_transfer": {
+   "parameters": [
+    "count",
+    "destroy",
+    "mode",
+    "pawn",
+    "thing",
+    "thingDef",
+    "unforbid"
+   ],
+   "required": []
+  },
+  "jawa/kcsg_place": {
+   "parameters": [
+    "defName",
+    "layoutType",
+    "point",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/letter_list": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/letter_send_delayed": {
+   "parameters": [
+    "delayTicks",
+    "label",
+    "playSound",
+    "text",
+    "textLetterDef"
+   ],
+   "required": []
+  },
+  "jawa/list_factions": {
+   "parameters": [
+    "defName",
+    "includeHidden",
+    "limit"
+   ],
+   "required": []
+  },
+  "jawa/list_pawns": {
+   "parameters": [
+    "faction",
+    "includeCorpses",
+    "includeHealth",
+    "limit",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/list_things": {
+   "parameters": [
+    "defName",
+    "group",
+    "includePawns",
+    "limit",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/load_stall_probe": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/lock_apparel": {
+   "parameters": [
+    "all",
+    "apparel",
+    "locked",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/log_autoopen_suppress": {
+   "parameters": [
+    "action"
+   ],
+   "required": []
+  },
+  "jawa/lord_assault_spawn": {
+   "parameters": [
+    "breachers",
+    "canKidnap",
+    "canPickUpOpportunisticWeapons",
+    "canSteal",
+    "canTimeoutOrFlee",
+    "faction",
+    "pawns",
+    "sappers",
+    "useAvoidGridSmart"
+   ],
+   "required": []
+  },
+  "jawa/lord_defend_spawn": {
+   "parameters": [
+    "addFleeToil",
+    "defendRadius",
+    "faction",
+    "isCaravanSendable",
+    "pawns",
+    "point",
+    "wanderRadius"
+   ],
+   "required": []
+  },
+  "jawa/lord_destroy": {
+   "parameters": [
+    "loadID",
+    "lordIndex"
+   ],
+   "required": []
+  },
+  "jawa/lord_pawn_move": {
+   "parameters": [
+    "action",
+    "lordIndex",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/lord_poke": {
+   "parameters": [
+    "action",
+    "lordIndex",
+    "memo",
+    "signalTag"
+   ],
+   "required": []
+  },
+  "jawa/lord_set_job": {
+   "parameters": [
+    "args",
+    "loadID",
+    "lordIndex",
+    "lordJob"
+   ],
+   "required": []
+  },
+  "jawa/lord_set_point": {
+   "parameters": [
+    "loadID",
+    "lordIndex",
+    "point"
+   ],
+   "required": []
+  },
+  "jawa/lord_travel_to": {
+   "parameters": [
+    "dest",
+    "loadID",
+    "lordIndex"
+   ],
+   "required": []
+  },
+  "jawa/lore_stage_get": {
+   "parameters": [
+    "ladderId"
+   ],
+   "required": [
+    "ladderId"
+   ],
+   "source": "csharp"
+  },
+  "jawa/lore_stage_set": {
+   "parameters": [
+    "ladderId",
+    "stage"
+   ],
+   "required": [
+    "ladderId",
+    "stage"
+   ],
+   "source": "csharp"
+  },
+  "jawa/make_empty_room": {
+   "parameters": [
+    "doorDef",
+    "floorDef",
+    "rect",
+    "roofDef",
+    "stuffDef",
+    "wallDef"
+   ],
+   "required": []
+  },
+  "jawa/manhunter_preview": {
+   "parameters": [
+    "points"
+   ],
+   "required": []
+  },
+  "jawa/map_commit": {
+   "parameters": [
+    "full",
+    "pathing",
+    "power",
+    "redraw",
+    "regions"
+   ],
+   "required": []
+  },
+  "jawa/map_drop": {
+   "parameters": [
+    "mapIndex",
+    "notifyPlayer"
+   ],
+   "required": []
+  },
+  "jawa/map_explosion": {
+   "parameters": [
+    "center",
+    "chanceToStartFire",
+    "damType",
+    "damage",
+    "damageFalloff",
+    "gas",
+    "listTypes",
+    "radius",
+    "screenShake",
+    "spawnChance",
+    "spawnThing",
+    "spillToNeighbors"
+   ],
+   "required": []
+  },
+  "jawa/map_fire": {
+   "parameters": [
+    "action",
+    "fireSize",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/map_info": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/map_skyfaller": {
+   "parameters": [
+    "cell",
+    "count",
+    "innerThing",
+    "skyfaller"
+   ],
+   "required": []
+  },
+  "jawa/map_zones": {
+   "parameters": [
+    "action",
+    "area",
+    "plant",
+    "rect",
+    "value",
+    "zone",
+    "zoneType"
+   ],
+   "required": []
+  },
+  "jawa/mod_inventory": {
+   "parameters": [
+    "filter"
+   ],
+   "required": []
+  },
+  "jawa/mod_settings_field": {
+   "parameters": [
+    "action",
+    "field",
+    "typeName",
+    "value"
+   ],
+   "required": [
+    "typeName"
+   ],
+   "source": "csharp"
+  },
+  "jawa/new_allowed_area": {
+   "parameters": [
+    "label"
+   ],
+   "required": []
+  },
+  "jawa/oracle_configure": {
+   "parameters": [
+    "apiKey",
+    "baseUrl",
+    "claudeCliPath",
+    "enabled",
+    "godsBudgetPerDay",
+    "model",
+    "timeoutSeconds"
+   ],
+   "required": []
+  },
+  "jawa/oracle_selftest": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/oracle_test_ohm_letter": {
+   "parameters": [
+    "context",
+    "fallback"
+   ],
+   "required": []
+  },
+  "jawa/order_pawn": {
+   "parameters": [
+    "draft",
+    "pathEndMode",
+    "pawnId",
+    "targetId",
+    "timeoutSeconds",
+    "undraftAfter",
+    "unpause",
+    "waitTicks",
+    "x",
+    "z"
+   ],
+   "required": [
+    "pawnId"
+   ]
+  },
+  "jawa/ordered_job": {
+   "parameters": [
+    "count",
+    "jobDef",
+    "jobTag",
+    "pawnId",
+    "plantDef",
+    "queue",
+    "targetAId",
+    "targetAX",
+    "targetAZ",
+    "targetBId",
+    "targetBX",
+    "targetBZ",
+    "timeoutSeconds",
+    "waitTicks"
+   ],
+   "required": []
+  },
+  "jawa/paint_area": {
+   "parameters": [
+    "area",
+    "clearAreaFirst",
+    "createIfMissing",
+    "ops",
+    "value"
+   ],
+   "required": []
+  },
+  "jawa/paint_building": {
+   "parameters": [
+    "cells",
+    "colorDef",
+    "defName",
+    "rect",
+    "removePaint"
+   ],
+   "required": []
+  },
+  "jawa/pawn_atlas": {
+   "parameters": [
+    "folder",
+    "mode",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/pawn_break_thresholds": {
+   "parameters": [
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/pawn_dirty_situational": {
+   "parameters": [
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/pawn_flight": {
+   "parameters": [
+    "action",
+    "clearCooldown",
+    "kind",
+    "maintainTicks",
+    "maxPawns",
+    "pawn",
+    "timeoutSeconds",
+    "unpause"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/pawn_force_incapacitate": {
+   "parameters": [
+    "action",
+    "allowBleedingWounds",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/pawn_force_mental_break": {
+   "parameters": [
+    "breakDef",
+    "intensity",
+    "pawn",
+    "reason"
+   ],
+   "required": []
+  },
+  "jawa/pawn_gear": {
+   "parameters": [
+    "action",
+    "clearWhat",
+    "count",
+    "def",
+    "pawn",
+    "quality",
+    "stuff"
+   ],
+   "required": []
+  },
+  "jawa/pawn_genes": {
+   "parameters": [
+    "action",
+    "gene",
+    "pawn",
+    "xenogene",
+    "xenotype"
+   ],
+   "required": []
+  },
+  "jawa/pawn_get": {
+   "parameters": [
+    "limit",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/pawn_health": {
+   "parameters": [
+    "action",
+    "bodyPart",
+    "confirmDestructive",
+    "hediff",
+    "pawn",
+    "severity"
+   ],
+   "required": []
+  },
+  "jawa/pawn_ideo_reassign": {
+   "parameters": [
+    "confirmReplace",
+    "factionDefName",
+    "limit"
+   ],
+   "required": [
+    "factionDefName"
+   ]
+  },
+  "jawa/pawn_memory": {
+   "parameters": [
+    "action",
+    "otherPawn",
+    "pawn",
+    "precept",
+    "thought"
+   ],
+   "required": []
+  },
+  "jawa/pawn_mental": {
+   "parameters": [
+    "action",
+    "forceWake",
+    "forced",
+    "limit",
+    "otherPawn",
+    "pawn",
+    "state"
+   ],
+   "required": []
+  },
+  "jawa/pawn_need": {
+   "parameters": [
+    "action",
+    "level",
+    "need",
+    "otherPawn",
+    "pawn",
+    "thought"
+   ],
+   "required": []
+  },
+  "jawa/pawn_portrait": {
+   "parameters": [
+    "forceDirty",
+    "height",
+    "path",
+    "pawn",
+    "renderClothes",
+    "renderHeadgear",
+    "rotation",
+    "width"
+   ],
+   "required": []
+  },
+  "jawa/pawn_pregnancy": {
+   "parameters": [
+    "action",
+    "father",
+    "pawn",
+    "progress",
+    "quiet"
+   ],
+   "required": []
+  },
+  "jawa/pawn_psychic": {
+   "parameters": [
+    "ability",
+    "action",
+    "clearEntropy",
+    "level",
+    "pawn",
+    "psycastsOnly",
+    "psyfocus"
+   ],
+   "required": []
+  },
+  "jawa/pawn_refresh_needs": {
+   "parameters": [
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/pawn_relations": {
+   "parameters": [
+    "action",
+    "force",
+    "otherPawn",
+    "pawn",
+    "relation"
+   ],
+   "required": []
+  },
+  "jawa/pawn_restore_part": {
+   "parameters": [
+    "bodyPart",
+    "checkStateChange",
+    "confirmDestructive",
+    "keepHediff",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/pawn_resurrect": {
+   "parameters": [
+    "dontSpawn",
+    "gettingScarsChance",
+    "invisibleStun",
+    "noLord",
+    "pawn",
+    "removeDiedThoughts",
+    "restoreMissingParts"
+   ],
+   "required": []
+  },
+  "jawa/pawn_romance": {
+   "parameters": [
+    "action",
+    "otherPawn",
+    "pawn",
+    "thought"
+   ],
+   "required": []
+  },
+  "jawa/pawn_set_guest_status": {
+   "parameters": [
+    "guestStatus",
+    "hostFaction",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/pawn_severity_adjust": {
+   "parameters": [
+    "dryRun",
+    "hediff",
+    "offset",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/pawn_stats": {
+   "parameters": [
+    "includeHidden",
+    "limit",
+    "pawn",
+    "stats"
+   ],
+   "required": []
+  },
+  "jawa/pawn_thoughts": {
+   "parameters": [
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/pawn_traits": {
+   "parameters": [
+    "action",
+    "degree",
+    "force",
+    "pawn",
+    "trait"
+   ],
+   "required": []
+  },
+  "jawa/pawn_use_ability": {
+   "parameters": [
+    "ability",
+    "action",
+    "draft",
+    "force",
+    "mode",
+    "pawn",
+    "resetCooldown",
+    "targetId",
+    "timeoutSeconds",
+    "unpause",
+    "waitTicks",
+    "x",
+    "z"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/pawn_use_verb": {
+   "parameters": [
+    "action",
+    "force",
+    "pawn",
+    "targetId",
+    "timeoutSeconds",
+    "unpause",
+    "verb",
+    "waitTicks",
+    "x",
+    "z"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/pawnkind_audit": {
+   "parameters": [
+    "filter",
+    "includeHealthy",
+    "limit"
+   ],
+   "required": []
+  },
+  "jawa/pawns_patrol_route": {
+   "parameters": [
+    "faction",
+    "pawns",
+    "waypoints"
+   ],
+   "required": []
+  },
+  "jawa/pipe_net_info": {
+   "parameters": [
+    "maxGenericFields"
+   ],
+   "required": []
+  },
+  "jawa/power_net": {
+   "parameters": [
+    "forcePowerOn",
+    "thing"
+   ],
+   "required": []
+  },
+  "jawa/prefab_capture": {
+   "parameters": [
+    "copyAllThings",
+    "copyTerrain",
+    "name",
+    "overwrite",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/prefab_list": {
+   "parameters": [
+    "limit"
+   ],
+   "required": []
+  },
+  "jawa/prefab_place": {
+   "parameters": [
+    "blueprint",
+    "checkOnly",
+    "faction",
+    "name",
+    "pos",
+    "readBack",
+    "rot"
+   ],
+   "required": []
+  },
+  "jawa/prefs": {
+   "parameters": [
+    "autosaveIntervalDays",
+    "autosavesCount",
+    "devMode",
+    "logVerbose",
+    "pauseOnLoad"
+   ],
+   "required": []
+  },
+  "jawa/prioritized_work": {
+   "parameters": [
+    "cellX",
+    "cellZ",
+    "count",
+    "jobDef",
+    "pawnId",
+    "targetAId",
+    "targetAX",
+    "targetAZ",
+    "targetBId",
+    "targetBX",
+    "targetBZ",
+    "timeoutSeconds",
+    "waitTicks",
+    "workGiverDef"
+   ],
+   "required": []
+  },
+  "jawa/quest_lifecycle": {
+   "parameters": [
+    "accepterPawn",
+    "action",
+    "outcome",
+    "playSound",
+    "questId",
+    "sendLetter"
+   ],
+   "required": []
+  },
+  "jawa/raid_preview": {
+   "parameters": [
+    "points"
+   ],
+   "required": []
+  },
+  "jawa/raid_shape_fire": {
+   "parameters": [
+    "biocodeApparelChance",
+    "biocodeWeaponsChance",
+    "dryRun",
+    "faction",
+    "pawnGroupMakerSeed",
+    "points",
+    "raidForceOneDowned",
+    "raidNeverFleeIndividual"
+   ],
+   "required": []
+  },
+  "jawa/rain_suppress": {
+   "parameters": [
+    "ticks"
+   ],
+   "required": []
+  },
+  "jawa/read_opinion": {
+   "parameters": [
+    "other",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/read_psychic_sensitivity": {
+   "parameters": [
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/rebuild_dirty_regions": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/refresh_rect": {
+   "parameters": [
+    "rect"
+   ],
+   "required": [
+    "rect"
+   ]
+  },
+  "jawa/research_availability": {
+   "parameters": [
+    "project"
+   ],
+   "required": [
+    "project"
+   ]
+  },
+  "jawa/research_bulk": {
+   "parameters": [
+    "mode"
+   ],
+   "required": [
+    "mode"
+   ]
+  },
+  "jawa/research_finish_project": {
+   "parameters": [
+    "doCompletionDialog",
+    "doCompletionLetter",
+    "project",
+    "researcher"
+   ],
+   "required": [
+    "project"
+   ]
+  },
+  "jawa/research_grant_techprints": {
+   "parameters": [
+    "amount",
+    "project"
+   ],
+   "required": [
+    "amount",
+    "project"
+   ]
+  },
+  "jawa/research_progress": {
+   "parameters": [
+    "action",
+    "amount",
+    "project",
+    "source"
+   ],
+   "required": [
+    "project"
+   ]
+  },
+  "jawa/research_reapply_unlocks": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/research_reinvented_reset": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/rimdefdump_run": {
+   "parameters": [
+    "mode"
+   ],
+   "required": []
+  },
+  "jawa/ritual_start": {
+   "parameters": [
+    "organizer",
+    "ritual",
+    "targetThingId"
+   ],
+   "required": []
+  },
+  "jawa/roof_collapse": {
+   "parameters": [
+    "rect",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "jawa/room_get": {
+   "parameters": [
+    "includeOutdoors",
+    "limit",
+    "rect",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "jawa/room_heat": {
+   "parameters": [
+    "mode",
+    "value",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "jawa/royal_title": {
+   "parameters": [
+    "action",
+    "faction",
+    "favor",
+    "grantRewards",
+    "pawn",
+    "rewardsOnlyForNewestTitle",
+    "sendLetter",
+    "title"
+   ],
+   "required": []
+  },
+  "jawa/run_basegen_symbol": {
+   "parameters": [
+    "rect",
+    "symbol"
+   ],
+   "required": []
+  },
+  "jawa/run_genstep": {
+   "parameters": [
+    "genStepDef"
+   ],
+   "required": []
+  },
+  "jawa/running_mods": {
+   "parameters": [
+    "assembly",
+    "details"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/savegame_mod_match": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/scatter_at": {
+   "parameters": [
+    "at",
+    "genStepDef"
+   ],
+   "required": []
+  },
+  "jawa/scenario_part_add": {
+   "parameters": [
+    "allowDuplicate",
+    "className",
+    "defName",
+    "dryRun",
+    "fields",
+    "initCalls"
+   ],
+   "required": []
+  },
+  "jawa/scenario_parts_get": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/screenshot_mode": {
+   "parameters": [
+    "enabled"
+   ],
+   "required": []
+  },
+  "jawa/seabed_layer_probe": {
+   "parameters": [],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/select_things": {
+   "parameters": [
+    "action",
+    "ids",
+    "jumpCamera"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/send_letter": {
+   "parameters": [
+    "label",
+    "letterDef",
+    "text",
+    "x",
+    "z"
+   ],
+   "required": [
+    "label",
+    "text"
+   ]
+  },
+  "jawa/set_bed_owner_type": {
+   "parameters": [
+    "limit",
+    "medical",
+    "ownerType",
+    "thing"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/set_crop": {
+   "parameters": [
+    "plantDef",
+    "target",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "jawa/set_current_map": {
+   "parameters": [
+    "mapId"
+   ],
+   "required": [
+    "mapId"
+   ],
+   "source": "csharp"
+  },
+  "jawa/set_deep_resource": {
+   "parameters": [
+    "count",
+    "def",
+    "readBack",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/set_draft": {
+   "parameters": [
+    "drafted",
+    "fireAtWill",
+    "pawnId"
+   ],
+   "required": []
+  },
+  "jawa/set_faction_relation": {
+   "parameters": [
+    "dryRun",
+    "faction",
+    "goodwill",
+    "kind",
+    "sendLetter"
+   ],
+   "required": [
+    "faction"
+   ]
+  },
+  "jawa/set_fog": {
+   "parameters": [
+    "action",
+    "cell",
+    "rect",
+    "sendLetters"
+   ],
+   "required": []
+  },
+  "jawa/set_game_speed": {
+   "parameters": [
+    "speed"
+   ],
+   "required": []
+  },
+  "jawa/set_gas": {
+   "parameters": [
+    "action",
+    "density",
+    "gasType",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/set_pawn_age": {
+   "parameters": [
+    "allowBackwards",
+    "biologicalYears",
+    "chronologicalYears",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/set_pawn_appearance": {
+   "parameters": [
+    "beard",
+    "bodyType",
+    "hair",
+    "hairColor",
+    "headType",
+    "pawn",
+    "skinColor"
+   ],
+   "required": []
+  },
+  "jawa/set_pawn_backstory": {
+   "parameters": [
+    "adulthood",
+    "childhood",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/set_pawn_faction": {
+   "parameters": [
+    "faction",
+    "pawn",
+    "recruit"
+   ],
+   "required": []
+  },
+  "jawa/set_pawn_gender": {
+   "parameters": [
+    "gender",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/set_pawn_identity": {
+   "parameters": [
+    "first",
+    "last",
+    "nick",
+    "pawn",
+    "single",
+    "title"
+   ],
+   "required": []
+  },
+  "jawa/set_pawn_ideo": {
+   "parameters": [
+    "action",
+    "certaintyOffset",
+    "ideo",
+    "pawn",
+    "role"
+   ],
+   "required": []
+  },
+  "jawa/set_pawn_rotation": {
+   "parameters": [
+    "dir",
+    "lockRotation",
+    "pawnId"
+   ],
+   "required": [
+    "dir",
+    "pawnId"
+   ]
+  },
+  "jawa/set_pawn_skill": {
+   "parameters": [
+    "level",
+    "passion",
+    "pawn",
+    "resetXp",
+    "skill"
+   ],
+   "required": []
+  },
+  "jawa/set_pawn_style": {
+   "parameters": [
+    "beard",
+    "bodyTattoo",
+    "bodyType",
+    "faceTattoo",
+    "fur",
+    "hair",
+    "hairColor",
+    "headType",
+    "pawnId",
+    "skinColor"
+   ],
+   "required": [
+    "pawnId"
+   ]
+  },
+  "jawa/set_pawn_xenotype": {
+   "parameters": [
+    "clearEndogenes",
+    "pawnId",
+    "xenotype"
+   ],
+   "required": [
+    "pawnId",
+    "xenotype"
+   ]
+  },
+  "jawa/set_plants": {
+   "parameters": [
+    "clearFirst",
+    "density",
+    "growth",
+    "ops",
+    "seed"
+   ],
+   "required": [
+    "ops"
+   ]
+  },
+  "jawa/set_player_settings": {
+   "parameters": [
+    "area",
+    "hostilityResponse",
+    "masterId",
+    "medCare",
+    "pawnId"
+   ],
+   "required": []
+  },
+  "jawa/set_pollution": {
+   "parameters": [
+    "polluted",
+    "rect",
+    "silent"
+   ],
+   "required": []
+  },
+  "jawa/set_quality": {
+   "parameters": [
+    "quality",
+    "thing"
+   ],
+   "required": []
+  },
+  "jawa/set_roof_batch": {
+   "parameters": [
+    "ops",
+    "refresh",
+    "roofDef"
+   ],
+   "required": [
+    "ops"
+   ]
+  },
+  "jawa/set_stuff": {
+   "parameters": [
+    "stuff",
+    "thing"
+   ],
+   "required": []
+  },
+  "jawa/set_substructure_batch": {
+   "parameters": [
+    "action",
+    "doLeavings",
+    "readBack",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/set_terrain": {
+   "parameters": [
+    "height",
+    "layer",
+    "refresh",
+    "terrainDef",
+    "width",
+    "x",
+    "z"
+   ],
+   "required": [
+    "terrainDef",
+    "x",
+    "z"
+   ]
+  },
+  "jawa/set_terrain_batch": {
+   "parameters": [
+    "layer",
+    "ops",
+    "refresh",
+    "terrainDef"
+   ],
+   "required": [
+    "ops"
+   ]
+  },
+  "jawa/set_terrain_layer": {
+   "parameters": [
+    "def",
+    "doLeavings",
+    "expireInTicks",
+    "layer",
+    "readBack",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/set_thing_props": {
+   "parameters": [
+    "faction",
+    "hitPoints",
+    "quality",
+    "style",
+    "thing"
+   ],
+   "required": []
+  },
+  "jawa/set_weather_buildup": {
+   "parameters": [
+    "center",
+    "depth",
+    "kind",
+    "mode",
+    "radius",
+    "readBack",
+    "rect"
+   ],
+   "required": []
+  },
+  "jawa/set_work_priority": {
+   "parameters": [
+    "pawnId",
+    "priority",
+    "workType"
+   ],
+   "required": []
+  },
+  "jawa/settlement_attack": {
+   "parameters": [
+    "caravanId",
+    "dryRun",
+    "settlementId"
+   ],
+   "required": []
+  },
+  "jawa/settlement_remove": {
+   "parameters": [
+    "dryRun",
+    "force",
+    "mode",
+    "notifyPlayer",
+    "settlementId",
+    "tile"
+   ],
+   "required": []
+  },
+  "jawa/shadegrid_read": {
+   "parameters": [
+    "cells"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/signal_send": {
+   "parameters": [
+    "global",
+    "subjectPawn",
+    "tag",
+    "textArg"
+   ],
+   "required": [
+    "tag"
+   ]
+  },
+  "jawa/site_state": {
+   "parameters": [
+    "autoHome",
+    "clearIncidentQueue",
+    "mapId",
+    "rect",
+    "storyteller"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/sky_glow_set": {
+   "parameters": [
+    "lerpSeconds",
+    "skyGlow",
+    "targetBrightness"
+   ],
+   "required": []
+  },
+  "jawa/social_cancel": {
+   "parameters": [
+    "action",
+    "all",
+    "index"
+   ],
+   "required": []
+  },
+  "jawa/social_gathering_start": {
+   "parameters": [
+    "force",
+    "gathering",
+    "organizer"
+   ],
+   "required": []
+  },
+  "jawa/social_list": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/social_marry": {
+   "parameters": [
+    "ceremony",
+    "otherPawn",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/spawn_batch": {
+   "parameters": [
+    "defName",
+    "ops",
+    "rot",
+    "stuff"
+   ],
+   "required": [
+    "ops"
+   ]
+  },
+  "jawa/spawn_fill_area": {
+   "parameters": [
+    "rect",
+    "thingDef"
+   ],
+   "required": []
+  },
+  "jawa/spawn_mech_cluster": {
+   "parameters": [
+    "at",
+    "canAssaultColony",
+    "dropInPods",
+    "forceNoConditionCauser",
+    "points",
+    "startDormant"
+   ],
+   "required": []
+  },
+  "jawa/spawn_pawn": {
+   "parameters": [
+    "count",
+    "faction",
+    "kindDef",
+    "x",
+    "xenotype",
+    "z"
+   ],
+   "required": [
+    "kindDef",
+    "x",
+    "z"
+   ]
+  },
+  "jawa/spawn_variant": {
+   "parameters": [
+    "cell",
+    "def",
+    "mapId",
+    "stuff",
+    "variant"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/split_stack": {
+   "parameters": [
+    "at",
+    "count",
+    "thing"
+   ],
+   "required": []
+  },
+  "jawa/start_inspiration": {
+   "parameters": [
+    "force",
+    "inspiration",
+    "pawn",
+    "reason",
+    "sendLetter"
+   ],
+   "required": []
+  },
+  "jawa/startup_types": {
+   "parameters": [
+    "excludeVanilla",
+    "filter",
+    "kind"
+   ],
+   "required": []
+  },
+  "jawa/stat_cache_bust": {
+   "parameters": [
+    "stats",
+    "thing"
+   ],
+   "required": []
+  },
+  "jawa/stat_explain": {
+   "parameters": [
+    "stats",
+    "subject"
+   ],
+   "required": []
+  },
+  "jawa/stop_job": {
+   "parameters": [
+    "canReturnToPool",
+    "ifLayingKeepLaying",
+    "jobCondition",
+    "mode",
+    "pawnId"
+   ],
+   "required": []
+  },
+  "jawa/storage_settings": {
+   "parameters": [
+    "allow",
+    "disallow",
+    "disallowAll",
+    "limit",
+    "priority",
+    "target"
+   ],
+   "required": []
+  },
+  "jawa/story_stats": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/storyteller_fire": {
+   "parameters": [
+    "dryRun",
+    "faction",
+    "incidentDef",
+    "points"
+   ],
+   "required": []
+  },
+  "jawa/storyteller_swap": {
+   "parameters": [
+    "difficultyDef",
+    "storytellerDef"
+   ],
+   "required": []
+  },
+  "jawa/swcp_character_roster": {
+   "parameters": [
+    "roleFilter",
+    "trackedOnly"
+   ],
+   "required": []
+  },
+  "jawa/swcp_character_spawn": {
+   "parameters": [
+    "character",
+    "forceRespawn",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "jawa/take_screenshot": {
+   "parameters": [
+    "fileName"
+   ],
+   "required": []
+  },
+  "jawa/tale_list": {
+   "parameters": [
+    "limit",
+    "onlyWithCustomLabel"
+   ],
+   "required": []
+  },
+  "jawa/tale_record": {
+   "parameters": [
+    "customLabel",
+    "otherPawn",
+    "pawn",
+    "taleDef"
+   ],
+   "required": []
+  },
+  "jawa/texture_audit": {
+   "parameters": [
+    "filter",
+    "limit",
+    "maxPaths",
+    "mod"
+   ],
+   "required": []
+  },
+  "jawa/thing_graphic": {
+   "parameters": [
+    "defs",
+    "limit",
+    "mapId",
+    "rect",
+    "thing"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/thing_minify": {
+   "parameters": [
+    "destroyMode",
+    "thing"
+   ],
+   "required": []
+  },
+  "jawa/thing_stats": {
+   "parameters": [
+    "defFilter",
+    "includeHidden",
+    "limit",
+    "pawn",
+    "slot",
+    "stats",
+    "thing"
+   ],
+   "required": []
+  },
+  "jawa/tile_cache_audit": {
+   "parameters": [
+    "limit",
+    "tiles"
+   ],
+   "required": []
+  },
+  "jawa/tile_settleable": {
+   "parameters": [
+    "examplesPerReason",
+    "forGravship",
+    "tiles"
+   ],
+   "required": []
+  },
+  "jawa/time_clock": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/time_date_at": {
+   "parameters": [
+    "latitude",
+    "longitude",
+    "ticksAbs"
+   ],
+   "required": []
+  },
+  "jawa/time_perf": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/time_pin_normal_speed": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/time_set_ticks": {
+   "parameters": [
+    "ticks"
+   ],
+   "required": [
+    "ticks"
+   ]
+  },
+  "jawa/timetable": {
+   "parameters": [
+    "assignment",
+    "hour",
+    "pawnId"
+   ],
+   "required": []
+  },
+  "jawa/trade_execute": {
+   "parameters": [
+    "action",
+    "count",
+    "defName",
+    "dryRun",
+    "giftMode",
+    "negotiatorPawnId",
+    "traderPawnId"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/trade_price_probe": {
+   "parameters": [
+    "defNames",
+    "maxRows",
+    "negotiatorPawnId",
+    "traderPawnId"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/transporter_launch": {
+   "parameters": [
+    "destinationTile",
+    "dryRun",
+    "podDefName",
+    "transporterId",
+    "x",
+    "z"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/type_probe": {
+   "parameters": [
+    "typeName"
+   ],
+   "required": [
+    "typeName"
+   ]
+  },
+  "jawa/type_visibility": {
+   "parameters": [
+    "maxLoaderExceptions",
+    "typeName"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/vehicle_components": {
+   "parameters": [
+    "damagedOnly",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/vehicle_ground_aerial": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/vehicle_spawn_airdrop": {
+   "parameters": [
+    "at",
+    "kind",
+    "pawn"
+   ],
+   "required": []
+  },
+  "jawa/vge_spawn_structure_skyfaller": {
+   "parameters": [
+    "defName",
+    "point"
+   ],
+   "required": []
+  },
+  "jawa/visibility_report": {
+   "parameters": [],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/visibility_seed_tile_memory": {
+   "parameters": [
+    "layerId",
+    "ticksAgo",
+    "tileId",
+    "visibilityAtDeparture"
+   ],
+   "required": [
+    "layerId",
+    "ticksAgo",
+    "tileId",
+    "visibilityAtDeparture"
+   ],
+   "source": "csharp"
+  },
+  "jawa/wealth_recount": {
+   "parameters": [
+    "allowDuringInit"
+   ],
+   "required": []
+  },
+  "jawa/weather_get": {
+   "parameters": [
+    "listDefs"
+   ],
+   "required": []
+  },
+  "jawa/weather_roll_next": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/weather_set": {
+   "parameters": [
+    "lockWeather",
+    "unlock",
+    "weather"
+   ],
+   "required": []
+  },
+  "jawa/window_list_close": {
+   "parameters": [
+    "action",
+    "closeAll",
+    "doCloseSound",
+    "index",
+    "typeName"
+   ],
+   "required": []
+  },
+  "jawa/wipe_cell": {
+   "parameters": [
+    "dryRun",
+    "point",
+    "refund",
+    "rot",
+    "thingDef"
+   ],
+   "required": []
+  },
+  "jawa/world_cache_audit": {
+   "parameters": [
+    "includeTemps",
+    "limit",
+    "populate",
+    "range",
+    "tempEpsilon",
+    "tiles"
+   ],
+   "required": []
+  },
+  "jawa/world_commit": {
+   "parameters": [
+    "clearCaches",
+    "lazy",
+    "recalcPaths",
+    "redraw"
+   ],
+   "required": []
+  },
+  "jawa/world_features_get": {
+   "parameters": [
+    "limit",
+    "sampleTiles"
+   ],
+   "required": []
+  },
+  "jawa/world_features_import": {
+   "parameters": [
+    "apply",
+    "clearExisting",
+    "expectTiles",
+    "featureDef",
+    "path"
+   ],
+   "required": []
+  },
+  "jawa/world_features_set": {
+   "parameters": [
+    "action",
+    "centerOnTile",
+    "def",
+    "drawAngle",
+    "featureId",
+    "maxDrawSizeInTiles",
+    "name",
+    "range",
+    "tiles"
+   ],
+   "required": []
+  },
+  "jawa/world_info_get": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/world_info_set": {
+   "parameters": [
+    "allowNonPersistent",
+    "landmarkDensity",
+    "name",
+    "overallPopulation",
+    "pollution",
+    "seedString"
+   ],
+   "required": []
+  },
+  "jawa/world_landmark_rename": {
+   "parameters": [
+    "name",
+    "tile"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/world_landmarks_get": {
+   "parameters": [
+    "def",
+    "limit"
+   ],
+   "required": []
+  },
+  "jawa/world_landmarks_set": {
+   "parameters": [
+    "action",
+    "checkValid",
+    "def",
+    "forced",
+    "tiles"
+   ],
+   "required": []
+  },
+  "jawa/world_layers": {
+   "parameters": [],
+   "required": []
+  },
+  "jawa/world_links_clear": {
+   "parameters": [
+    "kind",
+    "range",
+    "readBack",
+    "tiles",
+    "to"
+   ],
+   "required": []
+  },
+  "jawa/world_links_get": {
+   "parameters": [
+    "limit",
+    "onlyLinked",
+    "range",
+    "tiles"
+   ],
+   "required": []
+  },
+  "jawa/world_links_import": {
+   "parameters": [
+    "apply",
+    "clearFirst",
+    "expectTiles",
+    "path"
+   ],
+   "required": []
+  },
+  "jawa/world_links_set": {
+   "parameters": [
+    "def",
+    "kind",
+    "path",
+    "readBack"
+   ],
+   "required": []
+  },
+  "jawa/world_links_validate": {
+   "parameters": [
+    "limit",
+    "path"
+   ],
+   "required": []
+  },
+  "jawa/world_lint": {
+   "parameters": [
+    "limit",
+    "lushBiomes",
+    "marineMutators",
+    "trunkRivers"
+   ],
+   "required": []
+  },
+  "jawa/world_map_mode": {
+   "parameters": [
+    "forceDirect",
+    "mapModeDefName"
+   ],
+   "required": []
+  },
+  "jawa/world_mutators_audit": {
+   "parameters": [
+    "histogram",
+    "limit",
+    "marineMutators"
+   ],
+   "required": []
+  },
+  "jawa/world_mutators_get": {
+   "parameters": [
+    "limit",
+    "onlyWithMutators",
+    "range",
+    "tiles"
+   ],
+   "required": []
+  },
+  "jawa/world_mutators_set": {
+   "parameters": [
+    "action",
+    "mutators",
+    "range",
+    "readBack",
+    "tiles"
+   ],
+   "required": []
+  },
+  "jawa/world_neighbors": {
+   "parameters": [
+    "path"
+   ],
+   "required": []
+  },
+  "jawa/world_objects_add": {
+   "parameters": [
+    "def",
+    "faction",
+    "name",
+    "tile"
+   ],
+   "required": []
+  },
+  "jawa/world_objects_get": {
+   "parameters": [
+    "def",
+    "faction",
+    "limit",
+    "onlyMissingFaction",
+    "tiles"
+   ],
+   "required": []
+  },
+  "jawa/world_objects_remove": {
+   "parameters": [
+    "ids"
+   ],
+   "required": []
+  },
+  "jawa/world_objects_set": {
+   "parameters": [
+    "faction",
+    "ids",
+    "name",
+    "tile"
+   ],
+   "required": []
+  },
+  "jawa/world_objects_validate": {
+   "parameters": [
+    "limit"
+   ],
+   "required": []
+  },
+  "jawa/world_settlements_import": {
+   "parameters": [
+    "apply",
+    "clearExisting",
+    "expectTiles",
+    "path"
+   ],
+   "required": []
+  },
+  "jawa/world_stats": {
+   "parameters": [
+    "limit",
+    "minBodySize"
+   ],
+   "required": []
+  },
+  "jawa/world_tile_export": {
+   "parameters": [
+    "extended",
+    "format",
+    "path"
+   ],
+   "required": []
+  },
+  "jawa/world_tile_get": {
+   "parameters": [
+    "limit",
+    "range",
+    "tiles"
+   ],
+   "required": []
+  },
+  "jawa/world_tile_import": {
+   "parameters": [
+    "apply",
+    "expectTiles",
+    "maxRows",
+    "path",
+    "sampleRows"
+   ],
+   "required": []
+  },
+  "jawa/world_tile_map_generate": {
+   "parameters": [
+    "dryRun",
+    "sizeX",
+    "sizeZ",
+    "suggestedMapParent",
+    "tile"
+   ],
+   "required": []
+  },
+  "jawa/world_tile_set": {
+   "parameters": [
+    "biome",
+    "elevation",
+    "hilliness",
+    "pollution",
+    "rainfall",
+    "range",
+    "readBack",
+    "swampiness",
+    "temperature",
+    "tiles"
+   ],
+   "required": []
+  },
+  "jawa/world_tile_validate": {
+   "parameters": [
+    "limit",
+    "maxRows",
+    "path",
+    "tolerance"
+   ],
+   "required": []
+  },
+  "jawa/world_view": {
+   "parameters": [
+    "altitude",
+    "centerTile",
+    "northUp",
+    "show"
+   ],
+   "required": []
+  },
+  "rimbridge/compile_lua": {
+   "parameters": [
+    "luaSource",
+    "parameters"
+   ],
+   "required": [
+    "luaSource"
+   ]
+  },
+  "rimbridge/compile_lua_file": {
+   "parameters": [
+    "parameters",
+    "scriptPath"
+   ],
+   "required": [
+    "scriptPath"
+   ]
+  },
+  "rimbridge/get_bridge_status": {
+   "parameters": [],
+   "required": []
+  },
+  "rimbridge/get_capability": {
+   "parameters": [
+    "capabilityIdOrAlias"
+   ],
+   "required": [
+    "capabilityIdOrAlias"
+   ]
+  },
+  "rimbridge/get_lua_reference": {
+   "parameters": [],
+   "required": []
+  },
+  "rimbridge/get_operation": {
+   "parameters": [
+    "operationId"
+   ],
+   "required": [
+    "operationId"
+   ]
+  },
+  "rimbridge/get_script_reference": {
+   "parameters": [],
+   "required": []
+  },
+  "rimbridge/list_capabilities": {
+   "parameters": [
+    "category",
+    "includeParameters",
+    "limit",
+    "providerId",
+    "query",
+    "source"
+   ],
+   "required": []
+  },
+  "rimbridge/list_logs": {
+   "parameters": [
+    "afterSequence",
+    "capabilityId",
+    "limit",
+    "minimumLevel",
+    "operationId",
+    "rootOperationId"
+   ],
+   "required": []
+  },
+  "rimbridge/list_operation_events": {
+   "parameters": [
+    "afterSequence",
+    "eventType",
+    "includeDiagnostics",
+    "limit",
+    "operationId"
+   ],
+   "required": []
+  },
+  "rimbridge/list_operations": {
+   "parameters": [
+    "includeResults",
+    "limit"
+   ],
+   "required": []
+  },
+  "rimbridge/ping": {
+   "parameters": [],
+   "required": []
+  },
+  "rimbridge/run_lua": {
+   "parameters": [
+    "includeStepResults",
+    "luaSource",
+    "parameters"
+   ],
+   "required": [
+    "luaSource"
+   ]
+  },
+  "rimbridge/run_lua_file": {
+   "parameters": [
+    "includeStepResults",
+    "parameters",
+    "scriptPath"
+   ],
+   "required": [
+    "scriptPath"
+   ]
+  },
+  "rimbridge/run_script": {
+   "parameters": [
+    "includeStepResults",
+    "scriptJson"
+   ],
+   "required": [
+    "scriptJson"
+   ]
+  },
+  "rimbridge/wait_for_game_loaded": {
+   "parameters": [
+    "pauseIfNeeded",
+    "pollIntervalMs",
+    "readiness",
+    "targetReadiness",
+    "timeoutMs",
+    "waitForVisualReady"
+   ],
+   "required": []
+  },
+  "rimbridge/wait_for_long_event_idle": {
+   "parameters": [
+    "pollIntervalMs",
+    "timeoutMs"
+   ],
+   "required": []
+  },
+  "rimbridge/wait_for_operation": {
+   "parameters": [
+    "operationId",
+    "pollIntervalMs",
+    "timeoutMs"
+   ],
+   "required": [
+    "operationId"
+   ]
+  },
+  "rimworld/activate_alert": {
+   "parameters": [
+    "alertId"
+   ],
+   "required": [
+    "alertId"
+   ]
+  },
+  "rimworld/apply_architect_designator": {
+   "parameters": [
+    "designatorId",
+    "dryRun",
+    "height",
+    "keepSelected",
+    "width",
+    "x",
+    "z"
+   ],
+   "required": [
+    "designatorId",
+    "x",
+    "z"
+   ]
+  },
+  "rimworld/clear_area": {
+   "parameters": [
+    "areaId"
+   ],
+   "required": [
+    "areaId"
+   ]
+  },
+  "rimworld/clear_hover_target": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/clear_selection": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/click_cell": {
+   "parameters": [
+    "button",
+    "holdDurationMs",
+    "modifiers",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "rimworld/click_screen_target": {
+   "parameters": [
+    "targetId"
+   ],
+   "required": [
+    "targetId"
+   ]
+  },
+  "rimworld/click_ui_target": {
+   "parameters": [
+    "targetId",
+    "timeoutMs"
+   ],
+   "required": [
+    "targetId"
+   ]
+  },
+  "rimworld/close_context_menu": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/close_main_tab": {
+   "parameters": [
+    "mainTabId"
+   ],
+   "required": []
+  },
+  "rimworld/close_window": {
+   "parameters": [
+    "windowType"
+   ],
+   "required": []
+  },
+  "rimworld/create_allowed_area": {
+   "parameters": [
+    "label",
+    "select"
+   ],
+   "required": []
+  },
+  "rimworld/delete_area": {
+   "parameters": [
+    "areaId"
+   ],
+   "required": [
+    "areaId"
+   ]
+  },
+  "rimworld/delete_zone": {
+   "parameters": [
+    "zoneId"
+   ],
+   "required": [
+    "zoneId"
+   ]
+  },
+  "rimworld/deselect_pawn": {
+   "parameters": [
+    "pawnId",
+    "pawnName"
+   ],
+   "required": []
+  },
+  "rimworld/dismiss_letter": {
+   "parameters": [
+    "letterId"
+   ],
+   "required": [
+    "letterId"
+   ]
+  },
+  "rimworld/dpa_cleanup": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/dpa_patch_methods": {
+   "parameters": [
+    "category",
+    "initialize",
+    "inputMode",
+    "preset",
+    "previewLimit",
+    "resetAfterPatch",
+    "targets"
+   ],
+   "required": []
+  },
+  "rimworld/dpa_reset": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/dpa_snapshot": {
+   "parameters": [
+    "limit",
+    "sortBy"
+   ],
+   "required": []
+  },
+  "rimworld/dpa_status": {
+   "parameters": [
+    "includePresets"
+   ],
+   "required": []
+  },
+  "rimworld/dpa_stop": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/drag_cell": {
+   "parameters": [
+    "button",
+    "fromX",
+    "fromZ",
+    "holdDurationMs",
+    "modifiers",
+    "toX",
+    "toZ"
+   ],
+   "required": []
+  },
+  "rimworld/execute_context_menu_option": {
+   "parameters": [
+    "label",
+    "optionIndex"
+   ],
+   "required": []
+  },
+  "rimworld/execute_debug_action": {
+   "parameters": [
+    "path",
+    "pawnId",
+    "pawnName",
+    "thingId",
+    "x",
+    "z"
+   ],
+   "required": [
+    "path"
+   ]
+  },
+  "rimworld/execute_gizmo": {
+   "parameters": [
+    "gizmoId"
+   ],
+   "required": [
+    "gizmoId"
+   ]
+  },
+  "rimworld/find_random_cell_near": {
+   "parameters": [
+    "designatorId",
+    "footprintAnchor",
+    "height",
+    "maxSearchRadius",
+    "reachablePawnId",
+    "reachablePawnName",
+    "requireNoImpassableThings",
+    "requireNotFogged",
+    "requireStandable",
+    "requireWalkable",
+    "startingSearchRadius",
+    "width",
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ]
+  },
+  "rimworld/flood_fill_cells": {
+   "parameters": [
+    "designatorId",
+    "footprintAnchor",
+    "height",
+    "maxCellsToProcess",
+    "maxReturnedCells",
+    "minimumCellCount",
+    "reachablePawnId",
+    "reachablePawnName",
+    "requireNoImpassableThings",
+    "requireNotFogged",
+    "requireStandable",
+    "requireWalkable",
+    "width",
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ]
+  },
+  "rimworld/frame_cell_rect": {
+   "parameters": [
+    "height",
+    "paddingCells",
+    "rootSize",
+    "width",
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ]
+  },
+  "rimworld/frame_pawns": {
+   "parameters": [
+    "pawnIdsCsv",
+    "pawnNamesCsv"
+   ],
+   "required": []
+  },
+  "rimworld/get_camera_state": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/get_cell_info": {
+   "parameters": [
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ]
+  },
+  "rimworld/get_cells_info": {
+   "parameters": [
+    "height",
+    "width",
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ]
+  },
+  "rimworld/get_context_menu_options": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/get_debug_action": {
+   "parameters": [
+    "includeChildren",
+    "includeHiddenChildren",
+    "path"
+   ],
+   "required": [
+    "path"
+   ]
+  },
+  "rimworld/get_designator_state": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/get_game_info": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/get_map_target_info": {
+   "parameters": [
+    "pawnId",
+    "pawnName",
+    "thingId"
+   ],
+   "required": []
+  },
+  "rimworld/get_mod_configuration_status": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/get_mod_settings": {
+   "parameters": [
+    "maxCollectionEntries",
+    "maxDepth",
+    "modId"
+   ],
+   "required": [
+    "modId"
+   ]
+  },
+  "rimworld/get_screen_targets": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/get_selected_pawn_inventory_state": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/get_selection_semantics": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/get_ui_layout": {
+   "parameters": [
+    "surfaceId",
+    "timeoutMs"
+   ],
+   "required": []
+  },
+  "rimworld/get_ui_state": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/go_to_main_menu": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/jump_camera_to_cell": {
+   "parameters": [
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ]
+  },
+  "rimworld/jump_camera_to_pawn": {
+   "parameters": [
+    "pawnId",
+    "pawnName"
+   ],
+   "required": []
+  },
+  "rimworld/list_alerts": {
+   "parameters": [
+    "limit"
+   ],
+   "required": []
+  },
+  "rimworld/list_architect_categories": {
+   "parameters": [
+    "includeEmpty",
+    "includeHidden"
+   ],
+   "required": []
+  },
+  "rimworld/list_architect_designators": {
+   "parameters": [
+    "categoryId",
+    "includeHidden"
+   ],
+   "required": [
+    "categoryId"
+   ]
+  },
+  "rimworld/list_areas": {
+   "parameters": [
+    "includeAssignableOnly",
+    "includeEmpty"
+   ],
+   "required": []
+  },
+  "rimworld/list_colonists": {
+   "parameters": [
+    "currentMapOnly"
+   ],
+   "required": []
+  },
+  "rimworld/list_debug_action_children": {
+   "parameters": [
+    "includeHidden",
+    "path"
+   ],
+   "required": [
+    "path"
+   ]
+  },
+  "rimworld/list_debug_action_roots": {
+   "parameters": [
+    "includeHidden"
+   ],
+   "required": []
+  },
+  "rimworld/list_inspect_tabs": {
+   "parameters": [
+    "includeHidden"
+   ],
+   "required": []
+  },
+  "rimworld/list_languages": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/list_letters": {
+   "parameters": [
+    "limit"
+   ],
+   "required": []
+  },
+  "rimworld/list_main_tabs": {
+   "parameters": [
+    "includeHidden"
+   ],
+   "required": []
+  },
+  "rimworld/list_messages": {
+   "parameters": [
+    "limit"
+   ],
+   "required": []
+  },
+  "rimworld/list_mod_settings_surfaces": {
+   "parameters": [
+    "includeWithoutSettings"
+   ],
+   "required": []
+  },
+  "rimworld/list_mods": {
+   "parameters": [
+    "includeInactive"
+   ],
+   "required": []
+  },
+  "rimworld/list_saves": {
+   "parameters": [
+    "compatibleOnly"
+   ],
+   "required": []
+  },
+  "rimworld/list_selected_gizmos": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/list_zones": {
+   "parameters": [
+    "includeEmpty",
+    "includeHidden"
+   ],
+   "required": []
+  },
+  "rimworld/load_game": {
+   "parameters": [
+    "ignoreModCompatibility",
+    "saveName"
+   ],
+   "required": [
+    "saveName"
+   ]
+  },
+  "rimworld/load_game_ready": {
+   "parameters": [
+    "ignoreModCompatibility",
+    "pauseIfNeeded",
+    "pollIntervalMs",
+    "readiness",
+    "saveName",
+    "targetReadiness",
+    "timeoutMs",
+    "waitForVisualReady"
+   ],
+   "required": [
+    "saveName"
+   ]
+  },
+  "rimworld/move_camera": {
+   "parameters": [
+    "deltaX",
+    "deltaZ"
+   ],
+   "required": [
+    "deltaX",
+    "deltaZ"
+   ]
+  },
+  "rimworld/open_context_menu": {
+   "parameters": [
+    "button",
+    "holdDurationMs",
+    "mode",
+    "modifiers",
+    "targetPawnId",
+    "targetPawnName",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "rimworld/open_inspect_tab": {
+   "parameters": [
+    "inspectTabId"
+   ],
+   "required": [
+    "inspectTabId"
+   ]
+  },
+  "rimworld/open_letter": {
+   "parameters": [
+    "letterId"
+   ],
+   "required": [
+    "letterId"
+   ]
+  },
+  "rimworld/open_main_tab": {
+   "parameters": [
+    "mainTabId"
+   ],
+   "required": [
+    "mainTabId"
+   ]
+  },
+  "rimworld/open_mod_settings": {
+   "parameters": [
+    "modId",
+    "replaceExisting"
+   ],
+   "required": [
+    "modId"
+   ]
+  },
+  "rimworld/open_window_by_type": {
+   "parameters": [
+    "replaceExisting",
+    "windowType"
+   ],
+   "required": [
+    "windowType"
+   ]
+  },
+  "rimworld/pause_game": {
+   "parameters": [
+    "pause"
+   ],
+   "required": []
+  },
+  "rimworld/play_for": {
+   "parameters": [
+    "durationMs",
+    "forceRequestedSpeed",
+    "pollIntervalMs",
+    "speed"
+   ],
+   "required": [
+    "durationMs"
+   ]
+  },
+  "rimworld/play_until_letter": {
+   "parameters": [
+    "forceRequestedSpeed",
+    "includeExistingLetters",
+    "pollIntervalMs",
+    "speed",
+    "timeoutMs"
+   ],
+   "required": []
+  },
+  "rimworld/press_accept": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/press_cancel": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/reload_mod_settings": {
+   "parameters": [
+    "maxCollectionEntries",
+    "maxDepth",
+    "modId"
+   ],
+   "required": [
+    "modId"
+   ]
+  },
+  "rimworld/reorder_mod": {
+   "parameters": [
+    "modId",
+    "save",
+    "targetIndex"
+   ],
+   "required": [
+    "modId",
+    "targetIndex"
+   ]
+  },
+  "rimworld/right_click_cell": {
+   "parameters": [
+    "button",
+    "holdDurationMs",
+    "modifiers",
+    "targetPawnId",
+    "targetPawnName",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "rimworld/save_game": {
+   "parameters": [
+    "saveName"
+   ],
+   "required": [
+    "saveName"
+   ]
+  },
+  "rimworld/screenshot_cell_rect": {
+   "parameters": [
+    "doNotResetCamera",
+    "fileName",
+    "height",
+    "includeTargets",
+    "paddingCells",
+    "rootSize",
+    "suppressMessage",
+    "width",
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ]
+  },
+  "rimworld/scroll_ui_target": {
+   "parameters": [
+    "deltaX",
+    "deltaY",
+    "targetId",
+    "targetX",
+    "targetY",
+    "timeoutMs"
+   ],
+   "required": [
+    "targetId"
+   ]
+  },
+  "rimworld/search_debug_actions": {
+   "parameters": [
+    "includeHidden",
+    "limit",
+    "query",
+    "requiredTargetKind",
+    "supportedOnly"
+   ],
+   "required": [
+    "query"
+   ]
+  },
+  "rimworld/select_allowed_area": {
+   "parameters": [
+    "areaId"
+   ],
+   "required": []
+  },
+  "rimworld/select_architect_designator": {
+   "parameters": [
+    "designatorId"
+   ],
+   "required": [
+    "designatorId"
+   ]
+  },
+  "rimworld/select_pawn": {
+   "parameters": [
+    "append",
+    "pawnId",
+    "pawnName"
+   ],
+   "required": []
+  },
+  "rimworld/set_camera_zoom": {
+   "parameters": [
+    "rootSize"
+   ],
+   "required": [
+    "rootSize"
+   ]
+  },
+  "rimworld/set_camera_zoom_extension": {
+   "parameters": [
+    "enabled"
+   ],
+   "required": [
+    "enabled"
+   ]
+  },
+  "rimworld/set_colonist_job_logging": {
+   "parameters": [
+    "enabled",
+    "pawnId",
+    "pawnName"
+   ],
+   "required": []
+  },
+  "rimworld/set_debug_setting": {
+   "parameters": [
+    "enabled",
+    "path"
+   ],
+   "required": [
+    "enabled",
+    "path"
+   ]
+  },
+  "rimworld/set_draft": {
+   "parameters": [
+    "drafted",
+    "pawnId",
+    "pawnName"
+   ],
+   "required": []
+  },
+  "rimworld/set_god_mode": {
+   "parameters": [
+    "enabled"
+   ],
+   "required": []
+  },
+  "rimworld/set_hover_target": {
+   "parameters": [
+    "anchor",
+    "durationMs",
+    "offsetX",
+    "offsetY",
+    "pawnId",
+    "pawnName",
+    "screenX",
+    "screenY",
+    "settleMs",
+    "targetId",
+    "thingId",
+    "x",
+    "z"
+   ],
+   "required": []
+  },
+  "rimworld/set_mod_enabled": {
+   "parameters": [
+    "allowDisableCore",
+    "enabled",
+    "modId",
+    "save"
+   ],
+   "required": [
+    "enabled",
+    "modId"
+   ]
+  },
+  "rimworld/set_time_speed": {
+   "parameters": [
+    "speed",
+    "ultraSpeedBoost"
+   ],
+   "required": []
+  },
+  "rimworld/set_zone_target": {
+   "parameters": [
+    "designatorId",
+    "zoneId"
+   ],
+   "required": [
+    "designatorId"
+   ]
+  },
+  "rimworld/spawn_thing": {
+   "parameters": [
+    "defName",
+    "stackCount",
+    "x",
+    "z"
+   ],
+   "required": [
+    "defName",
+    "x",
+    "z"
+   ]
+  },
+  "rimworld/start_debug_game": {
+   "parameters": [],
+   "required": []
+  },
+  "rimworld/start_debug_game_ready": {
+   "parameters": [
+    "pauseIfNeeded",
+    "pollIntervalMs",
+    "readiness",
+    "targetReadiness",
+    "timeoutMs",
+    "waitForVisualReady"
+   ],
+   "required": []
+  },
+  "rimworld/step_game_ticks": {
+   "parameters": [
+    "pauseFirst",
+    "playSound",
+    "pollIntervalMs",
+    "ticks",
+    "timeoutMs"
+   ],
+   "required": []
+  },
+  "rimworld/switch_language": {
+   "parameters": [
+    "language"
+   ],
+   "required": [
+    "language"
+   ]
+  },
+  "rimworld/take_screenshot": {
+   "parameters": [
+    "clipPadding",
+    "clipTargetId",
+    "fileName",
+    "includeTargets",
+    "suppressMessage"
+   ],
+   "required": []
+  },
+  "rimworld/update_mod_settings": {
+   "parameters": [
+    "maxCollectionEntries",
+    "maxDepth",
+    "modId",
+    "values",
+    "write"
+   ],
+   "required": [
+    "modId",
+    "values"
+   ]
+  },
+  "rimworld/zoom_camera": {
+   "parameters": [
+    "delta"
+   ],
+   "required": [
+    "delta"
+   ]
+  }
+ }
+}
