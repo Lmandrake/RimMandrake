@@ -1,0 +1,9 @@
+Config error in RM_Liikka: tries to use meat from Megascarab which uses meat from Megaspider
+Config error in RM_Loomma: animal has trainability = null
+Config error in RM_Vaalok: animal has trainability = null
+Config error in RM_Veessa: tries to use meat from Megascarab which uses meat from Megaspider
+Config error in RM_Zuurrik: tries to use meat from Megascarab which uses meat from Megaspider
+Could not resolve cross-reference: No Verse.BodyDef named Rat found to give to Verse.RaceProperties Verse.RaceProperties
+Could not resolve cross-reference: No Verse.BodyPartGroupDef named FrontLegs found to give to Verse.Tool front leg
+Could not resolve cross-reference: No Verse.ThingDef named RM_KneelOllim found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TrainabilityDef named Simple found to give to Verse.RaceProperties Verse.RaceProperties

@@ -1,0 +1,88 @@
+{
+ "weather_set": "Clear",
+ "w": {
+  "current": "Clear",
+  "last": "Sandstorm",
+  "curWeatherAge": 30,
+  "rainRate": 0.0,
+  "snowRate": 0.0
+ },
+ "pos": [
+  {
+   "x": 175,
+   "z": 71
+  },
+  [
+   [
+    "mirror crest",
+    true
+   ],
+   [
+    null,
+    true
+   ],
+   [
+    null,
+    true
+   ]
+  ]
+ ],
+ "pre": [
+  [
+   "Muffalo86523",
+   false,
+   []
+  ],
+  [
+   "Muffalo86524",
+   false,
+   []
+  ],
+  [
+   "Muffalo86525",
+   false,
+   []
+  ]
+ ],
+ "cast0": {
+  "success": true,
+  "accepted": true,
+  "refusedBy": null,
+  "message": null
+ },
+ "cast1": {
+  "success": false,
+  "accepted": false,
+  "refusedBy": "Verb.CanHitTarget is false for thing Muffalo86524 - out of range (22.9), inside minRange, or no shootable line. This tool does not path; the pawn casts from where it stands.",
+  "message": null
+ },
+ "cast2": {
+  "success": false,
+  "accepted": false,
+  "refusedBy": "Verb.CanHitTarget is false for thing Muffalo86525 - out of range (22.9), inside minRange, or no shootable line. This tool does not path; the pawn casts from where it stands.",
+  "message": null
+ },
+ "post": [
+  [
+   "Muffalo86523",
+   false,
+   [
+    "Heatstroke"
+   ]
+  ],
+  [
+   "Muffalo86524",
+   false,
+   [
+    "Heatstroke"
+   ]
+  ],
+  [
+   "Muffalo86525",
+   false,
+   [
+    "Heatstroke"
+   ]
+  ]
+ ]
+}

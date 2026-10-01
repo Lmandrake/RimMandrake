@@ -1,0 +1,66 @@
+compose: biomes  (manifest src/RimMandrake/Biomes.compose.json)
+  compose  CreatureBehaviors    mandrake.rm.creaturebehaviors        32 file(s) -> Biomes/_Kits/CreatureBehaviors
+  compose  EnvironmentalHazards mandrake.rm.environmentalhazards     28 file(s) -> Biomes/_Kits/EnvironmentalHazards
+  compose  Abyss                mandrake.rm.abyss                     3 file(s) -> Biomes/Abyss
+  compose  BlueDesert           mandrake.rm.bluedesert               43 file(s) -> Biomes/BlueDesert
+  compose  Cauldron             mandrake.rm.cauldron                 28 file(s) -> Biomes/Cauldron
+  compose  Contagion            mandrake.rm.contagion               112 file(s) -> Biomes/Contagion
+  compose  FeverWood            mandrake.rm.feverwood               105 file(s) -> Biomes/FeverWood
+  compose  FloodedCanyon        mandrake.rm.floodedcanyon            24 file(s) -> Biomes/FloodedCanyon
+  compose  GelatinousSlime      mandrake.rm.gelatinousslime          32 file(s) -> Biomes/GelatinousSlime
+  compose  Greentide            mandrake.rm.greentide                36 file(s) -> Biomes/Greentide
+  compose  LanternDeeps         mandrake.rm.lanterndeeps             78 file(s) -> Biomes/LanternDeeps
+  compose  LeaningScrub         mandrake.rm.leaningscrub             84 file(s) -> Biomes/LeaningScrub
+  compose  LongShade            mandrake.rm.longshade                71 file(s) -> Biomes/LongShade
+  compose  Miasma               mandrake.rm.miasma                   30 file(s) -> Biomes/Miasma
+  compose  NightsideIce         mandrake.rm.nightsideice              2 file(s) -> Biomes/NightsideIce
+  compose  Pyrelands            mandrake.rm.pyrelands                54 file(s) -> Biomes/Pyrelands
+  compose  RustCathedral        mandrake.rm.rustcathedral            34 file(s) -> Biomes/RustCathedral
+  compose  Stillsand            mandrake.rm.stillsand               123 file(s) -> Biomes/Stillsand
+  compose  TerminalBiomes       mandrake.rm.terminalbiomes          263 file(s) -> Biomes/TerminalBiomes
+  compose  TheForge             mandrake.rm.theforge                 34 file(s) -> Biomes/TheForge
+  compose  TheRot               mandrake.rm.therot                  181 file(s) -> Biomes/TheRot
+  compose  TheSump              mandrake.rm.thesump                  26 file(s) -> Biomes/TheSump
+  compose  Warscar              mandrake.rm.warscar                   7 file(s) -> Biomes/Warscar
+  compose  Wasteland            mandrake.rm.wasteland                89 file(s) -> Biomes/Wasteland
+  compose  Webwork              mandrake.rm.webwork                  52 file(s) -> Biomes/Webwork
+  compose  WeepingStones        mandrake.rm.weepingstones            19 file(s) -> Biomes/WeepingStones
+  compose  DivingInteraction    mandrake.rm.divinginteraction        16 file(s) -> Biomes/DivingInteraction
+  compose  MovingDunes          mandrake.rm.movingdunes               6 file(s) -> Biomes/MovingDunes
+  compose  SeaShores            mandrake.rm.seashores                 4 file(s) -> Biomes/SeaShores
+  compose  (settings shell)     BiomesShell                           2 file(s) -> Assemblies/
+  compose  About.xml: 6 hard dependencies (brrainz.harmony, ludeon.rimworld, ludeon.rimworld.odyssey, mandrake.rm.flowworks, mandrake.rm.luminouspigment, sarg.alphabiomes); 29 folded packageId(s) dropped from every list
+  compose  LoadFolders.xml: / + 29 root(s), manifest order
+
+repo : /mnt/d/Luke/dev/RimMandrake-wt-livedeploy/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 41 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+RimMandrake.Biomes mandrake.rm.biomes         10 file(s) HELD
+    H  Biomes/TheSump/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml   (repo-only; not deployed)
+           held: BENCH: held with the ThingDef it scatters, 2026-09-13 (hold DEPLOY_HOLD.txt:279 on TheSump/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml)
+    H  Biomes/TheSump/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13 (hold DEPLOY_HOLD.txt:278 on TheSump/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml)
+    H  Biomes/TheSump/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13 (hold DEPLOY_HOLD.txt:253 on TheSump/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml)
+    H  Biomes/TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml   (repo-only; not deployed)
+           held: FOUNDRY: no art yet, 2026-09-25 (hold DEPLOY_HOLD.txt:432 on TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml)
+    H  Biomes/TheSump/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-14 (hold DEPLOY_HOLD.txt:300 on TheSump/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml)
+    H  Biomes/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml   (repo-only; not deployed)
+           held: FOUNDRY: no art yet, 2026-09-25 (hold DEPLOY_HOLD.txt:431 on TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml)
+    H  Biomes/TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml   (repo-only; not deployed)
+           held: FOUNDRY: no art yet, 2026-09-26 (hold DEPLOY_HOLD.txt:446 on TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml)
+    H  Biomes/TheSump/Patches/RUT_BeastBulge_DreadRegistration.xml   (repo-only; not deployed)
+           held: BENCH: held with RUT_BeastBulge.xml, 2026-09-14 (hold DEPLOY_HOLD.txt:288 on TheSump/Patches/RUT_BeastBulge_DreadRegistration.xml)
+    H  Biomes/TheSump/Patches/RUT_SumpTarBeastGenStep_Register.xml   (repo-only; not deployed)
+           held: BENCH: held with the ThingDef it scatters, 2026-09-13 (hold DEPLOY_HOLD.txt:280 on TheSump/Patches/RUT_SumpTarBeastGenStep_Register.xml)
+    H  Biomes/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml   (game copy left as-is)
+           held: LOAD_ERRORS_DEF_FIELDS_1: held with RM_SumpFlora.xml/RM_SumpFauna.xml, 2026-09-30 (hold DEPLOY_HOLD.txt:461 on TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml)
+    -  Biomes/ForsakenCrags/Assemblies/RimMandrake.ForsakenCrags.dll   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Biomes/ForsakenCrags/Assemblies/RimMandrake.ForsakenCrags.dll.srchash   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Biomes/ForsakenCrags/Defs/BiomeDefs/RM_ForsakenCrags.xml   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+
+Drift found. Re-run with --apply to deploy.

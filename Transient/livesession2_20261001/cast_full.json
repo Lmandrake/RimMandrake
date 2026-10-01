@@ -1,0 +1,48 @@
+{
+ "success": false,
+ "action": "cast",
+ "accepted": false,
+ "refusedBy": "Verb.CanHitTarget is false for thing Muffalo86523 - out of range (22.9), inside minRange, or no shootable line. This tool does not path; the pawn casts from where it stands.",
+ "preCast": {
+  "pawn": {
+   "id": "RM_Muurrok86469",
+   "name": "Muurrok",
+   "kind": "RM_Muurrok",
+   "faction": null,
+   "isPlayer": false,
+   "hostileToPlayer": false,
+   "spawned": true,
+   "downed": false,
+   "dead": false,
+   "drafted": false,
+   "position": {
+    "x": 142,
+    "z": 104
+   },
+   "currentJob": "AttackMelee",
+   "stance": "Stance_Mobile"
+  },
+  "target": "thing Muffalo86523",
+  "verb": {
+   "source": "race",
+   "id": "Verb_Thing_RM_Muurrok86469_0",
+   "label": "mirror crest",
+   "verbClass": "RM_Verb_MirrorBeam",
+   "isMelee": false,
+   "range": 22.9,
+   "minRange": 3.9,
+   "warmupTime": 1.5,
+   "burstShotCount": 5,
+   "state": "Idle",
+   "warmingUp": false,
+   "casterSpawned": true,
+   "equipmentSource": "Muurrok",
+   "hediffSource": null,
+   "usableByCaster": true,
+   "canHitTarget": false
+  }
+ },
+ "speedRestored": false,
+ "ticksElapsed": 0,
+ "ticksGame": 23783
+}

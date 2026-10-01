@@ -1,0 +1,190 @@
+{
+ "success": true,
+ "message": "6 of 6 def(s) resolved",
+ "requested": 6,
+ "foundCount": 6,
+ "notFound": [],
+ "malformed": [],
+ "fieldsAsked": [
+  "modExtensions",
+  "comps"
+ ],
+ "defs": [
+  {
+   "requested": "BiomeDef/RM_Stillsand",
+   "found": true,
+   "defName": "RM_Stillsand",
+   "defType": "BiomeDef",
+   "label": "the Stillsand",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "modExtensions": [
+     "RM_SunHeatExtension",
+     "RM_PinnedSunExtension",
+     "DuneFieldExtension",
+     "RM_SkeletonBiomeExtension",
+     "RM_SandRemembersWaterExtension"
+    ],
+    "comps": "(no such field)"
+   }
+  },
+  {
+   "requested": "BiomeDef/RM_LongShade",
+   "found": true,
+   "defName": "RM_LongShade",
+   "defType": "BiomeDef",
+   "label": "the Long Shade",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "modExtensions": [
+     "RM_PinnedSunExtension",
+     "RM_SunHeatExtension"
+    ],
+    "comps": "(no such field)"
+   }
+  },
+  {
+   "requested": "ThingDef/RSW_KraytDragon",
+   "found": true,
+   "defName": "RSW_KraytDragon",
+   "defType": "ThingDef",
+   "label": "krayt dragon",
+   "modName": "RimMandrake: SW \u2014 Bestiary",
+   "packageId": "mandrake.rsw.swbestiary",
+   "fields": {
+    "comps": [
+     "CompProperties",
+     "CompProperties_PawnLookupCache",
+     "CompProperties_PawnRenderProperties",
+     "CompProperties",
+     "CompProperties_CombatAI",
+     "CompProperties_Statistics",
+     "CompProperties",
+     "CompProperties_RunAndGun",
+     "UniteComp_Properties",
+     "CompProperties",
+     "CompProperties",
+     "CompProperties_SidearmMemory",
+     "CompProperties",
+     "CompProperties",
+     "CompProperties_HoldingPlatformTarget",
+     "CompProperties_Studiable",
+     "CompProperties_EggLayer",
+     "RM_CompProperties_OpensWaterReturn",
+     "CompProperties",
+     "RM_CompProperties_SandSwim"
+    ],
+    "modExtensions": [
+     "RM_SandSwimExtension"
+    ]
+   }
+  },
+  {
+   "requested": "ThingDef/RSW_GreaterKraytDragon",
+   "found": true,
+   "defName": "RSW_GreaterKraytDragon",
+   "defType": "ThingDef",
+   "label": "greater krayt dragon",
+   "modName": "RimMandrake: SW \u2014 Bestiary",
+   "packageId": "mandrake.rsw.swbestiary",
+   "fields": {
+    "comps": [
+     "CompProperties",
+     "CompProperties_PawnLookupCache",
+     "CompProperties_PawnRenderProperties",
+     "CompProperties",
+     "CompProperties_CombatAI",
+     "CompProperties_Statistics",
+     "CompProperties",
+     "CompProperties_RunAndGun",
+     "UniteComp_Properties",
+     "CompProperties",
+     "CompProperties",
+     "CompProperties_SidearmMemory",
+     "CompProperties",
+     "CompProperties",
+     "CompProperties_HoldingPlatformTarget",
+     "CompProperties_Studiable",
+     "CompProperties_EggLayer",
+     "RM_CompProperties_OpensWaterReturn",
+     "CompProperties",
+     "RM_CompProperties_SandSwim"
+    ],
+    "modExtensions": [
+     "RM_SandSwimExtension"
+    ]
+   }
+  },
+  {
+   "requested": "ThingDef/RSW_SandStalker",
+   "found": true,
+   "defName": "RSW_SandStalker",
+   "defType": "ThingDef",
+   "label": "sand stalker",
+   "modName": "RimMandrake: SW \u2014 Bestiary",
+   "packageId": "mandrake.rsw.swbestiary",
+   "fields": {
+    "comps": [
+     "CompProperties",
+     "CompProperties_PawnLookupCache",
+     "CompProperties_PawnRenderProperties",
+     "CompProperties",
+     "CompProperties_CombatAI",
+     "CompProperties_Statistics",
+     "CompProperties",
+     "CompProperties_RunAndGun",
+     "UniteComp_Properties",
+     "CompProperties",
+     "CompProperties",
+     "CompProperties_SidearmMemory",
+     "CompProperties",
+     "CompProperties",
+     "CompProperties_HoldingPlatformTarget",
+     "CompProperties_Studiable",
+     "CompProperties",
+     "RM_CompProperties_SandSwim"
+    ],
+    "modExtensions": [
+     "RM_SandSwimExtension"
+    ]
+   }
+  },
+  {
+   "requested": "ThingDef/RM_Mirrak",
+   "found": true,
+   "defName": "RM_Mirrak",
+   "defType": "ThingDef",
+   "label": "mirrak",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "comps": [
+     "CompProperties",
+     "CompProperties_PawnLookupCache",
+     "CompProperties_PawnRenderProperties",
+     "CompProperties",
+     "CompProperties_CombatAI",
+     "CompProperties_Statistics",
+     "CompProperties",
+     "CompProperties_RunAndGun",
+     "UniteComp_Properties",
+     "CompProperties",
+     "CompProperties",
+     "CompProperties_SidearmMemory",
+     "CompProperties",
+     "CompProperties",
+     "CompProperties_HoldingPlatformTarget",
+     "CompProperties_Studiable",
+     "CompProperties_FalseShadeAmbusher",
+     "CompProperties"
+    ],
+    "modExtensions": [
+     "RM_FalseShadeExtension"
+    ]
+   }
+  }
+ ],
+ "ticksGame": -1
+}

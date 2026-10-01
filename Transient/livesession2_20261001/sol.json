@@ -1,0 +1,38 @@
+[
+ [
+  27277,
+  "{\"success\": true, \"message\": \"SolarGenerator774498's net: gain 0.02833333 W/tick-day, stored 0.\", \"thing\": {\"id\": \"SolarGenerator774498\", \"defName\": \"SolarGenerator\"}, \"connected\": true, \"net\": {\"currentEnergyGainRate\": 0.0283333343, \"currentStoredEnergy\": 0.0, \"hasPowerSource\": true, \"connectorsCou"
+ ],
+ [
+  28021,
+  "{\"success\": true, \"message\": \"SolarGenerator774498's net: gain 0 W/tick-day, stored 0.\", \"thing\": {\"id\": \"SolarGenerator774498\", \"defName\": \"SolarGenerator\"}, \"connected\": true, \"net\": {\"currentEnergyGainRate\": 0.0, \"currentStoredEnergy\": 0.0, \"hasPowerSource\": true, \"connectorsCount\": 0, \"transmitt"
+ ],
+ [
+  28973,
+  "{\"success\": true, \"message\": \"SolarGenerator774498's net: gain 0 W/tick-day, stored 0.\", \"thing\": {\"id\": \"SolarGenerator774498\", \"defName\": \"SolarGenerator\"}, \"connected\": true, \"net\": {\"currentEnergyGainRate\": 0.0, \"currentStoredEnergy\": 0.0, \"hasPowerSource\": true, \"connectorsCount\": 0, \"transmitt"
+ ],
+ [
+  29933,
+  "{\"success\": true, \"message\": \"SolarGenerator774498's net: gain 0 W/tick-day, stored 0.\", \"thing\": {\"id\": \"SolarGenerator774498\", \"defName\": \"SolarGenerator\"}, \"connected\": true, \"net\": {\"currentEnergyGainRate\": 0.0, \"currentStoredEnergy\": 0.0, \"hasPowerSource\": true, \"connectorsCount\": 0, \"transmitt"
+ ],
+ [
+  30000,
+  "{\"success\": true, \"message\": \"SolarGenerator774498's net: gain 0 W/tick-day, stored 0.\", \"thing\": {\"id\": \"SolarGenerator774498\", \"defName\": \"SolarGenerator\"}, \"connected\": true, \"net\": {\"currentEnergyGainRate\": 0.0, \"currentStoredEnergy\": 0.0, \"hasPowerSource\": true, \"connectorsCount\": 0, \"transmitt"
+ ],
+ [
+  31012,
+  "{\"success\": true, \"message\": \"SolarGenerator774498's net: gain 0 W/tick-day, stored 0.\", \"thing\": {\"id\": \"SolarGenerator774498\", \"defName\": \"SolarGenerator\"}, \"connected\": true, \"net\": {\"currentEnergyGainRate\": 0.0, \"currentStoredEnergy\": 0.0, \"hasPowerSource\": true, \"connectorsCount\": 0, \"transmitt"
+ ],
+ [
+  32103,
+  "{\"success\": true, \"message\": \"SolarGenerator774498's net: gain 0 W/tick-day, stored 0.\", \"thing\": {\"id\": \"SolarGenerator774498\", \"defName\": \"SolarGenerator\"}, \"connected\": true, \"net\": {\"currentEnergyGainRate\": 0.0, \"currentStoredEnergy\": 0.0, \"hasPowerSource\": true, \"connectorsCount\": 0, \"transmitt"
+ ],
+ [
+  33213,
+  "{\"success\": true, \"message\": \"SolarGenerator774498's net: gain 0 W/tick-day, stored 0.\", \"thing\": {\"id\": \"SolarGenerator774498\", \"defName\": \"SolarGenerator\"}, \"connected\": true, \"net\": {\"currentEnergyGainRate\": 0.0, \"currentStoredEnergy\": 0.0, \"hasPowerSource\": true, \"connectorsCount\": 0, \"transmitt"
+ ],
+ [
+  34352,
+  "{\"success\": true, \"message\": \"SolarGenerator774498's net: gain 0 W/tick-day, stored 0.\", \"thing\": {\"id\": \"SolarGenerator774498\", \"defName\": \"SolarGenerator\"}, \"connected\": true, \"net\": {\"currentEnergyGainRate\": 0.0, \"currentStoredEnergy\": 0.0, \"hasPowerSource\": true, \"connectorsCount\": 0, \"transmitt"
+ ]
+]

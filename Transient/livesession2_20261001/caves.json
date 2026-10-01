@@ -1,0 +1,220 @@
+{
+ "56053": {
+  "gen": {
+   "success": true,
+   "message": null,
+   "mapId": 2,
+   "mapIndex": 1
+  },
+  "secs": 20,
+  "stillsand": [
+   "[Stillsand] precious cave: cragstone yardang east (3318 cells, yardang-shaped), chamber r=6 at (208, 0, 119), mouth (193, 0, 128) (0 deg off the shadow line, facing-away dot 1.00, sun from pinned sun).",
+   "[Stillsand] precious cave roll: RM_PreciousCave_Taken (RM) in the cragstone yardang at (208, 0, 119) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default."
+  ],
+  "remove": {
+   "success": false,
+   "message": "Give 'settlementId' for mode='settlement'."
+  }
+ },
+ "56056": {
+  "gen": {
+   "success": true,
+   "message": null,
+   "mapId": 3,
+   "mapIndex": 1
+  },
+  "secs": 25,
+  "stillsand": [
+   "[Stillsand] precious cave: limestone yardang north-west (2850 cells, yardang-shaped), chamber r=6 at (107, 0, 154), mouth (72, 0, 175) (0 deg off the shadow line, facing-away dot 1.00, sun from pinned sun).",
+   "[Stillsand] precious cave roll: RM_PreciousCave_Seep (RM) in the limestone yardang at (107, 0, 154) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object",
+   "MakeThing error: Shelf is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Shelf is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: SculptureSmall is madeFromStuff but stuff=null. Assigning default."
+  ],
+  "remove": {
+   "success": true,
+   "message": null
+  }
+ },
+ "56058": {
+  "gen": {
+   "success": true,
+   "message": null,
+   "mapId": 4,
+   "mapIndex": 1
+  },
+  "secs": 23,
+  "stillsand": [
+   "[Stillsand] precious cave: sandstone yardang north-west (1569 cells, yardang-shaped), chamber r=6 at (52, 0, 220), mouth (18, 0, 239) (0 deg off the shadow line, facing-away dot 1.00, sun from pinned sun).",
+   "[Stillsand] precious cave roll: RM_PreciousCave_SealedCache (RM) in the sandstone yardang at (52, 0, 220) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default."
+  ],
+  "remove": {
+   "success": true,
+   "message": null
+  }
+ },
+ "56086": {
+  "gen": {
+   "success": true,
+   "message": null,
+   "mapId": 5,
+   "mapIndex": 1
+  },
+  "secs": 54,
+  "stillsand": [
+   "[Stillsand] precious cave: sandstone yardang north-east (34938 cells, as generated), chamber r=6 at (167, 0, 191), mouth (51, 0, 190) (30 deg off the shadow line, facing-away dot 0.86, sun from pinned sun).",
+   "[Stillsand] precious cave roll: RM_PreciousCave_Seep (RM) in the sandstone yardang at (167, 0, 191) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object",
+   "[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: a recycled world pawn came back as 'HorrorsInfestedHuman' instead of the requested 'Drifter' (KCSG_PAWNKIND_COLONIST_FALLBACK_1) \u2014 corrected in place.",
+   "[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: a recycled world pawn came back as 'HorrorsInfestedHuman' instead of the requested 'Drifter' (KCSG_PAWNKIND_COLONIST_FALLBACK_1) \u2014 corrected in place.",
+   "[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: a recycled world pawn came back as 'HorrorsInfestedHuman' instead of the requested 'Drifter' (KCSG_PAWNKIND_COLONIST_FALLBACK_1) \u2014 corrected in place."
+  ],
+  "remove": {
+   "success": true,
+   "message": null
+  }
+ },
+ "56090": {
+  "gen": {
+   "success": true,
+   "message": null,
+   "mapId": 6,
+   "mapIndex": 1
+  },
+  "secs": 32,
+  "stillsand": [
+   "[Stillsand] precious cave: marble yardang south-west (28699 cells, as generated), chamber r=6 at (32, 0, 94), mouth (20, 0, 142) (-45 deg off the shadow line, facing-away dot 0.71, sun from pinned sun).",
+   "[Stillsand] precious cave roll: RM_PreciousCave_Seep (RM) in the marble yardang at (32, 0, 94) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object",
+   "MakeThing error: Shelf is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Shelf is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: SculptureSmall is madeFromStuff but stuff=null. Assigning default."
+  ],
+  "remove": {
+   "success": true,
+   "message": null
+  }
+ },
+ "56092": {
+  "gen": {
+   "success": true,
+   "message": null,
+   "mapId": 7,
+   "mapIndex": 1
+  },
+  "secs": 37,
+  "stillsand": [
+   "[Stillsand] precious cave: sandstone yardang south-east (11588 cells, as generated), chamber r=6 at (216, 0, 135), mouth (163, 0, 167) (0 deg off the shadow line, facing-away dot 1.00, sun from pinned sun).",
+   "[Stillsand] precious cave roll: RM_PreciousCave_Seep (RM) in the sandstone yardang at (216, 0, 135) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default."
+  ],
+  "remove": {
+   "success": true,
+   "message": null
+  }
+ },
+ "56094": {
+  "gen": {
+   "success": true,
+   "message": null,
+   "mapId": 8,
+   "mapIndex": 1
+  },
+  "secs": 29,
+  "stillsand": [
+   "[Stillsand] precious cave: slate yardang south (21673 cells, as generated), chamber r=6 at (185, 0, 40), mouth (132, 0, 72) (0 deg off the shadow line, facing-away dot 1.00, sun from pinned sun).",
+   "[Stillsand] precious cave roll: RM_PreciousCave_Seep (RM) in the slate yardang at (185, 0, 40) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object",
+   "MakeThing error: Shelf is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Shelf is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: SculptureSmall is madeFromStuff but stuff=null. Assigning default."
+  ],
+  "remove": {
+   "success": true,
+   "message": null
+  }
+ },
+ "56096": {
+  "gen": {
+   "success": true,
+   "message": null,
+   "mapId": 9,
+   "mapIndex": 1
+  },
+  "secs": 45,
+  "stillsand": [
+   "[Stillsand] precious cave: sandstone yardang south-west (22140 cells, as generated), chamber r=6 at (87, 0, 47), mouth (33, 0, 83) (0 deg off the shadow line, facing-away dot 1.00, sun from pinned sun).",
+   "[Stillsand] precious cave roll: RM_PreciousCave_Seep (RM) in the sandstone yardang at (87, 0, 47) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object",
+   "MakeThing error: Shelf is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Shelf is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: SculptureSmall is madeFromStuff but stuff=null. Assigning default."
+  ],
+  "remove": {
+   "success": true,
+   "message": null
+  }
+ },
+ "56098": {
+  "gen": {
+   "success": true,
+   "message": null,
+   "mapId": 10,
+   "mapIndex": 1
+  },
+  "secs": 29,
+  "stillsand": [
+   "[Stillsand] precious cave: hardened slime yardang east (28773 cells, as generated), chamber r=6 at (199, 0, 87), mouth (133, 0, 129) (0 deg off the shadow line, facing-away dot 1.00, sun from pinned sun).",
+   "[Stillsand] precious cave roll: RM_PreciousCave_GuzzkaLair (RM) in the hardened slime yardang at (199, 0, 87) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default.",
+   "MakeThing error: Bedroll is madeFromStuff but stuff=null. Assigning default."
+  ],
+  "remove": {
+   "success": true,
+   "message": null
+  }
+ }
+}
