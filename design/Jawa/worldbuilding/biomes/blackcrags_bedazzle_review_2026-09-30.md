@@ -560,4 +560,15 @@ Paths and names in §§1-6 predate the rename: `ForsakenCrags` is now `Abyss` (`
 | 3. Hidden ship | Yes. His words, typed: *"Yes but probe droids will still come that must be avoided."* | `ABYSS_HIDDEN_SHIP_PROBES_1`. The "pursuers slow down here" rule now lists `RUT_Abyss` and `RM_Abyss` beside the donor (`ScenParts_EmpirePursuit.xml`). |
 | 4. New creatures | gharrek, durrgak, krizzak, etchcap, **all admitted**. | Decision taken by question card. One build item each: `ABYSS_GHARREK_BUILD_1`, `ABYSS_DURRGAK_BUILD_1`, `ABYSS_KRIZZAK_BUILD_1` (flier, real flight), `ABYSS_ETCHCAP_BUILD_1`. No art exists for any of them. |
 
-Card items 5-7 (Etchfall walls, the two echoes, housekeeping) were not answered at turn 1 and remain open for turn 2.
+Card items 5-8 were not answered at turn 1; turn 2 rulings are in section 8.
+
+## 8. Turn 2 rulings (owner, 2026-10-01 07:24 PDT)
+
+| Card item | Ruling | How recorded |
+|---|---|---|
+| 5. Etchfall | **Yes, with a strength slider.** Unroofed stone and steel slowly erode under the Dark's falling grain, leaving sweepable tholin dust that refines into fuel; roofs stop it; Mod Settings slider including off. The etchcap grows where grain eats rock. | Decision taken by question card. `ABYSS_ETCHFALL_BUILD_1` (links `ABYSS_ETCHCAP_BUILD_1`, `ABYSS_DARK_BUILD_1`). |
+| 6. Echoes | **Lamps as crops only.** Glowing trees transplanted to light a farm against the Dark are built; the gust turbines are cut. | Decision taken by question card. `ABYSS_LAMP_CROPS_BUILD_1` (linked to `ABYSS_DARK_BUILD_1`). Gust turbines: cut, no item. |
+| 7. Housekeeping | **Move our two inventions** (cindermare, skarnix to the free `RM_` tier, one home each) and **switch on the two placed** (ghorrumak, nighthrumbo/zhurrakor). His words, typed: *"Fully regenerate art and names for those two beasts. No donor dependencies tolerable. Free us."* Read as the two donor beasts (to confirm with him): new invented names, regenerated art, zero donor dependency. | Move: decision taken by question card, `ABYSS_INVENTED_CREATURES_TO_RM_1`. Freeing: his typed word, `ABYSS_DONOR_BEASTS_FREED_1` (no absorbed port existed in `src/`; donor-bodied art exists in artpipe `crags_ghorrumak_*`, `crags_zhurrakor_*`). |
+| 8. Lightfall's bottom | His words, typed: *"You draft three items. Then ask gpt to make three unrelated ideas. Make them spectacular."* Six options, not yet written here. | Noted on `BLACKCRAGS_BEDAZZLE_SITTING_1`. |
+
+Still open: the cryptid "Forsakens" naming, and the Lightfall options.
