@@ -1,13 +1,13 @@
-# BLACKCRAGS_BEDAZZLE_SITTING_1 — Black Crags (was Forsaken Crags) bedazzle sitting
+# BLACKCRAGS_BEDAZZLE_SITTING_1 — the Abyss (asked as Black Crags; was Forsaken Crags) bedazzle sitting
 
 Row 11 of `BAROQUE_BEDAZZLE_PROGRAM_1` — the last row. Opening authorized by
 question card 2026-09-30 22:45 PDT (decision taken by question card). The
 rename Forsaken Crags → Black Crags was owner-typed 2026-09-27 (program row 11)
 and executes at this sitting, gated by the tile check.
 
-Biome: `src/RimMandrake/ForsakenCrags/` (`RM_ForsakenCrags`), frozen twin
-`RUT_ForsakenCrags`, frozen sheet `design/Jawa/worldbuilding/biomes/forsaken_crags.md`,
-roster `design/Jawa/worldbuilding/biomes/rosters/forsaken_crags.json`.
+Biome: `src/RimMandrake/Abyss/` (`RM_Abyss`), frozen twin `RUT_Abyss`, sheet
+`design/Jawa/worldbuilding/biomes/abyss.md`, roster
+`design/Jawa/worldbuilding/biomes/rosters/abyss.json`.
 
 ## Report (movements 1–2, done 2026-09-30)
 
@@ -19,7 +19,7 @@ owner's first volley card (§6). GPT consult:
 
 Findings that stand regardless of the volley:
 - Tile gate (offline decode of the canonical save, dump 2026-10-01T01-12-26Z,
-  probe RM_FloodedCanyon 44): `RM_ForsakenCrags` 0, `RUT_ForsakenCrags` 1,135,
+  probe RM_FloodedCanyon 44): `RM_ForsakenCrags` 0, `RUT_ForsakenCrags` 1,135 (old def names, as measured on the save),
   `AB_RockyCrags` 0. Live world UNMEASURED (game down). Same block shape as
   Cauldron's `RUT_PoisonForest`.
 - `EMPIRE_PURSUIT_SURVEY_SHADOW_1`'s `surveyShadowBiomes` names only the donor
@@ -53,3 +53,7 @@ The four movements of the program item, applied to this biome:
 
 `rimflow show BLACKCRAGS_BEDAZZLE_SITTING_1` lists the owner's volley rulings as
 notes; the three child items exist; the review doc's §6 card is answered.
+
+## Turn 1 rulings (2026-09-30)
+
+See report §7. Rename to **the Abyss** (typed), executed by `ABYSS_FULL_RENAME_1`; spine = the Dark in full -> `ABYSS_DARK_BUILD_1`; hidden ship yes with probe droids -> `ABYSS_HIDDEN_SHIP_PROBES_1`; all four new creatures admitted -> `ABYSS_{GHARREK,DURRGAK,KRIZZAK,ETCHCAP}_BUILD_1`. The pursuit shadow list now names `RUT_Abyss` and `RM_Abyss`. Turn 2 owes card items 5-7.

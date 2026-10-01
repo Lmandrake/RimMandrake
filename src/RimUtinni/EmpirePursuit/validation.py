@@ -13,7 +13,7 @@ data), `HarmonyPatches.cs` (the single postfix on
 `Settings.cs` (the ONE real Mod Settings field, `printDebug`) -- plus the
 mod's own `Defs/Scenarios/ScenParts_EmpirePursuit.xml` (the shipped
 `RUT_RuthlessPursuingMechanoids` def: `surveyShadowMultiplier=4`,
-`surveyShadowBiomes=[AB_RockyCrags]`) and `About.xml` (Odyssey +
+`surveyShadowBiomes=[RUT_Abyss, RM_Abyss, AB_RockyCrags]`) and `About.xml` (Odyssey +
 brrainz.harmony deps, `incompatibleWith matathias.ruthlessmechanoids` --
 the upstream mod this REPLACES via an identical namespace/defName/
 scenPartClass, per that file's own header comment).
@@ -55,7 +55,7 @@ themselves as UNCONFIRMED against any other grounded source in this repo
 -- a first live run may need to correct the parameter names.
 
 WHAT THIS SUITE CANNOT COVER, per the walk doc's own step 11, and why:
-the `AB_RockyCrags` (Alpha Biomes "Forsaken Crags") survey-shadow multiplier
+the `AB_RockyCrags` (Alpha Biomes "Abyss") survey-shadow multiplier
 itself needs a live map generated on that specific biome, which needs
 Alpha Biomes active -- outside `minimal+harmony`, the walk doc's own
 declared environment for this mod (Odyssey is an owned DLC, Harmony is the
@@ -127,11 +127,11 @@ def scen_part_def_readback(t):
                 "%s.surveyShadowMultiplier = %r, expected 4" % (SCEN_DEF, got_mult))
 
         got_biomes = fields.get("surveyShadowBiomes", "")
-        ok_biomes = "AB_RockyCrags" in str(got_biomes)
+        ok_biomes = all(b in str(got_biomes) for b in ("RUT_Abyss", "RM_Abyss", "AB_RockyCrags"))
         t._record("surveyShadowBiomes -> %r" % got_biomes, ok_biomes)
         if not ok_biomes:
             raise ExpectationFailed(
-                "%s.surveyShadowBiomes = %r, expected to contain AB_RockyCrags"
+                "%s.surveyShadowBiomes = %r, expected to contain RUT_Abyss, RM_Abyss and AB_RockyCrags"
                 % (SCEN_DEF, got_biomes))
 
 
