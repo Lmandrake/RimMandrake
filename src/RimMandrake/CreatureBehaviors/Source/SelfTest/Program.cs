@@ -609,6 +609,21 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(F(li, "substellarLatitude", 0f) == 0f && F(li, "substellarLongitude", 0f) == 0f, "substellar point not 0,0");
             });
 
+            // ── STILLSAND_STILL_COOLING_DRAUGHT_1 ───────────────────────
+            Case("cooling draught: +8 C comfortable max for ~6 h slows vanilla Heatstroke", () =>
+            {
+                var doc = new System.Xml.XmlDocument();
+                doc.Load(System.IO.Path.Combine(FindModsRoot(), "Stillsand", "Defs", "HediffDefs", "RM_CoolingDraught.xml"));
+                System.Xml.XmlNode hd = doc.SelectSingleNode("//HediffDef[defName='RM_CoolingDraught']");
+                Assert(hd != null, "RM_CoolingDraught missing");
+                float off = F(hd, "stages/li/statOffsets/ComfyTemperatureMax", 0f);
+                float ticks = F(hd, "comps/li[@Class='HediffCompProperties_Disappears']/disappearsAfterTicks", 0f);
+                Assert(off == 8f, "ComfyTemperatureMax offset " + off);
+                Assert(Math.Abs(ticks / 2500f - 6f) < 0.01f, "lasts " + ticks / 2500f + " h, not 6");
+                // A felt 40 C: over the plain safe max, under it with the draught.
+                Assert(HeatstrokeStep(40f, HumanSafeMax) > HeatstrokeStep(40f, HumanSafeMax + off), "draught does not slow Heatstroke");
+            });
+
             foreach (string p in Pass) Console.WriteLine("PASS " + p);
             foreach (string f in Fail) Console.WriteLine("FAIL " + f);
             Console.WriteLine(Pass.Count + "/" + (Pass.Count + Fail.Count) + " passed");
