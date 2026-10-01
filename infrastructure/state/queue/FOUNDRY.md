@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:57:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T10:21:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1295,15 +1295,6 @@ target:   v1
 kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
-
-## LONGSHADE_GPT_ENRICHMENT_1 Long Shade enrichment (GPT consult 2026-09-30, owner-picked by card): ship becomes a refuge, gloomcast moves shade, camera-keyed heat soundscape, lee-side middens, shade gear learned by study
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  1. Ship becomes a refuge (Shipfall Commons). After landing, the shade grid sees the gravship's
-prose:    infrastructure/state/items/LONGSHADE_GPT_ENRICHMENT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -2790,3 +2781,23 @@ kind:     verify
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  LEANINGSCRUBENRICHMENTQUICKTEST1 — quicktest-prove the Leaning Scrub enrichment on a Scrub map
 prose:    infrastructure/state/items/LEANINGSCRUB_ENRICHMENT_QUICKTEST_1.md
+
+## LONGSHADE_ENRICHMENT_QUICKTEST_1 Quicktest the Long Shade enrichment: gloomcast moving shade, camera heat soundscape, Shipfall Commons, grove hum
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  LONGSHADEENRICHMENTQUICKTEST1 — prove the Long Shade enrichment in game
+prose:    infrastructure/state/items/LONGSHADE_ENRICHMENT_QUICKTEST_1.md
+
+## RUST_CATHEDRAL_HUM_UNMAINTAINED_1 Rust Cathedral hum PerTick sustainers never maintained: silent two ticks after start
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  - Maintain every live layer on every tick, the same fix as the proximity soundscape. Rebuild the
+prose:    infrastructure/state/items/RUST_CATHEDRAL_HUM_UNMAINTAINED_1.md
