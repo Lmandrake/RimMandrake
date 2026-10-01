@@ -1,0 +1,1724 @@
+# FOUNDRY_REBOOT_HANDOFF_202610010319 — READ FIRST on wake
+
+Follows `FOUNDRY_REBOOT_HANDOFF_202609291645`. Everything below is committed and pushed unless a
+line says otherwise. **Game and bridge state is the last section — read it
+before touching the game.**
+
+## The one thing to carry forward
+
+<!-- The single most important thing learned. Not a list — the thing that would cost the next seat hours if it had to rediscover it. If nothing qualifies, write 'nothing this wave' and mean it. -->
+Subagent-built content is compiled-only until quicktested: acoustic scanner, Wasteland and Blue Desert enrichments, and the Contagion donor-host fix all await a deployed live run. Live-proven this wave: Baroque toggle, Deepfire paint (closed).
+
+## What the owner should see
+
+<!-- Findings that need HIS eye or HIS decision: a number nobody ruled on, a mod that vanished from his list, a change he can veto. Say what you shipped deliberately with a flag raised. Empty is a legitimate answer. -->
+Carbon Garden plant vetting (milelace/hazebell/longglass) in design/Jawa/worldbuilding/biomes/bluedesert_carbon_garden_2026-09-30.md needs his rulings; all enrichment tuning numbers are invented.
+
+## What is half-done, and where it stops
+
+<!-- Anything left mid-flight, one bullet each: `- ITEM_ID -- state; NEXT: <one imperative action>`. A pointer without a ledger item id does not survive a seat change, and a pointer without a NEXT: measured ~0% pickup. An item in `doing` with no line here is a trap for the next seat. -->
+<!-- These are the items you started this window and did not
+     close. Say what state each is in and ONE imperative NEXT:
+     action, or close/block it. --check refuses while any is
+     unaccounted for or lacks a NEXT:, so deleting a line here
+     is not a way past it. -->
+- `BLUEDESERT_GPT_ENRICHMENT_1` — 3 of 4 built (fd492b10f), Carbon Garden defs gated on art review; 7 art jobs queued; untested; NEXT: quicktest cold rack, three incident variants and vhaulk road after deploy
+- `GRAVSHIP_ACOUSTIC_SCANNER_1` — built 7900d5dab, compiles, in no ModsConfig/compose.json, placeholder art; NEXT: add mandrake.rm.acousticscanner to a test tier and quicktest on a landed powered gravship
+- `SCALD_CROWNCARPET_NO_HABITAT_1` — carried over from earlier window, untouched this wave; NEXT: run rimflow show SCALD_CROWNCARPET_NO_HABITAT_1 and either work or block it
+- `WASTELAND_GPT_ENRICHMENT_1` — all 4 parts built 7b6e10997, untested, 9 art jobs queued; NEXT: quicktest storms, Middenshell, WasteCaskBay and Rite of Tipping after deploy
+
+## Traps learned
+
+<!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives -- file it to LESSONS_INBOX.md the moment it is learned, then cite `(filed: LESSONS_INBOX)` or `(see: <item/doc>)`. Never re-explain a trap that is already recorded somewhere durable. -->
+step_game_ticks gives up after 10s (~316 ticks) unless timeoutMs is passed and reports timedout, not an error (see: Transient/live_verify_batch_2026-09-30.md)
+
+## Closed since the last handoff (44)
+
+- `MOEVENTS_FINDMOD_RETIRED_1` — 06d08564b
+- `CONTAGION_NEW_SPECIES_FLORA_1` — 3e217f4ff
+- `CONTAGION_FLYER_WIRING_1` — 6ce458d32
+- `LEANINGSCRUB_RULED_CONTENT_1` — 66dffc905
+- `CAULDRON_RULED_CONTENT_1` — 71c4a821a
+- `CAULDRON_TREE_METAL_YIELD_1` — 9d3986f0a
+- `LEANINGSCRUB_ART_WIRING_1` — 1a202c407
+- `BLURRG_RSW_PORT_1` — 7592e256f
+- `FORGE_RULED_CONTENT_1` — a61ef118c
+- `OGLEKNOT_CREATURE_BUILD_1` — ef1a9f4c4
+- `BLURRG_ART_JOB_FIX_1` — 8f723337d
+- `CONTAGION_FLORA_PORT_1` — b632297aa
+- `WASTELAND_GRIPPER_STEAL_BEHAVIOR_1` — 10287c1e2
+- `CONTAGION_FINAL_BAN_SWEEP_1` — b458498d5
+- `FLOATSTONE_WALL_ATLAS_1` — 87a139193
+- `SHADE_GEAR_FAMILY_1` — 5769d2dd0
+- `WARCASKET_CASK_BAY_AND_SARCOPHAGI_1` — 27adad24d
+- `BLURRG_CANON_REGEN_1` — f94585748
+- `RM_RAWVENOM_ART_1` — f94585748
+- `LOAD_ERRORS_FAUNA_FLORA_1` — 044381748
+- `LOAD_ERRORS_DEF_FIELDS_1` — 085f98c3e
+- `BRIDGE_MOD_DEBUGACTIONS_NOOP_1` — 136d7c228
+- `CAULDRON_FULL_RENAME_1` — b1960d6a4
+- `FORGE_LAVA_TERRAIN_1` — 3b28bae1d
+- `DEEPFIRE_FLOOR_PAINT_1` — 0321a774f
+- `LOAD_ERRORS_ROUND_2_1` — 546d14da6
+- `CONTAGION_GROWN_LIMBS_DESIGN_1` — 4770b6a02
+- `MAPGEN_SCATTER_NRE_1` — 47f6c74a0
+- `WASTELAND_MIDDENSHELL_FOOTPRINT_1` — daef5a8f6
+- `BLUEDESERT_ZERO_PLANTS_1` — 788574ea0
+- `DEEPFIRE_FIRSTCOAT_BONUS_1` — d49dc88e5
+- `DEEPFIRE_PROXY_BLOCKS_STORAGE_1` — a6a5211aa
+- `SEA_FLOOR_SINGLE_BAND_1` — b8d8be87f
+- `DEEPFIRE_WORN_GLOW_1` — 1aa5a5d61
+- `DEEPFIRE_STATUS_THOUGHTS_1` — 1aa5a5d61
+- `DEEPFIRE_GOD_BRIDGE_DELTAS_1` — 08541549d
+- `DEEPFIRE_LIVE_FAILURES_1` — 1aa5a5d61
+- `DEEPFIRE_MOD_SETTINGS_1` — 86c895fc7
+- `DEEPFIRE_DODGE_PROOF_TWINS_1` — 85f1db6ed
+- `SEA_DIVE_LIVE_ERRORS_1` — 0208ef45c
+- `REALFOW_POCKET_MAP_COMPAT_1` — 0f4ff3623
+- `ROTSPOREKIT_MAYREQUIRE_ORPHANED_1` — 23f9c36d3
+- `BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1` — e387af64d
+- `DEEPFIRE_PAINT_LIVE_VERIFY_1` — e387af64d
+
+## Filed and still open (31) — the next seat's queue
+
+- `SOLAR_HEAT_EXPOSURE_1` — Planet-wide sun heat: sun exposure feeds VANILLA heat (no new heat kind), per-biome heat kind (overhead sun / low sun / steam), directional shade grid
+- `LONGSHADE_BEDAZZLE_MECHANICS_1` — Long Shade bedazzle mechanics: golden-hour perpetual sunset + pinned sun angle, mirrak false-shadow ambusher, swimmer's road (one young sarlacc, visib
+- `LONGSHADE_BEDAZZLE_CONTENT_1` — Long Shade bedazzle content: wire the finished-but-unwired art (7 magenta creatures + vorrel family), five filler defs, qorrax rename, glitter-bird/pi
+- `JOSSUR_FLIGHT_FRAMES_1` — Flight flip-book frames for RM_Jossur (optional; flight stat already set)
+- `FORGE_MISSING_ART_1` — No render anywhere: RM_CinderCrust (identity unwritten), RUT_TibannaGas, RUT_FoundryTowerEntrance, RUT_FoundrySalvageCache
+- `WARCASKET_CASK_ART_1` — Art for RM_CaskBay (building) and RM_HalfExtractedCore (item); texPaths wired under Warcasket/Textures, no render exists
+- `WARCASKET_WASTE_RUN_REMAINDER_1` — Cask-bay follow-ons: five waste-run destinations, Stenchlands cask item, Junker pawnkind wearing the warcasket, what the half-extracted core is for
+- `CONTAGION_GPT_ENRICHMENT_1` — Contagion enrichment (GPT consult 2026-09-30, owner-picked by card): Draftprints (Helix buys scans of Unfinished, you assume the risks), The Dive (map
+- `WASTELAND_GPT_ENRICHMENT_1` — Wasteland enrichment (GPT consult 2026-09-30, owner-picked by card): named storms (Deadlight Halo, Cinderwire Storm), Middenshell Procession, Sealed C
+- `BLUEDESERT_GPT_ENRICHMENT_1` — Blue Desert enrichment (GPT consult 2026-09-30, owner-picked by card): blue-ice heat sink, the line gives back slowly (staged ablation salvage), Carbo
+- `GRAVSHIP_ACOUSTIC_SCANNER_1` — Gravship acoustic scanner (owner, 2026-09-30, from the Cracked Lands Belly Sounder): grounded ship fires a sounding pulse that reveals broad bands of 
+- `CRACKEDLANDS_GPT_ENRICHMENT_1` — Cracked Lands enrichment (GPT consult 2026-09-30, owner-picked by card): Ledges of Mercy, five beats before water, Peakstorm light, three-height flora
+- `CAULDRON_GPT_ENRICHMENT_1` — Cauldron enrichment (GPT consult 2026-09-30, owner-picked by card): four-stroke weather cycle, vexxiss warden of the breath, vexxith closed loop, assa
+- `FORGE_GPT_ENRICHMENT_1` — Forge enrichment (GPT consult 2026-09-30, owner-picked by card): floatstone keelwork, spunstone bonding, four voices of the Forge, white plume fronts,
+- `CONTAGION_GROWN_LIMBS_BUILD_1` — Build the grown limbs the owner keeps on design/Jawa/worldbuilding/biomes/contagion_grown_limbs_2026-09-30.md (Pillar Arm + Lash first; Monstrous samp
+- `SCALD_CROWNCARPET_NO_HABITAT_1` — RM_TheScald generates ~no plants: its only wild plant (crowncarpet) grows only on a shallow margin terrain that map generation never lays down (live 2
+- `SEA_DIVE_FLOOR_TERRAIN_1` — Gravship dive floors ignore the seas' terrain bands: GenStep_SeaFloorTerrain paints one constant terrain (RM_SeaFloorGround / RM_ChillIceBedrock) on e
+- `SUBSTRUCTURE_PROPS_LAYER_OOB_1` — Live 2026-09-30b: 'Could not regenerate layer RimWorld.SectionLayer_SubstructureProps: IndexOutOfRangeException' during the sea-dive proof run (pocket
+- `LEANINGSCRUB_GPT_ENRICHMENT_1` — Leaning Scrub enrichment (GPT consult 2026-09-30, owner-picked by card): venomvine as distinct rooms (five forms + more to pitch), runway bloom, named
+- `LONGSHADE_GPT_ENRICHMENT_1` — Long Shade enrichment (GPT consult 2026-09-30, owner-picked by card): ship becomes a refuge, gloomcast moves shade, camera-keyed heat soundscape, lee-
+- `CHILL_CRYOPONICS_GROWER_1` — Fully enclosed cryoponics grower for the Chill's six propane-bed plants (owner ruling 2026-09-30)
+- `CHILL_FLOOR_GROWING_BED_1` — Normal growing bed placeable only on the Chill floor, for the six bed plants (owner ruling 2026-09-30)
+- `STILLSAND_BEDAZZLE_CONTENT_1` — Stillsand presentation wave: wire 6 finished render sets, build the 9 ruled fill-out defs, wire this commission's creature art (vozzik/vekka/drazzik/n
+- `STILLSAND_SAND_SWIM_KIT_1` — Stillsand sand-swim kit: things swim under the sand (submerge/wake/rumble/breach, readable signs), droids invisible to swimmers, the thumper (vibratio
+- `STILLSAND_SUN_FROM_LATITUDE_1` — Stillsand sun from latitude: pinned sky from the tile, cover follows sun angle (overhead >~55 deg), sin(elev) heat, sand glare, race-gated glare-blind
+- `STILLSAND_EVENT_CREATURES_1` — Stillsand event creatures: krayt attack incident on top of wild krayts, the muurrok (RM leviathan, mirror-crest beam on an animal-safe Verb_ShootBeam 
+- `STILLSAND_PRECIOUS_CAVES_1` — Stillsand rare rock + precious cave: yardang genstep with a shade-face cave, the cave as a place (brine seep, mummified register), weighted precious t
+- `STILLSAND_DUNE_GALE_1` — Stillsand dune gale: the biome's own storm on the dunes engine (dunes march, sun off, abrasion, carry-and-return), gale static, one emergence incl. th
+- `STILLSAND_GLASS_LENS_CHAIN_1` — Stillsand sand-to-glass-to-lens chain: drift shovelling yields glass sand at full yield, sieve as grader, sun furnace, lenses, solar still (+ wringing
+- `STILLSAND_SKELETONS_TRACKS_1` — Stillsand huge skeletons and tracks: 0-2 giant skeleton buildings per map with bone harps, giant corpses become skeletons, krayt graveyard re-pointed,
+- `STILLSAND_RETURN_RITUAL_1` — Stillsand Return: Sun-Debt water ledger weighting the biome's events, the Return ritual at a debt stone (bloom, debt paid, the sand gives back), RM bl
+
+## Commits
+
+```
+c6337c142 Ledger sync: Warscar volley turn-2 rulings
+982965785 Ledger sync: live verify batch closes, build-wave notes
+3e168e765 Ledger sync: owner rulings on fine sand/sieve, zuurrik, watcher medium binding, Stillsand heat values
+5cf728cf9 Ledger sync: STILLSAND_BEDAZZLE_SITTING_1 published-sha note
+718e4ccd6 Ledger sync: STILLSAND_BEDAZZLE_SITTING_1 closed (commission 61 jobs)
+1239cb506 Stillsand bedazzle commission: 61 artpipe jobs filed (43 subjects)
+d68218189 Stillsand ticket-out: 9 FOUNDRY build items, cast bible + art list (43 subjects, 61 jobs; not yet filed)
+a4db53318 Ledger sync: Stillsand turn-4 rulings, watchers mod filed + ruled, enrichment review closed
+1f64b2499 Queue Blue Desert enrichment art: 7 jobs
+86d9e2a2c Queue Wasteland enrichment art: 9 jobs for 7 placeholders
+c41ed9289 Owner picks: Leaning Scrub + Long Shade GPT enrichment; Chill bed plants get enclosed cryoponics + Chill-floor bed
+2e4a56ef9 Queue 7 LongShade fauna art jobs (CSV + report)
+c4d695108 FOUNDRY handoff 2026-09-30: live game-up wave closed out; bridge released
+59e6242ac Ledger sync: FOUNDRY live wave close-out; bridge released
+682d9c50a Sea dive live proof round 2 output
+f652f0a3c Deepfire round-2 live proof outputs
+bbdd49d96 Ledger sync: FOUNDRY live game-up wave - load-error rounds, Forge lava + cycle proven, Deepfire proven, Middenshell, renames, sea bands
+84b55e39f SWALE_CANAL_ART_REFERENCE_1: live FlowWorks canal shots, RM_Swale art spec, v2 regen queued
+d42de033e terrain_census bridge helper; biome quicktest takes BIOME@tempC; Scald live census
+e85d789f2 Deepfire live proof outputs 2026-09-30 + regen_current_map helper for clean-map proofs
+... 82 more: git log --oneline bdfab2dff..HEAD
+```
+
+## Game / bridge / tree state at wrap
+
+- running   : NOT RUNNING   (tasklist.exe lists no RimWorldWin64)
+- recorded  : DOWN
+- Bridge: FREE    since 2026-10-01T01:26:33Z
+
+Uncommitted (replace the placeholder after each line below with whose it is —
+yours, the other seat's, a subagent's):
+
+```
+M Transient/codebase_health.html   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M Transient/codebase_health.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M Transient/codebase_health_artifact.html   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M deployed/config/ModsConfig.before-tier-pits.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M design/Jawa/worldbuilding/biomes/_def_bindings_2026-09-09.md   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M design/Jawa/worldbuilding/biomes/rosters/the_propane_lakes.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M design/Jawa/worldbuilding/biomes/terminal_seas_cast_proposal_2026-09-25.md   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M design/RimMandrake/flowworks_liquid_matrix.md   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M design/RimMandrake/sea_dive_maps_spec.md   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M design/RimMandrake/sea_shore_mutator_spec.md   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M design/RimUtinni/vanilla_beast_excision_census.md   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/active/RM_Biosilica.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/active/RM_BloodyMess_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/active/RM_Boilhide_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/active/RM_Filth_MiddenshellFlakes.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/active/RM_GlassSand.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/active/RM_Gloomcast_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/active/RM_LensSand.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M infrastructure/artpipe/daemon_run_20260927_derivefacings.log   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/failed/rut_greentideant_carapacewall_atlas.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/failed/rut_greentideant_carapacewall_menuicon.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_AblationSilhouette.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Aurrok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Aurrok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Aurrok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_BloodyMess_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_BloodyMess_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_BlueIceMeltwaterCan.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Boilhide_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Boilhide_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+AD infrastructure/artpipe/pending/RM_CaskBay.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_CloudRepulsor_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_ColdSinkRack.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_CrestPlate.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_CrownVenomvine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Cruststar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Crustweevil_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Crustweevil_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Crustweevil_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_DebtStone.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_DewfringeSprig.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_DhokkurDormant.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Dhokkur_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Dhokkur_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Dhokkur_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_DhuvvoxNodule.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Dhuvvox_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Dhuvvox_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Dhuvvox_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Drazzik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Drazzik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Drazzik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_DrippingVenomvine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_DustDevil.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Dustflutter_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Dustflutter_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Dustflutter_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Eskith_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Eskith_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Eskith_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Eyebark_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_FE_Fulgurite_real.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Filth_DisturbedSand.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Filth_DragMark.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Filth_EruptionScar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Filth_GlasscrustScar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Filth_MiddenshellFootprint.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Filth_OommokPrint.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Filth_SandWake.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Fleshsop_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Fleshsop_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Fleshsop_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Floatstone.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_FloatstoneGarden.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_FossilSkeleton_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Fuzzrunner_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Fuzzrunner_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Fuzzrunner_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Fuzzviper_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Fuzzviper_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Fuzzviper_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Geophone.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Gloomcast_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Gloomcast_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_GreatDevourer_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_GreatDevourer_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_GreatDevourer_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Grimewing_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Grimewing_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Grimewing_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Gristleswarm_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Gristleswarm_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Gristleswarm_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Groundrunner_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Groundrunner_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Groundrunner_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_GuzzkaSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Guzzka_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Guzzka_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Guzzka_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_HalfExtractedCore.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Hazebell.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Hazebell_Open.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_HollowVenomvine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Jossur_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Jossur_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Jossur_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Julmox_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Julmox_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Julmox_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Krannock_v1_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Krannock_v1_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Krannock_v1_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_LensBench_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_LensBench_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_LensBench_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Longglass.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Maidenbloom.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_MatureFleshbeast_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_MatureFleshbeast_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_MatureFleshbeast_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_MiddenshellEdgeScar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_MiddenshellTrack.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Middenshell_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Middenshell_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Middenshell_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Milelace.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Mirrak_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Mirrak_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Mirrak_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Muttavaq_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_MuurrokSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Muurrok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Muurrok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Muurrok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Nizzek_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Nizzek_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Nizzek_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_OommokSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Parasol.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_ParasolWorn_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_ParasolWorn_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_ParasolWorn_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Pavecrust.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_PearlLens.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Pillowmoss.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_PrecisionLens.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Ribbonwhip_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Ribbonwhip_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Ribbonwhip_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Rollbug_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Rollbug_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Rollbug_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SandSieve.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Scumslider_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Scumslider_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Scumslider_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SealedWaterJar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Seismograph_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_ShadeTent.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Shadespire.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Shirrel_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Shirrel_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Shirrel_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Shokka_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Shokka_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Shokka_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Sippra_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Sippra_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Sippra_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Skarrok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Skarrok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Skarrok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Slagmole_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Slagmole_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Slagmole_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Sloghog_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Sloghog_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Sloghog_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SolarOven.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SolarStill.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SunFurnace.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SunGlass.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SunGoggles.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SunGogglesWorn_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SunGogglesWorn_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SunGogglesWorn_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SunLance_Base.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SunLance_Top.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SunShield_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SunShield_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_SunShield_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Surrik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Surrik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Surrik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+AD infrastructure/artpipe/pending/RM_Swale_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Tanglefuzz.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Tazzok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Tazzok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Tazzok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Thornhold_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Thornhold_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Thornhold_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Thumper.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Tikkit_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Tikkit_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Tikkit_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_TruffleMole_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_TruffleMole_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_TruffleMole_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_TwitcherVenomvine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vekka_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vekka_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vekka_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_VenomvineThicket_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vexxiss_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vexxiss_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vexxiss_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vhaulk_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_VisslerArm.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vissler_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vissler_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vissler_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_VozzikSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vozzik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vozzik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vozzik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vrekka_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vrekka_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Vrekka_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_WasteCask.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_WasteCaskBay_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_WasteCaskBay_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_WasteCaskBay_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_WasteTippingPad.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Whipfuzz.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_WreckedCart.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Zellik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Zellik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RM_Zellik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RSW_CrawlerTreadWreck.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RSW_Filth_CrawlerTread.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RSW_GreaterKraytSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RSW_KraytHorn.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RSW_KraytLens.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RSW_KraytSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RSW_WarWyrmSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RSW_WreckedSkiff.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientAirlock.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientAirlock_Large.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientBlackBox_Off_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientBlackBox_Off_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientBlackBox_Off_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientBlackBox_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientBlackBox_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientBlackBox_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientFloorHeater.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientLandmine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientShieldedTurret.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientShipLandingBeacon.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientSpacerAutocannon.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientTransmitterBeacon.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientWargamingTable_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientWargamingTable_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_AncientWargamingTable_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_BlueprintsBench_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_BlueprintsBench_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_BlueprintsBench_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_BustedShieldedTurret.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_BustedSpacerAutocannon.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_CryptoAncientTerminalBank_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_CryptoAncientTerminalBank_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_CryptoAncientTerminalBank_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_CryptoAncientTerminal_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_CryptoAncientTerminal_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_CryptoAncientTerminal_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_ForcedAncientAirlock.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_ForcedAncientAirlock_Large.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_FrozenEmptyCryptosleepPod.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_JammedAncientAirlock.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_JammedAncientAirlock_Large.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_RuinedHospitalBed_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_RuinedHospitalBed_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/RUT_RuinedHospitalBed_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/coalescence_stage2_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/coalescence_stage3_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_blurrg_v1_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_blurrg_v1_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_blurrg_v1_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_scrapnestbird_v1_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_scrapnestbird_v1_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_scrapnestbird_v1_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_shrublandgiant_v1_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_shrublandgiant_v1_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_shrublandgiant_v1_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_tunnelsnake_v1_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_tunnelsnake_v1_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ D infrastructure/artpipe/pending/rsw_tunnelsnake_v1_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M infrastructure/artpipe/registry.jsonl   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M infrastructure/artpipe/throughput.jsonl   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M infrastructure/dashboards/hub/data/health.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M infrastructure/state/codebase_health_last.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M infrastructure/state/ledger/events/OWNER.jsonl   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M infrastructure/state/queue/BENCH.md   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M infrastructure/state/queue/FOUNDRY.md   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+ M src/RimMandrake/bridgetools/prove_biome_timelapse.py   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-THEY_MOD_REPLICATION_1-retirement-write.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-baroque_wave0.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-baroque_wave0_control.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-firehawk.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-greentideant.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-leaningscrub.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-luminouspigment.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_bluedesert.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_contagion.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_feverwood.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_floodedcanyon.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_forsakencrags.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_gelatinousslime.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_greentide.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_leaningscrub.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_longshade.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_miasma.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_nightsideice.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_poisonforest.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_pyrelands.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_rustcathedral.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_stillsand.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_terminalbiomes.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_theforge.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_therot.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_thesump.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_wasteland.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_webwork.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-proof_weepingstones.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? deployed/config/ModsConfig.before-tier-weepingstones.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? design/RimMandrake/watchers_mod_pitch_2026-09-30.md   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Dakkra_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Dakkra_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Dakkra_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Dakkra_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Dakkra_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Dakkra_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Gennok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Gennok_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Gennok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Gennok_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Gennok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Gennok_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Pirrik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Pirrik_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Pirrik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Pirrik_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Pirrik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Pirrik_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Qorrax_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Qorrax_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Qorrax_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Qorrax_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Qorrax_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Qorrax_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Sollak_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Sollak_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Sollak_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Sollak_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Sollak_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Sollak_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Tebbra_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Tebbra_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Tebbra_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Tebbra_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Tebbra_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/_withdrawn/RM_Tebbra_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_AblationSilhouette.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_AblationSilhouette.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Aurrok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Aurrok_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Aurrok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Aurrok_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Aurrok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Aurrok_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Biosilica.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Biosilica.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Bleedleaf.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Bleedleaf.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Blisterfloat_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Blisterfloat_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Blisterfloat_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Blisterfloat_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Blisterfloat_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Blisterfloat_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Bloodlurk_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Bloodlurk_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Bloodlurk_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Bloodlurk_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Bloodlurk_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Bloodlurk_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyFist.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyFist.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BloodyMess_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BlueIce.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BlueIce.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BlueIceMeltwaterCan.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BlueIceMeltwaterCan.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilbulb.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilbulb.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Boilhide_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BrinePlate.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_BrinePlate.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CaskBay.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CaskBay.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CauldronVent.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CauldronVent.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Cinderfelt.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Cinderfelt.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CloudRepulsor.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CloudRepulsor.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CloudRepulsor_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CloudRepulsor_v2.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_ColdSinkRack.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_ColdSinkRack.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_ContaminantBezoar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_ContaminantBezoar.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CorrodedCondenserStack.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CorrodedCondenserStack.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CorrodedShrine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CorrodedShrine.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CorrodedWellhead.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CorrodedWellhead.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CrackWaxSuit.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CrackWaxSuit.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CrestPlate.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CrestPlate.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crispling_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crispling_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crispling_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crispling_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crispling_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crispling_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CrownVenomvine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_CrownVenomvine.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Cruststar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Cruststar.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crustweevil_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crustweevil_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crustweevil_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crustweevil_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crustweevil_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Crustweevil_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dakkra_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dakkra_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dakkra_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dakkra_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dakkra_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dakkra_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Danglemaw_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Danglemaw_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Danglemaw_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Danglemaw_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Danglemaw_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Danglemaw_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DebtStone.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DebtStone.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dewfringe.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dewfringe.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DewfringeSprig.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DewfringeSprig.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DhokkurDormant.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DhokkurDormant.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhokkur_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhokkur_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhokkur_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhokkur_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhokkur_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhokkur_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DhuvvoxNodule.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DhuvvoxNodule.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhuvvox_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhuvvox_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhuvvox_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhuvvox_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhuvvox_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dhuvvox_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Doublemaw_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Doublemaw_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Doublemaw_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Doublemaw_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Doublemaw_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Doublemaw_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Drazz.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Drazz.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Drazzik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Drazzik_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Drazzik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Drazzik_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Drazzik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Drazzik_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DrippingVenomvine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DrippingVenomvine.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DustDevil.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_DustDevil.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dustflutter_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dustflutter_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dustflutter_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dustflutter_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dustflutter_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Dustflutter_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Duumma_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Duumma_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Duumma_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Duumma_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Duumma_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Duumma_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eskith_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eyebark.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eyebark.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eyebark_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eyebark_v2.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eyestinger_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eyestinger_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eyestinger_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eyestinger_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eyestinger_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Eyestinger_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FE_Fulgurite_real.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FE_Fulgurite_real.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FilterCartridge.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FilterCartridge.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FilterWorks.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FilterWorks.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_DisturbedSand.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_DisturbedSand.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_DragMark.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_DragMark.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_EruptionScar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_EruptionScar.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_GlasscrustScar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_GlasscrustScar.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_MiddenshellFlakes.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_MiddenshellFlakes.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_MiddenshellFootprint.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_MiddenshellFootprint.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_OommokPrint.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_OommokPrint.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_SandWake.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Filth_SandWake.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fleshsop_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Floatstone.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Floatstone.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FloatstoneGarden.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FloatstoneGarden.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilDeepStratum.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilDeepStratum.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilDisplayMount.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilDisplayMount.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilDisplaySlab.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilDisplaySlab.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilImpression.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilImpression.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilSeam.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilSeam.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilSkeleton.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilSkeleton_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_FossilSkeleton_v2.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzrunner_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzrunner_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzrunner_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzrunner_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzrunner_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzrunner_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzviper_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzviper_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzviper_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzviper_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzviper_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Fuzzviper_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_b_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_b_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_b_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_b_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_b_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_b_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gaanok_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GasTapScaffold.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GasTapScaffold.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gawpsack_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gawpsack_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gawpsack_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gawpsack_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gawpsack_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gawpsack_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_b_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_b_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_b_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_b_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_b_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_b_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gennok_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Geophone.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Geophone.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GlassSand.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GlassSand.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Glasscrust.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Glasscrust.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gloomcast_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gloomcast_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gloomcast_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gloomcast_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gloomcast_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gloomcast_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gnashling_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gnashling_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gnashling_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gnashling_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gnashling_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gnashling_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gorekite_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gorekite_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gorekite_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gorekite_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gorekite_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gorekite_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gorestalk.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gorestalk.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gravelgut_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gravelgut_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gravelgut_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gravelgut_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gravelgut_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gravelgut_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GreatDevourer_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GreatDevourer_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GreatDevourer_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GreatDevourer_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GreatDevourer_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GreatDevourer_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Grimewing_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Gristleswarm_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Groundrunner_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Groundrunner_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Groundrunner_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Groundrunner_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Groundrunner_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Groundrunner_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GuzzkaSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_GuzzkaSkeleton.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Guzzka_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Guzzka_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Guzzka_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Guzzka_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Guzzka_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Guzzka_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_HalfExtractedCore.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_HalfExtractedCore.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_HalfmadeTree.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_HalfmadeTree.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_HalfmadeTreeBlighted.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_HalfmadeTreeBlighted.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Hazebell.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Hazebell.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Hazebell_Open.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Hazebell_Open.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_HollowVenomvine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_HollowVenomvine.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Hourbloom.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Hourbloom.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ikee_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ikee_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ikee_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ikee_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ikee_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ikee_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Irqit_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Irqit_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Irqit_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Irqit_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Irqit_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Irqit_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Jossur_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Jossur_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Jossur_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Jossur_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Jossur_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Jossur_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Julmox_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Julmox_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Julmox_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Julmox_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Julmox_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Julmox_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Khorrak_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Khorrak_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Khorrak_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Khorrak_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Khorrak_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Khorrak_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_KneelOllim.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_KneelOllim.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_KneelOllim_b.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_KneelOllim_b.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Krannock_v1_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Krannock_v1_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Krannock_v1_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Krannock_v1_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Krannock_v1_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Krannock_v1_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Kudda_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Kudda_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Kudda_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Kudda_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Kudda_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Kudda_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Lashgrass.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Lashgrass.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_LensSand.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_LensSand.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Liikka_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Liikka_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Liikka_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Liikka_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Liikka_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Liikka_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Longglass.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Longglass.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_b_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_b_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_b_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_b_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_b_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_b_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Loomma_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Maidenbloom.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Maidenbloom.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MatureFleshbeast_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MatureFleshbeast_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MatureFleshbeast_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MatureFleshbeast_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MatureFleshbeast_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MatureFleshbeast_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Meatvine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Meatvine.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Meltgut_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Meltgut_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Meltgut_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Meltgut_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Meltgut_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Meltgut_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenbeetle_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenbeetle_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenbeetle_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenbeetle_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenbeetle_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenbeetle_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MiddenshellEdgeScar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MiddenshellEdgeScar.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MiddenshellTrack.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MiddenshellTrack.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Middenshell_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Milelace.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Milelace.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Mirrak_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Mirrak_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Mirrak_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Mirrak_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Mirrak_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Mirrak_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Murrek_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Murrek_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Murrek_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Murrek_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Murrek_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Murrek_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muttavaq_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muttavaq_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muttavaq_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muttavaq_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muttavaq_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muttavaq_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muttavaq_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muttavaq_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MuurrokSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_MuurrokSkeleton.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muurrok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muurrok_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muurrok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muurrok_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muurrok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Muurrok_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Nizzek_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Nizzek_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Nizzek_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Nizzek_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Nizzek_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Nizzek_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ommok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ommok_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ommok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ommok_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ommok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ommok_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_OommokSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_OommokSkeleton.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Oorrik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Oorrik_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Oorrik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Oorrik_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Oorrik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Oorrik_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_b_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_b_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_b_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_b_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_b_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_b_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Orruhmu_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossik_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossik_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossik_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossivel_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossivel_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossivel_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossivel_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossivel_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ossivel_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Parasol.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Parasol.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pavecrust.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pavecrust.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_PearlLens.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_PearlLens.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Peeper_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Peeper_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Peeper_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Peeper_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Peeper_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Peeper_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pillowmoss.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pillowmoss.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_b_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_b_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_b_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_b_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_b_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_b_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pirrik_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_PrecisionLens.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_PrecisionLens.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pusberry.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Pusberry.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Qorrax_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Qorrax_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Qorrax_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Qorrax_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Qorrax_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Qorrax_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Rattlegrope.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Rattlegrope.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_RawVenom.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_RawVenom.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ribbonwhip_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ribbonwhip_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ribbonwhip_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ribbonwhip_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ribbonwhip_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ribbonwhip_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Rollbug_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Rollbug_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Rollbug_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Rollbug_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Rollbug_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Rollbug_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ruukka_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ruukka_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ruukka_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ruukka_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ruukka_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ruukka_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SandBusterMound_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SandBusterMound_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SandSieve.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SandSieve.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sapblister.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sapblister.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scabspinner_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scabspinner_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scabspinner_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scabspinner_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scabspinner_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scabspinner_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scaldhide_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scaldhide_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scaldhide_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scaldhide_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scaldhide_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scaldhide_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scorchpod_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scorchpod_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scorchpod_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scorchpod_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scorchpod_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scorchpod_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumgrass.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumgrass.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumrat_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumrat_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumrat_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumrat_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumrat_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumrat_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumslider_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumslider_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumslider_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumslider_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumslider_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Scumslider_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SealedWaterJar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SealedWaterJar.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Seismograph.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Seismograph.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Seismograph_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Seismograph_v2.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_ShadeTent.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_ShadeTent.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shadespire.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shadespire.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shambles_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shambles_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shambles_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shambles_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shambles_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shambles_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shirrel_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shirrel_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shirrel_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shirrel_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shirrel_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shirrel_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shokka_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shokka_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shokka_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shokka_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shokka_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Shokka_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sippra_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sippra_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sippra_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sippra_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sippra_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sippra_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skarrok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skarrok_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skarrok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skarrok_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skarrok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skarrok_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skinflap_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skinflap_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skinflap_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skinflap_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skinflap_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Skinflap_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Slagmole_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloghog_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloshbelly_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloshbelly_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloshbelly_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloshbelly_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloshbelly_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sloshbelly_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Smolderback_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Smolderback_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Smolderback_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Smolderback_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Smolderback_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Smolderback_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SolarOven.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SolarOven.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SolarStill.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SolarStill.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_b_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_b_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_b_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_b_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_b_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_b_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sollak_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_b_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_b_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_b_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_b_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_b_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_b_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Soorrak_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SootBrick.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SootBrick.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SootGristleswarm_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SootGristleswarm_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SootGristleswarm_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SootGristleswarm_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SootGristleswarm_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SootGristleswarm_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sootgrazer_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sootgrazer_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sootgrazer_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sootgrazer_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sootgrazer_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sootgrazer_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SparkleechGrub_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SparkleechGrub_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SparkleechGrub_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SparkleechGrub_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SparkleechGrub_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SparkleechGrub_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sparkleech_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sparkleech_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sparkleech_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sparkleech_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sparkleech_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sparkleech_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunFurnace.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunFurnace.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunGlass.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunGlass.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunGoggles.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunGoggles.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunGogglesWorn_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunGogglesWorn_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunGogglesWorn_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunGogglesWorn_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunGogglesWorn_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunGogglesWorn_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunLance_Base.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunLance_Base.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunLance_Top.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_SunLance_Top.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sunbeam.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Sunbeam.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Surrik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Surrik_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Surrik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Surrik_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Surrik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Surrik_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Swale.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Swale.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Swale_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Swale_v2.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_TallScumgrass.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_TallScumgrass.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tanglefuzz.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tanglefuzz.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tarruq_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tarruq_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tarruq_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tarruq_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tarruq_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tarruq_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tazzok_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tazzok_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tazzok_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tazzok_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tazzok_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tazzok_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_b_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_b_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_b_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_b_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_b_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_b_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tebbra_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tekk.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tekk.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thornhold_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thornhold_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thornhold_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thornhold_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thornhold_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thornhold_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thumper.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thumper.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thurra_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thurra_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thurra_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thurra_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thurra_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Thurra_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tikkit_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tikkit_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tikkit_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tikkit_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tikkit_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Tikkit_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Toothmoss.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Toothmoss.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_TruffleMole_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_TruffleMole_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_TruffleMole_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_TruffleMole_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_TruffleMole_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_TruffleMole_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_TwitcherVenomvine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_TwitcherVenomvine.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ulgga_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ulgga_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ulgga_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ulgga_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ulgga_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Ulgga_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_UltracactusPad.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_UltracactusPad.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Uttaqar_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Uttaqar_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Uttaqar_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Uttaqar_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Uttaqar_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Uttaqar_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Veessa_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Veessa_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Veessa_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Veessa_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Veessa_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Veessa_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vekka_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vekka_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vekka_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vekka_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vekka_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vekka_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_VenomvineThicket_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_VenomvineThicket_v2.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Veqma.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Veqma.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxiss_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxith.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vexxith.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vhaulk_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vhaulk_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vhaulk_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vhaulk_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vhaulk_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vhaulk_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vhaulk_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vhaulk_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Virr.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Virr.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_VisslerArm.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_VisslerArm.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vissler_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vissler_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vissler_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vissler_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vissler_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vissler_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_VitrifiedBezoar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_VitrifiedBezoar.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vosska_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vosska_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vosska_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vosska_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vosska_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vosska_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_VozzikSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_VozzikSkeleton.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vozzik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vozzik_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vozzik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vozzik_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vozzik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vozzik_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vrekka_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vrekka_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vrekka_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vrekka_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vrekka_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Vrekka_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Warcasket.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Warcasket.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_WarcasketJunker.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_WarcasketJunker.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Wartshrub.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Wartshrub.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_WasteCask.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_WasteCask.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_WasteTippingPad.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_WasteTippingPad.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Whipfuzz.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Whipfuzz.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Wombpod.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Wombpod.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_WreckedCart.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_WreckedCart.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Xithess.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Xithess.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zellik_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zellik_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zellik_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zellik_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zellik_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zellik_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zisska_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zisska_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zisska_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zisska_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zisska_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RM_Zisska_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_CrawlerTreadWreck.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_CrawlerTreadWreck.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_Filth_CrawlerTread.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_Filth_CrawlerTread.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_GreaterKraytSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_GreaterKraytSkeleton.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_KraytHorn.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_KraytHorn.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_KraytLens.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_KraytLens.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_KraytSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_KraytSkeleton.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_WarWyrmSkeleton.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_WarWyrmSkeleton.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_WreckedSkiff.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RSW_WreckedSkiff.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientAirlock.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientAirlock.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientAirlock_Large.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientAirlock_Large.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientFloorHeater.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientFloorHeater.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientLandmine.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientLandmine.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientShieldedTurret.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientShieldedTurret.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientShipLandingBeacon.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientShipLandingBeacon.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientSpacerAutocannon.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientSpacerAutocannon.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientTransmitterBeacon.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_AncientTransmitterBeacon.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_BustedShieldedTurret.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_BustedShieldedTurret.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_BustedSpacerAutocannon.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_BustedSpacerAutocannon.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_CrackWax.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_CrackWax.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_ForcedAncientAirlock.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_ForcedAncientAirlock.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_ForcedAncientAirlock_Large.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_ForcedAncientAirlock_Large.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_FoundrySalvageCache.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_FoundrySalvageCache.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_FoundryTowerEntrance.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_FoundryTowerEntrance.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_FrozenEmptyCryptosleepPod.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_FrozenEmptyCryptosleepPod.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_JammedAncientAirlock.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_JammedAncientAirlock.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_JammedAncientAirlock_Large.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_JammedAncientAirlock_Large.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_TibannaGas.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/RUT_TibannaGas.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_eldspar.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_eldspar.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_fuselight.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_fuselight.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_ghostpane.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_ghostpane.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_keelgrass.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_keelgrass.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_pitchpearl.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_pitchpearl.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_skyharp.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_skyharp.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_slackwax.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_slackwax.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_stillbloom.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_stillbloom.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_stonewater.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_stonewater.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_tarspool.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/chill_plant_tarspool.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/coalescence_stage1.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/coalescence_stage1.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/coalescence_stage2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/coalescence_stage2.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/coalescence_stage2_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/coalescence_stage2_v2.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/coalescence_stage3.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/coalescence_stage3.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/coalescence_stage3_v2.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/coalescence_stage3_v2.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rm_chillauroracollector_v1.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rm_chillauroracollector_v1.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rmshademite_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rmshademite_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rmshademite_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rmshademite_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rmshademite_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rmshademite_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v1_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v1_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v1_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v1_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v1_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v1_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v2_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v2_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v2_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v2_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v2_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_blurrg_v2_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_scrapnestbird_v1_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_scrapnestbird_v1_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_scrapnestbird_v1_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_scrapnestbird_v1_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_scrapnestbird_v1_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_scrapnestbird_v1_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_shrublandgiant_v1_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_shrublandgiant_v1_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_shrublandgiant_v1_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_shrublandgiant_v1_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_shrublandgiant_v1_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_shrublandgiant_v1_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_tunnelsnake_v1_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_tunnelsnake_v1_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_tunnelsnake_v1_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_tunnelsnake_v1_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_tunnelsnake_v1_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rsw_tunnelsnake_v1_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rut_greentideant_carapacewall_atlas.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rut_greentideant_carapacewall_atlas.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rut_greentideant_carapacewall_menuicon.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/done/rut_greentideant_carapacewall_menuicon.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_LensBench_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_LensBench_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_LensBench_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_LensBench_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_LensBench_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_LensBench_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_ParasolWorn_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_ParasolWorn_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_ParasolWorn_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_ParasolWorn_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_ParasolWorn_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_ParasolWorn_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_SunShield_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_SunShield_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_SunShield_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_SunShield_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_SunShield_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_SunShield_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_WasteCaskBay_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_WasteCaskBay_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_WasteCaskBay_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_WasteCaskBay_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_WasteCaskBay_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RM_WasteCaskBay_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_Off_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_Off_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_Off_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_Off_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_Off_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_Off_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientBlackBox_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientWargamingTable_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientWargamingTable_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientWargamingTable_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientWargamingTable_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientWargamingTable_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_AncientWargamingTable_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_BlueprintsBench_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_BlueprintsBench_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_BlueprintsBench_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_BlueprintsBench_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_BlueprintsBench_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_BlueprintsBench_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminalBank_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminalBank_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminalBank_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminalBank_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminalBank_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminalBank_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminal_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminal_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminal_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminal_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminal_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_CryptoAncientTerminal_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_RuinedHospitalBed_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_RuinedHospitalBed_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_RuinedHospitalBed_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_RuinedHospitalBed_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_RuinedHospitalBed_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/RUT_RuinedHospitalBed_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/rmshademite_v1_east.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/rmshademite_v1_east.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/rmshademite_v1_north.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/rmshademite_v1_north.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/rmshademite_v1_south.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/artpipe/failed/rmshademite_v1_south.manifest.json   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/dashboards/hub/tabs/maturity.html   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/dashboards/hub/utinni_control_room_standalone.html   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/state/cherrypicker/CherryPicker.PRESWAP.20260911_234759.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/state/logs/harvested/   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/state/modlists/ModsConfig.FULL.PRECAPTURE.20260926_142047.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/state/modlists/ModsConfig.pre-floodedcanyon-quicktest-20260921T104640.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_COLD_LOAD_RUN_SHEET_4_2026-09-23.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_bacta_enable_2026-09-24T133247Z.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_restoring_seashores_bacta_2026-09-25T175356.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/state/modlists/ModsConfig_BACKUP_before_seashores_enable_2026-09-25T133443.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/state/modlists/ModsConfig_backup_before_rustcathedral_enable_2026-09-23T211528Z.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/state/modlists/ModsConfig_before_miasma_predation_proof_2026-09-27.xml   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? infrastructure/state/rescued/LanternDeeps_RUT/Assemblies/   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+?? src/RimMandrake/Utils/firehawk_flight_probe.py   BENCH — dirty before this session began (artpipe daemon/health publisher/peer edits), not FOUNDRY work
+```
+
