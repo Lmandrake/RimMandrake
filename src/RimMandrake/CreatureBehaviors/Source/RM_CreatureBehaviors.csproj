@@ -169,6 +169,7 @@
     <Compile Include="RM_ShadeHop.cs" />
     <Compile Include="RM_GlareBlind.cs" />
     <Compile Include="RM_Mirage.cs" />
+    <Compile Include="RM_FlightJobStartGuard.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
