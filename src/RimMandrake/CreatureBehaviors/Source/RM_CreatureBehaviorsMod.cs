@@ -272,6 +272,11 @@ namespace RimMandrake.CreatureBehaviors
     //      keeps a floor of exposure even in shade; paved floors do not glare.
     //      Off: shade on sand works as anywhere else. The heat-by-angle
     //      offset rides the existing sunHeatStrength dial.
+    //  44. Glare-blind (STILLSAND_GLARE_BLIND_GOGGLES_1, RM_GlareBlind.cs) — only
+    //      a biome whose RM_SunHeatExtension names a glareBlindHediff.
+    //      glareBlindEnabled — off: nobody gains it; one already carried still
+    //      decays away. glareBlindRateMultiplier — how fast full glare blinds.
+    //      Immunity (a gene, or eye protection) is never a setting.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -356,6 +361,8 @@ namespace RimMandrake.CreatureBehaviors
         public static bool kindFromElevationEnabled = true;
         public static bool sandGlareEnabled = true;
         public static float sandGlareStrength = 1f;
+        public static bool glareBlindEnabled = true;
+        public static float glareBlindRateMultiplier = 1f;
 
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 2400f;
@@ -441,6 +448,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref kindFromElevationEnabled, "kindFromElevationEnabled", true);
             Scribe_Values.Look(ref sandGlareEnabled, "sandGlareEnabled", true);
             Scribe_Values.Look(ref sandGlareStrength, "sandGlareStrength", 1f);
+            Scribe_Values.Look(ref glareBlindEnabled, "glareBlindEnabled", true);
+            Scribe_Values.Look(ref glareBlindRateMultiplier, "glareBlindRateMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -742,6 +751,16 @@ namespace RimMandrake.CreatureBehaviors
                 {
                     list.Label("    Sand glare strength: " + sandGlareStrength.ToStringPercent());
                     sandGlareStrength = list.Slider(sandGlareStrength, 0f, 2f);
+                }
+                list.CheckboxLabeled("  Glare-blind", ref glareBlindEnabled,
+                    "On a land built with it (the Stillsand): people standing in full glare slowly lose "
+                  + "sight, and get it back in shade or indoors. Sun goggles (or any goggles that keep "
+                  + "out glare) stop it, and some peoples are born with eyes that never need them. "
+                  + "Animals are not affected. Off: nobody is glare-blinded.");
+                if (glareBlindEnabled)
+                {
+                    list.Label("    How fast glare blinds: " + glareBlindRateMultiplier.ToStringPercent());
+                    glareBlindRateMultiplier = list.Slider(glareBlindRateMultiplier, 0f, 3f);
                 }
             }
             list.GapLine();

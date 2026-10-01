@@ -319,6 +319,23 @@ namespace RimMandrake.CreatureBehaviors
             return exposure > f ? exposure : f;
         }
 
+        /// <summary>STILLSAND_GLARE_BLIND_GOGGLES_1: the glare-blind severity a
+        /// pawn gains over one check interval. Nothing below the full-glare
+        /// threshold (shade on sand, which the glare floor holds at about
+        /// 0.35, does not blind), nothing for protected eyes (a gene or eye
+        /// cover), and above the threshold perDay × the interval's share of a
+        /// day × the strength dial. Recovery is the hediff's own
+        /// SeverityPerDay decay, never this.</summary>
+        public static float GlareBlindGain(float exposure, float fullGlareMin, float severityPerDay,
+            float strength, int intervalTicks, bool eyesProtected)
+        {
+            if (eyesProtected || exposure < fullGlareMin || severityPerDay <= 0f || strength <= 0f || intervalTicks <= 0)
+            {
+                return 0f;
+            }
+            return severityPerDay * strength * intervalTicks / 60000f;
+        }
+
         public static float Clamp01(float v)
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);
