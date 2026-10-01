@@ -59,6 +59,19 @@
       <wildClusterWeight>0.05</wildClusterWeight>
       <wildOrder>4</wildOrder>
     </plant>
+    <comps>
+      <!-- LEANINGSCRUB_GPT_ENRICHMENT_1: name, history panel, snagged-wool timer
+           (Source/RM_SweetlineStation.cs). TUNED: 5 hanks every 5 days once mature,
+           a trickle beside the 20-hank harvest so the tree pays visitors without
+           replacing the harvest. -->
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_SweetlineStation">
+        <namer>RM_NamerSweetlineTree</namer>
+        <woolThing>RM_SweetlineWool</woolThing>
+        <woolCount>5</woolCount>
+        <woolIntervalDays>5</woolIntervalDays>
+        <maxHistory>12</maxHistory>
+      </li>
+    </comps>
   </ThingDef>
 
 </Defs>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LeaningScrub_Namers.xml                 LEANINGSCRUB_GPT_ENRICHMENT_1
+
+  Names for the named sweetline trees (Source/RM_SweetlineStation.cs).
+
+  PLACEHOLDER VOCABULARY. No ruling sets the naming register for these trees;
+  every word below is lifted from the shipped def descriptions and
+  arid_shrubland.md §4 (silver wool, giants, roads, the lean, the line) so
+  nothing new is invented, but the register itself is owed to the owner:
+  LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1. Replace the lists, keep the defName.
+-->
+<Defs>
+
+  <RulePackDef>
+    <defName>RM_NamerSweetlineTree</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_name(p=3)->the [adj] [noun]</li>
+        <li>r_name(p=2)->[noun] of the [thing]</li>
+        <li>r_name->the [adj] [noun] of the [thing]</li>
+
+        <li>adj->silver</li>
+        <li>adj->grey</li>
+        <li>adj->old</li>
+        <li>adj->lone</li>
+        <li>adj->leaning</li>
+        <li>adj->scarred</li>
+        <li>adj->woolhung</li>
+        <li>adj->rubbed</li>
+
+        <li>noun->tree</li>
+        <li>noun->sweetline</li>
+        <li>noun->mark</li>
+
+        <li>thing->giants</li>
+        <li>thing->road</li>
+        <li>thing->line</li>
+        <li>thing->wool</li>
+        <li>thing->wind</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+</Defs>
