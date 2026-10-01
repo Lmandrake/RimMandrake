@@ -377,6 +377,10 @@ class FakeEnv(P.Env):
         return {"load_high": 12.0, "load_unknown": None}.get(
             next((x for x in self.faults if x.startswith("load_")), ""), 1.5)
 
+    def run_wsl(self, argv, timeout=600):
+        argv = [a for a in argv if a != "env" and not a.startswith("AGENT_SEAT=")]
+        return self.run(["py" if a == "python3" else a for a in argv], timeout)
+
     def log_birth(self):
         return self._born
 

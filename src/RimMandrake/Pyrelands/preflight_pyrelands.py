@@ -100,7 +100,8 @@ DEPLOY_PLANS = (["--compose", "biomes"], ["--mod", "UtinniPatches", "--mod", "Py
 LOG_FATAL = ("CommonalityOfAnimal",)
 LOG_ALLOWED = "burnedDef is flammable"
 LOG_ALLOWED_MAX = 4
-BENIGN_WINDOWS = ("EditWindow_Log",)        # auto-closed; anything else refuses (plan §3.8)
+BENIGN_WINDOWS = ("EditWindow_Log", "LudeonTK.EditWindow_Log")
+IGNORED_WINDOWS = ("Verse.ImmediateWindow",)   # the dev overlay: cannot be closed, blocks nothing        # auto-closed; anything else refuses (plan §3.8)
 QUIET_STORYTELLER = "Tutor"                 # UNMEASURED that it fires nothing; gate B also
                                             # requires the incident queue to be empty.
 LAT_MAX = 25.0                              # plan §3.5
@@ -212,6 +213,17 @@ class Env(object):
         except Exception as ex:
             return None, "%s: %s" % (type(ex).__name__, ex)
 
+    def run_wsl(self, argv, timeout=600):
+        """Run argv under WSL python3 -- the deploy/rimflow tools are developed and used there (a Windows
+        interpreter composes the same files with different line endings and reports drift)."""
+        full = ["wsl.exe", "--cd", self.root, "-e"] + argv
+        try:
+            p = subprocess.run(full, capture_output=True, text=True, timeout=timeout,
+                               encoding="utf-8", errors="replace")
+            return p.returncode, (p.stdout or "") + (p.stderr or "")
+        except Exception as ex:
+            return None, "%s: %s" % (type(ex).__name__, ex)
+
     def manifest(self):
         """The tier's resolved, ordered packageId list -- exactly what --apply writes."""
         import modset_builder as mb
@@ -239,6 +251,19 @@ class Env(object):
         return None
 
     def log_birth(self):
+        """When THIS game process started. Player.log keeps its Windows creation time across relaunches
+        (it is truncated in place), so its ctime is the first-ever launch, not this one."""
+        try:
+            p = subprocess.run(["powershell.exe", "-NoProfile", "-Command",
+                                "(Get-Process RimWorldWin64 | Sort-Object StartTime -Descending | "
+                                "Select-Object -First 1).StartTime.ToUniversalTime().ToString('o')"],
+                               capture_output=True, text=True, timeout=30)
+            import datetime
+            t = p.stdout.strip()
+            if t:
+                return datetime.datetime.fromisoformat(t.replace("Z", "+00:00")).timestamp()
+        except Exception:
+            pass
         st = os.stat(self.player_log)
         # Player.log is recreated at launch; on Windows st_ctime is creation time.
         return getattr(st, "st_birthtime", st.st_ctime)
@@ -251,7 +276,7 @@ class Env(object):
 
 def a1_bridge_lock(env):
     def f():
-        rc, out = env.run(["py", "src/RimMandrake/rimflow/cli.py", "bridge", "who"], timeout=120)
+        rc, out = env.run_wsl(["env", "AGENT_SEAT=" + SEAT, "python3", "src/RimMandrake/rimflow/cli.py", "bridge", "who"], timeout=120)
         if rc is None:
             raise Unmeasured("rimflow bridge who did not run: %s" % out)
         m = re.search(r"bridge held by (\w+)", out)
@@ -330,13 +355,15 @@ def a_deploy_current(env):
         out = []
         bad = False
         for args in DEPLOY_PLANS:
-            rc, txt = env.run(["py", "src/RimMandrake/Utils/deploy_custom_mods.py"] + args)
+            rc, txt = env.run_wsl(["python3", "src/RimMandrake/Utils/deploy_custom_mods.py"] + args)
             if rc is None:
                 raise Unmeasured("deploy plan did not run: %s" % txt)
-            drift = [ln.strip() for ln in txt.splitlines() if re.match(r"\s+[+~-]\s", ln)]
+            # `-` lines are files only in the game folder ("kept"); they are not drift, and are the only
+            # reason the tool exits 1 when everything else is in sync
+            drift = [ln.strip() for ln in txt.splitlines() if re.match(r"\s+[+~]\s", ln)]
             out.append("%s rc=%s drift=%d%s" % (" ".join(args), rc, len(drift),
                                                 (" e.g. %s" % drift[:3]) if drift else ""))
-            bad = bad or rc != 0 or bool(drift)
+            bad = bad or bool(drift) or (rc not in (0, 1))
         return (FAIL if bad else PASS), "; ".join(out), "0 changes (plan only)"
     return _row("3.2.1", "deploy current: compose biomes + UtinniPatches + PyrelandsMechanics", f)
 
@@ -493,6 +520,7 @@ def dialogs_row(s, rid="3.8.dialogs"):
         wins = r.get("windows")
         if not isinstance(wins, list):
             raise Unmeasured("window_list_close list gave no windows[]")
+        wins = [w for w in wins if w.get("type") not in IGNORED_WINDOWS]
         benign = [w for w in wins if w.get("type") in BENIGN_WINDOWS]
         other = [w for w in wins if w.get("type") not in BENIGN_WINDOWS]
         for w in benign:
@@ -505,7 +533,8 @@ def dialogs_row(s, rid="3.8.dialogs"):
                 pass
             return FAIL, "unexpected: %s screenshot %s" % (
                 [(w.get("type"), w.get("optionalTitle")) for w in other], shot), "0 non-benign windows"
-        again = _call(s, "jawa/window_list_close", action="list").get("windows") or []
+        again = [w for w in (_call(s, "jawa/window_list_close", action="list").get("windows") or [])
+                 if w.get("type") not in IGNORED_WINDOWS]
         if again:
             return FAIL, "still open after closing benign: %s" % [w.get("type") for w in again], "0"
         return PASS, "closed %d benign, 0 open" % len(benign), "0 open dialogs"
