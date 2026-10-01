@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T04:10:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T06:01:24Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2312,3 +2312,13 @@ kind:     build
 thin:     no ## verify
 summary:  1. Tracking without firing: a turret-aim comp with no verb on the Warscar's broken ancient turrets
 prose:    infrastructure/state/items/WARSCAR_TURRETS_TRACK_1.md
+
+## WARSCAR_CHOTRIX_BUILD_1 Chotrix: the Warscar's invisible hunter (cloak-lacquer eater, prints on the track grid) + permanent cloak lacquer (owner card 2026-09-30)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  - RMChotrix: RM tier, Warscar only, bodySize ~0.9, one or two per map. A lean, low scavenger that
+prose:    infrastructure/state/items/WARSCAR_CHOTRIX_BUILD_1.md

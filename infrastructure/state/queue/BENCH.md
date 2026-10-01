@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T04:10:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T06:01:24Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -31,24 +31,6 @@ target:   v1
 kind:     design
 summary:  BAROQUEBEDAZZLEPROGRAM1 — the bedazzle program: eleven biomes raised to the Baroque bar
 prose:    infrastructure/state/items/BAROQUE_BEDAZZLE_PROGRAM_1.md
-
-## BLUEDESERT_BEDAZZLE_SITTING_1 Blue Desert bedazzle sitting - program row 3: score against the nine-mark bar, fill gaps, four-turn volley, ticket + commission
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/BLUEDESERT_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BLUEDESERT_BEDAZZLE_SITTING_1.md
-
-## FLOODEDCANYON_BEDAZZLE_SITTING_1 Flooded Canyon bedazzle sitting - program row 4: score against the nine-mark bar, fill flora/fauna, four-turn volley, ticket + commission (hard-deps FlowWorks; biome mods already unified)
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/FLOODEDCANYON_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FLOODEDCANYON_BEDAZZLE_SITTING_1.md
 
 # IN PROGRESS
 
@@ -260,24 +242,6 @@ target:   v1
 kind:     task
 summary:  1. A backgrounded design/spec pass writes
 prose:    infrastructure/state/items/BIOME_MOD_UNIFICATION_1.md
-
-## CONTAGION_BEDAZZLE_SITTING_1 Contagion bedazzle sitting - program row 1: review, roster fill, the four-turn volley to the nine-mark Baroque bar, then ticket + commission
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-summary:  (no items/CONTAGION_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CONTAGION_BEDAZZLE_SITTING_1.md
-
-## WASTELAND_BEDAZZLE_SITTING_1 Wasteland bedazzle sitting - program row 2: review, roster fill, the four-turn volley to the nine-mark Baroque bar, then ticket + commission
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-summary:  (no items/WASTELAND_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WASTELAND_BEDAZZLE_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
