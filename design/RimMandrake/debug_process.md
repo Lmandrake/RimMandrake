@@ -63,6 +63,14 @@ A RED that is filed does not hold the pause; it is bug work, which continues any
 owner in one line with the census output, and the pause is over. Umbrella item:
 `NORTHSTAR_EVERYWHERE_PROGRAM_1`.
 
+**Keep the bridge busy** (owner, 2026-10-01, typed: *"Multitasking to keep the bridge active is a good
+idea. That's what we want to maximize. Live bridge usage. In fact that's a great metric to track."*).
+The pause is bounded by live-run throughput, not authoring. So the bridge holder always has a next
+script to run: authors work offline in parallel behind the current live run, each delivering a
+READY-TO-RUN script with a live-run sheet, and the holder never sits on the bridge between runs
+(release it when truly idle). Nobody blocks on "writing everything first". The tracked metric is
+bridge utilization (active driving and ticking time over held time): `NORTHSTAR_BRIDGE_UTILIZATION_1`.
+
 ## 2. What a first script must contain
 
 **Use the existing machinery and build no parallel system.** A first script is a modcheck

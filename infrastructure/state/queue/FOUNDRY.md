@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T20:47:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T20:50:09Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -3580,3 +3580,13 @@ kind:     build
 thin:     no ## spec, no ## criteria
 summary:  BIOMETIERCLEANUP1 — tier cleanup found by the grandfathered bedazzle scoring
 prose:    infrastructure/state/items/BIOME_TIER_CLEANUP_1.md
+
+## NORTHSTAR_BRIDGE_UTILIZATION_1 Track live bridge utilization (active driving time over held time) as the program's throughput metric
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Measure live bridge utilization: active time (bridge calls plus game ticks advanced by the driver) divided by…
+prose:    infrastructure/state/items/NORTHSTAR_BRIDGE_UTILIZATION_1.md
