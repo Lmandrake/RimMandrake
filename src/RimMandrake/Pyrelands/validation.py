@@ -982,8 +982,14 @@ def scorchfruit_spoils(t):
                     _fail("RM_FE_ScorchFruitYield neither rotted nor destroyed by day 4.5: %r" % last)
                 gone_early = [s for s in samples if s["day"] < 3.0 and not s["yield"]]
                 if gone_early:
-                    _unmeasured(t, "the yield stack vanished at day %.1f, before it could rot "
-                                   "(eaten or hauled?); rot unproven" % gone_early[0]["day"])
+                    g = gone_early[0]
+                    _note(t, "log around the disappearance",
+                          [m.get("text", "")[:200] for m in
+                           ((t.bridge_call("jawa/drain_log", limit=30) or {}).get("messages") or [])])
+                    _unmeasured(t, "the sealed-room yield stack vanished by day %.1f, before its "
+                                   "spoil timer ran out (whole-map ScorchFruitYield stacks then: %s); "
+                                   "something removed it, so rot is unproven this run"
+                                % (g["day"], g.get("yieldOnMap")))
                 if plant_at_1_5:
                     _fail("%d unharvested ScorchFruit plant(s) still standing at day 1.5" % plant_at_1_5)
             t.screenshot()
