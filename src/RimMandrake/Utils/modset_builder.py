@@ -103,6 +103,15 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.luminouspigment"],
         "dlc": True,
     },
+    "luminouspigment_ns": {
+        "why": "LUMINOUS_PIGMENT_FIRST_SCRIPT_1: the north-star script for LuminousPigment "
+               "(src/RimMandrake/LuminousPigment/validation.py). The `luminouspigment` tier plus "
+               "Ninefold, so the god-delta chain (godsReact, DeepfireGodDeltas) is MEASURED "
+               "instead of UNMEASURED. LightsOut (a third-party donor) is not carried: the one "
+               "LightsOut bar stays UNCOVERED.",
+        "want": [BRIDGE, "mandrake.rm.luminouspigment", "mandrake.rm.ninefold"],
+        "dlc": True,
+    },
     "weepingstones": {
         "why": "Live-load/quicktest proof for WEEPINGSTONES_RM_MOD_BUILD_1: does "
                "mandrake.rm.weepingstones load clean, does RM_WeepingStones "
