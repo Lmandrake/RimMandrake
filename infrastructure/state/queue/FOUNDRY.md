@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T08:12:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T08:22:10Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1295,15 +1295,6 @@ target:   v1
 kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
-
-## STILLSAND_GLASS_LENS_CHAIN_1 Stillsand sand-to-glass-to-lens chain: drift shovelling yields glass sand at full yield, sieve as grader, sun furnace, lenses, solar still (+ wringing still), solar oven, sun lance, geophone, fulgurites on Stillsand with real-photo art
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. Drift shovelling yields glass sand, at full yield (ruled by card 2026-09-30; REVERSES the
-prose:    infrastructure/state/items/STILLSAND_GLASS_LENS_CHAIN_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
