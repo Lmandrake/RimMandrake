@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T17:44:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T18:23:57Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1059,12 +1059,12 @@ thin:     no ## spec, no ## verify
 summary:  GLOOMCASTWAKERIDERS1 — which grazers ride the gloomcast's shadow, and what its feeding leaves
 prose:    infrastructure/state/items/GLOOMCAST_WAKE_RIDERS_1.md
 
-## CONDITION_GATED_RITUALS_MOD_1 Condition-gated rituals mod (darkness first; Utinni gods)
+## SALVATION_RITES_UNIFICATION_1 Salvation rites unified in mandrake.rut.rites; biomes teach rites (four Abyss rites, four gods)
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
-kind:     task
+kind:     design
 thin:     no ## spec, no ## verify
-summary:  CONDITIONGATEDRITUALSMOD1 — rituals that can only be done in certain conditions (first case: absolute darknes…
-prose:    infrastructure/state/items/CONDITION_GATED_RITUALS_MOD_1.md
+summary:  SALVATIONRITESUNIFICATION1 — every Salvation rite in one home; biomes teach rites
+prose:    infrastructure/state/items/SALVATION_RITES_UNIFICATION_1.md

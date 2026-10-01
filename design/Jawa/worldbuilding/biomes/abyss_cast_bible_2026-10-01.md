@@ -7,9 +7,9 @@
 
 ## 0. Rulings this ticket-out carries
 
-**Authorities:** `blackcrags_bedazzle_review_2026-09-30.md` §§7–13 (the ruling tables are the truth;
+**Authorities:** `blackcrags_bedazzle_review_2026-09-30.md` §§7–14 (the ruling tables are the truth;
 §§1–6 predate the rename, so `ForsakenCrags` there is `Abyss` now), every `ABYSS_*` item,
-`CONDITION_GATED_RITUALS_MOD_1`, and `abyss_free_cryptid_2026-10-01.md`. Card selections are
+`SALVATION_RITES_UNIFICATION_1` (`design/Jawa/salvation_rites_2026-10-01.md`), and `abyss_free_cryptid_2026-10-01.md`. Card selections are
 *decision taken by question card*; only typed words are quoted.
 
 | # | ruling | how | what it means for the cast |
@@ -30,7 +30,7 @@
 | 14 | Fold-lamp: research that warmth pushes the Dark back, then a heater-lamp that holds a clear lane | card | one faced building |
 | 15 | Free tier gets no ship touch | card | nothing owed |
 | 16 | **Both soundscapes**: the gust register and the Dark that swallows sound (the second half gated by a spike) | card | audio, not sprites |
-| 17 | Rituals are a new **RimUtinni** mod, darkness the only condition; a discoverable rite is found in the Abyss's deep dark and performed elsewhere later (candidate: **the Dark Vigil**, owner to confirm) | card + typed | no build item yet (`CONDITION_GATED_RITUALS_MOD_1` is design-stage); its found-text is drafted in §6D |
+| 17 | Darkness the only condition; the Abyss's deep dark teaches **four** rites (the Dark Vigil, the Blind Offering, the Snuffing, the Lightless Burial), each appeasing a different god, performed anywhere dark later; they live in The Salvation's suite, `mandrake.rut.rites`, not a new mod (review §14) | card + typed | no build item yet (`SALVATION_RITES_UNIFICATION_1` is design-stage); the four inscriptions are drafted in §6D |
 
 ## 1. Build-item audit
 
@@ -53,7 +53,7 @@ Every ruled feature and the item that carries it. **One item was missing and is 
 | Brood, egg, great bone, wreck, greed meter, bane-and-boon beast | `ABYSS_LIGHTFALL_BROOD_WRECK_1` | exists |
 | The Nhaleth | `ABYSS_FREE_CRYPTID_1` | exists |
 | Both soundscapes | `ABYSS_SOUNDSCAPE_BUILD_1` | exists |
-| The discoverable dark rite | `CONDITION_GATED_RITUALS_MOD_1` | BENCH design stage; **no build item by ruling** ("Not a build item yet": the mod name and the rite await the owner) |
+| The four found dark rites | `SALVATION_RITES_UNIFICATION_1` | BENCH design stage; no build item yet (home ruled: `mandrake.rut.rites`) |
 | Free-tier labels, the 12 finished `crags_*` sets wired, dusk-rat redo, 8 flora rows guarded or owned, Etchfall/Witchfire owned names, About.xml Forsakens line, paint list | **`ABYSS_FREE_TIER_BODY_1`** | **filed this pass** |
 | Gust turbines | — | CUT, no item |
 | Free-tier ship touch | — | ruled out, no item |
@@ -307,13 +307,22 @@ Drafts only, as Warscar §6 did. **Each is marked for his pen: accept, rewrite o
 > A rescue ship, by its faded stripes. It came down into Lightfall after someone, and it is
 > still here. Whatever it came for, nobody climbed out with it.
 
-### 6D. The found rite (`CONDITION_GATED_RITUALS_MOD_1`, candidate the Dark Vigil, owner to confirm) — DRAFT, FOR HIS PEN
+### 6D. The four found rites (`SALVATION_RITES_UNIFICATION_1`, review §14) — DRAFT, FOR HIS PEN
 
-> *Scratched into the stone where no light has ever reached:* "Sit where the dark is whole. Make
-> no light. Do not speak until the dark speaks first."
+Each inscription is the rite's `CompStudiable` find, studied in the dark; its rubbing is learned on
+the Rites tab (`design/Jawa/salvation_rites_2026-10-01.md` §d). Sites are candidates.
 
-The rite itself, its name, the mod's name and Sh'kaar's answer when the dark breaks are **his**
-(the item's `## next`). Nothing here is a build input until he rules.
+- **The Dark Vigil** (Ishko), where no light has ever reached:
+  > "Sit where the dark is whole. Make no light. Do not speak until the dark speaks first."
+- **The Blind Offering** (Mob'Unloo), at the Nhaleth circle (`RM_DurrgakCairn`):
+  > "Name what is owed. Set it down. Go, and do not turn. What is taken is paid."
+- **The Snuffing** (Sh'kaar), at a ring of lamps all put out by hand, long ago:
+  > "He sees by what you light. Put it out, one and then the next, until he forgets where you are."
+- **The Lightless Burial** (Ozzik), cut beside the rescue ship's dead in Lightfall:
+  > "We were more once. Bury that with them, in the dark, and close it before the light comes back."
+
+Names, wording and sites are **his**; Sh'kaar's answer when the dark breaks is ruled (it fails and
+he answers). Nothing here is a build input until he rules.
 
 ## 7. Art list: 24 subjects, 56 jobs (NOT filed; the commission waits for the owner)
 
