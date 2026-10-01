@@ -15,14 +15,13 @@
   the engine's own bodySize->meat computation rather than an override — 0.12 is
   already the smallest body in this file by a wide margin).
 
-  🔴 OWED TO CRACKEDLANDS_MECHANICS_BUILD_1, NOT THIS ITEM: the bible's real
-  lifecycle mechanism — "spawned as a cohort on the flood component's
-  soaked-cell list at recede... aging on a fast lifecycle clock... at dry-out
-  the cohort dies where it stands." That is a C# spawn/aging-clock system reading
-  the flood map component's soaked-cell list; nothing here wires it. This ThingDef
-  + PawnKindDef ship as an ordinary small animal that CAN be spawned/aged by
-  vanilla means in the interim (quicktest, `jawa/spawn_thing`, a manual wildAnimals
-  row) without erroring, so the mechanics item has something real to drive.
+  The bible's lifecycle mechanism ("spawned as a cohort on the flood
+  component's soaked-cell list at recede... at dry-out the cohort dies where it
+  stands") is Source/RM_MapComponent_RecedeAftermath.cs
+  (CRACKEDLANDS_GPT_ENRICHMENT_1 §5): a bounded cohort on the wetted cells,
+  each tagged RM_IrqitFloodBorn, killed at the dry so the corpses are the
+  windrows. This def stays an ordinary small animal, so it can still be spawned
+  by vanilla means (quicktest, `jawa/spawn_thing`) without erroring.
 
   LIFECYCLE SHAPE CHOSEN HERE: a single lifeStage (AnimalAdult, minAge 0) — no
   baby/juvenile split, matching this biome's OWN precedent for a creature that is
@@ -55,14 +54,11 @@
   codebase (grep of `<body>` across src/RimMandrake); no dedicated climber body
   exists to match more precisely.
 
-  🔴 OWED TO A FOLLOW-UP PASS, NOT THIS ITEM: the bible's ambient-call/silence
-  mechanism — "an ambient call (SoundDef, slate E's pipeline) keyed to tarruq
-  presence, gated OFF by the flood map component's pre-chime phase." That is
-  audio-pipeline + flood-map-component wiring (a SoundDef plus the boolean gate
-  read), not a ThingDef field; no CRACKEDLANDS-named audio item was found to cite
-  by ID at build time, so this note stands in its place. This creature def ships
-  with no SoundDef fields overridden (inherits AnimalKindBase's stock ambience),
-  which is honest: it makes no sound claim the game cannot yet keep.
+  The bible's ambient-call/silence mechanism: the GATE is built
+  (Source/RM_TarruqHushPatch.cs skips the idle call while the flood component's
+  TarruqSilenced is true, i.e. from the herald's third beat to the recede). The
+  CALL itself is owed audio, CRACKEDLANDS_FIVE_BEATS_AUDIO_1. Until it lands
+  this def sets no soundCall, so there is nothing yet for the gate to silence.
 
   ═════════════════════════════════════ ART ═════════════════════════════════════
 

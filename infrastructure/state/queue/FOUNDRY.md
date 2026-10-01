@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:15:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:17:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1260,6 +1260,15 @@ kind:     task
 summary:  - A ship-mounted acoustic scanner. When the grounded gravship fires a sounding pulse, dust jumps
 prose:    infrastructure/state/items/GRAVSHIP_ACOUSTIC_SCANNER_1.md
 
+## CRACKEDLANDS_GPT_ENRICHMENT_1 Cracked Lands enrichment (GPT consult 2026-09-30, owner-picked by card): Ledges of Mercy, five beats before water, Peakstorm light, three-height flora, the recede feast, floodline salvage claim; acoustic scanner's Cracked Lands payload
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Ledges of Mercy. Map generation places high ledges bearing worn figures, old offerings, and
+prose:    infrastructure/state/items/CRACKEDLANDS_GPT_ENRICHMENT_1.md
+
 ## CONTAGION_GROWN_LIMBS_BUILD_1 Build the grown limbs the owner keeps on design/Jawa/worldbuilding/biomes/contagion_grown_limbs_2026-09-30.md (Pillar Arm + Lash first; Monstrous sample grade from Coalescence drops; removal-spawns-Unfinished comp)
 state:    doing
 row:      unassigned
@@ -2041,16 +2050,6 @@ thin:     no ## verify, no ## criteria
 summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
 
-## CRACKEDLANDS_GPT_ENRICHMENT_1 Cracked Lands enrichment (GPT consult 2026-09-30, owner-picked by card): Ledges of Mercy, five beats before water, Peakstorm light, three-height flora, the recede feast, floodline salvage claim; acoustic scanner's Cracked Lands payload
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Ledges of Mercy. Map generation places high ledges bearing worn figures, old offerings, and
-prose:    infrastructure/state/items/CRACKEDLANDS_GPT_ENRICHMENT_1.md
-
 ## CAULDRON_GPT_ENRICHMENT_1 Cauldron enrichment (GPT consult 2026-09-30, owner-picked by card): four-stroke weather cycle, vexxiss warden of the breath, vexxith closed loop, assay forestry, condensate gardens
 state:    proposed
 row:      unassigned
@@ -2730,3 +2729,73 @@ kind:     defect
 thin:     no ## spec, no ## verify
 summary:  RIMPLACEGENSTEPNRE1 — GenStepRimplacePlan throws during map generation
 prose:    infrastructure/state/items/RIMPLACE_GENSTEP_NRE_1.md
+
+## CRACKEDLANDS_LEDGES_OF_MERCY_1 Ledges of Mercy (from CRACKEDLANDS_GPT_ENRICHMENT_1 §1): refuge ledges, carvings, chime-line anchors, visitors+trained animals seek ledges at the warning; owner must answer ledge physical form, inscription lines, memory numbers
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  CRACKEDLANDSLEDGESOFMERCY1 — refuge ledges, carvings, chime-line anchors
+prose:    infrastructure/state/items/CRACKEDLANDS_LEDGES_OF_MERCY_1.md
+
+## CRACKEDLANDS_FIVE_BEATS_AUDIO_1 Bespoke audio for the five beats (6 SoundDefs on vanilla-clip placeholders) + the tarruq's call; owner: audio source
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  CRACKEDLANDSFIVEBEATSAUDIO1 — bespoke audio for the five beats, and the tarruq's call
+prose:    infrastructure/state/items/CRACKEDLANDS_FIVE_BEATS_AUDIO_1.md
+
+## CRACKEDLANDS_THREE_HEIGHT_FLORA_1 Qirra mats + talus clasps (names swept clean): art to review sheet before defs; owner: what 'pry cracks wider' does, harvests, veqma shade-line law
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  CRACKEDLANDSTHREEHEIGHTFLORA1 — qirra mats and talus clasps
+prose:    infrastructure/state/items/CRACKEDLANDS_THREE_HEIGHT_FLORA_1.md
+
+## CRACKEDLANDS_SALVAGE_CLAIM_CREW_1 Floodline salvage claim stakes + rival crew visitor lord (scatter already built); owner: RM scavenger faction, what negotiate offers, frequency
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  CRACKEDLANDSSALVAGECLAIMCREW1 — claim stakes and the rival salvage crew
+prose:    infrastructure/state/items/CRACKEDLANDS_SALVAGE_CLAIM_CREW_1.md
+
+## CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1 Peakstorm Light: dust briefly reverses (no WeatherDef field; overlay vs mote event vs drop)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  CRACKEDLANDSPEAKSTORMDUSTREVERSAL1 — dust briefly reverses under Peakstorm Light
+prose:    infrastructure/state/items/CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1.md
+
+## CRACKEDLANDS_ENRICHMENT_QUICKTEST_1 Quicktest-prove the Cracked Lands enrichment tranche by state reads: five beats, peakstorm odds, recede feast cohort/migrants, salvage decay
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CRACKEDLANDSENRICHMENTQUICKTEST1 — prove the GPT-enrichment tranche live
+prose:    infrastructure/state/items/CRACKEDLANDS_ENRICHMENT_QUICKTEST_1.md
+
+## CRACKEDLANDS_WOOLAMANDER_FLIGHT_1 RSW_Woolamander is a ruled Cracked Lands flier-commuter but has no MaxFlightTime/canFlyIntoMap; owner: does it fly?
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CRACKEDLANDSWOOLAMANDERFLIGHT1 — the woolamander is a ruled flier but cannot fly
+prose:    infrastructure/state/items/CRACKEDLANDS_WOOLAMANDER_FLIGHT_1.md

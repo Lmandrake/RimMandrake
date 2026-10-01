@@ -54,6 +54,13 @@ VANILLA_PACKED = {
     # STILLSAND_SKELETONS_TRACKS_1's bone harp (placeholder grain); verbatim
     # from Core Ambient_Wind_Desolate, verified via RimSage 2026-10-01.
     "Ambience/Wind/Amb_Wind_Altitude1_Loop": "vanilla Ambient_Wind_Desolate",
+    # CRACKEDLANDS_GPT_ENRICHMENT_1's five-beat placeholders
+    # (FloodedCanyon/Defs/SoundDefs/RM_CanyonBeats.xml); each verbatim from the
+    # named vanilla SoundDef's own grain, verified via RimSage 2026-10-01.
+    "Ambience/Wind/Amb_Wind_Stormy_Loop": "vanilla Ambient_Wind_Storm",
+    "UI/TickLow": "vanilla Tick_Low",
+    "UI/TinyBell": "vanilla TinyBell",
+    "Electricity/Watermill_Loop_01a": "vanilla WaterMill_Ambience",
 }
 
 
