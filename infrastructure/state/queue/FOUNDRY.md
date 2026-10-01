@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T21:08:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T21:14:12Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -3600,3 +3600,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  The first ExplosiveGrowth north-star script (src/RimMandrake/ExplosiveGrowth/validation.py, item EXPLOSIVEGRO…
 prose:    infrastructure/state/items/EXPLOSIVE_GROWTH_PROBE_TOOL_1.md
+
+## SLIME_SEEKER_LOAD_TOOL_1 JawaBench tool to load a slime seeker so the GelatinousSlime script can cover prime, extract, inject and the antidote race
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  The GelatinousSlime first script (item GELATINOUSSLIMEFIRSTSCRIPT1) marks seeker prime, extract, inject and t…
+prose:    infrastructure/state/items/SLIME_SEEKER_LOAD_TOOL_1.md
