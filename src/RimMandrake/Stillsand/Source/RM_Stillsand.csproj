@@ -12,7 +12,7 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No BiomeWorker (Harmony arrived with STILLSAND_GLASS_LENS_CHAIN_1, below): the def reuses vanilla Core's own
+    No BiomeWorker (Harmony arrived with STILLSAND_GLASS_LENS_CHAIN_1, below; STILLSAND_SKELETONS_TRACKS_1's horizon warning also uses it): the def reuses vanilla Core's own
     RimWorld.BiomeWorker_ExtremeDesert unchanged (item's own MEASURED STATE —
     the donor twin never named a third-party workerClass).
   -->
@@ -61,6 +61,11 @@
     <!-- STILLSAND_RETURN_RITUAL_1: sand remembers water (RM) + the inert water-ledger engine -->
     <Compile Include="RM_StillsandWater.cs" />
     <Compile Include="RM_WaterLedger.cs" />
+    <!-- STILLSAND_SKELETONS_TRACKS_1: giant skeletons, bone harp, corpse-to-skeleton,
+         the horizon warning (a Harmony prefix on Storyteller.TryFire) and their settings -->
+    <Compile Include="RM_GiantSkeletons.cs" />
+    <Compile Include="RM_HorizonWarning.cs" />
+    <Compile Include="RM_SkeletonSettings.cs" />
     <!-- STILLSAND_GLASS_LENS_CHAIN_1: sun-fed work tables (Harmony, see below) -->
     <Compile Include="RM_SunPowered.cs" />
     <Compile Include="RM_GlassChainMod.cs" />

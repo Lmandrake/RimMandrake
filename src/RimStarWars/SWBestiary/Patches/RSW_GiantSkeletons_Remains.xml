@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_SKELETONS_TRACKS_1 §5: a krayt, greater krayt or war wyrm that dies on a biome
+  that keeps its bones (RM_SkeletonBiomeExtension, the Stillsand) becomes its skeleton
+  (Defs/ThingDefs_Buildings/RSW_GiantSkeletons.xml). Guarded by PatchOperationFindMod, not
+  MayRequire: MayRequire on an <Operation> is ignored by the 1.6 engine (CLAUDE.md).
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Stillsand</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAddModExtension">
+          <xpath>/Defs/ThingDef[defName="RSW_KraytDragon"]</xpath>
+          <value>
+            <li Class="RimMandrake.Stillsand.RM_SkeletonRemainsExtension">
+              <skeleton>RSW_KraytSkeleton</skeleton>
+            </li>
+          </value>
+        </li>
+        <li Class="PatchOperationAddModExtension">
+          <xpath>/Defs/ThingDef[defName="RSW_GreaterKraytDragon"]</xpath>
+          <value>
+            <li Class="RimMandrake.Stillsand.RM_SkeletonRemainsExtension">
+              <skeleton>RSW_GreaterKraytSkeleton</skeleton>
+            </li>
+          </value>
+        </li>
+        <li Class="PatchOperationAddModExtension">
+          <xpath>/Defs/ThingDef[defName="RSW_WarWyrm"]</xpath>
+          <value>
+            <li Class="RimMandrake.Stillsand.RM_SkeletonRemainsExtension">
+              <skeleton>RSW_WarWyrmSkeleton</skeleton>
+            </li>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

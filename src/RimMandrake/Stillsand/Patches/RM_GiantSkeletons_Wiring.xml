@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_SKELETONS_TRACKS_1: wire the skeletons onto the Stillsand without touching
+  RM_Stillsand_Biome.xml or the race files (other items edit those).
+  1. RM_Stillsand gets the RM_GiantSkeletons gen step (extraGenSteps, as
+     RM_PreciousCaves_BiomeGenSteps.xml) and RM_SkeletonBiomeExtension (this biome keeps
+     its giants' bones and sees what crosses its horizon).
+  2. Each RM giant race names the skeleton its corpse becomes. The RSW giants (krayt,
+     greater krayt, war wyrm) are wired by SWBestiary's own patch.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_Stillsand"]/extraGenSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Stillsand"]/extraGenSteps</xpath>
+      <value>
+        <li>RM_GiantSkeletons</li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Stillsand"]</xpath>
+      <value>
+        <extraGenSteps>
+          <li>RM_GiantSkeletons</li>
+        </extraGenSteps>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>/Defs/BiomeDef[defName="RM_Stillsand"]</xpath>
+    <value>
+      <li Class="RimMandrake.Stillsand.RM_SkeletonBiomeExtension">
+        <corpsesBecomeSkeletons>true</corpsesBecomeSkeletons>
+        <horizonWarnings>true</horizonWarnings>
+        <chanceNone>0.3</chanceNone>
+        <chanceOne>0.5</chanceOne>
+        <chanceOllim>0.6</chanceOllim>
+      </li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>/Defs/ThingDef[defName="RM_Oommok"]</xpath>
+    <value>
+      <li Class="RimMandrake.Stillsand.RM_SkeletonRemainsExtension">
+        <skeleton>RM_OommokSkeleton</skeleton>
+      </li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>/Defs/ThingDef[defName="RM_Muurrok"]</xpath>
+    <value>
+      <li Class="RimMandrake.Stillsand.RM_SkeletonRemainsExtension">
+        <skeleton>RM_MuurrokSkeleton</skeleton>
+      </li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>/Defs/ThingDef[defName="RM_Guzzka"]</xpath>
+    <value>
+      <li Class="RimMandrake.Stillsand.RM_SkeletonRemainsExtension">
+        <skeleton>RM_GuzzkaSkeleton</skeleton>
+      </li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>/Defs/ThingDef[defName="RM_Vozzik"]</xpath>
+    <value>
+      <li Class="RimMandrake.Stillsand.RM_SkeletonRemainsExtension">
+        <skeleton>RM_VozzikSkeleton</skeleton>
+      </li>
+    </value>
+  </Operation>
+</Patch>
