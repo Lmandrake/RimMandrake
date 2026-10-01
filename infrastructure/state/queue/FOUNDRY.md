@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T06:56:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T07:12:22Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## STILLSAND_EVENT_CREATURES_1 Stillsand event creatures: krayt attack incident on top of wild krayts, the muurrok (RM leviathan, mirror-crest beam on an animal-safe Verb_ShootBeam copy), sarlacc comes to root, greater krayt den quest, krayt horn
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. 🔴 The krayts and the war wyrm STAY WILD (owner, by card, 2026-09-30; he declined the doc's
-prose:    infrastructure/state/items/STILLSAND_EVENT_CREATURES_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
