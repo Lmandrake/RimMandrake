@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T22:14:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T23:09:54Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1089,3 +1089,23 @@ kind:     task
 thin:     no ## verify
 summary:  Movements 1-2 done. Next: the owner's turn-1 card (§7), then the volley, then ticket-out
 prose:    infrastructure/state/items/LANTERNDEEPS_BEDAZZLE_SITTING_1.md
+
+## NINE_FAULTS_PERMANENT_RITE_1 Zizzik's Nine Faults: explore the first rite with a permanent, game-changing decision and consequence
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NINE_FAULTS_PERMANENT_RITE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NINE_FAULTS_PERMANENT_RITE_1.md
+
+## SHIP_CARGO_HOIST_DESIGN_1 Universal vertical cargo hoist: a unique gravship component reused campaign-wide (Hutt slave pits, oubliettes, dungeon entrances, Deep cave mouths), plus a Hutt lottery idea; deep plan + GPT commentary
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SHIP_CARGO_HOIST_DESIGN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHIP_CARGO_HOIST_DESIGN_1.md
