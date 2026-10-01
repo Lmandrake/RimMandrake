@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-10-01T04:09:06Z",
+  "derive_from": "RM_Chotrix_east",
+  "drawsize": 0.9,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Chotrix_north",
+  "priority": 60,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game animal sprite: the chotrix, a lean, low, long-limbed scavenger of the old battlefield that ate the cloaks \u2014 a slender low-slung body on long thin limbs, a narrow head, hide shimmering with a light-bending lacquer so its outline seems to ripple and take on the grey slag behind it. Familiar lean-scavenger architecture but no nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "WARSCAR_CHOTRIX_BUILD_1",
+  "style_notes": "warscar register: an old battlefield where everyone already lost: grey slag terraces under a flat grey overcast sky, soft diffuse top light, no sun glare, no hard cast shadow and NO baked cast shadow on the ground; ash grey, gunmetal and old rust, with black glower varnish on metal; nothing green, nothing lush, nothing pastoral, no intact shiny treasure; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is OIL-SLICK VIOLET-TEAL SHIMMER over dull gunmetal: a faint refractive sheen on the hide, pale ash underside; bs~0.9, drawSize ~0.9; lean, low, long-limbed; stalking pose; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the back, hips and thin tail from behind"
+}
