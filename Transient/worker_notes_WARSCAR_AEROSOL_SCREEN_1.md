@@ -1,0 +1,5 @@
+# worker notes WARSCAR_AEROSOL_SCREEN_1 — ESCALATED, nothing built
+- Not already built: no RM_CompAerosolScreen / RM_PollutionSense / RM_AerosolScreen / RM_WarscarProjector / RM_ProjectorCore / glower panel+plate anywhere in src/.
+- Existing core to lift: src/RimUtinni/ShipShields/Source (CompShieldParticulateScreen, ShieldHazardUtility, HarmonyPatches; 1561 lines total).
+- Blockers: (1) no dotnet in WSL, cannot rebuild the committed DLLs + .srchash (RUT ShipShields must be rebuilt to call the RM comp); (2) spec needs dielectric gel (WARSCAR_RAINBOW_POOLS_1) and old-tongue projector reading (WARSCAR_OLD_TONGUE_1), neither built; (3) item spans a new assembly choice (EnvironmentalHazards vs new), genstep, Odyssey-ruins placement, Biotech analyzable research, salvage/evaluate job, gravship wake, 11 settings, ~10 new defs: far beyond one worker pass, and the assembly choice is undecided in the item.
+- Suggest: split into (a) core lift + PollutionSense + RM_AerosolScreen building (needs Windows build), (b) rings+salvage, (c) glower shielding, (d) ship-wakes-line.
