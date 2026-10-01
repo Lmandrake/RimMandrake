@@ -86,7 +86,7 @@
       <foodType>Meal, Processed, VegetableOrFruit</foodType>
       <preferability>MealSimple</preferability>
       <baseIngestTicks>250</baseIngestTicks>
-      <ingestSound>Ingest_Vegetable</ingestSound>
+      <ingestSound>RawVegetable_Eat</ingestSound>
       <ingestHoldOffsetStanding>
         <northDefault>
           <offset>(0, 0, 0.1)</offset>
