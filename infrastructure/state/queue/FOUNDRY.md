@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:52:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:57:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1296,6 +1296,15 @@ kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
+## LONGSHADE_GPT_ENRICHMENT_1 Long Shade enrichment (GPT consult 2026-09-30, owner-picked by card): ship becomes a refuge, gloomcast moves shade, camera-keyed heat soundscape, lee-side middens, shade gear learned by study
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Ship becomes a refuge (Shipfall Commons). After landing, the shade grid sees the gravship's
+prose:    infrastructure/state/items/LONGSHADE_GPT_ENRICHMENT_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -2041,16 +2050,6 @@ kind:     task
 thin:     no ## verify
 summary:  1. Floatstone keelwork. Pearl-white, spun-sugar floatstone braces threaded through a gravship
 prose:    infrastructure/state/items/FORGE_GPT_ENRICHMENT_1.md
-
-## LONGSHADE_GPT_ENRICHMENT_1 Long Shade enrichment (GPT consult 2026-09-30, owner-picked by card): ship becomes a refuge, gloomcast moves shade, camera-keyed heat soundscape, lee-side middens, shade gear learned by study
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Ship becomes a refuge (Shipfall Commons). After landing, the shade grid sees the gravship's
-prose:    infrastructure/state/items/LONGSHADE_GPT_ENRICHMENT_1.md
 
 ## FOOTPRINT_TRACK_GRID_1 One footprint grid for the planet: capped TrackGrid + section layer + cell-entry postfix in CreatureBehaviors, invisible pawns recorded, erase API; Warscar film and Stillsand sand both consume it as XML
 state:    proposed

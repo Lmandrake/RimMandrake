@@ -1717,3 +1717,5 @@
 {"seat":"FOUNDRY","event":"file","id":"LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1","title":"Runway bloom visuals: ribbonwhip sway and burrower exit holes (which species burrow?)","kind":"task","target":"v1","needs":"offline","caused_by":"LEANINGSCRUB_GPT_ENRICHMENT_1","for":"FOUNDRY","ts":"2026-10-01T09:43:37Z"}
 {"seat":"FOUNDRY","event":"file","id":"LEANINGSCRUB_ENRICHMENT_QUICKTEST_1","title":"Quicktest-prove dripping regrow, crown mob, runway bloom, named sweetline trees by state read","kind":"verify","target":"v1","needs":"bridge","caused_by":"LEANINGSCRUB_GPT_ENRICHMENT_1","for":"FOUNDRY","ts":"2026-10-01T09:43:43Z"}
 {"seat":"FOUNDRY","event":"close","id":"LEANINGSCRUB_GPT_ENRICHMENT_1","sha":"8e3d24e35","ts":"2026-10-01T09:52:01Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LONGSHADE_GPT_ENRICHMENT_1","ts":"2026-10-01T09:57:07Z"}
+{"seat":"FOUNDRY","event":"start","id":"LONGSHADE_GPT_ENRICHMENT_1","ts":"2026-10-01T09:57:09Z"}
