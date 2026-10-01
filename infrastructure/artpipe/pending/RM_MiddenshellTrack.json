@@ -1,0 +1,18 @@
+{
+  "background": "#6b6452",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-09-30T23:59:11Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_MiddenshellTrack",
+  "priority": 100,
+  "prompt": "Tiling ground terrain texture: earth crushed flat by something titanic and glazed in its passing - a hard trench floor of packed crust, slag crumbs and metal-salt smear, dull grey-brown with faint parallel drag marks and fused glassy flecks. Must tile seamlessly edge-to-edge. Painterly vanilla-RimWorld terrain art style, top-down, muted palette (def tint 0.52,0.48,0.40) low value range so a colonist sprite reads on top. Full-bleed opaque seamless tiling texture filling the entire canvas edge to edge -- no transparency, no isolated subject, no vignette, no border; every edge must wrap to its opposite edge.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_GPT_ENRICHMENT_1",
+  "style_notes": "terrain RM_MiddenshellTrack (TerrainDef texturePath currently Terrain/Surfaces/Gravel); tiling, no alpha by design, opaque hex background per lanternstoneterrain_v1 precedent; wasteland register: an ash-grey drained flat of cinder, slag and salvage under a dim exhaust-hazed sun; realistic painted illustration, grounded believable, matte surface texture, never cartoonish, no outlines; "
+}
