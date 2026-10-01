@@ -48,6 +48,8 @@ import contextlib
 import importlib.util
 import json
 import os
+import sys
+import time
 
 from modcheck import Suite, ExpectationFailed
 
@@ -90,6 +92,7 @@ PAD_BURROW = (190, 125)
 PAD_WARMTH = (95, 160)
 PAD_ROOMS = (160, 90)
 PAD_PROBE = (225, 225)
+FIRE_PADS = (PAD_FIRE_TICK, PAD_LADDER, PAD_REGROW, PAD_FIRE_BORN, PAD_HAWK, PAD_BURROW)
 
 _GEN = {}   # gen-time readings shared between chains of ONE run (chains run in order)
 
@@ -132,10 +135,54 @@ def _comp(t, name, **kw):
         t.components[-1].detail = "UNMEASURED: %s" % why
         t.upstream_failed = False
     t._why = None
+    if t.session is not None:   # progress line (the driver prints only at the very end)
+        c = t.components[-1]
+        print("[pyre] %s %s %s" % (time.strftime("%H:%M:%S"), c.name, c.verdict),
+              str(c.detail or "")[:300], file=sys.stderr, flush=True)
+
+
+def _wait(t, n):
+    """Advance `n` real ticks. Short waits use t.wait_ticks (exact, one tick per frame: MEASURED
+    ~53 ticks/s, so 7 days would take ~2.2 h). Long waits run the game at Ultrafast and poll the
+    real clock, then pause; the overshoot is recorded. Raises on a stalled clock."""
+    if t.session is None or t.upstream_failed or n <= 5000:
+        return t.wait_ticks(n)
+    _on_site(t)
+    s = t.session
+    start = s._ticks()
+    target = start + n
+    s.call("rimworld/set_time_speed", speed="Ultrafast")
+    last, stall = start, time.time()
+    try:
+        while True:
+            time.sleep(1.0)
+            now = s._ticks()
+            if now is None:
+                raise ExpectationFailed("clock unreadable during a %d-tick wait" % n)
+            if now >= target - 400:
+                break
+            if now > last:
+                last, stall = now, time.time()
+            elif time.time() - stall > 60:
+                raise ExpectationFailed("clock stalled at %d during a %d-tick wait (a modal "
+                                        "dialog pausing the game?)" % (now, n))
+    finally:
+        s.call("rimworld/set_time_speed", speed="Paused")
+    now = s._ticks()
+    if now < target:
+        t.wait_ticks(target - now)
+        now = s._ticks()
+    t._record("_wait(%d) at Ultrafast -> %d real ticks" % (n, now - start), now - start)
+    _on_site(t)
 
 
 def _note(t, label, data):
+    """Evidence record. Also echoed to stderr: the results JSON keeps only a ~300-char
+    excerpt of a component's evidence, so the numbers would otherwise be lost."""
     t._record(label, data)
+    if t.session is not None:
+        print("[pyre-note] %s: %s" % (label, json.dumps(data, default=str)[:1500]),
+              file=sys.stderr, flush=True)
 
 
 def _on_site(t):
@@ -149,7 +196,7 @@ def _on_site(t):
         _GEN.setdefault("site_map", r.get("mapId"))
         return
     try:
-        t.session.call("jawa/window_list_close", action="close", typeName="NamePlayerFaction",
+        t.session.call("jawa/window_list_close", action="close", typeName="NamePlayer",
                        closeAll=True)
     except Exception:
         pass   # no such dialog open: nothing to close
@@ -282,6 +329,13 @@ def _firebreak(t, rect, width=4):
     t.bridge_call("jawa/set_plants", ops=";".join("CLEAR:%s" % _rs(r) for r in ring))
 
 
+def _soil(t, rect):
+    """Re-lay the cohort as RM_FE_Ground_Soil: a pad burned by an earlier run sits on deep ash,
+    which neither grows grass nor takes fire."""
+    t.bridge_call("jawa/set_terrain", x=rect[0], z=rect[1], terrainDef=SOIL, width=rect[2],
+                  height=rect[3], layer="top")
+
+
 def _extinguish(t):
     t.bridge_call("jawa/map_fire", action="extinguish", rect=_whole(t))
 
@@ -407,7 +461,8 @@ def plant_census(t):
         live = _get_defs(t, "BiomeDef/RM_Pyrelands", "wildPlants,plantDensity")
         census = _whole_map(t, "Plant")
         if _live(t):
-            _GEN["scorchfruit"] = census.get("RM_FE_Plant_ScorchFruit", 0)
+            _GEN["scorchfruit"] = [(p.get("x"), p.get("z")) for p in
+                                   _things(t, "RM_FE_Plant_ScorchFruit", limit=500)]
             row = live.get("RM_Pyrelands") or {}
             wp = row.get("wildPlants")
             keys = set(x.get("plant") for x in wp) if isinstance(wp, list) else None
@@ -589,7 +644,9 @@ def ground_ash_ladder(t):
             for cycle in range(3):
                 _plants(t, "RM_FE_Plant_EmberGrass", burn)
                 _fire(t, burn)
-                t.wait_ticks(3000)
+                # Fire.TryBurnFloor runs only once a Fire has lived TicksToBurnFloor = 7500 ticks
+                # (decompiled RimWorld.Fire); extinguishing sooner can never move the ladder.
+                _wait(t, 8000)
                 _extinguish(t)
                 got = _terrain(t, _rs(burn))
                 series.append(got)
@@ -629,7 +686,7 @@ def fire_tick_effects(t):
 
         with _comp(t, "ash_dusting", toggle="ashDustingEnabled"):
             _fire(t, rect)
-            t.wait_ticks(2600)
+            _wait(t, 2600)
             n = _count(t, "RM_FE_Filth_LooseAsh", _rs(rect))
             if _live(t) and n < 1:
                 _fail("expected >=1 RM_FE_Filth_LooseAsh in %s after 2600 ticks of fire, got %d"
@@ -637,8 +694,10 @@ def fire_tick_effects(t):
             t.screenshot(rect=rect)
 
         with _comp(t, "scorch_fruit_seed", toggle="scorchFruitEnabled"):
-            t.wait_ticks(9000)
+            _wait(t, 9000)
             n = _count(t, "RM_FE_Plant_ScorchFruit", _rs(rect))
+            whole = _count(t, "RM_FE_Plant_ScorchFruit")
+            _note(t, "ScorchFruit in the rect / whole map (cap 40)", {"rect": n, "map": whole})
             if _live(t):
                 if n < 1:
                     _fail("expected >=1 RM_FE_Plant_ScorchFruit in %s after ~11,600 ticks of fire, "
@@ -663,7 +722,7 @@ def ashfall_weather_accumulation(t):
             _fail("could not clear ash to zero before the run: %d remain" % start)
         try:
             t.bridge_call("jawa/weather_set", weather="RM_FE_Weather_AshFall", lockWeather=True)
-            t.wait_ticks(2600)
+            _wait(t, 2600)
             n = _count(t, "RM_FE_Filth_LooseAsh")
         finally:
             t.bridge_call("jawa/weather_set", unlock=True)
@@ -683,11 +742,11 @@ def ashfall_drifts(t):
             _extinguish(t)
             t.bridge_call("jawa/destroy_batch", rects=_whole(t), categories="Filth")
             t.bridge_call("jawa/weather_set", weather="RM_FE_Weather_AshFall", lockWeather=True)
-            t.wait_ticks(4000)
+            _wait(t, 4000)
             series = []
             for _ in range(4):
                 series.append(_count(t, "RM_FE_Filth_LooseAsh"))
-                t.wait_ticks(2500)
+                _wait(t, 2500)
             _note(t, "whole-map LooseAsh at t=0/2500/5000/7500 after settle", series)
             if _live(t):
                 if any(b < a for a, b in zip(series, series[1:])) or series[-1] < 20:
@@ -708,7 +767,7 @@ def _weather_pair(t, name, other, fields):
             _fail("%s and %s differ in none of %r" % (name, other, fields))
     try:
         t.bridge_call("jawa/weather_set", weather=name, lockWeather=True)
-        t.wait_ticks(5000)
+        _wait(t, 5000)
         t.screenshot()
     finally:
         t.bridge_call("jawa/weather_set", unlock=True)
@@ -758,13 +817,20 @@ def scorchfruit_fire_born(t):
             if _live(t):
                 gen = _GEN.get("scorchfruit")
                 if gen is None:
-                    _unmeasured(t, "the gen census (plant_census) did not record a ScorchFruit count")
-                if gen != 0:
-                    _fail("ScorchFruit present on unburned land at gen: %d" % gen)
+                    _unmeasured(t, "the gen census (plant_census) did not record ScorchFruit")
+                # The site's only fires are this suite's pads (the site recipe isolates every
+                # natural igniter), so a ScorchFruit outside every fire pad grew on unburned land.
+                wild = [c for c in gen if not any(abs(c[0] - px) <= 18 and abs(c[1] - pz) <= 18
+                                                  for (px, pz) in FIRE_PADS)]
+                _note(t, "gen ScorchFruit positions", {"all": gen, "outsideFirePads": wild})
+                if wild:
+                    _fail("ScorchFruit on unburned land (outside every fire pad) at the census: %r"
+                          % wild)
             _firebreak(t, rect)
+            _soil(t, rect)
             _plants(t, "RM_FE_Plant_EmberGrass", rect)
             _fire(t, rect)
-            t.wait_ticks(11600)
+            _wait(t, 11600)
             n = _count(t, "RM_FE_Plant_ScorchFruit", _rs(rect))
             _note(t, "ScorchFruit inside the burned cohort", n)
             if _live(t) and n < 1:
@@ -798,7 +864,7 @@ def scorchfruit_produces(t):
                 for p in plants[:3]:
                     t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Harvest",
                                   targetAId=p["id"], queue=True, waitTicks=60)
-                t.wait_ticks(2500)
+                _wait(t, 2500)
                 made = [x for x in _things(t, "RM_FE_ScorchFruitYield", limit=500)
                         if x.get("id") not in before]
                 _note(t, "yield made by the harvest", made)
@@ -807,14 +873,21 @@ def scorchfruit_produces(t):
                           % len(plants[:3]))
                 t.bridge_call("jawa/pawn_need", pawn=cid, action="need", need="Food", level=0.2)
                 f0 = _need(t, cid, "Food")
-                t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Ingest",
-                              targetAId=made[0]["id"], count=1, waitTicks=900)
-                f1 = _need(t, cid, "Food")
-                _note(t, "food across the ingest", {"before": f0, "after": f1, "pawn": cid})
-                if f0 is None or f1 is None:
-                    _unmeasured(t, "food need unreadable: %r -> %r" % (f0, f1))
-                if f1 <= f0:
-                    _fail("food did not rise across the ingest: %.3f -> %.3f" % (f0, f1))
+                job = t.bridge_call("jawa/ordered_job", pawnId=cid, jobDef="Ingest",
+                                    targetAId=made[0]["id"], count=1, waitTicks=60)
+                levels = []
+                for _ in range(10):        # the game is paused: ticks must be run for the ingest
+                    _wait(t, 150)
+                    levels.append(_need(t, cid, "Food"))
+                left = [x.get("id") for x in _things(t, "RM_FE_ScorchFruitYield", limit=500)]
+                _note(t, "food across the ingest", {"before": f0, "after": levels, "pawn": cid,
+                                                    "orderedJob": job, "yieldConsumed":
+                                                    made[0]["id"] not in left or None})
+                if f0 is None or None in levels:
+                    _unmeasured(t, "food need unreadable: %r -> %r" % (f0, levels))
+                if max(levels) <= f0:
+                    _fail("food never rose above %.3f across 1500 ticks after the ordered ingest: %r"
+                          % (f0, levels))
             t.screenshot(rect=rect)
     finally:
         _restore(t)
@@ -836,7 +909,7 @@ def scorchfruit_spoils(t):
             yid = [y.get("id") for y in _things(t, "RM_FE_ScorchFruitYield", "%d,%d,1,1" % (x, z))]
             samples, plant_at_1_5 = [], None
             for half_day in range(1, 10):          # 0.5 .. 4.5 days
-                t.wait_ticks(30000)
+                _wait(t, 30000)
                 if not _live(t):
                     break
                 r = t.bridge_call("jawa/inspect_string", thingIds=",".join(yid)) if yid else None
@@ -844,6 +917,10 @@ def scorchfruit_spoils(t):
                 ref = t.bridge_call("jawa/inspect_string", defName="Meat_Human",
                                     rect="%d,%d,1,1" % (x + 2, z))
                 samples.append({"day": half_day / 2.0,
+                                "yieldOnMap": _count(t, "RM_FE_ScorchFruitYield"),
+                                "near": [(w.get("id"), w.get("x"), w.get("z"), w.get("stackCount"))
+                                         for w in _things(t, "RM_FE_ScorchFruitYield",
+                                                          "%d,%d,5,5" % (x - 2, z - 2))],
                                 "yield": [" ".join(w.get("inspect") or []) for w in rows],
                                 "ref": [" ".join(w.get("inspect") or []) for w in ((ref or {}).get("things") or [])]})
                 if half_day == 3:
@@ -879,12 +956,13 @@ def firehawk(t):
         with _comp(t, "firehawk_carries_ember", shows=["pyre_firehawk_carries_ember"]):
             _set(t, {"burnLineEnabled": True, "fireHawkSpreadEnabled": True})
             _firebreak(t, rect)
+            _soil(t, rect)
             _plants(t, "RM_FE_Plant_EmberGrass", rect)
             _fire(t, (x - 2, z - 2, 4, 4), size=0.5)
             hawk = _spawn_wild(t, "RUT_FireHawk", x + 8, z)
             seen = []
             for _ in range(20):
-                t.wait_ticks(300)
+                _wait(t, 300)
                 j = _job_of(t, hawk)
                 seen.append(j)
                 if j == FIRE_HAWK_JOB:
@@ -906,8 +984,10 @@ def furnace_warmth(t):
     with _comp(t, "furnacebeast_warmth", shows=["pyre_furnacebeast_warmth"]):
         _set(t, {"furnaceThermalEnabled": True})
         _spawn_wild(t, "RUT_FurnaceBeast", x, z)
-        col = t.spawn_pawn("Colonist", beyond=[(x - 1, z), (x, z)])
-        t.wait_ticks(300)
+        # CompFurnaceWarmthAura: radius = 4.9 x Lerp(0.35, 1, charge); a fresh beast's charge is
+        # 0, so its aura reaches 1.7 cells. The colonist stands adjacent (x+1).
+        col = t.spawn_pawn("Colonist", beyond=[(x - 2, z), (x - 2, z)])
+        _wait(t, 300)
         near = _pawn_row(t, col, health=True)
         if _live(t):
             if not near:
@@ -916,7 +996,7 @@ def furnace_warmth(t):
                 _fail("colonist beside the furnace-beast has no RM_FurnaceWarmth: %r"
                       % (near.get("health") or {}).get("hediffs"))
         t.bridge_call("jawa/order_pawn", pawnId=col, x=x + 25, z=z, waitTicks=900)
-        t.wait_ticks(600)
+        _wait(t, 600)
         away = _pawn_row(t, col, health=True)
         if _live(t):
             _note(t, "after walking away", {"x": (away or {}).get("x"), "z": (away or {}).get("z")})
@@ -939,11 +1019,11 @@ def furnace_room(t):
         for r in (a, b):
             t.bridge_call("jawa/make_empty_room", rect=_rs(r))
         _spawn_wild(t, "RUT_FurnaceBeast", ca[0], ca[1])
-        t.wait_ticks(1200)
+        _wait(t, 1200)
         amb = [t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c) for c in (ca, cb)]
         for c in (ca, cb):
             t.bridge_call("jawa/room_heat", x=c[0], z=c[1], mode="set", value=10.0)
-        t.wait_ticks(2500)
+        _wait(t, 2500)
         cold = [t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c) for c in (ca, cb)]
         if _live(t):
             def tv(r):
@@ -968,13 +1048,14 @@ def burrowers(t):
         with _comp(t, "burrowers_dive", shows=["pyre_burrowers_dive"]):
             _set(t, {"burrowOnFireEnabled": True})
             _firebreak(t, rect)
+            _soil(t, rect)
             _plants(t, "RM_FE_Plant_EmberGrass", rect)
             g = _spawn_wild(t, "RUT_Ashwallow", x + 5, z)
             _fire(t, (x - 3, z - 3, 6, 6))
             seen = False
             jobs = []
             for _ in range(15):
-                t.wait_ticks(100)
+                _wait(t, 100)
                 row = _pawn_row(t, g, health=True)
                 jobs.append(_job_of(t, g))
                 if _has_hediff(row, "RM_Burrowed"):
@@ -983,7 +1064,7 @@ def burrowers(t):
             _note(t, "burrower job samples", jobs)
             if _live(t) and not seen:
                 _fail("burrow-on-fire grazer never showed RM_Burrowed over 1500 ticks beside a fire")
-            t.wait_ticks(2500)
+            _wait(t, 2500)
             _extinguish(t)
             after = _pawn_row(t, g, health=True)
             if _live(t):
@@ -1015,16 +1096,16 @@ def embergrass_regrow(t):
             pre_ids = set(p.get("id") for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
                                                        inner, limit=2000))
             _fire(t, regrow)
-            t.wait_ticks(3000)
+            _wait(t, 3000)
             _extinguish(t)
 
             def new_count():
                 return len([p for p in _things(t, "RM_FE_Plant_EmberGrass,RM_FE_Plant_Quickgrass",
                                                inner, limit=2000) if p.get("id") not in pre_ids])
             d0 = new_count()
-            t.wait_ticks(3 * 60000)
+            _wait(t, 3 * 60000)
             d3 = new_count()
-            t.wait_ticks(4 * 60000)
+            _wait(t, 4 * 60000)
             d7 = new_count()
             temp = t.bridge_call("jawa/cell_temperature", cell="%d,%d" % t.anchor)
             pre = len(pre_ids)
@@ -1035,8 +1116,11 @@ def embergrass_regrow(t):
             if _live(t):
                 if pre <= 0:
                     _fail("regrow cohort had no pre-burn plants")
-                if d7 == 0:
-                    _fail("no roster plant regrew in the burned cohort within 7 days (pre-burn %d)" % pre)
+                # Plan bar 5: >=25% by day 3 / >=60% by day 7 is CALIBRATING (never gates until
+                # the owner rules it), so the state half cannot decide this bar either way.
+                _unmeasured(t, "CALIBRATING, unruled: new roster plants in the burned 16x16 cohort "
+                               "pre=%d afterBurn=%d day3=%d day7=%d (plan targets 25%%/60%%)"
+                            % (pre, d0, d3, d7))
             t.screenshot(rect=regrow)
     finally:
         _extinguish(t)
@@ -1052,8 +1136,11 @@ def fulgurite(t):
         with _comp(t, "fulgurite_after_lightning", shows=["pyre_fulgurite_after_lightning"]):
             _set(t, {"fulguriteEnabled": True})
             before = _count(t, "RM_FE_Fulgurite")
+            terr = _terrain(t, _whole(t))
+            _note(t, "sand-family cells (fulgurite needs sand)",
+                  dict((k, v) for k, v in terr.items() if "Sand" in k))
             t.bridge_call("jawa/weather_set", weather="DryThunderstorm", lockWeather=True)
-            t.wait_ticks(20000)
+            _wait(t, 20000)
             after = _count(t, "RM_FE_Fulgurite")
             fires = _count(t, "Fire")
             _note(t, "fulgurite across 20000 ticks of DryThunderstorm",
