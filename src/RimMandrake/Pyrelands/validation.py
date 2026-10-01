@@ -141,11 +141,11 @@ def _comp(t, name, **kw):
               str(c.detail or "")[:300], file=sys.stderr, flush=True)
 
 
-def _wait(t, n):
+def _wait(t, n, fast=None):
     """Advance `n` real ticks. Short waits use t.wait_ticks (exact, one tick per frame: MEASURED
     ~53 ticks/s, so 7 days would take ~2.2 h). Long waits run the game at Ultrafast and poll the
     real clock, then pause; the overshoot is recorded. Raises on a stalled clock."""
-    if t.session is None or t.upstream_failed or n <= 5000:
+    if t.session is None or t.upstream_failed or (n <= 5000 and not fast):
         return t.wait_ticks(n)
     _on_site(t)
     s = t.session
@@ -277,6 +277,33 @@ def _whole_map(t, group):
         _fail("whole-map %s census unreadable or inconsistent: scanned=%r countMatched=%r perDef=%r"
               % (group, r.get("scanned"), r.get("countMatched"), per))
     return dict(per)
+
+
+def _fresh_site(t):
+    """Refuse a census on a site that is not a fresh map. RM_FE_Ash_Deep is reachable only by
+    burning (plan 1.3: the patchmaker lays Trace/Light/Heavy), so deep ash outside this suite's
+    own fire pads means the land has burned since generation -- a census then describes that
+    fire, not the biome. Live 2026-10-01: run 4's lightning chain burned the whole site."""
+    if not _live(t):
+        return
+    if "fresh" not in _GEN:
+        r = t.bridge_call("jawa/get_terrain_batch", rects=_whole(t))
+        outside = 0
+        for op in ((r or {}).get("ops") or "").split(";"):
+            if not op.startswith("RM_FE_Ash_Deep:"):
+                continue
+            p = [int(v) for v in op.split(":", 1)[1].split(",")]
+            w, h = (p[2] if len(p) > 2 else 1), (p[3] if len(p) > 3 else 1)
+            for cx in range(p[0], p[0] + w):
+                for cz in range(p[1], p[1] + h):
+                    if not any(abs(cx - px) <= 18 and abs(cz - pz) <= 18 for (px, pz) in FIRE_PADS):
+                        outside += 1
+        _GEN["fresh"] = outside
+        _note(t, "deep-ash cells outside the suite's fire pads", outside)
+    if _GEN["fresh"] > 100:
+        _unmeasured(t, "site is not a fresh map: %d RM_FE_Ash_Deep cells outside the suite's fire "
+                       "pads (deep ash only comes from burning); a fresh-map census is not "
+                       "measurable here -- reload the site" % _GEN["fresh"])
 
 
 def _ops_counts(ops):
@@ -458,6 +485,7 @@ def mapgen_log(t):
 def plant_census(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "plant_distribution_correct", shows=["pyre_plant_distribution_correct"]):
+        _fresh_site(t)
         live = _get_defs(t, "BiomeDef/RM_Pyrelands", "wildPlants,plantDensity")
         census = _whole_map(t, "Plant")
         if _live(t):
@@ -491,6 +519,7 @@ def plant_census(t):
 def animal_census(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "animal_distribution_correct", shows=["pyre_animal_distribution_correct"]):
+        _fresh_site(t)
         live = _get_defs(t, "BiomeDef/RM_Pyrelands", "wildAnimals")
         r = t.bridge_call("jawa/list_pawns", limit=1000)
         if _live(t):
@@ -527,6 +556,7 @@ def animal_census(t):
 def grass_cover(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "grass_chokes_ground", shows=["pyre_grass_chokes_ground"]):
+        _fresh_site(t)
         census = _whole_map(t, "Plant")
         terr = _terrain(t, _whole(t))
         if _live(t):
@@ -553,6 +583,7 @@ def grass_cover(t):
 def ruins(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "ruins_scorched", shows=["pyre_ruins_scorched"]):
+        _fresh_site(t)
         ruins_ = _things(t, "RM_FE_ScorchRuins", limit=50)
         if _live(t):
             if not ruins_:
@@ -570,6 +601,7 @@ def ruins(t):
 def burn_line(t):
     _pad(t, PAD_PROBE)
     with _comp(t, "burn_line_present", shows=["pyre_burn_line_present"]):
+        _fresh_site(t)
         # MapComponent_BurnLine.Measure() counts free-standing Fire; no tool reads the component
         # itself, so the same count is taken directly.
         fires = _things(t, "Fire", limit=2000)
@@ -622,6 +654,7 @@ def ground_ash_ladder(t):
     burn = _rect(t, 20)
     try:
         with _comp(t, "ground_ash_ladder", shows=["pyre_ground_ash_ladder"]):
+            _fresh_site(t)
             gen = _terrain(t, _whole(t))
             if _live(t):
                 _note(t, "gen terrain census", gen)
@@ -854,11 +887,14 @@ def scorchfruit_produces(t):
             before = set(x.get("id") for x in _things(t, "RM_FE_ScorchFruitYield", limit=500))
             _plants(t, "RM_FE_Plant_ScorchFruit", (rect[0], rect[1], 5, 2))
             plants = _things(t, "RM_FE_Plant_ScorchFruit", _rs(rect), limit=20)
-            col = _colonist(t)
+            # The chain builds its own harvester (spec 1b): the site's own colonists are not part
+            # of this bar and may be busy, hurt or gone.
+            cid = t.spawn_pawn("Colonist", beyond=[(rect[0] - 4, rect[1]), (rect[0] - 4, rect[1])])
             if _live(t):
+                if not cid:
+                    _fail("could not spawn a harvester colonist")
                 if not plants:
                     _fail("set_plants placed no RM_FE_Plant_ScorchFruit in %s" % _rs(rect))
-                cid = col["id"]
                 t.bridge_call("jawa/designate_batch", action="add", designation="HarvestPlant",
                               rect=_rs(rect))
                 for p in plants[:3]:
@@ -903,6 +939,11 @@ def scorchfruit_spoils(t):
     try:
         with _comp(t, "scorchfruit_spoils_fast", shows=["pyre_scorchfruit_spoils_fast"]):
             _isolate(t)
+            # Plan 2.3a: the stack sits in a fenced cell no pawn can reach. Run 5 left it in the
+            # open and a wild grazer ate it at day 2 (it read "spoils in 2.5 days" at 1.5).
+            ring = [(cx, z - 3) for cx in range(x - 5, x + 6)] + [(cx, z + 5) for cx in range(x - 5, x + 6)] \
+                + [(x - 5, cz) for cz in range(z - 2, z + 5)] + [(x + 5, cz) for cz in range(z - 2, z + 5)]
+            t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % c for c in ring), stuff="Steel")
             t.bridge_call("jawa/spawn_batch", ops="RM_FE_ScorchFruitYield:%d,%d,10;Meat_Human:%d,%d,10"
                           % (x, z, x + 2, z))
             _plants(t, "RM_FE_Plant_ScorchFruit", (x - 3, z + 3, 3, 1))
@@ -964,11 +1005,13 @@ def firehawk(t):
             for _ in range(20):
                 _wait(t, 300)
                 j = _job_of(t, hawk)
-                seen.append(j)
+                seen.append((j, _count(t, "Fire", _rs(rect))))
                 if j == FIRE_HAWK_JOB:
                     break
             _note(t, "fire-hawk job samples", seen)
-            if _live(t) and FIRE_HAWK_JOB not in seen:
+            if _live(t) and not any(s_[1] for s_ in seen):
+                _unmeasured(t, "no fire was alive beside the hawk at any sample: %r" % seen)
+            if _live(t) and FIRE_HAWK_JOB not in [s_[0] for s_ in seen]:
                 _fail("no %s job observed in 6000 ticks beside a live fire (job state read only)"
                       % FIRE_HAWK_JOB)
             t.screenshot(rect=rect)
@@ -983,18 +1026,33 @@ def furnace_warmth(t):
     x, z = t.anchor
     with _comp(t, "furnacebeast_warmth", shows=["pyre_furnacebeast_warmth"]):
         _set(t, {"furnaceThermalEnabled": True})
-        _spawn_wild(t, "RUT_FurnaceBeast", x, z)
+        bid = _spawn_wild(t, "RUT_FurnaceBeast", x, z)
         # CompFurnaceWarmthAura: radius = 4.9 x Lerp(0.35, 1, charge); a fresh beast's charge is
         # 0, so its aura reaches 1.7 cells. The colonist stands adjacent (x+1).
         col = t.spawn_pawn("Colonist", beyond=[(x - 2, z), (x - 2, z)])
-        _wait(t, 300)
-        near = _pawn_row(t, col, health=True)
+        samples, near = [], None
+        for _ in range(8 if _live(t) else 0):
+            b = _pawn_row(t, bid) or {}
+            if b.get("x") is not None:
+                t.bridge_call("jawa/order_pawn", pawnId=col, x=b["x"] + 1, z=b["z"], waitTicks=60)
+            _wait(t, 90)
+            near = _pawn_row(t, col, health=True) or {}
+            b = _pawn_row(t, bid) or {}
+            d = None
+            if b.get("x") is not None and near.get("x") is not None:
+                d = ((b["x"] - near["x"]) ** 2 + (b["z"] - near["z"]) ** 2) ** 0.5
+            samples.append({"dist": d, "warm": _has_hediff(near, "RM_FurnaceWarmth")})
+            if samples[-1]["warm"]:
+                break
+        _note(t, "colonist-to-beast distance / warmth samples", samples)
         if _live(t):
-            if not near:
-                _fail("spawned colonist %r not found" % col)
-            if not _has_hediff(near, "RM_FurnaceWarmth"):
-                _fail("colonist beside the furnace-beast has no RM_FurnaceWarmth: %r"
-                      % (near.get("health") or {}).get("hediffs"))
+            if not any(sm["warm"] for sm in samples):
+                close = [sm for sm in samples if sm["dist"] is not None and sm["dist"] <= 1.7]
+                if not close:
+                    _unmeasured(t, "the colonist never got within the uncharged aura (1.7 cells) "
+                                   "of the beast: %r" % samples)
+                _fail("colonist within %.1f cells of the furnace-beast never gained RM_FurnaceWarmth"
+                      % min(sm["dist"] for sm in close))
         t.bridge_call("jawa/order_pawn", pawnId=col, x=x + 25, z=z, waitTicks=900)
         _wait(t, 600)
         away = _pawn_row(t, col, health=True)
@@ -1018,23 +1076,39 @@ def furnace_room(t):
         _set(t, {"furnaceThermalEnabled": True})
         for r in (a, b):
             t.bridge_call("jawa/make_empty_room", rect=_rs(r))
-        _spawn_wild(t, "RUT_FurnaceBeast", ca[0], ca[1])
-        _wait(t, 1200)
-        amb = [t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c) for c in (ca, cb)]
+        bid = _spawn_wild(t, "RUT_FurnaceBeast", ca[0], ca[1])
+        _wait(t, 600)
+
+        def tv(r):
+            return (r or {}).get("temperature", (r or {}).get("temp"))
+        rooms = [t.bridge_call("jawa/room_get", x=c[0], z=c[1]) for c in (ca, cb)]
+        beast = _pawn_row(t, bid) or {}
+        amb = [tv(t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c)) for c in (ca, cb)]
         for c in (ca, cb):
             t.bridge_call("jawa/room_heat", x=c[0], z=c[1], mode="set", value=10.0)
-        _wait(t, 2500)
-        cold = [t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c) for c in (ca, cb)]
+        series = []
+        for _ in range(10):
+            _wait(t, 250)
+            series.append([tv(t.bridge_call("jawa/cell_temperature", cell="%d,%d" % c))
+                           for c in (ca, cb)])
         if _live(t):
-            def tv(r):
-                return (r or {}).get("temperature", (r or {}).get("temp"))
-            ta, tb = tv(cold[0]), tv(cold[1])
-            _note(t, "room temperatures", {"ambientArm": [tv(amb[0]), tv(amb[1])],
-                                           "coldStartArm": [ta, tb], "raw": cold})
-            if ta is None or tb is None:
-                _unmeasured(t, "cell_temperature unreadable: %r" % cold)
-            if ta - tb <= 0.5:
-                _fail("beast room %.1f C is not warmer than the matched control %.1f C" % (ta, tb))
+            inside = (beast.get("x") is not None and a[0] < beast["x"] < a[0] + 6
+                      and a[1] < beast["z"] < a[1] + 6)
+            _note(t, "room temperatures", {"ambient": amb, "coldStartSeries": series,
+                                           "beastAt": (beast.get("x"), beast.get("z")),
+                                           "beastInsideRoomA": inside,
+                                           "roomsFound": [(r or {}).get("roomsFound") for r in rooms]})
+            if not all((r or {}).get("roomsFound") for r in rooms):
+                _fail("make_empty_room did not produce two enclosed rooms: %r" % rooms)
+            if not inside:
+                _unmeasured(t, "spawn_pawn scattered the beast out of room A (at %r)"
+                            % ((beast.get("x"), beast.get("z")),))
+            cold = [sa - sb for sa, sb in series if None not in (sa, sb) and sb < 24.0]
+            if not cold:
+                _unmeasured(t, "the control room never sat below the pusher's 24 C cap: %r" % series)
+            if sum(cold) / len(cold) <= 0.5:
+                _fail("beast room is not warmer than the matched control while below 24 C: "
+                      "mean delta %.2f C over %r" % (sum(cold) / len(cold), series))
         t.screenshot(rect=(a[0], a[1], 18, 7))
 
 
@@ -1137,17 +1211,30 @@ def fulgurite(t):
             _set(t, {"fulguriteEnabled": True})
             before = _count(t, "RM_FE_Fulgurite")
             terr = _terrain(t, _whole(t))
-            _note(t, "sand-family cells (fulgurite needs sand)",
-                  dict((k, v) for k, v in terr.items() if "Sand" in k))
+            sand = sum(v for k, v in terr.items()
+                       if k in ("RM_FE_Ground_Sand", "Sand", "SoftSand", "RM_DeepSand"))
+            sand_frac = float(sand) / max(1, sum(terr.values()))
+            _note(t, "sand-family cells (fulgurite needs sand)", {"cells": sand, "frac": sand_frac})
             t.bridge_call("jawa/weather_set", weather="DryThunderstorm", lockWeather=True)
-            _wait(t, 20000)
+            # Lightning lights the grass: extinguish every 1,000 ticks so a strike cannot grow into
+            # a map-wide burn (run 4 burned the whole site to deep ash this way).
+            fires = 0
+            for _ in range(20):
+                _wait(t, 1000, fast=True)
+                fires += _count(t, "Fire")
+                _extinguish(t)
             after = _count(t, "RM_FE_Fulgurite")
-            fires = _count(t, "Fire")
             _note(t, "fulgurite across 20000 ticks of DryThunderstorm",
                   {"before": before, "after": after, "firesBurning": fires})
+            # Strikes land on random cells and no tool forces one onto sand; each fire found is
+            # at most one strike, so this is the expected fulgurite count at fulguriteChance 0.35.
+            expect = fires * sand_frac * 0.35 if _live(t) else 0
+            if _live(t) and after - before < 1 and expect < 1:
+                _unmeasured(t, "expected %.2f fulgurite (%d fires found x %.4f sand fraction x 0.35): "
+                               "too few strikes can reach sand to test the bar" % (expect, fires, sand_frac))
             if _live(t) and after - before < 1:
                 _fail("no new RM_FE_Fulgurite after 20000 ticks of locked DryThunderstorm "
-                      "(%d -> %d; %d fires burning, so strikes landed)" % (before, after, fires))
+                      "(%d -> %d; %d fires found across the 20 checks, i.e. strikes landed)" % (before, after, fires))
             t.screenshot()
     finally:
         t.bridge_call("jawa/weather_set", unlock=True)
