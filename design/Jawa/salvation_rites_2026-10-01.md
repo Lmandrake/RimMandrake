@@ -18,7 +18,7 @@ record in `design/Jawa/divine_satiation_engine.md` §2.0b; rites-as-invitation i
 ## (a) Where rites live
 
 **Decision: every rite of The Salvation lives in `mandrake.rut.rites`, folder
-`src/RimUtinni/Rites/`, display name "RimUtinni: The Rites".** Why: it already exists, it is
+`src/RimUtinni/Rites/`, display name "Salvation Rites" (owner, typed, 2026-10-01; deploy owed).** Why: it already exists, it is
 already the Salvation's liturgy (a research tab whose rites are *"revealed, not bought"*), so a rite
 found in a biome is one more revealed row in the tree the clan already reads, not a new mod.
 
@@ -54,6 +54,7 @@ the gate moves down to RM then, not now.
 (`UtinniPatches`, the Deep Desert Tribes' ideoligion), the deep tribes' fire rite
 (`PyrelandsMechanics`), the Holy Flame precept (any Ritualist ideo). They are in the register so
 the gods' map is complete; they are not Salvation rites.
+Ruled 2026-10-01 (decision taken by question card): a Salvation colony cannot learn other faiths' rites; they stay with their own faiths and factions.
 
 **Correction carried in.** The concept doc said *"`MaxRituals = 6` per ideoligion"* and planned
 slot-free variants to save slots. That was false: there is no engine cap
@@ -303,5 +304,5 @@ discover new rites."* A biome may answer "none"; the question must still be aske
 
 - The Unveiling name collision: `design/Jawa/first_contact_chains.md`'s "nine unveilings" against
   the Abyss's rare lifting of the Dark, "the Unveiling". Neither renamed.
-- Whether Rites of other faiths a Salvation colony meets (the Return, offering and forgetting) can
-  be learned too, as a convert learns a neighbour's custom.
+
+Ruled 2026-10-01: the Rites mod display name is "Salvation Rites"; other faiths' rites are not learnable by a Salvation colony (card); the Lightless Burial appeases Ozzik for now, to be renormalized by `SALVATION_RITES_RENORMALIZE_PASS_1`.

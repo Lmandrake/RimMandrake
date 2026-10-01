@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T18:40:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T18:54:35Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1068,3 +1068,13 @@ kind:     design
 thin:     no ## spec, no ## verify
 summary:  SALVATIONRITESUNIFICATION1 — every Salvation rite in one home; biomes teach rites
 prose:    infrastructure/state/items/SALVATION_RITES_UNIFICATION_1.md
+
+## SALVATION_RITES_RENORMALIZE_PASS_1 Renormalize gods, appeasement kinds and outcomes across all rites
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  SALVATIONRITESRENORMALIZEPASS1
+prose:    infrastructure/state/items/SALVATION_RITES_RENORMALIZE_PASS_1.md

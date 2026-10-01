@@ -1,4 +1,4 @@
-"""validation.py -- modcheck suite for RimUtinni: The Rites
+"""validation.py -- modcheck suite for Salvation Rites
 (mandrake.rut.rites).
 
 Never deployed (deploy_custom_mods.py excludes `.py` wholesale). Run with:
