@@ -2522,6 +2522,56 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  PITSSTALEDEPLOYCOLLISION1
 prose:    infrastructure/state/items/PITS_STALE_DEPLOY_COLLISION_1.md
 
+## GRAFFITI_NORTHSTAR_TRIAL_1 Graffiti north-star trial: pipeline pilot to first GREEN (parent of WIRED/GREEN_MINIMAL/GREEN_FULL/SHIP)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  GRAFFITINORTHSTARTRIAL1
+prose:    infrastructure/state/items/GRAFFITI_NORTHSTAR_TRIAL_1.md
+
+## GRAFFITI_NORTHSTAR_WIRED_1 Graffiti: wire every north-star bar with shows= plus northstar_site.py preflight (plan sec 2-3)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify, no ## criteria
+summary:  - Rewrite src/RimMandrake/Graffiti/validation.py per plan §2:
+prose:    infrastructure/state/items/GRAFFITI_NORTHSTAR_WIRED_1.md
+
+## GRAFFITI_NORTHSTAR_GREEN_MINIMAL_1 Graffiti: GREEN on MINIMAL+graffiti via fast driver, owner sheet review
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+thin:     no ## verify, no ## criteria
+summary:  - Prerequisites, in order:
+prose:    infrastructure/state/items/GRAFFITI_NORTHSTAR_GREEN_MINIMAL_1.md
+
+## GRAFFITI_NORTHSTAR_GREEN_FULL_1 Graffiti: GREEN on the owner's FULL list (fresh launch, full-list driver mode)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+thin:     no ## verify, no ## criteria
+summary:  Run the same suite on the owner's FULL list:
+prose:    infrastructure/state/items/GRAFFITI_NORTHSTAR_GREEN_FULL_1.md
+
+## GRAFFITI_NORTHSTAR_SHIP_1 Graffiti: SHIPPED - art complete, settings superb, CLEAN, stamped, deployed
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  GRAFFITINORTHSTARSHIP1
+prose:    infrastructure/state/items/GRAFFITI_NORTHSTAR_SHIP_1.md
+
 ## STILLSAND_CONTENT_LIVE_PROOF_1 Prove the built Stillsand cast live (atlas, zuurrik on blood) and swap four placeholder renders
 state:    proposed
 row:      unassigned
