@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T15:32:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T15:47:20Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -2221,16 +2221,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  NORTHSTARPHASELADDER1 — the standard rung sequence every north-star mod follows
 prose:    infrastructure/state/items/NORTHSTAR_PHASE_LADDER_1.md
 
-## PYRELANDS_NORTHSTAR_WIRING_1 Wire every Pyrelands bar with shows= and fix suite bugs (composed mandrake.rm.biomes packaging)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  PYRELANDSNORTHSTARWIRING1 — wire every Pyrelands bar to a test (shows=)
-prose:    infrastructure/state/items/PYRELANDS_NORTHSTAR_WIRING_1.md
-
 ## MODCHECK_COMPOSED_BIOMES_LIST_1 modcheck builds a test list from the retired dev packageId for composed biomes (no closure, biome silently absent)
 state:    proposed
 row:      unassigned
@@ -2290,16 +2280,6 @@ kind:     trial
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  FLOWWORKSNORTHSTARTRIAL1
 prose:    infrastructure/state/items/FLOWWORKS_NORTHSTAR_TRIAL_1.md
-
-## FLOWWORKS_NORTHSTAR_WIRE_1 FlowWorks north star WIRED: rewrite validation.py, every bar and toggle claimed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     trial
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  FLOWWORKSNORTHSTARWIRE1
-prose:    infrastructure/state/items/FLOWWORKS_NORTHSTAR_WIRE_1.md
 
 ## FLOWWORKS_NORTHSTAR_SITE_PREP_1 FlowWorks trial site: golden save, manifest, preflight that refuses a dirty site
 state:    proposed

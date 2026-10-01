@@ -1799,3 +1799,9 @@
 {"seat":"FOUNDRY","event":"claim","id":"PITS_STALE_DEPLOY_COLLISION_1","ts":"2026-10-01T15:32:29Z"}
 {"seat":"FOUNDRY","event":"start","id":"PITS_STALE_DEPLOY_COLLISION_1","ts":"2026-10-01T15:32:36Z"}
 {"seat":"FOUNDRY","event":"close","id":"PITS_STALE_DEPLOY_COLLISION_1","sha":"bd8d58dbbf7a6bbe7a97a23e061f2ede9ad413f7","reason":"live ModsConfig had no pits entry on re-read (611 active, ET-parsed); snapshot entry removed; Mods/Pits moved to ModsRetired/Pits-2026-10-01; no Pits-only defNames (22/22 collide with FlowWorks). Next-load log check owed to GREEN_FULL.","ts":"2026-10-01T15:32:41Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FLOWWORKS_NORTHSTAR_WIRE_1","ts":"2026-10-01T15:47:11Z"}
+{"seat":"FOUNDRY","event":"start","id":"FLOWWORKS_NORTHSTAR_WIRE_1","ts":"2026-10-01T15:47:13Z"}
+{"seat":"FOUNDRY","event":"close","id":"FLOWWORKS_NORTHSTAR_WIRE_1","sha":"84f3788da551446bed8f26ffd807d5af44a83998","reason":"floor: every bar covered by shows= (modcheck floor), selftests 80/82 (sound_paths pre-existing); live predicates unmeasured until baseline run","ts":"2026-10-01T15:47:15Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_NORTHSTAR_WIRING_1","ts":"2026-10-01T15:47:17Z"}
+{"seat":"FOUNDRY","event":"start","id":"PYRELANDS_NORTHSTAR_WIRING_1","ts":"2026-10-01T15:47:18Z"}
+{"seat":"FOUNDRY","event":"close","id":"PYRELANDS_NORTHSTAR_WIRING_1","sha":"bb474242d771917b79640374343574c7f26a3f4b","reason":"floor: every bar covered by shows= (modcheck floor), selftests 80/82 (sound_paths pre-existing); live predicates unmeasured until baseline run","ts":"2026-10-01T15:47:20Z"}
