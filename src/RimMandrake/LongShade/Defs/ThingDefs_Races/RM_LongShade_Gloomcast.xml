@@ -174,6 +174,12 @@
         <castShadeRadius>1</castShadeRadius>
         <castShadeDepth>1.0</castShadeDepth>
       </li>
+      <!-- LONGSHADE_GPT_ENRICHMENT_1 §3: footfalls heard before it is seen
+           (RM_Gloomcast_Footfall, wide distRange). TUNED: one every 1.5 s of walking. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_Footfalls" MayRequire="mandrake.rm.biomes">
+        <sound>RM_Gloomcast_Footfall</sound>
+        <intervalTicks>90</intervalTicks>
+      </li>
     </comps>
     <race>
       <body>RM_GloomcastBody</body>

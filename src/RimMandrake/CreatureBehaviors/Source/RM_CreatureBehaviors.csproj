@@ -163,6 +163,8 @@
     <Compile Include="RM_SunHeatMath.cs" />
     <!-- LONGSHADE_GPT_ENRICHMENT_1 §2: moving shade casters (the gloomcast). -->
     <Compile Include="RM_MovingShadeMath.cs" />
+    <!-- LONGSHADE_GPT_ENRICHMENT_1 §3: camera-keyed heat soundscape, herd calls, footfalls. -->
+    <Compile Include="RM_HeatSoundscape.cs" />
     <Compile Include="RM_SunHeatExtension.cs" />
     <Compile Include="RM_SunHeatPatches.cs" />
     <Compile Include="RM_Gizmo_SunLoad.cs" />
