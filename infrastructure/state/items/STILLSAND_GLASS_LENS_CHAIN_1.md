@@ -44,7 +44,9 @@ the stack; the raw optics that do exist are `RM_Biosilica` (no use yet), `RM_Gla
    *drawing* (Utinni thoughts). Output into FlowWorks' water liquid or DBH water, whichever is live.
    Rate scales with sun elevation; a pearl lens doubles it. Every litre counts on the Debt
    (`STILLSAND_RETURN_RITUAL_1`). Distinct from the moisture vaporator (air; the Leaning Scrub owns
-   moisture farming).
+   moisture farming). A drink of still water gives `RM_CoolingDraught` (built,
+   `src/RimMandrake/Stillsand/Defs/HediffDefs/RM_CoolingDraught.xml`, STILLSAND_STILL_COOLING_DRAUGHT_1):
+   wire it on the still's water output (an `IngestionOutcomeDoer_GiveHediff`, or the liquid's drink hook).
 6. **The solar oven.** A glazed box on a mirror skirt that cooks with no fuel and no power, in full
    sun only (stops in shade and in the gale). A skirt of muurrok **crest-plate** (`RM_CrestPlate`,
    `STILLSAND_EVENT_CREATURES_1`) makes it high-performance: faster, and able to bake sun glass.
@@ -55,8 +57,9 @@ the stack; the raw optics that do exist are `RM_Biosilica` (no use yet), `RM_Gla
 8. **The geophone.** A biosilica resonator staked in the sand that turns rumbles within its radius
    into coarse direction-and-size markers (reads the swim kit's submerged query). It cannot tell a
    drazzik's lie from a real drum.
-9. **Sun goggles** get a sun-glass recipe here (the goggles themselves are
-   `STILLSAND_SUN_FROM_LATITUDE_1` §7).
+9. **Sun goggles** get a sun-glass recipe here (the goggles themselves are built:
+   `RM_SunGoggles`, `src/RimMandrake/Stillsand/Defs/ThingDefs_Apparel/RM_SunGoggles.xml`,
+   STILLSAND_GLARE_BLIND_GOGGLES_1).
 10. **Fulgurites (slate IN). Already built: do not rebuild.** `RM_FE_Fulgurite`
     (`src/RimMandrake/Pyrelands/Defs/ThingDefs_Fulgurite/Fulgurite.xml`) spawns from
     `Patch_LightningStrike_Fulgurite` in `FireEcologyHook.cs` on `RM_FE_Ground_Sand` and vanilla
