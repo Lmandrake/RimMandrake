@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T07:12:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T07:27:55Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1296,6 +1296,15 @@ kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
+## STILLSAND_MIRAGE_CONDITION_1 Stillsand mirage: high-sun GameCondition (false-water band, long-range accuracy malus) + 'chasing the water' MentalStateDef that always leaves the pawn on the map with a letter: parent spec item 8
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  8. The mirage (slate IN). On a tile with sun elevation above a threshold, a GameCondition
+prose:    infrastructure/state/items/STILLSAND_MIRAGE_CONDITION_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -2082,16 +2091,6 @@ thin:     no ## verify
 summary:  1. Ship becomes a refuge (Shipfall Commons). After landing, the shade grid sees the gravship's
 prose:    infrastructure/state/items/LONGSHADE_GPT_ENRICHMENT_1.md
 
-## STILLSAND_PRECIOUS_CAVES_1 Stillsand rare rock + precious cave: yardang genstep with a shade-face cave, the cave as a place (brine seep, mummified register), weighted precious table that finally spawns the guzzka; no sinkholes
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  1. The rock genstep (RM tier). After terrain: if the map has natural rock, take the largest
-prose:    infrastructure/state/items/STILLSAND_PRECIOUS_CAVES_1.md
-
 ## STILLSAND_DUNE_GALE_1 Stillsand dune gale: the biome's own storm on the dunes engine (dunes march, sun off, abrasion, carry-and-return), gale static, one emergence incl. the mummified caravan, dust devils, tracks wiped
 state:    proposed
 row:      unassigned
@@ -2382,26 +2381,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  PYRELANDSSHIPREADINESS1 — the SHIPPED rung for Pyrelands: art, review, settings, deploy
 prose:    infrastructure/state/items/PYRELANDS_SHIP_READINESS_1.md
 
-## STILLSAND_GLARE_BLIND_GOGGLES_1 Stillsand glare-blind (race-gated by RM_GlareAdapted gene, Jawa immune) + RM_SunGoggles + Armoury goggle tag patch: parent spec items 6-7
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  6. Glare-blind, race-gated (slate IN). Owner, typed: "the sun protection for the eyes is great
-prose:    infrastructure/state/items/STILLSAND_GLARE_BLIND_GOGGLES_1.md
-
-## STILLSAND_MIRAGE_CONDITION_1 Stillsand mirage: high-sun GameCondition (false-water band, long-range accuracy malus) + 'chasing the water' MentalStateDef that always leaves the pawn on the map with a letter: parent spec item 8
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  8. The mirage (slate IN). On a tile with sun elevation above a threshold, a GameCondition
-prose:    infrastructure/state/items/STILLSAND_MIRAGE_CONDITION_1.md
-
 ## STILLSAND_WIND_SUN_BEARING_1 Pin MovingDunes wind to the tile-to-substellar bearing (DuneFieldExtension.lockBearingToSubstellar) so crests, lees, shadows and wind point one way: parent spec item 9
 state:    proposed
 row:      unassigned
@@ -2591,3 +2570,33 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  STILLSANDEVENTCREATURESLIVE1 — live-prove the krayt attack and the muurrok
 prose:    infrastructure/state/items/STILLSAND_EVENT_CREATURES_LIVE_1.md
+
+## STILLSAND_PRECIOUS_CAVES_LIVE_1 Precious caves: ten live Stillsand quicktest maps
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Deploy Stillsand (it now depends on mandrake.rm.environmentalhazards).
+prose:    infrastructure/state/items/STILLSAND_PRECIOUS_CAVES_LIVE_1.md
+
+## STILLSAND_CAVE_AS_PLACE_1 Stillsand cave: preservation, drip, biosilica walls, tribal mark
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. The mummified preservation register: nothing rots inside the cave, and desiccated remains stay.
+prose:    infrastructure/state/items/STILLSAND_CAVE_AS_PLACE_1.md
+
+## STILLSAND_CAVE_TIER_ROWS_1 Precious cave rows: krayt den, sarlacc seep, debt cave
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Krayt den (RSW): a greater krayt, or its old den with skull and pearl (RSWKraytDragonSkull,
+prose:    infrastructure/state/items/STILLSAND_CAVE_TIER_ROWS_1.md
