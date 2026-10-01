@@ -265,7 +265,7 @@ from defused ordnance.
 **Not built, by ruling:** the calm alarm, the entombed line (OUT, turn 4); the bearing, phantom barrage,
 slag ricochet (not picked); glower black uses and the Watch (OUT, turn 2).
 
-## 8. Queued art: TO BE FILED with this commission
+## 8. Queued art: FILED 2026-09-30, 55 jobs, 0 refused
 
 **CSV:** `infrastructure/artpipe/art_lists/warscar_bedazzle_cast.csv`. Channel codex, transparent,
 `reference` empty on every row (fresh designs, never reskins). Queued with `fill_queue.py`,
