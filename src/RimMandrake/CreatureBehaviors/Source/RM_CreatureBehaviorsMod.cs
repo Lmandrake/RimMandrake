@@ -264,6 +264,14 @@ namespace RimMandrake.CreatureBehaviors
     //      the surface like any animal (no submerge, no wake, no rumble).  sandSwim-
     //      DroidImmunity — off: a submerged swimmer will press an attack on a
     //      mechanoid or droid too. sandSwimRumbleVolume — the rumble slider.
+    //  43. Sun from latitude (STILLSAND_SUN_FROM_LATITUDE_1) — only a biome
+    //      whose RM_SunHeatExtension opts in. kindFromElevationEnabled — the
+    //      cover that counts follows the sun angle (overhead above the
+    //      biome's threshold, low sun below). Off: the biome's fixed heat
+    //      kind. sandGlareEnabled / sandGlareStrength — open natural sand
+    //      keeps a floor of exposure even in shade; paved floors do not glare.
+    //      Off: shade on sand works as anywhere else. The heat-by-angle
+    //      offset rides the existing sunHeatStrength dial.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -345,6 +353,9 @@ namespace RimMandrake.CreatureBehaviors
         public static bool sandSwimEnabled = true;
         public static bool sandSwimDroidImmunity = true;
         public static float sandSwimRumbleVolume = 1f;
+        public static bool kindFromElevationEnabled = true;
+        public static bool sandGlareEnabled = true;
+        public static float sandGlareStrength = 1f;
 
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 2400f;
@@ -427,6 +438,9 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sandSwimEnabled, "sandSwimEnabled", true);
             Scribe_Values.Look(ref sandSwimDroidImmunity, "sandSwimDroidImmunity", true);
             Scribe_Values.Look(ref sandSwimRumbleVolume, "sandSwimRumbleVolume", 1f);
+            Scribe_Values.Look(ref kindFromElevationEnabled, "kindFromElevationEnabled", true);
+            Scribe_Values.Look(ref sandGlareEnabled, "sandGlareEnabled", true);
+            Scribe_Values.Look(ref sandGlareStrength, "sandGlareStrength", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -716,6 +730,19 @@ namespace RimMandrake.CreatureBehaviors
                 list.CheckboxLabeled("  Back-to-shade ring", ref dashRingEnabled,
                     "Draws a line on the ground around a selected drafted colonist, showing how far they "
                   + "can go and still get back into shade before heatstroke sets in.");
+                list.CheckboxLabeled("  Cover follows the sun's height", ref kindFromElevationEnabled,
+                    "On a land whose sun height comes from where it sits on the planet (the Stillsand): "
+                  + "On: where the sun stands high, roofs and parasols protect; where it stands low, only "
+                  + "the shade behind a wall or rock does. Off: the land's one fixed rule applies everywhere.");
+                list.CheckboxLabeled("  Sand glare", ref sandGlareEnabled,
+                    "On: open sand throws the sun back up, so standing on it in shade still heats you a "
+                  + "little. Paved floors do not glare, so a paved patch of shade is fully cool. "
+                  + "Off: shade on sand works as anywhere else.");
+                if (sandGlareEnabled)
+                {
+                    list.Label("    Sand glare strength: " + sandGlareStrength.ToStringPercent());
+                    sandGlareStrength = list.Slider(sandGlareStrength, 0f, 2f);
+                }
             }
             list.GapLine();
 

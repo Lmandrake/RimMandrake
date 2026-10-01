@@ -147,7 +147,7 @@ namespace RimMandrake.CreatureBehaviors
             }
             float sizeFactor = RM_SunHeatMath.BodySizeFactor(pawn.BodySize, ext.bodySizeExponent,
                 ext.minBodySizeFactor, ext.maxBodySizeFactor);
-            return RM_SunHeatMath.HeatOffset(exposure, ext.heatOffsetC, RM_CreatureBehaviorsSettings.sunHeatStrength,
+            return RM_SunHeatMath.HeatOffset(exposure, grid.EffectiveHeatOffsetC, RM_CreatureBehaviorsSettings.sunHeatStrength,
                 sizeFactor, ext.maxHeatOffsetC);
         }
 

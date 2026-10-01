@@ -275,6 +275,50 @@ namespace RimMandrake.CreatureBehaviors
             return x != cx || z != cz;
         }
 
+        // ── STILLSAND_SUN_FROM_LATITUDE_1: the sun's height decides ──────
+        // Owner rulings: "The biome takes its sun angle from its latitude"
+        // (the tile's planet latitude, never a region's prose), and "the cover
+        // that counts follows the sun angle". Still ONE kind of heat: these
+        // pick which cover counts and how strong the sun is, nothing else.
+
+        /// <summary>The heat kind a biome's sun resolves to at this elevation:
+        /// overhead at or above overheadAboveDeg, lowSun below it. Ambient is
+        /// never changed (shade does not help there at any angle). A negative
+        /// threshold, or an unknown (NaN) elevation, keeps the biome's own
+        /// kind.</summary>
+        public static RM_HeatKind KindFromElevation(RM_HeatKind baseKind, float elevationDeg, float overheadAboveDeg)
+        {
+            if (baseKind == RM_HeatKind.ambient || overheadAboveDeg < 0f || float.IsNaN(elevationDeg))
+            {
+                return baseKind;
+            }
+            return elevationDeg >= overheadAboveDeg ? RM_HeatKind.overhead : RM_HeatKind.lowSun;
+        }
+
+        /// <summary>Irradiance by angle: zenithOffsetC × sin(elevation), never
+        /// below floorC (the far ring's own figure). An unknown (NaN)
+        /// elevation returns zenithOffsetC unchanged.</summary>
+        public static float ElevationHeatOffset(float zenithOffsetC, float elevationDeg, float floorC)
+        {
+            if (float.IsNaN(elevationDeg))
+            {
+                return zenithOffsetC;
+            }
+            double e = Math.Max(0.0, Math.Min(90.0, elevationDeg)) * Math.PI / 180.0;
+            float off = zenithOffsetC * (float)Math.Sin(e);
+            return off < floorC ? floorC : off;
+        }
+
+        /// <summary>Sand glare: exposure on open natural sand never drops
+        /// below the floor, whatever shade or cover is over it (the light
+        /// comes up from the ground). An enclosed room is handled before this
+        /// (exposure 0 there, never floored).</summary>
+        public static float WithGlareFloor(float exposure, float glareFloor)
+        {
+            float f = Clamp01(glareFloor);
+            return exposure > f ? exposure : f;
+        }
+
         public static float Clamp01(float v)
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);

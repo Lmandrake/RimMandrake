@@ -56,6 +56,28 @@ namespace RimMandrake.CreatureBehaviors
         public float minElevationDegrees = 5f;
         public float maxElevationDegrees = 60f;
 
+        // ── STILLSAND_SUN_FROM_LATITUDE_1: the sun's height decides ─────
+        // All three are off by default, so every existing sun-heat biome is
+        // unchanged. Elevation is the map's sun elevation: the pinned sun's
+        // when the biome has one, else the geometry above — always from the
+        // tile's planet position, never from a region name.
+
+        /// <summary>When ≥ 0: at or above this elevation the heat kind is
+        /// overhead (roofs and parasols count), below it lowSun (only a lee
+        /// or rock counts). Ignored for ambient heat. Negative = off.</summary>
+        public float overheadAboveElevationDegrees = -1f;
+
+        /// <summary>When true, heatOffsetC is the offset at the substellar
+        /// point (sun at 90°) and the map's offset is heatOffsetC ×
+        /// sin(elevation), never below minScaledHeatOffsetC.</summary>
+        public bool heatScalesWithElevation = false;
+        public float minScaledHeatOffsetC = 0f;
+
+        /// <summary>Sand glare: exposure on natural sand (TerrainDef
+        /// categoryType Sand, not a constructed floor) never drops below this,
+        /// even in shade, before the Mod Settings strength dial. 0 = off.</summary>
+        public float sandGlareExposureFloor = 0f;
+
         // ── §5 shade hopping / §6 dash ring (RM_ShadeHop.cs) ───────────
         /// <summary>A cell with exposure at or below this counts as shade in
         /// the patch graph.</summary>

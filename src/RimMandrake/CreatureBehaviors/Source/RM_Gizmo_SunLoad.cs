@@ -60,9 +60,10 @@ namespace RimMandrake.CreatureBehaviors
             {
                 Widgets.DrawHighlight(rect);
                 RM_SunHeatExtension ext = grid?.HeatExtension;
-                string kind = ext == null ? "" : ext.heatKind == RM_HeatKind.ambient
+                RM_HeatKind heatKind = grid?.EffectiveHeatKind ?? RM_HeatKind.overhead;
+                string kind = ext == null ? "" : heatKind == RM_HeatKind.ambient
                     ? "Here the heat is in the air: shade does nothing, only insulation or an enclosed room helps."
-                    : ext.heatKind == RM_HeatKind.lowSun
+                    : heatKind == RM_HeatKind.lowSun
                         ? "Here the sun is low: only the lee shadow of a wall, rock or shield protects; a roof overhead does not."
                         : "Here roofs and shadows both protect.";
                 TooltipHandler.TipRegion(rect, "Sun load is this creature's heatstroke. Standing in the sun adds "
