@@ -21,8 +21,8 @@
   - The five destinations (wasteland.md §10) are campaign quest work, not
     this building.
 
-  ART: none generated (searched 2026-09-29). texPath is this mod's own
-  path, BLOCKED until a render lands there.
+  ART: render wired at Textures/Things/Building/RM_CaskBay/ (owner has
+  not reviewed it).
 -->
 <Defs>
 

@@ -16,9 +16,8 @@
   2026-09-28: "mostly pollution mechanism"); in a shielded cask bay it is
   silent (RM_CaskBay.cs).
 
-  ART: none generated (artpipe done/, _artsrc/, registry.jsonl searched
-  2026-09-29). texPath below is this mod's own path, BLOCKED until a render
-  lands there.
+  ART: render wired at Textures/Things/Item/Resource/RM_HalfExtractedCore/
+  (owner has not reviewed it).
 -->
 <Defs>
 
