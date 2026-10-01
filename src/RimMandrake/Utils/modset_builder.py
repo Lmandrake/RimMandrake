@@ -298,6 +298,18 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.explosivegrowth", "mandrake.rut.plantgrowth"],
         "dlc": True,
     },
+    "explosivegrowth_solo": {
+        "why": "EXPLOSIVE_GROWTH_FIRST_SCRIPT_1 north-star script: mandrake.rm.explosivegrowth "
+               "ALONE with the bridge. NOT the `explosivegrowth` tier above -- that one adds "
+               "mandrake.rut.plantgrowth, whose x4/x10 ambient bands multiply the same "
+               "Plant.GrowthRate the soak postfix multiplies (it cancels in a ratio but "
+               "not in any absolute rate), and the RM-tier script must not depend on a "
+               "campaign mod. Vanilla + DLC plants carry every Churn check; the "
+               "donor-plant tops (Burst/Tinder/Slime/Rupture/Flush) read UNMEASURED here by "
+               "design. All five DLCs and Harmony resolve automatically.",
+        "want": [BRIDGE, "mandrake.rm.explosivegrowth"],
+        "dlc": True,
+    },
     "fish": {
         "why": "Prove FISH_BESTIARY_BUILD_1's live fishing wiring (Scald, "
                "Wasteland brine mining, Cracked Lands, Weeping Stones, "
