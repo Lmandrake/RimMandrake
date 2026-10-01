@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T01:09:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-10-01T04:06:37Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1008,15 +1008,6 @@ kind:     task
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
 
-## DEEPFIRE_PAINT_LIVE_VERIFY_1 Deepfire painting + worn-glow darkness tradeoff (needs live bridge)
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  DEEPFIREPAINTLIVEVERIFY1
-prose:    infrastructure/state/items/DEEPFIRE_PAINT_LIVE_VERIFY_1.md
-
 ## SUMP_TAR_FIRE_NETWORK_1 Network fire with gate firebreaks; wire belch to glass-cooling
 state:    doing
 row:      unassigned
@@ -1115,15 +1106,6 @@ target:   v1
 kind:     task
 summary:  BLUEDESERTMECHANICSBUILD1 — the Warnings, blue-ice quarrying, the vhaulk trap, weathers, sound, Cold Hold
 prose:    infrastructure/state/items/BLUEDESERT_MECHANICS_BUILD_1.md
-
-## BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1 Live-verify a Baroque Biomes toggle actually stops worldgen placement, not just that the startup gate wires cleanly: flip one biome off in Mod Settings, generate a new world, confirm its BiomeDef never places a tile, flip back on. RM_BiomesGate's startup log (roster mapped, gate applied) is proven; an actual OFF-and-regenerate cycle is not.
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  (no items/BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1.md
 
 ## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
 state:    doing  (BLOCKED)
@@ -2210,3 +2192,123 @@ kind:     build
 thin:     no ## verify
 summary:  1. The Debt (Utinni tier). A colony counter of water drawn on Stillsand maps: every still litre,
 prose:    infrastructure/state/items/STILLSAND_RETURN_RITUAL_1.md
+
+## FOOTPRINT_TRACK_GRID_1 One footprint grid for the planet: capped TrackGrid + section layer + cell-entry postfix in CreatureBehaviors, invisible pawns recorded, erase API; Warscar film and Stillsand sand both consume it as XML
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. TrackGrid (a MapComponent): one compact record per cell (direction 3 bits, size class 2,
+prose:    infrastructure/state/items/FOOTPRINT_TRACK_GRID_1.md
+
+## WARSCAR_AEROSOL_SCREEN_1 Warscar projectors and aerosol screen: lift ShipShields particulate core to RM, broad polluted-biome screen balanced by cost, live/dead rings, salvageable working generators, ship wakes the line, glower shielding
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Lift the core to RM. The particulate effect in src/RimUtinni/ShipShields/
+prose:    infrastructure/state/items/WARSCAR_AEROSOL_SCREEN_1.md
+
+## WARSCAR_FREE_TIER_BODY_1 Warscar free-tier body: chatrak (+ chatrak plate leather), totchak body, tetchik, wreck-lichen; pallbearer and scar roach to RM (save-checked); glower art wired; Soil band dropped; label Warscar
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. RMChatrak (bs ~3.0, commonality ~0.25), the plated grazer and scaria host, inline in
+prose:    infrastructure/state/items/WARSCAR_FREE_TIER_BODY_1.md
+
+## WARSCAR_SETTLING_WEATHER_1 Warscar Settling: calm-triggered war fallout, settled film that keeps tracks on the shared grid, wind wipes it, the lift front, war dust, buried ordnance revealed by the film
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Calm detection: MapComponentSettling samples map.windManager.WindSpeed every 250 ticks and
+prose:    infrastructure/state/items/WARSCAR_SETTLING_WEATHER_1.md
+
+## WARSCAR_GEIGER_CHOIR_1 Warscar Geiger choir: tetchik tick, wind on metal, Settling silence, projector hum, pool boil; the tetchik in a jar pollution counter
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Layers, on the shipped RMProximitySoundscapeExtension + RMMapComponentProximitySoundscape:
+prose:    infrastructure/state/items/WARSCAR_GEIGER_CHOIR_1.md
+
+## WARSCAR_HOSPICE_DESERTERS_1 Warscar hospice: kneeling chassis rings, deserter histories, five-stage cradle revival into an overseer-free servitor, named failed wrecks, a deserter walks in
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Scatter: RMKneelingChassis (slagged / posed / intact) in rings facing the ruin layout's centre.
+prose:    infrastructure/state/items/WARSCAR_HOSPICE_DESERTERS_1.md
+
+## WARSCAR_SNAP_MARK_1 Warscar chatrak snap (scaria incubation with visible stages) and the mark made a trade (RM port, stat pay, loosened panels, no stacking)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. RMChatrakSnapArming in RMWarscar's <biomeMapConditions: GameConditionArmLatentHazard
+prose:    infrastructure/state/items/WARSCAR_SNAP_MARK_1.md
+
+## WARSCAR_TOTCHAK_WAKES_1 Warscar totchak: dormant in the Last Line, demolition wake, eats ruin walls then player walls, lies down again
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Dormancy: stock CompCanBeDormant + CompWakeUpDormant (wakeUpOnDamage,
+prose:    infrastructure/state/items/WARSCAR_TOTCHAK_WAKES_1.md
+
+## WARSCAR_OLD_TONGUE_1 Warscar old tongue: inscribed panel sets read by Intellectual 8 unlock hospice protocols, projector calibration, the pool phase reader
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. RMInscribedPanel in three subtypes, each with its own glyph art (hospice, projector, pool),
+prose:    infrastructure/state/items/WARSCAR_OLD_TONGUE_1.md
+
+## WARSCAR_PILGRIM_CAMPS_1 Warscar pilgrim camps (RUT): camp prefabs and journals that call AdvanceStage(Scarlands); rung texts from the owner-edited drafts
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. RUTPilgrimCamp: a small prefab set (cold fire, bedroll, a body sitting upright facing the
+prose:    infrastructure/state/items/WARSCAR_PILGRIM_CAMPS_1.md
+
+## WARSCAR_RAINBOW_POOLS_1 Warscar rainbow pools: reaction-liquor registry row, phase cycle with colour-blind icons, tap and four reagents, journal and phase reader, glower crust as phase catalyst
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. The registry row RMLiquidReactionLiquor (pH 2, acid damageOnImmersion, corrodesApparel,
+prose:    infrastructure/state/items/WARSCAR_RAINBOW_POOLS_1.md
+
+## WARSCAR_TURRETS_TRACK_1 Warscar turrets still track: verbless aim comp on broken turrets, refit into a working old-line turret
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Tracking without firing: a turret-aim comp with no verb on the Warscar's broken ancient turrets
+prose:    infrastructure/state/items/WARSCAR_TURRETS_TRACK_1.md
