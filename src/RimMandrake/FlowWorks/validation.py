@@ -129,6 +129,29 @@ def _fill(t, x, z, f):
     return r or {}
 
 
+def _set_fluid(t, fluid):
+    """Set the map's ActiveFluid BEFORE first classification (plan section 6 item 3) and read it
+    back. `jawa/flowworks_set_active_fluid` refuses once any body is classified or any cell holds
+    fill, so on a shared map that already ran a water chain this FAILS -- the baseline run gives
+    the chain a fresh working copy. Call inside a component so a refusal stops the chain rather
+    than letting it run on water and report a tar/slime result."""
+    r = t.bridge_call("jawa/flowworks_set_active_fluid", fluidDefName=fluid)
+    if t._guard():
+        _expect(bool((r or {}).get("success")) and r.get("fluidAfter") == fluid,
+                "ActiveFluid not set to %s before first classification: %r" % (fluid, r))
+    return r or {}
+
+
+def _restore_water(t):
+    """Put the map back on water after a tar/slime chain, guard or no guard. Existing bodies and
+    fill terrain keep the old fluid (the tool says so); later chains prep their own plots.
+    No session = the offline declaration probe: nothing to restore."""
+    if getattr(t, "session", None) is None:
+        return
+    t.session.call("jawa/flowworks_set_active_fluid", fluidDefName="RM_Fluid_Water",
+                   allowAfterClassification=True)
+
+
 def _line(x0, z, n):
     return [(x0 + i, z) for i in range(n)]
 
@@ -391,11 +414,20 @@ def plot_C2_tar_and_fluids(t):
     """Tar vs water fill front, and the two-fluids-side-by-side bar. Both are expected to FAIL today:
     the depth engine has no viscosity and `ActiveFluid` is one FluidDef per map (plan section 1)."""
     x0, z0 = _prep_plot(t, "T")
+    try:
+        _plot_C2_body(t, x0, z0)
+    finally:
+        _restore_water(t)
+
+
+def _plot_C2_body(t, x0, z0):
+    # ActiveFluid=TAR before first classification (plan section 6 item 3); refused on a map
+    # where a body is already classified, which fails this component and stops the chain.
+    with t.component("tar_fluid_set"):
+        _set_fluid(t, TAR)
     _limitless_source(t, "T")
     cells = _channel_from(x0 + 10, z0 + 6, 10)
     _dig_run(t, cells, 1)
-    # ActiveFluid=TAR must be set before first classification: needs the driver's new set_active_fluid
-    # tool (plan section 6 item 3), which does not exist yet. Until it does this plot runs on water.
     with t.component("tar_front_lags_water", shows=["tar_fill_front_lags_water"]):
         _wait(t, PULSE)
         p1 = _frame(t, x0, z0 + 2, 22, 10, "T_pulse1")
@@ -407,7 +439,8 @@ def plot_C2_tar_and_fluids(t):
             wet = sum(1 for _, f in _state(t, cells) if (f or 0) >= 1)
             _expect(wet < len(cells), "tar wet front reached all %d cells: no viscosity lag" % len(cells))
     with t.component("two_fluids_side_by_side", shows=["fill_fluid_distinct"]):
-        # needs two fluids on ONE map; ActiveFluid is per-map with no setter -> cannot be staged yet.
+        # needs two fluids on ONE map; ActiveFluid is one FluidDef per map (the setter changes the
+        # map's fluid, it cannot give two bodies different fluids) -> cannot be staged yet.
         if t._guard():
             raise ExpectationFailed("BLOCKED: per-body fluid unbuilt; two fluids cannot share a map")
         _frame(t, x0, z0 + 2, 22, 10)
@@ -502,6 +535,15 @@ def plot_F_slime(t):
     """Plot F: a 1x6 D=3 slime run (ActiveFluid RM_Fluid_SlimeGreen set before first classification --
     a fresh working copy in the real run) and a colonist walked into the middle cell."""
     x0, z0 = _prep_plot(t, "F")
+    try:
+        _plot_F_body(t, x0, z0)
+    finally:
+        _restore_water(t)
+
+
+def _plot_F_body(t, x0, z0):
+    with t.component("slime_fluid_set"):
+        _set_fluid(t, SLIME)
     cells = _line(x0 + 6, z0 + 6, 6)
     _dig_run(t, cells, 3)
     with _setting(t, "depthEngineEnabled", False):
