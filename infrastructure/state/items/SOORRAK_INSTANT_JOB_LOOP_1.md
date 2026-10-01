@@ -22,3 +22,23 @@ records `job.def` for RM_Soorrak, or read the soorrak's think tree / `RM_` job g
 ## criteria
 - A wild RM_Soorrak on a Stillsand quicktest shows a JobDef other than `Wait_MaintainPosture` and changes cell within
   2,500 ticks, without any flight being watched.
+
+## Source read 2026-10-01 (FOUNDRY, offline; no live run)
+Read against decompiled 1.6 (RimSage) and our source. None of these gives a job that runs out of toils inside
+`StartJob` for a standing wild animal, so none is J:
+- vanilla `JobGiver_Wander` (an own-cell dest returns `Wait_Wander`, which would be visible), `JobGiver_LayEgg`
+  (`Wait(500)`), `JobGiver_GetRest`/`JobDriver_LayDown`, `JobGiver_GetFood`, `JobGiver_ReactToCloseMeleeThreat`,
+  `JobGiver_ExitMap*` (walking exit is `Goto`, which never gets the filler);
+- ours: `RM_JobGiver_SunEscape` / `RM_JobGiver_ShadeHop` (`RM_ShadeDash` B is always another patch or a lure's side,
+  never the pawn's cell; mill excludes the pawn's cell; rest is a timed `Wait`), every other `Animal_PreMain` /
+  `Animal_PreWander` giver in `src/` (each is gated on an extension or comp the soorrak lacks, or on another biome).
+- Installed mods' XML inserts at those tags (VFE Settlers chemshine, Alpha Animals exploding eggs, Biomes! unbeach,
+  Vanilla Genetics hybrids, cleaner): gated on their own races. C#-only Harmony patches from other mods were not read.
+- Why 4 of 6 left: `LeaveIfWrongSeason` -> `ThinkNode_ConditionalDangerousTemperature` reads `AmbientTemperature`,
+  which our sun-heat postfix raises in open sun -> `JobGiver_ExitMapRandom` -> `ExitMapFlying` (unroofed + `CanEverFly`).
+  Expected for the def's drinking trip.
+
+So J is named in the log instead of guessed: `RM_FlightJobStartGuard.Prefix_EndCurrentJob` warns once per
+(race, job, giver) after 20 same-tick Succeeded ends in a row on a standing animal. Deciding string, on a Stillsand
+quicktest with wild RM_Soorrak: `[RM CreatureBehaviors] instant job loop: RM_Soorrak` (the line names the JobDef,
+the giver class, the think tree and both targets). The fix follows from that line.
