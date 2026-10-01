@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T08:22:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T08:25:19Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2451,16 +2451,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  GRAFFITINORTHSTARTRIAL1
 prose:    infrastructure/state/items/GRAFFITI_NORTHSTAR_TRIAL_1.md
 
-## GRAFFITI_NORTHSTAR_WIRED_1 Graffiti: wire every north-star bar with shows= plus northstar_site.py preflight (plan sec 2-3)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify, no ## criteria
-summary:  - Rewrite src/RimMandrake/Graffiti/validation.py per plan §2:
-prose:    infrastructure/state/items/GRAFFITI_NORTHSTAR_WIRED_1.md
-
 ## GRAFFITI_NORTHSTAR_GREEN_MINIMAL_1 Graffiti: GREEN on MINIMAL+graffiti via fast driver, owner sheet review
 state:    proposed
 row:      unassigned
@@ -2680,3 +2670,13 @@ kind:     build
 thin:     no ## verify
 summary:  1. Live proof (Desktop, quicktest on RMStillsand, all DLC). The parent's two criteria:
 prose:    infrastructure/state/items/STILLSAND_RETURN_REMAINDER_1.md
+
+## GRAFFITI_NORTHSTAR_BRIDGE_TOOLS_1 JawaBench tools the Graffiti trial cannot fake: thing_graphic, spawn_variant, running_mods, glow_at, site_state
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GRAFFITI_NORTHSTAR_BRIDGE_TOOLS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GRAFFITI_NORTHSTAR_BRIDGE_TOOLS_1.md
