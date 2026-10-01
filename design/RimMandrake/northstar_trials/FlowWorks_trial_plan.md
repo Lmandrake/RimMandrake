@@ -292,7 +292,8 @@ Nothing is "assumed fine".
   Size ≥ 200×200 (MEASURED once: a quicktest map was 174×174 — record the real size).
 - **Golden save, never overwritten (GPT #2, #3):** `NS_FlowWorks_TrialSite_v1.rws` is the golden copy,
   set read-only on disk. Each run copies it to `NS_FlowWorks_Work_<ts>.rws` and loads THAT; autosave is
-  disabled for the session (`jawa/set_player_settings`, read back) and the working map is never saved.
+  off (Prefs.xml `autosaveIntervalDays`, asserted by P-E4 — there is no bridge setter;
+  `jawa/set_player_settings` is a per-pawn tool) and the working map is never saved.
   Back up the Saves folder first and stat it after any save (the `save_game` wrong-slot trap). The
   sidecar `NS_FlowWorks_TrialSite_v1.json` carries a **version contract**: sha256 of the save, game
   build, FlowWorks DLL sha, defs hash, settings snapshot, prep-script version. Any mismatch ⇒ rebuild

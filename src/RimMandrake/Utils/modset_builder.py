@@ -137,11 +137,16 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches"],  # BAROQUE_BIOMES_WAVE2_FOLD_1: gelatinousslime folded
         "dlc": True,
     },
-    "pits": {
-        "why": "Prove the pit framework inside FlowWorks (dig stages, mass-sum "
-               "cover trigger, struggle escape) with nothing else on the map "
-               "that could spring a trap or explain a failure.",
+    "flowworks": {
+        "why": "FLOWWORKS_NORTHSTAR trial (FlowWorks_trial_plan.md 3.1): FlowWorks "
+               "alone with the bridge -- canals, the depth/fill primitive, liquid "
+               "stock, superdeep pits. All five DLCs and Harmony resolve "
+               "automatically. REFUSES if the stale mandrake.rm.pits (22/22 "
+               "defName collision) or a terrain donor (Alpha Biomes, ManyWaters) "
+               "is in the closure, so a slime/tar terrain cannot come from a donor.",
         "want": [BRIDGE, "mandrake.rm.flowworks"],
+        "forbid": ["mandrake.rm.pits", "sarg.alphabiomes"],
+        "forbid_substr": ["manywaters"],
         "dlc": True,
     },
     "visibility": {
@@ -626,6 +631,32 @@ def full_mod_count():
         return None
 
 
+DLC_IDS = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
+           "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")
+
+
+def tier_guard(tier, pids):
+    """Refusals for a resolved tier list (empty = fine). A tier's `forbid` ids and
+    `forbid_substr` fragments must be absent from the dependency CLOSURE, not just
+    from `want` -- a dependency can drag a forbidden mod in. A `dlc` tier must
+    resolve all five expansions (owner ruling 2026-09-19); a missing one is a
+    refusal, never a quieter list."""
+    pids = [p.lower() for p in pids]
+    out = []
+    for f in tier.get("forbid", ()):
+        if f.lower() in pids:
+            out.append("forbidden mod in closure: %s" % f)
+    for frag in tier.get("forbid_substr", ()):
+        hit = [p for p in pids if frag.lower() in p]
+        if hit:
+            out.append("forbidden mod in closure (matches %r): %s" % (frag, hit))
+    if tier.get("dlc"):
+        miss = [d for d in DLC_IDS if d not in pids]
+        if miss:
+            out.append("DLC missing from the resolved list: %s" % miss)
+    return out
+
+
 def write_config(pids, version_from):
     tree = ET.parse(version_from)
     root = tree.getroot()
@@ -713,6 +744,11 @@ def main():
         print("  %3d  %-44s %s" % (i, pid, installed[pid]["name"][:40]))
     if missing:
         print("\n  ! NOT INSTALLED (tier is incomplete): %s" % missing)
+        return 1
+    refusals = tier_guard(t, ordered)
+    if refusals:
+        for r in refusals:
+            print("\n  REFUSING tier '%s': %s" % (a.tier, r))
         return 1
     full_n = full_mod_count()
     print("\n  %d mods%s." % (len(ordered),
