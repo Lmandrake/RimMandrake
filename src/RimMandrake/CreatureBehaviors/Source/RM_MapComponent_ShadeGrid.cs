@@ -332,7 +332,10 @@ namespace RimMandrake.CreatureBehaviors
 				return 0f;
 			}
 			ex = RM_SunHeatMath.WithCover(ex, RM_ShadeGear.WornCover(pawn, GearKind, out _));
-			return RM_SunHeatMath.WithGlareFloor(ex, GlareFloorAt(pawn.Position));
+			ex = RM_SunHeatMath.WithGlareFloor(ex, GlareFloorAt(pawn.Position));
+			// STILLSAND_DUNE_GALE_1 §3: a dim sky (the dune gale) takes the sun off,
+			// glare floor included — the sand does not shine under a brown sky.
+			return ex * RM_WeatherSenseExtension.SunFactor(map);
 		}
 
 		/// <summary>

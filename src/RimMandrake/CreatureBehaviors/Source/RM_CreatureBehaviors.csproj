@@ -114,6 +114,8 @@
     <Compile Include="RM_CompDrumLure.cs" />
     <Compile Include="RM_SandSwimExtension.cs" />
     <Compile Include="RM_CompSandSwim.cs" />
+    <!-- STILLSAND_DUNE_GALE_1: what a weather does to sun exposure and the swimmers' senses -->
+    <Compile Include="RM_WeatherSenseExtension.cs" />
     <Compile Include="RM_HediffCompProperties_ShadeStagger.cs" />
     <Compile Include="RM_HediffComp_ShadeStagger.cs" />
     <Compile Include="RM_FilterFeedExtension.cs" />
