@@ -224,9 +224,10 @@ after A/B so the two don't double-author "the fallen."
 2. **Admissions: ALL FOUR join the roster** — subject to (2a) below.
    2a. **Name-style ruling:** the four names badly need varied style, away from
    just two syllables — restyled set proposed at turn 3.
-3. **Mark 9: BIOME-LOCAL LORE.** No campaign ideoligion defs — no precepts, no
-   rituals. The Warnings/script/tableaus carry the gods layer as prose and content.
-   Candidate H's precept shape is dead; candidate A carries marks 2+9 together.
+3. **Mark 9: rites are allowed in every biome** (owner, 2026-10-01); the Blue Desert's rites
+   live in `mandrake.rut.rites` (`biome_rites_pass_2026-10-01.md` §3). The
+   Warnings/script/tableaus carry the gods layer as prose and content.
+   Candidate A carries marks 2+9 together.
 4. **Tameability: relaxed.** The owner does not mind tameable creatures; the tamed
    dovvik minesweeper (candidate I) is approved.
 
