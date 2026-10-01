@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T14:42:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T14:44:11Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2910,3 +2910,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Owner, typed (turn 2, 2026-10-01): "Fully regenerate art and names for those two beasts. No donor dependencie…
 prose:    infrastructure/state/items/ABYSS_DONOR_BEASTS_FREED_1.md
+
+## ABYSS_FREE_CRYPTID_1 The Nhaleth: Abyss free-tier cryptid; Utinni relabels to the Forsakens (Sith whisper)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Owner, typed 2026-10-01: free tier gets its own invented cryptid; the Star Wars tier keeps "the Forsakens", w…
+prose:    infrastructure/state/items/ABYSS_FREE_CRYPTID_1.md
