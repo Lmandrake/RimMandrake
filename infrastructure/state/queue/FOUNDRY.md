@@ -1296,6 +1296,15 @@ kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
+## STILLSAND_GLASS_LENS_CHAIN_1 Stillsand sand-to-glass-to-lens chain: drift shovelling yields glass sand at full yield, sieve as grader, sun furnace, lenses, solar still (+ wringing still), solar oven, sun lance, geophone, fulgurites on Stillsand with real-photo art
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. Drift shovelling yields glass sand, at full yield (ruled by card 2026-09-30; REVERSES the
+prose:    infrastructure/state/items/STILLSAND_GLASS_LENS_CHAIN_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -2092,16 +2101,6 @@ thin:     no ## verify
 summary:  1. RMDuneGale WeatherDef plus a GameConditionDef for its duration: rare (a few a year), one
 prose:    infrastructure/state/items/STILLSAND_DUNE_GALE_1.md
 
-## STILLSAND_GLASS_LENS_CHAIN_1 Stillsand sand-to-glass-to-lens chain: drift shovelling yields glass sand at full yield, sieve as grader, sun furnace, lenses, solar still (+ wringing still), solar oven, sun lance, geophone, fulgurites on Stillsand with real-photo art
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  1. Drift shovelling yields glass sand, at full yield (ruled by card 2026-09-30; REVERSES the
-prose:    infrastructure/state/items/STILLSAND_GLASS_LENS_CHAIN_1.md
-
 ## STILLSAND_SKELETONS_TRACKS_1 Stillsand huge skeletons and tracks: 0-2 giant skeleton buildings per map with bone harps, giant corpses become skeletons, krayt graveyard re-pointed, track filths the dunes erase, horizon dust warnings
 state:    proposed
 row:      unassigned
@@ -2621,6 +2620,56 @@ kind:     task
 thin:     no ## verify
 summary:  1. Krayt den (RSW): a greater krayt, or its old den with skull and pearl (RSWKraytDragonSkull,
 prose:    infrastructure/state/items/STILLSAND_CAVE_TIER_ROWS_1.md
+
+## STILLSAND_SAND_SIEVE_CHORE_1 Stillsand sand sieve as a pawn chore: glass sand to fine sand with a carried sieve (feasible, no building)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. RMSandSieve: a cheap craftable tool item, carried in inventory. If the pawn has no sieve when
+prose:    infrastructure/state/items/STILLSAND_SAND_SIEVE_CHORE_1.md
+
+## STILLSAND_SOLAR_STILL_1 Stillsand solar still and wringing still: sun-gated lens condenser distilling brine, wet organics and the dead
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  A glazed, black-bottomed lens condenser. It distils water from brine (cave seeps) and from wet
+prose:    infrastructure/state/items/STILLSAND_SOLAR_STILL_1.md
+
+## STILLSAND_SUN_LANCE_1 Stillsand sun lance: heliostat mirror turret that heats and never ignites
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  A heliostat turret: an array of mirrors that focuses the fixed sun on one target. It heats and
+prose:    infrastructure/state/items/STILLSAND_SUN_LANCE_1.md
+
+## STILLSAND_GEOPHONE_1 Stillsand biosilica geophone: rumble markers from the sand-swim query
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  A biosilica resonator staked in the sand. It turns rumbles within its radius into coarse markers
+prose:    infrastructure/state/items/STILLSAND_GEOPHONE_1.md
+
+## STILLSAND_GLASS_CHAIN_REMAINDER_1 Stillsand glass chain remainder: krayt lens, goggles recipe, fulgurite art, art wire-in, live proof
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+thin:     no ## verify, no ## criteria
+summary:  Still owed:
+prose:    infrastructure/state/items/STILLSAND_GLASS_CHAIN_REMAINDER_1.md
 
 ## STILLSAND_SUN_GOGGLES_ART_1 Wire the sun goggles' own icon and worn art when it lands
 state:    proposed

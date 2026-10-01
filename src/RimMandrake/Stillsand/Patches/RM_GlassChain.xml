@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GlassChain.xml                        RimMandrake — STILLSAND_GLASS_LENS_CHAIN_1
+
+  1. The sun-fed work speed part on vanilla's WorkTableWorkSpeedFactor. Core always has the
+     stat and its <parts> list, so this is unguarded: a false return is a real failure.
+  2. §10(d): a fulgurite melts at the sun furnace into sun glass. RM_FE_Fulgurite is the
+     Pyrelands' def and Stillsand does not depend on the Pyrelands, so the whole RecipeDef is
+     added only when that def exists (PatchOperationConditional on its xpath; a MayRequire on
+     the Operation node is ignored by the engine, and a recipe naming an absent ingredient
+     NREs RecipeDefGenerator and resets ModsConfig).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/StatDef[defName="WorkTableWorkSpeedFactor"]/parts</xpath>
+    <value>
+      <li Class="RimMandrake.Stillsand.RM_StatPart_SunPowered" />
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_FE_Fulgurite"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs</xpath>
+      <value>
+        <RecipeDef>
+          <defName>RM_MeltFulgurite</defName>
+          <label>melt fulgurite</label>
+          <description>Melt lightning glass down into sun glass in focused sunlight.</description>
+          <jobString>Melting fulgurite.</jobString>
+          <workAmount>700</workAmount>
+          <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+          <effectWorking>Smelt</effectWorking>
+          <soundWorking>Recipe_Smelt</soundWorking>
+          <workSkill>Crafting</workSkill>
+          <workSkillLearnFactor>0.25</workSkillLearnFactor>
+          <ingredients>
+            <li>
+              <filter>
+                <thingDefs>
+                  <li>RM_FE_Fulgurite</li>
+                </thingDefs>
+              </filter>
+              <count>1</count>
+            </li>
+          </ingredients>
+          <fixedIngredientFilter>
+            <thingDefs>
+              <li>RM_FE_Fulgurite</li>
+            </thingDefs>
+          </fixedIngredientFilter>
+          <products>
+            <RM_SunGlass>4</RM_SunGlass>
+          </products>
+          <recipeUsers>
+            <li>RM_SunFurnace</li>
+          </recipeUsers>
+        </RecipeDef>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
