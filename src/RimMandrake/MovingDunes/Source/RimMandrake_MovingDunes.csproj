@@ -57,6 +57,8 @@
     <Compile Include="Thing_BuriedCache.cs" />
     <Compile Include="DuneBurialUtility.cs" />
     <Compile Include="MovingDunesDebugActions.cs" />
+    <!-- STILLSAND_GLASS_LENS_CHAIN_1 §1: shovelled drift yields the biome's sand item -->
+    <Compile Include="Patch_ClearSandYield.cs" />
   </ItemGroup>
 
   <ItemGroup>

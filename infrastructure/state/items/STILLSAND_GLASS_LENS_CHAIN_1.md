@@ -10,6 +10,21 @@ Checked before filing (2026-09-30): no glass stuff, solar still, solar oven or s
 the stack; the raw optics that do exist are `RM_Biosilica` (no use yet), `RM_GlassPearl` (moving to
 `RM_GlassPearl`), glasscrust grit and `RSW_KraytPearl`. Fulgurites already exist (below).
 
+## state (2026-10-01, FOUNDRY)
+
+Built, offline-checked (compiles, validate_patch clean except art-pending texPaths):
+§1 drift yield (`MovingDunes/Source/Patch_ClearSandYield.cs`, `DuneFieldExtension.clearYield`,
+bound to RM_Stillsand); items `RM_GlassSand`, `RM_FineSand`, `RM_SunGlass` (stuff),
+`RM_LensGlass`, `RM_PrecisionLens`, `RM_PearlLens`; §3 `RM_SunFurnace`; §4 `RM_LensBench`; §6
+`RM_SolarOven` + `RM_SolarOvenCrest` (crest-plate skirt, bakes sun glass); sun gate and sun-scaled
+speed in `Stillsand/Source/RM_SunPowered.cs`; §10(a)(b)(d) fulgurite sand family, gate and melt
+recipe; §10(c) was already true (`DryThunderstorm` 1 in RM_Stillsand); §11 row added to
+`BIOME_SHIP_CONTRIBUTIONS_1`; §12 settings ("Stillsand: glass and lenses" + "Moving Dunes").
+§2 sieve: the chore form is feasible; finding and build in `STILLSAND_SAND_SIEVE_CHORE_1`.
+Owed elsewhere: `STILLSAND_SOLAR_STILL_1`, `STILLSAND_SUN_LANCE_1`, `STILLSAND_GEOPHONE_1`,
+`STILLSAND_GLASS_CHAIN_REMAINDER_1` (krayt lens, goggles recipe, fulgurite art, art wire-in, live
+proof).
+
 ## spec
 
 1. **Drift shovelling yields glass sand, at full yield (ruled by card 2026-09-30; REVERSES the

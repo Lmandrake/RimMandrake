@@ -25,6 +25,7 @@ before then.
 | biome | ship contribution | source item |
 |---|---|---|
 | the Sump | **glasswalk/bitumen ship flooring** (tar-proof, slippery, never needs cleaning — his own example) · **gas lamps and flame statuary aboard** (the warbling Sumpgas light, the burning statues — his own example) · candidate: a tar-vault larder module | `SUMP_WALKWAYS_1`, `SUMP_GASLIGHT_1`, `SUMP_TAR_VAULT_1` — each carries a "ship-buildable" note |
+| the Stillsand | **ship lens array**: a lens-array ship part fed by precision lenses (`RM_PrecisionLens`, ground at the lens bench from fine-sand lens glass); the build rides this item | `STILLSAND_GLASS_LENS_CHAIN_1` §11 |
 
 ## spec
 

@@ -46,6 +46,8 @@ namespace RimMandrake.MovingDunes
         public static bool burialEnabled = true;
         public static bool plantChokeEnabled = true;
         public static bool windLockEnabled = true;
+        public static bool clearYieldEnabled = true;          // STILLSAND_GLASS_LENS_CHAIN_1 §1
+        public static float clearYieldMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -55,6 +57,8 @@ namespace RimMandrake.MovingDunes
             Scribe_Values.Look(ref burialEnabled, "burialEnabled", true);
             Scribe_Values.Look(ref plantChokeEnabled, "plantChokeEnabled", true);
             Scribe_Values.Look(ref windLockEnabled, "windLockEnabled", true);
+            Scribe_Values.Look(ref clearYieldEnabled, "clearYieldEnabled", true);
+            Scribe_Values.Look(ref clearYieldMultiplier, "clearYieldMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -78,6 +82,16 @@ namespace RimMandrake.MovingDunes
                 "On a land built with it: the wind blows from one bearing forever, the same way every "
               + "shadow falls, so dune crests, lees and shadows all line up. Off: the wind shifts "
               + "every day or so, as on any other dune field.");
+            list.GapLine();
+            list.CheckboxLabeled("Shovelled drift yields sand", ref clearYieldEnabled,
+                "Clearing drift through the clear-sand area drops the biome's sand item (on the "
+              + "Stillsand: glass sand) in proportion to the depth removed. Only biomes that name "
+              + "a yield give one. Off: shovelled sand just leaves the field.");
+            if (clearYieldEnabled)
+            {
+                list.Label("Sand per drift depth: " + clearYieldMultiplier.ToString("0.00") + "x");
+                clearYieldMultiplier = list.Slider(clearYieldMultiplier, 0.1f, 3f);
+            }
 
             list.End();
         }

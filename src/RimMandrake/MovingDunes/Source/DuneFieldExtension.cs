@@ -28,6 +28,15 @@ namespace RimMandrake.MovingDunes
         /// from the sun), so dune lees fall on the shadow side.</summary>
         public bool windBlowsTowardSubstellar;
 
+        /// <summary>STILLSAND_GLASS_LENS_CHAIN_1 §1: what a pawn shovelling drift off this
+        /// biome's maps gets for it, or null for nothing (the sand simply leaves the field).
+        /// Full yield, no loss factor (ruled by card 2026-09-30): every drift is stock.</summary>
+        public ThingDef clearYield;
+
+        /// <summary>Items of <see cref="clearYield"/> per unit of sand depth removed (a cell
+        /// at full depth is 1.0). Fractions round randomly. Scaled by the Mod Settings slider.</summary>
+        public float clearYieldPerDepth = 6f;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string error in base.ConfigErrors())
@@ -38,6 +47,11 @@ namespace RimMandrake.MovingDunes
             {
                 yield return "DuneFieldExtension.material is null — this biome would be marked a "
                     + "dune field with nothing to drift, which is worse than not opting in at all.";
+            }
+            if (clearYield != null && clearYieldPerDepth <= 0f)
+            {
+                yield return "DuneFieldExtension.clearYield is set but clearYieldPerDepth <= 0, so "
+                    + "shovelling would never yield it.";
             }
         }
     }

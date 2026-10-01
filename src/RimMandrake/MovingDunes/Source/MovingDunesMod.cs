@@ -51,6 +51,10 @@ namespace RimMandrake.MovingDunes
         /// Without it the vanilla and skinned layers double-draw.</summary>
         internal static bool VanillaLayerSuppressionArmed;
 
+        /// <summary>True once shovelled drift yields the biome's sand item
+        /// (STILLSAND_GLASS_LENS_CHAIN_1 §1).</summary>
+        internal static bool ClearYieldArmed;
+
         static MovingDunesMod()
         {
             Harmony h = new Harmony(HarmonyId);
@@ -79,6 +83,14 @@ namespace RimMandrake.MovingDunes
                 rule: "vanilla-sand-layer-suppression",
                 detail: "armed; the vanilla sand submesh is disabled on skinned maps so the "
                         + "tinted layer never double-draws");
+
+            ClearYieldArmed = Apply(
+                h,
+                AccessTools.Method(typeof(JobDriver_ClearSnowAndSand), "MakeNewToils"),
+                typeof(Patch_ClearSand_Yield), prefix: false,
+                rule: "clear-sand-yield",
+                detail: "armed; shovelling drift on a dune field whose biome names a clearYield "
+                        + "drops it in proportion to the depth removed");
 
             ApplyHideDepths();
         }

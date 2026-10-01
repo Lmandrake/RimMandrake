@@ -12,7 +12,7 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony, no BiomeWorker: the def reuses vanilla Core's own
+    No BiomeWorker (Harmony arrived with STILLSAND_GLASS_LENS_CHAIN_1, below): the def reuses vanilla Core's own
     RimWorld.BiomeWorker_ExtremeDesert unchanged (item's own MEASURED STATE —
     the donor twin never named a third-party workerClass).
   -->
@@ -61,6 +61,22 @@
     <!-- STILLSAND_RETURN_RITUAL_1: sand remembers water (RM) + the inert water-ledger engine -->
     <Compile Include="RM_StillsandWater.cs" />
     <Compile Include="RM_WaterLedger.cs" />
+    <!-- STILLSAND_GLASS_LENS_CHAIN_1: sun-fed work tables (Harmony, see below) -->
+    <Compile Include="RM_SunPowered.cs" />
+    <Compile Include="RM_GlassChainMod.cs" />
+  </ItemGroup>
+
+  <!-- STILLSAND_GLASS_LENS_CHAIN_1: Harmony IS referenced (one postfix on
+       Building_WorkTable.UsableForBillsAfterFueling, the sun gate). Same path
+       as CreatureBehaviors' csproj; brrainz.harmony is declared in About.xml. -->
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
   <!-- STILLSAND_PRECIOUS_CAVES_1: the cave rows reuse EnvironmentalHazards'
