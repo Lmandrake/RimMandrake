@@ -1,0 +1,309 @@
+{
+ "dry": {
+  "success": true,
+  "message": "RM_DuneGale canFireNow=True (dry run, nothing fired).",
+  "incident": "RM_DuneGale",
+  "category": "Misc",
+  "canFireNow": true,
+  "fired": false,
+  "windowsOpened": [],
+  "blockedByDialog": false,
+  "points": 35.0,
+  "faction": null,
+  "ticksGame": 5385
+ },
+ "fire": {
+  "success": true,
+  "message": "RM_DuneGale fired with 35 points.",
+  "incident": "RM_DuneGale",
+  "category": "Misc",
+  "canFireNow": true,
+  "fired": true,
+  "windowsOpened": [],
+  "blockedByDialog": false,
+  "points": 35.0,
+  "faction": null,
+  "ticksGame": 5385
+ },
+ "weather": {
+  "success": true,
+  "readErrors": [],
+  "weather": {
+   "current": "Clear",
+   "last": "Clear",
+   "curWeatherAge": 27117,
+   "rainRate": 0.0,
+   "snowRate": 0.0
+  },
+  "activeConditionCount": 1,
+  "conditions": [
+   {
+    "def": "RM_DuneGale",
+    "label": "Dune gale",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false,
+    "ticksPassed": 0,
+    "ticksLeft": 107569
+   }
+  ],
+  "threatPoints": 35.0,
+  "wealth": {
+   "total": 5009.84,
+   "items": 1176.48,
+   "buildings": 288.360077,
+   "pawns": 3545.0
+  },
+  "storyteller": {
+   "def": "Cassandra",
+   "difficulty": "Rough",
+   "threatScale": 1.0,
+   "allowBigThreats": true
+  },
+  "weatherDefs": null,
+  "conditionDefs": null,
+  "note": "TransitionTo does not HOLD - WeatherDecider rerolls when the duration expires. Use jawa/weather_set lock=true.",
+  "ticksGame": 5385
+ },
+ "end_incident_gale": {
+  "success": true,
+  "action": "end",
+  "scope": "map",
+  "notes": [
+   "Duration = TicksPassed - it expires next tick. GameCondition has no EndNow()."
+  ],
+  "endsNextTick": true,
+  "gamePaused": true,
+  "listCaveat": "Still listed below because Duration=TicksPassed expires on the NEXT TICK and the game is PAUSED.",
+  "activeConditions": [
+   {
+    "def": "RM_DuneGale",
+    "permanent": false,
+    "ticksLeft": 0
+   }
+  ],
+  "ticksGame": 5385
+ },
+ "start_short": {
+  "success": true,
+  "action": "start",
+  "scope": "map",
+  "notes": [
+   "replaced an already-active instance",
+   "registered RM_DuneGale for 6000 ticks"
+  ],
+  "endsNextTick": false,
+  "gamePaused": true,
+  "listCaveat": null,
+  "activeConditions": [
+   {
+    "def": "RM_DuneGale",
+    "permanent": false,
+    "ticksLeft": 0
+   },
+   {
+    "def": "RM_DuneGale",
+    "permanent": false,
+    "ticksLeft": 6000
+   }
+  ],
+  "ticksGame": 5385
+ },
+ "t0": 5385,
+ "g0": {
+  "tick": 6273,
+  "weather": {
+   "current": "RM_DuneGaleHerald",
+   "last": "Clear",
+   "curWeatherAge": 887,
+   "rainRate": 0.0,
+   "snowRate": 0.0
+  }
+ },
+ "g1": {
+  "tick": 7273,
+  "weather": {
+   "current": "RM_DuneGaleHerald",
+   "last": "Clear",
+   "curWeatherAge": 1887,
+   "rainRate": 0.0,
+   "snowRate": 0.0
+  }
+ },
+ "g2": {
+  "tick": 8273,
+  "weather": {
+   "current": "RM_DuneGaleHerald",
+   "last": "Clear",
+   "curWeatherAge": 2887,
+   "rainRate": 0.0,
+   "snowRate": 0.0
+  }
+ },
+ "g3": {
+  "tick": 9247,
+  "weather": {
+   "current": "RM_DuneGaleHerald",
+   "last": "Clear",
+   "curWeatherAge": 3861,
+   "rainRate": 0.0,
+   "snowRate": 0.0
+  }
+ },
+ "g4": {
+  "tick": 10247,
+  "weather": {
+   "current": "RM_DuneGale",
+   "last": "RM_DuneGaleHerald",
+   "curWeatherAge": 860,
+   "rainRate": 0.0,
+   "snowRate": 0.0
+  }
+ },
+ "g5": {
+  "tick": 11247,
+  "weather": {
+   "current": "RM_DuneGale",
+   "last": "RM_DuneGaleHerald",
+   "curWeatherAge": 1860,
+   "rainRate": 0.0,
+   "snowRate": 0.0
+  }
+ },
+ "g6": {
+  "tick": 12247,
+  "weather": {
+   "current": "RM_DuneGale",
+   "last": "RM_DuneGaleHerald",
+   "curWeatherAge": 2860,
+   "rainRate": 0.0,
+   "snowRate": 0.0
+  }
+ },
+ "letters": [
+  [
+   "Area revealed",
+   1
+  ],
+  [
+   "Area revealed",
+   1
+  ],
+  [
+   "Death: Haruka (hen)",
+   1
+  ],
+  [
+   "Roof collapse",
+   1
+  ],
+  [
+   "Rock island",
+   120
+  ],
+  [
+   "Taken under: Cassandra",
+   317
+  ],
+  [
+   "Death: Cassandra (hen)",
+   317
+  ],
+  [
+   "Taken under: Victor",
+   906
+  ],
+  [
+   "Death: Victor (rooster)",
+   906
+  ],
+  [
+   "Dune gale",
+   5385
+  ],
+  [
+   "A caravan the dune took",
+   5386
+  ],
+  [
+   "A sealed cache",
+   11386
+  ]
+ ],
+ "rm_filth": {
+  "RM_Filth_DisturbedSand": 2
+ },
+ "devil_spawn": {
+  "success": true,
+  "thingId": "Thing_RM_DustDevil86463",
+  "defName": "RM_DustDevil",
+  "label": "Dust devil",
+  "stackCount": 1,
+  "cell": {
+   "x": 100,
+   "z": 100
+  }
+ },
+ "devil_track": [
+  [
+   [
+    "RM_DustDevil86463",
+    96,
+    100
+   ]
+  ],
+  [
+   [
+    "RM_DustDevil86463",
+    92,
+    102
+   ]
+  ],
+  [
+   [
+    "RM_DustDevil86463",
+    89,
+    104
+   ]
+  ],
+  [
+   [
+    "RM_DustDevil86463",
+    85,
+    106
+   ]
+  ],
+  [
+   [
+    "RM_DustDevil86463",
+    81,
+    106
+   ]
+  ],
+  [
+   [
+    "RM_DustDevil86463",
+    77,
+    107
+   ]
+  ],
+  [
+   [
+    "RM_DustDevil86463",
+    77,
+    111
+   ]
+  ],
+  [
+   [
+    "RM_DustDevil86463",
+    78,
+    115
+   ]
+  ],
+  [],
+  [],
+  [],
+  []
+ ]
+}
