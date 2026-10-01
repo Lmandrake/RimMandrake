@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T06:46:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T06:56:19Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1295,15 +1295,6 @@ target:   v1
 kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
-
-## STILLSAND_SUN_FROM_LATITUDE_1 Stillsand sun from latitude: pinned sky from the tile, cover follows sun angle (overhead >~55 deg), sin(elev) heat, sand glare, race-gated glare-blind + sun goggles (Jawa immune), the mirage, wind locked to the sun bearing
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. Pin the sky from the tile. Add RMPinnedSunExtension to RMStillsand with elevation
-prose:    infrastructure/state/items/STILLSAND_SUN_FROM_LATITUDE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
