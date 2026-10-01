@@ -192,8 +192,10 @@ UNMEASURED; 8 is proposed)
   neck and chest that faintly glow a storm-violet when charged, tiny deep-set eyes adapted to the
   dark, hide like wet-dark basalt with pale lichen-grey plating. No wings, no fire, no scales in
   a heraldic pattern. Anchor **basalt and storm-violet**. 1024, faced.
-- *Juvenile:* `RM_Summ_Juvenile`, the hatchling's life stage: oversized head and throat-sac
-  buds, soft pale hide not yet plated, already hungry and hostile. Anchor **pale ash and
+- *Juvenile, the "summing" (owner, typed 2026-10-01):* `RM_Summing`: oversized head and throat-sac
+  buds, soft pale hide not yet plated, already hungry and hostile. **Not so little, and constantly
+  growing, problematically:** it never stops growing, so its size, hunger and space needs keep
+  escalating through its whole life (a size curve with no plateau; the colony's trouble grows with it). Anchor **pale ash and
   violet**. 512, faced.
 
 **The quill predator** · **Drokattak** · `RM_Drokattak` · bs ~3
@@ -207,19 +209,19 @@ UNMEASURED; 8 is proposed)
 ### 4D. The Brood and the Ship in the Wall (campaign, `RUT_`, `ABYSS_LIGHTFALL_BROOD_WRECK_1`)
 
 - **The brood-mother, "Summ the All-Render"** · `RUT_SummAllRender` (PawnKind on the `RM_Summ` race, much larger
-  draw size). *Plain:* the oldest of the Summ, asleep coiled round her clutch among giant bones.
+  draw size). *Plain:* the oldest of the Summ, asleep coiled round her clutch among giant bones. **LANDSCAPE-SIZED (owner, typed 2026-10-01): the size of terrain**, not of a beast; she reads as a ridge of the cavern. Draw size or a multi-cell structure-like presence, feasibility for FOUNDRY to decide.
   *Behaviour:* light and noise from egg theft and salvage feed one **wake meter**; her stirring
   and a low rumble are the readable signs; **past the greed line she wakes and is essentially
   unkillable**: you flee. *Art:* the species, but ancient: plating grown into a ridged shell
   scarred white, throat-sacs vast and dark, lichen and grain crusted on her back so she reads as
-  part of the cavern floor until she moves. Anchor **bone-white scar on black**. 1024, faced.
+  part of the cavern floor until she moves. Anchor **bone-white scar on black**. 1024, faced; art composed at landscape scale, filling the frame past its edges.
 - **The egg** · `RUT_SummEgg`. A leathery, heavy egg the size of a barrel, dark violet veins
   under a grey grain-dusted shell, a faint inner pulse of light. Its inspect text must say plainly
   why it has not bonded when no great bone is aboard. Anchor **grey and pulse-violet**. 256
   single.
 - **The great bone** · `RUT_GreatBone` (installable, minified building) and `RUT_BroodBone`
   (the stuff, from the bone field). *Behaviour:* one great bone **installed aboard the gravship**
-  is what lets the egg imprint; without it the hatchling stays wild. *Art:* the great bone is one
+  is what lets the egg imprint; without it the summing stays wild. *Art:* the great bone is one
   colossal curved rib or vertebra, ivory gone amber with age, light for its size, lashed to a
   cradle so it can stand on a ship deck (1024×512 single). The stuff is a stack of cut pale bone
   planks (256 single). Anchor **old amber ivory**.
@@ -231,7 +233,7 @@ UNMEASURED; 8 is proposed)
   and says so in plain words. *Art:* the hull section as a map building, 1024 single (torn plating,
   a dead running light, grain drifted into the seams, faded rescue stripes); a debris pile 512
   single. Anchor **faded rescue orange on grey**.
-- **The tamed beast, bane and boon:** the hatchling raised is the `RM_Summ` race. Very hungry
+- **The tamed beast, bane and boon:** the summing raised is the `RM_Summ` race family and **never stops growing** (owner, typed: its size, hunger and space problems keep escalating). Very hungry
   and very aggressive (it kills wildlife indiscriminately and semi-randomly), deeply tough and
   powerful, UV-sensitive, sees in the dark. Its art is the species set above; no extra job.
 
@@ -262,7 +264,7 @@ a dusk-rose belly. Anchor **smoke and dusk-rose**. 256, faced.
 - **Probe droids:** existing Droidworks content.
 - **The dark rite:** no object of its own is ruled yet.
 
-## 5. Names for the two freed beasts (owner to confirm)
+## 5. Names for the two freed beasts (ruled; "summing" typed 2026-10-01)
 
 Accent rule (batch-3a names doc rule 5): *"Crags: hard voiced stops, k/g/r clusters… said in a
 gust."* No four-letter opening shared with the crag names (vrakk, dhukk, hulggarok, zekkra, kessik,
@@ -277,16 +279,16 @@ list, and nothing else. Wookieepedia search API (`list=search&srsearch=`; probe 
 
 | beast | owner's name | stage labels (plain English; owner to confirm) |
 |---|---|---|
-| the storm giant and its family | **Summ** (his words: *"Summ the All-Render, with the lesser forms of it other Summ creatures."*) | wild adult: "summ" (`RM_Summ`) · egg: "summ egg" (`RUT_SummEgg`) · young: "summ hatchling" (`RM_Summ_Juvenile`) · the great one at Lightfall's bottom: **"Summ the All-Render"** (`RUT_SummAllRender`) · tamed: "summ", bane and boon |
+| the storm giant and its family | **Summ** (his words: *"Summ the All-Render, with the lesser forms of it other Summ creatures."*) | wild adult: "summ" (`RM_Summ`) · egg: "summ egg" (`RUT_SummEgg`) · young: **"summing"** (`RM_Summing`, owner, typed; replaces "summ hatchling") · the great one at Lightfall's bottom: **"Summ the All-Render"** (`RUT_SummAllRender`) · tamed: "summ", bane and boon |
 | the quill predator | **Drokattak** (his word) | "drokattak" (`RM_Drokattak`) |
 
-DefNames: `RM_Summ`, `RM_Summ_Juvenile`, `RUT_SummAllRender`, `RUT_SummEgg`, `RM_Drokattak`.
+DefNames: `RM_Summ`, `RM_Summing`, `RUT_SummAllRender`, `RUT_SummEgg`, `RM_Drokattak`.
 
 ## 6. Lore for his pen
 
-Drafts only, as Warscar §6 did. **Each is marked for his pen: accept, rewrite or strike.**
+Drafts, as Warscar §6 did. **Draft in use; owner edit pending** (decision taken by question card, 2026-10-01: use them now, he edits later).
 
-### 6A. The storm giant's biology (`ABYSS_LIGHTFALL_BROOD_WRECK_1` owes "why it nests here, why the storms answer it") — DRAFT, FOR HIS PEN
+### 6A. The storm giant's biology (`ABYSS_LIGHTFALL_BROOD_WRECK_1` owes "why it nests here, why the storms answer it") — DRAFT IN USE; OWNER EDIT PENDING
 
 > The summ grazes on the Dark itself. The Dark holds a charge, and the summ's throat-sacs
 > gather it as it feeds, until the beast is heavy with it and must call it out: that is the
@@ -295,18 +297,18 @@ Drafts only, as Warscar §6 did. **Each is marked for his pen: accept, rewrite o
 > Dark is thickest there and has never once lifted, and an egg must lie a year in perfect dark to
 > hatch. Sunlight burns them. They see by the faint glow of their own throats.
 
-### 6B. The ship's refusals (the wreck's "refused parts say so") — DRAFT, FOR HIS PEN
+### 6B. The ship's refusals (the wreck's "refused parts say so") — DRAFT IN USE; OWNER EDIT PENDING
 
 > *"The ship will not take this. It does not want to be something else."*
 > *"It knows its own shape. This part is not its shape."*
 > *"It accepts the coupling. Something in the old frame settles, as if it remembered."* (an accepted repair)
 
-### 6C. The wreck's story (description text) — DRAFT, FOR HIS PEN
+### 6C. The wreck's story (description text) — DRAFT IN USE; OWNER EDIT PENDING
 
 > A rescue ship, by its faded stripes. It came down into Lightfall after someone, and it is
 > still here. Whatever it came for, nobody climbed out with it.
 
-### 6D. The four found rites (`SALVATION_RITES_UNIFICATION_1`, review §14) — DRAFT, FOR HIS PEN
+### 6D. The four found rites (`SALVATION_RITES_UNIFICATION_1`, review §14) — DRAFT IN USE; OWNER EDIT PENDING
 
 Each inscription is the rite's `CompStudiable` find, studied in the dark; its rubbing is learned on
 the Rites tab (`design/Jawa/salvation_rites_2026-10-01.md` §d). Sites are candidates.
@@ -323,7 +325,7 @@ the Rites tab (`design/Jawa/salvation_rites_2026-10-01.md` §d). Sites are candi
 Names, wording and sites are **his**; Sh'kaar's answer when the dark breaks is ruled (it fails and
 he answers). Nothing here is a build input until he rules.
 
-## 7. Art list: 24 subjects, 56 jobs (NOT filed; the commission waits for the owner)
+## 7. Art list: 24 subjects, 56 jobs (COMMISSIONED 2026-10-01 by question card)
 
 **CSV:** `infrastructure/artpipe/art_lists/abyss_bedazzle_cast.csv`. Channel codex, transparent,
 `reference` empty on every row (fresh designs). Not queued. `fill_queue.py --dry-run` 2026-10-01: 56 would be filed, 0 duplicates refused, 0 row errors; re-run it
@@ -343,7 +345,7 @@ skarnix, the lamp crop via `giantgamma_v1`).
 | ETCHCAP | `RM_Etchcap` / `RM_EtchcapCap` | 256 | single | 2 | black and violet |
 | ETCHFALL | `RM_Tholin` / `RM_Filth_Tholin` | 256 | single | 2 | rust-brown and tar |
 | FREED | `RM_Summ` | 1024 | s,e,n | 3 | basalt and storm-violet |
-| FREED | `RM_Summ_Juvenile` | 512 | s,e,n | 3 | pale ash and violet |
+| FREED | `RM_Summing` | 512 | s,e,n | 3 | pale ash and violet |
 | FREED | `RM_Drokattak` | 512 | s,e,n | 3 | ochre and banded bone |
 | LIGHTFALL | `RUT_SummAllRender` | 1024 | s,e,n | 3 | bone-white scar on black |
 | LIGHTFALL | `RUT_SummEgg` | 256 | single | 1 | grey and pulse-violet |

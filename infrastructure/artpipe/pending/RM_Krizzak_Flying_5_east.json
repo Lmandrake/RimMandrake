@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-01T18:59:47Z",
+  "drawsize": 0.7,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Krizzak_Flying_5_east",
+  "priority": 58,
+  "prompt": "RimWorld game animal flight-animation frame 5 of 5: the krizzak in flight, a soft hand-sized plum moth-like flier with a pale glassy lamp-glass mouth, wings half-closed on the downstroke. Whole-body pose, the same creature as the grounded krizzak.",
+  "reference": null,
+  "rimflow_item_id": "ABYSS_KRIZZAK_BUILD_1",
+  "style_notes": "abyss register: permanent night under the Dark, no sun and no sky-light, near-black obsidian ground; light the subject only with a dim cool rim light from above-behind and its own glow where it has one, the silhouette must still read at game zoom by rim and value, never a bright fill; bake NO cast shadow and no daylight; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is PLUM AND LAMP-AMBER: deep plum velvet wings, a pale glass mouth with a faint amber stolen glow; familiar body architecture but never a nameable Earth animal; whole-body flip-book frame 5 of 5 (Locust template), consistent anatomy and scale across all frames; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the wings and the furred back from behind"
+}

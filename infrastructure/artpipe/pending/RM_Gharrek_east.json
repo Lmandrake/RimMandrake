@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-01T18:59:47Z",
+  "drawsize": 0.9,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Gharrek_east",
+  "priority": 60,
+  "prompt": "RimWorld game animal sprite: the gharrek, a flat many-gilled crawler the size of a dinner plate that clings to dark crag rock \u2014 overlapping slate plates half-lifted off a ring of frilled gill-fans, the fans glowing faintly from within with a flameless chemical light, short gripping legs underneath. Caught mid-opening so both its shut and open states read.",
+  "reference": null,
+  "rimflow_item_id": "ABYSS_GHARREK_BUILD_1",
+  "style_notes": "abyss register: permanent night under the Dark, no sun and no sky-light, near-black obsidian ground; light the subject only with a dim cool rim light from above-behind and its own glow where it has one, the silhouette must still read at game zoom by rim and value, never a bright fill; bake NO cast shadow and no daylight; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is SLATE AND VERDIGRIS: slate-grey plates, verdigris-teal frilled gill-fans with a faint teal inner glow; familiar body architecture but never a nameable Earth animal; bs~0.6, drawSize ~0.9; harmless grazer of the air; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the domed plate shell and fan edges from behind"
+}

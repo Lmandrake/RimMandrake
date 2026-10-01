@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-10-01T18:59:48Z",
+  "drawsize": 3.0,
+  "facing": null,
+  "facings": [],
+  "id": "RUT_GreatBone",
+  "priority": 60,
+  "prompt": "RimWorld building sprite seen from above at a three-quarter angle: one colossal curved rib bone, ivory gone amber with age, lashed with straps to a low iron cradle so it can stand on a ship deck.",
+  "reference": null,
+  "rimflow_item_id": "ABYSS_LIGHTFALL_BROOD_WRECK_1",
+  "style_notes": "abyss register: permanent night under the Dark, no sun and no sky-light, near-black obsidian ground; light the subject only with a dim cool rim light from above-behind and its own glow where it has one, the silhouette must still read at game zoom by rim and value, never a bright fill; bake NO cast shadow and no daylight; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is OLD AMBER IVORY: amber-aged ivory bone, dark iron cradle, worn leather straps; building, no figures"
+}

@@ -10610,3 +10610,115 @@
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_DuneCrawler", "notes": "", "target": "RM_DuneCrawler", "ts": 1790835123.5132923}
 {"by": "fill_queue", "event": "registered", "source": "STILLSAND_BEDAZZLE_CONTENT_1", "target": "RM_GlassPearl", "ts": 1790835123.5252373}
 {"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_GlassPearl", "notes": "", "target": "RM_GlassPearl", "ts": 1790835123.5517297}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_GHARREK_BUILD_1", "target": "RM_Gharrek/south", "ts": 1790881187.4889157}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Gharrek_south", "notes": "", "target": "RM_Gharrek/south", "ts": 1790881187.5073347}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_GHARREK_BUILD_1", "target": "RM_Gharrek/east", "ts": 1790881187.50893}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Gharrek_east", "notes": "", "target": "RM_Gharrek/east", "ts": 1790881187.5255072}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_GHARREK_BUILD_1", "target": "RM_Gharrek/north", "ts": 1790881187.526885}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Gharrek_north", "notes": "", "target": "RM_Gharrek/north", "ts": 1790881187.5439775}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_GHARREK_BUILD_1", "target": "RM_GillAsh", "ts": 1790881187.5452335}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_GillAsh", "notes": "", "target": "RM_GillAsh", "ts": 1790881187.561126}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DURRGAK_BUILD_1", "target": "RM_Durrgak/south", "ts": 1790881187.5625348}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Durrgak_south", "notes": "", "target": "RM_Durrgak/south", "ts": 1790881187.5789857}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DURRGAK_BUILD_1", "target": "RM_Durrgak/east", "ts": 1790881187.580471}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Durrgak_east", "notes": "", "target": "RM_Durrgak/east", "ts": 1790881187.5973425}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DURRGAK_BUILD_1", "target": "RM_Durrgak/north", "ts": 1790881187.5986648}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Durrgak_north", "notes": "", "target": "RM_Durrgak/north", "ts": 1790881187.612828}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DURRGAK_BUILD_1", "target": "RM_DurrgakCairn", "ts": 1790881187.614248}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_DurrgakCairn", "notes": "", "target": "RM_DurrgakCairn", "ts": 1790881187.6281276}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DURRGAK_BUILD_1", "target": "RM_AbyssStockedDen", "ts": 1790881187.6294794}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_AbyssStockedDen", "notes": "", "target": "RM_AbyssStockedDen", "ts": 1790881187.644128}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DURRGAK_BUILD_1", "target": "RM_AbyssSalvageCache", "ts": 1790881187.6454618}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_AbyssSalvageCache", "notes": "", "target": "RM_AbyssSalvageCache", "ts": 1790881187.6614156}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak/south", "ts": 1790881187.6627893}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_south", "notes": "", "target": "RM_Krizzak/south", "ts": 1790881187.6786237}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak/east", "ts": 1790881187.679912}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_east", "notes": "", "target": "RM_Krizzak/east", "ts": 1790881187.695441}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak/north", "ts": 1790881187.696724}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_north", "notes": "", "target": "RM_Krizzak/north", "ts": 1790881187.7122264}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_1/south", "ts": 1790881187.7139623}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_1_south", "notes": "", "target": "RM_Krizzak_Flying_1/south", "ts": 1790881187.72873}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_1/east", "ts": 1790881187.7300994}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_1_east", "notes": "", "target": "RM_Krizzak_Flying_1/east", "ts": 1790881187.74619}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_1/north", "ts": 1790881187.7475808}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_1_north", "notes": "", "target": "RM_Krizzak_Flying_1/north", "ts": 1790881187.7685604}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_2/south", "ts": 1790881187.7701328}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_2_south", "notes": "", "target": "RM_Krizzak_Flying_2/south", "ts": 1790881187.7871768}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_2/east", "ts": 1790881187.7886944}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_2_east", "notes": "", "target": "RM_Krizzak_Flying_2/east", "ts": 1790881187.8056571}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_2/north", "ts": 1790881187.8071716}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_2_north", "notes": "", "target": "RM_Krizzak_Flying_2/north", "ts": 1790881187.8216996}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_3/south", "ts": 1790881187.8230836}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_3_south", "notes": "", "target": "RM_Krizzak_Flying_3/south", "ts": 1790881187.8386025}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_3/east", "ts": 1790881187.8402448}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_3_east", "notes": "", "target": "RM_Krizzak_Flying_3/east", "ts": 1790881187.8550413}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_3/north", "ts": 1790881187.8565822}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_3_north", "notes": "", "target": "RM_Krizzak_Flying_3/north", "ts": 1790881187.8742688}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_4/south", "ts": 1790881187.8756194}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_4_south", "notes": "", "target": "RM_Krizzak_Flying_4/south", "ts": 1790881187.890869}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_4/east", "ts": 1790881187.8922544}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_4_east", "notes": "", "target": "RM_Krizzak_Flying_4/east", "ts": 1790881187.9079976}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_4/north", "ts": 1790881187.9096713}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_4_north", "notes": "", "target": "RM_Krizzak_Flying_4/north", "ts": 1790881187.9267209}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_5/south", "ts": 1790881187.9279828}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_5_south", "notes": "", "target": "RM_Krizzak_Flying_5/south", "ts": 1790881187.942534}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_5/east", "ts": 1790881187.9438264}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_5_east", "notes": "", "target": "RM_Krizzak_Flying_5/east", "ts": 1790881187.9589968}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_KRIZZAK_BUILD_1", "target": "RM_Krizzak_Flying_5/north", "ts": 1790881187.960312}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Krizzak_Flying_5_north", "notes": "", "target": "RM_Krizzak_Flying_5/north", "ts": 1790881187.9748218}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_ETCHCAP_BUILD_1", "target": "RM_Etchcap", "ts": 1790881187.9761755}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Etchcap", "notes": "", "target": "RM_Etchcap", "ts": 1790881187.9904525}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_ETCHCAP_BUILD_1", "target": "RM_EtchcapCap", "ts": 1790881187.9919636}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_EtchcapCap", "notes": "", "target": "RM_EtchcapCap", "ts": 1790881188.0079849}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_ETCHFALL_BUILD_1", "target": "RM_Tholin", "ts": 1790881188.0093343}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Tholin", "notes": "", "target": "RM_Tholin", "ts": 1790881188.0259848}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_ETCHFALL_BUILD_1", "target": "RM_Filth_Tholin", "ts": 1790881188.0272992}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Filth_Tholin", "notes": "", "target": "RM_Filth_Tholin", "ts": 1790881188.0423665}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DONOR_BEASTS_FREED_1", "target": "RM_Summ/south", "ts": 1790881188.0437684}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Summ_south", "notes": "", "target": "RM_Summ/south", "ts": 1790881188.0583122}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DONOR_BEASTS_FREED_1", "target": "RM_Summ/east", "ts": 1790881188.0600886}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Summ_east", "notes": "", "target": "RM_Summ/east", "ts": 1790881188.0758188}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DONOR_BEASTS_FREED_1", "target": "RM_Summ/north", "ts": 1790881188.0772188}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Summ_north", "notes": "", "target": "RM_Summ/north", "ts": 1790881188.092886}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DONOR_BEASTS_FREED_1", "target": "RM_Summing/south", "ts": 1790881188.094371}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Summing_south", "notes": "", "target": "RM_Summing/south", "ts": 1790881188.1100836}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DONOR_BEASTS_FREED_1", "target": "RM_Summing/east", "ts": 1790881188.1116946}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Summing_east", "notes": "", "target": "RM_Summing/east", "ts": 1790881188.128269}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DONOR_BEASTS_FREED_1", "target": "RM_Summing/north", "ts": 1790881188.129624}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Summing_north", "notes": "", "target": "RM_Summing/north", "ts": 1790881188.1449304}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DONOR_BEASTS_FREED_1", "target": "RM_Drokattak/south", "ts": 1790881188.1463778}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Drokattak_south", "notes": "", "target": "RM_Drokattak/south", "ts": 1790881188.161533}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DONOR_BEASTS_FREED_1", "target": "RM_Drokattak/east", "ts": 1790881188.1629376}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Drokattak_east", "notes": "", "target": "RM_Drokattak/east", "ts": 1790881188.1787233}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_DONOR_BEASTS_FREED_1", "target": "RM_Drokattak/north", "ts": 1790881188.1801157}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_Drokattak_north", "notes": "", "target": "RM_Drokattak/north", "ts": 1790881188.1964688}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_LIGHTFALL_BROOD_WRECK_1", "target": "RUT_SummAllRender/south", "ts": 1790881188.1978922}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_SummAllRender_south", "notes": "", "target": "RUT_SummAllRender/south", "ts": 1790881188.2145958}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_LIGHTFALL_BROOD_WRECK_1", "target": "RUT_SummAllRender/east", "ts": 1790881188.2159853}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_SummAllRender_east", "notes": "", "target": "RUT_SummAllRender/east", "ts": 1790881188.2315571}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_LIGHTFALL_BROOD_WRECK_1", "target": "RUT_SummAllRender/north", "ts": 1790881188.232966}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_SummAllRender_north", "notes": "", "target": "RUT_SummAllRender/north", "ts": 1790881188.2479255}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_LIGHTFALL_BROOD_WRECK_1", "target": "RUT_SummEgg", "ts": 1790881188.2493937}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_SummEgg", "notes": "", "target": "RUT_SummEgg", "ts": 1790881188.265384}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_LIGHTFALL_BROOD_WRECK_1", "target": "RUT_GreatBone", "ts": 1790881188.2669034}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_GreatBone", "notes": "", "target": "RUT_GreatBone", "ts": 1790881188.2835133}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_LIGHTFALL_BROOD_WRECK_1", "target": "RUT_BroodBone", "ts": 1790881188.2848744}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_BroodBone", "notes": "", "target": "RUT_BroodBone", "ts": 1790881188.300895}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_LIGHTFALL_BROOD_WRECK_1", "target": "RUT_BroodRibArch", "ts": 1790881188.3022695}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_BroodRibArch", "notes": "", "target": "RUT_BroodRibArch", "ts": 1790881188.31788}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_LIGHTFALL_BROOD_WRECK_1", "target": "RUT_WallWreckHull", "ts": 1790881188.3192854}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_WallWreckHull", "notes": "", "target": "RUT_WallWreckHull", "ts": 1790881188.3355103}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_LIGHTFALL_BROOD_WRECK_1", "target": "RUT_WreckDebris", "ts": 1790881188.336976}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RUT_WreckDebris", "notes": "", "target": "RUT_WreckDebris", "ts": 1790881188.355097}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_FOLD_LAMP_BUILD_1", "target": "RM_FoldLamp/south", "ts": 1790881188.356427}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_FoldLamp_south", "notes": "", "target": "RM_FoldLamp/south", "ts": 1790881188.372053}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_FOLD_LAMP_BUILD_1", "target": "RM_FoldLamp/east", "ts": 1790881188.3733914}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_FoldLamp_east", "notes": "", "target": "RM_FoldLamp/east", "ts": 1790881188.3890636}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_FOLD_LAMP_BUILD_1", "target": "RM_FoldLamp/north", "ts": 1790881188.3907735}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_FoldLamp_north", "notes": "", "target": "RM_FoldLamp/north", "ts": 1790881188.405997}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_FREE_TIER_BODY_1", "target": "RM_DuskRat/south", "ts": 1790881188.4075756}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_DuskRat_south", "notes": "", "target": "RM_DuskRat/south", "ts": 1790881188.4239657}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_FREE_TIER_BODY_1", "target": "RM_DuskRat/east", "ts": 1790881188.4261715}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_DuskRat_east", "notes": "", "target": "RM_DuskRat/east", "ts": 1790881188.4422264}
+{"by": "fill_queue", "event": "registered", "source": "ABYSS_FREE_TIER_BODY_1", "target": "RM_DuskRat/north", "ts": 1790881188.443814}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_DuskRat_north", "notes": "", "target": "RM_DuskRat/north", "ts": 1790881188.4618125}

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-01T18:59:47Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Etchcap",
+  "priority": 55,
+  "prompt": "RimWorld plant sprite: the etchcap, a tight cluster of glossy black cap fungi with violet gill-edges, growing low out of a hollow in dark rock, the base crusted with fine grey grain. Not lit by any sun.",
+  "reference": null,
+  "rimflow_item_id": "ABYSS_ETCHCAP_BUILD_1",
+  "style_notes": "abyss register: permanent night under the Dark, no sun and no sky-light, near-black obsidian ground; light the subject only with a dim cool rim light from above-behind and its own glow where it has one, the silhouette must still read at game zoom by rim and value, never a bright fill; bake NO cast shadow and no daylight; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is BLACK AND VIOLET: glossy black caps, vivid violet gill-edges, grey grain crust; plant sprite, no ground tile, nothing sun-fed, no green"
+}
