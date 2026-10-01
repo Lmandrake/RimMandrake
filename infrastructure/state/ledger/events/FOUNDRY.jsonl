@@ -1776,3 +1776,12 @@
 {"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running, bridge did not answer","ts":"2026-10-01T10:57:52Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-01T10:57:55Z"}
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-01T10:58:20Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_WALKLINT_FINDINGS_1","ts":"2026-10-01T14:42:31Z"}
+{"seat":"FOUNDRY","event":"start","id":"PYRELANDS_WALKLINT_FINDINGS_1","ts":"2026-10-01T14:42:31Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1","ts":"2026-10-01T14:42:32Z"}
+{"seat":"FOUNDRY","event":"start","id":"FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1","ts":"2026-10-01T14:42:32Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DEPLOYED_BIOME_REFS_ROTSPOREKIT_1","ts":"2026-10-01T14:42:32Z"}
+{"seat":"FOUNDRY","event":"start","id":"DEPLOYED_BIOME_REFS_ROTSPOREKIT_1","ts":"2026-10-01T14:42:33Z"}
+{"seat":"FOUNDRY","event":"close","id":"PYRELANDS_WALKLINT_FINDINGS_1","sha":"0989f63a3","reason":"walklint-ok on generated composed packageId; model=sonnet-5.5","ts":"2026-10-01T14:42:33Z"}
+{"seat":"FOUNDRY","event":"close","id":"FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1","sha":"ca9d6a4f5","reason":"Harmony postfix built, compiled only, untested live; model=opus-5.5","ts":"2026-10-01T14:42:34Z"}
+{"seat":"FOUNDRY","event":"close","id":"DEPLOYED_BIOME_REFS_ROTSPOREKIT_1","sha":"fac981995","reason":"selftest_deployed_biome_refs now 0 unresolved of 522; deploy changed; model=sonnet-5.5","ts":"2026-10-01T14:42:34Z"}
