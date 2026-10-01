@@ -308,8 +308,12 @@ namespace RimMandrake.CreatureBehaviors
                 FilthMaker.TryMakeFilth(at, map, funnel, 1);
             }
 
+            // The corpse is deliberately LEFT where it fell: it is the swimmer's meal (PredatorHunt
+            // eats it in place, submerged and unseen), and removing it would break the food chain and
+            // send the swimmer out to kill again. So the text says struck down, never "pulled down"
+            // (SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1).
             string text = "Something under the sand came up beneath " + victim.LabelShort
-                + " and pulled the body down. A collapsed funnel of sand marks the place. It was a "
+                + " and struck it down. A collapsed funnel of sand marks the place. It was a "
                 + pawn.KindLabel + ".";
             bool playerConcern = victim.Faction == Faction.OfPlayer || victim.HostFaction == Faction.OfPlayer;
             if (playerConcern)
