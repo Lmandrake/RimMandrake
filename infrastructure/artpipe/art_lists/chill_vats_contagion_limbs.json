@@ -1,0 +1,93 @@
+[
+ {
+  "id": "RM_ChillCryoponicsVat",
+  "rimflow_item_id": "CONTAGION_GROWN_LIMBS_ART_1",
+  "prompt": "RimWorld building sprite, top-down three-quarter view as vanilla RimWorld 2x2 buildings: a cryoponics vat, a sealed squat steel tank with a thick glass-fronted lid, frost rime crusting every seam and rivet, a pale translucent bath of cryogenic propane visible through the lid with the pale root-tips of deep-bed plants curled inside, a small coolant pump and two insulated pipes at the back corner, small power indicator lamp. Utilitarian salvage-industrial, cold blue-white and steel-grey palette with a hint of rust.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "reference": "",
+  "facings": "",
+  "style_notes": "defName RM_ChillCryoponicsVat, 2x2 building, single south-facing sprite (item CHILL_CRYOPONICS_GROWER_1). painterly vanilla-RimWorld art style, hand-painted look matching vanilla Anomaly flesh-limb attachments, heavy clean dark outline, no ground shadow, no background, single object centered, transparent background",
+  "priority": 100,
+  "background": "transparent",
+  "channel": "codex"
+ },
+ {
+  "id": "RM_ChillFloorBed",
+  "rimflow_item_id": "CONTAGION_GROWN_LIMBS_ART_1",
+  "prompt": "RimWorld building sprite, top-down three-quarter view as vanilla RimWorld 2x2 buildings: a plain steel growing bed for deep-bed plants, a shallow rectangular riveted tray with a low raised rim, bare unpowered and simple, soil-less grating base, a dusting of frost and ice crystals along the rim, a few pale frost-hardy sprout stubs. Utilitarian, cold steel-grey and pale blue-white palette, distinctly plainer than a powered hydroponic basin.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "reference": "",
+  "facings": "",
+  "style_notes": "defName RM_ChillFloorBed, 2x2 building, single south-facing sprite (item CHILL_FLOOR_GROWING_BED_1). painterly vanilla-RimWorld art style, hand-painted look matching vanilla Anomaly flesh-limb attachments, heavy clean dark outline, no ground shadow, no background, single object centered, transparent background",
+  "priority": 100,
+  "background": "transparent",
+  "channel": "codex"
+ },
+ {
+  "id": "RM_PillarArmA",
+  "rimflow_item_id": "CONTAGION_GROWN_LIMBS_ART_1",
+  "prompt": "RimWorld pawn body-attachment sprite, a single detached grown limb seen on its own, arm hanging down along the body: a slab of bone-cored raw meat as thick as a thigh hanging to the knee and ending in a knuckled blunt club with no fingers at all, pale bone showing through at the knuckles. Variant A: smoother, straighter slab. Fleshy pink-grey skin tone, desaturated so it can be tinted by the pawn's skin colour; wet organic texture.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "reference": "",
+  "facings": "east,north,south",
+  "style_notes": "texPath Things/Pawn/Humanlike/BodyAttachments/RM_PillarArm/RM_PillarArmA, drawSize 1.6, Contagion grown limb, static (no wriggle). Match scale/anchor of vanilla FleshWhipLimbA. painterly vanilla-RimWorld art style, hand-painted look matching vanilla Anomaly flesh-limb attachments, heavy clean dark outline, no ground shadow, no background, single object centered, transparent background",
+  "priority": 100,
+  "background": "transparent",
+  "channel": "codex"
+ },
+ {
+  "id": "RM_PillarArmB",
+  "rimflow_item_id": "CONTAGION_GROWN_LIMBS_ART_1",
+  "prompt": "RimWorld pawn body-attachment sprite, a single detached grown limb seen on its own, arm hanging down along the body: a slab of bone-cored raw meat as thick as a thigh hanging to the knee and ending in a knuckled blunt club with no fingers at all, pale bone showing through at the knuckles. Variant B: lumpier with a crooked knuckle ridge. Fleshy pink-grey skin tone, desaturated so it can be tinted by the pawn's skin colour; wet organic texture.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "reference": "",
+  "facings": "east,north,south",
+  "style_notes": "texPath Things/Pawn/Humanlike/BodyAttachments/RM_PillarArm/RM_PillarArmB, drawSize 1.6, Contagion grown limb, static (no wriggle). Match scale/anchor of vanilla FleshWhipLimbA. painterly vanilla-RimWorld art style, hand-painted look matching vanilla Anomaly flesh-limb attachments, heavy clean dark outline, no ground shadow, no background, single object centered, transparent background",
+  "priority": 100,
+  "background": "transparent",
+  "channel": "codex"
+ },
+ {
+  "id": "RM_LashA",
+  "rimflow_item_id": "CONTAGION_GROWN_LIMBS_ART_1",
+  "prompt": "RimWorld pawn body-attachment sprite, a single detached grown limb on its own: a pink rope of muscle three times the length of an arm, no hand, coiling on the ground behind and trailing down, glistening, tapering to a thin twitching tip. Variant A: one loose S-curve. Fleshy pink skin tone, desaturated so it can be tinted by the pawn's skin colour; wet organic texture.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "reference": "",
+  "facings": "east,north,south",
+  "style_notes": "texPath Things/Pawn/Humanlike/BodyAttachments/RM_Lash/RM_LashA, drawSize 1.8, Contagion grown limb, rendered with spastic twitch in game. Match scale/anchor of vanilla TentacleLimb. painterly vanilla-RimWorld art style, hand-painted look matching vanilla Anomaly flesh-limb attachments, heavy clean dark outline, no ground shadow, no background, single object centered, transparent background",
+  "priority": 100,
+  "background": "transparent",
+  "channel": "codex"
+ },
+ {
+  "id": "RM_LashB",
+  "rimflow_item_id": "CONTAGION_GROWN_LIMBS_ART_1",
+  "prompt": "RimWorld pawn body-attachment sprite, a single detached grown limb on its own: a pink rope of muscle three times the length of an arm, no hand, coiling on the ground behind and trailing down, glistening, tapering to a thin twitching tip. Variant B: a tight double coil. Fleshy pink skin tone, desaturated so it can be tinted by the pawn's skin colour; wet organic texture.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "reference": "",
+  "facings": "east,north,south",
+  "style_notes": "texPath Things/Pawn/Humanlike/BodyAttachments/RM_Lash/RM_LashB, drawSize 1.8, Contagion grown limb, rendered with spastic twitch in game. Match scale/anchor of vanilla TentacleLimb. painterly vanilla-RimWorld art style, hand-painted look matching vanilla Anomaly flesh-limb attachments, heavy clean dark outline, no ground shadow, no background, single object centered, transparent background",
+  "priority": 100,
+  "background": "transparent",
+  "channel": "codex"
+ },
+ {
+  "id": "RM_LashC",
+  "rimflow_item_id": "CONTAGION_GROWN_LIMBS_ART_1",
+  "prompt": "RimWorld pawn body-attachment sprite, a single detached grown limb on its own: a pink rope of muscle three times the length of an arm, no hand, coiling on the ground behind and trailing down, glistening, tapering to a thin twitching tip. Variant C: a long straight trail with a hooked tip. Fleshy pink skin tone, desaturated so it can be tinted by the pawn's skin colour; wet organic texture.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "reference": "",
+  "facings": "east,north,south",
+  "style_notes": "texPath Things/Pawn/Humanlike/BodyAttachments/RM_Lash/RM_LashC, drawSize 1.8, Contagion grown limb, rendered with spastic twitch in game. Match scale/anchor of vanilla TentacleLimb. painterly vanilla-RimWorld art style, hand-painted look matching vanilla Anomaly flesh-limb attachments, heavy clean dark outline, no ground shadow, no background, single object centered, transparent background",
+  "priority": 100,
+  "background": "transparent",
+  "channel": "codex"
+ }
+]
