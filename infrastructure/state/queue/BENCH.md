@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T06:34:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T06:35:30Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -958,3 +958,13 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  The four movements of the program item, applied to this biome:
 prose:    infrastructure/state/items/BLACKCRAGS_BEDAZZLE_SITTING_1.md
+
+## PYRELANDS_NORTHSTAR_VALIDATE_1 Owner re-validates the Pyrelands north star (10 bars + proposed additions; hash mismatch since b3457a829)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  PYRELANDSNORTHSTARVALIDATE1 — owner re-validates the Pyrelands north star
+prose:    infrastructure/state/items/PYRELANDS_NORTHSTAR_VALIDATE_1.md
