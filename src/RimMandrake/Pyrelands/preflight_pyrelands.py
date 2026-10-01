@@ -99,7 +99,10 @@ DEPLOY_PLANS = (["--compose", "biomes"], ["--mod", "UtinniPatches", "--mod", "Py
 # Log (plan §3.8 item 7): these refuse; the documented ScorchableGround config errors are allowed.
 LOG_FATAL = ("CommonalityOfAnimal",)
 LOG_ALLOWED = "burnedDef is flammable"
-LOG_ALLOWED_MAX = 4
+# 6 terrains (RM_FE_Ash_Trace, RM_FE_Ash_Light, RM_FE_Ground_Sand/Gravel/Soil/SoilRich) carry a flammable burnedDef on
+# purpose -- the ash ladder (Defs/TerrainDefs/AshLadder.xml header) -- and vanilla logs each once per pass, twice
+# per load: 6 x 2 = 12 lines (MEASURED live 2026-10-01). The earlier "4" counted two of them.
+LOG_ALLOWED_MAX = 12
 BENIGN_WINDOWS = ("EditWindow_Log", "LudeonTK.EditWindow_Log")
 IGNORED_WINDOWS = ("Verse.ImmediateWindow", "LudeonTK.Dialog_DevPalette")   # the dev overlay: cannot be closed, blocks nothing        # auto-closed; anything else refuses (plan §3.8)
 QUIET_STORYTELLER = "Tutor"                 # UNMEASURED that it fires nothing; gate B also

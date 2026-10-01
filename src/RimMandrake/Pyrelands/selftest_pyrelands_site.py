@@ -335,7 +335,7 @@ class FakeEnv(P.Env):
             with open(os.path.join(self.mods_dir, d, "About.xml"), "w") as fh:
                 fh.write("<x/>")
         log = ["RimWorld 1.6", "Config error in RM_FE_Ground_Sand: burnedDef is flammable"] * 1
-        log += ["Config error in X: burnedDef is flammable"] * (5 if "log_burn5" in self.faults else 3)
+        log += ["Config error in X: burnedDef is flammable"] * (13 if "log_burn5" in self.faults else 3)
         if "log_nre" in self.faults:
             log.append("Exception in GenStep_Animals: NullReferenceException at CommonalityOfAnimal")
         if "log_xref" in self.faults:
