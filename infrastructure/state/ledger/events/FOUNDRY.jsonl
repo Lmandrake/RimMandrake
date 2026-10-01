@@ -1761,3 +1761,18 @@
 {"seat":"FOUNDRY","event":"file","id":"LIVE_ROUND2_FIXES_PROOF_1","title":"Prove the three live-round-2 fixes in game (beam, soorrak loop log, rimplace stuff)","kind":"task","target":"v1","needs":"game-up","spec":"infrastructure/state/items/LIVE_ROUND2_FIXES_PROOF_1.md","for":"FOUNDRY","ts":"2026-10-01T11:41:08Z"}
 {"seat":"FOUNDRY","event":"close","id":"RIMPLACE_STUFFLESS_THING_ROWS_1","sha":"a204c05b1","reason":"GenStep_RimplacePlan supplies GenStuff.DefaultStuffFor for stuffless rows; live log check in LIVE_ROUND2_FIXES_PROOF_1","ts":"2026-10-01T11:42:39Z"}
 {"seat":"FOUNDRY","event":"note","id":"SOORRAK_INSTANT_JOB_LOOP_1","text":"246950f7d adds a one-shot log naming the looping job; mechanism not found offline (ruled-out list in item prose). Next: LIVE_ROUND2_FIXES_PROOF_1 bar 2 captures the line.","ts":"2026-10-01T11:42:41Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-10-01T05:42:18Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FEVERWOOD_SAP_SUCKER_TUNING_1","ts":"2026-10-01T05:50:16Z"}
+{"seat":"FOUNDRY","event":"start","id":"FEVERWOOD_SAP_SUCKER_TUNING_1","ts":"2026-10-01T05:50:21Z"}
+{"seat":"FOUNDRY","event":"file","id":"FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1","title":"Harmony postfix on Pawn_MindState.CheckStartMentalStateBecauseRecruitAttempted so a failed tame triggers the sap-sucker refusal (opus; add Harmony ref + srchash DLL rebuild)","kind":"build","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-10-01T05:51:53Z"}
+{"seat":"FOUNDRY","event":"close","id":"FEVERWOOD_SAP_SUCKER_TUNING_1","sha":"9af41986b3207fec2ba2b8497210aa3ee06ca296","ts":"2026-10-01T05:52:23Z"}
+{"seat":"FOUNDRY","event":"note","id":"FEVERWOOD_SAP_SUCKER_TUNING_1","text":"Correction: closed event carries stale sha 9af41986b; the real work is 338e2bc68 (on main). Not done: Silloch alarm tag, art for vaulm/ollareth/drommath. Mishandle hook is FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1.","ts":"2026-10-01T06:09:18Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY live check session: deploy + cold load, Stillsand sun/sandswim/events/caves, Chill, Contagion","ts":"2026-10-01T07:32:55Z"}
+{"seat":"FOUNDRY","event":"file","id":"DEPLOYED_BIOME_REFS_ROTSPOREKIT_1","title":"selftest_deployed_biome_refs fails: 19 wildPlants/wildAnimals entries in deployed RUT_TheRot/RUT_Contagion/RUT_Miasma name defs absent because mandrake.rut.rotsporekit is not deployed; passed ~40 min earlier — find what changed (2026-10-01 live-deploy?) and whether it produces load errors","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-10-01T07:55:51Z"}
+{"seat":"FOUNDRY","event":"file","id":"PYRELANDS_WALKLINT_FINDINGS_1","title":"run_selftests reports 3 walklint findings in design/validation_walks/RimMandrake/Pyrelands.md (found by STILLSAND_SKELETONS_TRACKS_1 full run 2026-10-01) — read each finding, fix the walk, never the grader","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-10-01T08:43:01Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-01T08:53:14Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-01T08:53:19Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY live round 2","ts":"2026-10-01T09:37:13Z"}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running, bridge did not answer","ts":"2026-10-01T10:57:52Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-01T10:57:55Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-01T10:58:20Z"}
