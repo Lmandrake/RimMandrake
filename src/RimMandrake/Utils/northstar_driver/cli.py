@@ -4,6 +4,9 @@
   python.exe src/RimMandrake/Utils/northstar_driver/cli.py preflight --mod Graffiti
   python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Graffiti --plan <plan.py> [--pipeline]
   python3    src/RimMandrake/Utils/northstar_driver/cli.py run --mock --plan <plan.py>   # offline
+  python3    src/RimMandrake/Utils/northstar_driver/judge_cli.py <results.json>           # visual half, WSL
+
+Suite bars (`shows=`) are visual: a state PASS reads UNMEASURED until judge_cli.py writes a verdict.
 
 Never touches ModsConfig.xml (read-only fingerprint), never launches the game, never takes the
 bridge lock (you hold it: `rimflow bridge who`). Output is JSON (LF) at --out, default
@@ -137,7 +140,7 @@ def cmd_run(args):
             wanted = [b for b in B.REGISTRY.values() if b.mod in (None, mod)]
             rows = [B.run_bar(b, s) for b in wanted]
             if getattr(plan, "USE_SUITE", False):
-                rows += _suite_rows(s, mod, exp)
+                rows += _suite_rows(s, mod, exp, doc)
             doc["bars"] = rows
             doc["summary"] = B.summarize(rows)
             doc["all_green"] = B.all_green(rows, exp or None)
@@ -169,16 +172,76 @@ def unclaimed_cannot_show(mod):
         return ["(unreadable: %s)" % ex]
 
 
-def _suite_rows(s, mod, expected):
+def _suite_rows(s, mod, expected, doc):
     import runner
     suite = runner.load_validation(runner.find_mod_dir(mod))
-    res = runner.run_suite(suite, s, anchor=None, mod=None)   # judge/visual half is separate
+    res = runner.run_suite(suite, s, anchor=None, mod=None)   # visual half: judge_cli.py, after the run
     for ch in res["chains"]:
         for c in ch["components"]:
             if not str(c.get("verdict", "")).startswith("PASS"):
                 print("component %s/%s: %s" % (ch.get("name"), c.get("name"),
                                                json.dumps({k: v for k, v in c.items() if k != "name"}, default=str)[:600]))
-    return B.rollup_components(res["chains"], expected)
+    doc["components"] = component_records(res["chains"])
+    doc["bar_text"], doc["bar_text_source"] = bar_text(mod)
+    return mark_visual(B.rollup_components(res["chains"], expected), doc["bar_text"])
+
+
+def to_wsl(p):
+    """`C:\\x\\y.png` -> `/mnt/c/x/y.png`; a POSIX path is returned unchanged."""
+    p = str(p or "")
+    if len(p) > 2 and p[1] == ":" and p[0].isalpha():
+        return "/mnt/%s/%s" % (p[0].lower(), p[2:].replace("\\", "/").lstrip("/"))
+    return p
+
+
+def to_win(p):
+    """`/mnt/c/x/y.png` -> `C:\\x\\y.png`; a Windows path is returned unchanged."""
+    p = str(p or "")
+    if p.startswith("/mnt/") and len(p) > 6 and p[6] == "/":
+        return "%s:\\%s" % (p[5].upper(), p[7:].replace("/", "\\"))
+    return p
+
+
+def component_records(chains):
+    """Every component, with each screenshot as {path (as the bridge returned it), win, wsl}, so the
+    WSL-side judge can find the image without re-deriving anything."""
+    out = []
+    for ch in chains:
+        for c in ch["components"]:
+            out.append({"chain": ch.get("name"), "name": c.get("name"), "verdict": c.get("verdict"),
+                        "shows": list(c.get("shows") or ()),
+                        "screenshots": [{"path": p, "win": to_win(p), "wsl": to_wsl(p)}
+                                        for p in (c.get("screenshots") or ()) if p]})
+    return out
+
+
+def bar_text(mod):
+    """{bar id: {polarity, text}} from the VALIDATED walk -- the narrow question the judge asks."""
+    try:
+        import northstar
+        w = northstar.find_walk(ROOT, mod)
+        ns = northstar.parse(w) if w else None
+        if not ns or ns["state"] != northstar.VALIDATED:
+            return {}, "no VALIDATED walk"
+        out = {i: {"polarity": "must", "text": ns["must_show_text"].get(i, "")} for i in ns["must_show"]}
+        out.update({i: {"polarity": "cannot", "text": ns["cannot_show_text"].get(i, "")}
+                    for i in ns["cannot_show"]})
+        return out, "%s (hash %s)" % (os.path.relpath(w, ROOT), ns.get("recorded_hash", ""))
+    except Exception as ex:
+        return {}, "walk unreadable: %s" % ex
+
+
+def mark_visual(rows, texts):
+    """Every `shows=` bar is judged on its screenshots, so state alone cannot PASS it: a state PASS
+    reads UNMEASURED until judge_cli.py writes a verdict. The state result is kept in `state_status`."""
+    for r in rows:
+        r["visual"] = True
+        r["polarity"] = (texts.get(r["id"]) or {}).get("polarity", "must")
+        r["state_status"], r["state_evidence"] = r["status"], r["evidence"]
+        if r["status"] == PASS:
+            r["status"] = UNMEASURED
+            r["evidence"] = "visual bar: state PASS, not yet judged (run judge_cli.py) [%s]" % r["evidence"]
+    return rows
 
 
 def main(argv=None):
