@@ -1632,3 +1632,5 @@
 {"seat":"FOUNDRY","event":"close","id":"STILLSAND_STILL_COOLING_DRAUGHT_1","sha":"568fa9d2c","ts":"2026-10-01T08:02:22Z"}
 {"seat":"FOUNDRY","event":"claim","id":"STILLSAND_RETURN_RITUAL_1","ts":"2026-10-01T07:35:39Z"}
 {"seat":"FOUNDRY","event":"start","id":"STILLSAND_RETURN_RITUAL_1","ts":"2026-10-01T07:35:41Z"}
+{"seat":"FOUNDRY","event":"file","id":"STILLSAND_RETURN_REMAINDER_1","title":"Stillsand Return remainder: live proof, the visible Return line, cave debt stones, more water sources, stale stillsand MayRequire sweep","kind":"build","target":"v1","needs":"game-up","spec":"infrastructure/state/items/STILLSAND_RETURN_REMAINDER_1.md","caused_by":"STILLSAND_RETURN_RITUAL_1","for":"FOUNDRY","ts":"2026-10-01T08:12:44Z"}
+{"seat":"FOUNDRY","event":"close","id":"STILLSAND_RETURN_RITUAL_1","sha":"c1aa656de","ts":"2026-10-01T08:12:47Z"}

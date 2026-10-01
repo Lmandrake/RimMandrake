@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T08:02:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T08:12:47Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2112,16 +2112,6 @@ thin:     no ## verify
 summary:  1. Giant skeleton buildings, one per giant: multi-cell, staticSunShadowHeight per piece,
 prose:    infrastructure/state/items/STILLSAND_SKELETONS_TRACKS_1.md
 
-## STILLSAND_RETURN_RITUAL_1 Stillsand Return: Sun-Debt water ledger weighting the biome's events, the Return ritual at a debt stone (bloom, debt paid, the sand gives back), RM bloom-on-pour
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  1. The Debt (Utinni tier). A colony counter of water drawn on Stillsand maps: every still litre,
-prose:    infrastructure/state/items/STILLSAND_RETURN_RITUAL_1.md
-
 ## FOOTPRINT_TRACK_GRID_1 One footprint grid for the planet: capped TrackGrid + section layer + cell-entry postfix in CreatureBehaviors, invisible pawns recorded, erase API; Warscar film and Stillsand sand both consume it as XML
 state:    proposed
 row:      unassigned
@@ -2641,3 +2631,13 @@ kind:     task
 thin:     no ## verify
 summary:  When the art lands, copy it into src/RimMandrake/Stillsand/Textures/ (icon at a Things/Item/Apparel/... path;…
 prose:    infrastructure/state/items/STILLSAND_SUN_GOGGLES_ART_1.md
+
+## STILLSAND_RETURN_REMAINDER_1 Stillsand Return remainder: live proof, the visible Return line, cave debt stones, more water sources, stale stillsand MayRequire sweep
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Live proof (Desktop, quicktest on RMStillsand, all DLC). The parent's two criteria:
+prose:    infrastructure/state/items/STILLSAND_RETURN_REMAINDER_1.md
