@@ -67,19 +67,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 yield return "RM_LiquidProperties pH must be within 0..14.";
             }
 
-            bool doesAnything = damageOnContact != null
-                || damageOnImmersion != null
-                || corrodesApparel
-                || flammable
-                || pH < 4f
-                || pH > 10f;
-            if (!doesAnything)
-            {
-                yield return "RM_LiquidProperties does nothing beyond documenting viscosity: "
-                    + "no damage spec, no corrosion, and pH is in the neutral 4..10 band. "
-                    + "That is a valid liquid (§3: an empty extension is still a complete, "
-                    + "working liquid) — this is a naming/authoring check, not a hard error.";
-            }
+            // An inert liquid (no damage, no corrosion, neutral pH) is valid (spec §3: an empty
+            // extension is a complete, working liquid), so it is never reported as a config error.
         }
     }
 
