@@ -91,6 +91,10 @@ class Component(object):
         }
 
 
+class _Shot(object):
+    n = 0       # process-wide screenshot counter, part of every rect shot's fileName
+
+
 class TestContext(object):
     """The `t` a chain function receives. Wraps a `rimdrive.Session` with the
     verb vocabulary v1 (spec §2). Every verb calls `self._guard()` first --
@@ -448,9 +452,14 @@ class TestContext(object):
             self.session.call("jawa/clear_ui")
             if rect:
                 rx, rz, rw, rh = rect
+                # A unique fileName: without one the tool names the file by the
+                # SECOND, so two shots in one second overwrite each other (live
+                # 2026-10-01: three spree_wall shots left two files).
+                _Shot.n += 1
                 r = self.session.call("rimworld/screenshot_cell_rect",
                                       x=rx, z=rz, width=rw, height=rh,
-                                      paddingCells=padding)
+                                      paddingCells=padding,
+                                      fileName="%s_%d_%d" % (name, int(time.time() * 1000), _Shot.n))
             else:
                 self.session.call("rimworld/jump_camera_to_cell", x=x, z=z)
                 r = self.session.call("rimworld/take_screenshot",
