@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GROWN_LIMBS_BUILD_1 (design: design/Jawa/worldbuilding/biomes/
+    contagion_grown_limbs_2026-09-30.md). Pillar Arm and Lash, the two plain
+    melee limbs, built on the Anomaly flesh-whip shape: ParentName=
+    AddedMutationBase (Anomaly, Hediffs_BodyParts_Prosthetic.xml), installed on
+    the Shoulder, which replaces the whole arm and hand. Every limb gives one
+    real thing and costs one real thing that lasts; the numbers are first-pass
+    and every one is a named vanilla field, so tuning is XML only.
+
+    Removal: HediffCompProperties_UnfinishedEmerge (ours) spawns a manhunter
+    RM_TheUnfinished: vanilla FleshbeastEmerge is hard-coded to Fingerspike.
+
+    ART: the render nodes below reuse Anomaly's shipped TentacleLimb and
+    FleshWhipLimb textures as PLACEHOLDERS (checked: no RM_PillarArm/RM_Lash
+    art exists in artpipe done/ or _artsrc/). Bespoke art is owed to
+    CONTAGION_GROWN_LIMBS_ART_1.
+  -->
+
+  <HediffDef ParentName="AddedMutationBase">
+    <defName>RM_PillarArm</defName>
+    <label>pillar arm</label>
+    <labelNoun>a pillar arm</labelNoun>
+    <description>A slab of bone-cored meat as thick as a thigh, hanging to the knee and ending in a knuckled club with no fingers at all. It hits harder than anything a pawn can otherwise grow, and it makes the hand useless for work. It is fed from the body that carries it.\n\nIt has its own neural structures and may become dangerous if removed.</description>
+    <defaultInstallPart>Shoulder</defaultInstallPart>
+    <stages>
+      <li>
+        <hungerRateFactorOffset>0.25</hungerRateFactorOffset>
+        <statOffsets>
+          <PawnBeauty>-1</PawnBeauty>
+          <MoveSpeed>-0.4</MoveSpeed>
+        </statOffsets>
+      </li>
+    </stages>
+    <renderNodeProperties>
+      <li>
+        <texPath>Things/Pawn/Humanlike/BodyAttachments/FleshWhipLimb/FleshWhipLimbA</texPath>
+        <parentTagDef>Body</parentTagDef>
+        <overrideMeshSize>1</overrideMeshSize>
+        <drawSize>1.6</drawSize>
+        <colorType>Skin</colorType>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <useSkinShader>true</useSkinShader>
+        <useRottenColor>true</useRottenColor>
+        <drawData>
+          <scaleOffsetByBodySize>true</scaleOffsetByBodySize>
+          <useBodyPartAnchor>true</useBodyPartAnchor>
+          <childScale>0.7</childScale>
+          <bodyTypeScales>
+            <Hulk>1.2</Hulk>
+            <Fat>1.4</Fat>
+            <Thin>0.8</Thin>
+          </bodyTypeScales>
+          <defaultData>
+            <layer>49</layer>
+          </defaultData>
+          <dataNorth>
+            <rotationOffset>310</rotationOffset>
+            <flip>true</flip>
+            <layer>0</layer>
+          </dataNorth>
+          <dataEast>
+            <rotationOffset>270</rotationOffset>
+            <flip>true</flip>
+          </dataEast>
+          <dataSouth>
+            <rotationOffset>220</rotationOffset>
+          </dataSouth>
+          <dataWest>
+            <rotationOffset>270</rotationOffset>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+    <addedPartProps>
+      <solid>true</solid>
+      <partEfficiency>0.3</partEfficiency>
+    </addedPartProps>
+    <comps>
+      <li Class="HediffCompProperties_VerbGiver">
+        <tools>
+          <li>
+            <label>pillar</label>
+            <capacities>
+              <li>Blunt</li>
+            </capacities>
+            <power>24</power>
+            <armorPenetration>0.35</armorPenetration>
+            <cooldownTime>3.2</cooldownTime>
+            <extraMeleeDamages>
+              <li>
+                <def>Stun</def>
+                <amount>8</amount>
+              </li>
+            </extraMeleeDamages>
+          </li>
+        </tools>
+      </li>
+      <li Class="RimMandrake.Contagion.HediffCompProperties_UnfinishedEmerge">
+        <emergeKind>RM_TheUnfinished</emergeKind>
+        <letterLabel>The limb comes away</letterLabel>
+        <letterText>Cutting {PAWN_nameDef}'s pillar arm free has let the thing inside finish its thought. The limb has torn loose of {PAWN_nameDef} and walked off as one of the Unfinished, and it is not friendly.</letterText>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef ParentName="AddedMutationBase">
+    <defName>RM_Lash</defName>
+    <label>lash</label>
+    <labelNoun>a lash</labelNoun>
+    <description>A pink rope of muscle three times the length of an arm. It coils on the ground behind the pawn and keeps twitching after the pawn has stopped. It is a fast, weak striker that stuns, and it lashes out at people the owner did not mean to hit.\n\nIt has its own neural structures and may become dangerous if removed.</description>
+    <defaultInstallPart>Shoulder</defaultInstallPart>
+    <stages>
+      <li>
+        <socialFightChanceFactor>3</socialFightChanceFactor>
+        <statOffsets>
+          <PawnBeauty>-1</PawnBeauty>
+        </statOffsets>
+      </li>
+    </stages>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Spastic">
+        <texPaths>
+          <li>Things/Pawn/Humanlike/BodyAttachments/TentacleLimb/TentacleLimbA</li>
+          <li>Things/Pawn/Humanlike/BodyAttachments/TentacleLimb/TentacleLimbB</li>
+          <li>Things/Pawn/Humanlike/BodyAttachments/TentacleLimb/TentacleLimbC</li>
+        </texPaths>
+        <parentTagDef>Body</parentTagDef>
+        <overrideMeshSize>1</overrideMeshSize>
+        <drawSize>1.8</drawSize>
+        <colorType>Skin</colorType>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <useSkinShader>true</useSkinShader>
+        <useRottenColor>true</useRottenColor>
+        <rotationRange>-40~40</rotationRange>
+        <durationTicksRange>10~35</durationTicksRange>
+        <nextSpasmTicksRange>10~50</nextSpasmTicksRange>
+        <drawData>
+          <scaleOffsetByBodySize>true</scaleOffsetByBodySize>
+          <useBodyPartAnchor>true</useBodyPartAnchor>
+          <childScale>0.7</childScale>
+          <bodyTypeScales>
+            <Hulk>1.2</Hulk>
+            <Fat>1.4</Fat>
+            <Thin>0.8</Thin>
+          </bodyTypeScales>
+          <defaultData>
+            <layer>49</layer>
+          </defaultData>
+          <dataNorth>
+            <rotationOffset>310</rotationOffset>
+            <flip>true</flip>
+            <layer>0</layer>
+          </dataNorth>
+          <dataEast>
+            <rotationOffset>270</rotationOffset>
+            <flip>true</flip>
+          </dataEast>
+          <dataSouth>
+            <rotationOffset>220</rotationOffset>
+          </dataSouth>
+          <dataWest>
+            <rotationOffset>270</rotationOffset>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+    <addedPartProps>
+      <solid>true</solid>
+      <partEfficiency>0.6</partEfficiency>
+    </addedPartProps>
+    <comps>
+      <li Class="HediffCompProperties_VerbGiver">
+        <tools>
+          <li>
+            <label>lash</label>
+            <capacities>
+              <li>Blunt</li>
+            </capacities>
+            <power>9</power>
+            <cooldownTime>1.4</cooldownTime>
+            <extraMeleeDamages>
+              <li>
+                <def>Stun</def>
+                <amount>12</amount>
+              </li>
+            </extraMeleeDamages>
+          </li>
+        </tools>
+      </li>
+      <li Class="RimMandrake.Contagion.HediffCompProperties_UnfinishedEmerge">
+        <emergeKind>RM_TheUnfinished</emergeKind>
+        <letterLabel>The limb comes away</letterLabel>
+        <letterText>Cutting {PAWN_nameDef}'s lash free has let the thing inside finish its thought. The limb has torn loose of {PAWN_nameDef} and become one of the Unfinished, and it is not friendly.</letterText>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

@@ -13,6 +13,8 @@ namespace RimMandrake.Contagion
         public int sourcePawnID = -1;
         public string sourcePawnName = "";
 
+        public bool monstrous;
+
         private bool completed;
 
         public void Setup(int id, string name)
@@ -27,6 +29,7 @@ namespace RimMandrake.Contagion
             Scribe_Values.Look(ref sourcePawnID, "rmSourcePawnID", -1);
             Scribe_Values.Look(ref sourcePawnName, "rmSourcePawnName", "");
             Scribe_Values.Look(ref completed, "rmCompleted", false);
+            Scribe_Values.Look(ref monstrous, "rmMonstrous", false);
         }
 
         public override void PostTick()
@@ -39,7 +42,7 @@ namespace RimMandrake.Contagion
             if (Severity >= def.maxSeverity - 0.001f)
             {
                 completed = true;
-                AmoebaHostUtility.CompleteGestation(pawn, sourcePawnID, sourcePawnName);
+                AmoebaHostUtility.CompleteGestation(pawn, sourcePawnID, sourcePawnName, monstrous);
             }
         }
     }

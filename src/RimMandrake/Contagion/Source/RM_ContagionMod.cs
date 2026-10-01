@@ -53,6 +53,11 @@ namespace RimMandrake.Contagion
         // (it still dies to the next Burn).
         public static bool coalescenceEnabled = true;
 
+        // CONTAGION_GROWN_LIMBS_BUILD_1: off removes grown limbs from the
+        // Monstrous gestation roll (a Monstrous sample then grows the normal
+        // organ batch). Limbs already installed keep working.
+        public static bool grownLimbsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -66,6 +71,7 @@ namespace RimMandrake.Contagion
             Scribe_Values.Look(ref cloudRepulsorEnabled, "cloudRepulsorEnabled", true, true);
             Scribe_Values.Look(ref sunbeamNativeFactor, "sunbeamNativeFactor", 6f, true);
             Scribe_Values.Look(ref coalescenceEnabled, "coalescenceEnabled", true, true);
+            Scribe_Values.Look(ref grownLimbsEnabled, "grownLimbsEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -124,6 +130,14 @@ namespace RimMandrake.Contagion
                 + "that absorbs the Unfinished, grows through three forms and sends out mad ones. "
                 + "Any Burn kills it, spilling genome samples. With the Burn switched off only "
                 + "damage or a Cloud Repulsor can kill it. Off: none forms.");
+
+            list.CheckboxLabeled(
+                "Grown limbs enabled",
+                ref grownLimbsEnabled,
+                "Monstrous genome samples (the Coalescence's death-spill) gestate one grown "
+                + "limb, rolled at random: a Pillar Arm or a Lash. Each is a real trade, never "
+                + "an upgrade. Off: a Monstrous sample grows the normal organ batch. Limbs "
+                + "already installed keep working.");
 
             list.GapLine();
             list.CheckboxLabeled(
