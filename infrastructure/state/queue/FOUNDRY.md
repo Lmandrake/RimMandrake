@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T11:42:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T14:35:09Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2031,16 +2031,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## FEVERWOOD_SAP_SUCKER_TUNING_1 Real numbers and the mishandling trigger for the sap-sucker guild
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     mechanism
-thin:     no ## verify, no ## criteria
-summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
-prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
-
 ## FOOTPRINT_TRACK_GRID_1 One footprint grid for the planet: capped TrackGrid + section layer + cell-entry postfix in CreatureBehaviors, invisible pawns recorded, erase API; Warscar film and Stillsand sand both consume it as XML
 state:    proposed
 row:      unassigned
@@ -2170,6 +2160,16 @@ kind:     task
 thin:     no ## verify
 summary:  - RMChotrix: RM tier, Warscar only, bodySize ~0.9, one or two per map. A lean, low scavenger that
 prose:    infrastructure/state/items/WARSCAR_CHOTRIX_BUILD_1.md
+
+## FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1 Harmony postfix on Pawn_MindState.CheckStartMentalStateBecauseRecruitAttempted so a failed tame triggers the sap-sucker refusal (opus; add Harmony ref + srchash DLL rebuild)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1.md
 
 ## CONTAGION_GROWN_LIMBS_ART_1 Art for Pillar Arm and Lash (replace Anomaly placeholder textures) plus item icons; check _artsrc and artpipe done first
 state:    proposed
@@ -2531,6 +2531,16 @@ thin:     no ## verify
 summary:  1. Krayt den (RSW): a greater krayt, or its old den with skull and pearl (RSWKraytDragonSkull,
 prose:    infrastructure/state/items/STILLSAND_CAVE_TIER_ROWS_1.md
 
+## DEPLOYED_BIOME_REFS_ROTSPOREKIT_1 selftest_deployed_biome_refs fails: 19 wildPlants/wildAnimals entries in deployed RUT_TheRot/RUT_Contagion/RUT_Miasma name defs absent because mandrake.rut.rotsporekit is not deployed; passed ~40 min earlier — find what changed (2026-10-01 live-deploy?) and whether it produces load errors
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEPLOYED_BIOME_REFS_ROTSPOREKIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEPLOYED_BIOME_REFS_ROTSPOREKIT_1.md
+
 ## STILLSAND_SAND_SIEVE_CHORE_1 Stillsand sand sieve as a pawn chore: glass sand to fine sand with a carried sieve (feasible, no building)
 state:    proposed
 row:      unassigned
@@ -2620,6 +2630,16 @@ kind:     build
 thin:     no ## verify, no ## criteria
 summary:  1. Tracks (parent §7) — blocked on FOOTPRINTTRACKGRID1 (proposed, unbuilt when the
 prose:    infrastructure/state/items/STILLSAND_SKELETONS_REMAINDER_1.md
+
+## PYRELANDS_WALKLINT_FINDINGS_1 run_selftests reports 3 walklint findings in design/validation_walks/RimMandrake/Pyrelands.md (found by STILLSAND_SKELETONS_TRACKS_1 full run 2026-10-01) — read each finding, fix the walk, never the grader
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_WALKLINT_FINDINGS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_WALKLINT_FINDINGS_1.md
 
 ## SHADEGRID_BRIDGE_READER_1 Bridge tool to read the shade grid and pinned sun (sun elevation, heat kind, exposure per cell, sky glow)
 state:    proposed
@@ -2880,3 +2900,43 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  LIVEROUND2FIXESPROOF1 — prove the three live-round-2 fixes in game
 prose:    infrastructure/state/items/LIVE_ROUND2_FIXES_PROOF_1.md
+
+## ABYSS_ETCHFALL_BUILD_1 Etchfall: Dark grain erodes unroofed stone and steel into tholin dust (slider)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Ruled by question card, turn 2 (decision taken by question card; strength slider requested). Unroofed natural…
+prose:    infrastructure/state/items/ABYSS_ETCHFALL_BUILD_1.md
+
+## ABYSS_INVENTED_CREATURES_TO_RM_1 Move cindermare and skarnix into the free RM_ tier
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Ruled by question card, turn 2 (decision taken by question card: move our two inventions, switch on the two p…
+prose:    infrastructure/state/items/ABYSS_INVENTED_CREATURES_TO_RM_1.md
+
+## ABYSS_LAMP_CROPS_BUILD_1 Lamp crops: transplanted glowing trees light a farm against the Dark
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Ruled by question card, turn 2 (decision taken by question card): the "lamps as crops only" option. The Abyss…
+prose:    infrastructure/state/items/ABYSS_LAMP_CROPS_BUILD_1.md
+
+## ABYSS_DONOR_BEASTS_FREED_1 Free ghorrumak and zhurrakor: own names, regenerated art, zero donor dependency
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Owner, typed (turn 2, 2026-10-01): "Fully regenerate art and names for those two beasts. No donor dependencie…
+prose:    infrastructure/state/items/ABYSS_DONOR_BEASTS_FREED_1.md
