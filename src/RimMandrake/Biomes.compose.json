@@ -27,12 +27,12 @@
     {"key": "CreatureBehaviors", "source": "CreatureBehaviors", "group": "engine", "wave": 2, "label": "Creature Behaviors", "blurb": "Shared creature-AI engine (hunting, lairs, swarms) that many biomes' fauna ride on."},
     {"key": "EnvironmentalHazards", "source": "EnvironmentalHazards", "group": "engine", "wave": 2, "label": "Environmental Hazards", "blurb": "Shared hazard engine: configurable terrain, gas and weather mechanics used across biomes."},
 
+    {"key": "Abyss", "source": "Abyss", "group": "biome", "wave": 0, "label": "The Abyss", "blurb": "Obsidian-black highlands drowned in darkness."},
     {"key": "BlueDesert", "source": "BlueDesert", "group": "biome", "wave": 2, "label": "Blue Desert", "blurb": "A plateau of hydrocarbon ice where warmth is detonation."},
     {"key": "Cauldron", "source": "Cauldron", "group": "biome", "wave": 0, "label": "The Cauldron", "blurb": "A wet-black forest in permanent dusk over ground that breathes gas."},
     {"key": "Contagion", "source": "Contagion", "group": "biome", "wave": 0, "label": "The Contagion", "blurb": "A red storm-roofed valley running an unchecked mutation engine."},
     {"key": "FeverWood", "source": "FeverWood", "group": "biome", "wave": 2, "label": "Fever Wood", "blurb": "A hot, still, tree-canopied swamp."},
     {"key": "FloodedCanyon", "source": "FloodedCanyon", "group": "biome", "wave": 0, "label": "Flooded Canyon", "blurb": "Canyons that periodically flood from wall to wall."},
-    {"key": "ForsakenCrags", "source": "ForsakenCrags", "group": "biome", "wave": 0, "label": "Forsaken Crags", "blurb": "Obsidian-black highlands drowned in darkness."},
     {"key": "GelatinousSlime", "source": "GelatinousSlime", "group": "biome", "wave": 2, "label": "Gelatinous Slime", "blurb": "A living, spreading superorganism of slime."},
     {"key": "Greentide", "source": "Greentide", "group": "biome", "wave": 2, "label": "Greentide", "blurb": "A furiously humid, ground-hugging green flood."},
     {"key": "LanternDeeps", "source": "LanternDeeps", "group": "biome", "wave": 2, "label": "Lantern Deeps", "blurb": "A persistent glowing cave layer beneath the surface."},

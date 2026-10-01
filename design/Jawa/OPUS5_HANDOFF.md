@@ -268,7 +268,7 @@ and pushed; nothing below is open design — it is execution.**
   git). Every remaining sheet using `showSaveFilePicker` must switch to
   `showOpenFilePicker`; `check_sheet.py` passes a sheet with no decisions file on disk
   and with empty `sheetPath`/`decisionsPath` — three LESSONS_INBOX lines filed.
-- **Forsaken Crags fauna: RULED, all three approved** (Cindermare, Skarnix, Tellurox);
+- **Abyss fauna: RULED, all three approved** (Cindermare, Skarnix, Tellurox);
   decisions frozen `decidedBy: owner-said`. **Tellurox = livestock genetically modified
   by the Helix faction** (owner's words); FOUNDRY ports the three names into RUT_ defs.
 - **Techprint stamp attributed**: Configurable Techprints

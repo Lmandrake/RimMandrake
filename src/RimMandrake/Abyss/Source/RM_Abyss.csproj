@@ -11,7 +11,7 @@
     one. About.xml carries no brrainz.harmony dependency either.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\ForsakenCrags\Source\RM_ForsakenCrags.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Abyss\Source\RM_Abyss.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->
@@ -19,8 +19,8 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>RimMandrake.ForsakenCrags</AssemblyName>
-    <RootNamespace>RimMandrake.ForsakenCrags</RootNamespace>
+    <AssemblyName>RimMandrake.Abyss</AssemblyName>
+    <RootNamespace>RimMandrake.Abyss</RootNamespace>
     <Version>1.0.0</Version>
 
     <OutputPath>..\Assemblies\</OutputPath>
@@ -40,8 +40,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="RM_ForsakenCragsMod.cs" />
-    <Compile Include="RM_ForsakenCragsBiome.cs" />
+    <Compile Include="RM_AbyssMod.cs" />
+    <Compile Include="RM_AbyssBiome.cs" />
   </ItemGroup>
 
   <ItemGroup>

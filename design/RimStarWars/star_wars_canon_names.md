@@ -360,7 +360,7 @@ contradict a standing ruling:
 Ash'karr (this campaign's fixed world). Sophiamunda (campaign's own Empire
 homeworld — "techno-feudal culture," not a real SW planet). Campaign-original
 sub-locations: Rust Cathedral, the Scorch, the Fall Line, Deadstone, the Slough,
-the Umbra vault, the Rot, the Propane Lakes, the Blue Desert, the Forsaken Crags,
+the Umbra vault, the Rot, the Propane Lakes, the Blue Desert, the Abyss,
 the Cracked Lands, the Poison Forest, the Weeping Stones, the Pyrelands, the
 Greentide, the Contagion, the Webwork, the Slime, the Miasma, the Sump, the Fever
 Wood, the Forge, the Gaping Doom, Lightfall, the gelatinous breach. [A]

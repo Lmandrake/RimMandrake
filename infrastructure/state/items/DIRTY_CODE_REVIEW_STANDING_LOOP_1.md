@@ -2037,7 +2037,7 @@ cluster). No duplicate `wildAnimals`/`wildPlants` keys; XML parses. No bugs.
 Diff-scoped the 7 smallest remaining diffs by `git diff --shortstat`:
 `RUT_TwilightSea.xml` (+10), `RUT_RustCathedral.xml` (+12),
 `RUT_PoisonForest.xml` (+13/-4), `RUT_NightsideIce.xml` (+21),
-`RUT_ForsakenCrags.xml` (+18/-2), `RUT_TheForge.xml` (+18/-6),
+`RUT_Abyss.xml` (+18/-2), `RUT_TheForge.xml` (+18/-6),
 `RUT_Greentide.xml` (+31/-5). Every change traced to its cited item/ruling
 and verified on disk, not taken on the comment's word:
 
@@ -2069,9 +2069,9 @@ and verified on disk, not taken on the comment's word:
   `rosters/nightside_ice.json` exactly, including the roster's own note that
   the cave lemming deliberately WORSENS the small-fauna ratio on the
   owner's explicit ruling (not a defect to fix).
-- **RUT_ForsakenCrags / RUT_TheForge**: a matched pair — `AG_Gamma` (0.5)
+- **RUT_Abyss / RUT_TheForge**: a matched pair — `AG_Gamma` (0.5)
   and `AG_Septimum` (0.25) moved OUT of `RUT_TheForge` and INTO
-  `RUT_ForsakenCrags` at the same commonalities under
+  `RUT_Abyss` at the same commonalities under
   `SHEET_ORPHAN_CONSUMPTION_1` (checked both diffs against each other, not
   just each file's own comment) plus independent `ECOSYSTEM_PYRAMID_LAW_1`
   small-fauna boosts (`AA_DuskRat`/`AA_Murkling` raises on Crags,
@@ -4080,7 +4080,7 @@ before any of them are spent on a review — untouched for 47 waves running now.
 ## Wave 62 — 2026-09-24: the "13 never-entered Utils tools" note was STALE, plus `RUT_Sump.xml`'s open thread resolved
 
 **Part 0 — resolved wave 61's open `RUT_Sump.xml` MayRequire question.** Checked
-another Alpha-Biomes donor-twin BiomeDef (`RUT_ForsakenCrags.xml`) side by side:
+another Alpha-Biomes donor-twin BiomeDef (`RUT_Abyss.xml`) side by side:
 its `workerClass`/`texture`/`wildPlants` also reference bare `AlphaBiomes.*`/`AB_*`
 donor content with **no** `MayRequire`, while its optional `AA_*` (Alpha Animals)
 wildlife entries **are** individually `MayRequire="sarg.alphaanimals"`-gated —
@@ -4423,7 +4423,7 @@ still untouched and worth picking if no comparably cohesive `.cs` cluster surfac
 
 This wave's session runs concurrently with other agents actively building the
 per-biome standalone mods (`RSW_→RM_` split work), so deliberately steered away
-from every biome-specific mod folder (`BlueDesert`, `FeverWood`, `ForsakenCrags`,
+from every biome-specific mod folder (`BlueDesert`, `FeverWood`, `Abyss`,
 `LeaningScrub`, `LongShade`, `NightsideIce`, `PoisonForest`, `Stillsand`,
 `TerminalBiomes`, `TheRot`, `Wasteland` all had untracked `*Mod.cs`/`BiomeWorker`
 files this wave's `list --show-untracked` surfaced, none picked) and picked instead
@@ -4470,7 +4470,7 @@ the shared tree during this wave, expected with concurrent agents; only the 4 fi
 this wave touched are attributable to this pass).
 
 Next wave: **avoid the biome-specific mod folders while the concurrent biome-split
-build is in flight** (`BlueDesert`, `FeverWood`, `ForsakenCrags`, `LeaningScrub`,
+build is in flight** (`BlueDesert`, `FeverWood`, `Abyss`, `LeaningScrub`,
 `LongShade`, `NightsideIce`, `PoisonForest`, `Stillsand`, `TerminalBiomes`, `TheRot`,
 `Wasteland` — all currently carry untracked `*Mod.cs`/`BiomeWorker` files another
 agent may be actively editing). Safer non-biome clusters still NEVER ENTERED this
@@ -4533,7 +4533,7 @@ never-entered), `CreatureBehaviors/Source/` loose files
 `RM_JobGiver_AvoidOwnKind.cs` is already CLEAN per wave 7's note), and the
 `modcheck/` Python tools / `validation.py` sampling pass named in earlier waves.
 ⛔ Keep avoiding biome-specific mod folders (`BlueDesert`, `FeverWood`,
-`ForsakenCrags`, `LeaningScrub`, `LongShade`, `NightsideIce`, `PoisonForest`,
+`Abyss`, `LeaningScrub`, `LongShade`, `NightsideIce`, `PoisonForest`,
 `Stillsand`, `TerminalBiomes`, `TheForge`, `TheRot`, `Wasteland`, `Miasma`,
 `Contagion`, `Pyrelands`) and `biome_paint_list.md` until told the concurrent
 biome-split build is done. Re-survey `list --show-untracked` fresh rather than
@@ -4615,7 +4615,7 @@ CLEAN per wave 7's note) are both still untouched. The `modcheck/` Python tools
 and the `validation.py` sampling pass named in every wave since wave 3 remain
 the oldest unpicked candidate — worth taking next if no comparably cohesive
 `.cs` cluster surfaces. ⛔ Keep avoiding biome-specific mod folders (`BlueDesert`,
-`FeverWood`, `ForsakenCrags`, `LeaningScrub`, `LongShade`, `NightsideIce`,
+`FeverWood`, `Abyss`, `LeaningScrub`, `LongShade`, `NightsideIce`,
 `PoisonForest`, `Stillsand`, `TerminalBiomes`, `TheForge`, `TheRot`, `Wasteland`,
 `Miasma`, `Contagion`, `Pyrelands`, `GelatinousSlime`, `LanternDeeps`) and
 `biome_paint_list.md` until told the concurrent biome-split build is done.
@@ -4692,7 +4692,7 @@ Next wave: the `modcheck/` candidate is now retired (see correction above —
 it was already fully CLEAN). Re-survey `list --show-untracked` fresh for the
 next cohesive cluster rather than reusing any prior wave's named candidates,
 since both small clusters named by wave 11 are now done. ⛔ Keep avoiding
-biome-specific mod folders (`BlueDesert`, `FeverWood`, `ForsakenCrags`,
+biome-specific mod folders (`BlueDesert`, `FeverWood`, `Abyss`,
 `LeaningScrub`, `LongShade`, `NightsideIce`, `PoisonForest`, `Stillsand`,
 `TerminalBiomes`, `TheForge`, `TheRot`, `Wasteland`, `Miasma`, `Contagion`,
 `Pyrelands`, `GelatinousSlime`, `LanternDeeps`, `RustCathedral`) and
@@ -4781,7 +4781,7 @@ attributable to this pass).
 
 Next wave: re-survey `list --show-untracked` fresh — no candidate cluster is
 carried forward from this wave. ⛔ Keep avoiding biome-specific mod folders
-(`BlueDesert`, `FeverWood`, `ForsakenCrags`, `LeaningScrub`, `LongShade`,
+(`BlueDesert`, `FeverWood`, `Abyss`, `LeaningScrub`, `LongShade`,
 `NightsideIce`, `PoisonForest`, `Stillsand`, `TerminalBiomes`, `TheForge`,
 `TheRot`, `Wasteland`, `Miasma`, `Contagion`, `Pyrelands`, `GelatinousSlime`,
 `LanternDeeps`, `RustCathedral`, `WeepingStones` [new this wave —
@@ -6106,7 +6106,7 @@ both pushed.
 
 Next wave suggestion (not re-verified): `PoisonForest`/`Stillsand` remain
 blocked on `UtinniPatches/`. `TheRot` (40 files), `RustCathedral` (38),
-`TheSump` (29), `CreatureBehaviors` (7), `Scarlands` (5), `ForsakenCrags` (4),
+`TheSump` (29), `CreatureBehaviors` (7), `Scarlands` (5), `Abyss` (4),
 `NightsideIce`/`ExplosiveGrowth` (3 each), `HostileFlora`/`GelatinousSlime`/
 `FlowWorks` (2 each) were all present in the DIRTY list and outside every
 current exclusion as of this wave — any is a ready pick. Re-run
@@ -6257,7 +6257,7 @@ Next wave suggestion (not re-verified): `PoisonForest`/`Stillsand` remain
 blocked on `UtinniPatches/` (now also owed `SUMP_TARVAULT_TICKER_NEVER_1`'s
 one-line fix once it's clear to work there). `TheRot` (40 files),
 `CreatureBehaviors` (~4 remaining, per wave 32's note — re-verify), `Scarlands`
-(5), `ForsakenCrags` (4), `NightsideIce`/`ExplosiveGrowth` (3 each),
+(5), `Abyss` (4), `NightsideIce`/`ExplosiveGrowth` (3 each),
 `HostileFlora`/`GelatinousSlime`/`FlowWorks` (2 each), and the
 `Utils/artpipe/`, `bridgetools/`, `loadsweep/` Python script clusters were
 all present in the DIRTY/never-entered list and outside every current
@@ -6357,7 +6357,7 @@ silent-failure linter bug plus 5 owner-ruled-size mismatches), 1 stale
 comment fixed.
 
 Next wave suggestion (not re-verified): `CreatureBehaviors` (~4 remaining,
-per wave 32's note — re-verify), `Scarlands` (5), `ForsakenCrags` (4),
+per wave 32's note — re-verify), `Scarlands` (5), `Abyss` (4),
 `NightsideIce`/`ExplosiveGrowth` (3 each), `HostileFlora`/
 `GelatinousSlime`/`FlowWorks` (2 each), and the `Utils/artpipe/`,
 `bridgetools/`, `loadsweep/` Python script clusters were all present in

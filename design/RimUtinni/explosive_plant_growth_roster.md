@@ -251,13 +251,13 @@ Everything that soaks and is neither dry-adapted, contaminated, slime-fed, fire-
 | `IronScruff_PrimordialGrass` | `CHURN` | the_forge | geyser flora — geyser water is its habitat, if anything wet-living; default |
 | `IronScruff_PrimordialTallGrass` | `CHURN` | the_forge | as PrimordialGrass |
 | `IronScruff_Bindweed` | `CHURN` | the_forge | as PrimordialGrass |
-| `AB_GlowingGrass` | `CHURN` | forsaken_crags | glow-carpet grass; light-adapted, not water. Reachable by irrigation only (crags trickle is below threshold) |
-| `AB_GiantGamma` | `CHURN` | forsaken_crags | natural-sunlamp giant; default |
-| `AB_ToxicGamma` | `CHURN` | forsaken_crags | gamma family; default |
-| `AB_GiantSeptimum` | `CHURN` | forsaken_crags | fibre giant; default |
-| `AB_WildRadagast` | `CHURN` | forsaken_crags | glow-berry; default |
-| `AG_Gamma` | `CHURN` | forsaken_crags | gamma family; default |
-| `AG_Septimum` | `CHURN` | forsaken_crags | septimum family; default |
+| `AB_GlowingGrass` | `CHURN` | abyss | glow-carpet grass; light-adapted, not water. Reachable by irrigation only (crags trickle is below threshold) |
+| `AB_GiantGamma` | `CHURN` | abyss | natural-sunlamp giant; default |
+| `AB_ToxicGamma` | `CHURN` | abyss | gamma family; default |
+| `AB_GiantSeptimum` | `CHURN` | abyss | fibre giant; default |
+| `AB_WildRadagast` | `CHURN` | abyss | glow-berry; default |
+| `AG_Gamma` | `CHURN` | abyss | gamma family; default |
+| `AG_Septimum` | `CHURN` | abyss | septimum family; default |
 | `Plant_GrayGrass` | `CHURN` | wasteland | Biotech pollution grass — POLLUTION-adapted, which is neither the Contagion's contamination nor a water adaptation; default. Inert on the brine tile |
 | `Plant_Toxipotato` | `CHURN` | wasteland | mutant crop gone feral; default |
 | `Plant_TreePolux` | `CHURN` | wasteland | polux tree; default |
@@ -289,7 +289,7 @@ Everything that soaks and is neither dry-adapted, contaminated, slime-fed, fire-
 | RSW_Ollim | (our def, `RSW_ExtremeDesertSignatureFlora.xml`) | 400-day bone-white deep-desert tree grown 'where the faintest hint of buried moisture fed a single cell' — its identity is the opposite of fast growth; deep_desert.md HARD BAN 4 in plant form |
 | RSW_LightPipeNub | (our def) | 'not a leaf and it has never been one' — silica glass; no water metabolism |
 | (new) glass-nub light-pipe flora / silverbole | dune_sea new_defs | deep-desert signature flora; HARD BAN 4 |
-| AB_GiantStikehr | dune_sea + deep_desert, forsaken_crags | 'dry standing form' — a drought form that stands, not spends; 🄸 hoarder reading (see hard call 1) |
+| AB_GiantStikehr | dune_sea + deep_desert, abyss | 'dry standing form' — a drought form that stands, not spends; 🄸 hoarder reading (see hard call 1) |
 | RUT_SweetlineTree | (our def, AshkarrFlora) — arid_shrubland new_defs | 'a single ancient giant, centuries old, growing only where the moisture-light trade balances exactly' — as the ollim: its identity is balance, not surge |
 | AB_GargantuanLithops | the_cracked_lands | stone-mimic succulent — a water-HOARDER. 🄸 Hoarders store the soak instead of spending it; they never charge (hard call 1) |
 | RG_Plant_CrimsonCushion | arid_shrubland | cushion form = hoarder (🄸, hard call 1) |

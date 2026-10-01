@@ -351,7 +351,7 @@ independently, that is a trade worth making.**
 `BaseCoastMut`'s biome whitelist, and the biome's own terrain patch makers
 already paint **`WaterShallow` and `WaterDeep`** onto its maps.
 
-> ⇒ **A coastal forsaken-crags tile can roll `Archipelago` right now: a
+> ⇒ **A coastal abyss tile can roll `Archipelago` right now: a
 > permanently dark, mostly-ocean playable map. Zero new defs.**
 
 **That is the cheapest possible proof of the whole concept** — before adopting

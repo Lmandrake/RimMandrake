@@ -38,7 +38,7 @@ CFG="$LOGDIR/Config/ModsConfig.xml"
 OUT="$REPO/Transient/biome_load_proof_results.tsv"
 STEAM="/mnt/c/Program Files (x86)/Steam/steam.exe"
 
-ALL_BIOMES="bluedesert contagion feverwood floodedcanyon forsakencrags gelatinousslime greentide leaningscrub longshade miasma nightsideice poisonforest pyrelands rustcathedral stillsand terminalbiomes theforge therot thesump wasteland webwork weepingstones"
+ALL_BIOMES="bluedesert contagion feverwood floodedcanyon abyss gelatinousslime greentide leaningscrub longshade miasma nightsideice poisonforest pyrelands rustcathedral stillsand terminalbiomes theforge therot thesump wasteland webwork weepingstones"
 
 if [ "${1:-}" = "--all" ]; then set -- $ALL_BIOMES; fi
 if [ $# -eq 0 ]; then echo "usage: $0 <biome>... | --all"; exit 2; fi
@@ -58,7 +58,7 @@ defname_for() {
     therot)          echo "RM_TheRot" ;;
     thesump)         echo "RM_TheSump" ;;
     weepingstones)   echo "RM_WeepingStones" ;;
-    forsakencrags)   echo "RM_ForsakenCrags" ;;
+    abyss)   echo "RM_Abyss" ;;
     rustcathedral)   echo "RM_RustCathedral" ;;
     bluedesert)      echo "RM_BlueDesert" ;;
     feverwood)       echo "RM_FeverWood" ;;

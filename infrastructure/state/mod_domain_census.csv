@@ -44,7 +44,7 @@ RimStarWars,JawaIonWeapons,yes,mandrake.rsw.ionweapons,Jawa Ion Weapons (local),
 RimStarWars,JawaRules,yes,mandrake.rsw.jawarules,Jawa Rules (local),,0,,0,yes,mechanic,"colony behaviour rules (no sowing, etc) via C#"
 RimStarWars,JawaVoice,yes,mandrake.rsw.jawavoice,JawaVoice (SpeakUp reskin),,0,,0,no,mechanic,Jawaese speech bubbles via SpeakUp reskin
 RimStarWars,KotORBandolierNorthFix,yes,mandrake.rsw.kotorbandoliernorthfix,Bandolier North Fix — Star Wars KotOR Resources and Materials,mandrake.missingartfixes,0,,20,no,fix,"north-facing bandolier art fix, Star Wars KotOR Resources"
-RimStarWars,Livestock,yes,mandrake.rsw.livestock,RimMandrake: SW — Forsaken Crags Fauna,,11,ThingDef:5;PawnKindDef:3;leatherDef:3,3,yes,animals,Cindermare & Skarnix wild untameable predator creatures
+RimStarWars,Livestock,yes,mandrake.rsw.livestock,RimMandrake: SW — Abyss Fauna,,11,ThingDef:5;PawnKindDef:3;leatherDef:3,3,yes,animals,Cindermare & Skarnix wild untameable predator creatures
 RimStarWars,MSEDroidFix,yes,mandrake.rsw.msedroidfix,MSE Droid North Fix — Outer Rim: Droid Depot,,0,,1,no,fix,"north-facing MSE-6 droid art fix, Outer Rim Droid Depot"
 RimStarWars,SWBestiary,yes,mandrake.rsw.swbestiary,RimMandrake: SW — Bestiary,,631,SoundDef:589;ThingDef:32;PawnKindDef:10,70,no,animals,absorbed creature defs/art from retiring SW animal mods
 RimStarWars,SeaBeasts,yes,mandrake.rsw.seabeasts,RimMandrake - SW Sea Beasts,,36,ThingDef:18;PawnKindDef:18;leatherDef:6,72,no,animals,18 Naboo/SW sea creatures across six ecological roles

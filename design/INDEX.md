@@ -452,7 +452,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `floodedcanyon_bedazzle_review_2026-09-28.md` | The Cracked Lands (RM_FloodedCanyon) — bedazzle review (movement 1 + movement 2 prep) | — |
 | `forge_bedazzle_cast_2026-09-29.md` | The Forge — bedazzle cast bible (movement 4: commission) | ? cast bible — commissioned under forge_bedazzle_sitting_1 movement 4 |
 | `forge_bedazzle_review_2026-09-28.md` | The Forge — bedazzle review (movements 1–2), 2026-09-28 | — |
-| `forsaken_crags.md` | The Forsaken Crags — definition sheet | — |
+| `abyss.md` | The Abyss — definition sheet | — |
 | `greentide_risk_reward_2026-09-22.md` | The Greentide as an exchange — audit, progression, and new reward categories | — |
 | `greentide_tree_roster_2026-09-22.md` | Greentide flora roster — 15 invented trees + 7 invented understory plants, 2026-09-22 | — |
 | `grey_deep_pool_sentinel_2026-09-27.md` | The Grey Deep pool sentinel — the orruhmu (2026-09-27) | — |

@@ -37,7 +37,7 @@ Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuild
 | vault-archetypes | v2→**dream** | Not sure I get this one. |
 | organism-cavern | dream | Kinda feels like a sarlacc |
 | collapse-hazard-tool | v2→**v1** | This is a good mechanic, especially as engineered by the Genosians where their sonic weapons might not trigger it. Attacking them hurts yourself if you do it wrong. And natural caverns that grumble and moan are great tension. Regions of instability should have animated bits of dust trailing down to warn the player, as well as some piled sand accumulating below. |
-| darkness-mechanic | v1 | This is just needed in so many places. Beneath the water surface (ocean/lake biomes). Flooded dungeons. Forsaken Crags for sure. Night side in general. Light is what we bring because we need it, but in such great abundance compared to the local creatures we are like blazing beacons begging to be messed with. |
+| darkness-mechanic | v1 | This is just needed in so many places. Beneath the water surface (ocean/lake biomes). Flooded dungeons. Abyss for sure. Night side in general. Light is what we bring because we need it, but in such great abundance compared to the local creatures we are like blazing beacons begging to be messed with. |
 
 ## 0. Why caverns, and why they matter more here than on a normal Rim world
 

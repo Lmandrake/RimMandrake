@@ -64,7 +64,7 @@ as evidence only.
 | Contagion | mandrake.rm.contagion | no | Biome (row 16) |
 | FeverWood | mandrake.rm.feverwood | yes | Biome (row 22) |
 | FloodedCanyon | mandrake.rm.floodedcanyon | no | Biome (flood-canyon standalone). NB its DLL compile-references FlowWorks — unified mod gains a HARD dep on `mandrake.rm.flowworks` |
-| ForsakenCrags | mandrake.rm.forsakencrags | no | Biome (row 6) |
+| Abyss | mandrake.rm.abyss | no | Biome (row 6) |
 | GelatinousSlime | mandrake.rm.gelatinousslime | yes | Biome (Q14 donor-free) |
 | Greentide | mandrake.rm.greentide | yes | Biome |
 | LeaningScrub | mandrake.rm.leaningscrub | no | Biome (row 9) |
@@ -358,7 +358,7 @@ exactly once and last:
 
 - **Wave 0 — compose + shell, off the live list.** Build the compose target, the
   generated About/LoadFolders, and the `RM_BiomesMod` settings shell. Compose ONLY
-  the 12 off-list biomes (Contagion, FloodedCanyon, ForsakenCrags, LeaningScrub,
+  the 12 off-list biomes (Contagion, FloodedCanyon, Abyss, LeaningScrub,
   Miasma, Cauldron, RustCathedral, Warscar, TheForge, TheSump, Webwork,
   WeepingStones). BlueDesert is ON the live list and waits for wave 2, as do the
   four Q3/Q4 folds (CreatureBehaviors, EnvironmentalHazards, LanternDeeps,

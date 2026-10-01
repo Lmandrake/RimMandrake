@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.ForsakenCrags
+namespace RimMandrake.Abyss
 {
     // ════════════════════════════════════════════════════════════════════
     // MOD SETTINGS — MOD_OPTIONS_RETROFIT_1 doctrine: every mod ships a real
@@ -15,7 +15,7 @@ namespace RimMandrake.ForsakenCrags
     // STATIC FIELD, read from the biome worker which runs during worldgen
     // with no Mod instance handy — same pattern as every sibling.
     // ════════════════════════════════════════════════════════════════════
-    public class RM_ForsakenCragsSettings : ModSettings
+    public class RM_AbyssSettings : ModSettings
     {
         // Worldgen insertion. 0 = the biome never generates on a new
         // planet. 1 = the shipped default.
@@ -33,7 +33,7 @@ namespace RimMandrake.ForsakenCrags
             list.Begin(inRect);
 
             list.Label("Biome rarity: " + RarityLabel());
-            list.Label("At 0 the Forsaken Crags never generates on a new planet. "
+            list.Label("At 0 the Abyss never generates on a new planet. "
                        + "The default places a handful of rare, hilly, night-dark patches. "
                        + "Affects planets generated afterwards, never one that already exists.");
             biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
@@ -51,18 +51,18 @@ namespace RimMandrake.ForsakenCrags
         }
     }
 
-    public class RM_ForsakenCragsMod : Mod
+    public class RM_AbyssMod : Mod
     {
-        public static RM_ForsakenCragsSettings settings;
+        public static RM_AbyssSettings settings;
 
-        public RM_ForsakenCragsMod(ModContentPack content) : base(content)
+        public RM_AbyssMod(ModContentPack content) : base(content)
         {
-            settings = GetSettings<RM_ForsakenCragsSettings>();
+            settings = GetSettings<RM_AbyssSettings>();
         }
 
         public override string SettingsCategory()
         {
-            return "Forsaken Crags";
+            return "Abyss";
         }
 
         public override void DoSettingsWindowContents(Rect inRect)

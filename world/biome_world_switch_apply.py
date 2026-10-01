@@ -32,7 +32,7 @@ MAP = [
     ("PoisonForest", "RUT_PoisonForest"),
     ("AridShrubland", "RUT_AridShrubland"),
     ("ZBiome_Badlands", "RUT_CrackedLands"),
-    ("AB_RockyCrags", "RUT_ForsakenCrags"),
+    ("AB_RockyCrags", "RUT_Abyss"),
     ("Wasteland", "RUT_Wasteland"),
     ("AB_MycoticJungle", "RUT_TheRot"),
     ("Desert", "RUT_Desert"),

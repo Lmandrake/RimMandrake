@@ -33,7 +33,7 @@
   ascending, logged 6x each ("Config error ...: lifeStages minAges are not in
   ascending order") = 42 of the 93 config errors in a 2026-09-18 full-list
   harvest. Fixed by adding Inherit="False" to each <lifeStageAges>, the same
-  pattern already used in ThingDefs_ForsakenCrags.xml, RUT_LivingBolt.xml and
+  pattern already used in ThingDefs_Abyss.xml, RUT_LivingBolt.xml and
   RUT_CathedralRoach.xml.
 -->
 <Defs>

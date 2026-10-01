@@ -55,7 +55,7 @@ ranges.
 | the_pyrelands | 7 / 9 |
 | weeping_stones | 7 / 9 |
 | the_grey_deep | 6 / 8 |
-| forsaken_crags | 6 / 14 |
+| abyss | 6 / 14 |
 | the_webwork | 5 / 6 |
 | nightside_ice | 4 / 7 |
 | the_forge | 4 / 8 |

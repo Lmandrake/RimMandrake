@@ -6,8 +6,8 @@ namespace RimMandrake.Contagion
 {
     // ════════════════════════════════════════════════════════════════════
     // BIOME PLACEMENT — the thing XML cannot do. Same reasoning as the
-    // sibling Forsaken Crags / Blue Desert workers
-    // (src/RimMandrake/ForsakenCrags/Source/RM_ForsakenCragsBiome.cs,
+    // sibling Abyss / Blue Desert workers
+    // (src/RimMandrake/Abyss/Source/RM_AbyssBiome.cs,
     // src/RimMandrake/BlueDesert — vanilla worker kept there instead):
     // BiomeDef has no temperature/rainfall/elevation field, RimWorld scores
     // every BiomeDef's workerClass per tile and keeps the highest, so a

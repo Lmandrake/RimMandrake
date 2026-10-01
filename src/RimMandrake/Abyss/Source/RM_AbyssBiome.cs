@@ -2,7 +2,7 @@ using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
-namespace RimMandrake.ForsakenCrags
+namespace RimMandrake.Abyss
 {
     // ════════════════════════════════════════════════════════════════════
     // BIOME PLACEMENT — the thing XML cannot do. Same reasoning as the
@@ -13,7 +13,7 @@ namespace RimMandrake.ForsakenCrags
     // every BiomeDef's workerClass per tile and keeps the highest, so a
     // biome with no worker never generates anywhere.
     //
-    // TRIGGERED BY: the <workerClass> field on RM_ForsakenCrags — this
+    // TRIGGERED BY: the <workerClass> field on RM_Abyss — this
     // replaces the donor AlphaBiomes.BiomeWorker_RockyCrags per
     // biome_mod_architecture.md §5 step 2 ("a donor type in workerClass is a
     // hard dependency the RimMandrake tier may not assume").
@@ -26,9 +26,9 @@ namespace RimMandrake.ForsakenCrags
     // worker gates on climate + relief only, same as every sibling.
     // ════════════════════════════════════════════════════════════════════
 
-    // TRIGGERED BY: a <modExtensions><li Class="...RM_ForsakenCragsBiomeRanges">
+    // TRIGGERED BY: a <modExtensions><li Class="...RM_AbyssBiomeRanges">
     // block on a BiomeDef. Absent, the defaults below apply unchanged.
-    public class RM_ForsakenCragsBiomeRanges : DefModExtension
+    public class RM_AbyssBiomeRanges : DefModExtension
     {
         public FloatRange temperature = new FloatRange(-20f, 15f);
         public FloatRange rainfall = new FloatRange(0f, 700f);
@@ -46,10 +46,10 @@ namespace RimMandrake.ForsakenCrags
         public float spawnChance = 0.02f;
     }
 
-    // TRIGGERED BY: <workerClass> on the RM_ForsakenCrags BiomeDef.
-    public class RM_BiomeWorker_ForsakenCrags : BiomeWorker
+    // TRIGGERED BY: <workerClass> on the RM_Abyss BiomeDef.
+    public class RM_BiomeWorker_Abyss : BiomeWorker
     {
-        private static readonly RM_ForsakenCragsBiomeRanges FallbackRanges = new RM_ForsakenCragsBiomeRanges();
+        private static readonly RM_AbyssBiomeRanges FallbackRanges = new RM_AbyssBiomeRanges();
 
         // Mixed into the tile id so this gate never correlates with any
         // other mod's tile-seeded roll.
@@ -62,13 +62,13 @@ namespace RimMandrake.ForsakenCrags
                 return -100f;
             }
 
-            float rarity = RM_ForsakenCragsSettings.biomeRarityFactor;
+            float rarity = RM_AbyssSettings.biomeRarityFactor;
             if (rarity <= 0.001f)
             {
                 return -100f;
             }
 
-            RM_ForsakenCragsBiomeRanges r = biome.GetModExtension<RM_ForsakenCragsBiomeRanges>() ?? FallbackRanges;
+            RM_AbyssBiomeRanges r = biome.GetModExtension<RM_AbyssBiomeRanges>() ?? FallbackRanges;
 
             if (tile.temperature < r.temperature.min || tile.temperature > r.temperature.max)
             {

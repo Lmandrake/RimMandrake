@@ -1010,7 +1010,7 @@
       "sizeBin": "small",
       "sizeBinPrefill": "small"
     },
-    "fauna:forsaken_crags:AA_CrepuscularBeetle": {
+    "fauna:abyss:AA_CrepuscularBeetle": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1019,7 +1019,7 @@
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
-    "fauna:forsaken_crags:AA_DarkVandal": {
+    "fauna:abyss:AA_DarkVandal": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1028,7 +1028,7 @@
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
-    "fauna:forsaken_crags:AA_Darkbeast": {
+    "fauna:abyss:AA_Darkbeast": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1037,7 +1037,7 @@
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
-    "fauna:forsaken_crags:AA_DuskProwler": {
+    "fauna:abyss:AA_DuskProwler": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1046,7 +1046,7 @@
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
-    "fauna:forsaken_crags:AA_DuskRat": {
+    "fauna:abyss:AA_DuskRat": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1055,7 +1055,7 @@
       "sizeBin": "small",
       "sizeBinPrefill": "small"
     },
-    "fauna:forsaken_crags:AA_Frostling": {
+    "fauna:abyss:AA_Frostling": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1064,7 +1064,7 @@
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
-    "fauna:forsaken_crags:AA_Murkling": {
+    "fauna:abyss:AA_Murkling": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1073,7 +1073,7 @@
       "sizeBin": "small",
       "sizeBinPrefill": "small"
     },
-    "fauna:forsaken_crags:AA_NightAve": {
+    "fauna:abyss:AA_NightAve": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1082,7 +1082,7 @@
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
-    "fauna:forsaken_crags:AA_NightMule": {
+    "fauna:abyss:AA_NightMule": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1091,7 +1091,7 @@
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
-    "fauna:forsaken_crags:AA_NightRam": {
+    "fauna:abyss:AA_NightRam": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1100,7 +1100,7 @@
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
-    "fauna:forsaken_crags:AA_Nightling": {
+    "fauna:abyss:AA_Nightling": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1109,7 +1109,7 @@
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
-    "fauna:forsaken_crags:AA_SandProwler": {
+    "fauna:abyss:AA_SandProwler": {
       "art": "keep",
       "artPrefill": "keep",
       "decision": "in",
@@ -1118,7 +1118,7 @@
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
-    "fauna:forsaken_crags:AA_ShadowCharger": {
+    "fauna:abyss:AA_ShadowCharger": {
       "art": "redo",
       "artPrefill": "redo",
       "decision": "in",
@@ -1127,7 +1127,7 @@
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
-    "fauna:forsaken_crags:AA_Thunderox": {
+    "fauna:abyss:AA_Thunderox": {
       "art": "redo",
       "artPrefill": "redo",
       "decision": "in",

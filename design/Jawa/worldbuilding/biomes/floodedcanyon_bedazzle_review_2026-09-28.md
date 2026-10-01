@@ -69,7 +69,7 @@ missing. Parsed as XML elements this pass (`<DefName>commonality</DefName>` shor
 | `RSW_MutagenicNorphea` | 0.4 | Sealed | RSW_ port | dormant-until-woken; batch 4h draft *qattora* / *norphea* |
 | `AA_SandSquid` | 0.1 | Sealed | donor (sarg.alphaanimals) | port-named *ommok*, port not executed |
 | `RUT_SealedSleeper` | 0.2 | Sealed (signature) | ours | 🔴 **on the frozen twin ONLY — missing from the RM_ patch** (see wiring gaps) |
-| `AA_Murkling` | 0.2 | Spenders | donor | eats the flood's drowned dead; **multi-homed**: also Forsaken/Black Crags (annotate, that sitting's call) |
+| `AA_Murkling` | 0.2 | Spenders | donor | eats the flood's drowned dead; **multi-homed**: also Forsaken/Abyss (annotate, that sitting's call) |
 | `RSW_SandLeaper` | 0.2 | Spenders | RSW_ port | draft *qetta* |
 | `RSW_Gornt` | 0.3 | Patient | RSW_ port | seep-edge pouncer |
 | `RSW_Eopie` | 0.25 | Patient | RSW_ port | ⚠️ **5 homes** (Desert, Leaning Scrub, Long Shade, Weeping Stones, here — MEASURED sweep). SW canon icon carve-out; annotate for the one-home law, do not evict here |

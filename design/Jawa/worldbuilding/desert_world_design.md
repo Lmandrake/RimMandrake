@@ -564,7 +564,7 @@ This is the Tier-1/Tier-2 set-piece model (`context.md` 2026-08-05, GREENLIT) re
 *Desert sea (the default ocean you cross):*
 - **Deep desert (DD):** a **caravan ossuary** — sand-scoured pack-animal skeletons and toppled cargo around a dead pilot clutching a working nav-beacon. Loot = the beacon (a fixed waypoint hint). → *arc beat: the beacon's last ping points toward the launch corridor — the first thread of a destination.*
 - **Arid shrubland (AR):** a **derelict moisture-farm homestead**, vaporators long dry, with a scratched wall-log of a family who "left when the soldiers came through." Low-danger, high-flavor. → *arc beat: earliest civilian rumor the Empire patrols this region.*
-- **Forsaken crags (FC):** a **crashed escape pod** wedged in the rocks, occupant gone but distress-log intact — coordinates and a name. → *arc beat: introduces a recurring NPC the crew might later meet (or find dead) — a personal stake in the pursuit.*
+- **Abyss (FC):** a **crashed escape pod** wedged in the rocks, occupant gone but distress-log intact — coordinates and a name. → *arc beat: introduces a recurring NPC the crew might later meet (or find dead) — a personal stake in the pursuit.*
 - **Salt flat (SF):** a wrecked **Imperial gravbarge** half-buried in salt — the first hard proof the Empire came this way. → *arc beat: Act I → II hinge, the "they're real and they're here" reveal.*
 
 *Water (the scarce lifeline tiles):*

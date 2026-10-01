@@ -294,7 +294,7 @@ spec:     `jawa/biome_probe find=<defName>` audits a removal across every biome 
 verify:   EMPTY
 criteria: each removal must report `spawning` / `zeroed` / `absent` against the DECLARED records — present-at-commonality-0 and absent are DIFFERENT defects, and the engine's own resolved lists drop a zeroed record exactly like a deleted one (`get_AllWildAnimals` yields a kind only if `CommonalityOfAnimal` or `…PollutionAnimal` or `…CoastalAnimal` > 0, IL_0055/0063/0071; `get_AllWildPlants` filters `CommonalityOfPlant > 0`, IL_0038).
 
-## C27 A coastal forsaken-crags tile
+## C27 A coastal abyss tile
 spec:     Roll one. It can roll Archipelago today, giving a permanently dark mostly-ocean map with zero new code.
 verify:   EMPTY
 criteria: does it read — this decides the deep.

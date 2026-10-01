@@ -216,7 +216,7 @@ existing def: ecology and scale prefill from the def (and the owner's 60 notes �
 "N cells wide" notes are `visual_size` orders, the move-notes are roster edits, not
 art), and only `graphics`/`prompt_deltas`/`validation` are authored fresh. Per the
 2026-09-10 "redo" ruling: `improve` keeps identity and refines; `redo` (1 row:
-`forsaken_crags` dusk-rat — a fauna row on the flora sheet's ledger) is full
+`abyss` dusk-rat — a fauna row on the flora sheet's ledger) is full
 regeneration.
 
 ---
@@ -369,7 +369,7 @@ Demand rows per biome group (27 groups, Σ=118):
 | desert | 7 | defending-shade-plants · staggerseed-cycle-plant · ultracactus |
 | dune_sea + deep_desert | 8 | glass-nub-light-pipe · silverbole · mirror-plated-sun-axis-giant? |
 | fall_line | 3 | wreck-shade-flora-pockets |
-| forsaken_crags | 4 | — |
+| abyss | 4 | — |
 | nightside_ice | 6 | chemical-frosts? · sessile-catalytic-sheets? |
 | poison_forest | 3 | dark-crust-phototroph |
 | terminator_sea + the_grey_deep | 5 | salt-rimed-blade (grey variant) · pillar-mason-film? |

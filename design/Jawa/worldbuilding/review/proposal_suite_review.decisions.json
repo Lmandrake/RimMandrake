@@ -395,7 +395,7 @@
   },
   "cav:darkness-mechanic": {
    "d": "v1",
-   "n": "This is just needed in so many places. Beneath the water surface (ocean/lake biomes). Flooded dungeons. Forsaken Crags for sure. Night side in general. Light is what we bring because we need it, but in such great abundance compared to the local creatures we are like blazing beacons begging to be messed with.",
+   "n": "This is just needed in so many places. Beneath the water surface (ocean/lake biomes). Flooded dungeons. Abyss for sure. Night side in general. Light is what we bring because we need it, but in such great abundance compared to the local creatures we are like blazing beacons begging to be messed with.",
    "touched": true,
    "prefill": "v1",
    "doc": "underground_caverns_deep_design.md"

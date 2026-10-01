@@ -10,7 +10,7 @@ Every fact below is web-sourced (link given per row); nothing is invented.
 Bantha, Ronto, Eopie, Falumpaset, Dalgo, Dewback, FeralNerf/Nerf, FrilledGorg,
 Gorg, LongtailGorg, Kybuck, Shaak, Orray, Kaadu, Veermok, Blurrg,
 `homeless:Behemoth` (the existing "huuuge trader pack animal," already IN),
-`homeless:AA_Behemoth` (unrelated 16-square Forsaken Crags creature —
+`homeless:AA_Behemoth` (unrelated 16-square Abyss creature —
 name-collision warned about in `biome_findings.md` line 258; do not confuse
 the two), JRWGorgonops, RSW_ShaleGorger, AA_EngorgedTentacularAberration.
 

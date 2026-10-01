@@ -60,7 +60,7 @@ Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/revi
 | `homeless:AA_Atispec` | AA_Atispec | Scald | the_scald |
 | `homeless:AA_AuroraSylph` | AA_AuroraSylph | Perfect Propane Lake creature | the_propane_lakes |
 | `homeless:AA_Barbslinger` | AA_Barbslinger | wherever needed in hot biomes | OPEN |
-| `homeless:AA_Behemoth` | AA_Behemoth | crag, 16 squares | forsaken_crags |
+| `homeless:AA_Behemoth` | AA_Behemoth | crag, 16 squares | abyss |
 | `homeless:AA_BumbledroneQueen` | AA_BumbledroneQueen | goes with the rest of the bumbledrones | the_sump |
 | `homeless:AA_ColossalAerofleet` | AA_ColossalAerofleet | rare creature wherever normal aerofleets end up | terminator_sea + the_grey_deep + the_twilight_deep + the_forge |
 | `homeless:AA_CrescendoAnole` | AA_CrescendoAnole | volcanic biomes | the_forge |
@@ -130,7 +130,7 @@ Rebuilt from the owner's completed fauna review (`design/Jawa/worldbuilding/revi
 | `homeless:GR_Mechachicken` | GR_Mechachicken | rust cathedral | the_rust_cathedral |
 | `homeless:GR_Mecharat` | GR_Mecharat | rust cathedral and mechanoid dungeons | the_rust_cathedral |
 | `homeless:GR_Needlechicken` | GR_Needlechicken | Helix territory | OPEN |
-| `homeless:GR_Nighthrumbo` | GR_Nighthrumbo | Crags | forsaken_crags |
+| `homeless:GR_Nighthrumbo` | GR_Nighthrumbo | Crags | abyss |
 | `homeless:GR_Rabbitchicken` | GR_Rabbitchicken | sold as pet by the Helix faction | OPEN |
 | `homeless:GR_Snakecat` | GR_Snakecat | venomthorn dweller | OPEN |
 | `homeless:GR_Spidersnake` | GR_Spidersnake | Helix area | OPEN |

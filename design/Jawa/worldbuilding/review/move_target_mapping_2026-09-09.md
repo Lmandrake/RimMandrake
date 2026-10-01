@@ -21,7 +21,7 @@ rescale worklist and art queue unchanged; this doc maps HOMES only.
 | blue desert | the_blue_desert | 1 |
 | arid type | arid_shrubland | 1 |
 | ice sheet | nightside_ice | 1 |
-| Crags | forsaken_crags | 1 |
+| Crags | abyss | 1 |
 | cracked land | the_cracked_lands | 1 |
 | the Fall (wreckage-based) | fall_line | 1 |
 | Crystal caverns | the_lantern_deeps (its cave-map layer) | 2 |

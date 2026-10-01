@@ -57,7 +57,7 @@ plan that is not mostly about `mlie.starwarsanimalcollection` and
 | `RUT_Miasma` | 10 | 0 | 20 | 7 | alphaanimals:10, swanimals:9 |
 | `RUT_Cauldron` | 1 | 0 | 16 | 9 | alphaanimals:8, swanimals:3, alphamemes:3 |
 | `RUT_FeverWood` | 3 | 0 | 15 | 0 | swanimals:10, alphabiomes:3 |
-| `RUT_ForsakenCrags` | 0 | 0 | 14 | 6 | alphaanimals:14 |
+| `RUT_Abyss` | 0 | 0 | 14 | 6 | alphaanimals:14 |
 | `RUT_Wasteland` | 7 | 1 | 12 | 1 | alphaanimals:5, vgeneticse:4 |
 | `RUT_Contagion` | 1 | 0 | 10 | 10 | alphaanimals:10 |
 | `RUT_Slime` | 0 | 0 | 9 | 6 | alphaanimals:7, vgeneticse:2 |

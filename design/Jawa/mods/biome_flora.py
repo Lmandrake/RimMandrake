@@ -218,7 +218,7 @@ FAMILIES = {
                             # named signature flora (EXTREME_DESERT_SIGNATURE_FLORA_1,
                             # dune_sea.md SS4 / deep_desert.md SS4b), deliberately sparse.
                             # AB_GiantStikehr removed 2026-09-20 on the owner's eye ("The
-                            # giant mushroom seems misplaced") — it is a Forsaken Crags
+                            # giant mushroom seems misplaced") — it is a Abyss
                             # organism by Alpha Biomes' own description and is carried there.
     'RSW_LightPipeNub': 0.1, 'RSW_Plant_Bloddle': 0.05, 'RSW_Ollim': 0.01},
   'RM_TheRot': {   # 2,204 tiles · 30 plants — was AB_MycoticJungle. 18 of the fungi
@@ -242,12 +242,12 @@ FAMILIES = {
     'AB_DribblingCap': 0.1, 'RUT_Skulltop': 0.1,
     'RUT_BlastpodShroom': 0.05,   # our own RUT_ port; wild-only per owner ruling 2026-09-06
     'AB_AgariluxPrime': 0.01},
-  'RM_ForsakenCrags': {   # RM_ mod built 2026-09-25, FORSAKENCRAGS_RM_MOD_BUILD_1 — was
-                           # RUT_ForsakenCrags (still frozen, world-carrying twin, identical
+  'RM_Abyss': {   # RM_ mod built 2026-09-25, FORSAKENCRAGS_RM_MOD_BUILD_1 — was
+                           # RUT_Abyss (still frozen, world-carrying twin, identical
                            # content). 1,135 tiles · 8 plants — AG_Gamma/AG_Septimum moved in
                            # (SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11 "to
                            # crags" / "elsewhere, not heat resistant"; flora_move_mapping.md's
-                           # "already in forsaken_crags" claim was false, MEASURED 2026-09-12 —
+                           # "already in abyss" claim was false, MEASURED 2026-09-12 —
                            # this is the actual first landing, joining their Giant/Toxic kin)
     'AB_GlowingGrass': 1.0, 'AB_ToxicGamma': 0.6, 'AB_GiantGamma': 0.5,
     'AB_WildRadagast': 0.5, 'AG_Gamma': 0.5, 'AB_GiantStikehr': 0.3,
@@ -278,7 +278,7 @@ FAMILIES = {
                        # BMT_FireLavender/BMT_Sagecrust/BMT_HeatsinkFungus repointed to their
                        # RUT_ ports 2026-09-20 (BMT_FLORA_ABSORPTION_1) — Sagecrust already
                        # existed (RotSporeKit), FireLavender/HeatsinkFungus newly ported.
-                       # AG_Gamma/AB_GiantGamma/AG_Septimum moved out to forsaken_crags the
+                       # AG_Gamma/AB_GiantGamma/AG_Septimum moved out to abyss the
                        # same day (SHEET_ORPHAN_CONSUMPTION_1) — the Forge's 42-56 C floor
                        # was already above their optimal band (opt max 42 C, MEASURED
                        # plant_pool.csv), and AB_GiantGamma was already resident at the crags

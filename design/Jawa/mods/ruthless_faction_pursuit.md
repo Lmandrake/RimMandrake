@@ -78,7 +78,7 @@ exactly.
    ⇒ `firstRaidDelayHours` **156 ± 36** and `raidDelayHours` **156 ± 36**
    (5.0–8.0 days). Warning lead shortened to fit: `warningDelayHours` **48 ± 12**.
 2. **Poorly-surveyed refuges are the counterplay.** Owner: areas like the
-   Forsaken Crags ("and possibly some others, and even in distant v2 maybe on
+   Abyss ("and possibly some others, and even in distant v2 maybe on
    the ocean floor for a sealed ship") should be more like **20–30 days**.
    ⛔ The mod has ONE global cadence — no per-biome modulation. The bundled
    source is licensed for modification with credit, so this is a small C# fork:

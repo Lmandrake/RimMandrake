@@ -25,7 +25,7 @@ tool, is the record.
 > ⚠️ **37 and ~35 occur nowhere in `design/`.** Phantom values; do not chase them.
 
 **Headline: every biome the lore needs survived.** Poison forest, mycotic jungle,
-gelatinous superorganism, propane lakes, ocular forest, forsaken crags
+gelatinous superorganism, propane lakes, ocular forest, Abyss
 (`AB_RockyCrags`), tar pits, crystalline caverns (`BMT_CrystalCaverns`), the Rust
 Cathedral (`AB_MechanoidIntrusion`), desert, extreme desert, oasis, ocean — plus
 **three volcanic biomes** (`Volcano`, `LavaField`, `AB_PyroclasticConflagration`)

@@ -173,7 +173,7 @@
       "sizeBin": "small",
       "sizeBinPrefill": "small"
     },
-    "flora:forsaken_crags:AB_GiantGamma": {
+    "flora:abyss:AB_GiantGamma": {
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-11T01:22:14.308Z",
@@ -183,7 +183,7 @@
       "sizeBin": "medium",
       "sizeBinPrefill": "medium"
     },
-    "flora:forsaken_crags:AB_GiantSeptimum": {
+    "flora:abyss:AB_GiantSeptimum": {
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-11T01:09:57.537Z",
@@ -193,7 +193,7 @@
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
-    "flora:forsaken_crags:AB_GiantStikehr": {
+    "flora:abyss:AB_GiantStikehr": {
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-11T01:10:12.320Z",
@@ -203,7 +203,7 @@
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
-    "flora:forsaken_crags:AB_GlowingGrass": {
+    "flora:abyss:AB_GlowingGrass": {
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-11T01:22:06.000Z",
@@ -213,7 +213,7 @@
       "sizeBin": "small",
       "sizeBinPrefill": "small"
     },
-    "flora:forsaken_crags:AB_ToxicGamma": {
+    "flora:abyss:AB_ToxicGamma": {
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-11T01:22:30.427Z",
@@ -223,7 +223,7 @@
       "sizeBin": "large",
       "sizeBinPrefill": "large"
     },
-    "flora:forsaken_crags:AB_WildRadagast": {
+    "flora:abyss:AB_WildRadagast": {
       "art": "improve",
       "artPrefill": "keep",
       "at": "2026-09-11T01:22:22.000Z",
@@ -572,7 +572,7 @@
       "prefill": "in",
       "sizeBin": "medium",
       "sizeBinPrefill": "medium",
-      "inheritedFrom": "flora:forsaken_crags:AB_GiantGamma"
+      "inheritedFrom": "flora:abyss:AB_GiantGamma"
     },
     "flora:the_forge:AB_TinkleGrass": {
       "art": "improve",
@@ -1820,22 +1820,22 @@
       "note": "",
       "prefill": "in"
     },
-    "ledger:forsaken_crags:cindermare": {
+    "ledger:abyss:cindermare": {
       "decision": "in",
       "note": "",
       "prefill": "in"
     },
-    "ledger:forsaken_crags:darkbeast-dark-halo-behaviour": {
+    "ledger:abyss:darkbeast-dark-halo-behaviour": {
       "decision": "in",
       "note": "",
       "prefill": "in"
     },
-    "ledger:forsaken_crags:dusk-rat-art-redo": {
+    "ledger:abyss:dusk-rat-art-redo": {
       "decision": "in",
       "note": "",
       "prefill": "in"
     },
-    "ledger:forsaken_crags:skarnix": {
+    "ledger:abyss:skarnix": {
       "decision": "in",
       "note": "",
       "prefill": "in"

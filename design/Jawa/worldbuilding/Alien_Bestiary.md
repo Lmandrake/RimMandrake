@@ -79,7 +79,7 @@ The source doc treats C and D as exclusion categories. In this setting they're *
 
 ## 3. The bestiary
 
-Terrain codes match `desert_world_design.md` §3E: DD deep desert · AR arid shrubland · FC forsaken crags · SF salt flat · OA oasis · RV river · VO volcanic · TP tar pits · CO coast · FJ feralisk jungle · MJ mycotic jungle · GF glowforest · OC ocular forest · WA wasteland/android · SH shipyards.
+Terrain codes match `desert_world_design.md` §3E: DD deep desert · AR arid shrubland · FC Abyss · SF salt flat · OA oasis · RV river · VO volcanic · TP tar pits · CO coast · FJ feralisk jungle · MJ mycotic jungle · GF glowforest · OC ocular forest · WA wasteland/android · SH shipyards.
 
 ### 3.1 Ursine-dominant — the heavies
 
@@ -285,7 +285,7 @@ Your source doc's advice — 3–5 coherent clades per region, not a zoo — app
 |---|---|---|
 | **Deep desert (DD)** | reptile, equine, bantha-kin | `kraddon`, `obbak`, `krayt dragon` |
 | **Arid shrubland (AR)** | avian, canine, bantha-kin | `vekt`, `drovak`, `gorrel` |
-| **Forsaken crags (FC)** | ursine, feline, reptile | `skarn`, `dhak`, `nirrik` |
+| **Abyss (FC)** | ursine, feline, reptile | `skarn`, `dhak`, `nirrik` |
 | **Salt flat (SF)** | reptile, bantha-kin (transient) | `sslarn`, `vhaggan` |
 | **Oasis (OA)** | feline, rodent, avian | `sookal`, `sivvik`, `pikka` |
 | **River (RV)** | canine, rodent, avian | `chirrik`, `brakka`, `vekt` |

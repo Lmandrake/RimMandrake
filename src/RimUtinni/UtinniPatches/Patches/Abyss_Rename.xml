@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
-  <!-- ForsakenCrags_Rename.xml            RimUtinni Patches — new file 2026-09-24
+  <!-- Abyss_Rename.xml            RimUtinni Patches — new file 2026-09-24
 
-       NONCANON_BEAST_RENAME_1 batch 3a — Forsaken Crags. Owner ruled batch 3
+       NONCANON_BEAST_RENAME_1 batch 3a — Abyss. Owner ruled batch 3
        applied 2026-09-24 (design/Jawa/worldbuilding/biomes/
        noncanon_beast_names_crags_nightside_contagion_slime.md). Fourteen donor
        ThingDef+PawnKindDef pairs (13 Alpha Animals AA_, 1 Vanilla Genetics

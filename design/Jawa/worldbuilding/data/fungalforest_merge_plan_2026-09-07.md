@@ -75,7 +75,7 @@ near-constant across every candidate here.
 | AB_MycoticJungle (the Rot) | 352 | 179 | 173 | 3 |
 | Desert | 53 | 24 | 29 | 7 |
 | BiomeGRimond (Blue Desert) | 8 | 6 | 2 | 3 |
-| AB_RockyCrags (Forsaken Crags) | 8 | 4 | 4 | 1 |
+| AB_RockyCrags (Abyss) | 8 | 4 | 4 | 1 |
 | RUT_NightsideIce (the deep-night highland) | 4 | 3 | 1 | 1 |
 | **TOTAL** | **425** | 216 | 209 | 15 |
 
@@ -99,7 +99,7 @@ everything tied.
 | 4099 | Sporefields | interior | 90.0 | 12.6 | Desert | AB_MycoticJungle, Desert |
 | 5648 | Sweatwood | interior | 83.34 | 16.5 | Desert | Desert, AB_MycoticJungle |
 | 7560 | Sweatwood | interior | 77.97 | 20.4 | Desert | AB_MycoticJungle, Desert |
-| 8620 | South Crags | interior | 122.93 | -29.0 | AB_RockyCrags (Forsaken Crags) | BiomeGRimond, AB_RockyCrags |
+| 8620 | South Crags | interior | 122.93 | -29.0 | AB_RockyCrags (Abyss) | BiomeGRimond, AB_RockyCrags |
 | 8621 | South Crags | interior | 123.65 | -30.2 | BiomeGRimond (Blue Desert) | BiomeGRimond, AB_RockyCrags |
 | 9699 | Hanging Wood | direct | 116.96 | -20.9 | AB_MycoticJungle (the Rot) | AB_RockyCrags, AB_MycoticJungle |
 | 10178 | Sporefields | interior | 96.05 | 5.7 | Desert | Desert, AB_MycoticJungle |
@@ -111,7 +111,7 @@ everything tied.
 
 Pattern in the ties: `Desert` vs `AB_MycoticJungle` (the Rot) at the warm dayside edge
 (Sporefields/Sweatwood/Stepwood, arc 74–96), and `BiomeGRimond` (Blue Desert) vs
-`AB_RockyCrags` (Forsaken Crags) vs the Rot at the cold nightside edge (South Crags/
+`AB_RockyCrags` (Abyss) vs the Rot at the cold nightside edge (South Crags/
 Blindwood/Hanging Wood/Stillwood, arc 117–131) — i.e. exactly the two frontiers where the
 dissolved biome sat between two already-adjoining neighbours in comparable proportion.
 The owner may prefer to rule these as a block (e.g. "South Crags ties go to whichever
@@ -127,7 +127,7 @@ only, not modified — another agent is editing that directory live).
 | AB_MycoticJungle (the Rot) (352 tiles) | 89–130 (`the_rot.md`) | arc 75.3–132.9 pushes past BOTH ends — new min 75.3 is 14° below the sheet's dayside edge, new max 132.9 is 3° past its nightside edge |
 | Desert (53 tiles) | 60–88 core (`desert.md`; already only ~51% of the def sits inside this per `WORLDMAP_DESERT_BAND_REPAIR_1`) | arc 74.0–96.1 — mean 86.5 fits, but max 96.1 adds MORE tiles past 88°, compounding the already-open band-repair issue |
 | BiomeGRimond (Blue Desert) (8 tiles) | Deadstone ring 126–143, lobes to 155 in places (`the_blue_desert.md`) | arc 123.7–131.4 — slightly below 126 at the low end, otherwise inside |
-| AB_RockyCrags (Forsaken Crags) (8 tiles) | 99–121 (`forsaken_crags.md`) | arc 118.5–122.9 — top end 1.9° past 121, otherwise inside |
+| AB_RockyCrags (Abyss) (8 tiles) | 99–121 (`abyss.md`) | arc 118.5–122.9 — top end 1.9° past 121, otherwise inside |
 | RUT_NightsideIce (the deep-night highland) (4 tiles) | 128–159, 802 tiles measured (`nightside_ice.md`) | arc 130.5–131.9 — fully inside, and only 4 tiles vs. its own 802 (0.5% growth) |
 
 **The Rot (`AB_MycoticJungle`) is the one that matters**: it gains 352 of the 425 tiles
@@ -244,7 +244,7 @@ non-FungalForest biome seen among DIRECT neighbors only (empty for pure-interior
 | 3739 | South Crags | 117.47 | -24.3 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
 | 3758 | South Crags | 124.36 | -31.7 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
 | 3759 | South Crags | 122.18 | -28.0 | I(d3) | — | AB_MycoticJungle (the Rot) |  |
-| 3760 | South Crags | 122.18 | -28.0 | I(d1) | — | AB_RockyCrags (Forsaken Crags) |  |
+| 3760 | South Crags | 122.18 | -28.0 | I(d1) | — | AB_RockyCrags (Abyss) |  |
 | 3761 | South Crags | 124.36 | -31.0 | D | BiomeGRimond:1, AB_RockyCrags:1 | BiomeGRimond (Blue Desert) | TIE |
 | 3762 | South Crags | 126.55 | -34.6 | D | AB_MycoticJungle:1 | AB_MycoticJungle (the Rot) |  |
 | 3763 | South Crags | 126.55 | -34.0 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
@@ -270,7 +270,7 @@ non-FungalForest biome seen among DIRECT neighbors only (empty for pure-interior
 | 4818 | South Crags | 119.95 | -24.7 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
 | 4819 | Hanging Wood | 117.73 | -21.7 | D | AB_MycoticJungle:3 | AB_MycoticJungle (the Rot) |  |
 | 4838 | Hanging Wood | 117.73 | -21.7 | D | AB_MycoticJungle:2 | AB_MycoticJungle (the Rot) |  |
-| 4842 | Hanging Wood | 119.95 | -24.4 | D | AB_RockyCrags:2 | AB_RockyCrags (Forsaken Crags) |  |
+| 4842 | Hanging Wood | 119.95 | -24.4 | D | AB_RockyCrags:2 | AB_RockyCrags (Abyss) |  |
 | 4988 | Nightspill | 123.1 | -32.2 | D | AB_MycoticJungle:2 | AB_MycoticJungle (the Rot) |  |
 | 4989 | Nightspill | 120.44 | -29.5 | I(d2) | — | AB_MycoticJungle (the Rot) |  |
 | 4990 | Nightspill | 119.23 | -27.5 | I(d3) | — | AB_MycoticJungle (the Rot) |  |
@@ -340,7 +340,7 @@ non-FungalForest biome seen among DIRECT neighbors only (empty for pure-interior
 | 8599 | South Crags | 116.65 | -23.9 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
 | 8618 | South Crags | 125.11 | -32.7 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
 | 8619 | South Crags | 123.65 | -30.8 | I(d2) | — | AB_MycoticJungle (the Rot) |  |
-| 8620 | South Crags | 122.93 | -29.0 | I(d2) | — | AB_RockyCrags (Forsaken Crags) | TIE |
+| 8620 | South Crags | 122.93 | -29.0 | I(d2) | — | AB_RockyCrags (Abyss) | TIE |
 | 8621 | South Crags | 123.65 | -30.2 | I(d1) | — | BiomeGRimond (Blue Desert) | TIE |
 | 8622 | South Crags | 125.11 | -32.5 | I(d1) | — | BiomeGRimond (Blue Desert) |  |
 | 8623 | South Crags | 125.84 | -33.6 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
@@ -365,7 +365,7 @@ non-FungalForest biome seen among DIRECT neighbors only (empty for pure-interior
 | 9676 | South Crags | 118.39 | -23.6 | D | AB_MycoticJungle:2 | AB_MycoticJungle (the Rot) |  |
 | 9677 | South Crags | 119.17 | -24.0 | D | AB_MycoticJungle:1 | AB_MycoticJungle (the Rot) |  |
 | 9678 | Hanging Wood | 118.46 | -22.6 | D | AB_MycoticJungle:2 | AB_MycoticJungle (the Rot) |  |
-| 9698 | Hanging Wood | 118.46 | -22.4 | D | AB_RockyCrags:2 | AB_RockyCrags (Forsaken Crags) |  |
+| 9698 | Hanging Wood | 118.46 | -22.4 | D | AB_RockyCrags:2 | AB_RockyCrags (Abyss) |  |
 | 9699 | Hanging Wood | 116.96 | -20.9 | D | AB_RockyCrags:2, AB_MycoticJungle:2 | AB_MycoticJungle (the Rot) | TIE |
 | 9848 | Nightspill | 121.82 | -31.0 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
 | 9849 | Nightspill | 120.53 | -29.4 | I(d2) | — | AB_MycoticJungle (the Rot) |  |
@@ -555,14 +555,14 @@ non-FungalForest biome seen among DIRECT neighbors only (empty for pure-interior
 | 20111 | South Crags | 120.66 | -26.3 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
 | 20112 | South Crags | 122.82 | -29.9 | D | AB_MycoticJungle:1 | AB_MycoticJungle (the Rot) |  |
 | 20113 | South Crags | 123.6 | -30.6 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
-| 20114 | South Crags | 121.45 | -26.7 | I(d2) | — | AB_RockyCrags (Forsaken Crags) |  |
-| 20115 | South Crags | 120.71 | -25.7 | I(d1) | — | AB_RockyCrags (Forsaken Crags) |  |
+| 20114 | South Crags | 121.45 | -26.7 | I(d2) | — | AB_RockyCrags (Abyss) |  |
+| 20115 | South Crags | 120.71 | -25.7 | I(d1) | — | AB_RockyCrags (Abyss) |  |
 | 20116 | South Crags | 120.71 | -25.6 | I(d2) | — | AB_MycoticJungle (the Rot) |  |
 | 20117 | Hanging Wood | 119.22 | -23.6 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
 | 20118 | Hanging Wood | 118.48 | -22.7 | D | AB_MycoticJungle:1 | AB_MycoticJungle (the Rot) |  |
 | 20119 | Hanging Wood | 119.22 | -23.7 | I(d1) | — | AB_MycoticJungle (the Rot) | TIE |
-| 20120 | South Crags | 122.9 | -28.7 | D | AB_RockyCrags:2 | AB_RockyCrags (Forsaken Crags) |  |
-| 20122 | South Crags | 121.43 | -26.6 | D | AB_RockyCrags:2 | AB_RockyCrags (Forsaken Crags) |  |
+| 20120 | South Crags | 122.9 | -28.7 | D | AB_RockyCrags:2 | AB_RockyCrags (Abyss) |  |
+| 20122 | South Crags | 121.43 | -26.6 | D | AB_RockyCrags:2 | AB_RockyCrags (Abyss) |  |
 | 20126 | South Crags | 125.81 | -33.3 | D | BiomeGRimond:2, AB_MycoticJungle:1 | BiomeGRimond (Blue Desert) |  |
 | 20132 | South Crags | 127.28 | -35.2 | I(d1) | — | AB_MycoticJungle (the Rot) |  |
 | 20133 | South Crags | 127.98 | -35.1 | D | AB_MycoticJungle:2 | AB_MycoticJungle (the Rot) |  |

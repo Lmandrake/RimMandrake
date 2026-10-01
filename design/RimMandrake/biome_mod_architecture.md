@@ -88,7 +88,7 @@ and in the deserts' case the owner named them separately in the ruling.
 | 3 | `RUT_TheRot` | 2204 | the Rot | `the_rot.md`, `kits/rot_kit_spec.md` | `TheRot` | `mandrake.rm.therot` | `RM_TheRot` | PROPOSED — owner-named standalone; absorbs `mandrake.rut.rotsporekit` (151 files, biome mechanics, not campaign) |
 | 4 | `RUT_Wasteland` | 1853 | the Wasteland | `wasteland.md` | `Wasteland` | `mandrake.rm.wasteland` | `RM_Wasteland` | PROPOSED; owns the `RUT_WastelandBrine*` terrain family |
 | 5 | `RUT_NightsideIce` | 1506 | the Nightside Ice | `nightside_ice.md` | `NightsideIce` | `mandrake.rm.nightsideice` | `RM_NightsideIce` | PROPOSED; thin (no plants by design) but it is a Lantern Deeps host surface |
-| 6 | `RUT_ForsakenCrags` | 1135 | the Forsaken Crags | `forsaken_crags.md` | `ForsakenCrags` | `mandrake.rm.forsakencrags` | `RM_ForsakenCrags` | PROPOSED |
+| 6 | `RUT_Abyss` | 1135 | the Abyss | `abyss.md` | `Abyss` | `mandrake.rm.abyss` | `RM_Abyss` | PROPOSED |
 | 7 | `RUT_BlueDesert` | 1029 | the Blue Desert | `the_blue_desert.md` | `BlueDesert` | `mandrake.rm.bluedesert` | `RM_BlueDesert` | PROPOSED; `BLUE_DESERT_LIFE_AUTHORING_1` builds INTO this mod, not into UtinniPatches |
 | 8 | `RUT_CrackedLands` | 970 | the Cracked Lands | `the_cracked_lands.md` | `FloodedCanyon` (EXISTS) | `mandrake.rm.floodedcanyon` | `RM_FloodedCanyon` | twin pair, §4; §7 Q4 |
 | 9 | `RUT_AridShrubland` | 628 | the Leaning Scrub (RULED 2026-09-21 — §7 Q2) | `arid_shrubland.md` | `LeaningScrub` | `mandrake.rm.leaningscrub` | `RM_LeaningScrub` | PROPOSED — "arid shrubland" is a vanilla biome label; the name is the sheet's own gesture, everything leaning sunward in a wind that never stops |

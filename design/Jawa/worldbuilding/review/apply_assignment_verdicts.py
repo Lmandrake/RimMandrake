@@ -110,7 +110,7 @@ MAPPING_TARGET_ALIASES = {
     "desert": "desert",
     "dune_sea": "dune_sea_deep_desert",
     "fall_line": "fall_line",
-    "forsaken_crags": "forsaken_crags",
+    "abyss": "abyss",
     "nightside_ice": "nightside_ice",
     "poison_forest": "poison_forest",
     "the_blue_desert": "the_blue_desert",

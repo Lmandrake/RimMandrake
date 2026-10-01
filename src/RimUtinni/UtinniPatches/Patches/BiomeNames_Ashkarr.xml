@@ -71,9 +71,9 @@
     <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/label</xpath>
-      <value><label>the Forsaken Crags</label></value>
+      <value><label>the Abyss</label></value>
     </match>
-  </Operation>   <!-- was "forsaken crags" -->
+  </Operation>   <!-- was "Abyss" -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/label</xpath>

@@ -1,4 +1,4 @@
-# Non-canon beast names — Forsaken Crags, Nightside Ice, the Contagion, the Slime
+# Non-canon beast names — Abyss, Nightside Ice, the Contagion, the Slime
 
 **DRAFT for the owner, 2026-09-24. Nothing applied.** Phase 1 of `NONCANON_BEAST_RENAME_1`
 (census + drafted names, by biome). Beasts only — flora renaming is its own track and is
@@ -29,7 +29,7 @@ acceptance, never the label alone.
 - **The Rot's six fauna** (rennok, gromma, durrok, mullgoth, vorrugath, chittik) and the two
   keep-renames (skerrith, grellik) are ruled in `rot_flora_fauna_names.md`.
 - **The ikee** (`AA_Eyeling`) is the owner's own ruling of 2026-08-15.
-- **The dusk rat stays** — `forsaken_crags.md` §4 and §Owed: *"the name stays; owner ruled
+- **The dusk rat stays** — `abyss.md` §4 and §Owed: *"the name stays; owner ruled
   the name IS the joke."* Not drafted.
 
 🔑 **A donor def and its `RSW_` port are one beast and get one name.** Several donor rows in
@@ -79,7 +79,7 @@ The Rot/Lantern rules unchanged, plus the item's STANDARD:
 
 ---
 
-## Batch 3a — Forsaken Crags (`forsaken_crags.json`, 16 rows)
+## Batch 3a — Abyss (`abyss.json`, 16 rows)
 
 *Obsidian teeth in a fog light cannot cross.* The donor roster is the population by the
 owner's wholesale ruling — a single transplanted nocturnal family. The accent is the crags
@@ -303,7 +303,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `arid_shrubland` | 41 | 34 | 1 |  |  | 6 |  |  |  |
 | `desert` | 53 | 37 | 1 |  |  | 14 | 1 |  |  |
 | `dune_sea_deep_desert` | 16 | 7 | 1 |  |  | 8 |  |  |  |
-| `forsaken_crags` | 16 |  |  | 1 |  | 14 | 1 |  |  |
+| `abyss` | 16 |  |  | 1 |  | 14 | 1 |  |  |
 | `nightside_ice` | 10 | 2 |  |  |  | 8 |  |  |  |
 | `poison_forest` | 24 | 6 | 1 |  |  | 16 | 1 |  |  |
 | `the_blue_desert` | 2 | 1 |  |  |  | 1 |  |  |  |
@@ -464,7 +464,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `RSW_GlowSlug` | glowbulb | the_fever_wood | RimMandrake: SW — Bestiary | RULED | donor art | already carries a ruled coined name |
 | `RSW_Maligoat` | kroffa | wasteland | RimMandrake: SW — Bestiary | RULED | donor art | already carries a ruled coined name |
 | `RSW_Stoneback` | bokka | desert | RimMandrake: SW — Bestiary | RULED | regen:3 | already carries a ruled coined name |
-| `AA_DuskRat` | dusk rat | forsaken_crags | Alpha Animals | KEPT | donor art | KEPT — owner ruled the name IS the joke (forsaken_crags.md §4/§Owed); art redo owed, name stays |
+| `AA_DuskRat` | dusk rat | abyss | Alpha Animals | KEPT | donor art | KEPT — owner ruled the name IS the joke (abyss.md §4/§Owed); art redo owed, name stays |
 | `RM_Titanoslime` | None | the_slime | ? | OURS | UNMEASURED | owner's own creature, named in his ask 2026-09-20 |
 | `RSW_Korrum` | None | the_scarlands | ? | OURS | regen:3 done:3 | our DesertPort def, label 'korrum' |
 | `RUT_CathedralRoach` | cathedral roach | the_rust_cathedral | RimMandrake: Utinni — Rust Cathedral Roaches | OURS | donor art | our def (Rust Cathedral) |
@@ -481,7 +481,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_AuroraSylph` | Aurora sylph | the_propane_lakes | Alpha Animals | NONCANON | donor art |  |
 | `AA_Barbslinger` | barbslinger | the_pyrelands | Alpha Animals | NONCANON | regen:6 done:10 |  |
 | `AA_BedBug` | bedbug | poison_forest | Alpha Animals | NONCANON | donor art |  |
-| `AA_Behemoth` | Behemoth | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: ghorrumak |
+| `AA_Behemoth` | Behemoth | abyss | Alpha Animals | NONCANON | donor art | DRAFTED HERE: ghorrumak |
 | `AA_BloodShrimp` | blood shrimp | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: zhirrik |
 | `AA_BoulderMit` | bouldermit | dune_sea_deep_desert, nightside_ice | Alpha Animals | NONCANON | donor art | port-named: RSW_Korrum korrum |
 | `AA_Bumbledrone` | bumbledrone | the_sump | Alpha Animals | NONCANON | donor art |  |
@@ -489,19 +489,19 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_BumbledroneQueen` | bumbledrone queen | the_sump | Alpha Animals | NONCANON | donor art |  |
 | `AA_Cactipine` | cactipine | arid_shrubland | Alpha Animals | NONCANON | donor art | port-named: RSW_Spinerat chikka |
 | `AA_ColossalAerofleet` | colossal aerofleet | the_forge, the_grey_sea, the_twilight_sea | Alpha Animals | NONCANON | donor art | DRAFTED HERE: greater bulloo |
-| `AA_CrepuscularBeetle` | Crepuscular Beetle | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: brekkugar |
+| `AA_CrepuscularBeetle` | Crepuscular Beetle | abyss | Alpha Animals | NONCANON | donor art | DRAFTED HERE: brekkugar |
 | `AA_CrescendoAnole` | crescendo anole | the_forge | Alpha Animals | NONCANON | donor art |  |
 | `AA_CrystalMit` | crystalmit | poison_forest | Alpha Animals | NONCANON | donor art |  |
-| `AA_DarkVandal` | dark vandal | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: gruzz |
+| `AA_DarkVandal` | dark vandal | abyss | Alpha Animals | NONCANON | donor art | DRAFTED HERE: gruzz |
 | `AA_DecayDrake` | decay drake | poison_forest, the_miasma, the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: mubbaro |
 | `AA_DesertAve` | desert ave | desert | Alpha Animals | NONCANON | donor art | port-named: RSW_Sandstrider ossik |
 | `AA_Drainer` | drainer | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: fezzira |
 | `AA_DrainerLarva` | drainer larva | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: fezzira larva |
 | `AA_Dunealisk` | dunealisk | dune_sea_deep_desert | Alpha Animals | NONCANON | donor art |  |
-| `AA_DuskProwler` | dusk prowler | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: shekkur |
+| `AA_DuskProwler` | dusk prowler | abyss | Alpha Animals | NONCANON | donor art | DRAFTED HERE: shekkur |
 | `AA_Feralisk` | feralisk | the_webwork | Alpha Animals | NONCANON | donor art |  |
 | `AA_FrostboundBehemoth` | frostbound behemoth | the_propane_lakes | Alpha Animals | NONCANON | donor art |  |
-| `AA_Frostling` | frostling | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: thrizzik |
+| `AA_Frostling` | frostling | abyss | Alpha Animals | NONCANON | donor art | DRAFTED HERE: thrizzik |
 | `AA_Frostmite` | frostmite | the_propane_lakes | Alpha Animals | NONCANON | regen:3 done:3 |  |
 | `AA_FungalHusk` | fungal husk | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: ghuvv |
 | `AA_GiantCrownedSilkie` | giant crowned silkie | poison_forest | Alpha Animals | NONCANON | donor art |  |
@@ -518,13 +518,13 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_MatureFleshbeast` | mature fleshbeast | desert | Alpha Animals | NONCANON | donor art |  |
 | `AA_Metallovore` | metallovore | the_forge | Alpha Animals | NONCANON | donor art |  |
 | `AA_Mime` | mime | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: hennul |
-| `AA_Murkling` | murkling | forsaken_crags, the_cracked_lands | Alpha Animals | NONCANON | donor art | DRAFTED HERE: kessik |
+| `AA_Murkling` | murkling | abyss, the_cracked_lands | Alpha Animals | NONCANON | donor art | DRAFTED HERE: kessik |
 | `AA_Needlepost` | needlepost | arid_shrubland, the_greentide | Alpha Animals | NONCANON | donor art | port-named: RSW_Barbthorn skorra |
 | `AA_Needleroll` | needleroll | desert, dune_sea_deep_desert | Alpha Animals | NONCANON | donor art | port-named: RSW_Spineroller kudda |
-| `AA_NightAve` | night ave | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: zekkra |
-| `AA_NightMule` | nightmule | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: hulggarok |
-| `AA_NightRam` | nightram | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: dhukk |
-| `AA_Nightling` | nightling | forsaken_crags | Alpha Animals | NONCANON | donor art | DRAFTED HERE: vrakk |
+| `AA_NightAve` | night ave | abyss | Alpha Animals | NONCANON | donor art | DRAFTED HERE: zekkra |
+| `AA_NightMule` | nightmule | abyss | Alpha Animals | NONCANON | donor art | DRAFTED HERE: hulggarok |
+| `AA_NightRam` | nightram | abyss | Alpha Animals | NONCANON | donor art | DRAFTED HERE: dhukk |
+| `AA_Nightling` | nightling | abyss | Alpha Animals | NONCANON | donor art | DRAFTED HERE: vrakk |
 | `AA_OcularJelly` | ocular jelly | poison_forest, the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: zhool |
 | `AA_OcularNightling` | ocular nightling | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: gollivra |
 | `AA_OvergrownColossus` | overgrown colossus | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: thummorak |
@@ -538,9 +538,9 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_RipperHound` | ripper hound | poison_forest | Alpha Animals | NONCANON | donor art |  |
 | `AA_RoughPlatedMonitor` | rough-plated monitor | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: brossak |
 | `AA_SandLion` | sand lion | desert, dune_sea_deep_desert | Alpha Animals | NONCANON | donor art |  |
-| `AA_SandProwler` | sand prowler | desert, forsaken_crags | Alpha Animals | NONCANON | donor art | port-named: RSW_Dunestalker vosska |
+| `AA_SandProwler` | sand prowler | desert, abyss | Alpha Animals | NONCANON | donor art | port-named: RSW_Dunestalker vosska |
 | `AA_SandSquid` | sand squid | desert, the_cracked_lands | Alpha Animals | NONCANON | donor art | port-named: RSW_Sandmaw ommok |
-| `AA_ShadowCharger` | shadow charger | forsaken_crags | Alpha Animals | NONCANON | regen:3 done:3 | DRAFTED HERE: korrag |
+| `AA_ShadowCharger` | shadow charger | abyss | Alpha Animals | NONCANON | regen:3 done:3 | DRAFTED HERE: korrag |
 | `AA_ShockGoat` | shock goat | nightside_ice | Alpha Animals | NONCANON | donor art | DRAFTED HERE: zhissa |
 | `AA_Skyeel` | arcturan sky eel | the_propane_lakes | Alpha Animals | NONCANON | donor art |  |
 | `AA_Slurrypede` | slurrypede | nightside_ice, the_miasma, the_propane_lakes | Alpha Animals | NONCANON | donor art | DRAFTED HERE: thollum |
@@ -553,7 +553,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_TetraSlug` | tetra slug | dune_sea_deep_desert, nightside_ice | Alpha Animals | NONCANON | donor art | port-named: RSW_Voltmaw vozzik |
 | `AA_Thermadon` | thermadon | the_miasma | Alpha Animals | NONCANON | donor art |  |
 | `AA_Thunderbeast` | thunderbeast | the_blue_desert | Alpha Animals | NONCANON | donor art |  |
-| `AA_Thunderox` | thunderox | forsaken_crags | Alpha Animals | NONCANON | regen:3 done:3 | DRAFTED HERE: bhoruk |
+| `AA_Thunderox` | thunderox | abyss | Alpha Animals | NONCANON | regen:3 done:3 | DRAFTED HERE: bhoruk |
 | `AG_OcularSlinger` | ocular slinger | the_contagion | Alpha Genes | NONCANON | donor art | DRAFTED HERE: pellorax |
 | `AM_Dryad_Corruptor` | corruptor dryad | poison_forest | Alpha Memes | NONCANON | donor art |  |
 | `AM_Dryad_Ocular` | ocular dryad | poison_forest | Alpha Memes | NONCANON | donor art |  |
@@ -568,7 +568,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `GR_Mantistanis` | None | the_pyrelands | ? | NONCANON | regen:1 done:11 |  |
 | `GR_Mechachicken` | mecha-chicken | the_rust_cathedral | Vanilla Genetics Expanded | NONCANON | donor art |  |
 | `GR_Mecharat` | mecha-rat | the_rust_cathedral | Vanilla Genetics Expanded | NONCANON | donor art |  |
-| `GR_Nighthrumbo` | nighthrumbo | forsaken_crags | Vanilla Genetics Expanded | NONCANON | donor art | DRAFTED HERE: zhurrakor |
+| `GR_Nighthrumbo` | nighthrumbo | abyss | Vanilla Genetics Expanded | NONCANON | donor art | DRAFTED HERE: zhurrakor |
 | `JOE_Cephalope` | cephalope | desert, dune_sea_deep_desert | RimUtinni Patches (Jawa campaign) | NONCANON | donor art |  |
 | `JOE_Landopus` | landopus | desert | RimUtinni Patches (Jawa campaign) | NONCANON | donor art |  |
 | `JOE_Nautilant` | nautilant | the_scald | RimUtinni Patches (Jawa campaign) | NONCANON | donor art |  |
@@ -627,7 +627,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `VFEI2_Megathrips` | megathrips | the_fever_wood | Vanilla Factions Expanded - Insectoids 2 | NONCANON | donor art |  |
 | `VFEI2_Swarmling` | swarmlings | the_greentide, the_miasma, wasteland | Vanilla Factions Expanded - Insectoids 2 | NONCANON | donor art |  |
 | `Visceral` | visceral | poison_forest | Horrors | NONCANON | donor art |  |
-| `AA_Darkbeast` | darkbeast | forsaken_crags | Alpha Animals | NONCANON* | donor art | DRAFTED HERE: ulkhorr; non-canon beast wearing a REAL Wookieepedia title ('Dark Beast') — rename fixes a false canon read |
+| `AA_Darkbeast` | darkbeast | abyss | Alpha Animals | NONCANON* | donor art | DRAFTED HERE: ulkhorr; non-canon beast wearing a REAL Wookieepedia title ('Dark Beast') — rename fixes a false canon read |
 | `AA_FireWasp` | fire wasp | the_pyrelands | Alpha Animals | NONCANON* | regen:1 done:3 | non-canon beast wearing a REAL Wookieepedia title ('Fire wasp') — rename fixes a false canon read |
 | `AA_GreatDevourer` | great devourer | desert | Alpha Animals | NONCANON* | donor art | non-canon beast wearing a REAL Wookieepedia title ('Great Devourer') — rename fixes a false canon read |
 | `GR_Spidercat` | spidercat | wasteland | Vanilla Genetics Expanded | NONCANON* | regen:3 done:3 | non-canon beast wearing a REAL Wookieepedia title ('Spidercat') — rename fixes a false canon read |

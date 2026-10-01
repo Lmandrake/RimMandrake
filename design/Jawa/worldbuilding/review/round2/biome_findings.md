@@ -253,7 +253,7 @@ Arrivals (2): AA_Feralisk (ruled: reskin/merge INTO Wysokk), GR_Chickenspider ("
 2. Resident Kreetle carries the owner's "arid type only" note — the webwork copy should depart; unpropagated leftover.
 3. OPPORTUNITY: Chickenspider-as-juvenile gives the Wyyyschokk a brood ecology — eggs in the dark cells (ban 6 synergy). Rename owed (chicken).
 
-## forsaken_crags — churn 4 (cast 14 → 14) — sitting 2026-09-10: AA_SandProwler + AA_Frostling OUT
+## abyss — churn 4 (cast 14 → 14) — sitting 2026-09-10: AA_SandProwler + AA_Frostling OUT
 Arrivals (2): AA_Behemoth (16 sq — distinct from trader-beast "Behemoth"), GR_Nighthrumbo.
 1. Both fit the dark register (ban 6: no sun-dependent life). Watch the name collision AA_Behemoth vs homeless:Behemoth (trader pack animal) — two rosters, one word.
 2. OPPORTUNITY: 16-square Behemoth as the thing you hear in the gust-dark — the cryptid register (§8) made flesh without showing the Forsakens.

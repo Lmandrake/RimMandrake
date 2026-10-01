@@ -230,7 +230,7 @@ either by label.**
 |---|---|---|
 | `RG_BoilingForest` | boiling forest | **Hold until we can explore it.** Not endorsed, not cut |
 | `AB_TarPits` | tar pits | **Hold until explored** — and it is the donor for the tar-pit augmentation |
-| `AB_PropaneLakes` | propane lakes | ⭐ **Place along the terminator, before it turns fully into forsaken crags.** A chemical margin between twilight and permanent night |
+| `AB_PropaneLakes` | propane lakes | ⭐ **Place along the terminator, before it turns fully into Abyss.** A chemical margin between twilight and permanent night |
 | `AB_MechanoidIntrusion` | mechanoid intrusion | ⭐ **The Forgotten Arsenal's home.** The owner named it — this is where the Forsakens' automata are |
 
 ### Three consequences worth stating

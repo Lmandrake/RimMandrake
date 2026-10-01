@@ -87,7 +87,7 @@ typed rulings 1 and 6 — the one ruled exception to one-liquid-per-biome.
 | 3 | the Rot (`RM_TheRot`) | **WHITE slime** | G | owner, typed, 2026-09-24: *"It's white slime. The description calls it the shine I believe."* — the sheet's word is **the Sheen** (`the_rot.md` §Surface: "everything gloss-coated — the Sheen reads as a wet shine on creatures, ruins and visitors alike"); the 54 water tiles remain Twilight Sea guests |
 | 4 | the Wasteland (`RM_Wasteland`) | **brine** | G | "no outlet" — the drained flat; the mod owns the `RUT_WastelandBrine*` terrain family |
 | 5 | the Nightside Ice (`RM_NightsideIce`) | **icy water** | G+S | the atmosphere's drain freezing out in order; dirty ice ground, snow sky |
-| 6 | the Forsaken Crags (`RM_ForsakenCrags`) | **NONE** | — | the fog light cannot cross is weather, not saturation; 36 water tiles are strays |
+| 6 | the Abyss (`RM_Abyss`) | **NONE** | — | the fog light cannot cross is weather, not saturation; 36 water tiles are strays |
 | 7 | the Blue Desert (`RM_BlueDesert`) | **icy water** (decision taken by question card, 2026-09-24) | G | zero water, zero rivers, but the ice IS the mechanism (cold-storage forms in it) |
 | 8 | the Cracked Lands (`RM_FloodedCanyon`) | **fresh water** | S | thematic handle "the flood": rain max 1,442 mm on the Dew Horn highs, hidden canyon water |
 | 9 | the Leaning Scrub (`RM_LeaningScrub`) | **fresh water** | G | "the last damp ground before the stormwall" |
@@ -115,7 +115,7 @@ arch. §2b): when its row arrives, its native is **propane (S)** — the name is
 declaration.
 
 Tallies: **28 rows · 28 declared** (22 with a liquid, 6 explicit NONE: Stillsand,
-Long Shade, Forsaken Crags, Rust Cathedral v1, Warscar, Lantern Deeps) · **0 OPEN** —
+Long Shade, Abyss, Rust Cathedral v1, Warscar, Lantern Deeps) · **0 OPEN** —
 the five former OPENs were ruled at the 2026-09-24 sitting (§Open).
 
 ## 4. Ground pump table
