@@ -53,4 +53,68 @@
     <tradeability>None</tradeability>
   </ThingDef>
 
+
+  <ThingDef ParentName="BodyPartBase">
+    <defName>RM_EyeburstItem</defName>
+    <label>eyeburst</label>
+    <description>A wet cluster of mismatched eyes, grown from monstrous tissue inside a Contagion amoeba. Fitted in an eye socket, it sees and aims better than an eye. It is not matched to anyone, and cutting it out later has consequences.</description>
+    <descriptionHyperlinks>
+      <RecipeDef>RM_InstallEyeburst</RecipeDef>
+      <HediffDef>RM_Eyeburst</HediffDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Item/Health/HealthItem</texPath>
+      <color>(120, 150, 210)</color>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.80</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>1800</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+  <ThingDef ParentName="BodyPartBase">
+    <defName>RM_CaudalSpringItem</defName>
+    <label>caudal spring</label>
+    <description>A coiled tail of gristle, grown from monstrous tissue inside a Contagion amoeba. Fitted in place of the spine, it grants a long daily leap and costs the owner a slower walk. It is not matched to anyone, and cutting it out later has consequences.</description>
+    <descriptionHyperlinks>
+      <RecipeDef>RM_InstallCaudalSpring</RecipeDef>
+      <HediffDef>RM_CaudalSpring</HediffDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Item/Health/HealthItem</texPath>
+      <color>(170, 130, 90)</color>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.80</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>2000</MarketValue>
+      <Mass>4</Mass>
+    </statBases>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+  <ThingDef ParentName="BodyPartBase">
+    <defName>RM_BellowsItem</defName>
+    <label>bellows</label>
+    <description>A translucent bladder with red fog inside it, grown from monstrous tissue inside a Contagion amoeba. Fitted in place of a lung, it breathes better and can blow out blinding smoke. It is not matched to anyone, and cutting it out later has consequences.</description>
+    <descriptionHyperlinks>
+      <RecipeDef>RM_InstallBellows</RecipeDef>
+      <HediffDef>RM_Bellows</HediffDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Item/Health/HealthItem</texPath>
+      <color>(190, 90, 100)</color>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.80</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>1700</MarketValue>
+      <Mass>1.5</Mass>
+    </statBases>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
 </Defs>

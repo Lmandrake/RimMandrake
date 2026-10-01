@@ -198,4 +198,167 @@
     </comps>
   </HediffDef>
 
+
+  <!--
+    CONTAGION_GROWN_LIMBS_REST_1: Eyeburst (Eye), Caudal Spring (Spine),
+    Bellows (Lung). Same shape as the limbs above. Stage fields verified
+    against decompiled HediffStage (restFallFactor, totalBleedFactor,
+    hungerRateFactorOffset, painOffset). Abilities: RM_GrownLimbAbilities.xml.
+    ART: Eyeburst reuses vanilla's bionic-eye wound texture, Caudal Spring
+    reuses Anomaly's TentacleLimb, Bellows has NO render node (internal
+    organ); bespoke art is owed to CONTAGION_GROWN_LIMBS_ART_1.
+  -->
+
+  <HediffDef ParentName="AddedMutationBase">
+    <defName>RM_Eyeburst</defName>
+    <label>eyeburst</label>
+    <labelNoun>an eyeburst</labelNoun>
+    <description>Where one eye was, a wet cluster of a dozen mismatched eyes has pushed out, pink and blue and all sizes, blinking out of step. It sees further and aims truer than any eye, and it never stops stinging, never closes and never lets the owner sleep well.\n\nIt has its own neural structures and may become dangerous if removed.</description>
+    <defaultInstallPart>Eye</defaultInstallPart>
+    <stages>
+      <li>
+        <painOffset>0.1</painOffset>
+        <restFallFactor>1.2</restFallFactor>
+        <statOffsets>
+          <ShootingAccuracyPawn>0.1</ShootingAccuracyPawn>
+          <MentalBreakThreshold>0.08</MentalBreakThreshold>
+          <PawnBeauty>-2</PawnBeauty>
+        </statOffsets>
+      </li>
+    </stages>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Eye">
+        <workerClass>PawnRenderNodeWorker_HediffEye</workerClass>
+        <texPath>Things/Pawn/Wounds/BionicEye</texPath>
+        <parentTagDef>Head</parentTagDef>
+        <drawSize>0.3</drawSize>
+        <color>(0.85, 0.45, 0.6)</color>
+        <drawData>
+          <defaultData>
+            <layer>56</layer>
+            <offset>(0, 0, -0.25)</offset>
+          </defaultData>
+          <dataWest>
+            <flip>true</flip>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+    <addedPartProps>
+      <solid>true</solid>
+      <partEfficiency>1.5</partEfficiency>
+    </addedPartProps>
+    <comps>
+      <li Class="RimMandrake.Contagion.HediffCompProperties_UnfinishedEmerge">
+        <emergeKind>RM_TheUnfinished</emergeKind>
+        <letterLabel>The limb comes away</letterLabel>
+        <letterText>Cutting {PAWN_nameDef}'s eyeburst free has let the thing inside finish its thought. It has torn loose of {PAWN_nameDef} and become one of the Unfinished, and it is not friendly.</letterText>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef ParentName="AddedMutationBase">
+    <defName>RM_CaudalSpring</defName>
+    <label>caudal spring</label>
+    <labelNoun>a caudal spring</labelNoun>
+    <description>A coiled, segmented tail of gristle grown out of the base of the spine, folded under itself like a compressed spring and ending in a flat pad. It replaces the spine. It lets the owner leap a long way once a day, and it makes every ordinary step slower and stiffer in the cold.\n\nIt has its own neural structures and may become dangerous if removed. Cutting it out leaves no spine at all.</description>
+    <defaultInstallPart>Spine</defaultInstallPart>
+    <stages>
+      <li>
+        <painOffset>0.05</painOffset>
+        <statOffsets>
+          <ComfyTemperatureMin>5</ComfyTemperatureMin>
+        </statOffsets>
+      </li>
+    </stages>
+    <renderNodeProperties>
+      <li Class="PawnRenderNodeProperties_Spastic">
+        <texPaths>
+          <li>Things/Pawn/Humanlike/BodyAttachments/TentacleLimb/TentacleLimbA</li>
+        </texPaths>
+        <parentTagDef>Body</parentTagDef>
+        <overrideMeshSize>1</overrideMeshSize>
+        <drawSize>1.2</drawSize>
+        <colorType>Skin</colorType>
+        <rotDrawMode>Fresh, Rotting</rotDrawMode>
+        <useSkinShader>true</useSkinShader>
+        <useRottenColor>true</useRottenColor>
+        <rotationRange>-15~15</rotationRange>
+        <durationTicksRange>40~90</durationTicksRange>
+        <nextSpasmTicksRange>120~300</nextSpasmTicksRange>
+        <drawData>
+          <scaleOffsetByBodySize>true</scaleOffsetByBodySize>
+          <defaultData>
+            <layer>0</layer>
+          </defaultData>
+          <dataNorth>
+            <layer>60</layer>
+            <offset>(0, 0, -0.35)</offset>
+          </dataNorth>
+          <dataEast>
+            <rotationOffset>270</rotationOffset>
+            <offset>(-0.2, 0, -0.35)</offset>
+          </dataEast>
+          <dataSouth>
+            <offset>(0, 0, -0.35)</offset>
+          </dataSouth>
+          <dataWest>
+            <rotationOffset>90</rotationOffset>
+            <offset>(0.2, 0, -0.35)</offset>
+          </dataWest>
+        </drawData>
+      </li>
+    </renderNodeProperties>
+    <addedPartProps>
+      <solid>true</solid>
+      <partEfficiency>0.75</partEfficiency>
+    </addedPartProps>
+    <comps>
+      <li Class="HediffCompProperties_GiveAbility">
+        <abilityDefs>
+          <li>RM_CaudalLeap</li>
+        </abilityDefs>
+      </li>
+      <li Class="RimMandrake.Contagion.HediffCompProperties_UnfinishedEmerge">
+        <emergeKind>RM_TheUnfinished</emergeKind>
+        <letterLabel>The limb comes away</letterLabel>
+        <letterText>Cutting {PAWN_nameDef}'s caudal spring free has let the thing inside finish its thought. It has torn loose of {PAWN_nameDef} and become one of the Unfinished, and it is not friendly.</letterText>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <HediffDef ParentName="AddedMutationBase">
+    <defName>RM_Bellows</defName>
+    <label>bellows</label>
+    <labelNoun>a bellows</labelNoun>
+    <description>A translucent bladder bulging out of one side of the ribcage, swelling and emptying with every breath, with red fog moving inside it. It breathes better than a lung and can blow out a cloud of blinding smoke, but it takes a great deal of air and food, and it is thin enough that every wound bleeds more.\n\nIt has its own neural structures and may become dangerous if removed.</description>
+    <defaultInstallPart>Lung</defaultInstallPart>
+    <stages>
+      <li>
+        <hungerRateFactorOffset>0.3</hungerRateFactorOffset>
+        <totalBleedFactor>1.5</totalBleedFactor>
+        <statOffsets>
+          <ToxicEnvironmentResistance>0.3</ToxicEnvironmentResistance>
+          <PawnBeauty>-1</PawnBeauty>
+        </statOffsets>
+      </li>
+    </stages>
+    <addedPartProps>
+      <solid>true</solid>
+      <partEfficiency>1.4</partEfficiency>
+    </addedPartProps>
+    <comps>
+      <li Class="HediffCompProperties_GiveAbility">
+        <abilityDefs>
+          <li>RM_BellowsExhale</li>
+        </abilityDefs>
+      </li>
+      <li Class="RimMandrake.Contagion.HediffCompProperties_UnfinishedEmerge">
+        <emergeKind>RM_TheUnfinished</emergeKind>
+        <letterLabel>The limb comes away</letterLabel>
+        <letterText>Cutting {PAWN_nameDef}'s bellows free has let the thing inside finish its thought. It has torn loose of {PAWN_nameDef} and become one of the Unfinished, and it is not friendly.</letterText>
+      </li>
+    </comps>
+  </HediffDef>
+
 </Defs>

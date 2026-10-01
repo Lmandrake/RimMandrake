@@ -69,4 +69,95 @@
     <addsHediff>RM_Lash</addsHediff>
   </RecipeDef>
 
+
+  <RecipeDef ParentName="SurgeryInstallBodyPartArtificialBase">
+    <defName>RM_InstallEyeburst</defName>
+    <label>install eyeburst</label>
+    <description>Replace an eye with a grown eyeburst.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_EyeburstItem</ThingDef>
+      <HediffDef>RM_Eyeburst</HediffDef>
+    </descriptionHyperlinks>
+    <jobString>Installing eyeburst.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_EyeburstItem</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_EyeburstItem</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <appliedOnFixedBodyParts>
+      <li>Eye</li>
+    </appliedOnFixedBodyParts>
+    <addsHediff>RM_Eyeburst</addsHediff>
+  </RecipeDef>
+
+  <RecipeDef ParentName="SurgeryInstallBodyPartArtificialBase">
+    <defName>RM_InstallCaudalSpring</defName>
+    <label>install caudal spring</label>
+    <description>Replace the spine with a grown caudal spring. Removing it later leaves no spine.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_CaudalSpringItem</ThingDef>
+      <HediffDef>RM_CaudalSpring</HediffDef>
+    </descriptionHyperlinks>
+    <jobString>Installing caudal spring.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_CaudalSpringItem</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_CaudalSpringItem</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <appliedOnFixedBodyParts>
+      <li>Spine</li>
+    </appliedOnFixedBodyParts>
+    <addsHediff>RM_CaudalSpring</addsHediff>
+  </RecipeDef>
+
+  <RecipeDef ParentName="SurgeryInstallBodyPartArtificialBase">
+    <defName>RM_InstallBellows</defName>
+    <label>install bellows</label>
+    <description>Replace a lung with a grown bellows.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_BellowsItem</ThingDef>
+      <HediffDef>RM_Bellows</HediffDef>
+    </descriptionHyperlinks>
+    <jobString>Installing bellows.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_BellowsItem</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_BellowsItem</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <appliedOnFixedBodyParts>
+      <li>Lung</li>
+    </appliedOnFixedBodyParts>
+    <addsHediff>RM_Bellows</addsHediff>
+  </RecipeDef>
+
 </Defs>

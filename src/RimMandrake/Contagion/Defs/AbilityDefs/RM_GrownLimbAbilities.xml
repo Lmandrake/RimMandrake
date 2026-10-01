@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GROWN_LIMBS_REST_1. The two abilities granted by grown limbs.
+    RM_CaudalLeap: vanilla Biotech Longjump (Verb_CastAbilityJump, job CastJump)
+    minus the hemogen cost, range 12, one-day cooldown. RM_BellowsExhale:
+    Anomaly's CompProperties_AbilityReleaseGas shape (see ReleaseDeadlifeDust),
+    BlindSmoke, 20 cells, two-day cooldown. Icons and sounds are vanilla's.
+  -->
+
+  <AbilityDef>
+    <defName>RM_CaudalLeap</defName>
+    <label>caudal leap</label>
+    <description>Uncoil the caudal spring and leap to a distant spot, over walls and water. It takes a day to recoil.</description>
+    <iconPath>UI/Abilities/Longjump</iconPath>
+    <cooldownTicksRange>60000</cooldownTicksRange>
+    <hostile>false</hostile>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <verbProperties>
+      <verbClass>Verb_CastAbilityJump</verbClass>
+      <label>leap</label>
+      <violent>false</violent>
+      <forceNormalTimeSpeed>false</forceNormalTimeSpeed>
+      <warmupTime>0.5</warmupTime>
+      <range>12</range>
+      <requireLineOfSight>true</requireLineOfSight>
+      <soundCast>Longjump_Jump</soundCast>
+      <soundLanding>Longjump_Land</soundLanding>
+      <targetParams>
+        <canTargetLocations>true</canTargetLocations>
+        <canTargetPawns>false</canTargetPawns>
+        <canTargetBuildings>false</canTargetBuildings>
+      </targetParams>
+    </verbProperties>
+    <jobDef>CastJump</jobDef>
+  </AbilityDef>
+
+  <AbilityDef>
+    <defName>RM_BellowsExhale</defName>
+    <label>exhale smoke</label>
+    <description>Blow a cloud of blinding smoke out of the bellows. Smoke blocks ranged fire in both directions, so it covers a retreat and does not win a fight. It takes two days to refill.</description>
+    <iconPath>UI/Abilities/ReleaseDeadlifeDust</iconPath>
+    <cooldownTicksRange>120000</cooldownTicksRange>
+    <showPsycastEffects>false</showPsycastEffects>
+    <sendMessageOnCooldownComplete>true</sendMessageOnCooldownComplete>
+    <casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+    <hostile>false</hostile>
+    <targetRequired>false</targetRequired>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <label>exhale smoke</label>
+      <drawAimPie>false</drawAimPie>
+      <warmupTime>0.5</warmupTime>
+      <violent>false</violent>
+      <targetable>false</targetable>
+      <targetParams>
+        <canTargetSelf>true</canTargetSelf>
+      </targetParams>
+      <soundCast>DeadlifeRelease</soundCast>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityReleaseGas">
+        <gasType>BlindSmoke</gasType>
+        <cellsToFill>20</cellsToFill>
+      </li>
+    </comps>
+  </AbilityDef>
+
+</Defs>

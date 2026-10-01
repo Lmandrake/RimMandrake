@@ -135,7 +135,7 @@ namespace RimMandrake.Contagion
                 "Grown limbs enabled",
                 ref grownLimbsEnabled,
                 "Monstrous genome samples (the Coalescence's death-spill) gestate one grown "
-                + "limb, rolled at random: a Pillar Arm or a Lash. Each is a real trade, never "
+                + "limb, rolled at random: a Pillar Arm, a Lash, an Eyeburst, a Caudal Spring or a Bellows. Each is a real trade, never "
                 + "an upgrade. Off: a Monstrous sample grows the normal organ batch. Limbs "
                 + "already installed keep working.");
 

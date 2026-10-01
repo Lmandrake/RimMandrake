@@ -47,7 +47,7 @@ namespace RimMandrake.Contagion
             inject.WithProgressBarToilDelay(TargetIndex.A);
             inject.AddFinishAction(delegate
             {
-                Thing sample = pawn.inventory.innerContainer.FirstOrDefault(t => t.def == RM_ContagionDefOf.RM_GenomeSample);
+                Thing sample = AmoebaHostUtility.FindSampleToInject(pawn);
                 if (sample == null)
                 {
                     return;
