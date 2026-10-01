@@ -10558,3 +10558,5 @@
 {"by": "artpiped", "event": "validated", "job_id": "RM_Muurrok_north", "target": "RM_Muurrok/north", "ts": 1790823186.73006, "verdict": "pass"}
 {"by": "artpiped", "elapsed_s": 118.97719780600164, "event": "generated", "job_id": "RM_Muurrok_south", "target": "RM_Muurrok/south", "ts": 1790823305.4472642}
 {"by": "artpiped", "event": "validated", "job_id": "RM_Muurrok_south", "target": "RM_Muurrok/south", "ts": 1790823305.472937, "verdict": "pass"}
+{"by": "fill_queue", "event": "registered", "source": "WARCASKET_CASK_ART_1", "target": "RM_CaskBay", "ts": 1790833817.7512386}
+{"by": "fill_queue", "event": "queued", "iteration": 1, "job_id": "RM_CaskBay", "notes": "", "target": "RM_CaskBay", "ts": 1790833817.827955}
