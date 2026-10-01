@@ -1,0 +1,549 @@
+{
+ "_source": "JawaIonWeapons_summary.json chains/1 jawa/list_pawns rows verbatim; DERIVED: listing keys rewritten to a complete listing (the recorded one was truncated)",
+ "result": {
+  "success": true,
+  "message": "7 pawn(s).",
+  "pawns": [
+   {
+    "id": "Human966",
+    "name": "Justice",
+    "kind": "Colonist",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "hasGenes": true,
+    "xenotype": "Baseliner",
+    "xenotypeLabel": "Baseliner",
+    "uniqueXenotype": false,
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals",
+    "isPlayer": true,
+    "hostile": false,
+    "x": 117,
+    "z": 137,
+    "spawned": true,
+    "dead": false,
+    "downed": false,
+    "stunned": false,
+    "stunTicksLeft": 0,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Humanlike",
+    "bodySize": 1.0,
+    "health": {
+     "hediffs": [
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 1.92,
+       "part": "Shoulder",
+       "partLabel": "left shoulder"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 7.84,
+       "part": "Leg",
+       "partLabel": "left leg"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 2.0,
+       "part": "Foot",
+       "partLabel": "left foot"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 3.0,
+       "part": "Arm",
+       "partLabel": "left arm"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 1.92,
+       "part": "Toe",
+       "partLabel": "right big toe"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 1.0,
+       "part": "Torso",
+       "partLabel": "torso"
+      }
+     ],
+     "capacities": {
+      "Consciousness": 0.9,
+      "Moving": 0.73,
+      "Manipulation": 0.82,
+      "Talking": 0.9,
+      "Eating": 0.9,
+      "Sight": 1.0,
+      "Hearing": 1.0,
+      "Breathing": 1.0,
+      "BloodFiltration": 1.0,
+      "BloodPumping": 1.0,
+      "Metabolism": 1.0
+     },
+     "capacityErrors": [],
+     "painTotal": 0.331500053,
+     "bleedRate": 0.0
+    }
+   },
+   {
+    "id": "Human969",
+    "name": "Penelope",
+    "kind": "Colonist",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "hasGenes": true,
+    "xenotype": "Baseliner",
+    "xenotypeLabel": "Baseliner",
+    "uniqueXenotype": false,
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals",
+    "isPlayer": true,
+    "hostile": false,
+    "x": 112,
+    "z": 139,
+    "spawned": true,
+    "dead": false,
+    "downed": false,
+    "stunned": false,
+    "stunTicksLeft": 0,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Humanlike",
+    "bodySize": 1.0,
+    "health": {
+     "hediffs": [
+      {
+       "def": "Bite",
+       "label": "bite scar (itchy)",
+       "severity": 6.0,
+       "part": "Head",
+       "partLabel": "head"
+      },
+      {
+       "def": "BadBack",
+       "label": "bad back",
+       "severity": 0.001,
+       "part": "Spine",
+       "partLabel": "spine"
+      },
+      {
+       "def": "Dementia",
+       "label": "dementia",
+       "severity": 0.001,
+       "part": "Brain",
+       "partLabel": "brain"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 1.92,
+       "part": "Shoulder",
+       "partLabel": "right shoulder"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 8.92,
+       "part": "Torso",
+       "partLabel": "torso"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 2.0,
+       "part": "Nose",
+       "partLabel": "nose"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 1.92,
+       "part": "Foot",
+       "partLabel": "right foot"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 3.0,
+       "part": "Leg",
+       "partLabel": "right leg"
+      }
+     ],
+     "capacities": {
+      "Consciousness": 0.73,
+      "Moving": 0.36,
+      "Manipulation": 0.6,
+      "Talking": 0.48,
+      "Eating": 0.73,
+      "Sight": 1.0,
+      "Hearing": 0.75,
+      "Breathing": 1.0,
+      "BloodFiltration": 1.0,
+      "BloodPumping": 1.0,
+      "Metabolism": 1.0
+     },
+     "capacityErrors": [],
+     "painTotal": 0.370500028,
+     "bleedRate": 0.0
+    }
+   },
+   {
+    "id": "Rat35965",
+    "name": "Gitta",
+    "kind": "Rat",
+    "kindDef": "Rat",
+    "def": "Rat",
+    "hasGenes": false,
+    "xenotype": null,
+    "xenotypeLabel": null,
+    "uniqueXenotype": false,
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals",
+    "isPlayer": true,
+    "hostile": false,
+    "x": 138,
+    "z": 133,
+    "spawned": true,
+    "dead": false,
+    "downed": false,
+    "stunned": false,
+    "stunTicksLeft": 0,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Animal",
+    "bodySize": 0.2,
+    "health": {
+     "hediffs": [
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 1.9768,
+       "part": "Neck",
+       "partLabel": "neck"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 2.0,
+       "part": "Leg",
+       "partLabel": "rear right leg"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 3.9768,
+       "part": "Body",
+       "partLabel": "body"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 1.9768,
+       "part": "Leg",
+       "partLabel": "rear left leg"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 1.9768,
+       "part": "Leg",
+       "partLabel": "front left leg"
+      }
+     ],
+     "capacities": {
+      "Consciousness": 0.66,
+      "Moving": 0.51,
+      "Manipulation": 0.66,
+      "Talking": 0.48,
+      "Eating": 0.48,
+      "Sight": 1.0,
+      "Hearing": 1.0,
+      "Breathing": 0.72,
+      "BloodFiltration": 1.0,
+      "BloodPumping": 1.0,
+      "Metabolism": 1.0
+     },
+     "capacityErrors": [],
+     "painTotal": 0.7698621,
+     "bleedRate": 0.0
+    }
+   },
+   {
+    "id": "Human972",
+    "name": "Louis",
+    "kind": "Colonist",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "hasGenes": true,
+    "xenotype": "Baseliner",
+    "xenotypeLabel": "Baseliner",
+    "uniqueXenotype": false,
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals",
+    "isPlayer": true,
+    "hostile": false,
+    "x": 123,
+    "z": 130,
+    "spawned": true,
+    "dead": false,
+    "downed": false,
+    "stunned": false,
+    "stunTicksLeft": 0,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Humanlike",
+    "bodySize": 1.0,
+    "health": {
+     "hediffs": [
+      {
+       "def": "Stab",
+       "label": "stab scar",
+       "severity": 2.0,
+       "part": "Leg",
+       "partLabel": "right leg"
+      },
+      {
+       "def": "MissingBodyPart",
+       "label": "Crushed (fresh)",
+       "severity": 0.5,
+       "part": "Eye",
+       "partLabel": "left eye"
+      },
+      {
+       "def": "BloodLoss",
+       "label": "blood loss (minor)",
+       "severity": 0.162585571,
+       "part": null,
+       "partLabel": null
+      },
+      {
+       "def": "Cut",
+       "label": "cut",
+       "severity": 18.84,
+       "part": "Head",
+       "partLabel": "head"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 4.92,
+       "part": "Torso",
+       "partLabel": "torso"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 2.0,
+       "part": "Leg",
+       "partLabel": "right leg"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 2.0,
+       "part": "Neck",
+       "partLabel": "neck"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 2.0,
+       "part": "Finger",
+       "partLabel": "left thumb"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 3.0,
+       "part": "Foot",
+       "partLabel": "right foot"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 1.92,
+       "part": "Arm",
+       "partLabel": "left arm"
+      },
+      {
+       "def": "Burn",
+       "label": "burn",
+       "severity": 2.0,
+       "part": "Hand",
+       "partLabel": "left hand"
+      }
+     ],
+     "capacities": {
+      "Consciousness": 0.62,
+      "Moving": 0.53,
+      "Manipulation": 0.55,
+      "Talking": 0.56,
+      "Eating": 0.56,
+      "Sight": 0.75,
+      "Hearing": 1.0,
+      "Breathing": 0.91,
+      "BloodFiltration": 1.0,
+      "BloodPumping": 1.0,
+      "Metabolism": 1.0
+     },
+     "capacityErrors": [],
+     "painTotal": 0.695000052,
+     "bleedRate": 3.46079969
+    }
+   },
+   {
+    "id": "Hare49432",
+    "name": "Hare",
+    "kind": "Hare",
+    "kindDef": "Hare",
+    "def": "Hare",
+    "hasGenes": false,
+    "xenotype": null,
+    "xenotypeLabel": null,
+    "uniqueXenotype": false,
+    "faction": null,
+    "factionName": null,
+    "isPlayer": false,
+    "hostile": false,
+    "x": 86,
+    "z": 168,
+    "spawned": true,
+    "dead": false,
+    "downed": false,
+    "stunned": false,
+    "stunTicksLeft": 0,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Animal",
+    "bodySize": 0.2,
+    "health": {
+     "hediffs": [],
+     "capacities": {
+      "Consciousness": 1.0,
+      "Moving": 1.0,
+      "Manipulation": 1.0,
+      "Talking": 1.0,
+      "Eating": 1.0,
+      "Sight": 1.0,
+      "Hearing": 1.0,
+      "Breathing": 1.0,
+      "BloodFiltration": 1.0,
+      "BloodPumping": 1.0,
+      "Metabolism": 1.0
+     },
+     "capacityErrors": [],
+     "painTotal": 0.0,
+     "bleedRate": 0.0
+    }
+   },
+   {
+    "id": "Squirrel49433",
+    "name": "Squirrel",
+    "kind": "Squirrel",
+    "kindDef": "Squirrel",
+    "def": "Squirrel",
+    "hasGenes": false,
+    "xenotype": null,
+    "xenotypeLabel": null,
+    "uniqueXenotype": false,
+    "faction": null,
+    "factionName": null,
+    "isPlayer": false,
+    "hostile": false,
+    "x": 10,
+    "z": 189,
+    "spawned": true,
+    "dead": false,
+    "downed": false,
+    "stunned": false,
+    "stunTicksLeft": 0,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Animal",
+    "bodySize": 0.2,
+    "health": {
+     "hediffs": [],
+     "capacities": {
+      "Consciousness": 1.0,
+      "Moving": 1.0,
+      "Manipulation": 1.0,
+      "Talking": 1.0,
+      "Eating": 1.0,
+      "Sight": 1.0,
+      "Hearing": 1.0,
+      "Breathing": 1.0,
+      "BloodFiltration": 1.0,
+      "BloodPumping": 1.0,
+      "Metabolism": 1.0
+     },
+     "capacityErrors": [],
+     "painTotal": 0.0,
+     "bleedRate": 0.0
+    }
+   },
+   {
+    "id": "Squirrel49434",
+    "name": "Squirrel",
+    "kind": "Squirrel",
+    "kindDef": "Squirrel",
+    "def": "Squirrel",
+    "hasGenes": false,
+    "xenotype": null,
+    "xenotypeLabel": null,
+    "uniqueXenotype": false,
+    "faction": null,
+    "factionName": null,
+    "isPlayer": false,
+    "hostile": false,
+    "x": 88,
+    "z": 105,
+    "spawned": true,
+    "dead": false,
+    "downed": false,
+    "stunned": false,
+    "stunTicksLeft": 0,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Animal",
+    "bodySize": 0.2,
+    "health": {
+     "hediffs": [],
+     "capacities": {
+      "Consciousness": 1.0,
+      "Moving": 1.0,
+      "Manipulation": 1.0,
+      "Talking": 1.0,
+      "Eating": 1.0,
+      "Sight": 1.0,
+      "Hearing": 1.0,
+      "Breathing": 1.0,
+      "BloodFiltration": 1.0,
+      "BloodPumping": 1.0,
+      "Metabolism": 1.0
+     },
+     "capacityErrors": [],
+     "painTotal": 0.0,
+     "bleedRate": 0.0
+    }
+   }
+  ],
+  "returned": 7,
+  "truncated": 0,
+  "totalOnMap": 7,
+  "ticksGame": 5693
+ }
+}

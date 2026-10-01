@@ -1,0 +1,69 @@
+{
+ "_source": "Antiquities_summary.json first jawa/list_things (verbatim)",
+ "result": {
+  "success": true,
+  "things": [
+   {
+    "id": "SteamGeyser47532",
+    "def": "SteamGeyser",
+    "label": "Steam geyser",
+    "x": 129,
+    "z": 132,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": -1,
+    "maxHitPoints": -1,
+    "faction": null,
+    "factionName": null,
+    "stuff": null,
+    "quality": null
+   },
+   {
+    "id": "RUT_AntiquityReadingStation49620",
+    "def": "RUT_AntiquityReadingStation",
+    "label": "Steel urn reading station",
+    "x": 125,
+    "z": 125,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": 150,
+    "maxHitPoints": 150,
+    "faction": null,
+    "factionName": null,
+    "stuff": "Steel",
+    "quality": null
+   },
+   {
+    "id": "RUT_Antiquity_Urn49621",
+    "def": "RUT_Antiquity_Urn",
+    "label": "Ancient urn",
+    "x": 125,
+    "z": 125,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": 60,
+    "maxHitPoints": 60,
+    "faction": null,
+    "factionName": null,
+    "stuff": null,
+    "quality": null
+   }
+  ],
+  "scanned": 39810,
+  "countReturned": 3,
+  "countMatched": 3,
+  "isCompleteList": true,
+  "truncated": 0,
+  "pawnsSkipped": 56,
+  "perDef": {
+   "SteamGeyser": 1,
+   "RUT_AntiquityReadingStation": 1,
+   "RUT_Antiquity_Urn": 1
+  },
+  "ticksGame": 2105,
+  "message": "3 of 3 matching thing(s) returned, 39810 examined."
+ }
+}
