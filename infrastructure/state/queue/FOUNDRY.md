@@ -1296,6 +1296,15 @@ kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
+## STILLSAND_SKELETONS_TRACKS_1 Stillsand huge skeletons and tracks: 0-2 giant skeleton buildings per map with bone harps, giant corpses become skeletons, krayt graveyard re-pointed, track filths the dunes erase, horizon dust warnings
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. Giant skeleton buildings, one per giant: multi-cell, staticSunShadowHeight per piece,
+prose:    infrastructure/state/items/STILLSAND_SKELETONS_TRACKS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -2091,16 +2100,6 @@ kind:     build
 thin:     no ## verify
 summary:  1. RMDuneGale WeatherDef plus a GameConditionDef for its duration: rare (a few a year), one
 prose:    infrastructure/state/items/STILLSAND_DUNE_GALE_1.md
-
-## STILLSAND_SKELETONS_TRACKS_1 Stillsand huge skeletons and tracks: 0-2 giant skeleton buildings per map with bone harps, giant corpses become skeletons, krayt graveyard re-pointed, track filths the dunes erase, horizon dust warnings
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  1. Giant skeleton buildings, one per giant: multi-cell, staticSunShadowHeight per piece,
-prose:    infrastructure/state/items/STILLSAND_SKELETONS_TRACKS_1.md
 
 ## FOOTPRINT_TRACK_GRID_1 One footprint grid for the planet: capped TrackGrid + section layer + cell-entry postfix in CreatureBehaviors, invisible pawns recorded, erase API; Warscar film and Stillsand sand both consume it as XML
 state:    proposed
