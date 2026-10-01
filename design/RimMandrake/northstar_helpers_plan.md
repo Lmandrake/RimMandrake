@@ -612,3 +612,37 @@ Every item below was checked against the plan and accepted; the review's other p
     script's `(test_intent, stimulus, observed_assertion)`; expected-set overbreadth auditor; semantic oracle beside
     exact checks; duplicate-failure clustering; tool-mutation-risk lint (once per bridge tool, cached). The first of
     these needs no game at all and is the cheapest first Jev win.
+
+## 11. MEASURED live, 2026-10-01 (minimal 26-mod list, quicktest `TemperateSwamp`, fixture `src/RimMandrake/Utils/modcheck/testdata/contract_probe_2026-10-01.json`)
+
+Settles most §2 UNMEASURED rows. Read these before trusting any detector written from the older prose.
+
+- **Latency is negligible:** every read 4–50 ms; `step_game_ticks` 60 ticks = 385 ms, 300 ticks = 875 ms (~340 ticks/s).
+  A full snapshot is ~150 ms. The budget guard exists for game-TIME contamination, not wall-clock cost; sweep freely.
+- **Cold start measured:** launch→`Bridge token:` 48 s; `start_debug_game_ready` → map readable ~12 s after the call returns.
+- **Fresh quicktest map is NOT bland** (screenshot read): dense forest + ancient ruins + 58 wild animals + 2 factionless
+  humanlike strangers at t=0 (E8 confirmed). A colonist had **Frostbite within 60 ticks** (swamp tile, 40 °F) — environment
+  hurts people with no raid involved. A flat dry tile is needed (`jawa/world_tile_map_generate`; not yet driven here).
+- `isPlayer` is true for the colony **Husky**: a colonist is `isPlayer and intelligence=="Humanlike"`. Dead pawns keep
+  `isPlayer`, `faction`, and have `spawned:false`; dead rows include pre-seeded dead Drifters.
+- **A factionless wolf reads `hostile:false`** (`faction:None`). `hostile` finds raiders only; predators need
+  `kindDef`/`intelligence=="Animal"` + `faction None` + proximity, or a manhunter mental state. Mental state is
+  NOT in `list_pawns` rows (needs `pawn_mental list`, or companion G1).
+- **`list_pawns` truncation fields:** `returned`, `truncated` (count cut), `totalOnMap`, plus the `message`. Test `truncated>0`.
+- **Paused mutations are IMMEDIATE:** `jawa/damage` hediffs, `pawn_force_incapacitate kill` (Death letter + `colonistsKilled`
+  +1 with no step), and `fire_raid` (2 hostile rows at once, `numRaidsEnemy` +1) are all readable with zero ticks spent.
+  A fire started while paused spreads on the next step (3→4 fires in 60 ticks).
+- **Letters:** `jawa/letter_list` `label` is a dict (`RawText`); `rimworld/list_letters` gives `id`, `type`
+  (`Verse.DeathLetter`), `letterDef`, plain `label`, `text`, `arrivalTick`, `ageTicks`, `lookTargets` (no `mapId` seen).
+  Real defNames: `Death`, `ThreatBig` ("Raid: <name>"), `NegativeEvent` ("Sad wander: <pawn>" for a forced mental break),
+  `NeutralEvent`. A death also spawns a companion `NeutralEvent` ("Mourning of Nature opportunity for X") — dedupe.
+- **`jawa/alerts_list` stayed EMPTY** after a death, a raid and a mental break within 371 ticks: alerts are throttled, so
+  never use them as a tripwire (detector `alert_unexpected` is demoted to INFO-only).
+- **Fire:** `jawa/list_things defName=Fire` works (`scanned` 43183, `isCompleteList`); `group="Fire"` scans 0 — do not use it.
+- **Settings:** `jawa/debug_settings action=list` → `fields:[{name,value}]` (47). `jawa/weather_get` →
+  `weather.current`, `conditions[]`, `storyteller{def,difficulty,threatScale,allowBigThreats}`, `readErrors[]`.
+  `jawa/story_stats` is cheap and instantaneous. `jawa/incident_queue_clear` → `clearedCount`, `cleared[]`.
+- **Screenshot:** `rimworld/take_screenshot` 262 ms, 3.4 MB, returns the Windows `path` + `sizeBytes`; the result also embeds
+  the UI state (`Dialog_DevPalette` was open and top window — `clear_ui` is needed to get a clean frame).
+- **`time_clock`:** `{ticksGame, ticksAbs, curTimeSpeed:"Normal", paused:true}` — `curTimeSpeed` is **not** `"Paused"` while
+  paused; the `paused` flag is the truth (clockgate's verify_pause must not require a speed string).
