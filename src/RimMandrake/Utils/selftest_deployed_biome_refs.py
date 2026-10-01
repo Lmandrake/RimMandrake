@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# selftest-timeout: 720   # walks every deployed mod on the drvfs mount; 367 s measured 2026-09-23
+# selftest-timeout: 600   # cold run walks every deployed mod on the drvfs mount; warm runs hit /tmp caches
 """
 selftest_deployed_biome_refs.py
 
@@ -106,23 +106,72 @@ def find_deployed_mod_dir(mods_root, want_package_id):
     return None
 
 
+def _walk_def_xmls(root):
+    """Every *.xml under any `Defs` folder below root. os.scandir recursion --
+    glob's `**/Defs/**` pattern costs ~6x more on drvfs (46 s vs 7 s, MEASURED)."""
+    stack = [(root, False)]
+    while stack:
+        d, in_defs = stack.pop()
+        try:
+            it = list(os.scandir(d))
+        except OSError:
+            continue
+        for e in it:
+            try:
+                if e.is_dir(follow_symlinks=True):
+                    stack.append((e.path, in_defs or e.name == "Defs"))
+                elif in_defs and e.name.endswith(".xml"):
+                    yield e.path
+            except OSError:
+                continue
+
+
 def _scan_root_careful(root):
     """Per-file read with comments stripped, so a commented-out <defName>
     cannot falsely resolve a dangling reference. Used for the Mods and Data
     roots -- ~120 folders, where OUR content lives and where this test's
     whole bug class (our biome table naming our undeployed def) occurs.
+
+    Per-file results are cached in /tmp keyed by (size, mtime_ns), so only a
+    changed file is re-read; the cache can only make a file's names stale if
+    its size AND mtime_ns both stay identical across an edit.
     """
+    cache = os.path.join(tempfile.gettempdir(), "rimworld_careful_defnames.json")
+    try:
+        with open(cache, encoding="utf-8") as fh:
+            blob = json.load(fh)
+    except (OSError, ValueError):
+        blob = {}
+    fresh = {}
     names = set()
-    pattern = os.path.join(root, "**", "Defs", "**", "*.xml")
-    for path in glob.iglob(pattern, recursive=True):
+    for path in _walk_def_xmls(root):
         try:
-            with open(path, encoding="utf-8", errors="replace") as fh:
-                text = fh.read()
+            st = os.stat(path)
         except OSError:
             continue
-        text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
-        for m in DEFNAME_RE.finditer(text):
-            names.add(m.group(1))
+        key = "%d:%d" % (st.st_size, st.st_mtime_ns)
+        hit = blob.get(path)
+        if hit and hit[0] == key:
+            found = hit[1]
+        else:
+            try:
+                with open(path, encoding="utf-8", errors="replace") as fh:
+                    text = fh.read()
+            except OSError:
+                continue
+            text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)
+            found = sorted({m.group(1) for m in DEFNAME_RE.finditer(text)})
+        fresh[path] = [key, found]
+        names.update(found)
+    # Merge so the Mods and Data roots, scanned in turn, share one cache file.
+    blob.update(fresh)
+    try:
+        tmp = cache + ".%d.tmp" % os.getpid()
+        with open(tmp, "w", encoding="utf-8") as fh:
+            json.dump(blob, fh)
+        os.replace(tmp, cache)
+    except OSError:
+        pass
     return names
 
 
@@ -159,24 +208,38 @@ def _scan_workshop_fast(root):
     except (OSError, ValueError, KeyError):
         pass
 
-    try:
-        out = subprocess.run(
-            ["grep", "-rhoE", "<defName>[^<]+</defName>", root, "--include=*.xml"],
-            capture_output=True, text=True, timeout=400,
-        ).stdout
-    except subprocess.TimeoutExpired as exc:
-        raise WorkshopScanFailed(
-            "grep over %s did not finish inside 400s -- the universe cannot "
-            "be trusted incomplete, this must not silently read as zero "
-            "Workshop defNames" % root) from exc
-    except OSError as exc:
-        raise WorkshopScanFailed("grep over %s failed: %r" % (root, exc)) from exc
+    # One grep per top-level mod folder, run in parallel: drvfs latency, not CPU,
+    # is the cost, so 16 concurrent greps cut the cold scan several-fold
+    # (SELFTEST_RUNNER_SPEED_1). ANY failed/timed-out grep fails the whole scan
+    # loudly -- a partial universe must never read as a complete one.
+    def _grep_one(path):
+        try:
+            res = subprocess.run(
+                ["grep", "-rhoE", "<defName>[^<]+</defName>", path, "--include=*.xml"],
+                capture_output=True, text=True, timeout=400)
+        except subprocess.TimeoutExpired as exc:
+            raise WorkshopScanFailed(
+                "grep over %s did not finish inside 400s -- the universe cannot "
+                "be trusted incomplete, this must not silently read as zero "
+                "Workshop defNames" % path) from exc
+        except OSError as exc:
+            raise WorkshopScanFailed("grep over %s failed: %r" % (path, exc)) from exc
+        if res.returncode > 1:  # 1 = no match (fine); >1 = real error
+            raise WorkshopScanFailed("grep over %s exited %d: %s"
+                                     % (path, res.returncode, res.stderr[:200]))
+        return res.stdout
+
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=16) as pool:
+        out = "\n".join(pool.map(_grep_one, [e.path for e in entries if e.is_dir()]))
 
     names = {line[len("<defName>"):-len("</defName>")]
              for line in out.splitlines() if line.startswith("<defName>")}
     try:
-        with open(cache, "w", encoding="utf-8") as fh:
+        tmp = cache + ".%d.tmp" % os.getpid()
+        with open(tmp, "w", encoding="utf-8") as fh:
             json.dump({"key": key, "names": sorted(names)}, fh)
+        os.replace(tmp, cache)
     except OSError:
         pass
     return names
