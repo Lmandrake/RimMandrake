@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   SAND_SWIMMERS_MOD_1 — "the thing that catches the catcher": a subsurface ambush
-  predator that hunts dune crawlers (RSW_DuneCrawler) in deep sand, grounded in
+  predator that hunts dune crawlers (RM_DuneCrawler) in deep sand, grounded in
   dune_sea.md §4's predation law ("Predation cannot work by ambush, because there is
   no cover... hunting is either subsurface... or attritional") and
   desert_ecology_feasibility.md §7's confirmed sand-prowler precedent.

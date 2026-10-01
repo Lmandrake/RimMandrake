@@ -5,10 +5,8 @@
   ============================================================================
 
   Puts the campaign's Long Shade fauna roster onto RM_LongShade, adding onto the
-  two native creatures src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml
-  ships on its own (JOE_Landopus, RM_Qorrax — renamed from JOE_Cephalope,
-  LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified — non-Star-Wars donor fauna,
-  already this mod's own def, kept there per §7 Q9). The Star Wars cast reaches
+  native creatures src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml
+  ships on its own (JOE_Landopus, and RM_Qorrax whose def lives in mandrake.rm.stillsand). The Star Wars cast reaches
   RM_LongShade HERE, never in the LongShade mod itself — same shape as
   WildAnimals_Greentide.xml / WildAnimals_Pyrelands.xml.
 

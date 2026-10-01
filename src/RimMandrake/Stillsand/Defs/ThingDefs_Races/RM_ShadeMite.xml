@@ -44,26 +44,17 @@
   Not a dormancy reskin (RM_DustHusk's own mechanic): this is an active
   follower, awake and moving whenever its host is on the map.
 
-  Art: no existing render found for "shade mite"/"shadow mite"/
-  "commensal"/"mirror giant" companion in
-  infrastructure/artpipe/{done,pending,registry.jsonl} (checked this
-  pass). One 3-facing job filed, rmshademite_v1_{south,east,north}.
+  Art: 3-facing render (rmshademite_v2) copied into Textures/Things/Pawn/Animal/RM_ShadeMite.
 
-  🔴 THE NAME IS NOT SETTLED — RM_ShadeMite is the INTERNAL working
-  defName, same posture RM_Oommok/RM_Siidda used before their own naming.
-  STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting) ratified oommok/siidda and
-  four filler coins (ruukka, oorrik, eemmok, vaalok — none of them this def)
-  but did not name this creature; STILLSAND_SHIPPING_NAMES_1, which this
-  comment used to cite, was never filed and does not exist in items/ or the
-  ledger shards. This remains a genuinely unsettled name, most likely to be
-  resolved alongside the roster fill-out commission's own coined names.
+  NAME: the shipped name is "eemmok" (Q11 ruled it; renamed in STILLSAND_BEDAZZLE_CONTENT_1).
+  RM_ShadeMite stays the defName so existing saves resolve.
 -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_ShadeMite</defName>
-    <label>shade mite</label>
-    <description>A grain-scale scuttler that has never once, in its whole life, stood in direct sun. It lives entirely inside the moving shadow of a mirror giant — feeding on what the giant's bulk crushes into the sand, sheltering under the coolest ground on the planet, and moving only when the shadow moves. A shade mite separated from its giant does not go looking for another one; out here, there usually isn't another one to find.</description>
+    <label>eemmok</label>
+    <description>A grain-scale scuttler (the eemmok) that has never once, in its whole life, stood in direct sun. It lives entirely inside the moving shadow of a mirror giant — feeding on what the giant's bulk crushes into the sand, sheltering under the coolest ground on the planet, and moving only when the shadow moves. An eemmok separated from its giant does not go looking for another one; out here, there usually isn't another one to find.</description>
     <statBases>
       <MoveSpeed>2.2</MoveSpeed>
       <Mass>0.3</Mass>
@@ -138,8 +129,8 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_ShadeMite</defName>
-    <label>shade mite</label>
-    <labelPlural>shade mites</labelPlural>
+    <label>eemmok</label>
+    <labelPlural>eemmoks</labelPlural>
     <race>RM_ShadeMite</race>
     <combatPower>3</combatPower>
     <wildGroupSize>2~5</wildGroupSize>

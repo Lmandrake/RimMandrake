@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Zuurrik.xml                          RimMandrake — STILLSAND_BEDAZZLE_CONTENT_1 §7
+
+  The zuurrik, the blood-waker swarm (review stillsand_bedazzle_review_2026-09-29.md
+  §6 fill #1; ADMITTED by owner card 2026-09-30). Grain ~0.12, subsurface, dormant:
+  a filament-swarm in the top hand of sand, woken by BLOOD ON THE SAND and never by
+  footfall or a clock of day. Never attacks the unwounded. It is the veessa's
+  opposite: the veessa mills the dry dead, the zuurrik the wet.
+
+  NOT in wildAnimals: it never spawns as ordinary wildlife. RM_MapComponent_Zuurrik
+  (Source/RM_MapComponent_Zuurrik.cs) polls blood filth on sand cells on an
+  RM_Stillsand map and, past a threshold, spawns this pawn kind there; when no blood
+  or corpse remains it buries them again with a dust puff. Its feeding is shipped
+  behaviour: a carnivore diet that includes corpses, and RM_EatCleanableExtension
+  (creaturebehaviors), which strips filth.
+
+  ART: PLACEHOLDER. The oorrik grain-swarm render is copied into
+  Textures/Things/Pawn/Animal/RM_Zuurrik (our own art, no donor). Real art is queued in
+  infrastructure/artpipe/art_lists/stillsand_content_fill.csv (RM_Zuurrik, 3 facings).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Zuurrik</defName>
+    <label>zuurrik</label>
+    <description>A swarm of filaments that lies dormant in the top hand of sand and is not woken by footfall, which is every other thing here. It is woken by blood on the sand: wet, salt, and the only free water a fight ever spills. Kill something in the Stillsand and within the hour the stain boils with zuurrik stripping it, then the bodies beside it. Then they go dormant again, fatter, and the sand is clean. Fighting here starts a clock. It never attacks the unwounded.</description>
+    <statBases>
+      <MoveSpeed>2.4</MoveSpeed>
+      <MarketValue>8</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>999</ComfyTemperatureMax>
+      <MeatAmount>1</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mouthparts</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <modExtensions>
+      <!-- Strips the stain: filth is a first-class forage target, fast and eager. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_EatCleanableExtension">
+        <eatsFilth>true</eatsFilth>
+        <searchRadius>20</searchRadius>
+        <nutritionPerMeal>0.25</nutritionPerMeal>
+        <eatDurationTicks>400</eatDurationTicks>
+        <seekChance>0.5</seekChance>
+      </li>
+    </modExtensions>
+    <race>
+      <body>BeetleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.12</baseBodySize>
+      <baseHealthScale>0.2</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <!-- A carrion diet: it takes the bodies beside the stain, never the living. -->
+      <foodType>CarnivoreAnimal</foodType>
+      <useMeatFrom>Megascarab</useMeatFrom>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <roamMtbDays>30</roamMtbDays>
+      <lifeExpectancy>3</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.05</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.1</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Zuurrik</defName>
+    <label>zuurrik</label>
+    <labelPlural>zuurrik</labelPlural>
+    <race>RM_Zuurrik</race>
+    <combatPower>2</combatPower>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zuurrik/RM_Zuurrik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zuurrik/RM_Zuurrik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Zuurrik/RM_Zuurrik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

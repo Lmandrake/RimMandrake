@@ -3,7 +3,7 @@
   FISH_BESTIARY_BUILD_1, wave 2 — the Cracked Lands' 4 new catch items
   (fish_bestiary_commission_2026-09-10.md §2B): RUT_Tubbik (floater),
   RUT_Zhurr (eel), RUT_Hurrok (cucumber), RUT_Vhessa (squid). These join the
-  already-shipped RSW_DuneCrawler and the RSW_Rocktooth/RSW_Boneblade pair
+  already-shipped RM_DuneCrawler and the RSW_Rocktooth/RSW_Boneblade pair
   (ported from Biomes! Caverns by BMT_FAUNA_ABSORPTION_1; kept permanently — see
   SandFishing_CrackedLands.xml, this folder's sibling, for the wiring half).
 

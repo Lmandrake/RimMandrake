@@ -127,7 +127,7 @@ whichever mechanism gets chosen.
   are NOT retired since the six RUT species were not built this wave.
 - **Cracked Lands** (`RUT_Tubbik`/`RUT_Zhurr`/`RUT_Hurrok`/`RUT_Vhessa` + the
   `RSW_RareSandCatches` rare-table addition) — untouched; the BMT pair and
-  `RSW_DuneCrawler` stand exactly as already shipped.
+  `RM_DuneCrawler` stand exactly as already shipped.
 - **Greentide's remaining 7 new species** (`zeev`/`uvva`/`karrun`/`dubbol`/
   `lozh`/`saava`/`tuun`), `RUT_RareGreentideCatches`, and `RUT_LungerFry` —
   untouched. The brief's item 6 (ship the fry now) was conditional on
@@ -249,7 +249,7 @@ already carries this water's fish wiring (`SandFishing_CrackedLands.xml`,
 - `SandFishing_CrackedLands.xml` extended: the two existing
   `PatchOperationReplace` bucket values (freshwater_Common/_Uncommon) now
   fold the 4 new species in alongside the already-shipped
-  `RSW_DuneCrawler`/`BMT_Rocktooth`/`BMT_Boneblade` (a `PatchOperationReplace`
+  `RM_DuneCrawler`/`BMT_Rocktooth`/`BMT_Boneblade` (a `PatchOperationReplace`
   on a Dictionary field fully overwrites it, so this is one edit, not an
   append). BMT pair stays PERMANENT, no retirement logic added, per this
   morning's ratification. A new `PatchOperationFindMod` operation appends
@@ -368,7 +368,7 @@ verbatim convention), `RUT_Vobbal` (octopus, uncommon 0.5) —
 `RUT_WeepingStonesFish_Items.xml`, Defs/ThingDefs_Items/. Full spec/stats
 per §2A's own register table (§0). `RUT_SeepStone` (the §2A.rare headline
 prize, ResourceBase/ExoticMisc, MarketValue 30/Beauty 3, the oasis sibling
-of `RSW_GlassPearl`) alongside them. `RUT_RareOasisCatches`
+of `RM_GlassPearl`) alongside them. `RUT_RareOasisCatches`
 (Defs/ThingSetMakerDefs/) ships BOTH of the doc's rare options (weight 4
 SeepStone x1-2, weight 1 "vobbal tower" Silver 8-20) — no corpses, per the
 pool's own hard ban on hunting-story flavor (§6/§10, weeping_stones.md).

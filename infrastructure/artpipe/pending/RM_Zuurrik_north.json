@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-01T06:12:03Z",
+  "derive_from": "RM_Zuurrik_east",
+  "drawsize": 0.4,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Zuurrik_north",
+  "priority": 60,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game animal sprite: the zuurrik, a swarm of dormant filaments woken by blood on the sand, drawn as a small compact mass of fine pale-rose threads and tiny hooked mouthparts boiling up out of a stained patch of sand, glistening only where the blood is. Grain scale: the whole subject reads as one tight clump a few cells wide, not a single animal. No nameable Earth worm, leech or insect.",
+  "reference": null,
+  "rimflow_item_id": "STILLSAND_BEDAZZLE_CONTENT_1",
+  "style_notes": "stillsand register: the deep desert under a fixed white sun that never sets: bleached bone, pale gold and old-ivory sand, hard-edged black shade with no penumbra; light the subject with one hard white key from high front-top and crisp dark undersides, but bake NO cast shadow onto the ground (the engine draws shadows along the pinned sun); no rain, nothing wet-slicked, no lush green; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is BLOOD ROSE AND SALT WHITE: pale rose filaments with salt-white tips and a dark oxblood core; bs~0.12, drawSize ~0.4; ambush swarm that strips stains and carrion, never a pursuit predator; familiar body architecture but never a nameable Earth animal; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible."
+}

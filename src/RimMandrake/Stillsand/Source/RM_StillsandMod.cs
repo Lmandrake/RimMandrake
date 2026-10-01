@@ -9,21 +9,26 @@ namespace RimMandrake.Stillsand
     //
     // Precedent: src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs.
     //
-    // Deliberately thin, and that is a finding, not a shortcut. This build
-    // (STILLSAND_RM_MOD_BUILD_1 steps 1-4) ships only the BiomeDef itself,
-    // reusing vanilla Core's own `RimWorld.BiomeWorker_ExtremeDesert`
-    // unchanged (the item's own MEASURED STATE: the donor twin never named
-    // a third-party workerClass, so no RM_BiomeWorker_Stillsand exists to
-    // gate). FeverWood's own toggle gates ITS custom worker's score; there
-    // is no equivalent class here to gate without authoring one the item
-    // explicitly found unowed. A checkbox wired to nothing is a settings
-    // screen that lies, so none is added — only an informational panel.
+    // The biome itself reuses vanilla Core's BiomeWorker_ExtremeDesert unchanged,
+    // so there is no placement score to gate. The one mechanic this assembly
+    // owns besides the sand-buster eruption is the zuurrik blood-waker
+    // (STILLSAND_BEDAZZLE_CONTENT_1), which has a toggle and a threshold. Defaults
+    // are the shipped behaviour; all-off leaves the biome whole (the zuurrik
+    // def is then simply never woken).
     // ════════════════════════════════════════════════════════════════════
     public class RM_StillsandSettings : ModSettings
     {
+        /// <summary>Master toggle for the zuurrik: blood on sand wakes a stripping swarm.</summary>
+        public bool zuurrikEnabled = true;
+
+        /// <summary>Stained sand cells within one cluster that wake a swarm.</summary>
+        public int zuurrikBloodThreshold = 8;
+
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref zuurrikEnabled, "zuurrikEnabled", true);
+            Scribe_Values.Look(ref zuurrikBloodThreshold, "zuurrikBloodThreshold", 8);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -32,12 +37,19 @@ namespace RimMandrake.Stillsand
             list.Begin(inRect);
 
             list.Label("Stillsand");
-            list.Label("This build ships biome data only (terrain, weather, disease "
-              + "profile, and the placement wiring for its wild animals, wild plants and "
-              + "pack animals, all patched in from mandrake.rut.patches). It reuses "
-              + "vanilla Core's own BiomeWorker_ExtremeDesert unchanged, so there is no "
-              + "natural-placement score of this mod's own to toggle. No mechanic here "
-              + "is gated — nothing to configure yet.");
+            list.CheckboxLabeled("Blood on the sand wakes the zuurrik",
+                ref zuurrikEnabled,
+                "On a Stillsand map, enough fresh blood on sand wakes a swarm that strips the stain "
+                + "and the bodies beside it, then re-buries. Never attacks the unwounded. Off: the "
+                + "zuurrik never wakes.");
+            if (zuurrikEnabled)
+            {
+                list.Label("Stained cells needed to wake a swarm: " + zuurrikBloodThreshold);
+                zuurrikBloodThreshold = (int)list.Slider(zuurrikBloodThreshold, 2, 40);
+            }
+            list.GapLine();
+            list.Label("The biome itself reuses vanilla Core's BiomeWorker_ExtremeDesert unchanged, "
+              + "so there is no natural-placement score of this mod's own to toggle.");
 
             list.End();
         }

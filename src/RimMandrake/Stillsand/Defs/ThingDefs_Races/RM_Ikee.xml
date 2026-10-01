@@ -16,9 +16,7 @@
   donor-framework dependency to drop) with only bs 0.4->0.15 and defName/label/
   leatherDef-none/useMeatFrom(vanilla Pig, unchanged) touched.
 
-  ART: no render exists for "ikee" (checked infrastructure/artpipe/{done,_artsrc,
-  registry.jsonl} this pass — none found). texPath points at this def's own future
-  folder, same "art pending" posture RM_Kudda's LONGSHADE_RULED_CONTENT_1 port used.
+  ART: own 3-facing render, Textures/Things/Pawn/Animal/RM_Ikee (STILLSAND_BEDAZZLE_CONTENT_1).
 -->
 <Defs>
 
@@ -84,7 +82,6 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <!-- art pending — STILLSAND_RULED_CONTENT_1 tier move, no render filed yet -->
           <texPath>Things/Pawn/Animal/RM_Ikee/RM_Ikee</texPath>
           <drawSize>1</drawSize>
         </bodyGraphicData>

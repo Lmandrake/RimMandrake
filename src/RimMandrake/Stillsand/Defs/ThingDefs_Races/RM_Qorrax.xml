@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Qorrax.xml                           RimMandrake — STILLSAND_BEDAZZLE_CONTENT_1
+
+  The qorrax (renamed from JOE_Cephalope, Q7 ratified) moved INLINE into the RM
+  mod (Q1): invented content, no Star Wars IP, so it no longer rides the Utinni
+  patch route. Its defName is unchanged, so saves and every other biome's
+  roster row (patched in by mandrake.rut.patches) still resolve.
+
+  Self-contained: its own body (RM_QorraxBody, with its own shell part and
+  tentacle groups), its own eggs, and its own copies of the renders in
+  Textures/Things/Pawn/Animal/RM_Qorrax (grounded, dessicated, swimming).
+  The donor-absorbed Cephaloid/Nautiloid bodies and Shell part stay in
+  mandrake.rut.patches for the landopus and nautilant, which this does not touch.
+-->
+<Defs>
+
+  <BodyPartDef>
+    <defName>RM_QorraxShell</defName>
+    <label>shell</label>
+    <hitPoints>2500</hitPoints>
+    <permanentInjuryChanceFactor>0</permanentInjuryChanceFactor>
+    <skinCovered>true</skinCovered>
+    <solid>true</solid>
+    <canSuggestAmputation>false</canSuggestAmputation>
+    <bleedRate>0</bleedRate>
+    <destroyableByDamage>false</destroyableByDamage>
+  </BodyPartDef>
+
+  <BodyPartGroupDef>
+    <defName>RM_QorraxFrontRightTentacle</defName>
+    <label>front right tentacle</label>
+    <labelShort>tentacle</labelShort>
+  </BodyPartGroupDef>
+
+  <BodyPartGroupDef>
+    <defName>RM_QorraxFrontLeftTentacle</defName>
+    <label>front left tentacle</label>
+    <labelShort>tentacle</labelShort>
+  </BodyPartGroupDef>
+
+  <BodyDef>
+        <defName>RM_QorraxBody</defName>
+        <label>qorrax</label>
+        <corePart>
+        <def>Body</def>
+        <height>Middle</height>
+        <depth>Outside</depth>
+        <parts>
+            <li>
+                <def>Head</def>
+                <coverage>0.59</coverage>
+                <parts>
+          <li>
+            <def>RM_QorraxShell</def>
+            <coverage>0.69</coverage>
+            <depth>Inside</depth>
+            <parts>
+              <li>
+                <def>Brain</def>
+                <coverage>0.59</coverage>
+                <depth>Inside</depth>
+              </li>
+              <li>
+              <def>Stomach</def>
+              <coverage>0.04</coverage>
+              <depth>Inside</depth>
+              </li>
+              <li>
+              <def>Heart</def>
+              <coverage>0.1</coverage>
+              <depth>Inside</depth>
+              </li>
+              <li>
+              <def>Lung</def>
+              <customLabel>mono lung</customLabel>
+              <coverage>0.2</coverage>
+              <depth>Inside</depth>
+              </li>
+              <li>
+              <def>Kidney</def>
+              <customLabel>left kidney</customLabel>
+              <coverage>0.02</coverage>
+              <depth>Inside</depth>
+              </li>
+              <li>
+              <def>Kidney</def>
+              <customLabel>right kidney</customLabel>
+              <coverage>0.02</coverage>
+              <depth>Inside</depth>
+              </li>
+              <li>
+              <def>Liver</def>
+              <coverage>0.02</coverage>
+              <depth>Inside</depth>
+              </li>
+                  </parts>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>left eye</customLabel>
+              <coverage>0.1</coverage>
+            </li>
+            <li>
+              <def>Eye</def>
+              <customLabel>right eye</customLabel>
+              <coverage>0.1</coverage>
+            </li>
+            <li>
+              <def>Beak</def>
+              <coverage>0.1</coverage>
+              <groups>
+              <li>Beak</li>
+              </groups>
+            </li>
+          </parts>
+            </li>
+            <li>
+            <def>Leg</def>
+            <customLabel>tentacle</customLabel>
+            <coverage>0.02</coverage>
+            <height>Bottom</height>
+            </li>
+            <li>
+            <def>Leg</def>
+            <customLabel>tentacle</customLabel>
+            <coverage>0.02</coverage>
+            <height>Bottom</height>
+            </li>
+            <li>
+            <def>Leg</def>
+            <customLabel>tentacle</customLabel>
+            <coverage>0.02</coverage>
+            <height>Bottom</height>
+            </li>
+            <li>
+            <def>Leg</def>
+            <customLabel>tentacle</customLabel>
+            <coverage>0.02</coverage>
+            <height>Bottom</height>
+            </li>
+            <li>
+            <def>Leg</def>
+            <customLabel>tentacle</customLabel>
+            <coverage>0.02</coverage>
+            <height>Bottom</height>
+            </li>
+            <li>
+            <def>Leg</def>
+            <customLabel>tentacle</customLabel>
+            <coverage>0.02</coverage>
+            <height>Bottom</height>
+            </li>
+            <li>
+            <def>Leg</def>
+            <customLabel>tentacle</customLabel>
+            <coverage>0.02</coverage>
+            <height>Bottom</height>
+            </li>
+      <li>
+            <def>Leg</def>
+            <customLabel>tentacle</customLabel>
+            <coverage>0.02</coverage>
+            <height>Bottom</height>
+            </li>
+      <li>
+            <def>Arm</def>
+            <customLabel>tentacle</customLabel>
+            <coverage>0.02</coverage>
+            <height>Bottom</height>
+            </li>
+            <li>
+            <def>Arm</def>
+            <customLabel>right main tentacle</customLabel>
+            <coverage>0.02</coverage>
+            <height>Bottom</height>
+      <groups>
+      <li>RM_QorraxFrontRightTentacle</li>
+      </groups>
+            </li>
+            <li>
+            <def>Arm</def>
+            <customLabel>left main tentacle</customLabel>
+            <coverage>0.02</coverage>
+            <height>Bottom</height>
+      <groups>
+      <li>RM_QorraxFrontLeftTentacle</li>
+      </groups>
+            </li>
+        </parts>
+        </corePart>
+    </BodyDef>
+
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RM_QorraxEggUnfertilized</defName>
+    <label>qorrax egg (unfert.)</label>
+    <description>An unfertilized qorrax egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <graphicData>
+    <color>(143, 189, 173)</color>
+    </graphicData>
+    <statBases>
+    <MarketValue>7.0</MarketValue>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="EggFertBase">
+    <defName>RM_QorraxEggFertilized</defName>
+    <label>qorrax egg (fert.)</label>
+    <description>A fertilized qorrax egg. It will take a long time to hatch. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+    <color>(100, 163, 141)</color>
+    </graphicData>
+    <statBases>
+    <MarketValue>35.0</MarketValue>
+    </statBases>
+    <comps>
+    <li Class="CompProperties_Hatcher">
+      <hatcherDaystoHatch>12.5</hatcherDaystoHatch>
+      <hatcherPawn>RM_Qorrax</hatcherPawn>
+    </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Qorrax</defName>
+    <label>qorrax</label>
+    <description>Descended from squid this tentacled monstrosity is like a spider the size of a deer. Fast and aggressive with a lethal bite delivered by venomous beak. An internal shell protects their vital organs.</description>
+    <statBases>
+      <MoveSpeed>8.8</MoveSpeed>
+      <MarketValue>250</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <comps>
+    <li Class="CompProperties_EggLayer">
+      <eggUnfertilizedDef>RM_QorraxEggUnfertilized</eggUnfertilizedDef>
+      <eggFertilizedDef>RM_QorraxEggFertilized</eggFertilizedDef>
+      <eggFertilizationCountMax>2</eggFertilizationCountMax>
+      <eggLayIntervalDays>6</eggLayIntervalDays>
+      <eggCountRange>1~4</eggCountRange>
+    </li>
+    </comps>
+    <tools>
+      <li>
+        <capacities>
+          <li>ToxicBite</li>
+        </capacities>
+        <power>64</power>
+        <cooldownTime>1</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+        <chanceFactor>.95</chanceFactor>
+        <surpriseAttack>
+        <extraMeleeDamages>
+          <li>
+          <def>Stun</def>
+          <amount>34</amount>
+          </li>
+        </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>.75</cooldownTime>
+        <linkedBodyPartsGroup>RM_QorraxFrontLeftTentacle</linkedBodyPartsGroup>
+        <chanceFactor>.75</chanceFactor>
+        <surpriseAttack>
+        <extraMeleeDamages>
+          <li>
+          <def>Stun</def>
+          <amount>15</amount>
+          </li>
+        </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>.75</cooldownTime>
+        <linkedBodyPartsGroup>RM_QorraxFrontRightTentacle</linkedBodyPartsGroup>
+        <chanceFactor>.75</chanceFactor>
+        <surpriseAttack>
+        <extraMeleeDamages>
+          <li>
+          <def>Stun</def>
+          <amount>15</amount>
+          </li>
+        </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <race>
+      <body>RM_QorraxBody</body>
+      <predator>true</predator>
+      <maxPreyBodySize>8.0</maxPreyBodySize>
+      <baseBodySize>1.2</baseBodySize>
+      <baseHungerRate>0.25</baseHungerRate>
+      <baseHealthScale>1.5</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+          <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <gestationPeriodDays>20</gestationPeriodDays>
+      <lifeExpectancy>24</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <waterSeeker>true</waterSeeker>
+          <waterCellCost>1</waterCellCost>
+          <canFishForFood>true</canFishForFood>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+          <soundDeath>Pawn_Cobra_Death</soundDeath>
+          <soundCall>Pawn_Cobra_Call</soundCall>
+          <soundAngry>Pawn_Cobra_Angry</soundAngry>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+          <soundDeath>Pawn_Cobra_Death</soundDeath>
+          <soundCall>Pawn_Cobra_Call</soundCall>
+          <soundAngry>Pawn_Cobra_Angry</soundAngry>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Cobra_Wounded</soundWounded>
+          <soundDeath>Pawn_Cobra_Death</soundDeath>
+          <soundCall>Pawn_Cobra_Call</soundCall>
+          <soundAngry>Pawn_Cobra_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Qorrax</defName>
+    <label>qorrax</label>
+    <labelPlural>qorraxes</labelPlural>
+    <race>RM_Qorrax</race>
+    <combatPower>250</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>1~3</wildGroupSize>
+    <canArriveManhunter>true</canArriveManhunter>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>4.0</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax</texPath>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Dessicated</texPath>
+          <drawSize>0.8</drawSize>
+        </dessicatedBodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax</texPath>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Dessicated</texPath>
+          <drawSize>1.8</drawSize>
+        </dessicatedBodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax</texPath>
+          <drawSize>3.8</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Dessicated</texPath>
+          <drawSize>3.8</drawSize>
+        </dessicatedBodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.8</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

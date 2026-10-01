@@ -47,6 +47,8 @@
     <Compile Include="RM_StillsandDefOf.cs" />
     <Compile Include="RM_SandBusterTunnelSpawner.cs" />
     <Compile Include="RM_IncidentWorker_SandBusterEruption.cs" />
+    <!-- STILLSAND_BEDAZZLE_CONTENT_1: the zuurrik blood-waker -->
+    <Compile Include="RM_MapComponent_Zuurrik.cs" />
   </ItemGroup>
 
   <ItemGroup>
