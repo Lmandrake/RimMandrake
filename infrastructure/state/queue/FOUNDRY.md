@@ -2342,6 +2342,26 @@ thin:     no ## spec, no ## criteria
 summary:  PYRELANDSNORTHSTARTRIAL1 — carry Pyrelands up the north-star ladder to SHIPPED (the biome template)
 prose:    infrastructure/state/items/PYRELANDS_NORTHSTAR_TRIAL_1.md
 
+## NORTHSTAR_FAST_DRIVER_1 Ultra-fast Python bridge driver for north-star validation (core built, live proof owed)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  NORTHSTARFASTDRIVER1 — ultra-fast Python driver for north-star validation
+prose:    infrastructure/state/items/NORTHSTAR_FAST_DRIVER_1.md
+
+## NORTHSTAR_PHASE_LADDER_1 North-star phase ladder standard: DRAFT, VALIDATED, WIRED, GREEN min, GREEN full, SHIPPED
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  NORTHSTARPHASELADDER1 — the standard rung sequence every north-star mod follows
+prose:    infrastructure/state/items/NORTHSTAR_PHASE_LADDER_1.md
+
 ## PYRELANDS_NORTHSTAR_WIRING_1 Wire every Pyrelands bar with shows= and fix suite bugs (composed mandrake.rm.biomes packaging)
 state:    proposed
 row:      unassigned
