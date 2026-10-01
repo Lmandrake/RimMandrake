@@ -1,4 +1,4 @@
-# Black Crags (was the Forsaken Crags): bedazzle review, movements 1 and 2
+# The Abyss (asked as Black Crags; was the Forsaken Crags): bedazzle review, movements 1 and 2
 
 _BENCH design pass, 2026-09-30. Row 11 of `BAROQUE_BEDAZZLE_PROGRAM_1`, the last row. Sitting
 item `BLACKCRAGS_BEDAZZLE_SITTING_1`. The owner authorized opening it by question card on
@@ -546,3 +546,18 @@ Seven picks, in order. Plain words. Each one says what it costs.
      be switched on?
    - **Lightfall's bottom:** do you want to write what waits down there now, or leave it
      unwritten for this pass?
+
+---
+
+## 7. Turn 1 rulings (owner, 2026-09-30 23:25 PDT)
+
+Paths and names in §§1-6 predate the rename: `ForsakenCrags` is now `Abyss` (`src/RimMandrake/Abyss/`, `RM_Abyss`, `RUT_Abyss`).
+
+| Card item | Ruling | How recorded |
+|---|---|---|
+| 1. Rename | **The Abyss**, full rename now. His words, typed: *"Actually I want to call it the Abyss. And do the full rename in content, code, def, mod, and put it all in the consolidated biome mod now."* Not "Black Crags". | Done: `ABYSS_FULL_RENAME_1`. The 1,135 `RUT_ForsakenCrags` tiles in the start save are dead references until the repaint (accepted). The cryptid "Forsakens" naming stays an open question; every "Forsaken" hit for the Rakata, the cryptid and the vaults was left alone. |
+| 2. Spine | **The Dark, full**: real air that heat clears, the rare Unveiling, the ghorrumak storm call, strength slider. | Decision taken by question card. `ABYSS_DARK_BUILD_1`. |
+| 3. Hidden ship | Yes. His words, typed: *"Yes but probe droids will still come that must be avoided."* | `ABYSS_HIDDEN_SHIP_PROBES_1`. The "pursuers slow down here" rule now lists `RUT_Abyss` and `RM_Abyss` beside the donor (`ScenParts_EmpirePursuit.xml`). |
+| 4. New creatures | gharrek, durrgak, krizzak, etchcap, **all admitted**. | Decision taken by question card. One build item each: `ABYSS_GHARREK_BUILD_1`, `ABYSS_DURRGAK_BUILD_1`, `ABYSS_KRIZZAK_BUILD_1` (flier, real flight), `ABYSS_ETCHCAP_BUILD_1`. No art exists for any of them. |
+
+Card items 5-7 (Etchfall walls, the two echoes, housekeeping) were not answered at turn 1 and remain open for turn 2.
