@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T16:22:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T17:06:49Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1065,6 +1065,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
+thin:     no ## spec, no ## verify
 summary:  CONDITIONGATEDRITUALSMOD1 — rituals that can only be done in certain conditions (first case: absolute darknes…
 prose:    infrastructure/state/items/CONDITION_GATED_RITUALS_MOD_1.md
