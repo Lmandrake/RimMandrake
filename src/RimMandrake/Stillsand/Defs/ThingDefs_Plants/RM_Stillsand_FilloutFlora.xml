@@ -93,7 +93,7 @@
       <dieFromToxicFallout>false</dieFromToxicFallout>
       <visualSizeRange>1.6~2.6</visualSizeRange>
       <topWindExposure>0.1</topWindExposure>
-      <treeCategory>Standard</treeCategory>
+      <treeCategory>Full</treeCategory>
       <!-- One material for both forms: the same RM_OllimWood, a smaller yield. -->
       <harvestedThingDef>RM_OllimWood</harvestedThingDef>
       <harvestYield>5</harvestYield>

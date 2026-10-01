@@ -72,7 +72,7 @@
       <foodType>VegetarianRoughAnimal</foodType>
       <leatherDef>Leather_Heavy</leatherDef>
       <useMeatFrom>Cow</useMeatFrom>
-      <trainability>Simple</trainability>
+      <trainability>Intermediate</trainability>
       <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
       <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
       <roamMtbDays>4</roamMtbDays>

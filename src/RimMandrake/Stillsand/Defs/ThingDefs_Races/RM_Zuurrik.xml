@@ -74,7 +74,7 @@
       <baseHungerRate>0.3</baseHungerRate>
       <!-- A carrion diet: it takes the bodies beside the stain, never the living. -->
       <foodType>CarnivoreAnimal</foodType>
-      <useMeatFrom>Megascarab</useMeatFrom>
+      <useMeatFrom>Megaspider</useMeatFrom>
       <trainability>None</trainability>
       <manhunterOnDamageChance>0</manhunterOnDamageChance>
       <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
