@@ -467,7 +467,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `miasma_fauna_roster_2026-09-23.md` | The Miasma fauna roster — the arthropod floor, the composters, and what the stranded actually are, 2026-09-23 | — |
 | `miasma_flora_roster_2026-09-23.md` | The Miasma flora roster — 19 invented plants, 2026-09-23 | — |
 | `nightside_ice.md` | The Nightside Ice — biome definition sheet | — |
-| `noncanon_beast_names_crags_nightside_contagion_slime.md` | Non-canon beast names — Forsaken Crags, Nightside Ice, the Contagion, the Slime | — |
+| `noncanon_beast_names_crags_nightside_contagion_slime.md` | Non-canon beast names — The Abyss, Nightside Ice, the Contagion, the Slime | — |
 | `noncanon_beast_names_poison_miasma_desert_scar_rot_dune_waste_cracked.md` | Non-canon beast names — Poison Forest, Miasma, Desert, Scarlands, the Rot, Dune Sea, Wasteland, Cracked Lands | — |
 | `noncanon_beast_names_propane_arid_forge_pyre_fever_greentide_rust_lantern_blue.md` | Non-canon beast names — Propane Lakes, Arid Shrubland, the Forge, the Pyrelands, Fever Wood, Greentide, Rust Cathedral, Lantern Deeps, Blue Desert | — |
 | `rot_flora_fauna_names.md` | The Rot — flora and fauna names and regen briefs | — |
