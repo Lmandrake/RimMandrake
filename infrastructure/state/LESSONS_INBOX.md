@@ -161,3 +161,4 @@ TRAP: a faced animal job whose prompt says 'top-down' is refused whole by artpip
 - jawa/list_pawns puts hediffs under health.hediffs; reading x["hediffs"] reports a false zero (FOUNDRY, 2026-09-30).
 - rimworld/screenshot_cell_rect can crop the wrong screen region at far zoom; crop from the full frame it saves beside the crop (FOUNDRY, 2026-09-30).
 - shared_sync.py replay conflicts if the shared tree created a file origin already has; commit such files from a private worktree (FOUNDRY, 2026-09-30).
+- 2026-10-01 BENCH: `git worktree add` on /mnt/d exceeds 2 min, so background it. Subagents cannot pass the rimflow owner-said flag (the guard cannot see the owner's chat), so the seat runs owner-quoted verbs itself.
