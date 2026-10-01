@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T21:16:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T22:10:34Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1069,16 +1069,6 @@ kind:     design
 thin:     no ## spec, no ## criteria
 summary:  BEDAZZLETOPSHAPEPROGRAM1 — get every biome into top shape
 prose:    infrastructure/state/items/BEDAZZLE_TOP_SHAPE_PROGRAM_1.md
-
-## NIGHTSIDEICE_BEDAZZLE_SITTING_1 Nightside Ice bedazzle sitting (grandfathered track a, worst-first)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  Movements 1-2 done. Next: the owner's turn-1 card (§7), then the volley, then ticket-out
-prose:    infrastructure/state/items/NIGHTSIDEICE_BEDAZZLE_SITTING_1.md
 
 ## FLAWED_MASTERWORK_ENGINE_CHECK_1 Can Ninefold damp Ozzik's knock-on to Sh'kaar and Zizzik for one call?
 state:    proposed
