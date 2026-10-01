@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T15:30:58Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-10-01T15:32:41Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -2350,16 +2350,6 @@ kind:     trial
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  FLOWWORKSNORTHSTARSHIP1
 prose:    infrastructure/state/items/FLOWWORKS_NORTHSTAR_SHIP_1.md
-
-## PITS_STALE_DEPLOY_COLLISION_1 Stale mandrake.rm.pits active on the live list beside FlowWorks: 22 of 22 defNames collide
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     trial
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  PITSSTALEDEPLOYCOLLISION1
-prose:    infrastructure/state/items/PITS_STALE_DEPLOY_COLLISION_1.md
 
 ## GRAFFITI_NORTHSTAR_TRIAL_1 Graffiti north-star trial: pipeline pilot to first GREEN (parent of WIRED/GREEN_MINIMAL/GREEN_FULL/SHIP)
 state:    proposed
