@@ -1757,3 +1757,5 @@
 {"seat":"FOUNDRY","event":"start","id":"SOORRAK_INSTANT_JOB_LOOP_1","ts":"2026-10-01T11:11:27Z"}
 {"seat":"FOUNDRY","event":"claim","id":"RIMPLACE_STUFFLESS_THING_ROWS_1","ts":"2026-10-01T11:11:32Z"}
 {"seat":"FOUNDRY","event":"start","id":"RIMPLACE_STUFFLESS_THING_ROWS_1","ts":"2026-10-01T11:11:37Z"}
+{"seat":"FOUNDRY","event":"close","id":"MUURROK_BEAM_NO_DAMAGE_1","sha":"f591714e5","reason":"warmup was cancelled by job churn; beam now casts from UseVerbOnThingStatic; live proof filed as follow-up","ts":"2026-10-01T11:19:21Z"}
+{"seat":"FOUNDRY","event":"file","id":"LIVE_ROUND2_FIXES_PROOF_1","title":"Prove the three live-round-2 fixes in game (beam, soorrak loop log, rimplace stuff)","kind":"task","target":"v1","needs":"game-up","spec":"infrastructure/state/items/LIVE_ROUND2_FIXES_PROOF_1.md","for":"FOUNDRY","ts":"2026-10-01T11:41:08Z"}

@@ -1,11 +1,11 @@
 {
- "generatedAt": "2026-10-01T11:12:00Z",
+ "generatedAt": "2026-10-01T11:38:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 1018873,
-  "sha256_12": "816f28634f7e"
+  "bytes": 1018874,
+  "sha256_12": "d17249196fc0"
  },
- "head": "ace0863d3",
+ "head": "246950f7d",
  "counts": {
   "red": 22,
   "blue": 1619,
@@ -18,9 +18,9 @@
   "red": 4566,
   "blue": 518940,
   "green": 396435,
-  "grey": 341797,
+  "grey": 341932,
   "unmeasured": 0,
-  "total": 1261738
+  "total": 1261873
  },
  "reviewEntries": 3911,
  "recidivists": [

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T11:11:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T11:41:08Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1295,15 +1295,6 @@ target:   v1
 kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
-
-## MUURROK_BEAM_NO_DAMAGE_1 Muurrok mirror beam fires (accepted, no exception) but damages nothing
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     defect
-summary:  MUURROKBEAMNODAMAGE1 — the muurrok's mirror beam fires and hurts nothing
-prose:    infrastructure/state/items/MUURROK_BEAM_NO_DAMAGE_1.md
 
 ## SOORRAK_INSTANT_JOB_LOOP_1 Wild soorrak sits in Wait_MaintainPosture forever: its next job succeeds instantly every cycle
 state:    doing
@@ -2888,3 +2879,13 @@ kind:     task
 thin:     no ## verify
 summary:  - Maintain every live layer on every tick, the same fix as the proximity soundscape. Rebuild the
 prose:    infrastructure/state/items/RUST_CATHEDRAL_HUM_UNMAINTAINED_1.md
+
+## LIVE_ROUND2_FIXES_PROOF_1 Prove the three live-round-2 fixes in game (beam, soorrak loop log, rimplace stuff)
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  LIVEROUND2FIXESPROOF1 — prove the three live-round-2 fixes in game
+prose:    infrastructure/state/items/LIVE_ROUND2_FIXES_PROOF_1.md
