@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 using Verse.Sound;
 
 namespace RimMandrake.Stillsand
@@ -176,10 +177,43 @@ namespace RimMandrake.Stillsand
             }
         }
 
+        /// <summary>True while the caster's current job is the cast job carrying this verb.</summary>
+        public bool CasterIsInCastJob
+        {
+            get
+            {
+                Job cur = CasterIsPawn ? CasterPawn.CurJob : null;
+                return cur != null && cur.def == JobDefOf.UseVerbOnThingStatic && cur.verbToUse == this;
+            }
+        }
+
+        // MUURROK_BEAM_NO_DAMAGE_1. Verb.TryStartCastOn only sets a Stance_Warmup (1.5 s);
+        // nothing holds the pawn in it. Pawn_JobTracker.EndCurrentJob -> CleanupCurrentJob
+        // (cancelBusyStancesSoft: true) swaps a Stance_Warmup for Stance_Mobile whenever ANY job
+        // ends, and StartJob(cancelBusyStances: true) hard-cancels it, so a wild animal's
+        // wander/wait ending, or the leviathan component's own strike job 30 ticks later, threw
+        // the warmup away: Stance_Warmup.Expire -> WarmupComplete never ran, no shot, no
+        // exception, while TryStartCastOn had already returned true. Vanilla beam users fire from
+        // a job that outlives the warmup; so does this verb now. A pawn caster not already in its
+        // cast job is given UseVerbOnThingStatic (JobDriver_CastVerbOnceStatic: StopDead, then
+        // Toils_Combat.CastVerb, which ends FinishedBusy, i.e. after warmup, burst and cooldown);
+        // that toil calls back in here and falls through to the engine.
         public override bool TryStartCastOn(LocalTargetInfo castTarg, LocalTargetInfo destTarg, bool surpriseAttack = false,
             bool canHitNonTargetPawns = true, bool preventFriendlyFire = false, bool nonInterruptingSelfCast = false)
         {
-            return base.TryStartCastOn(verbProps.beamTargetsGround ? (LocalTargetInfo)castTarg.Cell : castTarg, destTarg,
+            LocalTargetInfo target = verbProps.beamTargetsGround ? (LocalTargetInfo)castTarg.Cell : castTarg;
+            if (CasterIsPawn && CasterPawn.jobs != null && !CasterIsInCastJob)
+            {
+                if (caster == null || !caster.Spawned || state == VerbState.Bursting || !CanHitTarget(target))
+                {
+                    return false;
+                }
+                Job cast = JobMaker.MakeJob(JobDefOf.UseVerbOnThingStatic, target);
+                cast.verbToUse = this;
+                CasterPawn.jobs.StartJob(cast, JobCondition.InterruptForced);
+                return CasterIsInCastJob && (state == VerbState.Bursting || WarmingUp);
+            }
+            return base.TryStartCastOn(target, destTarg,
                 surpriseAttack, canHitNonTargetPawns, preventFriendlyFire, nonInterruptingSelfCast);
         }
 

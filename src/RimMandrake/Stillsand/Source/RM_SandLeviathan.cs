@@ -556,10 +556,16 @@ namespace RimMandrake.Stillsand
             {
                 return;
             }
+            RM_Verb_MirrorBeam beam = p.verbTracker?.AllVerbs?.OfType<RM_Verb_MirrorBeam>().FirstOrDefault();
+            if (beam != null && (beam.CasterIsInCastJob || beam.state == VerbState.Bursting))
+            {
+                // MUURROK_BEAM_NO_DAMAGE_1: the beam is warming up or sweeping. Starting the
+                // strike job now would end the cast job and cancel its warmup; let it finish.
+                return;
+            }
             if (RM_StillsandEventsSettings.mirrorBeamEnabled && now - v.lastBeamTick >= v.Ext.beamCooldownTicks
                 && p.stances != null && !p.stances.FullBodyBusy)
             {
-                RM_Verb_MirrorBeam beam = p.verbTracker?.AllVerbs?.OfType<RM_Verb_MirrorBeam>().FirstOrDefault();
                 if (beam != null && beam.state == VerbState.Idle && beam.Available()
                     && (v.target.Position - p.Position).LengthHorizontal >= beam.verbProps.minRange
                     && beam.CanHitTarget(v.target) && beam.TryStartCastOn(v.target))
