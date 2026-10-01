@@ -137,13 +137,14 @@ def forced_paint_job(t):
     `JoyGiver_PaintGraffiti`'s own cell search) and prove the periodic toil leaves a mark from
     the whole pool, on schedule with the shipped `paintIntervalTicks`=250. Also the terrain
     calibration: if nothing paints on Concrete the floor rejects the placementMask."""
-    _prep_site(t, 40)
     x, z = t.anchor
-    _wall_run(t, x - 5, z + 1, 11)
     mark_x, mark_z = x, z
-    walker = t.spawn_pawn("Colonist", hostile=False)
-    _no_cleaning(t)
     rect = "%d,%d,8,6" % (mark_x - 4, mark_z - 3)
+    with t.component("site_ready_forced_paint"):
+        _prep_site(t, 40)
+        _wall_run(t, x - 5, z + 1, 11)
+        walker = t.spawn_pawn("Colonist", hostile=False)
+        _no_cleaning(t)
 
     with t.component("paints_mark_at_interval", toggle="paintIntervalTicks"):
         _settle_painter(t, walker)
@@ -169,12 +170,13 @@ def forced_paint_job(t):
 def mental_break_spree(t):
     """The ONE reachable path to `JobGiver_GraffitiPaintingSpree.TryGiveJob`, hence the only proof of
     `paintingEnabled`: force the break, prove the state and a mark near the wall."""
-    _prep_site(t, 40)
     x, z = t.anchor
-    _wall_run(t, x - 5, z + 3, 11)
-    walker = t.spawn_pawn("Colonist", hostile=False)
-    _no_cleaning(t)
     rect = "%d,%d,12,8" % (x - 6, z - 2)
+    with t.component("site_ready_mental_break"):
+        _prep_site(t, 40)
+        _wall_run(t, x - 5, z + 3, 11)
+        walker = t.spawn_pawn("Colonist", hostile=False)
+        _no_cleaning(t)
 
     with t.component("mental_break_assigns_paint_job", toggle="paintingEnabled"):
         _settle_painter(t, walker)
@@ -200,30 +202,33 @@ def mental_break_spree(t):
 def spree_wall(t):
     """Bars 1, 2, 7: six painters, each with its own wall lane, a real spree, natural rendering.
     No `map_commit` after painting (plan: a forced commit would hide a mesh bug)."""
-    _prep_site(t, 70)
     lanes = _lanes(t)
-    painters = []
-    for ln in lanes:
-        _wall_run(t, ln["x0"], ln["wall_z"], LANE_LEN)
-    t.bridge_call("jawa/map_commit")                    # FIXTURE write (walls/terrain), never marks
-    for ln in lanes:
-        r = t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=ln["x0"] + LANE_LEN // 2,
-                          z=ln["wall_z"] + 2, faction="player", count=1)
-        row = ((r or {}).get("pawns") or [{}])[0]
-        painters.append(row.get("id"))
-    _no_cleaning(t)
-    started = []
-    for pid in painters:
-        if pid:
-            _settle_painter(t, pid)
-            r = t.bridge_call("jawa/pawn_force_mental_break", pawn=pid,
-                              breakDef="RM_GraffitiPaintingSpreeBreak")
-            started.append(bool((r or {}).get("started")))
-    t.wait_ticks(3000)
-    # painters out of frame before any shutter: a body must not occlude a mark
-    for ln in lanes:
-        t.bridge_call("jawa/destroy_batch", rects=ln["rect"], categories="Pawn")
-    per_lane = [_marks_in(t, ln["rect"]) for ln in lanes] if t._guard() else []
+    painters, started = [], []
+    with t.component("site_ready_spree_wall"):
+        _prep_site(t, 70)
+        for ln in lanes:
+            _wall_run(t, ln["x0"], ln["wall_z"], LANE_LEN)
+        t.bridge_call("jawa/map_commit")                # FIXTURE write (walls/terrain), never marks
+        for ln in lanes:
+            r = t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=ln["x0"] + LANE_LEN // 2,
+                              z=ln["wall_z"] + 2, faction="player", count=1)
+            row = ((r or {}).get("pawns") or [{}])[0]
+            painters.append(row.get("id"))
+        _no_cleaning(t)
+        for pid in painters:
+            if pid:
+                _settle_painter(t, pid)
+                r = t.bridge_call("jawa/pawn_force_mental_break", pawn=pid,
+                                  breakDef="RM_GraffitiPaintingSpreeBreak")
+                started.append(bool((r or {}).get("started")))
+    per_lane = []
+    with t.component("spree_runs"):
+        t.wait_ticks(3000)
+        # painters out of frame before any shutter: a body must not occlude a mark
+        for ln in lanes:
+            t.bridge_call("jawa/destroy_batch", rects=ln["rect"], categories="Pawn")
+        if t._guard():
+            per_lane = [_marks_in(t, ln["rect"]) for ln in lanes]
 
     with t.component("spree_paints_marks", shows=["mark_actually_appears"]):
         if t._guard():
@@ -334,12 +339,13 @@ def gallery(t):
 @suite.chain("beauty_pair")
 def beauty_pair(t):
     """Bar 8: Vandal (Beauty -15) left, TallyMarks (-3) right, Beauty read off the spawned things."""
-    _prep_site(t, 40)
     x, z = t.anchor
-    _wall_run(t, x - 8, z, 17)
-    t.bridge_call("jawa/map_commit")
-    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d;RM_Graffiti_TallyMarks:%d,%d"
-                  % (VANDAL_DEF, x - 4, z + 1, x + 4, z + 1))
+    with t.component("site_ready_beauty_pair"):
+        _prep_site(t, 40)
+        _wall_run(t, x - 8, z, 17)
+        t.bridge_call("jawa/map_commit")
+        t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d;RM_Graffiti_TallyMarks:%d,%d"
+                      % (VANDAL_DEF, x - 4, z + 1, x + 4, z + 1))
 
     with t.component("beauty_pair", shows=["mark_ugliness_is_visible"]):
         r = t.bridge_call("jawa/list_things", defName="%s,RM_Graffiti_TallyMarks" % VANDAL_DEF,

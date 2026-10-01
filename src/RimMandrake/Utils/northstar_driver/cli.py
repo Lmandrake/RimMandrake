@@ -114,6 +114,19 @@ def cmd_run(args):
                               need_god=args.god or getattr(plan, "NEED_GOD", False),
                               rect=args.rect or getattr(plan, "RECT", None), fix=args.fix,
                               config_path=mock_config(getattr(plan, "EXPECT_MODS", ()) or args.expect_id or ()) if args.mock else None)
+        # mod-supplied site check: plan.preflight(s) -> [failed precondition, ...] (plan 3.13)
+        if getattr(plan, "preflight", None) and not args.mock_skip_site:
+            try:
+                for msg in plan.preflight(s) or []:
+                    cs.append(pf.Check("site:" + msg.split(":")[0][:40], FAIL, msg))
+            except Exception as ex:
+                cs.append(pf.Check("site_preflight", UNMEASURED, "%s: %s" % (type(ex).__name__, ex)))
+        # cannot-show enforcement (plan 6.10): a VALIDATED walk's cannot-show id that no component claims
+        if getattr(plan, "USE_SUITE", False):
+            miss = unclaimed_cannot_show(mod)
+            if miss:
+                cs.append(pf.Check("cannot_show_claimed", FAIL,
+                                   "cannot-show id(s) no component claims via shows=: %s" % miss))
         doc["preflight"] = [c.as_dict() for c in cs]
         ok, bad, unk = pf.verdict(cs, args.allow_unmeasured)
         if not ok:
@@ -139,6 +152,23 @@ def cmd_run(args):
     return code
 
 
+def unclaimed_cannot_show(mod):
+    """Cannot-show ids of a VALIDATED walk that no component's `shows=` claims. [] when no walk."""
+    try:
+        import northstar
+        import runner
+        w = northstar.find_walk(ROOT, mod)
+        ns = northstar.parse(w) if w else None
+        if not ns or ns["state"] != northstar.VALIDATED:
+            return []
+        claimed = set()
+        for c in runner.load_validation(runner.find_mod_dir(mod)).components_declared():
+            claimed.update(c.get("shows") or ())
+        return [i for i in ns["cannot_show"] if i not in claimed]
+    except Exception as ex:
+        return ["(unreadable: %s)" % ex]
+
+
 def _suite_rows(s, mod, expected):
     import runner
     suite = runner.load_validation(runner.find_mod_dir(mod))
@@ -160,6 +190,7 @@ def main(argv=None):
         p.add_argument("--fix", action="store_true", help="pause / enable god, each proved by re-read")
         p.add_argument("--expect-id", action="append", help="packageId that must be active (repeat)")
         p.add_argument("--allow-unmeasured", action="store_true")
+        p.add_argument("--mock-skip-site", action="store_true", help="skip plan.preflight (offline selftests)")
         p.add_argument("--pipeline", action="store_true", help="pipelined call_many (UNPROVEN live)")
         if name == "run":
             p.add_argument("--plan", help="python plan module registering @bar functions")

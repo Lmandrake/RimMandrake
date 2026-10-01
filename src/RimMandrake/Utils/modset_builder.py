@@ -160,6 +160,15 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.graffiti", "mandrake.rm.sacredgraffiti"],
         "dlc": True,
     },
+    "graffiti_solo": {
+        "why": "GRAFFITI_NORTHSTAR trial: mandrake.rm.graffiti ALONE with the bridge. "
+               "NOT the `graffiti` tier above -- that one adds SacredGraffiti, whose "
+               "RM_SacredMark_* defs inherit RM_BaseGraffiti and join the mark pool and "
+               "gallery, so a GREEN would no longer be Graffiti's. All five DLCs and "
+               "Harmony resolve automatically (BreachBiasHook is a Harmony postfix).",
+        "want": [BRIDGE, "mandrake.rm.graffiti"],
+        "dlc": True,
+    },
     "bench": {
         "why": "RimBridge + our mods + the smallest content set that can answer "
                "the open balance questions: saber vs vibro vs armour, ion vs "

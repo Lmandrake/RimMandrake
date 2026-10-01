@@ -34,6 +34,16 @@ def pre(faults=(), **kw):
     return {c.name: c for c in cs}, cs
 
 
+def _raises(exc, fn, *a):
+    try:
+        fn(*a)
+    except exc:
+        return True
+    except Exception:
+        return False
+    return False
+
+
 def main():
     c, cs = pre(rect="90,90,20,20")
     ok, bad, unk = pf.verdict(cs)
@@ -149,6 +159,63 @@ def main():
     B.REGISTRY.clear()
     code = cli.main(["run", "--mock", "--fault", "modal", "--plan", plan, "--out", out, "--mod", "SelftestMod"])
     check("e2e dirty site exit 2 and no bars ran", code == 2 and json.load(open(out))["bars"] == [])
+
+    # site primitives (Graffiti plan section 6) -- mock only, shapes unproven live
+    from northstar_driver import site
+    from northstar_driver.bars import Unmeasured
+    g = MockGame()
+    s = FastSession(transport=MockTransport(g), strict=False)
+    with s:
+        site.set_terrain_rect(s, (10, 10, 5, 5), "Concrete")
+        check("site: terrain set + verified", g.terrain[(12, 12)] == "Concrete")
+        site.spawn_wall_run(s, 10, 10, 6)
+        check("site: wall run verified", len(site.things_by_defs(s, ["Wall"], (10, 10, 6, 1))) == 6)
+        site.clear_rect(s, (10, 10, 6, 2), margin=1)
+        check("site: clear_rect proves empty", not site.things_by_defs(s, ["Wall"], (9, 9, 8, 4)))
+        site.weather_lock(s)
+        check("site: weather locked + read back", g.weather == "Clear")
+        h = site.pin_time(s)
+        check("site: pin_time lands in 10-14h", 10 <= h < 14, str(h))
+        try:
+            site.get_defs_checked(s, ["ThingDef/Wall"])
+            check("site: get_defs refuses a list", False)
+        except TypeError:
+            check("site: get_defs refuses a list", True)
+        try:
+            with site.setting_restored(s, "T", "paintIntervalTicks", 250):
+                s.call("jawa/mod_settings_field", typeName="T", action="set", field="paintIntervalTicks", value="60")
+            check("site: setting restored in finally", g.settings["paintIntervalTicks"] == "250")
+        except Exception as ex:
+            check("site: setting restored in finally", False, str(ex))
+        g.faults.add("x")
+    check("site: failed read is UNMEASURED not zero",
+          _raises(Unmeasured, site._ok, {"success": False}, "t"))
+    import tempfile as _tf
+    pl = os.path.join(_tf.mkdtemp(), "Player.log")
+    open(pl, "w").write("old line Config error\n")
+    off = site.log_offset(pl)
+    open(pl, "a").write("new Config error mandrake.rm.graffiti\nunrelated\n")
+    check("site: log read starts at the pre-launch offset",
+          site.read_log_since(pl, off, ["Config error"]) == ["new Config error mandrake.rm.graffiti"])
+    try:
+        from PIL import Image
+        png = os.path.join(_tf.mkdtemp(), "b.png")
+        Image.new("RGB", (8, 8), (0, 0, 0)).save(png)
+        check("site: black frame refused", _raises(AssertionError, site.black_frame_guard, png))
+    except ImportError:
+        print("skip  PIL absent: image primitives untested")
+    # graffiti plan end to end: all 10 bars claimed + a cannot-show unclaimed is refused
+    import json
+    if os.path.isfile(os.path.join(cli.ROOT, "src", "RimMandrake", "Graffiti", "northstar_plan.py")):
+        B.REGISTRY.clear()
+        out2 = os.path.join(_tf.mkdtemp(), "g.json")
+        code = cli.main(["run", "--mock", "--mod", "Graffiti", "--out", out2, "--plan",
+                         os.path.join(cli.ROOT, "src", "RimMandrake", "Graffiti", "northstar_plan.py")])
+        d = json.load(open(out2))
+        check("graffiti mock plan: not refused, all 10 expected bars rolled up",
+              code in (0, 1) and len(d["bars"]) == 10 and len(d["expected"]) == 10,
+              "code=%s bars=%d expected=%d" % (code, len(d["bars"]), len(d["expected"])))
+        check("graffiti: every cannot-show id is claimed", cli.unclaimed_cannot_show("Graffiti") == [])
 
     # overhead
     t = MockTransport(MockGame())
