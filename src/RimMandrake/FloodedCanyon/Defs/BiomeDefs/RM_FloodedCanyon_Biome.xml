@@ -27,7 +27,7 @@
       </li>
       <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "lowSun" - the Cracked Lands: the_cracked_lands.md "the open flats lethal by exposure", "Shade is in the cuts; the sun owns the flats", sun ~21 degrees.
            heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
         <heatKind>lowSun</heatKind>
         <heatOffsetC>25</heatOffsetC>
       </li>

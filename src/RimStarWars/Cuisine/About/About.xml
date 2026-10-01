@@ -18,6 +18,6 @@ This mod is the intended eventual home for the rest of high_cuisine_deep_design.
          a loadAfter + MayRequire, never a modDependency — the sheet's §4b
          ruling is "no hard dependency in either direction", so a cook with no
          Grey Sea simply never sees those four recipes. -->
-    <li>mandrake.rm.terminalbiomes</li>
+    <li>mandrake.rm.biomes</li>
   </loadAfter>
 </ModMetaData>

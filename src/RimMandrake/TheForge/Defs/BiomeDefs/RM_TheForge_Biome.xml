@@ -115,7 +115,7 @@
       <li Class="RimMandrake.TheForge.RM_TheForgeBiomeRanges" />
       <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - the Forge: the_forge.md "one volcanic massif", "lava ... in scalding bursts".
            heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
         <heatKind>ambient</heatKind>
         <heatOffsetC>15</heatOffsetC>
       </li>

@@ -222,7 +222,7 @@
            substellar point, scaled by sin(elevation), floored at 35 in the far ring (owner card
            2026-09-30 18:11 PDT: +55 / about 35). sandGlareExposureFloor 0.35 (owner card 2026-09-30).
            All tuned in live play. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
         <heatKind>lowSun</heatKind>
         <heatOffsetC>55</heatOffsetC>
         <heatScalesWithElevation>true</heatScalesWithElevation>
@@ -245,7 +245,7 @@
       <!-- STILLSAND_SUN_FROM_LATITUDE_1 §1-2: the pinned sky. Ends the day-night cycle. Elevation from the
            tile (same geometry as above), clamp lifted to 85 so near the substellar point shadows shrink to
            almost nothing. Bleached-white sky, black shadow. glow 1 = solar panels at full output. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_PinnedSunExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_PinnedSunExtension" MayRequire="mandrake.rm.biomes">
         <minElevationDegrees>2</minElevationDegrees>
         <maxElevationDegrees>85</maxElevationDegrees>
         <glow>1</glow>

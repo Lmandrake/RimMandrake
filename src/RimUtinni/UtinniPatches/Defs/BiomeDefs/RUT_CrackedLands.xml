@@ -155,7 +155,7 @@
     <maxFishPopulation>90</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <freshwater_Common>
-        <RM_DuneCrawler MayRequire="mandrake.rm.stillsand">1</RM_DuneCrawler>
+        <RM_DuneCrawler MayRequire="mandrake.rm.biomes">1</RM_DuneCrawler>
         <RUT_Tubbik>1</RUT_Tubbik>
         <RUT_Zhurr>0.6</RUT_Zhurr>
       </freshwater_Common>
