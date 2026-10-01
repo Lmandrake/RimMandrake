@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T15:47:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T16:18:16Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1058,3 +1058,13 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  GLOOMCASTWAKERIDERS1 — which grazers ride the gloomcast's shadow, and what its feeding leaves
 prose:    infrastructure/state/items/GLOOMCAST_WAKE_RIDERS_1.md
+
+## CONDITION_GATED_RITUALS_MOD_1 Condition-gated rituals mod (darkness first; Utinni gods)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CONDITIONGATEDRITUALSMOD1 — rituals that can only be done in certain conditions (first case: absolute darknes…
+prose:    infrastructure/state/items/CONDITION_GATED_RITUALS_MOD_1.md

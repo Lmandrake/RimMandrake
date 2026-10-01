@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T15:47:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T16:18:16Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -2880,3 +2880,23 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  One place, two halves, both at the bottom of Lightfall.
 prose:    infrastructure/state/items/ABYSS_LIGHTFALL_BROOD_WRECK_1.md
+
+## ABYSS_FOLD_LAMP_BUILD_1 Heat-folding research and the fold-lamp (Abyss)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Decision taken by question card (turn 3, 2026-10-01). Research that warmth pushes the Dark back, then a heate…
+prose:    infrastructure/state/items/ABYSS_FOLD_LAMP_BUILD_1.md
+
+## ABYSS_SOUNDSCAPE_BUILD_1 Abyss gust soundscape plus Dark-swallows-sound spike
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Decision taken by question card (turn 3, 2026-10-01): BOTH halves.
+prose:    infrastructure/state/items/ABYSS_SOUNDSCAPE_BUILD_1.md
