@@ -119,6 +119,18 @@ namespace RimMandrake.CreatureBehaviors
                 target = null;
             }
 
+            // STILLSAND_DUNE_GALE_1 §6: a storm is all vibration, so the swimmer cannot pick its
+            // target out of it. It stays down and lets the strike go, like the droid case above.
+            if (submerged && target != null)
+            {
+                RM_WeatherSenseExtension sense = RM_WeatherSenseExtension.On(pawn.Map);
+                if (sense != null && sense.swimmerSenseChance < 1f && !Rand.Chance(sense.swimmerSenseChance))
+                {
+                    pawn.jobs?.EndCurrentJob(JobCondition.Incompletable);
+                    target = null;
+                }
+            }
+
             if (target != null)
             {
                 float range = Ext.strikeRangeCells;
@@ -239,7 +251,8 @@ namespace RimMandrake.CreatureBehaviors
 
         private void MaintainRumble(Pawn pawn)
         {
-            if (Ext.rumbleSound == null || RM_CreatureBehaviorsSettings.sandSwimRumbleVolume <= 0f)
+            if (Ext.rumbleSound == null || RM_CreatureBehaviorsSettings.sandSwimRumbleVolume <= 0f
+                || (RM_WeatherSenseExtension.On(pawn.Map)?.drownsRumble ?? false))
             {
                 EndRumble();
                 return;

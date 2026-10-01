@@ -61,6 +61,9 @@
     <!-- STILLSAND_RETURN_RITUAL_1: sand remembers water (RM) + the inert water-ledger engine -->
     <Compile Include="RM_StillsandWater.cs" />
     <Compile Include="RM_WaterLedger.cs" />
+    <!-- STILLSAND_DUNE_GALE_1: the dune gale (condition, carry-and-return, settings) and the dust devil -->
+    <Compile Include="RM_DuneGale.cs" />
+    <Compile Include="RM_DustDevil.cs" />
     <!-- STILLSAND_SKELETONS_TRACKS_1: giant skeletons, bone harp, corpse-to-skeleton,
          the horizon warning (a Harmony prefix on Storyteller.TryFire) and their settings -->
     <Compile Include="RM_GiantSkeletons.cs" />

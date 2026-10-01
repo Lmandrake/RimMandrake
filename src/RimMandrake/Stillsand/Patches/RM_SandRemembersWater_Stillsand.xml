@@ -7,9 +7,9 @@
   sandTerrains: vanilla Sand and SoftSand (the biome's terrainsByFertility and
   its patch maker) and FlowWorks' RM_DeepSand (DEEP_SAND_WALKABLE_TERRAIN_1).
   bloomPlant: RM_Hourbloom, whose own short life is "dust again in days".
-  galeWeathers: Odyssey's Sandstorm, the one gale this biome's weather table
-  carries today. STILLSAND_DUNE_GALE_1 appends its own WeatherDef here when it
-  ships. A gale wipes every wet cell; its end is an opening for a ledger.
+  galeWeathers: RM_DuneGale, the biome's own storm (STILLSAND_DUNE_GALE_1,
+  Defs/WeatherDefs/RM_DuneGale.xml). A gale wipes every wet cell; its end is an
+  opening for a ledger. Odyssey's Sandstorm is not a gale here.
 
   The guzzka egg is the canteen egg (deep_desert.md "Eggs are canteens"): 6
   litres, the same figure as its Dubs Bad Hygiene WaterExt.
@@ -31,7 +31,7 @@
         <wetHours>48</wetHours>
         <swimmerDrawHours>12</swimmerDrawHours>
         <galeWeathers>
-          <li>Sandstorm</li>
+          <li>RM_DuneGale</li>
         </galeWeathers>
       </li>
     </value>

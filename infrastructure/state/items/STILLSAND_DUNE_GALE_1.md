@@ -50,3 +50,9 @@ From `STILLSAND_BEDAZZLE_SITTING_1` (closed 2026-09-30). Design source:
   cuts sun exposure, and ends with exactly one emergence and its letter.
 - A carried pawn always has a drag line or a letter; none disappears silently.
 - A dust devil spawns, moves, and despawns on its own with no leftover Thing.
+
+## built (offline)
+
+All twelve spec points are built offline; the live criteria and three small leftovers (water
+skins, the track grid hook, the hiss) moved to `STILLSAND_DUNE_GALE_LIVE_1`, which lists every file.
+Not gated on `MOVING_DUNES_BUILD_1`'s shader-tint run: that gate decides sand colour only.

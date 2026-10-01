@@ -11,7 +11,7 @@ opening (`Patches/RUT_TheReturn_KraytOpens.xml`). Settings rows: Stillsand panel
 
 1. **Live proof (Desktop, quicktest on RM_Stillsand, all DLC).** The parent's two criteria:
    a Sun-Debt colony (an ideo holding the `RUT_Ritual_TheReturn` precept) accrues debt from
-   drinking water, the Return opens after a sandstorm ends (dev-fire it), and a good outcome
+   drinking water, the Return opens after a dune gale ends (dev-fire `RM_DuneGale`), and a good outcome
    lowers the debt and blooms the ring at the stone. Without the Utinni layer, pouring a guzzka
    egg on sand still blooms hourbloom and no debt rows appear in settings. Read the first
    exception in `Player.log`, not the loudest.
@@ -24,9 +24,7 @@ opening (`Patches/RUT_TheReturn_KraytOpens.xml`). Settings rows: Stillsand panel
    carries it. The still flask (`STILLSAND_GLASS_LENS_CHAIN_1`), a duumma sac and a wringing
    should carry the same comp, or call `RM_WaterLedger.Notify_Drawn(map, litres, what)` directly.
    Drinking an egg through Dubs Bad Hygiene's thirst job may not run `PostIngested`; check live.
-5. **The dune gale.** `galeWeathers` lists only Odyssey's `Sandstorm`; `STILLSAND_DUNE_GALE_1`
-   appends its WeatherDef in `src/RimMandrake/Stillsand/Patches/RM_SandRemembersWater_Stillsand.xml`.
-6. **Stale folded-id guards.** `RUT_KraytAttack` was gated on `mandrake.rm.stillsand` (folded into
+5. **Stale folded-id guards.** `RUT_KraytAttack` was gated on `mandrake.rm.stillsand` (folded into
    `mandrake.rm.biomes`, so the def never loaded); fixed in the parent. Other Utinni XML still
    names `mandrake.rm.stillsand` in `MayRequire` (e.g. `Defs/BiomeDefs/RUT_CrackedLands.xml`'s
    `RM_DuneCrawler` row) and is silently skipped. Sweep them to `mandrake.rm.biomes`.

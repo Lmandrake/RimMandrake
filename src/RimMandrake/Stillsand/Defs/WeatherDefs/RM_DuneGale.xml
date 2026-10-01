@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DuneGale.xml                    RimMandrake — STILLSAND_DUNE_GALE_1
+
+  The Stillsand's own storm (owner, typed: "Call it a dune gale."), and its fair-weather
+  opposite, the dust devil. Code: Source/RM_DuneGale.cs, Source/RM_DustDevil.cs.
+
+  One file holds the whole feature so it reads top to bottom:
+    RM_DuneGaleHerald / RM_DuneGale   WeatherDefs the condition forces, in that order
+    RM_DuneGale (GameConditionDef)    the storm's duration, its tick and its aftermath table
+    RM_DuneGale (IncidentDef)         rare: a few a year, one to two days
+    RM_DustDevil (ThingDef, IncidentDef)
+
+  Neither weather sits in the biome's weather table: the gale only ever comes as the
+  condition. Both are XML-only consumers of two engines:
+    MovingDunes   DuneWeatherExtension (the dunes march; MayRequireAnyOf the engine's own id
+                  or mandrake.rm.biomes, which composes both mods, so the row loads standalone
+                  and composed and drops cleanly without the engine; the mass cap stays binding).
+    CreatureBehaviors  RM_WeatherSenseExtension (sun off, swimmers blind, rumble drowned).
+  Every number is an INVENTED first value; the live run in the item's criteria rules on them.
+-->
+<Defs>
+
+  <!-- ===================== the herald ===================== -->
+  <WeatherDef>
+    <defName>RM_DuneGaleHerald</defName>
+    <label>gale herald</label>
+    <description>The windward horizon has gone ochre and every crest is smoking sand. A dune gale is coming.</description>
+    <favorability>Neutral</favorability>
+    <perceivePriority>1</perceivePriority>
+    <isBad>false</isBad>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <windSpeedFactor>1.6</windSpeedFactor>
+    <windSpeedOffset>0.8</windSpeedOffset>
+    <accuracyMultiplier>0.9</accuracyMultiplier>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_SandHard</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.95,0.84,0.62)</sky>
+      <shadow>(0.55,0.5,0.42)</shadow>
+      <overlay>(0.85,0.72,0.5)</overlay>
+      <saturation>0.95</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.85,0.7,0.48)</sky>
+      <shadow>(0.55,0.5,0.42)</shadow>
+      <overlay>(0.75,0.6,0.4)</overlay>
+      <saturation>0.95</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.4,0.34,0.26)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.5,0.45,0.38)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.4,0.34,0.26)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.5,0.45,0.38)</overlay>
+      <saturation>0.9</saturation>
+    </skyColorsNightMid>
+    <modExtensions>
+      <li Class="RimMandrake.MovingDunes.DuneWeatherExtension" MayRequireAnyOf="mandrake.rm.movingdunes,mandrake.rm.biomes">
+        <transportFactor>4</transportFactor>
+        <influxFactor>1.5</influxFactor>
+        <forceStormTransport>true</forceStormTransport>
+      </li>
+    </modExtensions>
+  </WeatherDef>
+
+  <!-- ===================== the gale ===================== -->
+  <WeatherDef>
+    <defName>RM_DuneGale</defName>
+    <label>dune gale</label>
+    <description>A dune gale: a brown-gold dark at midday, sight cut to a few strides, and the dunes marching in hours. The sun is off you, and so are the swimmers, but the sand scours and the wind carries.</description>
+    <favorability>Bad</favorability>
+    <perceivePriority>2</perceivePriority>
+    <isBad>true</isBad>
+    <canOccurAsRandomForcedEvent>false</canOccurAsRandomForcedEvent>
+    <preventSkygaze>true</preventSkygaze>
+    <preventsShuttleLaunch>true</preventsShuttleLaunch>
+    <accuracyMultiplier>0.45</accuracyMultiplier>
+    <moveSpeedMultiplier>0.7</moveSpeedMultiplier>
+    <windSpeedFactor>2.6</windSpeedFactor>
+    <windSpeedOffset>1.6</windSpeedOffset>
+    <weatherThought>BlowingSand</weatherThought>
+    <ambientSounds>
+      <li>Ambient_Wind_Storm</li>
+    </ambientSounds>
+    <overlayClasses>
+      <li>WeatherOverlay_SandHard</li>
+    </overlayClasses>
+    <!-- Bleached ochre to dim gold, black shadow kept (turn-3 §2.2). -->
+    <skyColorsDay>
+      <sky>(0.66,0.53,0.33)</sky>
+      <shadow>(0.4,0.36,0.3)</shadow>
+      <overlay>(0.62,0.5,0.32)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.55,0.43,0.27)</sky>
+      <shadow>(0.4,0.36,0.3)</shadow>
+      <overlay>(0.52,0.42,0.28)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.3,0.25,0.18)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.4,0.34,0.26)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.3,0.25,0.18)</sky>
+      <shadow>(0.85,0.85,0.85)</shadow>
+      <overlay>(0.4,0.34,0.26)</overlay>
+      <saturation>0.85</saturation>
+    </skyColorsNightMid>
+    <modExtensions>
+      <!-- §2: storm transport about 20x and a raised influx; forceStormTransport because this
+           gale carries no Odyssey sandRate (it moves the field that is there, it does not rain
+           sand). The engine's mass cap stays binding. -->
+      <li Class="RimMandrake.MovingDunes.DuneWeatherExtension" MayRequireAnyOf="mandrake.rm.movingdunes,mandrake.rm.biomes">
+        <transportFactor>20</transportFactor>
+        <influxFactor>4</influxFactor>
+        <forceStormTransport>true</forceStormTransport>
+      </li>
+      <!-- §3 sun off (about 0.2), §6 swimmers blind, §1 the rumble layer drowned. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_WeatherSenseExtension">
+        <sunExposureFactor>0.2</sunExposureFactor>
+        <swimmerSenseChance>0.1</swimmerSenseChance>
+        <drownsRumble>true</drownsRumble>
+      </li>
+    </modExtensions>
+  </WeatherDef>
+
+  <!-- ===================== the condition ===================== -->
+  <GameConditionDef>
+    <defName>RM_DuneGale</defName>
+    <label>dune gale</label>
+    <description>A dune gale is blowing. The dunes are moving, the sun is off, and anything light standing on a crest can be carried downwind.</description>
+    <conditionClass>RimMandrake.Stillsand.RM_GameCondition_DuneGale</conditionClass>
+    <canBePermanent>false</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <letterDef>NegativeEvent</letterDef>
+    <letterText>The windward horizon has gone ochre and every crest is smoking. A dune gale is coming.\n\nFor a day or two the dunes will march, the sky will go brown-gold and dim, and the sun will be off you: the one natural relief from the heat out here. The swimmers cannot hear through it either.\n\nBut the sand scours anyone left out in it, light walls and roof edges wear, and anything small standing on a crest can be carried away downwind. Keep the light ones off the crests. When it ends, the wind will have uncovered something.</letterText>
+    <endMessage>The dune gale has blown itself out.</endMessage>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_DuneGaleExtension">
+        <heraldWeather>RM_DuneGaleHerald</heraldWeather>
+        <galeWeather>RM_DuneGale</galeWeather>
+        <heraldFraction>0.15</heraldFraction>
+        <crestDepth>0.45</crestDepth>
+        <abrasionMtbHours>3</abrasionMtbHours>
+        <abrasionDamage>1~2</abrasionDamage>
+        <lightBuildingMaxHitPoints>220</lightBuildingMaxHitPoints>
+        <structureMtbHours>8</structureMtbHours>
+        <roofStripChancePerSample>0.01</roofStripChancePerSample>
+        <carryMaxBodySize>1.0</carryMaxBodySize>
+        <carryMtbHours>8</carryMtbHours>
+        <carryCells>3~10</carryCells>
+        <dragFilth>RM_Filth_DragMark</dragFilth>
+        <returnAliveChance>0.75</returnAliveChance>
+        <returnDays>2~6</returnDays>
+        <staticMtbHours>3</staticMtbHours>
+        <staticStunTicks>60~240</staticStunTicks>
+        <wipeDepthDelta>0.2</wipeDepthDelta>
+        <wakeRaces>
+          <li>RM_Siidda</li>
+        </wakeRaces>
+        <glasscrustPlant>RM_Glasscrust</glasscrustPlant>
+        <bloomPlant>RM_Hourbloom</bloomPlant>
+        <emergences>
+          <li>
+            <key>mummifiedCaravan</key>
+            <weight>3</weight>
+            <letterLabel>A caravan the dune took</letterLabel>
+            <letterText>The gale has stripped a dune back to what it swallowed: a whole caravan, beasts and riders, desiccated where they stood when the sand came over them. Their packs are intact. Nobody buried them. It is a mass grave that points nowhere, and the sand kept it exactly as it was.</letterText>
+            <corpses>
+              <Villager>3</Villager>
+              <Dromedary>2</Dromedary>
+            </corpses>
+            <things>
+              <Cloth>40</Cloth>
+              <Silver>60</Silver>
+              <MedicineHerbal>4</MedicineHerbal>
+              <Pemmican>24</Pemmican>
+            </things>
+          </li>
+          <li>
+            <key>hull</key>
+            <weight>2</weight>
+            <letterLabel>A hull in the sand</letterLabel>
+            <letterText>The gale has scoured the sand off a hull: a wreck the dunes swallowed long ago, plating and all, standing in the open again where the wind dropped the crest.</letterText>
+            <things>
+              <ShipChunk>1</ShipChunk>
+              <ShipChunk>1</ShipChunk>
+              <Steel>40</Steel>
+              <ComponentIndustrial>3</ComponentIndustrial>
+            </things>
+          </li>
+          <li>
+            <key>sealedCache</key>
+            <weight>2</weight>
+            <letterLabel>A sealed cache</letterLabel>
+            <letterText>The gale has uncovered a sealed cache: a scavenger's store, packed and buried against exactly this kind of wind, and never come back for.</letterText>
+            <things>
+              <ComponentIndustrial>4</ComponentIndustrial>
+              <Silver>120</Silver>
+              <MedicineIndustrial>3</MedicineIndustrial>
+              <Steel>30</Steel>
+            </things>
+          </li>
+          <li>
+            <key>giantSkeleton</key>
+            <weight>2</weight>
+            <letterLabel>Bones in the drift</letterLabel>
+            <letterText>The gale has stripped the sand off a giant's bones. Whatever it was died here long ago; the dunes have been burying and uncovering it ever since.</letterText>
+            <skeleton>true</skeleton>
+          </li>
+          <li>
+            <key>caveMouth</key>
+            <weight>1</weight>
+            <letterLabel>A cave mouth</letterLabel>
+            <letterText>The gale has scoured the drift off the foot of the nearest rock and opened a cave mouth that the sand had sealed. Something older than the dunes may be inside.</letterText>
+            <caveMouth>true</caveMouth>
+          </li>
+        </emergences>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+  <IncidentDef>
+    <defName>RM_DuneGale</defName>
+    <label>dune gale</label>
+    <workerClass>RimMandrake.Stillsand.RM_IncidentWorker_DuneGale</workerClass>
+    <category>Misc</category>
+    <gameCondition>RM_DuneGale</gameCondition>
+    <letterLabel>Dune gale</letterLabel>
+    <letterDef>NegativeEvent</letterDef>
+    <!-- "rare (a few a year)": a 60-day year, refire floor 12 days. -->
+    <baseChance>1.2</baseChance>
+    <minRefireDays>12</minRefireDays>
+    <durationDays>1~2</durationDays>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+      <li>Map_TempIncident</li>
+    </targetTags>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_DuneGaleIncidentExtension">
+        <biomes>
+          <li>RM_Stillsand</li>
+        </biomes>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+  <!-- ===================== the dust devil ===================== -->
+  <ThingDef ParentName="EtherealThingBase">
+    <defName>RM_DustDevil</defName>
+    <label>dust devil</label>
+    <description>A single spinning column of lifted sand, wandering the flat in fair weather. It lifts anything light, scatters a stockpile and spooks animals, and is gone in minutes.</description>
+    <thingClass>RimMandrake.Stillsand.RM_DustDevil</thingClass>
+    <category>Ethereal</category>
+    <tickerType>Normal</tickerType>
+    <drawerType>RealtimeOnly</drawerType>
+    <drawOffscreen>true</drawOffscreen>
+    <seeThroughFog>true</seeThroughFog>
+    <useHitPoints>false</useHitPoints>
+    <alwaysFlee>true</alwaysFlee>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <graphicData>
+      <texPath>Things/Ethereal/RM_DustDevil</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(2,4)</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_DustDevilExtension">
+        <durationTicks>900~2400</durationTicks>
+        <scourRadius>2.4</scourRadius>
+        <liftChance>0.35</liftChance>
+        <liftMaxMass>2</liftMaxMass>
+        <scourDepthPerPass>0.08</scourDepthPerPass>
+        <spookRadius>6</spookRadius>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <IncidentDef>
+    <defName>RM_DustDevil</defName>
+    <label>dust devil</label>
+    <workerClass>RimMandrake.Stillsand.RM_IncidentWorker_DustDevil</workerClass>
+    <category>Misc</category>
+    <baseChance>1.5</baseChance>
+    <minRefireDays>4</minRefireDays>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+      <li>Map_TempIncident</li>
+    </targetTags>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_DuneGaleIncidentExtension">
+        <biomes>
+          <li>RM_Stillsand</li>
+        </biomes>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_DustDevilIncidentExtension">
+        <dustDevil>RM_DustDevil</dustDevil>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>
