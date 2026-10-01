@@ -1622,3 +1622,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"SELFTEST_RUNNER_SPEED_1","ts":"2026-10-01T07:10:32Z"}
 {"seat":"FOUNDRY","event":"start","id":"SELFTEST_RUNNER_SPEED_1","ts":"2026-10-01T07:10:37Z"}
 {"seat":"FOUNDRY","event":"close","id":"SELFTEST_RUNNER_SPEED_1","sha":"8fd48835b","ts":"2026-10-01T07:51:07Z"}
+{"seat":"FOUNDRY","event":"close","id":"STILLSAND_MIRAGE_CONDITION_1","sha":"6106d6a2d","ts":"2026-10-01T07:44:56Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_WIND_SUN_BEARING_1","ts":"2026-10-01T07:44:59Z"}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_WIND_SUN_BEARING_1","ts":"2026-10-01T07:45:03Z"}

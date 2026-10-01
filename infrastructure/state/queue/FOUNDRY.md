@@ -1296,14 +1296,14 @@ kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
-## STILLSAND_MIRAGE_CONDITION_1 Stillsand mirage: high-sun GameCondition (false-water band, long-range accuracy malus) + 'chasing the water' MentalStateDef that always leaves the pawn on the map with a letter: parent spec item 8
+## STILLSAND_WIND_SUN_BEARING_1 Pin MovingDunes wind to the tile-to-substellar bearing (DuneFieldExtension.lockBearingToSubstellar) so crests, lees, shadows and wind point one way: parent spec item 9
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-summary:  8. The mirage (slate IN). On a tile with sun elevation above a threshold, a GameCondition
-prose:    infrastructure/state/items/STILLSAND_MIRAGE_CONDITION_1.md
+summary:  9. One bearing for everything. Pin the dunes engine's wind to the same tile-to-substellar
+prose:    infrastructure/state/items/STILLSAND_WIND_SUN_BEARING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -2380,16 +2380,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  PYRELANDSSHIPREADINESS1 — the SHIPPED rung for Pyrelands: art, review, settings, deploy
 prose:    infrastructure/state/items/PYRELANDS_SHIP_READINESS_1.md
-
-## STILLSAND_WIND_SUN_BEARING_1 Pin MovingDunes wind to the tile-to-substellar bearing (DuneFieldExtension.lockBearingToSubstellar) so crests, lees, shadows and wind point one way: parent spec item 9
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify, no ## criteria
-summary:  9. One bearing for everything. Pin the dunes engine's wind to the same tile-to-substellar
-prose:    infrastructure/state/items/STILLSAND_WIND_SUN_BEARING_1.md
 
 ## STILLSAND_STILL_COOLING_DRAUGHT_1 Still-water cooling draught: drinking it gives ComfyTemperatureMax +8 C for ~6 h (XML on the still's output): parent spec item 10
 state:    proposed
