@@ -94,6 +94,30 @@ namespace RimMandrake.CreatureBehaviors
 		private readonly HashSet<Thing> gearThings = new HashSet<Thing>();
 		private bool recomputeRequested;
 
+		// LONGSHADE_GPT_ENRICHMENT_1 §2 (RM_MovingShadeMath.cs): living shade
+		// casters (RM_CompProperties_ShadowCaster.castShadeHeight > 0, the
+		// gloomcast). Their shade is its own layer, refreshed every
+		// MovingShadeRefreshTicks, and only when a caster moved: its OLD
+		// rectangle is cleared and its NEW one written — never a full-map pass.
+		// Read live by ShadeAt and ExposureAt. NOT folded into the exposure
+		// array, so the sun path cost and the shade-patch graph do not see it
+		// (both rebuild every 2000 ticks, far slower than the shadow moves):
+		// a creature reaches a moving shadow by seeking shade or by following
+		// its host, never by a path cached under it.
+		// TUNED: 60 ticks — the gloomcast walks ~2 cells a second (MoveSpeed
+		// 2.2), so its shadow trails by at most a couple of cells.
+		private const int MovingShadeRefreshTicks = 60;
+		private float[] movingShade;
+		private readonly Dictionary<Thing, MovingCasterState> movingCasters = new Dictionary<Thing, MovingCasterState>();
+		private bool movingDirty;
+
+		private class MovingCasterState
+		{
+			public IntVec3 lastPos = IntVec3.Invalid;
+			public bool hasRect;
+			public int minX, minZ, maxX, maxZ;
+		}
+
 		// SOLAR_HEAT_EXPOSURE_1 §5: the shade-patch graph (RM_ShadePatchGraph),
 		// built lazily from the exposure layer. It is built only when a hop,
 		// escape or ring asks for it, and only after the grid has recomputed
@@ -279,6 +303,10 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				RefreshParasolLayer();
 			}
+			if (now % MovingShadeRefreshTicks == 30)
+			{
+				RefreshMovingShade(false);
+			}
 			// STILLSAND_GLARE_BLIND_GOGGLES_1, offset off the recompute ticks.
 			if (now % RM_GlareBlind.CheckIntervalTicks == 125)
 			{
@@ -298,6 +326,132 @@ namespace RimMandrake.CreatureBehaviors
 			if (t != null && gearThings.Add(t))
 			{
 				recomputeRequested = true;
+			}
+		}
+
+		/// <summary>LONGSHADE_GPT_ENRICHMENT_1 §2: a living shade caster
+		/// spawned (RM_Comp_ShadowCaster with castShadeHeight).</summary>
+		public void RegisterMovingCaster(Thing t)
+		{
+			if (t != null && !movingCasters.ContainsKey(t))
+			{
+				movingCasters.Add(t, new MovingCasterState());
+				movingDirty = true;
+			}
+		}
+
+		public void UnregisterMovingCaster(Thing t)
+		{
+			if (t != null && movingCasters.TryGetValue(t, out MovingCasterState st))
+			{
+				if (st.hasRect && movingShade != null)
+				{
+					RM_MovingShadeMath.ClearRect(movingShade, map.Size.x, map.Size.z, st.minX, st.minZ, st.maxX, st.maxZ);
+				}
+				movingCasters.Remove(t);
+				movingDirty = true;
+			}
+		}
+
+		/// <summary>Shade 0..1 from living casters alone at this cell.</summary>
+		public float MovingShadeAt(IntVec3 cell)
+		{
+			if (!Ready(cell) || movingShade == null)
+			{
+				return 0f;
+			}
+			return movingShade[map.cellIndices.CellToIndex(cell)];
+		}
+
+		/// <summary>Clears the old rectangle of every caster that moved and
+		/// recasts every caster whose rectangle touched a cleared one. force:
+		/// the sun vector or the arrays changed, so redo all of them.</summary>
+		private void RefreshMovingShade(bool force)
+		{
+			if (movingCasters.Count == 0 && !force)
+			{
+				return;
+			}
+			int w = map.Size.x;
+			int h = map.Size.z;
+			int n = map.cellIndices.NumGridCells;
+			if (movingShade == null || movingShade.Length != n)
+			{
+				movingShade = new float[n];
+				force = true;
+			}
+			bool on = RM_CreatureBehaviorsSettings.shadeGridEnabled && RM_CreatureBehaviorsSettings.movingShadeEnabled;
+			if (force)
+			{
+				System.Array.Clear(movingShade, 0, n);
+				foreach (MovingCasterState st in movingCasters.Values)
+				{
+					st.hasRect = false;
+					st.lastPos = IntVec3.Invalid;
+				}
+			}
+			List<Thing> gone = null;
+			bool any = force || movingDirty;
+			foreach (KeyValuePair<Thing, MovingCasterState> kv in movingCasters)
+			{
+				Thing t = kv.Key;
+				if (t == null || !t.Spawned || t.Map != map)
+				{
+					(gone ??= new List<Thing>()).Add(t);
+					any = true;
+					continue;
+				}
+				if (t.Position != kv.Value.lastPos)
+				{
+					any = true;
+				}
+			}
+			if (gone != null)
+			{
+				foreach (Thing t in gone)
+				{
+					UnregisterMovingCaster(t);
+				}
+			}
+			movingDirty = false;
+			if (!any)
+			{
+				return;
+			}
+			// Clear every old rectangle first, then cast every caster at its
+			// new place: overlapping shadows of two casters stay whole. With
+			// the one or two giants a map holds this is a few hundred cells.
+			foreach (MovingCasterState st in movingCasters.Values)
+			{
+				if (st.hasRect)
+				{
+					RM_MovingShadeMath.ClearRect(movingShade, w, h, st.minX, st.minZ, st.maxX, st.maxZ);
+					st.hasRect = false;
+				}
+			}
+			if (!on)
+			{
+				return;
+			}
+			foreach (KeyValuePair<Thing, MovingCasterState> kv in movingCasters)
+			{
+				Thing t = kv.Key;
+				MovingCasterState st = kv.Value;
+				st.lastPos = t.Position;
+				RM_CompProperties_ShadowCaster p = t.TryGetComp<RM_Comp_ShadowCaster>()?.Props;
+				if (p == null || p.castShadeHeight <= 0f)
+				{
+					continue;
+				}
+				float len = directional ? RM_SunHeatMath.ShadowLength(p.castShadeHeight, sunLengthPerHeight, MaxCastCells) : 0f;
+				if (!RM_MovingShadeMath.ShadowBounds(w, h, t.Position.x, t.Position.z, p.castShadeRadius,
+					directional, sunShadowDir.x, sunShadowDir.y, len, out st.minX, out st.minZ, out st.maxX, out st.maxZ))
+				{
+					continue;
+				}
+				st.hasRect = true;
+				RM_MovingShadeMath.CastBody(movingShade, w, h, t.Position.x, t.Position.z, p.castShadeRadius,
+					directional, sunShadowDir.x, sunShadowDir.y, len, ShadowTipShade, p.castShadeDepth);
 			}
 		}
 
@@ -360,6 +514,10 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				s = Mathf.Max(s, parasolShade[i]);
 			}
+			if (movingShade != null && RM_CreatureBehaviorsSettings.movingShadeEnabled)
+			{
+				s = Mathf.Max(s, movingShade[i]);
+			}
 			return s;
 		}
 
@@ -394,6 +552,13 @@ namespace RimMandrake.CreatureBehaviors
 			if (parasolShade != null && EffectiveHeatKind != RM_HeatKind.ambient)
 			{
 				ex = RM_SunHeatMath.WithCover(ex, parasolShade[i]);
+			}
+			// LONGSHADE_GPT_ENRICHMENT_1 §2: a living caster's shadow is cast
+			// shade, so it covers under overhead and low sun alike, never
+			// under ambient heat.
+			if (movingShade != null && RM_CreatureBehaviorsSettings.movingShadeEnabled && EffectiveHeatKind != RM_HeatKind.ambient)
+			{
+				ex = RM_SunHeatMath.WithCover(ex, movingShade[i]);
 			}
 			if (glareFloor != null)
 			{
@@ -462,6 +627,7 @@ namespace RimMandrake.CreatureBehaviors
 			}
 			BuildGearLayer();
 			RefreshParasolLayer();
+			RefreshMovingShade(true);
 			RebuildHeatLayers();
 			gridVersion++;
 			// STILLSAND_MIRAGE_CONDITION_1: hold or end the mirage to match the sun.

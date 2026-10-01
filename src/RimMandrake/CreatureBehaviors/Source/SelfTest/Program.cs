@@ -624,6 +624,66 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(HeatstrokeStep(40f, HumanSafeMax) > HeatstrokeStep(40f, HumanSafeMax + off), "draught does not slow Heatstroke");
             });
 
+            // LONGSHADE_GPT_ENRICHMENT_1 §2, REAL from RM_MovingShadeMath.cs.
+            Case("moving shade: body footprint shaded, shadow runs along the sun, nothing upsun", () =>
+            {
+                int w = 40, h = 40;
+                float[] g = new float[w * h];
+                RM_MovingShadeMath.CastBody(g, w, h, 20, 20, 1, true, 1f, 0f, 6f, 0.6f, 1f);
+                for (int dz = -1; dz <= 1; dz++)
+                    for (int dx = -1; dx <= 1; dx++)
+                        Assert(g[(20 + dz) * w + 20 + dx] == 1f, "body cell " + dx + "," + dz + " not shaded");
+                Assert(g[20 * w + 25] > 0.5f, "no shadow 4 cells down-sun of the body edge");
+                Assert(g[20 * w + 17] == 0f, "shade appeared up-sun of the body");
+                Assert(g[23 * w + 20] == 0f, "shade appeared beside the body, off the sun line");
+            });
+
+            Case("moving shade: every written cell lies inside ShadowBounds", () =>
+            {
+                int w = 50, h = 50;
+                foreach (var dir in new[] { (1f, 0f), (-0.6f, 0.8f), (0.3f, -0.95f), (0f, 0f) })
+                {
+                    bool directional = dir.Item1 != 0f || dir.Item2 != 0f;
+                    float[] g = new float[w * h];
+                    RM_MovingShadeMath.CastBody(g, w, h, 25, 25, 2, directional, dir.Item1, dir.Item2, 9f, 0.6f, 0.8f);
+                    Assert(RM_MovingShadeMath.ShadowBounds(w, h, 25, 25, 2, directional, dir.Item1, dir.Item2, 9f,
+                        out int x0, out int z0, out int x1, out int z1), "bounds empty");
+                    for (int z = 0; z < h; z++)
+                        for (int x = 0; x < w; x++)
+                            if (g[z * w + x] > 0f)
+                                Assert(x >= x0 && x <= x1 && z >= z0 && z <= z1,
+                                    "cell " + x + "," + z + " written outside bounds for dir " + dir);
+                }
+            });
+
+            Case("moving shade: clearing the old rectangle and casting the new leaves no trail", () =>
+            {
+                int w = 40, h = 40;
+                float[] g = new float[w * h];
+                RM_MovingShadeMath.CastBody(g, w, h, 10, 10, 1, true, 0f, 1f, 5f, 0.6f, 1f);
+                RM_MovingShadeMath.ShadowBounds(w, h, 10, 10, 1, true, 0f, 1f, 5f, out int a0, out int b0, out int a1, out int b1);
+                RM_MovingShadeMath.ClearRect(g, w, h, a0, b0, a1, b1);
+                RM_MovingShadeMath.CastBody(g, w, h, 30, 10, 1, true, 0f, 1f, 5f, 0.6f, 1f);
+                for (int z = 0; z < h; z++)
+                    for (int x = 0; x < 20; x++)
+                        Assert(g[z * w + x] == 0f, "stale shade left at " + x + "," + z);
+                Assert(g[10 * w + 30] == 1f, "new body cell not shaded");
+            });
+
+            Case("moving shade: the gloomcast is a moving caster, the shadow cools like a rock's", () =>
+            {
+                var doc = new System.Xml.XmlDocument();
+                doc.Load(System.IO.Path.Combine(FindModsRoot(), "LongShade", "Defs", "ThingDefs_Races", "RM_LongShade_Gloomcast.xml"));
+                System.Xml.XmlNode td = doc.SelectSingleNode("//ThingDef[defName='RM_Gloomcast']");
+                Assert(td != null, "RM_Gloomcast missing");
+                float hgt = F(td, "comps/li[@Class='RimMandrake.CreatureBehaviors.RM_CompProperties_ShadowCaster']/castShadeHeight", 0f);
+                float depth = F(td, "comps/li[@Class='RimMandrake.CreatureBehaviors.RM_CompProperties_ShadowCaster']/castShadeDepth", 1f);
+                Assert(hgt > 0f, "RM_Gloomcast casts no moving shade");
+                float ex = RM_SunHeatMath.WithCover(RM_SunHeatMath.Exposure(RM_HeatKind.overhead, true, 0f, false, 0f), depth);
+                Assert(HeatstrokeStep(OutdoorC + RM_SunHeatMath.HeatOffset(ex, 30f, 1f, 1f, 70f), HumanSafeMax) == 0f,
+                    "a pawn in the gloomcast's shadow still gains Heatstroke");
+            });
+
             foreach (string p in Pass) Console.WriteLine("PASS " + p);
             foreach (string f in Fail) Console.WriteLine("FAIL " + f);
             Console.WriteLine(Pass.Count + "/" + (Pass.Count + Fail.Count) + " passed");
