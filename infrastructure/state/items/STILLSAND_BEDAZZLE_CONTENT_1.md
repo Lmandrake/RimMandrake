@@ -35,7 +35,15 @@ shipped inside `RimMandrake.Biomes`). This is wiring and defs whose outcome an a
 6. **Tier move of the sand catches (Q11a):** `RSW_DuneCrawler` and `RSW_GlassPearl` are invented,
    so they become `RM_DuneCrawler` and `RM_GlassPearl` in the RM tier. `RSW_SandStalker` stays RSW
    until the owner rules otherwise. The fishing hookup itself is `STILLSAND_SAND_SWIM_KIT_1`'s job.
-7. **The piinnok is NOT this item's.** It was admitted 2026-09-30 and is the first member of
+7. **The zuurrik is ADMITTED (owner, by card 2026-09-30 18:11 PDT).** The blood-waker swarm
+   (`RM_Zuurrik`; source row: the zuurrik entry in
+   `design/Jawa/worldbuilding/biomes/stillsand_bedazzle_review_2026-09-29.md`, §6 fill #1, with the
+   blood-on-sand clock in its mechanics list). Owed: the def, its art (not yet queued: dedup check,
+   then `fill_queue.py`), and a **map component** that polls new blood filth on sand cells in this
+   biome and, past a threshold, wakes a zuurrik swarm there that strips the stain and then the
+   bodies, then goes dormant again. It never attacks the unwounded and keys to the blood filth,
+   never to a clock of day. Add its `RM_Stillsand` roster row once the def exists.
+8. **The piinnok is NOT this item's.** It was admitted 2026-09-30 and is the first member of
    `WATCHER_CREATURES_MOD_1`, which owns its def, behaviour and art. This item adds its
    `RM_Stillsand` roster row only once that def exists.
 
@@ -43,6 +51,6 @@ shipped inside `RimMandrake.Biomes`). This is wiring and defs whose outcome an a
 
 - A Stillsand quicktest atlas shows no magenta and no donor texture on any free-tier def, and the
   free mod loads with `sarg.alphaanimals` and SWBestiary both absent.
-- The nine fill-out defs spawn on a Stillsand quicktest map.
+- The nine fill-out defs spawn on a Stillsand quicktest map; blood left on sand wakes a zuurrik swarm.
 - `RM_Qorrax`, `RM_DuneCrawler` and `RM_GlassPearl` resolve from the RM mod; no `RSW_`-prefixed
   def remains for an invented creature or catch.

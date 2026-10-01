@@ -22,8 +22,25 @@ Prior art to reuse, not re-invent (search done 2026-09-30):
 Constraints: no animal vanishes without a readable sign (a hole or mound shows where it hid); a
 Mod Settings toggle per feature; every DLC is assumed present.
 
+## owner rulings (card, 2026-09-30 18:11 PDT)
+
+- **Hide** = the creature vanishes in place and leaves a **sign mark on the cell** (the readable
+  sign the no-vanish constraint requires).
+- **Flinch cue** = anything that is not its own kind.
+- **Standalone:** it ships as its own mod, not folded into a biome mod.
+- **Q9 (peek art), owner typed:** *"You should check that we even can have a creatuer look different
+  in different mediums. Why not restrict its movements to be upon the Fine Sand of the deep desert?
+  that was rather the original intention of the Deep Desert / Dunes biome: swimmers swim in it, and
+  these creatures lurk just under its surface"*. Consequences:
+  1. **Before ANY watcher art is made**, verify with the RimSage MCP tools (or a cited decompiled
+     source) whether a pawn's rendered look can vary by the terrain under it. Record the answer,
+     with the symbol read, in this item.
+  2. **Bind each watcher's movement to ONE medium** (the Stillsand/deep-desert members to its fine
+     sand), so a single baked peek pose is enough and no per-terrain look is needed.
+
 ## criteria
 
+- The Q9 terrain-look check is answered and recorded, and every member names its one medium.
 - A design pitch is written and ruled by the owner: the kit mechanism, and a per-biome candidate
   member list drawn from existing rosters plus new creatures.
 - The kit is built, and one member per biome is proven on a quicktest map.
