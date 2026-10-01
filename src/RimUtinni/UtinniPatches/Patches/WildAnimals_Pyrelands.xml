@@ -108,36 +108,19 @@
   src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Emberscythe.xml):
     RUT_Emberscythe    0.05  large-predator     — was GR_Mantistanis (Vanilla Genetics Expanded)
 
-  Star Wars Animal Collection (Continued) (mod name string "Star Wars Animal
-  Collection (Continued)", packageId mlie.starwarsanimalcollection — confirmed
-  active in ModsConfig.xml). This mod's own workshop download was not present
-  in the local Steam Workshop cache to cite a raw XML line directly (only a
-  dependent mod, "Star Wars : The Force Standalone", id 3557220601, was found,
-  and it does not itself declare these races). Verified instead via TWO
-  independent lines of evidence that both require these exact defNames to be
-  real, loaded PawnKindDefs sourced from this mod:
-    (a) design/Jawa/fauna/animal_census.csv:487,493,515,549,583,585,637 —
-        Gizka/Anooba/Dalgo/Iriaz/Nuna/Orray/Zeer, each row's `mod`/`packageId`
-        columns naming this exact mod, built from a live per-mod XML scan.
-    (b) src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml —
-        this repo's OWN live fix, confirmed firing against a real capture, for
-        `/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Iriaz[2]`
-        (that file's op #40) and (per that file's header) prior removals for
-        Gizka/Nuna/Orray/Zeer duplicate records against the same biome — a
-        PatchOperationConditional that fires proves the exact node existed in
-        the loaded def set, not merely in this mod's own claim.
-    Anooba is the bare "Anooba" defName from Star Wars Animal Collection
-    (Continued), NOT this repo's own RSW_Anooba port
-    (src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Anooba.xml) — that
-    port is a distinct def created only to resolve a ZBiome_Grasslands/
-    Ashkarr duplicate-record collision and is not wired to any other biome by
-    that change.
-    Anooba              0.35  medium-predator
-    Iriaz               0.50  small-herd
-    Nuna                0.50  small
-    Orray               0.25  medium (burrower + predator double role)
-    Zeer                0.60  large-herd
-    Dalgo               0.18  brake (round-2 import)
+  OURS, the SW-canon herd (SWBestiary, packageId mandrake.rsw.swbestiary), cast as
+  RSW_* defs; the donor's bare Anooba/Iriaz/... keys are no longer used anywhere here:
+    RSW_Anooba          0.35  medium-predator
+    RSW_Iriaz           0.50  small-herd
+    RSW_Nuna            0.50  small
+    RSW_Orray           0.25  medium (burrower + predator double role)
+    RSW_Zeer            0.60  large-herd
+    RSW_Dalgo           0.18  brake (round-2 import)
+    RSW_Gizka           1.00  quick grain-forager
+
+  Both top-level <Operation MayRequire=...> guards below (swbestiary, biomes) are IGNORED by
+  the 1.6 engine, so a test list must carry those mods itself
+  (PATCH_MAYREQUIRE_GUARD_INERT_1).
     Gizka               1.00  grain (ECOSYSTEM_PYRAMID_LAW_1: the most-seen animal)
 
   ============================================================================
