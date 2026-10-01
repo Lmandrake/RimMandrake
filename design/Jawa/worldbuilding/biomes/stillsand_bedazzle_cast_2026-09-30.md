@@ -17,7 +17,7 @@ Card selections are recorded as *decision taken by question card*; only typed wo
 | 2 | Heat cover follows the sun angle: `overhead` rules above about 55°, `lowSun` below | card | as recommended |
 | 3 | The muurrok **YES**, the free tier's giant, typed: *"Yes and use the beam attack style from mechanics due to reflections"* | card + typed | new: a reflected-sun beam in the mechanoid style. RimSage-verified as `Verb_ShootBeam` (`Gun_BeamGraser`), which needs an animal-safe copy (see `STILLSAND_EVENT_CREATURES_1` §3) |
 | 4 | The piinnok **admitted** with its sink-when-threat warning | card | it is also the first member of `WATCHER_CREATURES_MOD_1`, which owns its def, behaviour and art |
-| 5 | Drift shovelling yields glass sand at **full yield** | card | **reverses** the dunes engine's "dig vanishes" (the doc recommended no). The sieve becomes a grader (`STILLSAND_GLASS_LENS_CHAIN_1` §2); `design/MOVING_DUNES_DESIGN.md` corrected in this commission |
+| 5 | Drift shovelling yields glass sand at **full yield** | card | **reverses** the dunes engine's "dig vanishes" (the doc recommended no). The sieve now sifts glass sand into fine sand (`STILLSAND_GLASS_LENS_CHAIN_1` §2); `design/MOVING_DUNES_DESIGN.md` corrected in this commission |
 | 6 | Slate IN: droids invisible to swimmers; the thumper, typed *"Also thumper needs moisture not just thump"*; gale static; the mirage; fulgurites; sun glare + goggles; the sun lance; singing dunes warn; dust devils | card + typed | the thumper draws only while its sand is wet |
 | 7 | Slate OUT: travel thirsty (the water appraisal), dunes take the ship, sinkholes | card | removed everywhere: no "wettest body" targeting, no hull burial, no sand caves |
 | 8 | Glare is race-gated, typed: *"the sun protection for the eyes is great for races that need it, but the Jawa won't need it, but the slaves might"* | typed | Jawas immune by gene (`RM_GlareAdapted` on `RSW_RimMandrakeJawa`); everyone else, slaves included, is affected |
@@ -37,7 +37,7 @@ Each carries a Mod Settings toggle per feature and the readable-sign rule.
 | `STILLSAND_EVENT_CREATURES_1` | krayt attack incident (krayts stay wild); the muurrok and its mirror beam; sarlacc comes to root; greater krayt den quest; krayt horn; Long Hunger live-fire | the swim kit |
 | `STILLSAND_PRECIOUS_CAVES_1` | the rock genstep, the cave as a place, the precious table; **replaces `STILLSAND_CAVERN_AUTHORING_1`** | nothing |
 | `STILLSAND_DUNE_GALE_1` | the dune gale, abrasion, carry-and-return, static, one emergence (mummified caravan), seeding, dust devils, tracks wiped | `MOVING_DUNES_BUILD_1` live run |
-| `STILLSAND_GLASS_LENS_CHAIN_1` | drift → glass sand; sieve as grader; sun furnace; sun glass; lens bench; lenses; solar still (+ wringing); solar oven; sun lance; geophone; fulgurites on Stillsand + real-photo art; ship lens array row | nothing (crest-plate oven upgrade waits on the muurrok) |
+| `STILLSAND_GLASS_LENS_CHAIN_1` | drift → glass sand; fine sand by sifting; sun furnace; sun glass; lens bench; lenses; solar still (+ wringing); solar oven; sun lance; geophone; fulgurites on Stillsand + real-photo art; ship lens array row | nothing (crest-plate oven upgrade waits on the muurrok) |
 | `STILLSAND_SKELETONS_TRACKS_1` | skeleton buildings, bone harps, corpse-to-skeleton, krayt graveyard re-pointed, track filths erased by the dunes, horizon warnings | the swim kit (wake filth) |
 | `STILLSAND_RETURN_RITUAL_1` | the Debt, the Return ritual at a debt stone, bloom-on-pour (RM) | the still |
 
@@ -76,7 +76,7 @@ under `origin/main:src` (7,512). Each subject was searched by current, port and 
 | vozzik, vekka, drazzik, nizzek, guzzka, aurrok | + sandlion, cavernbeast, cavebeast, spinedgow | 0 everywhere, **queued** |
 | biosilica | biosilica | 0, **queued** |
 | muurrok | + tuullik, kaaddok, haarrok | 0, **queued** |
-| piinnok, zuurrik | + tiillok, muurra | 0; **held** (§5) |
+| piinnok, zuurrik | + tiillok, muurra | 0; zuurrik admitted; piinnok held (§5) |
 | glass sand, sun glass, lenses, furnace, still, oven, sieve, sun lance, geophone, thumper, krayt horn, debt stone, water jar, dust devil, sand wake | the obvious spellings + heliostat, groundcaller, sandhammer, wringing | 0, **queued** |
 | goggles | goggle | only Armoury headgear PNGs (Bothan, light-scan, pao hat), none a desert sun goggle, **queued**; existing goggles also cancel glare by tag |
 | skeletons | skeleton, ribcage, kraytskull, kraytgraveyard | only `RM_FossilSkeleton` (Flooded Canyon, an item) and the krayt `*_Dessicated` corpse sprites; no giant skeleton building, **queued** |
@@ -106,11 +106,11 @@ seen when it cruises. 1024 canvas (ds ~10). **Crest-plate** (its corpse yield, t
 reflector) and the **krayt horn** (Obi-Wan's call, RSW) are item icons.
 
 ### 4C. Sand to glass to lens (`STILLSAND_GLASS_LENS_CHAIN_1`)
-Five materials that must read as a refinement ladder: glass sand (ivory powder) → lens sand
+Five materials that must read as a refinement ladder: glass sand (ivory powder) → fine sand
 (sugar-white, visibly finer) → sun glass (pale honey slabs) → precision lens (clear, brass rim) →
 pearl lens (opal milk) and krayt lens (luminous amber). Buildings: the **sun furnace** (mirror dish
-on a crucible, no fire), the **sieve** (driftwood grading screen with two trays, the ruling's new
-grader), the **lens bench** (3×1, faced), the **solar still** (black basin, beaded glass, one focal
+on a crucible, no fire), the **sieve** (driftwood sifting screen with two trays; the ruling makes it a chore
+tool or a Sand Sieve building, producing fine sand), the **lens bench** (3×1, faced), the **solar still** (black basin, beaded glass, one focal
 spot), the **solar oven** (mirror petals), the **sun lance** (base + rotating heliostat top) and the
 **geophone** (glass-bulb resonator spike).
 🔴 **The fulgurite** is drawn from the six real photographs in
@@ -145,7 +145,7 @@ eruption scar, glasscrust scar, crawler tread (RSW).
 **Held, not queued:**
 - **piinnok**: owned by `WATCHER_CREATURES_MOD_1`. Its sprite's shape depends on that pitch's Q9
   (peek art baked in, or a plain sprite plus a rim layer), so its art waits for that ruling.
-- **zuurrik** (the blood-waker, review §6 fill #1): proposed, never ruled. No def, no art.
+- **zuurrik** (the blood-waker, review §6 fill #1): ADMITTED 2026-09-30; def, art and a blood-on-sand map component are owed (`STILLSAND_BEDAZZLE_CONTENT_1` §7). Art not yet queued.
 - **vaalok**: ruled (Q11) but never designed to art-brief level; CONTENT_1 files the def and queues
   the art after a dedup check.
 - **Terrain** (brine seep, cave floor, the Return-line stain): terrain textures are authored with
@@ -174,7 +174,7 @@ reskin validation). Queued with `fill_queue.py`, derive-facings default.
 | EVENT | `RM_Muurrok` | 1024 | s,e,n | mirror and oxblood |
 | EVENT | `RM_CrestPlate` | 256 | single | polished silver |
 | EVENT | `RSW_KraytHorn` | 256 | single | old ivory |
-| LENS | `RM_GlassSand` / `RM_LensSand` / `RM_SunGlass` | 256 | single | ivory powder / sugar white / pale honey |
+| LENS | `RM_GlassSand` / `RM_FineSand` / `RM_SunGlass` | 256 | single | ivory powder / sugar white / pale honey |
 | LENS | `RM_PrecisionLens` / `RM_PearlLens` / `RSW_KraytLens` | 256 | single | clear+brass / opal milk / krayt amber |
 | LENS | `RM_SunFurnace` | 512 | single | white heat and steel |
 | LENS | `RM_SandSieve` | 256 | single | driftwood and wire |
@@ -200,10 +200,12 @@ reskin validation). Queued with `fill_queue.py`, derive-facings default.
 
 ## 7. Handoff notes
 
-- **Owner still to rule:** (a) the sieve's new role as a grader is BENCH's rethink after ruling 5
-  removed its old job; (b) zuurrik, never carded; (c) the watcher pitch's Q9 (peek art), which
-  gates the piinnok's art; (d) the first-value heat numbers (55 °C substellar, 0.35 glare floor),
-  which the owner-watched heat sitting tunes.
+- **Ruled by card 2026-09-30 18:11 PDT:** (a) the product is Fine Sand, a trade commodity, made by a
+  sifting chore or, as fallback, a Sand Sieve building (`STILLSAND_GLASS_LENS_CHAIN_1` §2); (b) the
+  zuurrik is admitted (`STILLSAND_BEDAZZLE_CONTENT_1` §7); (c) the watchers: peek art waits on a
+  RimSage check that a look can vary by terrain, and each watcher is bound to one medium
+  (`WATCHER_CREATURES_MOD_1`); (d) the first heat values (+55 °C substellar, 0.35 glare floor) are
+  accepted and tuned in live play (`STILLSAND_SUN_FROM_LATITUDE_1`).
 - `RM_FE_Fulgurite_real` is a re-make of a shipped texture: when it lands, put it beside the current
   `RM_FE_Fulgurite.png` on a review sheet before swapping, since the Pyrelands ships the old one.
 - The worn-goggle set assumes a plain eyes-layer apparel with no body-type variants; if the def pass

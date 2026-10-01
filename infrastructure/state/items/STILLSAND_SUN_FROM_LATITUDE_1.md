@@ -25,9 +25,10 @@ heat planet-wide (sun exposure feeds vanilla heat, never a new hediff).
    55° the `overhead` rules apply (roofs and parasols count, lee shadows are short); below it,
    `lowSun` (only a lee or rock counts). This is which cover counts, never a new kind of heat.
    Built as an elevation threshold on the existing heat-kind extension, so any biome can use it.
-4. **Irradiance by angle:** the heat offset scales with sin(elevation). First values: 55 °C at the
-   substellar point, about 35 °C in the far ring (today 35 flat). The owner-watched sitting tunes them.
-5. **Sand glare (heat):** exposure on open natural sand cannot drop below 0.35, even in cast
+4. **Irradiance by angle:** the heat offset scales with sin(elevation). Values accepted (owner, by card
+   2026-09-30 18:11 PDT): +55 °C at the substellar point, scaled by sun angle, about 35 °C in the far
+   ring (today 35 flat). They are tuned in live play.
+5. **Sand glare (heat):** exposure on open natural sand cannot drop below 0.35 (accepted, owner card 2026-09-30; tuned in live play), even in cast
    shade. Constructed floors do not glare, so a paved lee ("shade yard") is the one outdoor space
    where shade fully works.
 6. **Glare-blind, race-gated (slate IN).** Owner, typed: *"the sun protection for the eyes is great

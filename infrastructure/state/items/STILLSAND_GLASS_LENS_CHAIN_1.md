@@ -17,17 +17,24 @@ the stack; the raw optics that do exist are `RM_Biosilica` (no use yet), `RSW_Gl
    `WorkGiver_ClearSnowOrSand` on a dunes-engine map drops `RM_GlassSand` in proportion to the sand
    depth removed, with no loss factor. Every drift is stock. `design/MOVING_DUNES_DESIGN.md` is
    corrected in the same commission. Mind the engine's mass cap: removed sand leaves the field.
-2. **The sieve, rethought.** With drift as the bulk source, the sand sieve no longer makes sand
-   from terrain. It becomes the **grader**: `RM_GlassSand` in, a fraction of **`RM_LensSand`**
-   (the region's ultra-fine grain, the only input that makes lens-grade glass) out, the rest back
-   as plain glass sand. Each batch also has small chances of grit finds: biosilica fragments,
-   glasscrust grit, a glass-pearl seed. Plain glass sand makes plain sun glass (glazing, still
-   tops); lens sand makes lens glass. The sieve is a staked screen built on sand, no power.
-   ⚠️ This is BENCH's rethink, made because the ruling removed the sieve's old job; the owner may
-   prefer another role (see the cast bible §7).
+2. **Fine sand and the sieve (ruled by card 2026-09-30 18:11 PDT).** Owner, typed: *"It's not just
+   Lens Sand, it's simply Fine Sand, and one of the things it's good for is high quality glass. It's a
+   trade commodity. Can we make pawns get the sand sieve and do it as a chore? If not, the sand sieve
+   becomes just a recipe at a new processing building called the Sand Sieve. Could be a shared piece
+   of furniture with the Cuisine mod: a sifter."* So the product is **`RM_FineSand`**, a trade
+   commodity (priced and tradable) whose uses include high-quality glass; there is no separate "lens
+   sand" and the sieve is not a grader. Glass sand (`RM_GlassSand`, from drift) sifts into fine sand
+   with small chances of grit finds: biosilica fragments, glasscrust grit, a glass-pearl seed.
+   Plain glass sand makes plain sun glass (glazing, still tops); fine sand makes lens-grade glass.
+   - **Preferred form: sifting as a pawn chore with a sieve.** Check feasibility FIRST (a hauled-to
+     job or a work type that has a pawn use a carried sieve on a sand stack or sand cell, no
+     building); report the finding before building either form.
+   - **Fallback, only if the chore is infeasible:** a **Sand Sieve** processing building with a
+     sifting recipe, possibly a shared **"sifter"** furnishing with the High Cuisine design
+     (`design/Jawa/proposals/high_cuisine_deep_design.md`); read that doc before defining it.
 3. **The sun furnace (bootstrap).** A mirror-and-lens dish built with `RM_Biosilica` + steel; no
    fuel, no power. It melts glass sand into **`RM_SunGlass`** (one stuff, one stat line, one market
-   value, waiting on `DESIGN_MATERIALS_REVIEW_1`) and lens sand into lens-grade glass. Output scales
+   value, waiting on `DESIGN_MATERIALS_REVIEW_1`) and fine sand into lens-grade glass. Output scales
    with the tile's sun elevation; the gale stops it.
 4. **The lens bench** grinds lens glass into **`RM_PrecisionLens`**. Premium: a glass pearl gives a
    **pearl lens**, a krayt pearl a **krayt lens** (the apex; RSW patch recipe).
@@ -66,11 +73,11 @@ the stack; the raw optics that do exist are `RM_Biosilica` (no use yet), `RSW_Gl
 11. **The ship lens array** is the Stillsand's row for `BIOME_SHIP_CONTRIBUTIONS_1`: add the row there
     (a lens-array ship part fed by precision lenses); the build rides that item.
 12. **Mod Settings:** toggle drift yield, each building, the sun lance and Stillsand fulgurites;
-    sliders for drift yield per depth, sieve fraction and still rate.
+    sliders for drift yield per depth, sifting yield and still rate.
 
 ## criteria
 
-- On a Stillsand quicktest, clearing a drift drops glass sand; the sieve turns glass sand into lens
+- On a Stillsand quicktest, clearing a drift drops glass sand; sifting turns glass sand into fine
   sand; the furnace, bench and still each complete one cycle in full sun and stop in the gale.
 - The oven cooks a meal with no fuel and no power in sun, and not in shade.
 - A lightning strike on `RM_DeepSand` can leave a fulgurite with the Pyrelands toggle off.
