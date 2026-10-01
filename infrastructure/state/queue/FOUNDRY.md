@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T07:59:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T08:02:22Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1295,15 +1295,6 @@ target:   v1
 kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
-
-## STILLSAND_STILL_COOLING_DRAUGHT_1 Still-water cooling draught: drinking it gives ComfyTemperatureMax +8 C for ~6 h (XML on the still's output): parent spec item 10
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  10. Cooling draught: a drink of still water gives a hediff of ComfyTemperatureMax +8 °C for
-prose:    infrastructure/state/items/STILLSAND_STILL_COOLING_DRAUGHT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

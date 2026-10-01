@@ -1629,3 +1629,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"STILLSAND_STILL_COOLING_DRAUGHT_1","ts":"2026-10-01T07:57:56Z"}
 {"seat":"FOUNDRY","event":"start","id":"STILLSAND_STILL_COOLING_DRAUGHT_1","ts":"2026-10-01T07:58:01Z"}
 {"seat":"FOUNDRY","event":"file","id":"STILLSAND_SUN_GOGGLES_ART_1","title":"Wire the sun goggles' own icon and worn art when it lands","kind":"task","target":"v1","needs":"offline","caused_by":"STILLSAND_GLARE_BLIND_GOGGLES_1","for":"FOUNDRY","ts":"2026-10-01T07:59:29Z"}
+{"seat":"FOUNDRY","event":"close","id":"STILLSAND_STILL_COOLING_DRAUGHT_1","sha":"568fa9d2c","ts":"2026-10-01T08:02:22Z"}
