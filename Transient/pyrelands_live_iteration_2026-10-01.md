@@ -178,6 +178,45 @@ PASS=0 FAIL=2 UNMEASURED=18 (state PASSes await the judge).
 - burrowers_dive PASS; regrow UNMEASURED (calibrating 256/0/0/0); fulgurite UNMEASURED
   (0 sand cells left: 24 fires, expected 0.00).
 
+### Run 8 — last run (`Transient/northstar/Pyrelands_20261001T220547Z.json`)
+
+Driver: NOT GREEN, PASS=0 FAIL=1 UNMEASURED=19 (11 state-PASS bars await `judge_cli.py`).
+No harness error; every component reached a verdict with a stated reason.
+
+| bar | state verdict | reason |
+|---|---|---|
+| mapgen_log_clean | PASS (awaits judge) | Player.log clean |
+| plant_distribution_correct, animal_distribution_correct, grass_chokes_ground, ruins_scorched, burn_line_present, ground_ash_ladder | UNMEASURED | site not fresh: ~45,000 deep-ash cells outside the pads (run 4's lightning burn) — reload the site |
+| embergrass_regrows | UNMEASURED | CALIBRATING (unruled): 256 pre / 0 / 0 / 0 on a burned-out map |
+| scorchfruit_fire_born | **FAIL** | 0 ScorchFruit in a burned, freshly grassed 24x24 soil cohort after 11,600 ticks |
+| scorchfruit_produces | PASS (awaits judge) | forced harvest -> yield; forced Ingest -> food rose |
+| scorchfruit_spoils_fast | UNMEASURED | the sealed-room stack (and every other food stack on the map) vanished between day 1.0 and 1.5, before its timer ran out; run 7 measured it cleanly (PASS). Cause unknown; the message now states the measured facts and the next run logs `drain_log` at the disappearance |
+| fulgurite_after_lightning | UNMEASURED | 0 sand cells left, so no strike can reach sand |
+| firehawk_carries_ember, furnacebeast_warmth, furnacebeast_heats_room, burrowers_dive | PASS (await judge) | job read / pen / matched cold rooms / RM_Burrowed |
+| ashfall_darkens_drifts, cinderfall_distinct, blackrain_reads, cannot_ordinary_rain | PASS (await judge) | |
+| toggle floor: fulgurite_armed_only, biome_def_wiring, ash_dusting, ashfall_accumulates | PASS | |
+| toggle floor: scorch_fruit_seed | FAIL | same mechanism as fire_born |
+
+Stopped here at the coordinator's request (bridge needed by queued scripts).
+
 ## Findings about the mod
 
-(filled at the end)
+1. **ScorchFruit is never born from a single burn of grassed ground** (scorch_fruit_seed and
+   scorchfruit_fire_born, runs 4-8, two pads). `Patch_FireTick_AshAndScorchFruit` takes its ONE
+   roll per Fire on the fire's first tick and needs a plant-free standable cell in the 3x3;
+   at that moment the burning grass still stands on every cell. Fruit did appear on the ladder
+   pad after three burn cycles, so the code can fire — only not where the bar says it should.
+2. **`Plant_TreeAnima` grows on a fresh Pyrelands site** (run 4, before the site burned): a
+   foreign plant the 3-plant manifest forbids; `WildPlantAllowlist` does not stop the Royalty
+   anima genstep.
+3. Recorded, not a bar failure: the furnace-beast's heat pusher stops at 24 C
+   (`heatPushMaxTemperature`), so at the Pyrelands' own 45-60 C it cannot heat a room; it only
+   does from a cold start. And an uncharged beast's warmth aura reaches 1.7 cells.
+
+## Fixture damage (for the seat)
+
+- Run 4's lightning chain burned the whole site to deep ash and the site's three colonists
+  died. The site needs `northstar_site.py` reload before any fresh-map census bar can measure.
+- The player faction ("Vererabum Common League") and the settlement ("Pandale") were named
+  through the dialogs to stop the map hop; `northstar_site.py` should name them at creation.
+- `rimflow bridge who` read FREE during run 8 (the seat's hold went stale); nothing else drove.
