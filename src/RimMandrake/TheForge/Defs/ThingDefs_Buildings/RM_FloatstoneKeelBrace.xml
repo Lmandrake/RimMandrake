@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FloatstoneKeelBrace.xml        FORGE_GPT_ENRICHMENT_1 §1 — floatstone keelwork
+
+  "Pearl-white, spun-sugar floatstone braces threaded through a gravship reduce its
+  launch cost." MEASURED (RimSage 1.6): Odyssey launch cost is fuel, cut only by a
+  linked gravship facility's fuelSavingsPercent (vanilla FuelOptimizer: 0.3, two per
+  ship). So the brace is such a facility; Patches/RM_TheForge_KeelBraceLink.xml lists it
+  on the grav engine. RM_CompKeelBrace (Source/RM_ForgeKeelwork.cs) shows the saving.
+  Unlocked by RM_SpunstoneBonding, which is hidden until floatstone gardens are studied.
+
+  TUNED, every number, not ruled: 5% fuel per brace, four per ship (20% at most, under
+  one vanilla optimizer's 30%, because a brace costs no gravtech); 30 floatstone per
+  brace (just under one garden's 35-block harvest); mass 3 (30 blocks at 0.1).
+
+  PLACEHOLDER ART: the floatstone block's own item texture. Bespoke brace art is owed
+  (FORGE_KEELWORK_REMAINDER_1).
+-->
+<Defs>
+  <ThingDef ParentName="GravshipComponentBase">
+    <defName>RM_FloatstoneKeelBrace</defName>
+    <label>floatstone keel brace</label>
+    <description>A pearl-white brace of spun floatstone, threaded through a gravship's frame along the lines its strain runs. It weighs almost nothing and gives almost nothing, so the grav engine lifts the ship with less help from its thrusters: every linked brace cuts the fuel a flight burns.\n\nA gravship can carry up to four keel braces.</description>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Item/RM_Floatstone/RM_Floatstone</texPath>
+      <drawSize>(1, 1)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>2</Beauty>
+      <WorkToBuild>2400</WorkToBuild>
+      <Mass>3</Mass>
+    </statBases>
+    <costList>
+      <RM_Floatstone>30</RM_Floatstone>
+    </costList>
+    <size>(1, 1)</size>
+    <fillPercent>0.3</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>14</pathCost>
+    <canOverlapZones>false</canOverlapZones>
+    <designationCategory>Odyssey</designationCategory>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <resourcesFractionWhenDeconstructed>1</resourcesFractionWhenDeconstructed>
+    <terrainAffordanceNeeded>Substructure</terrainAffordanceNeeded>
+    <researchPrerequisites>
+      <li>RM_SpunstoneBonding</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_GravshipFacility">
+        <fuelSavingsPercent>0.05</fuelSavingsPercent>
+        <requiresLOS>false</requiresLOS>
+        <maxSimultaneous>4</maxSimultaneous>
+        <maxDistance>500</maxDistance>
+      </li>
+      <li Class="RimMandrake.TheForge.CompProperties_KeelBrace" />
+    </comps>
+    <uiOrder>2210</uiOrder>
+  </ThingDef>
+</Defs>

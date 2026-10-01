@@ -1,4 +1,5 @@
 using LudeonTK;
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.TheForge
@@ -37,6 +38,29 @@ namespace RimMandrake.TheForge
             }
             cycle.DebugAdvancePhase();
             Log.Message("[RMTheForgeDebug] advanced. " + cycle.DebugStateReport());
+        }
+
+        // FORGE_GPT_ENRICHMENT_1 quicktest surface.
+        [DebugAction(CAT, "Spunstone: report knowledge",
+            allowedGameStates = AllowedGameStates.Playing)]
+        private static void SpunstoneReport()
+        {
+            RM_SpunstoneKnowledge k = RM_SpunstoneKnowledge.Get();
+            ResearchProjectDef p = RM_TheForgeDefOf.RM_SpunstoneBonding;
+            Log.Message("[RMTheForgeDebug] spunstone points=" + (k != null ? k.Points.ToString("0.##") : "null")
+                + " revealed=" + (k != null && k.Revealed) + " projectHidden=" + p.IsHidden + " canStart=" + p.CanStartNow);
+        }
+
+        [DebugAction(CAT, "Spunstone: reveal now",
+            allowedGameStates = AllowedGameStates.Playing)]
+        private static void SpunstoneReveal()
+        {
+            RM_SpunstoneKnowledge k = RM_SpunstoneKnowledge.Get();
+            if (k != null && !k.Revealed)
+            {
+                k.Reveal(null);
+            }
+            SpunstoneReport();
         }
     }
 }

@@ -481,6 +481,13 @@
       <li Class="RimMandrake.TheForge.CompProperties_ForgeCycleDormancy">
         <awakeDuringRain>true</awakeDuringRain>
         <awakeDuringFlashWindow>true</awakeDuringFlashWindow>
+        <!-- FORGE_GPT_ENRICHMENT_1 §7, the dhuvvox clock: countdown, slowing in
+             the final quarter-hour, a click as each nodule opens, a visible curl
+             when it reseals. -->
+        <runClock>true</runClock>
+        <slowFinalHours>0.25</slowFinalHours>
+        <slowHediff>RM_DhuvvoxRunSlowing</slowHediff>
+        <wakeSound>RM_DhuvvoxNoduleClick</wakeSound>
       </li>
     </comps>
     <race>

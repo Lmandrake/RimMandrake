@@ -55,3 +55,18 @@ Each ships a Mod Settings toggle.
 - Each of the seven is quicktest-proven on a Forge map.
 - A floatstone brace measurably changes gravship launch cost.
 - No dhuvvox or dhokkur disappears without a visible trace.
+
+## built (offline tranche, 2026-10-01)
+
+- §1 keelwork: `RM_FloatstoneKeelBrace`, a vanilla gravship facility (`fuelSavingsPercent`, TUNED 5%, four per
+  ship) linked to the grav engine by patch. MEASURED: Odyssey has no gravship mass, so no Harmony hook is needed.
+  Remainder: `FORGE_KEELWORK_REMAINDER_1`.
+- §2 spunstone: a study comp on mature gardens, a colony knowledge counter, `RM_SpunstoneBonding` hidden until
+  revealed, and an unlock letter. Remainder: `FORGE_SPUNSTONE_SOURCES_1`.
+- §3 voices: `RM_ForgeVoices` with phase sustainers, positional coughs and ticks, a cracking pulse, stingers and
+  visual cues (always on when muted). Placeholder vanilla audio; owed: `FORGE_VOICES_AUDIO_1`.
+- §7 dhuvvox clock: countdown, final quarter-hour slowing, nodule click, visible curl. Remainder:
+  `FORGE_DHUVVOX_SWARM_REMAINDER_1`.
+- Not built, each with its open question: §4 `FORGE_WHITE_PLUME_FRONTS_1`, §5 `FORGE_SKY_PASTURES_1`, §6
+  `FORGE_DHOKKUR_WAYS_1`.
+- Every built piece has a Mod Settings toggle. Live proof: `FORGE_ENRICHMENT_QUICKTEST_1`.

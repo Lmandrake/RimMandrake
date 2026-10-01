@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ForgeVoices.xml        FORGE_GPT_ENRICHMENT_1 §3 — the four voices of the Forge
+
+  Owner-picked spec: still heat = a subterranean turbine-like throb; gas washes approach
+  with coughing vents; boiling rain = a deafening hiss; cooling basalt ticks and sings
+  like glass; before remelt the harmony drops out and a deep cracking pulse begins.
+  Played by RM_ForgeVoices (Source/RM_ForgeVoices.cs), driven by the cycle condition.
+
+  PLACEHOLDER AUDIO. Every clip is a VANILLA clip retinted by pitch and volume, the
+  same doctrine as RM_CanyonBeats.xml. Clip paths read from vanilla SoundDefs in
+  RimSage 2026-10-01, each verbatim from the named vanilla SoundDef's own grain:
+  GeothermalPlant_Ambience (Electricity/GeothermalPlant/Run/GeothermalPlantRun_Loop1a),
+  GeyserSpray (Misc/Steam_Geyser/SteamGeyser_Venting), HissJet (Misc/Hiss/HissJet),
+  Roof_Collapse (Misc/RockCollapse), plus UI/TickLow, UI/TinyBell and the off-map
+  thunder folder. The first four are packed in resources.assets and still need their
+  VANILLA_PACKED entries in src/RimMandrake/Utils/selftest_sound_paths.py. Bespoke recordings are owed:
+  FORGE_VOICES_AUDIO_1. The defNames are what the code binds to; replace the grains.
+
+  TUNED, every number: pitches pulled down for the mountain-sized sounds (throb,
+  pulse, stinger) and up for the small glass ones; on-camera sustainers sit just under
+  vanilla weather loudness and follow the ambient-volume slider like vanilla rain does.
+-->
+<Defs>
+
+  <!-- Still heat: the turbine throb. On camera; the whole mountain is the source. -->
+  <SoundDef>
+    <defName>RM_ForgeVoice_StillThrob</defName>
+    <sustain>True</sustain>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Electricity/GeothermalPlant/Run/GeothermalPlantRun_Loop1a</clipPath>
+          </li>
+        </grains>
+        <volumeRange>9~9</volumeRange>
+        <pitchRange>0.35~0.38</pitchRange>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_AmbientVolume" />
+            <outParam Class="SoundParamTarget_Volume" />
+          </li>
+        </paramMappings>
+        <sustainAttack>2</sustainAttack>
+        <sustainRelease>2</sustainRelease>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- Gas wash approaching: a vent coughs. Positional, at a geyser or open ground. -->
+  <SoundDef>
+    <defName>RM_ForgeVoice_VentCough</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>3</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Misc/Steam_Geyser/SteamGeyser_Venting</clipPath>
+          </li>
+        </grains>
+        <volumeRange>16~20</volumeRange>
+        <pitchRange>0.55~0.7</pitchRange>
+        <distRange>15~160</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- Boiling rain: the deafening hiss. On camera, over the weather's own rain. -->
+  <SoundDef>
+    <defName>RM_ForgeVoice_RainHiss</defName>
+    <sustain>True</sustain>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Misc/Hiss/HissJet</clipPath>
+          </li>
+        </grains>
+        <volumeRange>14~14</volumeRange>
+        <pitchRange>0.5~0.55</pitchRange>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_AmbientVolume" />
+            <outParam Class="SoundParamTarget_Volume" />
+          </li>
+        </paramMappings>
+        <sustainAttack>1.5</sustainAttack>
+        <sustainRelease>3</sustainRelease>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- Cooling basalt: a tick in the crust. Positional, at a crusted cell. -->
+  <SoundDef>
+    <defName>RM_ForgeVoice_BasaltTick</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>4</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>UI/TickLow</clipPath>
+          </li>
+        </grains>
+        <volumeRange>14~18</volumeRange>
+        <pitchRange>1.6~2.2</pitchRange>
+        <distRange>8~90</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- Cooling basalt: the glass sings. Positional, rarer than the tick. -->
+  <SoundDef>
+    <defName>RM_ForgeVoice_GlassSing</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>2</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>UI/TinyBell</clipPath>
+          </li>
+        </grains>
+        <volumeRange>8~11</volumeRange>
+        <pitchRange>1.25~1.6</pitchRange>
+        <distRange>10~110</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- Before remelt: the deep cracking pulse. On camera. -->
+  <SoundDef>
+    <defName>RM_ForgeVoice_CrackPulse</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Ambience/Thunder/OffMap</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>16~18</volumeRange>
+        <pitchRange>0.35~0.42</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- Phase stinger: one low collapse as the mountain changes voice. On camera. -->
+  <SoundDef>
+    <defName>RM_ForgeVoice_PhaseStinger</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Misc/RockCollapse</clipPath>
+          </li>
+        </grains>
+        <volumeRange>12~12</volumeRange>
+        <pitchRange>0.45~0.5</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <!-- FORGE_GPT_ENRICHMENT_1 §7: a dhuvvox nodule clicks open. Positional. -->
+  <SoundDef>
+    <defName>RM_DhuvvoxNoduleClick</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>3</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>UI/TickLow</clipPath>
+          </li>
+        </grains>
+        <volumeRange>10~13</volumeRange>
+        <pitchRange>2.6~3.0</pitchRange>
+        <distRange>5~45</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>
