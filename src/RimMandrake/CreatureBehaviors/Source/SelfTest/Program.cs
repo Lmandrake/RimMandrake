@@ -24,6 +24,10 @@
 // by vanilla's Heatstroke curve (bigger = further, already hot = nowhere,
 // the strictness dial), and the §6 go-and-return ring.
 //
+// STILLSAND_SUN_FROM_LATITUDE_1: the heat kind resolved from sun elevation,
+// irradiance by sin(elevation) with its far-ring floor, and the sand glare
+// floor (shade on sand stays warm, a paved shade yard does not).
+//
 // NOT covered, and why: anything that needs a live Map — the room test
 // (UsesOutdoorTemperature), roof/thing scans, the Harmony postfixes and the
 // NativeArray customizer. Those are the quicktest criteria on the item.
@@ -417,6 +421,62 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(cells.Contains(0) && cells.Contains(5) && !cells.Contains(8), "ring from x=4 wrong");
                 g.ReachableWithReturn(0, 0, cells);
                 Assert(cells.Count == 0, "no budget still drew a ring");
+            });
+
+            // ── STILLSAND_SUN_FROM_LATITUDE_1 ───────────────────────────
+            Case("stillsand: cover follows the sun angle (overhead at/above threshold, lowSun below)", () =>
+            {
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 70f, 55f) == RM_HeatKind.overhead, "70 deg not overhead");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 55f, 55f) == RM_HeatKind.overhead, "55 deg not overhead");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 40f, 55f) == RM_HeatKind.lowSun, "40 deg not lowSun");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.overhead, 40f, 55f) == RM_HeatKind.lowSun, "base overhead at 40 not lowSun");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.ambient, 80f, 55f) == RM_HeatKind.ambient, "ambient changed by angle");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 80f, -1f) == RM_HeatKind.lowSun, "threshold off still switched");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, float.NaN, 55f) == RM_HeatKind.lowSun, "unknown elevation switched");
+            });
+
+            Case("stillsand: above the threshold a roof protects, below it only a lee does", () =>
+            {
+                RM_HeatKind high = RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 75f, 55f);
+                RM_HeatKind low = RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 35f, 55f);
+                Assert(RM_SunHeatMath.Exposure(high, true, 1f, false, 0f) == 0f, "roof gave no cover under a high sun");
+                Assert(RM_SunHeatMath.Exposure(low, true, 1f, false, 0f) == 1f, "roof still covered under a low sun");
+                Assert(RM_SunHeatMath.Exposure(low, true, 0f, false, 1f) == 0f, "lee gave no cover under a low sun");
+            });
+
+            Case("stillsand: irradiance scales with sin(elevation), floored at the far ring", () =>
+            {
+                Assert(Math.Abs(RM_SunHeatMath.ElevationHeatOffset(55f, 90f, 35f) - 55f) < 0.01f, "zenith not 55");
+                float at40 = RM_SunHeatMath.ElevationHeatOffset(55f, 40f, 0f);
+                Assert(Math.Abs(at40 - 35.35f) < 0.1f, "40 deg gave " + at40 + ", expected ~35.4");
+                Assert(RM_SunHeatMath.ElevationHeatOffset(55f, 10f, 35f) == 35f, "floor not applied low");
+                Assert(RM_SunHeatMath.ElevationHeatOffset(55f, 60f, 35f) > RM_SunHeatMath.ElevationHeatOffset(55f, 45f, 35f), "not monotone");
+                Assert(RM_SunHeatMath.ElevationHeatOffset(55f, float.NaN, 35f) == 55f, "NaN elevation not passthrough");
+            });
+
+            Case("stillsand: sand glare floors exposure in shade; paved shade is fully cool", () =>
+            {
+                float shadeOnSand = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.Exposure(RM_HeatKind.lowSun, true, 0f, false, 1f), 0.35f);
+                float shadeOnPaving = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.Exposure(RM_HeatKind.lowSun, true, 0f, false, 1f), 0f);
+                float sunOnSand = RM_SunHeatMath.WithGlareFloor(1f, 0.35f);
+                Assert(Math.Abs(shadeOnSand - 0.35f) < 1e-5f, "sand shade exposure " + shadeOnSand);
+                Assert(shadeOnPaving == 0f, "paved shade exposure " + shadeOnPaving);
+                Assert(sunOnSand == 1f, "glare lowered full sun");
+                // A parasol cannot beat glare either (cover, then the floor).
+                float parasol = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.WithCover(1f, 0.9f), 0.35f);
+                Assert(Math.Abs(parasol - 0.35f) < 1e-5f, "parasol beat the glare floor: " + parasol);
+                float felt = OutdoorC + RM_SunHeatMath.HeatOffset(shadeOnSand, 35f, 1f, 1f, 70f);
+                float paved = OutdoorC + RM_SunHeatMath.HeatOffset(shadeOnPaving, 35f, 1f, 1f, 70f);
+                Assert(HeatstrokeStep(felt, HumanSafeMax) > HeatstrokeStep(paved, HumanSafeMax), "sand shade no hotter than a shade yard");
+            });
+
+            Case("stillsand: shadow length differs by latitude (cot of elevation)", () =>
+            {
+                float lph70 = (float)(1.0 / Math.Tan(70 * Math.PI / 180));
+                float lph40 = (float)(1.0 / Math.Tan(40 * Math.PI / 180));
+                float l70 = RM_SunHeatMath.ShadowLength(1f, lph70, 16f);
+                float l40 = RM_SunHeatMath.ShadowLength(1f, lph40, 16f);
+                Assert(l40 > l70 * 2f, "40 deg shadow " + l40 + " not much longer than 70 deg " + l70);
             });
 
             foreach (string p in Pass) Console.WriteLine("PASS " + p);

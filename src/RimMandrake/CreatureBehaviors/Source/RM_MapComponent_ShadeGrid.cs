@@ -74,6 +74,12 @@ namespace RimMandrake.CreatureBehaviors
 		private Vector2 sunShadowDir;
 		private float sunLengthPerHeight;
 
+		// STILLSAND_SUN_FROM_LATITUDE_1: the map's sun elevation (NaN when
+		// unknown — no pin, no heat extension, no planet tile), and the sand
+		// glare floor per cell (null when no glare applies).
+		private float sunElevationDeg = float.NaN;
+		private float[] glareFloor;
+
 		private RM_SunPathCustomizer pathCustomizer;
 		private readonly List<RM_SunPathCustomizer> retiredCustomizers = new List<RM_SunPathCustomizer>();
 
@@ -131,7 +137,64 @@ namespace RimMandrake.CreatureBehaviors
 		/// <summary>True when shade hopping and the dash ring can run here: a
 		/// sun-heat map whose heat kind shade can help against.</summary>
 		public bool ShadeHopsApply => SunHeatActive && exposure != null
-		                              && HeatExtension.heatKind != RM_HeatKind.ambient;
+		                              && EffectiveHeatKind != RM_HeatKind.ambient;
+
+		/// <summary>The map's sun elevation in degrees from the last
+		/// recompute, or NaN when there is none.</summary>
+		public float SunElevationDegrees => sunElevationDeg;
+
+		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §3: the heat kind in force —
+		/// the biome's own, or (when it sets overheadAboveElevationDegrees and
+		/// the setting is on) overhead/lowSun by this map's sun elevation.
+		/// Which cover counts, never a new kind of heat. Overhead on a biome
+		/// with no sun heat (ordinary shade).</summary>
+		public RM_HeatKind EffectiveHeatKind
+		{
+			get
+			{
+				RM_SunHeatExtension ext = HeatExtension;
+				if (ext == null)
+				{
+					return RM_HeatKind.overhead;
+				}
+				if (!RM_CreatureBehaviorsSettings.kindFromElevationEnabled)
+				{
+					return ext.heatKind;
+				}
+				return RM_SunHeatMath.KindFromElevation(ext.heatKind, sunElevationDeg, ext.overheadAboveElevationDegrees);
+			}
+		}
+
+		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §4: °C of sun at full
+		/// exposure for a size-1 pawn before the strength dial — heatOffsetC,
+		/// or heatOffsetC × sin(elevation) on a biome that scales by angle.</summary>
+		public float EffectiveHeatOffsetC
+		{
+			get
+			{
+				RM_SunHeatExtension ext = HeatExtension;
+				if (ext == null)
+				{
+					return 0f;
+				}
+				if (!ext.heatScalesWithElevation)
+				{
+					return ext.heatOffsetC;
+				}
+				return RM_SunHeatMath.ElevationHeatOffset(ext.heatOffsetC, sunElevationDeg, ext.minScaledHeatOffsetC);
+			}
+		}
+
+		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §5: the sand glare floor at
+		/// this cell (0 where none).</summary>
+		public float GlareFloorAt(IntVec3 cell)
+		{
+			if (glareFloor == null || !cell.InBounds(map))
+			{
+				return 0f;
+			}
+			return glareFloor[map.cellIndices.CellToIndex(cell)];
+		}
 
 		/// <summary>The shade-patch graph for the current grid, or null where
 		/// hopping does not apply. The first call after a recompute rebuilds
@@ -221,7 +284,7 @@ namespace RimMandrake.CreatureBehaviors
 		/// <summary>The heat kind gear effectiveness is read under: the
 		/// biome's, or overhead on a biome with no sun heat (ordinary shade —
 		/// what the creature shade consumers read there).</summary>
-		public RM_HeatKind GearKind => HeatExtension?.heatKind ?? RM_HeatKind.overhead;
+		public RM_HeatKind GearKind => EffectiveHeatKind;
 
 		/// <summary>RM_CompShadeGear: a tent or shield appeared. Recomputed
 		/// on the next tick rather than waiting for the coarse interval.</summary>
@@ -263,7 +326,8 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return 0f;
 			}
-			return RM_SunHeatMath.WithCover(ex, RM_ShadeGear.WornCover(pawn, GearKind, out _));
+			ex = RM_SunHeatMath.WithCover(ex, RM_ShadeGear.WornCover(pawn, GearKind, out _));
+			return RM_SunHeatMath.WithGlareFloor(ex, GlareFloorAt(pawn.Position));
 		}
 
 		/// <summary>
@@ -319,9 +383,13 @@ namespace RimMandrake.CreatureBehaviors
 			}
 			int i = map.cellIndices.CellToIndex(cell);
 			float ex = exposure[i];
-			if (parasolShade != null && HeatExtension.heatKind != RM_HeatKind.ambient)
+			if (parasolShade != null && EffectiveHeatKind != RM_HeatKind.ambient)
 			{
 				ex = RM_SunHeatMath.WithCover(ex, parasolShade[i]);
+			}
+			if (glareFloor != null)
+			{
+				ex = RM_SunHeatMath.WithGlareFloor(ex, glareFloor[i]);
 			}
 			return ex;
 		}
@@ -531,17 +599,24 @@ namespace RimMandrake.CreatureBehaviors
 		private void ResolveSun()
 		{
 			directional = false;
+			sunElevationDeg = float.NaN;
 			RM_MapComponent_PinnedSun pin = RM_MapComponent_PinnedSun.For(map);
-			if (RM_CreatureBehaviorsSettings.directionalShadeEnabled && pin != null && pin.IsActive)
+			if (pin != null && pin.IsActive)
 			{
-				sunShadowDir = pin.ShadowDirection;
-				sunLengthPerHeight = pin.ShadowLengthPerHeight;
-				directional = true;
+				// The pinned sun's elevation is the map's sun elevation whether
+				// or not shadows are cast directionally (it drives the heat kind
+				// and the heat-by-angle offset too).
+				sunElevationDeg = pin.SunElevationDegrees;
+				if (RM_CreatureBehaviorsSettings.directionalShadeEnabled)
+				{
+					sunShadowDir = pin.ShadowDirection;
+					sunLengthPerHeight = pin.ShadowLengthPerHeight;
+					directional = true;
+				}
 				return;
 			}
 			RM_SunHeatExtension ext = HeatExtension;
-			if (!RM_CreatureBehaviorsSettings.directionalShadeEnabled || ext == null
-				|| Find.WorldGrid == null || !map.Tile.Valid)
+			if (ext == null || Find.WorldGrid == null || !map.Tile.Valid)
 			{
 				return;
 			}
@@ -549,6 +624,11 @@ namespace RimMandrake.CreatureBehaviors
 			RM_MapComponent_PinnedSun.SunGeometry(longLat.y, longLat.x, ext.substellarLatitude, ext.substellarLongitude,
 				out float bearingDeg, out float arcDeg);
 			float elev = Mathf.Clamp(90f - arcDeg, ext.minElevationDegrees, ext.maxElevationDegrees);
+			sunElevationDeg = elev;
+			if (!RM_CreatureBehaviorsSettings.directionalShadeEnabled)
+			{
+				return;
+			}
 			float b = bearingDeg * Mathf.Deg2Rad;
 			sunShadowDir = new Vector2(-Mathf.Sin(b), -Mathf.Cos(b));
 			float e = Mathf.Max(0.5f, elev) * Mathf.Deg2Rad;
@@ -562,6 +642,7 @@ namespace RimMandrake.CreatureBehaviors
 			if (ext == null || !RM_CreatureBehaviorsSettings.sunHeatEnabled)
 			{
 				exposure = null;
+				glareFloor = null;
 				RetireCustomizer();
 				return;
 			}
@@ -570,7 +651,9 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				exposure = new float[n];
 			}
-			bool wantPath = ext.heatKind != RM_HeatKind.ambient && ext.sunPathCostPerCell > 0f
+			RM_HeatKind kind = EffectiveHeatKind;
+			BuildGlareLayer(ext, kind);
+			bool wantPath = kind != RM_HeatKind.ambient && ext.sunPathCostPerCell > 0f
 			                && RM_CreatureBehaviorsSettings.sunPathingEnabled;
 			NativeArray<ushort> cost = default;
 			if (wantPath)
@@ -581,7 +664,11 @@ namespace RimMandrake.CreatureBehaviors
 			for (int i = 0; i < n; i++)
 			{
 				// outdoors=true here: the enclosed-room test is live in ExposureAt.
-				float ex = RM_SunHeatMath.Exposure(ext.heatKind, true, roofShade[i], thickRoof[i], castShade[i], gearShade[i]);
+				float ex = RM_SunHeatMath.Exposure(kind, true, roofShade[i], thickRoof[i], castShade[i], gearShade[i]);
+				if (glareFloor != null)
+				{
+					ex = RM_SunHeatMath.WithGlareFloor(ex, glareFloor[i]);
+				}
 				exposure[i] = ex;
 				if (wantPath)
 				{
@@ -597,6 +684,32 @@ namespace RimMandrake.CreatureBehaviors
 				// customizer's identity, so a fresh object is what makes the
 				// new costs take effect at all.
 				pathCustomizer = new RM_SunPathCustomizer(cost);
+			}
+		}
+
+		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §5: the sand glare floor on
+		/// every cell of natural sand (TerrainDef categoryType Sand, not a
+		/// constructed floor). Null when the biome sets no floor, the setting
+		/// is off, or the heat is ambient (exposure is already full there).</summary>
+		private void BuildGlareLayer(RM_SunHeatExtension ext, RM_HeatKind kind)
+		{
+			float floor = ext.sandGlareExposureFloor * RM_CreatureBehaviorsSettings.sandGlareStrength;
+			if (!RM_CreatureBehaviorsSettings.sandGlareEnabled || floor <= 0f || kind == RM_HeatKind.ambient)
+			{
+				glareFloor = null;
+				return;
+			}
+			floor = Mathf.Clamp01(floor);
+			int n = map.cellIndices.NumGridCells;
+			if (glareFloor == null || glareFloor.Length != n)
+			{
+				glareFloor = new float[n];
+			}
+			TerrainGrid tg = map.terrainGrid;
+			for (int i = 0; i < n; i++)
+			{
+				TerrainDef t = tg.TerrainAt(i);
+				glareFloor[i] = t != null && t.categoryType == TerrainDef.TerrainCategoryType.Sand && !t.IsFloor ? floor : 0f;
 			}
 		}
 

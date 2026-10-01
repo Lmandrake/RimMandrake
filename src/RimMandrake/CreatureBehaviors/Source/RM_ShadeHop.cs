@@ -87,7 +87,9 @@ namespace RimMandrake.CreatureBehaviors
         {
             float size = RM_SunHeatMath.BodySizeFactor(pawn.BodySize, ext.bodySizeExponent,
                 ext.minBodySizeFactor, ext.maxBodySizeFactor);
-            float offset = RM_SunHeatMath.HeatOffset(exposure, ext.heatOffsetC, RM_CreatureBehaviorsSettings.sunHeatStrength,
+            // STILLSAND_SUN_FROM_LATITUDE_1: the map's offset (by sun angle where the biome scales it).
+            float baseOffset = RM_MapComponent_ShadeGrid.For(pawn.Map)?.EffectiveHeatOffsetC ?? ext.heatOffsetC;
+            float offset = RM_SunHeatMath.HeatOffset(exposure, baseOffset, RM_CreatureBehaviorsSettings.sunHeatStrength,
                 size, ext.maxHeatOffsetC);
             float felt = pawn.Map.mapTemperature.OutdoorTemp + offset;
             float safeMax = pawn.SafeTemperatureRange().max;
