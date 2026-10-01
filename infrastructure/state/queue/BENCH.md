@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:57:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T10:21:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1018,3 +1018,33 @@ kind:     decision
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  LEANINGSCRUBSWEETLINENAMEREGISTER1 — the naming register for named sweetline trees
 prose:    infrastructure/state/items/LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1.md
+
+## LONGSHADE_MIDDENS_DESIGN_1 Lee-side middens: owner to rule what a midden is, what searching yields, the clean-patch tell, the vrekka
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  LONGSHADEMIDDENSDESIGN1 — lee-side middens: what they are, before anything is built
+prose:    infrastructure/state/items/LONGSHADE_MIDDENS_DESIGN_1.md
+
+## SHADECRAFT_LESSONS_DESIGN_1 Shade gear learned by study: lesson-to-piece mapping, and Long-Shade-only lessons vs the cross-biome gear ruling
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  SHADECRAFTLESSONSDESIGN1 — shade gear learned by study: the mapping and the cross-biome conflict
+prose:    infrastructure/state/items/SHADECRAFT_LESSONS_DESIGN_1.md
+
+## GLOOMCAST_WAKE_RIDERS_1 Gloomcast shadow: which small grazers actively follow it, and whether feeding leaves a scar distinct from dung
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  GLOOMCASTWAKERIDERS1 — which grazers ride the gloomcast's shadow, and what its feeding leaves
+prose:    infrastructure/state/items/GLOOMCAST_WAKE_RIDERS_1.md
