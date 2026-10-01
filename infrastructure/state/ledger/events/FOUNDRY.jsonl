@@ -1644,3 +1644,5 @@
 {"seat":"FOUNDRY","event":"close","id":"STILLSAND_GLASS_LENS_CHAIN_1","sha":"86e2b0fc9","reason":"Offline build: drift yield, glass/lens items, sun furnace, lens bench, solar ovens, fulgurite gate; still/lance/geophone/sieve/live proof filed as follow-ups","ts":"2026-10-01T08:22:10Z"}
 {"seat":"FOUNDRY","event":"claim","id":"STILLSAND_SKELETONS_TRACKS_1","ts":"2026-10-01T08:13:41Z"}
 {"seat":"FOUNDRY","event":"start","id":"STILLSAND_SKELETONS_TRACKS_1","ts":"2026-10-01T08:13:47Z"}
+{"seat":"FOUNDRY","event":"file","id":"STILLSAND_SKELETONS_REMAINDER_1","title":"Stillsand skeletons remainder: tracks on the footprint grid + dune eraser, dune burial, skeleton/skull art wiring, giant bone yield, ribs shadow, giant horizon warnings, live proof","kind":"build","target":"v1","needs":"offline","caused_by":"STILLSAND_SKELETONS_TRACKS_1","for":"FOUNDRY","ts":"2026-10-01T08:28:18Z"}
+{"seat":"FOUNDRY","event":"close","id":"STILLSAND_SKELETONS_TRACKS_1","sha":"3843ba1f4","ts":"2026-10-01T08:28:23Z"}

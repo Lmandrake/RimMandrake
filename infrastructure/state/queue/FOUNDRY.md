@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T08:25:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T08:28:23Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1295,15 +1295,6 @@ target:   v1
 kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
-
-## STILLSAND_SKELETONS_TRACKS_1 Stillsand huge skeletons and tracks: 0-2 giant skeleton buildings per map with bone harps, giant corpses become skeletons, krayt graveyard re-pointed, track filths the dunes erase, horizon dust warnings
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. Giant skeleton buildings, one per giant: multi-cell, staticSunShadowHeight per piece,
-prose:    infrastructure/state/items/STILLSAND_SKELETONS_TRACKS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -2680,3 +2671,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GRAFFITI_NORTHSTAR_BRIDGE_TOOLS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAFFITI_NORTHSTAR_BRIDGE_TOOLS_1.md
+
+## STILLSAND_SKELETONS_REMAINDER_1 Stillsand skeletons remainder: tracks on the footprint grid + dune eraser, dune burial, skeleton/skull art wiring, giant bone yield, ribs shadow, giant horizon warnings, live proof
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify, no ## criteria
+summary:  1. Tracks (parent §7) — blocked on FOOTPRINTTRACKGRID1 (proposed, unbuilt when the
+prose:    infrastructure/state/items/STILLSAND_SKELETONS_REMAINDER_1.md
