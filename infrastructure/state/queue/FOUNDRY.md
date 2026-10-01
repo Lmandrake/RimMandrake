@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T07:51:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T07:53:51Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2630,16 +2630,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Admitted by question card 2026-09-30. Report §4 row F1 (RMEtchcap; RMEtchHollow terrain/marker): a dense blac…
 prose:    infrastructure/state/items/ABYSS_ETCHCAP_BUILD_1.md
-
-## ABYSS_FULL_RENAME_1 Full rename Forsaken Crags / Black Crags to the Abyss (content, code, defs, mod; into mandrake.rm.biomes)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Executed. See the commit.
-prose:    infrastructure/state/items/ABYSS_FULL_RENAME_1.md
 
 ## STILLSAND_PRECIOUS_CAVES_LIVE_1 Precious caves: ten live Stillsand quicktest maps
 state:    proposed
