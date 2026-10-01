@@ -74,7 +74,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
          class resolves). severityRange matches the base trooper, not a
          specialty tier. -->
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_PawnKindExtended">
+      <li MayRequire="neronix17.toolbox" Class="TabulaRasa.DefModExt_PawnKindExtended">
         <additionalHediffs>
           <li>
             <hediff>OuterRim_StormtrooperTraining</hediff>
@@ -146,7 +146,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <!-- EMPIRE_TROOPER_TRAINING_1. severityRange matches OuterRim's specialty
          troopers (arty/jump/incinerator), the closest analog to a heavy. -->
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_PawnKindExtended">
+      <li MayRequire="neronix17.toolbox" Class="TabulaRasa.DefModExt_PawnKindExtended">
         <additionalHediffs>
           <li>
             <hediff>OuterRim_StormtrooperTraining</hediff>
@@ -210,7 +210,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <!-- EMPIRE_TROOPER_TRAINING_1. severityRange matches OuterRim's own
          OuterRim_ImperialOfficer, the direct analog for this kind's label. -->
     <modExtensions>
-      <li Class="TabulaRasa.DefModExt_PawnKindExtended">
+      <li MayRequire="neronix17.toolbox" Class="TabulaRasa.DefModExt_PawnKindExtended">
         <additionalHediffs>
           <li>
             <hediff>OuterRim_StormtrooperTraining</hediff>
