@@ -10,8 +10,9 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony: the one class here (RM_BiomeWorker_FeverWood) is a plain
-    engine extension point (BiomeWorker). The biome's own hazard mechanics
+    Harmony: one patch, RM_Patch_SapSuckerMishandle
+    (FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1); brrainz.harmony is a
+    modDependency in About.xml. The biome's own hazard mechanics
     (F1/F2/F3/F5/F6/F7 spike C#) stay in mandrake.rm.environmentalhazards —
     packaging them into this mod is a separate, not-yet-made call (see
     FEVERWOOD_RM_MOD_BUILD_1's own item file); this mod's XML references
@@ -42,6 +43,10 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="RM_BiomeWorker_FeverWood.cs" />
     <Compile Include="RM_FeverWoodMod.cs" />
@@ -61,6 +66,7 @@
     <Compile Include="RM_GenStep_AntHiveDungeon.cs" />
     <Compile Include="RM_CompProperties_SapSuckerRefusal.cs" />
     <Compile Include="RM_CompSapSuckerRefusal.cs" />
+    <Compile Include="RM_Patch_SapSuckerMishandle.cs" />
     <Compile Include="RM_TwoFrontLureDefOf.cs" />
     <Compile Include="RM_CompProperties_LureStake.cs" />
     <Compile Include="RM_CompLureStake.cs" />
@@ -107,8 +113,9 @@
       <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="RimMandrake.CreatureBehaviors">
-      <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
+    <!-- FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1: RM_Patch_SapSuckerMishandle. -->
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

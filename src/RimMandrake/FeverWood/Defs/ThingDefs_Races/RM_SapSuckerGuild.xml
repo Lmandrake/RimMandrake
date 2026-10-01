@@ -44,14 +44,14 @@
   mod, RM_CompSapSuckerRefusal.cs) — see that class for why a shared hediff-
   refusal comp beat tripling the fear-scan pattern.
 
-  🔴 Deferred: §6n's OTHER refusal trigger ("mishandled" in a failed taming
-  attempt). The engine seam is VERIFIED (RimSage, 2026-10-01):
-  Pawn_MindState.CheckStartMentalStateBecauseRecruitAttempted(Pawn tamer),
-  internal, called on a failed tame of a faction-less animal; it needs a
-  Harmony postfix, which this mod does not carry yet —
-  FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1. Shipped meanwhile: every member's
-  refusal fires on taking damage, deterministically, cooldown-gated, never a
-  random roll. Numeric values are tuned by FEVERWOOD_SAP_SUCKER_TUNING_1.
+  §6n's two refusal triggers: taking damage, and being "mishandled" in a
+  failed taming attempt. The second is a Harmony postfix on
+  Pawn_MindState.CheckStartMentalStateBecauseRecruitAttempted(Pawn tamer)
+  (RM_Patch_SapSuckerMishandle.cs, FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1),
+  which calls RM_CompSapSuckerRefusal.NotifyMishandled — ollareth carries
+  that comp hediff-less so a failed tame rings its alarm. Both triggers are
+  deterministic and share one cooldown, never a random roll. Numeric values
+  are tuned by FEVERWOOD_SAP_SUCKER_TUNING_1.
 
   Body: BeetleLike (11 existing repo uses for small insectoid fauna,
   Greentide's own RM_GreatboleGrub among them) — the guild's own legibility
@@ -270,6 +270,10 @@
         <tag>FeverWoodCrown</tag>
         <cooldownTicks>2500</cooldownTicks>
       </li>
+      <!-- Hediff-less on purpose: it exists only so a failed tame
+           (FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1) can ring the alarm above,
+           which never sees a failed tame on its own (not damage). -->
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_SapSuckerRefusal" />
     </comps>
   </ThingDef>
 

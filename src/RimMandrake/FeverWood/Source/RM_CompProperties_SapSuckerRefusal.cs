@@ -7,13 +7,14 @@ namespace RimMandrake.FeverWood
     // comp for the guild's two hediff-based refusals (vaulm's seal, drommath's
     // swell); the third (ollareth's scream) reuses the already-shipped,
     // content-blind RimMandrake.CreatureBehaviors.RM_CompProperties_PlantAlarm
-    // instead of a new class here — see RM_SapSuckerGuild.xml's own header
-    // for why that reuse is a better fit than tripling this pattern.
+    // — see RM_SapSuckerGuild.xml's own header for why that reuse is a better
+    // fit than tripling this pattern.
     public class RM_CompProperties_SapSuckerRefusal : CompProperties
     {
         // The refusal's visible expression — a sealed shell, a swollen sac.
-        // Always non-null for this comp (ollareth, the no-hediff member,
-        // uses RM_CompProperties_PlantAlarm instead, never this class).
+        // Null only on ollareth, whose refusal is RM_CompProperties_PlantAlarm's
+        // scream; it carries this comp hediff-less so the failed-tame trigger
+        // (FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1) can ring that alarm.
         public HediffDef refusalHediff;
 
         // INVENTED placeholder — how "sealed"/"swollen" the animal reads
