@@ -75,6 +75,14 @@
     <tradeTags>
       <li>AnimalCommon</li>
     </tradeTags>
+    <modExtensions>
+      <!-- LEANINGSCRUB_GPT_ENRICHMENT_1 runway bloom (Source/RM_RunwayBloom.cs). TUNED: half a second later the stem-tunnel floor bolts, further. -->
+      <li Class="RimMandrake.LeaningScrub.RM_RunwayBloomExtension">
+        <response>Bolt</response>
+        <delayTicks>30</delayTicks>
+        <fleeDistance>20</fleeDistance>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
@@ -630,7 +638,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- STUB: decoy-arm shedding and the lure are LEANINGSCRUB_MECHANICS_BUILD_1; RM_VisslerArm ships as a butcher product only. -->
+  <!-- Arm shedding on a runway bloom: RM_RunwayBloomExtension below. Arms drawing scavengers (the lure) is LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Vissler</defName>
     <label>vissler</label>
@@ -678,6 +686,18 @@
     <tradeTags>
       <li>AnimalCommon</li>
     </tradeTags>
+    <modExtensions>
+      <!-- LEANINGSCRUB_GPT_ENRICHMENT_1 runway bloom (Source/RM_RunwayBloom.cs). TUNED: drops an arm and runs. -->
+      <li Class="RimMandrake.LeaningScrub.RM_RunwayBloomExtension">
+        <response>Shed</response>
+        <delayTicks>15</delayTicks>
+        <fleeDistance>15</fleeDistance>
+        <shedThing>RM_VisslerArm</shedThing>
+        <shedCount>1</shedCount>
+        <!-- TUNED: half the visslers in reach shed, so arms are a find, not a carpet. -->
+        <shedChance>0.5</shedChance>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
@@ -712,7 +732,7 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- Tiny MaxFlightTime: flight as displacement, not travel. No flight frames. Crown-venomvine mobbing is LEANINGSCRUB_MECHANICS_BUILD_1. -->
+  <!-- Flight as displacement, not travel: up, ~40 cells on, down (runway bloom spec). TUNED MaxFlightTime 6: MoveSpeed 3 x flightSpeedFactor 2.5 = ~7.5 cells/s, so ~40 cells after takeoff/landing. No flight frames. Crown-venomvine mobbing: Source/RM_VenomvineRooms.cs. -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Dustflutter</defName>
     <label>dustflutter</label>
@@ -726,7 +746,7 @@
       <ComfyTemperatureMin>-20</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
       <Wildness>0.9</Wildness>
-      <MaxFlightTime>2</MaxFlightTime>
+      <MaxFlightTime>6</MaxFlightTime>
       <FlightCooldown>3</FlightCooldown>
     </statBases>
     <tools>
@@ -762,6 +782,14 @@
     <tradeTags>
       <li>AnimalCommon</li>
     </tradeTags>
+    <modExtensions>
+      <!-- LEANINGSCRUB_GPT_ENRICHMENT_1 runway bloom (Source/RM_RunwayBloom.cs). TUNED: crown floor last: up and ~40 cells on (spec). -->
+      <li Class="RimMandrake.LeaningScrub.RM_RunwayBloomExtension">
+        <response>Erupt</response>
+        <delayTicks>60</delayTicks>
+        <fleeDistance>40</fleeDistance>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
@@ -935,6 +963,14 @@
     <tradeTags>
       <li>AnimalCommon</li>
     </tradeTags>
+    <modExtensions>
+      <!-- LEANINGSCRUB_GPT_ENRICHMENT_1 runway bloom (Source/RM_RunwayBloom.cs). TUNED: ground floor goes first, a short scatter. -->
+      <li Class="RimMandrake.LeaningScrub.RM_RunwayBloomExtension">
+        <response>Scatter</response>
+        <delayTicks>0</delayTicks>
+        <fleeDistance>8</fleeDistance>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
