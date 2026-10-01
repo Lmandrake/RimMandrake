@@ -8,6 +8,14 @@
   </supportedVersions>
   <modDependencies>
     <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+    </li>
+    <li>
       <packageId>Ludeon.RimWorld</packageId>
       <displayName>RimWorld</displayName>
     </li>
@@ -17,6 +25,8 @@
     </li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.creaturebehaviors</li>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>Ludeon.RimWorld.Anomaly</li>
@@ -93,5 +103,14 @@ pass.
 Live-tile safety: the frozen `RUT_Scarlands` keeps its 90 live tiles on the
 canonical save untouched -- this build changes nothing about it, matching the
 compatibility-duplicate half of the item's own spec (it is frozen with a header
-notice, never deleted or repointed).</description>
+notice, never deleted or repointed).
+
+WARSCAR_FREE_TIER_BODY_1: the free tier now owns its cast, listed inline --
+`RM_Chatrak` (plated grazer, leather `RM_ChatrakPlate`, undyeable), `RM_Totchak`
+(colossus body only; wake and wall-eating are WARSCAR_TOTCHAK_WAKES_1),
+`RM_Tetchik` (inedible beetle, spawns only near glower), `RM_Pallbearer` (was
+RUT_MortuaryCrawler, retired) and `RM_ScarRoach` (RUT_ScarRoach stays a hidden
+alias for one release) -- plus `RM_WreckLichen`, seeded only beside ruins and
+wreck. Chatrak, totchak, tetchik and lichen art are flat placeholders. Mod Settings
+carry a toggle per species, the lichen seeder and the interim donor rows.</description>
 </ModMetaData>

@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WarscarFauna.xml                    WARSCAR_FREE_TIER_BODY_1
+
+  The free tier's own cast for RM_Warscar. Design: design/Jawa/worldbuilding/
+  biomes/warscar_turn3_development_2026-09-30.md section 3 + warscar_bedazzle_cast_2026-09-30.md.
+
+  RM_Chatrak     plated grazer / scaria host; leather RM_ChatrakPlate (RM_WarscarItems.xml)
+  RM_Totchak     the colossus, BODY ONLY. Wake, wall-eating and lie-down are
+                 WARSCAR_TOTCHAK_WAKES_1. Until that ships it is an ordinary
+                 (very large, very rare) herbivore.
+  RM_Tetchik     tiny clicking beetle, inedible; spawns only near glower cells
+                 (RM_WarscarPatches.TetchikGlowerGate).
+  RM_Pallbearer  was RUT_MortuaryCrawler (retired, 0 occurrences in the canonical save).
+                 Corpse-eating is vanilla CarnivoreAnimal behaviour; no extra filth def
+                 is shipped (spec allowed "the vanilla dessicated state").
+  RM_ScarRoach   was RUT_ScarRoach; RUT_ScarRoach stays as a hidden alias in
+                 mandrake.rut.rustcathedralroaches for one release.
+
+  Art: chatrak / totchak / tetchik are FLAT PLACEHOLDERS (art queued, cast bible section 8);
+  pallbearer (rutmortuarycrawler_v1) and scar roach art are real.
+-->
+<Defs>
+
+  <!-- ================= CHATRAK ================= -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Chatrak</defName>
+    <label>chatrak</label>
+    <description>A low plated grazer whose back plates stack like an earthwork and are pocked by ricochets. It grazes with its head down at the rust-orange lichen on wrecks and ignores gunfire, and its own wounds, with equal calm. Its hide turns bullets. Most wild chatrak carry scaria, and a scaria chatrak is the thing to be elsewhere from.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <Mass>180</Mass>
+      <MarketValue>380</MarketValue>
+      <Wildness>0.7</Wildness>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.6</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+      <LeatherAmount>45</LeatherAmount>
+      <ToxicResistance>0.5</ToxicResistance>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>front left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>front right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>12</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHealthScale>2.2</baseHealthScale>
+      <baseHungerRate>0.7</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>RM_ChatrakPlate</leatherDef>
+      <gestationPeriodDays>20</gestationPeriodDays>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>28</lifeExpectancy>
+      <trainability>Simple</trainability>
+      <roamMtbDays>4</roamMtbDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0.4)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Chatrak</defName>
+    <label>chatrak</label>
+    <race>RM_Chatrak</race>
+    <combatPower>150</combatPower>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>1.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Chatrak/RM_Chatrak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Chatrak/RM_Chatrak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Chatrak/RM_Chatrak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================= TOTCHAK (body only) ================= -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Totchak</defName>
+    <label>totchak</label>
+    <description>A section of fortification that got up and walked: fused slag, masonry and turret stubs grown into a tortoise bulk, coke black and concrete grey. It breathes. Nothing about it is hurried and nothing about it stops.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <Mass>4000</Mass>
+      <MarketValue>2400</MarketValue>
+      <Wildness>1</Wildness>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <ArmorRating_Sharp>1.0</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.8</ArmorRating_Blunt>
+      <LeatherAmount>0</LeatherAmount>
+      <ToxicResistance>0.9</ToxicResistance>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>40</power>
+        <cooldownTime>3.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>front left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>34</power>
+        <cooldownTime>3.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>front right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>34</power>
+        <cooldownTime>3.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>14</baseBodySize>
+      <baseHealthScale>9</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>120</lifeExpectancy>
+      <trainability>None</trainability>
+      <roamMtbDays>10</roamMtbDays>
+      <gestationPeriodDays>60</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.5</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Totchak</defName>
+    <label>totchak</label>
+    <race>RM_Totchak</race>
+    <combatPower>1500</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Totchak/RM_Totchak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Totchak/RM_Totchak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Totchak/RM_Totchak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>10</drawSize>
+        </bodyGraphicData>
+        <!-- RM_TotchakDormant (Things/Pawn/Animal/RM_TotchakDormant/RM_TotchakDormant, 1024x512 single)
+             is the dormant wall-pose; WARSCAR_TOTCHAK_WAKES_1 wires it as the dormant graphic. -->
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================= TETCHIK ================= -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Tetchik</defName>
+    <label>tetchik</label>
+    <description>A squat clicking beetle of tiny snapping plates, verdigris and brass, that lives in the glower crust and clicks faster where the ground runs hot. Inedible, and not worth the knife. It flees everything.</description>
+    <statBases>
+      <MoveSpeed>4.2</MoveSpeed>
+      <Mass>0.2</Mass>
+      <MarketValue>12</MarketValue>
+      <Wildness>1</Wildness>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <LeatherAmount>0</LeatherAmount>
+      <MeatAmount>0</MeatAmount>
+      <ToxicResistance>1</ToxicResistance>
+    </statBases>
+    <uiIconScale>0.6</uiIconScale>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>1.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHungerRate>0.15</baseHungerRate>
+      <baseHealthScale>0.3</baseHealthScale>
+      <foodType>OmnivoreAnimal</foodType>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>3</lifeExpectancy>
+      <trainability>None</trainability>
+      <soundEating>Insectoid_Eat</soundEating>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(4, 1)</li>
+          <li>(4.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.15</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Tetchik</defName>
+    <label>tetchik</label>
+    <race>RM_Tetchik</race>
+    <combatPower>4</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>3~8</wildGroupSize>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Tetchik/RM_Tetchik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Tetchik/RM_Tetchik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Tetchik/RM_Tetchik</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================= PALLBEARER (was RUT_MortuaryCrawler) ================= -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Pallbearer</defName>
+    <label>pallbearer</label>
+    <description>A heavy, armor-plated scavenger that moves at exactly one speed: unhurried. It works a graveyard the way nothing else here can, patiently and methodically, digesting the preserved dead of ground that won't properly rot. Everything else in the Warscar is one wrong step from madness; the pallbearer never seems to notice there was a war at all, which is exactly what makes it the worst thing to watch eat.</description>
+    <statBases>
+      <MoveSpeed>1.2</MoveSpeed>
+      <Mass>85</Mass>
+      <MarketValue>140</MarketValue>
+      <Wildness>0.3</Wildness>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>65</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+    </statBases>
+    <tools>
+      <li>
+        <label>bite</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>foreclaw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>foreclaw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>false</predator>
+      <baseBodySize>2.2</baseBodySize>
+      <baseHealthScale>1.3</baseHealthScale>
+      <baseHungerRate>0.55</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>6</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>22</lifeExpectancy>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 0.6)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Warg_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Pallbearer</defName>
+    <label>pallbearer</label>
+    <race>RM_Pallbearer</race>
+    <combatPower>60</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.2</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================= SCAR ROACH (was RUT_ScarRoach) ================= -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_ScarRoach</defName>
+    <label>scar-roach</label>
+    <description>A small, quick-scuttling insect that works the Warscar's scar-dust in loose colonies, foraging filth and stray waste from the ground. Not aggressive and not much of a fighter: it flees before it fights, but it never stops moving, and it never runs out of ground to clean.</description>
+    <statBases>
+      <Wildness>0.9</Wildness>
+      <MoveSpeed>3.8</MoveSpeed>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <MarketValue>28</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <ToxicResistance>0.6</ToxicResistance>
+    </statBases>
+    <uiIconScale>0.6</uiIconScale>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <baseBodySize>0.25</baseBodySize>
+      <baseHungerRate>0.22</baseHungerRate>
+      <baseHealthScale>0.4</baseHealthScale>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <lifeExpectancy>4</lifeExpectancy>
+      <trainability>None</trainability>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <meatColor>(160,168,139)</meatColor>
+      <meatMarketValue>0.4</meatMarketValue>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <soundEating>Insectoid_Eat</soundEating>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(3, 1)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.08</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_EatCleanableExtension">
+        <cleanableThingDefNames>
+          <li>Wastepack</li>
+        </cleanableThingDefNames>
+        <eatsFilth>true</eatsFilth>
+        <searchRadius>22</searchRadius>
+        <nutritionPerMeal>0.15</nutritionPerMeal>
+        <eatDurationTicks>5000</eatDurationTicks>
+        <seekChance>0.03</seekChance>
+      </li>
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_ScarRoach</defName>
+    <label>scar-roach</label>
+    <race>RM_ScarRoach</race>
+    <combatPower>12</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>0.08</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.65</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

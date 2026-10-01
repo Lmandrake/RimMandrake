@@ -39,31 +39,14 @@
     RSW_Korrum             0.05  (deliberately NOT the roster's 0.5 —
                                  ECOSYSTEM_PYRAMID_LAW_1, do not "fix" this)
 
-  mandrake.rm.warscar's own RimUtinni-tier campaign fauna (gate is the biome
-  mod itself, since neither row below names a donor mod):
-    RUT_ScarRoach          0.08  the Scarlands sibling of the Rust Cathedral's
-                                 cleaner roaches (src/RimUtinni/
-                                 RustCathedralRoaches) — left untouched there,
-                                 same disposition RUSTCATHEDRAL_RM_MOD_BUILD_1
-                                 gave it ("left for a future Scarlands mod
-                                 build to decide"). Not duplicated into RM
-                                 tier: unlike RM_CathedralRoach, this creature
-                                 has no bespoke Mod-Settings-worthy mechanic of
-                                 its own beyond the shared, already-toggleable
-                                 RM_ThinkNode_EatCleanable — nothing here would
-                                 diverge from the original, so a patch
-                                 reference costs less than a duplicate def.
-    RUT_MortuaryCrawler    0.06  wired into the frozen twin 2026-09-24
-                                 (COMMISSION_LEDGER_CLEANUP_1), after this
-                                 item's own analysis was written. Same
-                                 treatment as RUT_ScarRoach: RimUtinni-owned,
-                                 Scarlands-exclusive, no divergent mechanic to
-                                 justify a duplicate.
+  RUT_ScarRoach and RUT_MortuaryCrawler are no longer cast here: WARSCAR_FREE_TIER_BODY_1
+  moved them into mandrake.rm.warscar as RM_ScarRoach and RM_Pallbearer, listed inline in
+  RM_Warscar.xml.
 
   ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
   returns true on no match) — validate with
   skills/rimworld-modding/scripts/validate_patch.py against the live def dump
-  before trusting these four blocks fired.
+  before trusting these two blocks fired.
   ============================================================================
 -->
 <Patch>
@@ -90,24 +73,6 @@
         <RSW_MegaphoridLarva>0.5</RSW_MegaphoridLarva>
         <RSW_FoundryBeetle>0.18</RSW_FoundryBeetle>
         <RSW_Korrum>0.05</RSW_Korrum>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- PATCH_MAYREQUIRE_GUARD_INERT_1: the MayRequire above is ignored by
-       vanilla on a top-level <Operation> and was dropped rather than fixed.
-       RUT_ScarRoach/RUT_MortuaryCrawler are RimUtinni's own, always-present
-       creatures (no separate donor mod to gate on), so the only real
-       requirement is "does RM_Warscar exist" - and the outer <xpath> below
-       already tests exactly that (RM_Warscar is mandrake.rm.warscar's own
-       def), so with that mod absent this Add already no-ops safely. -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
-      <value>
-        <RUT_ScarRoach>0.08</RUT_ScarRoach>
-        <RUT_MortuaryCrawler>0.06</RUT_MortuaryCrawler>
       </value>
     </match>
   </Operation>
