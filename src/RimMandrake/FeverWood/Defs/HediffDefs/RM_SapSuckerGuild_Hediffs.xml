@@ -36,7 +36,7 @@
       <li>
         <label>sealed</label>
         <minSeverity>0</minSeverity>
-        <!-- INVENTED placeholder: the "must be cracked open" armour. -->
+        <!-- TUNED (reviewed, kept): the "must be cracked open" armour. -->
         <statOffsets>
           <ArmorRating_Sharp>0.6</ArmorRating_Sharp>
           <ArmorRating_Blunt>0.4</ArmorRating_Blunt>
@@ -46,7 +46,7 @@
     </stages>
     <comps>
       <li Class="HediffCompProperties_SeverityPerDay">
-        <!-- INVENTED placeholder: ~2 in-game days to fully unseal once left alone. -->
+        <!-- TUNED (reviewed, kept): ~2 in-game days to fully unseal once left alone. -->
         <severityPerDay>-0.5</severityPerDay>
       </li>
     </comps>
@@ -65,7 +65,7 @@
       <li>
         <label>swollen</label>
         <minSeverity>0</minSeverity>
-        <!-- INVENTED placeholder: "cannot be pulled off" — sluggish, tough. -->
+        <!-- TUNED (reviewed, kept): "cannot be pulled off" — sluggish, tough. -->
         <statOffsets>
           <MoveSpeed>-1.0</MoveSpeed>
           <ArmorRating_Blunt>0.3</ArmorRating_Blunt>
@@ -80,7 +80,7 @@
     </stages>
     <comps>
       <li Class="HediffCompProperties_SeverityPerDay">
-        <!-- INVENTED placeholder: ~1.5 in-game days to fully deflate. -->
+        <!-- TUNED (reviewed, kept): ~1.5 in-game days to fully deflate. -->
         <severityPerDay>-0.65</severityPerDay>
       </li>
     </comps>
