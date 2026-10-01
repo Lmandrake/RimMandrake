@@ -79,6 +79,21 @@ namespace RimMandrake.CreatureBehaviors
                 return;
             }
 
+            // The layers are PerTick sustainers: decompiled 1.6
+            // Sustainer.SustainerUpdate ends one the moment TicksGame passes
+            // its last Maintain() by more than 1, so every live layer is
+            // maintained on every tick, not only on the scan interval.
+            foreach (KeyValuePair<string, GroupState> g in groups)
+            {
+                List<Sustainer> ss = g.Value.sustainers;
+                for (int i = 0; i < ss.Count; i++)
+                {
+                    if (ss[i] != null && !ss[i].Ended)
+                    {
+                        ss[i].Maintain();
+                    }
+                }
+            }
             if (!map.IsHashIntervalTick(scanIntervalTicks))
             {
                 return;

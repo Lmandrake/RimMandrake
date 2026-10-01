@@ -58,6 +58,11 @@ VANILLA_PACKED = {
     # (FloodedCanyon/Defs/SoundDefs/RM_CanyonBeats.xml); each verbatim from the
     # named vanilla SoundDef's own grain, verified via RimSage 2026-10-01.
     "Ambience/Wind/Amb_Wind_Stormy_Loop": "vanilla Ambient_Wind_Storm",
+    # LONGSHADE_GPT_ENRICHMENT_1 §3 placeholder heat beds
+    # (LongShade/Defs/SoundDefs/RM_LongShade_HeatSounds.xml); each verbatim from
+    # the named Core SoundDef's own grain, verified via RimSage 2026-10-01.
+    "Ambience/JungleInsects_Day_1a": "vanilla Ambient_DayInsects_Jungle",
+    "Ambience/Wind/Amb_Wind_Fog2_Loop": "vanilla Ambient_Wind_Fog",
     "UI/TickLow": "vanilla Tick_Low",
     "UI/TinyBell": "vanilla TinyBell",
     "Electricity/Watermill_Loop_01a": "vanilla WaterMill_Ambience",

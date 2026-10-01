@@ -229,6 +229,13 @@ namespace RimMandrake.CreatureBehaviors
     //      RM_CompProperties_ShadowCaster sets castShadeHeight (the gloomcast)
     //      casts real moving shade into the grid. Off: the layer is cleared and
     //      the host is a follow-only host again.
+    //      heatSoundscapeEnabled / heatSoundscapeVolume — LONGSHADE_GPT_
+    //      ENRICHMENT_1 §3 (RM_HeatSoundscape.cs): on a biome carrying
+    //      RM_HeatSoundscapeExtension, a lit bed or a shade bed by the
+    //      exposure at the CAMERA's cell. Off (or volume 0): no bed.
+    //      creatureHeatSoundsEnabled — a herd animal's call at the rim before
+    //      a dash, and a giant's far-carrying footfalls (RM_CompFootfalls).
+    //      Off: both silent.
     //  37. pinnedSunEnabled / pinnedSunSkyStrength — RM_MapComponent_PinnedSun
     //      + RM_PinnedSunPatches (LONGSHADE_BEDAZZLE_MECHANICS_1 part 1, the
     //      golden hour). Only a biome carrying RM_PinnedSunExtension is
@@ -351,6 +358,9 @@ namespace RimMandrake.CreatureBehaviors
         public static int sightBlockCellsNeeded = 1;
         public static bool shadowFollowEnabled = true;
         public static bool movingShadeEnabled = true;
+        public static bool heatSoundscapeEnabled = true;
+        public static float heatSoundscapeVolume = 1f;
+        public static bool creatureHeatSoundsEnabled = true;
         public static bool pinnedSunEnabled = true;
         public static float pinnedSunSkyStrength = 1f;
         public static bool falseShadeAmbushEnabled = true;
@@ -441,6 +451,9 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sightBlockCellsNeeded, "sightBlockCellsNeeded", 1);
             Scribe_Values.Look(ref shadowFollowEnabled, "shadowFollowEnabled", true);
             Scribe_Values.Look(ref movingShadeEnabled, "movingShadeEnabled", true);
+            Scribe_Values.Look(ref heatSoundscapeEnabled, "heatSoundscapeEnabled", true);
+            Scribe_Values.Look(ref heatSoundscapeVolume, "heatSoundscapeVolume", 1f);
+            Scribe_Values.Look(ref creatureHeatSoundsEnabled, "creatureHeatSoundsEnabled", true);
             Scribe_Values.Look(ref pinnedSunEnabled, "pinnedSunEnabled", true);
             Scribe_Values.Look(ref pinnedSunSkyStrength, "pinnedSunSkyStrength", 1f);
             Scribe_Values.Look(ref falseShadeAmbushEnabled, "falseShadeAmbushEnabled", true);
@@ -759,6 +772,18 @@ namespace RimMandrake.CreatureBehaviors
                 list.CheckboxLabeled("  Back-to-shade ring", ref dashRingEnabled,
                     "Draws a line on the ground around a selected drafted colonist, showing how far they "
                   + "can go and still get back into shade before heatstroke sets in.");
+                list.CheckboxLabeled("  Heat you can hear", ref heatSoundscapeEnabled,
+                    "On a land built with it (the Long Shade): sunlit ground and shade sound different, "
+                  + "keyed to where the camera is looking, not to your people. Off: no heat sound bed.");
+                if (heatSoundscapeEnabled)
+                {
+                    list.Label("    Heat sound volume: " + heatSoundscapeVolume.ToStringPercent());
+                    heatSoundscapeVolume = list.Slider(heatSoundscapeVolume, 0f, 2f);
+                }
+                list.CheckboxLabeled("  Herd calls and giant footfalls", ref creatureHeatSoundsEnabled,
+                    "On a land built with it: a herd animal may call out at the edge of shade before it "
+                  + "sprints, and a giant's footfalls (the gloomcast's) carry further than you can see. "
+                  + "Off: both are silent.");
                 list.CheckboxLabeled("  Cover follows the sun's height", ref kindFromElevationEnabled,
                     "On a land whose sun height comes from where it sits on the planet (the Stillsand): "
                   + "On: where the sun stands high, roofs and parasols protect; where it stands low, only "

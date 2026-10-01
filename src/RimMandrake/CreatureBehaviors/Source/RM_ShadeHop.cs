@@ -364,7 +364,12 @@ namespace RimMandrake.CreatureBehaviors
             yield return walk;
 
             Toil pause = ToilMaker.MakeToil("RM_ShadeDash_Pause");
-            pause.initAction = () => pawn.pather?.StopDead();
+            pause.initAction = () =>
+            {
+                pawn.pather?.StopDead();
+                // LONGSHADE_GPT_ENRICHMENT_1 §3: a herd calls before it dashes.
+                RM_HeatSoundscape.TryHerdCall(pawn);
+            };
             pause.tickAction = () => pawn.rotationTracker.FaceCell(job.targetB.Cell);
             pause.handlingFacing = true;
             pause.defaultCompleteMode = ToilCompleteMode.Delay;
