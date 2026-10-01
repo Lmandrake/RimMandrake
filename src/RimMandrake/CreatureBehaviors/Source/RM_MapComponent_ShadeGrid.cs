@@ -279,6 +279,11 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				RefreshParasolLayer();
 			}
+			// STILLSAND_GLARE_BLIND_GOGGLES_1, offset off the recompute ticks.
+			if (now % RM_GlareBlind.CheckIntervalTicks == 125)
+			{
+				RM_GlareBlind.Tick(map, this);
+			}
 		}
 
 		/// <summary>The heat kind gear effectiveness is read under: the

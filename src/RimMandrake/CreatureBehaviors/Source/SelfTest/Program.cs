@@ -479,6 +479,49 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(l40 > l70 * 2f, "40 deg shadow " + l40 + " not much longer than 70 deg " + l70);
             });
 
+            // ── STILLSAND_GLARE_BLIND_GOGGLES_1 ─────────────────────────
+            Case("glare-blind: full sun blinds, sand shade and protected eyes do not (shipped numbers)", () =>
+            {
+                string root = FindModsRoot();
+                var biome = new System.Xml.XmlDocument();
+                biome.Load(System.IO.Path.Combine(root, "Stillsand", "Defs", "BiomeDefs", "RM_Stillsand_Biome.xml"));
+                System.Xml.XmlNode ext = biome.SelectSingleNode("//li[contains(@Class,'RM_SunHeatExtension')]");
+                Assert(ext != null, "Stillsand has no RM_SunHeatExtension");
+                Assert(ext.SelectSingleNode("glareBlindHediff")?.InnerText == "RM_GlareBlind", "Stillsand does not name RM_GlareBlind");
+                float min = F(ext, "glareBlindExposureMin", 0.6f);
+                float perDay = F(ext, "glareBlindSeverityPerDay", 4f);
+                float floor = F(ext, "sandGlareExposureFloor", 0f);
+                var hd = new System.Xml.XmlDocument();
+                hd.Load(System.IO.Path.Combine(root, "CreatureBehaviors", "Defs", "HediffDefs", "RM_GlareBlind_Hediffs.xml"));
+                float decay = F(hd.SelectSingleNode("//HediffDef[defName='RM_GlareBlind']/comps/li[@Class='HediffCompProperties_SeverityPerDay']"), "severityPerDay", 0f);
+                Assert(decay < 0f, "RM_GlareBlind has no recovery");
+                int iv = 250;
+                float sun = RM_SunHeatMath.GlareBlindGain(1f, min, perDay, 1f, iv, false);
+                float netPerDay = sun * 60000f / iv + decay;
+                Assert(netPerDay > 0f, "full glare nets " + netPerDay + "/day, never blinds");
+                Assert(RM_SunHeatMath.GlareBlindGain(RM_SunHeatMath.WithGlareFloor(0f, floor), min, perDay, 1f, iv, false) == 0f, "shade on sand blinds");
+                Assert(RM_SunHeatMath.GlareBlindGain(1f, min, perDay, 1f, iv, true) == 0f, "protected eyes blinded");
+                Assert(RM_SunHeatMath.GlareBlindGain(1f, min, perDay, 0f, iv, false) == 0f, "rate dial 0 still blinds");
+                Console.WriteLine("  glare-blind: full glare nets +" + netPerDay.ToString("0.00") + "/day; reaches 0.35 in "
+                    + (0.35f / netPerDay * 24f).ToString("0.0") + " h; clears at " + (-decay).ToString("0.0") + "/day");
+            });
+
+            Case("glare-blind: immunity is a gene on the Jawa, goggles carry the tag", () =>
+            {
+                string root = FindModsRoot();
+                var gene = new System.Xml.XmlDocument();
+                gene.Load(System.IO.Path.Combine(root, "CreatureBehaviors", "Defs", "GeneDefs", "RM_GlareAdapted.xml"));
+                Assert(gene.SelectSingleNode("//GeneDef[defName='RM_GlareAdapted']/modExtensions/li[contains(@Class,'RM_GlareProtectionExtension')]") != null, "gene lacks the protection extension");
+                var jawa = new System.Xml.XmlDocument();
+                jawa.Load(System.IO.Path.Combine(root, "..", "RimStarWars", "StarWarsRaces", "Patches", "RSW_Jawa_GlareAdapted.xml"));
+                System.Xml.XmlNode op = jawa.SelectSingleNode("//match[contains(xpath,'RSW_RimMandrakeJawa')]");
+                Assert(op != null && op.SelectSingleNode("value/li")?.InnerText == "RM_GlareAdapted", "Jawa patch does not add RM_GlareAdapted");
+                var gog = new System.Xml.XmlDocument();
+                gog.Load(System.IO.Path.Combine(root, "Stillsand", "Defs", "ThingDefs_Apparel", "RM_SunGoggles.xml"));
+                Assert(gog.SelectSingleNode("//ThingDef[defName='RM_SunGoggles']/apparel/tags/li[.='" + "RM_GlareProtection" + "']") != null, "goggles lack the tag");
+                Assert(gog.SelectSingleNode("//ThingDef[defName='RM_SunGoggles']/apparel/layers/li[.='EyeCover']") != null, "goggles not eyes-layer");
+            });
+
             foreach (string p in Pass) Console.WriteLine("PASS " + p);
             foreach (string f in Fail) Console.WriteLine("FAIL " + f);
             Console.WriteLine(Pass.Count + "/" + (Pass.Count + Fail.Count) + " passed");

@@ -78,6 +78,22 @@ namespace RimMandrake.CreatureBehaviors
         /// even in shade, before the Mod Settings strength dial. 0 = off.</summary>
         public float sandGlareExposureFloor = 0f;
 
+        // ── STILLSAND_GLARE_BLIND_GOGGLES_1: glare-blind (RM_GlareBlind.cs) ─
+        /// <summary>The hediff unprotected humanlike eyes take in full glare
+        /// (it carries its own Sight stages and SeverityPerDay recovery).
+        /// Null = this biome does not blind. Protection is a gene or apparel
+        /// carrying RM_GlareProtectionExtension, or apparel tagged
+        /// RM_GlareProtection — never a race or defName list.</summary>
+        public HediffDef glareBlindHediff;
+
+        /// <summary>Exposure (RM_MapComponent_ShadeGrid.ExposureFor) at or
+        /// above which a pawn stands in full glare.</summary>
+        public float glareBlindExposureMin = 0.6f;
+
+        /// <summary>Severity gained per day spent in full glare, before the
+        /// hediff's own decay and the Mod Settings rate dial.</summary>
+        public float glareBlindSeverityPerDay = 4f;
+
         // ── §5 shade hopping / §6 dash ring (RM_ShadeHop.cs) ───────────
         /// <summary>A cell with exposure at or below this counts as shade in
         /// the patch graph.</summary>

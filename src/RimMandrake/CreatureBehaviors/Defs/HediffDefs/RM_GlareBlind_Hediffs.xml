@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GlareBlind_Hediffs.xml      CreatureBehaviors - STILLSAND_GLARE_BLIND_GOGGLES_1
+
+  RM_GlareBlind   glare-blind. RM_GlareBlind.cs adds severity to unprotected humanlike eyes
+                  standing in full glare on a biome whose RM_SunHeatExtension names this
+                  hediff (glareBlindSeverityPerDay, default 4/day). Its own SeverityPerDay
+                  (-2/day) is the recovery, so full glare nets about +2/day and shade or a
+                  roof clears it at 2/day. Vanilla Sight only. First values; tuned in live play.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_GlareBlind</defName>
+    <label>glare-blind</label>
+    <description>Eyes burned by the glare off bright sand under a sun that does not move. Sight fades the longer the eyes go unprotected in full glare, and comes back in shade, indoors or behind goggles.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.9, 0.85, 0.6)</defaultLabelColor>
+    <isBad>true</isBad>
+    <makesSickThought>false</makesSickThought>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+    <initialSeverity>0.01</initialSeverity>
+    <minSeverity>0</minSeverity>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-2</severityPerDay>
+        <showHoursToRecover>true</showHoursToRecover>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>squinting</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <minSeverity>0.1</minSeverity>
+        <label>squinting</label>
+        <capMods>
+          <li>
+            <capacity>Sight</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.35</minSeverity>
+        <label>dazzled</label>
+        <capMods>
+          <li>
+            <capacity>Sight</capacity>
+            <offset>-0.15</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.7</minSeverity>
+        <label>glare-blind</label>
+        <capMods>
+          <li>
+            <capacity>Sight</capacity>
+            <offset>-0.35</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

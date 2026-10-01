@@ -230,6 +230,10 @@
         <overheadAboveElevationDegrees>55</overheadAboveElevationDegrees>
         <sandGlareExposureFloor>0.35</sandGlareExposureFloor>
         <maxElevationDegrees>85</maxElevationDegrees>
+        <!-- STILLSAND_GLARE_BLIND_GOGGLES_1: unprotected humanlike eyes in full glare go glare-blind. -->
+        <glareBlindHediff>RM_GlareBlind</glareBlindHediff>
+        <glareBlindExposureMin>0.6</glareBlindExposureMin>
+        <glareBlindSeverityPerDay>4</glareBlindSeverityPerDay>
       </li>
       <!-- STILLSAND_SUN_FROM_LATITUDE_1 §1-2: the pinned sky. Ends the day-night cycle. Elevation from the
            tile (same geometry as above), clamp lifted to 85 so near the substellar point shadows shrink to

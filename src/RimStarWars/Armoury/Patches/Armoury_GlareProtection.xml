@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_GLARE_BLIND_GOGGLES_1 spec 7: existing goggle headgear cancels glare-blind by a
+  patch-added apparel tag, so nobody re-buys what they wear. RM_GlareBlind.cs
+  (mandrake.rm.creaturebehaviors) reads the string tag RM_GlareProtection; a plain string, so
+  this needs no type from that mod and is harmless without it. The three named in the spec:
+  Bothan sensory goggles, light-scan goggles, the pao (flak) hat with goggles.
+  success Always: a def absent on a given list is not an error.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="guy762_Headband_bothan" or defName="guy762_Headband_lightscan" or defName="guy762_RebelFlakCap_goggles"]/apparel/tags</xpath>
+    <value>
+      <li>RM_GlareProtection</li>
+    </value>
+  </Operation>
+
+</Patch>
