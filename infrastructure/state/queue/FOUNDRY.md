@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T11:41:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T11:42:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1304,15 +1304,6 @@ target:   v1
 kind:     defect
 summary:  SOORRAKINSTANTJOBLOOP1 — a wild soorrak never moves; its job ends the moment it starts
 prose:    infrastructure/state/items/SOORRAK_INSTANT_JOB_LOOP_1.md
-
-## RIMPLACE_STUFFLESS_THING_ROWS_1 Rimplace plans place stuffed defs with stuff=null (SculptureSmall in sarlacc_sign, Bedroll in junkers templates)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  RIMPLACESTUFFLESSTHINGROWS1 — plan THING rows for stuffed defs carry no stuff
-prose:    infrastructure/state/items/RIMPLACE_STUFFLESS_THING_ROWS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
