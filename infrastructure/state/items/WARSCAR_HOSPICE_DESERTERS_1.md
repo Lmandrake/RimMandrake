@@ -4,8 +4,8 @@ From `WARSCAR_BEDAZZLE_SITTING_1`. Design source:
 `design/Jawa/worldbuilding/biomes/warscar_turn3_development_2026-09-30.md` §2.7 and §4 #3 (turn-4 IN).
 Ruled turn 2: **built before the rainbow pools**. Owner, typed: *"Those droids should be INTERESTING
 cases... they all left their owner, ran away, then died a slow death. That's gotta leave some strange
-features inside."* Memory texts: **BENCH drafts, the owner edits** (turn 4) — the drafts are
-`warscar_bedazzle_cast_2026-09-30.md` §6; build from the owner-edited version of that section.
+features inside."* Memory texts: `warscar_bedazzle_cast_2026-09-30.md` §6A, accepted
+as written by card 2026-09-30; build from that section.
 
 ## spec
 
@@ -45,3 +45,6 @@ features inside."* Memory texts: **BENCH drafts, the owner edits** (turn 4) — 
   colony mech with no mechanitor; its modification hediffs are present.
 - A forced failure produces `RM_FailedChassis` carrying the same name.
 - A dev-fired walk-in incident brings a servitor to the cradle.
+
+## ruling (card 2026-09-30)
+Cast bible section 6A text is ruled final (accepted as written, decision taken by question card 2026-09-30) and is the build source; ship verbatim, not as placeholders. Source: design/Jawa/worldbuilding/biomes/warscar_bedazzle_cast_2026-09-30.md.

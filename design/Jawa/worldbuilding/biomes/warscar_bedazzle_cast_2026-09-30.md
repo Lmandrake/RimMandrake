@@ -26,7 +26,7 @@ are quoted.
 | 9 | Live shield generators are salvage, typed: *"We're going to have to evaluate those shield generators if they're present and working. That's salvage man!"* | typed | rings carry a condition; working ones are evaluated, uninstalled and hauled home (`WARSCAR_AEROSOL_SCREEN_1` §7) |
 | 10 | Glower crust, typed *"1+2"*: **both** a rainbow-pool phase catalyst and radiation/toxic shielding | typed (card notes) | catalyst: `WARSCAR_RAINBOW_POOLS_1` §6; shielding panel and plate: `WARSCAR_AEROSOL_SCREEN_1` §9 |
 | 11 | ONE shared footprint grid with the Stillsand | card (turn 4) | `FOOTPRINT_TRACK_GRID_1` filed as the single kit; `STILLSAND_SKELETONS_TRACKS_1` §7, `STILLSAND_SAND_SWIM_KIT_1` and `STILLSAND_DUNE_GALE_1` §11 corrected to consume it |
-| 12 | Deserter memories and pilgrim lore rungs: BENCH drafts, the owner edits | card (turn 4) | drafts in §6, for his pen |
+| 12 | Deserter memories and pilgrim lore rungs: BENCH drafts | card (turn 4); accepted as written by card 2026-09-30 | §6, final |
 
 ## 1. The build items filed
 
@@ -49,10 +49,10 @@ the old-line turret refit.
 | `WARSCAR_SNAP_MARK_1` | the chatrak's staged snap; the mark as a trade; loosened panels; no stacking | the body |
 | `WARSCAR_TOTCHAK_WAKES_1` | dormant in the line, demolition wake, wall-eating, lie-down | the body |
 | `WARSCAR_GEIGER_CHOIR_1` | tick, wind, silence, hum, boil; tetchik in a jar | the body; the Settling (silence) |
-| `WARSCAR_HOSPICE_DESERTERS_1` | kneeling rings, histories, the five-stage cradle, the servitor, failed wrecks, a deserter walks in | the owner's edit of §6A |
+| `WARSCAR_HOSPICE_DESERTERS_1` | kneeling rings, histories, the five-stage cradle, the servitor, failed wrecks, a deserter walks in | §6A (ruled final, card 2026-09-30) |
 | `WARSCAR_OLD_TONGUE_1` | three panel sets unlocking protocols, calibration, phase reading | the screen and hospice (what it unlocks) |
 | `WARSCAR_RAINBOW_POOLS_1` | registry row, cycle, tap, four reagents, journal, phase reader, glower catalyst | the hospice (ruled order); FlowWorks |
-| `WARSCAR_PILGRIM_CAMPS_1` | (RUT) camps and journals that call `AdvanceStage("Scarlands")` | the owner's edit of §6B |
+| `WARSCAR_PILGRIM_CAMPS_1` | (RUT) camps and journals that call `AdvanceStage("Scarlands")` | §6B (ruled final, card 2026-09-30) |
 | `WARSCAR_TURRETS_TRACK_1` | verbless tracking on broken turrets; the old-line turret refit | etchant (optional) |
 
 **Scorecard after this commission** (turn 3 §5, adjusted for ruling 7): free tier **8 HIT + 1 PARTIAL**
@@ -200,14 +200,12 @@ also clean but set aside as too near the drafted *kettix* aloud.
 (2) Name: chotrix or tchekka? (3) Should cloak lacquer exist (pawn stealth from a creature), or should
 the hunter yield only leather and meat?
 
-## 6. Drafts for the owner's pen: deserter memories and pilgrim rungs
+## 6. Deserter memories and pilgrim rungs (ACCEPTED AS WRITTEN, card 2026-09-30)
 
-Ruled turn 4 (card): **BENCH drafts, the owner edits.** Everything in this section is a **DRAFT**.
-`WARSCAR_HOSPICE_DESERTERS_1` and `WARSCAR_PILGRIM_CAMPS_1` build their texts from the version of this
-section the owner has edited; until then they ship the drafts flagged as placeholders. Rules the drafts
-keep: R25 (the player may *infer*, never be *told*); §GM never named (no enemy, side, god, Rakata,
-Assailants or scaria's authorship); machines say *them*, *us* and *the order*. Edit in place: strike,
-rewrite, or mark a line KEEP.
+**Accepted as written by question card, 2026-09-30 22:45 PDT. This text is final and is the build source** for 
+`WARSCAR_HOSPICE_DESERTERS_1` (§6A) and `WARSCAR_PILGRIM_CAMPS_1` (§6B); ship it verbatim, no placeholder flag. 
+Rules the text keeps: R25 (the player may *infer*, never be *told*); §GM never named (no enemy, side, god, Rakata, 
+Assailants or scaria's authorship); machines say *them*, *us* and *the order*.
 
 ### 6A. The deserters: three memory lines each (revealed at lights, limbs, voice)
 

@@ -1,9 +1,8 @@
 # WARSCAR_PILGRIM_CAMPS_1 — the pilgrim camps open the Scarlands ladder (campaign tier)
 
 From `WARSCAR_BEDAZZLE_SITTING_1`. Design source:
-`design/Jawa/worldbuilding/biomes/warscar_turn3_development_2026-09-30.md` §2.10. Rung texts: **BENCH
-drafts, the owner edits** (turn 4). The drafts are `warscar_bedazzle_cast_2026-09-30.md` §6; build the
-texts from the owner-edited version of that section, never from an agent's own pen.
+`design/Jawa/worldbuilding/biomes/warscar_turn3_development_2026-09-30.md` §2.10. Rung texts: `warscar_bedazzle_cast_2026-09-30.md` §6B, accepted
+as written by card 2026-09-30; build the texts from that section, never from an agent's own pen.
 
 ## spec
 
@@ -26,3 +25,6 @@ texts from the owner-edited version of that section, never from an agent's own p
   the biome description changes.
 - Five camps read in sequence walk all five rungs; a sixth does nothing.
 - The rung texts in the shipped XML match the owner-edited cast bible §6.
+
+## ruling (card 2026-09-30)
+Cast bible section 6B text is ruled final (accepted as written, decision taken by question card 2026-09-30) and is the build source; ship verbatim, not as placeholders. Source: design/Jawa/worldbuilding/biomes/warscar_bedazzle_cast_2026-09-30.md.
