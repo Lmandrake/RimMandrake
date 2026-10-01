@@ -24,15 +24,10 @@ namespace RimMandrake.FeverWood
     // refusal exactly once per cooldown window, never at random.
     //
     // What this does NOT do, on purpose: detect "mishandled during a
-    // failed taming/training attempt" (§6n's other trigger half, alongside
-    // "frightened"). Which job/interaction hook fires on a failed handling
-    // attempt is a real engine question this pass could not verify against
-    // source (RimSage does not connect from this machine — CLAUDE.md's
-    // "engine-internals question is UNMEASURABLE on the laptop") and did
-    // not want to guess at. Damage-taken is the trigger this pass could
-    // verify and ship for real; FEVERWOOD_SAP_SUCKER_TUNING_1 owns the
-    // mishandling half plus every INVENTED number this file and its XML
-    // carry.
+    // failed taming attempt" (§6n's other trigger half). The seam is
+    // Pawn_MindState.CheckStartMentalStateBecauseRecruitAttempted(Pawn)
+    // (internal; verified in RimSage 2026-10-01) and needs a Harmony
+    // postfix — owed to FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1.
     public class RM_CompSapSuckerRefusal : ThingComp
     {
         private int lastTriggeredTick = -999999;
