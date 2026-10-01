@@ -405,6 +405,15 @@ def save_fixture(s, name, saves_dir, backup_dir, sleep=time.sleep, wait_s=120):
 def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep, map_id=None):
     """`rimworld/load_game` (load_game_ready is a PRE-condition check, traps.md); assert on
     programState, never on the call's own success."""
+    # Load from the MAIN MENU, once: loading over a live game runs Game.Dispose() right after queueing the
+    # async load, and a map still being torn down then NREs during the new load (GlowGrid.GlowPool.Take,
+    # "Error while loading a map" -- MEASURED live 2026-10-01, twice).
+    if _ui_state(s).get("programState") == "Playing":
+        try:
+            s.call("rimworld/go_to_main_menu")
+        except Exception:
+            pass
+        _wait_state(s, "Entry", 180, sleep)
     try:
         s.call("rimworld/load_game", saveName=name)
     except Exception as ex:
@@ -428,6 +437,16 @@ def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep, map_id=None):
         mi = _call(s, "jawa/map_info")
     if mi.get("tile") == tile:
         _call(s, "jawa/incident_queue_clear")      # a reload re-arms the storyteller's queue
+        # Time must run once before the site is judged: (1) cell temperatures only converge on the outdoor
+        # temperature after ticks (MEASURED: 41.6 vs 50.4 C at tick 0 of a load, gate row 3.8.8), and (2) the
+        # founded settlement raises a naming dialog, whose closing hops the current map back to the quicktest
+        # colony -- so close it, then go back to the site.
+        s.call("rimworld/step_game_ticks", ticks=600, pauseFirst=True, timeoutMs=120000)
+        s.call("jawa/window_list_close", action="close", typeName="RimWorld.Dialog_NamePlayerFactionAndSettlement")
+        if map_id is not None:
+            _call(s, "jawa/set_current_map", mapId=map_id)
+        s.call("rimworld/step_game_ticks", ticks=900, pauseFirst=True, timeoutMs=120000)
+        mi = _call(s, "jawa/map_info")
     if mi.get("tile") != tile or mi.get("mapBiome") != BIOME:
         raise SiteError("reloaded current map is tile %s biome %s, want %s %s" % (
             mi.get("tile"), mi.get("mapBiome"), tile, BIOME))
