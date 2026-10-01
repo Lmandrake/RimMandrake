@@ -1787,3 +1787,9 @@
 {"seat":"FOUNDRY","event":"close","id":"DEPLOYED_BIOME_REFS_ROTSPOREKIT_1","sha":"fac981995","reason":"selftest_deployed_biome_refs now 0 unresolved of 522; deploy changed; model=sonnet-5.5","ts":"2026-10-01T14:42:34Z"}
 {"seat":"FOUNDRY","event":"claim","id":"WARSCAR_AEROSOL_SCREEN_1","ts":"2026-10-01T14:45:34Z"}
 {"seat":"FOUNDRY","event":"block","id":"WARSCAR_AEROSOL_SCREEN_1","reason":"11-point build; depends on WARSCAR_RAINBOW_POOLS_1 and WARSCAR_OLD_TONGUE_1; needs split a-d (see Transient/worker_notes_WARSCAR_AEROSOL_SCREEN_1.md)","ts":"2026-10-01T14:45:34Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RUST_CATHEDRAL_HUM_UNMAINTAINED_1","ts":"2026-10-01T14:49:23Z"}
+{"seat":"FOUNDRY","event":"start","id":"RUST_CATHEDRAL_HUM_UNMAINTAINED_1","ts":"2026-10-01T14:49:23Z"}
+{"seat":"FOUNDRY","event":"close","id":"RUST_CATHEDRAL_HUM_UNMAINTAINED_1","sha":"9b410b512","reason":"built, untested live; model=sonnet-5.5","ts":"2026-10-01T14:49:24Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SHADEGRID_BRIDGE_READER_1","ts":"2026-10-01T14:49:24Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHADEGRID_BRIDGE_READER_1","ts":"2026-10-01T14:49:25Z"}
+{"seat":"FOUNDRY","event":"close","id":"SHADEGRID_BRIDGE_READER_1","sha":"f01c5d87d","reason":"built, untested live; model=sonnet-5.5","ts":"2026-10-01T14:49:25Z"}
