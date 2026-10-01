@@ -173,6 +173,11 @@ def _suite_rows(s, mod, expected):
     import runner
     suite = runner.load_validation(runner.find_mod_dir(mod))
     res = runner.run_suite(suite, s, anchor=None, mod=None)   # judge/visual half is separate
+    for ch in res["chains"]:
+        for c in ch["components"]:
+            if not str(c.get("verdict", "")).startswith("PASS"):
+                print("component %s/%s: %s" % (ch.get("name"), c.get("name"),
+                                               json.dumps({k: v for k, v in c.items() if k != "name"}, default=str)[:600]))
     return B.rollup_components(res["chains"], expected)
 
 

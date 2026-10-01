@@ -68,8 +68,12 @@ class TimedTransport(object):
     def call(self, tool, params=None, check=True):
         t0 = time.perf_counter()
         ok = False
+        params = dict(params or {})
+        if tool == "rimworld/step_game_ticks":
+            # the tool gives up after ~10 s (~316 ticks) unless told otherwise, and reports a clean stop
+            params.setdefault("timeoutMs", 120000)
         try:
-            r = self.rb.call(tool, params or {}, check)
+            r = self.rb.call(tool, params, check)
             ok = True
             return r
         finally:
@@ -134,7 +138,7 @@ class MockGame(object):
       dirty (stray thing/pawn in the test area), unfrozen (never advances ticks).
     """
     TOOLS = ["rimbridge/ping", "rimbridge/get_bridge_status", "rimworld/get_game_info",
-             "rimworld/pause_game", "rimworld/set_god_mode", "rimworld/list_windows",
+             "rimworld/pause_game", "rimworld/set_god_mode", "rimworld/get_ui_state",
              "rimworld/get_cell_info", "jawa/map_info", "jawa/list_pawns",
              "jawa/list_things", "jawa/destroy_batch", "jawa/damage",
              "jawa/spawn_thing", "jawa/time_clock",
@@ -191,8 +195,9 @@ class MockGame(object):
         if tool == "rimworld/set_god_mode":
             self.god = bool(p.get("enabled"))
             return {"success": True}
-        if tool == "rimworld/list_windows":
-            return {"success": True, "windows": list(self.windows)}
+        if tool == "rimworld/get_ui_state":
+            return {"success": True, "floatMenuOpen": False,
+                    "windows": [{"type": "Verse.ImmediateWindow"}] + [{"type": w} for w in self.windows]}
         if tool == "jawa/map_info":
             return {"success": True, "sizeX": self.size[0], "sizeZ": self.size[1]}
         if tool == "jawa/time_clock":

@@ -74,8 +74,8 @@ def main():
     g = MockGame()
     s = FastSession(transport=MockTransport(g), strict=False)
     with s:
-        s.tools.discard("rimworld/list_windows")
-        check("no list_windows tool -> UNMEASURED", pf.check_no_modal(s).status == UNMEASURED)
+        s.tools.discard("rimworld/get_ui_state")
+        check("no get_ui_state tool -> UNMEASURED", pf.check_no_modal(s).status == UNMEASURED)
     c, cs = pre(expect_ids=["mandrake.rm.x"])
     check("modlist present id PASS", c["modlist"].status == PASS)
     check("modlist missing id FAIL", pf.check_modlist(None, ["nope.mod"], cli.mock_config([])).status == FAIL)

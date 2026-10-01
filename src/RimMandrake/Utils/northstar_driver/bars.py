@@ -132,6 +132,15 @@ def _row(b, st, ev, t0, t):
             "notes": t.notes}
 
 
+def _component_evidence(c):
+    """`name=VERDICT`, plus WHY when the component did not pass -- a bare UNMEASURED is undebuggable."""
+    base = "%s=%s" % (c.get("name"), c.get("verdict"))
+    if str(c.get("verdict", "")).startswith("PASS"):
+        return base
+    why = {k: v for k, v in c.items() if k not in ("name", "shows", "verdict", "screenshots") and v}
+    return base + (" [%s]" % str(why)[:300] if why else "")
+
+
 def rollup_components(chains, declared_ids):
     """modcheck chain output -> {bar id: row} via each component's `shows`. A bar no component
     claims is UNMEASURED (unwired), which is exactly the floor modcheck refuses on."""
@@ -154,7 +163,7 @@ def rollup_components(chains, declared_ids):
         else:
             st = UNMEASURED
         rows[bid] = {"id": bid, "status": st,
-                     "evidence": "; ".join("%s=%s" % (c.get("name"), c.get("verdict")) for c in cs)}
+                     "evidence": "; ".join(_component_evidence(c) for c in cs)}
     return list(rows.values())
 
 

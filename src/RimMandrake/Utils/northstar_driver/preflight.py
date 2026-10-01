@@ -67,15 +67,21 @@ def check_loaded_not_zombie(s):
     return Check("game_loaded", PASS, "ticksGame=%s map=%sx%s" % (t1, mi["sizeX"], mi["sizeZ"]))
 
 
+# Windows that sit on screen in a dev quicktest and block nothing: the tick-rate/dev overlays.
+_BENIGN_WINDOWS = {"Verse.ImmediateWindow", "LudeonTK.Dialog_DevPalette"}
+
+
 def check_no_modal(s):
-    if "rimworld/list_windows" not in s.tools:
-        return Check("no_modal", UNMEASURED, "no window-listing tool on this bridge (rimworld/list_windows); "
+    if "rimworld/get_ui_state" not in s.tools:
+        return Check("no_modal", UNMEASURED, "no rimworld/get_ui_state on this bridge; "
                      "a stale modal cannot be ruled out -- close it by eye or build the tool")
-    r, err = _safe(s.call, "rimworld/list_windows")
+    r, err = _safe(s.call, "rimworld/get_ui_state")
     if err or "windows" not in (r or {}):
-        return Check("no_modal", UNMEASURED, "list_windows unreadable: %s %s" % (err, r))
-    w = r["windows"]
-    return Check("no_modal", FAIL if w else PASS, "open windows: %s" % (w or "none"))
+        return Check("no_modal", UNMEASURED, "get_ui_state unreadable: %s %s" % (err, str(r)[:120]))
+    w = [x.get("type") for x in r["windows"] if x.get("type") not in _BENIGN_WINDOWS]
+    if r.get("floatMenuOpen"):
+        w.append("float menu")
+    return Check("no_modal", FAIL if w else PASS, "open blocking windows: %s" % (w or "none"))
 
 
 def _ticks(s):
@@ -106,6 +112,11 @@ def check_dev_god(s, need_dev=True, need_god=False, fix=False):
     info, err = _safe(s.call, "rimworld/get_game_info")
     if err:
         return Check("dev_god_mode", UNMEASURED, err)
+    info = dict(info or {})
+    if "devModeEnabled" not in info and "jawa/prefs" in s.tools:   # read-only call: no setters passed
+        pr, perr = _safe(s.call, "jawa/prefs")
+        if not perr and isinstance((pr or {}).get("after"), dict) and "devMode" in pr["after"]:
+            info["devModeEnabled"] = pr["after"]["devMode"]
     out, status = [], PASS
     for label, key, need in (("dev", "devModeEnabled", need_dev), ("god", "godMode", need_god)):
         if not need:
@@ -177,6 +188,10 @@ def _tree(root, skip_big=("Textures",)):
     return out
 
 
+_DEPLOY_SKIP_DIRS = {".git", ".vs", "Source", "__pycache__", "_artsrc", "art_candidates", "art_source", "bin", "obj"}
+_DEPLOY_SKIP_EXTS = {".csproj", ".md", ".py", ".pyc", ".sln", ".user"}
+
+
 def check_deployed(mod_dir, deployed_dir):
     """Deployed copy == repo copy. Writing a file is not deploying it (CLAUDE.md)."""
     if not os.path.isdir(mod_dir):
@@ -185,6 +200,10 @@ def check_deployed(mod_dir, deployed_dir):
         return Check("deployed_matches_repo", FAIL, "not deployed: %s" % deployed_dir)
     held = os.path.join(mod_dir, "DEPLOY_HOLD.txt")
     a, b = _tree(mod_dir), _tree(deployed_dir)
+    # deploy_custom_mods.py never ships these (its `skip :` line), so their absence is not drift.
+    a = {k: v for k, v in a.items()
+         if not (set(k.replace("\\", "/").split("/")[:-1]) & _DEPLOY_SKIP_DIRS)
+         and os.path.splitext(k)[1].lower() not in _DEPLOY_SKIP_EXTS}
     if os.path.isfile(held):
         hold = {l.strip() for l in open(held, encoding="utf-8", errors="replace") if l.strip()}
         a = {k: v for k, v in a.items() if k not in hold}

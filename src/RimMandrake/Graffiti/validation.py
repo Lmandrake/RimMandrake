@@ -112,7 +112,7 @@ def _settle_painter(t, pid):
     t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
     t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Rest", level=1.0)
     t.bridge_call("jawa/set_pawn_skill", pawn=pid, skill="Artistic", level=8)
-    t.bridge_call("jawa/set_draft", pawnId=pid, draft=False)
+    t.bridge_call("jawa/set_draft", pawnId=pid, drafted=False)
 
 
 def _no_cleaning(t):

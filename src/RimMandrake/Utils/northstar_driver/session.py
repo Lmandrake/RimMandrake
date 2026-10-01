@@ -30,7 +30,7 @@ class FastSession(Session):
             if not token:
                 raise SessionError("No bridge token (env/Player.log). Is RimWorld up "
                                    "with RimBridgeServer active?")
-            self._transport = TimedTransport(RimBridge(host, port, token),
+            self._transport = TimedTransport(RimBridge(host, port, token, timeout=240.0),
                                              pipeline=self._pipeline)
         self._rb = self._transport.__enter__()
         self.tools = {t.get("name") for t in self._rb.list_tools()}
