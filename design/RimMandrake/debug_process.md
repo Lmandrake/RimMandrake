@@ -61,7 +61,7 @@ committed, and its remainder filed as an item. Then it stops.
 A RED that is filed does not hold the pause; it is bug work, which continues anyway. When
 `modcheck status` plus the glob census show (a) and (b), the seat that saw it tells the
 owner in one line with the census output, and the pause is over. Umbrella item:
-`FIRST_SCRIPT_EVERY_MOD_1`.
+`NORTHSTAR_EVERYWHERE_PROGRAM_1`.
 
 ## 2. What a first script must contain
 
@@ -209,7 +209,7 @@ them or grow them."*
   script never edits a hashed section. An agent may still draft north-star lines (DRAFT),
   but only his `modcheck validate --owner-said` binds them.
 - **Periodic adversarial review.** The owner releases adversarial agents and GPT reviews
-  against the scripts, on his clock (`SCRIPT_ADVERSARIAL_REVIEW_1`). A weakened, proxy
+  against the scripts, on his clock (`NORTHSTAR_ADVERSARIAL_REVIEW_1`). A weakened, proxy
   or never-red check they find is a script defect. It is fixed and recorded like any bug.
 
 ## 7. Briefing a bridge-driving subagent
