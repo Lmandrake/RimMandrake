@@ -5,7 +5,8 @@
 Engine sources verified via RimSage against 1.6 decompiled source (file:line cited inline).
 Owner rulings folded (2026-09-09): Odyssey soft-dep YES · pacing fully tunable ·
 edge condition designed §2, source/sink chosen · wild-items-only burial · generic
-release day one with per-map material skins · dig-vanishes and vanilla half-speed accepted.
+release day one with per-map material skins · vanilla half-speed accepted. Dug drift yields
+glass sand at full yield (owner, by card, 2026-09-30, `STILLSAND_BEDAZZLE_SITTING_1` turn 4).
 
 ## 1. Verdict
 
@@ -177,7 +178,8 @@ categories we bury.
   speed. "Extremely slow" (quarter speed on deep drift) is one small postfix on the
   path-cost add — offered as a knob, not assumed.
 - **Digging** — the whole loop ships in vanilla: `Area_SnowOrSandClear` designator +
-  `WorkGiver_ClearSnowOrSand`. Dug sand vanishes (vanilla). A maintained clear pit
+  `WorkGiver_ClearSnowOrSand`. Each unit of drift a pawn clears yields `RM_GlassSand` at
+  full yield (ruled 2026-09-30; build: `STILLSAND_GLASS_LENS_CHAIN_1`). A maintained clear pit
   upwind becomes a sand moat that the transport rule preferentially refills — dig,
   drift, re-dig: exactly the owner's "pits that fill in", emergent, zero extra code.
 - **Windbreaks** — full-fillage buildings zero sand on their cells and cast deposition
@@ -222,8 +224,7 @@ burial caches — **wild/unclaimed items only (RULED)** — + reveal + `BuryThin
 plant choke; biome opt-in via DefModExtension, **generic from day one (RULED)**:
 vanilla Desert/ExtremeDesert bound to the default sand material in the RM mod itself,
 campaign biomes via RUT pack.
-**Out, explicitly:** multi-material per map / own grids; snow drifting; sand as a
-haulable item (dig vanishes — RULED); deep-drift extra path tier (vanilla half-speed
+**Out, explicitly:** multi-material per map / own grids; snow drifting; deep-drift extra path tier (vanilla half-speed
 accepted — RULED); burying pawns/corpses/turrets; any worldgen; non-Odyssey fallback.
 **Size vs the yardstick:** Pyrelands' `FireEcologyHook.cs` is ~400 lines/one file.
 v2 additions (material def + skin layer + suppression patch + formalized edge flow)
