@@ -14,9 +14,8 @@
 > *why* still holds and is worth reading.
 >
 > ⛔ **Two things below are now wrong:**
-> 1. **"Whose world was it?" is answered: the RAKATA.** Not the Forsakens. The final
->    section of this doc picks the Forsakens and rejects the Rakata for being Legends;
->    the owner has since named the Rakata in full for v1 —
+> 1. **"Whose world was it?" is answered: the RAKATA** (folk name *the Forsaken*, the
+>    owner's own coinage). The owner named the Rakata in full for v1 —
 >    `design/Jawa/worldbuilding/ANCIENTS_AS_RAKATA_SPEC.md`. The sleepers in the vaults
 >    are Rakatan and the Utinni is a Rakatan vessel.
 > 2. **The mechs do NOT leave the raid roster.** "Empty the Mechanoid raid roster
@@ -157,54 +156,12 @@ alone.
 
 ---
 
-# ⭐⭐ THE ANSWER WAS ALREADY IN THE STACK — the Forsakens
-
-_2026-08-13, from a full read of Alpha Biomes' `AB_RockyCrags`._
-
-> 🔑 Refined (`TERRAMANUFACTURE_CANON_1`; owner 2026-09-11): the terraforming below was real
-> and was the first stage — **the race was evolving the planet towards terramanufacture**,
-> the world built into a factory. The ships terraformed; the discovery stands unchanged.
-
-**The dark biome ships its own dead precursor civilisation, and nobody had
-noticed.** Its own description, verbatim:
-
-> *"This desertic landscape appears to be perpetually covered in an unnatural fog
-> that seeps all light from the sun. **In the ancient past it was partly
-> terraformed by a mysterious humanoid alien race simply known as Forsakens.**"*
-
-## Why this settles the open question
-
-**Whose world was it? The Forsakens'.** And they are better than either canon
-option:
-
-| | Rakata | Techno Union | ⭐ **the Forsakens** |
-|---|---|---|---|
-| canon risk | ⚠️ Legends, not Disney | ✅ canon | ⭐ **none — they are not Star Wars at all, so they cannot contradict it** |
-| dead precursor? | yes | no, a corporation | ⭐ **yes, by definition** |
-| already in the stack? | as a *race* only | no | ⭐ **as a biome, a rock type, a terrain set, a weather system and a fauna roster** |
-| explains the darkness? | no | no | ⭐ **yes — the dark IS their failed terraforming** |
-
-⭐ **One noun now carries the entire back-story**: the world was terraformed by
-somebody, they failed, they left, the light never came back, and **their
-automatic defences are still standing.** The mechanoids are the Forsakens'
-garrison. The ancient dangers are Forsaken compounds. The salvage economy is
-Forsaken debris. **The Jawas are picking over a dead civilisation's estate**,
-which is the most Jawa sentence this design has produced.
-
-**And it costs nothing.** The name already exists in a def a player can read
-in-game. We are not inventing lore, we are *noticing* it.
-
-⚠️ **The Jawas still do not know who the Forsakens were.** Keep the player-facing
-ignorance from the earlier ruling — a clan finding a door they cannot explain is
-the better scene. The name exists in the world; the explanation does not.
-
 ## What follows mechanically
 
 - **Rename the Mechanoid faction to the Forgotten Arsenal** — one label operation,
   and it now *means* something. ⚠️ *This said "the Forsakens' garrison"; the name is
   settled as **the Forgotten Arsenal** (also *the Forsaken Arsenal*) — `FACTION_SPEC.md` §13.*
-- **"Secret Compound" becomes "Forsaken compound"**, answering the owner's
-  naming instinct with a word the game already uses.
+- **"Secret Compound" becomes "Forsaken compound"**, in the owner's own naming.
 - **The dark biome is their heartland**, not a random hazard tile.
 
 ---
