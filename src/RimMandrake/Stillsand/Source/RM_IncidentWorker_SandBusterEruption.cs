@@ -48,6 +48,13 @@ namespace RimMandrake.Stillsand
             new CurvePoint(5000f, 0.45f)
         };
 
+        // STILLSAND_RETURN_RITUAL_1: unpaid water debt weights the eruption up.
+        public override float ChanceFactorNow(IIncidentTarget target)
+        {
+            float f = base.ChanceFactorNow(target);
+            return target is Map map ? f * RM_StillsandWater.IncidentChanceFactor(map, def) : f;
+        }
+
         protected override bool CanFireNowSub(IncidentParms parms)
         {
             Map map = (Map)parms.target;

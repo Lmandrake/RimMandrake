@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_RETURN_RITUAL_1 spec 5 (RM tier): pour one unit of a water item
+  (anything carrying RM_CompProperties_WaterVolume) into remembering sand where
+  it lies. Offered by RM_FloatMenuOptionProvider_PourWater on a right-click of
+  the item; the sand blooms along the pour and draws the swimmers for a while.
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_PourWaterIntoSand</defName>
+    <driverClass>RimMandrake.Stillsand.RM_JobDriver_PourWaterIntoSand</driverClass>
+    <reportString>pouring TargetA into the sand.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+</Defs>

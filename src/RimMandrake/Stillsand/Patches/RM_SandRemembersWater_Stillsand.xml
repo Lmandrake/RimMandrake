@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_RETURN_RITUAL_1 spec 5 (RM tier, no theology): the Stillsand's sand
+  remembers water. Biome-kit gate: the extension is the whole switch, so any
+  other biome can opt in by carrying it (Source/RM_StillsandWater.cs).
+
+  sandTerrains: vanilla Sand and SoftSand (the biome's terrainsByFertility and
+  its patch maker) and FlowWorks' RM_DeepSand (DEEP_SAND_WALKABLE_TERRAIN_1).
+  bloomPlant: RM_Hourbloom, whose own short life is "dust again in days".
+  galeWeathers: Odyssey's Sandstorm, the one gale this biome's weather table
+  carries today. STILLSAND_DUNE_GALE_1 appends its own WeatherDef here when it
+  ships. A gale wipes every wet cell; its end is an opening for a ledger.
+
+  The guzzka egg is the canteen egg (deep_desert.md "Eggs are canteens"): 6
+  litres, the same figure as its Dubs Bad Hygiene WaterExt.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>/Defs/BiomeDef[defName="RM_Stillsand"]</xpath>
+    <value>
+      <li Class="RimMandrake.Stillsand.RM_SandRemembersWaterExtension">
+        <sandTerrains>
+          <li>Sand</li>
+          <li>SoftSand</li>
+          <li>RM_DeepSand</li>
+        </sandTerrains>
+        <bloomPlant>RM_Hourbloom</bloomPlant>
+        <litresPerBloomCell>1.5</litresPerBloomCell>
+        <maxBloomCellsPerPour>80</maxBloomCellsPerPour>
+        <wetHours>48</wetHours>
+        <swimmerDrawHours>12</swimmerDrawHours>
+        <galeWeathers>
+          <li>Sandstorm</li>
+        </galeWeathers>
+      </li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[defName="RM_GuzzkaEggUnfertilized"]/comps</xpath>
+    <value>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_WaterVolume">
+        <litres>6</litres>
+        <drawnAs>canteen egg</drawnAs>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>
