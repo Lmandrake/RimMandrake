@@ -1,7 +1,7 @@
 # Pyrelands — validation walk
-subject: src/RimMandrake/Pyrelands  (dev source folder, own About.xml packageId `mandrake.rm.pyrelands`, which is never deployed standalone: the biome ships COMPOSED inside `mandrake.rm.biomes`, RimMandrake: Baroque Biomes — test that)
+subject: src/RimMandrake/Pyrelands  (dev source folder, own About.xml packageId `mandrake.rm.pyrelands`, which is never deployed standalone: the biome ships COMPOSED inside `mandrake.rm.biomes`, RimMandrake: Baroque Biomes — test that) <!-- walklint-ok: mandrake.rm.biomes is the GENERATED composed packageId of Biomes.compose.json, built by deploy_custom_mods.py --compose biomes; no About.xml under src/ declares it -->
 feature: biome-core
-deps: mandrake.rm.biomes (the composed biome itself); mandrake.rut.patches (the fauna roster is patch-added, UtinniPatches/Patches/WildAnimals_Pyrelands.xml); mandrake.rsw.swbestiary (seven roster keys — the guard on that patch Operation is inert, so the tier must carry it); mandrake.rut.pyrelandsmechanics
+deps: mandrake.rm.biomes (the composed biome itself); mandrake.rut.patches (the fauna roster is patch-added, UtinniPatches/Patches/WildAnimals_Pyrelands.xml); mandrake.rsw.swbestiary (seven roster keys — the guard on that patch Operation is inert, so the tier must carry it); mandrake.rut.pyrelandsmechanics <!-- walklint-ok: composed packageId mandrake.rm.biomes has no About.xml under src/ by design -->
 list: minimal+mandrake.rm.biomes+mandrake.rut.patches+mandrake.rsw.swbestiary+mandrake.rut.pyrelandsmechanics
 status-hint: THE campaign fire biome; its BiomeDef is RM_Pyrelands (renamed from RM_FE_Pyrelands, PYRELANDS_DEFNAME_RENAME_1, closed). Tile assignment is redone wholesale at the one planet-painting pass, so a tile count is never evidence about this biome. Trial plan: design/RimMandrake/northstar_trials/Pyrelands_trial_plan.md.
 
