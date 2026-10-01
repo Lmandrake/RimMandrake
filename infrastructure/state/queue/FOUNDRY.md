@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:01:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:04:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1295,6 +1295,15 @@ target:   v1
 kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
+
+## STILLSAND_LOAD_DEF_ERRORS_1 Stillsand/Contagion load-time def errors: RM_KneelOllim discarded (TreeCategory Standard), loomma severityRange, trainability, meat, FrontLegs, Lashgrass texture
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  STILLSANDLOADDEFERRORS1 — def errors the 2026-10-01 full-list load printed for Stillsand and Contagion
+prose:    infrastructure/state/items/STILLSAND_LOAD_DEF_ERRORS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -2681,16 +2690,6 @@ kind:     defect
 thin:     no ## verify
 summary:  1. Give both filth defs a placement mask that sand accepts (add Unnatural), or place them in a way that
 prose:    infrastructure/state/items/SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1.md
-
-## STILLSAND_LOAD_DEF_ERRORS_1 Stillsand/Contagion load-time def errors: RM_KneelOllim discarded (TreeCategory Standard), loomma severityRange, trainability, meat, FrontLegs, Lashgrass texture
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify
-summary:  STILLSANDLOADDEFERRORS1 — def errors the 2026-10-01 full-list load printed for Stillsand and Contagion
-prose:    infrastructure/state/items/STILLSAND_LOAD_DEF_ERRORS_1.md
 
 ## OORRIK_PAWNGEN_NRE_1 RM_Oorrik pawn generation throws NullReferenceException (ShouldBeDead via lifestage recalculation) on the full list
 state:    proposed

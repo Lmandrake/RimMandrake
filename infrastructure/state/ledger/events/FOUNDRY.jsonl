@@ -1668,3 +1668,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"CONTAGION_GROWN_LIMBS_REST_1","ts":"2026-10-01T09:01:21Z"}
 {"seat":"FOUNDRY","event":"start","id":"CONTAGION_GROWN_LIMBS_REST_1","ts":"2026-10-01T09:01:23Z"}
 {"seat":"FOUNDRY","event":"close","id":"CONTAGION_GROWN_LIMBS_REST_1","sha":"5f3c5438f","ts":"2026-10-01T09:01:27Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_LOAD_DEF_ERRORS_1","ts":"2026-10-01T09:03:58Z"}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_LOAD_DEF_ERRORS_1","ts":"2026-10-01T09:04:00Z"}
