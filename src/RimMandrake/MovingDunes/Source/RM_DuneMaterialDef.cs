@@ -158,7 +158,7 @@ namespace RimMandrake.MovingDunes
         public ThingDef depositFilthDef;
 
         /// <summary>Chance per deposition of laying <see cref="depositFilthDef"/>.</summary>
-        public float depositFilthChance = 0.01f;
+        public float depositFilthChance = 0f;
 
         // -------------------------------------------------------------------- wind
 

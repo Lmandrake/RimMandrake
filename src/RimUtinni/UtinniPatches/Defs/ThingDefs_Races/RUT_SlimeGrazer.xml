@@ -133,13 +133,13 @@
         <li>
           <def>AnimalAdult</def>
           <minAge>0.5</minAge>
-          <soundCall>Muffalo_Call</soundCall>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
-      <soundEating>Muffalo_Eat</soundEating>
+      <soundEating>Herbivore_Eat</soundEating>
     </race>
     <tradeTags>
       <li>AnimalExotic</li>

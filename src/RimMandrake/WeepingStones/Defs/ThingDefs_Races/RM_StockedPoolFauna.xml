@@ -197,9 +197,9 @@
           <soundAngry>Pawn_Cobra_Angry</soundAngry>
         </li>
       </lifeStageAges>
-      <soundMeleeHitPawn>Pawn_Melee_SmallBite_HitPawn</soundMeleeHitPawn>
-      <soundMeleeHitBuilding>Pawn_Melee_SmallBite_HitBuilding</soundMeleeHitBuilding>
-      <soundMeleeMiss>Pawn_Melee_SmallBite_Miss</soundMeleeMiss>
+      <soundMeleeHitPawn>Pawn_Melee_HumanBite_Hit</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_HumanBite_Miss</soundMeleeMiss>
       <soundEating>Reptile_Eat</soundEating>
       <trainability>None</trainability>
       <manhunterOnDamageChance>0.12</manhunterOnDamageChance>
@@ -315,9 +315,9 @@
           <soundAngry>Pawn_Cobra_Angry</soundAngry>
         </li>
       </lifeStageAges>
-      <soundMeleeHitPawn>Pawn_Melee_SmallBite_HitPawn</soundMeleeHitPawn>
-      <soundMeleeHitBuilding>Pawn_Melee_SmallBite_HitBuilding</soundMeleeHitBuilding>
-      <soundMeleeMiss>Pawn_Melee_SmallBite_Miss</soundMeleeMiss>
+      <soundMeleeHitPawn>Pawn_Melee_HumanBite_Hit</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_HumanBite_Miss</soundMeleeMiss>
       <soundEating>Reptile_Eat</soundEating>
       <trainability>None</trainability>
       <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
@@ -432,9 +432,9 @@
           <soundAngry>Pawn_Cobra_Call</soundAngry>
         </li>
       </lifeStageAges>
-      <soundMeleeHitPawn>Pawn_Melee_SmallBite_HitPawn</soundMeleeHitPawn>
-      <soundMeleeHitBuilding>Pawn_Melee_SmallBite_HitBuilding</soundMeleeHitBuilding>
-      <soundMeleeMiss>Pawn_Melee_SmallBite_Miss</soundMeleeMiss>
+      <soundMeleeHitPawn>Pawn_Melee_HumanBite_Hit</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_HumanBite_Miss</soundMeleeMiss>
       <soundEating>Reptile_Eat</soundEating>
       <trainability>None</trainability>
       <manhunterOnDamageChance>0.06</manhunterOnDamageChance>
@@ -542,9 +542,9 @@
           <soundAngry>Pawn_Cobra_Angry</soundAngry>
         </li>
       </lifeStageAges>
-      <soundMeleeHitPawn>Pawn_Melee_SmallBite_HitPawn</soundMeleeHitPawn>
-      <soundMeleeHitBuilding>Pawn_Melee_SmallBite_HitBuilding</soundMeleeHitBuilding>
-      <soundMeleeMiss>Pawn_Melee_SmallBite_Miss</soundMeleeMiss>
+      <soundMeleeHitPawn>Pawn_Melee_HumanBite_Hit</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_HumanBite_Miss</soundMeleeMiss>
       <soundEating>Reptile_Eat</soundEating>
       <trainability>None</trainability>
       <manhunterOnDamageChance>0.25</manhunterOnDamageChance>
