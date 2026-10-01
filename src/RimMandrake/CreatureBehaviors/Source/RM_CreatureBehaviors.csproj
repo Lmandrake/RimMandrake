@@ -174,6 +174,12 @@
     <Compile Include="RM_GlareBlind.cs" />
     <Compile Include="RM_Mirage.cs" />
     <Compile Include="RM_FlightJobStartGuard.cs" />
+    <!-- FOOTPRINT_TRACK_GRID_1: one footprint grid for the planet (Warscar film + Stillsand sand). -->
+    <Compile Include="RM_TrackPool.cs" />
+    <Compile Include="RM_TrackSurfaceExtension.cs" />
+    <Compile Include="RM_MapComponent_TrackGrid.cs" />
+    <Compile Include="RM_TrackGridPatches.cs" />
+    <Compile Include="RM_SectionLayer_TrackPrints.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

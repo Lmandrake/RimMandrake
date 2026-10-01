@@ -294,6 +294,13 @@ namespace RimMandrake.CreatureBehaviors
     //      shimmer band, no accuracy cut, no new "chasing the water" breaks (one
     //      already running ends on its own). mirageBreakChanceMultiplier — how
     //      often a heat-struck pawn breaks (0 = never; band and shimmer stay).
+    //  46. Footprints (FOOTPRINT_TRACK_GRID_1, RM_MapComponent_TrackGrid) — only
+    //      where a terrain or filth carries RM_TrackSurfaceExtension (the Warscar's
+    //      settled film, the Stillsand's sand). tracksEnabled — THE performance
+    //      switch: off, no step is recorded and the layer draws nothing (records
+    //      already laid stay saved and reappear when it is turned back on).
+    //      trackPoolCap — records kept per map (eviction: small animals first,
+    //      then oldest; recent humanlike and large prints kept). trackPrintOpacity.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -386,6 +393,9 @@ namespace RimMandrake.CreatureBehaviors
         public static float glareBlindRateMultiplier = 1f;
         public static bool mirageEnabled = true;
         public static float mirageBreakChanceMultiplier = 1f;
+        public static bool tracksEnabled = true;
+        public static int trackPoolCap = RM_TrackPool.DefaultCapacity;
+        public static float trackPrintOpacity = 0.7f;
 
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 2400f;
@@ -479,6 +489,9 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref glareBlindRateMultiplier, "glareBlindRateMultiplier", 1f);
             Scribe_Values.Look(ref mirageEnabled, "mirageEnabled", true);
             Scribe_Values.Look(ref mirageBreakChanceMultiplier, "mirageBreakChanceMultiplier", 1f);
+            Scribe_Values.Look(ref tracksEnabled, "tracksEnabled", true);
+            Scribe_Values.Look(ref trackPoolCap, "trackPoolCap", RM_TrackPool.DefaultCapacity);
+            Scribe_Values.Look(ref trackPrintOpacity, "trackPrintOpacity", 0.7f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -847,6 +860,22 @@ namespace RimMandrake.CreatureBehaviors
                 list.Label("  Rumble volume: " + sandSwimRumbleVolume.ToStringPercent());
                 sandSwimRumbleVolume = list.Slider(sandSwimRumbleVolume, 0f, 2f);
             }
+            list.GapLine();
+
+            list.CheckboxLabeled("Footprints (performance switch)", ref tracksEnabled,
+                "On ground built to take prints (the Warscar's settled film, the Stillsand's sand), "
+              + "everything that walks leaves prints pointing the way it went, invisible things "
+              + "included. They stay until that land's own wind or dunes wipe them. Off: no prints "
+              + "are recorded or drawn. This is the switch to flip if a big map runs slow.");
+            if (tracksEnabled)
+            {
+                list.Label("  Prints kept per map: " + trackPoolCap
+                         + " (when full, small animals' prints go first, then the oldest)");
+                trackPoolCap = Mathf.RoundToInt(list.Slider(trackPoolCap, 1000f, 20000f) / 500f) * 500;
+                if (trackPoolCap < 1000) { trackPoolCap = 1000; }
+                list.Label("  Print opacity: " + trackPrintOpacity.ToStringPercent());
+                trackPrintOpacity = list.Slider(trackPrintOpacity, 0.1f, 1f);
+            }
 
             list.End();
             lastContentHeight = list.CurHeight + 12f;
@@ -861,6 +890,19 @@ namespace RimMandrake.CreatureBehaviors
         public RM_CreatureBehaviorsMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_CreatureBehaviorsSettings>();
+        }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            // Footprints: apply a new cap and redraw with the new opacity / on-off now.
+            if (Current.ProgramState != ProgramState.Playing || Find.Maps == null) return;
+            foreach (Map map in Find.Maps)
+            {
+                RM_MapComponent_TrackGrid grid = RM_MapComponent_TrackGrid.For(map);
+                grid?.ApplyCapacitySetting();
+                map.mapDrawer.WholeMapChanged(RM_TrackDefOf.RM_TrackPrints);
+            }
         }
 
         public override string SettingsCategory()
