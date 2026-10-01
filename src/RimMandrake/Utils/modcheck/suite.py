@@ -435,7 +435,10 @@ class TestContext(object):
         return got
 
     # ----------------------------------------------------------- evidence
-    def screenshot(self, name=None):
+    def screenshot(self, name=None, rect=None, padding=1):
+        """`rect=(x, z, w, h)` frames THAT rect (`rimworld/screenshot_cell_rect`)
+        instead of the anchor -- a component that must be judged on one subject
+        needs the subject in frame, not the anchor. Omitted: unchanged behaviour."""
         if not self._guard():
             return None
         x, z = self.anchor
@@ -443,10 +446,16 @@ class TestContext(object):
         path = None
         try:
             self.session.call("jawa/clear_ui")
-            self.session.call("rimworld/jump_camera_to_cell", x=x, z=z)
-            r = self.session.call("rimworld/take_screenshot",
-                                  fileName="%s_%d" % (name, int(time.time())),
-                                  suppressMessage=True)
+            if rect:
+                rx, rz, rw, rh = rect
+                r = self.session.call("rimworld/screenshot_cell_rect",
+                                      x=rx, z=rz, width=rw, height=rh,
+                                      paddingCells=padding)
+            else:
+                self.session.call("rimworld/jump_camera_to_cell", x=x, z=z)
+                r = self.session.call("rimworld/take_screenshot",
+                                      fileName="%s_%d" % (name, int(time.time())),
+                                      suppressMessage=True)
             path = (r or {}).get("path")
         except Exception:
             path = None
