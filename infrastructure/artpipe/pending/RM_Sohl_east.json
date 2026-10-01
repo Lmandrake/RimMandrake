@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-01T22:07:25Z",
+  "drawsize": 3.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Sohl_east",
+  "priority": 60,
+  "prompt": "RimWorld game animal sprite: the sohl, the one-move animal, a vast low slab-bodied thing the colour of the ice it rests on, fused flat to the ground, a few hooked shelf-like limbs folded under a plated back, no eyes, no head to speak of. It looks like a boulder or a ridge of ice until you see the limbs. Caught in the instant after its one and only move, limbs fully extended, never to move again.",
+  "reference": null,
+  "rimflow_item_id": "NIGHTSIDEICE_BEDAZZLE_SITTING_1",
+  "style_notes": "nightside ice register: the high dirty-ice plateau under a bright cold starlit sky and faint aurora, no sun, no warm light anywhere; hard white-grey ice ground, pale blue-white cold light from above, long soft cold shadows barely there; bake NO cast shadow; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; no bioluminescence, no glow of any kind (a seam metabolism cannot afford photons); owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is PALE BLUE-GREY ICE AND DULL IVORY: ice-grey plating streaked with dirty ivory and rust-brown mineral stain; familiar body architecture but never a nameable Earth animal; bs~4, drawSize ~3.0; no warm colour on the body north facing is a true rear view seen from directly behind: no face or frontal features visible."
+}
