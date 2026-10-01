@@ -2571,6 +2571,76 @@ thin:     no ## spec, no ## verify
 summary:  STILLSANDEVENTCREATURESLIVE1 — live-prove the krayt attack and the muurrok
 prose:    infrastructure/state/items/STILLSAND_EVENT_CREATURES_LIVE_1.md
 
+## ABYSS_DARK_BUILD_1 The Abyss: the Dark (real air, heat clears it), the Unveiling, ghorrumak storm call, strength slider
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Owner chose the full spine by question card 2026-09-30 (decision taken by question card): report §5 items 1-3.
+prose:    infrastructure/state/items/ABYSS_DARK_BUILD_1.md
+
+## ABYSS_HIDDEN_SHIP_PROBES_1 The Abyss: hidden-ship cover; probe droids still come and must be avoided
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Owner typed 2026-09-30: "Yes but probe droids will still come that must be avoided."
+prose:    infrastructure/state/items/ABYSS_HIDDEN_SHIP_PROBES_1.md
+
+## ABYSS_GHARREK_BUILD_1 New creature gharrek, the gust-feeder (RM_Gharrek)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Admitted by question card 2026-09-30. Report §4 row 1 (RMGharrek, ~0.6 commonality, alternate name krovvak):…
+prose:    infrastructure/state/items/ABYSS_GHARREK_BUILD_1.md
+
+## ABYSS_DURRGAK_BUILD_1 New creature durrgak, the placer (RM_Durrgak)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Admitted by question card 2026-09-30. Report §4 row 2 (RMDurrgak, ~1.2, alternate dhagga): a slow long-finger…
+prose:    infrastructure/state/items/ABYSS_DURRGAK_BUILD_1.md
+
+## ABYSS_KRIZZAK_BUILD_1 New flying creature krizzak, the light-thief (RM_Krizzak)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Admitted by question card 2026-09-30. Report §4 row 3 (RMKrizzak, ~0.3, alternate drekkis): a dark moth with…
+prose:    infrastructure/state/items/ABYSS_KRIZZAK_BUILD_1.md
+
+## ABYSS_ETCHCAP_BUILD_1 New plant etchcap, the gourmet fungus (RM_Etchcap)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Admitted by question card 2026-09-30. Report §4 row F1 (RMEtchcap; RMEtchHollow terrain/marker): a dense blac…
+prose:    infrastructure/state/items/ABYSS_ETCHCAP_BUILD_1.md
+
+## ABYSS_FULL_RENAME_1 Full rename Forsaken Crags / Black Crags to the Abyss (content, code, defs, mod; into mandrake.rm.biomes)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Executed. See the commit.
+prose:    infrastructure/state/items/ABYSS_FULL_RENAME_1.md
+
 ## STILLSAND_PRECIOUS_CAVES_LIVE_1 Precious caves: ten live Stillsand quicktest maps
 state:    proposed
 row:      unassigned
