@@ -508,6 +508,19 @@ TIERS["pyrelands"] = {
     "dlc": True,
 }
 
+TIERS["weepingstones_solo"] = {
+    "why": "WEEPING_STONES_FIRST_SCRIPT_1: the north-star script for WeepingStones "
+           "(src/RimMandrake/WeepingStones, packageId mandrake.rm.weepingstones). That "
+           "dev folder is SOURCE only: the biome ships composed inside "
+           "mandrake.rm.biomes (Biomes.compose.json), so the thing to load is the composed "
+           "mod and nothing else -- NOT the older `weepingstones` tier, which adds the "
+           "Utinni patch layer, swbestiary and Alpha Animals for the campaign fauna and "
+           "carries a retired packageId (mandrake.rut.rotsporekit). All five DLCs and "
+           "Harmony resolve automatically.",
+    "want": [BRIDGE, "mandrake.rm.biomes"],
+    "dlc": True,
+}
+
 
 def resolve_tier(name, installed):
     """(ordered packageIds, missing, refusals) for a tier -- the exact list --apply
