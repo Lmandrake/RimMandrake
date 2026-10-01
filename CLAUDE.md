@@ -12,6 +12,15 @@ well-defined coding with a checkable outcome, the latest Haiku only for OS-level
 searches. Fable is off the ladder.** The ladder lives in `infrastructure/agents/Agent_Policy.md`
 and nowhere else; never restate a model choice outside it.
 
+## How we debug — owner, 2026-10-01
+
+*"I really do mean stop and start working a new way."* Every mod gets a functional script
+and is debugged through it; every live poking session ends by writing what it learned —
+including informative false theories — into that script. Agents write and approve those
+scripts; the owner's hash-bound `## north star` bars stay his. 🔴 **Build pause:** no new
+content until every mod has a first script with a recorded run. The process, the
+first-script contract and the exact lift condition: `design/RimMandrake/debug_process.md`.
+
 ## 🔴 There is no worldgen feature, in any version — owner, 2026-08-15
 
 - **OUT, permanently:** any automated or programmatic worldgen; worldgen as a
