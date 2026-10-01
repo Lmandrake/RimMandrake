@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:28:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:30:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1296,14 +1296,41 @@ kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
-## STILLSAND_LOAD_DEF_ERRORS_1 Stillsand/Contagion load-time def errors: RM_KneelOllim discarded (TreeCategory Standard), loomma severityRange, trainability, meat, FrontLegs, Lashgrass texture
+## SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1 Sand-swim take funnel and drag mark are never laid: sand accepts only Unnatural filth, the defs use placementMask Terrain
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     defect
-summary:  STILLSANDLOADDEFERRORS1 — def errors the 2026-10-01 full-list load printed for Stillsand and Contagion
-prose:    infrastructure/state/items/STILLSAND_LOAD_DEF_ERRORS_1.md
+summary:  1. Give both filth defs a placement mask that sand accepts (add Unnatural), or place them in a way that
+prose:    infrastructure/state/items/SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1.md
+
+## OORRIK_PAWNGEN_NRE_1 RM_Oorrik pawn generation throws NullReferenceException (ShouldBeDead via lifestage recalculation) on the full list
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     defect
+summary:  OORRIKPAWNGENNRE1 — RMOorrik cannot be generated (NullReferenceException)
+prose:    infrastructure/state/items/OORRIK_PAWNGEN_NRE_1.md
+
+## SOORRAK_FLIGHT_JOBSTART_NRE_1 RM_Soorrak throws NullReferenceException in Pawn_FlightTracker.Notify_JobStarted on every job start (59x in one session)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  SOORRAKFLIGHTJOBSTARTNRE1 — RMSoorrak throws on every job start (PawnFlightTracker.NotifyJobStarted)
+prose:    infrastructure/state/items/SOORRAK_FLIGHT_JOBSTART_NRE_1.md
+
+## RIMPLACE_GENSTEP_NRE_1 GenStep_RimplacePlan.Generate throws NullReferenceException during map generation (Stillsand quicktest)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+summary:  RIMPLACEGENSTEPNRE1 — GenStepRimplacePlan throws during map generation
+prose:    infrastructure/state/items/RIMPLACE_GENSTEP_NRE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -2041,16 +2068,6 @@ thin:     no ## verify, no ## criteria
 summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
 
-## CAULDRON_GPT_ENRICHMENT_1 Cauldron enrichment (GPT consult 2026-09-30, owner-picked by card): four-stroke weather cycle, vexxiss warden of the breath, vexxith closed loop, assay forestry, condensate gardens
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Four-stroke weather cycle. The four ratified weathers become recognizable phases of one engine:
-prose:    infrastructure/state/items/CAULDRON_GPT_ENRICHMENT_1.md
-
 ## FORGE_GPT_ENRICHMENT_1 Forge enrichment (GPT consult 2026-09-30, owner-picked by card): floatstone keelwork, spunstone bonding, four voices of the Forge, white plume fronts, sky pastures, dhokkur ways, dhuvvox clock
 state:    proposed
 row:      unassigned
@@ -2661,26 +2678,6 @@ thin:     no ## verify, no ## criteria
 summary:  1. Tracks (parent §7) — blocked on FOOTPRINTTRACKGRID1 (proposed, unbuilt when the
 prose:    infrastructure/state/items/STILLSAND_SKELETONS_REMAINDER_1.md
 
-## SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1 Sand-swim take funnel and drag mark are never laid: sand accepts only Unnatural filth, the defs use placementMask Terrain
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## verify
-summary:  1. Give both filth defs a placement mask that sand accepts (add Unnatural), or place them in a way that
-prose:    infrastructure/state/items/SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1.md
-
-## OORRIK_PAWNGEN_NRE_1 RM_Oorrik pawn generation throws NullReferenceException (ShouldBeDead via lifestage recalculation) on the full list
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify
-summary:  OORRIKPAWNGENNRE1 — RMOorrik cannot be generated (NullReferenceException)
-prose:    infrastructure/state/items/OORRIK_PAWNGEN_NRE_1.md
-
 ## SHADEGRID_BRIDGE_READER_1 Bridge tool to read the shade grid and pinned sun (sun elevation, heat kind, exposure per cell, sky glow)
 state:    proposed
 row:      unassigned
@@ -2700,26 +2697,6 @@ kind:     build
 thin:     no ## verify
 summary:  1. Live proof (Desktop, Stillsand quicktest, all DLC, MovingDunes active). Dev-fire incident
 prose:    infrastructure/state/items/STILLSAND_DUNE_GALE_LIVE_1.md
-
-## SOORRAK_FLIGHT_JOBSTART_NRE_1 RM_Soorrak throws NullReferenceException in Pawn_FlightTracker.Notify_JobStarted on every job start (59x in one session)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify
-summary:  SOORRAKFLIGHTJOBSTARTNRE1 — RMSoorrak throws on every job start (PawnFlightTracker.NotifyJobStarted)
-prose:    infrastructure/state/items/SOORRAK_FLIGHT_JOBSTART_NRE_1.md
-
-## RIMPLACE_GENSTEP_NRE_1 GenStep_RimplacePlan.Generate throws NullReferenceException during map generation (Stillsand quicktest)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-thin:     no ## spec, no ## verify
-summary:  RIMPLACEGENSTEPNRE1 — GenStepRimplacePlan throws during map generation
-prose:    infrastructure/state/items/RIMPLACE_GENSTEP_NRE_1.md
 
 ## CRACKEDLANDS_LEDGES_OF_MERCY_1 Ledges of Mercy (from CRACKEDLANDS_GPT_ENRICHMENT_1 §1): refuge ledges, carvings, chime-line anchors, visitors+trained animals seek ledges at the warning; owner must answer ledge physical form, inscription lines, memory numbers
 state:    proposed
@@ -2790,3 +2767,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CRACKEDLANDSWOOLAMANDERFLIGHT1 — the woolamander is a ruled flier but cannot fly
 prose:    infrastructure/state/items/CRACKEDLANDS_WOOLAMANDER_FLIGHT_1.md
+
+## STILLSAND_FIXES_LIVE_PROOF_1 Live proof for the five 2026-10-01 live-session fixes
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  STILLSANDFIXESLIVEPROOF1 — live proof for the five 2026-10-01 live-session fixes
+prose:    infrastructure/state/items/STILLSAND_FIXES_LIVE_PROOF_1.md
+
+## CAULDRON_VENT_ENRICHMENT_HOOKS_1 Cauldron enrichment pieces that hang on vents: weather vent multipliers + vent-local exposure + falter, vexxiss vent-drinking, vent-keyed gardens
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  From the parent's spec, verbatim in substance:
+prose:    infrastructure/state/items/CAULDRON_VENT_ENRICHMENT_HOOKS_1.md
+
+## CAULDRON_ENRICHMENT_LIVE_PROOF_1 Quicktest-prove the offline-built Cauldron enrichment: assay grade line, vexxiss poisoned-water letter, nettles on toxic shores
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CAULDRONENRICHMENTLIVEPROOF1 — live proof of the offline Cauldron enrichment
+prose:    infrastructure/state/items/CAULDRON_ENRICHMENT_LIVE_PROOF_1.md
