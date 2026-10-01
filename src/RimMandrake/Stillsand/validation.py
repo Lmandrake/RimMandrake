@@ -242,8 +242,10 @@ def _ok(r, what):
 
 
 def _pad(t, name):
+    """Move t.anchor to the named pad. The base is the REGENERATED map's centre once the site chain has built
+    it (the driver's own anchor was read off the quicktest map, which may be another size)."""
     dx, dz = PADS[name]
-    ax, az = t._base if hasattr(t, "_base") else t.anchor
+    ax, az = _STATE.get("base") or (t._base if hasattr(t, "_base") else t.anchor)
     t._base = (ax, az)
     t.anchor = (ax + dx, az + dz)
 
@@ -376,8 +378,7 @@ def _ensure_colonist(t):
     if not _live(t):
         return
     rows = _rows(t)
-    if any(p.get("faction") in ("player", "PlayerColony", "Player") and not p.get("dead")
-           for p in rows.values()):
+    if any(p.get("isPlayer") and not p.get("dead") for p in rows.values()):
         return
     ax, az = t._base if hasattr(t, "_base") else t.anchor
     t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=ax, z=az, faction="player", count=1)
@@ -402,8 +403,21 @@ def _new_letters(before, after):
     return [x for x in after if (x[0], x[1]) not in seen]
 
 
-def _log_lines(t, contains, errors_only=False):
-    """(texts, bufferLines) of the in-game log messages containing `contains`."""
+def _log_saturated(t):
+    """True when RimWorld has stopped logging (its message limit): from then on a missing line, error or
+    count is NOT evidence of absence."""
+    r = t.bridge_call("jawa/drain_log", contains="Reached max messages limit", limit=1)
+    return bool((r or {}).get("messages")) if _live(t) else False
+
+
+def _log_lines(t, contains, errors_only=False, strict=True):
+    """(texts, repeats-weighted count) of the in-game log messages containing `contains`. A saturated log
+    is UNMEASURED (strict) or (None, None) (strict=False, for a reader that decides later)."""
+    if _log_saturated(t):
+        if strict:
+            _unmeasured(t, "the game has hit its log message limit and stopped logging: a missing line or "
+                           "a zero error count proves nothing (relaunch)")
+        return None, None
     r = t.bridge_call("jawa/drain_log", contains=contains, errorsOnly=errors_only, limit=500)
     if not _live(t):
         return [], 0
@@ -501,40 +515,8 @@ def _unlock_weather(t):
             print("[stillsand] weather reset failed: %s" % ex, file=sys.stderr, flush=True)
 
 
-def _wait(t, n):
-    """Advance `n` real ticks. Short waits use t.wait_ticks (exact); long waits run Ultrafast and poll
-    the real clock, then pause; raises on a stall."""
-    if t.session is None or t.upstream_failed or n <= 4000:
-        return t.wait_ticks(n)
-    s = t.session
-    start = s._ticks()
-    target = start + n
-    s.call("rimworld/set_time_speed", speed="Ultrafast")
-    last, stall = start, time.time()
-    try:
-        for _ in range(100000):
-            time.sleep(1.0)
-            now = s._ticks()
-            if now is None:
-                raise ExpectationFailed("clock unreadable during a %d-tick wait" % n)
-            if now >= target - 400:
-                break
-            if now > last:
-                last, stall = now, time.time()
-            elif time.time() - stall > 60:
-                raise ExpectationFailed("clock stalled at %d during a %d-tick wait (a modal dialog "
-                                        "pausing the game?)" % (now, n))
-    finally:
-        s.call("rimworld/set_time_speed", speed="Paused")
-    now = s._ticks()
-    if now < target:
-        t.wait_ticks(target - now)
-        now = s._ticks()
-    t._record("_wait(%d) at Ultrafast -> %d real ticks" % (n, now - start), now - start)
-
-
 def _cleanup(t):
-    """ALWAYS after a chain: release weather, remove what this chain spawned, clear its pad."""
+    """ALWAYS after a chain: release weather, remove what this chain spawned, clear its pads."""
     if t.session is None:
         return
     _unlock_weather(t)
@@ -612,7 +594,7 @@ def site_chain(t):
             if tile is None:
                 _unmeasured(t, "map_info reports no tile: no quicktest world is up")
             before_total = _buffer_total(t)
-            lines, before_n = _log_lines(t, "[Stillsand] precious cave")
+            lines, before_n = _log_lines(t, "[Stillsand] precious cave", strict=False)
             r = t.bridge_call("jawa/world_tile_set", tiles=str(tile), biome=BIOME, temperature=SITE_TEMP)
             _ok(r, "world_tile_set")
             _ok(t.bridge_call("jawa/world_commit"), "world_commit")
@@ -627,7 +609,7 @@ def site_chain(t):
             cx, cz = info["sizeX"] // 2, info["sizeZ"] // 2
             t.session.call("jawa/spawn_pawn", kindDef="Colonist", x=cx, z=cz, faction="player", count=3)
             t.session.call("rimworld/execute_debug_action", path="Actions\\Destroy hostile pawns")
-            lines2, after_n = _log_lines(t, "[Stillsand] precious cave")
+            lines2, after_n = _log_lines(t, "[Stillsand] precious cave", strict=False)
             _STATE.update(site=True, cave_before=before_n, cave_after=after_n, buf_before=before_total,
                           base=(cx, cz), tile=tile, lat=info.get("latitude"))
             t._base = (cx, cz)
@@ -643,13 +625,14 @@ def site_chain(t):
             b, a = _STATE.get("cave_before"), _STATE.get("cave_after")
             _note(t, "[Stillsand] precious cave lines before/after the regen", [b, a])
             if a is None or b is None:
-                _unmeasured(t, "the site component did not read the log")
+                _unmeasured(t, "the log was unreadable around the regen (message limit reached, or the "
+                               "site component did not run)")
             if a <= b:
                 _fail("regenerating a Stillsand map logged no new '[Stillsand] precious cave' line (%s -> "
                       "%s): the precious-cave gen steps did not run (extraGenSteps patch matched nothing?)"
                       % (b, a))
 
-    with _comp(t, "skeleton_gen_within_cap", toggle="skeletonPlacementEnabled"):
+    with _comp(t, "skeleton_gen_within_cap"):
         if _live(t):
             n = sum(_count(t, d) for d in GIANT_SKELETONS)
             cap = int(float(_get_setting(t, "maxSkeletonsPerMap")))
@@ -1004,10 +987,10 @@ def zuurrik_chain(t):
     with _comp(t, "zuurrik_below_threshold_dormant"):
         if _live(t):
             _blood(t, [(cx - 3 + 2 * j, cz) for j in range(3)])        # 3 cells < the threshold of 8
+            if _count(t, "Filth_Blood", _rs(_rect(t))) < 3:             # read BEFORE any swarm could strip it
+                _unmeasured(t, "the control blood did not stand")
             t.wait_ticks(1800)
             n = len(_zuurriks(t))
-            if _count(t, "Filth_Blood", _rs(_rect(t))) < 3:
-                _unmeasured(t, "the control blood did not stand")
             if n:
                 _fail("%d zuurrik woke on 3 blood cells (threshold 8): the wake ignores the threshold" % n)
     _pad(t, "zuurrik")
@@ -1037,15 +1020,16 @@ def zuurrik_chain(t):
                 _fail("the swarm did not strip any blood in 3000 ticks (%d -> %d)" % (before, after))
     with _comp(t, "zuurrik_toggle_off_no_wake", toggle="zuurrikEnabled"):
         if _live(t):
-            for p in _zuurriks(t):
-                _kill(t, p["x"], p["z"])
-            t.wait_ticks(60)
-            if _zuurriks(t):
-                _unmeasured(t, "could not clear the first swarm")
-            _blood(t, _cluster(x - 14, z + 6))
-            with _setting(t, "zuurrikEnabled", False):
+            _blood(t, _cluster(x - 14, z + 6))                 # fresh stain, so the on arm has a cause
+            first = [p["id"] for p in _zuurriks(t)]
+            with _setting(t, "zuurrikEnabled", False):          # off FIRST: a swarm killed while on re-wakes
+                for p in _zuurriks(t):
+                    _kill(t, p["x"], p["z"])
                 t.wait_ticks(1800)
-                woke = len(_zuurriks(t))
+                alive = _zuurriks(t)
+            if [p for p in alive if p["id"] in first]:
+                _unmeasured(t, "could not kill the first swarm")
+            woke = len(alive)
             t.wait_ticks(1800)
             back = len(_zuurriks(t))
             _note(t, "zuurrik after toggle off / after toggle back on", [woke, back])
@@ -1683,7 +1667,7 @@ def _close_dialogs(t, r):
 
 def _foreign(t):
     return dict((i, p) for i, p in _rows(t).items()
-                if p.get("faction") not in (None, "player", "PlayerColony", "Player") and not p.get("dead"))
+                if p.get("faction") and not p.get("isPlayer") and not p.get("dead"))
 
 
 @_chain("horizon")
@@ -1729,8 +1713,7 @@ def horizon_chain(t):
     if _live(t):    # the visitors are scenery for this chain only
         try:
             for p in [q for i, q in _pawns_raw(t).items()
-                      if q.get("faction") not in (None, "player", "PlayerColony", "Player")
-                      and not q.get("dead") and i not in ids0]:
+                      if q.get("faction") and not q.get("isPlayer") and not q.get("dead") and i not in ids0]:
                 t.session.call("jawa/destroy_batch", rects="%d,%d,1,1" % (p["x"], p["z"]), categories="Pawn")
         except Exception as ex:
             print("[stillsand] horizon cleanup failed: %s" % ex, file=sys.stderr, flush=True)
@@ -1742,24 +1725,32 @@ def horizon_chain(t):
 def caves_chain(t):
     _pad(t, "caves")
     _gate(t)
-    with _comp(t, "gen_toggles_off_no_cave_no_skeleton", toggle="genStepEnabled"):
+    seen = {}
+    with _comp(t, "caves_regen_both_off", poison=True):
         if _live(t):
             info = _ok(t.bridge_call("jawa/map_info"), "map_info")
             with _setting(t, "genStepEnabled", False):
                 with _setting(t, "skeletonPlacementEnabled", False):
                     before = _log_lines(t, "[Stillsand] precious cave")[1]
                     _regen(t)
-                    after = _log_lines(t, "[Stillsand] precious cave")[1]
-                    skel = sum(_count(t, d) for d in GIANT_SKELETONS)
-            _note(t, "cave log lines / skeletons with both gen toggles off", [before, after, skel])
-            if after > before:
-                _fail("genStepEnabled is off and the regeneration still logged a precious-cave line (%d -> %d)"
-                      % (before, after))
-            if skel:
-                _fail("skeletonPlacementEnabled is off and the regenerated map carries %d giant skeletons"
-                      % skel)
+                    seen["after"] = _log_lines(t, "[Stillsand] precious cave")[1]
+                    seen["skel"] = sum(_count(t, d) for d in GIANT_SKELETONS)
+                    seen["before"] = before
             t.session.call("jawa/spawn_pawn", kindDef="Colonist", x=info["sizeX"] // 2, z=info["sizeZ"] // 2,
                            faction="player", count=1)
+            _note(t, "cave log lines before/after, skeletons: both gen toggles off", seen)
+
+    with _comp(t, "genstep_off_no_cave_line", toggle="genStepEnabled"):
+        if _live(t):
+            if seen["after"] > seen["before"]:
+                _fail("genStepEnabled is off and the regeneration still logged a precious-cave line (%d -> %d)"
+                      % (seen["before"], seen["after"]))
+
+    with _comp(t, "skeleton_placement_off_none", toggle="skeletonPlacementEnabled"):
+        if _live(t):
+            if seen["skel"]:
+                _fail("skeletonPlacementEnabled is off and the regenerated map carries %d giant skeletons"
+                      % seen["skel"])
 
 
 # ----------------------------------------------------------------------------- chain: the log (last)
