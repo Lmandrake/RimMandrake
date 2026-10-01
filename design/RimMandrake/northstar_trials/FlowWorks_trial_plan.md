@@ -21,16 +21,15 @@ The ladder every trial climbs:
 
 | rung | state | evidence |
 |---|---|---|
-| DRAFT → VALIDATED | **VALIDATED, hash matches** — 13 must-show + 3 cannot-show | MEASURED: `modcheck.cli status` prints `FlowWorks STALE checklist VALIDATED (13 lines) [stored: GREEN]`; `northstar.parse()` gives 13/3; `floor --all` row reads `VALIDATED 13`. |
-| …but the bar is **incomplete** | **0 pit bars.** The 11+1 pit bars live in `design/validation_walks/RimMandrake/Pits.md`, which no `modcheck run FlowWorks` reads: `runner.northstar_for()` resolves `find_walk(ROOT, "FlowWorks")` → `FlowWorks.md` only. | MEASURED (read `runner.py`, `northstar.py`). The `feature:` key (`WALK_FEATURE_KEY_1`) has landed in `doctor.py` (`parse_feature`) — `Pits.md` already carries `subject: src/RimMandrake/FlowWorks` + `feature: pit-dig-trap-and-cell` — but **only `doctor` reads `feature:`; the runner, floor and judge do not.** So a per-feature walk is lint-clean and still binds nothing. |
-| Pits walk | `modcheck status` → `Pits ORPHANED (no such mod folder) checklist VALIDATED (11 lines) [stored: GREEN]` | MEASURED. Its `## north star` section also still opens with a **false** "⚠️ DRAFT — not a bar until the owner validates it" banner under `state: VALIDATED`. It is moot once the bars move (§2.3) and `Pits.md` is deleted, so it is not edited here (editing would revert his hash). |
+| DRAFT → VALIDATED | **VALIDATED 2026-10-01 — 38 must-show + 5 cannot-show**, pit bars included | Re-validated on his typed word *"Again write the comprehensive one and have gpt review it"* after the GPT checklist review (§9b). The 13+3 / 0-pit-bar state this row used to describe is gone. |
+| Pits walk | **deleted 2026-10-01** | Its still-valid bars were rewritten and folded into FlowWorks.md (§2.4); `modcheck forget-key Pits` run. |
 | STALE | The stored `GREEN` is from run `FluidCanals@1789295363` — a pre-north-star, pre-rename, pre-ruling-24 run against a deleted comp. It certifies nothing about today's mod. | MEASURED: `infrastructure/state/modcheck_status.json` `FlowWorks.run_id`, `renamed_from: FluidCanals`. |
-| VALIDATED → WIRED | **0 of 13 must-show lines claimed.** `floor --all`: `FlowWorks … VALIDATED 13 0 13 REFUSED (uncovered)`; Pits row `11 0 11 REFUSED (uncovered)`. | MEASURED. |
+| VALIDATED → WIRED | **0 of 38 must-show lines claimed** (no `shows=` in `validation.py`). | MEASURED 2026-10-01 by `northstar.parse`; the earlier 13-line `floor` reading predates the re-validation. |
 | validation.py | 🔴 **`src/RimMandrake/FlowWorks/validation.py` is the old Pits suite moved in unchanged**: docstring says "suite for RimMandrake Pits (mandrake.rm.pits)", `suite = Suite("Pits")`, toggles are `PitsSettings`' four, both chains drive the BUILDING pit (`RM_OpenPit_Bare`). **No canal, depth, fill, stock or superdeep component exists.** | MEASURED (read file, 133 lines). |
 | Mod Settings toggle floor | FlowWorks ships **27 boolean toggles** (22 in `RimMandrakeFlowWorksSettings`, 4 in `PitsSettings`, 1 in `RiverSteamSettings`) plus 18 numeric tunables. The suite declares 4. | MEASURED (grep of `public static bool` in the three settings classes). |
 | GREEN-minimal / GREEN-full | **Never run against the current mod.** | MEASURED (status store). |
 | Deploy | `deploy_custom_mods.py --mod FlowWorks` (dry run, from origin/main worktree): `in sync (68 files)`. Deployed `RimMandrakeFlowWorks.dll` and `.srchash` byte-identical to repo (sha1 `ca7e954fd522…` / `98c569bdb880…`). | MEASURED 2026-09-30. Re-measure at run time — this decays. |
-| 🔴 Stale **Pits** mod still deployed **and active** | Game `Mods/Pits/` (packageId `mandrake.rm.pits`, `RimMandrakePits.dll`, About.xml dated 2026-08-30) is on the live list beside FlowWorks. **All 22 of its defNames collide with FlowWorks' defs** (`RM_OpenPit_Bare`, `RM_PinnedInPit`, `RM_DigPitDeeper`, …). | MEASURED: parsed live `ModsConfig.xml` (612 active, read-only) — contains both `mandrake.rm.flowworks` and `mandrake.rm.pits`; defName set intersection 22/22. This is a site-prep blocker for GREEN-full and a live-game defect in its own right — filed as `PITS_STALE_DEPLOY_COLLISION_1`. |
+| 🔴 Stale **Pits** mod still deployed | **Off the live list since 2026-09-30 23:58** (backup `infrastructure/state/modlists/ModsConfig_before_pits_off_2026-09-30T235855.xml`); the game folder `Mods/Pits/` is still on disk and `ModsConfig.FULL.LATEST.xml` still lists `mandrake.rm.pits`. Its 22 defNames all collide with FlowWorks'. | MEASURED 2026-10-01: parsed live `ModsConfig.xml` (611 active, no `mandrake.rm.pits`); parsed FULL.LATEST (612, contains it); `Mods/Pits/` present. Remaining work: `PITS_STALE_DEPLOY_COLLISION_1`. |
 | Code review | **117 CLEAN / 12 DIRTY** of 129 tracked `.cs/.py/.xml` under `src/RimMandrake/FlowWorks`. DIRTY: `RM_LiquidDrill.xml`, `RM_LiquidBodyRegistry.xml`, `RM_Propane.xml`, `RM_TarGlass.xml`, `RM_WaterBoiling.xml`, `RM_LiquidTank.xml`, `RM_DeepSand.xml`, `RM_LiquidShores_MapGenPatch.xml`, `RM_LiquidBodyDef.cs`, `RM_NoRecreationalSwimExtension.cs`, `RM_Patch_NoRecreationalSandSwim.cs`, `Tools/generate_liquid_suite.py`. | MEASURED: `code_review_status.py check` over `git ls-files`. |
 | Art | **7 textures ship** (tank, 3 tar filth, barrel, bottle, bucket). Every channel depth (`RM_Channel_Empty/Mid/Deep/Superdeep`) borrows `Terrain/Surfaces/Gravel`; fills borrow vanilla water ramps tinted; **3 pit defs still point at `Things/Building/Security/TrapSpikeArmed`**. | MEASURED (find + grep of `texturePath`/`TrapSpikeArmed`). |
 
@@ -180,10 +179,10 @@ re-validation, as **proposed text** (§7) inside FlowWorks.md's `## north star` 
 **Deleted, not carried:** `digsite_stage_legible` (its referent, the `RM_PitDigSite_*` chain, retires).
 `fitting_reads_distinct` splits into `fill_fluid_distinct` + `spikes_read_distinct`.
 
-⚠️ A bar that cannot be evaluated must not be filed as a binding bar (the spec's own rule). The
-BLOCKED rows above go to him **marked as blocked**, with the choice: validate now and accept REFUSED
-until built, or park them as `### candidate lines` until their feature lands. That is his call, so it
-is a question in the re-validation item, not a decision here.
+✅ **Ruled 2026-10-01 — comprehensive:** the BLOCKED rows are bound, not parked. A bar for an
+unbuilt feature fails until the feature is built, which is the bar doing its job. The validated
+section (FlowWorks.md) also reworded several bars and added ten after the GPT review — §9b is the
+list; bind against the walk file, not the ids in this table.
 
 ### 2.5 State-only components (no `shows`), needed for the toggle floor
 
@@ -470,7 +469,7 @@ validated bars need) — the item says so, so nobody calls a RED run green.
 
 ## 5. Gaps that block SHIPPED
 
-1. **Bar roster incomplete** — pit bars not in FlowWorks.md; re-validation owed (§7).
+1. **Bar roster** — complete: 38+5 VALIDATED 2026-10-01 with the pit bars (§9b).
 2. **Runner cannot read a feature walk** — moot if the pit bars move into FlowWorks.md (recommended);
    otherwise `runner.northstar_for` must union every walk whose `subject:` is the mod.
 3. **validation.py is the old Pits suite** — rewrite against the primitive (§2).
@@ -527,7 +526,7 @@ Not built here. FlowWorks needs:
 
 ---
 
-## 7. Proposed bar-text changes — need his re-validation (not applied here)
+## 7. Bar-text changes — applied and re-validated 2026-10-01 (§9b)
 
 The `## north star` hash covers the whole section; none of this was edited. To take to him:
 
@@ -618,3 +617,50 @@ and `jawa/canal_cell_report` "ARE the only live-reachable surface". False since
 `jawa/flowworks_excavation_report`, `jawa/flowworks_excavation_drive` and `jawa/flowworks_spawn_flood`
 were added to `JawaBenchFlowWorksTools.cs`, and `canal_dig` is a stub that always fails. Corrected
 outside the hashed `## north star` section (hash re-checked unchanged).
+
+---
+
+## 9b. GPT review of the comprehensive checklist (2026-10-01)
+
+The owner's instruction, typed 2026-10-01: *"Again write the comprehensive one and have gpt review
+it"* — GPT stood in for his read, and that sentence is the `--owner-said` on the validation.
+Prompt `Transient/northstar_trials_gpt/flowworks_checklist.prompt.md` (the full draft section + §2.3–2.4
+tables); answer `Transient/northstar_trials_gpt/flowworks_checklist.answer.md` (28 findings,
+`codex.exe exec -s read-only`). Result: **38 must-show + 5 cannot-show, VALIDATED, hash `34e2ec9f267c…`.**
+
+Draft before review: 28 + 5 — the 13+3 canal bars kept by id, the pit group per §2.4
+(`pitcell_occupant_visible` merged into `pit_occupant_below_floor`; `pitcell_gate_state_legible` split
+into ladder + sluice; `fitting_reads_distinct` split into fluid + spikes; `digsite_stage_legible` cut;
+`pit_not_vanilla_trap` reworded), every BLOCKED bar bound, his depth ruling quoted verbatim, provenance
+moved out of the bar text into a table so the judge is asked only the claim.
+
+**Accepted (folded in):** #1 dug channel = recessed bed + cut walls · #3 spread = one continuous wet
+reach, not an inlet puddle · #4 fill front split → new `tar_fill_front_lags_water` · #5 confinement worded
+at the channel walls; `never_liquid_on_open_ground` excludes the reservoir · #6 reservoir drop split →
+new `reservoir_shoreline_recedes`, scoped to enclosed reservoirs · #9 `canal_fire_reaches_reservoir`
+becomes `(change)` · #10 spent channel judged against an unburned dry one · #11 new `canal_fire_persists`
+(*"burn for a very long time"*) · #12 slime = thick opaque surface, not recoloured water · #14 depth
+ladder names undug + four depths · #15 new `depth_and_fill_jointly_legible` · #16 pawn rise/lower split
+into `pawn_lowers_on_deeper_cell` + `pawn_rises_on_shallower_cell` (change) + `pawn_height_ladder_legible`
+· #17 new `pit_walls_have_visible_depth` split from `pit_reads_as_hole` · #18 `pit_not_vanilla_trap` drops
+the unprovable "nothing in the family" · #19 trapped bar states the visible wall-over-head relation (his
+20%) · #20 `pit_covered_invisible` becomes `(change)` · #21 ladder raised vs lowered (*"pulled up or
+lowered"*) · #22 spikes must visibly project (his camera ruling) · #24 `never_reads_as_building` excludes
+ladders, gates and spikes · #26 new `empty_reservoir_stops_flow` + `reservoir_recharge_progress_visible`
+· #27 new `filled_excavation_reads_as_obstacle` · #28 blocked bars bound, not parked (§2.4 updated).
+
+**Rejected:**
+- **#2** replace `canal_partial_fill_distinct` with "exposed inner wall" — a validated id and his words;
+  the replacement is an art solution, not a claim. It sits beside `fill_tier_legible`.
+- **#7** retire `never_full_reservoir_after_heavy_draw` — validated ids are frozen; a must/cannot pair
+  across polarities is how the system works.
+- **#8** visible volume balance — a vision judge cannot measure volume; conservation is the state half's
+  ledger (§2.2).
+- **#13** slipping pose for slime — invents an animation he never asked for; slime's difficulty is a
+  movement cost, covered by the state components.
+- **#23** reword `never_snared_standing` and add `never_pit_text_label` / `never_trapped_pawn_camera_pose`
+  — the first is kept verbatim by design; shots hide labels, so a label bar cannot fail; and an idle pawn
+  facing south is vanilla's default pose, so a camera-pose bar would be unmeetable.
+- **#25** pump / tank bars — ruling 34 collapsed pumping's look into the fill drop already bound; "five
+  canal-cell equivalents" is a quantity no screenshot can show.
+

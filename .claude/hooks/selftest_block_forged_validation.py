@@ -17,7 +17,7 @@ HOOK = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 
 DENY, ALLOW = "deny", "allow"
 
-WALK = "design/validation_walks/RimMandrake/Pits.md"
+WALK = "design/validation_walks/RimMandrake/FlowWorks.md"
 REGISTRY = "infrastructure/state/modcheck_status.json"
 
 DRAFT_SECTION = """## north star

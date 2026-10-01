@@ -6,7 +6,7 @@
 This is an index, not doctrine — the tier rule and the promotion test live in
 `design/README.md` and are written by hand.
 
-⚠️ **414 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
+⚠️ **491 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
 
 ### `design/`
 
@@ -19,7 +19,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `MOVING_DUNES_DESIGN.md` | MOVING_DUNES_DESIGN — real aeolian transport for RimWorld maps | — |
 | `NAMING_SCHEME_PLAN.md` | The Three-Tier Naming Scheme — RimMandrake / RimStarWars / RimUtinni | ? live as the grammar |
 | `RIMPROPERTY_ANIMAL_THEFT_SPEC.md` | RimProperty animal theft — RIMPROPERTY_ANIMAL_THEFT_1 | — |
-| `RM_GRAFFITI_SCOPE_WIDENING.md` | RM Graffiti — widening the base mod: punk-urban marks and ideoligion sigils | ? draft — fable design pass for owner ruling, 2026-09-09. item |
+| `RM_GRAFFITI_SCOPE_WIDENING.md` | RM Graffiti — widening the base mod: punk-urban marks and ideoligion sigils | ? ruled and built, 2026-09-24 — forks f1-f10's recommendations stand (owner card, 2026-09-24 |
 | `V2_DREAMS.md` | V2 — dreams and hopes | ☁ aspirational |
 | `mondayreviewitems.md` | mondayreviewitems — design questions waiting on the owner | — |
 
@@ -306,6 +306,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `ashfall_research_base.md` | The Ashfall Research Base — the Contagion's dungeon |  |
 | `beast_normalization_spec.md` | Beast Normalization — size, mass, casual lethality, temperature, products | ? draft — bench synthesis of the three-arm beast fan-out, 2026-08-31. owner's law |
 | `biome_flora_rosters.md` | Ash'karr's flora — what grows where, and why | — |
+| `biome_name_candidates_2026-09-26.md` | Biome name candidates — 2026-09-26 | — |
 | `biome_review_comments.md` | biome_review_comments.md — DECIDE's read of the owner's biome cuts |  |
 | `biome_terrain_palette.md` | biome_terrain_palette.md — Authoritative Biome + Terrain Palette |  |
 | `cherrypick_inbox.md` | Cherry Picker inbox — everything ruled OFF so far |  |
@@ -335,6 +336,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `faction_religions_spec.md` | Eleven religions, buildable — the encoding layer |  |
 | `faction_roster_v2.md` | RimWorld 1.6 Desert-World Faction Roster — v2 |  |
 | `faction_stage3_buildable_spec.md` | Faction Stage 3 — the buildable spec | → superseded `FACTION_SPEC.md` |
+| `faction_tech_alignment.md` | Faction tech alignment — who holds which technology, and why | — |
 | `faction_world_spec.md` | The world we want — faction specification |  |
 | `fall_line_major_region_label.md` | The Fall Line as a major world region — the label pass | — |
 | `fauna_placement.md` | fauna_placement.md — where each creature belongs |  |
@@ -384,6 +386,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      written by this doc. tier rimstarwars (mandrake.rsw.*, rsw_). |
 | `sea_beasts_family_review_grid_key.md` | Sea-beast family review save — grid key | — |
 | `sea_beasts_roster.md` | Sea beasts roster — 18 creatures, six roles, three each | ? ruled roster — sw_sea_monsters_art_1, owner 2026-08-31 |
+| `sea_catch_rosters_2026-09-24.md` | Sea catch rosters — four seas, seven-plus catches each | — |
 | `setting_physics.md` | setting_physics.md — the physical laws of this universe |  |
 | `setup_checklist.md` | setup_checklist.md — Game Setup Decision Checklist (work through live) |  |
 | `ship_deck_plan.md` | ship_deck_plan.md — The Ruined Vessel: deck plan + repair-progression design |  |
@@ -425,44 +428,108 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `_openers_prep.md` | Biome opener prep — measured tables for the remaining sheets | — |
 | `arid_shrubland.md` | The Arid Shrubland — definition sheet | — |
 | `assailant_weapon_remnants.md` | The Assailant weapon remnants — the triptych's third panel (not a biome) | — |
+| `blackcrags_bedazzle_review_2026-09-30.md` | Black Crags (was the Forsaken Crags): bedazzle review, movements 1 and 2 | — |
+| `bluedesert_bedazzle_cast_2026-09-28.md` | Blue Desert bedazzle cast — the four new natives + art commission | ? cast bible — commissioned under bluedesert_bedazzle_sitting_1 movement 4 |
+| `bluedesert_bedazzle_review_2026-09-28.md` | Blue Desert — bedazzle review (movement 1 + movement 2 prep) | — |
+| `bluedesert_carbon_garden_2026-09-30.md` | The Carbon Garden — hydrocarbon flora vetting (Blue Desert) | — |
+| `cauldron.md` | The Cauldron (formerly the Poison Forest) — biome definition sheet | — |
+| `cauldron_bedazzle_cast_2026-09-28.md` | The Cauldron — bedazzle cast bible (movement 4: commission) | ? cast bible — commissioned under cauldron_bedazzle_sitting_1 movement 4 |
+| `cauldron_bedazzle_review_2026-09-28.md` | The Cauldron (shipping as Poison Forest) — bedazzle review, 2026-09-28 | — |
 | `caverns_replacement_scoping.md` | Caverns replacement scoping — CAVERNS_REPLACEMENT_SCOPING_1 | — |
+| `contagion_grotesque_cast_2026-09-27.md` | The Contagion — grotesque cast bible (full RM_ development) | — |
+| `contagion_grown_limbs_2026-09-30.md` | The Contagion's five grown limbs — owner review sheet (2026-09-30) | — |
+| `cracked_lands_bedazzle_cast_2026-09-28.md` | The Cracked Lands — bedazzle cast bible (movement 4: commission) | — |
 | `deep_desert.md` | The Deep Desert — definition sheet | — |
 | `desert.md` | The Desert — definition sheet | — |
-| `dune_sea.md` | The Dune Sea — biome definition sheet | — |
+| `dune_sea.md` | The Dune Sea — definition sheet (a REGION of the Stillsand) | — |
 | `edible_genepack_native_mechanism.md` | The edible-genepack loop — reverse-engineered, verified, ready to implement natively | — |
 | `fall_line.md` | The Fall Line — definition sheet | — |
+| `fever_wood_deep_and_mud_2026-09-23.md` | The Fever Wood — the mud, the water, and the thing in it | — |
+| `fever_wood_fauna_roster_2026-09-23.md` | The Fever Wood fauna roster — 11 invented creatures, 2026-09-23 | — |
+| `fever_wood_flora_roster_2026-09-23.md` | The Fever Wood flora roster — 18 invented plants, 2026-09-23 | — |
+| `fever_wood_rm_cast_proposal_2026-09-24.md` | Fever Wood — RM_ invented cast proposal (2026-09-24) | — |
+| `fever_wood_syllable_variety_pass_2026-09-24.md` | Fever Wood syllable-variety pass — 2026-09-24 | — |
+| `floodedcanyon_bedazzle_review_2026-09-28.md` | The Cracked Lands (RM_FloodedCanyon) — bedazzle review (movement 1 + movement 2 prep) | — |
+| `forge_bedazzle_cast_2026-09-29.md` | The Forge — bedazzle cast bible (movement 4: commission) | ? cast bible — commissioned under forge_bedazzle_sitting_1 movement 4 |
+| `forge_bedazzle_review_2026-09-28.md` | The Forge — bedazzle review (movements 1–2), 2026-09-28 | — |
 | `forsaken_crags.md` | The Forsaken Crags — definition sheet | — |
 | `greentide_risk_reward_2026-09-22.md` | The Greentide as an exchange — audit, progression, and new reward categories | — |
 | `greentide_tree_roster_2026-09-22.md` | Greentide flora roster — 15 invented trees + 7 invented understory plants, 2026-09-22 | — |
+| `grey_deep_pool_sentinel_2026-09-27.md` | The Grey Deep pool sentinel — the orruhmu (2026-09-27) | — |
+| `grey_deep_sitting_agenda_2026-09-27.md` | The Grey Deep — sitting agenda, 2026-09-27 | — |
 | `lantern_deeps_flora_names.md` | Lantern Deeps — flora names (second proposal) | — |
+| `leaningscrub_bedazzle_cast_2026-09-29.md` | Leaning Scrub — bedazzle cast bible (movement 4: commission) | ? cast bible — commissioned under leaningscrub_bedazzle_sitting_1 movement 4 |
+| `leaningscrub_bedazzle_review_2026-09-29.md` | Leaning Scrub — bedazzle review (movements 1–2), 2026-09-29 | — |
+| `long_shade_bedazzle_2026-09-27.md` | The Long Shade — bedazzle to full-mod status (2026-09-27) | — |
+| `longshade_bedazzle_cast_2026-09-29.md` | Long Shade — bedazzle cast bible (movement 4: commission) | ? cast bible — commissioned under longshade_bedazzle_sitting_1 movement 4 |
+| `longshade_bedazzle_review_2026-09-29.md` | Long Shade — bedazzle review (movements 1–2), 2026-09-29 | — |
+| `longshade_shade_ideation_2026-09-29.md` | The Long Shade — what's in the shade (volley turn 3 ideation, 2026-09-29) | — |
+| `miasma_fauna_roster_2026-09-23.md` | The Miasma fauna roster — the arthropod floor, the composters, and what the stranded actually are, 2026-09-23 | — |
+| `miasma_flora_roster_2026-09-23.md` | The Miasma flora roster — 19 invented plants, 2026-09-23 | — |
 | `nightside_ice.md` | The Nightside Ice — biome definition sheet | — |
-| `cauldron.md` | The Cauldron (formerly Poison Forest) — biome definition sheet | — |
+| `noncanon_beast_names_crags_nightside_contagion_slime.md` | Non-canon beast names — Forsaken Crags, Nightside Ice, the Contagion, the Slime | — |
+| `noncanon_beast_names_poison_miasma_desert_scar_rot_dune_waste_cracked.md` | Non-canon beast names — Poison Forest, Miasma, Desert, Scarlands, the Rot, Dune Sea, Wasteland, Cracked Lands | — |
+| `noncanon_beast_names_propane_arid_forge_pyre_fever_greentide_rust_lantern_blue.md` | Non-canon beast names — Propane Lakes, Arid Shrubland, the Forge, the Pyrelands, Fever Wood, Greentide, Rust Cathedral, Lantern Deeps, Blue Desert | — |
 | `rot_flora_fauna_names.md` | The Rot — flora and fauna names and regen briefs | — |
+| `rot_rm_cast_proposal_2026-09-24.md` | The Rot — RM_TheRot franchise-free cast proposal (2026-09-24) | — |
+| `stillsand_bedazzle_2026-09-27.md` | The Stillsand — bedazzle to full-mod status (proposal, 2026-09-27) | — |
+| `stillsand_bedazzle_cast_2026-09-30.md` | The Stillsand — bedazzle cast bible (movement 4: ticket-out and commission) | ? cast bible — commissioned under stillsand_bedazzle_sitting_1 movement 4 |
+| `stillsand_bedazzle_review_2026-09-29.md` | The Stillsand — bedazzle review (movements 1–2), 2026-09-29 | — |
+| `stillsand_roster_fillout_2026-09-27.md` | Stillsand roster fill-out — 2026-09-27 | — |
+| `stillsand_turn3_development_2026-09-30.md` | The Stillsand — volley turn 3: developing what the owner ruled | — |
+| `sump_fauna_roster_2026-09-24.md` | The Sump — invented fauna roster | — |
+| `sump_flora_roster_2026-09-24.md` | The Sump — invented flora roster | — |
 | `sweetline_guardian_spec.md` | Sweetline guardian — generic guardian species spec | — |
+| `terminal_seas_cast_proposal_2026-09-25.md` | Terminal seas cast proposal — 2026-09-25 | — |
 | `terminator_sea.md` | The Terminator Sea — biome definition sheet | — |
 | `the_blue_desert.md` | The Blue Desert — definition sheet | — |
+| `the_chill_warlab_routes_spec_2026-09-27.md` | The Chill — routes into the ancient war lab (spec, 2026-09-27) | — |
 | `the_contagion.md` | The Contagion — definition sheet | — |
 | `the_cracked_lands.md` | The Cracked Lands — definition sheet | — |
 | `the_fever_wood.md` | The Fever Wood — definition sheet | — |
 | `the_forge.md` | The Forge — definition sheet | — |
 | `the_greentide.md` | The Greentide — definition sheet | — |
 | `the_grey_deep.md` | The Grey Deep — definition sheet | — |
+| `the_grey_deep_content_2026-09-26.md` | The Grey Deep — content drop, 2026-09-26 | — |
+| `the_grey_deep_danger_floor_pass_2026-09-27.md` | The Grey Deep — danger + floor design pass (2026-09-27) | — |
+| `the_grey_deep_flora_pass_2026-09-27.md` | The Grey Deep — underwater flora pass (2026-09-27) | — |
 | `the_lantern_deeps.md` | The Lantern Deeps — injection-layer definition sheet | — |
 | `the_miasma.md` | The Miasma — definition sheet | — |
+| `the_propane_lake_flora_pass_2026-09-27.md` | The Chill (ex-Propane Lake) — underwater flora design pass (2026-09-27) | — |
 | `the_propane_lakes.md` | The Propane Lakes — definition sheet | — |
 | `the_pyrelands.md` | The Pyrelands — definition sheet | — |
 | `the_rot.md` | The Rot — definition sheet | — |
 | `the_rust_cathedral.md` | The Rust Cathedral — definition sheet | — |
 | `the_rust_cathedral_SCALD_HISTORY_amendment_draft.md` | DRAFT amendment for owner ratification (RUST_CATHEDRAL_SCALD_HISTORY_1) — freeze rule: adds history/detail, changes no standing ruling. | — |
 | `the_scald.md` | The Scald — definition sheet | — |
+| `the_scald_underwater_flora_pass_2026-09-27.md` | The Scald — underwater flora design pass (2026-09-27) | — |
 | `the_scarlands.md` | The Scarlands — definition sheet | — |
 | `the_slime.md` | The Slime — definition sheet | — |
 | `the_slime_gene_lists.md` | The Slime — gene machine lists — ✅ ACCEPTED (owner, 2026-09-06) | — |
 | `the_sump.md` | The Sump — definition sheet | — |
 | `the_twilight_deep.md` | The Twilight Deep — definition sheet | — |
+| `the_twilight_deep_bedazzle_2026-09-26.md` | The Twilight Deep — the marquee: rewards, experiences, interactions (2026-09-26) | — |
+| `the_twilight_deep_bottom_cast_draft_2026-09-27.md` | The Twilight Deep — bottom cast (draft) | — |
+| `the_twilight_deep_content_2026-09-26.md` | The Twilight Deep — content drop, 2026-09-26 | — |
+| `the_twilight_deep_danger_pass_2026-09-27.md` | The Twilight Deep — danger pass (2026-09-27 sitting) | — |
+| `the_twilight_deep_flora_pass_2026-09-27.md` | The Twilight Sea — underwater flora design pass (2026-09-27) | — |
+| `the_twilight_deep_light_economy_pass_2026-09-27.md` | The Twilight Deep — light economy & Compact pass (2026-09-27) | — |
+| `the_twilight_deep_river_pass_2026-09-27.md` | The Twilight Deep — river pass (2026-09-27) | — |
 | `the_webwork.md` | The Webwork — definition sheet | — |
+| `warscar_bedazzle_cast_2026-09-30.md` | Warscar — bedazzle cast bible (movement 4: ticket-out and commission) | ? cast bible — commissioned under warscar_bedazzle_sitting_1 movement 4 |
+| `warscar_bedazzle_review_2026-09-30.md` | Warscar — bedazzle sitting, movements 1–2 + volley turn 1 (2026-09-30) | — |
+| `warscar_turn3_development_2026-09-30.md` | Warscar — volley turn 3: developing what the owner ruled | — |
 | `wasteland.md` | The Wasteland — definition sheet | — |
+| `wasteland_survivor_cast_2026-09-28.md` | The Wasteland survivor cast — full RM_ replacement bible | — |
+| `webwork_egg_blackmarket_2026-09-24.md` | The Webwork egg black market and the assassination quests (design draft) | — |
+| `webwork_fauna_roster_2026-09-23.md` | The Webwork — invented fauna roster (resident cast besides the Ollathrix) | — |
+| `webwork_flora_roster_2026-09-23.md` | The Webwork — invented flora roster | — |
+| `webwork_owner_and_nest_2026-09-23.md` | The Webwork — owner species, silk name, nest and egg economy (sitting record) | — |
 | `weeping_stones.md` | The Weeping Stones — definition sheet | — |
+| `weeping_stones_fauna_roster_2026-09-24.md` | The Weeping Stones — fauna roster | — |
+| `weeping_stones_flora_roster_2026-09-24.md` | The Weeping Stones — flora roster | — |
+| `weeping_stones_shine_options_2026-09-24.md` | Weeping Stones — "Make It Shine" Option Portfolio (2026-09-24) | — |
+| `weeping_stones_stocked_pool_2026-09-24.md` | Weeping Stones — The Stocked Pool: pool-fish bestiary, husbandry loop, cuisine hooks | — |
 | `wreck_fields.md` | The Wreck Fields — biome definition sheet | — |
 
 ### `design/Jawa/worldbuilding/biomes/kits/`
@@ -500,7 +567,11 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `RUT_ruled_commissions_wave2.md` | The ruled commissions, wave 2 — seven creatures from the 2026-09-10 sitting | ? design brief — nothing here is built except where a row says so |
 | `RUT_slime_transformation_system.md` | MOVED → `design/RimMandrake/RM_gelatinous_slime_mod.md` | — |
 | `blue_desert_hydrocarbon_life.md` | The Blue Desert's life — BLUE_DESERT_LIFE_AUTHORING_1, step 1 (design brief) | ? design brief — nothing here is built |
-| `goo_boom_commission.md` | The vhessk — GOO_BOOM_COMMISSION_1, the one boom creature that replaces the family | ? design brief — nothing here is built |
+| `goo_boom_commission.md` | The vhessk — GOO_BOOM_COMMISSION_1, the one boom creature that replaces the family | ? built 2026-09-25 (foundry) — thingdef+pawnkinddef in
+     src/rimutinni/utinnipatches/defs/thingdefs_races/rut_vhessk.xml, per every
+     ruling in s6 below. art queued (rut_vhessk_{south,east,north}), pending
+     render — see that file's own header for the placeholder texture in the
+     meantime. this doc's brief text below is left as written |
 
 ### `design/Jawa/worldbuilding/data/`
 
@@ -607,6 +678,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `Custom_World.md` | Custom_World.md — How to Build a Crafted RimWorld (living playbook) |  |
+| `Jev_Opportunities.md` | Jev opportunities — where a cheap typed-judgment model changes this project | — |
 | `RM_gelatinous_slime_mod.md` | The Gelatinous Slime Biome — GELATINOUS_SLIME_MOD_1 (RimMandrake tier) | ? design brief — nothing here is built |
 | `RM_liquid_types_mod.md` | One Liquid System, Many Liquids — LIQUID_TYPES_MOD_1 (RimMandrake tier) | ? design brief — nothing here is built |
 | `RM_titanoslime_spec.md` | The Titanoslime — `RM_Titanoslime`, the Slime's own mouth | ? design spec — nothing here is built. item |
@@ -618,22 +690,25 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      and ruled |
 | `art_regen_registry_design.md` | Art Regeneration Registry + Dashboard Hub — design (ruled 2026-09-11) | — |
 | `art_review_facts_spec.md` | Art review FACTS — the automatic sprite review ruleset | — |
+| `artpipe_console_design_2026-09-26.md` | artpipe daemon console — design (2026-09-26) | — |
+| `artpipe_console_questions_2026-09-26.md` | artpipe daemon console — clarifying questions before a design (2026-09-26) | — |
 | `atmospheric_base_hook_ecosystem.md` | AtmosphericBase — the hook ecosystem | — |
 | `atmospheric_base_mod_definition.md` | AtmosphericBase — mod definition | — |
 | `atmospheric_base_scheme_catalog.md` | AtmosphericBase — scheme catalog, DRAFT | — |
 | `balance_paradigm.md` | balance_paradigm.md — why we would change any number in this game |  |
 | `bazaar_trade_window_design.md` | The Bazaar — the scavenger trade window | — |
 | `beautiful_tilemap.md` | Beautiful_Tilemap — concept spec | ☁ aspirational |
-| `biome_mod_architecture.md` | Biome mod architecture — one RimMandrake mod per converted biome | — |
+| `biome_mod_architecture.md` | Biome mod architecture — one RimMandrake.Biomes mod, one section per biome | — |
+| `biome_mod_unification_spec.md` | Biome mod unification — execution spec (BIOME_MOD_UNIFICATION_1) | — |
 | `bridge_library_design.md` | rimdrive — the reusable Python bridge library (design) | — |
 | `coastal_mesa_rationale.md` | Coastal Mesa — LLM-authored map improvement |  |
 | `codex_receiving_agent_design.md` | A receiving agent inside Codex — accelerating graphics generation | — |
-| `droid_oracle_voice_design.md` | Droid voice through the Oracle — four consumers, live; Narrator third person | ? design, ruled live 2026-09-25/26 — droid_oracle_voice_design_1, fable pass 2026-09-08, rulings folded 2026-09-26, for owner
-     review. ruled into existence by droid_unified_framework_design.md §0 card 14 ("droid voice
-     via the oracle |
+| `deepfire_luminous_pigment_spec.md` | Deepfire — luminous pigment mod (`LuminousPigment`) — design spec | — |
+| `droid_oracle_voice_design.md` | Droid moments through the Oracle — Narrator letters, four consumers, live | ? ruled, live — droid_oracle_voice_design_1. fable pass 2026-09-08 |
+| `exposure_gear_matrix_spec.md` | Exposure gear matrix — design spec | — |
 | `faction_authoring_mechanism.md` | faction_authoring_mechanism.md — How we make rich, differentiated factions |  |
+| `flowworks_liquid_matrix.md` | FlowWorks Liquid Matrix — the six faces × the liquid registry | — |
 | `flowworks_mod_definition.md` | FlowWorks — mod definition | — |
-| `flowworks_program1_validation_checklist.md` | FlowWorks program 1 — grouped validation checklist (excavation+liquids merge) | — |
 | `liquids_framework_design.md` | Liquids Framework — one substance, many faces | — |
 | `llm_ingame_wiring_spec.md` | The Oracle — in-game LLM wiring | ? spec — llm_ingame_wiring_1, bench 2026-08-31, green-lit by the owner, verbatim |
 | `llm_stack_assessment.md` | llm_stack_assessment.md — how far the live LLM stack gets us |  |
@@ -642,6 +717,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `map_content_injection_research.md` | Map content injection — the research path |  |
 | `map_generator_chooser_spec.md` | Map generator v0 — the CHOOSER (spec) | — |
 | `map_generator_round4_options.md` | Map generator round 4 — the chooser, as OPTIONS (Fable design pass, not ruled) | — |
+| `minerals_census_2026-09-25.md` | Materials census: ores, gems, exotics — for the Scald sea floor decision | — |
 | `mod_validation_runner_spec.md` | modcheck — scripted mod-functionality validation (pre-playtest) | — |
 | `music_protocol.md` | music_protocol.md — adding our own music to the gravship campaign |  |
 | `narrative_dictionary_design.md` | Narrative Dictionary — design spec | ? approved-design, pilot not built |
@@ -652,6 +728,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      sources |
 | `nine_voices_v1_lines.md` | The Nine Voices — v1 line corpus (BLESSED by the owner, 2026-09-11) | — |
 | `north_star_validation_spec.md` | North stars — binding a mod's intended EXPERIENCE to its validation run | — |
+| `oasis_maker_machines_spec.md` | Oasis-Maker Machines — spec (OASIS_MAKER_MACHINES_1) | — |
 | `ollama.md` | ollama.md — installing Ollama on Windows |  |
 | `pit_superdeep_collapse_spec.md` | Pit → Superdeep collapse — design spec | — |
 | `reaction_mechanism_spec.md` | One reaction mechanism, four scales — spec | — |
@@ -659,6 +736,19 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `rimtalk_analysis.md` | rimtalk_analysis.md — RimTalk adoption analysis | → superseded `llm_stack_assessment.md` |
 | `rimworld_file_lore.md` | rimworld_file_lore.md — technical manual for editing RimWorld save / scenario / def files |  |
 | `save_authoring_pipeline.md` | Save-Based World Authoring Pipeline — RimWorld 1.6 Jawa Gravship Campaign | ⛔ dead |
+| `scald_steam_and_hazards_spec.md` | The Scald — steam weather and boiling-water hazards (design spec) | — |
+| `sea_dive_maps_spec.md` | Sea dive maps — design spec | — |
+| `sea_shore_mutator_spec.md` | Sea shore tile mutator — design spec | — |
+| `statue_expansion_assessment.md` | Statue Art Expansion — Assessment (STATUE_ART_EXPANSION_1) | — |
+| `statue_mods_spec.md` | Statue mods spec — Utinni statues (RUT_) and Flame statues (RM_) | — |
+| `watchers_mod_pitch_2026-09-30.md` | Watchers: a cross-biome mod of shy creatures (pitch, 2026-09-30) | — |
+
+### `design/RimMandrake/northstar_trials/`
+
+| doc | title | status |
+|---|---|---|
+| `FlowWorks_trial_plan.md` | FlowWorks north-star trial plan | — |
+| `Pyrelands_trial_plan.md` | Pyrelands — north-star trial plan (the biome template) | — |
 
 ### `design/RimStarWars/`
 
@@ -732,6 +822,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `description.md` | Bith | — |
+
+### `design/RimStarWars/canon_references/blurrg/`
+
+| doc | title | status |
+|---|---|---|
+| `description.md` | Blurrg | — |
 
 ### `design/RimStarWars/canon_references/bolotaur/`
 
@@ -1507,6 +1603,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `explosive_plant_growth_roster.md` | Explosive plant growth — per-plant roster | — |
 | `fall_line_arrival_mechanism_spec.md` | Fall Line arrival mechanism — design spec | — |
+| `vanilla_beast_excision_census.md` | Vanilla beast excision — census (VANILLA_BEAST_EXCISION_1, wave 1) | — |
 
 ### `design/validation_walks/`
 
@@ -1530,7 +1627,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Ninefold.md` | RimMandrake Ninefold (M0 — safe core) — validation walk | — |
 | `Oracle.md` | RimMandrake: Oracle — validation walk | — |
 | `PhytokinBarkHeadFix.md` | Bark Head East Fix — Vanilla Races Expanded: Phytokin — validation walk | — |
-| `Pits.md` | RimMandrake Pits — validation walk | — |
 | `PlanetPresetPrime.md` | Planet Preset Prime (local) — validation walk | — |
 | `Property.md` | Property — validation walk | — |
 | `Pyrelands.md` | Pyrelands — validation walk | — |

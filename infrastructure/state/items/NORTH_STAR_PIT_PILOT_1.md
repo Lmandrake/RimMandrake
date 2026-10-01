@@ -6,12 +6,10 @@ to overturn. Design: `design/RimMandrake/north_star_validation_spec.md`.
 
 ## Where this stands
 
-- The pit's walk (`design/validation_walks/RimMandrake/Pits.md`) already carries a
-  **DRAFT** `## north star` section, drafted 2026-09-15 from the owner's own
-  recorded words (his 2026-09-15 "shocked and appalled" statement and his
-  2026-09-13 "we need a big dark pit"). 12 must-show lines across five mechanic
-  groups, plus one `cannot show` line.
-- It is DRAFT, so it binds nothing. That is deliberate and correct.
+- The pit's bars live in FlowWorks' walk (`design/validation_walks/RimMandrake/FlowWorks.md`,
+  groups **Depth**, **The pit**, **The cover**, **The built half**), VALIDATED 2026-10-01
+  after the pit collapsed onto the superdeep cell (`PIT_SUPERDEEP_COLLAPSE_1`). The old
+  separate `Pits.md` walk is deleted.
 - The walk's old claim that "nothing here is visual-only" is deleted.
 
 ## spec
