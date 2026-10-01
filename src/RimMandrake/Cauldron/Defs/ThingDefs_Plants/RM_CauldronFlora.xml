@@ -70,6 +70,10 @@
       <growDays>15</growDays>
       <!-- CAULDRON_RULED_CONTENT_1: steep on purpose (was 210); thorn-armoured, metal-sweating wood. -->
       <harvestWork>1200</harvestWork>
+      <!-- CAULDRON_GPT_ENRICHMENT_1 part 4: harvesting is slow AND noisy. TUNED:
+           vanilla's smithing sustainer stands in for metal-in-the-grain until the
+           Cauldron's own audio exists (CAULDRON_ENRICHMENT_AUDIO_1). -->
+      <soundHarvesting>Recipe_Smith</soundHarvesting>
       <harvestYield>25</harvestYield>
       <harvestedThingDef>WoodLog</harvestedThingDef>
       <harvestMinGrowth>0.2</harvestMinGrowth>
@@ -116,6 +120,10 @@
       <growDays>10</growDays>
       <!-- CAULDRON_RULED_CONTENT_1: steep on purpose (was 210). -->
       <harvestWork>1000</harvestWork>
+      <!-- CAULDRON_GPT_ENRICHMENT_1 part 4: harvesting is slow AND noisy. TUNED:
+           vanilla's smithing sustainer stands in for metal-in-the-grain until the
+           Cauldron's own audio exists (CAULDRON_ENRICHMENT_AUDIO_1). -->
+      <soundHarvesting>Recipe_Smith</soundHarvesting>
       <harvestYield>15</harvestYield>
       <harvestedThingDef>WoodLog</harvestedThingDef>
       <harvestMinGrowth>0.2</harvestMinGrowth>
@@ -243,6 +251,25 @@
       <topWindExposure>0.1</topWindExposure>
       <wildOrder>2</wildOrder>
     </plant>
+    <!-- CAULDRON_GPT_ENRICHMENT_1 part 5 (Condensate Gardens): nettles colonize
+         poisoned shorelines - land touching toxic water, including water the
+         vexxiss poisons later. See Source/RM_CondensateGardens.cs.
+         TUNED: 25% of shore cells at mapgen gives a visible dark fringe without
+         a solid wall; 50% per sampled try lets a fresh shore fill in over weeks. -->
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_CondensateHabitatExtension">
+        <shoreOf>
+          <li>ToxicWaterShallow</li>
+          <li>ToxicWaterDeep</li>
+          <li>ToxicWaterMovingShallow</li>
+          <li>ToxicWaterMovingChestDeep</li>
+          <li>ToxicWaterOceanShallow</li>
+          <li>ToxicWaterOceanDeep</li>
+        </shoreOf>
+        <mapgenChance>0.25</mapgenChance>
+        <colonizeChance>0.5</colonizeChance>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">

@@ -25,6 +25,11 @@ namespace RimMandrake.Cauldron
         public float waterPoisonRadius = 1.5f;
         public List<RM_TerrainSwap> waterSwaps = new List<RM_TerrainSwap>();
 
+        // CAULDRON_GPT_ENRICHMENT_1 part 2: water the vexxiss poisons is
+        // announced, never silent. TUNED: at most one letter per vexxiss per
+        // in-game day, so a wading giant does not spam the letter stack.
+        public int waterLetterCooldownTicks = 60000;
+
         public RM_CompProperties_VexxissBehaviour()
         {
             compClass = typeof(RM_CompVexxissBehaviour);
@@ -85,12 +90,41 @@ namespace RimMandrake.Cauldron
             Map map = pawn.Map;
             if (SwapFor(pawn.Position.GetTerrain(map)) == null) return; // not wading
 
+            int poisoned = 0;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, Props.waterPoisonRadius, true))
             {
                 if (!c.InBounds(map)) continue;
                 TerrainDef to = SwapFor(c.GetTerrain(map));
-                if (to != null) map.terrainGrid.SetTerrain(c, to);
+                if (to != null) { map.terrainGrid.SetTerrain(c, to); poisoned++; }
             }
+            if (poisoned > 0) MaybeWarnPoisonedWater(pawn);
+        }
+
+        // The warning letter (CAULDRON_GPT_ENRICHMENT_1 part 2). Only where the
+        // player is present (a map with a spawned colonist); throttled per
+        // animal; its own Mod Settings toggle.
+        private int lastWaterLetterTick = -999999;
+
+        private void MaybeWarnPoisonedWater(Pawn pawn)
+        {
+            if (!RM_CauldronSettings.vexxissWaterLetter) return;
+            Map map = pawn.Map;
+            if (map == null || !map.mapPawns.AnyColonistSpawned) return;
+            int now = Find.TickManager.TicksGame;
+            if (now - lastWaterLetterTick < Props.waterLetterCooldownTicks) return;
+            lastWaterLetterTick = now;
+            Find.LetterStack.ReceiveLetter(
+                "Vexxiss poisoning water",
+                "A vexxiss is wading through open water, and every cell it touches is turning to toxic water. "
+                + "Toxic water is unsafe to drink from or wade through.",
+                LetterDefOf.NegativeEvent,
+                new LookTargets(pawn));
+        }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Values.Look(ref lastWaterLetterTick, "rmLastWaterLetterTick", -999999);
         }
 
         private TerrainDef SwapFor(TerrainDef t)
