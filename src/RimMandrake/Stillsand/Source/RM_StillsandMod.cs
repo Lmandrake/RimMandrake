@@ -49,7 +49,8 @@ namespace RimMandrake.Stillsand
             }
             list.GapLine();
             list.Label("The biome itself reuses vanilla Core's BiomeWorker_ExtremeDesert unchanged, "
-              + "so there is no natural-placement score of this mod's own to toggle.");
+              + "so there is no natural-placement score of this mod's own to toggle. The event "
+              + "creatures (muurrok, krayt attack) have their own panel: \"Stillsand: event creatures\".");
 
             list.End();
         }

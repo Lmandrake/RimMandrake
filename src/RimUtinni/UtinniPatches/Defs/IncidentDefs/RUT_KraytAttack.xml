@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_KraytAttack.xml                     RimUtinni — STILLSAND_EVENT_CREATURES_1 §2
+
+  The krayt attack: a krayt dragon comes up out of the Stillsand and fights on the surface.
+  Owner, typed, volley turn 2: "This biome needs event level creatures. Attacks by the mighty
+  krayt dragon. And others." Owner, by card, 2026-09-30: the krayts and the war wyrm STAY
+  WILD (WildAnimals_Stillsand.xml is unchanged); this attack is added on top.
+
+  XML only. The worker is the RM tier's RimMandrake.Stillsand.RM_IncidentWorker_SandLeviathan
+  (src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs), which never names a krayt; the
+  krayt is data here (Q11a: canon IP lives in the Utinni layer). surfaceFighter makes it
+  manhunter on arrival. It dives once fed (taking the body down a drag line into a funnel),
+  on fire, or after hardGroundGiveUpTicks off the sand.
+
+  Gate: all three mods by MayRequire (the worker's mod, the krayt's mod, and the sand-swim kit
+  the krayt's own RM_SandSwimExtension needs). Biome by defName in the extension. Toggle and
+  odds: Mod Settings, "Stillsand: event creatures" (rows are built from every IncidentDef on
+  this worker). Weighted up by vibration (powered deep drills). The Return's Debt weighting
+  is owed to STILLSAND_RETURN_RITUAL_1.
+-->
+<Defs>
+
+  <IncidentDef MayRequire="mandrake.rm.stillsand,mandrake.rsw.swbestiary,mandrake.rm.creaturebehaviors">
+    <defName>RUT_KraytAttack</defName>
+    <label>krayt attack</label>
+    <workerClass>RimMandrake.Stillsand.RM_IncidentWorker_SandLeviathan</workerClass>
+    <category>ThreatBig</category>
+    <letterDef>ThreatBig</letterDef>
+    <letterLabel>Krayt dragon</letterLabel>
+    <letterText>Something vast is moving under the sand.\n\nThe ground is humming on the windward horizon, louder every minute. A krayt dragon is coming, and it is heading for whatever is making the most noise.\n\nIt will break the surface and fight. Kill it, or make it dive: it will not stay long on rock, it will not stand in fire, and once it has fed it takes what it caught down with it.</letterText>
+    <baseChance>0.6</baseChance>
+    <minRefireDays>40</minRefireDays>
+    <earliestDay>20</earliestDay>
+    <minThreatPoints>800</minThreatPoints>
+    <pointsScaleable>false</pointsScaleable>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+      <li>Map_TempIncident</li>
+    </targetTags>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_SandLeviathanExtension">
+        <biomes>
+          <li>RM_Stillsand</li>
+        </biomes>
+        <pawnKind>RSW_KraytDragon</pawnKind>
+        <surfaceFighter>true</surfaceFighter>
+        <warningTicks>2000</warningTicks>
+        <maxStayTicks>30000</maxStayTicks>
+        <hardGroundGiveUpTicks>1200</hardGroundGiveUpTicks>
+        <breachRingRadius>4.9</breachRingRadius>
+        <breachStaggerTicks>120</breachStaggerTicks>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

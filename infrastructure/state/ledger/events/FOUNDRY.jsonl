@@ -1603,3 +1603,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"STILLSAND_BEDAZZLE_CONTENT_1","ts":"2026-10-01T05:48:22Z"}
 {"seat":"FOUNDRY","event":"file","id":"STILLSAND_CONTENT_LIVE_PROOF_1","title":"Prove the built Stillsand cast live (atlas, zuurrik on blood) and swap four placeholder renders","kind":"verify","target":"v1","needs":"game-up","spec":"infrastructure/state/items/STILLSAND_CONTENT_LIVE_PROOF_1.md","caused_by":"STILLSAND_BEDAZZLE_CONTENT_1","for":"FOUNDRY","ts":"2026-10-01T06:51:50Z"}
 {"seat":"FOUNDRY","event":"close","id":"STILLSAND_BEDAZZLE_CONTENT_1","sha":"8132caca2a5ce905e8cfc77160885b34f0cc2227","ts":"2026-10-01T06:51:54Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_EVENT_CREATURES_1","ts":"2026-10-01T06:41:36Z"}
+{"seat":"FOUNDRY","event":"file","id":"STILLSAND_EVENT_CREATURES_REMAINDER_1","title":"Stillsand event ladder remainder: sarlacc roots, krayt den quest, krayt horn, Debt weighting","kind":"task","target":"v1","needs":"offline","caused_by":"STILLSAND_EVENT_CREATURES_1","for":"FOUNDRY","ts":"2026-10-01T06:54:03Z"}
+{"seat":"FOUNDRY","event":"file","id":"STILLSAND_EVENT_CREATURES_LIVE_1","title":"Live-prove the krayt attack and muurrok on a Stillsand quicktest, and live-fire the Long Hunger","kind":"task","target":"v1","needs":"game-up","caused_by":"STILLSAND_EVENT_CREATURES_1","for":"FOUNDRY","ts":"2026-10-01T06:54:07Z"}
