@@ -43,7 +43,7 @@ try:
         w = call("jawa/weather_get"); tc, tk = terrain()
         cond = [(c.get("def"), c.get("label")) for c in w.get("conditions", [])]
         pw = call("jawa/list_pawns", includeHealth=True).get("pawns") or []
-        hd = collections.Counter(h.get("def") or h.get("defName") for x in pw for h in (x.get("hediffs") or []) if isinstance(h, dict))
+        hd = collections.Counter(h.get("def") or h.get("defName") for x in pw for h in ((x.get("health") or {}).get("hediffs") or []) if isinstance(h, dict))
         s0 = {"hediffs": {k: v for k, v in hd.items() if k and k.startswith("RM_")}, "pawns": len(pw)}
         s = {"t": int(time.time() - t0), "ticks": tk, "weather": (w.get("weather") or {}).get("current"), "conditions": cond,
              "extra": s0, "terrainDelta": {k: v - t0c.get(k, 0) for k, v in tc.items() if v != t0c.get(k, 0)}}
