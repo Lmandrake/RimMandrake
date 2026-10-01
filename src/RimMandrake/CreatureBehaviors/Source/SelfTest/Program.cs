@@ -565,6 +565,50 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                        && think.SelectSingleNode("value/li/state")?.InnerText == "RM_ChasingWater", "think-tree node missing");
             });
 
+            // ── STILLSAND_WIND_SUN_BEARING_1 ────────────────────────────
+            Case("wind lock: the dune engine's bearing IS the pinned sun's (shipped DLL)", () =>
+            {
+                // Reflection into the BUILT CreatureBehaviors assembly: the dunes engine
+                // cannot reference it, so this is what keeps the two formulas one.
+                string dll = System.IO.Path.Combine(FindModsRoot(), "CreatureBehaviors", "Assemblies", "RimMandrake.CreatureBehaviors.dll");
+                var asm = System.Reflection.Assembly.LoadFrom(dll);
+                var geo = asm.GetType("RimMandrake.CreatureBehaviors.RM_MapComponent_PinnedSun").GetMethod("SunGeometry");
+                float[][] tiles = { new[] { 20f, -30f }, new[] { -40f, 10f }, new[] { 5f, 80f }, new[] { -60f, -120f }, new[] { 0f, 45f } };
+                foreach (float[] t in tiles)
+                {
+                    object[] args = { t[0], t[1], 0f, 0f, 0f, 0f };
+                    geo.Invoke(null, args);
+                    float pinned = (float)args[4];
+                    float dune = RimMandrake.MovingDunes.DuneWindBearing.SunBearingDegrees(t[0], t[1], 0f, 0f);
+                    float diff = Math.Abs(((pinned - dune) % 360f + 540f) % 360f - 180f);
+                    Assert(diff < 0.01f, "tile " + t[0] + "," + t[1] + ": pinned " + pinned + " vs dune " + dune);
+                }
+            });
+
+            Case("wind lock: the wind blows along the shadows; lees fall shadow-side", () =>
+            {
+                // A tile due west of the substellar point sees the sun due east (90).
+                float b = RimMandrake.MovingDunes.DuneWindBearing.SunBearingDegrees(0f, -40f, 0f, 0f);
+                Assert(Math.Abs(b - 90f) < 0.01f, "sun bearing " + b + ", expected 90");
+                Assert(RimMandrake.MovingDunes.DuneWindBearing.WindDirFromSunBearing(b, false) == 6, "wind not toward W (6)");
+                Assert(RimMandrake.MovingDunes.DuneWindBearing.WindDirFromSunBearing(b, true) == 2, "toward-sun wind not E (2)");
+                // Wind index 6 = (-1,0): the same way RM_MapComponent_ShadeGrid casts shadows, -(sin b, cos b).
+                float sx = -(float)Math.Sin(b * Math.PI / 180), sz = -(float)Math.Cos(b * Math.PI / 180);
+                Assert(sx < -0.99f && Math.Abs(sz) < 0.01f, "shadow not west");
+                Assert(RimMandrake.MovingDunes.DuneWindBearing.WindDirFromSunBearing(-135f, false) == 1, "sun SW -> wind not NE");
+                Assert(RimMandrake.MovingDunes.DuneWindBearing.SunBearingDegrees(0f, 0f, 0f, 0f) == 0f, "substellar tile not 0");
+            });
+
+            Case("wind lock: Stillsand's dune binding locks the bearing at the pinned sun's point", () =>
+            {
+                var doc = new System.Xml.XmlDocument();
+                doc.Load(System.IO.Path.Combine(FindModsRoot(), "MovingDunes", "Patches", "BiomeBindings.xml"));
+                System.Xml.XmlNode li = doc.SelectSingleNode("//match[xpath='Defs/BiomeDef[defName=\"RM_Stillsand\"]']/value/li");
+                Assert(li != null, "no Stillsand dune binding");
+                Assert(li.SelectSingleNode("lockBearingToSubstellar")?.InnerText == "true", "Stillsand wind not locked");
+                Assert(F(li, "substellarLatitude", 0f) == 0f && F(li, "substellarLongitude", 0f) == 0f, "substellar point not 0,0");
+            });
+
             foreach (string p in Pass) Console.WriteLine("PASS " + p);
             foreach (string f in Fail) Console.WriteLine("FAIL " + f);
             Console.WriteLine(Pass.Count + "/" + (Pass.Count + Fail.Count) + " passed");

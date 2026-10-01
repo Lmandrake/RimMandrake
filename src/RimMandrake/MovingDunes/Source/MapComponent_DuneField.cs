@@ -179,6 +179,7 @@ namespace RimMandrake.MovingDunes
                 windDir = Rand.RangeInclusive(0, 7);
                 ScheduleNextWindShift();
             }
+            ApplyWindLock();
 
             armed = true;
             DuneFieldRegistry.Register(map, this);
@@ -205,7 +206,7 @@ namespace RimMandrake.MovingDunes
                 return;
             }
 
-            if (now >= nextWindShiftTick)
+            if (!ApplyWindLock() && now >= nextWindShiftTick)
             {
                 ShiftWind();
             }
@@ -221,6 +222,28 @@ namespace RimMandrake.MovingDunes
         }
 
         // ------------------------------------------------------------------- wind
+
+        /// <summary>STILLSAND_WIND_SUN_BEARING_1: on a biome that locks its wind to the
+        /// sun, set the wind to the tile's bearing and report true (no shift runs).
+        /// Re-applied every batch, so turning the setting back on snaps it home.</summary>
+        private bool ApplyWindLock()
+        {
+            if (!MovingDunesSettings.windLockEnabled || map.Biome == null || Find.WorldGrid == null
+                || !map.Tile.Valid)
+            {
+                return false;
+            }
+            DuneFieldExtension ext = map.Biome.GetModExtension<DuneFieldExtension>();
+            if (ext == null || !ext.lockBearingToSubstellar)
+            {
+                return false;
+            }
+            Vector2 longLat = Find.WorldGrid.LongLatOf(map.Tile);
+            float bearing = DuneWindBearing.SunBearingDegrees(longLat.y, longLat.x,
+                ext.substellarLatitude, ext.substellarLongitude);
+            windDir = DuneWindBearing.WindDirFromSunBearing(bearing, ext.windBlowsTowardSubstellar);
+            return true;
+        }
 
         private void ScheduleNextWindShift()
         {

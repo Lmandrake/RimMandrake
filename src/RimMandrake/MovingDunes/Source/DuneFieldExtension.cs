@@ -15,6 +15,19 @@ namespace RimMandrake.MovingDunes
         /// <summary>The material this biome's maps drift. Required.</summary>
         public RM_DuneMaterialDef material;
 
+        /// <summary>STILLSAND_WIND_SUN_BEARING_1: pin this biome's wind to the
+        /// tile-to-substellar bearing (DuneWindBearing) instead of letting it shift,
+        /// so crests, lees, shadows and the wind all point one way. The substellar
+        /// point must match the biome's pinned sun (Ash'karr's is 0, 0). Gated by
+        /// the Moving Dunes setting windLockEnabled.</summary>
+        public bool lockBearingToSubstellar;
+        public float substellarLatitude;
+        public float substellarLongitude;
+
+        /// <summary>Default false: the locked wind blows along the shadows (away
+        /// from the sun), so dune lees fall on the shadow side.</summary>
+        public bool windBlowsTowardSubstellar;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string error in base.ConfigErrors())
