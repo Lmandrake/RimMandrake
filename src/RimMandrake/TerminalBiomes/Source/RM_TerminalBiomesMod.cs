@@ -68,6 +68,15 @@ namespace RimMandrake.TerminalBiomes
         public static bool twilightSeaEnabled = true;
         public static bool greySeaEnabled = true;
 
+        // ── The Chill's growers (CHILL_CRYOPONICS_GROWER_1 / CHILL_FLOOR_GROWING_BED_1)
+        // Off: the cryoponics vat is an ordinary bed (no cryogenic bath, so the
+        // bed plants only grow where the ambient already permits); the floor bed
+        // refuses NEW placement (anything already built stays and keeps working).
+        public static bool chillCryoponicsEnabled = true;
+        public static bool chillFloorBedEnabled = true;
+        public static bool ChillCryoponicsActive => masterEnabled && chillEnabled && chillCryoponicsEnabled;
+        public static bool ChillFloorBedActive => masterEnabled && chillEnabled && chillFloorBedEnabled;
+
         // ── Scald mechanic sub-toggles (kit spec S1/S2/S4/S5/S6; S3 unbuilt) ─
         public static bool scaldS1SteamSkyEnabled = true;
         public static bool scaldS2SteamCatchEnabled = true;
@@ -177,6 +186,8 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
             Scribe_Values.Look(ref scaldEnabled, "scaldEnabled", true);
             Scribe_Values.Look(ref chillEnabled, "chillEnabled", true);
+            Scribe_Values.Look(ref chillCryoponicsEnabled, "chillCryoponicsEnabled", true);
+            Scribe_Values.Look(ref chillFloorBedEnabled, "chillFloorBedEnabled", true);
             Scribe_Values.Look(ref twilightSeaEnabled, "twilightSeaEnabled", true);
             Scribe_Values.Look(ref greySeaEnabled, "greySeaEnabled", true);
             Scribe_Values.Look(ref scaldS1SteamSkyEnabled, "scaldS1SteamSkyEnabled", true);
@@ -234,6 +245,13 @@ namespace RimMandrake.TerminalBiomes
             list.CheckboxLabeled("The Chill", ref chillEnabled,
                 "A black mirror of liquid fuel ringed by a frozen crust, with its own "
               + "catch table.");
+            list.CheckboxLabeled("  Chill cryoponics vat", ref chillCryoponicsEnabled,
+                "The sealed, powered vat that grows the Chill's six deep-bed plants anywhere, "
+              + "carrying its own cryogenic bath. Off: the vat gives no cold bath, so the bed "
+              + "plants only grow where the surroundings already allow it.");
+            list.CheckboxLabeled("  Chill floor growing bed", ref chillFloorBedEnabled,
+                "The plain growing bed that can only be built on the Chill's seabed. Off: no "
+              + "new beds can be placed; existing ones keep working.");
             list.CheckboxLabeled("The Twilight Sea", ref twilightSeaEnabled,
                 "A hypersaline terminal sea, moldy shore to shore, with its own fishing "
               + "table.");

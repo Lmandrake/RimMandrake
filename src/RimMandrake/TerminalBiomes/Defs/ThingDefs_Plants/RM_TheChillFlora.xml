@@ -198,6 +198,8 @@
       <wildTerrainTags>
         <li>RM_TheChillBed</li>
       </wildTerrainTags>
+      <!-- CHILL_CRYOPONICS_GROWER_1 / CHILL_FLOOR_GROWING_BED_1: deep-bed plants can be sown in the two Chill growers. -->
+      <sowTags><li>RM_ChillBed</li></sowTags>
       <minGrowthTemperature>-273</minGrowthTemperature>
       <maxGrowthTemperature>-20</maxGrowthTemperature>
       <!-- "No sun has ever reached this floor and none ever will" (doc,
@@ -257,6 +259,8 @@
       <wildTerrainTags>
         <li>RM_TheChillBed</li>
       </wildTerrainTags>
+      <!-- CHILL_CRYOPONICS_GROWER_1 / CHILL_FLOOR_GROWING_BED_1: deep-bed plants can be sown in the two Chill growers. -->
+      <sowTags><li>RM_ChillBed</li></sowTags>
       <minGrowthTemperature>-273</minGrowthTemperature>
       <maxGrowthTemperature>-20</maxGrowthTemperature>
       <!-- "No sun has ever reached this floor and none ever will" (doc,
@@ -359,6 +363,8 @@
       <wildTerrainTags>
         <li>RM_TheChillBed</li>
       </wildTerrainTags>
+      <!-- CHILL_CRYOPONICS_GROWER_1 / CHILL_FLOOR_GROWING_BED_1: deep-bed plants can be sown in the two Chill growers. -->
+      <sowTags><li>RM_ChillBed</li></sowTags>
       <minGrowthTemperature>-273</minGrowthTemperature>
       <maxGrowthTemperature>-20</maxGrowthTemperature>
       <!-- "No sun has ever reached this floor and none ever will" (doc,
@@ -478,6 +484,8 @@
       <wildTerrainTags>
         <li>RM_TheChillBed</li>
       </wildTerrainTags>
+      <!-- CHILL_CRYOPONICS_GROWER_1 / CHILL_FLOOR_GROWING_BED_1: deep-bed plants can be sown in the two Chill growers. -->
+      <sowTags><li>RM_ChillBed</li></sowTags>
       <minGrowthTemperature>-273</minGrowthTemperature>
       <maxGrowthTemperature>-20</maxGrowthTemperature>
       <!-- "No sun has ever reached this floor and none ever will" (doc,
@@ -602,6 +610,8 @@
       <wildTerrainTags>
         <li>RM_TheChillBed</li>
       </wildTerrainTags>
+      <!-- CHILL_CRYOPONICS_GROWER_1 / CHILL_FLOOR_GROWING_BED_1: deep-bed plants can be sown in the two Chill growers. -->
+      <sowTags><li>RM_ChillBed</li></sowTags>
       <minGrowthTemperature>-70</minGrowthTemperature>
       <maxGrowthTemperature>-20</maxGrowthTemperature>
       <!-- "No sun has ever reached this floor and none ever will" (doc,
@@ -654,6 +664,8 @@
         <li>RM_TheChillBed</li>
         <li>RM_TheChillShelf</li>
       </wildTerrainTags>
+      <!-- CHILL_CRYOPONICS_GROWER_1 / CHILL_FLOOR_GROWING_BED_1: deep-bed plants can be sown in the two Chill growers. -->
+      <sowTags><li>RM_ChillBed</li></sowTags>
       <minGrowthTemperature>-273</minGrowthTemperature>
       <maxGrowthTemperature>-20</maxGrowthTemperature>
       <!-- "No sun has ever reached this floor and none ever will" (doc,
