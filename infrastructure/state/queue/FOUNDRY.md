@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:30:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:33:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1295,42 +1295,6 @@ target:   v1
 kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
-
-## SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1 Sand-swim take funnel and drag mark are never laid: sand accepts only Unnatural filth, the defs use placementMask Terrain
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  1. Give both filth defs a placement mask that sand accepts (add Unnatural), or place them in a way that
-prose:    infrastructure/state/items/SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1.md
-
-## OORRIK_PAWNGEN_NRE_1 RM_Oorrik pawn generation throws NullReferenceException (ShouldBeDead via lifestage recalculation) on the full list
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     defect
-summary:  OORRIKPAWNGENNRE1 — RMOorrik cannot be generated (NullReferenceException)
-prose:    infrastructure/state/items/OORRIK_PAWNGEN_NRE_1.md
-
-## SOORRAK_FLIGHT_JOBSTART_NRE_1 RM_Soorrak throws NullReferenceException in Pawn_FlightTracker.Notify_JobStarted on every job start (59x in one session)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  SOORRAKFLIGHTJOBSTARTNRE1 — RMSoorrak throws on every job start (PawnFlightTracker.NotifyJobStarted)
-prose:    infrastructure/state/items/SOORRAK_FLIGHT_JOBSTART_NRE_1.md
-
-## RIMPLACE_GENSTEP_NRE_1 GenStep_RimplacePlan.Generate throws NullReferenceException during map generation (Stillsand quicktest)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     defect
-summary:  RIMPLACEGENSTEPNRE1 — GenStepRimplacePlan throws during map generation
-prose:    infrastructure/state/items/RIMPLACE_GENSTEP_NRE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
