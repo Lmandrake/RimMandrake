@@ -1703,3 +1703,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"RIMPLACE_GENSTEP_NRE_1","ts":"2026-10-01T09:18:40Z"}
 {"seat":"FOUNDRY","event":"start","id":"RIMPLACE_GENSTEP_NRE_1","ts":"2026-10-01T09:18:42Z"}
 {"seat":"FOUNDRY","event":"file","id":"STILLSAND_FIXES_LIVE_PROOF_1","title":"Live proof for the five 2026-10-01 live-session fixes","kind":"task","target":"v1","needs":"game-up","for":"FOUNDRY","ts":"2026-10-01T09:23:05Z"}
+{"seat":"FOUNDRY","event":"close","id":"OORRIK_PAWNGEN_NRE_1","sha":"c86ba25f6","ts":"2026-10-01T09:33:51Z"}
+{"seat":"FOUNDRY","event":"close","id":"SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1","sha":"2d1886be8","ts":"2026-10-01T09:33:54Z"}
+{"seat":"FOUNDRY","event":"close","id":"SOORRAK_FLIGHT_JOBSTART_NRE_1","sha":"99163e0e7","ts":"2026-10-01T09:33:57Z"}
+{"seat":"FOUNDRY","event":"close","id":"RIMPLACE_GENSTEP_NRE_1","sha":"bb2631aaa","ts":"2026-10-01T09:33:59Z"}
