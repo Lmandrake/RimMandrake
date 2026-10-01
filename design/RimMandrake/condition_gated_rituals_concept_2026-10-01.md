@@ -1,6 +1,6 @@
 # Condition-gated rituals: concept (2026-10-01)
 
-_Status: BENCH concept for the owner's ruling. Nothing is built. Item (filed separately):
+_Status: BENCH concept, owner-ruled 2026-10-01 (§6). Nothing is built. Item (filed separately):
 `CONDITION_GATED_RITUALS_MOD_1`. Source of the pitch: the Abyss review
 `design/Jawa/worldbuilding/biomes/blackcrags_bedazzle_review_2026-09-30.md` §11, mark 9 (a),
 "the Veil Vigil"._
@@ -16,21 +16,22 @@ His words, typed 2026-10-01 08:33 PDT:
 > religion concept of rituals that can be done in certain situations or in certain conditions."*
 
 In one paragraph: a ritual is not tied to a place. It is tied to a **condition** of the world at
-the moment it is held: absolute darkness first, and later others (eclipse, storm, the sea floor,
-killing cold, silence, the dead nearby, the open sky at an Unveiling). A rite can only be started
-while its condition holds at the ritual spot. Its quality rises the more deeply the condition
-holds, and it fails or sours if the condition breaks partway through. The Abyss is not the rite's
-home; it is simply the one place on the planet where absolute darkness is the weather, so it is
-where darkness rites are easiest. A colony anywhere can still hold one, in a sealed, unlit room
-dug into rock. The free mod ships the framework and a set of rites for any ideoligion. The
-campaign layer gives each condition to the Utinni gods who care about it, and darkness belongs
-to Ishko the Unmaskable.
+the moment it is held, and the one condition is **absolute darkness** (ruled 2026-10-01: no
+second condition; there are no eclipses on this planet). A rite can only be started while the dark
+holds at the ritual spot. Its quality rises the more deeply the dark holds, and if the dark breaks
+partway through, the rite fails and Sh'kaar answers. The Abyss is not the rite's home; it is
+simply the one place on the planet where absolute darkness is the weather, so it is where darkness
+rites are easiest. A colony anywhere can still hold one, in a sealed, unlit room dug into rock.
+**The mod is specific to the Utinni scenario** (tier RimUtinni). Darkness belongs to Ishko the
+Unmaskable. Its first rite is a **discoverable rite**: found in the Abyss's deep dark and
+performed later elsewhere, one of the Abyss's discoverable technologies (mark 2 of the nine marks,
+beside the fold-lamp).
 
 ## 2. The general mechanism
 
 ### 2.1 A condition is a small def, read in three places
 
-One new def type, `RM_RitualConditionDef`, names a condition and a C# worker that answers two
+One new def type, `RUT_RitualConditionDef`, names a condition and a C# worker that answers two
 questions for a cell on a map: **does it hold?** (bool) and **how deeply?** (0..1). Darkness is
 the first one. The same condition is read in three places in vanilla's ritual pipeline, all
 confirmed by RimSage against decompiled 1.6 source (2026-10-01):
@@ -70,26 +71,11 @@ The one ritual-shaped def that exists is `RM_Ishko_RitualOutcome_PlaceSacredMark
 its worker `RitualOutcomeEffectWorker_PlaceSacredMark`), built and waiting for a ritual to call
 it. Darkness rites are the natural first caller (§4).
 
-### 2.2 The condition catalogue (first is darkness; the rest are candidates)
+### 2.2 One condition: absolute darkness
 
-Each is tied to a system that already makes the condition happen somewhere on the planet. It is
-one condition per row, read by the same comp.
-
-| # | Condition | Holds when (sketch) | Where it naturally occurs | Status of the system |
-|---|---|---|---|---|
-| 1 | **Absolute darkness** | ground glow 0 at spot and all participants, or inside the Dark | The Abyss (everywhere); any sealed, unlit, roofed room; the permanently dark half of the tidally locked world | Glow grid is vanilla. The Dark is `ABYSS_DARK_BUILD_1`, open. |
-| 2 | **The sun hidden** | vanilla `Eclipse` game condition active | Anywhere, as an event | Vanilla. |
-| 3 | **Killing light** | `SolarFlare` active, or the spot under open sky in an overhead-sun heat biome | The dayside; `SOLAR_HEAT_EXPOSURE_1`'s overhead-sun biomes | Flare is vanilla; solar heat is an open item. |
-| 4 | **In the storm** | a storm weather on the map (sandstorm, Dune Gale, thunderstorm) | The Stillsand (`RM_DuneGale`), the Abyss's ghorrumak storms | Built in part (`RM_DuneGale.cs`). |
-| 5 | **Under the sea** | the ritual map is a sea-floor map | The four seas, reached only by the ship (`RM_SeaDiveHatch`) | Built. |
-| 6 | **Killing cold** | outdoor or room temperature below a threshold (for example -20 C) | Ice biomes; any unheated room on the nightside | Vanilla temperature. |
-| 7 | **Silence** | no running machine, drum, speaker or combat within a radius | Anywhere, by choice: switch the colony off | Needs a small "noise" read. |
-| 8 | **Among the dead** | N or more corpses, graves, skulls or great bones within a radius | The Stillsand's giant skeletons (`RM_GiantSkeletons.cs`); graveyards | Built in part. |
-| 9 | **The Unveiling** | the Abyss's rare lifting of the Dark is active and the spot is under open sky | The Abyss only, by nature (the condition is general; the weather is local) | Part of `ABYSS_DARK_BUILD_1`, open. |
-| 10 | **Rootless** | the ritual is held aboard a gravship in flight, or within N hours of landing | Anywhere the ship goes | Odyssey gravship. |
-
-Rows 9 and 10 show the pattern the owner asked for: the **condition** is general and the biome
-(or the ship) is simply where it naturally comes true.
+Darkness is the only condition. There is no catalogue of further conditions and none is planned
+(owner, 2026-10-01). The def and worker stay a small, general shape so the one condition is read
+in the three places of §2.1, nothing more.
 
 ## 3. Darkness rites in depth
 
@@ -108,7 +94,7 @@ Outcome tiers follow vanilla's four-band pattern (`outcomeChances` with `positiv
   be read first). Excellent: the same, plus an art tale ("They sat in the dark until the dark
   sat with them").
 - **Reads:** pawns walk in, lamps go out one by one, and then for two hours nothing happens on
-  screen. That is the point. **Held during an Unveiling** (condition 9 as a bonus factor, not a
+  screen. That is the point. **Held during an Unveiling** (the Abyss's rare lifting of the Dark, a bonus factor, not a
   gate), the vigil becomes the Veil Vigil of the review: a large shared memory and a guaranteed art
   tale. Nobody appears; ban 7 holds.
 
@@ -156,7 +142,7 @@ Outcome tiers follow vanilla's four-band pattern (`outcomeChances` with `positiv
 ## 4. The Utinni gods
 
 All of this is the **campaign layer** (RimUtinni, `RUT_`), riding the Utinni patch layer on top
-of the free framework. The gods are those of The Salvation, canon of record in
+of the rite framework. The gods are those of The Salvation, canon of record in
 `design/Jawa/divine_satiation_engine.md` (§2.0b, "The Pantheon"). Nothing below contradicts it;
 where this concept leans on it, the line is cited.
 
@@ -169,7 +155,7 @@ hiding, stillness and outlasting, and his deepest facet is *"death as the ultima
 for the grave is the deepest dark"* (§2.0b ①). The clan already *"mate only in total darkness"*
 (§2.0b ①), and the cross-god table lists *"Light ⇄ dark (Sh'kaar ⇄ Ishko) — lighting the dark
 feeds evil Sh'kaar AND offends hiding-Ishko"* (§8). The ambient channel already gives
-*"eclipse ↑Ishko + ↓Sh'kaar"* and *"Dark-obscured tile → ↑Ishko"* (§8b). So darkness rites are
+*"Dark-obscured tile → ↑Ishko"* (§8b). So darkness rites are
 not a new theology. They are the rite that the pantheon has been missing.
 
 ### 4.2 How each rite addresses the gods
@@ -210,74 +196,55 @@ the god of stillness.
   at the rare **wrong** ring (review §11, mark 9 (c)) advances the lore ladder toward the Sith
   whisper. No god claims it. The Narrator frames it as a voice that is **not** one of the nine,
   which makes the gods uneasy (a faint ↓ across the pantheon). It never resolves into a visitor.
-- **Nhaleth (free tier, never confirmed).** The free mod's Abyss cryptid. In the free tier, a
-  Blind Offering left in the Abyss is the "Nhaleth exchange": something takes it, and nobody sees
-  what. The Nhaleth are never shown and never confirmed. The campaign keeps the same name (owner's
-  typed ruling, review §11, "Cryptid name, all tiers").
+- **Nhaleth (never confirmed).** The Abyss's cryptid, the same name in the campaign (owner's
+  typed ruling, review §11, "Cryptid name, all tiers"). A Blind Offering left in the Abyss is the
+  "Nhaleth exchange": something takes it, and nobody sees what. The Nhaleth are never shown and
+  never confirmed.
 
-### 4.4 The tier split
+### 4.4 The tier
 
-| Layer | Contents | Stands alone? |
-|---|---|---|
-| **Free framework** (`mandrake.rm.*`) | The condition def and workers, the gate and quality comp, the mid-rite watcher, the five darkness rites as ordinary Ideology rites for any ideoligion, two generic precepts ("The Dark is holy", "Light is a trespass"), the Nhaleth exchange flavour when the Abyss mod is present | Yes. The rites work under any player ideoligion and any deity; nothing names a Utinni god. |
-| **Campaign** (`RUT_`, Utinni patch layer) | The god pre-moves and responses, Ishko's mark wiring, the lit night-rite as Sh'kaar's answer, the Council in the dark, the Sith-whisper ladder, rite text in the Salvation's register | Rides on the free framework and The Salvation ideoligion (`src/Jawa/ideoligion/The Salvation.rid`). |
-
-Per Q11a, an invented exotic name is free-tier material; only the Sith whisper is Star Wars IP.
+One tier: **RimUtinni** (`RUT_`), specific to the Utinni scenario (owner, 2026-10-01). The mod
+carries the condition def and worker, the gate and quality comp, the mid-rite watcher, the
+darkness rites, the god pre-moves and responses, Ishko's mark wiring, the lit night-rite as
+Sh'kaar's answer, the Council in the dark, the Sith-whisper ladder and rite text in the Salvation's
+register. It rides The Salvation ideoligion (`src/Jawa/ideoligion/The Salvation.rid`).
 
 ## 5. Naming and settings
 
-**Suggested name: _Rites of Circumstance_**, packageId **`mandrake.rm.ritesofcircumstance`**, C#
-namespace `RimMandrake.RitesOfCircumstance`, def prefix `RM_`. The name says the rule (a rite
-belongs to a circumstance, not a place) and leaves room for every condition in §2.2.
-Alternatives: _Conditional Rites_ (`mandrake.rm.conditionalrites`, plainer), _The Hour and the
-Place_ (`mandrake.rm.hourandplace`, more evocative but implies place). Campaign patches:
-ride the existing Utinni patch layer (`UtinniPatches`), not a new campaign mod.
+**Candidate name: _Rites of Circumstance_** (owner to confirm; _Rites of the Dark_ would fit the
+single-condition scope better), packageId **`mandrake.rut.ritesofcircumstance`**, C# namespace
+`RimMandrake.Utinni.RitesOfCircumstance`, def prefix `RUT_` (grammar:
+`design/NAMING_SCHEME_PLAN.md`). The packageId follows whichever name he picks.
 
 **Mod Settings** (defaults are the shipped behaviour; all-off degrades to vanilla rites):
 
-- On/off per condition (darkness, eclipse, storm, sea floor, cold, silence, the dead, the
-  Unveiling, rootless).
 - On/off per rite (the five darkness rites, each).
 - **Darkness threshold**: the glow a spot may have and still count as absolute dark (default 0).
 - **Strict participants**: whether every participant's cell must meet the condition, or only the
   spot (default: every participant).
 - **Break tolerance**: how much a condition may waver mid-rite before the rite is interrupted.
 - **Condition variants of vanilla rites** (the Unlit Wedding and Lightless Burial patches): on/off.
-- **Abyss integration**: count the Dark as absolute darkness when the Abyss mod is present
-  (labelled "affects only maps in the Abyss").
+- **Abyss integration**: count the Dark as absolute darkness on Abyss maps (labelled "affects
+  only maps in the Abyss").
 
-## 6. Open questions for the owner
+## 6. Owner rulings (2026-10-01, 09:22 PDT card)
 
-1. **Should a darkness rite be possible anywhere, or only where it is naturally dark?**
-   - **Anywhere you make it dark (Recommended):** a sealed, unlit room in any biome counts. The
-     Abyss is simply the easiest place. Most players can use it, but it is less special.
-   - **Only where it is naturally dark:** the Abyss, the nightside, deep caves. More precious, but
-     most colonies will never see a darkness rite.
-   - **Anywhere, but natural dark is better:** made darkness works, and natural darkness gives a
-     large quality bonus. Both, at the cost of one more number to tune.
+1. **Where can a darkness rite be held?** Anywhere the player makes it dark: any sealed, unlit
+   room. The Abyss is the easiest place, not the only one. _Decision taken by question card._
+2. **Own slots or variants?** Both: new darkness rites AND darkness variants of existing rites
+   (wedding, funeral in the dark) that consume no ritual slot. _Decision taken by question card._
+3. **If the dark breaks mid-rite?** The rite fails and Sh'kaar answers (real danger, in the
+   campaign). _Decision taken by question card._
+4. **Second condition / scope (his typed word):** *"There are no eclipses on this planet. This mod
+   is going to be specific to the utinni scenario. Just make a discoverable rite here in the deep
+   dark that they can perform later. That’s the discoverable tech, or one of them anyway."*
+   Consequences: (a) the mod is RimUtinni-tier, `mandrake.rut.*`; (b) darkness is the only
+   condition, with no second one; (c) a **discoverable rite** is found in the Abyss's deep dark and
+   performed later elsewhere, one of the Abyss's discoverable technologies (mark 2, beside the
+   fold-lamp).
 
-2. **Do these rites need their own ritual slots, or should they also change rites you already hold?**
-   - **Both (Recommended):** new rites for the ideoligion, plus darkness variants of the wedding
-     and funeral that need no slot. Richest, and it works around the six-rite limit.
-   - **New rites only:** cleaner, but they compete with everything else for six slots.
-   - **Variants only:** no slot pressure, but there is no rite that exists only in the dark.
-
-3. **What happens when the dark breaks during a rite?**
-   - **It fails, and in the campaign Sh'kaar answers (Recommended):** a lit night-rite draws
-     something, as the canon already says. High stakes, and it uses your own lore.
-   - **It fails quietly:** a poor outcome, nothing worse. Gentle, but the rite has no teeth.
-   - **Quality just drops:** no failure, only a worse result. Forgiving, but the condition barely
-     matters once started.
-
-4. **Which condition should come second, after darkness?**
-   - **The eclipse:** the sun hidden, Ishko's blessed dark and Sh'kaar's humiliation, already in
-     your gods' event table. Cheapest, because the event is vanilla.
-   - **Under the sea:** rites only on the sea floor, reached by the ship. Strong place feel, and
-     the system is built.
-   - **Among the dead:** rites near bones and graves, which suits the Stillsand's giant skeletons.
-     Medium build.
-   - **The open sky at the Unveiling:** the rare lifting of the Dark. Most special, but it waits
-     on the Abyss's Dark being built.
+**Candidate for the discoverable rite: the Dark Vigil (§3.1)**, the general form of the Veil Vigil
+and the rite the Abyss's lore already points at. Owner to confirm; no other choice is made here.
 
 ### Note on a name collision
 

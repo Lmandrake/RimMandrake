@@ -789,3 +789,14 @@ in "?". No ids appear in the labels._
 | Q4 The gods (mark 9) | His words, typed: *"These are very good ideas about having a special ritual. They should not be about this particular biome, but rather something that you can do in absolute darkness, and this entire biome is resident with that so this should have implications into the Uini gods very richly and enable certain rituals that can be done in darkness. This may be an entire new mod for the idea, religion concept of rituals that can be done in certain situations or in certain conditions."* Rituals are not biome-specific; a new mod for condition-gated rituals, darkness first. | His typed word. `CONDITION_GATED_RITUALS_MOD_1` (BENCH, design stage); concept doc forthcoming at `design/RimMandrake/condition_gated_rituals_concept_2026-10-01.md`. Prior art: `divine_satiation_engine.md`, `god_intercession_spec.md`, `devotional_sacrifice_catalog.md`; no PreceptDef or ritual def in `src/RimMandrake`. |
 
 **Scorecard now.** Free: tech HIT, sound HIT, ship PARTIAL (his choice), gods resolved via the new mod. Campaign: tech HIT, sound HIT, ship HIT, gods resolved via the new mod. The Abyss's own part of mark 9 is done once it is a resident of the darkness case; the rest lives in `CONDITION_GATED_RITUALS_MOD_1`. Next step is ticket-out (cast bible + art list) unless he adds more.
+
+## 13. Rituals card rulings (owner, 2026-10-01 09:22 PDT)
+
+| Card item | Ruling | How recorded |
+|---|---|---|
+| Q1 Where | A darkness rite can be held anywhere the player makes it dark (any sealed, unlit room); the Abyss is the easiest place. | Decision taken by question card. |
+| Q2 Slots | Both: new darkness rites and darkness variants of existing rites (wedding, funeral in the dark) that use no ritual slot. | Decision taken by question card. |
+| Q3 Break | If the dark breaks mid-rite the rite fails and Sh'kaar answers (real danger, campaign). | Decision taken by question card. |
+| Q4 Scope | His words, typed: *"There are no eclipses on this planet. This mod is going to be specific to the utinni scenario. Just make a discoverable rite here in the deep dark that they can perform later. That’s the discoverable tech, or one of them anyway."* The mod is RimUtinni-tier (`mandrake.rut.*`); darkness is the only condition; no free tier. | His typed word. `CONDITION_GATED_RITUALS_MOD_1`. |
+
+**Mark 2 now.** The Abyss's discoverable technology is the fold-lamp (`ABYSS_FOLD_LAMP_BUILD_1`) AND a discoverable dark rite found in the deep dark and performable elsewhere later. Candidate rite: the Dark Vigil, owner to confirm.
