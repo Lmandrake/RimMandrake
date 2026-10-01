@@ -352,9 +352,7 @@ MEASURED about the live world — the live system is the only instrument for "ri
   colonist swims down — is **RETIRED AND DELETED FROM THE CODE**, along with
   `RM_FloatMenuOptionProvider_Dive` and both JobDrivers. The live mechanism is
   `RM_SeaDiveHatch` (a `MapPortal` subclass), buildable only on a map that carries a real
-  `GravEngine`, i.e. inside a gravship. ⚠️ Several docs still describe the retired
-  pawn-dive as if it were current — `sea_dive_maps_spec.md` and `SEA_FLOOR_AND_CATCH_PASS_1`
-  among them. Do not build from them; the ship-only rule wins.
+  `GravEngine`, i.e. inside a gravship.
   🔑 **Every fishable is ALSO a living creature on the floor, in EVERY sea** (owner,
   2026-09-26): *"All the fishables should also be alive and moving around in the depths
   (this is true for ALL seas)."* A catch item with no living counterpart swimming the floor
