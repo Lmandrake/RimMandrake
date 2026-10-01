@@ -590,3 +590,191 @@ Still open: the free-tier cryptid (`ABYSS_FREE_CRYPTID_1`).
 | Cryptid name, all tiers | His words, typed: *"Forsaken actually came from Forsaken Crags from the donor mod, so we should not use it here"*. The cryptid is the **Nhaleth** in the free tier AND the Star Wars tier; the Star Wars layer only adds the Sith whisper (never Rakata). The "Utinni renames them back to the Forsakens" design is deleted. | His typed word. `ABYSS_FREE_CRYPTID_1`, spec `abyss_free_cryptid_2026-10-01.md`; sheet `abyss.md` ban 7 and §8 now say Nhaleth. |
 | The droid's story | The free-mod droid who told the story of the Forsakens tells of the Nhaleth instead. | Decision taken by question card. `CastRoster_DROIDS.xml` line ~657 edited; deploy of `mandrake.rm.inhabited` owed. |
 | Forsaken and Forgotten for the Rakata | His words, typed (08:09 PDT): *"I chose Forsaken and Forgotten myself, independent of the mod. It was NOT part of them. So we keep those for the Rakatan."* The ancients and the vaults keep Forsaken and Forgotten. Docs claiming the name came from the donor biome are corrected: the owner chose it himself. | His typed word. Corrected in `03_deep_history.md` and `what_the_machines_are.md`. |
+
+## 11. Volley turn 3: rescore and remaining asks
+
+_BENCH design pass, 2026-10-01 08:30 PDT. It scores what turns 1 and 2, Lightfall and the cryptid
+naming ruled (§§7–10 and the `ABYSS_*` items), the same way the Warscar's turn 3 scored its ruled
+package: **ruled counts, built does not matter yet.** Nothing in `src/RimMandrake/Abyss/` has
+changed. It still holds the BiomeDef, the worker and the settings stub. Tier follows each item:
+Lightfall (the brood and the wreck), the probe droids and the Sith whisper are campaign. The
+Dark, the Unveiling, the storm call, the four fills, etchfall, lamp crops, the two moved
+inventions, the freed giant and the Nhaleth are free._
+
+### 11.1 Rescore, free and campaign
+
+| # | Mark | Free (turn 1 → now) | Campaign (turn 1 → now) | Why |
+|---|---|---|---|---|
+| 1 | Unique mechanic | MISS → **HIT** | PARTIAL → **HIT** | The Dark, real air that heat folds into clear pockets (`ABYSS_DARK_BUILD_1`). No other biome ties sight to warmth. |
+| 2 | Discoverable technology | MISS → **PARTIAL** | MISS → **PARTIAL** | What's ruled is recipes and husbandry: refining tholin into fuel, and transplanting lamp crops. Nothing is *learned from the biome and kept*. The campaign wreck **repairs** the ship (his word: *"Just repair"*), which restores rather than teaches. The fold-lamp from slate #1 was never carried into the Dark item. |
+| 3 | Unique resources | MISS → **HIT** | MISS → **HIT** | Tholin (etchfall), the etchcap delicacy, gharrek gill-ash. The campaign adds the great bone (stuff) and the wreck haul. |
+| 4 | Surprising creatures | PARTIAL → **HIT** | PARTIAL → **HIT** | The gharrek's map-wide bloom on every gust, the durrgak's rings, the krizzak that eats your lamps. All are ours and live only here. |
+| 5 | GIANT beast | MISS → **HIT** | MISS → **HIT** | The freed storm-call giant (`ABYSS_DONOR_BEASTS_FREED_1`: RM tier, new name, wired into both defs). The campaign adds the unkillable brood-mother. ⚠ Its old donor description says *"fire breath"*. Under the Lightfall ruling (alien megafauna, no fantasy-dragon tells) the free giant loses that too, because it is the same animal. §5 #3's "a dragon calling" wording must not reach a label. |
+| 6 | Gravship touch | MISS → **PARTIAL** | MISS → **HIT** | The hidden ship with probe droids is campaign by its item (probes are Star Wars IP, and the pursuit shadow is EmpirePursuit, a Utinni mod). The campaign also has the wreck that repairs your ship. **The free tier has no ship touch at all.** Its item leaves the cover's tier undecided (*"whichever tier the gravship hiding kit lives in"*). |
+| 7 | Soundscape | MISS → **PARTIAL** | MISS → **PARTIAL** | Only the giant's storm call is ruled: thunder that is its voice. Slate #8, the gust register, never reached a card. The gharrek's rustle is a creature trait with no sound item behind it. |
+| 8 | Interesting weather | PARTIAL → **HIT** | PARTIAL → **HIT** | The Dark as a field, the rare Unveiling, etchfall that eats stone, and Witchfire with a voice in it. |
+| 9 | Relationship to the gods | MISS → **PARTIAL** | PARTIAL → **PARTIAL** | Free: the Unveiling is called a "holy moment" but has no ideoligion hook, and the Nhaleth exchange (an offering left on a ring) is lore. Campaign: adds the Sith whisper and Lightfall. That is lore without a ladder, a precept or a rite. `src/RimMandrake` ships **no PreceptDef or ritual def** today (MEASURED `git grep`). |
+
+**Free: 0 HIT → 5 HIT + 4 PARTIAL. Campaign: 0 HIT → 6 HIT + 3 PARTIAL.** Four marks fall short: 2,
+6 (free only), 7 and 9. Each is a gap that was never put to him, not one he turned down. The
+spine is strong, and what's thin is the edges: what you *learn* here, what you *hear*, how the
+*free* ship feels the place, and what the place *means*. So movement 4 (ticket-out) isn't
+reached yet. §11.3 asks the four.
+
+### 11.2 Pitches for every mark short of HIT
+
+**Searched first** (`git grep` on `origin/main`, `src/` + `infrastructure/state/items/`):
+- **Sound.** `RM_MapComponent_ProximitySoundscape` (CreatureBehaviors, generic, built for any biome).
+- **Lore ladder.** `GameComponent_LoreStage` + `RM_LoreStageTableDef` (LoreStages, the engine the Warscar's pilgrim rung rides).
+- **Gods.** No `PreceptDef`, `RitualPatternDef` or `RitualBehaviorDef` in `src/RimMandrake`. The only ritual-shaped biome content is the Stillsand's Return (pour water into the sand), which a vigil does not echo.
+- **Not found anywhere:** an `RM_GustController` or a fold-lamp. The gharrek item already owes a minimal gust signal.
+- **Not re-pitched:** gust turbines (cut, §8), the Twilight Deep's caged and placed lamps, the Lantern Deeps' shard-minds, Warscar's ship-wakes-the-line, Stillsand's dunes-take-the-ship.
+
+#### Mark 2: discoverable technology (free + campaign)
+
+- **(a) The fold-lamp, learned from the Dark.** ⭐ Recommended.
+  - The first time a pawn watches heat open a clear pocket (a campfire, a heater, a warm room), a
+    letter fires: *"the Dark folds back from warmth."* It unlocks research, *heat-folding*.
+  - That gives the **fold-lamp**: a fuelled heater-lamp with a directional throat that holds a
+    *lane* of clear air open toward where it points. It is a tool for watching a path, not a dome.
+  - Off the Abyss it is still a good cold-night heater-lamp, so you keep it.
+  - It is a heater that clears air, not a sensor (ban 5). It uses one kind of heat, vanilla.
+  - **Build:** a ResearchProjectDef, a ThingDef with `CompHeatPusher` + `CompGlower`, and a
+    directional bias that the Dark's field reads. It rides `ABYSS_DARK_BUILD_1` (small).
+  - **Why:** it is the sheet's own discovery (§3), and slate #1 and GPT both already proposed it.
+- **(b) Light-grafting.**
+  - Studying a lamp crop (ruled) long enough teaches grafting glow tissue onto **any** tree.
+  - The colony can then grow light anywhere on the planet, with no power.
+  - **Build:** research, a graft job, and a hediff-like comp on the plant (small–medium).
+  - **Risk:** it is the closest thing to the Twilight Deep's light economy, and it extends the
+    echo he only half-admitted.
+- **(c) Cold-burn cells.**
+  - The gharrek burns its feed flameless (§4). Gill-ash plus tholin makes a **cold-burn cell**:
+    unpowered light that gives **no heat**, so it lights without folding the Dark.
+  - A lamp that lets you see *in* the Dark without opening a hole in it is the stealth light.
+  - It pairs with hiding the ship.
+  - **Build:** research, an item, and a fuelled lamp (small).
+  - **Risk:** it only matters here. Off-biome it is just a lamp.
+
+#### Mark 6: gravship touch (free tier)
+
+- **(a) The cover comes to the free tier, and the krizzak are its hunters.** ⭐ Recommended.
+  - The ship-mask (raids slow to find you, orbital traders can't reach, engine start tears it
+    away) moves into `mandrake.rm.biomes`, with a Mod Settings toggle.
+  - The free tier's danger is local, not Imperial. **A landed ship's lights draw krizzak
+    swarms.** They settle on the hull lamps, and every lamp they smother lifts the mask a little.
+  - Run the ship dark and cold, and it stays hidden.
+  - The campaign keeps its probe droids on top, unchanged.
+  - **Why:** it is the biome's own voice: hiding *is* being dark, and the thief of light becomes
+    the ship's threat.
+  - **Build:** the mask MapComponent (already owed by `ABYSS_HIDDEN_SHIP_PROBES_1`) plus a
+    krizzak target preference for lamps on a `GravEngine` map (small).
+- **(b) The Abyss etches the hull.**
+  - Etchfall works on the ship's unroofed substructure and hull fittings: slow wear, and a
+    visible **etch-scar** overlay that stays on the ship after it leaves.
+  - Wherever the ship flies, it carries a mark that says *"I was in the Abyss"*. Sweeping the
+    tholin off pays for some of the repair.
+  - **Build:** an etchfall target filter for ship parts, plus a persistent ship-wide tag and an
+    overlay (medium).
+  - **Risk:** a cost with no gift, unless the scar is made to mean something, such as a small
+    stealth bonus at night anywhere.
+- **(c) Leave the free ship untouched.** Accept mark 6 as PARTIAL on the free tier, and keep the
+  hidden ship campaign-only. Cheapest, and it leaves the free tier below the bar on 6.
+
+#### Mark 7: soundscape (free + campaign)
+
+- **(a) Sound comes in gusts.** ⭐ Recommended. This is slate #8, now built on what exists.
+  - **Silence** is the bed.
+  - **The gust** lands like an impact: a whump, then wind through rock teeth, then the gharrek
+    fans opening in a map-wide rustle.
+  - The **tick of etchfall** on stone.
+  - The **krizzak's soft clatter** on lamp-glass as a light goes out.
+  - The **giant's voice** inside Witchfire.
+  - **Build:** one shared `RM_GustController` (the gharrek needs a gust signal anyway) feeding
+    the generic `RM_MapComponent_ProximitySoundscape`. SoundDefs plus audio (small–medium).
+  - **Distinct:** the Warscar's silence is the *alarm*. Here silence is normal, and the sound is
+    the event.
+- **(b) The Dark swallows sound.**
+  - In thick Dark, distant sounds come through muffled and late. Inside a warm clear pocket, the
+    world is suddenly sharp and loud.
+  - The listener hears the field.
+  - **Build:** a camera-position low-pass/volume filter reading `ABYSS_DARK_BUILD_1`'s density
+    (medium; needs a check that Unity's audio filter is reachable from a mod).
+  - **Why it is different:** it is not a register of noises but a property of the air, which
+    makes it the same idea as mark 1, heard.
+- **(c) Both.** (b) is the bed and (a) is the events. This is the richest choice, and also the
+  largest.
+
+#### Mark 9: relationship to the gods (free + campaign)
+
+- **(a) The Veil Vigil.** ⭐ Recommended. GPT's addition, grounded.
+  - An Ideology rite (all DLCs assumed), held at a ring in the Dark: a durrgak's or the
+    Nhaleth's, and nobody can say which. It is **best held during an Unveiling**.
+  - A precept, *"The Dark is a veil"*, makes believers want to witness an Unveiling. A vigil
+    held when it lifts gives a large shared memory and an art tale.
+  - Nobody appears. Ban 7 holds.
+  - **Build:** a RitualPatternDef/behavior, a PreceptDef and thoughts (medium). These are the
+    first ritual and precept defs in `src/RimMandrake`, so they need a careful read of the
+    vanilla ritual pipeline.
+- **(b) Witnesses, with no ideoligion layer.**
+  - Every pawn who saw an Unveiling carries **"witnessed the Unveiling"** for life: a permanent
+    mood memory that colours their art and their social talk.
+  - The Nhaleth exchange is counted as the offering half.
+  - **Build:** thoughts plus art-tale grammar (small).
+  - **Weaker:** it is a memory, not a relationship. It is honest if he wants the place to stay
+    unchurched.
+- **(c) Campaign rung ladder.** Add this on top of (a) or (b).
+  - The rare ring that is **wrong** (too big, too old, aligned to something) advances a
+    `RM_LoreStageTableDef` ladder toward the Sith whisper. That is slate #9's campaign half, and
+    the Warscar pilgrim-rung precedent.
+  - It never confirms. The rung texts need his pen, or a BENCH draft for him to edit.
+  - **Build:** prefab + one `AdvanceStage` call (small), plus writing.
+  - It closes the campaign column the way the pilgrim camps closed the Warscar's.
+
+**If the four recommendations are all taken, the result is free 9 HIT and campaign 9 HIT.**
+Then movement 4 follows: the cast bible + art list in the Warscar/Stillsand shape. The art list
+already has known subjects with no art anywhere: the gharrek, the durrgak, the krizzak (ground
+facings + flight frames), the etchcap, the freed giant and the freed nighthrumbo (new names,
+fresh art), the cindermare/skarnix under `RM_` (check `done/` first), the durrgak cairn, the
+brood-mother, the egg, the great bone, the wreck, and the fold-lamp if (a) on mark 2 lands.
+
+### 11.3 Draft turn-3 card
+
+_Four questions for AskUserQuestion. Headers are 12 characters or fewer, and every question ends
+in "?". No ids appear in the labels._
+
+**Q1 · header "Learned tech"**: *What should the Abyss teach your colony that it keeps?*
+- **Fold-lamp (Recommended)**: you notice warmth pushes the Dark back, research it, and build a
+  heater-lamp that holds a clear lane open. Small, and it is the sheet's own discovery. Off the
+  Abyss it is just a good cold-night lamp.
+- **Light-grafting**: learn to graft glow onto any tree and grow light anywhere on the planet.
+  Strong everywhere, but it overlaps the Twilight Deep's light.
+- **Cold-burn cells**: a heatless lamp from gharrek ash and tholin that lets you see in the Dark
+  without opening it. Clever and stealthy, but it only matters here.
+
+**Q2 · header "Free ship"**: *How should the free mod's Abyss touch the player's ship?*
+- **Hiding, hunted by light-eaters (Recommended)**: the free mod also gets the hidden ship.
+  Krizzak swarms are drawn to the ship's lamps, and every lamp they smother weakens the cover,
+  so you hide by running dark. The campaign keeps its probe droids. Small build.
+- **Etch scars**: the falling grain wears the hull and leaves a permanent "was in the Abyss"
+  scar the ship carries everywhere. A lasting mark, but mostly a cost.
+- **Leave it campaign-only**: the free mod's ship stays untouched, which is cheapest, and the
+  free Abyss stays one mark short.
+
+**Q3 · header "Soundscape"**: *What should the Abyss sound like?*
+- **Sound comes in gusts (Recommended)**: silence by default, then each gust hits like an
+  impact, with the gill-fans rustling open, grain ticking on stone and lamps clattering as they
+  die. Small to medium build, on a sound system we already have.
+- **The Dark swallows sound**: far sounds are muffled inside the Dark and suddenly sharp inside a
+  warm pocket, so you hear the air itself. Unique, but it needs an audio filter we haven't proven.
+- **Both**: muffled air as the bed and gusts as the events. The richest choice, and the largest.
+
+**Q4 · header "The gods"**: *How should the Abyss touch faith?*
+- **The Veil Vigil (Recommended)**: an ideoligion rite held at a ring in the Dark, best when the
+  Dark lifts. A belief, "the Dark is a veil", makes people long to see an Unveiling. No visitor is
+  ever seen. This is our first rite and belief, so it is a medium build.
+- **Witnesses only**: anyone who saw an Unveiling remembers it for life, in their mood, art and
+  talk. Small and quiet, but more memory than faith.
+- **Vigil plus the campaign's ladder**: the vigil, and in the campaign the rare wrong ring also
+  starts a slow lore ladder toward the Sith whisper that never confirms. Closes both versions,
+  and needs your words, or a draft from us to edit.
