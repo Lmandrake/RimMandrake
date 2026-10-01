@@ -36,7 +36,7 @@ Not wired into any biome by this file - see the item for the wiring/dedup step.
       <ComfyTemperatureMin>19.1</ComfyTemperatureMin>
       <ComfyTemperatureMax>352.2</ComfyTemperatureMax>
       <MeatAmount>294</MeatAmount>
-      <BoneAmount>105</BoneAmount>
+      <BoneAmount MayRequire="sihv.rombonesPort">105</BoneAmount>
       <Flammability>0.0</Flammability>
       <FilthRate>2</FilthRate>
       <Wildness>0.85</Wildness>

@@ -175,7 +175,7 @@
            mandrake.rm.therot equivalent; this row had no MayRequire and dangled a
            cross-reference on every load. Overlaps ROTSPOREKIT_MAYREQUIRE_ORPHANED_1,
            which owns the fuller retirement sweep. -->
-      <IronScruff_PrimordialGrass>0.35</IronScruff_PrimordialGrass>  <!-- primordial grass -->
+      <IronScruff_PrimordialGrass MayRequire="IronScruff.PrimordialGeysers">0.35</IronScruff_PrimordialGrass>  <!-- primordial grass -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11: AG_Gamma, AG_Septimum and
            AB_GiantGamma all moved OUT of here to abyss ("to crags" / "elsewhere,
            not heat resistant") — this biome's 42-56 C floor is above their optimal band
@@ -184,8 +184,8 @@
            only through BiomeFlora_Ashkarr.xml's now-retired replace operation;
            transplanted here by BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
       <AB_TinkleGrass>0.3</AB_TinkleGrass>  <!-- tinkle grass -->
-      <IronScruff_PrimordialTallGrass>0.3</IronScruff_PrimordialTallGrass>  <!-- primordial tall grass -->
-      <IronScruff_Bindweed>0.25</IronScruff_Bindweed>  <!-- bindweed -->
+      <IronScruff_PrimordialTallGrass MayRequire="IronScruff.PrimordialGeysers">0.3</IronScruff_PrimordialTallGrass>  <!-- primordial tall grass -->
+      <IronScruff_Bindweed MayRequire="IronScruff.PrimordialGeysers">0.25</IronScruff_Bindweed>  <!-- bindweed -->
       <AB_FirevineTree>0.2</AB_FirevineTree>  <!-- firevine tree - tree -->
       <RUT_HeatsinkFungus>0.2</RUT_HeatsinkFungus>  <!-- heatsink fungus - tree -->
     </wildPlants>

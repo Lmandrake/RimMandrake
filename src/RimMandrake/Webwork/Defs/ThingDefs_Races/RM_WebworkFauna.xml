@@ -338,7 +338,6 @@
         </capacities>
         <power>4</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>HindlegsFrontClaws</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>

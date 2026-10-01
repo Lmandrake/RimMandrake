@@ -142,9 +142,9 @@
            in rosters/abyss.json and reached the game only through
            BiomeFlora_Ashkarr.xml's now-retired replace operation; transplanted here by
            BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 so this def carries it itself. -->
-      <AG_Gamma>0.5</AG_Gamma>  <!-- gamma -->
+      <AG_Gamma MayRequire="sarg.alphagenes">0.5</AG_Gamma>  <!-- gamma -->
       <AB_GiantStikehr>0.3</AB_GiantStikehr>  <!-- giant stikehr -->
-      <AG_Septimum>0.25</AG_Septimum>  <!-- septimum -->
+      <AG_Septimum MayRequire="sarg.alphagenes">0.25</AG_Septimum>  <!-- septimum -->
       <AB_GiantSeptimum>0.2</AB_GiantSeptimum>  <!-- giant septimum - tree -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>

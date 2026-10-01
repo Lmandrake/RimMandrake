@@ -226,7 +226,7 @@
       <growDays>6</growDays>
       <harvestWork>60</harvestWork>
       <harvestYield>4</harvestYield>
-      <harvestedThingDef>RawVegetables</harvestedThingDef>
+      <harvestedThingDef>RawPotatoes</harvestedThingDef>
       <harvestTag>Standard</harvestTag>
       <harvestMinGrowth>0.5</harvestMinGrowth>
       <maxMeshCount>4</maxMeshCount>
