@@ -1,0 +1,307 @@
+# Salvation rites: where they live, every rite, and how a biome teaches one (2026-10-01)
+
+_Status: BENCH design. Nothing below is built unless a row says so. Item:
+`SALVATION_RITES_UNIFICATION_1` (supersedes `CONDITION_GATED_RITUALS_MOD_1`). Gods are canon of
+record in `design/Jawa/divine_satiation_engine.md` §2.0b; rites-as-invitation is §5 to §5c there._
+
+**The two rulings this doc applies** (owner, card Thu 2026-10-01 10:08 PDT, typed):
+
+- **R1**, asked which of four rites the Abyss teaches: *"Unlike all four of those! Amazing! Each of
+  these should do different sorts of appeasrmentsnif the utinni gods. I am starting to love the
+  idea that you don’t just discover tech in the biomes you discover new rites."* ("Unlike" read as
+  "I like".) All four are found in the Abyss's deep dark; each appeases a different god in a
+  different way; biomes yield rites as well as tech.
+- **R2**, asked for a mod name: *"This is part of the Jawas religion already. So it’s part of the
+  salvation mod suite. Decide where rites go in there and unify them."* There is no separate
+  rituals mod.
+
+## (a) Where rites live
+
+**Decision: every rite of The Salvation lives in `mandrake.rut.rites`, folder
+`src/RimUtinni/Rites/`, display name "RimUtinni: The Rites".** Why: it already exists, it is
+already the Salvation's liturgy (a research tab whose rites are *"revealed, not bought"*), so a rite
+found in a biome is one more revealed row in the tree the clan already reads, not a new mod.
+
+The Salvation suite, as it now stands:
+
+| Piece | Tier | packageId / path | Holds | Exists? |
+|---|---|---|---|---|
+| The ideoligion | RUT | `src/Jawa/ideoligion/The Salvation.rid` | the 103 precepts, 23 rituals, of the owner's approved ideo | yes |
+| The gods' engine | RM | `mandrake.rm.ninefold` (`src/RimMandrake/Ninefold/`) | satiation/mood vector, bands, `ApplyDelta(God, float, reason)`; names no faith | yes |
+| **The rites** | RUT | **`mandrake.rut.rites`** (`src/RimUtinni/Rites/`) | **every Salvation rite: the liturgy tab, found rites, their precepts, patterns, outcomes, discovery inscriptions, the darkness gate** | yes (tab and 5 research projects only) |
+| The Salvation pack | RUT | `mandrake.rut.salvation` (does not exist) | non-rite sacredness: relic veneration precept, the grade-change subscriber (`ancient_machines_design.md` §5) | no |
+| The lore record | RUT | `mandrake.rut.antiquities` | the stages that gate the liturgy tab's tiers | yes |
+
+**The RM engine and RUT content split** (`ancient_machines_design.md` §1, `NAMING_SCHEME_PLAN.md`
+§7.1): the gods' arithmetic stays in Ninefold; every rite calls it with `ApplyDelta` and never
+reaches into it. The rite gate (the darkness condition, the mid-rite watcher) is C# **inside
+`mandrake.rut.rites`**, not an RM engine, because the owner ruled the darkness rites
+campaign-only (card 2026-10-01 09:22, Q4). If a later rite needs the gate outside the campaign,
+the gate moves down to RM then, not now.
+
+**What moves in.** A rite of The Salvation now has exactly one home. When each is next touched:
+
+- `RM_Ishko_RitualOutcome_PlaceSacredMark` and its worker
+  (`src/RimMandrake/SacredGraffiti/Defs/RitualOutcomeEffects.xml`) name a god inside an RM mod,
+  which the tier grammar forbids. It moves into `mandrake.rut.rites` with the Dark Vigil, its one
+  caller. The marks themselves (`SacredMarks.xml`) stay in SacredGraffiti.
+- Any new Salvation `PreceptDef`/`RitualPatternDef`/`RitualOutcomeEffectDef` is authored here,
+  never in `UtinniPatches` and never in a biome mod.
+- The `.rid`'s own 23 rituals stay in the `.rid` (they are the owner's approved artifact); they are
+  registered below so the liturgy is read in one place.
+
+**What does not move.** Rites of **other** faiths stay with their faction: the Sun-Debt's Return
+(`UtinniPatches`, the Deep Desert Tribes' ideoligion), the deep tribes' fire rite
+(`PyrelandsMechanics`), the Holy Flame precept (any Ritualist ideo). They are in the register so
+the gods' map is complete; they are not Salvation rites.
+
+**Correction carried in.** The concept doc said *"`MaxRituals = 6` per ideoligion"* and planned
+slot-free variants to save slots. That was false: there is no engine cap
+(`infrastructure/state/facts/salvation_ritual_precepts.json`, MEASURED 2026-09-03:
+`PreceptDef.maxCount` is per-precept; The Salvation already carried 26). Slot-free variants stay,
+because the owner ruled them (card 09:22, Q2), but no rite is cut to save a slot.
+
+## (b) Register of every rite
+
+Status: **BUILT** (defs in `src/`), **IN .RID** (in The Salvation, donor-mod worker), **SPECCED**
+(a design doc gives the full shape), **PITCHED** (named in a biome sheet), **RULED OUT**.
+Appeasement kinds, used throughout: **feeding** (raise a god's satiation), **settlement** (balance
+a ledger), **starving** (deny an evil god what feeds him), **venting** (bleed a dangerous meter
+safely), **consolation** (lay grief down), **warding** (keep a god's attention away).
+
+### B1. The liturgy tab (`mandrake.rut.rites`, BUILT as research projects, no ritual yet)
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Scrap Shrine | Rekko | feeding | none | given at start | BUILT (research) | `src/RimUtinni/Rites/Defs/RUT_Rites_Research.xml` |
+| Conduit Choir | Ohm | feeding | power conduits | revealed by Antiquities LANGUAGE | BUILT (research) | same |
+| God-Speaker Array | all nine | invitation | the array | revealed by RELIGION | BUILT (research) | same |
+| Liturgy of the Hull | all nine | invitation | the ship walked | revealed by CULTURE | BUILT (research) | same |
+| The Gods Speak Back | all nine | the Council of Voices | none | revealed by VOICE | BUILT (research) | same; `divine_satiation_engine.md` §5c |
+
+### B2. The four found rites of the Abyss (§c; SPECCED here)
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Dark Vigil | Ishko | feeding (stillness offered) | absolute darkness | the Abyss, the inscription where no light has reached | SPECCED | this doc §c1 |
+| The Blind Offering | Mob'Unloo | settlement | absolute darkness | the Abyss, the Nhaleth circle | SPECCED | §c2 |
+| The Snuffing | Sh'kaar | starving | makes the dark | the Abyss, the ring of dead lamps | SPECCED | §c3 |
+| The Lightless Burial | Ozzik | consolation (grief vented) | absolute darkness | the Abyss, the rescue ship in Lightfall | SPECCED | §c4 |
+| The Unlit Wedding | Oomo, Ishko | variant (no new rite) | absolute darkness | unlocked by learning any darkness rite | SPECCED (variant) | §c5 |
+
+### B3. The Salvation's rituals in the `.rid` (IN .RID, 23, XML-parsed 2026-10-01)
+
+Campaign-named: Profitting Jubilee (`AM_ScrapRitual`), Scavenging Burial (`Funeral`), Wealthy
+Records (`QuarterlyReport`), Scrounging Revel (`Festival`), Blade Dance of Redemption
+(`LightsaberPracticeDuel`). Vanilla or donor, unrenamed: funeral (no corpse), child birth,
+conversion ritual, public execution, leader speech, prisoner interrogation, role change, wedding
+ceremony (RotR), three trials, five VFE Tribals tech-advance rituals, tribal gathering, trading
+fair. **God, kind and condition: unmapped** for all 23. They predate the pantheon's rite model;
+§5's pre-move per rite is owed when each is next reviewed (open, not filed). Throne speech, anima
+tree linking and tree connection are **RULED OUT** (`design/Jawa/ideoligion_precept_removals.md`).
+
+### B4. Rites the pantheon design names (SPECCED or PITCHED in design prose)
+
+| Rite | God | Kind | Condition | Status | Source |
+|---|---|---|---|---|---|
+| The launch-rite, "The Reckoning" | Ta'Baa (offends Ishko) | feeding | a launch | SPECCED (prose) | `divine_satiation_engine.md` §2.0b ⑥, §5 |
+| The machine-funeral | Ohm (offends Rekko if scrapped) | feeding | a machine's end | SPECCED (prose) | same, §5; `devotional_sacrifice_catalog.md` ⑤ The Mourning |
+| The Seating (a relic into a hull socket) | Rekko, both scalars | feeding | a seated relic | SPECCED | `design/RimMandrake/ancient_machines_design.md` §5.2 |
+| The Unburdening (potlatch) | Ozzik | venting | wealth destroyed | SPECCED | `salvation_engine_review.md` F13; catalog ⑨ |
+| The controlled waking | Zizzik | settlement (the bank spent) | a chosen moment | SPECCED | `salvation_engine_review.md` F11 |
+| The Nine-Course Ninefold Feast | all nine | invitation | a feast | PITCHED | `design/Jawa/proposals/high_cuisine_deep_design.md` §5 |
+| Triggered rites (landing, after battle, after trade, outpost, emancipation, a god's demand) | all nine | invitation, owed | the event | SPECCED (prose) | `divine_satiation_engine.md` §5b |
+
+### B5. The devotions (acts the rite frames; SPECCED, `design/Jawa/devotional_sacrifice_catalog.md`)
+
+Each is an act, not a ritual precept; several are "formalized as rite" in the catalog's words.
+Zizzik (feeding, the bank): the Weathered Cell, the Open Latch, the Honored Break, the Gift of
+Working Things. Ishko (feeding): the Deep Berth, the Hour of Stillness, the Passed Cup. Ohm
+(feeding): the Idle Made Whole, the Choir Hour, the Day of Current. Oomo (feeding): the Nursed
+Stranger, the Open Table, the Overpaid Kin. Mob'Unloo (settlement): the Named Debt, the God's
+Account, the Collected Grudge. Rekko (feeding, consolation): the Woken Sleeper, the Mourning, the
+Second Skin. Ta'Baa (feeding): the Left Behind, the Rehearsal, the Far Walker. Sh'kaar (starving,
+warding): the Kindled War, the Released, the Feast of the Unowned. Ozzik (venting): the
+Unburdening, the Named Grief, the Dedication.
+
+### B6. Biome-pitched rites (the principle's existing harvest)
+
+| Rite | Faith / god | Kind | Biome | Status | Source |
+|---|---|---|---|---|---|
+| The Return (pour water toward the star) | Sun-Debt (Deep Desert Tribes), the sun | settlement | Stillsand | BUILT (XML) | `src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_TheReturn.xml` |
+| The deep tribes' fire rite | deep tribes | feeding | Pyrelands | BUILT (C#) | `src/RimUtinni/PyrelandsMechanics/Source/LordJob_RUT_FireRite.cs` |
+| Revering the Holy Flame | Sh'kaar (any Ritualist ideo) | warding | carved-stone flame | BUILT (precept) | `src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_HolyFlamePrecepts.xml` |
+| The calling-pyre (torch your fields to call the herds) | unassigned | summons | Leaning Scrub | PITCHED | `design/Jawa/worldbuilding/biomes/leaningscrub_bedazzle_review_2026-09-29.md` |
+| The Rite of Tipping | unassigned | unknown | Wasteland | PITCHED (one line) | `design/Jawa/worldbuilding/biomes/warscar_bedazzle_review_2026-09-30.md` |
+| The Watch (stand a night facing outward) | — | — | Warscar | RULED OUT (turn 3) | `design/Jawa/worldbuilding/biomes/warscar_turn3_development_2026-09-30.md` |
+| The pilgrim camps (lore rungs, not a rite) | Rust Cathedral, "a god's deathbed" | — | Warscar | SPECCED (lore ladder caller) | same, §2.10 |
+| The pool rites, wind-hour | unassigned | — | Weeping Stones | PITCHED | `design/Jawa/worldbuilding/biomes/weeping_stones.md` §4; `weeping_stones_shine_options_2026-09-24.md` option 4 |
+| The rite of offering and forgetting | Deep Desert Tribes | settlement | sarlacc habitat | DRAFT | `design/Jawa/worldbuilding/sarlacc_native_habitat_draft.md` §3.1 |
+
+**Count (by hand from the tables above, not an instrument): 77 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 9. **68 are the Salvation's** (B1 to B5; the Unburdening appears in both B4 and
+B5, so 67 distinct). B6's 9 are other faiths' rites or unassigned biome pitches, one ruled out.
+
+## (c) The four Abyss rites
+
+Each answers R1: a different god, a different kind of appeasement, a different outcome. All four
+need absolute darkness (the Snuffing makes it); all four are learned in the Abyss and held anywhere
+dark afterwards (card 09:22, Q1). Every one follows §5: the rite pre-moves the gods by its nature,
+then each god decides whether to speak. The darkness itself always pre-moves **Ishko up** and
+**Sh'kaar down** (§2.0b ⑧, *"together the two make darkness doubly sacred"*); what differs is who the
+rite is **for**.
+
+**Shared teeth (ruled, card 09:22 Q3).** If the dark breaks mid-rite (a lamp, a door onto day, a
+fire), the rite fails and Sh'kaar answers: *"Wrathful Sh'kaar draws something to a lit
+night-rite"* (§5). A watcher re-reads the condition every 250 ticks and records the worst depth.
+**UNMEASURED:** whether `LordJob_Ritual` exposes a per-tick hook or needs a Harmony postfix.
+
+### c1. The Dark Vigil, for Ishko: feeding by stillness
+
+- **Grounding:** stillness itself pleases him; he alone does not punish a skipped rite
+  (§2.0b ①, §5b). The one rite held purely by choice.
+- **Asks:** an organiser and at least three still spectators, about two in-game hours, no light
+  carried. Quality from darkness depth, stillness, and Darkvision or dark-tolerant genes.
+- **Outcome:** Poor, "a long cold sit". Fair, "kept the vigil" (shared memory). Good, Ishko's mark
+  on the wall (`RM_Ishko_RitualOutcome_PlaceSacredMark`, built and waiting for this caller) and
+  the darkness mood debuff waived for a season (hediff route UNMEASURED). Excellent, plus an art
+  tale. Ninefold: a satiation gain for Ishko. Repeated Excellent vigils on one map count toward
+  his Body-vision, *"terraform the dark itself into a home"*.
+
+### c2. The Blind Offering, for Mob'Unloo: settlement
+
+- **Grounding:** *"nothing is ever handed directly; a thing is set down and the other takes it
+  up"* (§2.0b ④); his ledger is how debts are balanced, and the devotion "The Named Debt" names
+  a debt before it is paid (catalog ④).
+- **Asks:** the organiser names a debt (a theft from the clan, a ghost unlaid, a bargain gone sour)
+  and lays an item on a ring in the dark; everyone leaves; nobody watches overnight.
+- **Outcome:** by morning the offering is untouched (Poor: "it was not taken"; the debt stands),
+  gone (Fair or Good: the named debt is settled, a ledger entry, not a mood buff), or gone and
+  replaced by something small and strange from a curated list, never silver (Excellent). Nobody
+  sees who took it. In the Abyss this is the Nhaleth exchange, never confirmed. Ninefold: a
+  settlement entry for Mob'Unloo sized by the item's value.
+
+### c3. The Snuffing, for Sh'kaar: starving the evil god
+
+- **Grounding:** Sh'kaar is fed by light cast into darkness and starved by *"staying dark, hidden,
+  and unfought"* (§2.0b ⑧); his battle-escalation meter is cooled by stillness (§3⑧). The only
+  appeasement an evil god accepts is to be denied.
+- **Asks:** a short rite at a lit spot. Each light within a radius is put out by a participant,
+  one by one. It makes the condition the other three need, so it is a colony's way in.
+- **Outcome:** Poor, the lights are relit within the hour. Fair, the room stays dark until relit.
+  Good, Sh'kaar's escalation meter drops by a step (the clan has hidden from him; fewer and later
+  brute attacks), and the next darkness rite there gains quality. Excellent, plus participants are
+  steadier in the dark for a day. **The risk is sharpest here:** a Snuffing that fails to hold is
+  the clan lighting a night-rite in front of the god it was hiding from.
+
+### c4. The Lightless Burial, for Ozzik: consolation
+
+- **Grounding:** beneath his arrogance Ozzik is grief, *"we were once great, and we cannot bear
+  the memory"*; his satiation is a pride-meter that draws Sh'kaar and Zizzik (§2.0b ⑨). The
+  Unburdening vents that meter by destroying wealth; this vents it by laying grief down, for
+  *"the grave is the deepest dark"* (§2.0b ①).
+- **Asks:** the funeral held in absolute darkness at a grave cut into rock, closed before any light
+  returns. Once learned it is also the funeral's dark variant, using no new ritual (card 09:22 Q2).
+- **Outcome:** the vanilla funeral outcome, plus: Poor, "buried in the dark" (neutral). Fair, the
+  mourners' grief memories shorten. Good, Ozzik's pride-meter vents a step, lowering its upward
+  bias on Sh'kaar's and Zizzik's rolls, without the Unburdening's cost in wealth. Excellent, plus
+  the dead "went unseen" (Ishko's deepest facet), an art tale. Ishko is pleased as a side effect;
+  the rite is aimed at Ozzik.
+
+### c5. The Unlit Wedding (variant, not one of the four)
+
+The wedding ceremony held in absolute darkness: the canon *"mate only in total darkness"*
+(§2.0b ①) made pious. Vanilla outcomes, a darkness quality bonus, the memory "married in the
+dark"; it pre-moves Oomo (the family grows) and Ishko. Unlocked by learning any darkness rite.
+
+## (d) Discovering a rite in a biome
+
+**Machinery that already exists, used whole:**
+
+- **The Rites tab** (`mandrake.rut.rites`): each rite is a `ResearchProjectDef` and the tab's
+  promise is *"revealed, not bought"*. Its tiers are gated by `hiddenPrerequisites` on Antiquities
+  stages; that gate shows the row greyed until met (verified 2026-09-04 against
+  `MainTabWindow_Research.cs`, recorded in the mod's About.xml).
+- **`CompStudiable`** (core, MEASURED present in 1.6): a thing a pawn studies over time.
+- **`ResearchProjectDef.researchMods`** (MEASURED: `List<ResearchMod>`, abstract `ResearchMod`
+  with `Apply()`): runs code when a project completes.
+- **`Ideo.AddPrecept(Precept, bool init, FactionDef, RitualPatternDef fillWith)`** (MEASURED,
+  `Ideo.cs:1044`) with `PreceptMaker.MakePrecept(def)`: adds a ritual precept to a live ideo.
+- **`GameComponent_LoreStage`** (`mandrake.rm.lorestages`, BUILT): `AdvanceStage(ladderId)`
+  rewrites def descriptions stage by stage.
+
+**Locked.** A found rite's `PreceptDef` and `RitualPatternDef` ship in `mandrake.rut.rites` but
+are **not** in The Salvation. Its project sits in a new **"found rites"** row of the Rites tab,
+grouped by biome, with `techprintCount 1` and `techprintCommonality 0`, so no bench, trader or
+quest can supply it. The row is visible and greyed, its description a LoreStages placeholder
+("A rite the dark keeps.").
+
+**Found.** The biome places the rite's **inscription**: a `CompStudiable` thing at a site with a
+reason to be there (the four Abyss sites in B2). A pawn studies it in place, under the rite's own
+condition (in the dark; a lamp brought to read it spoils the study and is a lit night-rite, so
+Sh'kaar may answer). Study completion yields the rite's techprint, the **rubbing**, and advances
+the rite's LoreStages ladder so the project's description now says what was found and where.
+
+**Learned.** Applying the rubbing unlocks a short contemplation project. On completion its
+`ResearchMod` (`RUT_ResearchMod_GrantRite`) calls `AddPrecept` on the player's Salvation ideo with
+the rite's pattern, and the rite appears in the ritual list, performable anywhere its condition
+holds. This avoids hand-injecting a ritual into the frozen `.rid`, which is U10's untested shape
+(`ancient_machines_design.md` §8). **UNMEASURED:** that `AddPrecept(init: true)` at runtime fills a
+ritual's obligations and name correctly; read the method body in RimSage before building, and fall
+back to the `.rid` route plus a "not yet learned" `BlockingIssues` comp if it does not.
+
+**Surfaced.** A letter in the Narrator's register when the rubbing is taken ("The stone said what
+to do. It did not say who carved it."), the Rites tab row lighting, and the ritual gizmo's own
+reason line while the condition fails ("The spot is not dark: 34% light"). Nothing on screen
+names a god's number (canon F8: Mood is weather).
+
+**Settings** (Mod Settings, every mod ships them): on/off per found rite; darkness threshold
+(default ground glow 0); strict participants (every participant's cell, default) or the spot only;
+break tolerance; the slot-free variants on/off; "count the Abyss's Dark as absolute darkness"
+(labelled: affects only Abyss maps).
+
+## (f) The darkness gate (carried from the retired concept doc)
+
+The one condition is **absolute darkness** (no second condition; *"There are no eclipses on this
+planet"*, card 09:22). One small def, `RUT_RitualConditionDef`, names it and a worker answering
+*does it hold?* and *how deeply (0..1)?* at a cell. It is read in three vanilla places, all
+confirmed by RimSage against decompiled 1.6 (2026-10-01):
+
+| Where | Vanilla hook (MEASURED) | What the gate does |
+|---|---|---|
+| Can it start? | `RitualOutcomeComp.BlockingIssues(...)`, `RitualObligationTargetFilter.GetBlockingIssues(...)`, `RitualBehaviorWorker.CanStartRitualNow(...)`, all virtual | `RUT_RitualOutcomeComp_Condition` returns a reason line while the spot is lit |
+| How good is it? | `RitualOutcomeComp_QualitySingleOffset`; `RitualOutcomeComp_Indoors` is the template | a quality factor scaled by depth |
+| Where can it be held? | `RitualObligationTargetFilter` subclasses, `CanUseTargetInternal(TargetInfo, RitualObligation)` | optional: only offer spots that can be dark at all |
+
+Darkness reads `map.glowGrid.GroundGlowAt(IntVec3, ignoreCavePlants, ignoreSky)` (MEASURED), at the
+spot and every participant's cell. On Abyss maps, once `ABYSS_DARK_BUILD_1` lands, any cell inside
+the Dark also counts (soft dependency). XML: patterns, precepts, outcome effects, thoughts, tale
+grammar. C#: the condition def and worker, the comp, the mid-rite watcher, `RUT_ResearchMod_GrantRite`,
+a few outcome workers, settings.
+
+**The gods' larger answers (campaign, carried).** A darkness rite held at the ship's shrine-heart
+puts its lamps out first, so the Council of Voices (§5c) speaks out of the black; it needs the
+RimAI/Cradle-Mind voice layer, as §5c says. In the Abyss, a Dark Vigil at the rare **wrong** ring
+(review §11, mark 9 (c)) advances the lore ladder toward the Sith whisper, a voice that is not one
+of the nine (a faint fall across the pantheon); it never resolves into a visitor. The Blind Offering
+left in the Abyss is the Nhaleth exchange; the Nhaleth are never shown or confirmed.
+
+## (e) The program principle, for every biome sitting
+
+> **A biome is discovered for its rites as well as its tech.** Every biome sitting asks, beside
+> mark 2 (discoverable technology): *what rite does this place teach the Salvation, which god does
+> it appease, and in what way that no other rite already does?* The rite is found in the biome (an
+> inscription at a site with a reason to be there), learned through the Rites tab's "found rites"
+> row, and performable anywhere afterwards. Its home is `mandrake.rut.rites`; its god comes from
+> §2.0b's real appetites, never invented; and its kind of appeasement is checked against this
+> register so two biomes never teach the same rite twice.
+
+Owner, R1: *"I am starting to love the idea that you don’t just discover tech in the biomes you
+discover new rites."* A biome may answer "none"; the question must still be asked and recorded.
+
+## Still open (not decided here)
+
+- The Unveiling name collision: `design/Jawa/first_contact_chains.md`'s "nine unveilings" against
+  the Abyss's rare lifting of the Dark, "the Unveiling". Neither renamed.
+- Whether Rites of other faiths a Salvation colony meets (the Return, offering and forgetting) can
+  be learned too, as a convert learns a neighbour's custom.

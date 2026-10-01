@@ -48,6 +48,14 @@ Every biome that passes carries **at least one of each**:
 | 8 | **Interesting weather** — sky effects that belong to nowhere else |
 | 9 | A **relationship to the gods** — the biome's place in the ideoligion/lore layer |
 
+**Rites as well as tech (owner, typed, 2026-10-01 10:08 PDT):** *"I am starting to love the idea
+that you don’t just discover tech in the biomes you discover new rites."* So every sitting asks,
+beside mark 2: what rite does this biome teach the Salvation, which god does it appease, and in
+what way no other rite already does? The rite is found in the biome, learned on the Rites tab's
+"found rites" row, held anywhere afterwards, and lives in `mandrake.rut.rites`. A biome may answer
+"none", but the question is asked and recorded. Register and mechanism:
+`design/Jawa/salvation_rites_2026-10-01.md` (`SALVATION_RITES_UNIFICATION_1`).
+
 The bar is also the **design gate**: a biome — including one grandfathered
 below — ships only once a review has scored it against these nine and the
 owner has ruled the misses acceptable or filled.
