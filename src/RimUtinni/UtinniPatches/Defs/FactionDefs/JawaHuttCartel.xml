@@ -242,9 +242,9 @@
           <RSW_Nikto MayRequire="mandrake.rsw.starwarsraces">1</RSW_Nikto>
         </traders>
         <guards>
-          <RSW_Jawa_Gamorrean_Guard>6</RSW_Jawa_Gamorrean_Guard>
-          <RSW_Jawa_Gamorrean_Enforcer>2</RSW_Jawa_Gamorrean_Enforcer>
-          <RSW_Jawa_Spawn_Hutt>1</RSW_Jawa_Spawn_Hutt>
+          <RSW_Jawa_Gamorrean_Guard MayRequire="mandrake.rsw.patches">6</RSW_Jawa_Gamorrean_Guard>
+          <RSW_Jawa_Gamorrean_Enforcer MayRequire="mandrake.rsw.patches">2</RSW_Jawa_Gamorrean_Enforcer>
+          <RSW_Jawa_Spawn_Hutt MayRequire="mandrake.rsw.patches">1</RSW_Jawa_Spawn_Hutt>
           <!-- C1, protocol-droid presence only. The price mechanic is C4's
                (DROID_PROTOCOL_TRADE_ADVANTAGE_1); `guards` is the only node a
                Trader group reads a companion out of. Weight 4 of 13. -->

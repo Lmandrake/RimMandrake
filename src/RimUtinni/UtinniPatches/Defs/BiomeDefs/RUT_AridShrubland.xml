@@ -200,15 +200,15 @@
     <coastalWildAnimals />
     <wildPlants>
       <RUT_Fuzz MayRequire="mandrake.rut.ashkarrflora">0.9</RUT_Fuzz>  <!-- COMMISSION_LEDGER_CLEANUP_1: the fuzz def landed, replaces the Plant_ShrubLow stand-in -->
-      <RG_Plant_AridGrass>0.5</RG_Plant_AridGrass>  <!-- grass -->
+      <RG_Plant_AridGrass MayRequire="ReGrowth.BOTR.Core">0.5</RG_Plant_AridGrass>  <!-- grass -->
       <Plant_Brambles>0.3</Plant_Brambles>  <!-- brambles -->
       <RUT_Grellbush MayRequire="mandrake.rut.ashkarrflora">0.3</RUT_Grellbush>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces vanilla Plant_Bush -->
       <RUT_Grellspine MayRequire="mandrake.rut.ashkarrflora">0.3</RUT_Grellspine>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces Biotech's Plant_Ripthorn -->
       <RUT_WildHealroot MayRequire="mandrake.rut.ashkarrflora">0.25</RUT_WildHealroot>  <!-- DESERT_FAMILY_PORT_EXECUTION_1 owner ruling 2026-09-21: our own def, replaces vanilla Plant_HealrootWild. Label kept "wild healroot" per PlantNames_Ashkarr.xml (owner 2026-09-05: healroot is already an invented word, not renamed) -->
       <Plant_Nysyllin_Wild>0.22</Plant_Nysyllin_Wild>  <!-- wild nysyllin plant -->
-      <RG_Plant_CreepStern>0.2</RG_Plant_CreepStern>  <!-- creep stern -->
-      <RG_Plant_CrimsonCushion>0.2</RG_Plant_CrimsonCushion>  <!-- crimson cushion -->
-      <RG_Plant_Dervish>0.2</RG_Plant_Dervish>  <!-- dervish -->
+      <RG_Plant_CreepStern MayRequire="ReGrowth.BOTR.Core">0.2</RG_Plant_CreepStern>  <!-- creep stern -->
+      <RG_Plant_CrimsonCushion MayRequire="ReGrowth.BOTR.Core">0.2</RG_Plant_CrimsonCushion>  <!-- crimson cushion -->
+      <RG_Plant_Dervish MayRequire="ReGrowth.BOTR.Core">0.2</RG_Plant_Dervish>  <!-- dervish -->
       <RM_VenomvineThicket MayRequire="mandrake.rm.biomes">0.15</RM_VenomvineThicket>  <!-- the fortress flora, §4 — VENOMVINE_FORTRESS_PASSABILITY_1. Lowest weight in this list on purpose and it is NOT a density dial: §4 says thickets "sometimes manage to colonize" and §6.6 bans dense flora here with this as the sole carve-out, so what must stay rare is the NUMBER of stands. How solid each one is comes from wildClusterRadius 8 / wildClusterWeight 25 on the def, not from this weight — raising this scatters more islands rather than thickening the ones there are. -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>

@@ -127,7 +127,7 @@
           <li><key>AB_RockyCrags</key><value><scoreOffset>4</scoreOffset></value></li>
 
           <!-- RARE -->
-          <li><key>ZBiome_DesertOasis</key><value><scoreOffset>-4</scoreOffset></value></li>
+          <li MayRequire="zylle.MoreVanillaBiomes"><key>ZBiome_DesertOasis</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>AB_FeraliskInfestedJungle</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>AB_MiasmicMangrove</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>AB_MycoticJungle</key><value><scoreOffset>-4</scoreOffset></value></li>

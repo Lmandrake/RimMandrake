@@ -103,7 +103,7 @@
     <wildPlants>
       <AB_ToxiGrass>0.6</AB_ToxiGrass>  <!-- toxigrass -->
       <AB_CrystalHorn>0.4</AB_CrystalHorn>  <!-- crystal horn -->
-      <PoisonPlantTallGrass>0.4</PoisonPlantTallGrass>  <!-- poison tall grass -->
+      <PoisonPlantTallGrass MayRequire="Mlie.AdvancedBiomes">0.4</PoisonPlantTallGrass>  <!-- poison tall grass -->
       <RM_Palefloss>1.0</RM_Palefloss>
       <RM_Glassfern>0.5</RM_Glassfern>
       <RM_Chimeglobe>0.25</RM_Chimeglobe>

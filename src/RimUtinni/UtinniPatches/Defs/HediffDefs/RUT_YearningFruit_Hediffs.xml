@@ -4,7 +4,7 @@
 
   The digestive-accelerant hediff RUT_YearningFruit.xml applies. Ships the
   "digests fast / hunger returns / brief waddle" half of the_greentide.md
-  §4's mechanic with real vanilla stats — HungerRateMultiplier (statFactors)
+  §4's mechanic with real vanilla stats — hungerRateFactor (HediffStage field)
   and a short MoveSpeed penalty. hediffClass is HediffWithComps explicitly
   (RUT_Vorrel_Hediffs.xml's own header names the trap: the default
   Verse.Hediff carries no comps at all, so a comps block on an unstated
@@ -57,8 +57,8 @@
     <stages>
       <li>
         <label>digesting fast</label>
+        <hungerRateFactor>1.6</hungerRateFactor>
         <statFactors>
-          <HungerRateMultiplier>1.6</HungerRateMultiplier>
           <MoveSpeed>0.75</MoveSpeed>
         </statFactors>
       </li>

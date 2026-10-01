@@ -157,7 +157,7 @@
       <value>
         <wildPlants>
           <AB_HardyGrass>1.0</AB_HardyGrass>  <!-- hardy grass -->
-          <GRimMoss>0.8</GRimMoss>  <!-- moss -->
+          <GRimMoss MayRequire="GRimTerra.Biomesmod">0.8</GRimMoss>  <!-- moss -->
           <RUT_TwistingThorngrass>0.5</RUT_TwistingThorngrass>  <!-- twisting thorngrass -->
           <RUT_TwistingThornweed>0.4</RUT_TwistingThornweed>  <!-- twisting thornweed -->
           <RUT_TwistingThornwood>0.2</RUT_TwistingThornwood>  <!-- twisting thornwood - tree -->

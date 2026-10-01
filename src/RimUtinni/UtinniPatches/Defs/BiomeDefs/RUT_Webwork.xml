@@ -170,7 +170,7 @@
     <coastalWildAnimals />
     <wildPlants>
       <AB_JungleTree>1.1</AB_JungleTree>  <!-- deep jungle tree - tree -->
-      <RG_Plant_TropicalChokevine>1.0</RG_Plant_TropicalChokevine>  <!-- chokevine -->
+      <RG_Plant_TropicalChokevine MayRequire="ReGrowth.BOTR.Core">1.0</RG_Plant_TropicalChokevine>  <!-- chokevine -->
       <AB_TangleTea>0.4</AB_TangleTea>  <!-- tangle tea -->
       <Plant_TookeTrap_Wild>0.3</Plant_TookeTrap_Wild>  <!-- wild tooke-trap plant -->
       <AB_Gomphoeria>0.15</AB_Gomphoeria>  <!-- gomphoeria -->

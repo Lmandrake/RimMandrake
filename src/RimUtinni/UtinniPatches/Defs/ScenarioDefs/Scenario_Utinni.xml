@@ -135,13 +135,13 @@
           <pawnChoiceCount>10</pawnChoiceCount>
           <customSummary>Start with six Jawa of the clan that woke the hull.</customSummary>
           <overrideKinds>
-            <li>
+            <li MayRequire="mandrake.rsw.starwarsraces">
               <xenotype>RSW_MandrakeJawa</xenotype>
               <pawnKind>RUT_Jawa_Colonist</pawnKind>
             </li>
           </overrideKinds>
           <xenotypeCounts>
-            <li>
+            <li MayRequire="mandrake.rsw.starwarsraces">
               <xenotype>RSW_MandrakeJawa</xenotype>
               <count>6</count>
               <description>Jawa scavenger</description>

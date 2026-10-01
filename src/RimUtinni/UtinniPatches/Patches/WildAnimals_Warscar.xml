@@ -73,9 +73,9 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
       <value>
-        <SW_Electrictick>0.3</SW_Electrictick>
-        <SW_Electricgryllotalpa>0.15</SW_Electricgryllotalpa>
-        <SW_Juggernautbeetles>0.05</SW_Juggernautbeetles>
+        <SW_Electrictick MayRequire="Who.VFEE.IsopodaGeneline">0.3</SW_Electrictick>
+        <SW_Electricgryllotalpa MayRequire="Who.VFEE.IsopodaGeneline">0.15</SW_Electricgryllotalpa>
+        <SW_Juggernautbeetles MayRequire="Who.VFEE.IsopodaGeneline">0.05</SW_Juggernautbeetles>
       </value>
     </match>
   </Operation>
@@ -106,7 +106,7 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
       <value>
-        <RUT_ScarRoach>0.08</RUT_ScarRoach>
+        <RUT_ScarRoach MayRequire="mandrake.rut.rustcathedralroaches">0.08</RUT_ScarRoach>
         <RUT_MortuaryCrawler>0.06</RUT_MortuaryCrawler>
       </value>
     </match>

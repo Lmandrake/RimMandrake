@@ -68,8 +68,8 @@
          headgear, and leaving the roll at 0 is the obvious way to end up with a required hood
          that never appears. -->
     <apparelRequired Inherit="False">
-      <li>guy762_Robes_jawa</li>
-      <li>guy762_JawaHood</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_Robes_jawa</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_JawaHood</li>
     </apparelRequired>
     <apparelAllowHeadgearChance>1</apparelAllowHeadgearChance>
     <!-- 🔴 apparelMoney 0 — OWNER'S RULING 2026-08-23: "Jawa wear robes+hoods ONLY".
@@ -107,7 +107,7 @@
     <initialResistanceRange>13~21</initialResistanceRange>
     <xenotypeSet>
       <xenotypeChances>
-        <RSW_MandrakeJawa>1.0</RSW_MandrakeJawa>
+        <RSW_MandrakeJawa MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <!-- dusty dark brown — the player's own Jawa -->
@@ -123,12 +123,12 @@
     <label>Jawa scrounger</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RSW_MandrakeJawa>1.0</RSW_MandrakeJawa>
+        <RSW_MandrakeJawa MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <apparelRequired Inherit="False">
-      <li>guy762_Robes_jawa</li>
-      <li>guy762_JawaHood</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_Robes_jawa</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_JawaHood</li>
     </apparelRequired>
     <!-- 🔴 apparelMoney 0 — OWNER'S RULING 2026-08-23: "Jawa wear robes+hoods ONLY".
          Asked directly, with this file's own contrary comment in front of him, and he
@@ -179,12 +179,12 @@
     <label>Jawa slinger</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RSW_MandrakeJawa>1.0</RSW_MandrakeJawa>
+        <RSW_MandrakeJawa MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <apparelRequired Inherit="False">
-      <li>guy762_Robes_jawa</li>
-      <li>guy762_JawaHood</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_Robes_jawa</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_JawaHood</li>
     </apparelRequired>
     <!-- 🔴 apparelMoney 0 — OWNER'S RULING 2026-08-23: "Jawa wear robes+hoods ONLY".
          Asked directly, with this file's own contrary comment in front of him, and he
@@ -246,12 +246,12 @@
     </weaponTags>
     <xenotypeSet>
       <xenotypeChances>
-        <RSW_MandrakeJawa>1.0</RSW_MandrakeJawa>
+        <RSW_MandrakeJawa MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <apparelRequired Inherit="False">
-      <li>guy762_Robes_jawa</li>
-      <li>guy762_JawaHood</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_Robes_jawa</li>
+      <li MayRequire="mandrake.rsw.armoury">guy762_JawaHood</li>
     </apparelRequired>
     <!-- 🔴 apparelMoney 0 — OWNER'S RULING 2026-08-23: "Jawa wear robes+hoods ONLY".
          Asked directly, with this file's own contrary comment in front of him, and he

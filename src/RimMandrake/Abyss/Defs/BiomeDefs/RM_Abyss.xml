@@ -118,9 +118,9 @@
       <AB_ToxicGamma>0.6</AB_ToxicGamma>  <!-- toxic gamma - tree -->
       <AB_GiantGamma>0.5</AB_GiantGamma>  <!-- giant gamma -->
       <AB_WildRadagast>0.5</AB_WildRadagast>  <!-- wild ragadast -->
-      <AG_Gamma>0.5</AG_Gamma>  <!-- gamma -->
+      <AG_Gamma MayRequire="sarg.alphagenes">0.5</AG_Gamma>  <!-- gamma -->
       <AB_GiantStikehr>0.3</AB_GiantStikehr>  <!-- giant stikehr -->
-      <AG_Septimum>0.25</AG_Septimum>  <!-- septimum -->
+      <AG_Septimum MayRequire="sarg.alphagenes">0.25</AG_Septimum>  <!-- septimum -->
       <AB_GiantSeptimum>0.2</AB_GiantSeptimum>  <!-- giant septimum - tree -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
