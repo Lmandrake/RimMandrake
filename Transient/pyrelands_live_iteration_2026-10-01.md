@@ -135,6 +135,32 @@ Other run-5 evidence and fixes:
 - fulgurite: 16 sand cells on the map, 8 fires: an expected fulgurite count of ~0.0006 cannot
   test the bar. Now UNMEASURED with that arithmetic when expect < 1.
 
+### Run 6 (`Transient/northstar/Pyrelands_20261001T201058Z.json`) — first run with no harness error
+
+Driver: PASS=0 FAIL=1 UNMEASURED=19 (state-PASS bars wait for the judge). Every component
+reached a verdict for a stated reason:
+
+- `_fresh_site()` fired: 44,962 deep-ash cells outside the pads -> plant/animal/grass/ruins/
+  burn-line/ash-ladder UNMEASURED ("reload the site").
+- scorchfruit_produces **PASS**: forced harvest made 25 yield; ordered Ingest ran
+  (`afterJobDef Ingest`), food 0.192 -> 0.278.
+- furnacebeast_warmth **PASS** (warmth present at the first sample).
+- furnacebeast_heats_room **PASS**: both rooms proven (`roomsFound` 1/1), beast inside room A,
+  cold-start series beast vs control 18.8/13.1 ... 38.8/32.1 C (ambient 59.7 C).
+- burrowers_dive **PASS** (`RM_Burrow`, `RM_Burrowed`, grazer intact).
+- firehawk_carries_ember FAIL: fire alive at every sample (17 -> 219 fires), comp
+  `CompFireHawkSpread` present on the live def, no `RM_FireHawkCarryEmber` in 20 samples.
+  Sampling made 5x denser (100 x 60 ticks) for run 7 so a short sortie cannot slip between.
+- scorchfruit_spoils_fast UNMEASURED: the steel ring did not save the stack (gone at day 2
+  again). A probe in a sealed `make_empty_room` held ScorchFruit / Meat_Human / RawPotatoes
+  untouched for 1.2 days with correct countdowns (3.9 -> 2.8 days), so outdoors it is eaten.
+  The rot cohort now sits in a sealed room.
+- scorchfruit_fire_born UNMEASURED (census skipped); reordered so the burn half runs first and
+  a fruitless burn FAILs regardless.
+- scorch_fruit_seed FAIL (0 in rect, 2 on map) — same finding as runs 4-5.
+- embergrass_regrows UNMEASURED (calibrating: 256 / 0 / 0 / 0); fulgurite UNMEASURED
+  (expected 0.00 fulgurite: 16 sand cells).
+
 ## Findings about the mod
 
 (filled at the end)
