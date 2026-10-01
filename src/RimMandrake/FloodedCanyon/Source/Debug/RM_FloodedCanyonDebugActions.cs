@@ -58,6 +58,20 @@ namespace RimMandrake.FloodedCanyon
             Log.Message("[RMFloodedCanyonDebug] recede armed for next tick. " + comp.DebugStateReport());
         }
 
+        // CRACKEDLANDS_GPT_ENRICHMENT_1 verify: the recede feast and the
+        // floodline salvage as a state read (cohort / migrants / salvage
+        // counts and their clocks), never a screenshot hunt.
+        [DebugAction(CAT, "Report recede aftermath (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ReportAftermath()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return;
+            RM_MapComponent_RecedeAftermath comp = map.GetComponent<RM_MapComponent_RecedeAftermath>();
+            if (comp == null) { Log.Error("[RMFloodedCanyonDebug] no RM_MapComponent_RecedeAftermath on this map."); return; }
+            Log.Message("[RMFloodedCanyonDebug] aftermath: " + comp.DebugStateReport());
+        }
+
         // CRACKEDLANDS_MECHANICS_BUILD_1 verify: a STATE read of the seams on
         // the map (count per tier), so "fresh seams after a recede" is a
         // before/after number, never a screenshot hunt.

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_IrqitFloodBorn.xml   CRACKEDLANDS_GPT_ENRICHMENT_1 §5 — the recede feast
+
+  The readable sign on every irqit of a recede cohort (owner law: no animal
+  vanishes without a readable sign). It carries no mechanism: the cohort's
+  clock lives in RM_MapComponent_RecedeAftermath, which kills the survivors at
+  the dry (the soak-decay setting), so this label and the death agree with the
+  ground rather than with a fixed day count.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_IrqitFloodBorn</defName>
+    <label>flood-born</label>
+    <description>Hatched from eggs that waited years in the dry clay, in the hours after the flood receded. A flood-born irqit lives only as long as the mud stays wet: it breeds once, lays into the clay, and dies where it stands as the ground stiffens.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <defaultLabelColor>(0.75, 0.65, 0.5)</defaultLabelColor>
+  </HediffDef>
+
+</Defs>

@@ -47,3 +47,27 @@ the engine. Each ships a Mod Settings toggle.
 ## criteria
 
 Each of the six is quicktest-proven. The migrants arrive and leave by visible flight.
+
+## outcome (2026-10-01, offline tranche)
+
+Built in `src/RimMandrake/FloodedCanyon/`, every piece with its own Mod Settings toggle and every
+chosen number marked TUNED in its file:
+
+- **§2, five beats:** a Herald phase ahead of the chimes plays slot wind, then ticking pans, then
+  the tarruq hush (a Harmony gate on `Pawn_CallTracker.TryDoCall`). The chimes then toll at
+  positions from far to near toward the water's chosen entry point, and a roar sustainer plays
+  while the flood stands. All sounds are vanilla clips retinted in `Defs/SoundDefs/RM_CanyonBeats.xml`.
+- **§3, Peakstorm Light:** bruised red-violet sky sets and `windSpeedFactor` 1.6. The flood pull is
+  now one roll per cycle at 0.6, with a 0.5–2 day window, so the storm raises the odds without
+  being a timer.
+- **§5, the recede feast:** `RM_MapComponent_RecedeAftermath` spawns a bounded irqit cohort, each
+  tagged `RM_IrqitFloodBorn`, which is killed at the dry and leaves corpse windrows. The biome's own
+  flight-capable roster flies in by vanilla `FlyerArrival` and leaves by `ExitMapFlying`.
+- **§6, the scatter half:** components and slag on the wetted cells. Unclaimed pieces are taken back
+  by the mud after `salvageDecayDays`.
+
+Split out, each with its open question: `CRACKEDLANDS_LEDGES_OF_MERCY_1` (§1),
+`CRACKEDLANDS_FIVE_BEATS_AUDIO_1` (§2 audio and the tarruq call), `CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1`
+(§3 dust), `CRACKEDLANDS_THREE_HEIGHT_FLORA_1` (§4; both names swept clean),
+`CRACKEDLANDS_WOOLAMANDER_FLIGHT_1` (§5: it cannot fly yet), `CRACKEDLANDS_SALVAGE_CLAIM_CREW_1`
+(§6 stakes and crew), and `CRACKEDLANDS_ENRICHMENT_QUICKTEST_1` (the live proof of this tranche).

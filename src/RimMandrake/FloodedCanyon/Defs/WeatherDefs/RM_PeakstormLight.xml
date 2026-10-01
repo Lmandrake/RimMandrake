@@ -14,12 +14,22 @@
   the distant strike, and nothing strikes the map (no
   WeatherEvent_LightningStrike maker here, unlike vanilla DryThunderstorm).
 
-  Sky: Clear's own colour sets with a faint cold cast at dusk/night, so the
-  day reads clear and the flicker carries the storm.
+  Sky (CRACKEDLANDS_GPT_ENRICHMENT_1 §3, owner-picked): "the northern sky
+  turns bruised red, distant lightning silhouettes the peaks". RimWorld's sky
+  colour is one global colour, never directional, so "northern" is carried by
+  the flicker and the description; the bruise is a red-violet cast that is
+  faint at midday and deep at dusk and night. TUNED, every value: chosen to
+  read as bruised, not as a fire or an eclipse, against Clear's own sets.
+
+  Wind: "cool, wet-clay air pushes through the slots" - windSpeedFactor 1.6
+  (TUNED: noticeably gusty, short of a storm's). The dust that briefly
+  REVERSES is not expressible in a WeatherDef (no mote direction field);
+  owed to CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1.
 
   Flood coupling (RM_MapComponent_CanyonFlood): while this weather stands,
-  the flood clock may pull its next flood forward (setting
-  "peakstormBiasEnabled") - the chime follows the storm on the peaks.
+  the flood clock rolls ONCE per cycle (TUNED 0.6) to pull its next flood
+  forward to 0.5-2 days out (setting "peakstormBiasEnabled") - the storm
+  raises the odds without being a perfect timer.
 -->
 <Defs>
 
@@ -31,6 +41,7 @@
       <li>Ambient_Wind_Clear</li>
     </ambientSounds>
     <durationRange>10000~30000</durationRange>
+    <windSpeedFactor>1.6</windSpeedFactor>
     <eventMakers>
       <li>
         <averageInterval>900</averageInterval>
@@ -42,27 +53,27 @@
     <perceivePriority>1</perceivePriority>
     <repeatable>true</repeatable>
     <skyColorsDay>
-      <sky>(1,1,1)</sky>
-      <shadow>(0.718,0.745,0.757)</shadow>
-      <overlay>(1,1,1)</overlay>
+      <sky>(1,0.93,0.92)</sky>
+      <shadow>(0.73,0.70,0.74)</shadow>
+      <overlay>(1,0.95,0.94)</overlay>
       <saturation>1.2</saturation>
     </skyColorsDay>
     <skyColorsDusk>
-      <sky>(0.80,0.64,0.50)</sky>
-      <shadow>(0.93,0.90,0.94)</shadow>
-      <overlay>(0.78,0.78,0.82)</overlay>
-      <saturation>1.15</saturation>
+      <sky>(0.78,0.50,0.50)</sky>
+      <shadow>(0.93,0.86,0.92)</shadow>
+      <overlay>(0.78,0.66,0.72)</overlay>
+      <saturation>1.2</saturation>
     </skyColorsDusk>
     <skyColorsNightEdge>
-      <sky>(0.44,0.52,0.64)</sky>
-      <shadow>(0.92,0.92,0.92)</shadow>
-      <overlay>(0.58,0.58,0.64)</overlay>
+      <sky>(0.50,0.36,0.46)</sky>
+      <shadow>(0.92,0.88,0.92)</shadow>
+      <overlay>(0.58,0.48,0.56)</overlay>
       <saturation>1.15</saturation>
     </skyColorsNightEdge>
     <skyColorsNightMid>
-      <sky>(0.44,0.52,0.64)</sky>
-      <shadow>(0.85,0.85,0.85)</shadow>
-      <overlay>(0.58,0.58,0.64)</overlay>
+      <sky>(0.44,0.34,0.46)</sky>
+      <shadow>(0.85,0.82,0.86)</shadow>
+      <overlay>(0.54,0.46,0.56)</overlay>
       <saturation>1.15</saturation>
     </skyColorsNightMid>
   </WeatherDef>
