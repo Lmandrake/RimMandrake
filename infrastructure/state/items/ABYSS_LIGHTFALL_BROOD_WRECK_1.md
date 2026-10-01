@@ -35,6 +35,9 @@ Open for FOUNDRY/BENCH to ground in design (his typed text decides intent, these
 - Gravship hook code lives behind `HarmonyPatch_DoGravship.cs` (`design/Jawa/worldbuilding/row8_build_order.md`); the pocket-map and cross-map transfer GPT proposed is NOT needed, since the ship is not transferred.
 - The brood's creature art is NOT existing donor art; see `ABYSS_DONOR_BEASTS_FREED_1`.
 
+- **Landscape-sized brood-mother (owner, typed 2026-10-01):** *"the brood mother must be landscape sized."* Summ the All-Render is the size of terrain: a huge drawSize or a multi-cell structure-like presence; feasibility is FOUNDRY's to decide.
+- **The summing grows constantly, problematically (owner, typed 2026-10-01):** the juvenile/tamed Summ (`RM_Summing`) is *"not so little"* and keeps growing through its whole life; size, hunger and space problems keep escalating.
+
 ## criteria
 
 - Descent to the lair, bone field, brood-mother asleep with a readable wake warning (stir, rumble) before any lethal wake.
@@ -43,6 +46,8 @@ Open for FOUNDRY/BENCH to ground in design (his typed text decides intent, these
 - Wreck salvage yields a rich haul; the player's ship accepts only a defined set of parts and restores condition; refused parts say so; no second gravship exists.
 - Salvage noise and light add wake pressure.
 - Egg imprints only with a great bone installed on the player's ship; without it, it hatches wild, and the inspect text says why.
+- Brood-mother is landscape-sized (terrain scale), feasibility decided by FOUNDRY.
+- The summing never stops growing: size, hunger and space needs escalate over its life, with no plateau.
 - Tamed beast: very hungry, very aggressive, kills wildlife indiscriminately and semi-randomly; deeply tough and powerful; UV-sensitive (daylight penalty/harm); sees in darkness and the Dark unimpaired.
 - Greed threshold: past it the brood-mother wakes and is effectively unkillable (flee, not fight); the threshold may be learned by save/load.
 - No fantasy-dragon tells anywhere: no fire breath, no 'dragon' in labels/defNames/descriptions; alien-beast biology in descriptions and art briefs.

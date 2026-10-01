@@ -815,7 +815,15 @@ appeased four ways from one biome's dark; the god map is §(c) of the rites doc.
 
 | Card item | Ruling | How recorded |
 |---|---|---|
-| N1 Storm giant / Lightfall brood beast | His words, typed: *"Summ the All-Render, with the lesser forms of it other Summ creatures."* "Summ" is the family; "Summ the All-Render" is the brood-mother at Lightfall's bottom (`RUT_SummAllRender`); the wild adult is `RM_Summ`, the young `RM_Summ_Juvenile`, the egg `RUT_SummEgg`. Plain-English stage labels are proposals, owner to confirm. | `ABYSS_DONOR_BEASTS_FREED_1` note; cast bible §4C, §4D, §5 |
+| N1 Storm giant / Lightfall brood beast | His words, typed: *"Summ the All-Render, with the lesser forms of it other Summ creatures."* "Summ" is the family; "Summ the All-Render" is the brood-mother at Lightfall's bottom (`RUT_SummAllRender`); the wild adult is `RM_Summ`, the young `RM_Summing` (renamed by §16), the egg `RUT_SummEgg`. Plain-English stage labels are proposals, owner to confirm. | `ABYSS_DONOR_BEASTS_FREED_1` note; cast bible §4C, §4D, §5 |
 | N2 Quill predator | His word, typed: *"Drokattak"*. `RM_Drokattak`. | `ABYSS_DONOR_BEASTS_FREED_1` note; cast bible §4C, §5 |
 
 Donor defNames (`AA_Behemoth`, `GR_Nighthrumbo`) are renamed in `src/` by FOUNDRY build work, not here.
+
+## 16. Abyss commission card rulings (owner, 2026-10-01 11:53 PDT)
+
+| Card item | Ruling | How recorded |
+|---|---|---|
+| A Commission the art | Order all 56 Abyss art jobs now (24 subjects; 15 more subjects reuse finished art). | decision taken by question card; 56 jobs filed, 0 duplicates, 0 row errors |
+| B Summ sizes | His words, typed: *"Summing for the little one. (Not so little ) the brood mother must be landscape sized. And the little one should be constantly growing problemmatically."* The juvenile and tamed Summ is a "summing" (`RM_Summing`, was `RM_Summ_Juvenile`); the egg stays "summ egg". Summ the All-Render (`RUT_SummAllRender`) is landscape-sized, terrain scale, feasibility for FOUNDRY. The summing never stops growing: size, hunger and space problems keep escalating. | `ABYSS_LIGHTFALL_BROOD_WRECK_1` note and criteria; cast bible §4C, §4D, §5; art brief and drawSize 24 |
+| C Lore drafts | Use the drafted lore now: Summ biology, ship refusal lines, wreck description, four rite inscriptions (cast bible §6). | decision taken by question card; sections marked "draft in use; owner edit pending" |
