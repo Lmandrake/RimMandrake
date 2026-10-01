@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T17:06:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T17:13:44Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -2900,3 +2900,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Decision taken by question card (turn 3, 2026-10-01): BOTH halves.
 prose:    infrastructure/state/items/ABYSS_SOUNDSCAPE_BUILD_1.md
+
+## ABYSS_FREE_TIER_BODY_1 Abyss free-tier body: own labels, wire 12 done crags art sets, guard/own 8 flora, weather labels, About fix
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  The ticket-out audit found these §5 12 pre-ticket lines carried by no item. This is the Abyss's slice of them…
+prose:    infrastructure/state/items/ABYSS_FREE_TIER_BODY_1.md
