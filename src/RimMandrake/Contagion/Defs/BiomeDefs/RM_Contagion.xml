@@ -44,7 +44,7 @@
     So the row named a defName that has never existed and gated on a
     packageId that no About.xml has ever declared — the entry could never
     resolve and the plant could never spawn here, regardless of TheRot's
-    load state. Now `RM_RustPuff` / `MayRequire="mandrake.rm.therot"`.
+    load state. Now `RM_RustPuff` / `MayRequire="mandrake.rm.biomes"`.
     Other files across the repo still cite the stale `RUT_RustPuff` name —
     out of this mod's scope, left for a separate sweep.
 
@@ -211,7 +211,7 @@
       <RM_Rattlegrope>0.4</RM_Rattlegrope>  <!-- rattlegrope - the second tell -->
       <RM_Sapblister>0.4</RM_Sapblister>  <!-- sapblister - sap/wound-sealant source -->
       <RM_BloodyFist>0.3</RM_BloodyFist>  <!-- bloody fist - seed-fist fertilizer source -->
-      <RM_RustPuff MayRequire="mandrake.rm.therot">0.3</RM_RustPuff>  <!-- rust puff -->
+      <RM_RustPuff MayRequire="mandrake.rm.biomes">0.3</RM_RustPuff>  <!-- rust puff -->
       <RM_HalfmadeTreeBlighted>0.15</RM_HalfmadeTreeBlighted>  <!-- blighted halfmade tree - front-line variant -->
       <RM_Meatvine>0.35</RM_Meatvine>  <!-- meatvine - infection-front vine -->
       <RM_Toothmoss>0.3</RM_Toothmoss>  <!-- toothmoss - burn-line carpet -->

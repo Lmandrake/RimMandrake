@@ -64,7 +64,7 @@
       </statFactors>
     </stuffProps>
     <modExtensions>
-      <li Class="RimMandrake.CreatureBehaviors.RM_ShadeClothExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadeClothExtension" MayRequire="mandrake.rm.biomes">
         <shadeBonus>0.3</shadeBonus>
       </li>
     </modExtensions>
@@ -113,13 +113,13 @@
       </li>
     </tools>
     <modExtensions>
-      <li Class="RimMandrake.CreatureBehaviors.RM_FalseShadeExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_FalseShadeExtension" MayRequire="mandrake.rm.biomes">
         <perceivedShade>0.9</perceivedShade>
         <radius>1.5</radius>
       </li>
     </modExtensions>
     <comps>
-      <li Class="RimMandrake.CreatureBehaviors.CompProperties_FalseShadeAmbusher" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.CompProperties_FalseShadeAmbusher" MayRequire="mandrake.rm.biomes">
         <maxPreyBodySize>1.2</maxPreyBodySize>
         <strikeRangeCells>1.9</strikeRangeCells>
         <strikeDamageRange>14~22</strikeDamageRange>

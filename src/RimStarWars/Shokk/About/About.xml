@@ -65,7 +65,7 @@ verify beyond the skin patch's static xpath match.</description>
       <displayName>RimWorld</displayName>
     </li>
     <li>
-      <packageId>mandrake.rm.webwork</packageId>
+      <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: the Webwork</displayName>
     </li>
     <li>
@@ -76,7 +76,7 @@ verify beyond the skin patch's static xpath match.</description>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
-    <li>mandrake.rm.webwork</li>
+    <li>mandrake.rm.biomes</li>
     <li>mlie.starwarsanimalcollection</li>
   </loadAfter>
 </ModMetaData>

@@ -254,7 +254,7 @@
            here from the_rot. The ruling landed in rosters/the_miasma.json and reached the
            game only through BiomeFlora_Ashkarr.xml's now-retired replace operation;
            transplanted here by BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
-      <RM_Nogtyl MayRequire="mandrake.rm.therot">0.4</RM_Nogtyl>  <!-- nogtyl -->
+      <RM_Nogtyl MayRequire="mandrake.rm.biomes">0.4</RM_Nogtyl>  <!-- nogtyl -->
     </wildPlants>
     <wildPlantRegrowDays>13</wildPlantRegrowDays>
   </BiomeDef>

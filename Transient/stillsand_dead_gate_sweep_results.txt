@@ -1,0 +1,269 @@
+SANITY PROBE: 171 About ids defined; 3437 refs; refs naming mandrake.rm.biomes: 187; mandrake.rm.biomes defined: True; probe OK
+composed ids (29): mandrake.rm.abyss, mandrake.rm.bluedesert, mandrake.rm.cauldron, mandrake.rm.contagion, mandrake.rm.creaturebehaviors, mandrake.rm.divinginteraction, mandrake.rm.environmentalhazards, mandrake.rm.feverwood, mandrake.rm.floodedcanyon, mandrake.rm.gelatinousslime, mandrake.rm.greentide, mandrake.rm.lanterndeeps, mandrake.rm.leaningscrub, mandrake.rm.longshade, mandrake.rm.miasma, mandrake.rm.movingdunes, mandrake.rm.nightsideice, mandrake.rm.pyrelands, mandrake.rm.rustcathedral, mandrake.rm.seashores, mandrake.rm.stillsand, mandrake.rm.terminalbiomes, mandrake.rm.theforge, mandrake.rm.therot, mandrake.rm.thesump, mandrake.rm.warscar, mandrake.rm.wasteland, mandrake.rm.webwork, mandrake.rm.weepingstones
+
+## COMPOSED: 1
+  src/RimStarWars/SWBestiary/About/About.xml:59 [loadAfter] mandrake.rm.feverwood
+
+## ORPHAN_OURS: 3
+  src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml:38 [MayRequire] mandrake.rut.rotsporekit
+  src/RimUtinni/UtinniPatches/About/About.xml:35 [loadAfter] mandrake.rut.rotsporekit
+  src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_ContagionRingScatter.xml:41 [MayRequire] mandrake.rut.rotsporekit
+
+## ORPHAN_EXTERNAL: 1377
+  sarg.alphaanimals  x194
+  mlie.starwarsanimalcollection  x119
+  sarg.alphabiomes  x72
+  OskarPotocki.VanillaFactionsExpanded.Core  x55
+  kentington.saveourship2  x55
+  brrainz.harmony  x45
+  redmattis.bigsmall.core  x45
+  RedMattis.BetterPrerequisites  x44
+  lee.theforce.lightsaber  x42
+  biomesteam.biomescore  x39
+  neronix17.toolbox  x37
+  guy762.Lee.KotORPotF  x31
+  Mlie.StarWarsAnimalCollection  x30
+  toastyman.moreritualseats  x19
+  Neronix17.OuterRim.DroidDepot  x18
+  vanillaexpanded.vmemese  x18
+  pathfinding.framework  x17
+  Dubwise.DubsBadHygiene.Lite  x15
+  vanillaexpanded.vgeneticse  x14
+  vanillaexpanded.backgrounds  x14
+  sarg.alphamemes  x12
+  lee.theforce.standalone  x12
+  EBSG.Framework  x11
+  oskarpotocki.vfe.insectoid  x9
+  vanillaexpanded.vplantse  x9
+  guy762.StarWarsXenotypes  x9
+  Mlie.XNDNocturnalAnimals  x9
+  oskarpotocki.vfe.insectoid2  x8
+  guy762.KotORDroids  x7
+  RedMattis.BigSmall.Core  x6
+  guy762.MM.KotORCore  x6
+  Neronix17.OuterRim.GalacticEmpire  x5
+  VanillaExpanded.VGeneticsE  x5
+  SWCP.GCWVehicles  x5
+  mlie.horrors  x5
+  guy762.KotORWeapons  x5
+  Neronix17.Outland.Genetics  x4
+  dubwise.dubsbadhygiene.lite  x4
+  Mlie.AdvancedBiomes  x4
+  smartkar.athenaframework  x4
+  Neronix17.OuterRim.Core  x4
+  LazyFridayStudio.GenesExpandedEyes  x4
+  regrowth.botr.core  x4
+  IronScruff.PrimordialGeysers  x4
+  vanillaexpanded.gravship  x4
+  who.vfee.isopodageneline  x4
+  Arcjc007.GravshipCrashes  x4
+  neronix17.outerrim.core  x4
+  guy762.KotORFactions  x4
+  sarg.alphagenes  x4
+  Rick.FCP.Core.Tools  x4
+  erdelf.HumanoidAlienRaces  x3
+  BiomesTeam.BiomesCore  x3
+  van.beasts  x3
+  vanillaracesexpanded.saurid  x3
+  Turnovus.Biotech.IntegratedGenes  x3
+  M3.Continued.JangoDsoul.TheForge.Anvil  x3
+  ab.hoffa  x3
+  sarg.alphavehiclesneolithic  x3
+  Dark.Signs  x3
+  vanillaexpanded.vplantsemore  x3
+  Who.VFEE.IsopodaGeneline  x3
+  Nals.FacialAnimation  x3
+  OskarPotocki.VFE.Insectoid2  x3
+  oskarpotocki.vfe.pirates  x3
+  neronix17.outerrim.droiddepot  x3
+  biomesteam.biomespollutedlands  x3
+  Killathon.ArtificialBeings.SynCore  x3
+  vanillaracesexpanded.phytokin  x3
+  ReGrowth.BOTR.Core  x3
+  LovelyDovey.Sex.WithRosaline  x3
+  DanZinagri.FacialAnimationCompatabilityProject  x3
+  guy762.mm.kotorcore  x2
+  VanillaExpanded.VFEFactory  x2
+  7f.alienworlds.tidallylocked  x2
+  XMB.AncientUrbanrUins.MO  x2
+  BiomesTeam.BiomesPollutedLands  x2
+  zal.betterinfestations  x2
+  aoba.fortress.industrial  x2
+  killathon.artificialbeings.syncore  x2
+  dubwise.rimefeller  x2
+  OskarPotocki.VFE.Tribals  x2
+  Neronix17.OuterRim.RebelAlliance  x2
+  sarg.alphamechs  x2
+  nephlite.orbitaltradecolumn  x2
+  vanillaexpanded.vwe  x2
+  7f.alienworlds  x2
+  mlie.preceptsandmemes  x2
+  VanillaExpanded.VMemesE  x2
+  Sarg.AlphaMemes  x2
+  redmattis.betterprerequisites  x2
+  vanillaracesexpanded.archon  x2
+  mlie.miningcodrillturret  x2
+  zylle.MoreVanillaBiomes  x2
+  jecrell.doorsexpanded  x2
+  LingLuo.Cockroach  x2
+  FantasyFan.SOS2.StarWarsShip  x2
+  JPT.speakup  x2
+  vanillaexpanded.vfesecurity  x2
+  guy762.starwarsxenotypes  x2
+  SmashPhil.VehicleFramework  x2
+  zal.gianttoads  x2
+  titans.fl  x2
+  vanillaquestsexpanded.cryptoforge  x2
+  det.epochspyrinth  x2
+  aRandomKiwi.RimThemes  x2
+  petetimessix.researchreinvented  x2
+  rim.job.world  x2
+  sapiently.theyatomicmonsters  x2
+  vanillaexpanded.vaewaste  x2
+  GRimTerra.Biomesmod  x2
+  vanillaquestsexpanded.generator  x2
+  vanillaquestsexpanded.ancients  x2
+  det.buzzers  x2
+  Neronix17.OuterRim.GalacticDiversity  x2
+  mlie.miningcospaceship  x1
+  zal.comigogreaterswamps  x1
+  xmb.ancientminingindustry.mo  x1
+  leutiankane.mines2patchouterrim  x1
+  vanillaexpanded.vplantsesucculents  x1
+  GarryFlowers.MoreSlaveryStuff  x1
+  mlie.factionraidcooldown  x1
+  iforgotmysocks.caravanadventures  x1
+  Erin.FFAnimals  x1
+  kilokio.rimai.core  x1
+  zal.moreutilitypacks  x1
+  mlie.miningcomms  x1
+  smashphil.vehicleframework  x1
+  ArmoredAmpharos.fancyrats  x1
+  Greg.CustomGasTypes  x1
+  BiomesTeam.BiomesFossils  x1
+  neronix17.outerrim.rebelalliance  x1
+  Mlie.PreceptsAndMemes  x1
+  adaptive.storage.framework  x1
+  vanillaexpanded.vbrewe  x1
+  divineDerivative.Romance  x1
+  btd.remix.gravshipblueprints  x1
+  error277.tunneler.expanded  x1
+  PeteTimesSix.ResearchReinvented  x1
+  neronix17.shieldgenerators  x1
+  vanillaexpanded.vfefarming  x1
+  Mlie.SpaceWorms  x1
+  kikohi.jewelry  x1
+  oblitus.mylittleplanet  x1
+  VanillaExpanded.VExplorationE  x1
+  xmb.ancienturbanruins.mo  x1
+  ironscruff.primordialgeysers  x1
+  vanillaexpanded.vfeart  x1
+  Maal.BetterTreesMod  x1
+  mlie.rfrumorhasit  x1
+  milkwater.destinymod  x1
+  btd.xenotyperemix.starwars  x1
+  VanillaExpanded.VanillaTraitsExpanded  x1
+  m3.continued.jangodsoul.starwars.tsda  x1
+  ChaoticEnrico.BetterTrees  x1
+  iforgotmysocks.CaravanAdventures  x1
+  det.keshig  x1
+  TRIBeagle.simpleslaverycollars  x1
+  vanillaexpanded.vfeproduction  x1
+  Qux.Comigo.BetterTreesMod  x1
+  vanillaexpanded.vcooke  x1
+  oskarpotocki.vanillavehiclesexpanded  x1
+  vanillaexpanded.vappe  x1
+  mlie.miningcoalertspeaker  x1
+  als.gravtech  x1
+  VanillaExpanded.VWE  x1
+  OskarPotocki.VFE.Pirates  x1
+  jecrell.jecstools  x1
+  aoba.warcasket  x1
+  guy762.kotordroids  x1
+  rick.fcp.core.tools  x1
+  hmc.wall.furniture  x1
+  VanillaExpanded.VCookE  x1
+  vanillaexpanded.vfefactory  x1
+  neronix17.outerrim.galacticdiversity  x1
+  tidal.morevanilla.textures  x1
+  vanillaexpanded.vfespacer  x1
+  vesper.egihologramsandprojectors  x1
+  Mlie.Horrors  x1
+  mlie.yayoscombat3  x1
+  mlie.spaceworms  x1
+  avius.prisonlabor  x1
+  clown.dedicatedturrets  x1
+  oskarpotocki.vanillafactionsexpanded.core  x1
+  aw.researchreinvented.retextured  x1
+  VanillaExpanded.VAEAccessories  x1
+  VanillaExpanded.VPsycastsE  x1
+  Mlie.MoEvents  x1
+  amoruch.RimWorldStealingMod  x1
+  erin.ffanimals  x1
+  redmattis.bigsmall  x1
+  vanillaexpanded.vfepower  x1
+  vanillaexpanded.vfecore  x1
+  guy762.lee.kotorpotf  x1
+  guy762.kotorfactions  x1
+  vanillaexpanded.vee  x1
+  coldcrow.betterkibble  x1
+  propickelz.tinkerbench  x1
+  mlie.xndnocturnalanimals  x1
+  Legator.PrisonerRealism  x1
+  VanillaExpanded.VAEWaste  x1
+  neronix17.outerrim.galacticempire  x1
+  lingluo.cockroach  x1
+  mlie.dungeonpack  x1
+  Killathon.ArtificialBeings  x1
+  weilbyte.snapout  x1
+  karew.orcclan  x1
+  TSA.TorturePod  x1
+  killathon.artificialbeings  x1
+  cain.mineshaft  x1
+  swcp.gcwvehicles  x1
+  VanillaExpanded.VBrewE  x1
+  Van.Beasts  x1
+  telardo.RomanceOnTheRim  x1
+  GulMadred.BreedingRitual  x1
+  als.gravtech.bc  x1
+  mlie.advancedbiomes  x1
+  grimterra.biomesmod  x1
+  m3.continued.jangodsoul.theforge.anvil  x1
+  fantasyfan.sos2.starwarsship  x1
+  vanillaexpanded.vpsycastse  x1
+  guy762.kotorweapons  x1
+  neku.largepawns  x1
+  arcjc007.lasercannon  x1
+  krkr.rule56  x1
+  zylle.morevanillabiomes  x1
+  Joe.Cephaloids  x1
+  biomesteam.biomescaverns  x1
+  oskarpotocki.vfe.tribals  x1
+  ebsg.framework  x1
+  OskarPotocki.VanillaVehiclesExpanded  x1
+  greg.customgastypes  x1
+  Neronix17.Toolbox  x1
+  Neronix17.Asimov  x1
+  sihv.rombonesport  x1
+  neronix17.asimov  x1
+  VanillaExpanded.VFEPropsandDecor  x1
+
+## INERT: 18
+  src/RimMandrake/LeaningScrub/Patches/BetterTrees_SweetlineTree_Immunity.xml:16 [MayRequire] ChaoticEnrico.BetterTrees
+  src/RimMandrake/LeaningScrub/Patches/BetterTrees_SweetlineTree_Immunity.xml:23 [MayRequire] ChaoticEnrico.BetterTrees
+  src/RimMandrake/MandrakePatches/Patches/ThirdPartySignConfigErrors_Fix.xml:28 [MayRequire] Dark.Signs
+  src/RimStarWars/DesertVehicleReskin/Patches/BeastVehicleProp_Identity.xml:58 [MayRequire] VanillaExpanded.VFEPropsandDecor
+  src/RimStarWars/DesertVehicleReskin/Patches/BeastVehicle_Identity.xml:56 [MayRequire] sarg.alphavehiclesneolithic
+  src/RimStarWars/DesertVehicleReskin/Patches/EopieSled_Identity.xml:30 [MayRequire] sarg.alphavehiclesneolithic
+  src/RimStarWars/DesertVehicleReskin/Patches/EopieSled_Identity.xml:54 [MayRequire] VanillaExpanded.VFEPropsandDecor
+  src/RimUtinni/AshkarrFlora/Patches/BetterTrees_SweetlineTree_Immunity.xml:24 [MayRequire] ChaoticEnrico.BetterTrees
+  src/RimUtinni/AshkarrFlora/Patches/BetterTrees_SweetlineTree_Immunity.xml:31 [MayRequire] ChaoticEnrico.BetterTrees
+  src/RimUtinni/UtinniPatches/Patches/TibannaEmbargo_CutMineableRoute.xml:53 [MayRequire] leutiankane.mines2patchouterrim
+  src/RimUtinni/UtinniPatches/Patches/TibannaEmbargo_CutMineableRoute.xml:53 [MayRequire] neronix17.outerrim.core
+  src/RimUtinni/UtinniPatches/Patches/WildAnimals_BlueDesert.xml:39 [MayRequire] mlie.starwarsanimalcollection
+  src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml:101 [MayRequire] mlie.starwarsanimalcollection
+  src/RimUtinni/UtinniPatches/Patches/WildAnimals_Greentide.xml:218 [MayRequire] sarg.alphaanimals
+  src/RimUtinni/UtinniPatches/Patches/WildAnimals_Greentide.xml:231 [MayRequire] oskarpotocki.vfe.insectoid2
+  src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheRot.xml:56 [MayRequire] mlie.starwarsanimalcollection
+  src/RimUtinni/UtinniPatches/Patches/WildAnimals_Warscar.xml:71 [MayRequire] who.vfee.isopodageneline
+  src/RimUtinni/UtinniPatches/Patches/WildPlants_Webwork.xml:38 [MayRequire] mlie.starwarsanimalcollection
