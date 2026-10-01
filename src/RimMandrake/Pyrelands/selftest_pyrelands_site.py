@@ -77,7 +77,7 @@ def world_rows():
 
 class FakeGame(object):
     TOOLS = {"jawa/mod_inventory", "jawa/running_mods", "jawa/get_defs", "jawa/mod_settings_field",
-             "jawa/window_list_close", "rimworld/take_screenshot", "jawa/weather_get", "jawa/weather_set",
+             "jawa/window_list_close", "rimworld/step_game_ticks", "rimworld/take_screenshot", "jawa/weather_get", "jawa/weather_set",
              "jawa/map_info", "jawa/world_mutators_get", "jawa/world_mutators_set", "jawa/list_things",
              "jawa/get_roof_batch", "jawa/cell_temperature", "rimworld/get_cell_info", "jawa/world_tile_get",
              "jawa/time_clock", "jawa/incident_queue_clear", "jawa/list_pawns", "jawa/storyteller_swap",
@@ -154,6 +154,8 @@ class FakeGame(object):
             if "setting_off" in f and fld == "fulguriteEnabled":
                 v = "False"
             return {"success": True, "field": fld, "value": v}
+        if tool == "rimworld/step_game_ticks":
+            return {"success": True, "status": "completed", "completedTicks": p.get("ticks")}
         if tool == "jawa/window_list_close":
             if p.get("action") == "close":
                 self.windows = [w for w in self.windows if w["type"] != p.get("typeName")]
