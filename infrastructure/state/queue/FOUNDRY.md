@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T13:37:20Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-10-01T01:09:31Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1251,6 +1251,33 @@ kind:     task
 summary:  1. Draftprints. The owner typed this note on the card: "I like the helix offering to purchase
 prose:    infrastructure/state/items/CONTAGION_GPT_ENRICHMENT_1.md
 
+## WASTELAND_GPT_ENRICHMENT_1 Wasteland enrichment (GPT consult 2026-09-30, owner-picked by card): named storms (Deadlight Halo, Cinderwire Storm), Middenshell Procession, Sealed Cask Bay (ship), Rite of Tipping (paid dumping)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Named storms. These give the two already-ruled storms their identities; the pass extends their
+prose:    infrastructure/state/items/WASTELAND_GPT_ENRICHMENT_1.md
+
+## BLUEDESERT_GPT_ENRICHMENT_1 Blue Desert enrichment (GPT consult 2026-09-30, owner-picked by card): blue-ice heat sink, the line gives back slowly (staged ablation salvage), Carbon Garden hydrocarbon plants only, the vhaulk road
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Blue-ice heat sink. Loading blue ice into a rack holds a room cold through a power failure. The
+prose:    infrastructure/state/items/BLUEDESERT_GPT_ENRICHMENT_1.md
+
+## GRAVSHIP_ACOUSTIC_SCANNER_1 Gravship acoustic scanner (owner, 2026-09-30, from the Cracked Lands Belly Sounder): grounded ship fires a sounding pulse that reveals broad bands of hidden things, with a per-biome payload in EVERY biome
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - A ship-mounted acoustic scanner. When the grounded gravship fires a sounding pulse, dust jumps
+prose:    infrastructure/state/items/GRAVSHIP_ACOUSTIC_SCANNER_1.md
+
 ## SCALD_CROWNCARPET_NO_HABITAT_1 RM_TheScald generates ~no plants: its only wild plant (crowncarpet) grows only on a shallow margin terrain that map generation never lays down (live 2026-09-30c: 1 plant, an anima tree). Give the biome that margin terrain or the plant a habitat it actually gets
 state:    doing
 row:      unassigned
@@ -2004,16 +2031,6 @@ thin:     no ## verify, no ## criteria
 summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
 
-## ROTSPOREKIT_MAYREQUIRE_ORPHANED_1 Retiring RotSporeKit orphaned ~30 MayRequire-gated rows in 6 live biome files (RM_ equivalents exist, need repointing)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ROTSPOREKIT_MAYREQUIRE_ORPHANED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ROTSPOREKIT_MAYREQUIRE_ORPHANED_1.md
-
 ## WARCASKET_WASTE_RUN_REMAINDER_1 Cask-bay follow-ons: five waste-run destinations, Stenchlands cask item, Junker pawnkind wearing the warcasket, what the half-extracted core is for
 state:    proposed
 row:      unassigned
@@ -2023,36 +2040,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WARCASKET_WASTE_RUN_REMAINDER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARCASKET_WASTE_RUN_REMAINDER_1.md
-
-## WASTELAND_GPT_ENRICHMENT_1 Wasteland enrichment (GPT consult 2026-09-30, owner-picked by card): named storms (Deadlight Halo, Cinderwire Storm), Middenshell Procession, Sealed Cask Bay (ship), Rite of Tipping (paid dumping)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Named storms. These give the two already-ruled storms their identities; the pass extends their
-prose:    infrastructure/state/items/WASTELAND_GPT_ENRICHMENT_1.md
-
-## BLUEDESERT_GPT_ENRICHMENT_1 Blue Desert enrichment (GPT consult 2026-09-30, owner-picked by card): blue-ice heat sink, the line gives back slowly (staged ablation salvage), Carbon Garden hydrocarbon plants only, the vhaulk road
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Blue-ice heat sink. Loading blue ice into a rack holds a room cold through a power failure. The
-prose:    infrastructure/state/items/BLUEDESERT_GPT_ENRICHMENT_1.md
-
-## GRAVSHIP_ACOUSTIC_SCANNER_1 Gravship acoustic scanner (owner, 2026-09-30, from the Cracked Lands Belly Sounder): grounded ship fires a sounding pulse that reveals broad bands of hidden things, with a per-biome payload in EVERY biome
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  - A ship-mounted acoustic scanner. When the grounded gravship fires a sounding pulse, dust jumps
-prose:    infrastructure/state/items/GRAVSHIP_ACOUSTIC_SCANNER_1.md
 
 ## CRACKEDLANDS_GPT_ENRICHMENT_1 Cracked Lands enrichment (GPT consult 2026-09-30, owner-picked by card): Ledges of Mercy, five beats before water, Peakstorm light, three-height flora, the recede feast, floodline salvage claim; acoustic scanner's Cracked Lands payload
 state:    proposed
@@ -2093,3 +2080,133 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/CONTAGION_GROWN_LIMBS_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/CONTAGION_GROWN_LIMBS_BUILD_1.md
+
+## LEANINGSCRUB_GPT_ENRICHMENT_1 Leaning Scrub enrichment (GPT consult 2026-09-30, owner-picked by card): venomvine as distinct rooms (five forms + more to pitch), runway bloom, named sweetline trees
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Venomvine as distinct rooms, and MORE forms than five. Owner typed: "I really like the
+prose:    infrastructure/state/items/LEANINGSCRUB_GPT_ENRICHMENT_1.md
+
+## LONGSHADE_GPT_ENRICHMENT_1 Long Shade enrichment (GPT consult 2026-09-30, owner-picked by card): ship becomes a refuge, gloomcast moves shade, camera-keyed heat soundscape, lee-side middens, shade gear learned by study
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Ship becomes a refuge (Shipfall Commons). After landing, the shade grid sees the gravship's
+prose:    infrastructure/state/items/LONGSHADE_GPT_ENRICHMENT_1.md
+
+## CHILL_CRYOPONICS_GROWER_1 Fully enclosed cryoponics grower for the Chill's six propane-bed plants (owner ruling 2026-09-30)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  - A buildable, fully enclosed grower (hydroponics-style BuildingPlantGrower) that can grow the six
+prose:    infrastructure/state/items/CHILL_CRYOPONICS_GROWER_1.md
+
+## CHILL_FLOOR_GROWING_BED_1 Normal growing bed placeable only on the Chill floor, for the six bed plants (owner ruling 2026-09-30)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  CHILLFLOORGROWINGBED1 — a normal growing bed placeable only on the Chill floor
+prose:    infrastructure/state/items/CHILL_FLOOR_GROWING_BED_1.md
+
+## STILLSAND_BEDAZZLE_CONTENT_1 Stillsand presentation wave: wire 6 finished render sets, build the 9 ruled fill-out defs, wire this commission's creature art (vozzik/vekka/drazzik/nizzek/guzzka/aurrok/biosilica), vaalok/qorrax/eemmok rows, catches to RM_
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Wire the six finished-but-unwired render sets. Each def's texPath resolves nowhere today:
+prose:    infrastructure/state/items/STILLSAND_BEDAZZLE_CONTENT_1.md
+
+## STILLSAND_SAND_SWIM_KIT_1 Stillsand sand-swim kit: things swim under the sand (submerge/wake/rumble/breach, readable signs), droids invisible to swimmers, the thumper (vibration + moisture), sand fishing wired, the Listening sound bed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. The sand-swim kit (RM tier, CreatureBehaviors kit). RMSandSwimExtension on a race
+prose:    infrastructure/state/items/STILLSAND_SAND_SWIM_KIT_1.md
+
+## STILLSAND_SUN_FROM_LATITUDE_1 Stillsand sun from latitude: pinned sky from the tile, cover follows sun angle (overhead >~55 deg), sin(elev) heat, sand glare, race-gated glare-blind + sun goggles (Jawa immune), the mirage, wind locked to the sun bearing
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Pin the sky from the tile. Add RMPinnedSunExtension to RMStillsand with elevation
+prose:    infrastructure/state/items/STILLSAND_SUN_FROM_LATITUDE_1.md
+
+## STILLSAND_EVENT_CREATURES_1 Stillsand event creatures: krayt attack incident on top of wild krayts, the muurrok (RM leviathan, mirror-crest beam on an animal-safe Verb_ShootBeam copy), sarlacc comes to root, greater krayt den quest, krayt horn
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. 🔴 The krayts and the war wyrm STAY WILD (owner, by card, 2026-09-30; he declined the doc's
+prose:    infrastructure/state/items/STILLSAND_EVENT_CREATURES_1.md
+
+## STILLSAND_PRECIOUS_CAVES_1 Stillsand rare rock + precious cave: yardang genstep with a shade-face cave, the cave as a place (brine seep, mummified register), weighted precious table that finally spawns the guzzka; no sinkholes
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. The rock genstep (RM tier). After terrain: if the map has natural rock, take the largest
+prose:    infrastructure/state/items/STILLSAND_PRECIOUS_CAVES_1.md
+
+## STILLSAND_DUNE_GALE_1 Stillsand dune gale: the biome's own storm on the dunes engine (dunes march, sun off, abrasion, carry-and-return), gale static, one emergence incl. the mummified caravan, dust devils, tracks wiped
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. RMDuneGale WeatherDef plus a GameConditionDef for its duration: rare (a few a year), one
+prose:    infrastructure/state/items/STILLSAND_DUNE_GALE_1.md
+
+## STILLSAND_GLASS_LENS_CHAIN_1 Stillsand sand-to-glass-to-lens chain: drift shovelling yields glass sand at full yield, sieve as grader, sun furnace, lenses, solar still (+ wringing still), solar oven, sun lance, geophone, fulgurites on Stillsand with real-photo art
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Drift shovelling yields glass sand, at full yield (ruled by card 2026-09-30; REVERSES the
+prose:    infrastructure/state/items/STILLSAND_GLASS_LENS_CHAIN_1.md
+
+## STILLSAND_SKELETONS_TRACKS_1 Stillsand huge skeletons and tracks: 0-2 giant skeleton buildings per map with bone harps, giant corpses become skeletons, krayt graveyard re-pointed, track filths the dunes erase, horizon dust warnings
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Giant skeleton buildings, one per giant: multi-cell, staticSunShadowHeight per piece,
+prose:    infrastructure/state/items/STILLSAND_SKELETONS_TRACKS_1.md
+
+## STILLSAND_RETURN_RITUAL_1 Stillsand Return: Sun-Debt water ledger weighting the biome's events, the Return ritual at a debt stone (bloom, debt paid, the sand gives back), RM bloom-on-pour
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. The Debt (Utinni tier). A colony counter of water drawn on Stillsand maps: every still litre,
+prose:    infrastructure/state/items/STILLSAND_RETURN_RITUAL_1.md

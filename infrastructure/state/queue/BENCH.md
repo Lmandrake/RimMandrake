@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-30T13:37:20Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-10-01T01:09:31Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -278,15 +278,6 @@ target:   v1
 kind:     design
 summary:  (no items/WASTELAND_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WASTELAND_BEDAZZLE_SITTING_1.md
-
-## STILLSAND_BEDAZZLE_SITTING_1 Stillsand bedazzle sitting - program row 9: score against the nine-mark bar (09-27 sitting + roster fill-out done), fill gaps, four-turn volley to the bar, ticket + commission
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/STILLSAND_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/STILLSAND_BEDAZZLE_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -954,16 +945,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GREYSEA_USELESS_ARTIFACT_PLOT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GREYSEA_USELESS_ARTIFACT_PLOT_1.md
 
-## STILLSAND_CAVERN_AUTHORING_1 Author the Stillsand caverns as a place (ruled STILLSAND_DESIGN_SITTING_1 Q10, 2026-09-27: re-file both halves - beast+eggs went to DESERT_CAVERN_BEAST_EGGS_1, this is the cavern-authoring half): permanently shaded canyon/cavern terrain, brine and mineral-salt seeps, mummified preservation register per deep_desert.md - lands with the Stillsand row of BAROQUE_BEDAZZLE_PROGRAM_1
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/STILLSAND_CAVERN_AUTHORING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/STILLSAND_CAVERN_AUTHORING_1.md
-
 ## BEDAZZLE_FLORA_EXPANSION_1 Flora expansion pitches for Blue Desert, Cracked Lands and the Cauldron - owner asked for more plant-like members on all three sheets (2026-09-29); pitch new flora per biome accent at the next sitting
 state:    proposed
 row:      unassigned
@@ -994,22 +975,12 @@ thin:     no ## spec, no ## verify
 summary:  LONGSHADESHADEEXTRAS1 — Long Shade small ideas, deferred for the owner
 prose:    infrastructure/state/items/LONGSHADE_SHADE_EXTRAS_1.md
 
-## BEDAZZLE_ENRICHMENT_REVIEW_REST_1 Owner review later: GPT enrichment cards for Leaning Scrub and Long Shade, plus the Stillsand turn-3 development and its five open questions
+## WATCHER_CREATURES_MOD_1 Watchers mod: cross-biome shy creatures that sit, poke out, watch, and jerk away to hide when pawns near (owner idea 2026-09-30); shared kit + a member per biome; piinnok is the first
 state:    proposed
 row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
 thin:     no ## verify
-summary:  1. Leaning Scrub GPT enrichment cards. GPT's answer is in the committed consult folder
-prose:    infrastructure/state/items/BEDAZZLE_ENRICHMENT_REVIEW_REST_1.md
-
-## CHILL_WALKABLE_BED_TERRAIN_1 The Chill's six bed plants can only grow on liquid propane (the only RM_TheChillBed terrain), which the dive crew cannot stand in to harvest - rule a walkable bed terrain for the Chill floor, or accept them as unharvestable pool flora
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CHILL_WALKABLE_BED_TERRAIN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CHILL_WALKABLE_BED_TERRAIN_1.md
+summary:  A cross-biome RM mod (franchise-free tier): a shared behaviour kit, plus a family of small watcher
+prose:    infrastructure/state/items/WATCHER_CREATURES_MOD_1.md
