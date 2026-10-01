@@ -225,6 +225,10 @@ namespace RimMandrake.CreatureBehaviors
     //      tagged commensal stops tracking the nearest shadow-caster host
     //      and falls through to ordinary vanilla wander — it never seeks
     //      the host out, but nothing stops it standing near one by chance.
+    //      movingShadeEnabled — LONGSHADE_GPT_ENRICHMENT_1 §2: a host whose
+    //      RM_CompProperties_ShadowCaster sets castShadeHeight (the gloomcast)
+    //      casts real moving shade into the grid. Off: the layer is cleared and
+    //      the host is a follow-only host again.
     //  37. pinnedSunEnabled / pinnedSunSkyStrength — RM_MapComponent_PinnedSun
     //      + RM_PinnedSunPatches (LONGSHADE_BEDAZZLE_MECHANICS_1 part 1, the
     //      golden hour). Only a biome carrying RM_PinnedSunExtension is
@@ -346,6 +350,7 @@ namespace RimMandrake.CreatureBehaviors
         public static bool sightBlockRangedFire = true;
         public static int sightBlockCellsNeeded = 1;
         public static bool shadowFollowEnabled = true;
+        public static bool movingShadeEnabled = true;
         public static bool pinnedSunEnabled = true;
         public static float pinnedSunSkyStrength = 1f;
         public static bool falseShadeAmbushEnabled = true;
@@ -435,6 +440,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sightBlockRangedFire, "sightBlockRangedFire", true);
             Scribe_Values.Look(ref sightBlockCellsNeeded, "sightBlockCellsNeeded", 1);
             Scribe_Values.Look(ref shadowFollowEnabled, "shadowFollowEnabled", true);
+            Scribe_Values.Look(ref movingShadeEnabled, "movingShadeEnabled", true);
             Scribe_Values.Look(ref pinnedSunEnabled, "pinnedSunEnabled", true);
             Scribe_Values.Look(ref pinnedSunSkyStrength, "pinnedSunSkyStrength", 1f);
             Scribe_Values.Look(ref falseShadeAmbushEnabled, "falseShadeAmbushEnabled", true);
@@ -698,6 +704,10 @@ namespace RimMandrake.CreatureBehaviors
                 "On: a tagged small commensal actively tracks and follows the nearest large "
               + "shadow-casting host creature, staying in its moving shadow. Off: it stops seeking "
               + "one out and just wanders normally — nothing stops it standing near a host by chance.");
+            list.CheckboxLabeled("Giants cast moving shade", ref movingShadeEnabled,
+                "On: a giant built to cast shade (the Long Shade's gloomcast) throws a real shadow that "
+              + "moves with it. Anything looking for shade can shelter in it, and it cools whoever stands "
+              + "in it like the shadow of a rock. Off: its shadow is only something its riders follow.");
             list.GapLine();
 
             list.CheckboxLabeled("Pinned sun (golden hour)", ref pinnedSunEnabled,

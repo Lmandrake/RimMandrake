@@ -163,6 +163,16 @@
            about — the free mod itself declares nothing SW-tier. -->
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadowCaster">
         <commensalFollowRadius>4</commensalFollowRadius>
+        <!-- LONGSHADE_GPT_ENRICHMENT_1 §2 ("the gloomcast moves shade", owner-picked
+             by card 2026-09-30): its body is a real moving shade caster in the shade
+             grid, so every shade-seeking creature, not only its riders, can shelter
+             in it, and it cools whoever stands in it.
+             TUNED: height 2.0 (twice a rock: "colossal", bodySize 16) and a 3x3 body
+             footprint (radius 1) are first values for the owner to judge in game;
+             no ruling gives them. -->
+        <castShadeHeight>2.0</castShadeHeight>
+        <castShadeRadius>1</castShadeRadius>
+        <castShadeDepth>1.0</castShadeDepth>
       </li>
     </comps>
     <race>
