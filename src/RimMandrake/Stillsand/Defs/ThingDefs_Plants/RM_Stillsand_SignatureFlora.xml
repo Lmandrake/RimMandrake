@@ -23,10 +23,9 @@
   R22's freeze and this item's own explicit "do not touch RUT_ExtremeDesert"
   instruction.
 
-  Art: real, deployed renders already exist for the light-pipe nub and the ollim
-  pair under their RSW_ texPaths (rslpn_v1/rswollim_v1/rswollimwood_v1, landed
-  2026-09-24). Reused verbatim below — texture binds by texPath, not defName, so
-  no re-render is owed for a pure tier move.
+  Art: the real renders (rslpn_v1/rswollim_v1/rswollimwood_v1) are copied into this mod
+  under RM_ names (Textures/Things/Plant/RM_LightPipeNub, RM_Ollim, Item/Resource/RM_OllimWood), so
+  the free mod stands alone (Q11a, STILLSAND_BEDAZZLE_CONTENT_1).
 -->
 <Defs>
 
@@ -45,8 +44,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <!-- rslpn_v1, real art, already deployed at this texPath. -->
-      <texPath>Things/Plant/RSW_LightPipeNub</texPath>
+      <texPath>Things/Plant/RM_LightPipeNub</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -86,8 +84,7 @@
     </descriptionHyperlinks>
     <fillPercent>0.35</fillPercent>
     <graphicData>
-      <!-- rswollim_v1, real art, already deployed at this texPath. -->
-      <texPath>Things/Plant/RSW_Ollim</texPath>
+      <texPath>Things/Plant/RM_Ollim</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <statBases>
@@ -133,8 +130,7 @@
     <label>ollim wood</label>
     <description>Wood struck from an ollim stand — bone-white, dense as stone, and grown so slowly that a single plank predates most ruins on the planet. It shrugs off fire and blistering heat the way almost nothing else does, but a hard strike shatters it clean through: the tree traded strength for the one thing that actually kept it alive out here. Prized in a handful of recipes for exactly that trade-off.</description>
     <graphicData>
-      <!-- rswollimwood_v1, real art, already deployed at this texPath. -->
-      <texPath>Things/Item/Resource/RSW_OllimWood</texPath>
+      <texPath>Things/Item/Resource/RM_OllimWood</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <soundInteract>Wood_Drop</soundInteract>
@@ -191,7 +187,6 @@
     <label>biosilica</label>
     <description>A handful of clear, glassy lenses cut from a light-pipe nub — real optics, grown rather than ground, and the only non-volcanic natural glass on the planet. Too small and irregular for anything but the most patient hand-fitted work, but genuinely optical-grade: sensor lenses and glazing panels made from it see just as clearly as anything shaped in a furnace.</description>
     <graphicData>
-      <!-- art pending — brand-new item this pass, no render filed yet. -->
       <texPath>Things/Item/Resource/RM_Biosilica</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>

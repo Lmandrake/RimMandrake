@@ -45,13 +45,10 @@ invented, franchise-free content directly — no longer empty. wildAnimals carri
 and aurrok (a grown spined-gow port); wildPlants carries the light-pipe nub and the ollim
 (+ its harvested wood, + a new biosilica harvest item). None of this is Star Wars IP.
 
-⚠️ One row, RM_Qorrax (renamed from JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified), carries no RSW_/SW_/RUT_ prefix but is flagged in the
-item's own MEASURED STATE and routed to the Utinni patch file anyway: its ThingDef/
-PawnKindDef live in
-src/RimUtinni/UtinniPatches/Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml (Utinni
-tier), so wiring it inline here would give a RimMandrake-tier mod an undeclared hard
-dependency on Utinni content. STILLSAND_RULED_CONTENT_1 explicitly deferred qorrax pending
-the owner's art-review sheet — left untouched here and in the Utinni patch.
+✅ RM_Qorrax (renamed from JOE_Cephalope, Q7 ratified) is native to this mod
+(STILLSAND_BEDAZZLE_CONTENT_1): its ThingDef, PawnKindDef, body, eggs and renders ship
+here, so it no longer rides the Utinni patch route. Its defName is unchanged; other
+biomes' rows still resolve.
 
 Live proof (a scratch-world quicktest with all five expansions) is Desktop-only and OWED —
 see the item's own verify record.
@@ -66,8 +63,7 @@ replaces vanilla's TunnelHiveSpawner at the eruption point. RM_SandBusterEruptio
 via its own allowedBiomes field — the planet-wide ban of vanilla's own Infestation is
 mandrake.rut.patches' Infestation_PlanetwideBan.xml, not this mod. Neither caste is
 wired into wildAnimals — both are purely incident-spawned, matching the biome's own
-event-driven/dormant design law. Art queued (infrastructure/artpipe/art_lists/
-sandbuster_castes.csv), none rendered yet; every def ships with a placeholder texPath.
+event-driven/dormant design law. Both castes and the mound ship with their own renders.
 
 ✅ DESERT_CAVERN_BEAST_EGGS_1: ships the deep desert's cave-beast (guzzka, RM_Guzzka)
 and its prize eggs (RM_GuzzkaEggFertilized/Unfertilized) — deep_desert.md §8's "huge
@@ -79,5 +75,13 @@ here: caverns/permanently shaded canyons are not yet generated ground, so this d
 defined and homeless on purpose, pending the still-unbuilt cavern-authoring item. The
 egg optionally carries Dubs Bad Hygiene's WaterExt (MayRequire-gated, per-list-item, mirrors
 FlowWorks' RM_ColoredWaterBottles.xml) alongside its own always-on narrative water-value
-stats, so it reads as water-wealth with or without that mod active.</description>
+stats, so it reads as water-wealth with or without that mod active.
+✅ STILLSAND_BEDAZZLE_CONTENT_1: every def carries its own render in Textures/ (no Alpha
+Animals, SWBestiary or vanilla donor texture), including the six sets copied from
+SWBestiary/Utinni (ollim, ollim wood, light-pipe nub, qorrax) and the egg shell texture.
+Six fill-out creatures (soorrak, gaanok, liikka, duumma, veessa, loomma), three fill-out
+plants (hourbloom, kneel ollim, glasscrust), the vaalok pack giant, the zuurrik blood-waker
+swarm with its blood-on-sand map component, and the sand catches RM_DuneCrawler and
+RM_GlassPearl (moved here from SWBestiary, invented content). The shade mite ships as the
+eemmok (label only, defName unchanged).</description>
 </ModMetaData>

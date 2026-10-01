@@ -68,9 +68,7 @@
   sandbuster_castes.csv -> pending/RM_Ruukka_{south,east,north}.json,
   RM_Oorrik_{south,east,north}.json) — both prompts
   explicitly require the no-insect-silhouette + sun-face/shade-face split;
-  texPaths below point at each def's own future folder, art pending, same
-  posture this mod's other unrendered ports use (RM_Ikee, RM_Vekka,
-  RM_Drazzik, RM_Aurrok).
+  texPaths point at the rendered sets copied into this mod (STILLSAND_BEDAZZLE_CONTENT_1).
 -->
 <Defs>
 
@@ -206,10 +204,6 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <!-- art pending — SANDBUSTER_CASTES_BUILD_1, pending/RM_Ruukka_{south,
-               east,north}.json filed. Brief:
-               NO insect/spider silhouette; dorsal sun-face plate vs. soft
-               ventral shade-face split must read clearly. -->
           <texPath>Things/Pawn/Animal/RM_Ruukka/RM_Ruukka</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>3.2</drawSize>
@@ -304,10 +298,6 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <!-- art pending — SANDBUSTER_CASTES_BUILD_1, pending/RM_Oorrik_{south,
-               east,north}.json filed. Brief:
-               NO insect/spider silhouette; grain-scale, not a scaled-down
-               copy of ruukka's art. -->
           <texPath>Things/Pawn/Animal/RM_Oorrik/RM_Oorrik</texPath>
           <drawSize>0.55</drawSize>
         </bodyGraphicData>

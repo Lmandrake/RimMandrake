@@ -42,7 +42,8 @@
     the mid-sized SURFACE animal; a subsurface body is defended by depth instead of
     size. Ratified: annotate in place (each def's own header/race comment), evict
     nothing. wildPlants is no longer empty either (light-pipe nub, ollim).
-    allowedPackAnimals remains empty (canon pack animals only, Utinni-patched).
+    allowedPackAnimals carries the native RM_Vaalok (STILLSAND_BEDAZZLE_CONTENT_1); the canon pack
+    animals are Utinni-patched.
   -->
 
   <BiomeDef>
@@ -179,6 +180,18 @@
       <RM_Drazzik>0.05</RM_Drazzik>
       <!-- §7 Q8: the roster's one confirmed unwired row, grown to giant scale. -->
       <RM_Aurrok>0.15</RM_Aurrok>
+      <!-- STILLSAND_BEDAZZLE_CONTENT_1: qorrax moved inline (Q1); terrain-bound to deep sand. -->
+      <RM_Qorrax>0.5</RM_Qorrax>
+      <!-- STILLSAND_BEDAZZLE_CONTENT_1: the nine-def roster fill-out, one def per gap the
+           sheets rule (stillsand_roster_fillout_2026-09-27.md), at the doc's commonalities.
+           RM_Zuurrik and RM_Vaalok are deliberately NOT here: the zuurrik is woken by blood
+           (RM_MapComponent_Zuurrik), and the vaalok is a trader's pack animal. -->
+      <RM_Soorrak>0.02</RM_Soorrak>
+      <RM_Gaanok>0.01</RM_Gaanok>
+      <RM_Liikka>0.2</RM_Liikka>
+      <RM_Duumma>0.08</RM_Duumma>
+      <RM_Veessa>0.1</RM_Veessa>
+      <RM_Loomma>0.05</RM_Loomma>
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
@@ -187,11 +200,16 @@
            Utinni patch (weights unchanged from the original RSW_ rows). -->
       <RM_LightPipeNub>0.1</RM_LightPipeNub>
       <RM_Ollim>0.01</RM_Ollim>
+      <!-- STILLSAND_BEDAZZLE_CONTENT_1 fill-out flora. The hourbloom is event output only. -->
+      <RM_KneelOllim>0.008</RM_KneelOllim>
+      <RM_Glasscrust>0.15</RM_Glasscrust>
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
     <allowedPackAnimals>
-      <!-- Deliberately empty — see the header comment. Wired by
+      <!-- STILLSAND_BEDAZZLE_CONTENT_1: the vaalok, the free tier's own pack giant (Q11),
+           so the standalone mod generates traders. The canon pack animals are added by
            src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml. -->
+      <li>RM_Vaalok</li>
     </allowedPackAnimals>
     <modExtensions>
       <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "lowSun" - the Deep Desert (this def merges deep_desert.md + dune_sea.md): "a low sun in the deep desert, so a shield you stand behind works and overhead shade does not".

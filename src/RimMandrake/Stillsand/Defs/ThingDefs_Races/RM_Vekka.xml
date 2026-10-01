@@ -157,7 +157,6 @@
       <li>
         <label>vekka cub</label>
         <bodyGraphicData>
-          <!-- art pending — STILLSAND_RULED_CONTENT_1 tier move, no render filed yet -->
           <texPath>Things/Pawn/Animal/RM_Vekka/RM_Vekka</texPath>
           <drawSize>1.2</drawSize>
         </bodyGraphicData>

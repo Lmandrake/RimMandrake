@@ -56,12 +56,8 @@
   "Population target: sparse to the point of discomfort... a correct dune
   sea map is mostly nothing."
 
-  Art: no existing render found for "mirror giant"/"sun-axis giant"/
-  "mirrorplated" in infrastructure/artpipe/{done,pending,registry.jsonl}
-  (checked this pass). One 3-facing job filed, rmmirrorgiant_v1_{south,
-  east,north} — prompt written to require the sun-face/shade-face split
-  explicitly (mirror-white, hard-edged dorsal plating vs. dark, soft
-  ventral/shaded flank), the one property a reskin could never carry.
+  Art: 3-facing render rmmirrorgiant_v1 (sun-face/shade-face split), copied into
+  Textures/Things/Pawn/Animal/RM_Oommok.
 
   🔴 NAME RATIFIED — STILLSAND_RULED_CONTENT_1 (2026-09-27 sitting, §7/Rulings
   Q11): checker 6/6, Wookieepedia 0 hits with a live probe. RM_MirrorGiant was
@@ -185,21 +181,21 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_MirrorGiant/RM_MirrorGiant</texPath>
+          <texPath>Things/Pawn/Animal/RM_Oommok/RM_Oommok</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>3.0</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_MirrorGiant/RM_MirrorGiant</texPath>
+          <texPath>Things/Pawn/Animal/RM_Oommok/RM_Oommok</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>5.0</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_MirrorGiant/RM_MirrorGiant</texPath>
+          <texPath>Things/Pawn/Animal/RM_Oommok/RM_Oommok</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>7.5</drawSize>
         </bodyGraphicData>

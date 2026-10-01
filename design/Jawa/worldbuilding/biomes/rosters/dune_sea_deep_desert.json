@@ -701,6 +701,62 @@
       "commonality": 0.5,
       "def": "JOE_Cephalope",
       "law": "the QORRAX (name RATIFIED 2026-09-27 at the Long Shade cards; our own recreated art owed). Deadly sand-swimmer TERRAIN-BOUND to the deep-sand walkable terrain and WEIGHTED HERE (owner, typed: 'Some in the Long Shade, Muchly in the Stillsand' - DEEP_SAND_WALKABLE_TERRAIN_1); bs 1.2, mid-band legal by the depth arm (Q7); ->RM_Qorrax, with its ThingDef moved out of Utinni-tier Absorbed_Cephaloids_Defs.xml (Q1)"
+    },
+    {
+      "action": "add",
+      "band": "giant",
+      "commonality": 0.02,
+      "def": "RM_Soorrak",
+      "law": "giant flier; real flight, eggs are canteens; BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01)."
+    },
+    {
+      "action": "add",
+      "band": "giant",
+      "commonality": 0.01,
+      "def": "RM_Gaanok",
+      "law": "never-attacking follower; takes only the downed; BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01)."
+    },
+    {
+      "action": "add",
+      "band": "grain-scale",
+      "commonality": 0.2,
+      "def": "RM_Liikka",
+      "law": "light-eater; filter-feeds sand; BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01)."
+    },
+    {
+      "action": "add",
+      "band": "subsurface (depth arm)",
+      "commonality": 0.08,
+      "def": "RM_Duumma",
+      "law": "prey that drums dry; butchers into carried drink; depth arm, annotated in place; BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01)."
+    },
+    {
+      "action": "add",
+      "band": "grain-scale",
+      "commonality": 0.1,
+      "def": "RM_Veessa",
+      "law": "miller of the mummified fields; corpse diet; BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01)."
+    },
+    {
+      "action": "add",
+      "band": "grain-scale",
+      "commonality": 0.05,
+      "def": "RM_Loomma",
+      "law": "the ollim's tenant; shade-bound, dies in the open; BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01)."
+    },
+    {
+      "action": "add",
+      "band": "grain-scale, subsurface, dormant",
+      "commonality": 0,
+      "def": "RM_Zuurrik",
+      "law": "ADMITTED by owner card 2026-09-30. The blood-waker swarm: NOT a wildAnimals row. It is woken by blood filth on sand by RM_MapComponent_Zuurrik (Stillsand/Source), strips the stain and the bodies beside it, then re-buries. Never attacks the unwounded; keys to blood, never to a clock of day. BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01); art placeholder until the queued render lands."
+    },
+    {
+      "action": "add",
+      "band": "giant (pack)",
+      "commonality": 0,
+      "def": "RM_Vaalok",
+      "law": "Free-tier pack giant (Q11), allowedPackAnimals only, so the standalone mod generates traders. BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01); art placeholder until the queued render lands."
     }
   ],
   "fish": {
@@ -722,6 +778,21 @@
       "commonality": 0.01,
       "def": "RSW_Ollim",
       "law": "EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20) — deep_desert.md SS4b's shade tree, sparse per the sheets' own \"if the roster looks healthy, it is wrong\" ruling. ->RM_Ollim / RM_OllimWood with the Q1 tier move (2026-09-27)."
+    },
+    {
+      "commonality": 0.008,
+      "def": "RM_KneelOllim",
+      "law": "the ollim's second growth form; fells to RM_OllimWood. BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01)."
+    },
+    {
+      "commonality": 0.15,
+      "def": "RM_Glasscrust",
+      "law": "the graze base; yields RM_BiosilicaGrit. BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01)."
+    },
+    {
+      "commonality": 0,
+      "def": "RM_Hourbloom",
+      "law": "The anhydrobiotic bloom's plant def. Never map-resident: output of a bloom incident only (RM_IncidentWorker_BloomBurst bloomPlant). BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01); the incident that names it is not wired."
     }
   ],
   "flora_purged": [
@@ -836,13 +907,13 @@
       "from_sheet": "stillsand_roster_fillout_2026-09-27.md — the 2026-09-27 fill-out commission (owner, typed: 'but we need to fill out that roster. That's silly. More!')",
       "kind": "creature",
       "mechanic_load": "reuses shipped comps only (core flight; RM_FilterFeed*; RM_CompFluidSacs; vanilla corpse diet; RM_CompDungSeeder + shade stack)",
-      "name": "six DRAFT fill-out species pending the owner's review sheet: RM_Soorrak (giant flier, eggs-as-canteens), RM_Gaanok (attritional follower), RM_Liikka (grain light-eater), RM_Duumma (depth-arm water-cask that drums dry), RM_Veessa (miller of the mummified fields), RM_Loomma (the ollim's rent-paying tenant) — names checker- and probe-clean, art queued 2026-09-27"
+      "name": "six fill-out species BUILT (RM_Soorrak, RM_Gaanok, RM_Liikka, RM_Duumma, RM_Veessa, RM_Loomma) in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01)"
     },
     {
       "from_sheet": "stillsand_roster_fillout_2026-09-27.md §3 (same commission)",
       "kind": "plant",
       "mechanic_load": "hourbloom rides the shipped RM_IncidentWorker_BloomBurst; the other two are pure XML",
-      "name": "three DRAFT fill-out flora pending the owner's review sheet: hourbloom (the anhydrobiotic bloom's plant defs — the sheets' own hours-to-days carve-out), kneel ollim (the ollim's second growth form, same RM_OllimWood), glasscrust (the grain fauna's graze base, biosilica grit)"
+      "name": "three fill-out flora BUILT (RM_Hourbloom, RM_KneelOllim, RM_Glasscrust) in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01)"
     }
   ],
   "sheet": "dune_sea + deep_desert",

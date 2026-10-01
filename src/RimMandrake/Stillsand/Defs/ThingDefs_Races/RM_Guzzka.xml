@@ -99,14 +99,7 @@
   manhunter-pack incident is plausible once it has a real home; today it is
   moot either way because nothing spawns it.
 
-  ART: no render exists for "guzzka"/"cave beast"/"cavern beast" anywhere in
-  infrastructure/artpipe/{done,pending}/registry.jsonl (checked this pass —
-  0 hits). Shipping with a placeholder texPath pointing at this def's own
-  future folder, same posture as every other unrendered port in this mod
-  (RM_Ruukka, RM_Oorrik, RM_Drazzik, RM_Ikee, RM_Aurrok). Not queuing an
-  artpipe job in this pass — the brief needs the cavern's shaded-permanently
-  lighting context to write well, and that context lands with the cavern
-  authoring item, not here.
+  ART: own 3-facing render, Textures/Things/Pawn/Animal/RM_Guzzka (STILLSAND_BEDAZZLE_CONTENT_1).
 -->
 <Defs>
 
@@ -240,8 +233,6 @@
       <li>
         <label>guzzka cub</label>
         <bodyGraphicData>
-          <!-- art pending — DESERT_CAVERN_BEAST_EGGS_1, no render exists
-               (registry checked this pass). -->
           <texPath>Things/Pawn/Animal/RM_Guzzka/RM_Guzzka</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.6</drawSize>
@@ -284,7 +275,7 @@
     <description>Bigger than a Jawa's own head and heavy enough to need both arms, this is the whole reason anyone braves a guzzka's cavern at all — a rigid shell of good water thick enough to carry a scavenging party home. Sloshing, cool, and not remotely quiet if you hold still and listen: something inside it is already awake, and it did not wait for its mother to leave before it decided you were the reason to hurry.</description>
     <possessionCount>1</possessionCount>
     <graphicData>
-      <texPath>swresource/EggScaled</texPath>
+      <texPath>Things/Item/Egg/RM_EggScaled</texPath>
       <color>(222,214,190)</color>
       <drawSize>1.4</drawSize>
     </graphicData>
@@ -326,7 +317,7 @@
     <label>guzzka egg (unfert.)</label>
     <description>Bigger than a Jawa's own head and heavy enough to need both arms. Nothing is going to hatch out of this one and nothing inside it is listening for you — it is exactly what it feels like: the best drink of water a person could carry out of the deep desert on their own back.</description>
     <graphicData>
-      <texPath>swresource/EggScaled</texPath>
+      <texPath>Things/Item/Egg/RM_EggScaled</texPath>
       <color>(222,214,190)</color>
       <drawSize>1.4</drawSize>
     </graphicData>

@@ -18,17 +18,11 @@
       - wildAnimals: the 37 remaining canon Star Wars rows are OUT of this def
         by design (§7 Q11/Q12 — RimMandrake never names Star Wars) and ride
         UtinniPatches/Patches/WildAnimals_LongShade.xml as a PatchOperationAdd
-        instead, MayRequire="mandrake.rsw.swbestiary". JOE_Landopus and
-        RM_Qorrax (renamed from JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1
-        part 3, Q7 ratified) stay inline (this biome's own native, non-Star-Wars
-        fauna, §7 Q9) but now carry MayRequire="mandrake.rut.patches" that the twin's
-        copy did not need — those two defs live in
-        Defs/Absorbed_Cephaloids/Absorbed_Cephaloids_Defs.xml, that mod's own
-        package, shared with RUT_ExtremeDesert (the Stillsand); this mod must
-        stay standalone-playable, so a cross-mod reference needs its own guard.
-        🔴 OPEN, not resolved by this build: that shared def-ownership between
-        the Long Shade and the Stillsand is unadjudicated (item's own MEASURED
-        STATE section 3) — flagged for FOUNDRY/BENCH, not decided here.
+        instead, MayRequire="mandrake.rsw.swbestiary". JOE_Landopus stays inline
+        (MayRequire="mandrake.rut.patches": its def lives in that mod). RM_Qorrax
+        (renamed from JOE_Cephalope, Q7 ratified) is native to mandrake.rm.stillsand
+        since STILLSAND_BEDAZZLE_CONTENT_1, so its row here carries
+        MayRequire="mandrake.rm.stillsand".
 
         🔴 LONGSHADE_RULED_CONTENT_1 (2026-09-27 sitting, Q1/Q5/Q6/Q8/Q9)
         landed the sitting's rulings here, same pass as the new
@@ -181,7 +175,7 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <JOE_Landopus MayRequire="mandrake.rut.patches">0.5</JOE_Landopus>  <!-- landopus - small ambush predator, this biome's own native fauna -->
-      <RM_Qorrax MayRequire="mandrake.rut.patches">0.5</RM_Qorrax>  <!-- qorrax (was JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified) - sand burrower & swimmer, this biome's own native fauna -->
+      <RM_Qorrax MayRequire="mandrake.rm.stillsand">0.5</RM_Qorrax>  <!-- qorrax (was JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified) - sand burrower & swimmer, this biome's own native fauna -->
       <!-- LONGSHADE_RULED_CONTENT_1 Q1/Q5: the 14 invented-name rows, moved
            inline from the Utinni patch this pass. Weights carried over
            verbatim from WildAnimals_LongShade.xml's own Add block. -->

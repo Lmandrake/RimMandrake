@@ -7,7 +7,7 @@ turn 2: *"the very fine sand of this region is extremely high quality and can be
 glass fit for lenses. The lenses can be made into high performance solar stills and ovens."*
 
 Checked before filing (2026-09-30): no glass stuff, solar still, solar oven or sun furnace exists in
-the stack; the raw optics that do exist are `RM_Biosilica` (no use yet), `RSW_GlassPearl` (moving to
+the stack; the raw optics that do exist are `RM_Biosilica` (no use yet), `RM_GlassPearl` (moving to
 `RM_GlassPearl`), glasscrust grit and `RSW_KraytPearl`. Fulgurites already exist (below).
 
 ## spec
