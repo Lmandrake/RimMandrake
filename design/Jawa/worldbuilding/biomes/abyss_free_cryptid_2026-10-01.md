@@ -18,12 +18,16 @@ He then corrected how it had been read, also typed on 2026-10-01:
 
 Together these mean:
 
-- **Star Wars tier (Utinni):** the cryptid stays **"the Forsakens"**. The whisper is that they
-  may be **the Sith** themselves. They are **not** the Rakata. The sheet's §8 already says
-  this: *"that they are the Zabraks, the 'Nightbrothers', bringing this strangeness with their
-  twisted Sith associations."*
+- **Star Wars tier (Utinni):** the cryptid is **still the Nhaleth**. The Star Wars layer only
+  ADDS a whisper: the visitors may be **the Sith**. They are **not** the Rakata. The sheet's §8
+  says this: *"that they are the Zabraks, the 'Nightbrothers', bringing this strangeness with
+  their twisted Sith associations."*
 - **Free tier (`RM_`, `mandrake.rm.biomes`):** the cryptid gets its own invented people,
   defined below. It carries no Star Wars word and no Star Wars dependency.
+
+**Second ruling, typed 2026-10-01 (07:48 PDT card):** *"Forsaken actually came from Forsaken
+Crags from the donor mod, so we should not use it here"*. So the cryptid is **not called "the
+Forsakens" in any tier**. There is one name, the Nhaleth, in both.
 
 ## 2. The name
 
@@ -99,18 +103,13 @@ cryptid uses the same pattern.
 - **The name lives in one place.** Proposed: a `RulePackDef` `RM_AbyssCryptid` whose rules
   hold `cryptid_name` → "the Nhaleth" and `cryptid_whisper` → the §3 whisper. Every grammar
   consumer resolves through it: the letters, the interaction, the art tales and the thought
-  text where the engine supports it. Static `description` fields can't resolve grammar, so
-  each of those (for example the rumor-site ThingDefs) also gets its own Utinni replace.
-  ⚠️ FOUNDRY must check against RimSage which consumers really resolve a custom rulepack
-  symbol. This doc doesn't assert it.
+  text where the engine supports it. ⚠️ FOUNDRY must check against RimSage which consumers
+  really resolve a custom rulepack symbol. This doc doesn't assert it.
 - **defNames are neutral, never the name** (`RM_AbyssRumorCircle`, not `RM_NhalethCircle`).
-  Players never see a defName, and a neutral one lets Utinni rename the label without leaving
-  "Nhaleth" in the campaign build.
-- **Utinni patch `Abyss_CryptidForsakens.xml`:** replaces `cryptid_name` with "the Forsakens"
-  and `cryptid_whisper` with the Sith whisper (sheet §8: the Nightbrothers and their Sith
-  associations). It also replaces each static description that names the cryptid. ⛔ **No
-  Rakata, Rakatan, ancients or terraformer wording in that patch.** The owner's correction rules
-  it out.
+- **Utinni patch `Abyss_CryptidSithWhisper.xml`:** adds only the Sith whisper (sheet §8: the
+  Nightbrothers and their Sith associations), as an extra rumor line. It renames nothing, and
+  the cryptid is the Nhaleth in the campaign build too. ⛔ **No Rakata, Rakatan, ancients or
+  terraformer wording in that patch.** The owner's correction rules it out.
 - **Settings:** one toggle in the unified biomes mod, "Abyss: cryptid signs" (default on),
   covering rumor-sites, the exchange and the whisper. This follows `MOD_OPTIONS_RETROFIT_1`.
   With it off, the biome is whole and simply has no cryptid.
@@ -120,11 +119,10 @@ cryptid uses the same pattern.
 All of this was searched on origin/main at `0989f63a3`:
 
 - **No cryptid content is built in either tier.** `git grep -i cryptid` over `src/` finds 0
-  files, and "Forsakens" appears in no def as a cryptid.
+  files.
 - `src/RimMandrake/Abyss/` is a BiomeDef, a worker and a settings stub. Its `About.xml` (around
-  line 42) says the Forsakens *"are campaign plot content and stay in Utinni entirely."* That
-  stays true for the Star Wars name. The free tier now owes its own cryptid, so the
-  description is owed a line (listed in §8).
+  line 42) says the Forsakens *"are campaign plot content and stay in Utinni entirely."* The free tier
+  now owes its own cryptid, so the description is owed a line.
 - **Machinery admitted but not yet built** that this item depends on: `ABYSS_DURRGAK_BUILD_1`
   (the ring and cache placer, and the tamed tidy job) and `ABYSS_DARK_BUILD_1` (clear pockets).
   Neither has shipped yet, so this item **builds after them** or alongside them.
@@ -141,12 +139,12 @@ All of this was searched on origin/main at `0989f63a3`:
 5. An `InteractionDef` for the whisper, and a `ThoughtDef` for the long-stay dream memory.
 6. Art-tale grammar rules for the Abyss.
 7. The settings toggle.
-8. A Utinni patch, `Abyss_CryptidForsakens.xml`: the rename to the Forsakens with the Sith
-   whisper, gated per def, and no Rakata wording.
+8. A Utinni patch, `Abyss_CryptidSithWhisper.xml`: adds the Sith whisper only, gated per def,
+   no rename and no Rakata wording.
 9. Offline build, selftests and `validate_patch.py`. A live look is a joint session with the
    owner.
 
-## 8. Docs that tie the cryptid to the Rakata (BENCH to correct; not edited here)
+## 8. Docs that tie the cryptid to the Rakata
 
 The owner's correction says the Star Wars whisper is **Sith, not Rakatan**. These files say the
 biome's "Forsakens" race and the Rakata ancients are the same people. ⚠️ Separate this from his
@@ -169,7 +167,7 @@ the **cryptid** into it.
 - The task brief for this doc also said the Star Wars rumour was that they are "the ancient
   terraforming race". **That reading was wrong**, and the owner's correction above replaces it.
 
-**One free-tier leak to rule on:** `src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_DROIDS.xml`
-line ~657 is in `mandrake.rm.inhabited` (the free tier) and has a droid who *"tells the story of
-the Forsakens and the First Waking"*. That is a campaign name in a free mod. Either the
-storyteller says "the Nhaleth", or Utinni relabels the line. BENCH should decide which.
+**The free-tier leak, ruled (decision taken by question card, 2026-10-01):**
+`src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_DROIDS.xml` line ~657, the droid who
+told "the story of the Forsakens and the First Waking", now tells of the Nhaleth. A deploy of
+`mandrake.rm.inhabited` is owed.

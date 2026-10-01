@@ -183,7 +183,7 @@ adult: carries the broken up the Approach, on his back, one at a time, for nothi
 `item: Silver`
 `skills: Social 19`
 childhood: assembled ninety years ago out of a scrap heap by nobody in particular.
-adult: tells the story of the Forsakens and the First Waking at the ninth kilometre marker, nightly.
+adult: tells the story of the Nhaleth and the First Waking at the ninth kilometre marker, nightly.
 > A voice like a bandsaw in a bucket, and he is the hero of every episode, and he was present at events that predate his own parts by four hundred centuries. Every word is invented. The pilgrims weep. He passes a bowl afterward and it comes back heavy, and he is also the sole reason half of them made the walk at all.
 
 **Household Six** · nanny-protocol unit, pastel enamel kept perfect · f-presenting · 3,000+ service-years
