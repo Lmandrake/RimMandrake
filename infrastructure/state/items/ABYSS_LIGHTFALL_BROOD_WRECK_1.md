@@ -20,6 +20,12 @@ Read as:
 - **Greed is the dial.** Salvage and egg theft feed one wake meter; a modest haul is safe, a greedy one wakes the brood-mother, and **awake she is essentially unkillable** — the correct response is to flee, not fight. Tune so the line exists and is reachable, not so it is telegraphed to the last part.
 - **Learning the line by save/load is acceptable** — readable signs (stirring, rumble) are still owed, but they need not reveal the exact threshold.
 
+**🔴 The bond needs a great bone aboard; the beast is bane and boon (owner, typed, 2026-10-01).** His words: *"Perhaps you MUST have one of those great bones on your ship in order for the beast egg to bond with you? It will not imprint without it present. And the beast should be a bane and a boon. It should be very hungry and very aggressive, killing wildlife indescriminantly and semi-randomly. But it should also be deeply tough and powerful. UV sensitive but able to see in darkness."*
+- **Imprinting requires a great bone on the player's ship.** One of the bone field's great bones must be hauled up and installed aboard the gravship; without it present the egg hatches but **will not imprint** (it does not bond and stays wild). This makes the bone field a second, separate retrieval from the lair. Say plainly in the egg's inspect text why it has not bonded.
+- **Bane:** very hungry and very aggressive — it kills wildlife indiscriminately and semi-randomly, emptying the colony map's game and endangering tamed animals. Not reliably controllable.
+- **Boon:** deeply tough and powerful; a fighter worth the cost.
+- **UV-sensitive, sees in the dark:** suffers in sunlight/UV (penalties or harm outdoors in daylight; cf. Biotech's UV-sensitivity genes for a vanilla model) and is unimpaired by darkness and by the Dark (`ABYSS_DARK_BUILD_1`) — night and the Dark are when it is at its best.
+
 Open for FOUNDRY/BENCH to ground in design (his typed text decides intent, these decide shape): which parts the ship accepts and why (a short authored list, signalled before salvage so the surprise is the ship's character, not a lost run), what "glory" restores mechanically, and the wake-pressure rules.
 
 ## existing lore and mechanics found (2026-10-01, cited so nothing is re-invented)
@@ -36,6 +42,8 @@ Open for FOUNDRY/BENCH to ground in design (his typed text decides intent, these
 - Brood-beast bone stuff.
 - Wreck salvage yields a rich haul; the player's ship accepts only a defined set of parts and restores condition; refused parts say so; no second gravship exists.
 - Salvage noise and light add wake pressure.
+- Egg imprints only with a great bone installed on the player's ship; without it, it hatches wild, and the inspect text says why.
+- Tamed beast: very hungry, very aggressive, kills wildlife indiscriminately and semi-randomly; deeply tough and powerful; UV-sensitive (daylight penalty/harm); sees in darkness and the Dark unimpaired.
 - Greed threshold: past it the brood-mother wakes and is effectively unkillable (flee, not fight); the threshold may be learned by save/load.
 - No fantasy-dragon tells anywhere: no fire breath, no 'dragon' in labels/defNames/descriptions; alien-beast biology in descriptions and art briefs.
 - Mod Settings: toggles for the brood, the wreck, and a beast-hunger slider; all off degrades gracefully.
