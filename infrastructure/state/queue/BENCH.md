@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T19:00:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T19:02:58Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -948,16 +948,6 @@ kind:     task
 thin:     no ## verify
 summary:  A cross-biome RM mod (franchise-free tier): a shared behaviour kit, plus a family of small watcher
 prose:    infrastructure/state/items/WATCHER_CREATURES_MOD_1.md
-
-## BLACKCRAGS_BEDAZZLE_SITTING_1 Black Crags (was Forsaken Crags) bedazzle sitting - program row 11: review, roster fill, four-turn volley, ticket-out; rename executes here behind the tile gate
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     spec, verify and criteria all present
-summary:  The four movements of the program item, applied to this biome:
-prose:    infrastructure/state/items/BLACKCRAGS_BEDAZZLE_SITTING_1.md
 
 ## CAULDRON_ENRICHMENT_AUDIO_1 Cauldron enrichment sounds: vexxiss bellow, metal-tree harvest noise, directional vapour-bank hisses
 state:    proposed
