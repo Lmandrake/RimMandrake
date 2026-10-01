@@ -393,7 +393,7 @@ namespace RimMandrake.StructureInjections
                 if (blocked) break;
                 if (!alreadyThis)
                 {
-                    var thing = ThingMaker.MakeThing(def, def.MadeFromStuff ? stuffDef : null);
+                    var thing = ThingMaker.MakeThing(def, StuffFor(def, stuffDef));
                     // GenSpawn.Spawn returns null (and logs its own error) on failure rather than
                     // throwing - counting placed unconditionally let `placed == 0` below stay
                     // silent on a run that spawned fewer things than cells walked.
@@ -532,11 +532,24 @@ namespace RimMandrake.StructureInjections
                               t.Stuff + "' for " + t.DefName + " -- spawning unstuffed.");
             }
 
-            var thing = ThingMaker.MakeThing(td, td.MadeFromStuff ? stuffDef : null);
+            var thing = ThingMaker.MakeThing(td, StuffFor(td, stuffDef));
             var rot = new Rot4(t.Rot);
             if (GenSpawn.Spawn(thing, cell, map, rot, WipeMode.Vanish) == null)
                 Log.Error("[RimMandrake.StructureInjections] GenSpawn.Spawn refused '" + t.DefName +
                           "' at " + cell + " (plan " + sourceLabel + ") - not placed.");
+        }
+
+        // RIMPLACE_STUFFLESS_THING_ROWS_1. A row's stuff column may be '-' for a
+        // MadeFromStuff def (SculptureSmall, Bedroll ...): ThingMaker.MakeThing then
+        // logs "is madeFromStuff but stuff=null. Assigning default." and assigns
+        // GenStuff.DefaultStuffFor itself. Supplying that same default here keeps
+        // the result and drops the error, so a template only names a stuff when
+        // it wants a particular one.
+        private static ThingDef StuffFor(ThingDef def, ThingDef named)
+        {
+            if (!def.MadeFromStuff)
+                return null;
+            return named ?? GenStuff.DefaultStuffFor(def);
         }
 
         private static void LogOOB(IntVec3 cell, string defName)
