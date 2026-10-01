@@ -6,7 +6,7 @@ Biome: the Abyss (`RM_Abyss` in `src/RimMandrake/Abyss/`, composed into `mandrak
 
 One place, two halves, both at the bottom of Lightfall.
 
-**The Brood (option C, decision taken by question card).** The storm dragons (the ghorrumak, which becomes our own invented creature under `ABYSS_DONOR_BEASTS_FREED_1`; use the NEW name, not ghorrumak) nest at Lightfall's bottom among giant bones. A living brood-mother sleeps coiled round a clutch of eggs. The player steals an egg past the sleeping brood-mother (light and noise wake her; her stirring and a low rumble are readable BEFORE it is fatal, so the heist is not a reload lottery). Carrying the egg brings Witchfire storms home to the colony map (storm call is `ABYSS_DARK_BUILD_1`'s weather; the thunder is the readable warning, and one dragon comes looking). The egg can be returned at the lip or defended. Hatch it and raise your own dragon: slow, ruinously hungry, regenerating, fire-breathing, heavy food bill and long maturation (balance is the risk). Dragon bone (huge, light, stuffable) comes from the bone field. Not picked: the Sink, the Lowered, the Mercy Engine, the Lantern Tide.
+**The Brood (option C, decision taken by question card).** The storm dragons (the ghorrumak, which becomes our own invented creature under `ABYSS_DONOR_BEASTS_FREED_1`; use the NEW name, not ghorrumak) nest at Lightfall's bottom among giant bones. A living brood-mother sleeps coiled round a clutch of eggs. The player steals an egg past the sleeping brood-mother (light and noise wake her; her stirring and a low rumble are readable signs, but the exact threshold may be learned by save/load — owner 2026-10-01: *"It's ok to require load/save to learn the boundry, that's pretty normal in these games."*). Carrying the egg brings Witchfire storms home to the colony map (storm call is `ABYSS_DARK_BUILD_1`'s weather; the thunder is the readable warning, and one dragon comes looking). The egg can be returned at the lip or defended. Hatch it and raise your own beast: slow, ruinously hungry, regenerating, heavy food bill and long maturation (balance is the risk). Its bone (huge, light, stuffable) comes from the bone field. Not picked: the Sink, the Lowered, the Mercy Engine, the Lantern Tide.
 
 **The Ship in the Wall (GPT option E, reshaped by his typed words).** A wrecked rescue gravship lies driven into the chasm wall in the brood's lair. It is NOT a second ship and does not become the player's ship. It is a SALVAGE SITE. His words, typed: "Improve the crashed ship. You can’t have two ships but you can cannibalize that one to improve yours. A rich haul. But only then do they discover that their ship only wants certain parts. It likes what it is and doesn’t want deep redesign. Just repair. This is a chance to restore much of its glory. While the sleeping dragons threaten to pummel you."
 
@@ -14,6 +14,11 @@ Read as:
 - The player strips the wreck to improve their own gravship: a rich haul (parts, components, systems).
 - The discovery comes only AFTER the haul is in hand: the player's own ship accepts only certain parts. It likes what it is and refuses deep redesign. Salvage REPAIRS and restores its lost glory (damaged or degraded ship systems, fittings and condition brought back), it does not reconfigure it. Parts the ship will not take must read as refused in plain words (no silent failure), and the unaccepted remainder is still loot.
 - All of it happens inside the brood's lair: the dragons sleep, and noise and light from salvage work (cutting, hauling, power) risk waking them to pummel the party. The two halves share one wake-pressure system.
+
+**🔴 NOT FANTASY DRAGONS — and greed wakes something unkillable (owner, typed, 2026-10-01).** His words: *"We must be careful with those dragons to make sure they don't turn into fantasy dragons. They must remain starwars-esque beasts from an alien world. We need to carefully tune and balance that risk down there: get too greedy to steal from the crashed ship, and you wake an essentially unkillable thing. It's ok to require load/save to learn the boundry, that's pretty normal in these games."*
+- **Alien megafauna, never fantasy dragons:** no fire breath, no hoard, no wings-and-scales heraldry, no "dragon" in any player-facing text or defName. Read them like a krayt, a rancor or a zillo beast — a creature from an alien ecology with a biology (how it feeds on the Dark, why it nests here, why the storms answer it). Art briefs say so explicitly.
+- **Greed is the dial.** Salvage and egg theft feed one wake meter; a modest haul is safe, a greedy one wakes the brood-mother, and **awake she is essentially unkillable** — the correct response is to flee, not fight. Tune so the line exists and is reachable, not so it is telegraphed to the last part.
+- **Learning the line by save/load is acceptable** — readable signs (stirring, rumble) are still owed, but they need not reveal the exact threshold.
 
 Open for FOUNDRY/BENCH to ground in design (his typed text decides intent, these decide shape): which parts the ship accepts and why (a short authored list, signalled before salvage so the surprise is the ship's character, not a lost run), what "glory" restores mechanically, and the wake-pressure rules.
 
@@ -27,11 +32,13 @@ Open for FOUNDRY/BENCH to ground in design (his typed text decides intent, these
 ## criteria
 
 - Descent to the lair, bone field, brood-mother asleep with a readable wake warning (stir, rumble) before any lethal wake.
-- Egg theft; carrying it triggers Witchfire storms at home; return-at-lip and defend options; hatching yields a tameable dragon with a heavy food bill and long maturation.
-- Dragon bone stuff.
+- Egg theft; carrying it triggers Witchfire storms at home; return-at-lip and defend options; hatching yields a tameable beast with a heavy food bill and long maturation.
+- Brood-beast bone stuff.
 - Wreck salvage yields a rich haul; the player's ship accepts only a defined set of parts and restores condition; refused parts say so; no second gravship exists.
 - Salvage noise and light add wake pressure.
-- Mod Settings: toggles for the brood, the wreck, and a dragon-hunger slider; all off degrades gracefully.
+- Greed threshold: past it the brood-mother wakes and is effectively unkillable (flee, not fight); the threshold may be learned by save/load.
+- No fantasy-dragon tells anywhere: no fire breath, no 'dragon' in labels/defNames/descriptions; alien-beast biology in descriptions and art briefs.
+- Mod Settings: toggles for the brood, the wreck, and a beast-hunger slider; all off degrades gracefully.
 
 ## links
 
