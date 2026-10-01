@@ -67,6 +67,8 @@
     <Compile Include="DamageWorker_RM_UV.cs" />
     <!-- CONTAGION_MECHANICS_BUILD_1 Part 2: the Coalescence -->
     <Compile Include="Building_RM_Coalescence.cs" />
+    <!-- CONTAGION_GROWN_LIMBS_BUILD_1 -->
+    <Compile Include="HediffComp_UnfinishedEmerge.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -244,6 +244,12 @@ namespace RimMandrake.Contagion
                 for (int i = 0; i < samples; i++)
                 {
                     Thing s = ThingMaker.MakeThing(ext.sampleDef);
+                    // CONTAGION_GROWN_LIMBS_BUILD_1: the death-spill is Monstrous grade.
+                    CompGenomeSample sampleComp = s.TryGetComp<CompGenomeSample>();
+                    if (sampleComp != null)
+                    {
+                        sampleComp.monstrous = true;
+                    }
                     GenPlace.TryPlaceThing(s, center, map, ThingPlaceMode.Near);
                 }
             }

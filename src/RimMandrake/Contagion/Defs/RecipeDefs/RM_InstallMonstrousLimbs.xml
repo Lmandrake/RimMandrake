@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GROWN_LIMBS_BUILD_1. The ordinary bionic-install shape
+    (SurgeryInstallBodyPartArtificialBase -> Recipe_InstallArtificialBodyPart,
+    addsHediff, appliedOnFixedBodyParts), mirroring vanilla InstallBionicArm.
+    The inherited 2x Medicine ingredient merges with the limb ingredient the
+    same way the sibling RM_InstallGrownArm does.
+  -->
+
+  <RecipeDef ParentName="SurgeryInstallBodyPartArtificialBase">
+    <defName>RM_InstallPillarArm</defName>
+    <label>install pillar arm</label>
+    <description>Replace an arm with a grown pillar arm.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_PillarArmItem</ThingDef>
+      <HediffDef>RM_PillarArm</HediffDef>
+    </descriptionHyperlinks>
+    <jobString>Installing pillar arm.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_PillarArmItem</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_PillarArmItem</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <appliedOnFixedBodyParts>
+      <li>Shoulder</li>
+    </appliedOnFixedBodyParts>
+    <addsHediff>RM_PillarArm</addsHediff>
+  </RecipeDef>
+
+  <RecipeDef ParentName="SurgeryInstallBodyPartArtificialBase">
+    <defName>RM_InstallLash</defName>
+    <label>install lash</label>
+    <description>Replace an arm with a grown lash.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_LashItem</ThingDef>
+      <HediffDef>RM_Lash</HediffDef>
+    </descriptionHyperlinks>
+    <jobString>Installing lash.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_LashItem</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_LashItem</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <appliedOnFixedBodyParts>
+      <li>Shoulder</li>
+    </appliedOnFixedBodyParts>
+    <addsHediff>RM_Lash</addsHediff>
+  </RecipeDef>
+
+</Defs>
