@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:33:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:43:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -988,3 +988,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  VEXXITHCLOSEDLOOPBUILD1 — the vexxith closed loop, after three answers
 prose:    infrastructure/state/items/VEXXITH_CLOSED_LOOP_BUILD_1.md
+
+## LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1 Pitch further venomvine forms to the owner (he typed "Might need even more"); rule before any art
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify
+summary:  LEANINGSCRUBVENOMVINEFORMSPITCH1 — pitch further venomvine forms to the owner
+prose:    infrastructure/state/items/LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1.md
+
+## LEANINGSCRUB_SWEETLINE_GUARDIAN_1 Sweetline tree guardian: what creature, dormant pawn or incident, what counts as harm
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify
+summary:  LEANINGSCRUBSWEETLINEGUARDIAN1 — the resident guardian a named sweetline tree wakes
+prose:    infrastructure/state/items/LEANINGSCRUB_SWEETLINE_GUARDIAN_1.md
+
+## LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1 Sweetline tree naming register (current RM_NamerSweetlineTree vocabulary is a placeholder)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  LEANINGSCRUBSWEETLINENAMEREGISTER1 — the naming register for named sweetline trees
+prose:    infrastructure/state/items/LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1.md
