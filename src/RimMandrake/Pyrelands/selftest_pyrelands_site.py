@@ -83,7 +83,7 @@ class FakeGame(object):
              "jawa/time_clock", "jawa/incident_queue_clear", "jawa/list_pawns", "jawa/storyteller_swap",
              "rimworld/get_ui_state", "rimworld/go_to_main_menu", "rimworld/start_debug_game_ready",
              "rimworld/get_game_info", "jawa/world_info_get", "jawa/world_tile_export", "jawa/world_neighbors",
-             "jawa/world_tile_set", "jawa/world_commit", "jawa/world_tile_map_generate", "jawa/set_current_map",
+             "jawa/world_tile_set", "jawa/world_commit", "jawa/world_tile_map_generate", "jawa/colony_found", "jawa/set_current_map",
              "jawa/spawn_pawn", "jawa/set_fog", "jawa/time_date_at", "jawa/time_set_ticks",
              "rimworld/save_game", "rimworld/load_game"}
 
@@ -262,6 +262,8 @@ class FakeGame(object):
             return {"success": True, "written": len(ids), "tiles": [dict(self.world[i]) for i in ids]}
         if tool == "jawa/world_commit":
             return {"success": True, "steps": [{"step": "redraw", "status": "ok"}]}
+        if tool == "jawa/colony_found":
+            return {"success": True, "tile": p.get("tile")}
         if tool == "jawa/world_tile_map_generate":
             if "mapgen_fail" in f:
                 return {"success": True, "wasAlreadyGenerated": False, "mapSize": {"x": 250, "z": 250},

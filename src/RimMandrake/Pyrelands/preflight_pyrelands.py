@@ -101,7 +101,7 @@ LOG_FATAL = ("CommonalityOfAnimal",)
 LOG_ALLOWED = "burnedDef is flammable"
 LOG_ALLOWED_MAX = 4
 BENIGN_WINDOWS = ("EditWindow_Log", "LudeonTK.EditWindow_Log")
-IGNORED_WINDOWS = ("Verse.ImmediateWindow",)   # the dev overlay: cannot be closed, blocks nothing        # auto-closed; anything else refuses (plan §3.8)
+IGNORED_WINDOWS = ("Verse.ImmediateWindow", "LudeonTK.Dialog_DevPalette")   # the dev overlay: cannot be closed, blocks nothing        # auto-closed; anything else refuses (plan §3.8)
 QUIET_STORYTELLER = "Tutor"                 # UNMEASURED that it fires nothing; gate B also
                                             # requires the incident queue to be empty.
 LAT_MAX = 25.0                              # plan §3.5
@@ -678,8 +678,11 @@ def b9_weather_paused(s):
         w = _call(s, "jawa/weather_get")
         clk = _call(s, "jawa/time_clock")
         problems = []
-        if w.get("weather") != "Clear":
-            problems.append("weather %s" % w.get("weather"))
+        cur = w.get("weather")
+        if isinstance(cur, dict):          # live shape: {"weather": {"current": "Clear", ...}}
+            cur = cur.get("current")
+        if cur != "Clear":
+            problems.append("weather %s" % cur)
         if clk.get("paused") is None:
             raise Unmeasured("time_clock has no paused field")
         if not clk.get("paused"):

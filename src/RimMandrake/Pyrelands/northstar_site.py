@@ -256,6 +256,12 @@ def strip_mutators(s, centre):
 # ------------------------------------------------------------------ step 5/6: generate, home
 
 def generate(s, centre, size=P.MAP_SIZE):
+    # The engine culls a generated map that is not a player home (MEASURED live 2026-10-01: after save + reload
+    # only the quicktest colony map survived), so the site gets a PLAYER settlement first; the map is then
+    # built by the generate call below (colony_found itself never generates one).
+    f = _call(s, "jawa/colony_found", tile=centre, faction="Player")
+    if f.get("success") is False:
+        raise SiteError("colony_found refused at %s: %s" % (centre, str(f)[:200]))
     r = _call(s, "jawa/world_tile_map_generate", tile=centre, sizeX=size, sizeZ=size)
     if r.get("wasAlreadyGenerated"):
         raise SiteError("tile %s already had a map -- not a fresh fixture" % centre)
@@ -301,8 +307,12 @@ def isolate(s, settings_off=ISOLATION_OFF):
     st = _call(s, "jawa/storyteller_swap", storytellerDef=P.QUIET_STORYTELLER)
     _call(s, "jawa/incident_queue_clear")
     _call(s, "jawa/weather_set", weather="Clear", lockWeather=True)
-    if _call(s, "jawa/weather_get").get("weather") != "Clear":
-        raise SiteError("weather read-back is not Clear")
+    wg = _call(s, "jawa/weather_get")
+    cur = wg.get("weather")
+    if isinstance(cur, dict):                      # live shape: {"weather": {"current": "Clear", ...}}
+        cur = cur.get("current")
+    if (cur or wg.get("current")) != "Clear":
+        raise SiteError("weather read-back is not Clear (%r)" % (wg,))
     return {"settingsBefore": changed, "storyteller": st.get("before")}
 
 
@@ -392,7 +402,7 @@ def save_fixture(s, name, saves_dir, backup_dir, sleep=time.sleep, wait_s=120):
     return os.path.join(saves_dir, name + ".rws")
 
 
-def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep):
+def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep, map_id=None):
     """`rimworld/load_game` (load_game_ready is a PRE-condition check, traps.md); assert on
     programState, never on the call's own success."""
     try:
@@ -400,7 +410,24 @@ def reload_fixture(s, name, tile, budget_s=420, sleep=time.sleep):
     except Exception as ex:
         print("  load_game raised %s -- polling, not resending" % type(ex).__name__)
     _wait_state(s, "Playing", budget_s, sleep)
-    mi = _call(s, "jawa/map_info")
+    # programState is still "Playing" on the OLD map while the load begins (MEASURED live 2026-10-01:
+    # map_info answered "No current map"), so poll the map itself until it answers.
+    t0, mi = time.time(), None
+    while True:
+        try:
+            mi = _call(s, "jawa/map_info")
+            if mi.get("tile") == tile or time.time() - t0 > budget_s:
+                break
+        except Unmeasured:
+            if time.time() - t0 > budget_s:
+                raise
+        sleep(POLL_S)
+    if mi.get("tile") != tile and map_id is not None:
+        # the save's current map is the quicktest colony; the site is the second map
+        _call(s, "jawa/set_current_map", mapId=map_id)
+        mi = _call(s, "jawa/map_info")
+    if mi.get("tile") == tile:
+        _call(s, "jawa/incident_queue_clear")      # a reload re-arms the storyteller's queue
     if mi.get("tile") != tile or mi.get("mapBiome") != BIOME:
         raise SiteError("reloaded current map is tile %s biome %s, want %s %s" % (
             mi.get("tile"), mi.get("mapBiome"), tile, BIOME))
@@ -444,7 +471,7 @@ def build_site(s, k, fingerprint, saves_dir, work_dir, temp=TARGET_TEMP, census=
         rec["saveName"] = name
     finally:
         restore_isolation(s, iso["settingsBefore"])
-    rec["reload"] = {k2: reload_fixture(s, rec["saveName"], centre, sleep=sleep).get(k2)
+    rec["reload"] = {k2: reload_fixture(s, rec["saveName"], centre, sleep=sleep, map_id=rec["mapId"]).get(k2)
                      for k2 in ("mapId", "tile", "mapBiome", "outdoorTempNow", "season")}
     return rec
 
