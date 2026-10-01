@@ -168,3 +168,5 @@ TRAP: a faced animal job whose prompt says 'top-down' is refused whole by artpip
 - 2026-10-01 FOUNDRY: debugging is script-first (design/RimMandrake/debug_process.md) — a live poke that ends without its lesson committed as a check (plus informative false theories) is lost work; on 2026-10-01 the ns_probe_* scratch files vanished and survived only in commit messages.
 - 2026-10-01 BENCH: in a private worktree a commit can fail on index.lock (the health publisher) while `merge-base --is-ancestor HEAD origin/main` still passes, because HEAD is the base. Check your commit's subject first.
 - 2026-10-01 BENCH: a full `git worktree add` checkout fails with write errors on /mnt/d; use `--no-checkout` + `sparse-checkout set --no-cone <dirs>`.
+
+- 2026-10-01 FOUNDRY: generated bridge map needs a player settlement (colony_found) or it is culled on save; load saves from the main menu, once; naming-dialog close hops the map; paused site no-ops ordered_job waitTicks; step_game_ticks needs timeoutMs; zsh needs ${=P} for multi-path vars.
