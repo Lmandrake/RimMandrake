@@ -11,12 +11,16 @@ Verdicts: PROVEN / FAILED / UNMEASURED. Not closed in the ledger.
 - 16:45 launched via `steam.exe -applaunch 294100`.
 
 ## BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1
+**PROVEN: OFF stops worldgen placement, and ON places it.** In-session flip-back is UNMEASURED, because no bridge path writes the toggle (see below).
+- Run B (relaunch, settings file TheRot=False): startup log `worldgen gate applied (startup): OFF -> RM_TheRot`; `get_defs` RM_TheRot.generatesNaturally=**false** (RM_Pyrelands control: true). Quicktest world (seed `shipping`, 119,904 tiles, coverage 0.3): **RM_TheRot 0 tiles**, while other owned biomes still place (Cauldron 195, TheSump 139, Pyrelands 62, FloodedCanyon 35, GelatinousSlime 30, ForsakenCrags 27). `world_stats_B1_therot_off.json`.
+- Run A (all ON, seed `poker`, same size): RM_TheRot 20,100 tiles. Different seeds, so this is not a same-seed A/B, but 20,100 vs 0 is not a seed effect.
+- Restored: the settings file was deleted (it did not exist before this batch), so the next launch is all-ON. The game was killed afterwards so no in-memory OFF gate is left behind for the next worldgen.
 - 17:08 game up (cold load ~23 min). Startup log: `roster 29 entries ... 30 BiomeDef(s) mapped` / `worldgen gate applied (startup): all biomes on`.
 - **Run A, all ON** (quicktest world, seed in `world_stats_A_allon.json`, 119,904 tiles): `RM_TheRot` **20,100** tiles (the largest land biome on the planet), RM_Pyrelands 183, RM_Cauldron 56, RM_GelatinousSlime 27, RM_TheSump 26, RM_FloodedCanyon 17, RM_Contagion 2. Target for the OFF test: **TheRot**.
 - Runtime flip attempts: `rimworld/update_mod_settings` cannot write a Dictionary<string,bool> (`enabled[TheRot]` -> "not a valid integer"; `enabled:{...}` -> "Object must implement IConvertible").
   Wrote the settings file on disk (TheRot=False), `reload_mod_settings` (bridge read shows TheRot false), then opened+closed `Dialog_ModSettings`: log shows `worldgen gate applied (settings changed): all biomes on` and `get_defs` still reads RM_TheRot.generatesNaturally=true.
   => The WriteSettings -> RM_BiomesGate.Apply wiring FIRES on dialog close (proven), but RimBridge's reload swaps in a NEW settings object while the gate reads the static `RM_BiomesSettings.Instance` captured in the Mod constructor, so a bridge reload cannot drive the gate. Harness limitation, not a player path (a player flips the checkbox on the same Instance the gate reads).
-- Next: restart with the file pre-written (TheRot OFF) so the constructor loads it.
+- 17:55 restarted the game with the file pre-written (TheRot OFF) so the Mod constructor loads it (run B).
 
 ## DEEPFIRE_PAINT_LIVE_VERIFY_1
 **PROVEN (re-run on the full 612-mod list this session).** All six committed harnesses (`src/RimMandrake/bridgetools/prove_deepfire_*.py`), outputs beside this file:
@@ -42,4 +46,4 @@ Live state reads (quicktest, full list), raw output `terminal_lure.txt`, `termin
 - **Glower moves: UNMEASURED, and it cannot be measured.** No ThingDef carries `RM_CompProperties_GlowerMobile`, so there is nothing on any map to move. The fix (CompTickRare, judged correct by the 09-29 RimSage read) is unreachable from content.
 
 ## Game state at end
-(pending)
+18:26 game **DOWN** (killed after run B; `./game` measures NOT RUNNING), bridge **released**. ModsConfig untouched (612 active). Baroque settings file removed, so the default is all ON.
