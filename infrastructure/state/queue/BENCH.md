@@ -1069,3 +1069,13 @@ kind:     design
 thin:     no ## spec, no ## criteria
 summary:  BEDAZZLETOPSHAPEPROGRAM1 — get every biome into top shape
 prose:    infrastructure/state/items/BEDAZZLE_TOP_SHAPE_PROGRAM_1.md
+
+## NIGHTSIDEICE_BEDAZZLE_SITTING_1 Nightside Ice bedazzle sitting (grandfathered track a, worst-first)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  Movements 1-2 done. Next: the owner's turn-1 card (§7), then the volley, then ticket-out
+prose:    infrastructure/state/items/NIGHTSIDEICE_BEDAZZLE_SITTING_1.md
