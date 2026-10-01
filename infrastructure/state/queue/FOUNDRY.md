@@ -1296,6 +1296,15 @@ kind:     task
 summary:  (no items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
+## STILLSAND_DUNE_GALE_1 Stillsand dune gale: the biome's own storm on the dunes engine (dunes march, sun off, abrasion, carry-and-return), gale static, one emergence incl. the mummified caravan, dust devils, tracks wiped
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. RMDuneGale WeatherDef plus a GameConditionDef for its duration: rare (a few a year), one
+prose:    infrastructure/state/items/STILLSAND_DUNE_GALE_1.md
+
 ## STILLSAND_LOAD_DEF_ERRORS_1 Stillsand/Contagion load-time def errors: RM_KneelOllim discarded (TreeCategory Standard), loomma severityRange, trainability, meat, FrontLegs, Lashgrass texture
 state:    doing
 row:      unassigned
@@ -2091,16 +2100,6 @@ thin:     no ## verify
 summary:  1. Ship becomes a refuge (Shipfall Commons). After landing, the shade grid sees the gravship's
 prose:    infrastructure/state/items/LONGSHADE_GPT_ENRICHMENT_1.md
 
-## STILLSAND_DUNE_GALE_1 Stillsand dune gale: the biome's own storm on the dunes engine (dunes march, sun off, abrasion, carry-and-return), gale static, one emergence incl. the mummified caravan, dust devils, tracks wiped
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  1. RMDuneGale WeatherDef plus a GameConditionDef for its duration: rare (a few a year), one
-prose:    infrastructure/state/items/STILLSAND_DUNE_GALE_1.md
-
 ## FOOTPRINT_TRACK_GRID_1 One footprint grid for the planet: capped TrackGrid + section layer + cell-entry postfix in CreatureBehaviors, invisible pawns recorded, erase API; Warscar film and Stillsand sand both consume it as XML
 state:    proposed
 row:      unassigned
@@ -2710,6 +2709,16 @@ kind:     build
 thin:     no ## verify
 summary:  Add a read-only jawa/ tool (rimbridge-companion skill). Given a cell list, it returns the sun elevation,
 prose:    infrastructure/state/items/SHADEGRID_BRIDGE_READER_1.md
+
+## STILLSAND_DUNE_GALE_LIVE_1 Stillsand dune gale: live proof (mass delta, sun off, one emergence, carry letters, dust devil) + water skins, track-grid hook, hiss
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  1. Live proof (Desktop, Stillsand quicktest, all DLC, MovingDunes active). Dev-fire incident
+prose:    infrastructure/state/items/STILLSAND_DUNE_GALE_LIVE_1.md
 
 ## SOORRAK_FLIGHT_JOBSTART_NRE_1 RM_Soorrak throws NullReferenceException in Pawn_FlightTracker.Notify_JobStarted on every job start (59x in one session)
 state:    proposed
