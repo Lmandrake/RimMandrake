@@ -38,34 +38,23 @@ Until then this walk proves digging and terrain recovery, not filling.
 
 ## north star
 state: VALIDATED
-validated-hash: 0aede731ac0ac71fc33c5ca1840ac72795bbd847f1895399fe235a0b1db81351
+validated-hash: 34e2ec9f267cdaf684c55bcc08183c30366e1dd38a135675deb63f8d55652471
 
 The `state:` line above is authoritative;
 `design/RimMandrake/north_star_validation_spec.md` defines what each state means, and a
-checklist binds only while that line reads VALIDATED. Every `### must show` line below is
-distilled from his own words and adds no claim of its own; each names the phrase it came
-from. Amend only in a sitting with him: the recorded hash covers this whole section, so any
-edit reverts it to DRAFT until he re-validates.
+checklist binds only while that line reads VALIDATED. The recorded hash covers this whole
+section, so any edit reverts it to DRAFT until he re-validates. Every bar is one observable
+claim a player can check by looking; where each came from is in the provenance table at the
+end of this section, never in the bar text, because the bar text is the question the judge
+is asked.
 
-✅ **WALKED WITH HIM 2026-09-17** — the whole checklist read back to him line by line, which
-produced rulings 34-36 (`flowworks_mod_definition.md` §25) and **deleted three lines rather
-than adding any**. What changed, so nobody restores a line he cut:
+🔑 **A bar for a feature that is not built yet fails until it is built.** That is the bar
+doing its job, not a reason to park it. Every bar below stays bound whatever the state of
+the code or the art.
 
-- **The two source lines are gone.** Ruling 34: *"Strained isn't a thing anymore."* A reservoir
-  is deep filled terrain, so a drawn-down reservoir is partial fill on a deeper cell — the same
-  art as a partly filled channel. One line survives in its place, reframed.
-- **The irrigation line is gone.** Ruling 36: the yield is enough, and neither soil nor plants
-  need a watered look. This reverses what this walk and the mod definition both used to call the
-  visual the whole irrigation motivation rested on.
-- **Two candidates were promoted to real bars** — the fill front and the spent channel — and the
-  other two were dropped, so `### candidate lines` is now empty by resolution rather than by
-  neglect.
-- ⚠️ **Ids were renamed** where they said "source" (now "reservoir"). That rename happened
-  BEFORE this checklist was first validated, which is the only reason it was permitted; §1's
-  never-reuse-an-id rule binds from that first validation onward, so no id here may be renamed
-  again without his word.
+### the experience  (OWNER'S WORDS — verbatim)
 
-### the experience  (OWNER'S WORDS — verbatim, bench session 2026-09-16)
+The canal, bench session 2026-09-16:
 
 > *"This mod allows the user to dig canals in the ground from an ambient source of liquid
 > (fresh water, salt water, tar, propane, colored water, slime, etc from Many Waters if
@@ -88,114 +77,224 @@ than adding any**. What changed, so nobody restores a line he cut:
 > irrigation of crops (all plants nearby the canal react to the presence of the water as
 > though watered)."*
 
-His ranking the same session, which decides what gets tuned until it feels right:
-**defense first, then irrigation, then industry, and finally terraforming.** And his
-scarcity ruling: **every source is stock**, refilling *"slowly, from rain and season and
-ground liquids oozing in… it can take quite a while to fill up from a very small natural
-source."*
+His ranking the same session: **defense first, then irrigation, then industry, and finally
+terraforming.** His scarcity ruling: **every source is stock**, refilling *"slowly, from rain
+and season and ground liquids oozing in… it can take quite a while to fill up from a very
+small natural source."*
 
-2026-09-17, asked why no line covered pumping when his own description said the strained graphic
-would be reused for it — **the answer retired the concept instead**:
+2026-09-17, retiring the source object (ruling 34):
 
-> *"Strained isn't a thing anymore. We replaced 'sources' with just placed deep liquid reservoirs
-> just like a player would normally place on the map. Filled very deep tiles. Everything follows
-> from that."*
+> *"Strained isn't a thing anymore. We replaced 'sources' with just placed deep liquid
+> reservoirs just like a player would normally place on the map. Filled very deep tiles.
+> Everything follows from that."*
 
-🔑 The through-line: **a canal is the reservoir, moved.** What the player digs becomes part of the
-body it came from — it holds the same liquid, it costs that body volume to fill, and the body
-shows the cost.
+The pit, 2026-09-13 and 2026-09-15, on seeing the shipped trap:
 
-🔑 And after ruling 34 the through-line has one mechanism instead of two: **a reservoir and a canal
-are the same thing at different depths.** Both are excavated cells carrying a depth and a fill, so
-"the body shows the cost" is not a separate graphic — it is the fill level dropping, which is the
-line the channel already has. Every deleted line above was deleted because this collapsed two art
-systems into one.
+> *"Looks like it was working. But we need to think now about very deeply what it looks
+> like. It can't just be a simple trap graphic you get stuck on. So we need a big dark
+> pit."*
+
+> *"A simple little trap that just Snares a pawn to stand there staring at the camera, stuck
+> in a trap with "Pit" written on it. Not at all "falling in a pit" but I understand what
+> happened."*
+
+2026-09-17, collapsing the pit onto the canal (`PIT_SUPERDEEP_COLLAPSE_1`):
+
+> *"I'm not really sure a pit is any different than a deep canal."* · *"If you're in a
+> superdeep pit, you can't climb out. Period. Welcome to your pit."*
+
+2026-09-17, the depth ruling, verbatim:
+
+> *"All depths must be visually legible and differentiable graphically. The pawn should
+> visibly rise up and lower down as they move over the depths. They should be low enough
+> that it is visually clear how they could not possibly climb out (the walls are higher
+> than their head by 20%)"*
+
+2026-09-17, on spikes and the camera:
+
+> *"The spikes will barely be able to be tall enough to be visible most likely, but there
+> should still be something showing their presence. make sure the viewing angle of the pit
+> is such that SOME amount of spike is possible"*
+
+🔑 The through-line: **a canal is the reservoir, moved, and a pit is a canal dug all the way
+down.** Every cell carries a depth and a fill; the reservoir, the channel and the pit are the
+same thing at different depths, and the screen must show which depth and which fill a cell
+holds.
 
 ### must show
 
 **The channel itself**
-- [ ] `canal_reads_as_dug_channel` — a dug channel reads as excavated ground with walls, not
-      as a path or a floor. From *"dig canals in the ground"*; it borrows
-      `Terrain/Surfaces/Gravel` today.
+- [ ] `canal_reads_as_dug_channel` — a dug channel has a visibly recessed bed and cut earthen
+      walls, not the look of a path or a floor.
 - [ ] `canal_dry_reads_as_obstacle` — an unfilled channel is legible as something that
-      impedes crossing, without a tooltip. From *"an unfilled pit slows movement as per other
-      established dug barriers"*.
+      impedes crossing, without a tooltip.
+- [ ] `filled_excavation_reads_as_obstacle` — a filled channel reads as harder to cross than
+      the ordinary ground beside it.
 
 **Fill**
 - [ ] `canal_partial_fill_distinct` — a partly filled canal is distinguishable at a glance
-      from a full one. From *"a graphic showing partial fill"*.
-- [ ] `canal_fill_spreads_along_itself` — the liquid in an incompletely filled canal is
-      spread through the channel rather than pooled in the cell it entered. From *"spread the
-      water throughout themselves"*.
-- [ ] `canal_fill_front_watchable` (change) — the arriving liquid has a visible fill front, so
-      viscosity is something you watch rather than infer: water almost at once, tar creeping.
-      **Promoted from candidate to bar 2026-09-17.** Judging it needs two frames rather than
-      one; that cost was stated and accepted. ⚠️ It was recorded here as the only such line on the
-      list, which was wrong — `reservoir_fill_visibly_drops` and `never_full_reservoir_after_heavy_draw`
-      are the same shape, and all three are declared `(change)` per spec §4b.
-- [ ] `canal_holds_only_the_channel` — the liquid is inside the dug channel and not standing
-      on open ground beside it. From *"flows into the canal to fill it"*.
-      ✅ **MEASURED 2026-09-17: this is now BUILT and expected to PASS**, reversing this line's
-      previous note that it must fail. `Flood_FlowWorks.CanFloodInto` gates on
-      `RM_MapComponent_Excavation.CanLiquidEnter`, behind the `channelConfinementEnabled`
-      setting, which defaults to **true** (`RimMandrakeFlowWorksMod.cs:43`). A player who turns
-      that setting off is choosing the old behaviour and is not a failure of this line.
-- [ ] `canal_reads_as_same_liquid_as_reservoir` — a filled canal reads as the same substance as
-      the body it came from. From *"extending the source"*.
+      from a full one.
+- [ ] `fill_tier_legible` — dry, trace, half and brimming fill in excavations of the same
+      depth are distinguishable from each other by looking.
+- [ ] `canal_fill_spreads_along_itself` — an incompletely filled channel shows one
+      continuous wet reach extending away from its inlet, not an isolated puddle at the inlet.
+- [ ] `canal_fill_front_watchable` (change) — the boundary between wet and dry is visibly
+      farther along the same channel in the AFTER frame than in the BEFORE frame.
+- [ ] `tar_fill_front_lags_water` (change) — from matching dry starts, water has visibly
+      reached farther along its channel than tar has along an identical one after the same
+      time.
+- [ ] `canal_holds_only_the_channel` — the liquid surface ends at the channel's walls and does
+      not spread onto the ground beside it.
+- [ ] `canal_reads_as_same_liquid_as_reservoir` — a filled canal reads as the same substance
+      as the body it came from.
+- [ ] `fill_fluid_distinct` — excavations holding different fluids are distinguishable from
+      each other by looking.
+- [ ] `depth_and_fill_jointly_legible` — in one view, cells sharing a fill but differing in
+      depth, and cells sharing a depth but differing in fill, are all distinguishable.
 
 **The reservoir paying for it**
-- [ ] `reservoir_fill_visibly_drops` (change) — after supplying a canal, the reservoir is visibly less
-      full, and a small pond visibly shrinks at its far edge. From *"the parent body of water
-      reduces itself in proportion as well"*. 🔑 Ruling 34 makes this the **same art as
-      `canal_partial_fill_distinct`** on a deeper cell, so it demands nothing new to draw —
-      which is why the two strained-source lines it replaces could be deleted outright.
+- [ ] `reservoir_fill_visibly_drops` (change) — after supplying a canal, an enclosed
+      reservoir's visible liquid level is lower in the AFTER frame than in the BEFORE frame.
+- [ ] `reservoir_shoreline_recedes` (change) — after supplying a canal, the far shoreline of
+      a small enclosed pond has visibly receded.
+- [ ] `empty_reservoir_stops_flow` (change) — once its enclosed reservoir is visibly empty, a
+      canal's wet front stays where it was between two frames taken apart in time.
+- [ ] `reservoir_recharge_progress_visible` (change) — a drawn-down reservoir left alone has
+      visibly regained some liquid in the AFTER frame while still short of full.
 
 **Defense**
 - [ ] `canal_burning_reads_as_burning_liquid` — a lit flammable canal reads as the liquid
-      surface itself alight, not as ordinary fire standing on ground. From *"the canals can be
-      lit and burn for a very long time"*.
-- [ ] `canal_fire_reaches_reservoir` — fire is visibly present at the reservoir, not only in
-      the channel. From *"They will also light their source at that time"*.
-- [ ] `canal_spent_after_burn` — a burned-out channel reads as scorched and empty, not merely
-      dry. **Promoted from candidate to bar 2026-09-17**, so the defense use he ranked first
-      leaves a visible mark afterwards. Costs a third channel state to art, on top of dry and
-      filled; he took it while declining the matching exhausted-reservoir state, which is
-      consistent with ruling 34 — there is no reservoir object to be exhausted.
-- [ ] `slime_reads_as_viscous_not_water` — slime reads as opaque and viscous, never as tinted
-      water. From *"so slippery that it is nearly impossible to cross"*.
-- [ ] `slime_occupant_below_surface` — a pawn caught in a slime canal is not drawn standing on
-      the surface. Kin to Pits' `pit_occupant_below_floor`; his standing rejection of a pawn
-      *"staring at the camera"* is the same defect.
+      surface itself alight, not as ordinary fire standing on ground.
+- [ ] `canal_fire_reaches_reservoir` (change) — a connected flammable reservoir is unlit in
+      the BEFORE frame and visibly alight in the AFTER frame, while the channel fire is still
+      visible.
+- [ ] `canal_fire_persists` (change) — the same liquid is still visibly alight in two frames
+      labelled at least one in-game day apart.
+- [ ] `canal_spent_after_burn` — a burned-out channel is visibly distinguishable from an
+      unburned dry channel by scorching, reading as burned and empty rather than merely dry.
+- [ ] `slime_reads_as_viscous_not_water` — slime shows a thick, opaque surface, never the look
+      of recoloured water.
+- [ ] `slime_occupant_below_surface` — a pawn caught in a slime canal is drawn sunk into the
+      slime, not standing on its surface.
 
-⛔ **Irrigation has NO visual line, by ruling 36 (2026-09-17).** There used to be one here —
-`irrigated_ground_visibly_differs`, called "the whole irrigation motivation rests on this being
-visible." He was told the consequence is a player who may irrigate for hours without perceiving
-that it works, and ruled the yield is enough. Irrigation is still second in the motivation
-ranking and still tuned; it is simply not drawn, and **a future pass must not re-add this line
-as an oversight.**
+**Depth**
+- [ ] `pit_depth_ladder_legible` — undug ground and excavations of depth one, two, three and
+      four side by side are each distinguishable from the others by looking, without a
+      tooltip.
+- [ ] `pawn_height_ladder_legible` — pawns standing on undug ground and on each of the four
+      depths sit progressively lower at every deeper step.
+- [ ] `pawn_lowers_on_deeper_cell` (change) — the same pawn is drawn visibly lower relative to
+      the rim in the AFTER frame, after moving onto a deeper cell.
+- [ ] `pawn_rises_on_shallower_cell` (change) — the same pawn is drawn visibly higher in the
+      AFTER frame, after moving onto a shallower cell.
+
+**The pit — a superdeep excavation, empty**
+- [ ] `pit_reads_as_hole` — a superdeep cell reads as a big dark hole at play zoom with labels
+      hidden.
+- [ ] `pit_walls_have_visible_depth` — an empty superdeep excavation shows wall faces
+      descending from rim to floor, not a flat dark tile.
+- [ ] `pit_not_vanilla_trap` — a superdeep excavation is visually distinct from vanilla's
+      spike trap.
+- [ ] `pit_reads_at_size` — a multi-cell superdeep area reads as one excavated place, not as
+      a grid of identical tiles.
+
+**The pit, occupied**
+- [ ] `pit_occupant_below_floor` — an occupant of a superdeep cell reads as being down in
+      the hole, not standing on top of it.
+- [ ] `pit_occupied_distinguishable` — occupied and empty superdeep cells are
+      distinguishable at a glance, with no tooltip and no click.
+- [ ] `pit_trapped_reads_as_trapped` — the walls around a superdeep occupant rise visibly
+      above the top of their head, by about a fifth of their height, so climbing out reads
+      as impossible.
+
+**The cover**
+- [ ] `pit_covered_invisible` (change) — the same patch of ground looks the same at play zoom
+      in the BEFORE frame (undug) and the AFTER frame (a covered superdeep excavation).
+- [ ] `pit_covered_seam_at_max_zoom` — a covered superdeep excavation shows a slight seam or
+      discoloration at maximum zoom, so the player who placed it can find it.
+
+**The built half — ladders, sluice gates, spikes**
+- [ ] `ladder_state_legible` — a raised ladder beside the rim is visibly distinguishable from
+      the same ladder lowered into the excavation.
+- [ ] `sluice_gate_state_legible` — a sluice gate open versus shut is visible without
+      selecting it.
+- [ ] `spikes_read_distinct` — at play zoom some part of the spikes is visibly projecting in a
+      spiked cell, distinguishing it from a bare one before anything falls in.
+
+⛔ **Irrigation has NO visual line, by ruling 36 (2026-09-17).** He was told the consequence is
+a player who may irrigate for hours without perceiving that it works, and ruled the yield is
+enough. **A future pass must not re-add an irrigation line as an oversight.**
 
 ### cannot show
 
-- [ ] `never_liquid_on_open_ground` — liquid standing on open ground the player never dug.
-      ⚠️ Was described here as "the current engine's actual behaviour"; that is **no longer
-      true** as of the channel-confinement measurement above, so this absolute now guards a fixed
-      behaviour against regression rather than describing a live defect.
+- [ ] `never_liquid_on_open_ground` — liquid standing on undug ground outside both the
+      reservoir and the channel.
 - [ ] `never_gravel_path` — a channel that reads as a gravel road.
-- [ ] `never_full_reservoir_after_heavy_draw` (change) — a reservoir whose fill looks untouched after
-      filling a long canal, which would make conservation of mass invisible and the stock ruling
-      pointless.
+- [ ] `never_full_reservoir_after_heavy_draw` (change) — an enclosed reservoir whose fill looks
+      untouched after filling a long canal.
+- [ ] `never_snared_standing` — a pawn snared upright on a labelled tile, staring at the
+      camera.
+- [ ] `never_reads_as_building` — the bare excavation itself, apart from any ladder, gate or
+      spikes in it, reads as a placed building sitting on the floor.
 
 ### candidate lines
 
-**Empty — all four were resolved with him on 2026-09-17, none left parked.** Recorded so the
-absence reads as a decision:
+**Empty by decision.** Resolved with him and not to be re-added:
 
-- `canal_fill_front_watchable` — **promoted** to a bar.
-- `canal_spent_after_burn` — **promoted** to a bar.
-- `limited_vs_limitless_legible` — **cut** by ruling 35. The classification stays real in the
-  simulation and is shown nowhere; do not re-add an indicator as a usability fix.
-- `source_exhausted_distinct_from_strained` — **cut.** Incoherent after ruling 34, which removed
-  both the source object and the strained state it was to be distinguished from.
+- `limited_vs_limitless_legible` — **cut** by ruling 35. The classification is real in the
+  simulation and shown nowhere.
+- `source_exhausted_distinct_from_strained` — **cut.** Incoherent after ruling 34, which
+  removed the source object and the strained state.
+- `irrigated_ground_visibly_differs` — **cut** by ruling 36, above.
+- `digsite_stage_legible` — **cut** with the staged dig-site chain the pit collapse retires.
+
+### provenance
+
+| bar | his words it distils |
+|---|---|
+| `canal_reads_as_dug_channel` | *"dig canals in the ground"* |
+| `canal_dry_reads_as_obstacle` | *"an unfilled pit slows movement as per other established dug barriers"* |
+| `filled_excavation_reads_as_obstacle` | *"filled pits reduce as per that terrain cost"*; *"all other flooded canal depths just slow you down more"* |
+| `canal_partial_fill_distinct` | *"a graphic showing partial fill"* |
+| `fill_tier_legible` | pit card round 3, 2026-09-17 — approved; strengthens `canal_partial_fill_distinct` (four states vs two), sits beside it because ids are frozen |
+| `canal_fill_spreads_along_itself` | *"spread the water throughout themselves"* |
+| `canal_fill_front_watchable` | *"at the liquid's viscosity (water is essentially zero)"*; promoted from candidate 2026-09-17 |
+| `tar_fill_front_lags_water` | *"water is essentially zero"* viscosity against tar; split from `canal_fill_front_watchable` on GPT review |
+| `canal_holds_only_the_channel` | *"flows into the canal to fill it"* |
+| `canal_reads_as_same_liquid_as_reservoir` | *"extending the source"* |
+| `fill_fluid_distinct` | pit card round 3 — approved; generalises `slime_reads_as_viscous_not_water`; half of the old Pits `fitting_reads_distinct` |
+| `depth_and_fill_jointly_legible` | the depth ruling (*"All depths must be visually legible"*) held together with the four fill tiers |
+| `reservoir_fill_visibly_drops` | *"the parent body of water reduces itself in proportion as well"*; ruling 34 makes it partial fill on a deeper cell |
+| `reservoir_shoreline_recedes` | *"a small pond visibly shrinks at its far edge"*, split out of `reservoir_fill_visibly_drops` |
+| `empty_reservoir_stops_flow` | *"Each source's square can supply up to five canal squares with liquid before it stops providing"* |
+| `reservoir_recharge_progress_visible` | *"refilling slowly, from rain and season and ground liquids oozing in"* |
+| `canal_burning_reads_as_burning_liquid` | *"the canals can be lit and burn for a very long time"* |
+| `canal_fire_reaches_reservoir` | *"They will also light their source at that time"* |
+| `canal_fire_persists` | *"burn for a very long time"* |
+| `canal_spent_after_burn` | promoted from candidate 2026-09-17 so the defense use leaves a visible mark |
+| `slime_reads_as_viscous_not_water` | *"so slippery that it is nearly impossible to cross"* |
+| `slime_occupant_below_surface` | *"escape from the pit takes a great deal of time"*; his rejection of a pawn *"staring at the camera"* |
+| `pit_depth_ladder_legible` | the depth ruling: *"All depths must be visually legible and differentiable graphically."* |
+| `pawn_height_ladder_legible` | the depth ruling: *"They should be low enough that it is visually clear how they could not possibly climb out"* |
+| `pawn_lowers_on_deeper_cell` | the depth ruling: *"The pawn should visibly rise up and lower down as they move over the depths."* |
+| `pawn_rises_on_shallower_cell` | the same sentence, the other direction |
+| `pit_reads_as_hole` | *"we need a big dark pit"*; ruling 33 *"walls with depth, not a flat tile"* |
+| `pit_walls_have_visible_depth` | ruling 33 *"walls with depth, not a flat tile"*, split out of `pit_reads_as_hole` |
+| `pit_not_vanilla_trap` | *"stuck in a trap with "Pit" written on it"* — reworded from the Pits walk to drop the building's texture path |
+| `pit_reads_at_size` | Pits walk bar, strengthened from "fills its own footprint" to "one excavated place" |
+| `pit_occupant_below_floor` | Pits walk bar; absorbs the Pits walk's `pitcell_occupant_visible` (same claim) |
+| `pit_occupied_distinguishable` | Pits walk bar, "sprung pits" re-subjected to superdeep cells |
+| `pit_trapped_reads_as_trapped` | pit card round 3, worded against the walls by his choice; the depth ruling's *"the walls are higher than their head by 20%"* |
+| `pit_covered_invisible` | `design/Jawa/covered_pit_traps_spec.md` §3, 2026-08-30 |
+| `pit_covered_seam_at_max_zoom` | *"a slight seam/discoloration at high zoom for the player's own eye"* |
+| `ladder_state_legible` | *"A ladder nearby can be pulled up or lowered"*; half of the Pits walk's `pitcell_gate_state_legible` |
+| `sluice_gate_state_legible` | *"A sluice gate also acts just like a door"*; the other half of `pitcell_gate_state_legible` |
+| `spikes_read_distinct` | *"there should still be something showing their presence"*; half of the Pits walk's `fitting_reads_distinct` |
+| `never_liquid_on_open_ground` | *"flows into the canal to fill it"* |
+| `never_gravel_path` | the dug channel must not read as a road |
+| `never_full_reservoir_after_heavy_draw` | conservation of mass made visible; his stock ruling |
+| `never_snared_standing` | the defect that prompted the north-star system, kept verbatim from the Pits walk |
+| `never_reads_as_building` | pit card round 3 — approved; the general form of `pit_not_vanilla_trap` |
 
 ## anti-guessing notes
 - ✅ **The DRAFT banner that used to open `## north star` was false and is deleted** (2026-09-17).

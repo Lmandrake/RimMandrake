@@ -60,13 +60,6 @@
     "status": "RED",
     "ts": 1789295395.3677833
   },
-  "Pits": {
-    "hash": "306ec9f29596914d444f0fbd1b3117a683d9dc696e6025d4d99afac0e105ee7e",
-    "minor": null,
-    "run_id": "Pits@1789295347",
-    "status": "GREEN",
-    "ts": 1789295348.6166
-  },
   "Pyrelands": {
     "hash": "4657ffdd57c8b6fa53a182aeba42ce04022714d9d094243d1b5098f01709b1a8",
     "minor": null,

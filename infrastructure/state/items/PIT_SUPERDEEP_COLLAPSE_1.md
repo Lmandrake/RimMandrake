@@ -54,11 +54,11 @@ a spike trap.
 content ships inside FlowWorks (`Defs/Pits/`, `Source/Pits/`). `mandrake.rm.pits`
 survives only as prose in FlowWorks' `About.xml` line 51.
 
-Yet `design/validation_walks/RimMandrake/Pits.md` carries **11 must-show + 1
-cannot-show VALIDATED bars** — his approval, binding nothing, because
-`modcheck run Pits` cannot resolve a mod folder. FlowWorks' own 13+3 bars contain
-**zero** pit bars: measured, the two rosters have no overlap at all. The pit's
-visual floor was silently lost in the merge.
+The pit's 11 must-show + 1 cannot-show bars lived in a separate `Pits.md` walk that
+bound nothing, because `modcheck run Pits` cannot resolve a mod folder. ✅ **Resolved
+2026-10-01:** they were rewritten against the superdeep model below and folded into
+FlowWorks' `## north star` (`design/validation_walks/RimMandrake/FlowWorks.md`), which
+he re-validated (`FLOWWORKS_NORTHSTAR_REVALIDATE_1`); `Pits.md` is deleted.
 
 ⛔ **Do not move those 12 bars into FlowWorks as they stand.** Several are claims
 about a Building — `pit_not_vanilla_trap` is explicitly about "its own texture
