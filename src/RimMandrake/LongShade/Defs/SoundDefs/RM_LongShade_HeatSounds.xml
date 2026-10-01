@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LongShade_HeatSounds.xml     LONGSHADE_GPT_ENRICHMENT_1 §3 ("heat you can hear")
+
+  Consumed by mandrake.rm.creaturebehaviors' RM_HeatSoundscape.cs:
+    RM_Heat_LitBed / RM_Heat_ShadeBed  - the camera bed (RM_HeatSoundscapeExtension
+                                         on RM_LongShade), lit vs shade at the CAMERA's
+                                         cell, per the owner's typed card note.
+    RM_Gloomcast_Footfall              - RM_CompFootfalls on RM_Gloomcast, a map sound
+                                         with a wide distRange so it is heard before
+                                         the giant is on screen.
+
+  PLACEHOLDER AUDIO, same convention as RM_GreentideHummingGrove.xml and
+  RM_WastelandSounds.xml: no audio pipeline exists in this repo, so each grain is a
+  verbatim copy of a vanilla grain (the two clipPaths are listed in
+  Utils/selftest_sound_paths.py's VANILLA_PACKED with their donor SoundDefs),
+  pitched and levelled to be ours:
+    lit bed   <- Core Ambient_DayInsects_Jungle's clip, pitched up: a dry, rising
+                 insect shimmer standing in for "the open ground hisses";
+    shade bed <- Core Ambient_Wind_Fog's clip, low and soft: the quiet of shade,
+                 standing in for "breathing, leather creak, dew drips";
+    footfall  <- the undercave collapse rumble folder RM_Middenshell_Grind already
+                 uses, pitched far down: "subsonic footfalls".
+  Real authored audio (and the haze muffling, which waits on the smoke calendar)
+  is follow-up work. TUNED: every volume, pitch and distance below is a first value
+  for the owner to judge by ear.
+-->
+<Defs>
+
+  <SoundDef>
+    <defName>RM_Heat_LitBed</defName>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <sustain>true</sustain>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Ambience/JungleInsects_Day_1a</clipPath>
+          </li>
+        </grains>
+        <volumeRange>9</volumeRange>
+        <pitchRange>1.25~1.35</pitchRange>
+        <sustainLoop>true</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_Heat_ShadeBed</defName>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <sustain>true</sustain>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Ambience/Wind/Amb_Wind_Fog2_Loop</clipPath>
+          </li>
+        </grains>
+        <volumeRange>5</volumeRange>
+        <pitchRange>0.8~0.85</pitchRange>
+        <sustainLoop>true</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_Gloomcast_Footfall</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>2</maxSimultaneous>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Ambience/Undercave/Collapsing/Rumble</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>14~20</volumeRange>
+        <pitchRange>0.3~0.38</pitchRange>
+        <distRange>30~110</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>

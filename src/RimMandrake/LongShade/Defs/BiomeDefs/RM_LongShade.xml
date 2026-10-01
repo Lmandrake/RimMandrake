@@ -276,6 +276,15 @@
         <heatKind>overhead</heatKind>
         <heatOffsetC>30</heatOffsetC>
       </li>
+      <!-- LONGSHADE_GPT_ENRICHMENT_1 §3, heat you can hear: lit vs shade bed at the
+           camera's cell (owner: "It's ok for the heat sound to be where the camera is
+           rather than your people."). Sounds: ../SoundDefs/RM_LongShade_HeatSounds.xml
+           (placeholder audio). Toggles: Creature Behaviors, "Heat you can hear" and
+           "Herd calls and giant footfalls". Numbers are the extension's TUNED defaults. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_HeatSoundscapeExtension" MayRequire="mandrake.rm.biomes">
+        <litSound>RM_Heat_LitBed</litSound>
+        <shadeSound>RM_Heat_ShadeBed</shadeSound>
+      </li>
     </modExtensions>
   </BiomeDef>
 
