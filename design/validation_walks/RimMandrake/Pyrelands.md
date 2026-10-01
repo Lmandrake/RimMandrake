@@ -1,9 +1,9 @@
 # Pyrelands — validation walk
-subject: src/RimMandrake/Pyrelands  (packageId `mandrake.rm.pyrelands`)
+subject: src/RimMandrake/Pyrelands  (dev source folder, own About.xml packageId `mandrake.rm.pyrelands`, which is never deployed standalone: the biome ships COMPOSED inside `mandrake.rm.biomes`, RimMandrake: Baroque Biomes — test that)
 feature: biome-core
-deps: none — self-contained biome mod (own terrain/plants/weathers, RM_FE_ prefix); fauna wiring rides mandrake.rut.patches (WildAnimals_Pyrelands.xml)
-list: minimal+mandrake.rm.pyrelands+mandrake.rut.patches
-status-hint: THE campaign biome since PYRELANDS_WORLD_SWITCH_1 (2026-09-18): all 222 of Ash'karr's Pyrelands tiles are RM_Pyrelands (renamed from RM_FE_Pyrelands, PYRELANDS_DEFNAME_RENAME_1, closed); the ZBiome_Grasslands donor is retired from the worldmap.
+deps: mandrake.rm.biomes (the composed biome itself); mandrake.rut.patches (the fauna roster is patch-added, UtinniPatches/Patches/WildAnimals_Pyrelands.xml); mandrake.rsw.swbestiary (seven roster keys — the guard on that patch Operation is inert, so the tier must carry it); mandrake.rut.pyrelandsmechanics
+list: minimal+mandrake.rm.biomes+mandrake.rut.patches+mandrake.rsw.swbestiary+mandrake.rut.pyrelandsmechanics
+status-hint: THE campaign fire biome; its BiomeDef is RM_Pyrelands (renamed from RM_FE_Pyrelands, PYRELANDS_DEFNAME_RENAME_1, closed). Tile assignment is redone wholesale at the one planet-painting pass, so a tile count is never evidence about this biome. Trial plan: design/RimMandrake/northstar_trials/Pyrelands_trial_plan.md.
 
 ## must be true
 - A generated RM_Pyrelands map's plant population comes from the biome's own
@@ -44,37 +44,73 @@ X. [S] (human pass) walk a fresh Pyrelands map at play zoom: the ground cover
 
 ## north star
 state: VALIDATED
-validated-hash: 90a286aa83f12acdeb8cc6a8f94b10b23efd3f2aa58e991edfe72bc7f88a6e2c
+validated-hash: eca2fe9b0bd54f26ae17fac366c34ed410e796927dda5c0b9131e0a858ac652a
 
 Owner, 2026-09-17 (verbatim): *"Any wrong animals present? Btw these are two
 validation script bars you should add for pyrelands. Correct animal and plant
-distributions."*
+distributions."* The remaining bars are distilled from the owner-ruled biome
+sheet and the shipped mechanics; each is one thing a player can check on a
+freshly generated Pyrelands map in ordinary play.
 
 ### must show
 
 **The biome's own populations**
-- [ ] `pyre_plant_distribution_correct` — the plants on a Pyrelands map are the
-      biome's own flora roster; no other mod's grasses, trees, bushes or fungi
-      appear via global biome injection.
-- [ ] `pyre_animal_distribution_correct` — the wild animals on a Pyrelands map
-      are the biome's wildAnimals roster; no foreign kinds wander in through
-      other mods' biome-blind spawn patches.
+- [ ] `pyre_plant_distribution_correct` — every wild plant on a fresh Pyrelands
+      map is ember grass, quick grass or scorch-fruit; no other wild plant
+      species grows there.
+- [ ] `pyre_animal_distribution_correct` — every wild animal on a fresh
+      Pyrelands map belongs to the biome's fire-ecology cast, no other kind
+      wanders in, and the small common grazers outnumber the big predators.
+- [ ] `pyre_mapgen_log_clean` — generating a fresh Pyrelands map raises no
+      error message on screen.
 
 **The fire ecology**
-- [ ] `pyre_ground_ash_ladder` — the ground reads as the scorchable family with
-      real ash states after burns (trace through deep), not stock desert ground.
-- [ ] `pyre_grass_chokes_ground` — ember/quick grass carpets unburned soil
-      densely; no bare-dirt expanses where grass should carry the ground.
-- [ ] `pyre_embergrass_regrows` — a burned patch re-greens within days; the
-      burn-and-regrow cycle is readable in ordinary play, not just in defs.
-- [ ] `pyre_scorchfruit_produces` — scorch-fruit plants bear a harvestable
-      yield a colonist can actually pick and eat.
-- [ ] `pyre_scorchfruit_spoils_fast` — that yield visibly spoils within days
-      (faster still on the plant) — eat-or-lose pressure, no walking a
-      stockpile out of the biome.
+- [ ] `pyre_ground_ash_ladder` — all exposed soil, sand and gravel on a fresh
+      Pyrelands map is scorchable ground, and repeated burns visibly darken it
+      through trace, light, heavy and deep ash stages.
+- [ ] `pyre_grass_chokes_ground` — unburned soil is carpeted densely in grass;
+      there are no bare-dirt expanses where grass should carry the ground.
+- [ ] `pyre_embergrass_regrows` — a burned patch of grass is visibly
+      re-greening within a few days and largely green again within about a
+      week, at the biome's own heat.
+- [ ] `pyre_burn_line_present` — a fresh Pyrelands map shows an active line
+      of fire somewhere, with a visibly scorched trail behind its advancing
+      front.
+- [ ] `pyre_scorchfruit_fire_born` — scorch-fruit appears only on freshly
+      burned ground, never as ordinary wild growth on unburned land.
+- [ ] `pyre_scorchfruit_produces` — a ripe scorch-fruit plant yields edible
+      fruit that a colonist can harvest, and eating it raises a hungry
+      colonist's food meter.
+- [ ] `pyre_scorchfruit_spoils_fast` — unrefrigerated, harvested scorch-fruit
+      rots within about four days, and a ripe unharvested plant withers within
+      about a day.
+- [ ] `pyre_ruins_scorched` — ruins on a fresh Pyrelands map stand blackened
+      and fire-scarred, not pristine.
+- [ ] `pyre_fulgurite_after_lightning` — after a dry-lightning storm strikes
+      sandy ground, at least one impact site bears a visible lump of fulgurite
+      glass.
+
+**The fire cast at work**
+- [ ] `pyre_firehawk_carries_ember` — a fire-hawk picks up a burning twig and
+      a new fire starts where it drops it, ahead of the existing blaze.
+- [ ] `pyre_furnacebeast_warmth` — a pawn standing in the open near a
+      furnace-beast shows a readable warmth status that disappears after it
+      walks away.
+- [ ] `pyre_furnacebeast_heats_room` — an enclosed room holding a
+      furnace-beast becomes clearly hotter than a comparable room without
+      one.
+- [ ] `pyre_burrowers_dive` — when fire reaches a burrowing grazer it shows a
+      readable burrowed status and comes through unharmed once the fire has
+      passed.
+
+**The weather**
 - [ ] `pyre_ashfall_darkens_drifts` — ash fall dims the map and lays visible
-      loose-ash drifts that accumulate while it lasts.
-- [ ] `pyre_cinderfall_distinct` — cinderfall reads as its own weather at a
-      glance, not ash fall renamed.
-- [ ] `pyre_blackrain_reads` — black rain reads as black rain, visually its own
-      event among the biome's weathers.
+      loose-ash drifts that keep accumulating while it lasts.
+- [ ] `pyre_cinderfall_distinct` — cinderfall is recognisable at a glance as
+      its own weather, not ash fall renamed.
+- [ ] `pyre_blackrain_reads` — black rain falls visibly dark, plainly
+      different from ordinary blue-grey rain.
+
+### cannot show
+- [ ] `pyre_cannot_ordinary_rain` — ordinary rain falling on a Pyrelands map;
+      its only wet weather is black rain.
