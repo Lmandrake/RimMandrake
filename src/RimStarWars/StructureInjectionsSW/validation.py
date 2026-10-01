@@ -35,7 +35,7 @@ actually reachable) is the correct tool, and is what `def_wiring_readback`
 below uses instead.
 
 Every one of the 7 templates' own defining defName is UNIQUE across all 7
-(confirmed: `KotOR_MoistureVaporator_big`, `KraytDragonSkull`,
+(confirmed: `KotOR_MoistureVaporator_big`, `RSW_KraytDragonSkull`,
 `AncientPodCar`, `LargeFossilTrophy`/`MediumFossilTrophy`, `BanthaHorn`,
 `Filth_AnimalFilth`, `VFEPD_AncientEmptyMiningCar`) -- EXCEPT
 `ChunkSlagSteel`, which the walk doc's own step 20 uses for
@@ -73,7 +73,8 @@ ENGINE_SETTINGS_TYPE = "RimMandrake.StructureInjections.RM_StructureInjectionsSe
 DEF_PAIRS = [
     ("RSW_GenStep_MoistureFarm", "RSW_MoistureFarm",
      ["Desert", "ExtremeDesert", "AridShrubland"]),
-    ("RSW_GenStep_KraytGraveyard", "RSW_KraytGraveyard", ["ExtremeDesert"]),
+    # STILLSAND_SKELETONS_TRACKS_1 §6: RM_Stillsand added (MayRequire mandrake.rm.stillsand).
+    ("RSW_GenStep_KraytGraveyard", "RSW_KraytGraveyard", ["ExtremeDesert", "RM_Stillsand"]),
     ("RSW_GenStep_PodracerWreck", "RSW_PodracerWreck", ["Desert", "ExtremeDesert"]),
     ("RSW_GenStep_HuntingLodge", "RSW_HuntingLodge",
      ["AridShrubland", "ZBiome_Grasslands", "RM_Pyrelands"]),
@@ -85,7 +86,8 @@ DEF_PAIRS = [
 # (genStepDef, [(defName, exact_expected_count)])
 TEMPLATE_CHECKS = [
     ("RSW_GenStep_MoistureFarm", [("KotOR_MoistureVaporator_big", 6)]),
-    ("RSW_GenStep_KraytGraveyard", [("KraytDragonSkull", 6)]),
+    # STILLSAND_SKELETONS_TRACKS_1 §6: the central skull became one real skeleton.
+    ("RSW_GenStep_KraytGraveyard", [("RSW_KraytDragonSkull", 5), ("RSW_KraytSkeleton", 1)]),
     ("RSW_GenStep_PodracerWreck", [("AncientPodCar", 1)]),
     ("RSW_GenStep_HuntingLodge", [("LargeFossilTrophy", 1), ("MediumFossilTrophy", 1)]),
     ("RSW_GenStep_BanthaGraveyard", [("BanthaHorn", 29)]),

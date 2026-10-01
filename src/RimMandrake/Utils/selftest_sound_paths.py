@@ -51,6 +51,9 @@ VANILLA_PACKED = {
     "Building/Obelisks/Ambience/Obelisk_Amb_Stage2_A_01": "Anomaly ObeliskAmbientStageOne",
     "Building/Obelisks/Ambience/Obelisk_Amb_Stage3_A_01": "Anomaly ObeliskAmbientStageTwo",
     "Building/Obelisks/Ambience/Obelisk_Amb_Stage4_A_01": "Anomaly ObeliskAmbientStageThree",
+    # STILLSAND_SKELETONS_TRACKS_1's bone harp (placeholder grain); verbatim
+    # from Core Ambient_Wind_Desolate, verified via RimSage 2026-10-01.
+    "Ambience/Wind/Amb_Wind_Altitude1_Loop": "vanilla Ambient_Wind_Desolate",
 }
 
 

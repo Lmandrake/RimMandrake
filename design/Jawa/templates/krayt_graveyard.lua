@@ -6,9 +6,10 @@
 -- pearls are the lure, not guaranteed loot: only a minority of skulls carry
 -- one.
 --
--- Real defNames verified against the live def dump (no substitution
--- needed): KraytDragonSkull, KraytDragonHorn, KraytPearl all exist in the
--- current mod stack (Star Wars Animal Collection), category Item, 1x1.
+-- defNames: RSW_KraytDragonSkull and RSW_KraytPearl are our own SWBestiary
+-- items (the absorbed ports); KraytDragonHorn is still the Star Wars Animal
+-- Collection donor's (no RSW port exists). RSW_KraytSkeleton and
+-- RM_GiantSkull are STILLSAND_SKELETONS_TRACKS_1's skeleton buildings.
 --
 -- API available: ctx (see luaenv.Ctx), rect, params, rng, role(), note()
 
@@ -45,7 +46,7 @@ function build(ctx)
         -- alternate skull/horn along the arc so it doesn't read as one
         -- repeated prop; every third skull is pearl-bearing.
         if i % 2 == 0 then
-          ctx:place("KraytDragonSkull", bx, bz)
+          ctx:place("RSW_KraytDragonSkull", bx, bz)
           skulls_placed = skulls_placed + 1
           if skulls_placed % 3 == 1 then
             -- the pearl sits WITH the skull, not on it - offset one cell
@@ -55,7 +56,7 @@ function build(ctx)
             local pz = bz + (cz > bz and 1 or (cz < bz and -1 or 0))
             if px >= rect.x and px <= rect.x2 and pz >= rect.z and pz <= rect.z2
                 and not ctx:occupied(px, pz) then
-              ctx:place("KraytPearl", px, pz)
+              ctx:place("RSW_KraytPearl", px, pz)
               pearls_placed = pearls_placed + 1
             end
           end
@@ -67,15 +68,21 @@ function build(ctx)
     end
   end
 
-  -- ---- one large skull at the crescent's own focus ----------------------
-  -- the "owner of the bones" read: a single central skull the arc curves
-  -- around, distinct from the scattered ring.
+  -- ---- one real krayt skeleton at the crescent's own focus ---------------
+  -- STILLSAND_SKELETONS_TRACKS_1 §6: the "owner of the bones" is a whole
+  -- skeleton building now (RSW_KraytSkeleton, 7x3, SWBestiary, MayRequire
+  -- mandrake.rm.stillsand), with its skull building beside it - the
+  -- crescent of loose skulls is the scatter around it.
+  local skeleton_placed = 0
   if not ctx:occupied(cx, cz) then
-    ctx:place("KraytDragonSkull", cx, cz)
-    skulls_placed = skulls_placed + 1
+    ctx:place("RSW_KraytSkeleton", cx, cz)
+    skeleton_placed = 1
+    if not ctx:occupied(cx + 6, cz) then
+      ctx:place("RM_GiantSkull", cx + 6, cz)
+    end
   end
 
   note(string.format(
-    "krayt graveyard: %d skulls (%d pearl-bearing), %d horns along the crescent",
-    skulls_placed, pearls_placed, horns_placed))
+    "krayt graveyard: %d skeleton, %d skulls (%d pearl-bearing), %d horns along the crescent",
+    skeleton_placed, skulls_placed, pearls_placed, horns_placed))
 end

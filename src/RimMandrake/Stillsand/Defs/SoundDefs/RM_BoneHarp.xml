@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BoneHarp.xml                      RimMandrake — STILLSAND_SKELETONS_TRACKS_1 §3
+  The bone harp: wind across a skeleton's ribs, a hollow note that moans in the hiss and
+  howls in the gale (stillsand_turn3_development_2026-09-30.md §2.1 layer 4, §3.1).
+  RM_CompBoneHarp sets the external param "Wind" to the map's wind speed every tick
+  (WindManager.WindSpeed: ~0 still air, ~1 normal, 1.5+ in strong wind); the curve maps it
+  to volume, and the pitch is pulled down for a hollow, bone-tube note.
+  PLACEHOLDER GRAIN: vanilla Core's Amb_Wind_Altitude1_Loop (the Ambient_Wind_Desolate
+  clip, verified via RimSage), pitched low. A real harp clip is a follow-up.
+-->
+<Defs>
+  <SoundDef>
+    <defName>RM_BoneHarp</defName>
+    <context>MapOnly</context>
+    <sustain>True</sustain>
+    <maxVoices>2</maxVoices>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Ambience/Wind/Amb_Wind_Altitude1_Loop</clipPath>
+          </li>
+        </grains>
+        <volumeRange>14</volumeRange>
+        <pitchRange>0.45~0.5</pitchRange>
+        <distRange>12~45</distRange>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_External">
+              <inParamName>Wind</inParamName>
+              <defaultValue>1</defaultValue>
+            </inParam>
+            <outParam Class="SoundParamTarget_Volume"></outParam>
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve>
+              <points>
+                <li>(0,0.15)</li>
+                <li>(1,0.5)</li>
+                <li>(2,1)</li>
+              </points>
+            </curve>
+          </li>
+        </paramMappings>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>

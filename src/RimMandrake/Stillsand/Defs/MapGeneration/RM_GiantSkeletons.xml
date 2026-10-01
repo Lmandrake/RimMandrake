@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GiantSkeletons.xml (MapGeneration)  RimMandrake — STILLSAND_SKELETONS_TRACKS_1 §4
+  Zero to two giant skeletons per Stillsand map, sparse (40 cells apart, 12 from the edge),
+  often with a tower ollim, kneel ollims and loomma tenants in their shade. Wired onto
+  RM_Stillsand by Patches/RM_GiantSkeletons_Biome.xml; the 0/1/2 chances and the ollim
+  chance live on the biome's RM_SkeletonBiomeExtension, the cap in Mod Settings.
+-->
+<Defs>
+  <GenStepDef>
+    <defName>RM_GiantSkeletons</defName>
+    <!-- after Plants 900 and the precious-cave contents 965, before Animals 1200 -->
+    <order>970</order>
+    <genStep Class="RimMandrake.Stillsand.RM_GenStep_GiantSkeletons">
+      <towerOllim>RM_Ollim</towerOllim>
+      <kneelOllim>RM_KneelOllim</kneelOllim>
+      <tenant>RM_Loomma</tenant>
+    </genStep>
+  </GenStepDef>
+</Defs>
