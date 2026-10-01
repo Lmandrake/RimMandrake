@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T08:38:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T08:54:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1970,6 +1970,16 @@ blocked:  Jobs queued; waiting on daemon renders, then wire
 summary:  (no items/WARCASKET_CASK_ART_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WARCASKET_CASK_ART_1.md
 
+## WARCASKET_WASTE_RUN_REMAINDER_1 Cask-bay follow-ons: five waste-run destinations, Stenchlands cask item, Junker pawnkind wearing the warcasket, what the half-extracted core is for
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+blocked:  Needs owner rulings, nothing buildable from specs: (1) waste-run five destinations (wasteland.md s10) have no mechanics ruling - are they one quest or five, what does each destination do in play? (2) Stenchlands Throat cask: item stats/name not specified. (3) Junker pawnkind wearing RM_WarcasketJunker and sealed-corpse scatter belong to Wasteland cast items, not specified. (4) Half-extracted core use (fuel, trade, reactor input) is a lore ruling; core has no spec beyond cargo item.
+summary:  (no items/WARCASKET_WASTE_RUN_REMAINDER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WARCASKET_WASTE_RUN_REMAINDER_1.md
+
 ## CONTAGION_GPT_ENRICHMENT_1 Contagion enrichment (GPT consult 2026-09-30, owner-picked by card): Draftprints (Helix buys scans of Unfinished, you assume the risks), The Dive (map-wide flight to shelter before a Burn), Bodyprints (corpses fade to visible prints, no vanishing)
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -2021,16 +2031,6 @@ kind:     mechanism
 thin:     no ## verify, no ## criteria
 summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
-
-## WARCASKET_WASTE_RUN_REMAINDER_1 Cask-bay follow-ons: five waste-run destinations, Stenchlands cask item, Junker pawnkind wearing the warcasket, what the half-extracted core is for
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WARCASKET_WASTE_RUN_REMAINDER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WARCASKET_WASTE_RUN_REMAINDER_1.md
 
 ## CRACKEDLANDS_GPT_ENRICHMENT_1 Cracked Lands enrichment (GPT consult 2026-09-30, owner-picked by card): Ledges of Mercy, five beats before water, Peakstorm light, three-height flora, the recede feast, floodline salvage claim; acoustic scanner's Cracked Lands payload
 state:    proposed
