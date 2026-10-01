@@ -76,6 +76,9 @@
       <drawSize>1.0</drawSize>
     </graphicData>
     <techLevel>Industrial</techLevel>
+    <!-- RM_CompWarcasketIntegrity overrides CompTickRare; apparel defaults to tickerType Never, so
+         without this line the compound-failure roll never ran (Thing.DoTick only ticks Rare/Normal). -->
+    <tickerType>Rare</tickerType>
     <tradeability>Sellable</tradeability>
     <costList>
       <Steel>200</Steel>
@@ -92,7 +95,6 @@
       <ArmorRating_Heat>0.7</ArmorRating_Heat>
       <Insulation_Cold>140</Insulation_Cold>
       <Insulation_Heat>100</Insulation_Heat>
-      <ToxicEnvironmentResistance>0.9</ToxicEnvironmentResistance>
       <RM_HazardousTerrainProtection>0.9</RM_HazardousTerrainProtection>
       <EquipDelay>25</EquipDelay>
     </statBases>
@@ -103,6 +105,8 @@
       <MoveSpeed>-1.8</MoveSpeed>
       <WorkSpeedGlobal>-0.25</WorkSpeedGlobal>
       <VacuumResistance>0.85</VacuumResistance>
+      <!-- pawn stat reads equippedStatOffsets (vanilla gas/tox masks); it was in statBases, which nothing reads -->
+      <ToxicEnvironmentResistance>0.9</ToxicEnvironmentResistance>
     </equippedStatOffsets>
     <thingCategories>
       <li>ApparelArmor</li>
