@@ -810,3 +810,12 @@ in "?". No ids appear in the labels._
 
 **Mark 2 now.** The fold-lamp (`ABYSS_FOLD_LAMP_BUILD_1`) and four found rites. **Mark 9 now.** Four gods
 appeased four ways from one biome's dark; the god map is §(c) of the rites doc.
+
+## 15. Beast names (owner, 2026-10-01 10:24 PDT)
+
+| Card item | Ruling | How recorded |
+|---|---|---|
+| N1 Storm giant / Lightfall brood beast | His words, typed: *"Summ the All-Render, with the lesser forms of it other Summ creatures."* "Summ" is the family; "Summ the All-Render" is the brood-mother at Lightfall's bottom (`RUT_SummAllRender`); the wild adult is `RM_Summ`, the young `RM_Summ_Juvenile`, the egg `RUT_SummEgg`. Plain-English stage labels are proposals, owner to confirm. | `ABYSS_DONOR_BEASTS_FREED_1` note; cast bible §4C, §4D, §5 |
+| N2 Quill predator | His word, typed: *"Drokattak"*. `RM_Drokattak`. | `ABYSS_DONOR_BEASTS_FREED_1` note; cast bible §4C, §5 |
+
+Donor defNames (`AA_Behemoth`, `GR_Nighthrumbo`) are renamed in `src/` by FOUNDRY build work, not here.

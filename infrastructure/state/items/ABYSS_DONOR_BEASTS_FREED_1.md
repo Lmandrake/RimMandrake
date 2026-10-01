@@ -8,7 +8,7 @@ Owner, typed (turn 2, 2026-10-01): "Fully regenerate art and names for those two
 
 **Interpretation to confirm with him (BENCH):** "those two beasts" is read as the two donor-bodied creatures in the card's housekeeping question: the ghorrumak (donor `AA_Behemoth`) and the nighthrumbo / zhurrakor (donor `GR_Nighthrumbo`), both roster-placed but wired into neither def. If he meant cindermare and skarnix instead, those are already invented and covered by `ABYSS_INVENTED_CREATURES_TO_RM_1`.
 
-Build: two NEW invented creatures in the RM_ tier (new invented names, not ghorrumak/zhurrakor/behemoth/nighthrumbo), own ThingDef/PawnKindDef/race (no ParentName or graphic from a donor mod, no donor texPath), fully regenerated art (all three facings), wired into `RM_Abyss` and `RUT_Abyss`, with no `MayRequire`/patch dependency on the donor mods. The giant is the storm-call beast of `ABYSS_DARK_BUILD_1` (alien megafauna, never a dragon, no fire breath) (its thunder in Witchfire storms): that item must point at the new def, not `AA_Behemoth`.
+Build: two NEW invented creatures in the RM_ tier (names chosen by the owner (Summ family; Drokattak), not ghorrumak/zhurrakor/behemoth/nighthrumbo), own ThingDef/PawnKindDef/race (no ParentName or graphic from a donor mod, no donor texPath), fully regenerated art (all three facings), wired into `RM_Abyss` and `RUT_Abyss`, with no `MayRequire`/patch dependency on the donor mods. The giant is the storm-call beast of `ABYSS_DARK_BUILD_1` (alien megafauna, never a dragon, no fire breath) (its thunder in Witchfire storms): that item must point at the new def, not `AA_Behemoth`.
 
 ## already built (found 2026-10-01, cited so nothing is re-invented)
 
