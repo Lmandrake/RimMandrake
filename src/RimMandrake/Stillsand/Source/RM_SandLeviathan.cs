@@ -46,7 +46,8 @@ namespace RimMandrake.Stillsand
     // RSW_SwimmerRoadExtension pattern, so a consumer in another tier needs no
     // cross-reference to RM_Stillsand), and a per-incident toggle and odds slider
     // in RM_StillsandEventsSettings. Odds are weighted up by vibration (powered deep
-    // drills). The Return's Debt weighting waits on STILLSAND_RETURN_RITUAL_1.
+    // drills). Unpaid water debt weights them up too (RM_StillsandWater.IncidentChanceFactor,
+    // STILLSAND_RETURN_RITUAL_1), and a fresh pour on wet sand is a draw (LoudestCell).
     // ════════════════════════════════════════════════════════════════════
 
     public class RM_SandLeviathanExtension : DefModExtension
@@ -117,6 +118,10 @@ namespace RimMandrake.Stillsand
             {
                 int drills = RM_SandLeviathanUtility.PoweredDrills(map).Count();
                 f *= Mathf.Min(1f + Ext.vibrationFactorPerDrill * drills, Ext.maxVibrationFactor);
+            }
+            if (target is Map m)
+            {
+                f *= RM_StillsandWater.IncidentChanceFactor(m, def); // STILLSAND_RETURN_RITUAL_1: unpaid debt
             }
             return f;
         }
@@ -196,13 +201,18 @@ namespace RimMandrake.Stillsand
             }
         }
 
-        /// <summary>The thing it swims toward: a working drill first, else the colony.</summary>
+        /// <summary>The thing it swims toward: a working drill first, else a fresh pour (wet sand), else the colony.</summary>
         public static IntVec3 LoudestCell(Map map)
         {
             Thing drill = PoweredDrills(map).FirstOrDefault();
             if (drill != null)
             {
                 return drill.Position;
+            }
+            IntVec3 pour = RM_MapComponent_WetSand.For(map)?.LatestPourCell ?? IntVec3.Invalid;
+            if (pour.IsValid)
+            {
+                return pour; // STILLSAND_RETURN_RITUAL_1: the rumble comes to the pour
             }
             Pawn colonist = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
             if (colonist != null)

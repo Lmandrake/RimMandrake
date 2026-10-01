@@ -13,15 +13,16 @@
   manhunter on arrival. It dives once fed (taking the body down a drag line into a funnel),
   on fire, or after hardGroundGiveUpTicks off the sand.
 
-  Gate: all three mods by MayRequire (the worker's mod, the krayt's mod, and the sand-swim kit
-  the krayt's own RM_SandSwimExtension needs). Biome by defName in the extension. Toggle and
+  Gate: MayRequire on mandrake.rm.biomes (the worker's Stillsand and the sand-swim kit's
+  CreatureBehaviors are both composed into it, BAROQUE_BIOMES_COMPOSE_1, so their own ids do
+  not exist at runtime) and the krayt's mod. Biome by defName in the extension. Toggle and
   odds: Mod Settings, "Stillsand: event creatures" (rows are built from every IncidentDef on
-  this worker). Weighted up by vibration (powered deep drills). The Return's Debt weighting
-  is owed to STILLSAND_RETURN_RITUAL_1.
+  this worker). Weighted up by vibration (powered deep drills) and by unpaid water debt
+  (RUT_SunDebt in PreceptDefs/RUT_TheReturn.xml, STILLSAND_RETURN_RITUAL_1).
 -->
 <Defs>
 
-  <IncidentDef MayRequire="mandrake.rm.stillsand,mandrake.rsw.swbestiary,mandrake.rm.creaturebehaviors">
+  <IncidentDef MayRequire="mandrake.rm.biomes,mandrake.rsw.swbestiary">
     <defName>RUT_KraytAttack</defName>
     <label>krayt attack</label>
     <workerClass>RimMandrake.Stillsand.RM_IncidentWorker_SandLeviathan</workerClass>

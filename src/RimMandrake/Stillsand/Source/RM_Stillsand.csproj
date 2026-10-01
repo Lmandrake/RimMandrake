@@ -58,6 +58,9 @@
     <Compile Include="RM_PreciousCaveGeometry.cs" />
     <Compile Include="RM_PreciousCaves.cs" />
     <Compile Include="RM_PreciousCaveSettings.cs" />
+    <!-- STILLSAND_RETURN_RITUAL_1: sand remembers water (RM) + the inert water-ledger engine -->
+    <Compile Include="RM_StillsandWater.cs" />
+    <Compile Include="RM_WaterLedger.cs" />
   </ItemGroup>
 
   <!-- STILLSAND_PRECIOUS_CAVES_1: the cave rows reuse EnvironmentalHazards'

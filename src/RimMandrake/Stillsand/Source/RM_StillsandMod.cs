@@ -31,6 +31,7 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref zuurrikEnabled, "zuurrikEnabled", true);
             Scribe_Values.Look(ref zuurrikBloodThreshold, "zuurrikBloodThreshold", 8);
             RM_PreciousCaveSettings.Expose(); // STILLSAND_PRECIOUS_CAVES_1
+            RM_StillsandWaterSettings.Expose(); // STILLSAND_RETURN_RITUAL_1
         }
 
         public void DoWindowContents(Rect inRect)
@@ -54,6 +55,7 @@ namespace RimMandrake.Stillsand
               + "so there is no natural-placement score of this mod's own to toggle. The event "
               + "creatures (muurrok, krayt attack) have their own panel: \"Stillsand: event creatures\".");
             RM_PreciousCaveSettings.Draw(list); // STILLSAND_PRECIOUS_CAVES_1
+            RM_StillsandWaterSettings.Draw(list); // STILLSAND_RETURN_RITUAL_1
 
             list.End();
         }
