@@ -1621,3 +1621,4 @@
 {"seat":"FOUNDRY","event":"file","id":"SELFTEST_RUNNER_SPEED_1","title":"run_selftests.py takes 30+ min: profile, timeouts, skips","kind":"tooling","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-10-01T07:10:27Z"}
 {"seat":"FOUNDRY","event":"claim","id":"SELFTEST_RUNNER_SPEED_1","ts":"2026-10-01T07:10:32Z"}
 {"seat":"FOUNDRY","event":"start","id":"SELFTEST_RUNNER_SPEED_1","ts":"2026-10-01T07:10:37Z"}
+{"seat":"FOUNDRY","event":"close","id":"SELFTEST_RUNNER_SPEED_1","sha":"8fd48835b","ts":"2026-10-01T07:51:07Z"}
