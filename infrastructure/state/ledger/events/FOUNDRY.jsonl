@@ -1673,3 +1673,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"STILLSAND_DUNE_GALE_1","ts":"2026-10-01T08:35:50Z"}
 {"seat":"FOUNDRY","event":"start","id":"STILLSAND_DUNE_GALE_1","ts":"2026-10-01T08:35:53Z"}
 {"seat":"FOUNDRY","event":"file","id":"STILLSAND_DUNE_GALE_LIVE_1","title":"Stillsand dune gale: live proof (mass delta, sun off, one emergence, carry letters, dust devil) + water skins, track-grid hook, hiss","kind":"build","target":"v1","needs":"game-up","caused_by":"STILLSAND_DUNE_GALE_1","for":"FOUNDRY","ts":"2026-10-01T08:51:09Z"}
+{"seat":"FOUNDRY","event":"close","id":"STILLSAND_DUNE_GALE_1","sha":"76bf78a91","ts":"2026-10-01T09:15:03Z"}
