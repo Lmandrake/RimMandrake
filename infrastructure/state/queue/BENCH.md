@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T01:09:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-10-01T04:06:37Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -278,6 +278,15 @@ target:   v1
 kind:     design
 summary:  (no items/WASTELAND_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WASTELAND_BEDAZZLE_SITTING_1.md
+
+## WARSCAR_BEDAZZLE_SITTING_1 Warscar bedazzle sitting - program row 10: review + roster fill (Opus), four-turn volley to the nine-mark bar, ticket and commission
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  (no items/WARSCAR_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WARSCAR_BEDAZZLE_SITTING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

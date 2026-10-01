@@ -24,11 +24,16 @@ biome of the old tattoine. Huge skeletons on the sand. Barren tracks of apparent
 6. **The krayt graveyard:** the unplaced `RSW_KraytGraveyard` mutator is upgraded from loose skulls
    to one real krayt skeleton plus scatter, and its `biomeWhitelist` (vanilla `ExtremeDesert`) adds
    `RM_Stillsand`.
-7. **Tracks:** long-lived filths in this biome: footprints kept for days, crawler treads (RSW
-   flavour), `RM_Filth_SandWake` (from the swim kit), drag marks, oommok prints (house-sized pits in
-   a slow line), eruption scars, glasscrust scars that last years. **The dunes engine is the eraser**:
-   a cell whose sand depth changes past a threshold clears its track filth (a small hook in the
-   engine's deposit step, shared with the gale).
+7. **Tracks, on the shared grid** (owner ruling by card 2026-09-30 20:50 PDT, Warscar turn 4: the
+   Stillsand's tracks move onto ONE footprint grid with the Warscar's). Every pawn-laid track —
+   footprints, drag marks, `RM_Filth_SandWake` (the swim kit's wake), crawler treads (RSW flavour) and
+   oommok prints (house-sized pits in a slow line) — is a record in **`FOOTPRINT_TRACK_GRID_1`**, never a
+   filth `Thing`: the Stillsand's sand carries `RM_TrackSurfaceExtension`, and the queued print sprites
+   (`RM_Filth_OommokPrint`, `RSW_Filth_CrawlerTread`, `RM_Filth_SandWake`) become the grid's per-race
+   print sprites. Event scars that no pawn laid (eruption scars, glasscrust scars that last years) stay
+   long-lived filths. **The dunes engine is the eraser**: a cell whose sand depth changes past a
+   threshold calls the grid's `ClearCell` and clears its scar filth (a small hook in the engine's
+   deposit step, shared with the gale). This item consumes the grid; it does not build a track store.
 8. **Nothing hides, including you:** raids, caravans and wandering giants entering a Stillsand map
    are announced hours early by a dust plume on the edge and a letter with the bearing.
 9. **Mod Settings:** toggle skeleton placement, corpse-to-skeleton, track persistence and horizon
@@ -38,5 +43,5 @@ biome of the old tattoine. Huge skeletons on the sand. Barren tracks of apparent
 
 - A Stillsand quicktest map carries 0–2 skeletons; the skull's interior registers as full shade.
 - A dev-killed oommok becomes its skeleton after the configured delay (state read).
-- A wake filth on moving sand clears; one on still sand stays.
+- A wake/footprint record on moving sand clears from the grid; one on still sand stays.
 - A raid on a Stillsand map raises the horizon letter before arrival.

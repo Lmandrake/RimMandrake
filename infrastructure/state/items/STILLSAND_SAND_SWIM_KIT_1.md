@@ -17,7 +17,8 @@ surface on stock AI today.
    (swim terrains: `Sand`, `SoftSand`, `RM_DeepSand`, and drift depth ≥ 0.3 from the dunes engine;
    a rumble `SoundDef`; surface and dive rules) and `RM_CompSandSwim`. On swim terrain and not in
    melee, the pawn is **submerged**: a hediff using vanilla `HediffComp_Invisibility` (Anomaly), wake
-   flecks, a rumble sustainer scaled by body size, and `RM_Filth_SandWake` trough filth. It
+   flecks, a rumble sustainer scaled by body size, and a `RM_Filth_SandWake` trough record on the shared track grid
+   (`FOOTPRINT_TRACK_GRID_1`; Warscar turn-4 ruling), not a filth Thing. It
    **surfaces** (breach dust burst, breach sound, a one-cell stagger) when it strikes, crosses
    non-swim ground (rock, floors, so hard ground is a moat), or is hit.
 2. **No vanishing.** A take lays the shipped `RM_Filth_DisturbedSand` funnel at the wake's end plus
@@ -59,7 +60,7 @@ surface on stock AI today.
 
 ## criteria
 
-- On a Stillsand quicktest, a vekka on deep sand cannot be targeted, leaves wake filth and a rumble,
+- On a Stillsand quicktest, a vekka on deep sand cannot be targeted, leaves wake records and a rumble,
   and surfaces on rock or when struck. A state read (not a screenshot hunt) proves submerged/surfaced.
 - A swimmer kill always leaves a funnel or drag mark plus a letter; the test checks for both.
 - A swimmer never strikes a mechanoid that stands in its path.

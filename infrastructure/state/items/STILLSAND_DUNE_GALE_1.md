@@ -38,8 +38,9 @@ From `STILLSAND_BEDAZZLE_SITTING_1` (closed 2026-09-30). Design source:
     Thing with flecks and a scour radius) that wanders the flat, lifts light items, scours sand off
     a cache for a moment, scatters a stockpile and spooks animals. It announces itself on the hiss.
     It is a fair-weather event, distinct from the gale.
-11. **Tracks are wiped:** every track filth on a cell whose sand depth changes past a threshold is
-    cleared (shared with `STILLSAND_SKELETONS_TRACKS_1`); the gale resets the map's memory.
+11. **Tracks are wiped:** every track record (`FOOTPRINT_TRACK_GRID_1`) and scar filth on a cell whose
+    sand depth changes past a threshold is cleared (shared with `STILLSAND_SKELETONS_TRACKS_1`); the gale
+    resets the map's memory.
 12. **Mod Settings:** a toggle each for the gale, abrasion, carry, static, emergence and dust
     devils; frequency sliders.
 
