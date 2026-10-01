@@ -778,3 +778,14 @@ in "?". No ids appear in the labels._
 - **Vigil plus the campaign's ladder**: the vigil, and in the campaign the rare wrong ring also
   starts a slow lore ladder toward the Sith whisper that never confirms. Closes both versions,
   and needs your words, or a draft from us to edit.
+
+## 12. Turn 3 rulings (owner, 2026-10-01 08:33 PDT)
+
+| Card item | Ruling | How recorded |
+|---|---|---|
+| Q1 Learned tech (mark 2) | The fold-lamp: research that warmth pushes the Dark back, then a heater-lamp that holds a clear lane open; useful as a cold-night lamp anywhere. | Decision taken by question card. `ABYSS_FOLD_LAMP_BUILD_1` (FOUNDRY), linked to `ABYSS_DARK_BUILD_1`. |
+| Q2 Free-tier ship (mark 6) | Leave it to the campaign: the free tier gets no ship touch. Mark 6 stays PARTIAL on the free tier by his choice; accepted, not a gap to re-pitch. | Decision taken by question card. No item. |
+| Q3 Soundscape (mark 7) | Both: the gust soundscape (silence by default, each gust an impact; gill-fans rustle, grain ticks, dying lamps clatter) AND the Dark swallows sound (muffled inside, sharp in a warm pocket). The muffling filter is unproven, so a feasibility spike gates that half. | Decision taken by question card. `ABYSS_SOUNDSCAPE_BUILD_1` (FOUNDRY). |
+| Q4 The gods (mark 9) | His words, typed: *"These are very good ideas about having a special ritual. They should not be about this particular biome, but rather something that you can do in absolute darkness, and this entire biome is resident with that so this should have implications into the Uini gods very richly and enable certain rituals that can be done in darkness. This may be an entire new mod for the idea, religion concept of rituals that can be done in certain situations or in certain conditions."* Rituals are not biome-specific; a new mod for condition-gated rituals, darkness first. | His typed word. `CONDITION_GATED_RITUALS_MOD_1` (BENCH, design stage); concept doc forthcoming at `design/RimMandrake/condition_gated_rituals_concept_2026-10-01.md`. Prior art: `divine_satiation_engine.md`, `god_intercession_spec.md`, `devotional_sacrifice_catalog.md`; no PreceptDef or ritual def in `src/RimMandrake`. |
+
+**Scorecard now.** Free: tech HIT, sound HIT, ship PARTIAL (his choice), gods resolved via the new mod. Campaign: tech HIT, sound HIT, ship HIT, gods resolved via the new mod. The Abyss's own part of mark 9 is done once it is a resident of the darkness case; the rest lives in `CONDITION_GATED_RITUALS_MOD_1`. Next step is ticket-out (cast bible + art list) unless he adds more.
