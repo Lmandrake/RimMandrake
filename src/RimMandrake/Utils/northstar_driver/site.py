@@ -77,6 +77,8 @@ def weather_lock(s, weather="Clear"):
     _ok(s.call("jawa/weather_set", weather=weather, lockWeather=True), "weather_set")
     got = _ok(s.call("jawa/weather_get"), "weather_get")
     cur = got.get("weather") or got.get("current")
+    if isinstance(cur, dict):
+        cur = cur.get("current") or cur.get("defName")
     if cur != weather:
         raise AssertionError("weather read-back %r != %r" % (cur, weather))
 
@@ -164,8 +166,12 @@ def thing_stat(s, thing_id, stat):
 
 def dlc_status(s, want=("Royalty", "Ideology", "Biotech", "Anomaly", "Odyssey")):
     r = _ok(s.call("jawa/dlc_status"), "dlc_status")
-    blob = str(r)
-    missing = [d for d in want if d not in blob]
+    blob = str(r).lower()
+    missing = [d for d in want if d.lower() not in blob]
+    # the tool answers `<dlc>Active: bool`; naming a DLC is not proof it is active
+    off = [d for d in want if r.get(d.lower() + "Active") is False]
+    if off:
+        raise AssertionError("DLC not active in the running game: %s" % off)
     if missing:
         raise Unmeasured("dlc_status does not name %s: %s" % (missing, blob[:160]))
     return r
