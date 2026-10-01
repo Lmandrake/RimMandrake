@@ -136,7 +136,7 @@ Unburdening, the Named Grief, the Dedication.
 | The Rite of Tipping | unassigned | unknown | Wasteland | PITCHED (one line) | `design/Jawa/worldbuilding/biomes/warscar_bedazzle_review_2026-09-30.md` |
 | The Watch (stand a night facing outward) | — | — | Warscar | RULED OUT (turn 3) | `design/Jawa/worldbuilding/biomes/warscar_turn3_development_2026-09-30.md` |
 | The pilgrim camps (lore rungs, not a rite) | Rust Cathedral, "a god's deathbed" | — | Warscar | SPECCED (lore ladder caller) | same, §2.10 |
-| The pool rites, wind-hour | unassigned | — | Weeping Stones | PITCHED | `design/Jawa/worldbuilding/biomes/weeping_stones.md` §4; `weeping_stones_shine_options_2026-09-24.md` option 4 |
+| The pool rites | unassigned | — | Weeping Stones | PITCHED | `design/Jawa/worldbuilding/biomes/weeping_stones.md` §4 |
 | The rite of offering and forgetting | Deep Desert Tribes | settlement | sarlacc habitat | DRAFT | `design/Jawa/worldbuilding/sarlacc_native_habitat_draft.md` §3.1 |
 
 ### B7. Found rites of the other ten biomes (PITCHED, owner to rule)
