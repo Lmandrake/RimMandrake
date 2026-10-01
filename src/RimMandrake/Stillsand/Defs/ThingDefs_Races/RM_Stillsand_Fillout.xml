@@ -388,7 +388,7 @@
       <baseHealthScale>0.2</baseHealthScale>
       <baseHungerRate>0.08</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
-      <useMeatFrom>Megascarab</useMeatFrom>
+      <useMeatFrom>Megaspider</useMeatFrom>
       <trainability>None</trainability>
       <manhunterOnDamageChance>0</manhunterOnDamageChance>
       <roamMtbDays>4</roamMtbDays>
@@ -588,7 +588,7 @@
       <baseHungerRate>0.08</baseHungerRate>
       <!-- Vanilla carries it whole: a corpse-eating carnivore diet. -->
       <foodType>CarnivoreAnimal</foodType>
-      <useMeatFrom>Megascarab</useMeatFrom>
+      <useMeatFrom>Megaspider</useMeatFrom>
       <trainability>None</trainability>
       <manhunterOnDamageChance>0</manhunterOnDamageChance>
       <roamMtbDays>5</roamMtbDays>
@@ -740,7 +740,7 @@
       <baseHungerRate>0.1</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
       <useMeatFrom>Turtle</useMeatFrom>
-      <trainability>Simple</trainability>
+      <trainability>Intermediate</trainability>
       <manhunterOnDamageChance>0</manhunterOnDamageChance>
       <roamMtbDays>6</roamMtbDays>
       <lifeExpectancy>12</lifeExpectancy>
@@ -769,7 +769,7 @@
     <startingHediffs>
       <li>
         <def>RM_LoommaSunstruck</def>
-        <severityRange>0.01~0.05</severityRange>
+        <severity>0.03</severity>
       </li>
     </startingHediffs>
     <lifeStages>

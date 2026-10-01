@@ -52,13 +52,22 @@
     </statBases>
     <tools>
       <li>
-        <label>front leg</label>
+        <label>front left leg</label>
         <capacities>
           <li>Blunt</li>
         </capacities>
         <power>28</power>
         <cooldownTime>3.0</cooldownTime>
-        <linkedBodyPartsGroup>FrontLegs</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>front right leg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>3.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
       </li>
       <li>
         <label>head</label>
