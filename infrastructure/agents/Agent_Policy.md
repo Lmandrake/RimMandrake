@@ -4,12 +4,23 @@
 says which model does what; every other doc points here. The routing axis is
 measured, not argued.
 
-## 🔴 The seat models — owner, 2026-09-29 (replaces the 2026-09-02 Fable ladder)
+## 🔴 The seat models — owner, 2026-09-29 (replaces the 2026-09-02 Fable ladder);
+## Haiku struck 2026-10-01 — the sanctioned gateway serves no Haiku model at all
 
 > The owner asked for **Opus 5.5 for design work and complex code generation, Sonnet 5.5 for
 > well-defined coding tasks with checkable outcomes, and the most recent Haiku only for
 > OS-level searches.** Fable is dropped from the ladder entirely (decision taken by question
 > card, 2026-09-29).
+
+**Haiku is gone, as of a measurement, not a preference.** The sanctioned gateway at
+`$ANTHROPIC_BASE_URL` serves 40 model ids — only `us-gov.anthropic.claude-{opus-4-8,opus-5,
+sonnet-4-5-20250929-v1:0,sonnet-5}`, three Amazon Nova ids, and a Titan embedder — and carries
+no Haiku id at all; the entire `us.anthropic.*` prefix is dead (HTTP 400). Verify with
+`curl -s "$ANTHROPIC_BASE_URL/v1/models" -H "x-api-key: $ANTHROPIC_API_KEY" -H
+"anthropic-version: 2023-06-01"`. A subagent dispatched with `model: haiku` launches and only
+*then* 400s, which reads as a successful dispatch followed by a dead agent. OS-level searches
+(grep, glob, inventories, existence checks) fold into **Sonnet** below; there is no cheaper
+rung on this gateway to drop them to.
 
 BENCH runs on Opus 5.5 and orchestrates. It does not do design in-window and does not grind:
 it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the
@@ -30,7 +41,7 @@ loud, and dangerous exactly where it is silent.
 
 | Who catches a wrong answer | Use |
 |---|---|
-| It is an **OS-level search** (grep, glob, file inventory) whose result is re-checked | **haiku** |
+| It is an **OS-level search** (grep, glob, file inventory) whose result is re-checked | **sonnet** — no cheaper rung exists on this gateway (Haiku struck 2026-10-01) |
 | A **compiler, selftest, validator or hook**, before anyone reads it | **sonnet** |
 | **Another agent**, who will re-derive it before acting | **sonnet** |
 | **Nobody** — it becomes a recorded fact other work cites | **opus** |
@@ -43,11 +54,12 @@ loud, and dangerous exactly where it is silent.
 | | Alias | For |
 |---|---|---|
 | **Opus 5.5** (+fast mode) | `opus` | **Design** — design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation — always as a backgrounded subagent from BENCH. **Complex code generation** — Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world. **BENCH's window**, the orchestrator |
-| **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome** — patches, defs, deploys, quicktests, fixes a selftest or validator proves. Log triage, interpretive sweeps, first drafts. FOUNDRY's default |
-| **Haiku 4.5** (most recent Haiku) | `haiku` | **OS-level searches only** — greps, globs, censuses, existence checks, inventories. Never a window, never writing code |
+| **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome** — patches, defs, deploys, quicktests, fixes a selftest or validator proves. Log triage, interpretive sweeps, first drafts. **OS-level searches** — greps, globs, censuses, existence checks, inventories (folded in 2026-10-01; see below). FOUNDRY's default |
 
-Fable is not on the ladder (owner, 2026-09-29). The aliases resolve to these versions on the
-Anthropic API (Claude Code model-config docs, checked 2026-09-29).
+Fable is not on the ladder (owner, 2026-09-29). **Haiku is not on the ladder either, struck
+2026-10-01: the sanctioned gateway serves no Haiku id, so `model: haiku` 400s rather than
+resolving to any version.** Only `opus` and `sonnet` resolve to live models on this gateway;
+verify with the `/v1/models` call above before trusting any alias to resolve.
 
 Escalate the **model**, never the ceremony: a hard problem gets a smarter model on
 the same short leash. Put `model: opus` on an item you already know is hard;
@@ -65,7 +77,7 @@ candidate narrowing only, never conclusions, never writing —
 
 | Job | Model |
 |---|---|
-| OS-level search: grep, glob, inventory, "does X exist", fixed-shape census | **haiku** |
+| OS-level search: grep, glob, inventory, "does X exist", fixed-shape census | **sonnet** (folded in 2026-10-01 — the gateway has no Haiku) |
 | Well-defined coding a compiler, selftest or validator will check | **sonnet** |
 | Sweep where the agent must interpret or classify | **sonnet** |
 | Fan-out whose returns will contradict; adversarial refutation | **sonnet** |

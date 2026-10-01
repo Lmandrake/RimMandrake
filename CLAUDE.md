@@ -6,11 +6,9 @@ own window file: `infrastructure/agents/BENCH.md` (with the owner) or
 `infrastructure/GAME_STATE_WORKFLOW.md`. *(The four-seat POLICY.md system was
 superseded 2026-08-27 — redesign #4, `Fable_Review/`.)*
 
-**Models — owner, 2026-09-29: Opus 5.5 for design and complex code generation
-(BENCH orchestrates on it and backgrounds design to an Opus subagent), Sonnet 5.5 for
-well-defined coding with a checkable outcome, the latest Haiku only for OS-level
-searches. Fable is off the ladder.** The ladder lives in `infrastructure/agents/Agent_Policy.md`
-and nowhere else; never restate a model choice outside it.
+**Models — the ladder lives in `infrastructure/agents/Agent_Policy.md` and nowhere
+else; never restate a model choice outside it.** (A restated ladder is exactly how this file
+went stale on Haiku — see that file's history.)
 
 ## How we debug — owner, 2026-10-01
 
