@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T06:13:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T06:28:16Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## STILLSAND_SAND_SWIM_KIT_1 Stillsand sand-swim kit: things swim under the sand (submerge/wake/rumble/breach, readable signs), droids invisible to swimmers, the thumper (vibration + moisture), sand fishing wired, the Listening sound bed
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. The sand-swim kit (RM tier, CreatureBehaviors kit). RMSandSwimExtension on a race
+prose:    infrastructure/state/items/STILLSAND_SAND_SWIM_KIT_1.md
 
 # IN PROGRESS
 
@@ -2092,16 +2101,6 @@ thin:     no ## verify
 summary:  1. Wire the six finished-but-unwired render sets. Each def's texPath resolves nowhere today:
 prose:    infrastructure/state/items/STILLSAND_BEDAZZLE_CONTENT_1.md
 
-## STILLSAND_SAND_SWIM_KIT_1 Stillsand sand-swim kit: things swim under the sand (submerge/wake/rumble/breach, readable signs), droids invisible to swimmers, the thumper (vibration + moisture), sand fishing wired, the Listening sound bed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  1. The sand-swim kit (RM tier, CreatureBehaviors kit). RMSandSwimExtension on a race
-prose:    infrastructure/state/items/STILLSAND_SAND_SWIM_KIT_1.md
-
 ## STILLSAND_SUN_FROM_LATITUDE_1 Stillsand sun from latitude: pinned sky from the tile, cover follows sun angle (overhead >~55 deg), sin(elev) heat, sand glare, race-gated glare-blind + sun goggles (Jawa immune), the mirage, wind locked to the sun bearing
 state:    proposed
 row:      unassigned
@@ -2331,3 +2330,13 @@ kind:     chore
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  REPORENAMESYMLINKRETIRE1 — retire the Rimworld - RimMandrake symlink
 prose:    infrastructure/state/items/REPO_RENAME_SYMLINK_RETIRE_1.md
+
+## STILLSAND_SAND_SWIM_REMAINDER_1 Sand-swim kit remainder: thumper, sand fishing, the Listening, wake track records, drift depth, Drazzik/Sarlacc reconciliation, live criteria
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  What is still owed:
+prose:    infrastructure/state/items/STILLSAND_SAND_SWIM_REMAINDER_1.md

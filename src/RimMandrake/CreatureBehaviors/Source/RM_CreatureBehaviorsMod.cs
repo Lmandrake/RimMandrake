@@ -259,6 +259,11 @@ namespace RimMandrake.CreatureBehaviors
     //      sun. Off: they wander as vanilla does (sun pathing still applies).
     //      shadeHopRangeMultiplier — how far they will dash (the strictness
     //      dial). dashRingEnabled — the drafted-pawn "back to shade" ring.
+    //  42. Sand swimming (STILLSAND_SAND_SWIM_KIT_1, RM_CompSandSwim.cs) — only a
+    //      race carrying RM_SandSwimExtension. sandSwimEnabled — off: swimmers walk
+    //      the surface like any animal (no submerge, no wake, no rumble).  sandSwim-
+    //      DroidImmunity — off: a submerged swimmer will press an attack on a
+    //      mechanoid or droid too. sandSwimRumbleVolume — the rumble slider.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -337,6 +342,9 @@ namespace RimMandrake.CreatureBehaviors
         public static bool shadeHopEnabled = true;
         public static float shadeHopRangeMultiplier = 1f;
         public static bool dashRingEnabled = true;
+        public static bool sandSwimEnabled = true;
+        public static bool sandSwimDroidImmunity = true;
+        public static float sandSwimRumbleVolume = 1f;
 
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 2400f;
@@ -416,6 +424,9 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref shadeHopEnabled, "shadeHopEnabled", true);
             Scribe_Values.Look(ref shadeHopRangeMultiplier, "shadeHopRangeMultiplier", 1f);
             Scribe_Values.Look(ref dashRingEnabled, "dashRingEnabled", true);
+            Scribe_Values.Look(ref sandSwimEnabled, "sandSwimEnabled", true);
+            Scribe_Values.Look(ref sandSwimDroidImmunity, "sandSwimDroidImmunity", true);
+            Scribe_Values.Look(ref sandSwimRumbleVolume, "sandSwimRumbleVolume", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -719,6 +730,21 @@ namespace RimMandrake.CreatureBehaviors
             list.CheckboxLabeled("Sun shields cast shade", ref sunShieldEnabled,
                 "On: a standing sun shield throws shade on its far side from the sun. The one piece "
                 + "that works under a low sun; only modest under an overhead one. Off: it casts no shade.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Sand swimmers go under the sand", ref sandSwimEnabled,
+                "On: creatures built to swim through loose sand (the vekka, the sand stalker, the krayt) "
+              + "sink out of sight on sand, leaving a dust wake and a rumble, and burst up when they "
+              + "strike, reach rock or are hit. Hard ground stops them. Off: they walk the surface "
+              + "like any animal.");
+            if (sandSwimEnabled)
+            {
+                list.CheckboxLabeled("  Droids are invisible to swimmers", ref sandSwimDroidImmunity,
+                    "On: nothing under the sand goes after a pawn with no water in it, so droids and "
+                  + "mechanoids can cross, fish and haul where nothing alive can. Off: swimmers attack them too.");
+                list.Label("  Rumble volume: " + sandSwimRumbleVolume.ToStringPercent());
+                sandSwimRumbleVolume = list.Slider(sandSwimRumbleVolume, 0f, 2f);
+            }
 
             list.End();
             lastContentHeight = list.CurHeight + 12f;

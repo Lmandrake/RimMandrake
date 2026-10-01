@@ -1588,3 +1588,5 @@
 {"seat":"FOUNDRY","event":"start","id":"CHILL_FLOOR_GROWING_BED_1","ts":"2026-10-01T05:49:25Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_CRYOPONICS_GROWER_1","sha":"c04221efdafa67e389b20edc365fe4a171d5bb35","ts":"2026-10-01T06:03:51Z"}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_FLOOR_GROWING_BED_1","sha":"c04221efdafa67e389b20edc365fe4a171d5bb35","ts":"2026-10-01T06:04:03Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_SAND_SWIM_KIT_1","ts":"2026-10-01T06:21:39Z"}
+{"seat":"FOUNDRY","event":"file","id":"STILLSAND_SAND_SWIM_REMAINDER_1","title":"Sand-swim kit remainder: thumper, sand fishing, the Listening, wake track records, drift depth, Drazzik/Sarlacc reconciliation, live criteria","kind":"build","target":"v1","needs":"offline","spec":"infrastructure/state/items/STILLSAND_SAND_SWIM_REMAINDER_1.md","caused_by":"STILLSAND_SAND_SWIM_KIT_1","for":"FOUNDRY","ts":"2026-10-01T06:28:16Z"}

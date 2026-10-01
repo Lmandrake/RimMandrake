@@ -135,6 +135,16 @@
     <tradeTags>
       <li>AnimalFighter</li>
     </tradeTags>
+    <!-- STILLSAND_SAND_SWIM_KIT_1: swims under loose sand (submerge, wake, rumble, breach,
+         take funnel + letter). The kit adds its own comp; this extension is the whole wiring. -->
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SandSwimExtension">
+        <submergedHediff>RM_SandSubmerged</submergedHediff>
+        <swimmerMarkerHediff>RM_SandSwimmer</swimmerMarkerHediff>
+        <takeFilth>RM_Filth_DisturbedSand</takeFilth>
+        <dragFilth>RM_Filth_DragMark</dragFilth>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
