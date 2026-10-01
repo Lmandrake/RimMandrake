@@ -1,0 +1,52 @@
+{
+ "_source": "Antiquities_summary.json second jawa/list_things; DERIVED: RUT_Antiquity_Urn row removed",
+ "result": {
+  "success": true,
+  "things": [
+   {
+    "id": "SteamGeyser47532",
+    "def": "SteamGeyser",
+    "label": "Steam geyser",
+    "x": 129,
+    "z": 132,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": -1,
+    "maxHitPoints": -1,
+    "faction": null,
+    "factionName": null,
+    "stuff": null,
+    "quality": null
+   },
+   {
+    "id": "RUT_AntiquityReadingStation51743",
+    "def": "RUT_AntiquityReadingStation",
+    "label": "Steel urn reading station",
+    "x": 125,
+    "z": 125,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": 150,
+    "maxHitPoints": 150,
+    "faction": null,
+    "factionName": null,
+    "stuff": "Steel",
+    "quality": null
+   }
+  ],
+  "scanned": 41807,
+  "countReturned": 2,
+  "countMatched": 2,
+  "isCompleteList": true,
+  "truncated": 0,
+  "pawnsSkipped": 56,
+  "perDef": {
+   "SteamGeyser": 1,
+   "RUT_AntiquityReadingStation": 1
+  },
+  "ticksGame": 2698,
+  "message": "3 of 3 matching thing(s) returned, 41807 examined."
+ }
+}
