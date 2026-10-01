@@ -112,6 +112,8 @@
     <Compile Include="RM_JobGiver_FollowShadowCaster.cs" />
     <Compile Include="RM_CompProperties_DrumLure.cs" />
     <Compile Include="RM_CompDrumLure.cs" />
+    <Compile Include="RM_SandSwimExtension.cs" />
+    <Compile Include="RM_CompSandSwim.cs" />
     <Compile Include="RM_HediffCompProperties_ShadeStagger.cs" />
     <Compile Include="RM_HediffComp_ShadeStagger.cs" />
     <Compile Include="RM_FilterFeedExtension.cs" />
