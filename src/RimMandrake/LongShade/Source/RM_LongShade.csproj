@@ -58,6 +58,8 @@
     <!-- LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2: the Crawler Road and the Long Carry
          GenSteps (shade-patch graph, RimMandrake.CreatureBehaviors). -->
     <Compile Include="RM_LongShadeMapgen.cs" />
+    <!-- LONGSHADE_GPT_ENRICHMENT_1 §1: Shipfall Commons (gravship as refuge). -->
+    <Compile Include="RM_ShipfallCommons.cs" />
   </ItemGroup>
 
   <ItemGroup>
