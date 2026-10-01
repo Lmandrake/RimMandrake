@@ -1,0 +1,36 @@
+== 2d settings + drafted colonist adjacent ==
+ "success": true,
+   "name": "masterEnabled",
+   "name": "twilightSeaEnabled",
+ "success": true,
+ "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+   "id": "Human82635",
+{'name': 'masterEnabled', 'type': 'Boolean', 'kind': 'static', 'value': 'True'}
+{'name': 'twilightSeaEnabled', 'type': 'Boolean', 'kind': 'static', 'value': 'True'}
+{'name': 'vauliskEnabled', 'type': 'Boolean', 'kind': 'static', 'value': 'True'}
+{'name': 'twilightPaneStrikeEnabled', 'type': 'Boolean', 'kind': 'static', 'value': 'True'}
+{'name': 'twilightPaneStrikeFrequency', 'type': 'Single', 'kind': 'static', 'value': '1'}
+{'name': 'twilightDeckAccumulationEnabled', 'type': 'Boolean', 'kind': 'static', 'value': 'True'}
+{'name': 'twilightDeckAccumulationRate', 'type': 'Single', 'kind': 'static', 'value': '1'}
+{'name': 'twilightWellDriftEnabled', 'type': 'Boolean', 'kind': 'static', 'value': 'True'}
+{'name': 'twilightDriftCadence', 'type': 'Int32', 'kind': 'static', 'value': '1'}
+{'name': 'twilightChainAvailability', 'type': 'Int32', 'kind': 'static', 'value': '1'}
+{'name': 'twilightSuulkPressureScalingEnabled', 'type': 'Boolean', 'kind': 'static', 'value': 'True'}
+{'name': 'twilightCagesPassableBeneath', 'type': 'Boolean', 'kind': 'static', 'value': 'True'}
+{'name': 'twilightSunSphereGraceDays', 'type': 'Single', 'kind': 'static', 'value': '3'}
+{'name': 'twilightChartsAgeEnabled', 'type': 'Boolean', 'kind': 'static', 'value': 'True'}
+ "success": true,
+ "drafted": true,
+ "status": "completed",
+ "advancedTicks": 2500,
+lure after:
+ "countMatched": 0,
+pawns near:
+   "id": "Human82635",	   "kind": "Colonist",	   "x": 61,	   "z": 30,
+== 2e map-wide vaulisk search ==
+pawns total 61
+{'id': 'Muffalo82570', 'kind': 'Muffalo', 'x': 47, 'z': 38, 'dead': False, 'mentalState': None, 'faction': None, 'job': None}
+{'id': 'Muffalo82571', 'kind': 'Muffalo', 'x': 46, 'z': 39, 'dead': False, 'mentalState': None, 'faction': None, 'job': None}
+{'id': 'Muffalo82572', 'kind': 'Muffalo', 'x': 37, 'z': 32, 'dead': False, 'mentalState': None, 'faction': None, 'job': None}
+{'id': 'Muffalo82573', 'kind': 'Muffalo', 'x': 39, 'z': 35, 'dead': False, 'mentalState': None, 'faction': None, 'job': None}
+{'id': 'RM_Vaulisk82654', 'kind': 'RM_Vaulisk', 'x': 70, 'z': 48, 'dead': False, 'mentalState': None, 'faction': None, 'job': None}
