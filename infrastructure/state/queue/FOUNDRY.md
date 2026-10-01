@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T20:26:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T20:27:11Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -3560,3 +3560,13 @@ kind:     task
 thin:     no ## verify
 summary:  A standing item the owner triggers. An adversarial agent (and a GPT consult via the Codex CLI route) tries to…
 prose:    infrastructure/state/items/NORTHSTAR_ADVERSARIAL_REVIEW_1.md
+
+## NORTHSTAR_DRIVER_RECORD_STATUS_1 northstar_driver records its runs in the modcheck status registry (needed to lift the new-content pause)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  northstardriver writes its results JSON but does not record the run in the modcheck status registry, so modch…
+prose:    infrastructure/state/items/NORTHSTAR_DRIVER_RECORD_STATUS_1.md
