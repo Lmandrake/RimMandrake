@@ -21,10 +21,20 @@ namespace RimMandrake.Abyss
         // planet. 1 = the shipped default.
         public static float biomeRarityFactor = 1f;
 
+        // ABYSS_GHARREK_BUILD_1: the shared gust signal (off = no gusts, gharreks never open).
+        public static bool gustsEnabled = true;
+        // ABYSS_GHARREK_BUILD_1: gharreks lie dormant in the still and feed in gusts (off = ordinary animals).
+        public static bool gharrekReflexEnabled = true;
+        // ABYSS_DURRGAK_BUILD_1: cairn rings on Abyss maps and wild durrgaks laying them.
+        public static bool durrgakSignsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
+            Scribe_Values.Look(ref gustsEnabled, "gustsEnabled", true, true);
+            Scribe_Values.Look(ref gharrekReflexEnabled, "gharrekReflexEnabled", true, true);
+            Scribe_Values.Look(ref durrgakSignsEnabled, "durrgakSignsEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -37,6 +47,14 @@ namespace RimMandrake.Abyss
                        + "The default places a handful of rare, hilly, night-dark patches. "
                        + "Affects planets generated afterwards, never one that already exists.");
             biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+
+            list.GapLine();
+            list.CheckboxLabeled("Gusts", ref gustsEnabled,
+                "A shared wind pulse on Abyss maps. Off: no gusts, so gharreks never open.");
+            list.CheckboxLabeled("Gharrek gust reflex", ref gharrekReflexEnabled,
+                "Gharreks lie dormant in the still and open and feed in gusts. Off: ordinary animals.");
+            list.CheckboxLabeled("Durrgak signs", ref durrgakSignsEnabled,
+                "Cairn rings and a steel-lined cache on Abyss maps, and wild durrgaks laying rings. Off: none.");
 
             list.End();
         }
