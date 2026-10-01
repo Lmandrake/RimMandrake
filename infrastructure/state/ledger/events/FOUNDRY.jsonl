@@ -1582,3 +1582,9 @@
 {"seat":"FOUNDRY","event":"start","id":"CONTAGION_GROWN_LIMBS_BUILD_1","ts":"2026-10-01T06:02:20Z"}
 {"seat":"FOUNDRY","event":"file","id":"CONTAGION_GROWN_LIMBS_REST_1","title":"Build Eyeburst, Caudal Spring, Bellows (sheet contagion_grown_limbs_2026-09-30.md); needs owner rulings and two abilities","kind":"task","target":"v1","needs":"offline","caused_by":"CONTAGION_GROWN_LIMBS_BUILD_1","for":"FOUNDRY","ts":"2026-10-01T06:02:26Z"}
 {"seat":"FOUNDRY","event":"file","id":"CONTAGION_GROWN_LIMBS_ART_1","title":"Art for Pillar Arm and Lash (replace Anomaly placeholder textures) plus item icons; check _artsrc and artpipe done first","kind":"task","target":"v1","needs":"offline","caused_by":"CONTAGION_GROWN_LIMBS_BUILD_1","for":"FOUNDRY","ts":"2026-10-01T06:02:33Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_CRYOPONICS_GROWER_1","ts":"2026-10-01T05:49:05Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_CRYOPONICS_GROWER_1","ts":"2026-10-01T05:49:11Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_FLOOR_GROWING_BED_1","ts":"2026-10-01T05:49:18Z"}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_FLOOR_GROWING_BED_1","ts":"2026-10-01T05:49:25Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_CRYOPONICS_GROWER_1","sha":"c04221efdafa67e389b20edc365fe4a171d5bb35","ts":"2026-10-01T06:03:51Z"}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_FLOOR_GROWING_BED_1","sha":"c04221efdafa67e389b20edc365fe4a171d5bb35","ts":"2026-10-01T06:04:03Z"}
