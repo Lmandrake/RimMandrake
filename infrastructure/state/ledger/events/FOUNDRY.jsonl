@@ -1612,3 +1612,4 @@
 {"seat":"FOUNDRY","event":"file","id":"STILLSAND_PRECIOUS_CAVES_LIVE_1","title":"Precious caves: ten live Stillsand quicktest maps","kind":"task","target":"v1","needs":"game-up","caused_by":"STILLSAND_PRECIOUS_CAVES_1","for":"FOUNDRY","ts":"2026-10-01T07:16:39Z"}
 {"seat":"FOUNDRY","event":"file","id":"STILLSAND_CAVE_AS_PLACE_1","title":"Stillsand cave: preservation, drip, biosilica walls, tribal mark","kind":"task","target":"v1","needs":"offline","caused_by":"STILLSAND_PRECIOUS_CAVES_1","for":"FOUNDRY","ts":"2026-10-01T07:16:42Z"}
 {"seat":"FOUNDRY","event":"file","id":"STILLSAND_CAVE_TIER_ROWS_1","title":"Precious cave rows: krayt den, sarlacc seep, debt cave","kind":"task","target":"v1","needs":"offline","caused_by":"STILLSAND_PRECIOUS_CAVES_1","for":"FOUNDRY","ts":"2026-10-01T07:16:44Z"}
+{"seat":"FOUNDRY","event":"close","id":"STILLSAND_PRECIOUS_CAVES_1","sha":"6236731d6","ts":"2026-10-01T07:22:59Z"}
