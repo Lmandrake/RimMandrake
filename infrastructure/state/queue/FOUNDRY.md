@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T06:28:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T06:29:19Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## STILLSAND_SAND_SWIM_KIT_1 Stillsand sand-swim kit: things swim under the sand (submerge/wake/rumble/breach, readable signs), droids invisible to swimmers, the thumper (vibration + moisture), sand fishing wired, the Listening sound bed
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. The sand-swim kit (RM tier, CreatureBehaviors kit). RMSandSwimExtension on a race
-prose:    infrastructure/state/items/STILLSAND_SAND_SWIM_KIT_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
