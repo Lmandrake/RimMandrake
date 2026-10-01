@@ -45,6 +45,14 @@ namespace RimMandrake.TheForge
         public static bool cycleDormancyEnabled = true;
         public static bool cycleTelegraphLetters = true;
 
+        // FORGE_GPT_ENRICHMENT_1 — the owner-picked enrichments. Each is read
+        // live, so flipping one takes effect at once.
+        public static bool keelworkEnabled = true;
+        public static bool spunstoneStudyEnabled = true;
+        public static bool forgeVoicesEnabled = true;
+        public static bool forgeVoicesVisualCues = false;
+        public static bool dhuvvoxClockEnabled = true;
+
         // Master switch folded in: a feature is on only while the mod is.
         private static Vector2 scrollPos;
         private static float viewHeight = 900f;
@@ -72,6 +80,11 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref floatstoneBloomEnabled, "floatstoneBloomEnabled", true);
             Scribe_Values.Look(ref cycleDormancyEnabled, "cycleDormancyEnabled", true);
             Scribe_Values.Look(ref cycleTelegraphLetters, "cycleTelegraphLetters", true);
+            Scribe_Values.Look(ref keelworkEnabled, "keelworkEnabled", true);
+            Scribe_Values.Look(ref spunstoneStudyEnabled, "spunstoneStudyEnabled", true);
+            Scribe_Values.Look(ref forgeVoicesEnabled, "forgeVoicesEnabled", true);
+            Scribe_Values.Look(ref forgeVoicesVisualCues, "forgeVoicesVisualCues", false);
+            Scribe_Values.Look(ref dhuvvoxClockEnabled, "dhuvvoxClockEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -119,6 +132,26 @@ namespace RimMandrake.TheForge
                 "Letters before the gas wash (the hiss), at the glowing cracks and at the "
               + "melt. Off: the phases still happen, unannounced.");
             list.GapLine();
+
+            list.CheckboxLabeled("Floatstone keelwork", ref keelworkEnabled,
+                "Floatstone keel braces linked to a grav engine cut the gravship's fuel use. "
+              + "Off: braces still build and stand, but save no fuel.");
+            list.CheckboxLabeled("Spunstone bonding is learned in the Forge", ref spunstoneStudyEnabled,
+                "The spunstone bonding research stays hidden until colonists have studied "
+              + "enough mature floatstone gardens. Off: the project is visible and "
+              + "researchable from the start, and gardens are not studied.");
+            list.CheckboxLabeled("Four voices of the Forge", ref forgeVoicesEnabled,
+                "Each phase of the grand cycle has its own sound: a turbine throb in the still "
+              + "heat, coughing vents in the gas wash, a hiss under the boiling rain, ticking "
+              + "glass as the basalt cools, and a deep cracking pulse before the melt.");
+            list.CheckboxLabeled("  Visual cues for the voices", ref forgeVoicesVisualCues,
+                "Show a message naming each phase's sound as it begins. Always on while the "
+              + "game or ambient volume is muted.");
+            list.CheckboxLabeled("The dhuvvox clock", ref dhuvvoxClockEnabled,
+                "Awake dhuvvox show how long their run has left, slow in its final "
+              + "quarter-hour, and visibly curl back into their nodules when it ends. "
+              + "Off: they still seal on the cycle, without the clock.");
+            list.GapLine();
             list.Label("Tibanna-tap rate: " + tibannaTapRate.ToString("0.00") + "x");
             tibannaTapRate = list.Slider(tibannaTapRate, 0.25f, 3f);
             list.CheckboxLabeled("Vapor-column immunity", ref vaporColumnImmunity,
@@ -151,6 +184,14 @@ namespace RimMandrake.TheForge
             RimMandrake.EnvironmentalHazards.RM_MechanicGates.Register(
                 "TheForge.Pulse",
                 () => RM_TheForgeSettings.Active(RM_TheForgeSettings.weatherPulseEnabled));
+        }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            // FORGE_GPT_ENRICHMENT_1: the keelwork toggle rewrites the brace's
+            // vanilla fuel-savings number, so it must re-apply on every save.
+            RM_KeelworkUtility.ApplySetting();
         }
 
         public override string SettingsCategory()

@@ -202,6 +202,18 @@
       <wildOrder>2</wildOrder>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
+    <comps>
+      <!-- FORGE_GPT_ENRICHMENT_1 §2, spunstone bonding: researchers study mature
+           gardens (growth >= minGrowth, the harvestMinGrowth above) until the
+           hidden RM_SpunstoneBonding project is revealed. TUNED: one garden can
+           be studied every half day (frequencyTicks 30000). -->
+      <li Class="RimMandrake.TheForge.CompProperties_SpunstoneStudy">
+        <frequencyTicks>30000</frequencyTicks>
+        <studyEnabledByDefault>false</studyEnabledByDefault>
+        <minGrowth>0.9</minGrowth>
+        <knowledgeToReveal>12</knowledgeToReveal>
+      </li>
+    </comps>
   </ThingDef>
 
 </Defs>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FORGE_GPT_ENRICHMENT_1 §1: a gravship facility links only to a building whose
+  CompAffectedByFacilities lists it (RimSage 1.6, GravEngine in
+  Defs/Odyssey/ThingDefs_Buildings/Buildings_Gravship.xml). Conditional on the list
+  existing, so a load without it logs nothing rather than an xpath failure.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="GravEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="GravEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+      <value>
+        <li>RM_FloatstoneKeelBrace</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

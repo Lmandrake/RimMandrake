@@ -5,6 +5,7 @@ using RimMandrake.FlowWorks;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace RimMandrake.TheForge
 {
@@ -93,10 +94,33 @@ namespace RimMandrake.TheForge
         // Per-melt summary, flushed as one message per batch with losses.
         private readonly Dictionary<string, int> meltLosses = new Dictionary<string, int>();
 
+        // FORGE_GPT_ENRICHMENT_1 §3: the phase sounds. Unsaved: a sustainer
+        // is rebuilt from the saved phase on the first tick after load.
+        private readonly RM_ForgeVoices voices = new RM_ForgeVoices();
+
         public ForgeCyclePhase Phase => phase;
         public int PhaseEndTick => phaseEndTick;
         public int FrozenCellCount => frozenCells.Count;
         public IEnumerable<IntVec3> FrozenCells => frozenCells;
+
+        /// <summary>A random crusted cell, or Invalid. For the cooling-basalt
+        /// voice; O(n) in the crust size but called at most every 90 ticks.</summary>
+        public IntVec3 RandomFrozenCell()
+        {
+            if (frozenCells.Count == 0)
+            {
+                return IntVec3.Invalid;
+            }
+            int skip = Rand.Range(0, frozenCells.Count);
+            foreach (IntVec3 c in frozenCells)
+            {
+                if (skip-- == 0)
+                {
+                    return c;
+                }
+            }
+            return IntVec3.Invalid;
+        }
 
         private RM_ForgeCycleExtension CycleExt => def != null ? def.GetModExtension<RM_ForgeCycleExtension>() : null;
 
@@ -165,6 +189,12 @@ namespace RimMandrake.TheForge
             }
         }
 
+        public override void End()
+        {
+            voices.Stop();
+            base.End();
+        }
+
         public static string PhaseLabel(ForgeCyclePhase p)
         {
             switch (p)
@@ -188,6 +218,10 @@ namespace RimMandrake.TheForge
 
             Map map = MapOrNull;
             RM_ForgeCycleExtension ext = CycleExt;
+            if (ext != null)
+            {
+                voices.Tick(this, map, hissSent);
+            }
             if (map == null || ext == null || !map.IsHashIntervalTick(CycleInterval))
             {
                 return;
@@ -503,6 +537,11 @@ namespace RimMandrake.TheForge
             }
             FleckMaker.ThrowHeatGlow(center, map, 3f);
             FleckMaker.ThrowSmoke(center.ToVector3Shifted(), map, 3f);
+            if (RM_ForgeVoices.Enabled && Find.CurrentMap == map)
+            {
+                // §3: each wave bursts from a coughing vent.
+                RM_TheForgeDefOf.RM_ForgeVoice_VentCough?.PlayOneShot(SoundInfo.InMap(new TargetInfo(center, map)));
+            }
             StatGasIgnitions += lit;
             if (lit > 0)
             {

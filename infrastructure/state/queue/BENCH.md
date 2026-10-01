@@ -1018,3 +1018,13 @@ kind:     decision
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  LEANINGSCRUBSWEETLINENAMEREGISTER1 — the naming register for named sweetline trees
 prose:    infrastructure/state/items/LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1.md
+
+## FORGE_SPUNSTONE_SOURCES_1 Spunstone bonding remainder: foundry salvage as a study source, and what the high-speed doors and advanced structural parts are
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FORGESPUNSTONESOURCES1 — spunstone bonding: the other study source and the other unlocks
+prose:    infrastructure/state/items/FORGE_SPUNSTONE_SOURCES_1.md

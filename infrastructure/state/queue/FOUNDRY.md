@@ -1260,6 +1260,15 @@ kind:     task
 summary:  - A ship-mounted acoustic scanner. When the grounded gravship fires a sounding pulse, dust jumps
 prose:    infrastructure/state/items/GRAVSHIP_ACOUSTIC_SCANNER_1.md
 
+## FORGE_GPT_ENRICHMENT_1 Forge enrichment (GPT consult 2026-09-30, owner-picked by card): floatstone keelwork, spunstone bonding, four voices of the Forge, white plume fronts, sky pastures, dhokkur ways, dhuvvox clock
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Floatstone keelwork. Pearl-white, spun-sugar floatstone braces threaded through a gravship
+prose:    infrastructure/state/items/FORGE_GPT_ENRICHMENT_1.md
+
 ## CONTAGION_GROWN_LIMBS_BUILD_1 Build the grown limbs the owner keeps on design/Jawa/worldbuilding/biomes/contagion_grown_limbs_2026-09-30.md (Pillar Arm + Lash first; Monstrous sample grade from Coalescence drops; removal-spawns-Unfinished comp)
 state:    doing
 row:      unassigned
@@ -2032,16 +2041,6 @@ thin:     no ## verify, no ## criteria
 summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
 
-## FORGE_GPT_ENRICHMENT_1 Forge enrichment (GPT consult 2026-09-30, owner-picked by card): floatstone keelwork, spunstone bonding, four voices of the Forge, white plume fronts, sky pastures, dhokkur ways, dhuvvox clock
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Floatstone keelwork. Pearl-white, spun-sugar floatstone braces threaded through a gravship
-prose:    infrastructure/state/items/FORGE_GPT_ENRICHMENT_1.md
-
 ## LONGSHADE_GPT_ENRICHMENT_1 Long Shade enrichment (GPT consult 2026-09-30, owner-picked by card): ship becomes a refuge, gloomcast moves shade, camera-keyed heat soundscape, lee-side middens, shade gear learned by study
 state:    proposed
 row:      unassigned
@@ -2791,3 +2790,73 @@ kind:     verify
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  LEANINGSCRUBENRICHMENTQUICKTEST1 — quicktest-prove the Leaning Scrub enrichment on a Scrub map
 prose:    infrastructure/state/items/LEANINGSCRUB_ENRICHMENT_QUICKTEST_1.md
+
+## FORGE_ENRICHMENT_QUICKTEST_1 Quicktest-prove the Forge enrichment tranche on a Forge map: keel brace fuel saving, spunstone reveal, phase voices, dhuvvox clock
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  FORGEENRICHMENTQUICKTEST1 — live proof of the Forge enrichment tranche
+prose:    infrastructure/state/items/FORGE_ENRICHMENT_QUICKTEST_1.md
+
+## FORGE_KEELWORK_REMAINDER_1 Floatstone keelwork remainder: glassy ring at launch, brace art, and whether payload means substructure support
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FORGEKEELWORKREMAINDER1 — keelwork: the launch ring, the art, and "payload"
+prose:    infrastructure/state/items/FORGE_KEELWORK_REMAINDER_1.md
+
+## FORGE_VOICES_AUDIO_1 Bespoke audio for the four voices of the Forge (vanilla clips retinted as placeholders)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FORGEVOICESAUDIO1 — bespoke audio for the four voices
+prose:    infrastructure/state/items/FORGE_VOICES_AUDIO_1.md
+
+## FORGE_WHITE_PLUME_FRONTS_1 White plume fronts: moving quench-steam fronts that obscure shooters, soak ground, raise vanilla heatstroke; vapour-adapted exempt
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FORGEWHITEPLUMEFRONTS1 — white plume fronts
+prose:    infrastructure/state/items/FORGE_WHITE_PLUME_FRONTS_1.md
+
+## FORGE_SKY_PASTURES_1 Sky pastures: render the vapour-column grid, ash spirals, column-aware hunting and jossur stoops, flier-selected column highlight
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FORGESKYPASTURES1 — sky pastures
+prose:    infrastructure/state/items/FORGE_SKY_PASTURES_1.md
+
+## FORGE_DHOKKUR_WAYS_1 Dhokkur ways: outcrop disguise clues, rain-wake groan, path memory on glass-polished tracks, walls shoved not annihilated
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FORGEDHOKKURWAYS1 — dhokkur ways
+prose:    infrastructure/state/items/FORGE_DHOKKUR_WAYS_1.md
+
+## FORGE_DHUVVOX_SWARM_REMAINDER_1 Dhuvvox clock remainder: nodules as Things vs sealed pawns, swarm aggregation, slowing sound
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FORGEDHUVVOXSWARMREMAINDER1 — dhuvvox clock remainder
+prose:    infrastructure/state/items/FORGE_DHUVVOX_SWARM_REMAINDER_1.md
