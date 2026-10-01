@@ -26,4 +26,4 @@ Earlier rulings carried (card 09:22, decisions taken by question card; Q4 typed)
 
 ## next
 
-Owner to rule the open questions in the design doc's report (names/inscriptions, the Rites mod display name, other faiths' rites). Then a FOUNDRY build item.
+Ruled 2026-10-01: display name is "Salvation Rites" (About.xml changed; Rites deploy owed); other faiths' rites stay with their faiths, a Salvation colony cannot learn them (card); Lightless Burial appeases Ozzik for now, renormalized later by SALVATION_RITES_RENORMALIZE_PASS_1. Still owed: names/inscriptions. Then a FOUNDRY build item.
