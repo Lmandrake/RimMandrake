@@ -163,7 +163,8 @@ def fire_tick_effects(t):
     rect = _rect_str(t)
     ground = t.bridge_call("jawa/set_terrain", x=x0, z=z0, terrainDef=SOIL,
                            width=w, height=h, layer="top")
-    if _live(t) and (ground or {}).get("cellsChanged", 0) < w * h:
+    # cells already on the target terrain are correct, not unpainted (live: 570 changed + 6 already = 576)
+    if _live(t) and (ground or {}).get("cellsChanged", 0) + (ground or {}).get("cellsAlreadyCorrect", 0) < w * h:
         _fail("set_terrain(%s) over %s did not paint the whole rect: %r" % (SOIL, rect, ground))
     t.bridge_call("jawa/set_plants", defName="RM_FE_Plant_EmberGrass", rect=rect, growth=1.0)
 
@@ -471,7 +472,7 @@ def weather_looks(t):
             t.wait_ticks(5000)
             t.screenshot()
 
-        with t.component("cannot_ordinary_rain"):
+        with t.component("cannot_ordinary_rain", shows=["pyre_cannot_ordinary_rain"]):
             d = t.bridge_call("jawa/get_def", defName="RM_Pyrelands", defType="BiomeDef")
             table = (d or {}).get("baseWeatherCommonalities") or {}
             if _live(t):

@@ -59,6 +59,14 @@ def expected_bars(mod):
         return [], "walk unreadable: %s" % ex
 
 
+def _folded_into_composed(src_dir):
+    try:
+        import biomes_compose
+        return os.path.basename(os.path.abspath(src_dir)) in biomes_compose.folded_sources(_rel("src"))
+    except Exception:
+        return False
+
+
 def mod_dirs_for(mod):
     if not mod:
         return []
@@ -66,6 +74,8 @@ def mod_dirs_for(mod):
     out = []
     for tier in ("RimMandrake", "RimStarWars", "RimUtinni"):
         d = _rel("src", tier, mod)
+        if _folded_into_composed(d):
+            continue            # deployed inside RimMandrake.Biomes; that composed deploy is gated by the mod's own preflight
         if os.path.isfile(os.path.join(d, "About", "About.xml")):
             # the deployed folder is named like the repo folder (deploy_custom_mods.py is the authority)
             out.append((d, os.path.join(game_paths.STEAM, "common", "RimWorld", "Mods", mod)))
