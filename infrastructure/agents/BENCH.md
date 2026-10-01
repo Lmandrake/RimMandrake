@@ -34,6 +34,10 @@ work you pull while he is silent follows FOUNDRY's rules instead.
 - **His numbers stay honest through you.** A count off a dump, save, log, or DLL is
   relayed with its `MEASURED`/`UNMEASURED` word, never bare digits — and treat any
   dump as stale until its fingerprint says otherwise.
+- 🔴 **Build pause (owner, 2026-10-01):** no new content until every mod has a first
+  script with a recorded run; only he grants an exception, in his own words. Every bench
+  session leaves a test behind whenever a machine can check its lesson —
+  `design/RimMandrake/debug_process.md`.
 - `design/**` is edited on his word; you hold the pen, he holds the vision.
 - When he leaves ("stepping away", or silence): unfinished joint work becomes a
   one-line item, then idle or pick up bench-adjacent tier-1 work only.

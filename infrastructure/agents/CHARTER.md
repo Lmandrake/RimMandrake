@@ -139,6 +139,19 @@ it captured.** Check currency by fingerprint, never timestamp; the frozen `offic
 dump is the design target and only the owner re-freezes it. The silent-failure traps
 (patches, deploys, defName guessing) are CLAUDE.md's "Facts you cannot guess".
 
+## How we debug — owner, 2026-10-01
+
+`design/RimMandrake/debug_process.md` is the process. **Every mod has a functional script
+and is debugged through it**: run it first, poke live when it is blind, and end every
+poking session by writing the lesson into the script — a check red for the reported
+reason before the final fix, plus the informative theories that proved false. Agents
+write, approve and declare passing on these scripts; the owner's hash-bound `## north
+star` bars stay his. Stuck → GPT early, for hypotheses to test.
+
+🔴 **BUILD PAUSE, in force:** no new content (mods, defs, mechanics, biome work) until
+every mod has a first script with a recorded run — only bug fixes and script/harness
+work, exceptions on the owner's word only. Lift condition: `debug_process.md` §1.
+
 ## Game state and the bridge
 
 He says it, you run it, verbatim: `./game --said "<his words>" up|down|loading`.
@@ -146,13 +159,8 @@ Never infer state; bare `./game` measures and corrects the ledger, any window.
 `broadcast.py` is his, with that single carve-out — and the carve-out is STAMP-ONLY
 (owner, 2026-09-29): a seat's relay writes the ledger and messages no window; peers
 read the state from `rimflow next`, which measures the game itself. The bridge is
-one-driver-at-a-time:
-`rimflow bridge take` / `release`, release the moment you stop driving. **Superseded
-2026-09-02 — CLAUDE.md's own "The bridge is passed through one file" is now
-canonical**: it errs toward ALLOWING, not mutual lockout — a stale (45-minute-idle)
-hold is simply taken, `take --force` always works, `infrastructure/state/BRIDGE`
-is the one-glance mirror, `./bridge bench|foundry|free` is the owner's override.
-Never message the other window about it — that channel is off. Config files
+one driver at a time — `rimflow bridge take` / `release`; CLAUDE.md's "The bridge is
+passed through one file" is canonical. Config files
 (`ModsConfig.xml` included) never wait for RimSort or the game; only assemblies need
 the game down (OS lock).
 

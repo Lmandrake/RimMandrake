@@ -31,6 +31,10 @@ You run the queue. Autonomous — never ask, never message; blocked means
   it closes it; then grep `infrastructure/state/items/` for what else it settled —
   that glob is the LIVE set only (terminal prose sits in `items/closed/`, and
   `items/closed/` is where you look for history, deliberately not by default).
+- 🔴 **Build pause (owner, 2026-10-01):** pull only bug fixes and first-script/harness
+  work until every mod has a first script with a recorded run; a content item waits
+  (`rimflow block … --reason "build pause"`). Debug through the mod's script and end
+  every live poke by committing the check — `design/RimMandrake/debug_process.md`.
 - **Specs state outcomes.** A named defName/xpath is an example, not a mandate;
   implement a better route freely while `criteria:` is met, and record what you
   assumed.
