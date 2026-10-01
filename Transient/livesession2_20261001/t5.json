@@ -1,0 +1,177 @@
+{
+ "wild_before": [],
+ "RUT_KraytAttack": {
+  "dry": false,
+  "fired": true,
+  "msg": "RUT_KraytAttack fired with 35 points.",
+  "dry_after": false
+ },
+ "RM_MuurrokEmergence": {
+  "dry": false,
+  "fired": true,
+  "msg": "RM_MuurrokEmergence fired with 35 points.",
+  "dry_after": false
+ },
+ "s0": {
+  "pawns": []
+ },
+ "s1": {
+  "pawns": []
+ },
+ "s2": {
+  "pawns": [
+   [
+    "RM_Muurrok86469",
+    "RM_Muurrok",
+    132,
+    5,
+    false,
+    null
+   ]
+  ]
+ },
+ "s3": {
+  "pawns": [
+   [
+    "RM_Muurrok86469",
+    "RM_Muurrok",
+    178,
+    73,
+    false,
+    null
+   ]
+  ]
+ },
+ "s4": {
+  "pawns": [
+   [
+    "RM_Muurrok86469",
+    "RM_Muurrok",
+    178,
+    73,
+    false,
+    null
+   ],
+   [
+    "RSW_KraytDragon86473",
+    "RSW_KraytDragon",
+    170,
+    76,
+    false,
+    null
+   ]
+  ]
+ },
+ "s5": {
+  "pawns": [
+   [
+    "RM_Muurrok86469",
+    "RM_Muurrok",
+    178,
+    73,
+    false,
+    null
+   ],
+   [
+    "RSW_KraytDragon86473",
+    "RSW_KraytDragon",
+    132,
+    106,
+    false,
+    null
+   ]
+  ]
+ },
+ "s6": {
+  "pawns": [
+   [
+    "RM_Muurrok86469",
+    "RM_Muurrok",
+    178,
+    73,
+    false,
+    null
+   ],
+   [
+    "RSW_KraytDragon86473",
+    "RSW_KraytDragon",
+    120,
+    118,
+    false,
+    null
+   ]
+  ]
+ },
+ "s7": {
+  "pawns": [
+   [
+    "RM_Muurrok86469",
+    "RM_Muurrok",
+    177,
+    74,
+    false,
+    null
+   ],
+   [
+    "RSW_KraytDragon86473",
+    "RSW_KraytDragon",
+    143,
+    128,
+    false,
+    null
+   ]
+  ]
+ },
+ "letters": [
+  [
+   "Rock island",
+   120
+  ],
+  [
+   "Taken under: Cassandra",
+   317
+  ],
+  [
+   "Death: Cassandra (hen)",
+   317
+  ],
+  [
+   "Taken under: Victor",
+   906
+  ],
+  [
+   "Death: Victor (rooster)",
+   906
+  ],
+  [
+   "Dune gale",
+   5385
+  ],
+  [
+   "A caravan the dune took",
+   5386
+  ],
+  [
+   "A sealed cache",
+   11386
+  ],
+  [
+   "Krayt dragon",
+   15000
+  ],
+  [
+   "A line of glare",
+   15000
+  ]
+ ],
+ "dry_RUT_LongHungerSurfaces": {
+  "success": false,
+  "canFireNow": false,
+  "message": "RUT_LongHungerSurfaces canFireNow=False (dry run, nothing fired)."
+ },
+ "dry_RUT_LongHunger": {
+  "success": false,
+  "canFireNow": null,
+  "message": "No IncidentDef named 'RUT_LongHunger'."
+ }
+}

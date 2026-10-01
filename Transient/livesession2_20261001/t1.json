@@ -1,0 +1,447 @@
+{
+ "oorrik": {
+  "ids": [
+   "RM_Oorrik86078",
+   "RM_Oorrik86079",
+   "RM_Oorrik86080"
+  ],
+  "msg": "Spawned 3/3 RM_Oorrik in faction (none)."
+ },
+ "soorrak_spawn": {
+  "ids": [
+   "RM_Soorrak86081",
+   "RM_Soorrak86082",
+   "RM_Soorrak86083",
+   "RM_Soorrak86084",
+   "RM_Soorrak86085",
+   "RM_Soorrak86086"
+  ],
+  "msg": "Spawned 6/6 RM_Soorrak in faction (none)."
+ },
+ "paint": true,
+ "pairs": [
+  [
+   "RM_Vekka86088",
+   "Chicken86089"
+  ],
+  [
+   "RM_Vekka86090",
+   "Chicken86091"
+  ],
+  [
+   "RM_Vekka86092",
+   "Chicken86093"
+  ]
+ ],
+ "pre_sub": {
+  "RM_Vekka86088": {
+   "hediffs": [
+    "BadBack",
+    "RM_SandSwimmer",
+    "Crush",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 22,
+    "z": 22
+   }
+  },
+  "RM_Vekka86090": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 23,
+    "z": 33
+   }
+  },
+  "RM_Vekka86092": {
+   "hediffs": [
+    "Gunshot",
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 18,
+    "z": 50
+   }
+  }
+ },
+ "t0": {
+  "chicks": {
+   "Chicken86089": "absent",
+   "Chicken86091": {
+    "dead": true,
+    "x": 26,
+    "z": 31
+   },
+   "Chicken86093": {
+    "dead": false,
+    "x": 30,
+    "z": 34
+   }
+  },
+  "soorrak_jobs": [
+   [
+    "RM_Soorrak86084",
+    "Wait_MaintainPosture",
+    false
+   ],
+   [
+    "RM_Soorrak86085",
+    "Wait_MaintainPosture",
+    false
+   ]
+  ]
+ },
+ "t1": {
+  "chicks": {
+   "Chicken86089": "absent",
+   "Chicken86091": {
+    "dead": true,
+    "x": 26,
+    "z": 31
+   },
+   "Chicken86093": {
+    "dead": true,
+    "x": 26,
+    "z": 35
+   }
+  },
+  "soorrak_jobs": [
+   [
+    "RM_Soorrak86084",
+    "Wait_MaintainPosture",
+    false
+   ],
+   [
+    "RM_Soorrak86085",
+    "Wait_MaintainPosture",
+    false
+   ]
+  ]
+ },
+ "t2": {
+  "chicks": {
+   "Chicken86089": "absent",
+   "Chicken86091": {
+    "dead": true,
+    "x": 26,
+    "z": 31
+   },
+   "Chicken86093": {
+    "dead": true,
+    "x": 26,
+    "z": 35
+   }
+  },
+  "soorrak_jobs": [
+   [
+    "RM_Soorrak86084",
+    "Wait_MaintainPosture",
+    false
+   ],
+   [
+    "RM_Soorrak86085",
+    "Wait_MaintainPosture",
+    false
+   ]
+  ]
+ },
+ "t3": {
+  "chicks": {
+   "Chicken86089": "absent",
+   "Chicken86091": {
+    "dead": true,
+    "x": 26,
+    "z": 31
+   },
+   "Chicken86093": {
+    "dead": true,
+    "x": 26,
+    "z": 35
+   }
+  },
+  "soorrak_jobs": [
+   [
+    "RM_Soorrak86084",
+    "Wait_MaintainPosture",
+    false
+   ],
+   [
+    "RM_Soorrak86085",
+    "Wait_MaintainPosture",
+    false
+   ]
+  ]
+ },
+ "t4": {
+  "chicks": {
+   "Chicken86089": "absent",
+   "Chicken86091": {
+    "dead": true,
+    "x": 26,
+    "z": 31
+   },
+   "Chicken86093": {
+    "dead": true,
+    "x": 26,
+    "z": 35
+   }
+  },
+  "soorrak_jobs": [
+   [
+    "RM_Soorrak86084",
+    "Wait_MaintainPosture",
+    false
+   ],
+   [
+    "RM_Soorrak86085",
+    "Wait_MaintainPosture",
+    false
+   ]
+  ]
+ },
+ "t5": {
+  "chicks": {
+   "Chicken86089": "absent",
+   "Chicken86091": {
+    "dead": true,
+    "x": 26,
+    "z": 31
+   },
+   "Chicken86093": {
+    "dead": true,
+    "x": 26,
+    "z": 35
+   }
+  },
+  "soorrak_jobs": [
+   [
+    "RM_Soorrak86084",
+    "Wait_MaintainPosture",
+    false
+   ],
+   [
+    "RM_Soorrak86085",
+    "Wait_MaintainPosture",
+    false
+   ]
+  ]
+ },
+ "t6": {
+  "chicks": {
+   "Chicken86089": "absent",
+   "Chicken86091": {
+    "dead": true,
+    "x": 26,
+    "z": 31
+   },
+   "Chicken86093": {
+    "dead": true,
+    "x": 26,
+    "z": 35
+   }
+  },
+  "soorrak_jobs": [
+   [
+    "RM_Soorrak86084",
+    "Wait_MaintainPosture",
+    false
+   ],
+   [
+    "RM_Soorrak86085",
+    "Wait_MaintainPosture",
+    false
+   ]
+  ]
+ },
+ "t7": {
+  "chicks": {
+   "Chicken86089": "absent",
+   "Chicken86091": {
+    "dead": true,
+    "x": 26,
+    "z": 31
+   },
+   "Chicken86093": {
+    "dead": true,
+    "x": 26,
+    "z": 35
+   }
+  },
+  "soorrak_jobs": [
+   [
+    "RM_Soorrak86084",
+    "Wait_MaintainPosture",
+    false
+   ],
+   [
+    "RM_Soorrak86085",
+    "Wait_MaintainPosture",
+    false
+   ]
+  ]
+ },
+ "t8": {
+  "chicks": {
+   "Chicken86089": "absent",
+   "Chicken86091": {
+    "dead": true,
+    "x": 26,
+    "z": 31
+   },
+   "Chicken86093": {
+    "dead": true,
+    "x": 26,
+    "z": 35
+   }
+  },
+  "soorrak_jobs": [
+   [
+    "RM_Soorrak86084",
+    "Wait_MaintainPosture",
+    false
+   ],
+   [
+    "RM_Soorrak86085",
+    "Wait_MaintainPosture",
+    false
+   ]
+  ]
+ },
+ "t9": {
+  "chicks": {
+   "Chicken86089": "absent",
+   "Chicken86091": {
+    "dead": true,
+    "x": 26,
+    "z": 31
+   },
+   "Chicken86093": {
+    "dead": true,
+    "x": 26,
+    "z": 35
+   }
+  },
+  "soorrak_jobs": [
+   [
+    "RM_Soorrak86084",
+    "Wait_MaintainPosture",
+    false
+   ],
+   [
+    "RM_Soorrak86085",
+    "Wait_MaintainPosture",
+    false
+   ]
+  ]
+ },
+ "filth": [
+  {
+   "def": "RM_Filth_DisturbedSand",
+   "x": 26,
+   "z": 31
+  },
+  {
+   "def": "RM_Filth_DisturbedSand",
+   "x": 26,
+   "z": 35
+  }
+ ],
+ "letters": [
+  [
+   "Ozzik the Shamed",
+   0,
+   "None"
+  ],
+  [
+   "Propagandist role deactivated",
+   1,
+   "None"
+  ],
+  [
+   "Master Stylist role deactivated",
+   1,
+   "None"
+  ],
+  [
+   "Foul-Mouthed Bootlegger role deactivated",
+   1,
+   "None"
+  ],
+  [
+   "Inhabitants abandoned",
+   1,
+   "None"
+  ],
+  [
+   "Area revealed",
+   1,
+   "None"
+  ],
+  [
+   "Area revealed",
+   1,
+   "None"
+  ],
+  [
+   "Area revealed",
+   1,
+   "None"
+  ],
+  [
+   "Death: Haruka (hen)",
+   1,
+   "None"
+  ],
+  [
+   "Roof collapse",
+   1,
+   "None"
+  ],
+  [
+   "Rock island",
+   120,
+   "None"
+  ],
+  [
+   "Taken under: Cassandra",
+   317,
+   "None"
+  ],
+  [
+   "Death: Cassandra (hen)",
+   317,
+   "None"
+  ],
+  [
+   "Taken under: Victor",
+   906,
+   "None"
+  ],
+  [
+   "Death: Victor (rooster)",
+   906,
+   "None"
+  ]
+ ],
+ "oorrik_after": {
+  "RM_Oorrik86078": {
+   "dead": false,
+   "x": 206,
+   "z": 13
+  },
+  "RM_Oorrik86079": {
+   "dead": false,
+   "x": 205,
+   "z": 39
+  },
+  "RM_Oorrik86080": {
+   "dead": false,
+   "x": 174,
+   "z": 30
+  }
+ }
+}

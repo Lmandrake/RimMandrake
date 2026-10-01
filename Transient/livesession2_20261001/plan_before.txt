@@ -1,0 +1,697 @@
+repo : /mnt/d/Luke/dev/RimMandrake-wt-livedeploy/src
+game : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods
+mode : plan only (use --apply to write)
+holds: 31 pattern(s) from src/DEPLOY_HOLD.txt
+skip : dirs .git .vs Source __pycache__ _artsrc art_candidates art_source bin obj · exts .csproj .md .py .pyc .sln .user
+
+AcanthamoebaGiganteaLargeArtOverride mandrake.rut.acanthamoebagigantealargeartoverride
+    in sync (5 files)
+
+AcousticScanner  mandrake.rm.acousticscanner not enabled in ModsConfig
+    in sync (6 files)
+
+Aftermath        mandrake.rm.aftermath
+    in sync (3 files)
+
+AftermathRites   mandrake.rut.aftermath     not enabled in ModsConfig
+    in sync (4 files)
+
+AgaripodArtOverride mandrake.rut.agaripodartoverride
+    in sync (5 files)
+
+AnoobaArtOverride mandrake.rsw.anoobaartoverride
+    in sync (8 files)
+
+Antiquities      mandrake.rut.antiquities
+    in sync (9 files)
+
+Armoury          mandrake.rsw.armoury       2 file(s) HELD
+    H  Patches/Armour_Ratings.xml   (repo-only; not deployed)
+           held: owner: SHIP NEITHER, 2026-08-12
+    H  Patches/Warcasket_HazardRetune.xml   (repo-only; not deployed)
+           held: owner: SHIP NEITHER, 2026-08-12
+    +  Patches/Armoury_GlareProtection.xml
+
+AshkarrFlora     mandrake.rut.ashkarrflora
+    in sync (21 files)
+
+AshkarrInhabited mandrake.rut.inhabited
+    in sync (8 files)
+
+AshkarrLandmarkArt mandrake.rut.ashkarrlandmarkart
+    in sync (55 files)
+
+AshkarrWeatherSuite mandrake.rut.weathersuite  not enabled in ModsConfig
+    in sync (4 files)
+
+AssailantSalvage mandrake.rut.assailantsalvage not enabled in ModsConfig
+    in sync (4 files)
+
+Bacta            mandrake.rsw.bacta
+    in sync (22 files)
+
+BirthHatchDemo   mandrake.rut.birthhatchdemo
+    in sync (3 files)
+
+BloodShrimpArtOverride mandrake.rut.bloodshrimpartoverride
+    in sync (5 files)
+
+BrainWorms       mandrake.rsw.brainworms    not enabled in ModsConfig
+    in sync (11 files)
+
+BumbledroneArtOverride mandrake.rut.bumbledroneartoverride
+    in sync (5 files)
+
+BumbledroneHierophantArtOverride mandrake.rut.bumbledronehierophantartoverride
+    in sync (5 files)
+
+Cuisine          mandrake.rsw.cuisine
+    ~  About/About.xml
+
+DalgoArtOverride mandrake.rsw.dalgoartoverride
+    in sync (5 files)
+
+DesertVehicleReskin mandrake.rsw.desertvehiclereskin
+    in sync (39 files)
+
+DewbackArtOverride mandrake.rsw.dewbackartoverride
+    in sync (5 files)
+
+Doctrine         mandrake.rut.doctrine
+    in sync (6 files)
+
+DragonsnakeArtOverride mandrake.rsw.dragonsnakeartoverride
+    in sync (5 files)
+
+DroidRepairJobs  mandrake.rut.droidrepairjobs
+    in sync (6 files)
+
+Droidworks       mandrake.rsw.droidworks    3 file(s) HELD
+    H  ArtIncoming/misrouted_droid_from_mycoidcolossus_east.png   (repo-only; not deployed)
+           held: BENCH: rescued mis-route, wired to no def, 2026-09-19
+    H  ArtIncoming/misrouted_droid_from_mycoidcolossus_north.png   (repo-only; not deployed)
+           held: BENCH: rescued mis-route, wired to no def, 2026-09-19
+    H  ArtIncoming/misrouted_droid_from_mycoidcolossus_south.png   (repo-only; not deployed)
+           held: BENCH: rescued mis-route, wired to no def, 2026-09-19
+    in sync (560 files, 3 held)
+
+EggReckoning     mandrake.rut.eggreckoning  not enabled in ModsConfig
+    in sync (7 files)
+
+EmpirePursuit    mandrake.rut.empirepursuit
+    ~  About/About.xml
+    ~  Defs/Scenarios/ScenParts_EmpirePursuit.xml
+
+ExplosiveGrowth  mandrake.rm.explosivegrowth
+    ~  About/About.xml
+
+FambaaArtOverride mandrake.rsw.fambaaartoverride
+    in sync (5 files)
+
+FlowWorks        mandrake.rm.flowworks
+    in sync (68 files)
+
+FrostmiteArtOverride mandrake.rut.frostmiteartoverride
+    in sync (5 files)
+
+FungalSoilTrade  mandrake.rut.fungalsoiltrade not enabled in ModsConfig
+    in sync (8 files)
+
+GizkaArtOverride mandrake.rsw.gizkaartoverride
+    in sync (8 files)
+
+GizkaStowaway    mandrake.rsw.gizkastowaway
+    in sync (7 files)
+
+Graffiti         mandrake.rm.graffiti
+    ~  Assemblies/RimMandrakeGraffiti.dll
+
+GraffitiImperial mandrake.rsw.graffitiimperial not enabled in ModsConfig
+    in sync (2 files)
+
+GrankArtOverride mandrake.rsw.grankartoverride
+    in sync (5 files)
+
+GravshipLanding  mandrake.rm.gravshiplanding
+    in sync (3 files)
+
+GreaterKraytDragonArtOverride mandrake.rsw.greaterkraytdragonartoverride
+    in sync (5 files)
+
+GreenGooArtOverride mandrake.rut.greengooartoverride
+    in sync (5 files)
+
+GreentideRaidAnt mandrake.rut.greentideraidant
+    in sync (7 files)
+
+GritheArtOverride mandrake.rut.gritheartoverride
+    in sync (6 files)
+
+GruttArtOverride mandrake.rut.gruttartoverride
+    in sync (6 files)
+
+GualaarArtOverride mandrake.rsw.gualaarartoverride not enabled in ModsConfig
+    in sync (5 files)
+
+HawkbatArtOverride mandrake.rsw.hawkbatartoverride
+    in sync (8 files)
+
+HoraxArtOverride mandrake.rsw.horaxartoverride
+    in sync (5 files)
+
+HostileFlora     mandrake.rm.hostileflora   not enabled in ModsConfig
+    ~  About/About.xml
+
+Inhabited        mandrake.rm.inhabited
+    in sync (40 files)
+
+InsectomorphArtOverride mandrake.rsw.insectomorphartoverride
+    in sync (5 files)
+
+IriazArtOverride mandrake.rsw.iriazartoverride
+    in sync (5 files)
+
+IshkoDarkLandmarks mandrake.rut.ishkolandmarks
+    in sync (3 files)
+
+JawaIonWeapons   mandrake.rsw.ionweapons
+    in sync (12 files)
+
+JawaRules        mandrake.rsw.jawarules
+    in sync (4 files)
+
+JawaVoice        mandrake.rsw.jawavoice
+    in sync (13 files)
+
+KinrathArtOverride mandrake.rsw.kinrathartoverride
+    in sync (5 files)
+
+KotORBandolierNorthFix mandrake.rsw.kotorbandoliernorthfix not enabled in ModsConfig
+    in sync (22 files)
+
+KreetleArtOverride mandrake.rsw.kreetleartoverride
+    in sync (5 files)
+
+KyberTradePlot   mandrake.rut.kybertradeplot not enabled in ModsConfig
+    in sync (6 files)
+
+LoadTracer       mandrake.rm.loadtracer
+    in sync (3 files)
+
+LockjawArtOverride mandrake.rsw.lockjawartoverride
+    in sync (8 files)
+
+LongHunger       mandrake.rut.longhunger
+    in sync (7 files)
+
+LoreStages       mandrake.rm.lorestages     not enabled in ModsConfig
+    in sync (2 files)
+
+LuminousPigment  mandrake.rm.luminouspigment
+    in sync (30 files)
+
+MSEDroidFix      mandrake.rsw.msedroidfix   not enabled in ModsConfig
+    in sync (3 files)
+
+MandrakePatches  mandrake.rm.patches        1 file(s) HELD
+    H  Textures/Things/Structures/GravshipGenebank/GravshipGenebank_north.png   (repo-only; not deployed)
+           held: owner: pulled pending art verification, 2026-08-14
+    in sync (20 files, 1 held)
+
+MantistanisArtOverride mandrake.rut.mantistanisartoverride
+    in sync (4 files)
+
+MenuShell        mandrake.rut.menushell
+    in sync (37 files)
+
+MycoidColossusArtOverride mandrake.rut.mycoidcolossusartoverride
+    in sync (5 files)
+
+MynockArtOverride mandrake.rsw.mynockartoverride
+    in sync (5 files)
+
+Ninefold         mandrake.rm.ninefold
+    in sync (3 files)
+
+NunaArtOverride  mandrake.rsw.nunaartoverride
+    in sync (8 files)
+
+OasisMaker       mandrake.rm.oasismaker     not enabled in ModsConfig
+    in sync (4 files)
+
+OllopomArtOverride mandrake.rsw.ollopomartoverride
+    in sync (5 files)
+
+Oracle           mandrake.rm.oracle
+    in sync (3 files)
+
+OrrayArtOverride mandrake.rsw.orrayartoverride
+    in sync (5 files)
+
+PawnFlavor       mandrake.rut.pawnflavor
+    in sync (14 files)
+
+PekoPekoArtOverride mandrake.rsw.pekopekoartoverride
+    in sync (8 files)
+
+PlanetPresetPrime mandrake.rm.planetpresetprime
+    in sync (3 files)
+
+PlantGrowth      mandrake.rut.plantgrowth
+    in sync (8 files)
+
+PropaneLakeMechanics mandrake.rut.propanelakemechanics not enabled in ModsConfig
+    in sync (9 files)
+
+ProximityHatch   mandrake.rm.proximityhatch
+    in sync (2 files)
+
+PyrelandsMechanics mandrake.rut.pyrelandsmechanics
+    in sync (7 files)
+
+Pyrinth          mandrake.rm.pyrinth        not enabled in ModsConfig
+    in sync (25 files)
+
+RaidRedesigner   mandrake.rm.raidredesigner not enabled in ModsConfig
+    in sync (3 files)
+
+RaptorShrimpArtOverride mandrake.rut.raptorshrimpartoverride
+    in sync (5 files)
+
+ResearchRetag    mandrake.rut.researchretag
+    in sync (13 files)
+
+RestrainingBolts mandrake.rut.restrainingbolts not enabled in ModsConfig
+    in sync (4 files)
+
+RimDefDump       mandrake.rm.rimdefdump
+    in sync (3 files)
+
+RimProperty      mandrake.rm.property
+    in sync (11 files)
+
+RimclawArtOverride mandrake.rut.rimclawartoverride
+    in sync (5 files)
+
+Rites            mandrake.rut.rites
+    in sync (3 files)
+
+RiverColors      mandrake.rut.rivercolors   not enabled in ModsConfig
+    in sync (3 files)
+
+RontoArtOverride mandrake.rsw.rontoartoverride
+    in sync (5 files)
+
+RustCathedralRoaches mandrake.rut.rustcathedralroaches
+    in sync (14 files)
+
+RustChrome       mandrake.rm.rustchrome     not enabled in ModsConfig
+    in sync (17 files)
+
+SWBestiary       mandrake.rsw.swbestiary    96 file(s) HELD
+    H  art/Livestock/mockups/karrask_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/karrask_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/moornak_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/Livestock/mockups/onnik_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/AbyssalColo/AbyssalColo_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ColoClawFish/ColoClawFish_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/CrimsonOpee/CrimsonOpee_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ElderSando/ElderSando_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Faa/Faa_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Laa/Laa_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Lanternwhale/Lanternwhale_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Mee/Mee_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/OpeeSeaKiller/OpeeSeaKiller_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Reefback/Reefback_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/RustNipper/RustNipper_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SandoAquaMonster/SandoAquaMonster_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ShaleGorger/ShaleGorger_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/SiltLamprey/SiltLamprey_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Starmaw/Starmaw_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/StormSando/StormSando_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/ThornbackColo/ThornbackColo_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_east.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_north.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_south.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/final/Yobshrimp/Yobshrimp_west.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colo_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/colossus_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/grazer_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/opee_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/sando_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt1.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt2.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    H  art/SeaBeasts/mockups/swarm_opt3.png   (repo-only; not deployed)
+           held: BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+    +  Defs/Livestock/PawnKindDefs/PawnKindDefs_Abyss.xml
+    +  Defs/Livestock/ThingDefs_Animals/ThingDefs_Abyss.xml
+    +  Defs/ThingDefs_Buildings/RSW_GiantSkeletons.xml
+    +  Patches/Livestock/Abyss_WildSpawns.xml
+    +  Patches/RSW_GiantSkeletons_Remains.xml
+    ~  About/About.xml
+    ~  Defs/Livestock/PawnKindDefs/PawnKindDefs_Karrask.xml
+    ~  Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_NurseryJuveniles.xml
+    ~  Defs/ThingDefs_Races/RSW_GreaterKraytDragon.xml
+    ~  Defs/ThingDefs_Races/RSW_KraytDragon.xml
+    ~  Defs/ThingDefs_Races/RSW_SandStalker.xml
+    -  Defs/Livestock/PawnKindDefs/PawnKindDefs_ForsakenCrags.xml   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Defs/Livestock/ThingDefs_Animals/ThingDefs_ForsakenCrags.xml   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Defs/ThingDefs_Items/RSW_SandSwimmer_Items.xml   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Patches/Livestock/ForsakenCrags_WildSpawns.xml   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+
+SacredGraffiti   mandrake.rm.sacredgraffiti
+    in sync (9 files)
+
+Sarlacc          mandrake.rsw.sarlacc       not enabled in ModsConfig
+    ~  About/About.xml
+
+ScarlandsLadder  mandrake.rut.scarlandsladder not enabled in ModsConfig
+    in sync (2 files)
+
+ScavengerEvents  mandrake.rut.scavengerevents
+    in sync (5 files)
+
+ShadowChargerArtOverride mandrake.rut.shadowchargerartoverride
+    in sync (5 files)
+
+ShipMemory       mandrake.rut.shipmemory
+    in sync (6 files)
+
+ShipShields      mandrake.rut.shipshields   not enabled in ModsConfig
+    in sync (5 files)
+
+ShipVermin       mandrake.rm.shipvermin
+    in sync (3 files)
+
+ShiroArtOverride mandrake.rsw.shiroartoverride
+    in sync (5 files)
+
+Shokk            mandrake.rsw.shokk
+    ~  About/About.xml
+
+ShokkweaveEconomy mandrake.rut.shokkweaveeconomy
+    in sync (13 files)
+
+SpidercatArtOverride mandrake.rut.spidercatartoverride
+    in sync (5 files)
+
+StarWarsPatches  mandrake.rsw.patches
+    in sync (141 files)
+
+StarWarsRaces    mandrake.rsw.starwarsraces
+    +  Patches/RSW_Jawa_GlareAdapted.xml
+
+StrandedQuest    mandrake.rm.strandedquest
+    in sync (4 files)
+
+StructureInjections mandrake.rm.injections
+    +  Assemblies/RimMandrakeStructureInjections.dll.srchash
+    ~  Assemblies/RimMandrakeStructureInjections.dll
+
+StructureInjectionsRUT mandrake.rut.injections
+    in sync (77 files)
+
+StructureInjectionsSW mandrake.rsw.injections
+    ~  Defs/TileMutatorDefs_Batch2.xml
+    ~  Templates/krayt_graveyard.txt
+
+TarGuzzlerArtOverride mandrake.rut.targuzzlerartoverride
+    in sync (5 files)
+
+TerramorphArtOverride mandrake.rut.terramorphartoverride
+    in sync (5 files)
+
+TheBazaar        mandrake.rm.bazaar         not enabled in ModsConfig
+    in sync (2 files)
+
+ThermadonArtOverride mandrake.rut.thermadonartoverride
+    in sync (5 files)
+
+ThunderoxArtOverride mandrake.rut.thunderoxartoverride
+    in sync (5 files)
+
+TitanicCreatures mandrake.rm.titaniccreatures not enabled in ModsConfig
+    in sync (8 files)
+
+TrophyCraft      mandrake.rsw.trophycraft   not enabled in ModsConfig
+    in sync (9 files)
+
+UtinniPatches    mandrake.rut.patches       14 file(s) HELD
+    H  Defs/ThingDefs_Buildings/RUT_DryAirBlower.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-14
+    H  Defs/ThingDefs_Buildings/RUT_FoundrySalvageCache.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-14
+    H  Defs/ThingDefs_Buildings/RUT_FoundryTowerEntrance.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-14
+    H  Defs/ThingDefs_Buildings/RUT_VentForge.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_VentKiln.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Buildings/RUT_VentSmelter.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Items/RUT_DeadCreep.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Items/RUT_TibannaGas.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Defs/ThingDefs_Plants/RUT_DyingCreep.xml   (repo-only; not deployed)
+           held: BENCH: no art yet, 2026-09-13
+    H  Patches/RUT_VentForge_RecipeWiring.xml   (repo-only; not deployed)
+           held: BENCH: held with RUT_VentForge.xml, 2026-09-19 (FOUNDRY, retroactive)
+    H  Patches/RUT_VentKiln_RecipeWiring.xml   (repo-only; not deployed)
+           held: BENCH: held with RUT_VentKiln.xml, 2026-09-19 (FOUNDRY, retroactive)
+    H  Defs/MapGeneration/RUT_FoundryFloor_SalvageCache.xml   (game copy left as-is)
+           held: LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: held with RUT_FoundrySalvageCache.xml (its RM_SetPieceElement_SpawnMarker.markerDef dangled a cross-ref while the cache deployed without it)
+    H  Defs/MapGeneration/RUT_FoundryTowerScatter.xml   (game copy left as-is)
+           held: LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: held with RUT_FoundryTowerEntrance.xml (its RM_SetPieceElement_SpawnMarker.markerDef dangled a cross-ref while the entrance deployed without it)
+    H  Patches/RUT_TibannaTap_BeldonWiring.xml   (game copy left as-is)
+           held: LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: held with RUT_TibannaGas.xml (its CompProperties_GatherableGas.gasDef dangled a cross-ref while the gas item deployed without it)
+    +  Defs/BiomeDefs/RUT_Abyss.xml
+    +  Defs/IncidentDefs/RUT_KraytAttack.xml
+    +  Defs/PreceptDefs/RUT_TheReturn.xml
+    +  Patches/Abyss_Rename.xml
+    +  Patches/RUT_TheReturn_KraytOpens.xml
+    +  Textures/Things/Building/RUT_DebtStone/RUT_DebtStone.png
+    ~  Defs/BiomeDefs/RUT_Contagion.xml
+    ~  Defs/BiomeDefs/RUT_CrackedLands.xml
+    ~  Defs/BiomeDefs/RUT_ExtremeDesert.xml
+    ~  Defs/BiomeDefs/RUT_Miasma.xml
+    ~  Defs/BiomeDefs/RUT_TheForge.xml
+    ~  Defs/BiomeDefs/RUT_TheRot.xml
+    ~  Defs/LandmarkDefs/RUT_Lightfall.xml
+    ~  Patches/BiomeDescriptions_Ashkarr.xml
+    ~  Patches/BiomeFlora_Ashkarr.xml
+    ~  Patches/BiomeNames_Ashkarr.xml
+    ~  Patches/FishTypesStrip_NoFishBiomes.xml
+    ~  Patches/JawaTerrain_HorrorWastes.xml
+    ~  Patches/SandFishing_CrackedLands.xml
+    -  Defs/BiomeDefs/RUT_ForsakenCrags.xml   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Patches/ForsakenCrags_Rename.xml   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_east.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_north.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -  Textures/Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_south.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+
+Visibility       mandrake.rm.visibility
+    in sync (3 files)
+
+VornskyrArtOverride mandrake.rsw.vornskyrartoverride
+    in sync (5 files)
+
+Warcasket        mandrake.rm.warcasket      not enabled in ModsConfig
+    in sync (11 files)
+
+WeatherSuite     mandrake.rm.weathersuite
+    in sync (8 files)
+
+WhisperbirdArtOverride mandrake.rsw.whisperbirdartoverride
+    in sync (5 files)
+
+WildpodArtOverride mandrake.rut.wildpodartoverride
+    in sync (5 files)
+
+WildsteamEggBounty mandrake.rut.wildsteameggbounty not enabled in ModsConfig
+    in sync (4 files)
+
+WreckedMachines  mandrake.rm.wreckedmachines
+    in sync (19 files)
+
+WyyyschokkArtOverride mandrake.rsw.wyyyschokkartoverride
+    in sync (5 files)
+
+ZakkegArtOverride mandrake.rsw.zakkegartoverride
+    in sync (5 files)
+
+ZeerArtOverride  mandrake.rsw.zeerartoverride
+    in sync (5 files)
+
+⚠️  10 hold pattern(s) matched NOTHING — stale, or the file moved:
+      src/DEPLOY_HOLD.txt:253  TheSump/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml
+      src/DEPLOY_HOLD.txt:278  TheSump/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml
+      src/DEPLOY_HOLD.txt:279  TheSump/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml
+      src/DEPLOY_HOLD.txt:280  TheSump/Patches/RUT_SumpTarBeastGenStep_Register.xml
+      src/DEPLOY_HOLD.txt:288  TheSump/Patches/RUT_BeastBulge_DreadRegistration.xml
+      src/DEPLOY_HOLD.txt:300  TheSump/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml
+      src/DEPLOY_HOLD.txt:431  TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml
+      src/DEPLOY_HOLD.txt:432  TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml
+      src/DEPLOY_HOLD.txt:446  TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml
+      src/DEPLOY_HOLD.txt:461  TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml
+    A hold that matches nothing protects nothing. Fix the pattern or delete the line.
+
+Drift found. Re-run with --apply to deploy.

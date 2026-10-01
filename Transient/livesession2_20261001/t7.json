@@ -1,0 +1,319 @@
+{
+ "list": {
+  "success": true,
+  "action": "list",
+  "result": {
+   "pawn": {
+    "id": "RM_Muurrok86469",
+    "name": "Muurrok",
+    "kind": "RM_Muurrok",
+    "faction": null,
+    "isPlayer": false,
+    "hostileToPlayer": false,
+    "spawned": true,
+    "downed": false,
+    "dead": false,
+    "drafted": false,
+    "position": {
+     "x": 178,
+     "z": 73
+    },
+    "currentJob": "RM_ShadeDash",
+    "stance": "Stance_Mobile"
+   },
+   "target": null,
+   "verbCount": 3,
+   "verbs": [
+    {
+     "source": "race",
+     "id": "Verb_Thing_RM_Muurrok86469_0",
+     "label": "mirror crest",
+     "verbClass": "RM_Verb_MirrorBeam",
+     "isMelee": false,
+     "range": 22.9,
+     "minRange": 3.9,
+     "warmupTime": 1.5,
+     "burstShotCount": 5,
+     "state": "Idle",
+     "warmingUp": false,
+     "casterSpawned": true,
+     "equipmentSource": "Muurrok",
+     "hediffSource": null,
+     "usableByCaster": false,
+     "canHitTarget": null
+    },
+    {
+     "source": "race",
+     "id": "Verb_Thing_RM_Muurrok86469_0_Bite",
+     "label": null,
+     "verbClass": "Verb_MeleeAttackDamage",
+     "isMelee": true,
+     "range": 1.42,
+     "minRange": 0.0,
+     "warmupTime": 0.0,
+     "burstShotCount": 1,
+     "state": "Idle",
+     "warmingUp": false,
+     "casterSpawned": true,
+     "equipmentSource": "Muurrok",
+     "hediffSource": null,
+     "usableByCaster": true,
+     "canHitTarget": null
+    },
+    {
+     "source": "race",
+     "id": "Verb_Thing_RM_Muurrok86469_1_Smash",
+     "label": null,
+     "verbClass": "Verb_MeleeAttackDamage",
+     "isMelee": true,
+     "range": 1.42,
+     "minRange": 0.0,
+     "warmupTime": 0.0,
+     "burstShotCount": 1,
+     "state": "Idle",
+     "warmingUp": false,
+     "casterSpawned": true,
+     "equipmentSource": "Muurrok",
+     "hediffSource": null,
+     "usableByCaster": true,
+     "canHitTarget": null
+    }
+   ]
+  },
+  "ticksGame": 23000
+ },
+ "muffalo": [
+  "Muffalo86515",
+  "Muffalo86516",
+  "Muffalo86517"
+ ],
+ "cast0": {
+  "success": false,
+  "action": "cast",
+  "accepted": false,
+  "refusedBy": "Verb.IsStillUsableBy(Muurrok) is false - the verb is unavailable, its owner refuses it, or its damage factor for this pawn is 0.",
+  "preCast": {
+   "pawn": {
+    "id": "RM_Muurrok86469",
+    "name": "Muurrok",
+    "kind": "RM_Muurrok",
+    "faction": null,
+    "isPlayer": false,
+    "hostileToPlayer": false,
+    "spawned": true,
+    "downed": false,
+    "dead": false,
+    "drafted": false,
+    "position": {
+     "x": 178,
+     "z": 73
+    },
+    "currentJob": "RM_ShadeDash",
+    "stance": "Stance_Mobile"
+   },
+   "target": "thing Muffalo86515",
+   "verb": {
+    "source": "race",
+    "id": "Verb_Thing_RM_Muurrok86469_0",
+    "label": "mirror crest",
+    "verbClass": "RM_Verb_MirrorBeam",
+    "isMelee": false,
+    "range": 22.9,
+    "minRange": 3.9,
+    "warmupTime": 1.5,
+    "burstShotCount": 5,
+    "state": "Idle",
+    "warmingUp": false,
+    "casterSpawned": true,
+    "equipmentSource": "Muurrok",
+    "hediffSource": null,
+    "usableByCaster": false,
+    "canHitTarget": true
+   }
+  },
+  "speedRestored": false,
+  "ticksElapsed": 0,
+  "ticksGame": 23000
+ },
+ "cast1": {
+  "success": false,
+  "action": "cast",
+  "accepted": false,
+  "refusedBy": "Verb.IsStillUsableBy(Muurrok) is false - the verb is unavailable, its owner refuses it, or its damage factor for this pawn is 0.",
+  "preCast": {
+   "pawn": {
+    "id": "RM_Muurrok86469",
+    "name": "Muurrok",
+    "kind": "RM_Muurrok",
+    "faction": null,
+    "isPlayer": false,
+    "hostileToPlayer": false,
+    "spawned": true,
+    "downed": false,
+    "dead": false,
+    "drafted": false,
+    "position": {
+     "x": 178,
+     "z": 73
+    },
+    "currentJob": "RM_ShadeDash",
+    "stance": "Stance_Mobile"
+   },
+   "target": "thing Muffalo86516",
+   "verb": {
+    "source": "race",
+    "id": "Verb_Thing_RM_Muurrok86469_0",
+    "label": "mirror crest",
+    "verbClass": "RM_Verb_MirrorBeam",
+    "isMelee": false,
+    "range": 22.9,
+    "minRange": 3.9,
+    "warmupTime": 1.5,
+    "burstShotCount": 5,
+    "state": "Idle",
+    "warmingUp": false,
+    "casterSpawned": true,
+    "equipmentSource": "Muurrok",
+    "hediffSource": null,
+    "usableByCaster": false,
+    "canHitTarget": true
+   }
+  },
+  "speedRestored": false,
+  "ticksElapsed": 0,
+  "ticksGame": 23000
+ },
+ "cast2": {
+  "success": false,
+  "action": "cast",
+  "accepted": false,
+  "refusedBy": "Verb.IsStillUsableBy(Muurrok) is false - the verb is unavailable, its owner refuses it, or its damage factor for this pawn is 0.",
+  "preCast": {
+   "pawn": {
+    "id": "RM_Muurrok86469",
+    "name": "Muurrok",
+    "kind": "RM_Muurrok",
+    "faction": null,
+    "isPlayer": false,
+    "hostileToPlayer": false,
+    "spawned": true,
+    "downed": false,
+    "dead": false,
+    "drafted": false,
+    "position": {
+     "x": 178,
+     "z": 73
+    },
+    "currentJob": "RM_ShadeDash",
+    "stance": "Stance_Mobile"
+   },
+   "target": "thing Muffalo86517",
+   "verb": {
+    "source": "race",
+    "id": "Verb_Thing_RM_Muurrok86469_0",
+    "label": "mirror crest",
+    "verbClass": "RM_Verb_MirrorBeam",
+    "isMelee": false,
+    "range": 22.9,
+    "minRange": 3.9,
+    "warmupTime": 1.5,
+    "burstShotCount": 5,
+    "state": "Idle",
+    "warmingUp": false,
+    "casterSpawned": true,
+    "equipmentSource": "Muurrok",
+    "hediffSource": null,
+    "usableByCaster": false,
+    "canHitTarget": true
+   }
+  },
+  "speedRestored": false,
+  "ticksElapsed": 0,
+  "ticksGame": 23000
+ },
+ "muffalo_hp": [
+  [
+   "Muffalo86515",
+   false,
+   []
+  ],
+  [
+   "Muffalo86516",
+   false,
+   []
+  ],
+  [
+   "Muffalo86517",
+   false,
+   [
+    "Gunshot"
+   ]
+  ]
+ ],
+ "weather_set": {
+  "success": true,
+  "before": "RM_DuneGale",
+  "after": "Sandstorm",
+  "lockInForce": false,
+  "lockCaveat": null,
+  "gamePaused": true,
+  "notes": [
+   "plain transition - WeatherDecider WILL reroll when the duration expires"
+  ],
+  "ticksGame": 23000
+ },
+ "cast_sandstorm": {
+  "success": false,
+  "action": "cast",
+  "accepted": false,
+  "refusedBy": "Verb.IsStillUsableBy(Muurrok) is false - the verb is unavailable, its owner refuses it, or its damage factor for this pawn is 0.",
+  "preCast": {
+   "pawn": {
+    "id": "RM_Muurrok86469",
+    "name": "Muurrok",
+    "kind": "RM_Muurrok",
+    "faction": null,
+    "isPlayer": false,
+    "hostileToPlayer": false,
+    "spawned": true,
+    "downed": false,
+    "dead": false,
+    "drafted": false,
+    "position": {
+     "x": 178,
+     "z": 73
+    },
+    "currentJob": "AttackMelee",
+    "stance": "Stance_Mobile"
+   },
+   "target": "thing Muffalo86520",
+   "verb": {
+    "source": "race",
+    "id": "Verb_Thing_RM_Muurrok86469_0",
+    "label": "mirror crest",
+    "verbClass": "RM_Verb_MirrorBeam",
+    "isMelee": false,
+    "range": 22.9,
+    "minRange": 3.9,
+    "warmupTime": 1.5,
+    "burstShotCount": 5,
+    "state": "Idle",
+    "warmingUp": false,
+    "casterSpawned": true,
+    "equipmentSource": "Muurrok",
+    "hediffSource": null,
+    "usableByCaster": false,
+    "canHitTarget": true
+   }
+  },
+  "speedRestored": false,
+  "ticksElapsed": 0,
+  "ticksGame": 23030
+ },
+ "muffalo2_hp": [
+  [
+   "Muffalo86520",
+   []
+  ]
+ ]
+}

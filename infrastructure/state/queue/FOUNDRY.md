@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:33:59Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-10-01T11:00:28Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -2761,3 +2761,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CAULDRONENRICHMENTLIVEPROOF1 — live proof of the offline Cauldron enrichment
 prose:    infrastructure/state/items/CAULDRON_ENRICHMENT_LIVE_PROOF_1.md
+
+## MUURROK_BEAM_NO_DAMAGE_1 Muurrok mirror beam fires (accepted, no exception) but damages nothing
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify
+summary:  MUURROKBEAMNODAMAGE1 — the muurrok's mirror beam fires and hurts nothing
+prose:    infrastructure/state/items/MUURROK_BEAM_NO_DAMAGE_1.md
+
+## SOORRAK_INSTANT_JOB_LOOP_1 Wild soorrak sits in Wait_MaintainPosture forever: its next job succeeds instantly every cycle
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify
+summary:  SOORRAKINSTANTJOBLOOP1 — a wild soorrak never moves; its job ends the moment it starts
+prose:    infrastructure/state/items/SOORRAK_INSTANT_JOB_LOOP_1.md
+
+## RIMPLACE_STUFFLESS_THING_ROWS_1 Rimplace plans place stuffed defs with stuff=null (SculptureSmall in sarlacc_sign, Bedroll in junkers templates)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify
+summary:  RIMPLACESTUFFLESSTHINGROWS1 — plan THING rows for stuffed defs carry no stuff
+prose:    infrastructure/state/items/RIMPLACE_STUFFLESS_THING_ROWS_1.md

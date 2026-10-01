@@ -1,0 +1,7 @@
+{
+ "success": true,
+ "genStepDef": "RSW_GenStep_WhisperSarlaccSign",
+ "genStepType": "Verse.GenStep_RandomSelector",
+ "threw": null,
+ "ticksGame": 1
+}
