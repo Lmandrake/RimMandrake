@@ -2082,16 +2082,6 @@ thin:     no ## verify
 summary:  1. Ship becomes a refuge (Shipfall Commons). After landing, the shade grid sees the gravship's
 prose:    infrastructure/state/items/LONGSHADE_GPT_ENRICHMENT_1.md
 
-## STILLSAND_BEDAZZLE_CONTENT_1 Stillsand presentation wave: wire 6 finished render sets, build the 9 ruled fill-out defs, wire this commission's creature art (vozzik/vekka/drazzik/nizzek/guzzka/aurrok/biosilica), vaalok/qorrax/eemmok rows, catches to RM_
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  1. Wire the six finished-but-unwired render sets. Each def's texPath resolves nowhere today:
-prose:    infrastructure/state/items/STILLSAND_BEDAZZLE_CONTENT_1.md
-
 ## STILLSAND_EVENT_CREATURES_1 Stillsand event creatures: krayt attack incident on top of wild krayts, the muurrok (RM leviathan, mirror-crest beam on an animal-safe Verb_ShootBeam copy), sarlacc comes to root, greater krayt den quest, krayt horn
 state:    proposed
 row:      unassigned
@@ -2531,3 +2521,13 @@ kind:     trial
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  PITSSTALEDEPLOYCOLLISION1
 prose:    infrastructure/state/items/PITS_STALE_DEPLOY_COLLISION_1.md
+
+## STILLSAND_CONTENT_LIVE_PROOF_1 Prove the built Stillsand cast live (atlas, zuurrik on blood) and swap four placeholder renders
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     verify
+thin:     no ## verify
+summary:  1. Quicktest atlas on RMStillsand: spawn every RM Stillsand pawn kind and plant once and
+prose:    infrastructure/state/items/STILLSAND_CONTENT_LIVE_PROOF_1.md
