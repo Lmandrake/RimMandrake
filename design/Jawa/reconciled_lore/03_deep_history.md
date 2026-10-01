@@ -5,9 +5,8 @@
 **`Rakata` is the ENDONYM; `the Forsaken` / `the Forgotten` is the EXONYM.**
 Nobody alive says "Rakata" except a Rakata, a scholar, or a sleeper — a Jawa, a
 Hutt factor or an Imperial clerk says *the Forsaken*. Register rule for ALL
-authored text. (The `AB_RockyCrags` biome's own description of "a mysterious
-humanoid alien race simply known as Forsakens" is the same people — the name
-was already in the stack.)
+authored text. Both exonyms are the owner's own names, chosen independently of
+any mod (owner, 2026-10-01).
 
 ## Who they were — both halves are true [owner 2026-08-20 + 2026-08-29]
 
