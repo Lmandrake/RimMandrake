@@ -100,6 +100,41 @@ the driver until `judge_cli.py` grades their screenshots (by design).
 Also: the results JSON keeps only ~300 chars of each component's evidence, so `_note()` now
 echoes every evidence record to stderr (`[pyre-note]`).
 
+### Run 5 (`Transient/northstar/Pyrelands_20261001T192754Z.json`) — the fixture was destroyed by run 4
+
+🔴 **Run 4's fulgurite chain (locked DryThunderstorm, 20,000 ticks, no containment) let the
+lightning fires burn the WHOLE site**: run 5's terrain census reads 49,263 cells of
+`RM_FE_Ash_Deep`, 16 cells of sand, and the site's three colonists are gone (no player pawns,
+no human corpse). This was a harness defect of mine, not the mod. Consequences: every
+fresh-map census bar is now meaningless on this fixture, and the site needs a reload
+(`northstar_site.py`) before those bars can be measured — I am not permitted to load saves.
+Changes: the lightning chain now extinguishes the map every 1,000 ticks; a `_fresh_site()`
+gate makes every fresh-map census component UNMEASURED when > 100 deep-ash cells lie outside
+the suite's own fire pads (deep ash only comes from burning); the harvest bar spawns its own
+colonist (spec 1b) instead of borrowing the site's.
+
+Other run-5 evidence and fixes:
+- scorch_fruit_seed FAIL again: 0 in the 24x24 burn, 4 on the whole map. scorchfruit_fire_born
+  FAIL: 0 in its burned cohort. The 12 ScorchFruit the census found all sit on the LADDER pad,
+  i.e. they came from run 4's three-cycle burn, so the postfix can fire; a single burn of a
+  freshly grassed patch yields none. Consistent finding across two pads and two runs.
+- scorchfruit_spoils_fast: inspect text read "spoils in 3.5 / 3 / 2.5 days" at day 0.5 / 1 /
+  1.5 (i.e. daysToRotStart 4 confirmed), then the stack vanished at day 2 — eaten by a wild
+  grazer. Now walled in with steel (plan 2.3a "fenced cell").
+- firehawk_carries_ember: 20 job samples, never `RM_FireHawkCarryEmber` (wander, one Flee).
+  Fire-alive count now recorded per sample so "no fire" reads UNMEASURED, not FAIL.
+- furnacebeast_warmth: no hediff; `spawn_pawn` SCATTERS near the cell, so the distance was
+  unknown. Now walks the colonist to the beast each sample and records the distance.
+- furnacebeast_heats_room: both rooms read exactly 49.71 C (same as outdoors 49.67) 2,500
+  ticks after `room_heat set 10`. Now: `room_get` proves both are rooms, checks the scattered
+  beast actually landed inside room A, samples every 250 ticks, gates on the mean delta while
+  the control is below the pusher's 24 C cap, UNMEASURED if it never is.
+- burrowers_dive: PASS (`RM_Burrow` job, `RM_Burrowed` seen, grazer intact).
+- embergrass_regrows: pre 256 / day3 0 / day7 0 at 46 C (on a burned-out map); UNMEASURED
+  (calibrating).
+- fulgurite: 16 sand cells on the map, 8 fires: an expected fulgurite count of ~0.0006 cannot
+  test the bar. Now UNMEASURED with that arithmetic when expect < 1.
+
 ## Findings about the mod
 
 (filled at the end)
