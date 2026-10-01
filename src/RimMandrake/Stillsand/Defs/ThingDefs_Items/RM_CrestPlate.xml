@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_CrestPlate.xml                       RimMandrake — STILLSAND_EVENT_CREATURES_1 §3
+
+  Crest-plate: butchered from a muurrok (RM_Muurrok butcherProducts, 6 per corpse). A mirror
+  reflector material. Its consumer, the reflector skirt of the high-performance solar oven,
+  is STILLSAND_GLASS_LENS_CHAIN_1's to build; until then it is a trade good.
+  Art pending: artpipe job RM_CrestPlate (256, single); texPath below is where it lands.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CrestPlate</defName>
+    <label>crest-plate</label>
+    <description>A curved plate cut from a muurrok's mirror crest. The face is polished so smooth by sand that it throws the sun back like silvered glass. It is light and hard, and it does not tarnish. Set in a ring, a few of them will gather a lot of sunlight into one place.</description>
+    <graphicData>
+      <!-- art pending: artpipe RM_CrestPlate -->
+      <texPath>Things/Item/Resource/RM_CrestPlate</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <useHitPoints>true</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <MarketValue>45</MarketValue>
+      <Mass>1.2</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <Beauty>2</Beauty>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

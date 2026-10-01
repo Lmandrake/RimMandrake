@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SandLeviathanIncidents.xml           RimMandrake — STILLSAND_EVENT_CREATURES_1 §3
+
+  The muurrok's coming. Worker: RimMandrake.Stillsand.RM_IncidentWorker_SandLeviathan
+  (Source/RM_SandLeviathan.cs), shared with the krayt attack, which is XML only in
+  mandrake.rut.patches (src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_KraytAttack.xml).
+
+  Biome gate: RM_SandLeviathanExtension.biomes (defNames, the RSW_SwimmerRoadExtension
+  pattern), not allowedBiomes. Toggle and odds: Mod Settings, "Stillsand: event creatures".
+  Odds rise with vibration (each powered deep drill on the map, up to x3).
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RM_MuurrokEmergence</defName>
+    <label>muurrok</label>
+    <workerClass>RimMandrake.Stillsand.RM_IncidentWorker_SandLeviathan</workerClass>
+    <category>ThreatSmall</category>
+    <letterDef>ThreatSmall</letterDef>
+    <letterLabel>A line of glare</letterLabel>
+    <letterText>Something vast is moving under the sand.\n\nAt the edge of the map a line of glare is crossing the dunes: a mirror crest, cutting the surface. A muurrok has come up out of the deep sand.\n\nIt will weigh everyone it can see and pick the body with the most water in it. If the sun is up it will turn the light off its crest onto that one, then come up underneath it. It takes one body and goes back down.\n\nIt cannot follow anyone onto rock for long, and the beam does nothing at night, under a roof, or in a sand gale.</letterText>
+    <baseChance>0.8</baseChance>
+    <minRefireDays>30</minRefireDays>
+    <earliestDay>15</earliestDay>
+    <minThreatPoints>300</minThreatPoints>
+    <pointsScaleable>false</pointsScaleable>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+      <li>Map_TempIncident</li>
+    </targetTags>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_SandLeviathanExtension">
+        <biomes>
+          <li>RM_Stillsand</li>
+        </biomes>
+        <pawnKind>RM_Muurrok</pawnKind>
+        <appraise>true</appraise>
+        <warningTicks>1500</warningTicks>
+        <maxStayTicks>20000</maxStayTicks>
+        <hardGroundGiveUpTicks>600</hardGroundGiveUpTicks>
+        <beamCooldownTicks>600</beamCooldownTicks>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

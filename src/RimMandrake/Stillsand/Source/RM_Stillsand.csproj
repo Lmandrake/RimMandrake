@@ -14,8 +14,7 @@
 
     No Harmony, no BiomeWorker: the def reuses vanilla Core's own
     RimWorld.BiomeWorker_ExtremeDesert unchanged (item's own MEASURED STATE —
-    the donor twin never named a third-party workerClass). The one class
-    here is the Mod Settings pair (ModSettings + Mod).
+    the donor twin never named a third-party workerClass).
   -->
 
   <PropertyGroup>
@@ -49,6 +48,12 @@
     <Compile Include="RM_IncidentWorker_SandBusterEruption.cs" />
     <!-- STILLSAND_BEDAZZLE_CONTENT_1: the zuurrik blood-waker -->
     <Compile Include="RM_MapComponent_Zuurrik.cs" />
+    <!-- STILLSAND_EVENT_CREATURES_1: the sand-leviathan incident (muurrok, krayt attack),
+         the muurrok's mirror beam, and their settings. Uses the sand-swim kit in
+         RimMandrake.CreatureBehaviors (a declared hard dependency); build that first. -->
+    <Compile Include="RM_SandLeviathan.cs" />
+    <Compile Include="RM_Verb_MirrorBeam.cs" />
+    <Compile Include="RM_StillsandEventsMod.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,6 +71,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

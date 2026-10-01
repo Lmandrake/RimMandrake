@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Muurrok.xml                          RimMandrake — STILLSAND_EVENT_CREATURES_1 §3
+
+  The muurrok: the free tier's own leviathan (owner, by card, 2026-09-30: YES). Invented,
+  franchise-free (Q11a), name swept clean 2026-09-30. Design:
+  design/Jawa/worldbuilding/biomes/stillsand_turn3_development_2026-09-30.md §2.5.
+
+  - Incident only: it is NOT in RM_Stillsand's wildAnimals (commonality 0). It arrives by
+    RM_MuurrokEmergence (IncidentDefs/RM_SandLeviathanIncidents.xml).
+  - Sand-swim kit: the extension below is the whole wiring (submerge, wake, breach, take
+    funnel + letter).
+  - Its ranged attack is the reflected-sun beam off its mirror crest (owner, typed: "Yes and
+    use the beam attack style from mechanics due to reflections"): RM_Verb_MirrorBeam, a
+    null-safe copy of Verb_ShootBeam that heats and never ignites, needs sun, and scales with
+    it. The verb is a race verb, so no AI path picks it on its own: the incident's map
+    component fires it (RM_MapComponent_SandLeviathans.Hunt).
+  - Corpse yields RM_CrestPlate (ThingDefs_Items/RM_CrestPlate.xml).
+  - Art pending: artpipe jobs RM_Muurrok_{east,north,south} (drawsize 10) and
+    RM_MuurrokSkeleton are queued; texPath below is where they land.
+-->
+<Defs>
+
+  <DamageDef ParentName="Beam">
+    <defName>RM_MirrorGlare</defName>
+    <label>mirror glare</label>
+    <deathMessage>{0} has been burned to death by reflected sunlight.</deathMessage>
+    <defaultDamage>9</defaultDamage>
+    <defaultArmorPenetration>0.35</defaultArmorPenetration>
+    <hediff>Burn</hediff>
+  </DamageDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Muurrok</defName>
+    <label>muurrok</label>
+    <description>A giant that lives under the deep sand and almost never shows itself. All anyone usually sees is its crest: one curved plate polished like a mirror, which breaks the surface as it cruises. It shows up as a line of glare moving across the dunes.\n\nIt hunts by weighing what it sees. It circles a party at the edge of sight and picks the body with the most water in it. Then it turns the sun on that one, throwing a sweeping beam of reflected light off its crest, and comes up underneath it. It takes one body and goes back down. It ignores everyone else.\n\nThe beam needs sun. At night, under a roof, or in a sand gale, the crest is just a plate.</description>
+    <statBases>
+      <MoveSpeed>4.6</MoveSpeed>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>110</ComfyTemperatureMax>
+      <MarketValue>2400</MarketValue>
+      <Wildness>1</Wildness>
+      <ArmorRating_Sharp>0.9</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.6</ArmorRating_Blunt>
+      <ArmorRating_Heat>1.5</ArmorRating_Heat>
+      <LeatherAmount>220</LeatherAmount>
+      <FilthRate>0</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>jaws</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>42</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>30</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>26</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <verbs>
+      <li>
+        <verbClass>RimMandrake.Stillsand.RM_Verb_MirrorBeam</verbClass>
+        <label>mirror crest</label>
+        <hasStandardCommand>false</hasStandardCommand>
+        <warmupTime>1.5</warmupTime>
+        <range>22.9</range>
+        <minRange>3.9</minRange>
+        <beamFullWidthRange>6.9</beamFullWidthRange>
+        <burstShotCount>5</burstShotCount>
+        <showBurstShotStats>false</showBurstShotStats>
+        <beamWidth>4</beamWidth>
+        <ticksBetweenBurstShots>22</ticksBetweenBurstShots>
+        <beamDamageDef>RM_MirrorGlare</beamDamageDef>
+        <soundCastBeam>BeamGraser_Shooting</soundCastBeam>
+        <beamGroundFleckDef>Fleck_BeamBurn</beamGroundFleckDef>
+        <beamFleckChancePerTick>0.25</beamFleckChancePerTick>
+        <beamMaxDeviation>1.5</beamMaxDeviation>
+        <beamCurvature>0.6</beamCurvature>
+        <beamMoteDef>Mote_GraserBeamBase</beamMoteDef>
+        <beamEndEffecterDef>GraserBeam_End</beamEndEffecterDef>
+        <beamStartOffset>1.2</beamStartOffset>
+        <!-- heats, never ignites: RM_Verb_MirrorBeam has no fire path at all; these stay 0 -->
+        <beamChanceToStartFire>0</beamChanceToStartFire>
+        <beamChanceToAttachFire>0</beamChanceToAttachFire>
+      </li>
+    </verbs>
+    <race>
+      <body>Snake</body>
+      <predator>true</predator>
+      <maxPreyBodySize>4</maxPreyBodySize>
+      <herdAnimal>false</herdAnimal>
+      <baseBodySize>14</baseBodySize>
+      <baseHealthScale>12</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1</manhunterOnTameFailChance>
+      <lifeExpectancy>140</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>8</minAge>
+          <soundWounded>Pawn_Thrumbo_Pain</soundWounded>
+          <soundDeath>Pawn_Thrumbo_Death</soundDeath>
+          <soundCall>Pawn_Thrumbo_Call</soundCall>
+          <soundAngry>Pawn_Thrumbo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <butcherProducts>
+      <RM_CrestPlate>6</RM_CrestPlate>
+    </butcherProducts>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SandSwimExtension">
+        <submergedHediff>RM_SandSubmerged</submergedHediff>
+        <swimmerMarkerHediff>RM_SandSwimmer</swimmerMarkerHediff>
+        <takeFilth>RM_Filth_DisturbedSand</takeFilth>
+        <dragFilth>RM_Filth_DragMark</dragFilth>
+        <strikeRangeCells>2.9</strikeRangeCells>
+        <surfacedTicks>240</surfacedTicks>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_MirrorBeamExtension">
+        <minSunGlow>0.5</minSunGlow>
+        <heatPerHit>6</heatPerHit>
+        <noSunWeathers>
+          <li>Sandstorm</li>
+          <li>RM_DuneGale</li>
+          <li>RM_Gale</li>
+        </noSunWeathers>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Muurrok</defName>
+    <label>muurrok</label>
+    <race>RM_Muurrok</race>
+    <combatPower>900</combatPower>
+    <ecoSystemWeight>2</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- art pending: artpipe RM_Muurrok_{east,north,south} -->
+          <texPath>Things/Pawn/Animal/RM_Muurrok/RM_Muurrok</texPath>
+          <drawSize>4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Muurrok/RM_Muurrok</texPath>
+          <drawSize>7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Muurrok/RM_Muurrok</texPath>
+          <drawSize>10</drawSize>
+          <shadowData>
+            <volume>(0.9, 0.5, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

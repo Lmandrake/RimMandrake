@@ -12,7 +12,16 @@ game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## STILLSAND_EVENT_CREATURES_1 Stillsand event creatures: krayt attack incident on top of wild krayts, the muurrok (RM leviathan, mirror-crest beam on an animal-safe Verb_ShootBeam copy), sarlacc comes to root, greater krayt den quest, krayt horn
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. 🔴 The krayts and the war wyrm STAY WILD (owner, by card, 2026-09-30; he declined the doc's
+prose:    infrastructure/state/items/STILLSAND_EVENT_CREATURES_1.md
 
 # IN PROGRESS
 
@@ -2082,16 +2091,6 @@ thin:     no ## verify
 summary:  1. Ship becomes a refuge (Shipfall Commons). After landing, the shade grid sees the gravship's
 prose:    infrastructure/state/items/LONGSHADE_GPT_ENRICHMENT_1.md
 
-## STILLSAND_EVENT_CREATURES_1 Stillsand event creatures: krayt attack incident on top of wild krayts, the muurrok (RM leviathan, mirror-crest beam on an animal-safe Verb_ShootBeam copy), sarlacc comes to root, greater krayt den quest, krayt horn
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  1. 🔴 The krayts and the war wyrm STAY WILD (owner, by card, 2026-09-30; he declined the doc's
-prose:    infrastructure/state/items/STILLSAND_EVENT_CREATURES_1.md
-
 ## STILLSAND_PRECIOUS_CAVES_1 Stillsand rare rock + precious cave: yardang genstep with a shade-face cave, the cave as a place (brine seep, mummified register), weighted precious table that finally spawns the guzzka; no sinkholes
 state:    proposed
 row:      unassigned
@@ -2581,3 +2580,23 @@ kind:     verify
 thin:     no ## verify
 summary:  1. Quicktest atlas on RMStillsand: spawn every RM Stillsand pawn kind and plant once and
 prose:    infrastructure/state/items/STILLSAND_CONTENT_LIVE_PROOF_1.md
+
+## STILLSAND_EVENT_CREATURES_REMAINDER_1 Stillsand event ladder remainder: sarlacc roots, krayt den quest, krayt horn, Debt weighting
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. The sarlacc swimmer comes to root (RSW). A Stillsand incident: a RSWSarlaccSwimmer whose
+prose:    infrastructure/state/items/STILLSAND_EVENT_CREATURES_REMAINDER_1.md
+
+## STILLSAND_EVENT_CREATURES_LIVE_1 Live-prove the krayt attack and muurrok on a Stillsand quicktest, and live-fire the Long Hunger
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  STILLSANDEVENTCREATURESLIVE1 — live-prove the krayt attack and the muurrok
+prose:    infrastructure/state/items/STILLSAND_EVENT_CREATURES_LIVE_1.md
