@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- LONGSHADE_GPT_ENRICHMENT_1 §1, Shipfall Commons (Source/RM_ShipfallCommons.cs).
+     Animal_PreWander at insertPriority 15: ahead of the Creature Behaviors shade hop
+     (10), so an admitted wild animal heads for the ship's shade instead of hopping
+     elsewhere, and behind shadow-following (20), so the pirrik still ride a gloomcast
+     when one is near. Returns no job unless the map's biome carries
+     RM_ShipfallCommonsExtension, a gravship is on the map and a rung admitting this
+     animal is open, so it is safe to insert globally. -->
+<Defs>
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_ShipfallCommons</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>15</insertPriority>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.LongShade.RM_JobGiver_ShipfallCommons" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

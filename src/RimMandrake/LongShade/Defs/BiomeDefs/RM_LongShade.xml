@@ -285,6 +285,47 @@
         <litSound>RM_Heat_LitBed</litSound>
         <shadeSound>RM_Heat_ShadeBed</shadeSound>
       </li>
+      <!-- LONGSHADE_GPT_ENRICHMENT_1 §1, Shipfall Commons (Source/RM_ShipfallCommons.cs).
+           The rung ORDER is the item's spec, verbatim in sense: "small animals take the
+           ramp shadow, herds press the hull, pirrik circle, eventually the gloomcast
+           walks over". TUNED: every delay, the 0.7 "small" body size, the radius and the
+           chances are first values; no ruling gives them. -->
+      <li Class="RimMandrake.LongShade.RM_ShipfallCommonsExtension">
+        <radius>8</radius>
+        <minShade>0.5</minShade>
+        <pullChance>0.3</pullChance>
+        <stayChance>0.8</stayChance>
+        <dispersalDistance>30</dispersalDistance>
+        <dispersalMessage>The animals sheltering in the ship's shade scatter as the engine wakes.</dispersalMessage>
+        <stages>
+          <li>
+            <afterHours>2</afterHours>
+            <maxBodySize>0.7</maxBodySize>
+            <message>Small animals have crept into the shade of the ship.</message>
+          </li>
+          <li>
+            <afterHours>8</afterHours>
+            <herdOnly>true</herdOnly>
+            <message>Herds are pressing against the hull, out of the sun.</message>
+          </li>
+          <li>
+            <afterHours>16</afterHours>
+            <races>
+              <li>RM_Pirrik</li>
+            </races>
+            <walk>true</walk>
+            <message>Pirrik are circling over the ship's shadow.</message>
+          </li>
+          <li>
+            <afterHours>36</afterHours>
+            <races>
+              <li>RM_Gloomcast</li>
+            </races>
+            <walk>true</walk>
+            <message>A gloomcast has turned toward the ship.</message>
+          </li>
+        </stages>
+      </li>
     </modExtensions>
   </BiomeDef>
 
