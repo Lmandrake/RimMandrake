@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T20:22:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T20:26:20Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,15 +22,6 @@ target:   v1
 kind:     task
 summary:  GREYSEAFLOORPASS1 — the whole Grey Sea floor pass
 prose:    infrastructure/state/items/GREYSEA_FLOOR_PASS_1.md
-
-## BAROQUE_BEDAZZLE_PROGRAM_1 The bedazzle program: eleven biomes raised to the Baroque bar in ruled order (Contagion first, Black Crags last), four-movement ritual, nine-mark bar as the design gate; all other biomes grandfathered subject to the gate
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  BAROQUEBEDAZZLEPROGRAM1 — the bedazzle program: eleven biomes raised to the Baroque bar
-prose:    infrastructure/state/items/BAROQUE_BEDAZZLE_PROGRAM_1.md
 
 # IN PROGRESS
 
@@ -1068,3 +1059,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  SALVATIONRITESRENORMALIZEPASS1
 prose:    infrastructure/state/items/SALVATION_RITES_RENORMALIZE_PASS_1.md
+
+## BEDAZZLE_TOP_SHAPE_PROGRAM_1 Bedazzle top-shape program: re-score 12, finish seas, build backlog, rites over the 11
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## criteria
+summary:  BEDAZZLETOPSHAPEPROGRAM1 — get every biome into top shape
+prose:    infrastructure/state/items/BEDAZZLE_TOP_SHAPE_PROGRAM_1.md
