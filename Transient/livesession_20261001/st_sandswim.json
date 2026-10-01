@@ -1,0 +1,2109 @@
+{
+ "paint": {
+  "A": true,
+  "C": true,
+  "B": true
+ },
+ "spawn_vekkas": {
+  "A": [
+   "RM_Vekka111419"
+  ],
+  "C": [
+   "RM_Vekka111420"
+  ],
+  "msg": [
+   "Spawned 1/1 RM_Vekka in faction (none).",
+   "Spawned 1/1 RM_Vekka in faction (none)."
+  ]
+ },
+ "p1_terrain": {
+  "A_sand": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 31,
+    "z": 36
+   }
+  },
+  "C_gravel": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "Cut",
+    "BloodLoss"
+   ],
+   "pos": {
+    "x": 33,
+    "z": 211
+   }
+  }
+ },
+ "p2_damage_call": {
+  "success": true,
+  "msg": "Damaged 1 thing(s) with Blunt 1."
+ },
+ "p2_after_hit": {
+  "hediffs": [
+   "RM_SandSwimmer",
+   "Bruise"
+  ],
+  "pos": {
+   "x": 31,
+   "z": 36
+  }
+ },
+ "p2_after_1500": {
+  "hediffs": [
+   "RM_SandSwimmer",
+   "Bruise",
+   "RM_SandSubmerged"
+  ],
+  "pos": {
+   "x": 31,
+   "z": 35
+  }
+ },
+ "spawn_mechs": {
+  "A": [
+   "Mech_Militor111708"
+  ],
+  "C": [
+   "Mech_Militor111710"
+  ]
+ },
+ "manhunter_RM_Vekka111419": {
+  "success": true,
+  "msg": null
+ },
+ "manhunter_RM_Vekka111420": {
+  "success": true,
+  "msg": null
+ },
+ "p3_t0": {
+  "RM_Vekka111419": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "severity": 0.6,
+      "part": "Leg",
+      "partLabel": "front right leg"
+     },
+     {
+      "def": "RM_SandSubmerged",
+      "label": "under the sand",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     }
+    ],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.003,
+    "bleedRate": 0.0
+   },
+   "x": 43,
+   "z": 46,
+   "dead": false,
+   "downed": false
+  },
+  "RM_Vekka111420": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "severity": 24.5999985,
+      "part": "Neck",
+      "partLabel": "neck"
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "severity": 0.0530207977,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Gunshot",
+      "label": "gunshot (mini-shotgun)",
+      "severity": 10.0,
+      "part": "Body",
+      "partLabel": "body"
+     }
+    ],
+    "capacities": {
+     "Consciousness": 0.88,
+     "Moving": 0.8,
+     "Manipulation": 0.88,
+     "Talking": 0.49,
+     "Eating": 0.49,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 0.56,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.173,
+    "bleedRate": 2.60159969
+   },
+   "x": 42,
+   "z": 200,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111708": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 31,
+   "z": 35,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111710": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 33,
+   "z": 215,
+   "dead": false,
+   "downed": false
+  },
+  "vA_hediffs": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "Bruise",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 43,
+    "z": 46
+   }
+  }
+ },
+ "p3_t1": {
+  "RM_Vekka111419": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "severity": 0.400000036,
+      "part": "Leg",
+      "partLabel": "front right leg"
+     }
+    ],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.002,
+    "bleedRate": 0.0
+   },
+   "x": 56,
+   "z": 51,
+   "dead": false,
+   "downed": false
+  },
+  "RM_Vekka111420": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "severity": 24.5999985,
+      "part": "Neck",
+      "partLabel": "neck"
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "severity": 0.0634176,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Gunshot",
+      "label": "gunshot (mini-shotgun)",
+      "severity": 9.8,
+      "part": "Body",
+      "partLabel": "body"
+     }
+    ],
+    "capacities": {
+     "Consciousness": 0.88,
+     "Moving": 0.8,
+     "Manipulation": 0.88,
+     "Talking": 0.49,
+     "Eating": 0.49,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 0.56,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.171999991,
+    "bleedRate": 2.59679961
+   },
+   "x": 43,
+   "z": 194,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111708": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 30,
+   "z": 37,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111710": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 33,
+   "z": 215,
+   "dead": false,
+   "downed": false
+  },
+  "vA_hediffs": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "Bruise"
+   ],
+   "pos": {
+    "x": 56,
+    "z": 51
+   }
+  }
+ },
+ "p3_t2": {
+  "RM_Vekka111419": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "severity": 0.400000036,
+      "part": "Leg",
+      "partLabel": "front right leg"
+     }
+    ],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.002,
+    "bleedRate": 0.0
+   },
+   "x": 68,
+   "z": 51,
+   "dead": false,
+   "downed": false
+  },
+  "RM_Vekka111420": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "severity": 24.5999985,
+      "part": "Neck",
+      "partLabel": "neck"
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "severity": 0.07380481,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Gunshot",
+      "label": "gunshot (mini-shotgun)",
+      "severity": 9.8,
+      "part": "Body",
+      "partLabel": "body"
+     },
+     {
+      "def": "RM_SandSubmerged",
+      "label": "under the sand",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     }
+    ],
+    "capacities": {
+     "Consciousness": 0.88,
+     "Moving": 0.8,
+     "Manipulation": 0.88,
+     "Talking": 0.49,
+     "Eating": 0.49,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 0.56,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.171999991,
+    "bleedRate": 2.59679961
+   },
+   "x": 44,
+   "z": 193,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111708": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 27,
+   "z": 40,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111710": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 33,
+   "z": 215,
+   "dead": false,
+   "downed": false
+  },
+  "vA_hediffs": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "Bruise"
+   ],
+   "pos": {
+    "x": 68,
+    "z": 51
+   }
+  }
+ },
+ "p3_t3": {
+  "RM_Vekka111419": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "severity": 0.400000036,
+      "part": "Leg",
+      "partLabel": "front right leg"
+     }
+    ],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.002,
+    "bleedRate": 0.0
+   },
+   "x": 82,
+   "z": 64,
+   "dead": false,
+   "downed": false
+  },
+  "RM_Vekka111420": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "severity": 24.5999985,
+      "part": "Neck",
+      "partLabel": "neck"
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "severity": 0.08419202,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Gunshot",
+      "label": "gunshot (mini-shotgun)",
+      "severity": 9.8,
+      "part": "Body",
+      "partLabel": "body"
+     },
+     {
+      "def": "RM_SandSubmerged",
+      "label": "under the sand",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     }
+    ],
+    "capacities": {
+     "Consciousness": 0.88,
+     "Moving": 0.8,
+     "Manipulation": 0.88,
+     "Talking": 0.49,
+     "Eating": 0.49,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 0.56,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.171999991,
+    "bleedRate": 2.59679961
+   },
+   "x": 45,
+   "z": 192,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111708": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 29,
+   "z": 40,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111710": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 33,
+   "z": 216,
+   "dead": false,
+   "downed": false
+  },
+  "vA_hediffs": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "Bruise"
+   ],
+   "pos": {
+    "x": 82,
+    "z": 64
+   }
+  }
+ },
+ "p3_t4": {
+  "RM_Vekka111419": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "severity": 0.200000048,
+      "part": "Leg",
+      "partLabel": "front right leg"
+     },
+     {
+      "def": "RM_SandSubmerged",
+      "label": "under the sand",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     }
+    ],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.00100000028,
+    "bleedRate": 0.0
+   },
+   "x": 116,
+   "z": 68,
+   "dead": false,
+   "downed": false
+  },
+  "RM_Vekka111420": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "severity": 24.5999985,
+      "part": "Neck",
+      "partLabel": "neck"
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "severity": 0.09715201,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Gunshot",
+      "label": "gunshot (mini-shotgun)",
+      "severity": 9.6,
+      "part": "Body",
+      "partLabel": "body"
+     },
+     {
+      "def": "RM_SandSubmerged",
+      "label": "under the sand",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     }
+    ],
+    "capacities": {
+     "Consciousness": 0.88,
+     "Moving": 0.8,
+     "Manipulation": 0.88,
+     "Talking": 0.49,
+     "Eating": 0.49,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 0.56,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.170999989,
+    "bleedRate": 2.59199977
+   },
+   "x": 45,
+   "z": 192,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111708": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 32,
+   "z": 41,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111710": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 33,
+   "z": 216,
+   "dead": false,
+   "downed": false
+  },
+  "vA_hediffs": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "Bruise",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 116,
+    "z": 68
+   }
+  }
+ },
+ "p3_t5": {
+  "RM_Vekka111419": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "severity": 0.200000048,
+      "part": "Leg",
+      "partLabel": "front right leg"
+     }
+    ],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.00100000028,
+    "bleedRate": 0.0
+   },
+   "x": 146,
+   "z": 121,
+   "dead": false,
+   "downed": false
+  },
+  "RM_Vekka111420": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "severity": 24.5999985,
+      "part": "Neck",
+      "partLabel": "neck"
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "severity": 0.10752,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Gunshot",
+      "label": "gunshot (mini-shotgun)",
+      "severity": 9.6,
+      "part": "Body",
+      "partLabel": "body"
+     }
+    ],
+    "capacities": {
+     "Consciousness": 0.88,
+     "Moving": 0.8,
+     "Manipulation": 0.88,
+     "Talking": 0.49,
+     "Eating": 0.49,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 0.56,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.170999989,
+    "bleedRate": 2.59199977
+   },
+   "x": 78,
+   "z": 155,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111708": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 26,
+   "z": 43,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111710": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 40,
+   "z": 216,
+   "dead": false,
+   "downed": false
+  },
+  "vA_hediffs": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "Bruise"
+   ],
+   "pos": {
+    "x": 146,
+    "z": 121
+   }
+  }
+ },
+ "p3_t6": {
+  "RM_Vekka111419": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "severity": 5.96046448e-08,
+      "part": "Leg",
+      "partLabel": "front right leg"
+     }
+    ],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 2.98023217e-10,
+    "bleedRate": 0.0
+   },
+   "x": 146,
+   "z": 121,
+   "dead": false,
+   "downed": false
+  },
+  "RM_Vekka111420": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "severity": 24.5999985,
+      "part": "Neck",
+      "partLabel": "neck"
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "severity": 0.117873594,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Gunshot",
+      "label": "gunshot (mini-shotgun)",
+      "severity": 9.400001,
+      "part": "Body",
+      "partLabel": "body"
+     }
+    ],
+    "capacities": {
+     "Consciousness": 0.88,
+     "Moving": 0.8,
+     "Manipulation": 0.88,
+     "Talking": 0.49,
+     "Eating": 0.49,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 0.56,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.169999987,
+    "bleedRate": 2.58719969
+   },
+   "x": 82,
+   "z": 142,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111708": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 25,
+   "z": 42,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111710": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 40,
+   "z": 218,
+   "dead": false,
+   "downed": false
+  },
+  "vA_hediffs": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "Bruise"
+   ],
+   "pos": {
+    "x": 146,
+    "z": 121
+   }
+  }
+ },
+ "p3_t7": {
+  "RM_Vekka111419": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "severity": 5.96046448e-08,
+      "part": "Leg",
+      "partLabel": "front right leg"
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (human fist)",
+      "severity": 9.073507,
+      "part": "Body",
+      "partLabel": "body"
+     }
+    ],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0453675352,
+    "bleedRate": 0.0
+   },
+   "x": 146,
+   "z": 121,
+   "dead": false,
+   "downed": false
+  },
+  "RM_Vekka111420": {
+   "hp": {
+    "hediffs": [
+     {
+      "def": "RM_SandSwimmer",
+      "label": "sand swimmer",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "severity": 24.5999985,
+      "part": "Neck",
+      "partLabel": "neck"
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "severity": 0.128222391,
+      "part": null,
+      "partLabel": null
+     },
+     {
+      "def": "Gunshot",
+      "label": "gunshot (mini-shotgun)",
+      "severity": 9.400001,
+      "part": "Body",
+      "partLabel": "body"
+     },
+     {
+      "def": "RM_SandSubmerged",
+      "label": "under the sand",
+      "severity": 1.0,
+      "part": null,
+      "partLabel": null
+     }
+    ],
+    "capacities": {
+     "Consciousness": 0.88,
+     "Moving": 0.8,
+     "Manipulation": 0.88,
+     "Talking": 0.49,
+     "Eating": 0.49,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 0.56,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.169999987,
+    "bleedRate": 2.58719969
+   },
+   "x": 90,
+   "z": 129,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111708": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 28,
+   "z": 43,
+   "dead": false,
+   "downed": false
+  },
+  "Mech_Militor111710": {
+   "hp": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "x": 40,
+   "z": 223,
+   "dead": false,
+   "downed": false
+  },
+  "vA_hediffs": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "Bruise",
+    "Bruise"
+   ],
+   "pos": {
+    "x": 146,
+    "z": 121
+   }
+  }
+ },
+ "siteB": {
+  "vekka": [
+   "RM_Vekka111775"
+  ],
+  "muffalo": [
+   "Muffalo111776",
+   "Muffalo111777"
+  ],
+  "manhunter": true,
+  "msg": null
+ },
+ "p4_t0": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 193,
+    "z": 42
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_t1": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 191,
+    "z": 52
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_t2": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 190,
+    "z": 53
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_t3": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 190,
+    "z": 53
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_t4": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 190,
+    "z": 54
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_t5": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 190,
+    "z": 55
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_t6": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer"
+   ],
+   "pos": {
+    "x": 191,
+    "z": 60
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_t7": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer"
+   ],
+   "pos": {
+    "x": 178,
+    "z": 73
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_t8": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer",
+    "RM_SandSubmerged"
+   ],
+   "pos": {
+    "x": 164,
+    "z": 87
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_t9": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer"
+   ],
+   "pos": {
+    "x": 151,
+    "z": 97
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_t10": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer"
+   ],
+   "pos": {
+    "x": 142,
+    "z": 109
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_t11": {
+  "dead": [],
+  "vB": {
+   "hediffs": [
+    "RM_SandSwimmer"
+   ],
+   "pos": {
+    "x": 132,
+    "z": 118
+   }
+  },
+  "mu": {
+   "Muffalo111776": {
+    "hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "severity": 0.001125,
+      "part": null,
+      "partLabel": null
+     }
+    ],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   },
+   "Muffalo111777": {
+    "hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "severity": 0.001125,
+      "part": null,
+      "partLabel": null
+     }
+    ],
+    "capacities": {
+     "Consciousness": 1.0,
+     "Moving": 1.0,
+     "Manipulation": 1.0,
+     "Talking": 1.0,
+     "Eating": 1.0,
+     "Sight": 1.0,
+     "Hearing": 1.0,
+     "Breathing": 1.0,
+     "BloodFiltration": 1.0,
+     "BloodPumping": 1.0,
+     "Metabolism": 1.0
+    },
+    "capacityErrors": [],
+    "painTotal": 0.0,
+    "bleedRate": 0.0
+   }
+  }
+ },
+ "p4_filth": [],
+ "p4_letters": {
+  "success": true,
+  "count": 6,
+  "letters": [
+   {
+    "label": {
+     "RawText": "Ozzik the Shamed",
+     "Length": 16,
+     "StrippedLength": 16
+    },
+    "defName": "NeutralEvent",
+    "arrivalTick": 0,
+    "lookTargets": null
+   },
+   {
+    "label": {
+     "RawText": "Pitiless Doctor role deactivated",
+     "Length": 32,
+     "StrippedLength": 32
+    },
+    "defName": "NeutralEvent",
+    "arrivalTick": 1,
+    "lookTargets": null
+   },
+   {
+    "label": {
+     "RawText": "Master Stylist role deactivated",
+     "Length": 31,
+     "StrippedLength": 31
+    },
+    "defName": "NeutralEvent",
+    "arrivalTick": 1,
+    "lookTargets": null
+   },
+   {
+    "label": {
+     "RawText": "Nurse role deactivated",
+     "Length": 22,
+     "StrippedLength": 22
+    },
+    "defName": "NeutralEvent",
+    "arrivalTick": 1,
+    "lookTargets": null
+   },
+   {
+    "label": {
+     "RawText": "Inhabitants abandoned",
+     "Length": 21,
+     "StrippedLength": 21
+    },
+    "defName": "NegativeEvent",
+    "arrivalTick": 1,
+    "lookTargets": "Verse.LookTargets"
+   },
+   {
+    "label": {
+     "RawText": "Roof collapse",
+     "Length": 13,
+     "StrippedLength": 13
+    },
+    "defName": "NegativeEvent",
+    "arrivalTick": 601,
+    "lookTargets": "Verse.LookTargets"
+   }
+  ],
+  "ticksGame": 6640
+ }
+}

@@ -1,0 +1,22 @@
+1x [TerminalBiomes/RUT_SteamCatch.xml] Tried to use an uninitialized DefOf of type ThingDefOf. DefOfs are initialized right after all defs all loaded. Uninitialized DefOfs will return only nulls. (hint: don't use DefOfs as default field values in Defs, try to resolve t
+1x [-] Exception loading def from file RM_Stillsand_FilloutFlora.xml: System.ArgumentException: Exception parsing RimWorld.TreeCategory from "Standard" ---> System.ArgumentException: 'Standard' is not a valid value for RimWorld.TreeCateg
+1x [Stillsand/RM_Stillsand_Fillout.xml] XML error: <severityRange>0.01~0.05</severityRange> doesn't correspond to any field in type StartingHediff. Context: <li><def>RM_LoommaSunstruck</def><severityRange>0.01~0.05</severityRange></li>
+1x [Stillsand/RM_Stillsand_Biome.xml] Could not resolve cross-reference: No Verse.BodyPartGroupDef named FrontLegs found to give to Verse.Tool front leg
+1x [Stillsand/RM_Stillsand_Biome.xml] Could not resolve cross-reference: No Verse.ThingDef named RM_KneelOllim found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+1x [MovingDunes/Materials.xml] Config error in RM_Dunes_Sand: depositFilthChance is set but depositFilthDef is null — no filth can be laid.
+1x [Stillsand/RM_Stillsand_Fillout.xml] Config error in RM_WaterMineralDeep: RM_LiquidProperties does nothing beyond documenting viscosity: no damage spec, no corrosion, and pH is in the neutral 4..10 band. That is a valid liquid (§3: an empty extension is still a compl
+2x [Stillsand/RM_Stillsand_Fillout.xml] Config error in RM_Liikka: tries to use meat from Megascarab which uses meat from Megaspider
+1x [Stillsand/RM_Stillsand_Fillout.xml] Config error in guy762_bowcaster_ceremonial: verb 2: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+2x [Stillsand/RM_Stillsand_Fillout.xml] Config error in RM_Veessa: tries to use meat from Megascarab which uses meat from Megaspider
+1x [Stillsand/RM_Stillsand_Fillout.xml] Config error in guy762_hvyrepeater_massdriver: verb 1: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+2x [Stillsand/RM_Stillsand_Fillout.xml] Config error in RM_Loomma: animal has trainability = null
+1x [Stillsand/RM_Vaalok.xml] Config error in guy762_lgtrepeater_onderon: verb 1: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+2x [Stillsand/RM_Vaalok.xml] Config error in RM_Vaalok: animal has trainability = null
+1x [Stillsand/RM_Zuurrik.xml] Config error in RUT_BrineDeposit_Tekk: claimable item is compressible; faction will be unset after load
+2x [Stillsand/RM_Zuurrik.xml] Config error in RM_Zuurrik: tries to use meat from Megascarab which uses meat from Megaspider
+1x [Stillsand/RM_Stillsand_Fillout.xml] Config error in RM_FE_Ash_Light: burnedDef is flammable
+1x [Stillsand/RM_Stillsand_Fillout.xml] Config error in RM_FE_Ground_Sand: burnedDef is flammable
+1x [Stillsand/RM_Stillsand_Fillout.xml] Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+1x [Stillsand/RM_Vaalok.xml] Config error in RM_FE_Ground_Soil: burnedDef is flammable
+1x [Stillsand/RM_Zuurrik.xml] Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+1x [-] Collection cannot init: No textures found at path Things/Plant/RM_Lashgrass/RM_Lashgrass

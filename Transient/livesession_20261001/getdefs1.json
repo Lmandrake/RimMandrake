@@ -1,0 +1,202 @@
+{
+ "success": true,
+ "message": "15 of 16 def(s) resolved; 1 not found",
+ "requested": 16,
+ "foundCount": 15,
+ "notFound": [
+  "ThingDef/RM_KneelOllim"
+ ],
+ "malformed": [],
+ "fieldsAsked": [
+  "label"
+ ],
+ "defs": [
+  {
+   "requested": "ThingDef/RM_ChillCryoponicsVat",
+   "found": true,
+   "defName": "RM_ChillCryoponicsVat",
+   "defType": "ThingDef",
+   "label": "cryoponics vat",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "cryoponics vat"
+   }
+  },
+  {
+   "requested": "ThingDef/RM_ChillFloorBed",
+   "found": true,
+   "defName": "RM_ChillFloorBed",
+   "defType": "ThingDef",
+   "label": "Chill floor growing bed",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "Chill floor growing bed"
+   }
+  },
+  {
+   "requested": "ThingDef/RM_PillarArmItem",
+   "found": true,
+   "defName": "RM_PillarArmItem",
+   "defType": "ThingDef",
+   "label": "pillar arm",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "pillar arm"
+   }
+  },
+  {
+   "requested": "ThingDef/RM_LashItem",
+   "found": true,
+   "defName": "RM_LashItem",
+   "defType": "ThingDef",
+   "label": "lash",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "lash"
+   }
+  },
+  {
+   "requested": "HediffDef/RM_PillarArm",
+   "found": true,
+   "defName": "RM_PillarArm",
+   "defType": "HediffDef",
+   "label": "pillar arm",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "pillar arm"
+   }
+  },
+  {
+   "requested": "HediffDef/RM_Lash",
+   "found": true,
+   "defName": "RM_Lash",
+   "defType": "HediffDef",
+   "label": "lash",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "lash"
+   }
+  },
+  {
+   "requested": "RecipeDef/RM_InstallPillarArm",
+   "found": true,
+   "defName": "RM_InstallPillarArm",
+   "defType": "RecipeDef",
+   "label": "install pillar arm",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "install pillar arm"
+   }
+  },
+  {
+   "requested": "RecipeDef/RM_InstallLash",
+   "found": true,
+   "defName": "RM_InstallLash",
+   "defType": "RecipeDef",
+   "label": "install lash",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "install lash"
+   }
+  },
+  {
+   "requested": "ThingDef/RM_Vekka",
+   "found": true,
+   "defName": "RM_Vekka",
+   "defType": "ThingDef",
+   "label": "vekka",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "vekka"
+   }
+  },
+  {
+   "requested": "ThingDef/RM_Zuurrik",
+   "found": true,
+   "defName": "RM_Zuurrik",
+   "defType": "ThingDef",
+   "label": "zuurrik",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "zuurrik"
+   }
+  },
+  {
+   "requested": "HediffDef/RM_SandSubmerged",
+   "found": true,
+   "defName": "RM_SandSubmerged",
+   "defType": "HediffDef",
+   "label": "under the sand",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "under the sand"
+   }
+  },
+  {
+   "requested": "HediffDef/RM_SandSwimmer",
+   "found": true,
+   "defName": "RM_SandSwimmer",
+   "defType": "HediffDef",
+   "label": "sand swimmer",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "sand swimmer"
+   }
+  },
+  {
+   "requested": "BiomeDef/RM_Stillsand",
+   "found": true,
+   "defName": "RM_Stillsand",
+   "defType": "BiomeDef",
+   "label": "the Stillsand",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "the Stillsand"
+   }
+  },
+  {
+   "requested": "ThingDef/RM_KneelOllim",
+   "found": false,
+   "defType": "ThingDef",
+   "defName": "RM_KneelOllim"
+  },
+  {
+   "requested": "ThingDef/RM_Loomma",
+   "found": true,
+   "defName": "RM_Loomma",
+   "defType": "ThingDef",
+   "label": "loomma",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "loomma"
+   }
+  },
+  {
+   "requested": "ThingDef/RM_Soorrak",
+   "found": true,
+   "defName": "RM_Soorrak",
+   "defType": "ThingDef",
+   "label": "soorrak",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "fields": {
+    "label": "soorrak"
+   }
+  }
+ ],
+ "ticksGame": -1
+}

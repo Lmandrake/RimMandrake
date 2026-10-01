@@ -2681,3 +2681,63 @@ kind:     build
 thin:     no ## verify, no ## criteria
 summary:  1. Tracks (parent §7) — blocked on FOOTPRINTTRACKGRID1 (proposed, unbuilt when the
 prose:    infrastructure/state/items/STILLSAND_SKELETONS_REMAINDER_1.md
+
+## SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1 Sand-swim take funnel and drag mark are never laid: sand accepts only Unnatural filth, the defs use placementMask Terrain
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## verify
+summary:  1. Give both filth defs a placement mask that sand accepts (add Unnatural), or place them in a way that
+prose:    infrastructure/state/items/SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1.md
+
+## STILLSAND_LOAD_DEF_ERRORS_1 Stillsand/Contagion load-time def errors: RM_KneelOllim discarded (TreeCategory Standard), loomma severityRange, trainability, meat, FrontLegs, Lashgrass texture
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify
+summary:  STILLSANDLOADDEFERRORS1 — def errors the 2026-10-01 full-list load printed for Stillsand and Contagion
+prose:    infrastructure/state/items/STILLSAND_LOAD_DEF_ERRORS_1.md
+
+## OORRIK_PAWNGEN_NRE_1 RM_Oorrik pawn generation throws NullReferenceException (ShouldBeDead via lifestage recalculation) on the full list
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify
+summary:  OORRIKPAWNGENNRE1 — RMOorrik cannot be generated (NullReferenceException)
+prose:    infrastructure/state/items/OORRIK_PAWNGEN_NRE_1.md
+
+## SHADEGRID_BRIDGE_READER_1 Bridge tool to read the shade grid and pinned sun (sun elevation, heat kind, exposure per cell, sky glow)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  Add a read-only jawa/ tool (rimbridge-companion skill). Given a cell list, it returns the sun elevation,
+prose:    infrastructure/state/items/SHADEGRID_BRIDGE_READER_1.md
+
+## SOORRAK_FLIGHT_JOBSTART_NRE_1 RM_Soorrak throws NullReferenceException in Pawn_FlightTracker.Notify_JobStarted on every job start (59x in one session)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify
+summary:  SOORRAKFLIGHTJOBSTARTNRE1 — RMSoorrak throws on every job start (PawnFlightTracker.NotifyJobStarted)
+prose:    infrastructure/state/items/SOORRAK_FLIGHT_JOBSTART_NRE_1.md
+
+## RIMPLACE_GENSTEP_NRE_1 GenStep_RimplacePlan.Generate throws NullReferenceException during map generation (Stillsand quicktest)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     defect
+thin:     no ## spec, no ## verify
+summary:  RIMPLACEGENSTEPNRE1 — GenStepRimplacePlan throws during map generation
+prose:    infrastructure/state/items/RIMPLACE_GENSTEP_NRE_1.md

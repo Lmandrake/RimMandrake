@@ -1,0 +1,61 @@
+{
+ "success": true,
+ "count": 1,
+ "pawns": [
+  {
+   "thingId": "RM_Vekka111364",
+   "thingIdNumber": 111364,
+   "name": null,
+   "nameShort": "vekka",
+   "title": null,
+   "kindDef": "RM_Vekka",
+   "faction": null,
+   "factionName": null,
+   "gender": "Male",
+   "ageBiologicalYears": 3,
+   "ageChronologicalYears": 3,
+   "developmentalStage": "Adult",
+   "xenotype": null,
+   "ideo": null,
+   "childhood": null,
+   "adulthood": null,
+   "headType": null,
+   "bodyType": null,
+   "hair": null,
+   "beard": null,
+   "position": {
+    "x": 16,
+    "z": 238
+   },
+   "traits": [],
+   "skills": [],
+   "apparel": [],
+   "equipment": [],
+   "hediffs": [
+    {
+     "def": "RM_SandSwimmer",
+     "part": null,
+     "severity": 1.0
+    },
+    {
+     "def": "RM_SandSubmerged",
+     "part": null,
+     "severity": 1.0
+    }
+   ],
+   "needs": [
+    {
+     "need": "Food",
+     "level": 1.31740618,
+     "pct": 0.6587031
+    },
+    {
+     "need": "Rest",
+     "level": 0.9400568,
+     "pct": 0.9400568
+    }
+   ]
+  }
+ ],
+ "ticksGame": 601
+}
