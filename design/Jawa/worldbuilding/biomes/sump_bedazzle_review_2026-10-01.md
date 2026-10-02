@@ -1,4 +1,4 @@
-# The Sump: bedazzle review (grandfathered sitting, turns 1 and 2 ruled; the tar rites' turn 3 open)
+# The Sump: bedazzle review (grandfathered sitting, turns 1 and 2 ruled; the tar rites ruled)
 
 Item: `SUMP_BEDAZZLE_SITTING_1` (BENCH). Program: `BEDAZZLE_TOP_SHAPE_PROGRAM_1`, track (a), worst-first, sitting 4.
 
@@ -339,7 +339,7 @@ its tailoring recipe (`recipeMaker`).
   plus the Cherry Picker cut. No saved Melee Animation settings file exists in the Config folder
   today, so it runs on defaults.
 
-## 6. The tar offerings: two rites (turn 2 ruled; turn 3 open)
+## 6. The tar offerings: two rites (ruled)
 
 The owner's first rite (turn 1, typed) asked for one object of value plus an effigy of something
 hated. At turn 2 he split it, typed:
@@ -355,27 +355,23 @@ moat, a tar vault. Both keep the laws: **cohesion, never a material reward**; **
 through events, world state and subtle odds**, told by the Narrator; a risky world event is welcome.
 Nothing living or dead is ever thrown in.
 
-### Rite A, the Sinking (one thing of value; god on the turn-3 card)
+### Rite A, the Sinking (one thing of value; god Ishko)
 
 - **Found:** at a Junker barrel yard, a sunk ring of tar where the stations throw a thing of worth
   before a hard season; a tally board lists what went down, and no owner is written beside any of it.
 - **Asks:** one object of value, thrown into the tar by the participants and gone for good. Its
   value sets the rite's quality with attendance and roles. A market-value floor is a Mod Settings
   number.
-- **Effect 1, Imperial Heat falls.** Imperial Heat is the GM layer's measure of the Empire's
-  attention, kept outside the save (`design/Jawa/build_plan.md` §2, M4); today it runs only in
-  shadow mode in `src/RimMandrake/Utils/gm_blackboard_shadow.py` (item `GM_BLACKBOARD_SHADOW_M4_1`),
-  logging what it would fire. The rite emits a history event the blackboard reads and lowers Heat by
-  a step scaled by the offering's value (placeholder bands there: low 10, high 40). ⚠ **This breaks
-  the standing K2 rule** that Heat is *"never scrubbed by success"* (`kyber_trade_plot_spec.md`;
-  `cathedral_surveyor_misdirection_quest.md`). **His words override it for this rite.** The rule
-  stays true everywhere else, and it is why size and cadence matter (card Q3).
-- **Effect 2, raid frequency falls.** For a while after the rite, raids come less often on this map.
-  Mechanism UNMEASURED: vanilla raid cadence lives in the storyteller's threat comps, and the
-  campaign also runs raid-pacing mods (`required_mods.md` "Imperial Heat / 3-act escalation"
-  governors). A map condition that a Harmony postfix on the storyteller's raid roll reads is the
-  likely shape; FOUNDRY reads the storyteller and those mods first.
-- **Effect 3, ownership erased (RimProperty, measured).** RimProperty (`mandrake.rm.property`,
+- **God: Ishko** (god of hiding; decision taken by question card, 2026-10-02).
+- **Effect 1, the next Imperial probe or raid is pushed 5x further away.** His words, typed: *"We already
+  ruled this I thought. It doesn't actually reduce heat, it just pushes the next Imperial probe or raid
+  away x5"*. Imperial Heat is untouched: the K2 rule that Heat is *"never scrubbed by success"*
+  (`kyber_trade_plot_spec.md`; `cathedral_surveyor_misdirection_quest.md`) stands with no override. The
+  mechanism is the hold-off Rite B's Empire effigy uses (`RUT_ImperialHoldOff`, this map's
+  orbital-detection time multiplied by 5), built once and shared by the two build items. The real
+  constants are placeholders in `src/RimMandrake/Utils/gm_blackboard_shadow.py`; the vanilla-side Empire
+  raid gate is UNMEASURED and rides M4.
+- **Effect 2, ownership erased (RimProperty, measured).** RimProperty (`mandrake.rm.property`,
   `src/RimMandrake/RimProperty/`) is a decaying-claim engine. Every Thing can carry recorded claims,
   each a (claimant, strength 0–1, basis, timestamp). The recorded bases are `Stolen`, `Purchased`,
   `ClaimFeePaid`, `Gifted`, `Inherited`, `Looted` and `BattleLootOrigin` (the pre-loot owner's
@@ -402,7 +398,7 @@ Nothing living or dead is ever thrown in.
     chosen item (§9). Whether the faction's suspicion of the thief is erased too is not ruled; the
     build leaves `FactionRecord` alone.
 - **Readable signs:** the offering sinking with a slow bubble; a letter naming the cleansed item and
-  whose claim was wiped; the Heat change voiced by the Narrator; the raid lull shown as a map
+  whose claim was wiped; the pushed-back probe or raid voiced by the Narrator, shown as a map
   condition with its days left.
 - **Collision check:** the Unburdening (Ozzik) destroys wealth to vent pride, with no effect on the
   world's attention; the Cold Ledger (Mob'Unloo) seals a counter-gift to pay one dead man's debt.
@@ -421,7 +417,7 @@ Nothing living or dead is ever thrown in.
   Empire"). ⛔ Never a god (no god is evil or an enemy; the effigy cannot be made with one).
 - **The Empire effigy (RULED, turn 2):** his words, *"(3) but it effectively holds off the Empire for
   x5 the normal time on this map"*. Imperial Heat is untouched (so this rite never launders Heat:
-  Rite A does that). Instead the Empire's pressure on **this map** is held off for five times its
+  Rite A does not either: it only pushes the next Empire probe or raid away). Instead the Empire's pressure on **this map** is held off for five times its
   normal interval. The "normal time" is the GM layer's **orbital-detection timer**, which drains
   toward the Empire finding the colony (placeholder start 60,000 ticks, about a day, in
   `gm_blackboard_shadow.py`); the curse multiplies the time left on this map's timer by 5 and holds
@@ -467,7 +463,7 @@ Recorded on the ledger at `372642ebb` and `c71911f79` (OWNER notes on this item)
 | 1. Free tier | *"Move it all into the free mod that is now part of the Baroque Biomes mod"* (typed). | Rows 0, 0b, 0c |
 | 2. Tar beast | **The full station-eater.** Decision taken by question card. | row 1 |
 | 3. New ideas | **The Blackline capstan, revised into a turret on the lasso's pull** (typed, §5), **and the kethrel**. Pump rhythm and the buried dragline not taken. Lassos removed from the game. | rows 2, 3, 6 |
-| 4. Rites | **None of the three offered.** His own rite, typed (§6), split into two at turn 2. | open: turn 3 |
+| 4. Rites | **None of the three offered.** His own rite, typed (§6), split into two at turn 2. | ruled (turn 3) |
 
 FOUNDRY items, each `--caused-by SUMP_BEDAZZLE_SITTING_1`:
 
@@ -485,45 +481,18 @@ FOUNDRY items, each `--caused-by SUMP_BEDAZZLE_SITTING_1`:
 Rows 4 (seep flames and the discovery pilot) and 5 (sound) are not filed in this pass: row 4 is
 ruled under `SUMP_GASLIGHT_1` pieces 5–6 and rides the tier move; row 5 stays the ordered backlog.
 
-## 8. Turn 2 rulings and the draft turn-3 card
+## 8. Turn 2 rulings
 
 Turn 2, ledger `6daef10b1` (OWNER notes on this item), all typed:
 
 | Card item | Ruling |
 |---|---|
-| Which god | Two rites: Rite A (one thing of value: Heat down, ownership erased through RimProperty, fewer raids); Rite B to Mob'Unloo (a good thing plus a hated effigy, consequences on someone else, paid for by you). §6. |
+| Which god | Two rites: Rite A (one thing of value: ownership erased through RimProperty, the next Imperial probe or raid pushed away; see §9); Rite B to Mob'Unloo (a good thing plus a hated effigy, consequences on someone else, paid for by you). §6. |
 | Empire heat | *"(3) but it effectively holds off the Empire for x5 the normal time on this map"*: the lull, five times the normal hold-off on this map, Heat untouched (now Rite B's Empire effigy). |
 | Faction tar | All of the next group arrive tarred. |
 | More offers | None of round 1 (*"just not hitting... make it something a player on THIS map would care about"*); round 2 in §6. |
 
-### Draft turn-3 card
-
-For BENCH to put to the owner. Two questions (Q2 "Erase claims" and Q4 "More offers" were answered on
-2026-10-02, §9). Each explains its subject in full.
-
-**Q1. Header: `Sinking god`.** *Rite A, the Sinking: the colony throws one thing of value into the
-tar, and in return the Empire's attention on you falls, raids come less often for a while, and the
-old owners' claims on one thing you kept are wiped clean. Mob'Unloo already has Rite B. Which god
-does the Sinking belong to?*
-
-| Option | What it buys | What it costs |
-|---|---|---|
-| **Ishko** *(recommended: he is the god of hiding, and every effect of this rite hides the colony: from the Empire, from raiders, from its own thefts)* | A clean fit: the price paid to vanish a little. His rites so far are about stillness; this gives him a hiding rite with teeth. | He already has two found rites (the Dark Vigil, the Charged Reed). |
-| **Sh'kaar** | The hungry sun god's warding kind: the colony pays to keep the sky's eye off it. It ties the rite to the Empire "from orbit". | Sh'kaar already has the Holy Flame here, the Snuffing, the Shade Tithe and the Anvil Gift; he grows crowded. |
-| **Rekko** | The salvage god: the tar is the planet's great salvage store, and wiping a salvaged thing's old owner makes it truly yours. | Fits only the ownership effect, not the Heat or raid effects. |
-
-**Q3. Header: `Heat size`.** *A standing rule elsewhere says the Empire's attention (Imperial Heat)
-is never lowered by success, so the player cannot wash it clean. Your Sinking overrides that for
-this rite. Heat today is a number the game-master layer keeps outside the save, in a watch-only test
-mode. How hard should one Sinking push it down?*
-
-| Option | What it buys | What it costs |
-|---|---|---|
-| **By value, once a season** *(recommended: your rite stays real without becoming a way to wash Heat clean every week)* | Heat falls by a step scaled to what was thrown in, at most once a season. | A slow easing rather than a reprieve. |
-| **By value, any time** | Each Sinking lowers Heat as much as the offering is worth, as often as the colony can pay. | A rich colony can keep Heat near zero; the Empire threat thins. |
-| **A big fixed drop, once a year** | One dramatic reset a year, a real event in the campaign. | Rare; most seasons it does nothing to Heat. |
-
-## 9. Turn 2 ruled (2026-10-02) and ticket-out
+## 9. Turns 2 and 3 ruled (2026-10-02) and ticket-out
 
 OWNER and BENCH notes on `SUMP_BEDAZZLE_SITTING_1`, 2026-10-02. The offerings card was built from
 `Transient/bedazzle_gpt_enrich_2026-10-01/sump_tar_offerings_redo_2026-10-02.md` (the redo), not from
@@ -531,7 +500,7 @@ OWNER and BENCH notes on `SUMP_BEDAZZLE_SITTING_1`, 2026-10-02. The offerings ca
 
 | Subject | Ruling |
 |---|---|
-| Rite A, the Sinking | One thing of value into the tar: Imperial Heat falls, other parties' ownership claims are erased through RimProperty, raids come less often (typed). God unassigned (turn-3 Q1); Heat size open (turn-3 Q3). |
+| Rite A, the Sinking | One thing of value into the tar: other parties' ownership claims are erased through RimProperty (typed). **God: Ishko**, decision taken by question card. **Empire effect (turn 3, 06:24 PDT), typed:** *"We already ruled this I thought. It doesn't actually reduce heat, it just pushes the next Imperial probe or raid away x5"*: Imperial Heat is not lowered; the next Imperial probe or raid is pushed 5x further away, the same hold-off as Rite B's Empire effigy. |
 | Rite A offerings | By card: **the beast sleeps a season** (pitch thrown in: bulges ignore building, digging and pumping for a season; explosions still wake it) and **the ancient traps fizzle** (a dig find thrown in: the next three era traps the shafts roll click and go out harmlessly). Typed: *"I like Vault forgets, but it should be true about almost anything you own"*: the ownership wipe covers almost everything the colony owns, not only the tar vault. |
 | Rite B, Mob'Unloo's Price | A good thing plus a hated effigy, consequences on someone else, paid by you (typed). **Empire effigy:** Heat untouched, the Empire held off this map for 5× the normal time (typed). **Faction effigy:** all of the next group of that faction arrive tarred (card). None of the redo's three further Rite B offerings taken. |
 | Solvent wake | Typed: *"Oh! Throwing solvent into the pit should INSTANTLY wake the beast in Manhunter"*. By card: a deliberate player **weapon**, a scorched-earth last resort, not a rite and not a passive hazard; it serves **both** Sh'kaar and Zizzik at once (a rare shared offering). |
