@@ -1,0 +1,402 @@
+{
+  "mod": "Warcasket",
+  "mode": "mock",
+  "started_utc": "2026-10-01T21:00:54Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
+  "bars": [],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "46 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=1000 map=200x200",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 1000 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "2 active, sha256 baff5c06a2d3a410 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "components": [
+    {
+      "chain": "defs_and_load",
+      "name": "defs_resolve",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_and_load",
+      "name": "absent_def_is_refused",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_and_load",
+      "name": "comps_wired",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_and_load",
+      "name": "no_warcasket_log_errors",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suit_stats",
+      "name": "site_ready_suit",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suit_stats",
+      "name": "thermal_cover",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suit_stats",
+      "name": "vacuum_cover",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suit_stats",
+      "name": "toxin_cover",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suit_stats",
+      "name": "slow_and_bulky",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suit_stats",
+      "name": "terrain_protection_stat",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "suit_stats",
+      "name": "junker_variant_is_still_a_suit",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "compound_failure",
+      "name": "site_ready_compound",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "compound_failure",
+      "name": "exposure_on",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "compound_failure",
+      "name": "compound_failure_fires",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "compound_failure",
+      "name": "single_hazard_never_fails",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "compound_failure",
+      "name": "compound_failure_off",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "compound_failure",
+      "name": "master_off",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "terrain_immersion",
+      "name": "site_ready_immersion",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "terrain_immersion",
+      "name": "unprotected_on_deep_water_accrues",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "terrain_immersion",
+      "name": "protected_wearer_barely_accrues",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "terrain_immersion",
+      "name": "ford_is_safe",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "terrain_immersion",
+      "name": "terrain_immersion_off",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "terrain_immersion",
+      "name": "master_off_terrain",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sarcophagus",
+      "name": "site_ready_sarcophagus",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sarcophagus",
+      "name": "crack_open_yields_salvage",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sarcophagus",
+      "name": "plain_suit_corpse_yields_nothing",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sarcophagus",
+      "name": "sarcophagi_setting_flips",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "core_and_cask_bay",
+      "name": "site_ready_core",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "core_and_cask_bay",
+      "name": "inspect_reports_shielding",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "core_and_cask_bay",
+      "name": "cask_bay_storage_filter",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "core_and_cask_bay",
+      "name": "loose_core_doses_nearby",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "core_and_cask_bay",
+      "name": "cask_bay_silences_core",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "core_and_cask_bay",
+      "name": "warcasket_wearer_resists_core_dose",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "core_and_cask_bay",
+      "name": "core_dose_off",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "core_and_cask_bay",
+      "name": "cask_bay_shielding_off",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "core_and_cask_bay",
+      "name": "master_off_core",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 0
+  },
+  "all_green": false,
+  "timing": {
+    "n": 123,
+    "total_ms": 1.104,
+    "mean_ms": 0.009,
+    "p50_ms": 0.0005,
+    "p95_ms": 0.0112,
+    "by_tool": {
+      "rimworld/get_game_info": {
+        "n": 4,
+        "mean_ms": 0.0051,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 2,
+        "mean_ms": 0.009,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 0.0014,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 1,
+        "mean_ms": 0.0031,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 5,
+        "mean_ms": 0.0033,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 5,
+        "mean_ms": 0.1952,
+        "errors": 0
+      },
+      "jawa/set_fog": {
+        "n": 5,
+        "mean_ms": 0.0009,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 5,
+        "mean_ms": 0.0008,
+        "errors": 0
+      },
+      "jawa/log_autoopen_suppress": {
+        "n": 5,
+        "mean_ms": 0.0005,
+        "errors": 0
+      },
+      "jawa/spawn_pawn": {
+        "n": 15,
+        "mean_ms": 0.001,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 30,
+        "mean_ms": 0.0004,
+        "errors": 0
+      },
+      "jawa/set_draft": {
+        "n": 15,
+        "mean_ms": 0.0003,
+        "errors": 0
+      },
+      "jawa/pawn_stats": {
+        "n": 1,
+        "mean_ms": 0.0027,
+        "errors": 1
+      },
+      "jawa/make_empty_room": {
+        "n": 1,
+        "mean_ms": 0.0028,
+        "errors": 1
+      },
+      "jawa/mod_settings_field": {
+        "n": 24,
+        "mean_ms": 0.0005,
+        "errors": 0
+      },
+      "jawa/pawn_gear": {
+        "n": 3,
+        "mean_ms": 0.0011,
+        "errors": 3
+      },
+      "jawa/spawn_batch": {
+        "n": 1,
+        "mean_ms": 0.007,
+        "errors": 0
+      }
+    }
+  }
+}
