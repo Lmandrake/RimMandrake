@@ -223,9 +223,21 @@ Ohm carries five found rites (the Engine Hour, the Last Track, the Deserter's We
 Answering, B8, ruled; the Stranger's Overhaul, B12): at the cap. Rekko carries four (the Unfinished Laid
 Down, the Inherited Wreck, the Mud Claim, B7, pitched; the Mending Weld, B12): one under the cap.
 
-**Count (by hand from the tables above, not an instrument): 107 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2. **98 are the Salvation's** (B1 to B5, B7 to B12;
-the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 96 distinct). Sh'kaar
+### B13. Found rites ruled at the Rot sitting (RULED)
+
+Decision taken by question card 2026-10-02 10:20 PDT: *the Unjoining, for the god of flight*. Ta'Baa is *"the
+Unrooted — flight, the refusal to root"* (`divine_satiation_engine.md` ⑥).
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Unjoining | Ta'Baa | feeding | a colonist carrying a Rot symbiont is held by the participants through a hard purge until the symbiont dies (benefit gone for good); counts if the clan launches within days, sours if it stays the season; the first one teaches the Unjoining Draught | The Rot, a Wildsteam pilgrim path: an overturned empty brewing vessel, a rag stiff with dried Sheen, footprints that stop shining halfway | RULED (owner, 2026-10-02, question card); build `ROT_UNJOINING_RITE_1` | `design/Jawa/worldbuilding/biomes/rot_bedazzle_review_2026-10-02.md` §6 R2, §8 |
+
+Ta'Baa carries four found rites (the Returned, B7, ruled-kept; the Shadow Walk and the Vindication Walk, B7,
+pitched; the Unjoining, B13): one under the cap.
+
+**Count (by hand from the tables above, not an instrument): 108 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2 + B13 1. **99 are the Salvation's** (B1 to B5, B7 to B13;
+the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 97 distinct). Sh'kaar
 now carries four found rites (the Snuffing, the Anvil Gift, the Shade Tithe, the Felled Noon): one under the cap.
 
 **Per-god cap: five found rites** (decision taken by question card 2026-10-02 09:23 PDT, raising it from
