@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T07:12:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T07:22:59Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2082,16 +2082,6 @@ thin:     no ## verify
 summary:  1. Ship becomes a refuge (Shipfall Commons). After landing, the shade grid sees the gravship's
 prose:    infrastructure/state/items/LONGSHADE_GPT_ENRICHMENT_1.md
 
-## STILLSAND_PRECIOUS_CAVES_1 Stillsand rare rock + precious cave: yardang genstep with a shade-face cave, the cave as a place (brine seep, mummified register), weighted precious table that finally spawns the guzzka; no sinkholes
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## verify
-summary:  1. The rock genstep (RM tier). After terrain: if the map has natural rock, take the largest
-prose:    infrastructure/state/items/STILLSAND_PRECIOUS_CAVES_1.md
-
 ## STILLSAND_DUNE_GALE_1 Stillsand dune gale: the biome's own storm on the dunes engine (dunes march, sun off, abrasion, carry-and-return), gale static, one emergence incl. the mummified caravan, dust devils, tracks wiped
 state:    proposed
 row:      unassigned
@@ -2591,3 +2581,33 @@ kind:     task
 thin:     no ## spec, no ## verify
 summary:  STILLSANDEVENTCREATURESLIVE1 — live-prove the krayt attack and the muurrok
 prose:    infrastructure/state/items/STILLSAND_EVENT_CREATURES_LIVE_1.md
+
+## STILLSAND_PRECIOUS_CAVES_LIVE_1 Precious caves: ten live Stillsand quicktest maps
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Deploy Stillsand (it now depends on mandrake.rm.environmentalhazards).
+prose:    infrastructure/state/items/STILLSAND_PRECIOUS_CAVES_LIVE_1.md
+
+## STILLSAND_CAVE_AS_PLACE_1 Stillsand cave: preservation, drip, biosilica walls, tribal mark
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. The mummified preservation register: nothing rots inside the cave, and desiccated remains stay.
+prose:    infrastructure/state/items/STILLSAND_CAVE_AS_PLACE_1.md
+
+## STILLSAND_CAVE_TIER_ROWS_1 Precious cave rows: krayt den, sarlacc seep, debt cave
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  1. Krayt den (RSW): a greater krayt, or its old den with skull and pearl (RSWKraytDragonSkull,
+prose:    infrastructure/state/items/STILLSAND_CAVE_TIER_ROWS_1.md
