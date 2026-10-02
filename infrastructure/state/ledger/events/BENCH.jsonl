@@ -830,3 +830,4 @@
 {"seat":"BENCH","event":"file","id":"GIT_WORKFLOW_MIGRATION_1","title":"Git workflow migration: guard D:\\ writes, per-seat ext4 clones, generated views out of git, ledger union+dedupe, worktree drain to archive tags, helper pool (2/seat, submit/ branches) — phases 0-8 of the plan; owner chose windows-land-helpers and hub-page queues by card 2026-10-02","kind":"task","target":"v1","needs":"offline","spec":"design/RimMandrake/git_workflow_plan_2026-10-01.md","for":"BENCH","ts":"2026-10-02T07:16:28Z"}
 {"seat":"BENCH","event":"claim","id":"GIT_WORKFLOW_MIGRATION_1","ts":"2026-10-02T07:22:24Z"}
 {"seat":"BENCH","event":"start","id":"GIT_WORKFLOW_MIGRATION_1","ts":"2026-10-02T07:22:25Z"}
+{"seat":"BENCH","event":"note","id":"GIT_WORKFLOW_MIGRATION_1","text":"All 9 phases implemented overnight 2026-10-02 and pushed; D: frozen as mirror; live multi-day bars pending (handoff BENCH_REBOOT_HANDOFF_202610020812)","ts":"2026-10-02T08:13:24Z","tsn":1790928804457242410}
