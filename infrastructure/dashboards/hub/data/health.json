@@ -1,26 +1,26 @@
 {
- "generatedAt": "2026-09-30T02:19:00Z",
+ "generatedAt": "2026-09-30T02:38:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 962784,
-  "sha256_12": "214262e4ab05"
+  "bytes": 964969,
+  "sha256_12": "9a9130177e67"
  },
- "head": "186e472d7",
+ "head": "25292a71b",
  "counts": {
   "red": 22,
   "blue": 1625,
-  "green": 1833,
-  "grey": 755,
+  "green": 1831,
+  "grey": 766,
   "unmeasured": 0,
-  "total": 4235
+  "total": 4244
  },
  "loc": {
   "red": 4510,
-  "blue": 516521,
-  "green": 400106,
-  "grey": 293128,
+  "blue": 516544,
+  "green": 399943,
+  "grey": 294701,
   "unmeasured": 0,
-  "total": 1214265
+  "total": 1215698
  },
  "reviewEntries": 3911,
  "recidivists": [
@@ -77,5 +77,5 @@
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 4235 files (1833 clean, 755 dirty, 0 unmeasured)."
+ "headline": "OK: measured 4244 files (1831 clean, 766 dirty, 0 unmeasured)."
 }
