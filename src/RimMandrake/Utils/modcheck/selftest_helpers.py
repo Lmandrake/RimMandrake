@@ -200,6 +200,23 @@ def main():
     r = H.restore_needs(w, ["D1"])
     check("restore_needs only touches needs the pawn has", r.verified and not any(p.get("need") == "Food" for t, p in w.calls if t == "jawa/pawn_need"), str(r.residue))
 
+    # --- the anchor goes where the colonists are not (measured: a detonation at the centre killed two)
+    w = FakeWorld(pawns=[pawn_row("C1", x=125, z=125), pawn_row("C2", x=128, z=122), pawn_row("C3", x=122, z=128)])
+    ax, az, d = H.safe_anchor(w)
+    check("safe_anchor is far from every colonist", d >= 40 and max(abs(ax - 125), abs(az - 125)) >= 40, str((ax, az, d)))
+    # --- a colonist a previous chain lost is revived by the next chain's prepare (and noted), not left to poison it
+    w = messy()
+    w.kill("Col3")
+    with H.SettingsTransaction(w) as tx:
+        rep = H.prepare_bland_map(w, tx, resurrect=True)
+    check("resurrect=True revives a lost colonist, records a note, and the map is bland",
+          rep.bland and not w.pawns["Col3"]["dead"] and rep.notes, str(rep.problems))
+    w = messy()
+    w.kill("Col3")
+    with H.SettingsTransaction(w) as tx:
+        rep = H.prepare_bland_map(w, tx)
+    check("control: without resurrect the same loss makes the map not bland", (not rep.bland) and w.pawns["Col3"]["dead"], str(rep.problems))
+
     n_ok = sum(1 for _, c in _results if c)
     print("\n%d/%d passed" % (n_ok, len(_results)))
     return 0 if n_ok == len(_results) else 1
