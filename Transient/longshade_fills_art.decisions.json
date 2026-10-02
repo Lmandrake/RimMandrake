@@ -1,0 +1,47 @@
+{
+ "posture": "whitelist",
+ "criterion": "Pre-filled keep for all seven: this ranks nothing. The only judgement I applied was whether the art is alien enough for this campaign. It cannot say whether the creature is WORTH having in the Long Shade, which is yours.",
+ "reviewStatus": {
+  "state": "prefill",
+  "by": null,
+  "at": null,
+  "evidence": "agent pre-fill, no human has ruled"
+ },
+ "decisions": {
+  "maidenbloom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "shadespire": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "pavecrust": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "tazzok": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "skarrok": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "vrekka": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "sippra": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  }
+ }
+}
