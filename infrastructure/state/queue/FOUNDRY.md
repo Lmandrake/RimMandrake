@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-02T02:33:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-02T02:34:58Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -3688,5 +3688,45 @@ needs:    offline
 target:   v1
 kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NINEFOLD_FAVOUR_ODDS_BUILD_1.md yet — write one when you have something to say)
+summary:  NINEFOLDFAVOURODDSBUILD1: Nine Faults, the Left Behind, and god favour as odds
 prose:    infrastructure/state/items/NINEFOLD_FAVOUR_ODDS_BUILD_1.md
+
+## HOIST_FIXED_SITE_FRAMES_1 Fixed hoist head-frames placed only by site gensteps, plus the sealed holder-feature target; Foundry tower first (animation optional, last)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  Authority: design/RimMandrake/shipcargohoistdesign2026-10-01.md §2a, §2c and §5 row 2. RMHoistFrame: the same…
+prose:    infrastructure/state/items/HOIST_FIXED_SITE_FRAMES_1.md
+
+## HOIST_SHIP_PART_BUILD_1 Keel hoist as a gravship part: items, awake colonists, downed beasts captured on arrival; tether lock; manifest; Lantern Deeps test (animation optional, last)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  Authority: design/RimMandrake/shipcargohoistdesign2026-10-01.md §2 and §5 row 1 (RULED 2026-10-01). Build the…
+prose:    infrastructure/state/items/HOIST_SHIP_PART_BUILD_1.md
+
+## HUTT_SLAVE_PIT_TEST_SITE_1 Hutt slave pit at a small stand-alone test site: sell slaves, prisoners and downed beasts for silver; sealed oubliette liftable only after conquest; needs GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1 (animation optional, last)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  Authority: design/RimMandrake/shipcargohoistdesign2026-10-01.md §3a and §5 row 3 (RULED). A small stand-alone…
+prose:    infrastructure/state/items/HUTT_SLAVE_PIT_TEST_SITE_1.md
+
+## HUTT_LOTTERY_CHUTE_BUILD_1 Hutt chance chute: stake goods, slaves or beasts; house cut; value-matched crate returns; needs the slave-pit test site (animation optional, last)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## verify
+summary:  Authority: design/RimMandrake/shipcargohoistdesign2026-10-01.md §4 and §5 row 4 (RULED). A fixed chute at the…
+prose:    infrastructure/state/items/HUTT_LOTTERY_CHUTE_BUILD_1.md
