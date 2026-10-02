@@ -49,6 +49,11 @@ def main():
     os.environ["LIVE_QUEUE_RESULTS"] = res
     old_argv = sys.argv
     sys.argv = [sys.argv[0]]
+    sv = os.path.join(tmp, "Saves")
+    os.makedirs(sv)
+    with open(os.path.join(sv, "keeper.rws"), "wb") as f:
+        f.write(b"k" * 5000)
+    os.environ["LQ_SAVES_DIR"], os.environ["LQ_SAVE_WAIT"] = sv, "0"
     try:
         # ---- every job passes its dry run
         for j in jobs.JOBS:
@@ -123,6 +128,65 @@ def main():
             w._t_rimworld_take_screenshot = shot
         rec = run_body("j5_motion_frames", frozen_frames)
         check("J5 FAILs when every frame is byte-identical", "frames are not all byte-identical" in rec["failed"], rec["failed"])
+
+        # ---- saved_base: naming, save proof, load-reset, cleanup fallback
+        import saved_base as BW
+        for n_ in os.listdir(sv):
+            if n_ != 'keeper.rws':
+                os.remove(os.path.join(sv, n_))      # J6's dry run wrote the base; start the unit tests clean
+        from rimdrive.fake import FakeWorld, pawn_row
+        def clean_world():
+            w = FakeWorld(pawns=[pawn_row("Col1"), pawn_row("Col2", x=103), pawn_row("Col3", x=106)])
+            w.settled, w.saves_dir = {4375}, sv
+            w.dialogs = ["Dialog_NamePlayerFactionAndSettlement"]
+            return w
+        w = clean_world()
+        check("naming dialog is open before naming", bool(BW._window_types(w)[0]))
+        check("induce_and_finish_naming names the colony and leaves no dialog", BW.induce_and_finish_naming(w) == [] and w.named)
+        w2 = clean_world()
+        w2._t_jawa_name_colony = lambda **k: {"success": False, "message": "refused"}
+        w2._t_jawa_window_list_close = lambda **k: {"success": True, "windows": [{"typeName": "Dialog_NamePlayerSettlement"}]}
+        check("naming FAILs when the tool refuses and a dialog stays", len(BW.induce_and_finish_naming(w2)) == 2)
+        before = BW.snapshot_saves(sv)
+        r = BW.save_base(w, sv, wait=0)
+        check("save_base verifies a NEW file and no changed keeper", r["verified"] and r["sizeBytes"] > 1000, r)
+        check("keeper untouched", BW.snapshot_saves(sv)["keeper.rws"] == before["keeper.rws"])
+        wl = clean_world()
+        wl.modes.add("save_wrong_slot")
+        wl.current_save = "keeper"
+        wl.saves_dir = sv
+        wl._t_rimworld_save_game_orig = wl._t_rimworld_save_game
+        r2 = BW.save_base(wl, sv, name="OTHER", wait=0)
+        check("save_base FAILs when save_game writes the wrong slot (no new file)", not r2["verified"], r2)
+        r3 = BW.save_base(w, sv, wait=0)
+        check("save_base refuses to overwrite an existing base", not r3["verified"])
+        # dirty world: hostile + wildlife + fire + dead colonist + 21 colonists + queued incident
+        def dirty(w):
+            w.pawns["Raider1"] = pawn_row("Raider1", kind="Pirate", faction="TribeRough", is_player=False, hostile=True)
+            w.pawns["Wolf1"] = pawn_row("Wolf1", kind="Wolf", faction=None, is_player=False, intelligence="Animal")
+            w.pawns["Col1"]["dead"], w.pawns["Col1"]["spawned"] = True, False
+            for i in range(18):
+                w.pawns["Extra%d" % i] = pawn_row("Extra%d" % i, x=120 + i)
+            w.add_fire(90, 90)
+            w.queue.append({"defName": "RaidEnemy", "fireTick": 999})
+        import helpers as H
+        dw = clean_world()
+        BW.induce_and_finish_naming(dw)
+        BW.save_base(dw, sv, name="SELFTEST_BASE", wait=0)
+        dirty(dw)
+        check("dirty world FAILs assert_bland before reset", len(H.assert_bland(dw)) >= 3, H.assert_bland(dw))
+        rr = BW.world_reset(dw, save_name="SELFTEST_BASE", saves_dir=sv)
+        check("world_reset by LOAD passes assert_bland", rr["method"] == "load" and rr["problems"] == [], rr)
+        dw2 = clean_world()
+        dirty(dw2)
+        dw2.dialogs = []
+        rf = BW.world_reset(dw2, save_name="NO_SUCH_SAVE", saves_dir=sv, keep_colonists=3)
+        check("fallback cleanup: removes hostile/wildlife/fire/queue, revives, but 20 colonists remain -> still FAILs honestly",
+              rf["method"] == "cleanup" and any("colonists, expected" in p for p in rf["problems"])
+              and not any("hostiles" in p or "wildlife" in p or "fires" in p or "dead colonists" in p for p in rf["problems"])
+              and dw2.queue == [], rf)
+        rn = BW.world_reset(dw2, save_name="NO_SUCH_SAVE", saves_dir=sv, fallback=False)
+        check("no save and no fallback is a failure", rn["problems"])
 
         # ---- run_next: order, skip-past-UNMEASURED, done
         open(res, "w").close()
