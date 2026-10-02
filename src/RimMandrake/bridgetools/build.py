@@ -64,14 +64,20 @@ DLL_NAME = "JawaBench.BridgeTools.dll"
 
 DOTNET = os.path.join(os.path.expanduser("~"), ".dotnet", "dotnet.exe")
 
-# This script is Windows-native throughout: DOTNET, GAME_ROOT and DEPLOY_DIR are
-# all `C:\...` paths, and dotnet.exe cannot take a `/mnt/d/...` project path even
-# though WSL can launch the .exe itself. Under WSL, `~` is /home/<user>, so the
-# first symptom is a misleading "dotnet not found" pointing at a Linux path.
-# Fail early and say the actual fix instead.
+# Two routes. Under Windows python (repo on D:) everything is a `C:\...` path and dotnet.exe
+# builds in place. Under WSL python3 from an ext4 clone (git_workflow_plan_2026-10-01.md §2.3),
+# dotnet.exe cannot build a `\\wsl.localhost` path, so the project is staged on D: by
+# src/RimMandrake/Utils/winbuild.py and the artifacts copied back; game paths become /mnt/c.
+# WSL python3 on a /mnt/d tree is still refused: use python.exe there, as before.
 WSL = sys.platform.startswith("linux") and os.path.isdir("/mnt/c")
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+STAGED = WSL and not os.path.realpath(REPO_ROOT).startswith("/mnt/")
+if STAGED:
+    sys.path.insert(0, os.path.join(REPO_ROOT, "src", "RimMandrake", "Utils"))
+    import winbuild  # noqa: E402
 
-GAME_ROOT = r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld"
+GAME_ROOT = ("/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld" if STAGED
+             else r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld")
 BRIDGETOOLS_ROOT = os.path.join(GAME_ROOT, "BridgeTools")
 DEPLOY_DIR = os.path.join(BRIDGETOOLS_ROOT, "JawaBench")
 
@@ -95,10 +101,42 @@ def sh(cmd, **kw):
 GM_TOOLS = ("jawa/fire_incident", "jawa/send_letter")
 
 
+def build_staged(clean, gm):
+    """ext4 clone: stage on D:, build with dotnet.exe there, copy the bundle back."""
+    rel_art = os.path.relpath(ARTIFACT_DIR, REPO_ROOT)
+    if clean and os.path.isdir(ARTIFACT_DIR):
+        shutil.rmtree(ARTIFACT_DIR)
+    extra = ["--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false")]
+    extra_dirs, late = [], []
+    for env, prop in (("ORACLE_MOD_DIR", "OracleModDir"), ("INHABITED_MOD_DIR", "InhabitedModDir")):
+        v = os.environ.get(env)
+        if not v:
+            continue
+        if os.path.realpath(v).startswith(os.path.realpath(REPO_ROOT) + os.sep):
+            extra_dirs.append(v)                 # a repo dir: stage it and point at the staged copy
+            late.append((prop, v))
+        else:
+            extra.append("-p:%s=%s" % (prop, v if ":" in v else winbuild.win(v)))
+    if late:                                     # staged paths are known only after a dry stage
+        _, rec = winbuild.stage_build(PROJECT, "Release", (), extra_dirs, dry_run=True)
+        extra += ["-p:%s=%s" % (p, winbuild.staged_win(rec, v)) for p, v in late]
+    stage_art = os.path.join(winbuild.BUILD_ROOT, "JawaBench", rel_art)
+    if clean and os.path.isdir(stage_art):
+        shutil.rmtree(stage_art)
+    rc, rec = winbuild.stage_build(PROJECT, "Release", extra, extra_dirs,
+                                   copy_back_dirs=[rel_art], stage_name="JawaBench")
+    if rc:
+        sys.exit("BUILD FAILED")
+    return os.path.join(ARTIFACT_DIR, DLL_NAME)
+
+
 def build(clean, gm):
+    if STAGED:
+        return build_staged(clean, gm)
     if WSL:
         sys.exit(
-            "Run this under Windows Python, not WSL python3:\n"
+            "On the /mnt/d tree run this under Windows Python, not WSL python3 (from an ext4\n"
+            "clone, WSL python3 works — it stages the build through winbuild.py):\n"
             "    cd /mnt/d/Luke/dev/Rimworld && python.exe src/RimMandrake/bridgetools/build.py\n"
             "dotnet.exe cannot accept a /mnt/... project path, and every deploy\n"
             "path in this script is Windows-native.")

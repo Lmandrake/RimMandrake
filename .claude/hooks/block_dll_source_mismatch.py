@@ -191,10 +191,14 @@ def main():
         for kind, dll, _root in flagged:
             csproj = project_for_dll(where, dll, head)
             if csproj:
-                win = to_windows_path(root, csproj)
-                fix = ('rebuild it: "%s" build "%s" -c Release, then '
-                       "commit the .dll and its .dll.srchash together"
-                       % (dotnet_exe(), win))
+                if os.path.realpath(root).startswith("/mnt/"):
+                    win = to_windows_path(root, csproj)
+                    fix = ('rebuild it: "%s" build "%s" -c Release, then '
+                           "commit the .dll and its .dll.srchash together"
+                           % (dotnet_exe(), win))
+                else:                      # ext4 clone: dotnet.exe cannot build here in place
+                    fix = ("rebuild it: python3 src/RimMandrake/Utils/winbuild.py %s, then "
+                           "commit the .dll and its .dll.srchash together" % csproj)
             else:
                 fix = "rebuild the project that produces it and commit the .dll and its .dll.srchash together"
             reason = ("its committed source changed without a rebuild"
