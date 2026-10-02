@@ -2,251 +2,202 @@
 
 Item: `NINE_FAULTS_PERMANENT_RITE_1`. Status: DRAFT exploration for BENCH; nothing ruled, nothing built.
 
-## Round 3: THE RULED DESIGN (owner, 2026-10-01)
+## THE RULED DESIGN (owner, 2026-10-01, rounds 3 and 4)
 
 ### 1. His rulings
 
-Owner, 2026-10-01, typed (ledger `5f9b8da6a`):
+**Round 3** (ledger `5f9b8da6a`, typed): *"These aren't good. Carrying broken machinery forever is
+too heavy, the player's choose the next landing site not the gods, and you're never allowed to just
+write off a god as evil"* · *"It's only ok to leave behind something broken as an offering, and then
+it is lost forever"* · by card: build Nine Faults together with real effects for god favour.
 
-> *"These aren't good. Carrying broken machinery forever is too heavy, the player's choose the next
-> landing site not the gods, and you're never allowed to just write off a god as evil"*
+**Round 4** (ledger `566d2269a`, typed): *"You're right. Zizzik would be better served by breaking a
+new piece of machinery you just found rather than leaving it behind. And leaving things behind that
+work is more ta baa."* · *"Yes events and world and subtle probabilities. Thenjawa sjoild receive
+very little concrete evidence of the gods remover, but to them it will feel certain they are there
+and powerful. Nothing so coarse as hediffs of skill blessings."* · by card: remove "evil" from every
+god, everywhere (`GODS_NOT_EVIL_SWEEP_1`, done in the same pass as this doc).
 
-> *"It's only ok to leave behind something broken as an offering, and then it is lost forever"*
-
-By card, the same sitting: **build Nine Faults together with real effects for god favour.**
-Earlier the same day (ledger `8a6f7bc06`) he ruled that breakdowns are never redirected or soaked
-up (*"Too magical"*), and that leaving a thing broken moves favour from one god to another.
-
-**So the ruled shape is:** a broken machine is left behind on a map the clan departs, as an
-offering. It is lost forever. That moves favour from one god to another.
-
-**Banned, everywhere in this design:**
-- carrying broken machinery along;
-- gods choosing or steering where the ship lands, because the player picks the site;
-- any framing of a god as an enemy or as evil.
-
-**Rechecked: the "front god" does not choose the site.** In the built code
-(`GameComponent_Ninefold.ReckonFrontAtLanding`, called from the landing patch) the front is
-reckoned **after** the ship has landed where the player chose, as a judgement of the map just
-left. Nothing in Ninefold reads or writes a destination. Round 2's phrase "choose which god runs
-the next map" is deleted with round 2. One borderline design text is flagged in §8: Ta'Baa's L
-boon *Somewhere Better* reveals a site. The god shows a site and the player still chooses
-whether to go.
+**What stands, together:**
+1. **Nine Faults is Zizzik's:** the clan breaks a machine it **has just found**. It is not left
+   behind.
+2. **Leaving working things behind is Ta'Baa's:** the existing devotion, the Left Behind.
+3. **Every offering is lost forever**, and it moves favour from one god to another.
+4. **Favour shows only through events, the world, and subtle odds.** No hediffs, no skill or stat
+   blessings. The Jawa get almost no concrete evidence, yet feel certain.
+5. **The player chooses where the ship lands, never a god.** No god is evil, and no god is the
+   clan's enemy.
+6. **No breakdown is ever redirected or soaked up.** Nothing broken is carried along.
 
 
-### 2. The offering
+### 2. Nine Faults (Zizzik): breaking the newly found machine
 
-**What can be offered.** A building of the clan's own that is **broken down** at the moment of
-departure (vanilla's broken-down state, `CompBreakdownable.BrokenDown`, VERIFIED) and that stands
-**on the map, not on the ship**. Anything on the ship's substructure is not left behind, so it
-cannot be offered (ruled: nothing broken is carried). Droids are not machines here: a droid is a
-person to Ohm, and leaving one behind is a separate matter (it is in Q1).
+**The belief.** The first spark through a found machine is Zizzik's. A thing the clan has just
+dragged out of a ruin has not yet been anyone's: not Ohm's, who wakes machines, and not Rekko's,
+who restores them. Zizzik is the god of things coming apart, and he is owed the chance to take
+it first. A clan that gives him its newest find, unused, has paid him before he comes to collect.
+This matches the inscription: the dead droid in the Lantern Deeps crossed its own nine wires
+before the mindstone could take it.
 
-**How it becomes broken.** Either way works:
-- **It broke on its own**, a vanilla breakdown the clan chose not to repair; or
-- **The Nine Faults rite.** This is the found rite of the Lantern Deeps, and the only way to offer
-  a **working** machine. Worshippers surround it and miswire it, nine faults in sequence, the
-  nine bulbs failing one by one, until it breaks down in front of everyone. Poor: it burns, and a
-  burned machine is not an offering (the fire is Zizzik's, but nothing moves between gods). Fair
-  or better: it stands broken and is **dedicated** as an offering. Good or better also brings the
-  participants a "we gave it to him" memory; Excellent also brings an art tale.
+**When "newly found" applies.** The machine must meet all three:
+- **Found on this map.** It came into the clan's hands here, by claiming a ruin building,
+  uninstalling one from a wreck or ancient site, or hauling in a minified machine that dropped,
+  crashed or was dug up.
+- **Never run by the clan.** It has not been switched on, powered or worked at since the clan took
+  it.
+- **Still on this map.** Once the ship lifts, the chance has gone: a find carried to the next map is
+  simply the clan's machine.
 
-**How it is offered at departure.** A designation, *"Leave as offering"*, on any broken building
-off the ship. The designation is the clan's word; nothing happens until the ship lifts. **At the
-launch**, every designated offering still broken and still on the old map is counted, and the
-favour moves then, in one Narrator letter that names each machine and the two gods it set
-against each other. The old map is then left as it always is.
+The machine is marked "fresh find" when the clan takes it. The mark clears the first time the clan
+uses it, or when the ship departs. The Rites tab shows which finds are eligible.
 
-**Lost forever.** VERIFIED: on a gravship departure Odyssey's `GravshipUtility.AbandonMap` sends
-off every pawn left behind and abandons the map's parent (`Abandon(wasGravshipLaunch: true)`).
-So the offering is lost by ordinary means, with nothing magical about it: the clan flew away
-from it. UNVERIFIED: whether every departure calls `AbandonMap`, or whether a map can survive
-the launch (an outpost left behind). If one can, the offering must never be reclaimed; the
-letter says so, and reclaiming it is the one thing the gods would take back.
+**The rite.** As found in the Lantern Deeps (§6 R2 of the review). Worshippers surround the find and
+miswire it, nine faults in sequence, the nine bulbs failing one by one, in front of everyone.
+- **What it costs:** the best thing the salvage gave up. The clan offers the machine it has not yet
+  had the use of, and it is gone. The rite also takes the participants' hours.
+- **Lost forever:** the ninth fault burns the machine out. It is destroyed and leaves a burnt-out
+  hulk of slag where it stood, so the loss is readable on the ground.
+- **Outcomes:** Poor, the miswiring catches early: a real fire and a smaller offering. Fair, the
+  nine faults run true: a full offering. Good, plus a "we gave him the first spark" memory for the
+  participants. Excellent, plus an art tale.
 
-**Its relation to the Left Behind.** The Left Behind (`devotional_sacrifice_catalog.md`, Ta'Baa) is
-an existing devotion: at launch, leave one valuable thing on the old map, named at the launch
-rite, *"COST: the thing, forever."* Nine Faults is close kin: same moment, same loss. It differs
-in three ways. It is a **broken machine**, not any valuable thing. It **moves** favour between
-two gods instead of feeding one. And it has a found rite for breaking a good machine on purpose.
-Whether the two stay separate or merge is Q1.
+**Which favour it moves.** **Zizzik gains. Rekko loses.** A find is Rekko's by nature, because *"a
+neglected machine wants the second hand that will wake it"*, and this one will never be woken. The
+transfer is sized by the find's market value (Ninefold's Small 3 to Large 15), equal out of Rekko
+and into Zizzik, and the outcome quality scales it.
+
+**What it is not.** The clan does not offer its own working machine; that is the Gift of Working
+Things (`devotional_sacrifice_catalog.md`, Zizzik), and whether the two stay separate is Q1.
+Breakdowns are not redirected, and nothing broken is carried.
 
 
-### 3. Which gods a machine sets against each other
+### 3. Leaving working things behind is Ta'Baa's: the Left Behind
 
-**Fixed by what the machine is**, so the player chooses *which machine to give up* and thereby
-which pair moves. Every pairing is drawn from god canon (`divine_satiation_engine.md` §2.0b,
-§2.0c skill grid, §8b). The **keeper** is the god whose work the machine did. He loses favour,
-because his thing was given away broken instead of mended. The **receiver** is the god to whom
-leaving it unmended is an honour.
+**Home:** the Left Behind, `design/Jawa/devotional_sacrifice_catalog.md` (Ta'Baa):
+*"ACT: at launch, deliberately leave one VALUABLE thing on the old map — chosen, named at the
+launch-rite, abandoned. COST: the thing, forever. BUYS: the launch spike enlarged; the next
+rooted-clock runs slower (you have proven you can let go). SIGN: from the climbing ship, the left
+thing glints once, like a wave."*
 
-| Machine left as an offering | Keeper (favour taken) | Receiver (favour given) | Canon basis |
+**What this design proposes for it** (owed to the catalog entry once he rules; not edited there):
+
+- **What is left:** a **working** building of the clan's, off the ship, marked *"Leave behind"*
+  before departure. It must be in working order: a working thing is a real letting-go, whereas a
+  broken one is only rubbish left on the ground.
+- **Lost forever:** VERIFIED that on a gravship departure Odyssey's `GravshipUtility.AbandonMap`
+  sends off every pawn left behind and abandons the map (`Abandon(wasGravshipLaunch: true)`). The
+  clan flies away from it, which is not magic. UNVERIFIED whether every departure goes through
+  `AbandonMap`.
+- **Which favour it moves:** **Ta'Baa gains.** The god whose work the machine did loses, for a
+  working thing of his given up:
+
+  | Left behind, working | Loses favour | Canon basis |
+  |---|---|---|
+  | Power: generator, battery | Ohm | the living machine |
+  | Droid support: charger, droid bench | Ohm | *"wants his droid servants back"* |
+  | Water, kitchen, freezer | Oomo | the body's waters; Cooking (§2.0c) |
+  | Comms, trade beacon | Mob'Unloo | the deal |
+  | Salvage workbenches | Rekko | Crafting from salvage (§2.0c) |
+  | Research, art, high-tech benches | Ozzik | Intellectual, Artistic, high-tech building (§2.0c) |
+  | Turrets, walls of machinery | Ishko | the turtle that outlasts |
+
+  Sized by market value as above. One letter at departure names what was left; the catalog's sign
+  (the glint from the climbing ship) is the readable mark.
+
+
+### 4. How favour shows: events, world and subtle odds
+
+**The rule.** A god's standing **tilts the odds** of a few things in his domain coming to the clan's
+map: incidents, traders, finds and weather. Nothing is labelled. No letter says "because Ohm is
+pleased". No tooltip, hediff, stat or skill shows it. The player can see the standings in the
+Ninefold readout and the Narrator's landing report, and can only *infer* the rest. The Jawa read
+the eclipse, the trader and the short circuit as the gods, and nothing in the game contradicts
+them.
+
+**Size.** Per god band, applied as a multiplier on each listed incident's chance: Exalted ×1.35,
+Content ×1.15, Neutral ×1, Slighted ×0.85, Wrathful ×0.7. Where the row says the reverse, the
+factor is inverted. The tilts are subtle enough that no single event proves anything; over a
+campaign the pattern is felt.
+
+**The first table.** Every incident below is a vanilla `IncidentDef`, VERIFIED with RimSage in
+`Defs/Core/Storyteller/` (Incidents_Map_Misc, Incidents_Map_Special, Incidents_World_Conditions,
+Incidents_Map_Disease, Incidents_Map_Threats). Each god's row comes from his canon pleasures in
+`divine_satiation_engine.md` §2.0b and §8b.
+
+| God | When he is pleased, more often | And less often | Canon root |
 |---|---|---|---|
-| Power: generator, battery, conduit plant | Ohm | Zizzik | §8b.B *"a machine … breaks down → ▲Zizzik, ↓Ohm"*; Zizzik's S demand, *"one breakdown left unfixed"* |
-| Droid support: charger, droid workbench | Ohm | Zizzik | Ohm *"wants his droid servants back"* |
-| Water: vaporator, filter, purifier | Oomo | Zizzik | Oomo, the body's waters |
-| Kitchen and food: stove, nutrient dispenser, freezer | Oomo | Zizzik | Cooking is Oomo's (§2.0c) |
-| Comms: comms console, trade beacon | Mob'Unloo | Ishko | the deal is Mob'Unloo's; a silent clan is Ishko's (*"no comms"*) |
-| Lights: lamps, sun lamps, floodlights | Ohm | Ishko | the dark is Ishko's |
-| Workbenches that make from salvage | Rekko | Zizzik | Crafting from salvage is Rekko's (§2.0c) |
-| Research and fine work: research bench, art bench, high-tech fabrication | Ozzik | Zizzik | Intellectual, Artistic and high-tech building are Ozzik's (§2.0c) |
-| Defences: turrets, traps with machinery | Ishko | Zizzik | the turtle that outlasts is Ishko's (attrition defence) |
+| Ishko | `Eclipse`; sandstorm and fog weather; `SelfTame` | — | eclipse and sandstorm ↑Ishko (§8b.B); the patience to tame |
+| Ohm | `ShipChunkDrop` (machine wreckage falls) | `ShortCircuit` | the living machine; breakdowns ↓Ohm |
+| Oomo | `FarmAnimalsWanderIn` | `Disease_Flu` | a slighted Oomo *"lets sickness in"* (§8b.B) |
+| Mob'Unloo | `TraderCaravanArrival`, `OrbitalTraderArrival` | — | the deal and the counter-gift |
+| Rekko | `ResourcePodCrash` (salvage from the sky) | — | the second hand; things found |
+| Ta'Baa | `TravelerGroup`, `HerdMigration` | — | the road, things on the move |
+| Zizzik | `Flashstorm`, `SolarFlare` (small sparks, scattered) | `Infestation` | a fed Zizzik keeps his wakes small (§⑦); the starved slumber bank is unchanged |
+| Sh'kaar | `HeatWave` | `Eclipse` | the one unsetting sun; an eclipse is his hiding |
+| Ozzik | `VisitorGroup` (renown draws visitors) | — | pride is seen; *"a raid that arrives because you grew loud is Ozzik's bill"* stays a later step |
 
-**Size of the transfer:** scaled by the machine's market value, from Small (3) to Large (15)
-(`EventMagnitude`), taken from the keeper and given to the receiver in equal measure. A cheap
-lamp moves little; a fusion generator moves a lot. **No machine sets a god against himself, and
-none frames a god as an enemy.** The keeper is not punished as a villain; he grieves a thing
-given away.
+Nine gods and about fifteen tilts in all. **Not in the first pass:** raids and threat points (too
+coarse to stay subtle), quests, and the M and L boons. Those are later steps once this one is
+felt in play.
 
-
-### 4. Why losing the machine is the consequence
-
-- **It is real capital, gone.** Components and advanced components are scarce for a scavenger
-  clan. A generator left behind is one the next map does not have until it is rebuilt from
-  salvage.
-- **It is paid once, not carried.** The weight he called *"too heavy"* in round 2 was a cost
-  borne forever. This one is paid in full at the moment of leaving, and the clan flies on lighter.
-- **The choice is which god.** A clan that wants Ishko's favour leaves the comms console; one that
-  wants Zizzik's leaves a generator. Each choice costs a specific god, and the player can read on
-  the table above which one.
-- **It is permanent by nature, not by rule.** The machine stays on a map nobody returns to, and
-  the favour it moved stays moved. Nothing refunds it. Later deeds can move those gods again;
-  the offering itself is final.
-- **It only matters if favour matters.** That is why it is built together with §5.
+**What the Jawa have instead of evidence.** Their own rites and devotions, the Narrator's landing
+report of standings, and the world itself. Question Q3 asks whether there should also be a rare
+aside: one unattributed line in a vanilla letter, for example *"Some of the clan made Ishko's
+sign."*
 
 
-### 5. What god favour does in play (first proposal, built together with Nine Faults)
+### 5. What Ninefold needs
 
-**Principle: favour works through the clan's belief, never through physics.** The canon already
-says it: each god *"is a belief that shapes behavior"* (§2.0b). So a god's standing changes how
-the Jawa **work** at that god's craft, and how they **feel**. Nothing in the world changes because
-a god willed it, and no god chooses where the ship goes.
+All small, and all behind Mod Settings (a master toggle and a strength slider, per the every-mod
+settings rule).
 
-**One line per god, read from his band.** Content gives a small lift, Exalted a larger one,
-Slighted a small drag, Wrathful a larger one, and Neutral nothing. The magnitudes are a first
-pass: ±10% for Content and Slighted, ±20% for Exalted and Wrathful.
-
-| God | What his standing changes (the clan's heart in his work) | Canon root |
-|---|---|---|
-| Ishko | construction speed of walls and doors; taming | §2.0c Construction (doors to outlast), Animals |
-| Ohm | research speed; machine and droid work | §2.0c Intellectual; S boon *Steady Current* |
-| Oomo | cooking speed; tending the sick | §2.0c Cooking, Medical |
-| Mob'Unloo | trade prices, a small step either way | S boon *Thumb on the Scale* |
-| Rekko | repair speed; crafting from salvage | S boon *Second Wind* |
-| Ta'Baa | walking and caravan speed | S boon *Tailwind* |
-| Zizzik | inspiration chance (Content and Exalted only); Slighted and Wrathful bank his wake as already designed | S boon *Creative Sparks*; §⑦ |
-| Sh'kaar | shooting and melee accuracy in the open, a small step | §2.0c Shooting and Melee (open fight); S boon *Keen Edge* |
-| Ozzik | art speed; quality chance on fine work | S boon *Craftsman's Pride* |
-
-**How it reads:**
-- each affected stat's tooltip names the god and his band, for example *"Ohm is Content: +10%"*;
-- **one mood thought**, only for the most pleased and the most aggrieved god of the moment
-  (for example, *"Rekko is pleased with us"*), so the needs tab carries two lines, never nine;
-- the Narrator's letter at each landing reports the standings (the existing front reckoning
-  reused as a report, not a steer).
-
-**Why this is small enough.** It is one `StatPart` that reads Ninefold's band, nine table rows,
-one ThoughtDef pair and one letter. It needs no new god behaviour, no events and no dispensation
-system. The larger designs (boons M and L, demands, the front's actuators) stay where they are,
-for later.
-
-**What it does to Nine Faults.** An offering now has a visible price and payoff. Leaving the
-generator moves Ohm from Content to Neutral, so research loses its +10%; Zizzik reaches Content,
-so inspirations come more often. The player can see the trade before launching.
+- **A def type for tilts** (XML, data not code): `RM_GodFavourTiltDef { god, incident or weather,
+  direction }`. The table in §4 becomes about fifteen of these, and BENCH can tune them without C#.
+- **The incident hook:** a Harmony postfix on `StorytellerComp.IncidentChanceFinal(IncidentDef,
+  IIncidentTarget)`. VERIFIED: it exists, is `protected`, and multiplies `BaseChanceThisGame` by
+  the population factors and `ChanceFactorNow` before returning. The postfix multiplies the result
+  by the tilt for that def, read from `GameComponent_Ninefold.GetBand(god)` (built).
+- **The weather hook:** a postfix on `WeatherDecider.CurrentWeatherCommonality(WeatherDef)`.
+  VERIFIED: it exists, and it is `private`, so it is patched by name.
+- **The offerings:** two calls to the existing `ApplyDelta`, one per god, from the Nine Faults
+  outcome worker (`RitualOutcomeEffectWorker_FromQuality.ApplyExtraOutcome`, VERIFIED) and from a
+  prefix on `GravshipUtility.AbandonMap` (VERIFIED) for the Left Behind.
+- **The "fresh find" mark:** a small Scribed comp or map-component set, written when the clan
+  takes a machine and cleared on first use or at departure. UNVERIFIED: the cleanest seams for
+  "taken" (claim, uninstall, haul) and "first use" (power on, first job at a bench).
+- **Nothing new is Scribed in Ninefold** beyond what it already saves. The tilts read live bands.
+- **Owed alongside, and small:** a Ninefold hook on `CompBreakdownable.DoBreakdown` so ordinary
+  breakdowns move Zizzik and Ohm as §8b.B designs. It is not needed for either offering.
 
 
-### 6. Engine route
+### 6. Questions for the owner
 
-- **The broken-down test:** VERIFIED `CompBreakdownable.BrokenDown` (`=> brokenDownInt`), set by
-  `DoBreakdown()`.
-- **The designation:** a `Designator` limited to the clan's buildings whose `BrokenDown` is true
-  and which are not on the gravship's substructure (UNVERIFIED: the cleanest substructure test).
-- **The moment of departure:** a prefix on `GravshipUtility.AbandonMap(Map)` (VERIFIED to exist,
-  Odyssey) counts the map's designated offerings before the map goes, then calls Ninefold
-  `ApplyDelta` twice per offering (keeper −, receiver +) and sends the letter. Ninefold already
-  patches the launch (`Patch_GravshipLaunched`); UNVERIFIED which of the two seams fires on every
-  departure.
-- **The rite:** `PreceptDef`, `RitualPatternDef` and a `RitualOutcomeEffectWorker_FromQuality`
-  subclass in `mandrake.rut.rites`. Its `ApplyExtraOutcome` (VERIFIED to exist and to be called
-  from `Apply`) calls `DoBreakdown()` on the target and sets the offering designation.
-- **Favour effects:** one `StatPart` reading `GameComponent_Ninefold.GetBand(god)` (built), applied
-  to the stats in §5, plus a ThoughtDef pair. No Scribed state is needed beyond what Ninefold
-  already saves.
-- **Still missing, and small:** a Ninefold hook on `CompBreakdownable.DoBreakdown` so ordinary
-  breakdowns move gods as §8b.B designs. It is not needed for offerings.
+**Q1. Who loses favour when Nine Faults breaks a fresh find, and is it the same thing as the Gift of
+Working Things?** The proposal is that breaking a machine the clan has just found takes favour from
+Rekko and gives it to Zizzik. Rekko is the god of restoring things, and a find is his by nature:
+the machine he would have woken. The other option is the machine's own god by kind: Ohm for a
+generator, Oomo for a water machine, and so on. Separately, an older devotion, the Gift of Working
+Things, already has the clan destroy one of its own working machines for Zizzik. Should that stay
+as a separate act (your own machine) beside Nine Faults (a fresh find), or be folded into Nine
+Faults?
 
+**Q2. When a working machine is left behind for Ta'Baa, who should lose?** The Left Behind is the
+existing Ta'Baa devotion: at launch the clan leaves one valuable thing behind, forever. The
+proposal narrows it to working machines and makes it a transfer. Ta'Baa gains, and the god whose
+work the machine did loses: Ohm for a generator, Oomo for a water machine, Mob'Unloo for a comms
+console. Is that right, or should leaving things behind only please Ta'Baa and cost no other god?
 
-### 7. Questions for the owner
-
-**Q1. How should the offering be made, and is it the same thing as "the Left Behind"?** The
-proposal has two routes. Any machine that has broken down can be marked *"Leave as offering"*,
-and the favour moves when the ship lifts off. The Nine Faults rite is the way to give up a
-**working** machine: the clan breaks it on purpose, in front of everyone, and that dedicates it.
-There is already a Ta'Baa devotion called the Left Behind, in which the clan leaves one valuable
-thing behind at launch, forever, to please Ta'Baa. Should Nine Faults (a broken machine, moving
-favour from one god to another) stay a separate thing from the Left Behind (any valuable thing,
-pleasing Ta'Baa), or should they become one launch-time offering? And may a broken **droid** be
-left as an offering, or is a droid a person to Ohm and never offered?
-
-**Q2. Is "favour shows in the work" the right first effect?** Today, in the code, a god's favour
-changes almost nothing. The proposal is that each god's standing nudges the clan's work at his
-craft, because the Jawa believe in him: research for Ohm, cooking and nursing for Oomo, repair for
-Rekko, trade prices for Mob'Unloo, travel speed for Ta'Baa, and so on. It is +10% or +20% when he
-is pleased and the same amount down when he is aggrieved, shown in the tooltip, plus one mood line
-for the most pleased god and one for the most aggrieved. Nothing magical happens in the world,
-and no god chooses where the ship goes. Is that the right size and kind, or should favour act on
-something else first?
-
-**Q3. What should be done about the word "evil" in the pantheon?** You ruled that a god is never
-written off as evil. The pantheon of record (locked 2026-08-08) calls Sh'kaar *"the evil sun … an
-EVIL god"*, and several docs call Sh'kaar and Zizzik *"the two evil gods"*. One rite kind is even
-defined as *"deny an evil god what feeds him"*. The game code carries the same label. Does your
-ruling mean the word comes out everywhere, so that they become dangerous, hungry gods but never
-evil? Or does it only mean that a player can never turn a god into a permanent enemy, with the
-canon wording standing? §8 lists every place it appears.
-
-
-### 8. Flags for BENCH (other docs; not edited)
-
-**A god framed as evil or as an enemy** (measured with `git grep` on origin/main, 2026-10-01;
-counts are matching lines per file):
-
-| File | Lines | What it says |
-|---|---|---|
-| `design/Jawa/divine_satiation_engine.md` | 9 | Sh'kaar *"EVIL god"*, *"the evil sun"*; *"the two evil gods"* (Zizzik, Sh'kaar); §⑧ heading *"(EVIL; the escalation meter)"* |
-| `design/Jawa/salvation_rites_2026-10-01.md` | 3 | the kind **starving** defined as *"deny an evil god what feeds him"*; §c3 *"starving the evil god"* |
-| `design/Jawa/narrator_corpus/narrator_frame.md` | 3 | *"No mercy-softening of the evil gods"*; *"a gift from an evil god"* |
-| `design/Jawa/god_intercession_spec.md` | 2 | *"The evil gods are targets, never shields"* |
-| `design/Jawa/proposals/god_modes_deep_design.md` | 2 | *"The evil gods (Zizzik, Sh'kaar) INVERT the law"* |
-| `design/Jawa/worldbuilding/biomes/longshade_bedazzle_review_2026-09-29.md` | 3 | *"an evil sun god, Sh'kaar"* |
-| `design/Jawa/biome_rites_pass_2026-10-01.md` | 1 | *"never fed outright, as an evil god should be"* (§12 tally) |
-| `design/Jawa/first_contact_chains.md` | 1 | *"The two evil gods and the trap arrive LAST"* |
-| `design/Jawa/divine_dilemma_events.md` | 1 | the notation *"▲ = an evil god fed"* |
-| `design/Jawa/salvation_engine_build_spec.md` | 1 | *"evil gods front only via their own meters"* |
-| `design/Jawa/art/gods/god_render_prompt_spec.md` | 1 | Sh'kaar *"evil light … cruel, malevolent"* |
-| `design/Jawa/worldbuilding/biomes/stillsand_turn3_development_2026-09-30.md`, `blackcrags_bedazzle_review_2026-09-30.md` | 1 each | evil-god wording |
-| `design/RimMandrake/ancient_machines_design.md`, `statue_mods_spec.md`, `statue_expansion_assessment.md`, `atmospheric_base_scheme_catalog.md` | 1 each | *"both evil gods"*, Sh'kaar *"reads evil"* |
-| `infrastructure/state/items/SALVATION_RITES_UNIFICATION_1.md`, `SUMP_GASLIGHT_1.md` (and closed `SUMP_UTINNI_LAYER_1.md`, 3) | 1 each | *"starving the evil god"*, the canon quote |
-| `src/RimMandrake/Ninefold/Source/God.cs`, `Patch_FireStarted.cs` | 1 each | code comments: *"evil sun, exposure (EVIL god)"* |
-
-Q3 decides what happens to all of these. The pantheon canon is the root; everything else
-inherits from it.
-
-**Gods choosing or steering landing sites:** **none found.** Searched for god, front, Narrator
-or Ta'Baa near choose, pick, steer, decide or site. The nearest is **Ta'Baa's L boon *Somewhere
-Better*** (`divine_satiation_engine.md` §⑥; `narrator_corpus/triad_path.md` §L;
-`first_contact_chains.md` Ta'Baa DELIGHT; `proposals/god_modes_deep_design.md` ⑥-P *"multiple
-'somewhere better' sites revealed in sequence"*). The god **reveals** a site and the player
-decides. That is within the ruling as written; BENCH may want to confirm.
-
-**Redirect or soak of breakdowns (ruled out 2026-10-01):** Zizzik's decoy heap
-(`design/Jawa/folk_gesture_mechanics.md` §1); the Kept Mistake's Fair and Good outcomes
-(`design/Jawa/biome_rites_pass_2026-10-01.md` §1.3).
+**Q3. Should the gods leave any sign at all?** Favour will only tilt the odds. More traders when
+Mob'Unloo is pleased, fewer short circuits when Ohm is, more eclipses when Ishko is, and so on, at
+most a third more or less often. Nothing in the game would say a god did it. The question is
+whether that is enough, or whether the Narrator should very occasionally add one line to an
+ordinary letter, unattributed, such as *"Some of the clan made Ishko's sign."* That would be the
+nearest thing to evidence the Jawa ever get.
 
 
 ---
 
-# Round 1 (background; its forks and round 2's shapes were rejected and removed)
+# Round 1 (background; round 1's forks and rounds 2 and 3's shapes were rejected and removed)
 
 ## 1. The owner's words and the pitch
 
