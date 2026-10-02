@@ -1,26 +1,26 @@
 {
- "generatedAt": "2026-09-30T04:23:00Z",
+ "generatedAt": "2026-09-30T05:02:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 971923,
-  "sha256_12": "ea797603d012"
+  "bytes": 975267,
+  "sha256_12": "8b22f332ce0a"
  },
- "head": "a0393d718",
+ "head": "fe6c8561a",
  "counts": {
   "red": 22,
-  "blue": 1623,
+  "blue": 1628,
   "green": 1822,
-  "grey": 805,
+  "grey": 815,
   "unmeasured": 0,
-  "total": 4272
+  "total": 4287
  },
  "loc": {
   "red": 4510,
-  "blue": 517330,
+  "blue": 519191,
   "green": 398920,
-  "grey": 301378,
+  "grey": 303047,
   "unmeasured": 0,
-  "total": 1222138
+  "total": 1225668
  },
  "reviewEntries": 3911,
  "recidivists": [
@@ -46,7 +46,7 @@
   },
   {
    "path": "src/RimMandrake/EnvironmentalHazards/About/About.xml",
-   "loc": 85,
+   "loc": 91,
    "cycles": 4
   },
   {
@@ -77,5 +77,5 @@
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 4272 files (1822 clean, 805 dirty, 0 unmeasured)."
+ "headline": "OK: measured 4287 files (1822 clean, 815 dirty, 0 unmeasured)."
 }
