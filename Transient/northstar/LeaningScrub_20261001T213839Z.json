@@ -1,0 +1,456 @@
+{
+  "mod": "LeaningScrub",
+  "mode": "mock",
+  "started_utc": "2026-10-01T21:38:39Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (no `## north star` section in /mnt/d/Luke/dev/RimMandrake/.claude/worktrees/agent-ae8b97baae10b39e0/design/validation_walks/RimMandrake/LeaningScrub.md)",
+  "bars": [],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "46 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=1000 map=200x200",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 1000 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "2 active, sha256 2edc3c136a6e28d5 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "components": [
+    {
+      "chain": "defs",
+      "name": "defs_resolve",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "biome_weather_table",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "biome_density_and_flora",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "biome_lean_extension",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "patches",
+      "name": "rules_armed",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "patches",
+      "name": "thicket_smotherable",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "patches",
+      "name": "dead_venomvine_fuels_fire",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "defaults",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "venomvinePassabilityEnabled_roundtrip",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "galeRaidWeightingEnabled_roundtrip",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "leanEnabled_roundtrip",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "leanScentEnabled_roundtrip",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings",
+      "name": "leanFireEnabled_roundtrip",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fauna",
+      "name": "fauna_spawns",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "fauna",
+      "name": "dustflutter_can_fly",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora",
+      "name": "flora_spawns",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "stall",
+      "name": "stall_freezes_small",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "stall",
+      "name": "stall_toggle_off_wanders",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "stall",
+      "name": "stall_master_off_wanders",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "gale_site_ready",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "gale_deafens_outdoors",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "gale_spares_roofed",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "gale_deafen_toggle_off",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "gale_turbine_surge",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gale",
+      "name": "gale_turbine_breakdown",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lash",
+      "name": "lash_site_ready",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lash",
+      "name": "lash_toggle_off_quiet",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "lash",
+      "name": "lash_strikes_once",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smother",
+      "name": "smother_site_ready",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smother",
+      "name": "smother_claims_stands",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smother",
+      "name": "smother_off_holds_claims",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smother",
+      "name": "smother_matures_to_dead_wood",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "dripping",
+      "name": "dripping_survives_harvest",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "crown",
+      "name": "crown_site_ready",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "crown",
+      "name": "crown_toggle_off_stays_away",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "crown",
+      "name": "crown_mob_gathers",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "bloom_toggle_off_quiet",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "bloom",
+      "name": "bloom_answers_a_walker",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "sweetline_site_ready",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "station_named_and_timed",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "station_toggle_off_plain",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "sweetline",
+      "name": "station_sheds_wool",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "log",
+      "name": "log_clean",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 0
+  },
+  "all_green": false,
+  "timing": {
+    "n": 226,
+    "total_ms": 0.538,
+    "mean_ms": 0.0024,
+    "p50_ms": 0.0006,
+    "p95_ms": 0.006,
+    "by_tool": {
+      "rimworld/get_game_info": {
+        "n": 28,
+        "mean_ms": 0.0008,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 2,
+        "mean_ms": 0.0037,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 0.0016,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 2,
+        "mean_ms": 0.0014,
+        "errors": 0
+      },
+      "jawa/harmony_patches": {
+        "n": 1,
+        "mean_ms": 0.0032,
+        "errors": 1
+      },
+      "jawa/weather_set": {
+        "n": 35,
+        "mean_ms": 0.0005,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 36,
+        "mean_ms": 0.0012,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 37,
+        "mean_ms": 0.0006,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 10,
+        "mean_ms": 0.0369,
+        "errors": 0
+      },
+      "jawa/spawn_pawn": {
+        "n": 15,
+        "mean_ms": 0.001,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 17,
+        "mean_ms": 0.0004,
+        "errors": 0
+      },
+      "jawa/damage": {
+        "n": 15,
+        "mean_ms": 0.0004,
+        "errors": 0
+      },
+      "jawa/set_plants": {
+        "n": 6,
+        "mean_ms": 0.0011,
+        "errors": 6
+      },
+      "jawa/weather_get": {
+        "n": 3,
+        "mean_ms": 0.0007,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 4,
+        "mean_ms": 0.0004,
+        "errors": 0
+      },
+      "rimworld/step_game_ticks": {
+        "n": 12,
+        "mean_ms": 0.0006,
+        "errors": 0
+      },
+      "jawa/make_empty_room": {
+        "n": 1,
+        "mean_ms": 0.0012,
+        "errors": 1
+      },
+      "jawa/drain_log": {
+        "n": 1,
+        "mean_ms": 0.0011,
+        "errors": 1
+      }
+    }
+  }
+}
