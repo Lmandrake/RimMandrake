@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-02T02:39:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-02T02:42:38Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -3737,8 +3737,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  LANTERNDEEPSFAUNATIERPORTBUILD1
 prose:    infrastructure/state/items/LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1.md
 
 ## LANTERNDEEPS_WORKING_DEAD_BUILD_1 Lantern Deeps: the well-provisioned dead, the Working Dead and the Shard-minds
@@ -3747,8 +3747,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANTERNDEEPS_WORKING_DEAD_BUILD_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  LANTERNDEEPSWORKINGDEADBUILD1
 prose:    infrastructure/state/items/LANTERNDEEPS_WORKING_DEAD_BUILD_1.md
 
 ## LANTERNDEEPS_CREEP_CLEAVERS_BUILD_1 Lantern Deeps: the Creep (accretive predator) and the Cleavers (fracture-moving fragment life)
@@ -3757,8 +3757,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANTERNDEEPS_CREEP_CLEAVERS_BUILD_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  LANTERNDEEPSCREEPCLEAVERSBUILD1
 prose:    infrastructure/state/items/LANTERNDEEPS_CREEP_CLEAVERS_BUILD_1.md
 
 ## LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1 Lantern Deeps: the twelve hydrocarbon animals (galuush, hush, knocker, candler, sipper, drifter, tapper, pooler, blinker, chiller, slick, shoal)
@@ -3767,8 +3767,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  LANTERNDEEPSHYDROCARBONFAUNABUILD1
 prose:    infrastructure/state/items/LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1.md
 
 ## LANTERNDEEPS_LANTERN_LIGHT_BUILD_1 Lantern Deeps: the Lantern, the one safe light the darkness mechanic does not count
@@ -3777,8 +3777,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANTERNDEEPS_LANTERN_LIGHT_BUILD_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  LANTERNDEEPSLANTERNLIGHTBUILD1
 prose:    infrastructure/state/items/LANTERNDEEPS_LANTERN_LIGHT_BUILD_1.md
 
 ## LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1 Lantern Deeps: the aurora feast-day condition and the ruled collapse warnings
@@ -3787,8 +3787,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  LANTERNDEEPSAURORACOLLAPSEBUILD1
 prose:    infrastructure/state/items/LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1.md
 
 ## LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1 Lantern Deeps: the mindstone gallery, the mindstone as a find, the Kindled made reachable (campaign)
@@ -3797,8 +3797,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  LANTERNDEEPSMINDSTONEGALLERYBUILD1
 prose:    infrastructure/state/items/LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1.md
 
 ## LANTERNDEEPS_ORUN_GHAL_BUILD_1 Lantern Deeps: Orun-Ghal, the crystal-worn mining suit, an inhabitant to study and befriend
@@ -3807,8 +3807,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANTERNDEEPS_ORUN_GHAL_BUILD_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  LANTERNDEEPSORUNGHALBUILD1
 prose:    infrastructure/state/items/LANTERNDEEPS_ORUN_GHAL_BUILD_1.md
 
 ## LANTERNDEEPS_ANSWERING_RITE_BUILD_1 Lantern Deeps: The Answering, Ohm's found settlement rite (campaign)
@@ -3817,6 +3817,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LANTERNDEEPS_ANSWERING_RITE_BUILD_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## criteria
+summary:  LANTERNDEEPSANSWERINGRITEBUILD1
 prose:    infrastructure/state/items/LANTERNDEEPS_ANSWERING_RITE_BUILD_1.md
