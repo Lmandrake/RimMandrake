@@ -19,3 +19,8 @@ Every section seeded here is `state: DRAFT` with an empty `validated-hash:` — 
 SWBestiary, SeaBeasts, SeasWaterline, Livestock, JawaIkee, HelixTellurox, BeastNorm — 7 walks.
 Lint/floor: no new findings. Notable seeded question: Cindermare/Skarnix/Karrask/Tellurox each ship ONE
 `Graphic_Single` texture (no facings) — seeded as a `(guess)` cannot-show for him to rule.
+
+### Batch 2 — gear, species, droids, vehicles
+Armoury, StarWarsRaces, Droidworks, KotORBandolierNorthFix, CereanManeFix, MSEDroidFix, JawaIonWeapons,
+DesertVehicleReskin — 8 walks. Lint/floor: no new findings. The three single-PNG fixes get a tight
+must/cannot pair naming the exact defect they repair.
