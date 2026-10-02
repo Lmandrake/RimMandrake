@@ -50,8 +50,11 @@ import sys
 
 WT = r"C:\Users\Mandrake\AppData\Local\Microsoft\WindowsApps\wt.exe"
 PS = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-SCRIPT = r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils\launch_fleet.ps1"
-REPO_WIN = r"D:\Luke\dev\Rimworld"
+# The real folder, not the `D:\Luke\dev\Rimworld` alias (a junction kept from the 2026-09-30 rename).
+# launch_fleet.ps1 is Windows-side and only opens WT profiles by name, so the D:\ tree
+# (the exported mirror of origin/main after GIT_WORKFLOW_MIGRATION_1) is the right home.
+SCRIPT = r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\launch_fleet.ps1"
+REPO_WIN = r"D:\Luke\dev\RimMandrake"
 DESKTOPS = (r"C:\Users\Mandrake\OneDrive\Desktop", r"C:\Users\Mandrake\Desktop")
 STARTUP = (r"C:\Users\Mandrake\AppData\Roaming\Microsoft\Windows"
            r"\Start Menu\Programs\Startup")

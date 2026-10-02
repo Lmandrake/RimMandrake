@@ -171,7 +171,7 @@ fi
 REPO_ROOT="${CLAUDE_PROJECT_DIR:-}"
 if [ -z "$REPO_ROOT" ]; then
     REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    while [ "$REPO_ROOT" != "/" ] && [ ! -d "$REPO_ROOT/.git" ]; do
+    while [ "$REPO_ROOT" != "/" ] && [ ! -e "$REPO_ROOT/.git" ]; do
         REPO_ROOT="$(dirname "$REPO_ROOT")"
     done
 fi
