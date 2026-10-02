@@ -1,4 +1,4 @@
-# Webwork: bedazzle review (grandfathered sitting, turn 1 drafted)
+# Webwork: bedazzle review (grandfathered sitting, turn 1 ruled)
 
 Item: `WEBWORK_SCORING_SITTING_1` (BENCH; filed by the parent). Program: `BEDAZZLE_TOP_SHAPE_PROGRAM_1`, track (a), worst-first, sitting 5.
 
@@ -166,7 +166,7 @@ against the dark sits too close to the Abyss's darkness rites. §6 offers others
 | No colossus | mark 5; the ollathrix is ruled one race, one kind (sitting ruling 2), so the giant cannot be a bigger spider, a queen or a caste | **the morravell** (one new `RM_` giant, proposed below) |
 | Prey, flier, beetle, mite, scavenger | sitting ruling 5 asks for 4 to 6 rows besides the owner; five are built | none needed; the giant makes six, still inside the ruling |
 
-### Proposed: one new giant, free `RM_` tier, one home
+### Proposed: one new giant, free `RM_` tier, one home (NOT CHOSEN, turn 1: the dead giant was taken, §8)
 
 - **The morravell** (`RM_Morravell`, invented, Webwork accent: doubled consonant, *-ell* like
   *sivvern*/*skennet*; no hit in `src/` or `design/`, zero Wookieepedia search results, sanity probe
@@ -212,8 +212,8 @@ scald stays a **light** hediff, worded as light, never as heat. Size S to M.
 |---:|---|---|---|---|
 | 1 | **The giant** (§3 or §5 idea 2, owner picks): the living morravell that opens sun-holes, or the dead urraveth the owners ate, read bone by bone. | 5 | ChewAnchors pattern, ShadeGrid, SenseWeb (living); a saved map component and examine jobs (dead) | M |
 | 2 | **The traction lance** (§5 idea 1): learned from a braced, intact gutter junction; a thrixweave tether that reels a target, usable everywhere. | 2 | thrixweave (row 0), the web alarm on cutting | L |
-| 3 | **Sheetfall** (§5 idea 4): after a storm, torn canopy sheets fall and roof part of the light-moat until shot down. | 8 | vanilla storm transitions, the scald re-key (row 0b), the web structures (row 0) | L |
-| 4 | **The hull trellis** (§5 idea 3): threllick roots thread a landed ship's doorframes from a living gutter; excise or carry the damage away. | 6 | the gutter structure (row 0), vanilla gravship transport | M |
+| 3 | **Sheetfall** (§5 idea 4; NOT CHOSEN, turn 1): after a storm, torn canopy sheets fall and roof part of the light-moat until shot down. | 8 | vanilla storm transitions, the scald re-key (row 0b), the web structures (row 0) | L |
+| 4 | **The hull trellis** (§5 idea 3; NOT CHOSEN, turn 1): threllick roots thread a landed ship's doorframes from a living gutter; excise or carry the damage away. | 6 | the gutter structure (row 0), vanilla gravship transport | M |
 | 5 | **A Salvation rite** (§6 R1, R2, or §5 idea 5). | 9 | found-rites row, `RUT_ResearchMod_GrantRite` | M |
 | 6 | **Art commission:** the giant, the lance and its junction specimen, the falling sheet, the root intrusion, the rite's inscription. Web structures already have art from `WEBWORK_WEB_STRUCTURES_1`. | all | artpipe | — |
 
@@ -236,9 +236,9 @@ Against the Storm, ReGrowth, Dwarf Fortress and Ideology; its links are not veri
 |---|---|---|---|---|---|
 | 1 | **The Mouth's Answer:** brace and cut out an intact gutter junction without breaking it; studying it teaches the **thrixweave traction lance**, a manned emplacement that fires a tether and reels a target in: a downed colonist out of danger, a mechanoid out of cover, **an ollathrix out into the sun**. Walls stop the pull; big targets cost more power and silk. | 2 | free | L | Strong. Learn-here, use-anywhere like the lightning breakers, but a different verb (drag, not protect). The pull-into-sunlight use is the Webwork's own lesson turned on its owner. Needs row 0's silk. |
 | 2 | **They Ate the Colossus:** one Webwork map holds the wrapped skeleton of an **urraveth**, an extinct grazer bigger than a colony building. Examining it bone by bone reconstructs its death (pinned, bound, cut, eaten); opening the last wrapping shows the whole outline. Loaded bones creak and can collapse with warning. | 5 | free | M | A giant met as evidence: the owners ate it. Clean against the tar beast and the hessarund. Competes with §3's living morravell; the owner picks one or both. Name collision-checked: none in `src/`, `design/` or Wookieepedia. ⚠ "one designated map" must be one *kind of site*, not a worldgen feature. |
-| 3 | **Your Hull Is a Trellis:** where a living gutter touches a building seam, threllick roots thread through it; on a landed ship a pale root comes through an inside doorframe, thickens, forces the door, splits the frame. Cut it out, or take off: the supply is severed but the damage flies with you. | 6 | free | M | The biome acting on the ship in its own voice (the plantation occupies structures), not a ship gadget. Applies to any building, so no ship-only special case. Close to Anomaly fleshmass in kind; different in that it rides the existing gutters. |
-| 4 | **The White Sky Comes Down (Sheetfall):** after a thunderstorm, torn web sheets fall from the canopy and snag across the cleared moat as a real roof; shoot the suspension knots before it settles, or the owners have a shaded bridge until you destroy it. | 8 | free | L | Weather that does something visible on the map, tied to the light-moat. Depends on row 0b: the fallen roof only matters if the scald reads real shade. Roof ownership is the hard part; prototype first, as GPT says. |
-| 5 | **Testimony Beneath Sh'kaar:** found on the sun-facing wall of a refuge whose survivors reached open sun; the rite names one real, unacknowledged colony loss and witnesses it together bare to the sky (vanilla heatstroke risk); each loss can be testified once. Favour shows only as a slight lean toward clear weather. | 9 | campaign | M | Fits the rulings (cohesion only, favour as odds). Sh'kaar has room. Overlaps §6 R1 on god and exposure; R1 is the biome-specific act (felling shade), this one is remembrance. ⚠ "once per loss" is a non-repeatable choice; fine for a rite, but say so on the card. |
+| 3 | **Your Hull Is a Trellis** (NOT CHOSEN, turn 1)**:** where a living gutter touches a building seam, threllick roots thread through it; on a landed ship a pale root comes through an inside doorframe, thickens, forces the door, splits the frame. Cut it out, or take off: the supply is severed but the damage flies with you. | 6 | free | M | The biome acting on the ship in its own voice (the plantation occupies structures), not a ship gadget. Applies to any building, so no ship-only special case. Close to Anomaly fleshmass in kind; different in that it rides the existing gutters. |
+| 4 | **The White Sky Comes Down (Sheetfall)** (NOT CHOSEN, turn 1)**:** after a thunderstorm, torn web sheets fall from the canopy and snag across the cleared moat as a real roof; shoot the suspension knots before it settles, or the owners have a shaded bridge until you destroy it. | 8 | free | L | Weather that does something visible on the map, tied to the light-moat. Depends on row 0b: the fallen roof only matters if the scald reads real shade. Roof ownership is the hard part; prototype first, as GPT says. |
+| 5 | **Testimony Beneath Sh'kaar** (NOT CHOSEN, turn 1)**:** found on the sun-facing wall of a refuge whose survivors reached open sun; the rite names one real, unacknowledged colony loss and witnesses it together bare to the sky (vanilla heatstroke risk); each loss can be testified once. Favour shows only as a slight lean toward clear weather. | 9 | campaign | M | Fits the rulings (cohesion only, favour as odds). Sh'kaar has room. Overlaps §6 R1 on god and exposure; R1 is the biome-specific act (felling shade), this one is remembrance. ⚠ "once per loss" is a non-repeatable choice; fine for a rite, but say so on the card. |
 
 ## 6. Discoverable rites
 
@@ -255,7 +255,7 @@ an offering (Nightside Ice's Cold Ledger); lighting a fire you set (the Calling-
 its cap. Sh'kaar carries two found rites (the Anvil Gift, the Shade Tithe) and Ta'Baa three, so both
 have room.
 
-### R1. The Felled Noon, for Sh'kaar: feeding, by letting the sun in (PITCHED)
+### R1. The Felled Noon, for Sh'kaar: feeding, by letting the sun in (RULED, turn 1)
 
 - **Grounding:** the Webwork is the one place on the planet where the hungry sun is a *protector*:
   the owners die in it. Sh'kaar is fed by exposure; here exposure is safety, and the rite holds both
@@ -274,7 +274,7 @@ have room.
 - **Collision check:** the Shade Tithe (Sh'kaar) raises a roof to *make* shade at golden hour; this
   rite destroys shade at noon. The Anvil Gift gives a weapon to fire. Distinct.
 
-### R2. The Cut Cocoon, for Ta'Baa: consolation, by refusing to be held (PITCHED)
+### R2. The Cut Cocoon, for Ta'Baa: consolation, by refusing to be held (NOT CHOSEN, turn 1)
 
 - **Grounding:** the Webwork is the most rooted thing on the planet: roots that stole a river, a
   plantation, prey held in silk for days. Ta'Baa is the god of flight and refusal to root; the
@@ -345,3 +345,29 @@ rule that he is never assumed to remember.
 - **Testimony under the sun:** name one real past loss of the colony together under open sky, once
   per loss. Buys: remembrance. Costs: a medium build and colony-history bookkeeping.
 - **None:** the answer is recorded as none.
+
+## 8. Turn 1 rulings (2026-10-02) and ticket-out
+
+Decisions taken by question card 2026-10-02 07:17 PDT, except the sentence quoted under item 3, which the
+owner typed.
+
+| Card item | Ruling | Ticket |
+|---|---|---|
+| 1. Build first | **Fix the base first.** The free tier gets its creeping web front, the anchor / sheet web / gutter structures ported `RUT_` to `RM_`, and thrixweave; the heat kind is declared (`overhead`, finding 2); the spider's sun-scald counts tree shade through the existing shade grid (finding 3). Decision taken by question card. | Rows 0 and 0b: `WEBWORK_BASE_PORT_BUILD_1`, `WEBWORK_HEAT_SHADE_BUILD_1` |
+| 2. The giant | **The dead giant the spiders ate:** the wrapped urraveth skeleton bigger than a building, read bone by bone until you see what killed it (§5 idea 2). Decision taken by question card. The living morravell (§3) is **not chosen** and is not ticketed; "both" and "neither" were not chosen. | `WEBWORK_DEAD_GIANT_BUILD_1` |
+| 3. New marks | **The traction lance only** (§5 idea 1). Owner, typed: *"That traction lance was just suggested in another biome too. So now there are two places to get it from I guess. Lasso relative."* The other biome is the Sump's Blackline Capstan (`SUMP_CAPSTAN_TURRET_BUILD_1`, modelled on Melee Animation's lasso pull), so the lance is ticketed as the capstan's **sibling sharing one pull mechanism**, learnable from either biome's discovery, never a second implementation. Falling sheets (Sheetfall) and roots in the ship (the hull trellis) are **not chosen** and not ticketed. | `WEBWORK_TRACTION_LANCE_BUILD_1` |
+| 4. Rite | **The Felled Noon, for Sh'kaar** (§6 R1). Decision taken by question card. The Cut Cocoon (R2) and Testimony under the sun (§5 idea 5) are **not chosen**. Added to the register as B10 (`design/Jawa/salvation_rites_2026-10-01.md`); Sh'kaar is now at the four-rite cap. | `WEBWORK_FELLED_NOON_RITE_1` |
+
+FOUNDRY items, each `--caused-by WEBWORK_SCORING_SITTING_1`:
+
+| slate row | item |
+|---:|---|
+| 0 | `WEBWORK_BASE_PORT_BUILD_1` (web structures and front to `RM_`; free-tier thrixweave) |
+| 0b | `WEBWORK_HEAT_SHADE_BUILD_1` (heat kind `overhead`; sun-scald re-keyed to the shade grid) |
+| 1 | `WEBWORK_DEAD_GIANT_BUILD_1` (the urraveth remains) |
+| 2 | `WEBWORK_TRACTION_LANCE_BUILD_1` (sibling of `SUMP_CAPSTAN_TURRET_BUILD_1`) |
+| 5 | `WEBWORK_FELLED_NOON_RITE_1` |
+| 6 | art: `infrastructure/artpipe/art_lists/webwork_turn1_2026-10-02.csv` |
+
+Slate rows 3 and 4 are not ticketed (not chosen). `WEBWORK_FIRST_SCRIPT_1` should be written against row
+0's state.

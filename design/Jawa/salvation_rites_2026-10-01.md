@@ -183,9 +183,16 @@ to rule**.
 |---|---|---|---|---|---|---|
 | The Struck Glass | Zizzik | feeding, by breakage | a rough ring of lightning glass, stamped to pieces during any lightning storm; triggers a really powerful lightning blast at a random cell (the ship included) | Pyrelands, an old stamped ring on bare ash with a crater off across the plain | RULED (owner, 2026-10-01, revised by him, typed) | `design/Jawa/worldbuilding/biomes/pyrelands_bedazzle_review_2026-10-01.md` §6 R1 |
 
-**Count (by hand from the tables above, not an instrument): 101 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 8 + B7 22 + B8 2 + B9 1. **92 are the Salvation's** (B1 to B5, B7 to B9; the
-Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 90 distinct).
+### B10. Found rites of the Webwork (RULED)
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Felled Noon | Sh'kaar | feeding | the tallest living tree felled by hand at the hour of highest sun; participants stand bare-headed in the hole it leaves; on the Webwork the owners gather at the shade line and wait | Webwork, a great kollavane stump carved with a sun-mark, ringed by bleached ollathrix legs | RULED (owner, 2026-10-02, question card); build `WEBWORK_FELLED_NOON_RITE_1` | `design/Jawa/worldbuilding/biomes/webwork_bedazzle_review_2026-10-02.md` §6 R1 |
+
+**Count (by hand from the tables above, not an instrument): 103 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1. **94 are the Salvation's** (B1 to B5, B7 to B10; the
+Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 92 distinct). Sh'kaar
+now carries four found rites (the Snuffing, the Anvil Gift, the Shade Tithe, the Felled Noon): at the cap.
 
 **Per-god cap: four found rites, except Zizzik (owner, 2026-10-01, typed: *"Just leave them all for
 now"*).** Zizzik carries five, and none is cut: the controlled waking / Calling-Pyre (B4, ruled-merged),
