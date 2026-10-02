@@ -170,3 +170,9 @@ TRAP: a faced animal job whose prompt says 'top-down' is refused whole by artpip
 - 2026-10-01 BENCH: a full `git worktree add` checkout fails with write errors on /mnt/d; use `--no-checkout` + `sparse-checkout set --no-cone <dirs>`.
 
 - 2026-10-01 FOUNDRY: generated bridge map needs a player settlement (colony_found) or it is culled on save; load saves from the main menu, once; naming-dialog close hops the map; paused site no-ops ordered_job waitTicks; step_game_ticks needs timeoutMs; zsh needs ${=P} for multi-path vars.
+- Killing a wild Boomalope while paused ignites 25 fires within 5 ticks; clear wildlife with jawa/destroy_bulk filter=factionlessAnimals (no death, no fire), never per-id kill (FOUNDRY, 2026-10-01).
+- modcheck "everyone is dead" floods were Session.sweep killing the suite's own test colonists (Bomb 99999) plus explosion tests at the map centre where the colony spawns; the situational Watch registers fixtures and picks an anchor away from colonists (FOUNDRY, 2026-10-01).
+- A factionless wolf reads hostile:false in jawa/list_pawns, and isPlayer is true for the colony Husky; a colonist is isPlayer AND intelligence==Humanlike, a predator is faction None + Animal + proximity (FOUNDRY, 2026-10-01).
+- jawa/pawn_health remove with bodyPart can answer "no hediff on Leg" for a hediff listed on Leg; removing by def alone worked (FOUNDRY, 2026-10-01).
+- jawa/debug_settings takes field/value (not name); jawa/damage Cut 500 on a raider reported success and left it alive, pawn_force_incapacitate kill worked (FOUNDRY, 2026-10-01).
+- Codex consult route: codex.exe exec --ignore-user-config --ephemeral -m gpt-5.6-sol --sandbox read-only with the plan on stdin; without --ignore-user-config it reached for computer-control tools on the desktop (FOUNDRY, 2026-10-01).
