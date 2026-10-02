@@ -87,7 +87,7 @@ def break_scene():
 
 
 def sprawl_scene():
-    """Owner-excursion test bed (§8.11): real open floor, a rock outcrop and a pillar block to
+    """Owner-excursion test bed (§8.6): real open floor, a rock outcrop and a pillar block to
     avoid, runs laid one cell off a wall base (excess piles against it) and through a doorway."""
     W, Hh = 26, 16
     door = (9, 10)
@@ -125,3 +125,64 @@ SPRAWL_KEY = [
     ("K10..V10", "across open hall floor to the workbench: room for big loops and figure-eights"),
     ("K11..Q13", "south to the battery bank"),
 ]
+
+
+def nodal_scene():
+    """Nodal-cord test bed (design §8.2): the sprawl hall plus everything the nodal model has to
+    handle -- conduit that runs INSIDE a wall (J7 enters, runs inside the wall, emerges at L3), conduit that vanishes into
+    natural rock (D7 -> C7..A7), a doorway (J10), trunks to pile against, a deliberate one-cell gap
+    (N13: M13 live end, O13 dead end) and a run that leaves the room under the south wall (P14)."""
+    W, Hh = 26, 18
+    door = (9, 10)
+    walls = [c for c in _rect_perimeter(9, 2, 24, 14) if c != door]
+    rock = [(x, y) for x in range(0, 4) for y in range(0, 4)] + [(1, 4), (2, 4), (0, 4)]
+    rock += [(15, 6), (16, 6), (15, 7), (16, 7)]                     # rock pillar inside the hall
+    rock += [(x, y) for x in range(0, 3) for y in (6, 7)]              # a rock spur on the west edge
+    outdoor = [(x, 10) for x in range(3, 9)]                            # generator -> door
+    lamp_run = [(5, y) for y in range(5, 10)]
+    into_rock = [(4, 7), (3, 7), (2, 7), (1, 7), (0, 7)]                # vanishes under the rock spur
+    # G7..I7 outdoors, INTO the west wall at J7, up inside it and along the north wall, out at L3
+    in_wall = [(6, 7), (7, 7), (8, 7)] + [(9, y) for y in range(7, 1, -1)] + [(10, 2), (11, 2)]
+    north_base = [(x, 3) for x in range(11, 23)]
+    hall = [(x, 10) for x in range(10, 22)]
+    south = [(10, 11), (10, 12), (10, 13), (11, 13), (12, 13)]          # live side of the gap
+    dead = [(14, 13), (15, 13), (16, 13)]                               # gap at (13,13)
+    under_south = [(15, 14), (15, 15), (15, 16)] + [(x, 16) for x in range(16, 20)]
+    conduit = outdoor + [door] + lamp_run + into_rock + in_wall + north_base + hall + south + \
+        dead + under_south
+    return {
+        "name": "nodal", "w": W, "h": Hh,
+        "indoor": [(9, 2, 24, 14)], "walls": walls, "doors": [door], "rock": rock,
+        "machines": [
+            {"id": "generator", "kind": "generator", "x": 1, "y": 9, "w": 2, "h": 2, "hookup": (3, 10),
+             "source": True},
+            {"id": "heater", "kind": "heater", "x": 22, "y": 4, "w": 1, "h": 1, "hookup": (22, 3)},
+            {"id": "workbench", "kind": "workbench", "x": 22, "y": 9, "w": 2, "h": 3, "hookup": (21, 10)},
+            {"id": "battery", "kind": "battery", "x": 17, "y": 12, "w": 2, "h": 2, "hookup": (16, 13)},
+            {"id": "heater2", "kind": "heater", "x": 20, "y": 16, "w": 1, "h": 1, "hookup": (19, 16)},
+        ],
+        "lamps": [{"x": 5, "y": 4, "hookup": (5, 5)}],
+        "trees": [{"x": 7, "y": 11}, {"x": 12, "y": 16}],
+        "items": [(13, 11, "crate"), (19, 5, "components"), (4, 14, "steel")],
+        "conduit": conduit,
+    }
+
+
+NODAL_KEY = [
+    ("B9:C10", "generator (only source)"),
+    ("J10", "doorway: the cord is pinned through it"),
+    ("F7", "X junction; G7..I7 then INTO the west wall at J7; it runs inside the wall to L2 and comes out at L3"),
+    ("D7", "cable hole into the rock spur (conduit continues under rock, nothing drawn)"),
+    ("N13", "the GAP: M13 live end sparks, O13 dead end limp (battery side empty)"),
+    ("P14", "under the south wall: stubs P13|P14 and P15|P14, cord on to the heater U16"),
+]
+
+
+def gap_scene():
+    """Selftest bed: source -- run -- one-cell gap -- run -- consumer; a wall crossing on the far side."""
+    return mini([(1, 1), (2, 1), (3, 1), (5, 1), (6, 1), (7, 1), (7, 2), (7, 3), (7, 4), (8, 4)], 10, 6,
+                name="gap", walls=[(x, 3) for x in range(0, 10) if x != 2],
+                doors=[(2, 3)],
+                machines=[{"id": "gen", "kind": "generator", "x": 0, "y": 0, "w": 1, "h": 2, "hookup": (1, 1),
+                           "source": True},
+                          {"id": "load", "kind": "heater", "x": 9, "y": 4, "w": 1, "h": 1, "hookup": (8, 4)}])
