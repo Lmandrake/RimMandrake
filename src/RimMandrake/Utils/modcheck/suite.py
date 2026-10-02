@@ -77,6 +77,7 @@ class Component(object):
         self.checkpoints = []
         self.verdict = None         # PASS / FAIL / UNMEASURED, set on exit
         self.detail = ""
+        self.surprises = None       # watch.SurpriseAbort.summary() when a detector ended the component
 
     def as_dict(self):
         verdict = self.verdict
@@ -88,6 +89,7 @@ class Component(object):
             "detail": self.detail, "evidence": self.evidence,
             "screenshots": self.screenshots, "checkpoints": self.checkpoints,
             "shows": list(self.shows),
+            "surprises": self.surprises,
         }
 
 
@@ -107,11 +109,15 @@ class TestContext(object):
     """
 
     def __init__(self, session, anchor=(500, 500), debug=False,
-                 on_finding=None):
+                 on_finding=None, watch=None):
         self.session = session
         self.anchor = anchor
         self.debug = debug
+        # `watch` (modcheck.watch.Watch) is the situational envelope: bland map, tick budget, detector
+        # sweeps, surprise evidence. None keeps every verb exactly as it was before it existed.
+        self.watch = watch
         self.upstream_failed = False
+        self.upstream_reason = "upstream failed -- this chain's state is meaningless"
         self.components = []
         self._current = None
         self._on_finding = on_finding or (lambda component: None)
@@ -176,6 +182,8 @@ class TestContext(object):
         pid = row.get("id")
         if pid:
             self.session.track("pawn", pid, x=x, z=z)
+            if self.watch is not None:
+                self.watch.expect_fixture(pid, row.get("name"))   # the TEST made it: not a surprise
         self._record("spawn_pawn %s hostile=%s" % (kindDef, hostile), r)
         return pid
 
@@ -195,6 +203,8 @@ class TestContext(object):
         r = self.session.call("jawa/order_pawn", pawnId=pawn_id, x=tx, z=tz,
                               waitTicks=wait_ticks)
         self._record("walk_over %s -> (%d,%d)" % (pawn_id, tx, tz), r)
+        if self.watch is not None:
+            self.watch.charge_verb("walk_over")
         return r
 
     def order_to(self, pawn_id, dest, wait_ticks=1200):
@@ -207,6 +217,8 @@ class TestContext(object):
         r = self.session.call("jawa/order_pawn", pawnId=pawn_id, x=x, z=z,
                               waitTicks=wait_ticks)
         self._record("order_to %s -> %s" % (pawn_id, dest), r)
+        if self.watch is not None:
+            self.watch.charge_verb("order_to")
         return r
 
     def wait_ticks(self, n, _chunk=2000):
@@ -233,6 +245,11 @@ class TestContext(object):
         trust if the clock stalls."""
         if not self._guard():
             return None
+        if self.watch is not None:
+            # budgeted, chunked, swept every chunk; may raise watch.SurpriseAbort (component -> UNMEASURED)
+            r = self.watch.wait(self, n)
+            self._record("wait_ticks(%d) [watched] -> %d tick(s)" % (n, r["advanced"]), r)
+            return r
         start = self.session._ticks()
         max_calls = max(30, (n // 300) + 20)
         last = None
@@ -344,7 +361,30 @@ class TestContext(object):
             return None
         r = self.session.call(tool, **params)
         self._record("bridge_call %s" % tool, r)
+        if self.watch is not None:
+            if tool == "jawa/spawn_pawn":
+                # a pawn the test spawns through the escape valve is as much its own fixture as one made
+                # by spawn_pawn(): its injuries and its teardown death are not surprises (MEASURED live)
+                for row in (r or {}).get("pawns") or []:
+                    if row.get("id"):
+                        self.watch.expect_fixture(row["id"], row.get("name"))
+            self.watch.charge_verb("bridge_call:%s" % tool)
         return r
+
+    def expect(self, kind, matcher, until_tick=None):
+        """Declare something THIS chain causes on purpose, so the situational detectors do not call it a
+        surprise: a letter (`"letter", {"label_contains": "Wild droid"}`), a hostile
+        (`"hostile", {"id": pid}`), a condition, a fire. Only the PRESENCE alarm is suppressed. A no-op
+        when no watch is attached, so a script may declare it unconditionally."""
+        if self.watch is not None:
+            self.watch.expect(kind, matcher, until_tick=until_tick)
+
+    def check_surroundings(self):
+        """Sweep the detectors NOW (no game time spent). A script calls this right after a mutation it
+        wants proven clean. Returns the hits; raises watch.SurpriseAbort under the abort policy."""
+        if not self._guard() or self.watch is None:
+            return []
+        return self.watch.check()
 
     # ---------------------------------------------------------- asserts
     def _pawn_pos(self, pawn_id):
@@ -528,7 +568,17 @@ class _ComponentCtx(object):
         c = self.component
         if self.ctx.upstream_failed:
             c.verdict = UNMEASURED
-            c.detail = "upstream failed -- this chain's state is meaningless"
+            c.detail = self.ctx.upstream_reason
+        elif exc is not None and getattr(exc, "is_surprise_abort", False):
+            # A detector (or the harness's own budget/clock guard) ended the run. That is a statement
+            # about the ENVIRONMENT, never a verdict on the mod: UNMEASURED, evidence named, no finding.
+            c.verdict = UNMEASURED
+            c.surprises = exc.summary()
+            c.detail = "%s: %s" % (exc.kind, exc)
+            if c.surprises["evidence"]:
+                c.detail += " [evidence: %s]" % ", ".join(c.surprises["evidence"])
+            self.ctx.upstream_failed = True
+            self.ctx.upstream_reason = "a surprise ended this chain earlier: " + c.detail[:200]
         elif exc is not None:
             c.verdict = FAIL
             c.detail = "%s: %s" % (exc_type.__name__, exc)

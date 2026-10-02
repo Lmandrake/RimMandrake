@@ -443,10 +443,32 @@ def test_wildlife_near_colonist():
     ok(all(a["id"] != wolf["id"] for x in h2 for a in x.evidence["animals"]), "an expected animal is not reported")
 
 
+def test_fixture_exempt():
+    base = base_of(probe_raw("t0"))
+    snap = snap_of(probe_raw("E_after_raid_300"))
+    col = [p for p in snap["pawns"] if D.is_colonist(p) and not p["dead"]][0]
+    before = det(D.sweep(snap_of(probe_raw("D_after_kill_nostep")), base), "colonist_died")
+    ok(len(before) == 1, "sanity: the live kill fires colonist_died when nothing is expected")
+    exps = D.Expectations()
+    dead = [p for p in snap_of(probe_raw("D_after_kill_nostep"))["pawns"] if D.is_colonist(p) and p["dead"]][0]
+    exps.expect("fixture", {"id": dead["id"]})
+    exps.expect("fixture", {"name": dead["name"]})     # the Death LETTER names the pawn, not its id
+    after = D.sweep(snap_of(probe_raw("D_after_kill_nostep")), base, exps)
+    ok(not det(after, "colonist_died"), "a test-spawned fixture pawn's death is not a surprise")
+    ok(not det(after, "expected_contract_broken"), "a fixture has no contract: its death never breaks one")
+    bleed_snap = snap_of(probe_raw("B_after60", pawns_key="C_immediate_pawns"))
+    bled = det(D.sweep(bleed_snap, base), "colonist_downed")
+    ok(len(bled) >= 1, "sanity: the live Cut makes a colonist bleed -> colonist_downed fires")
+    exps2 = D.Expectations()
+    for h in bled:
+        exps2.expect("fixture", {"id": h.evidence["id"]})
+    ok(not det(D.sweep(bleed_snap, base, exps2), "colonist_downed"), "a fixture colonist's bleeding is not reported")
+
+
 def main():
     tests = (test_e1_seven_deaths, test_e1_pre_baseline_letters_do_not_fire, test_baseline_tick_boundary,
              test_e2_burn, test_e3_truncation, test_probe_clean_control, test_probe_kill, test_probe_fire,
-             test_probe_damage, test_probe_raid_and_expectations, test_probe_mental_break, test_wildlife_near_colonist,
+             test_probe_damage, test_probe_raid_and_expectations, test_probe_mental_break, test_wildlife_near_colonist, test_fixture_exempt,
              test_take_snapshot, test_dedup_and_severity, test_context_and_misc)
     for t in tests:
         try:

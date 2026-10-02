@@ -146,8 +146,14 @@ class Expectations(object):
     def live(self, kinds, tick):
         return [e for e in self.items if e.kind in kinds and self._live(e, tick)]
 
+    # A 'fixture' is something the TEST ITSELF spawned (a walker, a droid, a trap victim): exempt from the
+    # presence/death/downed alarms of the kinds below, and deliberately NOT in PAWN_KINDS, so its death or
+    # containment is never an `expected_contract_broken` (tests kill and capture their own subjects).
+    FIXTURE_EXEMPT = ("hostile", "pawn", "litter", "fixture")
+
     def matches(self, kind, entity, tick=None):
-        return any(e.match(entity) for e in self.live((kind,), tick))
+        kinds = (kind, "fixture") if kind in self.FIXTURE_EXEMPT else (kind,)
+        return any(e.match(entity) for e in self.live(kinds, tick))
 
 
 # ---- shared helpers -----------------------------------------------------------------
@@ -305,6 +311,8 @@ def colonist_downed(snap, baseline, exps, ctx):
     hits = []
     for p in snap["pawns"]:
         if not is_colonist(p) or p["dead"] or not p["spawned"]:
+            continue
+        if exps.matches("fixture", p, snap["tick"]):
             continue
         b = base.get(p["id"])
         was_down = b["downed"] if b else False

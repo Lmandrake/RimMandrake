@@ -12,6 +12,8 @@ Adversarial modes reproduce the lies the real bridge told us:
   - `list_truncate_at`  : `jawa/list_pawns` honours a limit and reports `truncated` (E3).
   - `kill_noop`         : `pawn_force_incapacitate kill` says success and changes nothing.
   - `settings_lie`      : `debug_settings set` says valueAfter but the value did not change.
+  - `part_mismatch`     : `pawn_health remove` with a bodyPart says 'no hediff on <part>' (measured).
+  - `kill_explodes`     : killing a Boomalope ignites 25 fires (MEASURED 2026-10-01).
   - `step_zero`         : `rimworld/step_game_ticks` completes 0 ticks (stall).
   - `step_truncate_to`  : a step completes fewer ticks than asked (E9).
 
@@ -19,6 +21,9 @@ Scheduled events (`at(tick, fn)`) fire as `step_game_ticks` advances, so a test 
 death INSIDE a wait. Pure python, no sockets; runs under python3 and python.exe.
 """
 import copy
+import os
+import struct
+import zlib
 
 
 def pawn_row(pid, kind="Colonist", faction="PlayerColony", is_player=True, hostile=False,
@@ -64,6 +69,9 @@ class FakeWorld(object):
         self.list_truncate_at = None
         self.step_truncate_to = None
         self._fid = 1000
+        self.shot_dir = None       # set by a test to make take_screenshot write real PNG files
+        self.litter = []           # rimdrive.Session surface used by TestContext
+        self.shots = 0
 
     # ----------------------------------------------------------- scripting
     def at(self, tick, fn):
@@ -168,9 +176,21 @@ class FakeWorld(object):
             return {"success": False, "message": "no such pawn"}
         before = p["dead"]
         if action == "kill" and "kill_noop" not in self.modes:
+            if "kill_explodes" in self.modes and p["kind"] == "Boomalope":
+                for i in range(25):                      # MEASURED: 25 fires within 5 ticks of one death
+                    self.add_fire(p["x"] + i % 5, p["z"] + i // 5)
             self.kill(pawn)
         return {"success": True, "action": action, "deadBefore": before, "deadAfter": p["dead"],
                 "changed": p["dead"] != before}
+
+    def _t_jawa_destroy_bulk(self, filter=None, dryRun=True, **_):
+        ids = [pid for pid, p in self.pawns.items()
+               if filter == "factionlessAnimals" and p["faction"] is None and p["intelligence"] == "Animal" and not p["dead"]]
+        if not dryRun:
+            for pid in ids:
+                del self.pawns[pid]
+        return {"success": True, "dryRun": dryRun, "filter": filter, "matchedCount": len(ids),
+                "destroyed": [{"thingId": i} for i in ids]}
 
     def _t_jawa_damage(self, thingId=None, damageDef="Cut", amount=10, **_):
         # the measured lie: success with a big amount, target may still be alive
@@ -195,6 +215,8 @@ class FakeWorld(object):
             return {"success": False, "message": "no such pawn"}
         hs = p["health"]["hediffs"]
         if action == "remove":
+            if "part_mismatch" in self.modes and bodyPart:
+                return {"success": False, "message": "Pawn has no hediff '%s' on %s." % (hediff, bodyPart)}
             keep = [h for h in hs if not (h["def"] == hediff and (bodyPart in (None, "") or h["part"] == bodyPart))]
             ok = len(keep) != len(hs)
             p["health"]["hediffs"] = keep
@@ -242,3 +264,67 @@ class FakeWorld(object):
         cleared = list(self.queue)
         self.queue = []
         return {"success": True, "clearedCount": n, "cleared": cleared}
+
+    # ------------------------------------------------ extra reads the snapshot takes (full tier)
+    def _t_jawa_alerts_list(self):
+        return {"success": True, "count": 0, "alerts": [], "ticksGame": self.ticks}
+
+    def _t_jawa_weather_get(self, **_):
+        return {"success": True, "readErrors": [], "weather": {"current": "Clear"}, "conditions": [],
+                "activeConditionCount": 0, "storyteller": {"def": "Cassandra", "difficulty": "Rough",
+                                                            "threatScale": self.difficulty["threatScale"],
+                                                            "allowBigThreats": self.difficulty["allowBigThreats"]}}
+
+    def _t_jawa_drain_log(self, limit=50, errorsOnly=False, **_):
+        return {"success": True, "messages": [], "totalInBuffer": 0, "ticksGame": self.ticks}
+
+    def _t_jawa_window_list_close(self, action="list", **_):
+        return {"success": True, "action": action, "count": 0, "windows": [], "ticksGame": self.ticks}
+
+    def _t_jawa_clear_ui(self, **_):
+        return {"success": True}
+
+    def _t_rimworld_jump_camera_to_cell(self, **_):
+        return {"success": True}
+
+    def _t_rimworld_take_screenshot(self, fileName="shot", **_):
+        self.shots += 1
+        if self.shot_dir is None:
+            return {"success": True, "path": None}
+        path = os.path.join(self.shot_dir, "%s.png" % fileName)
+        with open(path, "wb") as f:
+            f.write(make_png(1280, 720, self.shots))
+        return {"success": True, "path": path, "sizeBytes": os.path.getsize(path)}
+
+    def _t_jawa_spawn_pawn(self, kindDef=None, x=0, z=0, faction="hostile", count=1, **_):
+        self._fid += 1
+        pid = "%s%d" % (kindDef, self._fid)
+        hostile = faction == "hostile"
+        self.pawns[pid] = pawn_row(pid, kind=kindDef, faction=("TribeRough" if hostile else
+                                   ("PlayerColony" if faction == "player" else None)),
+                                   is_player=(faction == "player"), hostile=hostile, x=x, z=z)
+        return {"success": True, "spawnedCount": 1, "pawns": [{"id": pid, "name": pid}]}
+
+    # ------------------------------------------------ rimdrive.Session surface used by TestContext
+    def _ticks(self):
+        return self.ticks
+
+    def track(self, kind, id_, x=None, z=None):
+        self.litter.append({"kind": kind, "id": id_, "x": x, "z": z})
+
+    def things_at(self, x, z):
+        return []
+
+    def sweep(self):
+        return {"swept": 0, "left": []}
+
+
+def make_png(w, h, salt=0):
+    """A structurally valid PNG larger than the verifier's minimum, distinct per `salt`."""
+    def chunk(tag, data):
+        c = struct.pack(">I", len(data)) + tag + data
+        return c + struct.pack(">I", zlib.crc32(tag + data) & 0xffffffff)
+    raw = b"".join(b"\x00" + bytes(((x * 7 + y * 13 + salt * 31) & 0xff) for x in range(w * 3 // 2))
+                   for y in range(h // 2))
+    return (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
+            + chunk(b"IDAT", zlib.compress(raw, 0)) + chunk(b"IEND", b""))
