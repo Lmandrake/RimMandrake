@@ -1,0 +1,1 @@
+Claude Code WorktreeCreate hook: real stdin is cwd,name,prompt_id,session_id,transcript_path (docs say base_path/worktree_name — wrong); WorktreeRemove never fires (0 of 11 runs); the hook's parent pid is a dying sh -c, walk /proc to the claude process. Home: parallel-agent-worktrees.
