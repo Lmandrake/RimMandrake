@@ -53,6 +53,11 @@ def main(argv=None):
                        help="rimflow item id for a mod, MOD=ITEM_ID; "
                             "defaults to MODCHECK_<MOD>_RUN_1")
     p_run.add_argument("--debug", action="store_true")
+    p_run.add_argument("--situational", action="store_true",
+                       help="wrap every chain in the situational envelope: bland map, python-enforced "
+                            "tick budget, detector sweeps, evidence+screenshot on any surprise")
+    p_run.add_argument("--policy", choices=["abort", "record"], default="abort",
+                       help="what a surprise does: abort the component (UNMEASURED) or just record it")
     p_run.add_argument("--dry-run", action="store_true",
                        help="exercise the orchestration with no game, no "
                             "subprocess side effects (selftest-shaped)")
@@ -219,7 +224,8 @@ def main(argv=None):
         overrides = dict(kv.split("=", 1) for kv in args.item)
         mods = [(m, overrides.get(m, "MODCHECK_%s_RUN_1" % m.upper()))
                for m in args.mods]
-        results = runner.run(mods, debug=args.debug, dry_run=args.dry_run)
+        results = runner.run(mods, debug=args.debug, dry_run=args.dry_run,
+                             situational=args.situational, policy=args.policy)
         bad = [m for m, r in results.items() if not r["all_green"]]
         for m, r in results.items():
             print("%-20s %s" % (m, _verdict_line(r)))

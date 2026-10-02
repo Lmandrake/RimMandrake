@@ -232,6 +232,33 @@ def apply_judgement(summary, must_show_text, cannot_show_text=None,
     return summary
 
 
+FIXTURE_LEDGER = os.path.join(SHEET_DIR, "fixtures.json")
+
+
+def load_fixtures(ticks, path=None):
+    """Pawn ids earlier runs spawned and tore down on THIS game. Thing ids restart with every new game,
+    so a clock that went BACKWARDS means a new game and the ledger is discarded rather than risk an old
+    id exempting a real colonist."""
+    path = path or FIXTURE_LEDGER
+    try:
+        with open(path) as f:
+            d = json.load(f)
+    except (OSError, ValueError):
+        return set()
+    if ticks is None or d.get("tick") is None or ticks < d["tick"]:
+        return set()
+    return set(d.get("ids", []))
+
+
+def save_fixtures(ids, ticks, path=None):
+    path = path or FIXTURE_LEDGER
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump({"tick": ticks, "ids": sorted(ids)}, f)
+    os.replace(tmp, path)
+
+
 def _default_anchor(session):
     """MEASURED live 2026-09-12: a fixed guess (originally (500, 500)) was
     out of bounds on a 174x174 quicktest map and `get_cell_info` raising a
@@ -245,7 +272,7 @@ def _default_anchor(session):
 
 
 def run_suite(suite, session, debug=False, anchor=None, mod=None,
-              judge_runner=None):
+              judge_runner=None, situational=False, policy="abort"):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -257,6 +284,11 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
     `anchor`: (x, z) to build the test area around. Defaults to the current
     map's centre (queried live) rather than a hardcoded guess -- see
     `_default_anchor`.
+
+    `situational`: wrap every chain in a `watch.Watch` (bland map, python-enforced tick budget, a detector
+    sweep every chunk, evidence + screenshot on any surprise). OFF by default until the abort-only pilot has
+    run live; `policy` is 'abort' (a surprise ends the component UNMEASURED) or 'record' (diagnostics).
+    A chain whose map cannot be made bland records every component UNMEASURED, never FAIL against the mod.
 
     `mod`: the mod's folder name. Supplying it brings in the VISUAL half -- the
     floor is checked before any chain runs (an uncovered validated must-show
@@ -278,12 +310,55 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
         anchor = _default_anchor(session)
     findings = []
     chains_out = []
-    for name, fn in suite.chains:
-        t = TestContext(session, anchor=anchor, debug=debug,
-                        on_finding=findings.append)
+    watch_dir = os.path.join(SHEET_DIR, "surprises", time.strftime("%Y%m%dT%H%M%S"))
+    fixtures = set()      # pawns spawned and later torn down (this run, plus earlier runs on this game):
+    #                       their corpses are the harness's own litter, never contamination
+    if situational:
         try:
-            fn(t)
+            import clockgate  # noqa: E402
+            fixtures = load_fixtures(clockgate.read_ticks(session))
+        except Exception:     # noqa: BLE001 - no clock: start with none, never guess
+            fixtures = set()
+    for name, fn in suite.chains:
+        watch = None
+        if situational:
+            from watch import Watch  # noqa: E402
+            watch = Watch(session, anchor, watch_dir, mod=mod or suite.name, chain=name, policy=policy,
+                          expected_ids=sorted(fixtures))
+            watch.__enter__()
+        t = TestContext(session, anchor=anchor, debug=debug,
+                        on_finding=findings.append, watch=watch)
+        if watch is not None and not watch.bland:
+            t.upstream_failed = True
+            t.upstream_reason = ("could not establish a bland map -- not a verdict on the mod: %s"
+                                 % "; ".join(watch.report.problems)[:300])
+        try:
+            try:
+                fn(t)
+            except Exception as e:  # noqa: BLE001
+                # A check or a wait OUTSIDE any `with t.component()` (chain setup) used to kill the whole
+                # run on the first failure (Droidworks' salvage_on_death, MEASURED live 2026-10-01). A failed
+                # expectation or a detector abort there is a RESULT: record it as a component and go on.
+                # Any other exception is still a genuine script bug and still propagates.
+                from suite import Component, FAIL, UNMEASURED  # noqa: E402
+                surprise = getattr(e, "is_surprise_abort", False)
+                if not (surprise or type(e).__name__ == "ExpectationFailed"):
+                    raise
+                comp = Component("<chain setup, outside any component>", None, False)
+                if surprise:
+                    comp.verdict, comp.surprises = UNMEASURED, e.summary()
+                    comp.detail = "%s: %s" % (e.kind, e)
+                else:
+                    comp.verdict, comp.detail = FAIL, "%s: %s" % (type(e).__name__, e)
+                    findings.append(comp)
+                t.components.append(comp)
+                t.upstream_failed = True
+            if watch is not None and not t.upstream_failed:
+                watch.final()
         finally:
+            fixtures.update(l["id"] for l in getattr(session, "litter", []) if l.get("kind") == "pawn")
+            if watch is not None:
+                fixtures.update(watch.fixture_ids)
             # MEASURED live 2026-09-12: a chain that raises during its own
             # SETUP (before any `with t.component()`) used to skip this
             # entirely -- the pit it had already spawned sat on the map
@@ -292,8 +367,17 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             # and tear-down are absolute (spec 1b) even when the chain
             # itself is broken, not only when its components are.
             session.sweep()
+            if watch is not None:
+                watch.__exit__(None, None, None)
         chains_out.append({"name": name,
-                           "components": [c.as_dict() for c in t.components]})
+                           "components": [c.as_dict() for c in t.components],
+                           "situational": watch.summary() if watch is not None else None})
+    if situational:
+        try:
+            import clockgate  # noqa: E402
+            save_fixtures(fixtures, clockgate.read_ticks(session))
+        except Exception:     # noqa: BLE001
+            pass
     all_green = all(c["verdict"] == "PASS" or
                     (isinstance(c["verdict"], str) and c["verdict"].startswith("PASS"))
                     for chain in chains_out for c in chain["components"])
@@ -344,7 +428,7 @@ def file_findings(item_id, mod, findings, dry_run=False):
     return filed
 
 
-def run(mods, debug=False, dry_run=False):
+def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
     """`mods`: list of (mod_folder_name, item_id) pairs. Full orchestration
     per spec §2. `dry_run=True` skips every live/subprocess side effect and
     is how `selftest.py` exercises the sequencing without a game or a
@@ -406,7 +490,8 @@ def run(mods, debug=False, dry_run=False):
                 continue
             from rimdrive import Session  # noqa: E402
             with Session(lock=None) as s:
-                summary = run_suite(suite, s, debug=debug, mod=mod_folder)
+                summary = run_suite(suite, s, debug=debug, mod=mod_folder,
+                                    situational=situational, policy=policy)
             results[mod_folder] = summary
             sheet_path = write_sheet(mod_folder, summary)
             emit_verify(item_id, mod_folder, "min+%s" % mod_folder, summary,
