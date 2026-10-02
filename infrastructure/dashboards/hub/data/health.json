@@ -1,30 +1,81 @@
 {
- "generatedAt": "2026-10-01T06:55:00Z",
+ "generatedAt": "2026-10-01T07:25:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 1025141,
-  "sha256_12": "c52ade658063"
+  "bytes": 1003664,
+  "sha256_12": "4ec835e471f6"
  },
- "head": "b935d6e0e",
+ "head": "394f3a41a",
  "counts": {
   "red": 22,
   "blue": 1619,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 2744,
-  "total": 4385
+  "green": 1810,
+  "grey": 962,
+  "unmeasured": 0,
+  "total": 4413
  },
  "loc": {
   "red": 4566,
-  "blue": 517568,
-  "green": 0,
-  "grey": 0,
-  "unmeasured": 720749,
-  "total": 1242883
+  "blue": 517494,
+  "green": 397929,
+  "grey": 329133,
+  "unmeasured": 0,
+  "total": 1249122
  },
  "reviewEntries": 3911,
- "recidivists": [],
+ "recidivists": [
+  {
+   "path": "src/RimUtinni/Doctrine/About/About.xml",
+   "loc": 119,
+   "cycles": 6
+  },
+  {
+   "path": "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_ThoughtDef.xml",
+   "loc": 143430,
+   "cycles": 4
+  },
+  {
+   "path": "src/RimStarWars/Armoury/Patches/Armour_Leather.xml",
+   "loc": 3095,
+   "cycles": 4
+  },
+  {
+   "path": "src/RimMandrake/Utils/artpipe/common.py",
+   "loc": 460,
+   "cycles": 4
+  },
+  {
+   "path": "src/RimMandrake/EnvironmentalHazards/About/About.xml",
+   "loc": 91,
+   "cycles": 4
+  },
+  {
+   "path": "src/RimUtinni/PyrelandsMechanics/About/About.xml",
+   "loc": 35,
+   "cycles": 4
+  },
+  {
+   "path": "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Opee.xml",
+   "loc": 460,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimMandrake/Utils/install_wt_seat_profiles.py",
+   "loc": 378,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimMandrake/Greentide/About/About.xml",
+   "loc": 133,
+   "cycles": 3
+  },
+  {
+   "path": "src/RimMandrake/ShipVermin/About/About.xml",
+   "loc": 96,
+   "cycles": 3
+  }
+ ],
  "standalone": "Transient/codebase_health_artifact.html",
- "measurementOk": false,
- "headline": "THE RUN COULD NOT MEASURE: `git status` could not be read \u2014 every file's review/dev state reads UNMEASURED this run. Do not read `counts` (including green=0) as a health picture; rerun once git is available."
+ "measurementOk": true,
+ "headline": "OK: measured 4413 files (1810 clean, 962 dirty, 0 unmeasured)."
 }
