@@ -33,10 +33,10 @@ git add/commit <explicit paths>  →  git pull --rebase origin main  →  git pu
 
 ## Subagents
 
-- `isolation: worktree` takes a pool slot through the `WorktreeCreate` hook (`worktree_pool.py`). Pool full → the hook errors naming the holders; queue the work, or run unisolated when it is a one-path edit.
-- A helper in a slot runs `./publish`, which pushes `submit/<seat>/<name>` — never `main`. The seat lands them: `python3 src/RimMandrake/Utils/land_submissions.py` (rebases on a throwaway ref, pushes atomically, never touches the seat's tree; a conflict leaves the submit ref and exits 1).
-- A slot whose owner died is rescued on the next allocation into a local ref `refs/rescue/<seat>/…` (working tree, index and unpushed commits); `worktree_pool.py rescue-list` shows them. Rescue refs are never pushed.
+- 🔴 **Worktrees are OFF** (owner, 2026-10-02, by card). Never `isolation: "worktree"`, never `git worktree add`; `.claude/hooks/block_worktrees.py` refuses both and the WorktreeCreate hook refuses `claude --worktree`. Why: worktree agents duplicated whole checkouts and stranded work on side branches.
+- A writing helper edits in its window's clone; the window commits explicit paths with `./publish`. Writing helpers run one at a time when their paths could overlap.
 - Brief helpers: `reset --hard`, `checkout --`, `stash` on paths they did not create are forbidden; a conflict is reported, never cleared.
+- The drained worktree work is under `archive/*` tags on origin (`git checkout <tag> -- <path>` restores a file); `design/RimMandrake/git_migration_drain_2026-10-02.md` is the census.
 
 ## Generated and per-writer state (nothing shared to conflict on)
 

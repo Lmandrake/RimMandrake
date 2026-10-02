@@ -225,14 +225,10 @@ run** ("exceeds the dimension limit for many-image requests"), not just fail
 that one read. Check dimensions first and view a downscaled copy, keeping the
 full-size original as the reference asset.
 
-**A worktree agent hands in; the seat lands.** `isolation: "worktree"` takes a pool slot
-(2 per seat, `/home/mandrake/rm/pool/<seat>/`, via the WorktreeCreate hook). End the brief with
-`./publish -m "…" <paths>`, which pushes `submit/<seat>/<name>` — a helper never pushes `main`.
-The seat runs `python3 src/RimMandrake/Utils/land_submissions.py`. Pool full → the hook errors
-naming the holders: queue the work, or run unisolated for a one-path edit. Brief: `reset --hard`,
-`checkout --` and `stash` are forbidden; a conflict is reported back, never cleared. A dead
-agent's slot is snapshotted to a local `refs/rescue/<seat>/…` ref on the next allocation
-(`worktree_pool.py rescue-list`). Full account: `design/RimMandrake/GIT_WORKFLOW.md`.
+**Worktrees are OFF** (owner, 2026-10-02): never pass `isolation: "worktree"` — `block_worktrees.py` refuses it.
+A writing helper edits in the window's own clone and the window commits its paths with `./publish`; run
+writing helpers one at a time when their paths could overlap. Brief: `reset --hard`, `checkout --` and
+`stash` are forbidden; a conflict is reported back, never cleared.
 
 ## Limits that actually exist
 
