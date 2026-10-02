@@ -1,8 +1,8 @@
 # Nine Faults — the first permanent-choice rite (design exploration, 2026-10-01)
 
-Item: `NINE_FAULTS_PERMANENT_RITE_1`. Status: DRAFT exploration for BENCH; nothing ruled, nothing built.
+Item: `NINE_FAULTS_PERMANENT_RITE_1`. Status: **RULED** (owner, 2026-10-01), except the Left Behind's cost (§6), which BENCH is asking him now. Nothing built.
 
-## THE RULED DESIGN (owner, 2026-10-01, rounds 3 and 4)
+## THE RULED DESIGN (owner, 2026-10-01, rounds 3 and 4, and the round-4 rulings)
 
 ### 1. His rulings
 
@@ -28,6 +28,11 @@ god, everywhere (`GODS_NOT_EVIL_SWEEP_1`, done in the same pass as this doc).
 5. **The player chooses where the ship lands, never a god.** No god is evil, and no god is the
    clan's enemy.
 6. **No breakdown is ever redirected or soaked up.** Nothing broken is carried along.
+
+**Round-4 rulings** (ledger `bd9e58e0f`): by card, **Rekko loses the favour Zizzik gains**; by card,
+**Nine Faults replaces the Gift of Working Things** (that devotion is deleted and its substance is
+folded in below); and on signs, typed: *"The Narrator speaks of the gods with full living color. He
+seems closer to them than to the "strange creatures that dwell within the vessel now.""*
 
 
 ### 2. Nine Faults (Zizzik): breaking the newly found machine
@@ -66,9 +71,14 @@ neglected machine wants the second hand that will wake it"*, and this one will n
 transfer is sized by the find's market value (Ninefold's Small 3 to Large 15), equal out of Rekko
 and into Zizzik, and the outcome quality scales it.
 
-**What it is not.** The clan does not offer its own working machine; that is the Gift of Working
-Things (`devotional_sacrifice_catalog.md`, Zizzik), and whether the two stay separate is Q1.
-Breakdowns are not redirected, and nothing broken is carried.
+**It is Zizzik's burnt offering.** Nine Faults is the one way the clan answers his M demand,
+*"a burnt offering (destroy one working thing)"* (`divine_satiation_engine.md` §⑦), and calms the
+curse that waits on it. It pays **the largest single bank payment outside a full rite**. It is a
+devotion the clan can perform whenever a fresh find stands on the map, so it is always available.
+Its sign: the nine bulbs fail, and the smoke from the burnt-out hulk curls *against* the
+ventilation draft.
+
+**What it is not.** Breakdowns are not redirected, and nothing broken is carried.
 
 
 ### 3. Leaving working things behind is Ta'Baa's: the Left Behind
@@ -140,10 +150,14 @@ Nine gods and about fifteen tilts in all. **Not in the first pass:** raids and t
 coarse to stay subtle), quests, and the M and L boons. Those are later steps once this one is
 felt in play.
 
-**What the Jawa have instead of evidence.** Their own rites and devotions, the Narrator's landing
-report of standings, and the world itself. Question Q3 asks whether there should also be a rare
-aside: one unattributed line in a vanilla letter, for example *"Some of the clan made Ishko's
-sign."*
+**What the Jawa have instead of evidence: the Narrator.** The world gives them almost no proof.
+The Narrator's own voice is the opposite. Owner, 2026-10-01, typed: *"The Narrator speaks of the
+gods with full living color. He seems closer to them than to the "strange creatures that dwell
+within the vessel now.""* So his letters and landing reports speak of the nine vividly and
+intimately, as kin he knows: their moods, their appetites, their quarrels. He speaks of the
+colonists at a slight remove, as the strange creatures now dwelling in the vessel. The certainty
+the Jawa feel comes from his voice, never from a labelled effect in the world. He still never
+attributes a specific event to a god as proof. Voice authority: `design/Jawa/narrator_corpus/narrator_frame.md` §1.
 
 
 ### 5. What Ninefold needs
@@ -172,27 +186,14 @@ settings rule).
 
 ### 6. Questions for the owner
 
-**Q1. Who loses favour when Nine Faults breaks a fresh find, and is it the same thing as the Gift of
-Working Things?** The proposal is that breaking a machine the clan has just found takes favour from
-Rekko and gives it to Zizzik. Rekko is the god of restoring things, and a find is his by nature:
-the machine he would have woken. The other option is the machine's own god by kind: Ohm for a
-generator, Oomo for a water machine, and so on. Separately, an older devotion, the Gift of Working
-Things, already has the clan destroy one of its own working machines for Zizzik. Should that stay
-as a separate act (your own machine) beside Nine Faults (a fresh find), or be folded into Nine
-Faults?
+**Open, being asked by BENCH now: when a working machine is left behind for Ta'Baa, who should
+lose?** The Left Behind is the existing Ta'Baa devotion: at launch the clan leaves one valuable
+thing behind, forever. The proposal narrows it to working machines and makes it a transfer: Ta'Baa
+gains, and the god whose work the machine did loses (Ohm for a generator, Oomo for a water
+machine, Mob'Unloo for a comms console). The alternative is that leaving things behind only
+pleases Ta'Baa and costs no other god. §3's table stands only if he picks the first.
 
-**Q2. When a working machine is left behind for Ta'Baa, who should lose?** The Left Behind is the
-existing Ta'Baa devotion: at launch the clan leaves one valuable thing behind, forever. The
-proposal narrows it to working machines and makes it a transfer. Ta'Baa gains, and the god whose
-work the machine did loses: Ohm for a generator, Oomo for a water machine, Mob'Unloo for a comms
-console. Is that right, or should leaving things behind only please Ta'Baa and cost no other god?
-
-**Q3. Should the gods leave any sign at all?** Favour will only tilt the odds. More traders when
-Mob'Unloo is pleased, fewer short circuits when Ohm is, more eclipses when Ishko is, and so on, at
-most a third more or less often. Nothing in the game would say a god did it. The question is
-whether that is enough, or whether the Narrator should very occasionally add one line to an
-ordinary letter, unattributed, such as *"Some of the clan made Ishko's sign."* That would be the
-nearest thing to evidence the Jawa ever get.
+Everything else in this design is ruled (§1).
 
 
 ---
@@ -291,11 +292,6 @@ Searched on origin/main `b0adb7541`.
   lands all at once. His M demand is *"a burnt offering (destroy one working thing)"*. The
   controlled-waking rite (register B4, its Leaning Scrub form the Calling-Pyre) spends the bank
   early.
-- **The Gift of Working Things** (`design/Jawa/devotional_sacrifice_catalog.md`, Zizzik):
-  *"select one FUNCTIONING machine and destroy it at the shrine-heart … BUYS: the largest single
-  bank payment available outside a full rite"*, with a small `↓Rekko` on every gift. **This is
-  Nine Faults' act without the rite.** Round 2 separates them: Nine Faults' consequence is the
-  favour transfer while the thing stays broken, not the machine's fate.
 - **Sacred scrap** (`design/Jawa/worldbuilding/ideoligion/`, the ship's destroyed factory machines
   may not be touched until repaired) and **Rekko** (*"scrapping the repairable"* grieves him).
   Breaking a good machine on purpose is a deliberate war with Ohm's and Rekko's pieties, which
@@ -312,7 +308,7 @@ can be made irreversible, from smallest to largest.
 
 | What is fixed for good | Example | Reach | Feels game-changing? |
 |---|---|---|---|
-| A thing destroyed | the vessel burned | one object | no: the Gift of Working Things already does this, repeatably |
+| A thing destroyed | the vessel burned | one object | no: a repeatable devotion could do this |
 | A thing changed and kept | the vessel stands forever as an unrepairable fault-board | one object, one map or ship | a little: it is a scar you walk past |
 | A mark on the clan | every Jawa present carries "was there at the Nine Faults" for life | the people | moderately: a memory with no end date |
 | A god's standing | Ohm will never again fully trust this clan; Zizzik's wake is capped | the pantheon arithmetic, campaign-wide | **yes**: it changes every later reckoning |
