@@ -35,20 +35,35 @@ hybrid**; **ban 7, no engineered organisms**.
    stands alone). C# types the bodies name are listed first; a type from an assembly the free mod does not
    load is a discarded def (CLAUDE.md, debug-game trap 3), so measure each `<thingClass>`/comp class and port
    or replace it.
-2. **Art: already done, wire it, queue nothing.** MEASURED 2026-10-02 with `artpipe_state.py find` (probe
-   `korrum` hits): finished three-facing renders in the artpipe `done/` and `_artsrc/` for `rot_thozzik_*`,
-   `rot_thozzikqueen_*`, `rot_illoth_*`, `rot_brullith_*`, `rot_brogg_*`, `rot_skerrith_*` and
-   `rot_fungalweevil_v2_*` (the grellik). All five thozzik forms use the thozzik / thozzik-queen sets. Deploy
+2. **Art: seven sets are done, three are redrawn.** MEASURED 2026-10-02 with `artpipe_state.py find` (probe
+   `korrum` hits): finished three-facing renders in the artpipe `done/` and `_artsrc/` for
+   `rot_thozzikqueen_*`, `rot_brullith_*`, `rot_skerrith_*` and `rot_fungalweevil_v2_*` (the grellik): deploy
    those PNGs into the mod's `Textures/` and point each `texPath` at them (texture binds by texPath).
-   ⚠ The thozzik, illoth and brogg renders show plain animals (their prompts: a wasp, a moth, a camel-llama);
-   whether to redraw them as hybrids is an open owner question, not this item's work.
+   **The thozzik, illoth and brogg get NEW art** (owner, typed 2026-10-02 11:12 PDT: *"I like that they were
+   hybridized, but NOT terrain animals hybridized. Our own custom creatures from other biomes."*): each is a
+   fungus hybrid of one of our own invented creatures from another biome, never a wasp, moth or camel-llama.
+   Jobs filed from `infrastructure/artpipe/art_lists/rot_hybrid_redraw_2026-10-02.csv` (ids `rot_thozzik_b`,
+   `rot_illoth_b`, `rot_brogg_b`, three facings each): deploy those, not the old `rot_thozzik_*`, `rot_illoth_*`,
+   `rot_brogg_*`. All five thozzik forms use the new thozzik set; the queens (`rot_thozzikqueen_*`, still a
+   wasp-shaped render) take the new thozzik look scaled up: **a queen redraw from the same source creature is
+   owed** (add `kurreth`-queen rows to the csv when the thozzik render is accepted).
+   The pairings, read from creature descriptions in `src/`:
+   - **thozzik = a fungus hybrid of the `RM_Kurreth`** (Fever Wood: a glossy red-black segmented dog-sized hive
+     ant with forward-held mandibles; its queen `RM_KurrethQueen` is the thozzik queen's source). Fits a hive
+     creature that farms a fungus inside itself.
+   - **illoth = a fungus hybrid of the `RM_Vrisk`** (Blue Desert: a kite-thin, near-flat flier that rides haze
+     with never-still wingtips). Fits a flying lantern-lure creature; no moth.
+   - **brogg = a fungus hybrid of the `RM_Dorrak`** (Blue Desert: a six-legged slab plated like a boiler that
+     grazes by closing its whole face over a plant). Fits a heavy hunched grazer carrying a mycelial store.
 3. **Descriptions rewritten (ban 2, ban 7), franchise-free:**
-   - **thozzik:** a hive wasp whose toxin sacs are fruiting bodies of a fungus it farms inside itself; the gas
-     it vents when hurt is that fungus's spore cloud. Keep the hive and queen loyalty.
-   - **illoth:** a moth whose glowing lure is a living fungal lantern grown from its abdomen, its dusty wing
-     scales a spore powder.
-   - **brogg:** a hunchbacked grazer whose hump is a mycelial store, its shaggy coat half hair and half
-     hanging hyphae. **Delete** *"closely related to camels and llamas"*.
+   - **thozzik:** a hive creature built on the kurreth's armoured segmented ant body, whose toxin sacs are
+     fruiting bodies of a fungus it farms inside itself; the gas it vents when hurt is that fungus's spore
+     cloud. Keep the hive and queen loyalty. No wasp.
+   - **illoth:** a flat kite-bodied skimmer built on the vrisk, its wing membranes fungal gills dusted with
+     spore powder, a living fungal lantern hanging from its underside as the lure. No moth.
+   - **brogg:** a heavy plated six-legged grazer built on the dorrak, its back a mycelial-store mound under
+     layered bracket fungus, its edges shaggy with hanging hyphae. **Delete** *"closely related to camels and
+     llamas"*.
    - **brullith:** **delete the lab origin** (*"created from a mix of a failed genetics experiment"*); it is a
      natural amalgam of beast and fungus. Keep its gentle-but-dangerous body.
    - **grellik, skerrith:** keep the descriptions (already hybrid).
@@ -82,7 +97,7 @@ substring) and an offline XML parse, recorded as cases in `THE_ROT_FIRST_SCRIPT_
 - `RM_TheRot`'s merged `wildAnimals`, parsed as XML elements, contains all ten `RM_` names; the campaign
   patch file, parsed per operation, adds none of the ten `RSW_` names to `RM_TheRot` and still adds
   `RSW_ShiroTrap` and `Snoruuk`; no `<Operation>` node in it carries a `MayRequire` attribute.
-- Every `RM_` description in the ten (read from the loaded def) contains no `camel`, `llama`,
+- Every `RM_` description in the ten (read from the loaded def) contains no `wasp`, `hornet`, `moth`, `camel`, `llama`,
   `genetics`, `experiment` or `Force`; each of thozzik, illoth, brogg contains `fung` or `mycel` or `spore`.
 - `RM_Illoth`: `MaxFlightTime` > 0 (stat read on a spawned pawn) and `Pawn_FlightTracker.CanEverFly` = true
   through a debug `[Tool]` state read.
