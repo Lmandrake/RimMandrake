@@ -25,7 +25,7 @@ the offered rites, his own tar-offering rite instead. FOUNDRY: `SUMP_FREE_TIER_M
 `SUMP_KETHREL_BUILD_1`, `SUMP_CAPSTAN_TURRET_BUILD_1`, `LASSO_CHERRYPICKER_REMOVAL_1`. Art: 17 jobs
 from `infrastructure/artpipe/art_lists/sump_bedazzle_cast.csv`. The Tar Offering rite is ruled
 (review doc §6, §9): two rites, the Sinking to Ishko (its Empire effect pushes the next Imperial probe or raid 5x
-further away and never lowers Heat) and Mob'Unloo's Price (GPT: `Transient/bedazzle_gpt_enrich_2026-10-01/sump_tar_rite.md`).
+further away and never lowers Heat; other raids also lull on this map) and Mob'Unloo's Price (GPT: `Transient/bedazzle_gpt_enrich_2026-10-01/sump_tar_rite.md`).
 
 ## spec
 
