@@ -143,10 +143,13 @@ are the ways a well-run clan pays the entropy tax on its own schedule._
 
 ## ⑥ Ta'Baa the Unrooted
 
-- **The Left Behind** — ACT: at launch, deliberately leave one VALUABLE thing
-  on the old map — chosen, named at the launch-rite, abandoned. · COST: the
-  thing, forever. · BUYS: the launch spike enlarged; the next rooted-clock
-  runs slower (you have proven you can let go). · SIGN: from the climbing
+- **The Left Behind** — ACT: at launch, deliberately leave one WORKING machine
+  on the old map, off the ship — marked to be left, named at the launch-rite,
+  abandoned. · COST: the machine, forever, and Ohm's favour (Ta'Baa gains what
+  Ohm loses, sized by the machine's value, whatever the machine; Rekko is
+  unaffected, since it is salvage made for another). · BUYS: the launch spike
+  enlarged; the next rooted-clock runs slower (you have proven you can let
+  go). Full design: `design/Jawa/nine_faults_permanent_rite_2026-10-01.md` §3. · SIGN: from the climbing
   ship, the left thing glints once, like a wave.
 - **The Rehearsal** — ACT: a fuel-burning liftoff-and-return with no
   destination — the engines proven, the clan drilled. · COST: the fuel,
