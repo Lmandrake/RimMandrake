@@ -246,7 +246,7 @@ Per `design/Jawa/salvation_rites_2026-10-01.md` (e): found at a site with a reas
 learned through the Rites tab's found-rites row (`mandrake.rut.rites`), performable anywhere after.
 Campaign tier. The binding rulings: **no god is evil**; **a rite gives cohesion, never a power**;
 **favour shows only through events, world state and subtle odds**, voiced by the Narrator; a rite's
-effect may be a dramatic, risky world event. Four-rite cap per god (Zizzik waived).
+effect may be a dramatic, risky world event. Five-rite cap per god (raised from four 2026-10-02, card).
 
 **Not taken, and why:** offering brimlock water back (Oomo is at its cap of four found rites); a vigil
 against the shadow (the Abyss owns every darkness rite); anything with the owners as a party to it

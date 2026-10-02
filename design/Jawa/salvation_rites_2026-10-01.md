@@ -201,21 +201,18 @@ yet. Likely one with open sight lines."* The Open Boast's home, decision taken b
 | The Ceded Room | Ozzik | venting | a finished room built outside the ship, above an impressiveness floor, ceded with everything in it: doors held open, cooling off, wild seed sown; nothing reclaimed for a season; works better the better the room | Greentide, a grown-through mud dome with a lintel scratched *we were proud of this* | RULED (owner, 2026-10-02, typed); build `GREENTIDE_CEDED_ROOM_RITE_1` | `design/Jawa/worldbuilding/biomes/greentide_bedazzle_review_2026-10-02.md` §6 R1 |
 | The Open Boast | Ozzik | feeding | each participant declares an ambition and the congregation answers with the colony's name; days later a warned hostile challenge may arrive; once per colony | Warscar, a broken reviewing rostrum on a slag terrace with long sight lines, its rail gouged with names | RULED (owner, 2026-10-02, typed; home by question card); build `WARSCAR_OPEN_BOAST_RITE_1` | `design/Jawa/worldbuilding/biomes/greentide_bedazzle_review_2026-10-02.md` §5 idea 4 |
 
-⚠️ **Ozzik is now over the four-rite cap: five found rites** (the Lightless Burial, B2; the Salted
-Keeping, B7, pitched; the Flawed Masterwork, B7, ruled-kept; the Ceded Room and the Open Boast, B11). The
-review (§6) counted Ozzik at three with one slot left, and the turn-1 card did not put the cap to the
-owner; he chose both. Only Zizzik carries a waiver. Nothing is cut here: whether Ozzik is waived like Zizzik or one of
-the five (the pitched Salted Keeping is the only one not yet ruled) gives way is his decision.
+Ozzik carries five found rites (the Lightless Burial, B2; the Salted Keeping, B7, pitched; the
+Flawed Masterwork, B7, ruled-kept; the Ceded Room and the Open Boast, B11): at the cap.
 
 **Count (by hand from the tables above, not an instrument): 105 rows.** B1 5 + B2 5 + B3 23 +
 B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2. **96 are the Salvation's** (B1 to B5, B7 to B11;
 the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 94 distinct). Sh'kaar
-now carries four found rites (the Snuffing, the Anvil Gift, the Shade Tithe, the Felled Noon): at the cap.
+now carries four found rites (the Snuffing, the Anvil Gift, the Shade Tithe, the Felled Noon): one under the cap.
 
-**Per-god cap: four found rites, except Zizzik (owner, 2026-10-01, typed: *"Just leave them all for
-now"*).** Zizzik carries five, and none is cut: the controlled waking / Calling-Pyre (B4, ruled-merged),
-Nine Faults (B8, ruled), the Struck Glass (B9, ruled), the Kept Mistake (B7, pitched), the Capping
-(B7, pitched). B6's 8 are other faiths' rites or unassigned biome pitches,
+**Per-god cap: five found rites** (decision taken by question card 2026-10-02 09:23 PDT, raising it from
+four when Ozzik reached five). Zizzik carries five, all kept (owner, 2026-10-01, typed: *"Just leave them all for
+now"*): the controlled waking / Calling-Pyre (B4, ruled-merged), Nine Faults (B8, ruled), the Struck Glass
+(B9, ruled), the Kept Mistake (B7, pitched), the Capping (B7, pitched). B6's 8 are other faiths' rites or unassigned biome pitches,
 one ruled out. The calling-pyre is a form of B4's controlled waking, so it has no row of its own.
 
 ## (c) The four Abyss rites

@@ -323,7 +323,7 @@ Per `design/Jawa/salvation_rites_2026-10-01.md` (e): found at a site with a reas
 learned through the Rites tab's found-rites row (`mandrake.rut.rites`), performable anywhere after.
 Campaign tier. The binding rulings: **no god is evil**; **a rite gives cohesion, never a power**;
 **favour shows only through events, world state and subtle odds**, voiced by the Narrator; a rite's
-effect may be a dramatic, risky world event. Four-rite cap per god (Zizzik waived).
+effect may be a dramatic, risky world event. Five-rite cap per god (raised from four 2026-10-02, card).
 
 **Cap count, by hand from the register plus the 2026-10-02 ledger rulings:** at four, Oomo (Sunning,
 Chime Vigil, Filtered Cup, Unspilled March), Ohm (Engine Hour, Last Track, Deserter's Welcome, the
