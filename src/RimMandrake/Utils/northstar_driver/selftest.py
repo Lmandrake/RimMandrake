@@ -213,8 +213,11 @@ def main():
                          os.path.join(cli.ROOT, "src", "RimMandrake", "Graffiti", "northstar_plan.py")])
         d = json.load(open(out2))
         check("graffiti mock plan: not refused, all 10 expected bars rolled up",
-              code in (0, 1) and len(d["bars"]) == 10 and len(d["expected"]) == 10,
+              code in (0, 1) and len([b for b in d["bars"] if not b.get("functional")]) == 10
+              and len(d["expected"]) == 10,
               "code=%s bars=%d expected=%d" % (code, len(d["bars"]), len(d["expected"])))
+        check("graffiti: functional suite rows reach the result too",
+              any(b.get("functional") for b in d["bars"]), str(len(d["bars"])))
         check("graffiti: every cannot-show id is claimed", cli.unclaimed_cannot_show("Graffiti") == [])
 
     # overhead
