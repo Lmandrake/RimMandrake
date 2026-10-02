@@ -1,0 +1,756 @@
+{
+ "name": "FlowWorks__toggle_superdeep_shooting__colonist_injured_unexpectedly__t614230__001",
+ "when_utc": "2026-10-02T04:56:36Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Carlotta gained 3 new hediff(s) (BloodLoss,Bruise,MissingBodyPart); cause_hint=unknown",
+   "evidence": {
+    "id": "Human36959",
+    "name": "Carlotta",
+    "new_hediffs": [
+     {
+      "def": "MissingBodyPart",
+      "label": "Destroyed (fresh)",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (bolt-action rifle barrel)",
+      "part": "Foot",
+      "severity": 3.00863552
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.000960000034
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss",
+     "Bruise",
+     "MissingBodyPart"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    170,
+    242
+   ],
+   "fingerprint": "colonist_injured:Human36959:BloodLoss@None,Bruise@Foot,MissingBodyPart@Toe"
+  }
+ ],
+ "snapshot": {
+  "tick": 614230,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human36959",
+    "name": "Carlotta",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 170,
+    "z": 242,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "MissingBodyPart",
+      "label": "Destroyed (fresh)",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (bolt-action rifle barrel)",
+      "part": "Foot",
+      "severity": 3.00863552
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.000960000034
+     }
+    ],
+    "bleedRate": 0.96,
+    "painTotal": 0.137607947,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Guerrero",
+    "arrivalTick": 528320,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Guerrero",
+     528320
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for BB",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for BB",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: BB",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: BB",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Bryan",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Bryan",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bryan",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bryan",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Hairy",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Hairy",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hairy",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hairy",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Poss",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Poss",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Poss",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Poss",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Sautereau",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Sautereau",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sautereau",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sautereau",
+     529640
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     529640
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Shaman merchant from People of \u00d1oban",
+    "arrivalTick": 529700,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Shaman merchant from People of \u00d1oban",
+     529700
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Mispy",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Mispy",
+     529820
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mispy",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mispy",
+     529820
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Clark",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Clark",
+     529820
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Clark",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Clark",
+     529820
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Beasley",
+    "arrivalTick": 529880,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Beasley",
+     529880
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Beasley",
+    "arrivalTick": 529880,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Beasley",
+     529880
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 537684,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     537684
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Dougherty",
+    "arrivalTick": 603260,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Dougherty",
+     603260
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Dougherty",
+    "arrivalTick": 603260,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Dougherty",
+     603260
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 607085,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     607085
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Viper",
+    "arrivalTick": 613527,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Viper",
+     613527
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Viper",
+    "arrivalTick": 613527,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Viper",
+     613527
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 54,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 26,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 614230
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Henners with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Buchanan with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Zephyr with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -51.8 [Slighted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 90.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 70.0 [Exalted]"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3312"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -49.6 [Slighted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 93.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 67.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -46.6 [Slighted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 96.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 64.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -44.0 [Slighted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 99.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 61.0 [Exalted]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 358,
+   "isDebug": false,
+   "forcePause": true
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594949654,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 500,
+  "overhead_spent": 0,
+  "total_spent": 500,
+  "epoch": 0,
+  "last_seen_tick": 614230,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 912,
+    "spent": 250
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 613730,
+    "tick_to": 613980,
+    "ticks": 250,
+    "requested": 250
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 613980,
+    "tick_to": 614230,
+    "ticks": 250,
+    "requested": 250
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorks",
+  "chain": "toggle_superdeep_shooting",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T213936\\FlowWorks__toggle_superdeep_shooting__colonist_injured_unexpectedly__t614230__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 1944692,
+  "width": 1810,
+  "height": 1183,
+  "md5": "228b7acb9653578bbc6376eaef73dda7",
+  "why": ""
+ },
+ "notes": []
+}

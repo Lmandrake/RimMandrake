@@ -1,0 +1,631 @@
+{
+ "name": "Droidworks__wild_droid_crash__mental_break__t529700__001",
+ "when_utc": "2026-10-02T04:39:08Z",
+ "hits": [
+  {
+   "detector": "mental_break",
+   "severity": "SURPRISE",
+   "summary": "Ming entered mental state ManhunterPermanent (aggro)",
+   "evidence": {
+    "id": "RSW_DW_Race_JDSCIS_B1_Security_Droid35813",
+    "mentalState": "ManhunterPermanent",
+    "isAggro": true,
+    "via": "pawn_census"
+   },
+   "suggest": [
+    "calm_colonists"
+   ],
+   "focus": [
+    244,
+    244
+   ],
+   "fingerprint": "mental_break:RSW_DW_Race_JDSCIS_B1_Security_Droid35813:ManhunterPermanent"
+  }
+ ],
+ "snapshot": {
+  "tick": 529700,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "RSW_DW_Race_JDSCIS_B1_Security_Droid35813",
+    "name": "Ming",
+    "kindDef": "RSW_DW_JDSCIS_B1_Security_Droid",
+    "def": "RSW_DW_Race_JDSCIS_B1_Security_Droid",
+    "faction": null,
+    "isPlayer": false,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 244,
+    "z": 244,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": {
+     "def": "ManhunterPermanent",
+     "isAggro": true,
+     "ageTicks": 60,
+     "causedByMood": false,
+     "causedByDamage": false,
+     "causedByPawn": null,
+     "forceRecoverAfterTicks": -1
+    },
+    "hediffs": [
+     {
+      "def": "Stab",
+      "label": "stab scar",
+      "part": "Leg",
+      "severity": 6.0
+     },
+     {
+      "def": "RSW_DW_FormatTier",
+      "label": "format (programmable)",
+      "part": null,
+      "severity": 3.0
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Morrow",
+    "arrivalTick": 431400,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Morrow",
+     431400
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Morrow",
+    "arrivalTick": 431400,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Morrow",
+     431400
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Tomkir",
+    "arrivalTick": 431400,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Tomkir",
+     431400
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tomkir",
+    "arrivalTick": 431400,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tomkir",
+     431400
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 431400,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     431400
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Ancient danger",
+    "arrivalTick": 454497,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Ancient danger",
+     454497
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Zebo",
+    "arrivalTick": 526400,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Zebo",
+     526400
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Zebo",
+    "arrivalTick": 526400,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Zebo",
+     526400
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Lori",
+    "arrivalTick": 527000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Lori",
+     527000
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lori",
+    "arrivalTick": 527000,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lori",
+     527000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Connor",
+    "arrivalTick": 527600,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Connor",
+     527600
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Connor",
+    "arrivalTick": 527600,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Connor",
+     527600
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Guerrero",
+    "arrivalTick": 528320,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Guerrero",
+     528320
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Guerrero",
+    "arrivalTick": 528320,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Guerrero",
+     528320
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for BB",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for BB",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: BB",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: BB",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Bryan",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Bryan",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bryan",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bryan",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Hairy",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Hairy",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hairy",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hairy",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Poss",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Poss",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Poss",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Poss",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Sautereau",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Sautereau",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sautereau",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sautereau",
+     529640
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     529640
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 49,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 26,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 529700
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Error",
+   "MakeThing error: RUT_AntiquityReadingStation is madeFromStuff but stuff=null. Assigning default."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3312"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -54.4 [Slighted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 75.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 85.0 [Exalted]"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3312"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -51.4 [Slighted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 78.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 82.0 [Exalted]"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3312"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -48.4 [Slighted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 81.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 79.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Lion<color=#999999FF>, Shaman</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3312"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Mi\u00f1oca<color=#999999FF>, Plank cutter</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3312"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 273,
+   "isDebug": false,
+   "forcePause": true
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 60,
+  "overhead_spent": 0,
+  "total_spent": 60,
+  "epoch": 0,
+  "last_seen_tick": 529700,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 675,
+    "spent": 60
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 529640,
+    "tick_to": 529700,
+    "ticks": 60,
+    "requested": 60
+   }
+  ]
+ },
+ "context": {
+  "mod": "Droidworks",
+  "chain": "wild_droid_crash",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T213623\\Droidworks__wild_droid_crash__mental_break__t529700__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 957391,
+  "width": 1810,
+  "height": 1183,
+  "md5": "5b9e0a7936edc21cb942f8360fc7115d",
+  "why": ""
+ },
+ "notes": []
+}

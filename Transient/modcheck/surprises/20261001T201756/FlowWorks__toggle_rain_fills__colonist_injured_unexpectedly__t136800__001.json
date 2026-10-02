@@ -1,0 +1,607 @@
+{
+ "name": "FlowWorks__toggle_rain_fills__colonist_injured_unexpectedly__t136800__001",
+ "when_utc": "2026-10-02T03:22:58Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Emmie gained 1 new hediff(s) (Malnutrition); cause_hint=starvation",
+   "evidence": {
+    "id": "Human11779",
+    "name": "Emmie",
+    "new_hediffs": [
+     {
+      "def": "Malnutrition",
+      "label": "malnutrition (trivial)",
+      "part": null,
+      "severity": 0.00444965623
+     }
+    ],
+    "cause_hint": "starvation",
+    "causes": [
+     "starvation"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    106,
+    64
+   ],
+   "fingerprint": "colonist_injured:Human11779:Malnutrition@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 136800,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human11779",
+    "name": "Emmie",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 106,
+    "z": 64,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite scar",
+      "part": "Torso",
+      "severity": 2.0
+     },
+     {
+      "def": "HeartArteryBlockage",
+      "label": "artery blockage (minor)",
+      "part": "Heart",
+      "severity": 0.2524
+     },
+     {
+      "def": "Malnutrition",
+      "label": "malnutrition (trivial)",
+      "part": null,
+      "severity": 0.00444965623
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Mie",
+    "arrivalTick": 57000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Mie",
+     57000
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mie",
+    "arrivalTick": 57000,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mie",
+     57000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Inko",
+    "arrivalTick": 57600,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Inko",
+     57600
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Inko",
+    "arrivalTick": 57600,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Inko",
+     57600
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Bunny",
+    "arrivalTick": 58320,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Bunny",
+     58320
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bunny",
+    "arrivalTick": 58320,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bunny",
+     58320
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 60000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     60000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Colonel",
+    "arrivalTick": 61640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Colonel",
+     61640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Colonel",
+    "arrivalTick": 61640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Colonel",
+     61640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Cherkasski",
+    "arrivalTick": 61640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Cherkasski",
+     61640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cherkasski",
+    "arrivalTick": 61640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cherkasski",
+     61640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Ramos",
+    "arrivalTick": 61640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Ramos",
+     61640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ramos",
+    "arrivalTick": 61640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ramos",
+     61640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Henners",
+    "arrivalTick": 61640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Henners",
+     61640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Henners",
+    "arrivalTick": 61640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Henners",
+     61640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Buchanan",
+    "arrivalTick": 61640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Buchanan",
+     61640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Buchanan",
+    "arrivalTick": 61640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Buchanan",
+     61640
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 61640,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     61640
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Trader from East Thimonder",
+    "arrivalTick": 61700,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Trader from East Thimonder",
+     61700
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Jackal",
+    "arrivalTick": 61820,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Jackal",
+     61820
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jackal",
+    "arrivalTick": 61820,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jackal",
+     61820
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Zephyr",
+    "arrivalTick": 61820,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Zephyr",
+     61820
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Zephyr",
+    "arrivalTick": 61820,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Zephyr",
+     61820
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Tome",
+    "arrivalTick": 61880,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Tome",
+     61880
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tome",
+    "arrivalTick": 61880,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tome",
+     61880
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 12,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 5,
+   "adaptDays": -54.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 136800
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 54.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 12.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 88.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> 5.4 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 57.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 15.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 85.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #1: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #2: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3316"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3311"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 54 cells, LIMITED (270 / 270 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 48 cells, LIMITED (240 / 240 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 1.0."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3316"
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 2.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 3.0."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #6: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3316"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955631,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 2094,
+  "overhead_spent": 0,
+  "total_spent": 2094,
+  "epoch": 0,
+  "last_seen_tick": 136800,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 6850,
+    "spent": 2094
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 134706,
+    "tick_to": 135000,
+    "ticks": 294,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 135000,
+    "tick_to": 135600,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 135600,
+    "tick_to": 136200,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 136200,
+    "tick_to": 136800,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorks",
+  "chain": "toggle_rain_fills",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T201756\\FlowWorks__toggle_rain_fills__colonist_injured_unexpectedly__t136800__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3193383,
+  "width": 1810,
+  "height": 1183,
+  "md5": "2b9fbe9780141df2041db4ba15d82811",
+  "why": ""
+ },
+ "notes": []
+}

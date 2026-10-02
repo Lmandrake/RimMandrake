@@ -1,0 +1,743 @@
+{
+ "name": "FlowWorks__toggle_liquid_drilling__wildlife_near_colonist__t134563__001",
+ "when_utc": "2026-10-02T02:20:27Z",
+ "hits": [
+  {
+   "detector": "wildlife_near_colonist",
+   "severity": "SURPRISE",
+   "summary": "1 wild animal(s) within 12 cells of a colonist (1 new since baseline); proximity only, hunting intent unmeasured",
+   "evidence": {
+    "animals": [
+     {
+      "id": "Bluebird85011",
+      "kindDef": "Bluebird",
+      "x": 232,
+      "z": 103,
+      "dist": 8,
+      "new": true
+     }
+    ]
+   },
+   "suggest": [
+    "kill_wildlife"
+   ],
+   "focus": [
+    232,
+    103
+   ],
+   "fingerprint": "wildlife_near_colonist:Bluebird85011"
+  }
+ ],
+ "snapshot": {
+  "tick": 134563,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Bluebird85011",
+    "name": "Bluebird",
+    "kindDef": "Bluebird",
+    "def": "Bluebird",
+    "faction": null,
+    "isPlayer": false,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 232,
+    "z": 103,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": null,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 13703,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     13703
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 13703,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     13703
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 16703,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     16703
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 18953,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     18953
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 19453,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     19453
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 23453,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     23453
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Kennedy",
+    "arrivalTick": 37203,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Kennedy",
+     37203
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kennedy",
+    "arrivalTick": 37203,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kennedy",
+     37203
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 37203,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     37203
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 77703,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     77703
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 102500,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     102500
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 107500,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     107500
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 107500,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     107500
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Tack",
+    "arrivalTick": 109009,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Tack",
+     109009
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tack",
+    "arrivalTick": 109009,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tack",
+     109009
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 109009,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     109009
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Fritz",
+    "arrivalTick": 109709,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Fritz",
+     109709
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Fritz",
+    "arrivalTick": 109709,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Fritz",
+     109709
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 109709,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     109709
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Bowman",
+    "arrivalTick": 116163,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Bowman",
+     116163
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bowman",
+    "arrivalTick": 116163,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bowman",
+     116163
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 116163,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     116163
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 121413,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     121413
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 126663,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     126663
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 129163,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     129163
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 5,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 4,
+   "adaptDays": -57.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 134563
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[JawaBench] ready: 363 tools, build 0.1.0"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 32/f97103d0, toolSet 431566e1, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #1: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #2: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Terry<color=#999999FF>, Collector</color>) -> 11.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 54 cells, LIMITED (270 / 270 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 48 cells, LIMITED (240 / 240 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Kennedy<color=#999999FF>, Boss</color>) -> 19.0 [Neutral]"
+  ],
+  [
+   "Error",
+   "Bauer threw exception in WorkGiver RM_FillInCanalWorkGiver: System.InvalidOperationException: Collection was modified; enumeration operation may not execute.\r\n[Ref 2CDD7FC1]\n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at System.Collections.Generic.List`1+Enumerator[T].MoveNextRare () [0x00"
+  ],
+  [
+   "Error",
+   "Bauer threw exception in WorkGiver RM_FillInCanalWorkGiver: System.InvalidOperationException: Collection was modified; enumeration operation may not execute.\r\n[Ref 2CDD7FC1] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #6: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Green<color=#999999FF>, Vengeful</color>) -> 27.0 [Content]"
+  ],
+  [
+   "Warning",
+   "Sam on unwalkable cell (17, 0, 243). Teleporting to (11, 0, 243)"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Tack<color=#999999FF>, Colonist</color>) -> 35.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Fritz<color=#999999FF>, Priest</color>) -> 43.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Bowman<color=#999999FF>, Pilot</color>) -> 51.0 [Content]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 5400,
+  "overhead_spent": 0,
+  "total_spent": 5400,
+  "epoch": 0,
+  "last_seen_tick": 134563,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 13100,
+    "spent": 5400
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 129163,
+    "tick_to": 129763,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 129763,
+    "tick_to": 130363,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 130363,
+    "tick_to": 130963,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 130963,
+    "tick_to": 131563,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 131563,
+    "tick_to": 132163,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 132163,
+    "tick_to": 132763,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 132763,
+    "tick_to": 133363,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 133363,
+    "tick_to": 133963,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 133963,
+    "tick_to": 134563,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorks",
+  "chain": "toggle_liquid_drilling",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T185233\\FlowWorks__toggle_liquid_drilling__wildlife_near_colonist__t134563__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2793053,
+  "width": 1810,
+  "height": 1183,
+  "md5": "bc8277222fcca71fa8dd5a5e52d23ef3",
+  "why": ""
+ },
+ "notes": []
+}

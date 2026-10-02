@@ -1,0 +1,643 @@
+{
+ "name": "LiveQueueAbort__hostile_inside_component__hostile_pawns__t138457__001",
+ "when_utc": "2026-10-02T02:25:12Z",
+ "hits": [
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Human87031",
+      "kindDef": "Tribal_Warrior",
+      "faction": "TribeRoughNeanderthal",
+      "x": 52,
+      "z": 200
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    52,
+    200
+   ],
+   "fingerprint": "hostile_pawns:Human87031"
+  }
+ ],
+ "snapshot": {
+  "tick": 138457,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human87031",
+    "name": "Trosabru",
+    "kindDef": "Tribal_Warrior",
+    "def": "Human",
+    "faction": "TribeRoughNeanderthal",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 52,
+    "z": 200,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 19453,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     19453
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 23453,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     23453
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Kennedy",
+    "arrivalTick": 37203,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Kennedy",
+     37203
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kennedy",
+    "arrivalTick": 37203,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kennedy",
+     37203
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 37203,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     37203
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 77703,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     77703
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 102500,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     102500
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 107500,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     107500
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 107500,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     107500
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Tack",
+    "arrivalTick": 109009,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Tack",
+     109009
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tack",
+    "arrivalTick": 109009,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tack",
+     109009
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 109009,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     109009
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Fritz",
+    "arrivalTick": 109709,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Fritz",
+     109709
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Fritz",
+    "arrivalTick": 109709,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Fritz",
+     109709
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 109709,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     109709
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Bowman",
+    "arrivalTick": 116163,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Bowman",
+     116163
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bowman",
+    "arrivalTick": 116163,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bowman",
+     116163
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 116163,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     116163
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 121413,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     121413
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 126663,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     126663
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 129163,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     129163
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 134563,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     134563
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Ingram",
+    "arrivalTick": 138277,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Ingram",
+     138277
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ingram",
+    "arrivalTick": 138277,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ingram",
+     138277
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Berserk: Ingram",
+    "arrivalTick": 138277,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Berserk: Ingram",
+     138277
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 6,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 4,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 138457
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[JawaBench] context: modSet 32/f97103d0, toolSet 431566e1, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #1: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #2: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Terry<color=#999999FF>, Collector</color>) -> 11.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 54 cells, LIMITED (270 / 270 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 48 cells, LIMITED (240 / 240 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Kennedy<color=#999999FF>, Boss</color>) -> 19.0 [Neutral]"
+  ],
+  [
+   "Error",
+   "Bauer threw exception in WorkGiver RM_FillInCanalWorkGiver: System.InvalidOperationException: Collection was modified; enumeration operation may not execute.\r\n[Ref 2CDD7FC1]\n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at System.Collections.Generic.List`1+Enumerator[T].MoveNextRare () [0x00"
+  ],
+  [
+   "Error",
+   "Bauer threw exception in WorkGiver RM_FillInCanalWorkGiver: System.InvalidOperationException: Collection was modified; enumeration operation may not execute.\r\n[Ref 2CDD7FC1] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #6: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Green<color=#999999FF>, Vengeful</color>) -> 27.0 [Content]"
+  ],
+  [
+   "Warning",
+   "Sam on unwalkable cell (17, 0, 243). Teleporting to (11, 0, 243)"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Tack<color=#999999FF>, Colonist</color>) -> 35.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Fritz<color=#999999FF>, Priest</color>) -> 43.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Bowman<color=#999999FF>, Pilot</color>) -> 51.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Vulture<color=#999999FF>, Digger</color>) -> 59.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 3.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 62.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +15.0 (mental break: Ingram -> Berserk) -> 18.0 [Neutral]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 120,
+  "overhead_spent": 0,
+  "total_spent": 120,
+  "epoch": 0,
+  "last_seen_tick": 138457,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 750,
+    "spent": 120
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 138337,
+    "tick_to": 138457,
+    "ticks": 120,
+    "requested": 120
+   }
+  ]
+ },
+ "context": {
+  "mod": "LiveQueueAbort",
+  "chain": "hostile_inside_component",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T192505\\LiveQueueAbort__hostile_inside_component__hostile_pawns__t138457__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2613584,
+  "width": 1810,
+  "height": 1183,
+  "md5": "92ce2aa522d9f8769c2c8919a3eb3c17",
+  "why": ""
+ },
+ "notes": []
+}

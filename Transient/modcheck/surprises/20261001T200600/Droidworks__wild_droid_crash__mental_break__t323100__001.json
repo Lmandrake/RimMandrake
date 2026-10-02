@@ -1,0 +1,676 @@
+{
+ "name": "Droidworks__wild_droid_crash__mental_break__t323100__001",
+ "when_utc": "2026-10-02T03:06:38Z",
+ "hits": [
+  {
+   "detector": "mental_break",
+   "severity": "SURPRISE",
+   "summary": "Lumi entered mental state ManhunterPermanent (aggro)",
+   "evidence": {
+    "id": "RSW_DW_Race_OuterRim_SalvageAssistDroid132628",
+    "mentalState": "ManhunterPermanent",
+    "isAggro": true,
+    "via": "pawn_census"
+   },
+   "suggest": [
+    "calm_colonists"
+   ],
+   "focus": [
+    244,
+    3
+   ],
+   "fingerprint": "mental_break:RSW_DW_Race_OuterRim_SalvageAssistDroid132628:ManhunterPermanent"
+  }
+ ],
+ "snapshot": {
+  "tick": 323100,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "RSW_DW_Race_OuterRim_SalvageAssistDroid132628",
+    "name": "Lumi",
+    "kindDef": "RSW_DW_OuterRim_SalvageAssistDroid",
+    "def": "RSW_DW_Race_OuterRim_SalvageAssistDroid",
+    "faction": null,
+    "isPlayer": false,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 244,
+    "z": 3,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": {
+     "def": "ManhunterPermanent",
+     "isAggro": true,
+     "ageTicks": 60,
+     "causedByMood": false,
+     "causedByDamage": false,
+     "causedByPawn": null,
+     "forceRecoverAfterTicks": -1
+    },
+    "hediffs": [
+     {
+      "def": "RSW_DW_FormatTier",
+      "label": "format (programmable)",
+      "part": null,
+      "severity": 3.0
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Lu",
+    "arrivalTick": 319800,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Lu",
+     319800
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lu",
+    "arrivalTick": 319800,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lu",
+     319800
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Harris",
+    "arrivalTick": 320400,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Harris",
+     320400
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Harris",
+    "arrivalTick": 320400,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Harris",
+     320400
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 320400,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     320400
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for EB",
+    "arrivalTick": 320400,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for EB",
+     320400
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: EB",
+    "arrivalTick": 320400,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: EB",
+     320400
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 320400,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     320400
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Latch",
+    "arrivalTick": 321000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Latch",
+     321000
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Latch",
+    "arrivalTick": 321000,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Latch",
+     321000
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 321000,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     321000
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 321720,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     321720
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 321780,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     321780
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Nikanovich",
+    "arrivalTick": 321840,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Nikanovich",
+     321840
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Nikanovich",
+    "arrivalTick": 321840,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Nikanovich",
+     321840
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Solec",
+    "arrivalTick": 321840,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Solec",
+     321840
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Solec",
+    "arrivalTick": 321840,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Solec",
+     321840
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 321840,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     321840
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Peaches",
+    "arrivalTick": 323040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Peaches",
+     323040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Peaches",
+    "arrivalTick": 323040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Peaches",
+     323040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Ara",
+    "arrivalTick": 323040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Ara",
+     323040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ara",
+    "arrivalTick": 323040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ara",
+     323040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Alia",
+    "arrivalTick": 323040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Alia",
+     323040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Alia",
+    "arrivalTick": 323040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Alia",
+     323040
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 323040,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     323040
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 33,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 28,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 323100
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +15.0 (mental break: Molina -> Berserk) -> 100.0 [Exalted]"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith49638"
+  ],
+  [
+   "Error",
+   "MakeThing error: RUT_AntiquityReadingStation is madeFromStuff but stuff=null. Assigning default."
+  ],
+  [
+   "Error",
+   "Exception in JobDriver fixed tick for pawn Howell driver=JobDriver_LayDown (toilIndex=1) driver.job=(LayDown (Job_31736) A = (125, 0, 162) Giver = JobGiver_GetRest [workGiverDef: null])\nSystem.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 49E383D6]\n  at RimWorld."
+  ],
+  [
+   "Error",
+   "Exception in JobDriver fixed tick for pawn Pheanox driver=JobDriver_LayDown (toilIndex=1) driver.job=(LayDown (Job_31754) A = (50, 0, 200) Giver = JobGiver_GetRest [workGiverDef: null])\nSystem.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 49E383D6] Duplicate stac"
+  ],
+  [
+   "Error",
+   "MakeThing error: RUT_AntiquityReadingStation is madeFromStuff but stuff=null. Assigning default."
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: EB<color=#999999FF>, Priest</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -36.2 [Slighted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 85.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Latch<color=#999999FF>, Smuggler</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -33.2 [Slighted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 82.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Coem<color=#999999FF>, Loner</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: C\u00f3trebrin<color=#999999FF>, Weaver</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Nikanovich<color=#999999FF>, Animal farmer</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Solec<color=#999999FF>, Traveler</color>) -> 100.0 [Exalted]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "RimWorld.Dialog_NamePlayerSettlement",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 67,
+   "isDebug": false,
+   "forcePause": true
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594950604,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 60,
+  "overhead_spent": 0,
+  "total_spent": 60,
+  "epoch": 0,
+  "last_seen_tick": 323100,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 675,
+    "spent": 60
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 323040,
+    "tick_to": 323100,
+    "ticks": 60,
+    "requested": 60
+   }
+  ]
+ },
+ "context": {
+  "mod": "Droidworks",
+  "chain": "wild_droid_crash",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T200600\\Droidworks__wild_droid_crash__mental_break__t323100__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 1168734,
+  "width": 1810,
+  "height": 1183,
+  "md5": "9ab530f76759a0f3f7395c19cec9ccca",
+  "why": ""
+ },
+ "notes": []
+}

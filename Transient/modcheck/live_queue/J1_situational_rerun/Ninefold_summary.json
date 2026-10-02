@@ -1,0 +1,666 @@
+{
+ "chains": [
+  {
+   "name": "research_completed",
+   "components": [
+    {
+     "name": "research_completed_ledger",
+     "toggle": "engineEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/research_finish_project",
+       "result": {
+        "success": true,
+        "wasAlreadyFinished": true,
+        "prerequisitesTouched": [],
+        "reapplyUnlocksCalled": true,
+        "doCompletionDialog": false,
+        "doCompletionLetter": false,
+        "researcher": null,
+        "result": {
+         "defName": "Smithing",
+         "label": "Smithing",
+         "cost": 700.0,
+         "baseCost": 700.0,
+         "progress": 700.0,
+         "isFinished": true,
+         "techprintsApplied": 0,
+         "techprintCount": 0,
+         "techprintRequirementMet": true,
+         "isCurrentProject": false
+        },
+        "operation": {
+         "OperationId": "op_9b1da423fdc642e59ff7a2e6e22e1468",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/research-finish-project",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T05:01:19.8595259+00:00",
+         "CompletedAtUtc": "2026-10-02T05:01:19.8690404+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Ozzik satiation +15.0, None=None)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Ohm satiation +3.0, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\research_completed_ledger_1790917279.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "mental_break_started",
+   "components": [
+    {
+     "name": "mental_break_ledger",
+     "toggle": "eventMagnitudeMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_force_mental_break",
+       "result": {
+        "success": true,
+        "started": true,
+        "breakDef": "Wander_Sad",
+        "reason": "Forced via bridge",
+        "mentalStateBefore": null,
+        "mentalStateAfter": "Wander_Sad",
+        "ticksGame": 642801,
+        "operation": {
+         "OperationId": "op_e5386927458741029d64528aaa49e44b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-force-mental-break",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T05:01:21.695593+00:00",
+         "CompletedAtUtc": "2026-10-02T05:01:21.7066121+00:00",
+         "DurationMs": 11,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Zizzik satiation +15.0, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mental_break_ledger_1790917281.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "building_repaired_and_deconstructed",
+   "components": [
+    {
+     "name": "building_repaired",
+     "toggle": "firstContactLettersEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: hostile_pawns: 1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat) [evidence: D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__building_repaired_and_deconstructed__hostile_pawns__t645000__001.json]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with Blunt 40.",
+        "damageDef": "Blunt",
+        "harmsHealth": true,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Wall37334",
+          "def": "Wall",
+          "isPawn": false,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": 195,
+          "hitPointsAfter": 135,
+          "destroyed": false,
+          "totalDamageDealt": 60.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 0,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Wall37334",
+          "def": "Wall",
+          "isPawn": false,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": 195,
+          "hitPointsAfter": 135,
+          "destroyed": false,
+          "totalDamageDealt": 60.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 0,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 642801,
+        "operation": {
+         "OperationId": "op_36047b624e754cc5a0667fa716fc5347",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T05:01:23.5098571+00:00",
+         "CompletedAtUtc": "2026-10-02T05:01:23.5168569+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": false,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": null,
+        "requestedJobDef": "Repair",
+        "afterJobDef": "Wait_MaintainPosture",
+        "nowRunningRequested": false,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": "Job was accepted (enqueued) but curJob after 0 tick(s) is 'Wait_MaintainPosture', not 'Repair' - it may have finished, failed immediately, or be queued rather than current. \u26a0\ufe0f THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading proves nothing about whether the job would run. Unpause, or step ticks, and ask again.",
+        "operation": {
+         "OperationId": "op_71dfacd8d86c4b4c95988243f5258234",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T05:01:23.5238967+00:00",
+         "CompletedAtUtc": "2026-10-02T05:01:23.5374684+00:00",
+         "DurationMs": 13,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "hostile_pawns: 1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+      "hits": [
+       {
+        "detector": "hostile_pawns",
+        "severity": "SURPRISE",
+        "summary": "1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)"
+       }
+      ],
+      "evidence": [
+       "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__building_repaired_and_deconstructed__hostile_pawns__t645000__001.json"
+      ],
+      "screenshots": [
+       "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__building_repaired_and_deconstructed__hostile_pawns__t645000__001.png"
+      ]
+     }
+    },
+    {
+     "name": "building_deconstructed",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: hostile_pawns: 1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat) [evidence: D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__buildin",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 4,
+    "fed": 0,
+    "ticks_spent": 2199,
+    "surprises": [
+     {
+      "sidecar": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__building_repaired_and_deconstructed__hostile_pawns__t645000__001.json",
+      "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__building_repaired_and_deconstructed__hostile_pawns__t645000__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 643401,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 644001,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 644601,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 645000,
+      "detector": "hostile_pawns",
+      "severity": "SURPRISE",
+      "summary": "1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)"
+     },
+     {
+      "tick": 645000,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 645000,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] Party"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "birth_outcome",
+   "components": [
+    {
+     "name": "birth_outcome_ledger",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: colonist_downed: colonist Baby is downed [evidence: D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__birth_outcome__colonist_downed__t652200__001.json]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_pregnancy",
+       "result": {
+        "success": true,
+        "action": "start",
+        "notes": [
+         "pregnancy started with PregnantHuman, no father"
+        ],
+        "pregnant": true,
+        "hediff": "PregnantHuman",
+        "gestation": 0.001,
+        "mother": null,
+        "father": null,
+        "note": "Gestation IS the hediff severity - there is no separate progress field.",
+        "ticksGame": 645000,
+        "operation": {
+         "OperationId": "op_57167dcae1f449b9ad3bfbb4365088a6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-pregnancy",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T05:01:36.3299603+00:00",
+         "CompletedAtUtc": "2026-10-02T05:01:36.3390891+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_pregnancy",
+       "result": {
+        "success": true,
+        "action": "progress",
+        "notes": [
+         "gestation (= hediff Severity) set to 1 - LABOUR WILL BEGIN ON THE NEXT TICK"
+        ],
+        "pregnant": true,
+        "hediff": "PregnantHuman",
+        "gestation": 1.0,
+        "mother": null,
+        "father": null,
+        "note": "Gestation IS the hediff severity - there is no separate progress field.",
+        "ticksGame": 645000,
+        "operation": {
+         "OperationId": "op_79f55b87cfe040c6811f341b39a94347",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-pregnancy",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T05:01:36.349142+00:00",
+         "CompletedAtUtc": "2026-10-02T05:01:36.3582418+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "colonist_downed: colonist Baby is downed",
+      "hits": [
+       {
+        "detector": "colonist_downed",
+        "severity": "SURPRISE",
+        "summary": "colonist Baby is downed"
+       }
+      ],
+      "evidence": [
+       "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__birth_outcome__colonist_downed__t652200__001.json"
+      ],
+      "screenshots": [
+       "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__birth_outcome__colonist_downed__t652200__001.png"
+      ]
+     }
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 12,
+    "fed": 1,
+    "ticks_spent": 7200,
+    "surprises": [
+     {
+      "sidecar": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__birth_outcome__colonist_downed__t652200__001.json",
+      "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__birth_outcome__colonist_downed__t652200__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 645600,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     },
+     {
+      "tick": 646200,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     },
+     {
+      "tick": 646800,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     },
+     {
+      "tick": 647400,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     },
+     {
+      "tick": 648000,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     },
+     {
+      "tick": 648600,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     },
+     {
+      "tick": 649200,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     },
+     {
+      "tick": 649800,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     },
+     {
+      "tick": 650400,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     },
+     {
+      "tick": 651000,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     },
+     {
+      "tick": 651600,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     },
+     {
+      "tick": 652200,
+      "detector": "colonist_downed",
+      "severity": "SURPRISE",
+      "summary": "colonist Baby is downed"
+     },
+     {
+      "tick": 652200,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Baby (Human37383) joined the roster"
+     },
+     {
+      "tick": 652200,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [BabyBirth] Healthy child birth"
+     },
+     {
+      "tick": 652200,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Bread(/Name) in labor!"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "mood_walk_tick",
+   "components": [
+    {
+     "name": "mood_walk_advances",
+     "toggle": "moodWalkMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": "D:\\Luke\\dev\\wt_live2\\design\\validation_walks\\RimMandrake\\Ninefold.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": [
+   "corpses present: 2"
+  ]
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

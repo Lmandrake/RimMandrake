@@ -1,0 +1,419 @@
+{
+ "chains": [
+  {
+   "name": "trait_defs_readback",
+   "components": [
+    {
+     "name": "rollable_trait_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "TraitDef/RUT_Jawa_WaterDiscipline.commonality -> '(no such field)' (a numeric commonality)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "forced_only_trait_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "TraitDef/RUT_Jawa_Numbered.commonality -> '(no such field)' (commonality 0 (forcedTraits-only))",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "backstory_defs_readback",
+   "components": [
+    {
+     "name": "backstory_RUT_Jawa_AcademyCadet",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_AcademyCadet.slot -> '(no such field)' (slot=Childhood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_Majordomo",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_Majordomo.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_PurificationEngineer",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_PurificationEngineer.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_ColdForged",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_ColdForged.slot -> '(no such field)' (slot=Childhood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_AshSpeaker",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_AshSpeaker.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_MootSpeaker",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_MootSpeaker.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_RetrievalAgent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_RetrievalAgent.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "vqe_rakata_categories_readback",
+   "components": [
+    {
+     "name": "ancient_patient_pool_marked",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_RakataSiegeChild.spawnCategories -> '(no such field)' (VQE_AncientPatient present)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "experiment_pool_marked",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_RakataTakenChild.spawnCategories -> '(no such field)' (VQE_Experiment present)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "faction_patch_wired_vanilla",
+   "components": [
+    {
+     "name": "empire_filter_wired",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "FactionDef/Empire.backstoryFilters -> '(no such field)' (JawaBSC_Empire present)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pirate_filter_wired",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [
+      {
+       "call": "FactionDef/Pirate.backstoryFilters -> '(no such field)' (JawaBSC_Blackstar present)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "empire_pawn_generation",
+   "components": [
+    {
+     "name": "empire_pawn_draws_flavor_backstory",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": "D:\\Luke\\dev\\wt_live2\\design\\validation_walks\\RimUtinni\\PawnFlavor.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 2,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 11,
+     "verified": false,
+     "residue": [
+      [
+       "Human37383",
+       "Food"
+      ]
+     ]
+    },
+    "restore_needs": {
+     "acted": 11,
+     "verified": false
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}
