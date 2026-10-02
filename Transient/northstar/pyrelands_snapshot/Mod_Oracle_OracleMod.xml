@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="RimMandrake.Oracle.OracleSettings">
+		<enabled>True</enabled>
+		<baseUrl>http://127.0.0.1:8843/v1</baseUrl>
+	</ModSettings>
+</SettingsBlock>

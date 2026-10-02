@@ -1,0 +1,121 @@
+{
+ "extra": {
+  "def_fingerprint": "46a3a8544c79cd172ba49c12d0946d767207dcbf76c227b65d9dcf00061a71b1",
+  "settings_snapshot": "Transient/northstar/pyrelands_snapshot3",
+  "storyteller_before": null
+ },
+ "gate": "A",
+ "ok": true,
+ "refused_rows": [],
+ "rows": [
+  {
+   "expected": "FOUNDRY",
+   "id": "3.8.1",
+   "name": "bridge lock held by this seat",
+   "observed": "FOUNDRY",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "game launched AFTER the newest deploy",
+   "id": "3.8.2",
+   "name": "game started after the newest deploy (plan 3.2.5)",
+   "observed": "Player.log created 2026-10-01 10:29:10; newest deploy 2026-10-01 10:20:37 (RUT_PyrelandsPortedFauna.xml)",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "20 ids in tier order, all 5 DLCs",
+   "id": "3.8.3",
+   "name": "running mod set == tier manifest",
+   "observed": "20 running; equals manifest",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "0 changes (plan only)",
+   "id": "3.2.1",
+   "name": "deploy current: compose biomes + UtinniPatches + PyrelandsMechanics",
+   "observed": "--compose biomes rc=1 drift=0; --mod UtinniPatches --mod PyrelandsMechanics rc=1 drift=0",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "source == repo stamp == deployed stamp, DLL bytes equal",
+   "id": "3.8.4",
+   "name": ".srchash agrees across source, repo and deployed",
+   "observed": "4 DLLs agree",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "each assembly loaded once, by its owning mod, from the deployed bytes",
+   "id": "3.2.3",
+   "name": "loaded assemblies are the deployed ones",
+   "observed": "FireEcologyHook mvid=d379754b-1625-4d06-b229-e537423969d1; RimMandrake.Biomes mvid=8c1da16a-4f49-4fea-97a5-67a005c38ae0; RimMandrake.Utinni.PyrelandsMechanics mvid=e3020c67-4436-4aa3-990d-4f197f9977ff; RimMandrake.Utinni.UtinniPatches mvid=ea859f8d-d684-4147-a054-732790735124",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "all 30 defs found",
+   "id": "3.8.5",
+   "name": "defs as loaded + def fingerprint",
+   "observed": "found 30/30 notFound [] fingerprint 46a3a8544c79cd17",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "shipped defaults (plan 3.3)",
+   "id": "3.3",
+   "name": "Mod Settings at shipped defaults",
+   "observed": "all 25 at shipped defaults; no settings file (defaults: ON)",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "no CommonalityOfAnimal / roster xref / Pyrelands exception",
+   "id": "3.8.7",
+   "name": "log since load is clean",
+   "observed": "0 refusing line(s); 12 allowed burnedDef lines",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "< 10.0",
+   "id": "3.8.12",
+   "name": "loadavg < 10",
+   "observed": 1.04,
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "0 open dialogs",
+   "id": "3.8.dialogs",
+   "name": "no unexpected dialogs",
+   "observed": "closed 1 benign, 0 open",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "snapshot written",
+   "id": "3.8.snapshot",
+   "name": "Mod_* settings snapshot",
+   "observed": "82 Mod_*.xml snapshotted to Transient/northstar/pyrelands_snapshot3",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  }
+ ],
+ "utc": "2026-10-01T17:31:35Z"
+}

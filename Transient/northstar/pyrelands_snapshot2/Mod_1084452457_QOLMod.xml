@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="RIMMSqol.QOLModSettings">
+		<settings />
+		<traitCosts />
+		<backstoryCosts />
+		<recordFactors />
+		<mainButtons />
+		<architectButtons />
+		<recipes />
+		<floorsAndTerrain />
+		<thoughts />
+		<apparel />
+		<weapons />
+		<projectiles />
+		<damage />
+		<plants />
+		<material />
+		<food />
+		<buildings />
+		<items />
+		<hediffs />
+		<pawns>
+			<li>
+				<id>pawns</id>
+				<isConfigured>Version;t;Selectable;f;NeverMultiSelect;f;Race;t;statBases;t;ButcherProducts;f;Tools;f;TradeTags;f;Recipes;f;CompEggLayer;f;CompShearable;f;CompMilkable;f;</isConfigured>
+				<baseObjectKey>TYR_Mouse</baseObjectKey>
+				<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+				<Race>
+					<id>raceProperties</id>
+					<isConfigured>HasGenders;f;NeedsRest;f;MakesFootprints;f;ManhunterOnDamageChance;f;ManhunterOnTameFailChance;f;NuzzleMtbHours;t;Intelligence;f;Trainability;f;HerdAnimal;f;HerdMigrationAllowed;f;Predator;f;MaxPreyBodySize;f;CanBePredatorPrey;f;Body;f;BaseBodySize;f;BaseHealthScale;f;BaseHungerRate;f;RoamMtbDays;f;FoodType;f;LeatherDef;f;SpecificMeatDef;f;GestationPeriodDays;f;Petness;f;PackAnimal;f;LifeExpectancy;f;LifeStageAges;f;FleshType;f;BloodDef;f;ExecutionRange;f;MateMtbHours;f;UseMeatFrom;f;UseLeatherFrom;f;WildBiomes;f;maxMechEnergy;f;mechFixedSkillLevel;f;mechWeightClass;f;mechEnabledWorkTypes;f;mechWorkTypePriorities;f;</isConfigured>
+					<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+					<NuzzleMtbHours>0.25</NuzzleMtbHours>
+				</Race>
+				<statBases>
+					<li>
+						<id>statModifier</id>
+						<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+						<Stat>Mass</Stat>
+						<Stat_type>RimWorld.StatDef, Assembly-CSharp, Version=1.6.9438.37837, Culture=neutral, PublicKeyToken=null</Stat_type>
+						<Value>60</Value>
+					</li>
+					<li>
+						<id>statModifier</id>
+						<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+						<Stat>Flammability</Stat>
+						<Stat_type>RimWorld.StatDef, Assembly-CSharp, Version=1.6.9438.37837, Culture=neutral, PublicKeyToken=null</Stat_type>
+						<Value>0.699999988</Value>
+					</li>
+					<li>
+						<id>statModifier</id>
+						<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+						<Stat>LeatherAmount</Stat>
+						<Stat_type>RimWorld.StatDef, Assembly-CSharp, Version=1.6.9438.37837, Culture=neutral, PublicKeyToken=null</Stat_type>
+						<Value>5</Value>
+					</li>
+					<li>
+						<id>statModifier</id>
+						<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+						<Stat>ToxicResistance</Stat>
+						<Stat_type>RimWorld.StatDef, Assembly-CSharp, Version=1.6.9438.37837, Culture=neutral, PublicKeyToken=null</Stat_type>
+						<Value>0.5</Value>
+					</li>
+					<li>
+						<id>statModifier</id>
+						<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+						<Stat>MoveSpeed</Stat>
+						<Stat_type>RimWorld.StatDef, Assembly-CSharp, Version=1.6.9438.37837, Culture=neutral, PublicKeyToken=null</Stat_type>
+						<Value>4</Value>
+					</li>
+					<li>
+						<id>statModifier</id>
+						<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+						<Stat>MarketValue</Stat>
+						<Stat_type>RimWorld.StatDef, Assembly-CSharp, Version=1.6.9438.37837, Culture=neutral, PublicKeyToken=null</Stat_type>
+						<Value>10</Value>
+					</li>
+					<li>
+						<id>statModifier</id>
+						<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+						<Stat>ComfyTemperatureMin</Stat>
+						<Stat_type>RimWorld.StatDef, Assembly-CSharp, Version=1.6.9438.37837, Culture=neutral, PublicKeyToken=null</Stat_type>
+						<Value>-30</Value>
+					</li>
+					<li>
+						<id>statModifier</id>
+						<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+						<Stat>ToxicEnvironmentResistance</Stat>
+						<Stat_type>RimWorld.StatDef, Assembly-CSharp, Version=1.6.9438.37837, Culture=neutral, PublicKeyToken=null</Stat_type>
+						<Value>0.899999976</Value>
+					</li>
+					<li>
+						<id>statModifier</id>
+						<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+						<Stat>MeatAmount</Stat>
+						<Stat_type>RimWorld.StatDef, Assembly-CSharp, Version=1.6.9438.37837, Culture=neutral, PublicKeyToken=null</Stat_type>
+						<Value>10</Value>
+					</li>
+					<li>
+						<id>statModifier</id>
+						<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+						<Stat>Wildness</Stat>
+						<Stat_type>RimWorld.StatDef, Assembly-CSharp, Version=1.6.9438.37837, Culture=neutral, PublicKeyToken=null</Stat_type>
+						<Value>0.100000001</Value>
+					</li>
+				</statBases>
+			</li>
+			<li>
+				<id>pawns</id>
+				<isConfigured>Version;t;Selectable;f;NeverMultiSelect;f;Race;t;statBases;f;ButcherProducts;f;Tools;f;TradeTags;f;Recipes;f;CompEggLayer;f;CompShearable;f;CompMilkable;f;</isConfigured>
+				<baseObjectKey>Vulture</baseObjectKey>
+				<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+				<Race>
+					<id>raceProperties</id>
+					<isConfigured>HasGenders;f;NeedsRest;f;MakesFootprints;f;ManhunterOnDamageChance;f;ManhunterOnTameFailChance;f;NuzzleMtbHours;t;Intelligence;f;Trainability;f;HerdAnimal;f;HerdMigrationAllowed;f;Predator;f;MaxPreyBodySize;f;CanBePredatorPrey;f;Body;f;BaseBodySize;f;BaseHealthScale;f;BaseHungerRate;f;RoamMtbDays;f;FoodType;f;LeatherDef;f;SpecificMeatDef;f;GestationPeriodDays;f;Petness;f;PackAnimal;f;LifeExpectancy;f;LifeStageAges;f;FleshType;f;BloodDef;f;ExecutionRange;f;MateMtbHours;f;UseMeatFrom;f;UseLeatherFrom;f;WildBiomes;f;maxMechEnergy;f;mechFixedSkillLevel;f;mechWeightClass;f;mechEnabledWorkTypes;f;mechWorkTypePriorities;f;</isConfigured>
+					<baseObjectReferenceKey>-1</baseObjectReferenceKey>
+					<NuzzleMtbHours>0.25</NuzzleMtbHours>
+				</Race>
+			</li>
+		</pawns>
+		<pawnKinds />
+		<traits />
+		<abilities />
+		<researchProjects />
+		<researchTabs />
+		<backstories />
+		<biomes />
+		<filth />
+		<factions />
+		<worldObject />
+		<genes />
+		<precepts />
+		<workGivers />
+		<thingCategories />
+		<need />
+		<weaponTraits />
+		<royaltitlepermits />
+		<royalTiltes />
+		<xenotype />
+	</ModSettings>
+</SettingsBlock>

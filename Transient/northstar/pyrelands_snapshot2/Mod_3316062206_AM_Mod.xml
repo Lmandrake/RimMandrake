@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="AncientMarket_Libraray.AM_ModSetting">
+		<enableLandfill>True</enableLandfill>
+		<enableAICrossLevel>True</enableAICrossLevel>
+	</ModSettings>
+</SettingsBlock>

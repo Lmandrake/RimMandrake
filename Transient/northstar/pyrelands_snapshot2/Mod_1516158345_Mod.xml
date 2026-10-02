@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="Bubbles.Settings">
+		<Version>4.2</Version>
+		<DoAnimals>False</DoAnimals>
+		<DoDrafted>True</DoDrafted>
+		<DoTextColors>True</DoTextColors>
+		<AltitudeBase>10</AltitudeBase>
+		<AltitudeMax>60</AltitudeMax>
+		<PawnMax>1</PawnMax>
+		<FadeStart>200</FadeStart>
+	</ModSettings>
+</SettingsBlock>

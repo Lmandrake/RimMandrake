@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="aRandomKiwi.RimThemes.Settings">
+		<curTheme>mandrake.rut.shell§Utinni Shell</curTheme>
+		<curRandomBgIndex>8</curRandomBgIndex>
+		<lastVersionInfo>RimThemes NX rev10</lastVersionInfo>
+		<enableCentipedeClassicTheme>True</enableCentipedeClassicTheme>
+	</ModSettings>
+</SettingsBlock>

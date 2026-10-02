@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="ChooseWhereToLand.ChooseWhereToLand_Settings">
+		<noticeHistory>
+			<keys>
+				<li>CWTL_Notice</li>
+			</keys>
+			<values>
+				<li>CWTL_2025.9.1</li>
+			</values>
+		</noticeHistory>
+	</ModSettings>
+</SettingsBlock>

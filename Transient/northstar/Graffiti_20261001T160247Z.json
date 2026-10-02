@@ -1,0 +1,254 @@
+{
+  "mod": "Graffiti",
+  "mode": "live",
+  "started_utc": "2026-10-01T16:01:59Z",
+  "expected": [
+    "mark_actually_appears",
+    "mark_reads_as_deliberate",
+    "mark_reads_at_play_zoom",
+    "mark_sits_on_the_wall",
+    "marks_visibly_various",
+    "mark_register_is_punk_urban",
+    "mark_carries_no_earth_signage",
+    "mark_ugliness_is_visible",
+    "never_real_world_english",
+    "never_reads_as_dirt"
+  ],
+  "expected_source": "VALIDATED walk Graffiti.md",
+  "bars": [
+    {
+      "id": "mark_actually_appears",
+      "status": "UNMEASURED",
+      "evidence": "spree_paints_marks=UNMEASURED [{'detail': \"upstream failed -- this chain's state is meaningless\"}]"
+    },
+    {
+      "id": "mark_reads_as_deliberate",
+      "status": "PASS",
+      "evidence": "gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS"
+    },
+    {
+      "id": "mark_reads_at_play_zoom",
+      "status": "PASS",
+      "evidence": "gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS"
+    },
+    {
+      "id": "mark_sits_on_the_wall",
+      "status": "UNMEASURED",
+      "evidence": "wall_closeup=UNMEASURED [{'detail': \"upstream failed -- this chain's state is meaningless\"}]"
+    },
+    {
+      "id": "marks_visibly_various",
+      "status": "UNMEASURED",
+      "evidence": "spree_variety=UNMEASURED [{'detail': \"upstream failed -- this chain's state is meaningless\"}]"
+    },
+    {
+      "id": "mark_register_is_punk_urban",
+      "status": "PASS",
+      "evidence": "gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS"
+    },
+    {
+      "id": "mark_carries_no_earth_signage",
+      "status": "PASS",
+      "evidence": "gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS"
+    },
+    {
+      "id": "mark_ugliness_is_visible",
+      "status": "PASS",
+      "evidence": "beauty_pair=PASS"
+    },
+    {
+      "id": "never_real_world_english",
+      "status": "PASS",
+      "evidence": "closeup_page_0_0=PASS; closeup_page_0_1=PASS; closeup_page_0_2=PASS; closeup_page_0_3=PASS; closeup_page_1_0=PASS; closeup_page_1_1=PASS; closeup_page_1_2=PASS; closeup_page_1_3=PASS; closeup_page_2_0=PASS; closeup_page_2_1=PASS; closeup_page_2_2=PASS"
+    },
+    {
+      "id": "never_reads_as_dirt",
+      "status": "PASS",
+      "evidence": "dirt_page_0_0=PASS; dirt_page_0_1=PASS; dirt_page_0_2=PASS; dirt_page_0_3=PASS; dirt_page_1_0=PASS; dirt_page_1_1=PASS; dirt_page_1_2=PASS; dirt_page_1_3=PASS; dirt_page_2_0=PASS; dirt_page_2_1=PASS; dirt_page_2_2=PASS"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "479 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=1 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 1 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "9 active, sha256 30cd4bd89dfc6411 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    },
+    {
+      "name": "deployed_matches_repo:Graffiti",
+      "status": "PASS",
+      "evidence": "73 files identical (textures by size)",
+      "required": true
+    }
+  ],
+  "summary": {
+    "PASS": 7,
+    "FAIL": 0,
+    "UNMEASURED": 3
+  },
+  "all_green": false,
+  "timing": {
+    "n": 605,
+    "total_ms": 46664.013,
+    "mean_ms": 77.1306,
+    "p50_ms": 49.9604,
+    "p95_ms": 299.8824,
+    "by_tool": {
+      "rimworld/get_game_info": {
+        "n": 4,
+        "mean_ms": 14.5061,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 3,
+        "mean_ms": 48.1403,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.5668,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 50.3474,
+        "errors": 0
+      },
+      "jawa/dlc_status": {
+        "n": 1,
+        "mean_ms": 49.8821,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 22,
+        "mean_ms": 368.7539,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 30,
+        "mean_ms": 49.2942,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 1,
+        "mean_ms": 28.6797,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 32,
+        "mean_ms": 49.0099,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 29,
+        "mean_ms": 46.992,
+        "errors": 0
+      },
+      "jawa/set_fog": {
+        "n": 29,
+        "mean_ms": 49.8368,
+        "errors": 0
+      },
+      "jawa/log_autoopen_suppress": {
+        "n": 29,
+        "mean_ms": 16.6556,
+        "errors": 0
+      },
+      "jawa/spawn_batch": {
+        "n": 76,
+        "mean_ms": 49.7113,
+        "errors": 0
+      },
+      "jawa/spawn_pawn": {
+        "n": 8,
+        "mean_ms": 47.0781,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 5,
+        "mean_ms": 51.5201,
+        "errors": 0
+      },
+      "jawa/set_work_priority": {
+        "n": 204,
+        "mean_ms": 49.9522,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 6,
+        "mean_ms": 50.0026,
+        "errors": 0
+      },
+      "jawa/set_pawn_skill": {
+        "n": 3,
+        "mean_ms": 49.9202,
+        "errors": 0
+      },
+      "jawa/set_draft": {
+        "n": 3,
+        "mean_ms": 0.0147,
+        "errors": 3
+      },
+      "jawa/damage": {
+        "n": 3,
+        "mean_ms": 50.8565,
+        "errors": 0
+      },
+      "jawa/map_commit": {
+        "n": 27,
+        "mean_ms": 236.6078,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 34,
+        "mean_ms": 44.1444,
+        "errors": 0
+      },
+      "jawa/clear_ui": {
+        "n": 26,
+        "mean_ms": 42.3595,
+        "errors": 0
+      },
+      "rimworld/screenshot_cell_rect": {
+        "n": 26,
+        "mean_ms": 291.1305,
+        "errors": 0
+      },
+      "jawa/thing_stats": {
+        "n": 2,
+        "mean_ms": 50.1727,
+        "errors": 0
+      }
+    }
+  }
+}

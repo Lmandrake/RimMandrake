@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="PeteTimesSix.SimpleSidearms.SimpleSidearms_Settings">
+		<SettingsEverOpened>True</SettingsEverOpened>
+		<ActivePreset>Custom</ActivePreset>
+		<SeparateModes>True</SeparateModes>
+		<LimitModeSingle_RelativeMass>0.0542857125</LimitModeSingle_RelativeMass>
+		<LimitModeAmount_RelativeMass>0.285714298</LimitModeAmount_RelativeMass>
+		<LimitModeSingleMelee_RelativeMass>0.0642857179</LimitModeSingleMelee_RelativeMass>
+		<LimitModeAmountMelee_RelativeMass>0.285714298</LimitModeAmountMelee_RelativeMass>
+		<LimitModeSingleRanged_RelativeMass>0.142857149</LimitModeSingleRanged_RelativeMass>
+		<LimitModeAmountRanged_RelativeMass>0.285714298</LimitModeAmountRanged_RelativeMass>
+		<LimitModeAmountTotal_RelativeMass>0.285714298</LimitModeAmountTotal_RelativeMass>
+		<LimitModeSingle_Selection_defNames>
+			<li>MeleeWeapon_Gladius</li>
+			<li>MeleeWeapon_Axe</li>
+			<li>MeleeWeapon_Mace</li>
+			<li>MeleeWeapon_BreachAxe</li>
+			<li>MeleeWeapon_Ikwa</li>
+			<li>MeleeWeapon_Knife</li>
+			<li>MeleeWeapon_PsyfocusStaff</li>
+			<li>AM_CPHG</li>
+			<li>Weapon_GrenadeEMP</li>
+			<li>Weapon_GrenadeTox</li>
+			<li>Weapon_GrenadeFrag</li>
+			<li>Weapon_GrenadeMolotov</li>
+			<li>AM_APS</li>
+			<li>AM_Makarov</li>
+			<li>AM_FNHG</li>
+			<li>Gun_Autopistol</li>
+			<li>Gun_Revolver</li>
+			<li>Gun_Revolver_Unique</li>
+			<li>AG_ForsakenBow</li>
+			<li>ElephantTusk</li>
+			<li>Bow_Recurve</li>
+			<li>NerveSpiker</li>
+			<li>Flamebow</li>
+			<li>Bow_Short</li>
+			<li>Beer</li>
+			<li>WoodLog</li>
+		</LimitModeSingle_Selection_defNames>
+		<LimitModeSingleMelee_Selection_defNames>
+			<li>MeleeWeapon_Gladius</li>
+			<li>MeleeWeapon_Axe</li>
+			<li>MeleeWeapon_Mace</li>
+			<li>MeleeWeapon_BreachAxe</li>
+			<li>MeleeWeapon_Ikwa</li>
+			<li>MeleeWeapon_Knife</li>
+			<li>MeleeWeapon_PsyfocusStaff</li>
+			<li>ElephantTusk</li>
+			<li>Beer</li>
+			<li>WoodLog</li>
+		</LimitModeSingleMelee_Selection_defNames>
+		<LimitModeSingleRanged_Selection_defNames>
+			<li>m_Riskrunner</li>
+			<li>m_RatKing</li>
+			<li>m_PolarisLance</li>
+			<li>AM_M4A</li>
+			<li>AM_CPHG</li>
+			<li>Weapon_GrenadeEMP</li>
+			<li>Weapon_GrenadeTox</li>
+			<li>Weapon_GrenadeFrag</li>
+			<li>Weapon_GrenadeMolotov</li>
+			<li>AM_APS</li>
+			<li>AM_Makarov</li>
+			<li>AM_FNHG</li>
+			<li>Gun_MachinePistol</li>
+			<li>Gun_Autopistol</li>
+			<li>Gun_Revolver</li>
+			<li>Gun_Revolver_Unique</li>
+			<li>AG_ForsakenBow</li>
+			<li>Bow_Recurve</li>
+			<li>NerveSpiker</li>
+			<li>Flamebow</li>
+			<li>Bow_Short</li>
+		</LimitModeSingleRanged_Selection_defNames>
+		<LimitModeSingle_Selection />
+		<LimitModeSingleMelee_Selection />
+		<LimitModeSingleRanged_Selection />
+		<SkipEMPWeapons>True</SkipEMPWeapons>
+		<FumbleRecoveryChance>
+			<li>(0.00, 0.00)</li>
+			<li>(2.00, 0.15)</li>
+			<li>(5.00, 0.85)</li>
+			<li>(7.00, 1.00)</li>
+			<li>(20.00, 1.00)</li>
+		</FumbleRecoveryChance>
+	</ModSettings>
+</SettingsBlock>

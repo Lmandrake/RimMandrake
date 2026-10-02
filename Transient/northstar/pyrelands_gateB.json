@@ -1,0 +1,88 @@
+{
+ "extra": {
+  "site": {
+   "calibrating_median_minus_target": 1.36,
+   "fogged_sampled": 0,
+   "latitude": -2.561321e-08,
+   "longitude": -20.905159,
+   "median": 51.3625069,
+   "outdoorTempNow": 51.4309769,
+   "season": "PermanentSummer",
+   "temps": [
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069,
+    51.3625069
+   ],
+   "tile": 3,
+   "tileRawTemperature": 50.0
+  }
+ },
+ "gate": "B",
+ "ok": true,
+ "refused_rows": [],
+ "rows": [
+  {
+   "expected": "RM_Pyrelands, 250x250, no mutators/landmark, |lat|<=25.0, raw temp 50.0, 20 cells within 3.0 of outdoor, fog off",
+   "id": "3.8.8",
+   "name": "site: biome, mutators, size, temperature, latitude",
+   "observed": "tile 3 lat -2.561321e-08 biome RM_Pyrelands raw 50.0 cells 51.4..51.4 (median 51.4)",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "Clear, paused",
+   "id": "3.8.9",
+   "name": "weather Clear (locked by the site script), game paused",
+   "observed": "Clear, paused",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "storyteller Tutor, queue empty",
+   "id": "3.8.10",
+   "name": "storyteller quiet, incident queue empty",
+   "observed": "quiet, queue empty",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": ">= 3 living, none downed",
+   "id": "3.8.11",
+   "name": ">= 3 living colonists, none downed",
+   "observed": "3 living colonists, downed []",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  },
+  {
+   "expected": "0 open dialogs",
+   "id": "3.8.dialogs-B",
+   "name": "no unexpected dialogs",
+   "observed": "closed 0 benign, 0 open",
+   "ok": true,
+   "required": true,
+   "status": "PASS"
+  }
+ ],
+ "utc": "2026-10-01T17:35:11Z"
+}

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="BestApparel.Config">
+		<Version>6</Version>
+		<MainWindowWidth>1010</MainWindowWidth>
+		<UseAllThings>False</UseAllThings>
+		<FittingWorn />
+		<RangedSelectedAmmo />
+		<SimpleSorting />
+		<TabConfig>
+			<Apparel>
+				<Filters>
+					<ThingCategoryDef />
+					<ApparelLayerDef>
+						<Middle>True</Middle>
+						<Shell>False</Shell>
+					</ApparelLayerDef>
+					<BodyPartGroupDef />
+					<WeaponClassDef />
+				</Filters>
+				<Columns>
+					<ArmorRating_Blunt />
+					<ArmorRating_Sharp />
+					<WorkSpeedGlobal />
+					<EntityStudyRate />
+					<Insulation_Cold />
+					<TradePriceImprovement />
+					<MoveSpeed />
+				</Columns>
+				<Sorting>
+					<ArmorRating_Blunt>10</ArmorRating_Blunt>
+					<ArmorRating_Sharp>10</ArmorRating_Sharp>
+				</Sorting>
+			</Apparel>
+			<Ranged>
+				<Filters>
+					<ThingCategoryDef />
+					<WeaponClassDef />
+				</Filters>
+				<Columns>
+					<Damage />
+					<Range />
+					<AccuracyMedium />
+					<RangedWeapon_Cooldown />
+				</Columns>
+				<Sorting>
+					<Damage>10</Damage>
+					<Range>10</Range>
+				</Sorting>
+			</Ranged>
+			<Melee>
+				<Filters>
+					<ThingCategoryDef />
+					<WeaponClassDef />
+				</Filters>
+				<Columns>
+					<MeleeWeapon_AverageDPS />
+				</Columns>
+				<Sorting>
+					<MeleeWeapon_AverageDPS>10</MeleeWeapon_AverageDPS>
+				</Sorting>
+			</Melee>
+		</TabConfig>
+		<Presets />
+	</ModSettings>
+</SettingsBlock>

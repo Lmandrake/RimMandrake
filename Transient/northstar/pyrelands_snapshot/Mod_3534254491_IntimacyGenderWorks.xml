@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="LoveyDoveySexWithRosaline.IntimacyGenderWorksSettings">
+		<integrateReproductiveGenesIntoXenotypes>False</integrateReproductiveGenesIntoXenotypes>
+		<maleGestorChance>0.0410798118</maleGestorChance>
+	</ModSettings>
+</SettingsBlock>

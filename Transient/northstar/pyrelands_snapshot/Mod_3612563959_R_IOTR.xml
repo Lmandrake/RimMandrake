@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="R_IOTR.Mian.R_IOTRSettings">
+		<enableLogging>False</enableLogging>
+		<intimacyMultiplier>0.5</intimacyMultiplier>
+		<romanceMultiplier>1</romanceMultiplier>
+		<intimacyInterval>0.300000012</intimacyInterval>
+	</ModSettings>
+</SettingsBlock>
