@@ -1,12 +1,18 @@
 
-## owner ruling 2026-09-17 — do not build this on spec
+## Built as a provisional seed — 2026-10-01, `8463a2734`
 
-Filed earlier in the same bench walk that then stopped. His words: *"I'm not sure we
-should worry about how to automate these tests at this time... file it as TBD for now
-in terms of these highly subtle nuances until we can play with it live first."*
+The 2026-09-17 deferral was lifted by the owner on 2026-10-01 (relayed by the
+coordinator): *"There will be many such mods that require a human nearby to build proper
+northstar scripts. You are mostly seeding the field right now with reasonable initial
+guesses for refinement later through debugging needs or live feedback."*
 
-So the frame-sequence judge is **recorded, not owed-now**. It waits on live play of
-AtmosphericBase (`NORTH_STAR_ATMOSPHERIC_TBD_1`). The finding it rests on stands and is
-measured — `judge.py` took `shots[-1]` under a prompt telling the model to answer about
-that image alone, so a bar about change was structurally unjudgeable in silence. Do not
-close this as stale on that basis; it is deferred by his word, not doubted.
+What landed (spec `design/RimMandrake/north_star_validation_spec.md` §4b.1): `(change)`
+tag parsed by `northstar` (`kinds_for`), `suite.capture_frames(n, every_ticks)`, a
+sequence prompt in `judge` with `MIN_CHANGE_FRAMES = 2` (fewer is UNJUDGEABLE), kinds
+wired through `runner.apply_judgement`, and `modcheck/selftest_motion_frames.py`, where a
+fake judge that compares frames makes a static sequence FAIL a "moves" bar.
+
+Still open, deliberately: the frame count per line is a guess, and
+`never_interpolated_colour` still needs a material-cache count, not an eye. The
+AtmosphericBase checklist itself was not touched (`NORTH_STAR_ATMOSPHERIC_TBD_1`).
+FOUNDRY could not close this BENCH item; BENCH closes it on `8463a2734`.
