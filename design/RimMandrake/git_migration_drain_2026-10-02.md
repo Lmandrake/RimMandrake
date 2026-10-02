@@ -7,7 +7,7 @@ Tool: `src/RimMandrake/Utils/drain_worktrees.py` (run from ext4 against `/mnt/d/
 
 ## Status
 
-IN PROGRESS — census not yet run.
+IN PROGRESS — census running (status of 100 drvfs worktrees, ~40 s each, 10 parallel).
 
 ## Census
 
