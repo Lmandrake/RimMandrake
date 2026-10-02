@@ -1,7 +1,7 @@
 # FLOWWORKS_BUILD_PROGRAM_1 — one liquid mod, built on depth
 
 Filed by BENCH 2026-09-16 from a full bench design session with the owner. **Read
-`design/RimMandrake/fluid_canals_mod_definition.md` first** — it carries all 27 of his rulings from
+`design/RimMandrake/flowworks_mod_definition.md` first** — it carries all 27 of his rulings from
 that date, each traceable to his words, plus the measured facts about the existing code. This item is
 the build order, not the design.
 
@@ -184,12 +184,12 @@ leaving is transferred off-map, not destroyed).
 
 `pathCost` by depth (**30 for a dry trench**, matching what Pits already uses — today's flat 6 is a
 fifth of a dug pit, which is why his "unfilled pit slows movement" line is currently false).
-**SUPERDEEP captures regardless of fill** (ruling 26), reusing Pits' `Building_OpenPit` despawn-into-
-`innerContainer` machinery and `PitEscapeUtility`'s struggle clock — FlowWorks writes **no new capture
-or escape system**. `BlocksEscape` derives from the liquid's viscosity instead of `CompPitFitting`'s
-hardcoded `Water` enum. **Ladders**: a building that makes a dug cell exitable — one boolean, and
-removing it strands whatever is down there, which is a jailer mechanic for free and unifies with the
-prisoner pit-cell gate.
+**SUPERDEEP captures regardless of fill** (ruling 26). Since the collapse ruling
+(`PIT_SUPERDEEP_COLLAPSE_1`, 2026-09-17) a captured pawn **stays spawned** on the D=4 cell and simply
+cannot leave it — no container, no struggle-escape roll, no holder Thing. The Phase-5 build that reused
+`Building_OpenPit` (a hidden `RM_SuperdeepPit` per D=4 cell) predates that ruling and is being retired
+(`SUPERDEEP_HOLDER_RETIRE_1`). **Ladders** are built in the D=4 cell and raise/lower like a prison door
+(`LADDER_PRISON_DOOR_1`). The one model: `design/RimMandrake/flowworks_pits_unified_model_2026-10-02.md`.
 
 The shooting restriction (ruling 23): **SUPERDEEP only**, and "at the edge" means **8-way adjacency to
 the pawn's own cell** — region adjacency needs a flood fill and the targeting check runs constantly, so
@@ -235,12 +235,9 @@ stock bookkeeping directly.
 Rewrite the walk and `validation.py` against the new primitive (the old ones assert a deleted comp).
 Rewrite the north star: the DRAFT checklist in `design/validation_walks/RimMandrake/FlowWorks.md` is
 13 must-show + 3 cannot-show lines distilled from his own words, and it needs regrouping once depth is
-the primitive. Then the pit's visual redesign inside FlowWorks (`PIT_TRAP_VISUAL_REDESIGN_1`).
-
-🔑 **Do not let this phase be the first proof of the north-star system.** Validating Pits' *existing*
-DRAFT checklist today takes it GREEN → REFUSED on the visual floor with no sprite work at all, which
-IS the falsification test of `north_star_validation_spec.md` §9. One command, owner-authorised:
-`modcheck validate Pits --owner-said "…"`. Recommended before any of this starts.
+the primitive. The pit's bars are already folded into FlowWorks' walk and VALIDATED (2026-10-01); the pit's art is
+`EXCAVATION_WALL_ART_1` and `PIT_DEPTH_DRAW_OFFSET_1`. The north-star falsification run is
+`FLOWWORKS_NORTHSTAR_BASELINE_RUN_1` (RED expected).
 
 ## verify
 
@@ -257,9 +254,6 @@ LIES    a flood that leaves the channel; a source that never runs down; conserva
 
 ## Watch out
 
-- 🔴 **`Designator_DigCanal` may currently ALLOW digging onto a pit's cell** — it refuses edifices, but
-  Pits' buildings are `passability` Standable and may not read as one. Needs an explicit refusal or an
-  explicit conversion.
 - 🔴 **A canyon flood erases canals today** (`CANYON_FLOOD_ERASES_CANALS_1`): permanent `SetTerrain`
   over every flood cell. One engine fixes it; two owners for one cell is the disease.
 - **A roofed pit full of liquid** is a visual lie waiting to happen (ruling 25 makes roofs meaningful).
@@ -267,8 +261,8 @@ LIES    a flood that leaves the channel; a source that never runs down; conserva
 - **Fire reaching an occupied pit** must know there is an occupant, or it will be found later as "fire
   does nothing to a trapped pawn".
 - **Filling in a canal that contains a pit** — RULED 2026-09-16 (ruling 29, by card): the fill
-  DESTROYS the pit. Code owed: `Designator_FillInCanal` still refuses edifice cells and must be
-  changed to destroy a Pits building on the filled cell.
+  DESTROYS the pit. Under the collapse a pit is only D=4, so filling in lowers D and the pit is gone by
+  definition; spikes/ladders on the cell are uninstalled first (unified model §3.8).
 - **Every mechanic ships its own Mod Settings toggle**, defaults equal to shipped behaviour, all-off
   leaving a mod that still digs dry channels (standing rule, 2026-09-12). With this many mechanics the
   settings screen is large by design — group it by phase.

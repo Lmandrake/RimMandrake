@@ -77,6 +77,13 @@ resolution"; this commission plus his lip-killing ruling closes that.
 Not written. Design work; goes to a backgrounded high-tier subagent per
 `infrastructure/agents/Agent_Policy.md`, with this file as its input.
 
+## depends
+
+- "Not openable from inside a superdeep cell" needs the trap rule as a grid fact:
+  `SUPERDEEP_HOLDER_RETIRE_1` (a pawn held in a container never reaches a door).
+- "Liquid passes while closed" can only be proven once flow fills in every direction:
+  `FLOWWORKS_CHANNEL_OSCILLATION_1`. Unified model: `design/RimMandrake/flowworks_pits_unified_model_2026-10-02.md` §3.4.
+
 ## verify
 
 - Two defs only, both stuffable; no fixed armour/fire tiers hardcoded.

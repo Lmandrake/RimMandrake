@@ -15,7 +15,6 @@ python to drive the bridge to validate. Make it happen!"*
 3. `FLOWWORKS_NORTHSTAR_SITE_PREP_1` — golden site + preflight.
 4. `FLOWWORKS_NORTHSTAR_BASELINE_RUN_1` — first live run (RED expected).
 5. `FLOWWORKS_NORTHSTAR_GREEN_MINIMAL_1` → 6. `FLOWWORKS_NORTHSTAR_GREEN_FULL_1` → 7. `FLOWWORKS_NORTHSTAR_SHIP_1`.
-Blocker for GREEN-full: `PITS_STALE_DEPLOY_COLLISION_1`.
 Depends on the shared driver at `src/RimMandrake/Utils/northstar_driver/` (another agent builds it; §6 lists the calls).
 
 ## acceptance
