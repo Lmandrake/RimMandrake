@@ -1,0 +1,21 @@
+power_state_machine v=PASS,PASS,PASS,PASS bland=True sweeps=2 ticks=600 surprises=0 aborted=[]
+passive_charging v=FAIL bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   nimbus_charges_in_range FAIL: ExpectationFailed: RSW_DW_ChargeNimbus not found at anchor after spawn: []
+detonation v=PASS bland=True sweeps=2 ticks=60 surprises=0 aborted=[]
+salvage_on_death v=PASS,PASS bland=True sweeps=2 ticks=60 surprises=0 aborted=[]
+bolt_core v=FAIL,UNMEASURED,UNMEASURED,UNMEASURED bland=True sweeps=2 ticks=1200 surprises=0 aborted=[]
+   resentment_accrues FAIL: ExpectationFailed: RSW_DW_BoltResentment severity did not rise (0.000000 -> 0.000000)
+   shear_on_damage UNMEASURED: upstream failed -- this chain's state is meaningless
+   mood_penalty_nearby UNMEASURED: upstream failed -- this chain's state is meaningless
+   mental_break_suppressed_while_bolted UNMEASURED: upstream failed -- this chain's state is meaningless
+bolt_rebellion_structural v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]
+wipe_and_drift_structural v=PASS,FAIL,UNMEASURED bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   quirk_pool_marked FAIL: ExpectationFailed: get_defs('TraitDef/RSW_DW_Quirk_ServoTwitch', fields='modExtensions') did not contain 'HardwareQuirkExtension': {'success': True, 'message': '1 of 1 def(s) resolved', 'requested': 1
+   idiosyncrasy_pool_marked UNMEASURED: upstream failed -- this chain's state is meaningless
+hutt_captive_bolt_state v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]
+module_personality v=FAIL bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   module_grants_personality_on_wear FAIL: ExpectationFailed: RSW_DW_Race_guy762_DroidRace_T3series12674 hediff RSW_DW_ModulePersonality_Twitchy=False, expected present=True (hediffs: ['RSW_DW_FormatTier'])
+wild_droid_crash v=PASS bland=True sweeps=2 ticks=60 surprises=0 aborted=[]
+protocol_trade_advantage v=FAIL bland=True sweeps=1 ticks=120 surprises=0 aborted=[]
+   protocol_droid_shifts_prices FAIL: ExpectationFailed: no buy price changed after adding a protocol droid to the player party: before={'Silver': {'defName': 'Silver', 'label': 'silver', 'baseMarketValue': 1.0, 'buy': 1.0, 'sell': 1.0}} 
+ion_overload_shutdown v=PASS bland=True sweeps=2 ticks=60 surprises=0 aborted=[]

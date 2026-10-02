@@ -1,0 +1,6 @@
+jawa_xenotype_mechanism v=FAIL,UNMEASURED bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   xenotype_applies_fragile_genes FAIL: ExpectationFailed: RSW_MandrakeJawa reports 24 genes, expected 38 (this def's own documented count -- a changed count here means the xenotype was edited without updating this suite, OR a gene silently
+   mining_disabled_not_plantwork UNMEASURED: upstream failed -- this chain's state is meaningless
+jawa_naming v=FAIL bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   namer_draws_from_jawa_wordlist FAIL: ExpectationFailed: 3/3 Jawa-xenotype pawns got a first name NOT in this mod's own SWX/Jawa/First.txt: [('Human46191', 'Chris Madsen'), ('Human46194', "Unkow 'Schlitzer' Manus"), ('Human46197', 'Daniel
+donor_species_sample v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]

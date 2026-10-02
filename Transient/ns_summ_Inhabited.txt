@@ -1,0 +1,6 @@
+place_and_roster v=PASS,PASS,PASS,PASS,PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]
+fate_and_stock v=PASS,FAIL,UNMEASURED,UNMEASURED,UNMEASURED bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   stock_dumped FAIL: ExpectationFailed: no recent log line matched tag='[RimMandrake.Inhabited] dumped' field=None value=None (last matching line: None)
+   fate_detects_when_enabled UNMEASURED: upstream failed -- this chain's state is meaningless
+   stock_collected UNMEASURED: upstream failed -- this chain's state is meaningless
+   robbed_threshold_not_spurious UNMEASURED: upstream failed -- this chain's state is meaningless
