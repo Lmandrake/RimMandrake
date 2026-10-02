@@ -1,5 +1,5 @@
 {
- "_source": "census file Transient/bench_tools_dump.json (a live --list-tools capture), snapshot written 2026-10-01; +44 tools from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
+ "_source": "census file Transient/bench_tools_dump.json (a live --list-tools capture), snapshot written 2026-10-02; +54 tools from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
  "tools": {
   "deepfire/add_coat": {
    "parameters": [
@@ -448,6 +448,19 @@
     "damageDef"
    ]
   },
+  "jawa/damage_log": {
+   "parameters": [
+    "action",
+    "kind",
+    "limit",
+    "pawnsOnly",
+    "sinceSeq",
+    "sinceTick",
+    "thingId"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
   "jawa/debug_action_yielders": {
    "parameters": [
     "limit",
@@ -769,6 +782,24 @@
    ],
    "source": "csharp"
   },
+  "jawa/flowworks_excavation_rect": {
+   "parameters": [
+    "h",
+    "includeTerrain",
+    "mapId",
+    "onlyNonZero",
+    "w",
+    "x",
+    "z"
+   ],
+   "required": [
+    "h",
+    "w",
+    "x",
+    "z"
+   ],
+   "source": "csharp"
+  },
   "jawa/flowworks_excavation_report": {
    "parameters": [
     "x",
@@ -778,6 +809,32 @@
     "x",
     "z"
    ],
+   "source": "csharp"
+  },
+  "jawa/flowworks_pit_report": {
+   "parameters": [
+    "mapId",
+    "x",
+    "z"
+   ],
+   "required": [
+    "x",
+    "z"
+   ],
+   "source": "csharp"
+  },
+  "jawa/flowworks_pulse": {
+   "parameters": [
+    "count",
+    "h",
+    "ignoreEngineToggle",
+    "includeBodies",
+    "mapId",
+    "w",
+    "x",
+    "z"
+   ],
+   "required": [],
    "source": "csharp"
   },
   "jawa/flowworks_set_active_fluid": {
@@ -1096,6 +1153,20 @@
    "parameters": [],
    "required": []
   },
+  "jawa/incident_queue_peek": {
+   "parameters": [],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/incident_queue_remove": {
+   "parameters": [
+    "defName",
+    "dryRun",
+    "fireTick"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
   "jawa/incident_schedule": {
    "parameters": [
     "absoluteFireTick",
@@ -1413,6 +1484,14 @@
    ],
    "source": "csharp"
   },
+  "jawa/name_colony": {
+   "parameters": [
+    "factionName",
+    "settlementName"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
   "jawa/new_allowed_area": {
    "parameters": [
     "label"
@@ -1511,6 +1590,16 @@
     "pawn"
    ],
    "required": []
+  },
+  "jawa/pawn_census": {
+   "parameters": [
+    "faction",
+    "ids",
+    "includeDead",
+    "limit"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/pawn_dirty_situational": {
    "parameters": [
@@ -1704,6 +1793,16 @@
     "restoreMissingParts"
    ],
    "required": []
+  },
+  "jawa/pawn_roles": {
+   "parameters": [
+    "faction",
+    "ids",
+    "includeDead",
+    "limit"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/pawn_romance": {
    "parameters": [
@@ -2728,6 +2827,14 @@
     "mapId",
     "rect",
     "thing"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/thing_lineage": {
+   "parameters": [
+    "ids",
+    "includeEvents"
    ],
    "required": [],
    "source": "csharp"
