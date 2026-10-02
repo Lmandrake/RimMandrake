@@ -21,16 +21,46 @@
     "ts": 1789295394.5104144
   },
   "FlowWorks": {
-    "hash": "e9033a2a76d25b4eb0337d9340b5bbc6a8d2a27366d6dacecca3117151f5c0d8",
-    "minor": null,
-    "renamed_from": {
-      "old": "FluidCanals",
-      "ts": 1789685428.0722578,
-      "why": "MODCHECK_STATUS_ORPHANED_BY_RENAME_1: FluidCanals is the dead pre-rename key for the mod that ships as FlowWorks (ruling 20, 2026-09-16); no live FlowWorks entry existed to collide with"
+    "components": {
+      "counts": {
+        "PASS": 58,
+        "SKIP": 1,
+        "UNBUILT": 12
+      },
+      "not_ok": [],
+      "unbuilt": [
+        "U_fill_fluid_distinct",
+        "U_ladder_state_legible",
+        "U_pawn_height_ladder_legible",
+        "U_pawn_lowers_on_deeper_cell",
+        "U_pawn_rises_on_shallower_cell",
+        "U_pit_covered_invisible",
+        "U_pit_covered_seam_at_max_zoom",
+        "U_pit_trapped_reads_as_trapped",
+        "U_slime_occupant_below_surface",
+        "U_sluice_gate_state_legible",
+        "U_spikes_read_distinct",
+        "U_tar_fill_front_lags_water"
+      ],
+      "uncovered": []
     },
-    "run_id": "FluidCanals@1789295363",
-    "status": "GREEN",
-    "ts": 1789295364.2275925
+    "hash": "9909f906217db9a78f083c037831d09dac5f81a6e9d18e0d1fb59e37e5b5adcf",
+    "minor": null,
+    "owner_review": null,
+    "refused": "58 live rows PASS but 12 bars UNBUILT, 0 UNCOVERED: U_fill_fluid_distinct, U_ladder_state_legible, U_pawn_height_ladder_legible, U_pawn_lowers_on_deeper_cell, U_pawn_rises_on_shallower_cell, U_pit_covered_invisible, U_pit_covered_seam_at_max_zoom, U_pit_trapped_reads_as_trapped, U_slime_occupant_below_surface, U_sluice_gate_state_legible, U_spikes_read_distinct, U_tar_fill_front_lags_water",
+    "run_id": "FlowWorks/validation_v2@validation_v2_result_20261002T093135.json",
+    "source": {
+      "assembly_sha256": "571e6eb55f0470c2f064375e97f779febbe872eb1ffdd6d157b3b26de18ec5bc",
+      "env_running_count": 9,
+      "env_running_sha256": "e1e98d233056fa12fa22ed7bb3e2694edee39f05fbb3c89150fc5ea6b57c42d2",
+      "result": "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261002T093135.json",
+      "started": "2026-10-02T09:30:34",
+      "ticks_spent": 1030,
+      "tier": "flowworks",
+      "verb": "modcheck record"
+    },
+    "status": "REFUSED",
+    "ts": 1790958717.535347
   },
   "Inhabited": {
     "hash": "43f7825fc307142fe7683457f28eb2fb87b65079c79b1df74161a439335b4ef7",

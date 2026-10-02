@@ -8,6 +8,12 @@
     python3     src/RimMandrake/Utils/modcheck/cli.py forget-key <key> --why "..."
     python3     src/RimMandrake/Utils/modcheck/cli.py validate <mod> [--owner-said "..."]
     python3     src/RimMandrake/Utils/modcheck/cli.py review <mod> --owner-said "..."
+    python3     src/RimMandrake/Utils/modcheck/cli.py record <mod> --result <json> [--tier T]
+
+`record` (2026-10-02) records a functional script's LIVE result (e.g.
+FlowWorks/northstar/validation_v2.py) through status.record_run WITHOUT
+touching ModsConfig.xml -- it refuses a stale result (mod hash moved), a run
+whose live mod set is not the declared tier, and an aborted run (record.py).
 
 `run` drives a live bridge session and needs `python.exe` (Windows) for the
 same WSL-loopback reason every other bridge driver does
@@ -95,6 +101,14 @@ def main(argv=None):
     p_rev.add_argument("--owner-said", required=True)
     p_rev.add_argument("--run-id", help="defaults to the mod's last recorded run")
 
+    p_rec = sub.add_parser("record", help="record a functional script's live result "
+                                          "(no ModsConfig swap) -- refuses stale/off-tier runs")
+    p_rec.add_argument("mod")
+    p_rec.add_argument("--result", required=True, help="the script's result JSON")
+    p_rec.add_argument("--tier", default=None,
+                       help="modset_builder tier the run must have been on "
+                            "(default: the mod name lowercased)")
+
     p_lint = sub.add_parser("lint", help="every identifier a validation walk "
                                          "names must exist (walklint)")
     p_lint.add_argument("--warn", action="store_true",
@@ -114,6 +128,12 @@ def main(argv=None):
                                   "it surfaces are the owner's")
 
     args = ap.parse_args(argv)
+
+    if args.cmd == "record":
+        import record
+        code, msg, _ = record.record(args.mod, args.result, args.tier or args.mod.lower())
+        print(msg)
+        return code
 
     if args.cmd == "doctor":
         import doctor
@@ -187,7 +207,21 @@ def main(argv=None):
             live = status.check_or_orphaned(mod)
             stored = entry.get("status")
             drift = "" if live.split(" (")[0] == stored else "   [stored: %s]" % stored
-            print("%-30s %-22s %s%s" % (mod, live, bar, drift))
+            run = ""
+            if entry.get("source"):     # a `modcheck record` entry: say what it was run at
+                try:
+                    cur = status.mod_hash(runner.find_mod_dir(mod))
+                    at = "current hash" if cur == entry.get("hash") else "STALE hash"
+                except RuntimeError:
+                    at = "no mod folder"
+                cnt = (entry.get("components") or {}).get("counts") or {}
+                run = "   [run %s at %s %s; %s]" % (
+                    entry["source"].get("result", "?").rsplit("/", 1)[-1], at,
+                    (entry.get("hash") or "")[:12],
+                    " ".join("%s %d" % kv for kv in sorted(cnt.items())))
+            if len(live) > 60:
+                live = live[:57] + "..."
+            print("%-30s %-22s %s%s%s" % (mod, live, bar, drift, run))
         return 0
 
     if args.cmd == "declare":
