@@ -28,9 +28,8 @@ two effigy effects below.
    (the vanilla Empire faction, reskinned).
 4. **Asks.** One good thing (the price, destroyed; value floor a Mod Settings number) and one
    `RUT_TarEffigy`, both thrown into the tar and destroyed. Nothing living or dead goes in.
-5. **Empire effigy: the hold-off, five times over, on THIS map.** Imperial Heat is untouched (Rite A
-   alone lowers Heat). The map the rite is performed on gets a `GameConditionDef`
-   `RUT_ImperialHoldOff` (days left visible) lasting **5 × the normal hold-off interval**, during which
+5. **Empire effigy: the hold-off, five times over, on THIS map.** Imperial Heat is untouched. The map the rite is performed on gets a `GameConditionDef`
+   `RUT_ImperialHoldOff` (days left visible; shared with `SUMP_SINKING_RITE_BUILD_1`, which calls the same hold-off) lasting **5 × the normal hold-off interval**, during which
    no Empire raid, drop or inspection incident may target this map (Harmony on incident target
    selection for the Empire faction; other maps unaffected). The same multiplier is written as a
    history event the GM blackboard reads, multiplying this map's remaining orbital-detection time by 5.

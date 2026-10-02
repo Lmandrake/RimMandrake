@@ -23,8 +23,9 @@ Q1 all content into the free tier (Baroque Biomes); Q2 the full station-eater; Q
 the offered rites, his own tar-offering rite instead. FOUNDRY: `SUMP_FREE_TIER_MOVE_BUILD_1`,
 `SUMP_FAUNA_WIRING_BUILD_1`, `SUMP_HUNGRY_GOD_TEXT_1`, `SUMP_TAR_BEAST_BUILD_1`,
 `SUMP_KETHREL_BUILD_1`, `SUMP_CAPSTAN_TURRET_BUILD_1`, `LASSO_CHERRYPICKER_REMOVAL_1`. Art: 17 jobs
-from `infrastructure/artpipe/art_lists/sump_bedazzle_cast.csv`. **Open:** the Tar Offering rite,
-review doc §6, draft turn-2 card §8 (GPT: `Transient/bedazzle_gpt_enrich_2026-10-01/sump_tar_rite.md`).
+from `infrastructure/artpipe/art_lists/sump_bedazzle_cast.csv`. The Tar Offering rite is ruled
+(review doc §6, §9): two rites, the Sinking to Ishko (its Empire effect pushes the next Imperial probe or raid 5x
+further away and never lowers Heat) and Mob'Unloo's Price (GPT: `Transient/bedazzle_gpt_enrich_2026-10-01/sump_tar_rite.md`).
 
 ## spec
 
