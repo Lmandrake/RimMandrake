@@ -51,16 +51,16 @@ Not swapped: the RUT_ campaign biome files still carry the donor rows (RUT_Night
 ### The other 6 of the 9
 | creature | port | result |
 |---|---|---|
-| Cactipine | RSW_Chikka | SKIPPED: no finished art for any spelling (artpipe find chikka/cactipine: 0); texPath is donor-root AA_Cactipine; donor row is an Alpha Animals (AA_) name; whether the RSW_ port prefix is a misnomer is UNVERIFIED for this one; RM_-tier re-homing (Q12) would come first if so |
-| Needlepost | RSW_Skorra | SKIPPED: no finished art, donor-root texPath AA_NeedlePost (donor row is AA_/unverified; RSW_ prefix may be a misnomer: check origin, re-home to RM_ per Q12 if Alpha Animals) |
-| Terrorworm | RSW_Vurra | SKIPPED: no finished art, donor-root texPath Terrorworm/TerrorWorm (donor row is AA_/unverified; RSW_ prefix may be a misnomer: check origin, re-home to RM_ per Q12 if Alpha Animals) |
-| Wildpawn | RSW_Durrok | SKIPPED: finished art rot_wildpawn_v2_* exists but is already wired in src/RimMandrake/TheRot/Textures/RotSpecies/Wildpawn for the DONOR AA_Wildpawn def (patched to 'durrok'); RSW_Durrok's texPath is the donor path AA_Wildpawn/AA_Wildpawn, so wiring it would mean shadowing a donor path or repointing the def (donor row is AA_/unverified; RSW_ prefix may be a misnomer: check origin, re-home to RM_ per Q12 if Alpha Animals) |
-| Wildpod | RSW_Mullgoth | SKIPPED: same, rot_wildpod_v2 already in TheRot/RotSpecies/Wildpod and src/RimUtinni/WildpodArtOverride supplies AA_Wildpod_* at the donor path; no RM_ twin (donor row is AA_/unverified; RSW_ prefix may be a misnomer: check origin, re-home to RM_ per Q12 if Alpha Animals) |
+| Cactipine | RSW_Chikka | SKIPPED: no finished art for any spelling (artpipe find chikka/cactipine: 0); texPath is donor-root AA_Cactipine; Alpha Animals creature (owner, 2026-10-02); the RSW_ port prefix is a misnomer, re-home to RM_ per Q12 first |
+| Needlepost | RSW_Skorra | SKIPPED: no finished art, donor-root texPath AA_NeedlePost (Alpha Animals creature per owner; RSW_ port prefix is a misnomer, re-home to RM_ per Q12 first) |
+| Terrorworm | RSW_Vurra | SKIPPED: no finished art, donor-root texPath Terrorworm/TerrorWorm (Alpha Animals creature per owner; RSW_ port prefix is a misnomer, re-home to RM_ per Q12 first) |
+| Wildpawn | RSW_Durrok | SKIPPED: finished art rot_wildpawn_v2_* exists but is already wired in src/RimMandrake/TheRot/Textures/RotSpecies/Wildpawn for the DONOR AA_Wildpawn def (patched to 'durrok'); RSW_Durrok's texPath is the donor path AA_Wildpawn/AA_Wildpawn, so wiring it would mean shadowing a donor path or repointing the def (Alpha Animals creature per owner; RSW_ port prefix is a misnomer, re-home to RM_ per Q12 first) |
+| Wildpod | RSW_Mullgoth | SKIPPED: same, rot_wildpod_v2 already in TheRot/RotSpecies/Wildpod and src/RimUtinni/WildpodArtOverride supplies AA_Wildpod_* at the donor path; no RM_ twin (Alpha Animals creature per owner; RSW_ port prefix is a misnomer, re-home to RM_ per Q12 first) |
 | Nysyllin | RSW_Plant_Nysyllin_Wild | SKIPPED: art exists (nysyllin_v1, nysyllin_v1_r2, desertportb_plant_nysyllin_wild = multiple versions, no single unambiguous) and texPath is donor-root swplants/Nysillin; Nysyllin is a canon Star Wars plant (owner, 2026-10-02), so the RSW_ name is right and Q11 applies: canon names route through the Utinni/RSW layer, not an RM_ file |
 
 ## Skipped / owner eyes (see Part 2 tail)
 - AB_Agarilux tolluk cap v3: see Part 1; comparison PNG Transient/belt_art_agarilux_v3_compare.png (left current interim, right v3).
 - Failed artpipe jobs (not requeued, forbidden): sweetline wool, greatbole hardwood, vent smelter/forge/kiln (9), livingbolt (3).
-- Wildpawn and Wildpod are Alpha Animals creatures (owner, 2026-10-02), not Star Wars; the RSW_Durrok/RSW_Mullgoth port names are mis-tiered. Nysyllin is canon Star Wars (owner) and correctly RSW_. Cactipine, Needlepost, Terrorworm, Chikka, Skorra, Vurra: origin not yet verified. Open: re-home them to RM_ names (Q12) and settle art ownership between the TheRot patch and the port.
+- Wildpawn and Wildpod are Alpha Animals creatures (owner, 2026-10-02), not Star Wars; the RSW_Durrok/RSW_Mullgoth port names are mis-tiered. Nysyllin is canon Star Wars (owner) and correctly RSW_. Cactipine, Needlepost and Terrorworm are also Alpha Animals (owner), so RSW_Chikka, RSW_Skorra and RSW_Vurra are mis-tiered too. Open: re-home them to RM_ names (Q12) and settle art ownership between the TheRot patch and the port.
 
 ## Skipped / owner eyes (see Part 2 tail)
