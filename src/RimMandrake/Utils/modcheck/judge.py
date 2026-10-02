@@ -36,6 +36,15 @@ UNJUDGEABLE = "UNJUDGEABLE"
 MUST = "must"
 CANNOT = "cannot"
 
+STATE = "state"
+CHANGE = "change"
+
+# PROVISIONAL seed (owner 2026-10-01: "You are mostly seeding the field right
+# now with reasonable initial guesses for refinement later through debugging
+# needs or live feedback."). How many frames make a change line decidable is
+# UNMEASURED (spec §4b); two is the floor because one frame cannot show change.
+MIN_CHANGE_FRAMES = 2
+
 CLAUDE_TIMEOUT_S = 180
 
 _FRAMING = {
@@ -75,6 +84,66 @@ Do NOT answer YES because the mechanics probably work, because the screenshot
 looks broadly reasonable, or because you assume intent. You are the only check on
 appearance in this system; a charitable verdict defeats its purpose.
 """
+
+
+_SEQ_PROMPT = """\
+You are grading an ORDERED SEQUENCE of screenshots from an automated RimWorld
+mod validation run against ONE specific statement about CHANGE OVER TIME. The
+frames were captured in this order from the same run; read every one, in order,
+before answering. Answer only whether the statement is TRUE of the sequence --
+not whether that is good.
+
+{frames}
+
+The statement, taken verbatim from the mod's owner-validated checklist, where it
+is recorded as {framing}:
+
+  id:   {req_id}
+  says: {req_text}
+
+Answer with a single JSON object and nothing else:
+
+  {{"verdict": "YES" | "NO" | "UNJUDGEABLE", "why": "<one sentence naming the frames>"}}
+
+Rules for your verdict:
+- YES  -- comparing the frames, the sequence positively shows the change the
+  statement describes.
+- NO   -- the sequence shows the statement to be false: in particular, if the
+  statement says something moves, travels, rises, fades or reacts and the
+  relevant region looks the same across the frames, that is NO.
+- UNJUDGEABLE -- the frames cannot settle it (different framing between frames,
+  subject occluded or off-frame, the relevant thing simply is not pictured).
+
+Each frame shows a moment; a sequence proves that something CHANGED, never that
+it changed SMOOTHLY. Do not answer YES because the mechanics probably work or
+because any single frame looks reasonable.
+"""
+
+
+def _frames_block(frames):
+    """Numbered, ordered frame list for the sequence prompt. `frames` is a list
+    of {"path", "tick"} where tick may be None."""
+    out = []
+    for i, f in enumerate(frames, 1):
+        at = "" if f.get("tick") is None else " (tick offset +%d)" % f["tick"]
+        out.append("Frame %d of %d%s -- read the image at: %s"
+                   % (i, len(frames), at, f["path"]))
+    return "\n".join(out)
+
+
+def evidence_frames(component):
+    """The ordered frame sequence a CHANGE line is judged on: the component's
+    last `capture_frames` sequence when it took one, else every screenshot it
+    captured, in capture order. List of {"path", "tick"}."""
+    seqs = component.get("sequences") or ()
+    if seqs:
+        last = seqs[-1]
+        ticks = list(last.get("ticks") or ())
+        paths = list(last.get("paths") or ())
+        return [{"path": p, "tick": ticks[i] if i < len(ticks) else None}
+                for i, p in enumerate(paths)]
+    return [{"path": p, "tick": None}
+            for p in (component.get("screenshots") or ())]
 
 
 def _run_claude(prompt, cwd=None):
@@ -137,7 +206,7 @@ def passes(verdict, polarity):
 
 
 def judge_component(component, must_show_text, cannot_show_text=None,
-                    cwd=None, runner=None):
+                    cwd=None, runner=None, kinds=None):
     """Judge one component's screenshots against every checklist id it claims.
 
     `component`: a component dict from `Component.as_dict()`.
@@ -145,6 +214,10 @@ def judge_component(component, must_show_text, cannot_show_text=None,
     `cannot_show_text`: {id: prose} from its `### cannot show` -- judged with
       the opposite polarity, so a YES there fails the mod.
     `runner`: injection point for tests -- callable(prompt) -> (ok, text).
+    `kinds`: {id: "state" | "change"} (spec §4b). A CHANGE line is judged on
+      the component's ordered frame sequence in one prompt; fewer than
+      MIN_CHANGE_FRAMES frames is UNJUDGEABLE, never a partial pass. Absent
+      ids are STATE, judged on the last screenshot as before.
 
     Returns a list of result dicts:
       {"id", "polarity", "verdict", "pass", "why", "image"}
@@ -155,6 +228,7 @@ def judge_component(component, must_show_text, cannot_show_text=None,
     """
     call = runner or (lambda p: _run_claude(p, cwd=cwd))
     cannot_show_text = cannot_show_text or {}
+    kinds = kinds or {}
     shots = list(component.get("screenshots") or ())
     out = []
 
@@ -175,7 +249,33 @@ def judge_component(component, must_show_text, cannot_show_text=None,
                               "component claims this but captured no screenshot"))
             continue
 
-        # Judge against the LAST screenshot of the component: the state at the
+        if kinds.get(req_id) == CHANGE:
+            frames = evidence_frames(component)
+            image = " -> ".join(f["path"] for f in frames)
+            if len(frames) < MIN_CHANGE_FRAMES:
+                out.append(result(req_id, polarity, UNJUDGEABLE,
+                                  "a (change) line needs an ordered sequence of "
+                                  ">= %d frames; the component captured %d"
+                                  % (MIN_CHANGE_FRAMES, len(frames)), image))
+                continue
+            missing = [f["path"] for f in frames if not os.path.isfile(f["path"])]
+            if missing:
+                out.append(result(req_id, polarity, UNJUDGEABLE,
+                                  "frame path does not exist on disk: %s"
+                                  % missing[0], image))
+                continue
+            ok, raw = call(_SEQ_PROMPT.format(
+                frames=_frames_block(frames), req_id=req_id, req_text=text,
+                framing=_FRAMING[polarity]))
+            if not ok:
+                out.append(result(req_id, polarity, UNJUDGEABLE,
+                                  "judge could not run: %s" % raw, image))
+                continue
+            verdict, why = _parse_verdict(raw)
+            out.append(result(req_id, polarity, verdict, why, image))
+            continue
+
+        # A STATE line: judge against the LAST screenshot of the component: the state at the
         # end of the component is the state the component asserts about.
         image = shots[-1]
         if not os.path.isfile(image):
@@ -196,7 +296,7 @@ def judge_component(component, must_show_text, cannot_show_text=None,
 
 
 def judge_run(summary, must_show_text, cannot_show_text=None, cwd=None,
-              runner=None):
+              runner=None, kinds=None):
     """Judge every component in a run summary. Mutates each component dict by
     attaching `visual` (its list of results) and returns the flat list.
 
@@ -210,7 +310,7 @@ def judge_run(summary, must_show_text, cannot_show_text=None, cwd=None,
             if not (c.get("shows")):
                 continue
             r = judge_component(c, must_show_text, cannot_show_text,
-                                cwd=cwd, runner=runner)
+                                cwd=cwd, runner=runner, kinds=kinds)
             c["visual"] = r
             results.extend(r)
     return results

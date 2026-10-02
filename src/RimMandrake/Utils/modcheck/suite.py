@@ -74,6 +74,9 @@ class Component(object):
         self.evidence = []          # list of {"call": ..., "result": ...}
         self.unverified = 0
         self.screenshots = []
+        # Ordered frame sequences from capture_frames(): [{"paths", "ticks"}].
+        # A `(change)` must-show line is judged on the last one (spec §4b).
+        self.sequences = []
         self.checkpoints = []
         self.verdict = None         # PASS / FAIL / UNMEASURED, set on exit
         self.detail = ""
@@ -87,7 +90,8 @@ class Component(object):
             "name": self.name, "toggle": self.toggle,
             "beyond_toggle": self.beyond_toggle, "verdict": verdict,
             "detail": self.detail, "evidence": self.evidence,
-            "screenshots": self.screenshots, "checkpoints": self.checkpoints,
+            "screenshots": self.screenshots, "sequences": self.sequences,
+            "checkpoints": self.checkpoints,
             "shows": list(self.shows),
             "surprises": self.surprises,
         }
@@ -527,6 +531,34 @@ class TestContext(object):
         if self._current is not None:
             self._current.screenshots.append(path)
         return path
+
+    def capture_frames(self, n, every_ticks, name=None, rect=None, padding=1):
+        """Capture an ORDERED sequence of `n` screenshots, `every_ticks` real
+        game ticks apart, as the evidence for a `(change)` must-show line
+        (spec §4b). Frame 1 is taken now; the clock advances via
+        `wait_ticks` (verified against ticksGame) between frames. The frames
+        also land in `screenshots`, and the sequence is recorded with each
+        frame's tick offset from the first so the judge sees them in order.
+
+        PROVISIONAL seed (owner 2026-10-01) -- `n` and `every_ticks` are the
+        script author's guess per line; no defensible default exists yet.
+        Returns the list of frame paths."""
+        if not self._guard():
+            return []
+        if n < 2:
+            raise ValueError("capture_frames needs n >= 2 -- one frame cannot "
+                             "show change (spec §4b)")
+        base = name or (self._current.name if self._current else "modcheck")
+        paths, ticks = [], []
+        for i in range(n):
+            if i:
+                self.wait_ticks(every_ticks)
+            paths.append(self.screenshot(name="%s_f%d" % (base, i + 1),
+                                         rect=rect, padding=padding))
+            ticks.append(i * every_ticks)
+        if self._current is not None:
+            self._current.sequences.append({"paths": paths, "ticks": ticks})
+        return paths
 
     def checkpoint(self, name):
         """No-op in smoke mode. In debug mode, dumps local state so a

@@ -299,7 +299,7 @@ def refusal(fl):
 
 
 def apply_judgement(summary, must_show_text, cannot_show_text=None,
-                    judge_runner=None):
+                    judge_runner=None, kinds=None):
     """Grade the run's screenshots and fold the result into `all_green`.
 
     Before this existed, `all_green` was the state assertions alone, so a mod
@@ -312,7 +312,7 @@ def apply_judgement(summary, must_show_text, cannot_show_text=None,
     """
     import judge  # noqa: E402
     visual = judge.judge_run(summary, must_show_text or {}, cannot_show_text or {},
-                             cwd=ROOT, runner=judge_runner)
+                             cwd=ROOT, runner=judge_runner, kinds=kinds)
     summary["visual"] = visual
     summary["visual_all_green"] = judge.visual_all_green(visual)
     summary["state_all_green"] = summary["all_green"]
@@ -490,7 +490,8 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
         must_text, cannot_text = (northstar.text_for(walk) if walk
                                   else ({}, {}))
         apply_judgement(summary, must_text, cannot_text,
-                        judge_runner=judge_runner)
+                        judge_runner=judge_runner,
+                        kinds=northstar.kinds_for(walk) if walk else {})
     return summary
 
 
