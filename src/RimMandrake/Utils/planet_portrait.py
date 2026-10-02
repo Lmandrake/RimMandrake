@@ -2,12 +2,13 @@
 """Ash'karr planetary portrait — two hemispheres (dayside / nightside faces) on a
 starfield plate. Naturalistic palette, sun lighting with soft terminator, night
 emissives. No iconography. Reads world/ASHKARR_WORLDMAP_tiles.csv."""
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import csv, math, sys, random
 import numpy as np
 from PIL import Image, ImageFilter
 
-CSV = "/mnt/d/Luke/dev/Rimworld/world/ASHKARR_WORLDMAP_tiles.csv"
-OUT = sys.argv[1] if len(sys.argv) > 1 else "/mnt/d/Luke/dev/Rimworld/Transient/ashkarr_portrait.png"
+CSV = str(_RM_ROOT / 'world' / 'ASHKARR_WORLDMAP_tiles.csv')
+OUT = sys.argv[1] if len(sys.argv) > 1 else str(_RM_ROOT / 'Transient' / 'ashkarr_portrait.png')
 
 # --- naturalistic from-space palette (keyed to ratified artistic themes) ---
 PAL = {

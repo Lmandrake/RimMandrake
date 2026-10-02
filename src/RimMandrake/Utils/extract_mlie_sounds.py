@@ -15,6 +15,7 @@ script for one absorption pass, kept for provenance/re-run rather than as a
 general tool. Run with python.exe (Windows) - UnityPy is only installed
 there in this environment, not under WSL's python3.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import json
 import os
 import re
@@ -24,9 +25,9 @@ import UnityPy
 
 BUNDLE = r"C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3497316713\AssetBundles\Mlie_StarWarsAnimalCollection"
 SRC_SOUNDDEFS = r"C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3497316713\1.6\Defs\SoundDefs\Sounds_SWanimals.xml"
-OUT_SOUNDS_DIR = r"D:\Luke\dev\Rimworld\src\RimStarWars\SWBestiary\Sounds\SWanimals"
-OUT_DEFS_PATH = r"D:\Luke\dev\Rimworld\src\RimStarWars\SWBestiary\Defs\SoundDefs\SoundDefs_SWBestiary.xml"
-OUT_MAP_PATH = r"D:\Luke\dev\Rimworld\infrastructure\state\facts\mlie_sound_defname_map.json"
+OUT_SOUNDS_DIR = str(_RM_ROOT / 'src' / 'RimStarWars' / 'SWBestiary' / 'Sounds' / 'SWanimals')
+OUT_DEFS_PATH = str(_RM_ROOT / 'src' / 'RimStarWars' / 'SWBestiary' / 'Defs' / 'SoundDefs' / 'SoundDefs_SWBestiary.xml')
+OUT_MAP_PATH = str(_RM_ROOT / 'infrastructure' / 'state' / 'facts' / 'mlie_sound_defname_map.json')
 
 PREFIX = "RSW_"
 

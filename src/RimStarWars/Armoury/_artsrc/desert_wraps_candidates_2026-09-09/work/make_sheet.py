@@ -6,9 +6,10 @@ warm-brown ground, checker tile behind each RGBA candidate, big + sprite-size
 rows, plus a style-anchor row showing OUR OWN absorbed Sovereign-Tusken art
 (never the unsubscribed donor mod's own files) for comparison.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[6]  # repo root, derived (not hardcoded)
 from PIL import Image, ImageDraw, ImageFont
 
-REPO = "/mnt/d/Luke/dev/Rimworld/"
+REPO = str(_RM_ROOT) + "/"
 D = REPO + "Transient/art_review_desert_wraps/"
 
 WRAPS = [

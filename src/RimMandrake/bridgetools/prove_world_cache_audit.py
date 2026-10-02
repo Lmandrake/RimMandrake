@@ -21,10 +21,11 @@ tile agrees, forever, and the tool looks fine while measuring nothing.
 The fourth step - save, reload, audit, expect 0 - costs a second load and is
 NOT run here. It is printed as the remaining half.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import sys, json, time
 try: sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 except Exception: pass
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'))
 import rimbridge_client as rb
 
 host, port, token = rb.resolve_endpoint()

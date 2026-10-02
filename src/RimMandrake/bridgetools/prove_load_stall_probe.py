@@ -9,8 +9,9 @@ call would hang this script alongside the game. The probe reads static state fro
 the bridge thread; two readings 30s apart let the cpuSeconds diff name the
 spinning native thread.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import sys, json, time
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'))
 import rimbridge_client as rb
 
 host, port, token = rb.resolve_endpoint()

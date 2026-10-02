@@ -40,6 +40,7 @@ with a one-line reason, and exits 0.
 
 Run: bare `python3 selftest_deployed_biome_refs.py`, stdlib only, no args.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 
 import glob
 import json
@@ -57,8 +58,8 @@ STEAM_DATA_ROOT = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Da
 # separate root. Resolving against Mods+Data alone reports ~339 dangling refs,
 # 100% of them false -- MEASURED 2026-09-20, the first run of this file.
 STEAM_WORKSHOP_ROOT = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
-REPO_UTINNI_PATCHES_ABOUT = "/mnt/d/Luke/dev/Rimworld/src/RimUtinni/UtinniPatches/About/About.xml"
-REPO_BIOME_DEFS_GLOB = "/mnt/d/Luke/dev/Rimworld/src/RimUtinni/UtinniPatches/Defs/BiomeDefs/*.xml"
+REPO_UTINNI_PATCHES_ABOUT = str(_RM_ROOT / 'src' / 'RimUtinni' / 'UtinniPatches' / 'About' / 'About.xml')
+REPO_BIOME_DEFS_GLOB = str(_RM_ROOT / 'src' / 'RimUtinni' / 'UtinniPatches' / 'Defs' / 'BiomeDefs' / '*.xml')
 
 class WorkshopScanFailed(Exception):
     """Raised when the Workshop root cannot be scanned at all (grep timed out

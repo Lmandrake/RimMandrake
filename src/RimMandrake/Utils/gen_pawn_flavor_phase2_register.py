@@ -29,6 +29,7 @@ the agent decided, the human disagrees.
 the page). This generator refuses to overwrite it without
 --i-know-this-overwrites-the-owners-decisions.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import argparse
 import csv
 import json
@@ -41,8 +42,8 @@ PROSE_JSON = os.path.join(ROOT, "infrastructure", "output", "pawn_flavor_phase2_
 OUT_DIR = os.path.join(ROOT, "design", "Jawa", "worldbuilding", "review")
 HTML_OUT = os.path.join(OUT_DIR, "pawn_flavor_phase2_register.html")
 DEC_OUT = os.path.join(OUT_DIR, "pawn_flavor_phase2_register.decisions.json")
-DEC_NATIVE = r"D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\pawn_flavor_phase2_register.decisions.json"
-HTML_NATIVE = r"D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\pawn_flavor_phase2_register.html"
+DEC_NATIVE = str(_RM_ROOT / 'design' / 'Jawa' / 'worldbuilding' / 'review' / 'pawn_flavor_phase2_register.decisions.json')
+HTML_NATIVE = str(_RM_ROOT / 'design' / 'Jawa' / 'worldbuilding' / 'review' / 'pawn_flavor_phase2_register.html')
 
 DEFTYPE_ORDER = {"ThoughtDef": 0, "MentalBreakDef": 1, "XenotypeDef": 2}
 

@@ -30,11 +30,12 @@ What it proves, in order:
     the 1x5 exhaust zone must be free of blockWind things AND substructure, and
     the state only refreshes on CompTickRare. jawa/inspect_string is the judge.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import json
 import sys
 import time
 
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'))
 import rimbridge_client as rb  # noqa: E402
 
 host, port, token = rb.resolve_endpoint()

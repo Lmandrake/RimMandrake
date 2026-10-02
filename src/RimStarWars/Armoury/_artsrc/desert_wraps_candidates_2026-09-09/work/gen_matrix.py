@@ -18,10 +18,11 @@ design capture's own measurement of ~1% variance, so only 3 directions per
 head style are generated, then duplicated for both genders when built into
 the mod).
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[6]  # repo root, derived (not hardcoded)
 import subprocess, sys, time
 from pathlib import Path
 
-ROOT = Path("/mnt/d/Luke/dev/Rimworld")
+ROOT = Path(str(_RM_ROOT))
 OUT = ROOT / "Transient/art_review_desert_wraps/matrix_raw"
 OUT.mkdir(parents=True, exist_ok=True)
 CODEX = ROOT / "skills/generating-images/scripts/codex_image.py"

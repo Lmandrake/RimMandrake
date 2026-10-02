@@ -12,10 +12,11 @@ ruling), CAPPED AT 1024: the image model returns ~1.5 Mpx natively, so a 2048
 canvas would be an upscale of art that does not contain 2048px of detail.
 The three colossi therefore ship at 85-96 px/cell rather than 128.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[6]  # repo root, derived (not hardcoded)
 
-MOCKUPS = "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/art/SeaBeasts/mockups"
-FINAL = "/mnt/d/Luke/dev/Rimworld/src/RimStarWars/SWBestiary/art/SeaBeasts/final"
-RAW = "/mnt/d/Luke/dev/Rimworld/Transient/sea_raw"
+MOCKUPS = str(_RM_ROOT / 'src' / 'RimStarWars' / 'SWBestiary' / 'art' / 'SeaBeasts' / 'mockups')
+FINAL = str(_RM_ROOT / 'src' / 'RimStarWars' / 'SWBestiary' / 'art' / 'SeaBeasts' / 'final')
+RAW = str(_RM_ROOT / 'Transient' / 'sea_raw')
 
 
 def canvas_for(draw_size: float) -> int:

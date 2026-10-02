@@ -19,9 +19,10 @@ Evidence bar, from the item:
   4. A deliberate out-of-range mode='verb' cast -> refusedBy names the real predicate.
   5. jawa/map_drop returns a parsed row naming the removed map instead of throwing.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import sys, json, time
 
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'))
 import rimbridge_client as rb  # noqa: E402
 
 RESULTS = []

@@ -39,6 +39,7 @@ assumed.
     python3 ashkarr_place_complex_structures.py            # plan
     python.exe ashkarr_place_complex_structures.py --apply # place (needs the bridge)
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import argparse
 import collections
 import json
@@ -88,7 +89,7 @@ def main():
             "ZBiome_Grasslands",              # the Pyrelands
         }
         te = rb.call("jawa/world_tile_export",
-                     {"path": r"D:\Luke\dev\Rimworld\Transient\cs_place_tiles.csv"})
+                     {"path": str(_RM_ROOT / 'Transient' / 'cs_place_tiles.csv')})
         import csv as _csv
         # 🔴 The bridge call above writes on the GAME's (Windows) filesystem, so its
         # path argument stays Windows-style. But this process may be python3 under

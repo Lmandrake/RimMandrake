@@ -22,11 +22,12 @@ Run this against a live bridge. Two independent checks:
 ⚠️ A screenshot proves nothing here — a generated map has rendered as a blank
    mesh while holding correct data. Both checks read DATA.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import argparse
 import json
 import sys
 
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'))
 import rimbridge_client as rb  # noqa: E402
 
 # The exact set RM_LiquidProperties_CompatIndex.xml targets. Every one of

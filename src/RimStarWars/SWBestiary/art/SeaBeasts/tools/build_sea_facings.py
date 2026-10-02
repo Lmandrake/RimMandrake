@@ -11,18 +11,19 @@ All four land on one canvas at one animal size, then seacheck.py grades the set.
 
     python3 build_sea_facings.py CrimsonOpee [...]
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[6]  # repo root, derived (not hardcoded)
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/skills/generating-images/scripts")
+sys.path.insert(0, str(_RM_ROOT / 'skills' / 'generating-images' / 'scripts'))
 import pnglib  # noqa: E402
 from sea_creatures import CREATURES, FINAL, MOCKUPS, RAW, canvas_for  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
-SKILLS = Path("/mnt/d/Luke/dev/Rimworld/skills")
+SKILLS = Path(str(_RM_ROOT / 'skills'))
 CHROMA = SKILLS / "generating-images/scripts/chroma_key.py"
 SHEET = SKILLS / "generating-rimworld-sprites/scripts/contact_sheet.py"
 

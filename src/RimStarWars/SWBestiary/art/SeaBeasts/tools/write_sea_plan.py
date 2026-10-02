@@ -6,11 +6,12 @@ asserted, so the plan cannot drift from the art it describes.
 
     python3 write_sea_plan.py CrimsonOpee [...]
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[6]  # repo root, derived (not hardcoded)
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/skills/generating-rimworld-sprites/scripts")
+sys.path.insert(0, str(_RM_ROOT / 'skills' / 'generating-rimworld-sprites' / 'scripts'))
 import validate_sprite as V  # noqa: E402
 from sea_creatures import CREATURES, FINAL, TELL, canvas_for  # noqa: E402
 

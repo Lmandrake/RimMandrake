@@ -88,7 +88,7 @@ fi
 # or a rebuilt WSL distro is not silently downgraded to per-seat-only protection —
 # systemd would happily create an UNBOUNDED slice on demand for an unknown name,
 # which fails open in exactly the way this whole script exists to prevent.
-SLICE_SRC=/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude-seats.slice
+SLICE_SRC="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)/claude-seats.slice"
 SLICE_DST="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/claude-seats.slice"
 if [ -f "$SLICE_SRC" ] && ! cmp -s "$SLICE_SRC" "$SLICE_DST" 2>/dev/null; then
   mkdir -p "$(dirname "$SLICE_DST")"

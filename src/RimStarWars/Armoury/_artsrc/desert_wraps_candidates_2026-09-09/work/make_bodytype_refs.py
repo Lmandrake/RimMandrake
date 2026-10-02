@@ -9,10 +9,11 @@ and translates, it never warps). This is what lets the full body-type matrix
 land at realistic relative proportions (Thin narrow, Hulk tall, Fat wide)
 without needing an extracted vanilla body reference.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[6]  # repo root, derived (not hardcoded)
 from pathlib import Path
 from PIL import Image, ImageDraw
 
-OUT = Path("/mnt/d/Luke/dev/Rimworld/Transient/art_review_desert_wraps/bodytype_refs")
+OUT = Path(str(_RM_ROOT / 'Transient' / 'art_review_desert_wraps' / 'bodytype_refs'))
 OUT.mkdir(parents=True, exist_ok=True)
 
 # (x0, y0, x1, y1) inclusive, from the design capture's SS1.2 table (south).

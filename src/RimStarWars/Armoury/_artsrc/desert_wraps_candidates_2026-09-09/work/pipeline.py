@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """raw -> key -> achromatic -> conform -> validate, for every candidate."""
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[6]  # repo root, derived (not hardcoded)
 import subprocess, sys, json
 from pathlib import Path
 from PIL import Image
 import numpy as np
 
-ROOT = Path("/mnt/d/Luke/dev/Rimworld")
+ROOT = Path(str(_RM_ROOT))
 W = ROOT / "Transient/art_review_desert_wraps"
 GI = ROOT / "skills/generating-images/scripts"
 GS = ROOT / "skills/generating-rimworld-sprites/scripts"

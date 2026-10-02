@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Crop a cutout to its subject bbox (alpha>=8), scale to fit within a target
 box centered on a square canvas with margin, and write the result."""
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[4]  # repo root, derived (not hardcoded)
 import sys
 
-sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/skills/generating-images/scripts")
+sys.path.insert(0, str(_RM_ROOT / 'skills' / 'generating-images' / 'scripts'))
 import pnglib  # noqa: E402
 
 def main(inp, out, canvas=640, margin=64):

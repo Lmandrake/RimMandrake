@@ -12,6 +12,7 @@ Output: research/RimMandrake/reference/gl_landform_schema.md  (+ stdout summary)
 stdlib only (xml.etree.ElementTree, glob, collections, os, sys).
 """
 from __future__ import annotations
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[4]  # repo root, derived (not hardcoded)
 
 import glob
 import os
@@ -20,7 +21,7 @@ import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 
 LANDFORMS_DIR = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2773943594/1.6/Landforms-v1"
-OUT_MD = "/mnt/d/Luke/dev/Rimworld/research/RimMandrake/reference/gl_landform_schema.md"
+OUT_MD = str(_RM_ROOT / 'research' / 'RimMandrake' / 'reference' / 'gl_landform_schema.md')
 MAX_DISTINCT_SHOWN = 8
 
 SCALAR_TAGS = {

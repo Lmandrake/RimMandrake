@@ -1,3 +1,4 @@
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # 🔴 FROZEN 2026-08-16. The owner has finished selecting world-map elements and his
@@ -46,7 +47,7 @@ the mutator while rejecting its landmark.
 """
 import json, pathlib, re, sys
 
-REPO = pathlib.Path("/mnt/d/Luke/dev/Rimworld")
+REPO = pathlib.Path(str(_RM_ROOT))
 HTML = REPO / "design/Jawa/worldbuilding/review/worldmap_elements.html"
 OUT  = REPO / "design/Jawa/worldbuilding/review/worldmap_elements.prefill.json"
 

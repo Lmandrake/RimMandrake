@@ -9,6 +9,7 @@ correct Armoury/StarWarsRaces texture paths. Safe to re-run: skips any name
 whose FINAL file already exists, so it always processes only what is new
 since the last run.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[6]  # repo root, derived (not hardcoded)
 import re
 import subprocess
 import sys
@@ -17,7 +18,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-ROOT = Path("/mnt/d/Luke/dev/Rimworld")
+ROOT = Path(str(_RM_ROOT))
 RAW = ROOT / "Transient/art_review_desert_wraps/matrix_raw"
 WORK = ROOT / "Transient/art_review_desert_wraps/matrix_work"
 WORK.mkdir(parents=True, exist_ok=True)

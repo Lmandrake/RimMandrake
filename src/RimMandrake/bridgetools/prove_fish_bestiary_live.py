@@ -25,10 +25,11 @@ Run against a live bridge (python.exe, not python3 -- WSL cannot reach the
 bridge's Windows-loopback socket). Creates a Settlement + map per water
 tested and removes both afterward -- nothing kept.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import json
 import sys
 
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'))
 import rimbridge_client as rb  # noqa: E402
 
 FISHING_DESIGNATOR = "architect-designator:zone:highlight-designator-zoneadd-fishing"

@@ -32,6 +32,7 @@ artpipe's history and keep their old names; only the dest paths moved). If a job
 renamed or a def's texPath changes, this table goes stale silently — re-derive
 it, do not hand-patch one row.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import argparse
 import json
 import shutil
@@ -191,7 +192,7 @@ def plan(decisions, all_pass):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--decisions", type=Path,
-                     default=Path("/mnt/d/Luke/dev/Rimworld/Transient/deeps_art_review_2026-09-18.decisions.json"))
+                     default=Path(str(_RM_ROOT / 'Transient' / 'deeps_art_review_2026-09-18.decisions.json')))
     ap.add_argument("--apply", action="store_true", help="actually copy files (default: dry run, prints the plan only)")
     ap.add_argument("--all-pass", action="store_true",
                      help="ignore the decisions file; treat every facts-PASS render as kept (quick preview only)")

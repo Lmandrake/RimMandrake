@@ -35,10 +35,11 @@ USAGE
 SAFETY: read-only except for spawning pawns, which needs a map. Nothing is
 destroyed and the game is never unpaused.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import sys, os, json, io, argparse, collections
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'))
 import rimbridge_client as rc
 
 # The expectation is MEASURED from the deployed DLL, never quoted: a literal here
@@ -55,7 +56,7 @@ PHANTOMS = {"jawa/revoke", "jawa/anomaly_"}
 
 
 def expect_tools():
-    sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools")
+    sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'bridgetools'))
     import build
     dll = r"C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll"
     if not os.path.exists(dll):

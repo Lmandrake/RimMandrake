@@ -1,3 +1,4 @@
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import ctypes
 from ctypes import wintypes
 import platform
@@ -59,7 +60,7 @@ bmi.biSizeImage = buf_size
 buf = ctypes.create_string_buffer(buf_size)
 gdi32.GetDIBits(img_dc, bmp, 0, height, buf, ctypes.byref(bmi), 0)
 
-out_path = sys.argv[1] if len(sys.argv) > 1 else r"D:\Luke\dev\Rimworld\Transient\system_screenshot.bmp"
+out_path = sys.argv[1] if len(sys.argv) > 1 else str(_RM_ROOT / 'Transient' / 'system_screenshot.bmp')
 with open(out_path, "wb") as f:
     file_header = b"BM" + (54 + buf_size).to_bytes(4, "little") + b"\x00\x00\x00\x00" + (54).to_bytes(4, "little")
     f.write(file_header)
