@@ -1,0 +1,661 @@
+{
+ "name": "LiveQueue__kill_corroborated__colonist_died__t266630__001",
+ "when_utc": "2026-10-02T02:46:31Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Howell died (damage_log_kill+death_letter+pawn_row_dead)",
+   "evidence": {
+    "name": "Howell",
+    "ticks": [
+     266630
+    ],
+    "sources": [
+     "damage_log_kill",
+     "death_letter",
+     "pawn_row_dead"
+    ],
+    "ids": [
+     "Human109395"
+    ],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    125,
+    162
+   ],
+   "fingerprint": "colonist_died:Howell"
+  },
+  {
+   "detector": "modal_open",
+   "severity": "SURPRISE",
+   "summary": "1 force-pause modal(s) open: RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "evidence": {
+    "windows": [
+     {
+      "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+      "title": null,
+      "isDebug": false,
+      "forcePause": true
+     }
+    ]
+   },
+   "suggest": [
+    "close_modals"
+   ],
+   "focus": null,
+   "fingerprint": "modal_open:RimWorld.Dialog_NamePlayerFactionAndSettlement"
+  }
+ ],
+ "snapshot": {
+  "tick": 266630,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human109395",
+    "name": "Howell",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": true,
+    "downed": false,
+    "spawned": false,
+    "x": 125,
+    "z": 162,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Hunter",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Hunter",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hunter",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hunter",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Eidey",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Eidey",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Eidey",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Eidey",
+     188040
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     188040
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Trader from Ouna",
+    "arrivalTick": 188100,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Trader from Ouna",
+     188100
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Duncan",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Duncan",
+     188220
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Duncan",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Duncan",
+     188220
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Krand",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Krand",
+     188220
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Krand",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Krand",
+     188220
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Mal",
+    "arrivalTick": 188280,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Mal",
+     188280
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mal",
+    "arrivalTick": 188280,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mal",
+     188280
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Gift from Ouna",
+    "arrivalTick": 233840,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Gift from Ouna",
+     233840
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ta'Baa the Unrooted",
+    "arrivalTick": 240000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ta'Baa the Unrooted",
+     240000
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 261550,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     261550
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sad wander: Ingram",
+    "arrivalTick": 264150,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sad wander: Ingram",
+     264150
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Pheanox",
+    "arrivalTick": 264210,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Pheanox",
+     264210
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Pheanox",
+    "arrivalTick": 264210,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Pheanox",
+     264210
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Duarte",
+    "arrivalTick": 264330,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Duarte",
+     264330
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Duarte",
+    "arrivalTick": 264330,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Duarte",
+     264330
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Berserk: Duarte",
+    "arrivalTick": 264330,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Berserk: Duarte",
+     264330
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 264570,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     264570
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sad wander: Vladimir",
+    "arrivalTick": 266570,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sad wander: Vladimir",
+     266570
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Howell",
+    "arrivalTick": 266630,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Howell",
+     266630
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Howell",
+    "arrivalTick": 266630,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Howell",
+     266630
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 21,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 19,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 266630
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101560"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101555"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101556"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101557"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101558"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101559"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101560"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101555"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101556"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101557"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101558"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101559"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101560"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101555"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101556"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101557"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101558"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101559"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser101560"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +15.0 (mental break: Vladimir -> Wander_Sad) -> 78.0 [Exalted]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 11,
+   "isDebug": false,
+   "forcePause": true
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 266630,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "LiveQueue",
+  "chain": "kill_corroborated",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\live_queue\\J4_companion_live\\kill_corroborated\\LiveQueue__kill_corroborated__colonist_died__t266630__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2730764,
+  "width": 1810,
+  "height": 1183,
+  "md5": "813565cf2c238d0d912733431e1c375d",
+  "why": ""
+ },
+ "notes": []
+}

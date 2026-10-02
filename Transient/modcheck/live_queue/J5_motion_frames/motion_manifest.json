@@ -1,0 +1,162 @@
+{
+ "bars": [
+  "canal_fill_front_watchable",
+  "canal_fill_spreads_along_itself"
+ ],
+ "frames": [
+  {
+   "i": 0,
+   "tick": 141307,
+   "png": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\motion_00_1790908002241_1__cell_rect.png",
+   "ok": true,
+   "md5": "fdfb5233f7b8de690bba5bce05a26141",
+   "fill": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "i": 1,
+   "tick": 141557,
+   "png": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\motion_01_1790908009103_2__cell_rect.png",
+   "ok": true,
+   "md5": "aa3ab397b8d85fe971a99fa2d2d4fdde",
+   "fill": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    0
+   ]
+  },
+  {
+   "i": 2,
+   "tick": 141807,
+   "png": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\motion_02_1790908015979_3__cell_rect.png",
+   "ok": true,
+   "md5": "8ed85b3f6229456feea06a34fb83b4f6",
+   "fill": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "i": 3,
+   "tick": 142057,
+   "png": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\motion_03_1790908022837_4__cell_rect.png",
+   "ok": true,
+   "md5": "e278965fe52b95a0bc6b30d3340faf93",
+   "fill": [
+    0,
+    0,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0
+   ]
+  },
+  {
+   "i": 4,
+   "tick": 142307,
+   "png": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\motion_04_1790908029712_5__cell_rect.png",
+   "ok": true,
+   "md5": "1f3c611d1f5066c0bc1c53c3e0dc93be",
+   "fill": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "i": 5,
+   "tick": 142557,
+   "png": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\motion_05_1790908036603_6__cell_rect.png",
+   "ok": true,
+   "md5": "e59d1003337380945af5116f2b38edd6",
+   "fill": [
+    1,
+    1,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0
+   ]
+  },
+  {
+   "i": 6,
+   "tick": 142807,
+   "png": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\motion_06_1790908043495_7__cell_rect.png",
+   "ok": true,
+   "md5": "9f6c7ea96fb4d2a751dc19b51a8a5247",
+   "fill": [
+    1,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "i": 7,
+   "tick": 143057,
+   "png": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\motion_07_1790908050388_8__cell_rect.png",
+   "ok": true,
+   "md5": "b33a81676df4611c5823a1454fb9175c",
+   "fill": [
+    1,
+    1,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0
+   ]
+  }
+ ],
+ "aborted": null,
+ "judge": "DEFERRED (owner 2026-09-17, NORTHSTAR_MOTION_FRAMES_1)"
+}

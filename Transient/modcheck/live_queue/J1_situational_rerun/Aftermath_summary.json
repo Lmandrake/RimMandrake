@@ -1,0 +1,491 @@
+{
+ "chains": [
+  {
+   "name": "harmony_patches_registered",
+   "components": [
+    {
+     "name": "patches_applied",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "IncidentWorker_Raid",
+        "methodName": "TryGenerateRaidInfo",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TryGenerateRaidInfo",
+          "declaringType": "RimWorld.IncidentWorker_Raid",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "mandrake.rm.aftermath",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Aftermath.Patch_RaidGenerated.Postfix",
+            "patchAssembly": "RimMandrakeAftermath"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 431400,
+        "note": null,
+        "operation": {
+         "OperationId": "op_69afdd38fc114631a9ff728e74676389",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T04:04:10.0002789+00:00",
+         "CompletedAtUtc": "2026-10-02T04:04:10.0173814+00:00",
+         "DurationMs": 17,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "LordMaker",
+        "methodName": "MakeNewLord",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "MakeNewLord",
+          "declaringType": "Verse.AI.Group.LordMaker",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "mandrake.rm.aftermath",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Aftermath.Patch_LordCreated.Postfix",
+            "patchAssembly": "RimMandrakeAftermath"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 431400,
+        "note": null,
+        "operation": {
+         "OperationId": "op_ba25dde1482b496d8fa998024e93ec87",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T04:04:10.0663964+00:00",
+         "CompletedAtUtc": "2026-10-02T04:04:10.0834879+00:00",
+         "DurationMs": 17,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "LordManager",
+        "methodName": "RemoveLord",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "RemoveLord",
+          "declaringType": "Verse.AI.Group.LordManager",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "mandrake.rm.aftermath",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Aftermath.Patch_LordRemoved.Postfix",
+            "patchAssembly": "RimMandrakeAftermath"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 431400,
+        "note": null,
+        "operation": {
+         "OperationId": "op_e5af7ec4274449a78a30eacdcaca9223",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T04:04:10.1343937+00:00",
+         "CompletedAtUtc": "2026-10-02T04:04:10.1514094+00:00",
+         "DurationMs": 17,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Pawn",
+        "methodName": "Kill",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "Kill",
+          "declaringType": "Verse.Pawn",
+          "patchInfoError": null,
+          "prefixCount": 2,
+          "postfixCount": 6,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Storyteller.VanillaExpandedFramework_Pawn_Kill_Patch.Prefix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch.Prefix",
+            "patchAssembly": "VEF"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Pawns.VanillaExpandedFramework_Pawn_Kill.Postfix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch.Postfix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "mandrake.rm.ninefold",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Ninefold.Patch_BattleResolved.Postfix",
+            "patchAssembly": "RimMandrakeNinefold"
+           },
+           {
+            "owner": "mandrake.rm.ninefold",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Ninefold.Patch_KillManner.Postfix",
+            "patchAssembly": "RimMandrakeNinefold"
+           },
+           {
+            "owner": "mandrake.rm.aftermath",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Aftermath.Patch_ColonistCasualty.Postfix",
+            "patchAssembly": "RimMandrakeAftermath"
+           },
+           {
+            "owner": "mandrake.jawabench.eventrecorder",
+            "priority": 400,
+            "patchMethod": "JawaBench.BridgeTools.JawaBenchEventRecorder.KillPostfix",
+            "patchAssembly": "JawaBench.BridgeTools"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 431400,
+        "note": null,
+        "operation": {
+         "OperationId": "op_f2a0816cca3e4d69b23f72d6499abd14",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T04:04:10.2005199+00:00",
+         "CompletedAtUtc": "2026-10-02T04:04:10.2185432+00:00",
+         "DurationMs": 18,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "MentalStateHandler",
+        "methodName": "TryStartMentalState",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TryStartMentalState",
+          "declaringType": "Verse.AI.MentalStateHandler",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 2,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "mandrake.rm.ninefold",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Ninefold.Patch_MentalBreakStarted.Postfix",
+            "patchAssembly": "RimMandrakeNinefold"
+           },
+           {
+            "owner": "mandrake.rm.aftermath",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Aftermath.Patch_MentalBreakNearBattle.Postfix",
+            "patchAssembly": "RimMandrakeAftermath"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 431400,
+        "note": null,
+        "operation": {
+         "OperationId": "op_d29f3277d8e040bcaba0a3254eec594a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T04:04:10.2666534+00:00",
+         "CompletedAtUtc": "2026-10-02T04:04:10.2837914+00:00",
+         "DurationMs": 17,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patches_applied_1790913850.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "battle_lifecycle_repelled",
+   "components": [
+    {
+     "name": "devmode_and_raid_fire",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: jawa/faction_create(defName='Pirate') could not ensure a live faction instance exists: {'success': False, 'message': \"'Pirate' already exists in this world as 'The Beavers'. Pass allowDuplicate to add another.\", 'details': {'existingCount': 1, 'existingName': 'The Beavers'}, 'operation': {'OperationId': 'op_f282f427fb094f08b9425a14e3525e29', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/faction-create', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-02T04:04:16.0065956+00:00', 'CompletedAtUtc': '2026-10-02T04:04:16.0564862+00:00', 'DurationMs': 49, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/prefs",
+       "result": {
+        "success": true,
+        "before": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "after": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "saved": true,
+        "ticksGame": 431400,
+        "operation": {
+         "OperationId": "op_2d3a176fab284923865e92c7a88cb492",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/prefs-tool",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T04:04:15.9153667+00:00",
+         "CompletedAtUtc": "2026-10-02T04:04:15.9565004+00:00",
+         "DurationMs": 41,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "ensure_faction(Pirate)",
+       "result": {
+        "success": false,
+        "message": "'Pirate' already exists in this world as 'The Beavers'. Pass allowDuplicate to add another.",
+        "details": {
+         "existingCount": 1,
+         "existingName": "The Beavers"
+        },
+        "operation": {
+         "OperationId": "op_f282f427fb094f08b9425a14e3525e29",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/faction-create",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T04:04:16.0065956+00:00",
+         "CompletedAtUtc": "2026-10-02T04:04:16.0564862+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "kill_all_raiders_closes_repelled",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000025B1BBC6D50>"
+ ],
+ "refused": "",
+ "walk": "D:\\Luke\\dev\\wt_live2\\design\\validation_walks\\RimMandrake\\Aftermath.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 11,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

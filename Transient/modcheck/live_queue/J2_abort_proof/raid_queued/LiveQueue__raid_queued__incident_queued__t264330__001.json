@@ -1,0 +1,631 @@
+{
+ "name": "LiveQueue__raid_queued__incident_queued__t264330__001",
+ "when_utc": "2026-10-02T02:42:14Z",
+ "hits": [
+  {
+   "detector": "incident_queued",
+   "severity": "SURPRISE",
+   "summary": "incident RaidEnemy queued to fire in 30000 ticks",
+   "evidence": {
+    "defName": "RaidEnemy",
+    "fireTick": 294330,
+    "ticksUntilFire": 30000,
+    "via": "incident_queue_peek",
+    "threat": true
+   },
+   "suggest": [
+    "clear_incident_queue"
+   ],
+   "focus": null,
+   "fingerprint": "incident_queued:RaidEnemy:294330"
+  },
+  {
+   "detector": "modal_open",
+   "severity": "SURPRISE",
+   "summary": "1 force-pause modal(s) open: RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "evidence": {
+    "windows": [
+     {
+      "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+      "title": null,
+      "isDebug": false,
+      "forcePause": true
+     }
+    ]
+   },
+   "suggest": [
+    "close_modals"
+   ],
+   "focus": null,
+   "fingerprint": "modal_open:RimWorld.Dialog_NamePlayerFactionAndSettlement"
+  }
+ ],
+ "snapshot": {
+  "tick": 264330,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Jaderborg",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Jaderborg",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jaderborg",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jaderborg",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Daidai",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Daidai",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Daidai",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Daidai",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Hunter",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Hunter",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hunter",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hunter",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Eidey",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Eidey",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Eidey",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Eidey",
+     188040
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     188040
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Trader from Ouna",
+    "arrivalTick": 188100,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Trader from Ouna",
+     188100
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Duncan",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Duncan",
+     188220
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Duncan",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Duncan",
+     188220
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Krand",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Krand",
+     188220
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Krand",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Krand",
+     188220
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Mal",
+    "arrivalTick": 188280,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Mal",
+     188280
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mal",
+    "arrivalTick": 188280,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mal",
+     188280
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Gift from Ouna",
+    "arrivalTick": 233840,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Gift from Ouna",
+     233840
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ta'Baa the Unrooted",
+    "arrivalTick": 240000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ta'Baa the Unrooted",
+     240000
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 261550,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     261550
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sad wander: Ingram",
+    "arrivalTick": 264150,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sad wander: Ingram",
+     264150
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Pheanox",
+    "arrivalTick": 264210,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Pheanox",
+     264210
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Pheanox",
+    "arrivalTick": 264210,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Pheanox",
+     264210
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Duarte",
+    "arrivalTick": 264330,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Duarte",
+     264330
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Duarte",
+    "arrivalTick": 264330,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Duarte",
+     264330
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Berserk: Duarte",
+    "arrivalTick": 264330,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Berserk: Duarte",
+     264330
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 20,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 14,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 264330
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #6: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser47353"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=2657,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=2657,0 got map.Tile=2657,0 map.uniqueID=1 map.Index=1"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89243"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89244"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89245"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89246"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89247"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89243"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89244"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89245"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89246"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89247"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +15.0 (mental break: Ingram -> Wander_Sad) -> 45.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] front FLIPPED mid-map on a violent swing (Zizzik 15.0) -> Shkaar (loudness 100.0)"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 48.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +15.0 (mental break: Duarte -> Berserk) -> 63.0 [Exalted]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 9,
+   "isDebug": false,
+   "forcePause": true
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594951289,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 264330,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "LiveQueue",
+  "chain": "raid_queued",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\live_queue\\J2_abort_proof\\raid_queued\\LiveQueue__raid_queued__incident_queued__t264330__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3118731,
+  "width": 1810,
+  "height": 1183,
+  "md5": "7074803f86ebf7ec3ff42d85e2158e6a",
+  "why": ""
+ },
+ "notes": []
+}

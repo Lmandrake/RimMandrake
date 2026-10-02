@@ -1,26 +1,26 @@
 {
- "generatedAt": "2026-10-02T01:14:00Z",
+ "generatedAt": "2026-10-02T05:01:00Z",
  "source": {
   "path": "Transient/codebase_health.json",
-  "bytes": 1039498,
-  "sha256_12": "fedbe9923175"
+  "bytes": 1043779,
+  "sha256_12": "70482f71f49b"
  },
- "head": "4b3786455",
+ "head": "1ae95a9d8",
  "counts": {
-  "red": 22,
-  "blue": 1624,
-  "green": 1781,
-  "grey": 1153,
+  "red": 24,
+  "blue": 1618,
+  "green": 1772,
+  "grey": 1182,
   "unmeasured": 0,
-  "total": 4580
+  "total": 4596
  },
  "loc": {
-  "red": 4566,
-  "blue": 523130,
-  "green": 389505,
-  "grey": 388229,
+  "red": 7041,
+  "blue": 518319,
+  "green": 387305,
+  "grey": 396271,
   "unmeasured": 0,
-  "total": 1305430
+  "total": 1308936
  },
  "reviewEntries": 3911,
  "recidivists": [
@@ -60,6 +60,11 @@
    "cycles": 4
   },
   {
+   "path": "src/RimMandrake/Utils/modcheck/selftest.py",
+   "loc": 601,
+   "cycles": 3
+  },
+  {
    "path": "src/RimStarWars/SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Opee.xml",
    "loc": 460,
    "cycles": 3
@@ -68,14 +73,9 @@
    "path": "src/RimMandrake/Utils/install_wt_seat_profiles.py",
    "loc": 378,
    "cycles": 3
-  },
-  {
-   "path": "src/RimMandrake/Greentide/About/About.xml",
-   "loc": 133,
-   "cycles": 3
   }
  ],
  "standalone": "Transient/codebase_health_artifact.html",
  "measurementOk": true,
- "headline": "OK: measured 4580 files (1781 clean, 1153 dirty, 0 unmeasured)."
+ "headline": "OK: measured 4596 files (1772 clean, 1182 dirty, 0 unmeasured)."
 }

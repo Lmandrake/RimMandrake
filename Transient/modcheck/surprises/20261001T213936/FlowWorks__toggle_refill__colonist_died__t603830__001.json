@@ -1,0 +1,856 @@
+{
+ "name": "FlowWorks__toggle_refill__colonist_died__t603830__001",
+ "when_utc": "2026-10-02T04:53:49Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Dougherty died (death_letter)",
+   "evidence": {
+    "name": "Dougherty",
+    "ticks": [
+     603260
+    ],
+    "sources": [
+     "death_letter"
+    ],
+    "ids": [],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Dougherty"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Human22199 died (damage_log_kill)",
+   "evidence": {
+    "name": "Human22199",
+    "ticks": [
+     603260
+    ],
+    "sources": [
+     "damage_log_kill"
+    ],
+    "ids": [
+     "Human22199"
+    ],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Human22199"
+  }
+ ],
+ "snapshot": {
+  "tick": 603830,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Connor",
+    "arrivalTick": 527600,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Connor",
+     527600
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Connor",
+    "arrivalTick": 527600,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Connor",
+     527600
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Guerrero",
+    "arrivalTick": 528320,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Guerrero",
+     528320
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Guerrero",
+    "arrivalTick": 528320,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Guerrero",
+     528320
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for BB",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for BB",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: BB",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: BB",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Bryan",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Bryan",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bryan",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bryan",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Hairy",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Hairy",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hairy",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hairy",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Poss",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Poss",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Poss",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Poss",
+     529640
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Sautereau",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Sautereau",
+     529640
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sautereau",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sautereau",
+     529640
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     529640
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Shaman merchant from People of \u00d1oban",
+    "arrivalTick": 529700,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Shaman merchant from People of \u00d1oban",
+     529700
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Mispy",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Mispy",
+     529820
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mispy",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mispy",
+     529820
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Clark",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Clark",
+     529820
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Clark",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Clark",
+     529820
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Beasley",
+    "arrivalTick": 529880,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Beasley",
+     529880
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Beasley",
+    "arrivalTick": 529880,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Beasley",
+     529880
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 537684,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     537684
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Dougherty",
+    "arrivalTick": 603260,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Dougherty",
+     603260
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Dougherty",
+    "arrivalTick": 603260,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Dougherty",
+     603260
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 53,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 26,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 603830
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Buchanan with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Zephyr with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3312"
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 7.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 8.0."
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Ramos with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Henners with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Buchanan with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Zephyr with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Ramos with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Henners with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Buchanan with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Zephyr with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #17: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3312"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #18: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Ramos with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Henners with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Buchanan with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Zephyr with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 347,
+   "isDebug": false,
+   "forcePause": true
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 8700,
+  "overhead_spent": 0,
+  "total_spent": 8700,
+  "epoch": 0,
+  "last_seen_tick": 603830,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 6850,
+    "spent": 1200
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 595130,
+    "tick_to": 595730,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 595730,
+    "tick_to": 596330,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 596330,
+    "tick_to": 596930,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 596930,
+    "tick_to": 597530,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 597530,
+    "tick_to": 597630,
+    "ticks": 100,
+    "requested": 100
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 597630,
+    "tick_to": 598230,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 598230,
+    "tick_to": 598830,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 598830,
+    "tick_to": 599430,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 599430,
+    "tick_to": 600000,
+    "ticks": 570,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 600000,
+    "tick_to": 600600,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 600600,
+    "tick_to": 601200,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 601200,
+    "tick_to": 601800,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 601800,
+    "tick_to": 602400,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 602400,
+    "tick_to": 602630,
+    "ticks": 230,
+    "requested": 230
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 602630,
+    "tick_to": 603230,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 603230,
+    "tick_to": 603830,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorks",
+  "chain": "toggle_refill",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T213936\\FlowWorks__toggle_refill__colonist_died__t603830__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2480386,
+  "width": 1810,
+  "height": 1183,
+  "md5": "a999ba2325ee50223a61284b7c39ca61",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,909 @@
+{
+ "chains": [
+  {
+   "name": "mapgen_log",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "plant_census",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "animal_census",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "grass_cover",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "ruins",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "burn_line",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "startup_and_def_wiring",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "ground_ash_ladder",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "fire_tick_effects",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "ashfall_weather_accumulation",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "ashfall_drifts",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "cinderfall",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "blackrain",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "no_ordinary_rain",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "scorchfruit_fire_born",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "scorchfruit_produces",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "scorchfruit_spoils",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "firehawk",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "furnace_warmth",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "furnace_room",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "burrowers",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "embergrass_regrow",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "fulgurite",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'Desert'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000025B1BC238B0>",
+  "<suite.Component object at 0x0000025B1BC22570>",
+  "<suite.Component object at 0x0000025B1BC22150>",
+  "<suite.Component object at 0x0000025B1BC23750>",
+  "<suite.Component object at 0x0000025B1BC22DB0>",
+  "<suite.Component object at 0x0000025B1BC23800>",
+  "<suite.Component object at 0x0000025B1BC23540>",
+  "<suite.Component object at 0x0000025B1BC21E90>",
+  "<suite.Component object at 0x0000025B1BC22C50>",
+  "<suite.Component object at 0x0000025B1BC22D00>",
+  "<suite.Component object at 0x0000025B1BC23960>",
+  "<suite.Component object at 0x0000025B1BC22A40>",
+  "<suite.Component object at 0x0000025B1BC23A10>",
+  "<suite.Component object at 0x0000025B1BC23AC0>",
+  "<suite.Component object at 0x0000025B1BC23B70>",
+  "<suite.Component object at 0x0000025B1BC23C20>",
+  "<suite.Component object at 0x0000025B1BC22BA0>",
+  "<suite.Component object at 0x0000025B1BC21C80>",
+  "<suite.Component object at 0x0000025B1BC22200>",
+  "<suite.Component object at 0x0000025B1BC21FF0>",
+  "<suite.Component object at 0x0000025B1BC222B0>",
+  "<suite.Component object at 0x0000025B1BC22360>",
+  "<suite.Component object at 0x0000025B1BC224C0>"
+ ],
+ "refused": "",
+ "walk": "D:\\Luke\\dev\\wt_live2\\design\\validation_walks\\RimMandrake\\Pyrelands.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 11,
+     "verified": false,
+     "residue": [
+      [
+       "Human37383",
+       "Food"
+      ]
+     ]
+    },
+    "restore_needs": {
+     "acted": 11,
+     "verified": false
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

@@ -1,0 +1,165 @@
+{
+ "chains": [
+  {
+   "name": "replay_dwelling_plan",
+   "components": [
+    {
+     "name": "dwelling_plan_replays_fully",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "replay_moisture_farm_plan",
+   "components": [
+    {
+     "name": "moisture_farm_plan_replays",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "enabled_toggle_flips",
+   "components": [
+    {
+     "name": "enabled_setting_flips",
+     "toggle": "enabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human37383', 'Food')]",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": false,
+    "companion": true,
+    "bland_problems": [
+     "restore_colonists unverified: [('Human37383', 'Food')]"
+    ],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": "D:\\Luke\\dev\\wt_live2\\design\\validation_walks\\RimMandrake\\StructureInjections.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 11,
+     "verified": false,
+     "residue": [
+      [
+       "Human37383",
+       "Food"
+      ]
+     ]
+    },
+    "restore_needs": {
+     "acted": 11,
+     "verified": false
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

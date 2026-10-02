@@ -1,0 +1,343 @@
+{
+ "name": "Aftermath__battle_lifecycle_repelled__hostile_pawns__t501__001",
+ "when_utc": "2026-10-02T03:14:48Z",
+ "hits": [
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Human11272",
+      "kindDef": "Thrasher",
+      "faction": "Pirate",
+      "x": 232,
+      "z": 181
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    232,
+    181
+   ],
+   "fingerprint": "hostile_pawns:Human11272"
+  }
+ ],
+ "snapshot": {
+  "tick": 501,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human11272",
+    "name": "Hobaken",
+    "kindDef": "Thrasher",
+    "def": "Human",
+    "faction": "Pirate",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 232,
+    "z": 181,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Stab",
+      "label": "stab scar",
+      "part": "Arm",
+      "severity": 5.0
+     },
+     {
+      "def": "AlcoholAddiction",
+      "label": "alcohol addiction (32%)",
+      "part": null,
+      "severity": 0.676468849
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shot off (fresh)",
+      "part": "Leg",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shattered",
+      "part": "Femur",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shattered",
+      "part": "Tibia",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shot off",
+      "part": "Foot",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shot off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shot off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shot off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shot off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shot off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0180000011
+     }
+    ],
+    "bleedRate": 3.6,
+    "painTotal": 0.375,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Raid: The Beavers",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Raid: The Beavers",
+     1
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 3,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 501
+  },
+  "fires": 0,
+  "conditions": []
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_Organization) -> 24.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: RR_BasicApparel) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_BasicApparel) -> 27.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: RR_BasicCraftingFacilities) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_BasicCraftingFacilities) -> 30.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: RR_BasicFoodPrep) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_BasicFoodPrep) -> 33.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: RR_IncendiaryWeapons) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_IncendiaryWeapons) -> 36.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: RR_ElectricityBasics) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_ElectricityBasics) -> 39.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: RR_HeatingElements) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_HeatingElements) -> 42.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: RR_PowerGenerators) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): RR_PowerGenerators) -> 45.0 [Content]"
+  ],
+  [
+   "Error",
+   "Texture for _DistortionTex is not yet loaded; file may be invalid, or main thread may not have loaded it yet"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3315"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith11223"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Aftermath] battle opened: The Beavers, 2 pawns, 120 pts."
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Jenni<color=#999999FF>, Surgeon</color>) -> 11.0 [Neutral]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957246,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957181,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 500,
+  "overhead_spent": 0,
+  "total_spent": 500,
+  "epoch": 0,
+  "last_seen_tick": 501,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 975,
+    "spent": 300
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1,
+    "tick_to": 201,
+    "ticks": 200,
+    "requested": 200
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 201,
+    "tick_to": 501,
+    "ticks": 300,
+    "requested": 300
+   }
+  ]
+ },
+ "context": {
+  "mod": "Aftermath",
+  "chain": "battle_lifecycle_repelled",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T201444\\Aftermath__battle_lifecycle_repelled__hostile_pawns__t501__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2354583,
+  "width": 1810,
+  "height": 1183,
+  "md5": "3223fc88dc21928802624fadd93a545b",
+  "why": ""
+ },
+ "notes": []
+}

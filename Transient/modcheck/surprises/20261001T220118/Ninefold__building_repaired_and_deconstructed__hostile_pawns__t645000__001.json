@@ -1,0 +1,538 @@
+{
+ "name": "Ninefold__building_repaired_and_deconstructed__hostile_pawns__t645000__001",
+ "when_utc": "2026-10-02T05:01:34Z",
+ "hits": [
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Megaspider37347",
+      "kindDef": "Megaspider",
+      "faction": "Insect",
+      "x": 210,
+      "z": 127
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    210,
+    127
+   ],
+   "fingerprint": "hostile_pawns:Megaspider37347"
+  }
+ ],
+ "snapshot": {
+  "tick": 645000,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Megaspider37347",
+    "name": "Megaspider",
+    "kindDef": "Megaspider",
+    "def": "Megaspider",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 210,
+    "z": 127,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Sautereau",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sautereau",
+     529640
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 529640,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     529640
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Shaman merchant from People of \u00d1oban",
+    "arrivalTick": 529700,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Shaman merchant from People of \u00d1oban",
+     529700
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Mispy",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Mispy",
+     529820
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mispy",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mispy",
+     529820
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Clark",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Clark",
+     529820
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Clark",
+    "arrivalTick": 529820,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Clark",
+     529820
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Beasley",
+    "arrivalTick": 529880,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Beasley",
+     529880
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Beasley",
+    "arrivalTick": 529880,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Beasley",
+     529880
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 537684,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     537684
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Dougherty",
+    "arrivalTick": 603260,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Dougherty",
+     603260
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Dougherty",
+    "arrivalTick": 603260,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Dougherty",
+     603260
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 607085,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     607085
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Viper",
+    "arrivalTick": 613527,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Viper",
+     613527
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Viper",
+    "arrivalTick": 613527,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Viper",
+     613527
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Rosales",
+    "arrivalTick": 628352,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Rosales",
+     628352
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Rosales",
+    "arrivalTick": 628352,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Rosales",
+     628352
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Li",
+    "arrivalTick": 629660,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Li",
+     629660
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Li",
+    "arrivalTick": 629660,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Li",
+     629660
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Huber",
+    "arrivalTick": 633112,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Huber",
+     633112
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Huber",
+    "arrivalTick": 633112,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Huber",
+     633112
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sad wander: Superbass",
+    "arrivalTick": 642801,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sad wander: Superbass",
+     642801
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Superbass",
+    "arrivalTick": 642801,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Superbass",
+     642801
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Superbass",
+    "arrivalTick": 642801,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Superbass",
+     642801
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Party",
+    "arrivalTick": 645000,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Party",
+     645000
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 58,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 27,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 645000
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 22.0 [Content]"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser16447"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] created Test place at tile 254,0 for The Empire of Eloeur, archetype RM_InhabitedPlace_Scrapyard."
+  ],
+  [
+   "Warning",
+   "Tried to directly add implied pawn relation Sibling, pawn=Laucilos, otherPawn=Justice"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] roster of Test place now holds 3."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] ROSTER REPORT  Test place -> C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\InhabitedReports\\roster_reports.txt"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] moved 3 into the pool; roster now 0."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] drew 3; pool now 6.\r\n  Human37278  Laucilos Kronelle  age=82y (298665060 ticks)  relations=0  hediffs=3  traits=3  dead=False  faction=Ourna World Accord\r\n  Human37284  Teresa 'Terryluff' Noeldner  age=62y (223612358 ticks)  relations=1  hediffs=2  traits=3  dead=False  facti"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] created Test place at tile 254,0 for East Thimonder, archetype RM_InhabitedPlace_Scrapyard."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] dumped 145 goods in 3 stacks at (125, 0, 125); the holder now has 0 left."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] fate=FleeIfThreatened  cause=none  threatened=False  stockArea=(117,117,133,133)  spawned=145  onMap=157"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] took back 157 of 145; the holder now has 157 in 15 stacks."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] fate=FleeIfThreatened  cause=none  threatened=False  stockArea=(0,0,-1,-1)  spawned=0  onMap=0"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +15.0 (mental break: Superbass -> Wander_Sad) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] front FLIPPED mid-map on a violent swing (Zizzik 15.0) -> Zizzik (loudness 100.0)"
+  ],
+  [
+   "Error",
+   "MakeThing error: Wall is madeFromStuff but stuff=null. Assigning default."
+  ],
+  [
+   "Error",
+   "Exception in SetupToils for pawn Yuso driver=JobDriver_Repair (toilIndex=-1) driver.job=(Repair (Job_51244) A = (50, 0, 200) Giver = ThinkNode_QueuedJob [workGiverDef: null])\nSystem.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref B2C3B7FA] Duplicate stacktrace, see"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing Lau with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=targetA"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 2199,
+  "overhead_spent": 0,
+  "total_spent": 2199,
+  "epoch": 0,
+  "last_seen_tick": 645000,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 6850,
+    "spent": 2199
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 642801,
+    "tick_to": 643401,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 643401,
+    "tick_to": 644001,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 644001,
+    "tick_to": 644601,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 644601,
+    "tick_to": 645000,
+    "ticks": 399,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Ninefold",
+  "chain": "building_repaired_and_deconstructed",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T220118\\Ninefold__building_repaired_and_deconstructed__hostile_pawns__t645000__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2763011,
+  "width": 1810,
+  "height": 1183,
+  "md5": "4c59fbe767e414f103000a1de1caba86",
+  "why": ""
+ },
+ "notes": []
+}

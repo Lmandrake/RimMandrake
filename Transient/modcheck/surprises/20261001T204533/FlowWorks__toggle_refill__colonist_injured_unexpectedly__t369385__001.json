@@ -1,0 +1,721 @@
+{
+ "name": "FlowWorks__toggle_refill__colonist_injured_unexpectedly__t369385__001",
+ "when_utc": "2026-10-02T03:53:09Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Hui-ae gained 1 new hediff(s) (AB_PsychotropicFungusHigh); cause_hint=unknown",
+   "evidence": {
+    "id": "Human23249",
+    "name": "Hui-ae",
+    "new_hediffs": [
+     {
+      "def": "AB_PsychotropicFungusHigh",
+      "label": "psychotropic fungus high",
+      "part": null,
+      "severity": 0.284276247
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "AB_PsychotropicFungusHigh"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    74,
+    165
+   ],
+   "fingerprint": "colonist_injured:Human23249:AB_PsychotropicFungusHigh@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 369385,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human23249",
+    "name": "Hui-ae",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 74,
+    "z": 165,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AB_PsychotropicFungusAddiction",
+      "label": "psychotropic fungus addiction (25%)",
+      "part": null,
+      "severity": 0.7488588
+     },
+     {
+      "def": "AB_PsychotropicFungusTolerance",
+      "label": "psychotropic fungus tolerance (large)",
+      "part": null,
+      "severity": 0.5937968
+     },
+     {
+      "def": "SmokeleafAddiction",
+      "label": "smokeleaf dependence (38%)",
+      "part": null,
+      "severity": 0.616615355
+     },
+     {
+      "def": "SmokeleafTolerance",
+      "label": "smokeleaf tolerance (large)",
+      "part": null,
+      "severity": 0.622947335
+     },
+     {
+      "def": "Sterilized",
+      "label": "sterilized",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AB_PsychotropicFungusHigh",
+      "label": "psychotropic fungus high",
+      "part": null,
+      "severity": 0.284276247
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for DD",
+    "arrivalTick": 293305,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for DD",
+     293305
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: DD",
+    "arrivalTick": 293305,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: DD",
+     293305
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Zoey",
+    "arrivalTick": 293905,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Zoey",
+     293905
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Zoey",
+    "arrivalTick": 293905,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Zoey",
+     293905
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Butcher",
+    "arrivalTick": 294625,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Butcher",
+     294625
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Butcher",
+    "arrivalTick": 294625,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Butcher",
+     294625
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for York",
+    "arrivalTick": 295945,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for York",
+     295945
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: York",
+    "arrivalTick": 295945,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: York",
+     295945
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Alex",
+    "arrivalTick": 295945,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Alex",
+     295945
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Alex",
+    "arrivalTick": 295945,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Alex",
+     295945
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Jackalope",
+    "arrivalTick": 295945,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Jackalope",
+     295945
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jackalope",
+    "arrivalTick": 295945,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jackalope",
+     295945
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Wolf",
+    "arrivalTick": 295945,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Wolf",
+     295945
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Wolf",
+    "arrivalTick": 295945,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Wolf",
+     295945
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Danil",
+    "arrivalTick": 295945,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Danil",
+     295945
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Danil",
+    "arrivalTick": 295945,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Danil",
+     295945
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 295945,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     295945
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "War merchant from People of \u00d1oban",
+    "arrivalTick": 296005,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "War merchant from People of \u00d1oban",
+     296005
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Leslo",
+    "arrivalTick": 296125,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Leslo",
+     296125
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Leslo",
+    "arrivalTick": 296125,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Leslo",
+     296125
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Sara",
+    "arrivalTick": 296125,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Sara",
+     296125
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sara",
+    "arrivalTick": 296125,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sara",
+     296125
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Fear",
+    "arrivalTick": 296185,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Fear",
+     296185
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Fear",
+    "arrivalTick": 296185,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Fear",
+     296185
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 300266,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     300266
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 32,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 18,
+   "adaptDays": -51.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 369385
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Guaza<color=#999999FF>, Keeper</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (downed in battle: York<color=#999999FF>, Con artist</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -20.2 [Slighted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 57.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 88.0 [Exalted]"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3315"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #7: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #8: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith11223"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3315"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #9: 54 cells, LIMITED (270 / 270 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3315"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #10: 48 cells, LIMITED (240 / 240 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 4.0."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith11223"
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 5.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 6.0."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #11: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #12: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 113,
+   "isDebug": false,
+   "forcePause": true
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 4300,
+  "overhead_spent": 0,
+  "total_spent": 4300,
+  "epoch": 0,
+  "last_seen_tick": 369385,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 6850,
+    "spent": 1800
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 365085,
+    "tick_to": 365685,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 365685,
+    "tick_to": 366285,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 366285,
+    "tick_to": 366885,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 366885,
+    "tick_to": 367485,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 367485,
+    "tick_to": 367585,
+    "ticks": 100,
+    "requested": 100
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 367585,
+    "tick_to": 368185,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 368185,
+    "tick_to": 368785,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 368785,
+    "tick_to": 369385,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorks",
+  "chain": "toggle_refill",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T204533\\FlowWorks__toggle_refill__colonist_injured_unexpectedly__t369385__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2509324,
+  "width": 1810,
+  "height": 1183,
+  "md5": "cd305d623bb8228562eabe5b5811a2df",
+  "why": ""
+ },
+ "notes": []
+}

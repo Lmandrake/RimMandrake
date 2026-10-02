@@ -1,0 +1,488 @@
+{
+ "name": "LiveQueue__raid_queued__incident_queued__t196781__001",
+ "when_utc": "2026-10-02T03:37:44Z",
+ "hits": [
+  {
+   "detector": "incident_queued",
+   "severity": "SURPRISE",
+   "summary": "incident RaidEnemy queued to fire in 30000 ticks",
+   "evidence": {
+    "defName": "RaidEnemy",
+    "fireTick": 226781,
+    "ticksUntilFire": 30000,
+    "via": "incident_queue_peek",
+    "threat": true
+   },
+   "suggest": [
+    "clear_incident_queue"
+   ],
+   "focus": null,
+   "fingerprint": "incident_queued:RaidEnemy:226781"
+  }
+ ],
+ "snapshot": {
+  "tick": 196781,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Zephyr",
+    "arrivalTick": 61820,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Zephyr",
+     61820
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Tome",
+    "arrivalTick": 61880,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Tome",
+     61880
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tome",
+    "arrivalTick": 61880,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tome",
+     61880
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sad wander: Lau",
+    "arrivalTick": 185321,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sad wander: Lau",
+     185321
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Zizzik the Spark-Maker",
+    "arrivalTick": 185321,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Zizzik the Spark-Maker",
+     185321
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Lau",
+    "arrivalTick": 185321,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Lau",
+     185321
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lau",
+    "arrivalTick": 185321,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lau",
+     185321
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Redfields",
+    "arrivalTick": 193321,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Redfields",
+     193321
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Redfields",
+    "arrivalTick": 193321,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Redfields",
+     193321
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "(*Name)Robbin(/Name) in labor!",
+    "arrivalTick": 193325,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "(*Name)Robbin(/Name) in labor!",
+     193325
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Robbin",
+    "arrivalTick": 193921,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Robbin",
+     193921
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Robbin",
+    "arrivalTick": 193921,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Robbin",
+     193921
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "She remembers the chains",
+    "arrivalTick": 195521,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "She remembers the chains",
+     195521
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Elvira",
+    "arrivalTick": 195521,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Elvira",
+     195521
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Elvira",
+    "arrivalTick": 195521,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Elvira",
+     195521
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Unay",
+    "arrivalTick": 195521,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Unay",
+     195521
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Unay",
+    "arrivalTick": 195521,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Unay",
+     195521
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Sage",
+    "arrivalTick": 195521,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Sage",
+     195521
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sage",
+    "arrivalTick": 195521,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sage",
+     195521
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Nick",
+    "arrivalTick": 195521,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Nick",
+     195521
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Nick",
+    "arrivalTick": 195521,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Nick",
+     195521
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 195521,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     195521
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Industrial Interment opportunity for Leslie",
+    "arrivalTick": 196781,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Industrial Interment opportunity for Leslie",
+     196781
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Leslie",
+    "arrivalTick": 196781,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Leslie",
+     196781
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Berserk: Leslie",
+    "arrivalTick": 196781,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Berserk: Leslie",
+     196781
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 20,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 13,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 196781
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RimMandrake.Inhabited] drew 3; pool now 0.\r\n  Human11958  Remy Young  age=63y (227806787 ticks)  relations=0  hediffs=1  traits=1  dead=False  faction=Cosmic Conglomerate\r\n  Human11965  Darya Ramsey  age=46y (166167993 ticks)  relations=0  hediffs=13  traits=2  dead=False  faction=Cosmic Conglomera"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] created Test place at tile 119468,0 for People of \u00d1oban, archetype RM_InhabitedPlace_Scrapyard."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] dumped 145 goods in 3 stacks at (125, 0, 125); the holder now has 0 left."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] fate=FleeIfThreatened  cause=none  threatened=False  stockArea=(117,117,133,133)  spawned=145  onMap=1061"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] took back 1061 of 145; the holder now has 1061 in 19 stacks."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] fate=FleeIfThreatened  cause=none  threatened=False  stockArea=(0,0,-1,-1)  spawned=0  onMap=0"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: Smithing) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): Smithing) -> 63.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +15.0 (mental break: Lau -> Wander_Sad) -> 30.0 [Content]"
+  ],
+  [
+   "Error",
+   "MakeThing error: Wall is madeFromStuff but stuff=null. Assigning default."
+  ],
+  [
+   "Error",
+   "Exception in SetupToils for pawn Redfields driver=JobDriver_Repair (toilIndex=-1) driver.job=(Repair (Job_4726) A = (50, 0, 200) Giver = ThinkNode_QueuedJob [workGiverDef: null])\nSystem.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref B2C3B7FA]\n  at RimWorld.JobDriv"
+  ],
+  [
+   "Message",
+   "[Ninefold] Rekko satiation +15.0 (repaired to full health: Wall) -> 15.0 [Neutral]"
+  ],
+  [
+   "Warning",
+   "TryMakePreToilReservations() returned false right after TryTakeOrderedJob(). This should have been checked before. pawn = Redfields, job = Deconstruct (Job_4808) A = (50, 0, 200)"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3312"
+  ],
+  [
+   "Message",
+   "[RMInjectDebug] RAN C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjections\\Templates\\dwelling_test.txt clicked=(200, 0, 200) offset=(100,100) foundationCells=0 terrainCells=130 things=73 roofCells=192 thingsBefore=6766 thingsAfter=6839 thingsSpawned=73"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser3312"
+  ],
+  [
+   "Error",
+   "[RimMandrake.StructureInjections] no ThingDef 'PrimitiveWell' (plan C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjections\\Templates\\moisture_farm_test.txt)"
+  ],
+  [
+   "Error",
+   "[RimMandrake.StructureInjections] no ThingDef 'KotOR_MoistureVaporator_big' (plan C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjections\\Templates\\moisture_farm_test.txt)"
+  ],
+  [
+   "Message",
+   "[RMInjectDebug] RAN C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjections\\Templates\\moisture_farm_test.txt clicked=(200, 0, 200) offset=(100,100) foundationCells=0 terrainCells=9 things=99 roofCells=25 thingsBefore=6766 thingsAfter=6858 thingsSpawned=92"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +15.0 (mental break: Leslie -> Berserk) -> 45.0 [Content]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954457,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 196781,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "LiveQueue",
+  "chain": "raid_queued",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\live_queue\\J2_abort_proof\\raid_queued\\LiveQueue__raid_queued__incident_queued__t196781__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2762935,
+  "width": 1810,
+  "height": 1183,
+  "md5": "fc8a12618fecaa3bccfc23aa81dac992",
+  "why": ""
+ },
+ "notes": []
+}

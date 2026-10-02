@@ -1,1 +1,39 @@
 === J1bw 21:03:57
+== J1_situational_rerun
+     bland_world: tiles exported 119904 candidates 1688
+  FAIL bland world established (tile 255, map 2)  -- ["colonist Human34591 carries ['Stab']", "colonist Human34594 carries ['Stab']"]
+  -- Aftermath
+     refused='' verdicts={'PASS': 1, 'FAIL': 1, 'UNMEASURED': 1} surprises=0 serious=[]
+  -- Antiquities
+     refused='' verdicts={'FAIL': 1, 'PASS': 1} surprises=0 serious=[]
+  -- Droidworks
+     refused='' verdicts={'PASS': 17, 'FAIL': 2, 'UNMEASURED': 2} surprises=1 serious=['mental_break:SURPRISE']
+  -- FlowWorks
+     refused='' verdicts={'PASS': 28, 'FAIL': 21, 'UNMEASURED': 36} surprises=5 serious=['colonist_died:FATAL', 'colonist_injured_unexpectedly:SURPRISE']
+  -- Inhabited
+     refused='' verdicts={'PASS': 10} surprises=0 serious=[]
+  -- JawaIonWeapons
+     refused='' verdicts={'PASS': 9, 'FAIL': 1} surprises=0 serious=[]
+  -- Ninefold
+     refused='' verdicts={'PASS': 2, 'UNMEASURED': 4} surprises=2 serious=['colonist_downed:SURPRISE', 'hostile_pawns:SURPRISE']
+  -- PawnFlavor
+     refused='' verdicts={'UNMEASURED': 14} surprises=0 serious=[]
+  -- Pyrelands
+     refused='' verdicts={'FAIL': 23} surprises=0 serious=[]
+  -- ResearchRetag
+     refused='' verdicts={'UNMEASURED': 2} surprises=0 serious=[]
+  -- ShipMemory
+     refused='' verdicts={'UNMEASURED': 3} surprises=0 serious=[]
+  -- StarWarsRaces
+     refused='' verdicts={'UNMEASURED': 4} surprises=0 serious=[]
+  -- StructureInjections
+     refused='' verdicts={'UNMEASURED': 3} surprises=0 serious=[]
+  ok   no suite raised out of run_suite
+  ok   FlowWorks ran (not refused)
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  FAIL every chain established a bland map  -- ['Ninefold/mood_walk_tick', 'PawnFlavor/trait_defs_readback', 'PawnFlavor/backstory_defs_readback', 'PawnFlavor/vqe_rakata_categories_readback', 'PawnFlavor/faction_patch_wired_vanilla', 'PawnFlavor/empire_pawn_generation', 'Pyrelands/mapgen_log', 'Pyrelands/plant_census', 'Pyrelands/animal_census',
+  ok   every recorded surprise has its evidence on disk
+MEASURED FAIL J1_situational_rerun -- 4/6 checks ; failed: bland world established (tile 255, map 2), every chain established a bland map
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J1 done 22:03:11
+ALLDONE

@@ -1,0 +1,679 @@
+{
+ "name": "LiveQueue__mental_wander_sad__mental_break__t264150__001",
+ "when_utc": "2026-10-02T02:40:41Z",
+ "hits": [
+  {
+   "detector": "mental_break",
+   "severity": "SURPRISE",
+   "summary": "Ingram entered mental state Wander_Sad",
+   "evidence": {
+    "id": "Human87019",
+    "mentalState": "Wander_Sad",
+    "isAggro": false,
+    "via": "pawn_census"
+   },
+   "suggest": [
+    "calm_colonists"
+   ],
+   "focus": [
+    161,
+    49
+   ],
+   "fingerprint": "mental_break:Human87019:Wander_Sad"
+  },
+  {
+   "detector": "modal_open",
+   "severity": "SURPRISE",
+   "summary": "1 force-pause modal(s) open: RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "evidence": {
+    "windows": [
+     {
+      "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+      "title": null,
+      "isDebug": false,
+      "forcePause": true
+     }
+    ]
+   },
+   "suggest": [
+    "close_modals"
+   ],
+   "focus": null,
+   "fingerprint": "modal_open:RimWorld.Dialog_NamePlayerFactionAndSettlement"
+  }
+ ],
+ "snapshot": {
+  "tick": 264150,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human87019",
+    "name": "Ingram",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 161,
+    "z": 49,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": {
+     "def": "Wander_Sad",
+     "isAggro": false,
+     "ageTicks": 0,
+     "causedByMood": true,
+     "causedByDamage": false,
+     "causedByPawn": null,
+     "forceRecoverAfterTicks": -1
+    },
+    "hediffs": [
+     {
+      "def": "Frail",
+      "label": "frail",
+      "part": "Torso",
+      "severity": 0.001
+     },
+     {
+      "def": "HearingLoss",
+      "label": "hearing loss",
+      "part": "Ear",
+      "severity": 0.001
+     },
+     {
+      "def": "HearingLoss",
+      "label": "hearing loss",
+      "part": "Ear",
+      "severity": 0.001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Toni",
+    "arrivalTick": 186000,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Toni",
+     186000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Thorgan",
+    "arrivalTick": 186720,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Thorgan",
+     186720
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Thorgan",
+    "arrivalTick": 186720,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Thorgan",
+     186720
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Cottery",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Cottery",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cottery",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cottery",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Jaderborg",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Jaderborg",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jaderborg",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jaderborg",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Daidai",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Daidai",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Daidai",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Daidai",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Hunter",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Hunter",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hunter",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hunter",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Eidey",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Eidey",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Eidey",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Eidey",
+     188040
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     188040
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Trader from Ouna",
+    "arrivalTick": 188100,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Trader from Ouna",
+     188100
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Duncan",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Duncan",
+     188220
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Duncan",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Duncan",
+     188220
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Krand",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Krand",
+     188220
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Krand",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Krand",
+     188220
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Mal",
+    "arrivalTick": 188280,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Mal",
+     188280
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mal",
+    "arrivalTick": 188280,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mal",
+     188280
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Gift from Ouna",
+    "arrivalTick": 233840,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Gift from Ouna",
+     233840
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ta'Baa the Unrooted",
+    "arrivalTick": 240000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ta'Baa the Unrooted",
+     240000
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 261550,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     261550
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sad wander: Ingram",
+    "arrivalTick": 264150,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sad wander: Ingram",
+     264150
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 18,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 12,
+   "adaptDays": -54.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 264150
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89244"
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 2.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 3.0."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #6: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser47353"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=2657,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=2657,0 got map.Tile=2657,0 map.uniqueID=1 map.Index=1"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89243"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89244"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89245"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89246"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89247"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89243"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89244"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89245"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89246"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89247"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +15.0 (mental break: Ingram -> Wander_Sad) -> 45.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] front FLIPPED mid-map on a violent swing (Zizzik 15.0) -> Shkaar (loudness 100.0)"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 8,
+   "isDebug": false,
+   "forcePause": true
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 264150,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "LiveQueue",
+  "chain": "mental_wander_sad",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\live_queue\\J4_companion_live\\mental_wander_sad\\LiveQueue__mental_wander_sad__mental_break__t264150__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3121790,
+  "width": 1810,
+  "height": 1183,
+  "md5": "6c8cb0520b0476326402a6973ff99c02",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,562 @@
+{
+ "name": "FlowWorks__toggle_recession__colonist_injured_unexpectedly__t247850__001",
+ "when_utc": "2026-10-02T02:36:51Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Raymond gained 1 new hediff(s) (Malnutrition); cause_hint=starvation",
+   "evidence": {
+    "id": "Human96022",
+    "name": "Raymond",
+    "new_hediffs": [
+     {
+      "def": "Malnutrition",
+      "label": "malnutrition (trivial)",
+      "part": null,
+      "severity": 0.00324929412
+     }
+    ],
+    "cause_hint": "starvation",
+    "causes": [
+     "starvation"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    76,
+    61
+   ],
+   "fingerprint": "colonist_injured:Human96022:Malnutrition@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 247850,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human96022",
+    "name": "Raymond",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 76,
+    "z": 61,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Malnutrition",
+      "label": "malnutrition (trivial)",
+      "part": null,
+      "severity": 0.00324929412
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Mallari",
+    "arrivalTick": 185400,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mallari",
+     185400
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Toni",
+    "arrivalTick": 186000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Toni",
+     186000
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Toni",
+    "arrivalTick": 186000,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Toni",
+     186000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Thorgan",
+    "arrivalTick": 186720,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Thorgan",
+     186720
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Thorgan",
+    "arrivalTick": 186720,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Thorgan",
+     186720
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Cottery",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Cottery",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cottery",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cottery",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Jaderborg",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Jaderborg",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jaderborg",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jaderborg",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Daidai",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Daidai",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Daidai",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Daidai",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Hunter",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Hunter",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hunter",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hunter",
+     188040
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Eidey",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Eidey",
+     188040
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Eidey",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Eidey",
+     188040
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 188040,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     188040
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Trader from Ouna",
+    "arrivalTick": 188100,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Trader from Ouna",
+     188100
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Duncan",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Duncan",
+     188220
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Duncan",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Duncan",
+     188220
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Krand",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Krand",
+     188220
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Krand",
+    "arrivalTick": 188220,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Krand",
+     188220
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dark Burial opportunity for Mal",
+    "arrivalTick": 188280,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dark Burial opportunity for Mal",
+     188280
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mal",
+    "arrivalTick": 188280,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mal",
+     188280
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Gift from Ouna",
+    "arrivalTick": 233840,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Gift from Ouna",
+     233840
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ta'Baa the Unrooted",
+    "arrivalTick": 240000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ta'Baa the Unrooted",
+     240000
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 1,
+   "numThreatBigs": 0,
+   "colonistsKilled": 18,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 9,
+   "adaptDays": -54.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 247850
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -20.6 [Slighted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 27.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 91.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: White<color=#999999FF>, Butcher</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Repe<color=#999999FF>, Warrior</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Cottery<color=#999999FF>, Quack</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> -18.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 30.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 88.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #2: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89244"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 54 cells, LIMITED (270 / 270 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 48 cells, LIMITED (240 / 240 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 1.0."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser89244"
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 2.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 3.0."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594951742,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 247850,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 13100,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 247250,
+    "tick_to": 247850,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorks",
+  "chain": "toggle_recession",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\surprises\\20261001T193142\\FlowWorks__toggle_recession__colonist_injured_unexpectedly__t247850__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2617186,
+  "width": 1810,
+  "height": 1183,
+  "md5": "bae072942ed7254de5557381db3761eb",
+  "why": ""
+ },
+ "notes": []
+}
