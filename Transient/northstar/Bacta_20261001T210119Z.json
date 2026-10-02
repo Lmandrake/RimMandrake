@@ -1,0 +1,445 @@
+{
+  "mod": "Bacta",
+  "mode": "mock",
+  "started_utc": "2026-10-01T21:01:18Z",
+  "expected": [],
+  "expected_source": "no walk",
+  "bars": [],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "46 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=1000 map=200x200",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 1000 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "2 active, sha256 4e2baf100a93fe12 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "components": [
+    {
+      "chain": "content",
+      "name": "defs_resolve",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "content",
+      "name": "tank_def_wiring",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "content",
+      "name": "fluid_and_items_trade",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "content",
+      "name": "trader_stock_patch_landed",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "content",
+      "name": "doctor_recipes_patch_landed",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "content",
+      "name": "settings_ship_defaults",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "content",
+      "name": "no_bacta_errors_in_log",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_heals",
+      "name": "site_ready_heals",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_heals",
+      "name": "tank_refuels_via_vanilla_job",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_heals",
+      "name": "enters_and_reports_off",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_heals",
+      "name": "heals_fresh_wound_at_tuned_rate",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_heals",
+      "name": "drains_bacta_while_healing",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_heals",
+      "name": "never_regrows_never_touches_brain",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_heals",
+      "name": "ejects_when_nothing_left",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_heals",
+      "name": "no_bacta_errors_after_ticking",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_scar",
+      "name": "site_ready_scar",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_scar",
+      "name": "scar_erasure_off_keeps_the_scar",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_scar",
+      "name": "scar_erasure_on_removes_the_scar",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_power",
+      "name": "site_ready_power",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_power",
+      "name": "unpowered_tank_does_not_heal",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_power",
+      "name": "powered_tank_heals_again",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_needs_and_dry",
+      "name": "site_ready_dry",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_needs_and_dry",
+      "name": "needs_held_while_immersed",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_needs_and_dry",
+      "name": "dry_tank_holds_occupant_when_autoeject_off",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_needs_and_dry",
+      "name": "dry_tank_ejects_when_autoeject_on",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_droid",
+      "name": "site_ready_droid",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_droid",
+      "name": "linked_droid_is_reported_assisting",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "tank_droid",
+      "name": "droid_toggle_off_stops_the_assist",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "field_patch",
+      "name": "site_ready_patch",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "field_patch",
+      "name": "patch_unusable_when_field_items_off",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "field_patch",
+      "name": "patch_closes_a_fresh_wound",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "revival",
+      "name": "site_ready_revival",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "revival",
+      "name": "revival_off_by_default_refuses_corpse",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "revival",
+      "name": "revival_window_refuses_old_corpse",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "revival",
+      "name": "revival_on_revives_into_the_tank",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 0
+  },
+  "all_green": false,
+  "timing": {
+    "n": 578,
+    "total_ms": 10.713,
+    "mean_ms": 0.0185,
+    "p50_ms": 0.0014,
+    "p95_ms": 0.1055,
+    "by_tool": {
+      "rimworld/get_game_info": {
+        "n": 63,
+        "mean_ms": 0.0031,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 2,
+        "mean_ms": 0.0115,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 0.0028,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 3,
+        "mean_ms": 0.0071,
+        "errors": 0
+      },
+      "jawa/get_def": {
+        "n": 5,
+        "mean_ms": 0.0028,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 275,
+        "mean_ms": 0.0014,
+        "errors": 0
+      },
+      "jawa/drain_log": {
+        "n": 2,
+        "mean_ms": 0.0015,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 15,
+        "mean_ms": 0.0034,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 7,
+        "mean_ms": 0.0544,
+        "errors": 0
+      },
+      "jawa/log_autoopen_suppress": {
+        "n": 7,
+        "mean_ms": 0.0021,
+        "errors": 0
+      },
+      "jawa/build_batch": {
+        "n": 7,
+        "mean_ms": 0.0038,
+        "errors": 0
+      },
+      "jawa/map_commit": {
+        "n": 7,
+        "mean_ms": 0.0014,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 21,
+        "mean_ms": 0.0037,
+        "errors": 0
+      },
+      "jawa/power_net": {
+        "n": 10,
+        "mean_ms": 0.0023,
+        "errors": 0
+      },
+      "jawa/spawn_pawn": {
+        "n": 8,
+        "mean_ms": 0.0019,
+        "errors": 0
+      },
+      "jawa/set_draft": {
+        "n": 7,
+        "mean_ms": 0.0017,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 15,
+        "mean_ms": 0.0012,
+        "errors": 0
+      },
+      "rimworld/spawn_thing": {
+        "n": 7,
+        "mean_ms": 0.0019,
+        "errors": 0
+      },
+      "jawa/ordered_job": {
+        "n": 16,
+        "mean_ms": 0.0016,
+        "errors": 0
+      },
+      "rimworld/step_game_ticks": {
+        "n": 31,
+        "mean_ms": 0.2963,
+        "errors": 0
+      },
+      "jawa/inspect_string": {
+        "n": 16,
+        "mean_ms": 0.0053,
+        "errors": 0
+      },
+      "jawa/pawn_get": {
+        "n": 26,
+        "mean_ms": 0.0027,
+        "errors": 0
+      },
+      "jawa/pawn_health": {
+        "n": 8,
+        "mean_ms": 0.0019,
+        "errors": 0
+      },
+      "jawa/damage": {
+        "n": 9,
+        "mean_ms": 0.0037,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 8,
+        "mean_ms": 0.0017,
+        "errors": 0
+      },
+      "rimworld/search_debug_actions": {
+        "n": 1,
+        "mean_ms": 0.0012,
+        "errors": 0
+      },
+      "rimworld/execute_debug_action": {
+        "n": 1,
+        "mean_ms": 0.0017,
+        "errors": 0
+      }
+    }
+  }
+}
