@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 145.9571733789926,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 66.1514533573473,
+  "derive_from_palette_distance": 14.82802015205016,
+  "elapsed_s": 145.9571733789926,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RM_Vexxiss_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 46.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/28/rollout-2026-09-28T20-00-51-01a0eb1b-9f6f-7a01-9cd1-bb63da9392a7.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 46.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/28/rollout-2026-09-28T19-54-55-01a0eb16-32e3-7c50-a60b-17b161801bfe.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RM_Vexxiss_north",
+    "note": "Derived a true rear-facing north view from the accepted master, preserving the creature, palette, materials, painterly style, scale, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Vexxiss_north\\RM_Vexxiss_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Vexxiss_north/RM_Vexxiss_north.png\n    512x512  rgba  398,142 bytes  (143s)\n"
+}

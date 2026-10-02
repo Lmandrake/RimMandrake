@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 133.543503273002,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 50.03739640383147,
+  "derive_from_palette_distance": 7.582552118077824,
+  "elapsed_s": 133.543503273002,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_Fuzzviper_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 50.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/29/rollout-2026-09-29T00-12-16-01a0ec01-cf3f-7e22-8881-d068ce4e1646.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 50.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/29/rollout-2026-09-29T00-06-51-01a0ebfc-da3e-7f32-9925-c8930bfc326f.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_Fuzzviper_south",
+    "note": "Derived a frontal south-facing view from the accepted east master using built-in imagegen; preserved the creature's palette, painterly texture, scale, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Fuzzviper_south\\RM_Fuzzviper_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Fuzzviper_south/RM_Fuzzviper_south.png\n    256x256  rgba  55,205 bytes  (131s)\n"
+}

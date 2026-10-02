@@ -24,6 +24,10 @@
 // by vanilla's Heatstroke curve (bigger = further, already hot = nowhere,
 // the strictness dial), and the §6 go-and-return ring.
 //
+// STILLSAND_SUN_FROM_LATITUDE_1: the heat kind resolved from sun elevation,
+// irradiance by sin(elevation) with its far-ring floor, and the sand glare
+// floor (shade on sand stays warm, a paved shade yard does not).
+//
 // NOT covered, and why: anything that needs a live Map — the room test
 // (UsesOutdoorTemperature), roof/thing scans, the Harmony postfixes and the
 // NativeArray customizer. Those are the quicktest criteria on the item.
@@ -417,6 +421,267 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(cells.Contains(0) && cells.Contains(5) && !cells.Contains(8), "ring from x=4 wrong");
                 g.ReachableWithReturn(0, 0, cells);
                 Assert(cells.Count == 0, "no budget still drew a ring");
+            });
+
+            // ── STILLSAND_SUN_FROM_LATITUDE_1 ───────────────────────────
+            Case("stillsand: cover follows the sun angle (overhead at/above threshold, lowSun below)", () =>
+            {
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 70f, 55f) == RM_HeatKind.overhead, "70 deg not overhead");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 55f, 55f) == RM_HeatKind.overhead, "55 deg not overhead");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 40f, 55f) == RM_HeatKind.lowSun, "40 deg not lowSun");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.overhead, 40f, 55f) == RM_HeatKind.lowSun, "base overhead at 40 not lowSun");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.ambient, 80f, 55f) == RM_HeatKind.ambient, "ambient changed by angle");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 80f, -1f) == RM_HeatKind.lowSun, "threshold off still switched");
+                Assert(RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, float.NaN, 55f) == RM_HeatKind.lowSun, "unknown elevation switched");
+            });
+
+            Case("stillsand: above the threshold a roof protects, below it only a lee does", () =>
+            {
+                RM_HeatKind high = RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 75f, 55f);
+                RM_HeatKind low = RM_SunHeatMath.KindFromElevation(RM_HeatKind.lowSun, 35f, 55f);
+                Assert(RM_SunHeatMath.Exposure(high, true, 1f, false, 0f) == 0f, "roof gave no cover under a high sun");
+                Assert(RM_SunHeatMath.Exposure(low, true, 1f, false, 0f) == 1f, "roof still covered under a low sun");
+                Assert(RM_SunHeatMath.Exposure(low, true, 0f, false, 1f) == 0f, "lee gave no cover under a low sun");
+            });
+
+            Case("stillsand: irradiance scales with sin(elevation), floored at the far ring", () =>
+            {
+                Assert(Math.Abs(RM_SunHeatMath.ElevationHeatOffset(55f, 90f, 35f) - 55f) < 0.01f, "zenith not 55");
+                float at40 = RM_SunHeatMath.ElevationHeatOffset(55f, 40f, 0f);
+                Assert(Math.Abs(at40 - 35.35f) < 0.1f, "40 deg gave " + at40 + ", expected ~35.4");
+                Assert(RM_SunHeatMath.ElevationHeatOffset(55f, 10f, 35f) == 35f, "floor not applied low");
+                Assert(RM_SunHeatMath.ElevationHeatOffset(55f, 60f, 35f) > RM_SunHeatMath.ElevationHeatOffset(55f, 45f, 35f), "not monotone");
+                Assert(RM_SunHeatMath.ElevationHeatOffset(55f, float.NaN, 35f) == 55f, "NaN elevation not passthrough");
+            });
+
+            Case("stillsand: sand glare floors exposure in shade; paved shade is fully cool", () =>
+            {
+                float shadeOnSand = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.Exposure(RM_HeatKind.lowSun, true, 0f, false, 1f), 0.35f);
+                float shadeOnPaving = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.Exposure(RM_HeatKind.lowSun, true, 0f, false, 1f), 0f);
+                float sunOnSand = RM_SunHeatMath.WithGlareFloor(1f, 0.35f);
+                Assert(Math.Abs(shadeOnSand - 0.35f) < 1e-5f, "sand shade exposure " + shadeOnSand);
+                Assert(shadeOnPaving == 0f, "paved shade exposure " + shadeOnPaving);
+                Assert(sunOnSand == 1f, "glare lowered full sun");
+                // A parasol cannot beat glare either (cover, then the floor).
+                float parasol = RM_SunHeatMath.WithGlareFloor(RM_SunHeatMath.WithCover(1f, 0.9f), 0.35f);
+                Assert(Math.Abs(parasol - 0.35f) < 1e-5f, "parasol beat the glare floor: " + parasol);
+                float felt = OutdoorC + RM_SunHeatMath.HeatOffset(shadeOnSand, 35f, 1f, 1f, 70f);
+                float paved = OutdoorC + RM_SunHeatMath.HeatOffset(shadeOnPaving, 35f, 1f, 1f, 70f);
+                Assert(HeatstrokeStep(felt, HumanSafeMax) > HeatstrokeStep(paved, HumanSafeMax), "sand shade no hotter than a shade yard");
+            });
+
+            Case("stillsand: shadow length differs by latitude (cot of elevation)", () =>
+            {
+                float lph70 = (float)(1.0 / Math.Tan(70 * Math.PI / 180));
+                float lph40 = (float)(1.0 / Math.Tan(40 * Math.PI / 180));
+                float l70 = RM_SunHeatMath.ShadowLength(1f, lph70, 16f);
+                float l40 = RM_SunHeatMath.ShadowLength(1f, lph40, 16f);
+                Assert(l40 > l70 * 2f, "40 deg shadow " + l40 + " not much longer than 70 deg " + l70);
+            });
+
+            // ── STILLSAND_GLARE_BLIND_GOGGLES_1 ─────────────────────────
+            Case("glare-blind: full sun blinds, sand shade and protected eyes do not (shipped numbers)", () =>
+            {
+                string root = FindModsRoot();
+                var biome = new System.Xml.XmlDocument();
+                biome.Load(System.IO.Path.Combine(root, "Stillsand", "Defs", "BiomeDefs", "RM_Stillsand_Biome.xml"));
+                System.Xml.XmlNode ext = biome.SelectSingleNode("//li[contains(@Class,'RM_SunHeatExtension')]");
+                Assert(ext != null, "Stillsand has no RM_SunHeatExtension");
+                Assert(ext.SelectSingleNode("glareBlindHediff")?.InnerText == "RM_GlareBlind", "Stillsand does not name RM_GlareBlind");
+                float min = F(ext, "glareBlindExposureMin", 0.6f);
+                float perDay = F(ext, "glareBlindSeverityPerDay", 4f);
+                float floor = F(ext, "sandGlareExposureFloor", 0f);
+                var hd = new System.Xml.XmlDocument();
+                hd.Load(System.IO.Path.Combine(root, "CreatureBehaviors", "Defs", "HediffDefs", "RM_GlareBlind_Hediffs.xml"));
+                float decay = F(hd.SelectSingleNode("//HediffDef[defName='RM_GlareBlind']/comps/li[@Class='HediffCompProperties_SeverityPerDay']"), "severityPerDay", 0f);
+                Assert(decay < 0f, "RM_GlareBlind has no recovery");
+                int iv = 250;
+                float sun = RM_SunHeatMath.GlareBlindGain(1f, min, perDay, 1f, iv, false);
+                float netPerDay = sun * 60000f / iv + decay;
+                Assert(netPerDay > 0f, "full glare nets " + netPerDay + "/day, never blinds");
+                Assert(RM_SunHeatMath.GlareBlindGain(RM_SunHeatMath.WithGlareFloor(0f, floor), min, perDay, 1f, iv, false) == 0f, "shade on sand blinds");
+                Assert(RM_SunHeatMath.GlareBlindGain(1f, min, perDay, 1f, iv, true) == 0f, "protected eyes blinded");
+                Assert(RM_SunHeatMath.GlareBlindGain(1f, min, perDay, 0f, iv, false) == 0f, "rate dial 0 still blinds");
+                Console.WriteLine("  glare-blind: full glare nets +" + netPerDay.ToString("0.00") + "/day; reaches 0.35 in "
+                    + (0.35f / netPerDay * 24f).ToString("0.0") + " h; clears at " + (-decay).ToString("0.0") + "/day");
+            });
+
+            Case("glare-blind: immunity is a gene on the Jawa, goggles carry the tag", () =>
+            {
+                string root = FindModsRoot();
+                var gene = new System.Xml.XmlDocument();
+                gene.Load(System.IO.Path.Combine(root, "CreatureBehaviors", "Defs", "GeneDefs", "RM_GlareAdapted.xml"));
+                Assert(gene.SelectSingleNode("//GeneDef[defName='RM_GlareAdapted']/modExtensions/li[contains(@Class,'RM_GlareProtectionExtension')]") != null, "gene lacks the protection extension");
+                var jawa = new System.Xml.XmlDocument();
+                jawa.Load(System.IO.Path.Combine(root, "..", "RimStarWars", "StarWarsRaces", "Patches", "RSW_Jawa_GlareAdapted.xml"));
+                System.Xml.XmlNode op = jawa.SelectSingleNode("//match[contains(xpath,'RSW_RimMandrakeJawa')]");
+                Assert(op != null && op.SelectSingleNode("value/li")?.InnerText == "RM_GlareAdapted", "Jawa patch does not add RM_GlareAdapted");
+                var gog = new System.Xml.XmlDocument();
+                gog.Load(System.IO.Path.Combine(root, "Stillsand", "Defs", "ThingDefs_Apparel", "RM_SunGoggles.xml"));
+                Assert(gog.SelectSingleNode("//ThingDef[defName='RM_SunGoggles']/apparel/tags/li[.='" + "RM_GlareProtection" + "']") != null, "goggles lack the tag");
+                Assert(gog.SelectSingleNode("//ThingDef[defName='RM_SunGoggles']/apparel/layers/li[.='EyeCover']") != null, "goggles not eyes-layer");
+            });
+
+            // ── STILLSAND_MIRAGE_CONDITION_1 ────────────────────────────
+            Case("mirage: held only at/above the sun threshold", () =>
+            {
+                Assert(RM_SunHeatMath.MirageActive(60f, 45f), "60 deg no mirage");
+                Assert(RM_SunHeatMath.MirageActive(45f, 45f), "45 deg no mirage");
+                Assert(!RM_SunHeatMath.MirageActive(30f, 45f), "30 deg mirage");
+                Assert(!RM_SunHeatMath.MirageActive(float.NaN, 45f), "unknown sun mirage");
+                Assert(!RM_SunHeatMath.MirageActive(80f, -1f), "threshold off still mirage");
+            });
+
+            Case("mirage: the band lies on the sun-ward edge, opposite the shadows", () =>
+            {
+                // Shadow vector = -(sin b, cos b) for sun bearing b from north.
+                Assert(RM_SunHeatMath.MirageEdge(0f, -1f) == 0, "sun north -> not north edge");
+                Assert(RM_SunHeatMath.MirageEdge(-1f, 0f) == 1, "sun east -> not east edge");
+                Assert(RM_SunHeatMath.MirageEdge(0f, 1f) == 2, "sun south -> not south edge");
+                Assert(RM_SunHeatMath.MirageEdge(1f, 0f) == 3, "sun west -> not west edge");
+                Assert(RM_SunHeatMath.MirageEdge(-0.9f, -0.4f) == 1, "sun ENE -> not east edge");
+                Assert(RM_SunHeatMath.MirageEdge(0f, 0f) == 0, "no direction -> not north");
+            });
+
+            Case("mirage: heat shimmer cuts accuracy only in full sun (shipped factors)", () =>
+            {
+                string root = FindModsRoot();
+                var patch = new System.Xml.XmlDocument();
+                patch.Load(System.IO.Path.Combine(root, "CreatureBehaviors", "Patches", "RM_Mirage_ThinkTree.xml"));
+                System.Xml.XmlNode lng = patch.SelectSingleNode("//Operation[contains(xpath,'ShootingAccuracyFactor_Long')]/nomatch/value/parts/li");
+                System.Xml.XmlNode med = patch.SelectSingleNode("//Operation[contains(xpath,'ShootingAccuracyFactor_Medium')]/nomatch/value/parts/li");
+                Assert(lng != null && med != null, "shimmer stat parts not patched on Medium and Long");
+                float fl = F(lng, "factor", 1f), fm = F(med, "factor", 1f);
+                Assert(fl < fm && fm < 1f, "long " + fl + " not harsher than medium " + fm);
+                Assert(RM_SunHeatMath.MirageShimmerFactor(1f, 0.6f, fl) == fl, "full sun not cut");
+                Assert(RM_SunHeatMath.MirageShimmerFactor(0.35f, 0.6f, fl) == 1f, "sand shade cut");
+                var biome = new System.Xml.XmlDocument();
+                biome.Load(System.IO.Path.Combine(root, "Stillsand", "Defs", "BiomeDefs", "RM_Stillsand_Biome.xml"));
+                System.Xml.XmlNode ext = biome.SelectSingleNode("//li[contains(@Class,'RM_SunHeatExtension')]");
+                Assert(ext.SelectSingleNode("mirageCondition")?.InnerText == "RM_Mirage", "Stillsand does not name RM_Mirage");
+                Assert(ext.SelectSingleNode("mirageMentalState")?.InnerText == "RM_ChasingWater", "Stillsand does not name RM_ChasingWater");
+                var think = patch.SelectSingleNode("//Operation[contains(xpath,'MentalStateNonCritical')]");
+                Assert(think != null && think.SelectSingleNode("order")?.InnerText == "Prepend"
+                       && think.SelectSingleNode("value/li/state")?.InnerText == "RM_ChasingWater", "think-tree node missing");
+            });
+
+            // ── STILLSAND_WIND_SUN_BEARING_1 ────────────────────────────
+            Case("wind lock: the dune engine's bearing IS the pinned sun's (shipped DLL)", () =>
+            {
+                // Reflection into the BUILT CreatureBehaviors assembly: the dunes engine
+                // cannot reference it, so this is what keeps the two formulas one.
+                string dll = System.IO.Path.Combine(FindModsRoot(), "CreatureBehaviors", "Assemblies", "RimMandrake.CreatureBehaviors.dll");
+                var asm = System.Reflection.Assembly.LoadFrom(dll);
+                var geo = asm.GetType("RimMandrake.CreatureBehaviors.RM_MapComponent_PinnedSun").GetMethod("SunGeometry");
+                float[][] tiles = { new[] { 20f, -30f }, new[] { -40f, 10f }, new[] { 5f, 80f }, new[] { -60f, -120f }, new[] { 0f, 45f } };
+                foreach (float[] t in tiles)
+                {
+                    object[] args = { t[0], t[1], 0f, 0f, 0f, 0f };
+                    geo.Invoke(null, args);
+                    float pinned = (float)args[4];
+                    float dune = RimMandrake.MovingDunes.DuneWindBearing.SunBearingDegrees(t[0], t[1], 0f, 0f);
+                    float diff = Math.Abs(((pinned - dune) % 360f + 540f) % 360f - 180f);
+                    Assert(diff < 0.01f, "tile " + t[0] + "," + t[1] + ": pinned " + pinned + " vs dune " + dune);
+                }
+            });
+
+            Case("wind lock: the wind blows along the shadows; lees fall shadow-side", () =>
+            {
+                // A tile due west of the substellar point sees the sun due east (90).
+                float b = RimMandrake.MovingDunes.DuneWindBearing.SunBearingDegrees(0f, -40f, 0f, 0f);
+                Assert(Math.Abs(b - 90f) < 0.01f, "sun bearing " + b + ", expected 90");
+                Assert(RimMandrake.MovingDunes.DuneWindBearing.WindDirFromSunBearing(b, false) == 6, "wind not toward W (6)");
+                Assert(RimMandrake.MovingDunes.DuneWindBearing.WindDirFromSunBearing(b, true) == 2, "toward-sun wind not E (2)");
+                // Wind index 6 = (-1,0): the same way RM_MapComponent_ShadeGrid casts shadows, -(sin b, cos b).
+                float sx = -(float)Math.Sin(b * Math.PI / 180), sz = -(float)Math.Cos(b * Math.PI / 180);
+                Assert(sx < -0.99f && Math.Abs(sz) < 0.01f, "shadow not west");
+                Assert(RimMandrake.MovingDunes.DuneWindBearing.WindDirFromSunBearing(-135f, false) == 1, "sun SW -> wind not NE");
+                Assert(RimMandrake.MovingDunes.DuneWindBearing.SunBearingDegrees(0f, 0f, 0f, 0f) == 0f, "substellar tile not 0");
+            });
+
+            Case("wind lock: Stillsand's dune binding locks the bearing at the pinned sun's point", () =>
+            {
+                var doc = new System.Xml.XmlDocument();
+                doc.Load(System.IO.Path.Combine(FindModsRoot(), "MovingDunes", "Patches", "BiomeBindings.xml"));
+                System.Xml.XmlNode li = doc.SelectSingleNode("//match[xpath='Defs/BiomeDef[defName=\"RM_Stillsand\"]']/value/li");
+                Assert(li != null, "no Stillsand dune binding");
+                Assert(li.SelectSingleNode("lockBearingToSubstellar")?.InnerText == "true", "Stillsand wind not locked");
+                Assert(F(li, "substellarLatitude", 0f) == 0f && F(li, "substellarLongitude", 0f) == 0f, "substellar point not 0,0");
+            });
+
+            // ── STILLSAND_STILL_COOLING_DRAUGHT_1 ───────────────────────
+            Case("cooling draught: +8 C comfortable max for ~6 h slows vanilla Heatstroke", () =>
+            {
+                var doc = new System.Xml.XmlDocument();
+                doc.Load(System.IO.Path.Combine(FindModsRoot(), "Stillsand", "Defs", "HediffDefs", "RM_CoolingDraught.xml"));
+                System.Xml.XmlNode hd = doc.SelectSingleNode("//HediffDef[defName='RM_CoolingDraught']");
+                Assert(hd != null, "RM_CoolingDraught missing");
+                float off = F(hd, "stages/li/statOffsets/ComfyTemperatureMax", 0f);
+                float ticks = F(hd, "comps/li[@Class='HediffCompProperties_Disappears']/disappearsAfterTicks", 0f);
+                Assert(off == 8f, "ComfyTemperatureMax offset " + off);
+                Assert(Math.Abs(ticks / 2500f - 6f) < 0.01f, "lasts " + ticks / 2500f + " h, not 6");
+                // A felt 40 C: over the plain safe max, under it with the draught.
+                Assert(HeatstrokeStep(40f, HumanSafeMax) > HeatstrokeStep(40f, HumanSafeMax + off), "draught does not slow Heatstroke");
+            });
+
+            // LONGSHADE_GPT_ENRICHMENT_1 §2, REAL from RM_MovingShadeMath.cs.
+            Case("moving shade: body footprint shaded, shadow runs along the sun, nothing upsun", () =>
+            {
+                int w = 40, h = 40;
+                float[] g = new float[w * h];
+                RM_MovingShadeMath.CastBody(g, w, h, 20, 20, 1, true, 1f, 0f, 6f, 0.6f, 1f);
+                for (int dz = -1; dz <= 1; dz++)
+                    for (int dx = -1; dx <= 1; dx++)
+                        Assert(g[(20 + dz) * w + 20 + dx] == 1f, "body cell " + dx + "," + dz + " not shaded");
+                Assert(g[20 * w + 25] > 0.5f, "no shadow 4 cells down-sun of the body edge");
+                Assert(g[20 * w + 17] == 0f, "shade appeared up-sun of the body");
+                Assert(g[23 * w + 20] == 0f, "shade appeared beside the body, off the sun line");
+            });
+
+            Case("moving shade: every written cell lies inside ShadowBounds", () =>
+            {
+                int w = 50, h = 50;
+                foreach (var dir in new[] { (1f, 0f), (-0.6f, 0.8f), (0.3f, -0.95f), (0f, 0f) })
+                {
+                    bool directional = dir.Item1 != 0f || dir.Item2 != 0f;
+                    float[] g = new float[w * h];
+                    RM_MovingShadeMath.CastBody(g, w, h, 25, 25, 2, directional, dir.Item1, dir.Item2, 9f, 0.6f, 0.8f);
+                    Assert(RM_MovingShadeMath.ShadowBounds(w, h, 25, 25, 2, directional, dir.Item1, dir.Item2, 9f,
+                        out int x0, out int z0, out int x1, out int z1), "bounds empty");
+                    for (int z = 0; z < h; z++)
+                        for (int x = 0; x < w; x++)
+                            if (g[z * w + x] > 0f)
+                                Assert(x >= x0 && x <= x1 && z >= z0 && z <= z1,
+                                    "cell " + x + "," + z + " written outside bounds for dir " + dir);
+                }
+            });
+
+            Case("moving shade: clearing the old rectangle and casting the new leaves no trail", () =>
+            {
+                int w = 40, h = 40;
+                float[] g = new float[w * h];
+                RM_MovingShadeMath.CastBody(g, w, h, 10, 10, 1, true, 0f, 1f, 5f, 0.6f, 1f);
+                RM_MovingShadeMath.ShadowBounds(w, h, 10, 10, 1, true, 0f, 1f, 5f, out int a0, out int b0, out int a1, out int b1);
+                RM_MovingShadeMath.ClearRect(g, w, h, a0, b0, a1, b1);
+                RM_MovingShadeMath.CastBody(g, w, h, 30, 10, 1, true, 0f, 1f, 5f, 0.6f, 1f);
+                for (int z = 0; z < h; z++)
+                    for (int x = 0; x < 20; x++)
+                        Assert(g[z * w + x] == 0f, "stale shade left at " + x + "," + z);
+                Assert(g[10 * w + 30] == 1f, "new body cell not shaded");
+            });
+
+            Case("moving shade: the gloomcast is a moving caster, the shadow cools like a rock's", () =>
+            {
+                var doc = new System.Xml.XmlDocument();
+                doc.Load(System.IO.Path.Combine(FindModsRoot(), "LongShade", "Defs", "ThingDefs_Races", "RM_LongShade_Gloomcast.xml"));
+                System.Xml.XmlNode td = doc.SelectSingleNode("//ThingDef[defName='RM_Gloomcast']");
+                Assert(td != null, "RM_Gloomcast missing");
+                float hgt = F(td, "comps/li[@Class='RimMandrake.CreatureBehaviors.RM_CompProperties_ShadowCaster']/castShadeHeight", 0f);
+                float depth = F(td, "comps/li[@Class='RimMandrake.CreatureBehaviors.RM_CompProperties_ShadowCaster']/castShadeDepth", 1f);
+                Assert(hgt > 0f, "RM_Gloomcast casts no moving shade");
+                float ex = RM_SunHeatMath.WithCover(RM_SunHeatMath.Exposure(RM_HeatKind.overhead, true, 0f, false, 0f), depth);
+                Assert(HeatstrokeStep(OutdoorC + RM_SunHeatMath.HeatOffset(ex, 30f, 1f, 1f, 70f), HumanSafeMax) == 0f,
+                    "a pawn in the gloomcast's shadow still gains Heatstroke");
             });
 
             foreach (string p in Pass) Console.WriteLine("PASS " + p);

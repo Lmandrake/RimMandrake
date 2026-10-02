@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 115.90547968400642,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 115.90547968400642,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_Pavecrust",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 53.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/29/rollout-2026-09-29T20-11-18-01a0f04b-8ef5-7e72-9008-a3f45b9fe204.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 52.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/29/rollout-2026-09-29T04-32-20-01a0ecef-e906-77e1-a527-fed784328bfa.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_Pavecrust",
+    "note": "Created a centered top-down grey-amber pavecrust sprite and resized it to exactly 256x256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Pavecrust\\RM_Pavecrust.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Pavecrust/RM_Pavecrust.png\n    256x256  rgba  131,568 bytes  (113s)\n"
+}

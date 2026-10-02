@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 127.99658630101476,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 101.80780736779799,
+  "derive_from_palette_distance": 23.94249656760483,
+  "elapsed_s": 127.99658630101476,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_Sippra_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 53.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/29/rollout-2026-09-29T20-17-34-01a0f051-4a35-70c3-a268-ff7ac6b51260.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 53.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/29/rollout-2026-09-29T20-11-18-01a0f04b-8ef5-7e72-9008-a3f45b9fe204.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_Sippra_north",
+    "note": "Derived a true rear-facing north sprite from the accepted master and saved it at exactly 256\u00d7256 with transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Sippra_north\\RM_Sippra_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Sippra_north/RM_Sippra_north.png\n    256x256  rgba  42,964 bytes  (124s)\n"
+}

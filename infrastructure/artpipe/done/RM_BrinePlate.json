@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T15:47:00Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_BrinePlate",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: the brine plate, a stacked mineral wafer pried from a spent brine creature \u2014 layered plates salt-white and mineral-dark by turns, pressed and fused at the edges, a whisper of residual charge as one faint spark at a corner seam, salt crust along the layer lines. It reads as a strange dense battery-mineral worth trading. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+  "style_notes": "item icon for the spent electrode wafer resource (defName RM_BrinePlate); the read is layered salt-white and mineral-dark wafers with one faint corner spark; wasteland survivor register: salt whites and mineral darks, vitrified black-green accents, one faint sickly-radiance spark, harsh dry light; realistic painted illustration, grounded believable mineral form, matte natural surface texture with salt crust, never cartoonish, no outlines"
+}

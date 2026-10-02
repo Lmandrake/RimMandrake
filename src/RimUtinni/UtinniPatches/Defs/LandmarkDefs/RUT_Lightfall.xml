@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- RUT_Lightfall — the Forsaken Crags' one massive chasm (owner-named 2026-09-06:
+  <!-- RUT_Lightfall — the Abyss' one massive chasm (owner-named 2026-09-06:
        "where light falls in — the one place the Dark always dies";
-       forsaken_crags.md §3). A distinct LandmarkDef, not a reskin of vanilla Chasm,
+       abyss.md §3). A distinct LandmarkDef, not a reskin of vanilla Chasm,
        because this is the singular deepest etch-scar on the planet — the Damp
        chain's terminator suture, ages of the Dark's collapse-rain
        eating one spot deepest. Reuses the vanilla Chasm icon (already repainted by

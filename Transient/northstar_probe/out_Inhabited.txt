@@ -1,0 +1,15 @@
+elapsed 3.6s  all_green=False
+CHAIN place_and_roster | {'bland': True, 'sweeps': 1, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    PASS | place_created | 
+    PASS | roster_stuffed | 
+    PASS | absorbed_into_pool | 
+    PASS | pool_ready_for_beggars_substitution | 
+    PASS | drawn_from_pool | 
+    hits seen: []
+CHAIN fate_and_stock | {'bland': True, 'sweeps': 0, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    PASS | place_created | 
+    FAIL | stock_dumped | ExpectationFailed: no recent log line matched tag='[RimMandrake.Inhabited] dumped' field=None value=None (last matching line: None)
+    UNMEASURED | fate_detects_when_enabled | upstream failed -- this chain's state is meaningless
+    UNMEASURED | stock_collected | upstream failed -- this chain's state is meaningless
+    UNMEASURED | robbed_threshold_not_spurious | upstream failed -- this chain's state is meaningless
+    hits seen: []

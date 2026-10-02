@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T21:20:01Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_FossilDeepStratum",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: a deep-stratum fossil, a unique museum-grade piece from the oldest layers of the canyon walls \u2014 a heavy dark slab holding part of something immense: a curled giant form suggested at the slab's edge, massive plated bone in mineral-dark and wax-pale tones, strata so old they read almost black, one polished face where a cutter dressed the stone. It reads as a fragment of a sleeping giant older than the canyons. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "FLOODEDCANYON_BEDAZZLE_SITTING_1",
+  "style_notes": "item icon for the unique deep-stratum fossil tier; the read is a dark ancient slab holding the curled edge of something immense, plated bone in mineral-dark and wax-pale; cracked lands register: near-black deep strata, mineral-dark and wax-pale bone, faint red-brown banding, no green, hard dry light; realistic painted natural-history illustration, grounded believable geology, matte polished-stone texture, quiet awe never spectacle, never cartoonish, no outlines"
+}

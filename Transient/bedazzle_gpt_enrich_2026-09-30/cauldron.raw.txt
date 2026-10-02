@@ -1,0 +1,95 @@
+## 1. Scabweight
+
+*The landed gravship becomes the Cauldron’s newest mineral-encrusted organism.*
+
+- **Player experience:** Exposed hull sections slowly acquire colorful crystal scabs, first as harmless edge deposits, then as thick plates that make the launch readout sluggish. Scrubbing produces mineral concentrate; excessive buildup lengthens launch preparation but never causes an unexplained failure.
+- **Marks:** Gravship touch, unique resources, unique mechanic.
+- **Build:** A `MapComponent` calculates exposure during dewfall and vent bloom; injected hull comps store scab severity. Use cheap section-level overlays, a scrub `WorkGiver/JobDriver`, inspect strings, and a Harmony launch-delay modifier. **Large C#.**
+- **Why here:** The Cauldron plates everything that remains still—including its visitors. No other biome should physically “grow” onto the ship.
+
+## 2. The Pressure Lattice
+
+*Capping a vent solves a local problem while changing the pressure beneath the rest of the map.*
+
+- **Player experience:** Every vent visibly throbs, stains nearby ground and contributes to a shared pressure field. A gas tap stops its leak and captures material, but an undersized storage network forces pressure toward uncapped vents. Rising pressure produces widening mineral cracks, climbing gauges and deeper groans before a non-igniting blowout releases flammable gas.
+- **Marks:** Unique mechanic, discoverable technology, interesting weather.
+- **Build:** `CompVentPressure`, `CompGasTap`, a map-wide vent graph, tank capacity, an `IncidentWorker` for readable blowouts, and overlays driven by pressure bands. **Large C#.**
+- **Why here:** It makes the Cauldron a subterranean chemical machine, not another map with isolated hazard emitters.
+
+## 3. Ruin-Learned Filtercraft
+
+*Players reconstruct fluid conversion by studying three different failures of the extinct filtering industry.*
+
+- **Player experience:** A corroded wellhead teaches containment, a condenser stack teaches phase separation, and a shrine’s cartridge bowl teaches purity. Each study action adds a named insight; two insights unlock crude recipes, while all three unlock efficient toxic-water-to-potable-water and gas-condensate-to-reagent conversions.
+- **Marks:** Discoverable technology, unique resources, relationship to the gods.
+- **Build:** Anomaly-style study comps on the commissioned ruins, a hidden research project, insight records, filter recipes, cartridges, and the existing condenser/resource-comp family. **Small C# plus XML.**
+- **Why here:** Filtering is the intellectual answer to a land where every liquid is another substance wearing a solvent.
+
+## 4. The Four-Stroke Weather Cycle
+
+*The four ruled weathers become recognizable phases of the Cauldron’s engine.*
+
+- **Player experience:** Scatter-dusk provides the restless baseline; vapour banks shorten sightlines and make nearby hisses unnervingly directional; dewfall paints surfaces with brilliant chemical beads; vent bloom raises local vent output after a conspicuous pre-bloom falter. Exposure is strongest near vents rather than being an undifferentiated whole-map toxin tax.
+- **Marks:** Interesting weather, soundscape, unique mechanic.
+- **Build:** Four `WeatherDef`s, sky and mote workers, weather-linked pressure multipliers, chemical-dew filth or overlays, and local exposure hediff application. **Small C# plus XML.**
+- **Why here:** The weather is emitted by the ground’s chemistry, not delivered by an ordinary sky.
+
+## 5. The Engine Below
+
+*Treat the soundscape as a readable instrument panel, not ambient decoration.*
+
+- **Player experience:** One map-level mix produces rushes, liquid gurgles, boiler groans and distant dull roars. Nearby vents add sharper hisses; eskith knocks travel beneath it. Before a bloom, layers fail sequentially until the ground becomes horribly still. A powered seismograph converts that falling “pulse” into a visible trace and alert for muted play.
+- **Marks:** Soundscape, interesting weather, discoverable technology.
+- **Build:** Layered `SoundDef` sustainers controlled by one `MapComponent`, positional vent one-shots, eskith calls, and a seismograph comp displaying pressure history. **Small C#.**
+- **Why here:** The Cauldron’s defining presence is the sound of geology operating like machinery.
+
+## 6. Vexxiss, Warden of the Breath
+
+*Make the giant a roaming ecological authority rather than merely an enormous harvest target.*
+
+- **Player experience:** A vexxiss follows high-pressure groans, braces over a vent and inhales until the vent falls silent for several days. It leaves wet, mineral-ringed footprints and visibly poisons water it crosses. When fire starts nearby, it bellows, attacks the recorded igniter and smothers individual flames under its plates.
+- **Marks:** GIANT beast, surprising creatures, unique mechanic.
+- **Build:** Custom job givers for vent-drinking and fire response, a vent suppression hediff/state, ignition-instigator tracking, extinguishing jobs, and explicit toxic-water terrain conversion with warning letters. **Large C#.**
+- **Why here:** It is the only creature massive enough to participate directly in the underground engine.
+
+## 7. Vexxith Closed Loop
+
+*The rare shear material becomes the player’s best answer to the Cauldron without becoming generic super-metal.*
+
+- **Player experience:** Vexxith plates remain cold beside fire and bead acid without staining. They make durable filter vessels, vent-cap liners, fireproof doors and gravship scab-scrapers—but poor weapons and ordinary structural walls. This preserves the living-vexxiss economy.
+- **Marks:** Unique resources, GIANT beast, gravship touch.
+- **Build:** A StuffDef with zero flammability and focused durability modifiers, a custom extension recognized by acid/corrosion damage, and several specialized recipes requiring plates rather than generic stuff. **Small C# plus XML.**
+- **Why here:** It is a biological answer to the biome’s two governing forces: solvent and heat.
+
+## 8. Assay Forestry
+
+*Every old tree is a slow-growing ore body whose value can be read before it is cut.*
+
+- **Player experience:** Mature thornwood and martyr trees develop increasingly bright metallic flecks and an inspect-line assay grade. Harvesting is deliberately slow and noisy; the final yield includes growth-scaled metal concentrate. Premature cutting gives little, while preserving old stands creates valuable—but flammable—capital.
+- **Marks:** Unique resources, unique mechanic.
+- **Build:** Higher harvest work in XML, a plant comp that records assay tier, graphic/mote accents, and a harvest postfix adding secondary yield from growth and age. **Small C#.**
+- **Why here:** In the Cauldron, stationary life filters the ground until wood becomes richer than stone.
+
+## 9. Condensate Gardens
+
+*Use the seven completed replacement plant assets as a colorful map of local chemistry.*
+
+- **Player experience:** Owned Cauldron plants form distinct microhabitats: crystal flowers ring stable taps, blood-dark bouquets mark chronic leakage, nettles colonize poisoned shorelines, and towering toxic flowers favor recent blowouts. Dewfall briefly saturates their purple, red, glass-white and green-amber accents.
+- **Marks:** Unique resources, interesting weather, surprising ecology.
+- **Build:** Owned Cauldron-only `ThingDef`s using the existing art, XML wild-plant entries, habitat extensions, and a post-mapgen/map-component scatterer keyed to vents, water and ruins. **Small C# plus XML.**
+- **Why here:** The flora becomes a chemical diagnostic system rather than interchangeable alien decoration.
+
+## 10. Oomo’s Courtesy
+
+*Oomo comes to the Cauldron reluctantly—and grants only enough clean water to prove that he could do more.*
+
+- **Player experience:** Corroded shrines always face away from vents and preserve one immaculate bead in their bowls. Repairing and studying a shrine grants a single emergency purification cycle each quadrum, accompanied by a dry letter describing Oomo’s grimace. It is useful, never a replacement for filtercraft.
+- **Marks:** Relationship to the gods, discoverable technology.
+- **Build:** Shrine comp, cooldown, one small biome-local incident or letter, and a limited filter recipe token. No new ideoligion precepts. **Small C# plus XML.**
+- **Why here:** The planet’s wettest-looking country receives water as grudging grace, never as landscape.
+
+## Top 3
+
+1. **The Pressure Lattice** — unifies vents, warnings, capping, refining and map strategy into one signature system.
+2. **Scabweight** — fills the sole remaining open MISS and makes the gravship visibly remember where it landed.
+3. **Ruin-Learned Filtercraft** — turns the strongest lore premise into tangible exploration, progression and economy.

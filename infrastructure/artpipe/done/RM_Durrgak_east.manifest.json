@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 103.20921473402996,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 103.20921473402996,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_Durrgak_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 64.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/10/01/rollout-2026-10-01T13-05-28-01a0f912-69b4-7160-b734-bbd17950e3bd.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 64.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/10/01/rollout-2026-10-01T12-59-31-01a0f90c-f68b-7702-a4ff-2c487c47d8dd.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_Durrgak_east",
+    "note": "Generated with built-in imagegen, copied into the workspace, and resized to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\RimMandrake\\infrastructure\\artpipe\\_artsrc\\RM_Durrgak_east\\RM_Durrgak_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_artsrc/RM_Durrgak_east/RM_Durrgak_east.png\n    256x256  rgba  85,931 bytes  (99s)\n"
+}

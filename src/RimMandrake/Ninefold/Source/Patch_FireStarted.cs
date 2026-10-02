@@ -8,7 +8,7 @@ namespace RimMandrake.Ninefold
     // NINEFOLD_FIRE_HOOK_RATELIMITED_1. divine_satiation_engine.md §3⑦ lists
     // "every breakdown, jam, fire, explosion, electrical short..." as feeding
     // Zizzik (the wrong spark), and §3⑧/the shipped matrix lists "fires and
-    // burning" among what feeds Sh'kaar (the evil sun, exposure, killing
+    // burning" among what feeds Sh'kaar (the searing sun, exposure, killing
     // light). Fire is a Zizzik+Sh'kaar input.
     //
     // Verified against decompiled source (RimSage): `Verse.FireUtility.

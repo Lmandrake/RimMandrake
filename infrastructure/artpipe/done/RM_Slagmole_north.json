@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T15:46:59Z",
+  "derive_from": "RM_Slagmole_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Slagmole_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the slagmole, a barrel-bodied burrowing animal built for digging through vitrified crust \u2014 huge digging claws worn glassy-smooth, a broad back set with embedded slag-grit like a cobbled road, small weak eyes with one gone milky, heavy shoulders, a blunt seamed snout. It reads as muscle that eats through glass and does not mind. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+  "style_notes": "the heavy digger, bs~1.6; the read is a grit-cobbled barrel of digging muscle; wasteland survivor register: salt-white and ash-grey palette, vitrified black-green accents in the embedded grit, sparing sickly-radiance glints, harsh dry light; tough content survivor, never pitiable; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture with grime, warts and mineral crust, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the grit-cobbled back and haunches"
+}

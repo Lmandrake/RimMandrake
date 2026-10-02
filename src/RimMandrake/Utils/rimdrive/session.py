@@ -246,6 +246,59 @@ class Session(object):
         r = self.call("jawa/list_pawns", rect=rect)
         return (r or {}).get("pawns") or []
 
+    # ------------------------------------------- situational reads (NORTHSTAR_COMPANION_GAPS_1)
+    # Thin wrappers over the companion tools in JawaBenchSituationalTools.cs. Each one RAISES on
+    # success:false -- a refusal (unknown pawn id, recorder not installed, zero-match removal) must
+    # never reach a detector as an empty list. Only built, not yet live-proven: see the item.
+
+    def _must(self, tool, **params):
+        r = self.call(tool, **params) or {}
+        if not r.get("success"):
+            raise SessionError("%s refused: %s" % (tool, r.get("message") or r))
+        return r
+
+    def pawn_census(self, faction=None, ids=None, include_dead=False, limit=500):
+        """Rows with mentalState / job / isPredatorHunting / preyId / needs / lord / duty."""
+        p = {"includeDead": include_dead, "limit": limit}
+        if faction:
+            p["faction"] = faction
+        if ids:
+            p["ids"] = ",".join(ids) if isinstance(ids, (list, tuple)) else ids
+        return self._must("jawa/pawn_census", **p)
+
+    def pawn_roles(self, faction=None, ids=None, include_dead=False, limit=500):
+        p = {"includeDead": include_dead, "limit": limit}
+        if faction:
+            p["faction"] = faction
+        if ids:
+            p["ids"] = ",".join(ids) if isinstance(ids, (list, tuple)) else ids
+        return self._must("jawa/pawn_roles", **p)
+
+    def incident_queue(self):
+        return self._must("jawa/incident_queue_peek")["queue"]
+
+    def incident_queue_remove(self, def_name=None, fire_tick=-1, dry_run=True):
+        """GM-gated tool. Raises when nothing matched (the tool itself refuses)."""
+        p = {"fireTick": fire_tick, "dryRun": dry_run}
+        if def_name:
+            p["defName"] = def_name
+        return self._must("jawa/incident_queue_remove", **p)
+
+    def damage_log(self, since_seq=-1, since_tick=-1, thing_id=None, pawns_only=True, kind=None,
+                   limit=500):
+        """Raises when the recorder is not installed. Check `completeSinceSeq` and
+        `overwritten` before treating a missing event as 'did not happen'."""
+        p = {"sinceSeq": since_seq, "sinceTick": since_tick, "pawnsOnly": pawns_only, "limit": limit}
+        if thing_id:
+            p["thingId"] = thing_id
+        if kind:
+            p["kind"] = kind
+        return self._must("jawa/damage_log", **p)
+
+    def thing_lineage(self, ids, include_events=True):
+        ids = ",".join(ids) if isinstance(ids, (list, tuple)) else ids
+        return self._must("jawa/thing_lineage", ids=ids, includeEvents=include_events)["results"]
+
     def _ticks(self):
         """MEASURED live 2026-09-12, on a quicktest map: `ticksGame` is a
         TOP-LEVEL field of `rimworld/get_game_info`, not part of

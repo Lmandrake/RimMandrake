@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 113.35145036400354,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "derive_from_distance": 51.41358315124824,
+  "derive_from_palette_distance": 12.910648262915752,
+  "elapsed_s": 130.11999047501013,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_Gristleswarm_v2_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 48.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/28/rollout-2026-09-28T22-22-05-01a0eb9c-edd3-78b1-9306-a0f0212f63bd.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 48.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/28/rollout-2026-09-28T22-16-17-01a0eb97-9f98-7050-ba16-93d584e6e043.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_Gristleswarm_v2_south",
+    "note": "Derived a true frontal south-facing six-legged creature from the east master. Used built-in imagegen; resized to 256\u00d7256 after the first local resize utility was unavailable.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Gristleswarm_v2_south\\RM_Gristleswarm_v2_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Gristleswarm_v2_south/RM_Gristleswarm_v2_south.png\n    256x256  rgba  62,539 bytes  (110s)\n"
+}

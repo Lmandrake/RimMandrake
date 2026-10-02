@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-28T15:47:00Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Middenshell_east",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the Middenshell, a colossal ancient walking excretor the size of a hill \u2014 a vast four-legged animal almost buried under its own rampart shell, the shell a fused mass of slag, scavenged hull-plate scraps, ribs of long-dead creatures and its own vitrified black-green bezoar glass, grouted with salt crust and seamed with faint sickly radiance deep in the crevices; the small ancient head and thick pillar legs dwarfed by the mass they carry, mid-stride under visible load. It reads as terrain that turns out to be an animal, still walking. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+  "style_notes": "THE giant, owner-ruled twenty cells wide, rendered large and high-fidelity so the scale carries in the pixels; the read is a walking rampart of fused waste on pillar legs, never hostile, immense; wasteland survivor register: salt-white crust, ash grey, vitrified black-green bezoar glass dominant, sickly-radiance seams deep in the shell crevices, harsh dry light; tough ancient survivor, never pitiable, never monstrous-aggressive; realistic painted natural-history illustration, grounded believable anatomy under the debris, matte natural surface texture of slag, glass and crust, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the shell rampart and rear pillar legs"
+}

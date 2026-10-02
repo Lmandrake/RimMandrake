@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Bleedleaf",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: the bleedleaf, a low alien shrub whose broad leaves have wet-through red veins \u2014 each leaf pale at the edge and soaked dark red along the veinwork, beads of red gathering at the leaf tips and dripping, stems slightly translucent. Single organism, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the aberrant shrub that is not fully carbon; the read is leaves bleeding through at the veins; storm-dark red-valley register: pale leaf edges soaking to deep red veins, hanging red drops, pink-blue aberrant accents, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable botany, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

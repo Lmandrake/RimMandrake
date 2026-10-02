@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 108.08265140105505,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 108.08265140105505,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_AncientServitor_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 61.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T22-18-14-01a0f5e6-1f3c-7e20-9cba-231d952e0393.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 61.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T22-12-38-01a0f5e0-fe8d-73e3-a643-d600c7194178.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_AncientServitor_east",
+    "note": "Built-in imagegen: right-facing sand-ivory/oxblood ancient servitor. Resized to 256\u00d7256 with alpha preserved; first resize utility was unavailable.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_AncientServitor_east\\RM_AncientServitor_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_AncientServitor_east/RM_AncientServitor_east.png\n    256x256  rgba  53,408 bytes  (105s)\n"
+}

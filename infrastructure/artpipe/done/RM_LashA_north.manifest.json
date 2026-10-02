@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 121.72698619798757,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 59.70190772301899,
+  "derive_from_palette_distance": 2.9655551107715117,
+  "elapsed_s": 121.72698619798757,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_LashA_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 62.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T23-45-49-01a0f636-50bf-7cf0-8a05-f23ce2f02717.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 62.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T23-40-11-01a0f631-279e-7af1-8be6-a241d0af5717.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_LashA_north",
+    "note": "Derived north-facing loose S-curve from the accepted east master; preserved its fleshy palette, wet painterly texture, dark keyline, scale, and transparent background.",
+    "out": "D:\\Luke\\dev\\RimMandrake\\infrastructure\\artpipe\\_artsrc\\RM_LashA_north\\RM_LashA_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_artsrc/RM_LashA_north/RM_LashA_north.png\n    256x256  rgba  21,971 bytes  (109s)\n"
+}

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Toothmoss",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: the toothmoss, a low carpet-patch of small crowded grinding teeth growing like moss \u2014 hundreds of mismatched enamel nubs in pink gum-like matrix, worn flat in patches, freshly erupted in others, a fine dust of ground matter caught between them. Single organism patch, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the burn-line moss that chews the scorched dead back into soil; the read is a gum-and-enamel carpet of crowded teeth; scorch register within the storm-red palette: enamel whites and greys in raw pink matrix, ash dust, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable botany, matte natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

@@ -113,7 +113,7 @@
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
-      <soundEating>Warg_Eat</soundEating>
+      <soundEating>PredatorLarge_Eat</soundEating>
     </race>
     <tradeTags>
       <li>AnimalExotic</li>

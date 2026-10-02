@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 105.36451235803543,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 42.83477181034828,
+  "derive_from_palette_distance": 11.74645086502426,
+  "elapsed_s": 105.36451235803543,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RM_ChatrakPlatesLifted_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 61.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T22-28-44-01a0f5ef-bb68-7d92-ac16-25d2b030cb6e.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 61.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T22-23-10-01a0f5ea-a3bb-7172-86e3-5488eb5c516c.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RM_ChatrakPlatesLifted_south",
+    "note": "Derived the south-facing raised plate crest from the accepted east master using built-in imagegen; preserved the slate, rust-orange, and raw-pink palette.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_ChatrakPlatesLifted_south\\RM_ChatrakPlatesLifted_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_ChatrakPlatesLifted_south/RM_ChatrakPlatesLifted_south.png\n    512x512  rgba  171,987 bytes  (101s)\n"
+}

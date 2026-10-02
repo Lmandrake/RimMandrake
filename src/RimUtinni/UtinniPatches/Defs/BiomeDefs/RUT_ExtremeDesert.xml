@@ -197,10 +197,10 @@
     <wildPlants>
       <RSW_Plant_Bloddle MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Plant_Bloddle>  <!-- bloddle plant -->
       <!-- AB_GiantStikehr REMOVED 2026-09-20 on the owner's eye ("The giant mushroom seems
-           misplaced"). Alpha Biomes' own description makes it a Forsaken Crags organism: "A
+           misplaced"). Alpha Biomes' own description makes it a Abyss organism: "A
            giant alien mushroom that glows in the strange darkening mist... as long as it is
            protected by the Forsaken [Crags]". It is correctly carried there at 0.3
-           (RUT_ForsakenCrags.xml). A glowing mist-mushroom on the hottest, driest, sunniest
+           (RUT_Abyss.xml). A glowing mist-mushroom on the hottest, driest, sunniest
            biome on the planet was a stray copy - the entry carried no rationale comment,
            unlike every other row here.
            EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20): Plant_Bloddle is no longer the

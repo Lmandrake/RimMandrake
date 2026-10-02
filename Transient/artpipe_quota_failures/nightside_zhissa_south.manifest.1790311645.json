@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 5.0465267890000405,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 10.12247608000007,
+  "id": "nightside_zhissa_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/24/rollout-2026-09-24T21-00-05-01a0d6b8-6c99-7193-b256-32ccd9f2ab80.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/24/rollout-2026-09-24T20-59-53-01a0d6b8-3d6c-7521-81d7-d7380381cdc0.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nonal input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\nightside_zhissa_south\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0d6b8-6c99-7193-b256-32ccd9f2ab80\n--------\nuser\nUse $imagegen to [artpipe job nightside_zhissa_south] RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the zhissa, a static-charged six-eyed creature refashioned for the ice hemisphere, pale blue crackling aura around its hide, thermal-only sensing (no visible eyes doing the seeing \u2014 six small vestigial eye-spots instead), nothing goat-like left in its shape, on the dead-still Nightside ice hemisphere, a chemistry set switched off under the aurora; pale frost-white to glacial-blue palette, minimal markings, hushed and still. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: defName AA_ShockGoat. Batch 3b row 1. Owner asked for this rename+refashion in the roster itself. No bs given. Facing: south \u2014 the creature walks TOWARD the viewer; we see its FACE and chest straight on.\n\nThen copy the generated image into the current working directory as nightside_zhissa_south.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\n\n",
+  "worker_stdout_tail": ""
+}

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_BloodyFist",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: the bloody fist, a spined stalk plant crowned with a clenched knuckle of dark red blooms \u2014 the flower-heads pressed into one tight fist-like mass, petals thick and meaty, the stalk armoured in curved spines, one hardened seed-fist forming at the crown ready to break off and roll. Single organism, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the owner-named bloom whose armored seed-fist rolls to the burn line; the read is a clenched dark-red fist of meaty blooms on a spined stalk; storm-dark red-valley register: dark meat-reds, bruise-purple petal shadow, grey spine highlights, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable botany, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

@@ -15,7 +15,7 @@
       AB_FeraliskInfestedJungle (the_webwork), AB_GelatinousSuperorganism
       (the_slime), AB_MycoticJungle (the_rot), AB_OcularForest
       (the_contagion), AB_PropaneLakes (the_propane_lakes), AB_TarPits
-      (the_sump), AB_RockyCrags (forsaken_crags, file Biomes_ForsakenCrags.xml)
+      (the_sump), AB_RockyCrags (abyss, file Biomes_Abyss.xml)
     GRiNDTerra Biomes (workshop 3537211820, packageId GRimTerra.Biomesmod):
       BiomeGRimond (the_blue_desert)
     More Vanilla Biomes (workshop 1931453053, packageId zylle.MoreVanillaBiomes):

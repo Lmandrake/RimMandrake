@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 195.2234293759975,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 85.28323645552727,
+  "derive_from_palette_distance": 18.363494477984688,
+  "elapsed_s": 195.2234293759975,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RM_Thurra_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 56.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T16-55-25-01a0f4be-9251-7312-83a6-b8750634259b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 55.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T16-50-23-01a0f4b9-f6bb-7f00-b0f1-cc8200161323.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RM_Thurra_north",
+    "note": "Derived a true rear/north-facing view from the accepted master and preserved the transparent presentation.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Thurra_north\\RM_Thurra_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Thurra_north/RM_Thurra_north.png\n    512x512  rgba  299,983 bytes  (183s)\n"
+}

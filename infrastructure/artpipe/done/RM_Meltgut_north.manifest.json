@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 166.0839861050008,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 100.90047209867787,
+  "derive_from_palette_distance": 5.923028246439227,
+  "elapsed_s": 166.0839861050008,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RM_Meltgut_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 38.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/28/rollout-2026-09-28T00-38-28-01a0e6f3-6d0c-7e63-9c31-631aa01d7f5c.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 38.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/28/rollout-2026-09-28T00-29-51-01a0e6eb-8ba7-7563-a460-0af464c1fc01.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RM_Meltgut_north",
+    "note": "Derived a true rear-facing view from the accepted master and downsampled it to exactly 512\u00d7512 with transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Meltgut_north\\RM_Meltgut_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Meltgut_north/RM_Meltgut_north.png\n    512x512  rgba  431,940 bytes  (163s)\n"
+}

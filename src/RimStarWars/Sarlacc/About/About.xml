@@ -81,6 +81,6 @@ reference) — every def here that touches it is MayRequire-gated.</description>
     <li>brrainz.harmony</li>
     <!-- LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2: the swimmer's road reads its
          shade-patch graph. Soft: without it the incident never fires. -->
-    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.biomes</li>
   </loadAfter>
 </ModMetaData>

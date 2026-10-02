@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 109.34383057197556,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 35.18460845088753,
+  "derive_from_palette_distance": 5.636545654358077,
+  "elapsed_s": 109.34383057197556,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_WorkingDead_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 67.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/10/01/rollout-2026-10-01T19-54-05-01a0fa88-8275-7422-b2f2-b93664ac3b46.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 67.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/10/01/rollout-2026-10-01T19-48-19-01a0fa83-391a-7d92-a1ea-9398254ec97f.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_WorkingDead_north",
+    "note": "Derived a true rear-facing north view from the accepted master, preserved transparent alpha, and resized it to exactly 256x256.",
+    "out": "D:\\Luke\\dev\\RimMandrake\\infrastructure\\artpipe\\_artsrc\\RM_WorkingDead_north\\RM_WorkingDead_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_artsrc/RM_WorkingDead_north/RM_WorkingDead_north.png\n    256x256  rgba  46,168 bytes  (106s)\n"
+}

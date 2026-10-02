@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 91.09875058598118,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 91.09875058598118,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_Kethrel_Stage0_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 70.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/10/01/rollout-2026-10-01T22-33-07-01a0fb1a-1ad2-78c0-bc34-b8e3b6b4e02b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 69.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/10/01/rollout-2026-10-01T22-26-56-01a0fb14-7067-7e83-80b5-4c00186c2c97.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_Kethrel_Stage0_east",
+    "note": "Generated a bare, east-facing kethrel sprite and resized it to exactly 256\u00d7256 while preserving transparent alpha.",
+    "out": "D:\\Luke\\dev\\RimMandrake\\infrastructure\\artpipe\\_artsrc\\RM_Kethrel_Stage0_east\\RM_Kethrel_Stage0_east.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_artsrc/RM_Kethrel_Stage0_east/RM_Kethrel_Stage0_east.png\n    256x256  rgba  35,731 bytes  (81s)\n"
+}

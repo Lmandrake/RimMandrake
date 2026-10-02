@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_PreciousCaves.xml                     RimMandrake — STILLSAND_PRECIOUS_CAVES_1
+
+  The rare rock and the precious cave under almost every one (design:
+  stillsand_turn3_development_2026-09-30.md §2.6). Mechanism and the
+  mutator evaluation: Source/RM_PreciousCaves.cs header. Wired onto
+  RM_Stillsand by Patches/RM_PreciousCaves_BiomeGenSteps.xml.
+
+  The precious table, RM tier. The other three rows of §2.6 belong to other
+  tiers and arrive as RimMandrake.Stillsand.RM_PreciousCaveDef defs in their
+  own mods: krayt den (RSW, STILLSAND_EVENT_CREATURES_1 §5), sarlacc seep (RSW,
+  RSW_DeepDesertSeep), debt cave (Utinni, STILLSAND_RETURN_RITUAL_1).
+
+  Weights are INVENTED-BUILD, ordered by the spec's own words: the seep cave
+  "most common", "nothing, taken" "rare". Every weight is a Mod Settings slider.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_PreciousCaveCarve</defName>
+    <!-- after RocksFromGrid 200 / Terrain 210 / RemoveTinyIslands 240,
+         before every structure, ruin and start-spot step -->
+    <order>245</order>
+    <genStep Class="RimMandrake.Stillsand.RM_GenStep_PreciousCaveCarve" />
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_PreciousCaveContents</defName>
+    <!-- after Plants 900, before Animals 1200 -->
+    <order>965</order>
+    <genStep Class="RimMandrake.Stillsand.RM_GenStep_PreciousCaveContents" />
+  </GenStepDef>
+
+  <!-- the seep cave: deep_desert §7's brine and mineral-salt seep, "a chemistry
+       input available nowhere else", and a metres-wide food web where things
+       "strike out of the water like traps". The seep reuses FlowWorks' shipped
+       brine pool terrain (a dependency of this mod) rather than a new texture. -->
+  <RimMandrake.Stillsand.RM_PreciousCaveDef>
+    <defName>RM_PreciousCave_Seep</defName>
+    <label>seep cave</label>
+    <description>A brine and mineral-salt seep in the dark, and the small cavern food web that lives on it.</description>
+    <weight>5</weight>
+    <elements>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Terrain">
+        <terrain>RM_WaterBrineShallow</terrain>
+        <cells>5~9</cells>
+        <place>back</place>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Pawns">
+        <kind>RM_Drazzik</kind>
+        <count>1</count>
+        <place>back</place>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Pawns">
+        <kind>RM_Ikee</kind>
+        <count>1~2</count>
+        <place>any</place>
+      </li>
+    </elements>
+  </RimMandrake.Stillsand.RM_PreciousCaveDef>
+
+  <!-- the guzzka lair: wires the built-but-nowhere guzzka (DESERT_CAVERN_BEAST_EGGS_1)
+       on a clutch of its fertilized eggs, "the best drink of water a person could carry". -->
+  <RimMandrake.Stillsand.RM_PreciousCaveDef>
+    <defName>RM_PreciousCave_GuzzkaLair</defName>
+    <label>guzzka lair</label>
+    <description>A guzzka asleep on its clutch at the back of the cave.</description>
+    <weight>2</weight>
+    <elements>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <thing>RM_GuzzkaEggFertilized</thing>
+        <stackCount>2~4</stackCount>
+        <place>back</place>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Pawns">
+        <kind>RM_Guzzka</kind>
+        <count>1</count>
+        <place>back</place>
+      </li>
+    </elements>
+  </RimMandrake.Stillsand.RM_PreciousCaveDef>
+
+  <!-- the lens grotto: the richest biosilica on the map. The grown-biosilica WALL
+       (a mineable) is owed art and is filed as a follow-up; until then the riches
+       lie as harvested biosilica on the grotto floor. -->
+  <RimMandrake.Stillsand.RM_PreciousCaveDef>
+    <defName>RM_PreciousCave_LensGrotto</defName>
+    <label>lens grotto</label>
+    <description>A geode of light-pipe glass: the richest biosilica on the map.</description>
+    <weight>1.5</weight>
+    <elements>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <thing>RM_Biosilica</thing>
+        <stackCount>12~25</stackCount>
+        <stacks>3~5</stacks>
+        <place>any</place>
+      </li>
+    </elements>
+  </RimMandrake.Stillsand.RM_PreciousCaveDef>
+
+  <!-- the sealed cache: a dry, pristine cache, the buried record in stone. -->
+  <RimMandrake.Stillsand.RM_PreciousCaveDef>
+    <defName>RM_PreciousCave_SealedCache</defName>
+    <label>sealed cache</label>
+    <description>A dry, pristine cache sealed into the back of the cave.</description>
+    <weight>1.5</weight>
+    <elements>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <thing>AncientSealedCrate</thing>
+        <stacks>1~2</stacks>
+        <place>back</place>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <thing>ComponentIndustrial</thing>
+        <stackCount>3~6</stackCount>
+        <place>back</place>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <thing>MealSurvivalPack</thing>
+        <stackCount>4~10</stackCount>
+        <place>back</place>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <thing>Steel</thing>
+        <stackCount>40~80</stackCount>
+        <place>centre</place>
+      </li>
+    </elements>
+  </RimMandrake.Stillsand.RM_PreciousCaveDef>
+
+  <!-- nothing, taken: emptied. A mark and a cold hearth say by whom. The mark is
+       the Graffiti mod's scrawl when that mod is loaded (soft reference, no
+       cross-reference error without it); a proper tribal glyph is a follow-up. -->
+  <RimMandrake.Stillsand.RM_PreciousCaveDef>
+    <defName>RM_PreciousCave_Taken</defName>
+    <label>nothing, taken</label>
+    <description>The cave was emptied long ago. A mark on the wall and a cold hearth say by whom.</description>
+    <weight>0.5</weight>
+    <elements>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <rockChunk>true</rockChunk>
+        <stacks>3~4</stacks>
+        <place>centre</place>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <thing>Filth_Ash</thing>
+        <stackCount>2</stackCount>
+        <stacks>4~6</stacks>
+        <place>centre</place>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <softThingDefs>
+          <li>RM_Graffiti_Vandal</li>
+        </softThingDefs>
+        <place>back</place>
+      </li>
+    </elements>
+  </RimMandrake.Stillsand.RM_PreciousCaveDef>
+
+</Defs>

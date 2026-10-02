@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 135.02431389900084,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 48.398027718004805,
+  "derive_from_palette_distance": 19.703662589360594,
+  "elapsed_s": 135.02431389900084,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_Pirrik_b_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 35.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/27/rollout-2026-09-27T22-33-53-01a0e681-5e90-7fd3-b334-12ace3042eba.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 35.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/27/rollout-2026-09-27T22-28-04-01a0e67c-0d09-7ff3-a37e-6371d50ef6cd.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_Pirrik_b_south",
+    "note": "Derived the accepted pirrik master into a direct frontal south-facing sprite and preserved its alien anatomy, dark iridescent palette, amber light, scale, and painterly style.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Pirrik_b_south\\RM_Pirrik_b_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Pirrik_b_south/RM_Pirrik_b_south.png\n    256x256  rgba  51,278 bytes  (130s)\n"
+}

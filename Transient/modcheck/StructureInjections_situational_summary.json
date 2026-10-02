@@ -1,0 +1,385 @@
+{
+ "chains": [
+  {
+   "name": "replay_dwelling_plan",
+   "components": [
+    {
+     "name": "dwelling_plan_replays_fully",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "expect_log_contains(dwelling_test.txt, foundationCells=0)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(dwelling_test.txt, terrainCells=130)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(dwelling_test.txt, things=73)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(dwelling_test.txt, roofCells=192)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(dwelling_test.txt, thingsSpawned=73)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Wall18859",
+          "def": "Wall",
+          "label": "Sandstone wall",
+          "x": 50,
+          "z": 50,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 420,
+          "maxHitPoints": 420,
+          "faction": null,
+          "factionName": null,
+          "stuff": "BlocksSandstone",
+          "quality": null
+         },
+         {
+          "id": "Wall18860",
+          "def": "Wall",
+          "label": "Sandstone wall",
+          "x": 51,
+          "z": 50,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 420,
+          "maxHitPoints": 420,
+          "faction": null,
+          "factionName": null,
+          "stuff": "BlocksSandstone",
+          "quality": null
+         },
+         {
+          "id": "Wall18866",
+          "def": "Wall",
+          "label": "Sandstone wall",
+          "x": 50,
+          "z": 51,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 420,
+          "maxHitPoints": 420,
+          "faction": null,
+          "factionName": null,
+          "stuff": "BlocksSandstone",
+          "quality": null
+         }
+        ],
+        "scanned": 15824,
+        "countReturned": 3,
+        "countMatched": 3,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "Wall": 3
+        },
+        "ticksGame": 1,
+        "message": "3 of 3 matching thing(s) returned, 15824 examined.",
+        "operation": {
+         "OperationId": "op_5e4e72e3b6a44d2189b650bc87cffb9a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:15:23.285286+00:00",
+         "CompletedAtUtc": "2026-10-02T01:15:23.3033109+00:00",
+         "DurationMs": 18,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "ElectricStove18928",
+          "def": "ElectricStove",
+          "label": "Electric stove",
+          "x": 63,
+          "z": 60,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 180,
+          "maxHitPoints": 180,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 15824,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "ElectricStove": 1
+        },
+        "ticksGame": 1,
+        "message": "1 of 1 matching thing(s) returned, 15824 examined.",
+        "operation": {
+         "OperationId": "op_2b3ff438fd6947e9b34cd2aae46376d6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:15:23.3223338+00:00",
+         "CompletedAtUtc": "2026-10-02T01:15:23.338864+00:00",
+         "DurationMs": 16,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\dwelling_plan_replays_fully_1790903723.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "replay_moisture_farm_plan",
+   "components": [
+    {
+     "name": "moisture_farm_plan_replays",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "expect_log_contains(moisture_farm_test.txt, foundationCells=0)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(moisture_farm_test.txt, terrainCells=9)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(moisture_farm_test.txt, things=99)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains(moisture_farm_test.txt, roofCells=25)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/drain_log",
+       "result": {
+        "success": true,
+        "message": "3 message(s) of 227 in the buffer.",
+        "totalInBuffer": 227,
+        "messages": [
+         {
+          "type": "Error",
+          "text": "[RimMandrake.StructureInjections] no ThingDef 'PrimitiveWell' (plan C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjections\\Templates\\moisture_farm_test.txt)",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimMandrake.StructureInjections] no ThingDef 'KotOR_MoistureVaporator_big' (plan C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjections\\Templates\\moisture_farm_test.txt)",
+          "repeats": 6
+         },
+         {
+          "type": "Message",
+          "text": "[RMInjectDebug] RAN C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\StructureInjections\\Templates\\moisture_farm_test.txt clicked=(50, 0, 50) offset=(-50,-50) foundationCells=0 terrainCells=9 things=99 roofCells=25 thingsBefore=15751 thingsAfter=15843 thingsSpawned=92",
+          "repeats": 1
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_9b8f0f8f11354fcc851b37cbf295f1fa",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/drain-log",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:15:24.7349491+00:00",
+         "CompletedAtUtc": "2026-10-02T01:15:24.7390549+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Door18947",
+          "def": "Door",
+          "label": "Wooden door",
+          "x": 60,
+          "z": 58,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 104,
+          "maxHitPoints": 104,
+          "faction": null,
+          "factionName": null,
+          "stuff": "WoodLog",
+          "quality": null
+         }
+        ],
+        "scanned": 15843,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "Door": 1
+        },
+        "ticksGame": 1,
+        "message": "1 of 1 matching thing(s) returned, 15843 examined.",
+        "operation": {
+         "OperationId": "op_11351dac15414b8fa92a083f71e57b43",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:15:24.7450551+00:00",
+         "CompletedAtUtc": "2026-10-02T01:15:24.751115+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\moisture_farm_plan_replays_1790903724.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 1,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "3 new error message(s) in the log"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "enabled_toggle_flips",
+   "components": [
+    {
+     "name": "enabled_setting_flips",
+     "toggle": "enabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.StructureInjections.RM_StructureInjectionsSettings, {'enabled': False})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.StructureInjections.RM_StructureInjectionsSettings, {'enabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": "D:\\Luke\\dev\\RimMandrake\\design\\validation_walks\\RimMandrake\\StructureInjections.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": true
+}

@@ -95,7 +95,12 @@ suite.toggles = [
 ION_DAMAGE = "RSW_JawaIon_Damage"
 ION_STUN_HEDIFF = "RSW_JawaIon_Stun"
 INVERSE_BODYSIZE_STAT = "RSW_Jawa_InverseBodySize"
-VEHICLE_TIER_LOG_TAG = "Vehicle Framework is not loaded"
+VEHICLE_TIER_LOG_TAG = "Vehicle Framework is not loaded"   # kept for reference; see vehicle_tier_* below
+
+
+def _live(t):
+    """False for the offline declaration probe (no session) and for a chain past a failed component."""
+    return t.session is not None and not t.upstream_failed
 
 
 # ------------------------------------------------------------------ helpers
@@ -241,26 +246,38 @@ def buildup_math(t):
         t.screenshot()
 
     with t.component("bodysize_squared_resistance", toggle="bodySizeResistExponent"):
-        _damage(t, small, ION_DAMAGE, 8)
+        # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): the old version hit the Rat with the SAME 8
+        # damage as the human and compared raw severities. A Rat (bodySize ~0.2) takes 0.03*8/0.2^2 = 6.0,
+        # clamped to maxSeverity 1.0 (the mod's own comment: "A rat drops in one hit"), so the ratio
+        # collapsed to 1.0/0.24 = 4.17x whatever the exponent was -- the pair could not discriminate
+        # squared from linear at all. Hit the small pawn with 1 point (severity 0.03/bodySize^2, ~0.75 for a
+        # rat, under the clamp) and compare severity PER DAMAGE POINT; a clamped reading refuses to judge.
+        small_dmg = 1
+        _damage(t, small, ION_DAMAGE, small_dmg)
         small_row = _pawn_row(t, small)
         small_body = small_row.get("bodySize") or 0.0
         small_sev = _hediff_severity(small_row, ION_STUN_HEDIFF)
         human_row = _pawn_row(t, human)
         human_body = human_row.get("bodySize") or 1.0
-        human_sev = _hediff_severity(human_row, ION_STUN_HEDIFF)  # 1 hit already applied above
+        human_sev = _hediff_severity(human_row, ION_STUN_HEDIFF)  # 1 hit of 8 already applied above
         if small_body <= 0 or small_body >= human_body:
             raise ExpectationFailed(
                 "Rat bodySize %.3f is not smaller than Pirate bodySize %.3f -- "
                 "cannot prove the resistance curve with this pair" % (small_body, human_body))
         if human_sev <= 0:
             raise ExpectationFailed("human severity read back as 0 -- nothing to compare against")
-        observed_ratio = small_sev / human_sev
+        if small_sev >= 0.99:
+            raise ExpectationFailed(
+                "small pawn severity %.3f sits at the maxSeverity clamp after a %d-point hit -- this "
+                "reading cannot tell a squared curve from a linear one; use a smaller hit or a larger "
+                "pawn" % (small_sev, small_dmg))
+        observed_ratio = (small_sev / small_dmg) / (human_sev / 8.0)
         expected_ratio = (human_body / small_body) ** 2
         # Loose band: this is a shape check (smaller body = much more severity
         # per identical hit), not a precision regression test.
         if observed_ratio < expected_ratio * 0.4:
             raise ExpectationFailed(
-                "severity ratio %.2fx (rat/human) is far below the ~%.2fx the "
+                "severity-per-damage ratio %.2fx (rat/human) is far below the ~%.2fx the "
                 "bodySize^2 divisor predicts -- resistance curve may not be squared"
                 % (observed_ratio, expected_ratio))
         t.screenshot()
@@ -298,6 +315,11 @@ def machine_and_droid_tier(t):
 
     droid = t.spawn_pawn("OuterRim_BattleDroid", hostile=True)
     with t.component("droid_tier_strong_stun", toggle="machineTierMultiplier"):
+        if _live(t) and not droid:
+            raise ExpectationFailed(
+                "OuterRim_BattleDroid did not spawn -- Neronix17.OuterRim.Core (a hard dependency in this "
+                "mod's About.xml) is not in the load, so jawa/damage was handed no target. `modcheck run` "
+                "now composes a mod's modDependencies; an environment gap, not a mechanism failure.")
         row = _first_row(_damage(t, droid, ION_DAMAGE, 8))
         if row.get("dead"):
             raise ExpectationFailed("OuterRim_BattleDroid died from a harmsHealth=false damage def")
@@ -323,21 +345,30 @@ def shield_break(t):
                                        "def": "Apparel_ShieldBelt"})
 
     with t.component("ion_pops_shield_then_bullet_lands", toggle="shieldBreakEnabled"):
+        # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): jawa/damage reports hitPointsBefore/After as
+        # -1 for EVERY pawn, so the old before==after / after<before test could never see an absorbed or a
+        # landed bullet (control "absorbed" trivially, proof "still absorbed" always). MEASURED live
+        # 2026-10-01: the shield WORKED -- control bullet totalDamageDealt 0.0 / hediffs unchanged
+        # (absorbed), proof bullet totalDamageDealt 5.625 / hediffs 1 -> 2 (landed). Read those instead.
+        def _landed(row):
+            return ((row.get("totalDamageDealt") or 0.0) > 0.0
+                    or (row.get("hediffsAfter") or 0) > (row.get("hediffsBefore") or 0))
+
         control = _first_row(_damage(t, target, "Bullet", 15))
-        if control.get("hitPointsAfter") != control.get("hitPointsBefore"):
+        if _landed(control):
             raise ExpectationFailed(
-                "control bullet was NOT absorbed by the shield belt (before=%r "
-                "after=%r) -- cannot prove a break without a charged shield first"
-                % (control.get("hitPointsBefore"), control.get("hitPointsAfter")))
+                "control bullet was NOT absorbed by the shield belt (totalDamageDealt=%r hediffs %r->%r) "
+                "-- cannot prove a break without a charged shield first"
+                % (control.get("totalDamageDealt"), control.get("hediffsBefore"), control.get("hediffsAfter")))
         _damage(t, target, ION_DAMAGE, 8)
         proof = _first_row(_damage(t, target, "Bullet", 15))
         if proof.get("dead"):
             raise ExpectationFailed("target died from the proof bullet")
-        if not (proof.get("hitPointsAfter") < proof.get("hitPointsBefore")):
+        if not _landed(proof):
             raise ExpectationFailed(
-                "bullet STILL absorbed after an ion hit -- shieldBreakEnabled's "
-                "1-point EMP dispatch did not pop the belt: before=%r after=%r"
-                % (proof.get("hitPointsBefore"), proof.get("hitPointsAfter")))
+                "bullet STILL absorbed after an ion hit -- shieldBreakEnabled's 1-point EMP dispatch did "
+                "not pop the belt: totalDamageDealt=%r hediffs %r->%r"
+                % (proof.get("totalDamageDealt"), proof.get("hediffsBefore"), proof.get("hediffsAfter")))
         t.screenshot()
 
 
@@ -352,13 +383,27 @@ def vehicle_tier_without_framework(t):
     `Vehicles.dll` is absent from the AppDomain. No pawns, no map state."""
     t.clear_area(size=10)
     with t.component("vehicle_tier_logs_selfdisable", toggle="vehicleTierEnabled"):
-        t.expect_log_contains(VEHICLE_TIER_LOG_TAG, limit=5000)
+        # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): the old assertion waited for the static
+        # constructor's "Vehicle Framework is not loaded" warning. Since VF_UNGUARDED_EAGER_FIX_1
+        # (2026-09-05) LoadFolders.xml loads VehicleTier/Assemblies ONLY under
+        # IfModActive="SmashPhil.VehicleFramework", so without Vehicle Framework that assembly -- and its
+        # constructor -- never run and the warning cannot exist (and it would have scrolled out of the
+        # 1000-line log buffer anyway). The self-disable is now structural. What a live run CAN still see is
+        # that the absent tier left no error behind.
+        r = t.bridge_call("jawa/drain_log", limit=1000, errorsOnly=True, contains="JawaIon")
+        msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
+        if _live(t) and msgs:
+            raise ExpectationFailed(
+                "Jawa Ion Weapons logged %d error/warning line(s) with Vehicle Framework absent; first: %r"
+                % (len(msgs), msgs[0][:300]))
 
     with t.component("vehicle_tier_multiplier_dormant_without_framework",
                      toggle="vehicleTierMultiplier"):
-        # Floor-only: with the assembly never patching anything (component
-        # above), `vehicleTierMultiplier` cannot move any observable state in
-        # THIS environment. Re-reads the same log line as independent
-        # evidence that the whole vehicle tier -- multiplier included -- is
-        # inert here, rather than asserting nothing at all.
-        t.expect_log_contains(VEHICLE_TIER_LOG_TAG, limit=5000)
+        # Floor-only: with the VehicleTier assembly not loaded, `vehicleTierMultiplier` moves no
+        # observable state here. Re-reads the same error filter as independent evidence that the whole
+        # vehicle tier -- multiplier included -- is inert, rather than asserting nothing at all.
+        r = t.bridge_call("jawa/drain_log", limit=1000, errorsOnly=True, contains="VehicleIon")
+        msgs = [m.get("text", "") for m in ((r or {}).get("messages") or [])]
+        if _live(t) and msgs:
+            raise ExpectationFailed("vehicle-tier error line present without Vehicle Framework: %r"
+                                    % msgs[0][:300])

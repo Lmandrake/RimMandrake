@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 81.85594096899149,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 81.85594096899149,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RM_OommokSkeleton",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T19-17-09-01a0f540-550b-73f1-a889-ffc5ed9c44f8.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T19-12-08-01a0f53b-be67-72b3-92b2-4640ec9cfcae.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RM_OommokSkeleton",
+    "note": "Generated with built-in imagegen and resized to exact dimensions. First resize utility was unavailable; fallback preserved RGBA transparency.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_OommokSkeleton\\RM_OommokSkeleton.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_OommokSkeleton/RM_OommokSkeleton.png\n    1024x512  rgba  681,897 bytes  (79s)\n"
+}

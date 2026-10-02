@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T01:09:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-10-02T07:22:25Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1008,15 +1008,6 @@ kind:     task
 summary:  Design: design/Jawa/worldbuilding/biomes/webworkeggblackmarket2026-09-24.md
 prose:    infrastructure/state/items/WEBWORK_EGG_BROKER_CHANNEL_1.md
 
-## DEEPFIRE_PAINT_LIVE_VERIFY_1 Deepfire painting + worn-glow darkness tradeoff (needs live bridge)
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  DEEPFIREPAINTLIVEVERIFY1
-prose:    infrastructure/state/items/DEEPFIRE_PAINT_LIVE_VERIFY_1.md
-
 ## SUMP_TAR_FIRE_NETWORK_1 Network fire with gate firebreaks; wire belch to glass-cooling
 state:    doing
 row:      unassigned
@@ -1115,15 +1106,6 @@ target:   v1
 kind:     task
 summary:  BLUEDESERTMECHANICSBUILD1 — the Warnings, blue-ice quarrying, the vhaulk trap, weathers, sound, Cold Hold
 prose:    infrastructure/state/items/BLUEDESERT_MECHANICS_BUILD_1.md
-
-## BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1 Live-verify a Baroque Biomes toggle actually stops worldgen placement, not just that the startup gate wires cleanly: flip one biome off in Mod Settings, generate a new world, confirm its BiomeDef never places a tile, flip back on. RM_BiomesGate's startup log (roster mapped, gate applied) is proven; an actual OFF-and-regenerate cycle is not.
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  (no items/BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BAROQUE_BIOMES_TOGGLE_LIVE_VERIFY_1.md
 
 ## CRACKEDLANDS_FULL_RENAME_1 Full rename FloodedCanyon -> CrackedLands everywhere: defs, code, file names, docs (owner-typed 2026-09-28); live-tile/savegame check gates any defName change
 state:    doing  (BLOCKED)
@@ -2011,7 +1993,17 @@ prose:    infrastructure/state/items/SUBSTRUCTURE_PROPS_LAYER_OOB_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## NORTHSTAR_BLAND_TILE_1 Generate a genuinely bland test map (flat dry tile, no ruins) via jawa/world_tile_map_generate instead of the random quicktest forest
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+waiting:  needs `bridge`, game is DOWN
+summary:  (no items/NORTHSTAR_BLAND_TILE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTHSTAR_BLAND_TILE_1.md
 
 # NOT THIS TARGET
 
@@ -2020,16 +2012,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## FEVERWOOD_SAP_SUCKER_TUNING_1 Real numbers and the mishandling trigger for the sap-sucker guild
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     mechanism
-thin:     no ## verify, no ## criteria
-summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
-prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
 
 ## WARCASKET_WASTE_RUN_REMAINDER_1 Cask-bay follow-ons: five waste-run destinations, Stenchlands cask item, Junker pawnkind wearing the warcasket, what the half-extracted core is for
 state:    proposed
@@ -2210,3 +2192,73 @@ kind:     build
 thin:     no ## verify
 summary:  1. The Debt (Utinni tier). A colony counter of water drawn on Stillsand maps: every still litre,
 prose:    infrastructure/state/items/STILLSAND_RETURN_RITUAL_1.md
+
+## WARSCAR_CHOTRIX_BUILD_1 Chotrix: the Warscar's invisible hunter (cloak-lacquer eater, prints on the track grid) + permanent cloak lacquer (owner card 2026-09-30)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  - RMChotrix: RM tier, Warscar only, bodySize ~0.9, one or two per map. A lean, low scavenger that
+prose:    infrastructure/state/items/WARSCAR_CHOTRIX_BUILD_1.md
+
+## FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1 Harmony postfix on Pawn_MindState.CheckStartMentalStateBecauseRecruitAttempted so a failed tame triggers the sap-sucker refusal (opus; add Harmony ref + srchash DLL rebuild)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1.md
+
+## DEPLOYED_BIOME_REFS_ROTSPOREKIT_1 selftest_deployed_biome_refs fails: 19 wildPlants/wildAnimals entries in deployed RUT_TheRot/RUT_Contagion/RUT_Miasma name defs absent because mandrake.rut.rotsporekit is not deployed; passed ~40 min earlier — find what changed (2026-10-01 live-deploy?) and whether it produces load errors
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEPLOYED_BIOME_REFS_ROTSPOREKIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEPLOYED_BIOME_REFS_ROTSPOREKIT_1.md
+
+## PYRELANDS_WALKLINT_FINDINGS_1 run_selftests reports 3 walklint findings in design/validation_walks/RimMandrake/Pyrelands.md (found by STILLSAND_SKELETONS_TRACKS_1 full run 2026-10-01) — read each finding, fix the walk, never the grader
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_WALKLINT_FINDINGS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_WALKLINT_FINDINGS_1.md
+
+## NORTHSTAR_SITUATIONAL_ROLLOUT_1 Flip modcheck --situational to default after an abort-only pass over every suite
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NORTHSTAR_SITUATIONAL_ROLLOUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTHSTAR_SITUATIONAL_ROLLOUT_1.md
+
+## NORTHSTAR_COMPANION_GAPS_1 Companion tools: pawn census (mental state+job), incident-queue peek/selective remove, damage-event ring buffer, holder/stack lineage, pawn roles+lord
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NORTHSTAR_COMPANION_GAPS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTHSTAR_COMPANION_GAPS_1.md
+
+## NORTHSTAR_VALIDATION_SKILL_1 Carve a northstar-validation skill out of rimworld-debug-testing: bland saved world, situational envelope, live_queue, companion detectors, interference playbook, time ledger
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NORTHSTAR_VALIDATION_SKILL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTHSTAR_VALIDATION_SKILL_1.md

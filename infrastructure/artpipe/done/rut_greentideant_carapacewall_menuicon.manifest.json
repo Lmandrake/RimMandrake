@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 108.48609345200384,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 108.48609345200384,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 128,
+  "id": "rut_greentideant_carapacewall_menuicon",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 45.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/28/rollout-2026-09-28T13-25-37-01a0e9b1-c660-7a10-ae73-4c0dac6d1ce6.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/28/rollout-2026-09-28T10-41-27-01a0e91b-7a96-7090-b1ed-8db7040b6b45.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 128,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 128,
+    "id": "rut_greentideant_carapacewall_menuicon",
+    "note": "Generated with built-in imagegen and resized to exactly 128\u00d7128. Verified RGBA format and fully transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rut_greentideant_carapacewall_menuicon\\rut_greentideant_carapacewall_menuicon.png",
+    "status": "ok",
+    "width": 128
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rut_greentideant_carapacewall_menuicon/rut_greentideant_carapacewall_menuicon.png\n    128x128  rgba  24,779 bytes  (106s)\n"
+}

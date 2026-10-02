@@ -1,0 +1,63 @@
+{
+  "attempt_elapsed_s": 125.02792910099379,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 106.36776183719564,
+  "derive_from_palette_distance": 31.97432071131178,
+  "downscaled_from": "1254x1254",
+  "elapsed_s": 125.02792910099379,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RM_GreatDevourer_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 53.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/29/rollout-2026-09-29T20-55-46-01a0f074-4304-7972-a9e3-1fa66ab26408.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 53.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/29/rollout-2026-09-29T20-48-19-01a0f06d-727a-7741-ae51-fc12fe35edd9.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
+    "id": "RM_GreatDevourer_north",
+    "note": "The built-in image generator produced no returned image or saved artifact on either attempt, so no PNG could be copied.",
+    "out": null,
+    "status": "fail",
+    "width": null
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "note: agent did not place the file; harvested exec-57b7bf07-aa08-4847-a4ab-8d90b73bab9e.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_GreatDevourer_north/RM_GreatDevourer_north.png\n    1254x1254  rgba  1,163,783 bytes  (118s)\n"
+}

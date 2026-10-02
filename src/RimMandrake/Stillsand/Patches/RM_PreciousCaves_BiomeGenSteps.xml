@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_PRECIOUS_CAVES_1: put the rock-and-cave gen steps on every RM_Stillsand
+  map through BiomeDef.extraGenSteps (MapGenerator.GenerateMap concatenates them —
+  MEASURED, RimSage). A patch rather than an edit to RM_Stillsand_Biome.xml so the
+  biome file stays out of this item's diff. Conditional: add the list when the
+  biome has none yet, append to it when it has one.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_Stillsand"]/extraGenSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Stillsand"]/extraGenSteps</xpath>
+      <value>
+        <li>RM_PreciousCaveCarve</li>
+        <li>RM_PreciousCaveContents</li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Stillsand"]</xpath>
+      <value>
+        <extraGenSteps>
+          <li>RM_PreciousCaveCarve</li>
+          <li>RM_PreciousCaveContents</li>
+        </extraGenSteps>
+      </value>
+    </nomatch>
+  </Operation>
+</Patch>

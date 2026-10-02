@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 124.59625490699545,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 93.40947507282561,
+  "derive_from_palette_distance": 19.833245595926126,
+  "elapsed_s": 124.59625490699545,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RM_Dhokkur_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 47.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/28/rollout-2026-09-28T21-49-04-01a0eb7e-b1e6-7062-83e0-f1931b671d83.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 47.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/28/rollout-2026-09-28T21-43-26-01a0eb79-8c33-7e32-b5cd-5df15bb87d6d.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RM_Dhokkur_north",
+    "note": "Derived a true rear-facing walking view from the accepted master and resized the transparent output to exactly 512x512.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Dhokkur_north\\RM_Dhokkur_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Dhokkur_north/RM_Dhokkur_north.png\n    512x512  rgba  322,127 bytes  (116s)\n"
+}

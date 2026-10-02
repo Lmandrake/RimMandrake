@@ -62,7 +62,15 @@ class FakeWorld(object):
         self.difficulty = {"threatScale": 1.0, "allowBigThreats": True}
         self.mental = {}           # pawn id -> state
         self.needs = {}            # pawn id -> {need: level}
-        self.queue = []            # queued incidents
+        self.queue = []            # queued incidents: {"defName","fireTick",...} (peek row shape)
+        self.jobs = {}             # pawn id -> {"def": JobDef, "targetA": thing id or None}
+        self.lords = {}            # pawn id -> {"loadId","lordJob","toil"}
+        self.damage_log = []       # recorder ring (jawa/damage_log event rows)
+        self.lineage = []          # item journal (jawa/thing_lineage event rows)
+        self.things = {}           # live item id -> {"def","stackCount","holder": [..], "x","z"}
+        self.recorder_installed = True
+        self._dseq = 0             # damage ring seq (real: JawaEventRing.Total)
+        self._lseq = 0             # lineage journal seq
         self.calls = []            # (tool, params) log
         self.events = []           # (tick, fn) scheduled
         self.modes = set()
@@ -88,10 +96,44 @@ class FakeWorld(object):
             return
         p["dead"] = True
         p["spawned"] = False
+        self.record_damage(pid, kind="kill", damage_def=None, amount=0.0)
         if p["isPlayer"] and p["intelligence"] == "Humanlike":
             self.stats["colonistsKilled"] += 1
             self.letters.append({"defName": "Death", "label": "Death: %s" % pid,
                                  "arrivalTick": self.ticks})
+
+    def record_damage(self, victim, kind="damage", damage_def="Cut", amount=10.0, instigator=None):
+        p = self.pawns.get(victim, {})
+        self._dseq += 1
+        self.damage_log.append({
+            "seq": self._dseq - 1, "tick": self.ticks, "kind": kind, "victimId": victim,
+            "victimDef": p.get("def"), "victimIsPawn": victim in self.pawns, "victimFaction": p.get("faction"),
+            "victimColonist": bool(p.get("isPlayer")) and p.get("intelligence") == "Humanlike",
+            "victimDeadAfter": bool(p.get("dead")), "damageDef": damage_def, "amount": amount,
+            "totalDealt": amount if kind == "damage" else 0.0, "deflected": False,
+            "instigatorId": instigator, "instigatorDef": None, "instigatorFaction": None, "weapon": None,
+            "hitPart": None, "culpritHediff": None, "hediffsAdded": [], "mapUniqueId": 0,
+            "x": p.get("x", -1), "z": p.get("z", -1)})
+
+    def record_lineage(self, kind, thing_id, other_id=None, count=1, stack_after=0, destroy_mode=None):
+        t = self.things.get(thing_id, {})
+        self._lseq += 1
+        self.lineage.append({"seq": self._lseq - 1, "tick": self.ticks, "kind": kind, "thingId": thing_id,
+                             "def": t.get("def"), "otherId": other_id, "otherDef": None, "count": count,
+                             "stackAfter": stack_after, "holder": None, "destroyMode": destroy_mode,
+                             "mapUniqueId": 0, "x": t.get("x", -1), "z": t.get("z", -1)})
+
+    def eat(self, thing_id, pawn_id):
+        """A pawn eats a whole tracked item: the journal shows ingest then destroy (as in game)."""
+        t = self.things.pop(thing_id)
+        self.record_lineage("ingest", thing_id, pawn_id, count=t["stackCount"], stack_after=0)
+        self.record_lineage("destroy", thing_id, None, count=0, destroy_mode="Vanish")
+
+    def merge(self, thing_id, into_id):
+        t = self.things.pop(thing_id)
+        self.things[into_id]["stackCount"] += t["stackCount"]
+        self.record_lineage("absorb", thing_id, into_id, count=t["stackCount"], stack_after=0)
+        self.record_lineage("destroy", thing_id, None, count=0, destroy_mode="Vanish")
 
     # ----------------------------------------------------------- tool surface
     def call(self, tool, **p):
@@ -152,12 +194,29 @@ class FakeWorld(object):
         return d
 
     def _t_jawa_list_things(self, defName=None, group=None, **_):
+        if group == "Corpse":
+            rows = list(getattr(self, "corpses", []))
+            return {"success": True, "things": rows, "countReturned": len(rows), "countMatched": len(rows),
+                    "isCompleteList": True, "truncated": 0, "ticksGame": self.ticks}
         if defName == "Fire":
             return {"success": True, "things": [dict(f, **{"def": "Fire"}) for f in self.fires],
                     "scanned": 43183, "countReturned": len(self.fires), "countMatched": len(self.fires),
                     "isCompleteList": True, "truncated": 0, "ticksGame": self.ticks}
         return {"success": True, "things": [], "scanned": 0, "countReturned": 0, "countMatched": 0,
                 "isCompleteList": True, "truncated": 0, "ticksGame": self.ticks}
+
+    def _t_jawa_destroy_batch(self, rects="", categories="Plant", **_):
+        """Things only (never pawns, like the live tool): removes fake corpses standing in the given 1x1 cells."""
+        cells = set()
+        for r in str(rects).split(";"):
+            v = [int(q) for q in r.split(":")[-1].split(",") if q != ""]
+            if len(v) >= 2:
+                cells.add((v[0], v[1]))
+        before = len(getattr(self, "corpses", []))
+        if "Item" in categories or "All" in categories:
+            self.corpses = [c for c in getattr(self, "corpses", []) if (c["x"], c["z"]) not in cells]
+        return {"success": True, "message": "Destroyed %d thing(s) across %d cell(s)." % (
+            before - len(getattr(self, "corpses", [])), len(cells))}
 
     def _t_jawa_map_fire(self, action="start", rect=None, fireSize=0.5):
         if action == "extinguish":
@@ -185,7 +244,8 @@ class FakeWorld(object):
 
     def _t_jawa_destroy_bulk(self, filter=None, dryRun=True, **_):
         ids = [pid for pid, p in self.pawns.items()
-               if filter == "factionlessAnimals" and p["faction"] is None and p["intelligence"] == "Animal" and not p["dead"]]
+               if (filter == "factionlessAnimals" and p["faction"] is None and p["intelligence"] == "Animal" and not p["dead"])
+               or (filter == "nonColonists" and not (p["isPlayer"] and p["intelligence"] == "Humanlike"))]
         if not dryRun:
             for pid in ids:
                 del self.pawns[pid]
@@ -195,6 +255,8 @@ class FakeWorld(object):
     def _t_jawa_damage(self, thingId=None, damageDef="Cut", amount=10, **_):
         # the measured lie: success with a big amount, target may still be alive
         p = self.pawns.get(thingId)
+        if p is not None:
+            self.record_damage(thingId, damage_def=damageDef, amount=float(amount))
         if p is not None and "damage_kill_lies" not in self.modes and amount >= 500:
             self.kill(thingId)
         return {"success": True, "message": "Damaged 1 thing(s) with %s %s." % (damageDef, amount),
@@ -265,6 +327,255 @@ class FakeWorld(object):
         self.queue = []
         return {"success": True, "clearedCount": n, "cleared": cleared}
 
+    # ------------------------------------------------ situational companion reads (NORTHSTAR_COMPANION_GAPS_1)
+    # Keys copied from JawaBenchSituationalTools.cs's ResultDescription; selftest checks every key
+    # the fake emits appears in the real tool's ResultDescription. NOT live-measured yet.
+
+    def _select(self, faction, ids, includeDead):
+        if ids:
+            want = [i.strip() for i in ids.split(",") if i.strip()]
+            missing = [i for i in want if i not in self.pawns]
+            if missing:
+                return None, "No pawn matching: %s. Nothing was read; fix the id list." % ", ".join(missing)
+            return [self.pawns[i] for i in want], None
+        if faction not in (None, "", "player", "hostile", "nonplayer", "none"):
+            return None, "Unknown faction filter '%s'." % faction
+        rows = [p for p in self.pawns.values() if includeDead or not p["dead"]]
+        f = faction or ""
+        if f == "player":
+            rows = [p for p in rows if p["isPlayer"]]
+        elif f == "hostile":
+            rows = [p for p in rows if p["hostile"]]
+        elif f == "nonplayer":
+            rows = [p for p in rows if not p["isPlayer"]]
+        elif f == "none":
+            rows = [p for p in rows if p["faction"] is None]
+        return rows, None
+
+    def _t_jawa_pawn_census(self, faction=None, ids=None, includeDead=False, limit=500):
+        if not 1 <= int(limit) <= 2000:
+            return {"success": False, "message": "limit must be 1-2000"}
+        sel, err = self._select(faction, ids, includeDead)
+        if err:
+            return {"success": False, "message": err}
+        rows = []
+        for p in sel[:int(limit)]:
+            st = self.mental.get(p["id"])
+            job = self.jobs.get(p["id"])
+            hunting = bool(job and job["def"] == "PredatorHunt")
+            humanlike = p["intelligence"] == "Humanlike"
+            n = self.needs.get(p["id"], {"Food": 0.8, "Rest": 0.9, "Joy": 0.5, "Mood": 0.5})
+            rows.append({
+                "id": p["id"], "name": p["name"], "kindDef": p["kindDef"], "faction": p["faction"],
+                "isPlayer": p["isPlayer"], "hostile": p["hostile"],
+                "isColonist": p["isPlayer"] and humanlike, "spawned": p["spawned"], "dead": p["dead"],
+                "downed": p["downed"], "x": p["x"], "z": p["z"], "inMentalState": st is not None,
+                "mentalState": None if st is None else {
+                    "def": st, "isAggro": st in ("Berserk", "Manhunter", "ManhunterPermanent"),
+                    "ageTicks": 0, "causedByMood": False, "causedByDamage": False, "causedByPawn": None,
+                    "forceRecoverAfterTicks": -1},
+                "breakImminent": {"minor": False, "major": False, "extreme": False} if humanlike else None,
+                "job": None if job is None else {"def": job["def"],
+                                                 "targetA": None if not job.get("targetA") else {
+                                                     "thingId": job["targetA"], "def": None, "x": -1, "z": -1},
+                                                 "targetB": None},
+                "isPredatorHunting": hunting, "preyId": job.get("targetA") if hunting else None,
+                "enemyTargetId": None, "meleeThreatId": None, "lastAttackTargetTick": -99999,
+                "anyCloseHostilesRecently": False,
+                "needs": {"food": n.get("Food"), "rest": n.get("Rest"),
+                          "mood": n.get("Mood") if humanlike else None, "joy": n.get("Joy") if humanlike else None},
+                "lord": self.lords.get(p["id"]), "duty": None})
+        return {"success": True, "count": len(rows), "totalSelected": len(sel),
+                "truncated": max(0, len(sel) - int(limit)), "readErrors": [], "pawns": rows,
+                "ticksGame": self.ticks}
+
+    def _t_jawa_pawn_roles(self, faction=None, ids=None, includeDead=False, limit=500):
+        if not 1 <= int(limit) <= 2000:
+            return {"success": False, "message": "limit must be 1-2000"}
+        sel, err = self._select(faction, ids, includeDead)
+        if err:
+            return {"success": False, "message": err}
+        rows = []
+        for p in sel[:int(limit)]:
+            humanlike = p["intelligence"] == "Humanlike"
+            col = p["isPlayer"] and humanlike
+            rows.append({
+                "id": p["id"], "name": p["name"], "kindDef": p["kindDef"], "faction": p["faction"],
+                "isPlayer": p["isPlayer"], "isColonist": col, "isFreeColonist": col, "isSlave": False,
+                "isSlaveOfColony": False, "isPrisoner": False, "isPrisonerOfColony": False,
+                "guestStatus": "Guest" if humanlike else None, "hostFaction": None, "isQuestLodger": False,
+                "isQuestHelper": False, "isWildMan": False, "isCreepJoiner": False, "isMutant": False,
+                "isGhoul": False, "isAnimal": p["intelligence"] == "Animal", "isColonyMech": False,
+                "isColonistPlayerControlled": col and not p["dead"], "isCaravanMember": False,
+                "isWorldPawn": False, "dead": p["dead"], "spawned": p["spawned"], "ideoRole": None,
+                "royalTitle": None, "royalTitleFaction": None, "lord": self.lords.get(p["id"]), "duty": None,
+                "mapUniqueId": 0, "mapIndex": 0})
+        return {"success": True, "count": len(rows), "totalSelected": len(sel),
+                "truncated": max(0, len(sel) - int(limit)), "readErrors": [], "pawns": rows,
+                "ticksGame": self.ticks}
+
+    def _t_jawa_incident_queue_peek(self):
+        rows = [self._qrow(q, i) for i, q in enumerate(self.queue)]
+        return {"success": True, "count": len(rows), "queue": rows, "ticksGame": self.ticks}
+
+    def _t_jawa_incident_queue_remove(self, defName=None, fireTick=-1, dryRun=True):
+        if not defName and int(fireTick) < 0:
+            return {"success": False, "message": "Give defName and/or fireTick."}
+        hits = [q for q in self.queue if (not defName or q["defName"].lower() == defName.lower())
+                and (int(fireTick) < 0 or q["fireTick"] == int(fireTick))]
+        if not hits:
+            return {"success": False, "message": "Nothing in the incident queue matches. Nothing was removed.",
+                    "details": {"queue": list(self.queue)}}
+        before = len(self.queue)
+        matched = [self._qrow(q, self.queue.index(q)) for q in hits]
+        if not dryRun:
+            self.queue = [q for q in self.queue if q not in hits]
+        return {"success": True, "dryRun": dryRun, "matchedCount": len(hits), "matched": matched,
+                "removedCount": before - len(self.queue), "countBefore": before,
+                "countAfter": len(self.queue),
+                "remaining": [self._qrow(q, i) for i, q in enumerate(self.queue)], "ticksGame": self.ticks}
+
+    def _qrow(self, q, i):
+        return dict(q, index=i, ticksUntilFire=q["fireTick"] - self.ticks)
+
+    def _t_jawa_damage_log(self, action="read", sinceSeq=-1, sinceTick=-1, thingId=None, pawnsOnly=True,
+                           kind=None, limit=500):
+        if action not in ("read", "status", "clear"):
+            return {"success": False, "message": "Unknown action"}
+        if not self.recorder_installed:
+            return {"success": False, "message": "The damage recorder is not installed. Refusing."}
+        if action == "clear":
+            n = len(self.damage_log)
+            self.damage_log = []
+            return {"success": True, "action": action, "clearedTotal": n, "totalAfter": 0, "ticksGame": self.ticks}
+        hits = [] if action == "status" else [
+            e for e in self.damage_log if e["seq"] > int(sinceSeq) and (int(sinceTick) < 0 or e["tick"] >= int(sinceTick))
+            and (not pawnsOnly or e["victimIsPawn"]) and (kind is None or e["kind"] == kind)
+            and (thingId is None or thingId in (e["victimId"], e["instigatorId"]))]
+        ret = hits[-int(limit):]
+        oldest = self.damage_log[0]["seq"] if self.damage_log else self._dseq
+        return {"success": True, "action": action, "installed": {"damage": True, "kill": True},
+                "installErrors": [], "recorderInstalledUtc": "2026-10-01T00:00:00Z", "capacity": 4096,
+                "totalRecorded": len(self.damage_log), "overwritten": 0, "oldestRetainedSeq": oldest,
+                "oldestRetainedTick": self.damage_log[0]["tick"] if self.damage_log else -1,
+                "completeSinceSeq": int(sinceSeq) + 1 >= oldest, "recordErrors": 0, "lastRecordError": None,
+                "matchedCount": len(hits), "returned": len(ret), "truncated": len(hits) - len(ret),
+                "nextSeq": self._dseq, "events": ret, "ticksGame": self.ticks}
+
+    def _t_jawa_thing_lineage(self, ids=None, includeEvents=True):
+        if not ids or not ids.strip():
+            return {"success": False, "message": "Give ids: comma-separated thing ids."}
+        out = []
+        for tid in [i.strip() for i in ids.split(",") if i.strip()]:
+            evs = [e for e in self.lineage if tid in (e["thingId"], e["otherId"])]
+            t = self.things.get(tid)
+            if t is None:
+                own = [e for e in evs if e["thingId"] == tid]
+                kinds = [e["kind"] for e in own]
+                if not own:
+                    fate = "UNRECORDED"
+                elif "absorb" in kinds:
+                    fate = "absorbedInto:" + [e for e in own if e["kind"] == "absorb"][-1]["otherId"]
+                elif "ingest" in kinds:
+                    fate = "eatenBy:" + [e for e in own if e["kind"] == "ingest"][-1]["otherId"]
+                elif "destroy" in kinds:
+                    fate = "destroyed:" + [e for e in own if e["kind"] == "destroy"][-1]["destroyMode"]
+                else:
+                    fate = "gone-after:" + kinds[-1]
+                out.append({"id": tid, "found": False, "fate": fate, "events": evs if includeEvents else None})
+                continue
+            out.append({"id": tid, "found": True, "def": t["def"], "label": t["def"], "stackCount": t["stackCount"],
+                        "spawned": not t.get("holder"), "destroyed": False, "mapUniqueId": 0,
+                        "x": t.get("x", -1), "z": t.get("z", -1), "holderChain": list(t.get("holder") or ["map:0"]),
+                        "carriedBy": None, "forbidden": False, "rotStage": "Fresh", "rotProgress": 0.0, "fate": None,
+                        "events": evs if includeEvents else None})
+        return {"success": True, "lineageInstalled": self.recorder_installed, "installErrors": [],
+                "recorderInstalledUtc": "2026-10-01T00:00:00Z", "journalTotal": len(self.lineage),
+                "journalOverwritten": 0, "results": out, "ticksGame": self.ticks}
+
+    # ------------------------------------------------ hazard levers + world tools (northstar live queue)
+    # Keys from each tool's ResultDescription in JawaBench.BridgeTools (NOT live-measured shapes); used by
+    # modcheck/live_queue dry runs and selftest_companion_detectors.py.
+
+    def _t_jawa_pawn_force_mental_break(self, pawn=None, breakDef=None, intensity="minor", reason="", **_):
+        p = self.pawns.get(pawn)
+        if p is None:
+            return {"success": False, "message": "No pawn matching %s." % pawn}
+        before = self.mental.get(pawn)
+        self.mental[pawn] = breakDef or "Wander_Sad"
+        return {"success": True, "started": True, "breakDef": self.mental[pawn], "before": before,
+                "after": self.mental[pawn]}
+
+    def _t_jawa_ordered_job(self, pawnId=None, jobDef=None, targetAId=None, **_):
+        if pawnId not in self.pawns:
+            return {"success": False, "message": "No pawn matching %s." % pawnId}
+        before = (self.jobs.get(pawnId) or {}).get("def")
+        self.jobs[pawnId] = {"def": jobDef, "targetA": targetAId}
+        return {"success": True, "accepted": True, "beforeJobDef": before, "afterJobDef": jobDef,
+                "nowRunningRequested": True}
+
+    def _t_jawa_incident_schedule(self, incidentDef=None, delayTicks=2500, **_):
+        before = len(self.queue)
+        row = {"defName": incidentDef, "fireTick": self.ticks + int(delayTicks)}
+        self.queue.append(row)
+        return {"success": True, "queued": dict(row), "countBefore": before, "countAfter": len(self.queue),
+                "ticksUntilFire": int(delayTicks)}
+
+    def _t_jawa_world_tile_get(self, tiles=None, **_):
+        rows = []
+        for t in str(tiles).split(","):
+            t = int(t)
+            rows.append(dict({"tile": t, "biome": "AridShrubland", "hilliness": "Flat", "swampiness": 0.0,
+                              "temperature": 22.0, "elevation": 120.0, "mutatorCount": 0, "roadCount": 0,
+                              "riverCount": 0}, **getattr(self, "tile_overrides", {}).get(t, {})))
+        return {"success": True, "count": len(rows), "tiles": rows}
+
+    def _t_jawa_world_tile_export(self, path=None, **_):
+        rows = getattr(self, "tile_rows", None) or [
+            {"tile": 4375, "biome": "AridShrubland", "hilliness": "Flat", "swampiness": 0.0, "temperature": 22.0,
+             "elevation": 120.0}]
+        if path:
+            import csv
+            with open(path, "w", newline="", encoding="utf-8") as f:
+                w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+                w.writeheader()
+                w.writerows(rows)
+        return {"success": True, "path": path, "rows": len(rows)}
+
+    def _t_jawa_colony_found(self, tile=-1, faction="Player", name=None, dryRun=False, **_):
+        self.settled = getattr(self, "settled", set())
+        if tile in self.settled:
+            return {"success": False, "message": "Tile %s already carries a Settlement." % tile}
+        if not dryRun:
+            self.settled.add(tile)
+        if not dryRun:
+            self.dialogs = getattr(self, "dialogs", []) + ["Dialog_NamePlayerFactionAndSettlement"]
+        return {"success": True, "tile": tile, "layerId": 0, "faction": faction, "settlementId": 900 + tile % 97,
+                "name": name or "Bland", "limitReached": False}
+
+    def _t_jawa_world_tile_map_generate(self, tile=-1, suggestedMapParent="Settlement", dryRun=False, **_):
+        self.maps = getattr(self, "maps", [0])
+        if not dryRun:
+            self.maps.append(tile)
+        wild = getattr(self, "arrival_wildlife", 0)
+        for i in range(wild):               # MEASURED 2026-10-01: tile 4375 arrived with 47 wildlife pawns
+            pid = "Megasloth%d" % (5000 + i)
+            self.pawns[pid] = pawn_row(pid, kind="Megasloth", faction=None, is_player=False,
+                                       intelligence="Animal", x=50 + i, z=50)
+        return {"success": True, "tile": tile, "mapParentDef": suggestedMapParent, "wasAlreadyGenerated": False,
+                "mapSize": {"x": self.size, "z": self.size}, "mapIndex": len(self.maps) - 1,
+                "pawnCount": wild, "thingCount": 16753, "mapFinalize": {"failedSteps": [], "steps": []}}
+
+    def _t_jawa_set_current_map(self, mapId=None, **_):
+        self.maps = getattr(self, "maps", [0])
+        if int(mapId) >= len(self.maps):
+            return {"success": False, "message": "no map %s" % mapId,
+                    "loadedMaps": [{"mapId": i, "tile": t} for i, t in enumerate(self.maps)]}
+        prev = getattr(self, "current_map", 0)
+        self.current_map = int(mapId)
+        return {"success": True, "mapId": int(mapId), "tile": self.maps[int(mapId)], "biome": "AridShrubland",
+                "mapCount": len(self.maps), "previousMapId": prev, "ticksGame": self.ticks}
+
     # ------------------------------------------------ extra reads the snapshot takes (full tier)
     def _t_jawa_alerts_list(self):
         return {"success": True, "count": 0, "alerts": [], "ticksGame": self.ticks}
@@ -278,8 +589,47 @@ class FakeWorld(object):
     def _t_jawa_drain_log(self, limit=50, errorsOnly=False, **_):
         return {"success": True, "messages": [], "totalInBuffer": 0, "ticksGame": self.ticks}
 
-    def _t_jawa_window_list_close(self, action="list", **_):
-        return {"success": True, "action": action, "count": 0, "windows": [], "ticksGame": self.ticks}
+    def _t_jawa_window_list_close(self, action="list", typeName=None, closeAll=False, **_):
+        dlgs = getattr(self, "dialogs", [])
+        rows = [{"typeName": d} for d in dlgs]
+        closed = 0
+        if action == "close":
+            keep = [d for d in dlgs if not (typeName and typeName.lower() in d.lower())]
+            closed = len(dlgs) - len(keep)
+            self.dialogs = keep
+        return {"success": True, "action": action, "count": len(rows), "windows": rows, "closedCount": closed,
+                "ticksGame": self.ticks}
+
+    def _t_jawa_name_colony(self, factionName=None, settlementName=None, **_):
+        self.named = True
+        self.dialogs = [d for d in getattr(self, "dialogs", []) if "NamePlayer" not in d]
+        return {"success": True, "factionName": factionName or "Northstar Test Colony",
+                "settlements": [{"tile": t, "name": settlementName or "Northstar Base", "namedByPlayer": True}
+                                for t in sorted(getattr(self, "settled", set()))]}
+
+    def _t_rimworld_save_game(self, saveName=None, **_):
+        """Snapshots the world model; with `saves_dir` set also writes <saveName>.rws (size > 1000 bytes).
+        Mode `save_wrong_slot` reproduces the MEASURED lie: success, but the CURRENT slot is rewritten."""
+        self.saves = getattr(self, "saves", {})
+        d = getattr(self, "saves_dir", None)
+        target = getattr(self, "current_save", None) if "save_wrong_slot" in self.modes else saveName
+        self.saves[target] = (copy.deepcopy(self.pawns), copy.deepcopy(self.fires), bool(getattr(self, "named", False)))
+        path = None
+        if d and target:
+            path = os.path.join(d, target + ".rws")
+            with open(path, "wb") as f:
+                f.write(b"<savegame>" + b"x" * (2000 + len(self.pawns)))
+        return {"success": True, "path": path or ("%s.rws" % saveName)}
+
+    def _t_rimworld_load_game_ready(self, saveName=None, **_):
+        snap = getattr(self, "saves", {}).get(saveName)
+        if snap is None:
+            return {"success": False, "message": "no save %s" % saveName}
+        self.pawns, self.fires, self.named = copy.deepcopy(snap[0]), copy.deepcopy(snap[1]), snap[2]
+        self.dialogs = []
+        self.queue = []
+        self.current_save = saveName
+        return {"success": True, "saveName": saveName}
 
     def _t_jawa_clear_ui(self, **_):
         return {"success": True}
@@ -300,10 +650,12 @@ class FakeWorld(object):
         self._fid += 1
         pid = "%s%d" % (kindDef, self._fid)
         hostile = faction == "hostile"
+        humanlike = kindDef in ("Colonist", "Villager", "Tribal_Warrior", "Pirate") or hostile
         self.pawns[pid] = pawn_row(pid, kind=kindDef, faction=("TribeRough" if hostile else
                                    ("PlayerColony" if faction == "player" else None)),
-                                   is_player=(faction == "player"), hostile=hostile, x=x, z=z)
-        return {"success": True, "spawnedCount": 1, "pawns": [{"id": pid, "name": pid}]}
+                                   is_player=(faction == "player"), hostile=hostile, x=x, z=z,
+                                   intelligence="Humanlike" if humanlike else "Animal")
+        return {"success": True, "spawnedCount": 1, "pawns": [{"id": pid, "name": pid, "x": x, "z": z}]}
 
     # ------------------------------------------------ rimdrive.Session surface used by TestContext
     def _ticks(self):

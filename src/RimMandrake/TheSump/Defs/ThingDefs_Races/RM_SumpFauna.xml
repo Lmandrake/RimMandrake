@@ -257,7 +257,6 @@
         </capacities>
         <power>7</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Tail</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>

@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:04Z",
+  "derive_from": "RM_Fleshsop_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Fleshsop_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the fleshsop, a small pitiable creature that is barely holding a shape \u2014 a wet sagging rag of pale flesh draped over a soft uncertain frame, limbs of slightly different lengths, skin pooling at its feet, a small tired face that took real effort to finish; leaning slightly as if it needs the support. It reads as something the valley forgot to complete, asking to be kept anyway. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the failing chimera that needs care to live, bs~0.2; the read is sagging draped flesh over a soft frame - pitiable, never comic; storm-dark red-valley register: pale exhausted pinks and greys, wet sheen, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the back of the draped flesh"
+}

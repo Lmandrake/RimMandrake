@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 5.848420525000051,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 12.883871930000055,
+  "id": "rot_thozzikqueen_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/24/rollout-2026-09-24T21-02-16-01a0d6ba-6ac4-7c93-97ad-331a79c462e5.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/24/rollout-2026-09-24T21-01-59-01a0d6ba-27aa-74d1-b9b0-a85f1784540b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 3s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rot_thozzikqueen_east\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0d6ba-6ac4-7c93-97ad-331a79c462e5\n--------\nuser\nUse $imagegen to [artpipe job rot_thozzikqueen_east] The queen of a neurotoxic alien hive wasp species \u2014 three times the worker's bulk, heavy swollen abdomen ringed with pale venting toxin sacs, ragged translucent wings too small for her weight, regal and dangerous. Decaying fungal forest palette, ochre and bruised violet, painterly game-art style, not photorealistic, heavy clean black outline. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Facing: east \u2014 strict side profile with the camera at the creature's own eye level, the creature's head points to the RIGHT edge of the image. NOT a top-down or overhead view: we do not look down on its back, and only the near side of the body is visible.\n\nThen copy the generated image into the current working directory as rot_thozzikqueen_east.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\n\n",
+  "worker_stdout_tail": ""
+}

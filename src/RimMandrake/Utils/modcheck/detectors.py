@@ -47,11 +47,16 @@ SEVERITY = {
     "pawn_roster_transition": WARN,
     "expected_contract_broken": SURPRISE,
     "letter_unexpected": WARN,          # default; per-LetterDef below
+    # direct reads from the companion tools (pawn_census / damage_log / incident_queue_peek)
+    "predator_hunting": SURPRISE,
+    "colonist_damaged": SURPRISE,
+    "incident_queued": WARN,            # SURPRISE for a threat incident (THREAT_INCIDENT_WORDS)
 }
 LETTER_SEVERITY = {"NeutralEvent": INFO, "PositiveEvent": INFO, "NegativeEvent": WARN,
                    "Death": SURPRISE, "ThreatBig": SURPRISE, "ThreatSmall": SURPRISE}
 SURPRISE_CONDITION_WORDS = ("toxic", "flashstorm", "eclipse")   # condition defs that escalate
 AGGRESSIVE_MENTAL = ("berserk", "manhunter", "murderousrage", "slaughterer")
+THREAT_INCIDENT_WORDS = ("raid", "manhunter", "infestation", "siege", "mechcluster", "ambush")
 
 # hediff def -> cause class.  Honest 'unknown' when absent (not in table).
 HEDIFF_CAUSE = {
@@ -121,7 +126,12 @@ class Expectations(object):
 
     kinds: 'hostile' | 'pawn' (presence alarms of that entity), 'letter',
     'condition', 'fire', 'litter' (a sacrificial colonist whose death is the
-    test's own act).  matcher: dict of field==value (letters also take
+    test's own act), 'mental' (a pawn the test drove into a mental state; the matcher is tried against the
+    pawn row, which carries `id`/`name`, AND against the break's letter, which carries `label`, so a callable
+    can serve both), 'incident' (a queue row {defName, fireTick} the test scheduled itself), 'raid' (the test
+    fires a raid itself: its threat letter and the raid counter stop being a `raid_arrived` signal; the
+    raiders still need their own 'hostile' declaration, best bounded by `phase` so the test may kill them
+    afterwards).  matcher: dict of field==value (letters also take
     'label_contains') or a callable(entity)->bool.  until_tick / phase bound the
     lifetime; expired or other-phase expectations match nothing.
     """
@@ -270,6 +280,12 @@ def colonist_died(snap, baseline, exps, ctx):
         if l["defName"] != "Death":
             continue
         nm = death_name(l["label"]) or l["label"]
+        if re.search(r"\([^)]+\)", nm):
+            # MEASURED live 2026-10-01 (Antiquities, 95000-tick chain): the colony dog's death letter
+            # "Marina (husky) (bonded)" read as a COLONIST death and aborted the chain. A human's death
+            # letter is the bare name; an animal's carries its species in parentheses. Not a colonist.
+            ctx["consumed"].add(l["fingerprint"])
+            continue
         if exps.matches("litter", {"name": nm}, tick):
             excluded.add(nm)
             ctx["consumed"].add(l["fingerprint"])
@@ -278,6 +294,21 @@ def colonist_died(snap, baseline, exps, ctx):
         e["sources"].add("death_letter")
         e["ticks"].add(l["arrivalTick"])
         ctx["consumed"].add(l["fingerprint"])
+    if _damage_ok(ctx, snap):
+        by_id = _pawns_by_id(snap)
+        for d in snap["damage_events"]:
+            if d.get("kind") != "kill" or not d.get("victimColonist"):
+                continue
+            p = by_id.get(d.get("victimId")) or {"id": d.get("victimId"), "name": None}
+            key = p.get("name") or p["id"]
+            if key in excluded or exps.matches("litter", p, tick) or exps.matches("fixture", p, tick):
+                excluded.add(key)
+                continue
+            e = ev(key)
+            e["sources"].add("damage_log_kill")
+            e["ids"].add(p["id"])
+            if d.get("tick") is not None:
+                e["ticks"].add(d["tick"])
     # a death also emits a companion NeutralEvent "... opportunity for <name>" (real, E1 + probe):
     # it belongs to the death, never a second hit
     for l, extra in new_letters(snap, baseline):
@@ -348,9 +379,15 @@ def colonist_injured_unexpectedly(snap, baseline, exps, ctx):
         if p["id"] not in baseline.hediff_known:
             continue        # no baseline health for this pawn: cannot diff, never guess
         new, grown = [], []
+        explained = set()
+        for e in (ctx.get("damaged") or {}).get(p["id"], []):
+            explained.add(e.get("damageDef"))
+            explained.update(e.get("hediffsAdded") or [])
         for h in p["hediffs"]:
             key = (p["id"], h["def"], h["part"])
             if key not in baseline.hediffs:
+                if h["def"] in explained:
+                    continue          # colonist_damaged already reported it, with the real cause
                 new.append(h)
             elif (h["severity"] or 0) - baseline.hediffs[key] >= PROGRESSION_DELTA:
                 grown.append({"def": h["def"], "part": h["part"],
@@ -406,8 +443,9 @@ def wildlife_near_colonist(snap, baseline, exps, ctx):
     """Predator detection that does NOT rely on `hostile` (MEASURED 2026-10-01: a factionless wolf reads
     hostile:false). Any wild animal (faction None, intelligence Animal, spawned, alive) within
     WILDLIFE_RADIUS of a living colonist is reported: WARN if it was already on the map at the baseline,
-    SURPRISE if it arrived after. On a bland map there should be none. Whether it is actually hunting is
-    UNMEASURED without the pawn census (gap G1); this is proximity, said honestly."""
+    SURPRISE if it arrived after. On a bland map there should be none. Intent is NOT inferred here: with the
+    pawn census read, each row carries the direct `hunting` flag and predator_hunting raises the hunt
+    itself; without the census `hunting` is None (unmeasured)."""
     cols = [p for p in snap["pawns"] if is_colonist(p) and not p["dead"] and p["spawned"] and p["x"] is not None]
     if not cols:
         return []
@@ -428,7 +466,9 @@ def wildlife_near_colonist(snap, baseline, exps, ctx):
                  "%d wild animal(s) within %d cells of a colonist (%d new since baseline); proximity only, "
                  "hunting intent unmeasured" % (len(out_rows), WILDLIFE_RADIUS, len(new_ids)),
                  {"animals": [{"id": p["id"], "kindDef": p["kindDef"], "x": p["x"], "z": p["z"], "dist": d,
-                               "new": p["id"] in new_ids} for p, d in out_rows[:10]]},
+                               "new": p["id"] in new_ids,
+                               "hunting": p.get("isPredatorHunting") if p.get("census") else None}
+                              for p, d in out_rows[:10]]},
                  suggest=["kill_wildlife"], focus=_focus(out_rows[0][0]),
                  severity=SURPRISE if new_ids else WARN,
                  fp="wildlife_near_colonist:" + ",".join(sorted(p["id"] for p, _ in out_rows)))]
@@ -436,14 +476,17 @@ def wildlife_near_colonist(snap, baseline, exps, ctx):
 
 def raid_arrived(snap, baseline, exps, ctx):
     sig = []
+    declared = bool(exps.live(("raid",), snap["tick"]))    # t.expect("raid", {}): the TEST fired this raid
     for l, extra in new_letters(snap, baseline):
         if l["defName"] in ("ThreatBig", "ThreatSmall"):
             if exps.matches("letter", l, snap["tick"]):
                 continue
             ctx["consumed"].add(l["fingerprint"])
+            if declared:
+                continue
             sig.append(("letter", l["arrivalTick"], l["label"]))
     cur, base = snap["story"].get("numRaidsEnemy"), baseline.story.get("numRaidsEnemy")
-    if cur is not None and base is not None and cur > base:
+    if cur is not None and base is not None and cur > base and not declared:
         sig.append(("story_stats", baseline.tick, "numRaidsEnemy %s->%s" % (base, cur)))
     if not sig:
         return []
@@ -459,23 +502,122 @@ def raid_arrived(snap, baseline, exps, ctx):
                  fp="raid_arrived:" + "|".join("%s@%s" % (s[0], s[1]) for s in sig))]
 
 
+def _ms_def(ms):
+    """A census mentalState is a dict {def, isAggro, ...}; an older/guessed field may be a bare string."""
+    return ms.get("def") if isinstance(ms, dict) else ms
+
+
 def mental_break(snap, baseline, exps, ctx):
+    """With the pawn census read, `mentalState` is a DIRECT read and aggression is the game's own
+    `isAggro`; without it the field is absent from list_pawns and only the letter path speaks."""
     hits = []
     base = _pawns_by_id(baseline.snap)
     for p in snap["pawns"]:
         ms = p.get("mentalState")
         if ms and not (base.get(p["id"]) or {}).get("mentalState"):
-            sev = FATAL if any(w in str(ms).lower() for w in AGGRESSIVE_MENTAL) and is_colonist(p) else None
-            hits.append(_hit("mental_break", "%s entered mental state %s" % (p["name"], ms),
-                             {"id": p["id"], "mentalState": ms}, suggest=["calm_colonists"],
-                             focus=_focus(p), severity=sev, fp="mental_break:%s:%s" % (p["id"], ms)))
+            if exps.matches("fixture", p, snap["tick"]) or exps.matches("mental", p, snap["tick"]):
+                continue
+            d = _ms_def(ms)
+            aggro = ms.get("isAggro") if isinstance(ms, dict) else any(w in str(ms).lower() for w in AGGRESSIVE_MENTAL)
+            sev = FATAL if aggro and is_colonist(p) else None
+            hits.append(_hit("mental_break", "%s entered mental state %s%s" % (p["name"], d, " (aggro)" if aggro else ""),
+                             {"id": p["id"], "mentalState": d, "isAggro": bool(aggro),
+                              "via": "pawn_census" if isinstance(ms, dict) else "list_pawns"},
+                             suggest=["calm_colonists"], focus=_focus(p), severity=sev,
+                             fp="mental_break:%s:%s" % (p["id"], d)))
     for l, extra in new_letters(snap, baseline):
         if l["defName"] == "NegativeEvent" and MENTAL_LABEL_RE.search(l["label"]) \
                 and not exps.matches("letter", l, snap["tick"]):
+            if exps.matches("mental", l, snap["tick"]):
+                ctx["consumed"].add(l["fingerprint"])       # the induced break's own letter: consumed, not a hit
+                continue
             ctx["consumed"].add(l["fingerprint"])
+            if hits:            # the census already named the break; the letter is its echo, not a second event
+                continue
             hits.append(_hit("mental_break", "mental-break letter: %s" % l["label"],
-                             {"label": l["label"], "arrivalTick": l["arrivalTick"], "count": extra},
+                             {"label": l["label"], "arrivalTick": l["arrivalTick"], "count": extra, "via": "letter"},
                              suggest=["calm_colonists"], fp="mental_break:letter:%r" % (l["fingerprint"],)))
+    return hits
+
+
+def predator_hunting(snap, baseline, exps, ctx):
+    """DIRECT read (pawn_census isPredatorHunting + preyId): a predator whose prey is a player pawn.
+    Replaces proximity inference for intent; wildlife_near_colonist still reports proximity."""
+    if "pawn_census" in ctx["suppressed"]:
+        return []
+    by_id = _pawns_by_id(snap)
+    hits = []
+    for p in snap["pawns"]:
+        if not p.get("isPredatorHunting") or p["dead"]:
+            continue
+        prey = by_id.get(p.get("preyId"))
+        if prey is None or not prey["isPlayer"]:
+            continue
+        if exps.matches("fixture", prey, snap["tick"]) or exps.matches("hostile", p, snap["tick"]):
+            continue
+        hits.append(_hit("predator_hunting", "%s (%s) is hunting player pawn %s" % (p["name"], p["kindDef"], prey["name"]),
+                         {"predator": p["id"], "kindDef": p["kindDef"], "preyId": prey["id"],
+                          "preyIsColonist": is_colonist(prey), "via": "pawn_census"},
+                         suggest=["kill_wildlife"], focus=_focus(p),
+                         fp="predator_hunting:%s:%s" % (p["id"], prey["id"])))
+    return hits
+
+
+def _damage_ok(ctx, snap):
+    return "damage_log" not in ctx["suppressed"] and snap.get("damage_next_seq") is not None
+
+
+def colonist_damaged(snap, baseline, exps, ctx):
+    """DIRECT read (damage_log): every damage event on a colonist since the baseline, with the game's
+    own damageDef / instigator / weapon. The cause is read, never guessed from a hediff table."""
+    if not _damage_ok(ctx, snap):
+        return []
+    by_id = _pawns_by_id(snap)
+    rows = {}
+    for e in snap["damage_events"]:
+        if e.get("kind") != "damage" or not e.get("victimColonist"):
+            continue
+        vid = e.get("victimId")
+        p = by_id.get(vid) or {"id": vid, "name": vid}
+        if exps.matches("fixture", p, snap["tick"]) or exps.matches("litter", p, snap["tick"]):
+            continue
+        rows.setdefault(vid, []).append(e)
+        ctx.setdefault("damaged", {}).setdefault(vid, []).append(e)
+    hits = []
+    for vid in sorted(rows):
+        evs = rows[vid]
+        p = by_id.get(vid) or {}
+        causes = sorted({"%s by %s" % (e.get("damageDef"), e.get("instigatorDef") or e.get("instigatorId") or "nobody")
+                         for e in evs})
+        hits.append(_hit("colonist_damaged", "colonist %s took %d damage event(s): %s"
+                         % (p.get("name") or vid, len(evs), "; ".join(causes)),
+                         {"id": vid, "events": [{k: e.get(k) for k in ("seq", "tick", "damageDef", "amount", "instigatorId",
+                                                                      "instigatorDef", "weapon", "hediffsAdded")}
+                                                for e in evs[:10]], "via": "damage_log"},
+                         suggest=["restore_colonists"], focus=_focus(p) if p.get("x") is not None else None,
+                         fp="colonist_damaged:%s:%s" % (vid, ",".join(str(e.get("seq")) for e in evs))))
+    return hits
+
+
+def incident_queued(snap, baseline, exps, ctx):
+    """DIRECT read (incident_queue_peek): an incident queued since the baseline -- seen BEFORE it fires."""
+    if "incident_queue_peek" in ctx["suppressed"] or not snap["sources"]["incident_queue_peek"]["read"]:
+        return []
+    base = Counter(baseline.incident_queue)
+    hits = []
+    for q in snap["incident_queue"]:
+        key = (q["defName"], q["fireTick"])
+        if base[key] > 0:
+            base[key] -= 1
+            continue
+        if exps.matches("incident", q, snap["tick"]):
+            continue
+        threat = any(w in (q["defName"] or "").lower() for w in THREAT_INCIDENT_WORDS)
+        hits.append(_hit("incident_queued", "incident %s queued to fire in %s ticks"
+                         % (q["defName"], q.get("ticksUntilFire")),
+                         dict(q, via="incident_queue_peek", threat=threat), suggest=["clear_incident_queue"],
+                         severity=SURPRISE if threat else None,
+                         fp="incident_queued:%s:%s" % key))
     return hits
 
 
@@ -545,7 +687,11 @@ def condition_unexpected(snap, baseline, exps, ctx):
 def modal_open(snap, baseline, exps, ctx):
     if "window_list_close" in ctx["suppressed"]:
         return []
-    ws = [w for w in snap["windows"] if w["forcePause"] and not w["isDebug"]]
+    ws = [w for w in snap["windows"] if w["forcePause"] and not w["isDebug"]
+          # MEASURED live 2026-10-01: a quicktest/founded colony re-raises Dialog_NamePlayerFactionAndSettlement /
+          # Dialog_NamePlayerSettlement every ~600 ticks until named, closing it never sticks, and it blocks nothing
+          # the harness drives (ticks advance). Colony-naming prompts are not a surprise.
+          and "Dialog_NamePlayer" not in str(w["type"])]
     if not ws:
         return []
     return [_hit("modal_open", "%d force-pause modal(s) open: %s" % (len(ws), ", ".join(str(w["type"]) for w in ws)),
@@ -670,7 +816,7 @@ def expected_contract_broken(snap, baseline, exps, ctx):
 def sweep(snap, baseline, expectations=None, anchor=None):
     exps = expectations or Expectations()
     hits, suppressed = evidence_truncated_or_stale(snap, baseline)
-    ctx = {"suppressed": suppressed, "consumed": set()}
+    ctx = {"suppressed": suppressed, "consumed": set(), "damaged": {}}
     ctxhits = map_context_changed(snap, baseline)
     hits += ctxhits
     if ctxhits:
@@ -678,12 +824,14 @@ def sweep(snap, baseline, expectations=None, anchor=None):
         return _order(hits)
     # presence/absence of pawn rows depends on the pawns source being usable
     pawn_ok = "list_pawns" not in suppressed
+    hits += colonist_damaged(snap, baseline, exps, ctx)    # first: injured_unexpectedly reads ctx["damaged"]
     if pawn_ok:
         hits += colonist_died(snap, baseline, exps, ctx)
         hits += colonist_downed(snap, baseline, exps, ctx)
         hits += colonist_injured_unexpectedly(snap, baseline, exps, ctx)
         hits += hostile_pawns(snap, baseline, exps, ctx, anchor)
         hits += wildlife_near_colonist(snap, baseline, exps, ctx)
+        hits += predator_hunting(snap, baseline, exps, ctx)
         hits += mental_break(snap, baseline, exps, ctx)
         hits += strangers_near_anchor(snap, baseline, exps, ctx, anchor)
         hits += pawn_roster_transition(snap, baseline, exps, ctx)
@@ -694,6 +842,7 @@ def sweep(snap, baseline, expectations=None, anchor=None):
     if "letter_list" not in suppressed:
         hits += raid_arrived(snap, baseline, exps, ctx)
         hits += letter_unexpected(snap, baseline, exps, ctx)
+    hits += incident_queued(snap, baseline, exps, ctx)
     hits += fire_on_map(snap, baseline, exps, ctx)
     hits += item_vanished(snap, baseline, exps, ctx)
     hits += condition_unexpected(snap, baseline, exps, ctx)

@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-27T23:42:46Z",
+  "derive_from": "RM_Qorrax_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Qorrax_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld top-down game animal sprite: the qorrax, a deer-sized sand-swimming predator \u2014 a smooth keeled body built to move through loose sand the way a seal moves through water, a crown of muscular tentacles dragging forward around a sharp venomous beak at their centre, small hard eyes above the beak; sun-bleached bone-and-rust colouring with a sand-polished sheen. Real animal weight, alien but not cartoonish, no nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "LONGSHADE_DESIGN_SITTING_1",
+  "style_notes": "deadly deep-sand swimmer, bs~1.2; the read is the tentacle crown around the beak on a keeled plow body; permanent golden hour raking side-light; painterly vanilla-RimWorld animal art style"
+}

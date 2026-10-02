@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T05:10:17Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_FossilDisplaySlab",
+  "priority": 65,
+  "prompt": "RimWorld game furniture sprite: a wall-mounted fossil display slab, a sculpture-class piece of furniture seen face-on \u2014 a dressed rectangular stone frame bolted flat with mounting brackets, holding a fossil slab (a pale stone panel with a visible pressed fern-and-shell impression) presented like a museum wall plaque. It reads as a Farmer homestead's or a gravship galley's mounted trophy piece. Single furniture item, centered, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CRACKEDLANDS_RULED_CONTENT_1",
+  "style_notes": "quality-bearing sculpture-class furniture, beauty scaled by whichever fossil tier is mounted; the read is a bolted wall-frame holding a pale fossil slab like a plaque; cracked lands register: pale sedimentary grey-white stone and dark bracket metal, red-brown strata banding on the mounted slab, no green, hard dry light; realistic painted illustration, grounded believable craftsmanship, matte stone and worked-metal texture, never cartoonish, no outlines"
+}

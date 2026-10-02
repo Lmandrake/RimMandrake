@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 103.03920422200463,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 103.03920422200463,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_FossilImpression",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 45.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/28/rollout-2026-09-28T14-23-37-01a0e9e6-dfbe-7f33-ab83-1aa1533e8ecc.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 45.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/28/rollout-2026-09-28T13-25-37-01a0e9b1-c660-7a10-ae73-4c0dac6d1ce6.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_FossilImpression",
+    "note": "Generated via built-in imagegen and downsampled to exactly 256\u00d7256. Interpreted the requested keyline as natural dark geological edge shading, preserving the no-outline style.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_FossilImpression\\RM_FossilImpression.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_FossilImpression/RM_FossilImpression.png\n    256x256  rgba  122,289 bytes  (98s)\n"
+}

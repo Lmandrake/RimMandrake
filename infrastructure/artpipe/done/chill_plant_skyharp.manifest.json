@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 96.29941884199798,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 96.29941884199798,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "chill_plant_skyharp",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 31.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/27/rollout-2026-09-27T15-15-18-01a0e4ef-d795-7722-9f25-86732d244a4f.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 31.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/27/rollout-2026-09-27T15-09-21-01a0e4ea-6463-7571-a2fe-8b718adedb85.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "chill_plant_skyharp",
+    "note": "Generated via built-in imagegen, downscaled to exactly 256x256, and preserved genuine alpha transparency. Final prompt followed the supplied RM_Skyharp art specification.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\chill_plant_skyharp\\chill_plant_skyharp.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/chill_plant_skyharp/chill_plant_skyharp.png\n    256x256  rgba  59,006 bytes  (94s)\n"
+}

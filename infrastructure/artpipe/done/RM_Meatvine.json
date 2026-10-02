@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Meatvine",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: the meatvine, a climbing vine made of twitching muscle tissue \u2014 glossy red muscle cords wound around a pale support stem, fibers visibly bunched mid-flex, wet connective sheaths at the joints, a few thin tendrils testing the air like fingers that have not learned hands. Single organism, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the goo trying out reach - a vine of live muscle; the read is glossy flexed muscle cords climbing; storm-dark red-valley register: raw muscle reds with pale connective sheath whites, wet highlights, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable botany, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

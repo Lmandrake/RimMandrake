@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 107.3707689740113,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 120.59580876200926,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_ProjectorCore",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 60.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T21-54-00-01a0f5cf-ee46-76c1-a0de-1d64ff12a6f0.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 60.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T21-49-09-01a0f5cb-8075-74f1-9319-2eeb80b4434a.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_ProjectorCore",
+    "note": "Generated with built-in imagegen, then resized to exactly 256\u00d7256 while preserving transparency. Copper windings, cracked blued-steel housing, and two cable stubs retained.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_ProjectorCore\\RM_ProjectorCore.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_ProjectorCore/RM_ProjectorCore.png\n    256x256  rgba  63,793 bytes  (105s)\n"
+}

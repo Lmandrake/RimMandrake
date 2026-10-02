@@ -67,6 +67,13 @@ namespace RimMandrake.LeaningScrub
         public static bool leanFireEnabled = true;
         public static float leanFireBias = 0.5f;
 
+        // ── LEANINGSCRUB_GPT_ENRICHMENT_1 (RM_VenomvineRooms.cs,
+        //    RM_RunwayBloom.cs, RM_SweetlineStation.cs) ──
+        public static bool drippingRegrowEnabled = true;
+        public static bool crownMobEnabled = true;
+        public static bool runwayBloomEnabled = true;
+        public static bool sweetlineStationsEnabled = true;
+
         private static Vector2 scroll;
         private static float viewHeight = 900f;
 
@@ -94,6 +101,10 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref leanScentRange, "leanScentRange", 16f, true);
             Scribe_Values.Look(ref leanFireEnabled, "leanFireEnabled", true, true);
             Scribe_Values.Look(ref leanFireBias, "leanFireBias", 0.5f, true);
+            Scribe_Values.Look(ref drippingRegrowEnabled, "drippingRegrowEnabled", true, true);
+            Scribe_Values.Look(ref crownMobEnabled, "crownMobEnabled", true, true);
+            Scribe_Values.Look(ref runwayBloomEnabled, "runwayBloomEnabled", true, true);
+            Scribe_Values.Look(ref sweetlineStationsEnabled, "sweetlineStationsEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -174,6 +185,22 @@ namespace RimMandrake.LeaningScrub
             list.Label("Downwind fire bias: " + (leanFireBias * 100f).ToString("0") + "%");
             leanFireBias = list.Slider(leanFireBias, 0f, 1f);
 
+            list.GapLine();
+            list.Label("Venomvine rooms, the runway bloom and the named sweetline trees.");
+            list.CheckboxLabeled("Dripping venomvine regrows its venom", ref drippingRegrowEnabled,
+                "Harvesting a dripping stand's amber venom leaves the stand standing; it beads "
+                + "again as it regrows. Off: the harvest kills the stand, like any other plant.");
+            list.CheckboxLabeled("Crown venomvine draws dustflutters in the Stall", ref crownMobEnabled,
+                "While the Stall holds, wild dustflutters nearby fly to a crown stand and settle "
+                + "around it in a cloud. When the wind returns they drift off.");
+            list.CheckboxLabeled("The runway bloom", ref runwayBloomEnabled,
+                "Something big moving through the canopy sets off its small life in waves: "
+                + "crustweevils scatter, fuzzrunners bolt, dustflutters burst up and land again "
+                + "far off, visslers drop a twitching arm and run.");
+            list.CheckboxLabeled("Named sweetline trees", ref sweetlineStationsEnabled,
+                "Every sweetline tree carries a name and a short remembered history, and sheds "
+                + "snagged giant-wool beside its trunk every few days once grown.");
+
             viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
@@ -198,6 +225,12 @@ namespace RimMandrake.LeaningScrub
             RM_MechanicGates.Register(
                 VenomvinePassabilityGateKey,
                 () => RM_LeaningScrubSettings.modEnabled && RM_LeaningScrubSettings.venomvinePassabilityEnabled);
+        }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            RM_RegrowingHarvest.Apply();
         }
 
         public override string SettingsCategory()

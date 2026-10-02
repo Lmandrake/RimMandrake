@@ -1,0 +1,7 @@
+fire_tick_effects v=FAIL bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   <chain setup, outside any component> FAIL: ExpectationFailed: set_terrain(RM_FE_Ground_Sand) over 188,38,24,24 did not paint the whole rect: cellsChanged=0
+ashfall_weather_accumulation v=FAIL bland=True sweeps=5 ticks=2600 surprises=0 aborted=[]
+   ashfall_accumulates FAIL: ExpectationFailed: expected >=1 RM_FE_Filth_LooseAsh in 188,38,24,24 after 2600 ticks under RM_FE_Weather_AshFall, got 0
+startup_and_def_wiring v=FAIL,UNMEASURED bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   fulgurite_armed_only FAIL: ExpectationFailed: no recent log line matched tag='[RimMandrake.StarWars.FireEcology] fulgurite-spawn' field=None value=None (last matching line: None)
+   biome_def_wiring UNMEASURED: upstream failed -- this chain's state is meaningless

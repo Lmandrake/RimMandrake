@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-28T16:57:57Z",
+  "derive_from": "RM_Vhaulk_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Vhaulk_south",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the vhaulk, a house-sized sealed grazing colossus of a frozen night desert \u2014 six massive pillar legs like quarry columns, a vast seamed armored back with no true head, only a broad closed intake lid at the front like a garage door, frost rime standing thick on the flanks, one long translucent sludge-window low along the lower flank faintly revealing the pale liquid mass it carries; posture slow, mid-stride, utterly indifferent to everything smaller than itself. It reads as a terrain feature that turns out to be an animal, still walking. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "BLUEDESERT_BEDAZZLE_SITTING_1",
+  "style_notes": "THE colossus of the blue desert, bs~6.0, rendered large and high-fidelity so the scale carries in the pixels; the read is a slow mountain of sealed armor on pillar legs, neutral, never aggressive-looking; blue desert phase-line register: the blue plain that is not blue up close \u2014 glacial blue-white and glass-grey palette, grey-on-grey armored body, blue-white only in frost rime, rim light and the translucent sludge-window, starlit cold light, no warm colour anywhere; realistic painted natural-history illustration, grounded believable anatomy under the armor, matte natural surface texture with frost and ice crust, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no intake lid or frontal features visible, only the vast seamed back, rear pillar legs and frost-rimed haunches"
+}

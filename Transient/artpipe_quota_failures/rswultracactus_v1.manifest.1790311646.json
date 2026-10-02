@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.850651974000016,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 9.65307101899998,
+  "id": "rswultracactus_v1",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/24/rollout-2026-09-24T21-03-10-01a0d6bb-3f1a-7cf1-b455-84ac6aa42678.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/24/rollout-2026-09-24T21-02-58-01a0d6bb-103d-7c23-9069-6c58271efb53.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\n..\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rswultracactus_v1\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0d6bb-3f1a-7cf1-b455-84ac6aa42678\n--------\nuser\nUse $imagegen to [artpipe job rswultracactus_v1] RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a broad, flat, pale green cactus pad lying almost flush with pale desert sand, keeping most of its body buried underground and presenting only a thin rind above the surface -- no tall stalks, no spines standing proud, low and inconspicuous, like a shallow buried patch of pale green flesh visible at the sand's surface. Single organism, viewed from directly above at a slight isometric RimWorld camera angle, centered, a short soft shadow at its rim, no other background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: RSW_Ultracactus, DESERT_SIGNATURE_FLORA_1. desert.md SS4b: broad, flat, pale green, keeps most of itself under the sand, flush with the ground -- 'you would walk across a stand of them and register nothing.' Also covers the harvested item RSW_RawUltracactus (a cut pale-green pulp pad).\n\nThen copy the generated image into the current working directory as rswultracactus_v1.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\n\n",
+  "worker_stdout_tail": ""
+}

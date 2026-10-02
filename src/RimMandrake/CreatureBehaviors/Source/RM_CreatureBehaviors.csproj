@@ -112,6 +112,10 @@
     <Compile Include="RM_JobGiver_FollowShadowCaster.cs" />
     <Compile Include="RM_CompProperties_DrumLure.cs" />
     <Compile Include="RM_CompDrumLure.cs" />
+    <Compile Include="RM_SandSwimExtension.cs" />
+    <Compile Include="RM_CompSandSwim.cs" />
+    <!-- STILLSAND_DUNE_GALE_1: what a weather does to sun exposure and the swimmers' senses -->
+    <Compile Include="RM_WeatherSenseExtension.cs" />
     <Compile Include="RM_HediffCompProperties_ShadeStagger.cs" />
     <Compile Include="RM_HediffComp_ShadeStagger.cs" />
     <Compile Include="RM_FilterFeedExtension.cs" />
@@ -157,12 +161,25 @@
     <Compile Include="RM_ShadeClothExtension.cs" />
     <!-- SOLAR_HEAT_EXPOSURE_1 tranche 1: heat kinds, directional grid, sun heat, sun pathing, sun-load bar -->
     <Compile Include="RM_SunHeatMath.cs" />
+    <!-- LONGSHADE_GPT_ENRICHMENT_1 §2: moving shade casters (the gloomcast). -->
+    <Compile Include="RM_MovingShadeMath.cs" />
+    <!-- LONGSHADE_GPT_ENRICHMENT_1 §3: camera-keyed heat soundscape, herd calls, footfalls. -->
+    <Compile Include="RM_HeatSoundscape.cs" />
     <Compile Include="RM_SunHeatExtension.cs" />
     <Compile Include="RM_SunHeatPatches.cs" />
     <Compile Include="RM_Gizmo_SunLoad.cs" />
     <Compile Include="RM_ShadeGear.cs" />
     <Compile Include="RM_ShadePatchGraph.cs" />
     <Compile Include="RM_ShadeHop.cs" />
+    <Compile Include="RM_GlareBlind.cs" />
+    <Compile Include="RM_Mirage.cs" />
+    <Compile Include="RM_FlightJobStartGuard.cs" />
+    <!-- FOOTPRINT_TRACK_GRID_1: one footprint grid for the planet (Warscar film + Stillsand sand). -->
+    <Compile Include="RM_TrackPool.cs" />
+    <Compile Include="RM_TrackSurfaceExtension.cs" />
+    <Compile Include="RM_MapComponent_TrackGrid.cs" />
+    <Compile Include="RM_TrackGridPatches.cs" />
+    <Compile Include="RM_SectionLayer_TrackPrints.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

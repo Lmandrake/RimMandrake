@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 129.49886766000418,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 129.49886766000418,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RUT_FoundryTowerEntrance",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 59.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T20-43-19-01a0f58f-3acd-7e51-ab1c-df2e0a2408e2.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 59.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T20-36-36-01a0f589-11c4-7400-8628-2f214baf38c6.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RUT_FoundryTowerEntrance",
+    "note": "Built-in imagegen; normalized prompt preserved the basalt door, seam-red glow, steam, transparent isolation, and small-scale readability. Resized to exactly 512x512.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RUT_FoundryTowerEntrance\\RUT_FoundryTowerEntrance.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RUT_FoundryTowerEntrance/RUT_FoundryTowerEntrance.png\n    512x512  rgba  440,997 bytes  (126s)\n"
+}

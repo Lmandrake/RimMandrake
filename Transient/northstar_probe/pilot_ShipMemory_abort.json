@@ -1,0 +1,414 @@
+{
+ "chains": [
+  {
+   "name": "bioferrite_stockpile_reveal",
+   "components": [
+    {
+     "name": "reveals_on_stockpile",
+     "toggle": "shipMemoryEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: expected a 'She remembers the chains' letter after stockpiling 50 Bioferrite and waiting past the 600-tick check interval; letter_list had none matching",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 4,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Archonic Mourning opportunity for Molina",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 601,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Molina",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 601,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archonic Mourning opportunity for Fedon",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1025,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Fedon",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 1025,
+          "lookTargets": "Verse.LookTargets"
+         }
+        ],
+        "ticksGame": 1725,
+        "operation": {
+         "OperationId": "op_09ed8b403daf46c799733626ca0e911e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:06:10.489894+00:00",
+         "CompletedAtUtc": "2026-10-02T00:06:10.4938938+00:00",
+         "DurationMs": 3,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "ticks_spent": 700,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "assailant_signal_after_reveal",
+   "components": [
+    {
+     "name": "no_duplicate_reveal_once_discovered",
+     "toggle": "shipMemoryEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/signal_send",
+       "result": {
+        "success": true,
+        "tag": "RUT_ShipMemory_ContainmentTestSignal.RUT_ShipMemory_Containment",
+        "global": false,
+        "receiverCountAtSend": 3,
+        "subject": null,
+        "text": null,
+        "note": "Sent to 3 registered receiver(s). Whether any of them matched this exact tag is not observable from here - check the quest's own state (jawa/fire_quest / the save) for the effect.",
+        "ticksGame": 1725,
+        "operation": {
+         "OperationId": "op_2f9520158d9146f8bd200c59939de216",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/signal-send",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:06:11.9465726+00:00",
+         "CompletedAtUtc": "2026-10-02T00:06:11.9515741+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 5,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Archonic Mourning opportunity for Molina",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 601,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Molina",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 601,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Archonic Mourning opportunity for Fedon",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1025,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Fedon",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 1025,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "She remembers the chains",
+           "Length": 24,
+           "StrippedLength": 24
+          },
+          "defName": "PositiveEvent",
+          "arrivalTick": 1725,
+          "lookTargets": null
+         }
+        ],
+        "ticksGame": 1725,
+        "operation": {
+         "OperationId": "op_a25bd0ba2ad24039bd87acd2c4b460e7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:06:11.9565851+00:00",
+         "CompletedAtUtc": "2026-10-02T00:06:11.961588+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\no_duplicate_reveal_once_discovered_1790899571.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 1725,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] She remembers the chains"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "containment_gate_patch_wiring",
+   "components": [
+    {
+     "name": "seven_defs_gated_on_containment",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "7 of 7 def(s) resolved",
+        "requested": 7,
+        "foundCount": 7,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "researchPrerequisites",
+         "discoveryPrerequisites"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/HoldingPlatform",
+          "found": true,
+          "defName": "HoldingPlatform",
+          "defType": "ThingDef",
+          "label": "holding platform",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/ElectricInhibitor",
+          "found": true,
+          "defName": "ElectricInhibitor",
+          "defType": "ThingDef",
+          "label": "electric inhibitor",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/ShardInhibitor",
+          "found": true,
+          "defName": "ShardInhibitor",
+          "defType": "ThingDef",
+          "label": "shard inhibitor",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/BioferriteHarvester",
+          "found": true,
+          "defName": "BioferriteHarvester",
+          "defType": "ThingDef",
+          "label": "bioferrite harvester",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/Electroharvester",
+          "found": true,
+          "defName": "Electroharvester",
+          "defType": "ThingDef",
+          "label": "electroharvester",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/BioferriteGenerator",
+          "found": true,
+          "defName": "BioferriteGenerator",
+          "defType": "ThingDef",
+          "label": "bioferrite generator",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "TerrainDef/BioferritePlate",
+          "found": true,
+          "defName": "BioferritePlate",
+          "defType": "TerrainDef",
+          "label": "bioferrite plate",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         }
+        ],
+        "ticksGame": 1725,
+        "operation": {
+         "OperationId": "op_54a88403c1974eaaa187b304c74f8a13",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:06:13.2807836+00:00",
+         "CompletedAtUtc": "2026-10-02T00:06:13.285783+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\seven_defs_gated_on_containment_1790899573.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000019DD12B3620>"
+ ],
+ "refused": "",
+ "walk": null
+}

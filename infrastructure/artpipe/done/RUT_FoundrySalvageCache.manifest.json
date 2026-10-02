@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 108.87831602903316,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 108.87831602903316,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RUT_FoundrySalvageCache",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 59.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/30/rollout-2026-09-30T20-41-31-01a0f58d-9360-7740-98d5-46a1839fdbb3.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 59.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/30/rollout-2026-09-30T20-34-41-01a0f587-5376-7413-934d-0a6d7163a925.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RUT_FoundrySalvageCache",
+    "note": "Built-in imagegen; resized to exactly 256x256 while preserving alpha. One retry followed a PowerShell bitmap-constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RUT_FoundrySalvageCache\\RUT_FoundrySalvageCache.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RUT_FoundrySalvageCache/RUT_FoundrySalvageCache.png\n    256x256  rgba  98,729 bytes  (106s)\n"
+}

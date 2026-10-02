@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-10-01T04:09:06Z",
+  "derive_from": "RM_Chatrak_east",
+  "drawsize": 3.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Chatrak_north",
+  "priority": 60,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game animal sprite: the chatrak, a low heavy plated grazer of the old battlefield \u2014 a broad rhino-like body under overlapping layered back plates stacked like an earthwork embankment, scuffed and ricochet-pocked, a blunt armoured head with a wide rasping mouth for scraping lichen off metal, short thick legs. It ignores everything. Familiar armoured-grazer architecture but no nameable Earth rhino or armadillo.",
+  "reference": null,
+  "rimflow_item_id": "WARSCAR_FREE_TIER_BODY_1",
+  "style_notes": "warscar register: an old battlefield where everyone already lost: grey slag terraces under a flat grey overcast sky, soft diffuse top light, no sun glare, no hard cast shadow and NO baked cast shadow on the ground; ash grey, gunmetal and old rust, with black glower varnish on metal; nothing green, nothing lush, nothing pastoral, no intact shiny treasure; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is SLATE AND RUST-ORANGE: slate-blue plates with rust-orange lichen staining at the plate edges and a pale bone underside; bs~3.0, drawSize ~3.0; familiar body architecture but never a nameable Earth animal; calm, head down grazing; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the stacked back plates and stubby tail from behind"
+}

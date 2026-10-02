@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 102.06456865600194,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 69.05967185538276,
+  "derive_from_palette_distance": 5.713571404220918,
+  "elapsed_s": 102.06456865600194,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RM_Aurrok_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T19-12-08-01a0f53b-be67-72b3-92b2-4640ec9cfcae.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T19-07-12-01a0f537-389a-7b31-8873-5084e6f414d6.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RM_Aurrok_south",
+    "note": "Derived a direct front-facing south view from the accepted east master, preserving the aurrok\u2019s palette, anatomy, sail, and painterly sprite style.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_Aurrok_south\\RM_Aurrok_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_Aurrok_south/RM_Aurrok_south.png\n    512x512  rgba  191,512 bytes  (99s)\n"
+}

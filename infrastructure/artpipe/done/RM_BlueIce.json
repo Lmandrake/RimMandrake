@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T16:57:57Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_BlueIce",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: blue ice, a quarried block of ancient compressed glacier ice of distilled-water purity \u2014 clean cut facets, deep saturated glacial blue-into-teal in the thick body with internal light, fine white crack-veils deep inside, frost bloom along the cut edges, the thinnest corner going glass-clear. It reads as gem-grade water: valuable, cold, pure \u2014 the only truly blue thing in its whole desert. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "BLUEDESERT_BEDAZZLE_SITTING_1",
+  "style_notes": "item icon for the golden mineable water block (defName RM_BlueIce); the read is a deep-blue glassy quarried block with internal light and white crack-veils; blue desert phase-line register: this is the one earned exception to colorless-up-close \u2014 deep glacial blue and teal in the body, glass-clear at the thin corner, frost-white cut edges, starlit cold light; realistic painted illustration, grounded believable ice optics with refraction and internal fracture, matte frost on the cut edges, never cartoonish, no outlines"
+}

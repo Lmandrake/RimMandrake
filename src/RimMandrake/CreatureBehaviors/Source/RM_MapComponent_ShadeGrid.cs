@@ -74,6 +74,12 @@ namespace RimMandrake.CreatureBehaviors
 		private Vector2 sunShadowDir;
 		private float sunLengthPerHeight;
 
+		// STILLSAND_SUN_FROM_LATITUDE_1: the map's sun elevation (NaN when
+		// unknown — no pin, no heat extension, no planet tile), and the sand
+		// glare floor per cell (null when no glare applies).
+		private float sunElevationDeg = float.NaN;
+		private float[] glareFloor;
+
 		private RM_SunPathCustomizer pathCustomizer;
 		private readonly List<RM_SunPathCustomizer> retiredCustomizers = new List<RM_SunPathCustomizer>();
 
@@ -87,6 +93,30 @@ namespace RimMandrake.CreatureBehaviors
 		private readonly List<int> parasolTouched = new List<int>();
 		private readonly HashSet<Thing> gearThings = new HashSet<Thing>();
 		private bool recomputeRequested;
+
+		// LONGSHADE_GPT_ENRICHMENT_1 §2 (RM_MovingShadeMath.cs): living shade
+		// casters (RM_CompProperties_ShadowCaster.castShadeHeight > 0, the
+		// gloomcast). Their shade is its own layer, refreshed every
+		// MovingShadeRefreshTicks, and only when a caster moved: its OLD
+		// rectangle is cleared and its NEW one written — never a full-map pass.
+		// Read live by ShadeAt and ExposureAt. NOT folded into the exposure
+		// array, so the sun path cost and the shade-patch graph do not see it
+		// (both rebuild every 2000 ticks, far slower than the shadow moves):
+		// a creature reaches a moving shadow by seeking shade or by following
+		// its host, never by a path cached under it.
+		// TUNED: 60 ticks — the gloomcast walks ~2 cells a second (MoveSpeed
+		// 2.2), so its shadow trails by at most a couple of cells.
+		private const int MovingShadeRefreshTicks = 60;
+		private float[] movingShade;
+		private readonly Dictionary<Thing, MovingCasterState> movingCasters = new Dictionary<Thing, MovingCasterState>();
+		private bool movingDirty;
+
+		private class MovingCasterState
+		{
+			public IntVec3 lastPos = IntVec3.Invalid;
+			public bool hasRect;
+			public int minX, minZ, maxX, maxZ;
+		}
 
 		// SOLAR_HEAT_EXPOSURE_1 §5: the shade-patch graph (RM_ShadePatchGraph),
 		// built lazily from the exposure layer. It is built only when a hop,
@@ -131,7 +161,64 @@ namespace RimMandrake.CreatureBehaviors
 		/// <summary>True when shade hopping and the dash ring can run here: a
 		/// sun-heat map whose heat kind shade can help against.</summary>
 		public bool ShadeHopsApply => SunHeatActive && exposure != null
-		                              && HeatExtension.heatKind != RM_HeatKind.ambient;
+		                              && EffectiveHeatKind != RM_HeatKind.ambient;
+
+		/// <summary>The map's sun elevation in degrees from the last
+		/// recompute, or NaN when there is none.</summary>
+		public float SunElevationDegrees => sunElevationDeg;
+
+		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §3: the heat kind in force —
+		/// the biome's own, or (when it sets overheadAboveElevationDegrees and
+		/// the setting is on) overhead/lowSun by this map's sun elevation.
+		/// Which cover counts, never a new kind of heat. Overhead on a biome
+		/// with no sun heat (ordinary shade).</summary>
+		public RM_HeatKind EffectiveHeatKind
+		{
+			get
+			{
+				RM_SunHeatExtension ext = HeatExtension;
+				if (ext == null)
+				{
+					return RM_HeatKind.overhead;
+				}
+				if (!RM_CreatureBehaviorsSettings.kindFromElevationEnabled)
+				{
+					return ext.heatKind;
+				}
+				return RM_SunHeatMath.KindFromElevation(ext.heatKind, sunElevationDeg, ext.overheadAboveElevationDegrees);
+			}
+		}
+
+		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §4: °C of sun at full
+		/// exposure for a size-1 pawn before the strength dial — heatOffsetC,
+		/// or heatOffsetC × sin(elevation) on a biome that scales by angle.</summary>
+		public float EffectiveHeatOffsetC
+		{
+			get
+			{
+				RM_SunHeatExtension ext = HeatExtension;
+				if (ext == null)
+				{
+					return 0f;
+				}
+				if (!ext.heatScalesWithElevation)
+				{
+					return ext.heatOffsetC;
+				}
+				return RM_SunHeatMath.ElevationHeatOffset(ext.heatOffsetC, sunElevationDeg, ext.minScaledHeatOffsetC);
+			}
+		}
+
+		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §5: the sand glare floor at
+		/// this cell (0 where none).</summary>
+		public float GlareFloorAt(IntVec3 cell)
+		{
+			if (glareFloor == null || !cell.InBounds(map))
+			{
+				return 0f;
+			}
+			return glareFloor[map.cellIndices.CellToIndex(cell)];
+		}
 
 		/// <summary>The shade-patch graph for the current grid, or null where
 		/// hopping does not apply. The first call after a recompute rebuilds
@@ -216,12 +303,21 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				RefreshParasolLayer();
 			}
+			if (now % MovingShadeRefreshTicks == 30)
+			{
+				RefreshMovingShade(false);
+			}
+			// STILLSAND_GLARE_BLIND_GOGGLES_1, offset off the recompute ticks.
+			if (now % RM_GlareBlind.CheckIntervalTicks == 125)
+			{
+				RM_GlareBlind.Tick(map, this);
+			}
 		}
 
 		/// <summary>The heat kind gear effectiveness is read under: the
 		/// biome's, or overhead on a biome with no sun heat (ordinary shade —
 		/// what the creature shade consumers read there).</summary>
-		public RM_HeatKind GearKind => HeatExtension?.heatKind ?? RM_HeatKind.overhead;
+		public RM_HeatKind GearKind => EffectiveHeatKind;
 
 		/// <summary>RM_CompShadeGear: a tent or shield appeared. Recomputed
 		/// on the next tick rather than waiting for the coarse interval.</summary>
@@ -230,6 +326,132 @@ namespace RimMandrake.CreatureBehaviors
 			if (t != null && gearThings.Add(t))
 			{
 				recomputeRequested = true;
+			}
+		}
+
+		/// <summary>LONGSHADE_GPT_ENRICHMENT_1 §2: a living shade caster
+		/// spawned (RM_Comp_ShadowCaster with castShadeHeight).</summary>
+		public void RegisterMovingCaster(Thing t)
+		{
+			if (t != null && !movingCasters.ContainsKey(t))
+			{
+				movingCasters.Add(t, new MovingCasterState());
+				movingDirty = true;
+			}
+		}
+
+		public void UnregisterMovingCaster(Thing t)
+		{
+			if (t != null && movingCasters.TryGetValue(t, out MovingCasterState st))
+			{
+				if (st.hasRect && movingShade != null)
+				{
+					RM_MovingShadeMath.ClearRect(movingShade, map.Size.x, map.Size.z, st.minX, st.minZ, st.maxX, st.maxZ);
+				}
+				movingCasters.Remove(t);
+				movingDirty = true;
+			}
+		}
+
+		/// <summary>Shade 0..1 from living casters alone at this cell.</summary>
+		public float MovingShadeAt(IntVec3 cell)
+		{
+			if (!Ready(cell) || movingShade == null)
+			{
+				return 0f;
+			}
+			return movingShade[map.cellIndices.CellToIndex(cell)];
+		}
+
+		/// <summary>Clears the old rectangle of every caster that moved and
+		/// recasts every caster whose rectangle touched a cleared one. force:
+		/// the sun vector or the arrays changed, so redo all of them.</summary>
+		private void RefreshMovingShade(bool force)
+		{
+			if (movingCasters.Count == 0 && !force)
+			{
+				return;
+			}
+			int w = map.Size.x;
+			int h = map.Size.z;
+			int n = map.cellIndices.NumGridCells;
+			if (movingShade == null || movingShade.Length != n)
+			{
+				movingShade = new float[n];
+				force = true;
+			}
+			bool on = RM_CreatureBehaviorsSettings.shadeGridEnabled && RM_CreatureBehaviorsSettings.movingShadeEnabled;
+			if (force)
+			{
+				System.Array.Clear(movingShade, 0, n);
+				foreach (MovingCasterState st in movingCasters.Values)
+				{
+					st.hasRect = false;
+					st.lastPos = IntVec3.Invalid;
+				}
+			}
+			List<Thing> gone = null;
+			bool any = force || movingDirty;
+			foreach (KeyValuePair<Thing, MovingCasterState> kv in movingCasters)
+			{
+				Thing t = kv.Key;
+				if (t == null || !t.Spawned || t.Map != map)
+				{
+					(gone ??= new List<Thing>()).Add(t);
+					any = true;
+					continue;
+				}
+				if (t.Position != kv.Value.lastPos)
+				{
+					any = true;
+				}
+			}
+			if (gone != null)
+			{
+				foreach (Thing t in gone)
+				{
+					UnregisterMovingCaster(t);
+				}
+			}
+			movingDirty = false;
+			if (!any)
+			{
+				return;
+			}
+			// Clear every old rectangle first, then cast every caster at its
+			// new place: overlapping shadows of two casters stay whole. With
+			// the one or two giants a map holds this is a few hundred cells.
+			foreach (MovingCasterState st in movingCasters.Values)
+			{
+				if (st.hasRect)
+				{
+					RM_MovingShadeMath.ClearRect(movingShade, w, h, st.minX, st.minZ, st.maxX, st.maxZ);
+					st.hasRect = false;
+				}
+			}
+			if (!on)
+			{
+				return;
+			}
+			foreach (KeyValuePair<Thing, MovingCasterState> kv in movingCasters)
+			{
+				Thing t = kv.Key;
+				MovingCasterState st = kv.Value;
+				st.lastPos = t.Position;
+				RM_CompProperties_ShadowCaster p = t.TryGetComp<RM_Comp_ShadowCaster>()?.Props;
+				if (p == null || p.castShadeHeight <= 0f)
+				{
+					continue;
+				}
+				float len = directional ? RM_SunHeatMath.ShadowLength(p.castShadeHeight, sunLengthPerHeight, MaxCastCells) : 0f;
+				if (!RM_MovingShadeMath.ShadowBounds(w, h, t.Position.x, t.Position.z, p.castShadeRadius,
+					directional, sunShadowDir.x, sunShadowDir.y, len, out st.minX, out st.minZ, out st.maxX, out st.maxZ))
+				{
+					continue;
+				}
+				st.hasRect = true;
+				RM_MovingShadeMath.CastBody(movingShade, w, h, t.Position.x, t.Position.z, p.castShadeRadius,
+					directional, sunShadowDir.x, sunShadowDir.y, len, ShadowTipShade, p.castShadeDepth);
 			}
 		}
 
@@ -263,7 +485,11 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return 0f;
 			}
-			return RM_SunHeatMath.WithCover(ex, RM_ShadeGear.WornCover(pawn, GearKind, out _));
+			ex = RM_SunHeatMath.WithCover(ex, RM_ShadeGear.WornCover(pawn, GearKind, out _));
+			ex = RM_SunHeatMath.WithGlareFloor(ex, GlareFloorAt(pawn.Position));
+			// STILLSAND_DUNE_GALE_1 §3: a dim sky (the dune gale) takes the sun off,
+			// glare floor included — the sand does not shine under a brown sky.
+			return ex * RM_WeatherSenseExtension.SunFactor(map);
 		}
 
 		/// <summary>
@@ -287,6 +513,10 @@ namespace RimMandrake.CreatureBehaviors
 			if (parasolShade != null)
 			{
 				s = Mathf.Max(s, parasolShade[i]);
+			}
+			if (movingShade != null && RM_CreatureBehaviorsSettings.movingShadeEnabled)
+			{
+				s = Mathf.Max(s, movingShade[i]);
 			}
 			return s;
 		}
@@ -319,9 +549,20 @@ namespace RimMandrake.CreatureBehaviors
 			}
 			int i = map.cellIndices.CellToIndex(cell);
 			float ex = exposure[i];
-			if (parasolShade != null && HeatExtension.heatKind != RM_HeatKind.ambient)
+			if (parasolShade != null && EffectiveHeatKind != RM_HeatKind.ambient)
 			{
 				ex = RM_SunHeatMath.WithCover(ex, parasolShade[i]);
+			}
+			// LONGSHADE_GPT_ENRICHMENT_1 §2: a living caster's shadow is cast
+			// shade, so it covers under overhead and low sun alike, never
+			// under ambient heat.
+			if (movingShade != null && RM_CreatureBehaviorsSettings.movingShadeEnabled && EffectiveHeatKind != RM_HeatKind.ambient)
+			{
+				ex = RM_SunHeatMath.WithCover(ex, movingShade[i]);
+			}
+			if (glareFloor != null)
+			{
+				ex = RM_SunHeatMath.WithGlareFloor(ex, glareFloor[i]);
 			}
 			return ex;
 		}
@@ -386,8 +627,11 @@ namespace RimMandrake.CreatureBehaviors
 			}
 			BuildGearLayer();
 			RefreshParasolLayer();
+			RefreshMovingShade(true);
 			RebuildHeatLayers();
 			gridVersion++;
+			// STILLSAND_MIRAGE_CONDITION_1: hold or end the mirage to match the sun.
+			RM_Mirage.Sync(map, this);
 		}
 
 		/// <summary>SHADE_GEAR_FAMILY_1: tent footprints and shield lees, at
@@ -531,17 +775,24 @@ namespace RimMandrake.CreatureBehaviors
 		private void ResolveSun()
 		{
 			directional = false;
+			sunElevationDeg = float.NaN;
 			RM_MapComponent_PinnedSun pin = RM_MapComponent_PinnedSun.For(map);
-			if (RM_CreatureBehaviorsSettings.directionalShadeEnabled && pin != null && pin.IsActive)
+			if (pin != null && pin.IsActive)
 			{
-				sunShadowDir = pin.ShadowDirection;
-				sunLengthPerHeight = pin.ShadowLengthPerHeight;
-				directional = true;
+				// The pinned sun's elevation is the map's sun elevation whether
+				// or not shadows are cast directionally (it drives the heat kind
+				// and the heat-by-angle offset too).
+				sunElevationDeg = pin.SunElevationDegrees;
+				if (RM_CreatureBehaviorsSettings.directionalShadeEnabled)
+				{
+					sunShadowDir = pin.ShadowDirection;
+					sunLengthPerHeight = pin.ShadowLengthPerHeight;
+					directional = true;
+				}
 				return;
 			}
 			RM_SunHeatExtension ext = HeatExtension;
-			if (!RM_CreatureBehaviorsSettings.directionalShadeEnabled || ext == null
-				|| Find.WorldGrid == null || !map.Tile.Valid)
+			if (ext == null || Find.WorldGrid == null || !map.Tile.Valid)
 			{
 				return;
 			}
@@ -549,6 +800,11 @@ namespace RimMandrake.CreatureBehaviors
 			RM_MapComponent_PinnedSun.SunGeometry(longLat.y, longLat.x, ext.substellarLatitude, ext.substellarLongitude,
 				out float bearingDeg, out float arcDeg);
 			float elev = Mathf.Clamp(90f - arcDeg, ext.minElevationDegrees, ext.maxElevationDegrees);
+			sunElevationDeg = elev;
+			if (!RM_CreatureBehaviorsSettings.directionalShadeEnabled)
+			{
+				return;
+			}
 			float b = bearingDeg * Mathf.Deg2Rad;
 			sunShadowDir = new Vector2(-Mathf.Sin(b), -Mathf.Cos(b));
 			float e = Mathf.Max(0.5f, elev) * Mathf.Deg2Rad;
@@ -562,6 +818,7 @@ namespace RimMandrake.CreatureBehaviors
 			if (ext == null || !RM_CreatureBehaviorsSettings.sunHeatEnabled)
 			{
 				exposure = null;
+				glareFloor = null;
 				RetireCustomizer();
 				return;
 			}
@@ -570,7 +827,9 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				exposure = new float[n];
 			}
-			bool wantPath = ext.heatKind != RM_HeatKind.ambient && ext.sunPathCostPerCell > 0f
+			RM_HeatKind kind = EffectiveHeatKind;
+			BuildGlareLayer(ext, kind);
+			bool wantPath = kind != RM_HeatKind.ambient && ext.sunPathCostPerCell > 0f
 			                && RM_CreatureBehaviorsSettings.sunPathingEnabled;
 			NativeArray<ushort> cost = default;
 			if (wantPath)
@@ -581,7 +840,11 @@ namespace RimMandrake.CreatureBehaviors
 			for (int i = 0; i < n; i++)
 			{
 				// outdoors=true here: the enclosed-room test is live in ExposureAt.
-				float ex = RM_SunHeatMath.Exposure(ext.heatKind, true, roofShade[i], thickRoof[i], castShade[i], gearShade[i]);
+				float ex = RM_SunHeatMath.Exposure(kind, true, roofShade[i], thickRoof[i], castShade[i], gearShade[i]);
+				if (glareFloor != null)
+				{
+					ex = RM_SunHeatMath.WithGlareFloor(ex, glareFloor[i]);
+				}
 				exposure[i] = ex;
 				if (wantPath)
 				{
@@ -597,6 +860,32 @@ namespace RimMandrake.CreatureBehaviors
 				// customizer's identity, so a fresh object is what makes the
 				// new costs take effect at all.
 				pathCustomizer = new RM_SunPathCustomizer(cost);
+			}
+		}
+
+		/// <summary>STILLSAND_SUN_FROM_LATITUDE_1 §5: the sand glare floor on
+		/// every cell of natural sand (TerrainDef categoryType Sand, not a
+		/// constructed floor). Null when the biome sets no floor, the setting
+		/// is off, or the heat is ambient (exposure is already full there).</summary>
+		private void BuildGlareLayer(RM_SunHeatExtension ext, RM_HeatKind kind)
+		{
+			float floor = ext.sandGlareExposureFloor * RM_CreatureBehaviorsSettings.sandGlareStrength;
+			if (!RM_CreatureBehaviorsSettings.sandGlareEnabled || floor <= 0f || kind == RM_HeatKind.ambient)
+			{
+				glareFloor = null;
+				return;
+			}
+			floor = Mathf.Clamp01(floor);
+			int n = map.cellIndices.NumGridCells;
+			if (glareFloor == null || glareFloor.Length != n)
+			{
+				glareFloor = new float[n];
+			}
+			TerrainGrid tg = map.terrainGrid;
+			for (int i = 0; i < n; i++)
+			{
+				TerrainDef t = tg.TerrainAt(i);
+				glareFloor[i] = t != null && t.categoryType == TerrainDef.TerrainCategoryType.Sand && !t.IsFloor ? floor : 0f;
 			}
 		}
 

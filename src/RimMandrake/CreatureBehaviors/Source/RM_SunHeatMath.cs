@@ -275,6 +275,103 @@ namespace RimMandrake.CreatureBehaviors
             return x != cx || z != cz;
         }
 
+        // ── STILLSAND_SUN_FROM_LATITUDE_1: the sun's height decides ──────
+        // Owner rulings: "The biome takes its sun angle from its latitude"
+        // (the tile's planet latitude, never a region's prose), and "the cover
+        // that counts follows the sun angle". Still ONE kind of heat: these
+        // pick which cover counts and how strong the sun is, nothing else.
+
+        /// <summary>The heat kind a biome's sun resolves to at this elevation:
+        /// overhead at or above overheadAboveDeg, lowSun below it. Ambient is
+        /// never changed (shade does not help there at any angle). A negative
+        /// threshold, or an unknown (NaN) elevation, keeps the biome's own
+        /// kind.</summary>
+        public static RM_HeatKind KindFromElevation(RM_HeatKind baseKind, float elevationDeg, float overheadAboveDeg)
+        {
+            if (baseKind == RM_HeatKind.ambient || overheadAboveDeg < 0f || float.IsNaN(elevationDeg))
+            {
+                return baseKind;
+            }
+            return elevationDeg >= overheadAboveDeg ? RM_HeatKind.overhead : RM_HeatKind.lowSun;
+        }
+
+        /// <summary>Irradiance by angle: zenithOffsetC × sin(elevation), never
+        /// below floorC (the far ring's own figure). An unknown (NaN)
+        /// elevation returns zenithOffsetC unchanged.</summary>
+        public static float ElevationHeatOffset(float zenithOffsetC, float elevationDeg, float floorC)
+        {
+            if (float.IsNaN(elevationDeg))
+            {
+                return zenithOffsetC;
+            }
+            double e = Math.Max(0.0, Math.Min(90.0, elevationDeg)) * Math.PI / 180.0;
+            float off = zenithOffsetC * (float)Math.Sin(e);
+            return off < floorC ? floorC : off;
+        }
+
+        /// <summary>Sand glare: exposure on open natural sand never drops
+        /// below the floor, whatever shade or cover is over it (the light
+        /// comes up from the ground). An enclosed room is handled before this
+        /// (exposure 0 there, never floored).</summary>
+        public static float WithGlareFloor(float exposure, float glareFloor)
+        {
+            float f = Clamp01(glareFloor);
+            return exposure > f ? exposure : f;
+        }
+
+        /// <summary>STILLSAND_GLARE_BLIND_GOGGLES_1: the glare-blind severity a
+        /// pawn gains over one check interval. Nothing below the full-glare
+        /// threshold (shade on sand, which the glare floor holds at about
+        /// 0.35, does not blind), nothing for protected eyes (a gene or eye
+        /// cover), and above the threshold perDay × the interval's share of a
+        /// day × the strength dial. Recovery is the hediff's own
+        /// SeverityPerDay decay, never this.</summary>
+        public static float GlareBlindGain(float exposure, float fullGlareMin, float severityPerDay,
+            float strength, int intervalTicks, bool eyesProtected)
+        {
+            if (eyesProtected || exposure < fullGlareMin || severityPerDay <= 0f || strength <= 0f || intervalTicks <= 0)
+            {
+                return 0f;
+            }
+            return severityPerDay * strength * intervalTicks / 60000f;
+        }
+
+        // ── STILLSAND_MIRAGE_CONDITION_1 ────────────────────────────────
+
+        /// <summary>The mirage runs only on a map whose sun stands at or above
+        /// the threshold. Unknown (NaN) elevation or a negative threshold: no
+        /// mirage.</summary>
+        public static bool MirageActive(float elevationDeg, float minElevationDeg)
+        {
+            return minElevationDeg >= 0f && !float.IsNaN(elevationDeg) && elevationDeg >= minElevationDeg;
+        }
+
+        /// <summary>The map edge the mirage lies on: the sun-ward one, opposite
+        /// the shadow direction. 0 north (+z), 1 east (+x), 2 south, 3 west
+        /// (Rot4's numbering). No direction: north.</summary>
+        public static int MirageEdge(float shadowDirX, float shadowDirZ)
+        {
+            float x = -shadowDirX;
+            float z = -shadowDirZ;
+            if (Math.Abs(x) < 1e-4f && Math.Abs(z) < 1e-4f)
+            {
+                return 0;
+            }
+            if (Math.Abs(x) >= Math.Abs(z))
+            {
+                return x > 0f ? 1 : 3;
+            }
+            return z > 0f ? 0 : 2;
+        }
+
+        /// <summary>Heat shimmer on a long-range accuracy factor: the shipped
+        /// factor for a shooter standing in full sun (exposure at or above
+        /// the threshold), 1 otherwise.</summary>
+        public static float MirageShimmerFactor(float exposure, float fullSunMin, float factor)
+        {
+            return exposure >= fullSunMin ? Clamp01(factor) : 1f;
+        }
+
         public static float Clamp01(float v)
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);

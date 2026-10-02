@@ -1,0 +1,44 @@
+{
+ "RM_BlueDesert@-30": {
+  "biome": "RM_BlueDesert",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_BlueDesert",
+  "temp": 16.6627769,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 128518,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RM_BlueDesertHazeCarrier",
+     "label": "The Haze",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "Vapaad": 4
+  },
+  "plants": {},
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r",
+   "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ }
+}

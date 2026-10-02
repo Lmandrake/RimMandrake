@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:04Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Skinflap_east",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the skinflap, a flying sheet of loose wet skin with no body to speak of \u2014 a ragged pale membrane the size of a towel caught mid-flap, edges tattered and weeping, a few puckered pore-mouths scattered across the underside, fine tension cords where muscles should be. It reads as a piece of somebody's hide that got away and learned to fly. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the swarming harmless horror, bs~0.15, a flyer caught mid-flap; the read is one ragged sheet of flying wet skin; storm-dark red-valley register: pale flesh tones wet with red rain, grey-white tattered edges, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the upper surface of the sheet from behind"
+}

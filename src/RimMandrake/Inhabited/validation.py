@@ -173,6 +173,15 @@ def fate_and_stock(t):
     out. See module docstring gap 1 for why the 0.5 threshold's actual
     boundary is not exercised."""
     t.clear_area(size=20)
+    # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): the place chain 1 made is a WORLD object and
+    # outlives that chain, so this chain's "Create place" only logged "a place already exists" (MEASURED
+    # live), FindPlace() returned chain 1's already-used place, and the dump said "holds no goods". The old
+    # place_created check still passed on chain 1's STALE "created" line. A chain builds every element of
+    # the state it tests: remove any existing place first, so the create below is a real one.
+    old = (t.bridge_call("jawa/world_objects_get", **{"def": "Inhabited_Place"}) or {}).get("objects") or []
+    ids = ",".join(str(o.get("id")) for o in old if o.get("id") is not None)
+    if ids:
+        t.bridge_call("jawa/world_objects_remove", ids=ids)
 
     with t.component("place_created", beyond_toggle=True):
         _debug(t, "Create place at current tile")

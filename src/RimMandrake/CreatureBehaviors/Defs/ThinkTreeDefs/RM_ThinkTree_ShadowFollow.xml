@@ -8,11 +8,17 @@
      shaded cell. A pawn returns no job here unless its def carries
      RM_ShadowFollowerExtension, so this is safe to insert globally the same
      way the shade-seeking-wander tree already is. -->
+<!-- LONGSHADE_GPT_ENRICHMENT_1 §2: insertPriority 20 puts this ahead of
+     RM_ThinkTree_ShadeHop (10). At 0 it never ran on a sun-heat map, because
+     the hop always returns a job there, so the Long Shade's pirrik hopped
+     instead of riding the gloomcast's shadow. With no host in reach this
+     returns no job and the hop runs as before. -->
 <Defs>
 
   <ThinkTreeDef>
     <defName>RM_ThinkTree_ShadowFollow</defName>
     <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>20</insertPriority>
     <thinkRoot Class="ThinkNode_Priority">
       <subNodes>
         <li Class="RimMandrake.CreatureBehaviors.RM_JobGiver_FollowShadowCaster" />

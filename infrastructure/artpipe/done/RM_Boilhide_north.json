@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T15:46:59Z",
+  "derive_from": "RM_Boilhide_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Boilhide_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the boilhide, a lean antelope-shaped grazer whose entire hide is a landscape of sealed boils \u2014 each a smooth walled-off dome where its body locked poison away, in ordered fields down the neck and flanks; its antlers fused into a single mineral-crusted club; stance alert and healthy under the ugliness. It reads as a herd animal wearing its immunity on its skin. No nameable Earth antelope.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+  "style_notes": "the wretched herd grazer, bs~0.7; the read is a healthy runner armored in sealed boils with a fused club antler; wasteland survivor register: salt-white and ash-grey palette, boil domes in pale waxy tones, vitrified black-green accents, harsh dry light; tough content survivor, never pitiable; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture with boils and mineral crust, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the boil-fielded back and haunches"
+}

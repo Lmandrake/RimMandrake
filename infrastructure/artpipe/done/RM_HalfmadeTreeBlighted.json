@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_HalfmadeTreeBlighted",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: the blighted halfmade tree, a further-gone variant of the half-overwritten alien tree \u2014 the losing half collapsed to grey-white husk and slough, the winning half's wet red growth thinner and wrong, barely holding the shape of a tree at all; both halves alien, no Earth-tree read, silhouette sagging and asymmetric. Single organism, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the downslope front-line variant, further gone than the halfmade tree; the read is a collapsing husk half against a failing red half; storm-dark red-valley register: grey-white husk and slough dominant, thin wet storm-red growth, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable botany, matte natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

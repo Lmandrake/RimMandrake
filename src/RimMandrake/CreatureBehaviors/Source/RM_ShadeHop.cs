@@ -87,7 +87,9 @@ namespace RimMandrake.CreatureBehaviors
         {
             float size = RM_SunHeatMath.BodySizeFactor(pawn.BodySize, ext.bodySizeExponent,
                 ext.minBodySizeFactor, ext.maxBodySizeFactor);
-            float offset = RM_SunHeatMath.HeatOffset(exposure, ext.heatOffsetC, RM_CreatureBehaviorsSettings.sunHeatStrength,
+            // STILLSAND_SUN_FROM_LATITUDE_1: the map's offset (by sun angle where the biome scales it).
+            float baseOffset = RM_MapComponent_ShadeGrid.For(pawn.Map)?.EffectiveHeatOffsetC ?? ext.heatOffsetC;
+            float offset = RM_SunHeatMath.HeatOffset(exposure, baseOffset, RM_CreatureBehaviorsSettings.sunHeatStrength,
                 size, ext.maxHeatOffsetC);
             float felt = pawn.Map.mapTemperature.OutdoorTemp + offset;
             float safeMax = pawn.SafeTemperatureRange().max;
@@ -127,6 +129,14 @@ namespace RimMandrake.CreatureBehaviors
             Map map = pawn.Map;
             patch = graph.PatchAt(map.cellIndices.CellToIndex(pawn.Position));
             if (patch != RM_ShadePatchGraph.NoPatch)
+            {
+                return true;
+            }
+            // LONGSHADE_GPT_ENRICHMENT_1 §2: a giant's moving shadow is real
+            // shade, though the patch graph (rebuilt every 2000 ticks) never
+            // holds it: an animal standing in it is sheltered, not "caught in
+            // the open", so it rests there instead of sprinting away.
+            if (grid.MovingShadeAt(pawn.Position) >= 1f - grid.HeatExtension.shadeExposureMax)
             {
                 return true;
             }
@@ -362,7 +372,12 @@ namespace RimMandrake.CreatureBehaviors
             yield return walk;
 
             Toil pause = ToilMaker.MakeToil("RM_ShadeDash_Pause");
-            pause.initAction = () => pawn.pather?.StopDead();
+            pause.initAction = () =>
+            {
+                pawn.pather?.StopDead();
+                // LONGSHADE_GPT_ENRICHMENT_1 §3: a herd calls before it dashes.
+                RM_HeatSoundscape.TryHerdCall(pawn);
+            };
             pause.tickAction = () => pawn.rotationTracker.FaceCell(job.targetB.Cell);
             pause.handlingFacing = true;
             pause.defaultCompleteMode = ToilCompleteMode.Delay;

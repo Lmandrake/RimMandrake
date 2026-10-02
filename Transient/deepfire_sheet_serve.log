@@ -1,0 +1,36 @@
+
+  sheet      D:\Luke\dev\Rimworld\Transient\deepfire_pigment_review.html
+  decisions  D:\Luke\dev\Rimworld\Transient\deepfire_pigment_review.decisions.json
+             8 rows · 8 decided · NEVER reviewed (pre-fill only)
+  serving    http://localhost:39377/?t=_WeL_L3FPgJzAWJThnPGpg
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  opened with explorer.exe
+
+  "GET /?t=_WeL_L3FPgJzAWJThnPGpg HTTP/1.1" 200 -
+  "GET /decisions HTTP/1.1" 200 -
+  "GET /deepfire_pigment_review_assets/scald2_rainbowpigment_b.png HTTP/1.1" 200 -
+  "GET /deepfire_pigment_review_assets/scald2_rainbowpigment_a.png HTTP/1.1" 200 -
+  "GET /deepfire_pigment_review_assets/deepfire_pigmentjar_a.png HTTP/1.1" 200 -
+  "GET /deepfire_pigment_review_assets/rutwelcomeblanket_v1.png HTTP/1.1" 200 -
+  "GET /deepfire_pigment_review_assets/deepfire_crowncarpet_a.png HTTP/1.1" 200 -
+  "GET /deepfire_pigment_review_assets/scald2_rainbowpigment_c.png HTTP/1.1" 200 -
+  "GET /deepfire_pigment_review_assets/deepfire_pigmentjar_b.png HTTP/1.1" 200 -
+  "GET /deepfire_pigment_review_assets/deepfire_crowncarpet_b.png HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -
+  "POST /decisions HTTP/1.1" 200 -

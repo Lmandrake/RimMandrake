@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-27T22:06:18Z",
+  "drawsize": 1.2,
+  "facing": null,
+  "facings": [],
+  "id": "chill_plant_skyharp",
+  "priority": 150,
+  "prompt": "RimWorld plant sprite, top-down view, painterly vanilla-RimWorld flora art style, set against the ruled Chill seabed palette: violet-teal dusk, aurora greens, bioluminescent points on near-black -- the drowned-aurora floor of a cryogenic liquid-propane sea. RM_Skyharp, aurora-resonance filaments: upright fan of fine filaments, graded heights, each faintly fluorescing green through violet along the fan -- the gradient IS the tuning; no true light source, only re-emission. Single mature specimen, centered, no ground shadow, no background scenery, transparent background.",
+  "reference": null,
+  "rimflow_item_id": "CHILL_FLORA_BUILD_1",
+  "style_notes": "SPECULATIVE test candidate, owner directive 2026-09-27 (question card: speculative batch NOW, art leads defs). Chill (ex-Propane Lake) seabed flora roster row 8/RM_Skyharp, design/Jawa/worldbuilding/biomes/the_propane_lake_flora_pass_2026-09-27.md. Not yet built as a def -- art leads defs per ruling. Single sprite, no facings, matching the propane-lake floor fauna precedent (propanelake_fessu etc)."
+}

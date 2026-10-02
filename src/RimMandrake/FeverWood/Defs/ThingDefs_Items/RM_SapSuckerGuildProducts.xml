@@ -37,8 +37,10 @@
   placeholder in RM_SapSuckerGuild.xml). Real bespoke art for all four is
   owed to the standing art pipeline.
 
-  🔴 All market values, masses, stack limits and rot rates below are
-  INVENTED placeholders — FEVERWOOD_SAP_SUCKER_TUNING_1 owns the real pass.
+  TUNED (FEVERWOOD_SAP_SUCKER_TUNING_1): the two nectar/sap foods are
+  benchmarked on Core Milk (MarketValue 1.9, Mass 0.045, Nutrition 0.05) —
+  nectar a premium dairy at 2.4, drommath sap a thin by-product at 1.0.
+  Lacquer/burst-sap values stay at their first-pass numbers, now reviewed.
 -->
 <Defs>
 
@@ -54,7 +56,7 @@
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
       <MarketValue>2.4</MarketValue>
-      <Mass>0.02</Mass>
+      <Mass>0.045</Mass>
       <Flammability>0.5</Flammability>
       <!-- LOAD_ERRORS_FAUNA_FLORA_1: the <nutrition> field inside <ingestible>
            below is not a real IngestibleProperties field in 1.6 (XML error,
@@ -112,7 +114,7 @@
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
       <MarketValue>1.0</MarketValue>
-      <Mass>0.02</Mass>
+      <Mass>0.045</Mass>
       <Flammability>0.5</Flammability>
       <!-- LOAD_ERRORS_FAUNA_FLORA_1: see RM_ThornbugNectar above — the
            <nutrition> field inside <ingestible> is invalid in 1.6; this is
@@ -148,7 +150,7 @@
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
       <MarketValue>1.0</MarketValue>
-      <Mass>0.02</Mass>
+      <Mass>0.045</Mass>
       <Flammability>0.5</Flammability>
       <!-- LOAD_ERRORS_FAUNA_FLORA_1: see RM_ThornbugNectar above — the
            <nutrition> field inside <ingestible> is invalid in 1.6; this is

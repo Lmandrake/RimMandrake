@@ -225,6 +225,17 @@ namespace RimMandrake.CreatureBehaviors
     //      tagged commensal stops tracking the nearest shadow-caster host
     //      and falls through to ordinary vanilla wander — it never seeks
     //      the host out, but nothing stops it standing near one by chance.
+    //      movingShadeEnabled — LONGSHADE_GPT_ENRICHMENT_1 §2: a host whose
+    //      RM_CompProperties_ShadowCaster sets castShadeHeight (the gloomcast)
+    //      casts real moving shade into the grid. Off: the layer is cleared and
+    //      the host is a follow-only host again.
+    //      heatSoundscapeEnabled / heatSoundscapeVolume — LONGSHADE_GPT_
+    //      ENRICHMENT_1 §3 (RM_HeatSoundscape.cs): on a biome carrying
+    //      RM_HeatSoundscapeExtension, a lit bed or a shade bed by the
+    //      exposure at the CAMERA's cell. Off (or volume 0): no bed.
+    //      creatureHeatSoundsEnabled — a herd animal's call at the rim before
+    //      a dash, and a giant's far-carrying footfalls (RM_CompFootfalls).
+    //      Off: both silent.
     //  37. pinnedSunEnabled / pinnedSunSkyStrength — RM_MapComponent_PinnedSun
     //      + RM_PinnedSunPatches (LONGSHADE_BEDAZZLE_MECHANICS_1 part 1, the
     //      golden hour). Only a biome carrying RM_PinnedSunExtension is
@@ -259,6 +270,37 @@ namespace RimMandrake.CreatureBehaviors
     //      sun. Off: they wander as vanilla does (sun pathing still applies).
     //      shadeHopRangeMultiplier — how far they will dash (the strictness
     //      dial). dashRingEnabled — the drafted-pawn "back to shade" ring.
+    //  42. Sand swimming (STILLSAND_SAND_SWIM_KIT_1, RM_CompSandSwim.cs) — only a
+    //      race carrying RM_SandSwimExtension. sandSwimEnabled — off: swimmers walk
+    //      the surface like any animal (no submerge, no wake, no rumble).  sandSwim-
+    //      DroidImmunity — off: a submerged swimmer will press an attack on a
+    //      mechanoid or droid too. sandSwimRumbleVolume — the rumble slider.
+    //  43. Sun from latitude (STILLSAND_SUN_FROM_LATITUDE_1) — only a biome
+    //      whose RM_SunHeatExtension opts in. kindFromElevationEnabled — the
+    //      cover that counts follows the sun angle (overhead above the
+    //      biome's threshold, low sun below). Off: the biome's fixed heat
+    //      kind. sandGlareEnabled / sandGlareStrength — open natural sand
+    //      keeps a floor of exposure even in shade; paved floors do not glare.
+    //      Off: shade on sand works as anywhere else. The heat-by-angle
+    //      offset rides the existing sunHeatStrength dial.
+    //  44. Glare-blind (STILLSAND_GLARE_BLIND_GOGGLES_1, RM_GlareBlind.cs) — only
+    //      a biome whose RM_SunHeatExtension names a glareBlindHediff.
+    //      glareBlindEnabled — off: nobody gains it; one already carried still
+    //      decays away. glareBlindRateMultiplier — how fast full glare blinds.
+    //      Immunity (a gene, or eye protection) is never a setting.
+    //  45. The mirage (STILLSAND_MIRAGE_CONDITION_1, RM_Mirage.cs) — only a biome
+    //      whose RM_SunHeatExtension names a mirageCondition, under a high sun.
+    //      mirageEnabled — off: the condition ends on the next recompute, no
+    //      shimmer band, no accuracy cut, no new "chasing the water" breaks (one
+    //      already running ends on its own). mirageBreakChanceMultiplier — how
+    //      often a heat-struck pawn breaks (0 = never; band and shimmer stay).
+    //  46. Footprints (FOOTPRINT_TRACK_GRID_1, RM_MapComponent_TrackGrid) — only
+    //      where a terrain or filth carries RM_TrackSurfaceExtension (the Warscar's
+    //      settled film, the Stillsand's sand). tracksEnabled — THE performance
+    //      switch: off, no step is recorded and the layer draws nothing (records
+    //      already laid stay saved and reappear when it is turned back on).
+    //      trackPoolCap — records kept per map (eviction: small animals first,
+    //      then oldest; recent humanlike and large prints kept). trackPrintOpacity.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -322,6 +364,10 @@ namespace RimMandrake.CreatureBehaviors
         public static bool sightBlockRangedFire = true;
         public static int sightBlockCellsNeeded = 1;
         public static bool shadowFollowEnabled = true;
+        public static bool movingShadeEnabled = true;
+        public static bool heatSoundscapeEnabled = true;
+        public static float heatSoundscapeVolume = 1f;
+        public static bool creatureHeatSoundsEnabled = true;
         public static bool pinnedSunEnabled = true;
         public static float pinnedSunSkyStrength = 1f;
         public static bool falseShadeAmbushEnabled = true;
@@ -337,6 +383,19 @@ namespace RimMandrake.CreatureBehaviors
         public static bool shadeHopEnabled = true;
         public static float shadeHopRangeMultiplier = 1f;
         public static bool dashRingEnabled = true;
+        public static bool sandSwimEnabled = true;
+        public static bool sandSwimDroidImmunity = true;
+        public static float sandSwimRumbleVolume = 1f;
+        public static bool kindFromElevationEnabled = true;
+        public static bool sandGlareEnabled = true;
+        public static float sandGlareStrength = 1f;
+        public static bool glareBlindEnabled = true;
+        public static float glareBlindRateMultiplier = 1f;
+        public static bool mirageEnabled = true;
+        public static float mirageBreakChanceMultiplier = 1f;
+        public static bool tracksEnabled = true;
+        public static int trackPoolCap = RM_TrackPool.DefaultCapacity;
+        public static float trackPrintOpacity = 0.7f;
 
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 2400f;
@@ -401,6 +460,10 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sightBlockRangedFire, "sightBlockRangedFire", true);
             Scribe_Values.Look(ref sightBlockCellsNeeded, "sightBlockCellsNeeded", 1);
             Scribe_Values.Look(ref shadowFollowEnabled, "shadowFollowEnabled", true);
+            Scribe_Values.Look(ref movingShadeEnabled, "movingShadeEnabled", true);
+            Scribe_Values.Look(ref heatSoundscapeEnabled, "heatSoundscapeEnabled", true);
+            Scribe_Values.Look(ref heatSoundscapeVolume, "heatSoundscapeVolume", 1f);
+            Scribe_Values.Look(ref creatureHeatSoundsEnabled, "creatureHeatSoundsEnabled", true);
             Scribe_Values.Look(ref pinnedSunEnabled, "pinnedSunEnabled", true);
             Scribe_Values.Look(ref pinnedSunSkyStrength, "pinnedSunSkyStrength", 1f);
             Scribe_Values.Look(ref falseShadeAmbushEnabled, "falseShadeAmbushEnabled", true);
@@ -416,6 +479,19 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref shadeHopEnabled, "shadeHopEnabled", true);
             Scribe_Values.Look(ref shadeHopRangeMultiplier, "shadeHopRangeMultiplier", 1f);
             Scribe_Values.Look(ref dashRingEnabled, "dashRingEnabled", true);
+            Scribe_Values.Look(ref sandSwimEnabled, "sandSwimEnabled", true);
+            Scribe_Values.Look(ref sandSwimDroidImmunity, "sandSwimDroidImmunity", true);
+            Scribe_Values.Look(ref sandSwimRumbleVolume, "sandSwimRumbleVolume", 1f);
+            Scribe_Values.Look(ref kindFromElevationEnabled, "kindFromElevationEnabled", true);
+            Scribe_Values.Look(ref sandGlareEnabled, "sandGlareEnabled", true);
+            Scribe_Values.Look(ref sandGlareStrength, "sandGlareStrength", 1f);
+            Scribe_Values.Look(ref glareBlindEnabled, "glareBlindEnabled", true);
+            Scribe_Values.Look(ref glareBlindRateMultiplier, "glareBlindRateMultiplier", 1f);
+            Scribe_Values.Look(ref mirageEnabled, "mirageEnabled", true);
+            Scribe_Values.Look(ref mirageBreakChanceMultiplier, "mirageBreakChanceMultiplier", 1f);
+            Scribe_Values.Look(ref tracksEnabled, "tracksEnabled", true);
+            Scribe_Values.Look(ref trackPoolCap, "trackPoolCap", RM_TrackPool.DefaultCapacity);
+            Scribe_Values.Look(ref trackPrintOpacity, "trackPrintOpacity", 0.7f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -654,6 +730,10 @@ namespace RimMandrake.CreatureBehaviors
                 "On: a tagged small commensal actively tracks and follows the nearest large "
               + "shadow-casting host creature, staying in its moving shadow. Off: it stops seeking "
               + "one out and just wanders normally — nothing stops it standing near a host by chance.");
+            list.CheckboxLabeled("Giants cast moving shade", ref movingShadeEnabled,
+                "On: a giant built to cast shade (the Long Shade's gloomcast) throws a real shadow that "
+              + "moves with it. Anything looking for shade can shelter in it, and it cools whoever stands "
+              + "in it like the shadow of a rock. Off: its shadow is only something its riders follow.");
             list.GapLine();
 
             list.CheckboxLabeled("Pinned sun (golden hour)", ref pinnedSunEnabled,
@@ -705,6 +785,52 @@ namespace RimMandrake.CreatureBehaviors
                 list.CheckboxLabeled("  Back-to-shade ring", ref dashRingEnabled,
                     "Draws a line on the ground around a selected drafted colonist, showing how far they "
                   + "can go and still get back into shade before heatstroke sets in.");
+                list.CheckboxLabeled("  Heat you can hear", ref heatSoundscapeEnabled,
+                    "On a land built with it (the Long Shade): sunlit ground and shade sound different, "
+                  + "keyed to where the camera is looking, not to your people. Off: no heat sound bed.");
+                if (heatSoundscapeEnabled)
+                {
+                    list.Label("    Heat sound volume: " + heatSoundscapeVolume.ToStringPercent());
+                    heatSoundscapeVolume = list.Slider(heatSoundscapeVolume, 0f, 2f);
+                }
+                list.CheckboxLabeled("  Herd calls and giant footfalls", ref creatureHeatSoundsEnabled,
+                    "On a land built with it: a herd animal may call out at the edge of shade before it "
+                  + "sprints, and a giant's footfalls (the gloomcast's) carry further than you can see. "
+                  + "Off: both are silent.");
+                list.CheckboxLabeled("  Cover follows the sun's height", ref kindFromElevationEnabled,
+                    "On a land whose sun height comes from where it sits on the planet (the Stillsand): "
+                  + "On: where the sun stands high, roofs and parasols protect; where it stands low, only "
+                  + "the shade behind a wall or rock does. Off: the land's one fixed rule applies everywhere.");
+                list.CheckboxLabeled("  Sand glare", ref sandGlareEnabled,
+                    "On: open sand throws the sun back up, so standing on it in shade still heats you a "
+                  + "little. Paved floors do not glare, so a paved patch of shade is fully cool. "
+                  + "Off: shade on sand works as anywhere else.");
+                if (sandGlareEnabled)
+                {
+                    list.Label("    Sand glare strength: " + sandGlareStrength.ToStringPercent());
+                    sandGlareStrength = list.Slider(sandGlareStrength, 0f, 2f);
+                }
+                list.CheckboxLabeled("  Glare-blind", ref glareBlindEnabled,
+                    "On a land built with it (the Stillsand): people standing in full glare slowly lose "
+                  + "sight, and get it back in shade or indoors. Sun goggles (or any goggles that keep "
+                  + "out glare) stop it, and some peoples are born with eyes that never need them. "
+                  + "Animals are not affected. Off: nobody is glare-blinded.");
+                if (glareBlindEnabled)
+                {
+                    list.Label("    How fast glare blinds: " + glareBlindRateMultiplier.ToStringPercent());
+                    glareBlindRateMultiplier = list.Slider(glareBlindRateMultiplier, 0f, 3f);
+                }
+                list.CheckboxLabeled("  The mirage", ref mirageEnabled,
+                    "On a land built with it (the Stillsand), under a high sun: the far edge of the map "
+                  + "shimmers with water that is not there, the shimmer spoils long shots taken from full "
+                  + "sun, and someone suffering heatstroke may set off walking for the water. They stay on "
+                  + "the map: they come to, collapse, or stop when a drafted friend reaches them, and you "
+                  + "get a letter either way. Off: none of it.");
+                if (mirageEnabled)
+                {
+                    list.Label("    How often the heat-struck chase the water: " + mirageBreakChanceMultiplier.ToStringPercent());
+                    mirageBreakChanceMultiplier = list.Slider(mirageBreakChanceMultiplier, 0f, 3f);
+                }
             }
             list.GapLine();
 
@@ -719,6 +845,37 @@ namespace RimMandrake.CreatureBehaviors
             list.CheckboxLabeled("Sun shields cast shade", ref sunShieldEnabled,
                 "On: a standing sun shield throws shade on its far side from the sun. The one piece "
                 + "that works under a low sun; only modest under an overhead one. Off: it casts no shade.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Sand swimmers go under the sand", ref sandSwimEnabled,
+                "On: creatures built to swim through loose sand (the vekka, the sand stalker, the krayt) "
+              + "sink out of sight on sand, leaving a dust wake and a rumble, and burst up when they "
+              + "strike, reach rock or are hit. Hard ground stops them. Off: they walk the surface "
+              + "like any animal.");
+            if (sandSwimEnabled)
+            {
+                list.CheckboxLabeled("  Droids are invisible to swimmers", ref sandSwimDroidImmunity,
+                    "On: nothing under the sand goes after a pawn with no water in it, so droids and "
+                  + "mechanoids can cross, fish and haul where nothing alive can. Off: swimmers attack them too.");
+                list.Label("  Rumble volume: " + sandSwimRumbleVolume.ToStringPercent());
+                sandSwimRumbleVolume = list.Slider(sandSwimRumbleVolume, 0f, 2f);
+            }
+            list.GapLine();
+
+            list.CheckboxLabeled("Footprints (performance switch)", ref tracksEnabled,
+                "On ground built to take prints (the Warscar's settled film, the Stillsand's sand), "
+              + "everything that walks leaves prints pointing the way it went, invisible things "
+              + "included. They stay until that land's own wind or dunes wipe them. Off: no prints "
+              + "are recorded or drawn. This is the switch to flip if a big map runs slow.");
+            if (tracksEnabled)
+            {
+                list.Label("  Prints kept per map: " + trackPoolCap
+                         + " (when full, small animals' prints go first, then the oldest)");
+                trackPoolCap = Mathf.RoundToInt(list.Slider(trackPoolCap, 1000f, 20000f) / 500f) * 500;
+                if (trackPoolCap < 1000) { trackPoolCap = 1000; }
+                list.Label("  Print opacity: " + trackPrintOpacity.ToStringPercent());
+                trackPrintOpacity = list.Slider(trackPrintOpacity, 0.1f, 1f);
+            }
 
             list.End();
             lastContentHeight = list.CurHeight + 12f;
@@ -733,6 +890,19 @@ namespace RimMandrake.CreatureBehaviors
         public RM_CreatureBehaviorsMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_CreatureBehaviorsSettings>();
+        }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            // Footprints: apply a new cap and redraw with the new opacity / on-off now.
+            if (Current.ProgramState != ProgramState.Playing || Find.Maps == null) return;
+            foreach (Map map in Find.Maps)
+            {
+                RM_MapComponent_TrackGrid grid = RM_MapComponent_TrackGrid.For(map);
+                grid?.ApplyCapacitySetting();
+                map.mapDrawer.WholeMapChanged(RM_TrackDefOf.RM_TrackPrints);
+            }
         }
 
         public override string SettingsCategory()

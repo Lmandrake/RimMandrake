@@ -1033,7 +1033,6 @@
         </capacities>
         <power>5</power>
         <cooldownTime>1.8</cooldownTime>
-        <linkedBodyPartsGroup>Jaw</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
@@ -1565,7 +1564,6 @@
         </capacities>
         <power>13</power>
         <cooldownTime>2.0</cooldownTime>
-        <linkedBodyPartsGroup>Tail</linkedBodyPartsGroup>
       </li>
       <li>
         <label>claw</label>

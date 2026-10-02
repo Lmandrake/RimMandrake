@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_CoolingDraught.xml          Stillsand - STILLSAND_STILL_COOLING_DRAUGHT_1
+
+  "Drink the still" (stillsand_turn3_development_2026-09-30.md §2.7 counter 4): a drink of still
+  water gives a cooling draught, a VANILLA stat offset (ComfyTemperatureMax +8 C) for about six
+  hours (15000 ticks). One kind of heat: this widens the vanilla comfortable range, so it delays
+  vanilla Heatstroke; it is not a sun hediff and touches no sun-heat code.
+
+  Wiring is owed to STILLSAND_GLASS_LENS_CHAIN_1 spec 5, which builds the solar still: its water
+  output carries an IngestionOutcomeDoer_GiveHediff naming RM_CoolingDraught (severity 1). No
+  still and no still water exist yet, so nothing gives this hediff today.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_CoolingDraught</defName>
+    <label>cooling draught</label>
+    <description>A long drink of cool still water. The body sheds heat more easily for a few hours.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.6, 0.85, 1.0)</defaultLabelColor>
+    <isBad>false</isBad>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>15000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <statOffsets>
+          <ComfyTemperatureMax>8</ComfyTemperatureMax>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

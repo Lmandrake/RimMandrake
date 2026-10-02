@@ -1,0 +1,223 @@
+{
+ "biome": "RM_Cauldron",
+ "samples": [
+  {
+   "t": 20,
+   "ticks": 25514,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 18
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 41,
+   "ticks": 31689,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 18
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 61,
+   "ticks": 39035,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 18
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 82,
+   "ticks": 45857,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 18
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 102,
+   "ticks": 53946,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 18
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 124,
+   "ticks": 60081,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 17
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 144,
+   "ticks": 67445,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 16
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 165,
+   "ticks": 74864,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 14
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 186,
+   "ticks": 81086,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 13
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 206,
+   "ticks": 88381,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 14
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 227,
+   "ticks": 94763,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 14
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 247,
+   "ticks": 99695,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 12
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 268,
+   "ticks": 104880,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 14
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 289,
+   "ticks": 109135,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 14
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 309,
+   "ticks": 114276,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 14
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 330,
+   "ticks": 119528,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 14
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 351,
+   "ticks": 124529,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 12
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 371,
+   "ticks": 131102,
+   "weather": "RM_VapourBank",
+   "conditions": [],
+   "extra": {
+    "hediffs": {},
+    "pawns": 12
+   },
+   "terrainDelta": {}
+  }
+ ],
+ "terrain0": {
+  "RM_CauldronSoil": 34263,
+  "RM_BrineEncasement_Rough": 12896,
+  "Granite_Rough": 7084,
+  "Gravel": 5774,
+  "RM_CauldronSoilRich": 1816,
+  "AncientConcrete": 220,
+  "AM_KemeticTileSlate": 115,
+  "AM_SteampunkTileSandstone": 87,
+  "OuterRim_StoneHex_Marble": 76,
+  "FT_Concrete": 47,
+  "BrokenAsphalt": 30,
+  "AM_KemeticTileMudstone": 24,
+  "AM_KemeticTileSandstone": 23,
+  "TileSandstone": 21,
+  "AM_MesoamericanTilePristineLimestone": 13,
+  "AM_FlagstonePristineLimestone": 9,
+  "TileGranite": 1,
+  "AM_JewishTileCragstone": 1
+ }
+}

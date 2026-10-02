@@ -25,7 +25,7 @@ namespace RimMandrake.Ninefold
         Rekko,     // of the Second Hand - salvage, repair
         TaBaa,     // the Unrooted - flight, the refusal to root
         Zizzik,    // the Spark-Maker - malfunction, betrayal, bad luck
-        Shkaar,    // the All-Searing - evil sun, exposure (EVIL god)
+        Shkaar,    // the All-Searing - the searing sun, exposure (a dangerous, hungry god)
         Ozzik,     // the Shamed - ambition, pride, grief (THE TRAP)
     }
 

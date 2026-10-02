@@ -1,0 +1,138 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.107 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.622800 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Mod RimUtinni: Aftermath Rites dependency (mandrake.rm.aftermath) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Inhabited (Ash'karr) dependency (mandrake.rm.inhabited) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Weather Suite (Ash'karr) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Droid Repair Jobs dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Environmental Hazards Kit dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Fever Wood dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Fever Wood dependency (mandrake.rm.environmentalhazards) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Flooded Canyon dependency (mandrake.rm.flowworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimStarWars: Imperial Graffiti dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Greentide dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Greentide Raid Ant dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Hostile Flora dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod JawaVoice (SpeakUp reskin) dependency (JPT.speakup) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Leaning Scrub dependency (mandrake.rm.environmentalhazards) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Propane Lake Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Pyrelands Mechanics dependency (mandrake.rm.pyrelands) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Pyrelands Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod The Rites dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: the Rust Cathedral dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Rust Cathedral Roaches dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake Sacred Marks dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Scarlands Ladder dependency (mandrake.rm.lorestages) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rsw.swbestiary) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Shokk dependency (mandrake.rm.webwork) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (OskarPotocki.VanillaFactionsExpanded.Core) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimStarWars: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (OskarPotocki.VFE.Insectoid2) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (sarg.alphaanimals) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Terminal Biomes dependency (mandrake.rm.luminouspigment) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: The Forge dependency (mandrake.rm.environmentalhazards) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: The Rot dependency (mandrake.rm.creaturebehaviors) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: The Rot dependency (mandrake.rm.environmentalhazards) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni Patches (Jawa campaign) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Colony Visibility dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Weeping Stones dependency (mandrake.rm.environmentalhazards) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Exception loading from System.Xml.XmlElement: System.MissingMethodException: Default constructor not found for type System.String
+  at System.RuntimeType.CreateInstanceMono (System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00076] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceSlow (System.Boolean publicOnly, System.Boolean wrapExceptions, System.Boolean skipCheckThis, System.Boolean fillCache) [0x00009] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.RuntimeType.CreateInstanceDefaultCtor (System.Boolean publicOnly, System.Boolean skipCheckThis, System.Boolean fillCache, System.Boolean wrapExceptions, System.Threading.StackCrawlMark& stackMark) [0x00027] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic, System.Boolean wrapExceptions) [0x00020] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type, System.Boolean nonPublic) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Activator.CreateInstance (System.Type type) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0045c] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXmlReflection[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DirectXmlToObject.ObjectFromXml[T] (System.Xml.XmlNode xmlRoot, System.Boolean doPostLoad) [0x0060e] in <61e4173561894da49d210260257b5097>:0 
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000002707650B0A0.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-00000270768961E0.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 56 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=155 elapsedMs=156
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=156
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=156 elapsedMs=156
+[RimMandrake: The Contagion] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="AA_RedGoo"]/comps) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Contagion\Patches\RedGooSpawnsUnfinished.xml
+Could not resolve cross-reference: No Verse.ThingDef named AB_BloodBouquet found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named GU_RichAlienSand found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.TerrainDef named GU_AlienSandFine found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_GlobularPlant found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_HalfAlienTree found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_AlienTree found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named GU_AlienSandFine found to give to RimWorld.BiomeDef RM_Contagion
+Could not resolve cross-reference: No Verse.TerrainDef named GU_AlienSandFine found to give to RimWorld.BiomeDef RM_Contagion
+Could not resolve cross-reference: No Verse.TerrainDef named GU_AlienSandFine found to give to RimWorld.BiomeDef RM_Contagion
+Could not resolve cross-reference: No Verse.ThingDef named AB_AlienGrass found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.TerrainDef named GU_AlienSand found to give to RimWorld.TerrainThreshold RimWorld.TerrainThreshold
+Could not resolve cross-reference: No Verse.ThingDef named AB_TentacularPlant found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_RedPlantsTall found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_RedLeaves found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not resolve cross-reference: No Verse.ThingDef named AB_AlienTree_Polluted found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+Could not load Texture2D at 'Things/Item/Special/Genepack' for def 'RM_GenomeSample' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 97 unused Assets to reduce memory usage. Loaded Objects now: 26498.
+Total: 127.933600 ms (FindLiveObjects: 0.818000 ms CreateObjectMapping: 0.885300 ms MarkObjects: 125.971600 ms  DeleteObjects: 0.258500 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=24 elapsedMs=7028
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=305 elapsedMs=7334
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=7334
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=7335
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=7336
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=7336
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=7336
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=2 elapsedMs=7338
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=4 elapsedMs=7342
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=7343
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=1 elapsedMs=7344
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=7347
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=30 elapsedMs=7378
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=349 elapsedMs=7378
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=31 elapsedMs=7379
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: 2abb648069134a24ab05e0abc04b755d

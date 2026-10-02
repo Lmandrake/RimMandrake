@@ -37,8 +37,8 @@ merge of the sitting's own "pirrik" filler with RSW_GlitterBird, which is
 retired and deleted, since "glitter-bird" is descriptive English, not canon
 Star Wars IP (Q11a), and so belongs cast inline here rather than behind the
 Utinni patch layer. Native wild fauna: JOE_Landopus, RM_Qorrax (renamed from
-JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified; absorbed
-non-Star-Wars donor fauna, own defs, §7 Q9), plus RM_Bokka, RM_Ossik, RM_Kudda,
+JOE_Cephalope; its def lives in mandrake.rm.stillsand, so the row is guarded
+MayRequire="mandrake.rm.stillsand"), plus RM_Bokka, RM_Ossik, RM_Kudda,
 RM_Thurra, RM_Vosska, RM_Khorrak, RM_Ommok, RM_Ulgga, RM_Jellypot,
 RM_TruffleMole, RM_GreatDevourer, RM_Groundrunner, RM_MatureFleshbeast,
 RM_Gloomcast (the former shade whale, RULED name — Q5), RM_Sollak, RM_Gennok,

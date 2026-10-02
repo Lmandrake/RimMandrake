@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GlassChain_Items.xml                 RimMandrake — STILLSAND_GLASS_LENS_CHAIN_1 §1-4
+
+  Sand to glass to lens. Owner, typed (volley turn 2): "the very fine sand of this region is
+  extremely high quality and can be smelted into a fine glass fit for lenses."
+
+    RM_GlassSand    shovelled drift. Every drift is stock (MovingDunes' clear-yield, bound to
+                    RM_Stillsand in MovingDunes/Patches/BiomeBindings.xml).
+    RM_FineSand     the owner's "simply Fine Sand": a trade commodity; one of its uses is
+                    lens-grade glass. The sieve that makes it from glass sand is NOT built yet
+                    (feasibility reported on the item; owner picks chore vs Sand Sieve).
+    RM_SunGlass     plain glass from the sun furnace. One stuff, one stat line, one market
+                    value, provisional until DESIGN_MATERIALS_REVIEW_1.
+    RM_LensGlass    lens-grade glass from fine sand. Art: reuses the sun-glass icon, tinted
+                    (no job of its own).
+    RM_PrecisionLens / RM_PearlLens   ground at the lens bench. The krayt lens is RSW tier
+                    (an RSW patch recipe), not built here.
+
+  Art: artpipe jobs RM_GlassSand, RM_LensSand (delivers the fine-sand icon; filed before the
+  rename), RM_SunGlass, RM_PrecisionLens, RM_PearlLens. Each texPath is where that art lands.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GlassSand</defName>
+    <label>glass sand</label>
+    <description>Pale, clean drift sand shovelled off a dune field. The grains are almost pure silica, worn round by the wind, with very little clay or iron in them. A sun furnace melts it into plain glass, and a sieve can pull the finest grains out of it.</description>
+    <graphicData>
+      <!-- art pending: artpipe RM_GlassSand -->
+      <texPath>Things/Item/Resource/RM_GlassSand</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>75</stackLimit>
+    <useHitPoints>false</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>0.3</MarketValue>
+      <Mass>0.5</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_FineSand</defName>
+    <label>fine sand</label>
+    <description>The finest grains of desert silica, sifted clean and graded small. Traders buy it by the sack: glassmakers want it for high-quality glass, and it has other uses besides. A sun furnace melts it into lens glass.</description>
+    <graphicData>
+      <!-- art pending: artpipe RM_LensSand (filed under the old name) -->
+      <texPath>Things/Item/Resource/RM_FineSand</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>75</stackLimit>
+    <useHitPoints>false</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>2.2</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SunGlass</defName>
+    <label>sun glass</label>
+    <description>Thick, clear glass with a faint gold tint, melted out of desert sand by focused sunlight. It is good for glazing, still lids and ornament, and it builds well. It is not clear enough to grind into a lens.</description>
+    <graphicData>
+      <!-- art pending: artpipe RM_SunGlass -->
+      <texPath>Things/Item/Resource/RM_SunGlass</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Stone_Drop</soundInteract>
+    <soundDrop>Stone_Drop</soundDrop>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>2.8</MarketValue>
+      <Mass>0.5</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Beauty>1</Beauty>
+      <SharpDamageMultiplier>0.4</SharpDamageMultiplier>
+      <BluntDamageMultiplier>0.5</BluntDamageMultiplier>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <burnableByRecipe>false</burnableByRecipe>
+    <smeltable>false</smeltable>
+    <!-- Provisional single stat line (DESIGN_MATERIALS_REVIEW_1 rules the final one). -->
+    <stuffProps>
+      <categories>
+        <li>Stony</li>
+      </categories>
+      <commonality>0</commonality>
+      <color>(222,208,160)</color>
+      <appearance>Bricks</appearance>
+      <stuffAdjective>sun-glass</stuffAdjective>
+      <soundImpactBullet>BulletImpact_Ground</soundImpactBullet>
+      <soundMeleeHitSharp>MeleeHit_Stone</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Stone</soundMeleeHitBlunt>
+      <statOffsets>
+        <WorkToBuild>120</WorkToBuild>
+      </statOffsets>
+      <statFactors>
+        <MaxHitPoints>0.8</MaxHitPoints>
+        <Beauty>1.6</Beauty>
+        <Flammability>0</Flammability>
+        <WorkToBuild>3</WorkToBuild>
+        <WorkToMake>1.2</WorkToMake>
+        <MarketValue>1.1</MarketValue>
+      </statFactors>
+      <canSuggestUseDefaultStuff>false</canSuggestUseDefaultStuff>
+    </stuffProps>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_LensGlass</defName>
+    <label>lens glass</label>
+    <description>Water-clear glass melted from fine sand, with no bubbles and no streaks in it. A lens bench grinds it into precision optics.</description>
+    <graphicData>
+      <!-- no job of its own: the sun-glass icon, cooled to a clear blue-white -->
+      <texPath>Things/Item/Resource/RM_SunGlass</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(215,235,255)</color>
+    </graphicData>
+    <soundInteract>Stone_Drop</soundInteract>
+    <soundDrop>Stone_Drop</soundDrop>
+    <stackLimit>50</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>9</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Beauty>2</Beauty>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <burnableByRecipe>false</burnableByRecipe>
+    <smeltable>false</smeltable>
+    <techLevel>Neolithic</techLevel>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_PrecisionLens</defName>
+    <label>precision lens</label>
+    <description>A convex lens ground and polished from lens glass and set in a thin metal rim. It is accurate enough for scopes and sighting optics, and for the condensers of high-performance solar stills.</description>
+    <graphicData>
+      <!-- art pending: artpipe RM_PrecisionLens -->
+      <texPath>Things/Item/Resource/RM_PrecisionLens</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <stackLimit>25</stackLimit>
+    <healthAffectsPrice>true</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>55</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <Beauty>3</Beauty>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <techLevel>Medieval</techLevel>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_PearlLens</defName>
+    <label>pearl lens</label>
+    <description>A lens ground around a glass pearl from the deep sand, milky at the rim and perfectly clear at the centre. A pearl lens gathers light better than any lens ground from glass. Set in a solar still, it doubles the still's output.</description>
+    <graphicData>
+      <!-- art pending: artpipe RM_PearlLens -->
+      <texPath>Things/Item/Resource/RM_PearlLens</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>true</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>140</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <Beauty>6</Beauty>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <techLevel>Medieval</techLevel>
+  </ThingDef>
+
+</Defs>

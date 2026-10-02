@@ -1,0 +1,18 @@
+{
+ "background": "opaque",
+ "canvas": {
+  "height": 256,
+  "width": 256
+ },
+ "channel": "codex",
+ "created": "2026-09-30T11:42:59Z",
+ "drawsize": 1.0,
+ "facing": null,
+ "facings": [],
+ "id": "RM_Swale_v2",
+ "priority": 80,
+ "prompt": "RimWorld terrain tile, seen straight down: one cell of the swale, a hand-graded seep canal. The cell is filled edge to edge by a flat channel of brown-clear, faintly red-tinged water with a gentle diagonal ripple, set flush into the ground. A thin inset lip of fitted stone and packed clay runs along the two long edges, pierced by small dark weep-holes, and just beyond each lip a narrow darker, moss-green seep line where the water feeds the bank. No walls standing up, no cast shadow, no rounded banks, no object centred on a background. The tile must repeat seamlessly left-right and top-bottom.",
+ "reference": null,
+ "rimflow_item_id": "SWALE_CANAL_ART_REFERENCE_1",
+ "style_notes": "visual target is the live FlowWorks canal shot 2026-09-30 (Transient/swale_canal_reference_2026-09-30/SPEC.md): a flush, cell-filling water channel with crisp cell-stepped edges, top-down, full-bleed, seamless on all four edges, read as terrain rather than a structure; cracked lands register: cracked-clay grey-white and fitted stone, red-brown water, moss green confined to the seep lines, hard dry light; realistic painted illustration, matte natural stone and clay, never cartoonish, no outlines"
+}

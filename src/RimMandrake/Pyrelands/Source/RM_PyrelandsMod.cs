@@ -195,13 +195,15 @@ namespace RimMandrake.Pyrelands
             list.CheckboxLabeled("Mod enabled", ref pyrelandsEnabled,
                 "Off: RM_Pyrelands still loads and can still be assigned to a tile, but every "
               + "mechanic below stops mattering (their own toggles still apply if this is back "
-              + "on). Biome tile placement has its own separate switch, further down.");
+              + "on), except fulgurites on ordinary sand outside the Pyrelands' own ground. Biome tile placement has its own separate switch, further down.");
             list.GapLine();
 
             list.Label("Fulgurite");
             list.CheckboxLabeled("Lightning leaves fulgurite", ref fulguriteEnabled,
-                "A strike on sand-family ground has a chance to leave a fulgurite behind. "
-              + "Off: lightning strikes normally, nothing spawns.");
+                "A strike on sand-family ground (sand, soft sand, deep sand, scorched sand) has a "
+              + "chance to leave a fulgurite behind, in any biome; the Stillsand's dry "
+              + "thunderstorms leave them too. Only strikes on the Pyrelands' own ground also need "
+              + "\"Mod enabled\" above. Off: lightning strikes normally, nothing spawns.");
             if (fulguriteEnabled)
             {
                 list.Label("Chance per strike: " + fulguriteChance.ToString("0%"));

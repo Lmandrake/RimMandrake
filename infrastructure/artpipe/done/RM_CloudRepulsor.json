@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_CloudRepulsor",
+  "priority": 70,
+  "prompt": "RimWorld game building sprite: the cloud repulsor, a squat armoured field device of advanced genetic-cult manufacture \u2014 a low broad-shouldered housing of matte alloy panels with sealed conduit ribs and a ringed emitter throat at the crown, projecting a brilliant vertical purple beam straight up, the beam crisp-edged and intense with a faint violet bloom where it leaves the throat. It reads as serious fielded hardware, not scrap.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "a deployable Helix device that punches a hole in the storm cloud; the read is a squat armoured emitter and its brilliant vertical purple beam; hardware register against the storm-red biome: matte gunmetal and off-white alloy, violet beam the single strong light source, dim storm light elsewhere; realistic painted illustration, grounded believable industrial design, matte surface texture, never cartoonish, no outlines"
+}

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T11:00:41Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Warcasket",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: the warcasket, a full-body heavy survival suit laid out flat as an apparel item \u2014 a crude riveted patchwork of scavenged plate, thick rubberized joints, a bulky sealed chest unit with gauges, a heavy rounded helmet with a small dark faceplate, oversized boots and gauntlets. It reads as a primitive tank built around a person: improvised, over-engineered, welded from salvage rather than manufactured, meant to survive extreme heat, cold, vacuum and poison at once rather than move quickly. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "WARCASKET_SUIT_CLASS_1",
+  "style_notes": "item icon for the warcasket, a cross-cutting heavy survival-suit apparel class; the read is a bulky riveted scavenged-plate suit, thick and slow-looking, with a rounded helmet and sealed chest unit; rust-brown and scorched-grey scavenged metal, patched and welded, a few mismatched plates in different tones showing it was assembled from scrap; realistic painted illustration, grounded believable improvised engineering, matte worn-metal surface texture with rivets and weld seams, never cartoonish, no outlines"
+}

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 128,
+    "width": 128
+  },
+  "channel": "codex",
+  "created": "2026-10-01T04:09:08Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_PoolPhaseIcon_Bloom",
+  "priority": 55,
+  "prompt": "RimWorld game map-overlay icon: a simple bold star-burst symbol in a flat solid colour with a dark outline-free edge shadow, readable at small size, meant to float over a pool cell so colour-blind players can tell the phase.",
+  "reference": null,
+  "rimflow_item_id": "WARSCAR_RAINBOW_POOLS_1",
+  "style_notes": "warscar register: an old battlefield where everyone already lost: grey slag terraces under a flat grey overcast sky, soft diffuse top light, no sun glare, no hard cast shadow and NO baked cast shadow on the ground; ash grey, gunmetal and old rust, with black glower varnish on metal; nothing green, nothing lush, nothing pastoral, no intact shiny treasure; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is IRIDESCENT WHITE: flat solid fill; overlay icon, readable silhouette is what matters"
+}

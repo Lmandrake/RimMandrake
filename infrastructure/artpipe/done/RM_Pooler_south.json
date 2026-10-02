@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-02T02:41:58Z",
+  "derive_from": "RM_Pooler_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Pooler_south",
+  "priority": 60,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game animal sprite: the pooler, a hydrocarbon animal of the Lantern Deeps. A creature that is a puddle. One cell, drawn as a rounded meniscus of pale-blue liquid with a raised centre, the way a drop sits on a cold plate, and in the centre a slowly rotating yellow core the size of a coin. No limbs, no skin edge that reads as solid \u2014 the rim is a soft gradient into the floor, and it should look wet. It moves by flowing: the sprite's rear edge thins and the front edge thickens as it goes, and it pours itself around obstacles. It leaves a brief darker-blue damp mark behind it that fades. House palette but colder and paler than the others; it is mostly solvent.",
+  "reference": null,
+  "rimflow_item_id": "LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1",
+  "style_notes": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; hydrocarbon life (owner's own remake brief): pale glowing blue skin, YELLOW hydrocarbon internal fluids (oil, wax, light gas) visible through it, never red blood, never fur, never an Earth animal; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is MERCURY-BLUE AND COIN GOLD: a liquid meniscus of silvery pale blue fading into the floor, a slow gold coin-sized core; bs~0.9, drawSize ~1.0. north facing is a true rear view seen from directly behind: no face or frontal features visible."
+}

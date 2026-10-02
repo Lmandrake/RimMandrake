@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-27T23:42:45Z",
+  "derive_from": "RM_Sollak_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Sollak_south",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld top-down game animal sprite: the sollak, a towering leggy pack giant \u2014 high shoulder hump like a walking mesa, long column legs, a broad flat back that casts a pool of shade beneath it; dusty ochre hide. Familiar four-limbed architecture with real eyes but no nameable Earth animal \u2014 it reads as a living shade structure that caravans walk beside.",
+  "reference": null,
+  "rimflow_item_id": "LONGSHADE_DESIGN_SITTING_1",
+  "style_notes": "huge herd beast, bs~4.0; the read is the mesa-flat shaded back; permanent golden hour: warm low raking side-light, amber/ochre/rust lit faces against long cool blue shadow; painterly vanilla-RimWorld animal art style"
+}

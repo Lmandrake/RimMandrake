@@ -166,7 +166,7 @@
 
   <!-- RUT_SeepStone — the §2A.rare headline prize. "A mineral concretion
        grown in the spring throat, the Stones beneath the oasis in
-       miniature" — the oasis sibling of RSW_GlassPearl (same ResourceBase
+       miniature" — the oasis sibling of RM_GlassPearl (same ResourceBase
        shape, MarketValue/Beauty per the doc's own numbers). -->
   <ThingDef ParentName="ResourceBase">
     <defName>RUT_SeepStone</defName>

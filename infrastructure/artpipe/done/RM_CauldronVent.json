@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T02:36:56Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_CauldronVent",
+  "priority": 70,
+  "prompt": "RimWorld game terrain-feature sprite: a cauldron vent, a breathing throat in the ground of a toxic chemical forest \u2014 a dark fissured opening in bare rock rimmed with concentric mineral-ring terracing laid down one exhale at a time, bone-white outer rings grading to a green-amber inner stain, condensate beading heavy on the downwind rim, a faint heat-shimmer waver suggested above the mouth. UNLIT: no flame anywhere \u2014 the gas is invisible except as shimmer and beading. It reads as the loudest place in a loud forest, the engine's mouth. Single feature, centered, viewed from above, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CAULDRON_BEDAZZLE_SITTING_1",
+  "style_notes": "the map-spawned vent ThingDef (defName RM_CauldronVent): leaks flammable toxic gas, cappable by the gas-tap scaffold, drunk from by the vexxiss; the read is mineral-ring terracing around a dark throat, shimmer not flame; HARD BAN: no fire, no glow, no smoke; cauldron register: a poison forest of glass and acid under chemical fog, the ground loud with slow-steam-engine chemistry; wet-lacquered black-green and char-brown darks, dark-crust purple-red film sheen, pale glass-crystal accents, sick green-amber ONLY where chemistry pools or beads or stains, condensate beading and mineral rings on every surface; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture with wet sheen, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

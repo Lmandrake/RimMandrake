@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 1024,
+    "width": 1024
+  },
+  "channel": "codex",
+  "created": "2026-10-01T04:09:06Z",
+  "drawsize": 10.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Totchak_east",
+  "priority": 60,
+  "prompt": "RimWorld game animal sprite: the totchak, a colossal armoured slag-eater standing \u2014 a vast low tortoise-like bulk whose back is crusted with fused slag, black glower varnish, broken masonry and stubs of old turret barrels grown into the shell, so it looks like a section of fortification that got up and walked; thick pillar legs, a small heavy head with grinding plates for jaws. Familiar giant-herbivore architecture but no nameable Earth tortoise.",
+  "reference": null,
+  "rimflow_item_id": "WARSCAR_FREE_TIER_BODY_1",
+  "style_notes": "warscar register: an old battlefield where everyone already lost: grey slag terraces under a flat grey overcast sky, soft diffuse top light, no sun glare, no hard cast shadow and NO baked cast shadow on the ground; ash grey, gunmetal and old rust, with black glower varnish on metal; nothing green, nothing lush, nothing pastoral, no intact shiny treasure; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is COKE BLACK AND CONCRETE: coke-black slag crust over pale concrete-grey masonry with oxidised copper-green barrel stubs; bs~14, drawSize ~10; familiar body architecture but never a nameable Earth animal; slow, unhurried; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the crusted fortification back and hind legs from behind"
+}

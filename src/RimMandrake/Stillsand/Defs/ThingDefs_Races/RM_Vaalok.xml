@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Vaalok.xml                           RimMandrake — STILLSAND_BEDAZZLE_CONTENT_1 §5
+
+  The vaalok, the free-tier pack giant (Q11). Every canon pack animal on this
+  biome rides the Utinni patch, so without a native one the standalone mod would
+  resolve allowedPackAnimals empty and no trader caravan would ever generate.
+  bs ~4.0: slow, water-holding, "mass IS the water balance sheet" (deep_desert §4).
+  Giant band, so it passes the size law where every donor pack candidate (Eopie
+  1.4, Jamel 1.9, Falumpaset 3.0) would not.
+
+  Wired into RM_Stillsand's allowedPackAnimals only: it is a trader's beast, not
+  roster wildlife.
+
+  ART: PLACEHOLDER. The aurrok render (a placid sail-backed giant, our own art) is
+  copied into Textures/Things/Pawn/Animal/RM_Vaalok. Real art is queued in
+  infrastructure/artpipe/art_lists/stillsand_content_fill.csv (RM_Vaalok, 3 facings).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vaalok</defName>
+    <label>vaalok</label>
+    <description>A slow, deep-chested giant that carries its water inside itself: a vaalok's bulk is a cistern, and a caravan that owns one crosses open sand on a ledger the heat cannot easily balance. Placid to the point of stupor, it will walk for days at one pace and kneel to be loaded. Nothing here hunts it twice.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>1200</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>999</ComfyTemperatureMax>
+      <CarryingCapacity>180</CarryingCapacity>
+      <FilthRate>14</FilthRate>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <packAnimal>true</packAnimal>
+      <baseBodySize>4.0</baseBodySize>
+      <baseHealthScale>3.0</baseHealthScale>
+      <baseHungerRate>0.45</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <useMeatFrom>Cow</useMeatFrom>
+      <trainability>Intermediate</trainability>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <roamMtbDays>4</roamMtbDays>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <lifeExpectancy>35</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.3</minAge></li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>Pawn_Muffalo_Wounded</soundWounded>
+          <soundDeath>Pawn_Muffalo_Death</soundDeath>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
+          <soundAngry>Pawn_Muffalo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vaalok</defName>
+    <label>vaalok</label>
+    <race>RM_Vaalok</race>
+    <combatPower>150</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vaalok/RM_Vaalok</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vaalok/RM_Vaalok</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Vaalok/RM_Vaalok</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

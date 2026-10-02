@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Sunbeam",
+  "priority": 70,
+  "prompt": "RimWorld game weapon sprite: the sunbeam, a handheld ultraviolet projector of advanced genetic-cult manufacture \u2014 a compact two-handed emitter with a broad flared lens hood, ribbed heat-shedding fins along the barrel, a sealed cell housing at the grip, lens glowing a cold white-violet as if holding a piece of clear sky. It reads as a precision tool turned weapon.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the handheld Helix UV projector - the clear sky made portable; the read is a flared-hood emitter with a cold white-violet lens; hardware register against the storm-red biome: matte gunmetal and off-white alloy, cold white-violet lens glow, no other glow; realistic painted illustration, grounded believable industrial design, matte surface texture, never cartoonish, no outlines"
+}

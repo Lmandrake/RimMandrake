@@ -51,6 +51,10 @@ namespace RimMandrake.LongShade
         /// sun graves at map generation. Map-generation only.</summary>
         public static bool sunGravesEnabled = true;
 
+        /// <summary>LONGSHADE_GPT_ENRICHMENT_1 §1: the landed gravship's shade draws
+        /// the wildlife in, rung by rung, and they scatter when a pilot takes the console.</summary>
+        public static bool shipfallCommonsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -58,6 +62,7 @@ namespace RimMandrake.LongShade
             Scribe_Values.Look(ref dewfringeShadeLineGateEnabled, "dewfringeShadeLineGateEnabled", true);
             Scribe_Values.Look(ref crawlerRoadEnabled, "crawlerRoadEnabled", true);
             Scribe_Values.Look(ref sunGravesEnabled, "sunGravesEnabled", true);
+            Scribe_Values.Look(ref shipfallCommonsEnabled, "shipfallCommonsEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -93,6 +98,14 @@ namespace RimMandrake.LongShade
               + "still carrying their load, too far from shade to walk out and back bare-headed but "
               + "within reach under a parasol. Salvage and something to read; they point nowhere. "
               + "Needs Creature Behaviors' sun heat and shade gear. Off: no graves on new maps.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Shipfall Commons (the ship as a refuge)", ref shipfallCommonsEnabled,
+                "After your gravship lands on a Long Shade map, its shadow becomes the biggest shade "
+              + "on the map and the wildlife notices: first small animals, then herds, then pirrik, "
+              + "and at last a gloomcast come to shelter round the hull. Nothing climbs aboard. When "
+              + "a colonist takes the pilot's console they scatter, with a message; launching is never "
+              + "held up. Off: wildlife ignores the ship.");
             list.GapLine();
 
             list.Label("Shade-seeking wander and contact venom");

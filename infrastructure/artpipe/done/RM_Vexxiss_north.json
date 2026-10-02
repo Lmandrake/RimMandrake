@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-29T02:36:55Z",
+  "derive_from": "RM_Vexxiss_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Vexxiss_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the vexxiss, a colossal solid giant of a toxic chemical forest \u2014 a slag-plated hill that walks: a vast low-slung body on massive pillar limbs, armored in layered plates of smelter-slag and bark-scab grown together, a graded row of pale crystal spine-fans standing down the back like vents on a boiler, a blunt eyeless prow of a head that is more intake than face \u2014 NO eyes anywhere on the body, it has never needed to see. Posture slow, mid-stride, patient, utterly solid. It reads as a piece of terrain that turned out to be alive. Absolutely nothing explosive-looking: no inner glow, no gas-bag translucence, no warning colours, no volatile distended volumes \u2014 it reads as stone and patience, never as ordnance. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CAULDRON_BEDAZZLE_SITTING_1",
+  "style_notes": "THE colossus of the Cauldron, bs~6.0, rendered large and high-fidelity so the scale carries in the pixels; the read is a slag-plated walking hill with crystal spine-fans, neutral and unhurried, never aggressive-posed; slag greys and char-browns, dark-crust purple-red film in the plate seams, pale glass-crystal fans as the accent, condensate beading on the lower plates; HARD BAN: no eyes, nothing explosive-looking, no glow-from-within, no wick, no bright warning colour; cauldron register: a poison forest of glass and acid under chemical fog, the ground loud with slow-steam-engine chemistry; wet-lacquered black-green and char-brown darks, dark-crust purple-red film sheen, pale glass-crystal accents, sick green-amber ONLY where chemistry pools or beads or stains, condensate beading and mineral rings on every surface; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture with wet sheen, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the vast plated back, spine-fans from behind and rear pillar limbs"
+}

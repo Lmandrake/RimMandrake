@@ -1,0 +1,51 @@
+{
+  "attempt_elapsed_s": 105.71741699799895,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 105.71741699799895,
+  "height": 1254,
+  "id": "scaldfloor_muddal_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 15.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w7/sessions/2026/09/26/rollout-2026-09-26T13-28-25-01a0df67-a0a9-7312-848d-2bd5e60c0443.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 13.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w7/sessions/2026/09/26/rollout-2026-09-26T13-24-57-01a0df64-718c-7c51-aa70-2d02a75687c9.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "returned 1254x1254, job asked for 512x512 \u2014 the image tool is known to ignore requested size; never a silent ok, reference or not",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "width": 1254,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1254,
+    "id": "scaldfloor_muddal_east",
+    "note": "Built-in image generation returned 1254x1254 instead of the required 512x512. Saved unchanged; resizing is prohibited by the worker contract.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_muddal_east\\scaldfloor_muddal_east.png",
+    "status": "fail",
+    "width": 1254
+  },
+  "worker_status": "size_mismatch",
+  "worker_stderr_tail": ": a\nmismatch between what you claimed and what the daemon measures is itself a\nsignal something is wrong with you, not just with the image.\n\n**Never:** edit outside your working directory \u00c2\u00b7 touch another job's files \u00c2\u00b7\ngenerate more than the one image asked for \u00c2\u00b7 leave your final message\nun-emitted. If you exit having captured NOTHING through `-o` \u00e2\u20ac\u201d no image, no\nmanifest \u00e2\u20ac\u201d that is the one outcome the daemon treats as an immediate,\nunambiguous failure of THIS request: it fails to `failed/` right away, it\ndoes not wait for you and does not reconcile it back to `pending/` for a\nretry (reconciliation is for a whole daemon PROCESS dying mid-run, a\ndifferent failure than your own turn ending with nothing to show for it).\n\u00c2\u00b7 put in the chat anything other than the manifest JSON itself.\n\n\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command \"Copy-Item -LiteralPath 'C:\\\\Users\\\\Mandrake\\\\.codex_workers\\\\artpipe\\\\w7\\\\generated_images\\\\01a0df67-a0a9-7312-848d-2bd5e60c0443\\\\exec-52bb316e-184c-4412-96dc-1cf50c26847f.png' -Destination 'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_muddal_east\\\\scaldfloor_muddal_east.png'; Add-Type -AssemblyName System.Drawing; \"'$img=[System.Drawing.Bitmap]::FromFile('\"'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_muddal_east\\\\scaldfloor_muddal_east.png'); \"'$alphas=@($img.GetPixel(0,0).A,$img.GetPixel($img.Width-1,0).A,$img.GetPixel(0,$img.Height-1).A,$img.GetPixel($img.Width-1,$img.Height-1).A); [pscustomobject]@{Width=$img.Width;Height=$img.Height;PixelFormat=$img.PixelFormat.ToString();CornerAlphas=($alphas -join '\"',');Exists=(Test-Path -LiteralPath 'D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_muddal_east\\\\scaldfloor_muddal_east.png')} | ConvertTo-Json -Compress; \"'$img.Dispose()' in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_muddal_east\n succeeded in 234ms:\n{\"Width\":1254,\"Height\":1254,\"PixelFormat\":\"Format32bppArgb\",\"CornerAlphas\":\"0,0,0,0\",\"Exists\":true}\n\ncodex\n{\"id\":\"scaldfloor_muddal_east\",\"status\":\"fail\",\"out\":\"D:\\\\Luke\\\\dev\\\\Rimworld\\\\infrastructure\\\\artpipe\\\\_artsrc\\\\scaldfloor_muddal_east\\\\scaldfloor_muddal_east.png\",\"width\":1254,\"height\":1254,\"has_alpha\":true,\"corners_transparent\":true,\"background_used\":\"transparent\",\"attempts\":1,\"note\":\"Built-in image generation returned 1254x1254 instead of the required 512x512. Saved unchanged; resizing is prohibited by the worker contract.\"}\ntokens used\n22,120\n\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scaldfloor_muddal_east/scaldfloor_muddal_east.png\n    1254x1254  rgba  818,124 bytes  (106s)\n"
+}

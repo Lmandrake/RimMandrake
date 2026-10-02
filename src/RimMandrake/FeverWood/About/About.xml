@@ -8,6 +8,11 @@
   </supportedVersions>
   <modDependencies>
     <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
       <packageId>mandrake.rm.environmentalhazards</packageId>
       <displayName>RimMandrake: Environmental Hazards</displayName>
       <steamWorkshopUrl />
@@ -19,6 +24,7 @@
     </li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>mandrake.rm.environmentalhazards</li>
     <li>mandrake.rm.creaturebehaviors</li>
   </loadAfter>

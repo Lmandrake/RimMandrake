@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-02T05:26:42Z",
+  "drawsize": 1.4,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Kethrel_Stage0_east",
+  "priority": 60,
+  "prompt": "RimWorld game animal sprite: the kethrel, a boneless hydrocarbon animal of the tar's surface, low and broad like a flattened slug-seal the size of a large dog, glossy tar-black skin with a faint oily amber sheen, no visible bones or limbs beyond a wide creeping foot-fringe and a blunt eyeless head-lobe with a pale grey feeding slit. It binds loose scrap into its skin as an armour shell with its own tar. Armour stage 0 of 4, BARE: no scrap at all, the smooth glossy body only. One creature, centered, full body.",
+  "reference": null,
+  "rimflow_item_id": "SUMP_KETHREL_BUILD_1",
+  "style_notes": "sump register: the planet's tar basin under a sun that never rises; every black (wet, glassy, matte), horizon amber, lamp gold, waxy grey-greens, derrick rust; bake NO cast shadow onto the ground; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; genuinely transparent alpha background; all four kethrel stage sprites must show the SAME animal and body outline, differing only in how much scrap it wears; palette anchor is GLOSSY TAR-BLACK with rust-and-steel scrap; bs~0.9, drawSize ~1.4. north facing is a true rear view seen from directly behind: no face or frontal features visible."
+}

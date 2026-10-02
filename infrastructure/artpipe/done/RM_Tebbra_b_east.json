@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:00:29Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Tebbra_b_east",
+  "priority": 70,
+  "prompt": "RimWorld game animal sprite: the tebbra, a knee-high quick grazer of shaded rocky hills \u2014 compact body with tight-coiled hindquarters built for short sprints between cover, strange lidless eye-band, faintly alien limb joints, dust-brown coat with a pale underside. Small, alert, huddled near shadow.",
+  "reference": null,
+  "rimflow_item_id": "LONGSHADE_DESIGN_SITTING_1",
+  "style_notes": "small dense-patch grazer, bs~0.35; the read is coiled sprint-readiness; permanent golden hour raking side-light; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner: too cartoonish and too cute/terran - more alien and realistic; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the back of the head and body"
+}

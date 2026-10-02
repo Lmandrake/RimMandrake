@@ -1,0 +1,61 @@
+{
+  "attempt_elapsed_s": 103.05054421100067,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "downscaled_from": "1254x1254",
+  "elapsed_s": 103.05054421100067,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_Kethrel_Stage1_east",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 70.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/10/01/rollout-2026-10-01T22-38-25-01a0fb1e-f646-7db0-8c5d-57c8cb58ede0.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 70.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/10/01/rollout-2026-10-01T22-33-07-01a0fb1a-1ad2-78c0-bc34-b8e3b6b4e02b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
+    "id": "RM_Kethrel_Stage1_east",
+    "note": "Image generated successfully, but both available resize/save attempts failed, so no compliant 256\u00d7256 workspace PNG was produced.",
+    "out": null,
+    "status": "fail",
+    "width": null
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "note: agent did not place the file; harvested exec-19eb0d96-50b5-45ea-8702-67f6325a327c.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_artsrc/RM_Kethrel_Stage1_east/RM_Kethrel_Stage1_east.png\n    1254x1254  rgba  796,682 bytes  (84s)\n"
+}

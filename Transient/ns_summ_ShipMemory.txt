@@ -1,0 +1,4 @@
+bioferrite_stockpile_reveal v=FAIL bland=True sweeps=2 ticks=700 surprises=0 aborted=[]
+   reveals_on_stockpile FAIL: ExpectationFailed: expected a 'She remembers the chains' letter after stockpiling 50 Bioferrite and waiting past the 600-tick check interval; letter_list had none matching
+assailant_signal_after_reveal v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]
+containment_gate_patch_wiring v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]

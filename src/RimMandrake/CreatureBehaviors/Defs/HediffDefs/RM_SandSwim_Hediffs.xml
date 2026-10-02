@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SandSwim_Hediffs.xml        CreatureBehaviors - STILLSAND_SAND_SWIM_KIT_1
+
+  The two hediffs RM_CompSandSwim manages. Any RM_SandSwimExtension may point at these
+  or author its own.
+
+  RM_SandSubmerged    vanilla HediffComp_Invisibility, the same machinery as
+                      RM_AquaticAmbushInvisibility. Untargetable and unseen while it holds.
+  RM_SandSwimmer      always on, hidden from the health tab. Its comp hears the swimmer's
+                      kills (Hediff.Notify_KilledPawn, called on the killer's hediffs) and
+                      lays the take funnel and the letter: no animal or pawn vanishes
+                      without a readable sign.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_SandSubmerged</defName>
+    <label>under the sand</label>
+    <description>Swimming under loose sand, out of sight. It surfaces to strike, on hard ground, or when struck.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>false</visibleToPlayer>
+        <fadeDurationTicks>40</fadeDurationTicks>
+        <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks>
+        <affectedByDisruptor>false</affectedByDisruptor>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_SandSwimmer</defName>
+    <label>sand swimmer</label>
+    <description>Swims under loose sand.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_SandSwimmer" />
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+</Defs>

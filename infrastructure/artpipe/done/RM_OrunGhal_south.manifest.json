@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 108.70583558699582,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 73.37871353503675,
+  "derive_from_palette_distance": 4.278033039398666,
+  "elapsed_s": 108.70583558699582,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_OrunGhal_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 67.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/10/01/rollout-2026-10-01T19-46-26-01a0fa81-8315-7361-92c8-84967a7ebddd.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 67.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/10/01/rollout-2026-10-01T15-52-44-01a0f9ab-8c49-7ca3-bc0d-f90d33afc479.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_OrunGhal_south",
+    "note": "Derived the same Orun-Ghal in a direct south-facing view, preserved its industrial-yellow, bone, steel, and crystal-blue identity, and saved it at exactly 256\u00d7256.",
+    "out": "D:\\Luke\\dev\\RimMandrake\\infrastructure\\artpipe\\_artsrc\\RM_OrunGhal_south\\RM_OrunGhal_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_artsrc/RM_OrunGhal_south/RM_OrunGhal_south.png\n    256x256  rgba  100,379 bytes  (105s)\n"
+}

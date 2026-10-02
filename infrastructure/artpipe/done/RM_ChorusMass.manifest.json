@@ -1,0 +1,61 @@
+{
+  "attempt_elapsed_s": 121.92549588403199,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "downscaled_from": "1254x1254",
+  "elapsed_s": 121.92549588403199,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_ChorusMass",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 67.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/10/01/rollout-2026-10-01T19-59-20-01a0fa8d-5052-78b1-a028-a8f3b28ce575.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 67.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/10/01/rollout-2026-10-01T19-54-05-01a0fa88-8275-7422-b2f2-b93664ac3b46.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": null,
+    "corners_transparent": null,
+    "has_alpha": null,
+    "height": null,
+    "id": "RM_ChorusMass",
+    "note": "Built-in image generation returned no image or output path on both attempts, so no PNG could be copied or verified.",
+    "out": null,
+    "status": "fail",
+    "width": null
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "note: agent did not place the file; harvested exec-2dc086aa-6652-42dd-adf0-0a9a09986462.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_artsrc/RM_ChorusMass/RM_ChorusMass.png\n    1254x1254  rgba  917,750 bytes  (112s)\n"
+}

@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 114.42548329604324,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 75.24105323484893,
+  "derive_from_palette_distance": 4.964154519203883,
+  "elapsed_s": 114.42548329604324,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "RM_Summ_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 65.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/10/01/rollout-2026-10-01T13-48-17-01a0f939-9c25-7ee3-ba4e-51ae75ac17c6.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 65.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/10/01/rollout-2026-10-01T13-41-01-01a0f932-f54d-7053-a319-1ae7087278b3.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "RM_Summ_north",
+    "note": "Derived a true rear/north-facing view from the accepted east-facing master, preserving the creature\u2019s basalt, lichen-grey, and storm-violet design.",
+    "out": "D:\\Luke\\dev\\RimMandrake\\infrastructure\\artpipe\\_artsrc\\RM_Summ_north\\RM_Summ_north.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_artsrc/RM_Summ_north/RM_Summ_north.png\n    1024x1024  rgba  1,013,561 bytes  (105s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 102.14617529999668,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 102.14617529999668,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "chill_plant_slackwax",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 31.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/27/rollout-2026-09-27T15-16-55-01a0e4f1-4fd1-7082-a79c-38e33436f24e.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 31.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/27/rollout-2026-09-27T15-10-58-01a0e4eb-e06e-7751-a956-f6cbd3841eb7.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "chill_plant_slackwax",
+    "note": "Generated via built-in imagegen, copied into the workspace, resized to exactly 256\u00d7256, and verified as 32-bit PNG with fully transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\chill_plant_slackwax\\chill_plant_slackwax.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/chill_plant_slackwax/chill_plant_slackwax.png\n    256x256  rgba  84,963 bytes  (100s)\n"
+}

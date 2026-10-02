@@ -7,7 +7,7 @@ namespace RimMandrake.BlueDesert
     // ════════════════════════════════════════════════════════════════════
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for the Blue Desert.
     //
-    // Precedent: src/RimMandrake/ForsakenCrags/Source/RM_ForsakenCragsMod.cs.
+    // Precedent: src/RimMandrake/Abyss/Source/RM_AbyssMod.cs.
     // Unlike that sibling, this biome ships a real mechanics kit already
     // (BlueDesertLife.cs, built by BLUE_DESERT_LIFE_AUTHORING_1), so the six
     // per-mechanic toggles below are the same six fields that used to live on

@@ -182,6 +182,13 @@ namespace RimMandrake.FeverWood
         /// "Release lure" once this specific stake has drawn a raid.</summary>
         public static bool twoFrontLureLockOnceTriggered = false;
 
+        /// <summary>FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1 toggle. On: a
+        /// failed taming attempt on a vaulm, drommath or ollareth triggers
+        /// its refusal (seal / swell / scream) exactly as taking damage does.
+        /// Off: only damage triggers it. Default ON — matches shipped
+        /// behavior.</summary>
+        public static bool sapSuckerMishandleRefusalEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -209,6 +216,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref twoFrontLureThreatPointsMultiplier, "twoFrontLureThreatPointsMultiplier", 0.6f);
             Scribe_Values.Look(ref twoFrontLureMinThreatPoints, "twoFrontLureMinThreatPoints", 80f);
             Scribe_Values.Look(ref twoFrontLureLockOnceTriggered, "twoFrontLureLockOnceTriggered", false);
+            Scribe_Values.Look(ref sapSuckerMishandleRefusalEnabled, "sapSuckerMishandleRefusalEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -302,6 +310,11 @@ namespace RimMandrake.FeverWood
               + "already inbound. On: once THIS stake has drawn a raid, 'Release lure' is disabled until "
               + "the bait dies, is rescued by the raid's own fallout, or the stake is rebuilt — matching "
               + "the design sheet's 'you are hoping the second column shows up' framing more literally.");
+            list.GapLine();
+            list.CheckboxLabeled("Sap-suckers refuse a failed taming attempt", ref sapSuckerMishandleRefusalEnabled,
+                "On: a failed attempt to tame a vaulm, drommath or ollareth sets off its refusal — the vaulm "
+              + "seals itself, the drommath swells, the ollareth screams — just as being hurt does. Off: only "
+              + "being hurt sets it off.");
 
             list.End();
         }
@@ -314,6 +327,9 @@ namespace RimMandrake.FeverWood
         public RM_FeverWoodMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_FeverWoodSettings>();
+            // FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1 — this mod's only Harmony
+            // patch so far (RM_Patch_SapSuckerMishandle).
+            new HarmonyLib.Harmony("mandrake.rm.feverwood").PatchAll(typeof(RM_FeverWoodMod).Assembly);
         }
 
         public override string SettingsCategory()

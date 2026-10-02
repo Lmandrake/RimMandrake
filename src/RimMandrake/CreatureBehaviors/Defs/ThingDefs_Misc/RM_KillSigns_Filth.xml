@@ -28,9 +28,14 @@
       <drawSize>1.6</drawSize>
     </graphicData>
     <filth>
+      <!-- Unnatural, not Terrain: vanilla Sand/SoftSand (and RM_DeepSand) accept ONLY Unnatural
+           filth, and FilthMaker.TerrainAcceptsFilth needs every placement bit accepted, so a
+           Terrain mask could never land on the sand it is the sign for (measured live 2026-10-01,
+           SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1). A deliberate sign also skips the FilthMultiplier roll. -->
       <placementMask>
-        <li>Terrain</li>
+        <li>Unnatural</li>
       </placementMask>
+      <ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat>
       <disappearsInDays>20~25</disappearsInDays>
       <cleaningWorkToReduceThickness>35</cleaningWorkToReduceThickness>
       <maxThickness>1</maxThickness>
@@ -52,9 +57,14 @@
       <drawSize>2.2</drawSize>
     </graphicData>
     <filth>
+      <!-- Unnatural, not Terrain: vanilla Sand/SoftSand (and RM_DeepSand) accept ONLY Unnatural
+           filth, and FilthMaker.TerrainAcceptsFilth needs every placement bit accepted, so a
+           Terrain mask could never land on the sand it is the sign for (measured live 2026-10-01,
+           SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1). A deliberate sign also skips the FilthMultiplier roll. -->
       <placementMask>
-        <li>Terrain</li>
+        <li>Unnatural</li>
       </placementMask>
+      <ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat>
       <disappearsInDays>20~25</disappearsInDays>
       <cleaningWorkToReduceThickness>35</cleaningWorkToReduceThickness>
       <maxThickness>1</maxThickness>

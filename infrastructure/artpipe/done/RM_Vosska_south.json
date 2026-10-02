@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-30T23:29:46Z",
+  "derive_from": "RM_Vosska_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Vosska_south",
+  "priority": 80,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the vosska, an ambush hunter that swims through loose sand \u2014 a sleek low big-cat body with shark-like dorsal ridge and sand-skink scaled flanks, short powerful paddle-clawed legs, a wedge head with a fanged jaw; predatory and sinuous. Single creature, centered, side view, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "LONGSHADE_BEDAZZLE_CONTENT_1",
+  "style_notes": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour; lit surfaces warm amber, ochre and rust, shaded folds cool violet-blue; warm apricot key from front-top, but bake NO cast shadow onto the ground; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible, never a nameable Earth animal; north facing is a true rear view with no face or frontal features"
+}

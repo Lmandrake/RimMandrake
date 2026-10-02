@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 143.8444260749966,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 143.8444260749966,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RSW_WarWyrmSkeleton",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 59.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T19-38-11-01a0f553-9946-7600-90c0-a935a6d2caa6.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T19-32-29-01a0f54e-5e19-73c0-b44d-6800064368ff.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RSW_WarWyrmSkeleton",
+    "note": "Generated with built-in imagegen, then fitted to the exact canvas while preserving transparent margins and alpha.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RSW_WarWyrmSkeleton\\RSW_WarWyrmSkeleton.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_WarWyrmSkeleton/RSW_WarWyrmSkeleton.png\n    1024x512  rgba  625,128 bytes  (141s)\n"
+}

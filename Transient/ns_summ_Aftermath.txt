@@ -1,0 +1,4 @@
+harmony_patches_registered v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]
+battle_lifecycle_repelled v=FAIL,UNMEASURED bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   devmode_and_raid_fire FAIL: ExpectationFailed: jawa/storyteller_fire did not report fired=true: {'success': False, 'dryRun': False, 'resolved': {'incident': 'RaidEnemy', 'category': 'ThreatBig', 'points': 120.0, 'faction': 'Pira
+   kill_all_raiders_closes_repelled UNMEASURED: upstream failed -- this chain's state is meaningless

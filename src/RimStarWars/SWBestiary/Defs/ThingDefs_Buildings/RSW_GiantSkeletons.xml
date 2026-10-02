@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_GiantSkeletons.xml               RimStarWars — STILLSAND_SKELETONS_TRACKS_1 §1, §6
+  The canon giants' skeletons: krayt, greater krayt, war wyrm. Same classes as the RM
+  skeletons (mandrake.rm.stillsand, RM_GiantSkeletonBase); every def is MayRequire-gated on
+  that mod, so SWBestiary still loads clean without it. Their races are wired to them by
+  Patches/RSW_GiantSkeletons_Remains.xml.
+  A krayt skeleton yields the skull (RSW_KraytDragonSkull, which the existing
+  ProcessKraytDragonSkull recipe takes) and sometimes the gizzard pearl (RSW_KraytPearl).
+  genstepWeight 1 each: on a Stillsand map an RSW skeleton is as likely as a guzzka's.
+  PLACEHOLDER ART (vanilla RubblePile via the base); the artpipe jobs RSW_KraytSkeleton,
+  RSW_GreaterKraytSkeleton and RSW_WarWyrmSkeleton are queued; wiring them is a follow-up.
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_GiantSkeletonBase" MayRequire="mandrake.rm.stillsand">
+    <defName>RSW_KraytSkeleton</defName>
+    <label>krayt dragon skeleton</label>
+    <description>The sun-bleached skeleton of a krayt dragon, a long arc of vertebrae and ribs like the frame of a beached ship, the sand drifted up one flank. Fresh krayt bones mean krayts come here. The skull lies beside it, and a careful crew can take it whole; now and then the gizzard stones still hold a pearl.</description>
+    <size>(7,3)</size>
+    <graphicData>
+      <drawSize>(8,4)</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_GiantSkeletonExtension">
+        <skull>RM_GiantSkull</skull>
+        <genstepWeight>1</genstepWeight>
+        <leavings>
+          <li>
+            <thing>RSW_KraytDragonSkull</thing>
+            <count>1</count>
+          </li>
+          <li>
+            <thing>RSW_KraytPearl</thing>
+            <count>1</count>
+            <chance>0.25</chance>
+          </li>
+        </leavings>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_GiantSkeletonBase" MayRequire="mandrake.rm.stillsand">
+    <defName>RSW_GreaterKraytSkeleton</defName>
+    <label>greater krayt dragon skeleton</label>
+    <description>The old-ivory skeleton of a greater krayt dragon, longer than anything still walking. The bones are the one vertical for kilometres. Its gizzard stones are more likely than not to hold a pearl.</description>
+    <size>(9,4)</size>
+    <graphicData>
+      <drawSize>(10,5)</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_GiantSkeletonExtension">
+        <skull>RM_GiantSkull</skull>
+        <genstepWeight>0.5</genstepWeight>
+        <leavings>
+          <li>
+            <thing>RSW_KraytDragonSkull</thing>
+            <count>1</count>
+          </li>
+          <li>
+            <thing>RSW_KraytPearl</thing>
+            <count>1</count>
+            <chance>0.5</chance>
+          </li>
+        </leavings>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_GiantSkeletonBase" MayRequire="mandrake.rm.stillsand">
+    <defName>RSW_WarWyrmSkeleton</defName>
+    <label>war wyrm skeleton</label>
+    <description>The grey bones of a war wyrm, coiled where it died, the ribs sprung outward like a broken cage.</description>
+    <size>(7,3)</size>
+    <graphicData>
+      <drawSize>(8,4)</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_GiantSkeletonExtension">
+        <skull>RM_GiantSkull</skull>
+        <genstepWeight>1</genstepWeight>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

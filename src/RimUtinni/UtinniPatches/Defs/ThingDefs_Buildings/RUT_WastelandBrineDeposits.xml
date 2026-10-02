@@ -102,6 +102,7 @@
     <building>
       <isNaturalRock>false</isNaturalRock>
       <isResourceRock>true</isResourceRock>
+      <claimable>false</claimable>
       <mineableThing>RUT_Tekk</mineableThing>
       <mineableYield>3</mineableYield>
       <veinMineable>false</veinMineable>
@@ -131,6 +132,7 @@
     <building>
       <isNaturalRock>false</isNaturalRock>
       <isResourceRock>true</isResourceRock>
+      <claimable>false</claimable>
       <mineableThing>RUT_Drazz</mineableThing>
       <mineableYield>1</mineableYield>
       <veinMineable>false</veinMineable>
@@ -160,6 +162,7 @@
     <building>
       <isNaturalRock>false</isNaturalRock>
       <isResourceRock>true</isResourceRock>
+      <claimable>false</claimable>
       <mineableThing>RUT_BrinePlate</mineableThing>
       <mineableYield>2</mineableYield>
       <veinMineable>false</veinMineable>

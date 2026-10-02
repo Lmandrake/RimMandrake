@@ -47,7 +47,7 @@ namespace RimMandrake.Contagion
             inject.WithProgressBarToilDelay(TargetIndex.A);
             inject.AddFinishAction(delegate
             {
-                Thing sample = pawn.inventory.innerContainer.FirstOrDefault(t => t.def == RM_ContagionDefOf.RM_GenomeSample);
+                Thing sample = AmoebaHostUtility.FindSampleToInject(pawn);
                 if (sample == null)
                 {
                     return;
@@ -56,7 +56,8 @@ namespace RimMandrake.Contagion
                 int sourceID = comp?.sourcePawnID ?? -1;
                 string sourceName = (comp != null && !comp.sourcePawnName.NullOrEmpty()) ? comp.sourcePawnName : "unknown";
 
-                if (AmoebaHostUtility.TryBeginGestation(Host, sourceID, sourceName))
+                bool monstrous = comp != null && comp.monstrous;
+                if (AmoebaHostUtility.TryBeginGestation(Host, sourceID, sourceName, monstrous))
                 {
                     pawn.inventory.innerContainer.Remove(sample);
                     sample.Destroy();

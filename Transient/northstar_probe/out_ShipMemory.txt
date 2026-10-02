@@ -1,0 +1,10 @@
+elapsed 6.4s  all_green=False
+CHAIN bioferrite_stockpile_reveal | {'bland': True, 'sweeps': 2, 'ticks_spent': 700, 'policy': 'abort'} | problems: []
+    FAIL | reveals_on_stockpile | ExpectationFailed: expected a 'She remembers the chains' letter after stockpiling 50 Bioferrite and waiting past the 600-tick check interval; letter_list had none matching
+    hits seen: []
+CHAIN assailant_signal_after_reveal | {'bland': True, 'sweeps': 1, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    PASS | no_duplicate_reveal_once_discovered | 
+    hits seen: [('letter_unexpected', 'INFO')]
+CHAIN containment_gate_patch_wiring | {'bland': True, 'sweeps': 1, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    PASS | seven_defs_gated_on_containment | 
+    hits seen: []

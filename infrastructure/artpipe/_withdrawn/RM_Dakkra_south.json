@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-27T23:42:46Z",
+  "derive_from": "RM_Dakkra_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Dakkra_south",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld top-down game animal sprite: the dakkra, a shadow-ambush predator the size of a large dog \u2014 lean and low with a wide mouth and heavy forelimbs built for one explosive grab; dark slate hide that reads as shadow at rest, a warm rust line down the spine where the low sun catches it. Built for one burst, never a chase.",
+  "reference": null,
+  "rimflow_item_id": "LONGSHADE_DESIGN_SITTING_1",
+  "style_notes": "burst predator, bs~1.6; the read is the rust spine-line on a shadow-dark body; permanent golden hour raking side-light; painterly vanilla-RimWorld animal art style"
+}

@@ -96,6 +96,13 @@ namespace RimMandrake.Utinni.RustCathedralHum
 				return;
 			}
 
+			// PerTick sustainers end once TicksGame > lastMaintainTick + 1, so every
+			// live layer must be maintained on EVERY tick, before the interval gate.
+			for (int i = 0; i < activeSustainers.Count; i++)
+			{
+				activeSustainers[i]?.Maintain();
+			}
+
 			if (!map.IsHashIntervalTick(def.checkIntervalTicks))
 			{
 				return;

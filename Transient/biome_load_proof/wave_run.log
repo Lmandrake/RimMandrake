@@ -1,0 +1,114 @@
+════════ bluedesert  (expect RM_BlueDesert) ════════
+  tier applied: 9 mods
+  UP after 12s
+  biomedef RM_BlueDesert: PRESENT   (4 distinct errors; lines: cfg 0, xref 3, patch 0, typeload 0)
+  => PASS
+════════ contagion  (expect RM_Contagion) ════════
+  tier applied: 9 mods
+  UP after 12s
+  biomedef RM_Contagion: PRESENT   (13 distinct errors; lines: cfg 0, xref 15, patch 1, typeload 0)
+  => PASS
+════════ feverwood  (expect RM_FeverWood) ════════
+  tier applied: 11 mods
+  UP after 12s
+  biomedef RM_FeverWood: PRESENT   (2 distinct errors; lines: cfg 1, xref 1, patch 0, typeload 0)
+  => PASS
+════════ floodedcanyon  (expect RM_FloodedCanyon) ════════
+  tier applied: 10 mods
+  UP after 12s
+  biomedef RM_FloodedCanyon: PRESENT   (53 distinct errors; lines: cfg 102, xref 0, patch 0, typeload 0)
+  => PASS
+════════ forsakencrags  (expect RM_ForsakenCrags) ════════
+  tier applied: 9 mods
+  UP after 12s
+  biomedef RM_ForsakenCrags: PRESENT   (10 distinct errors; lines: cfg 0, xref 10, patch 0, typeload 0)
+  => PASS
+════════ gelatinousslime  (expect RM_GelatinousSlime) ════════
+  tier applied: 9 mods
+  UP after 12s
+  biomedef RM_GelatinousSlime: PRESENT   (5 distinct errors; lines: cfg 4, xref 6, patch 0, typeload 0)
+  => PASS
+════════ greentide  (expect RM_Greentide) ════════
+  tier applied: 10 mods
+  UP after 13s
+  biomedef RM_Greentide: PRESENT   (2 distinct errors; lines: cfg 0, xref 2, patch 0, typeload 0)
+  => PASS
+════════ leaningscrub  (expect RM_LeaningScrub) ════════
+  tier applied: 11 mods
+  UP after 12s
+  biomedef RM_LeaningScrub: PRESENT   (5 distinct errors; lines: cfg 0, xref 5, patch 0, typeload 0)
+  => PASS
+════════ longshade  (expect RM_LongShade) ════════
+  tier applied: 9 mods
+  UP after 12s
+  biomedef RM_LongShade: PRESENT   (0 distinct errors; lines: cfg 0, xref 0, patch 0, typeload 0)
+  => PASS
+════════ miasma  (expect RM_Miasma) ════════
+  tier applied: 11 mods
+  UP after 22s
+  biomedef RM_Miasma: PRESENT   (0 distinct errors; lines: cfg 0, xref 0, patch 0, typeload 0)
+  => PASS
+════════ nightsideice  (expect RM_NightsideIce) ════════
+  tier applied: 9 mods
+  UP after 12s
+  biomedef RM_NightsideIce: PRESENT   (0 distinct errors; lines: cfg 0, xref 0, patch 0, typeload 0)
+  => PASS
+════════ poisonforest  (expect RM_PoisonForest) ════════
+  tier applied: 9 mods
+  UP after 12s
+  biomedef RM_PoisonForest: PRESENT   (7 distinct errors; lines: cfg 0, xref 7, patch 0, typeload 0)
+  => PASS
+════════ pyrelands  (expect RM_Pyrelands) ════════
+  tier applied: 9 mods
+  UP after 12s
+  biomedef RM_Pyrelands: PRESENT   (6 distinct errors; lines: cfg 12, xref 0, patch 0, typeload 0)
+  => PASS
+════════ rustcathedral  (expect RM_RustCathedral) ════════
+  tier applied: 12 mods
+  UP after 21s
+  biomedef RM_RustCathedral: PRESENT   (1 distinct errors; lines: cfg 0, xref 0, patch 0, typeload 0)
+  => PASS
+════════ stillsand  (expect RM_Stillsand) ════════
+  tier applied: 9 mods
+  UP after 12s
+  biomedef RM_Stillsand: PRESENT   (3 distinct errors; lines: cfg 0, xref 1, patch 0, typeload 0)
+  => PASS
+════════ terminalbiomes  (expect RM_TheScald) ════════
+  tier applied: 9 mods
+  UP after 13s
+  biomedef RM_TheScald: PRESENT   (1 distinct errors; lines: cfg 0, xref 1, patch 0, typeload 0)
+  => PASS
+════════ theforge  (expect RM_TheForge) ════════
+  tier applied: 11 mods
+  UP after 13s
+  biomedef RM_TheForge: PRESENT   (10 distinct errors; lines: cfg 0, xref 9, patch 0, typeload 0)
+  => PASS
+════════ therot  (expect RM_TheRot) ════════
+  tier applied: 11 mods
+  UP after 15s
+  biomedef RM_TheRot: PRESENT   (13 distinct errors; lines: cfg 0, xref 13, patch 0, typeload 0)
+  => PASS
+════════ thesump  (expect RM_TheSump) ════════
+  tier applied: 11 mods
+  UP after 21s
+  biomedef RM_TheSump: PRESENT   (14 distinct errors; lines: cfg 0, xref 13, patch 0, typeload 0)
+  => PASS
+════════ wasteland  (expect RM_Wasteland) ════════
+  tier applied: 9 mods
+  UP after 12s
+  biomedef RM_Wasteland: PRESENT   (7 distinct errors; lines: cfg 0, xref 7, patch 0, typeload 0)
+  => PASS
+════════ webwork  (expect RM_Webwork) ════════
+  tier applied: 9 mods
+  UP after 12s
+  biomedef RM_Webwork: PRESENT   (30 distinct errors; lines: cfg 9, xref 23, patch 0, typeload 0)
+  => PASS
+════════ weepingstones  (expect RM_WeepingStones) ════════
+  tier applied: 11 mods
+  UP after 12s
+  biomedef RM_WeepingStones: PRESENT   (3 distinct errors; lines: cfg 0, xref 12, patch 0, typeload 0)
+  => PASS
+
+🔴 RESTORE THE OWNER'S LIST before he plays:
+   python3 src/RimMandrake/Utils/modlist_swap.py --restore --apply
+results: /mnt/d/Luke/dev/Rimworld/Transient/biome_load_proof_results.tsv

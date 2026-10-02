@@ -40,6 +40,57 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(_UTILS)))
 RIMFLOW_CLI = os.path.join(ROOT, "src", "RimMandrake", "rimflow", "cli.py")
 MODLIST_SWAP = os.path.join(_UTILS, "modlist_swap.py")
 SHEET_DIR = os.path.join(ROOT, "Transient", "modcheck")
+QUICKTEST_STARTER = os.path.join(os.path.dirname(_UTILS), "bridgetools", "prove_quicktest_world.py")
+
+
+def _wsl_path(p):
+    """`D:\\Luke\\dev\\x` -> `/mnt/d/Luke/dev/x` (a POSIX path passes through unchanged)."""
+    import re
+    m = re.match(r"^([A-Za-z]):[\\/](.*)$", p)
+    if not m:
+        return p
+    return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/"))
+
+
+def py_cmd(script, *args):
+    """Command line for a script that must run under POSIX python3 (modlist_swap, rimflow and
+    deploy_custom_mods import `fcntl`). Under Windows python.exe -- the only place the bridge is reachable --
+    it is shelled through `wsl.exe python3` with the script path translated; elsewhere plain `python3`."""
+    if os.name == "nt":
+        return ["wsl.exe", "python3", _wsl_path(script)] + [str(a) for a in args]
+    return ["python3", script] + [str(a) for a in args]
+
+
+def ensure_playing_map(dry_run=False, _client=None, _starter=None):
+    """If the bridge reports no Playing map, run the existing quicktest-world starter
+    (`bridgetools/prove_quicktest_world.py`, exit 0 = Playing with a world) under THIS interpreter. The runner
+    used to assume a map already existed (MEASURED 2026-10-01). Returns "playing" | "started" | "dry-run".
+    Raises RuntimeError when the bridge cannot be asked or the starter fails -- never guesses."""
+    if dry_run:
+        return "dry-run"
+    state = None
+    try:
+        if _client is None:
+            import rimbridge_client as rb
+            host, port, token = rb.resolve_endpoint()
+            _client = rb.RimBridge(host=host, port=port, token=token, timeout=30.0)
+            _client.connect()
+        r = _client.call("rimworld/get_ui_state", {}) or {}
+        if isinstance(r, dict) and r.get("content"):
+            r = json.loads(r["content"][0]["text"])
+        state = r.get("programState")
+    except Exception as e:  # noqa: BLE001
+        raise RuntimeError("ensure_playing_map: cannot ask the bridge for programState (%s: %s)"
+                           % (type(e).__name__, e))
+    if state == "Playing":
+        return "playing"
+    starter = _starter or (lambda: subprocess.run([sys.executable, QUICKTEST_STARTER], cwd=ROOT,
+                                                  capture_output=True, text=True))
+    r = starter()
+    if r.returncode != 0:
+        raise RuntimeError("quicktest world start FAILED (programState was %r): %s"
+                           % (state, (r.stdout + r.stderr).strip()[-500:]))
+    return "started"
 
 
 def find_mod_dir(mod_folder_name):
@@ -86,7 +137,7 @@ def restore_full():
     failure here is loud (non-zero exit propagates to the caller) but never
     swallowed, because leaving the owner's mod list on MINIMAL silently is
     exactly the failure mode this function exists to prevent."""
-    r = subprocess.run(["python3", MODLIST_SWAP, "--restore", "--apply"],
+    r = subprocess.run(py_cmd(MODLIST_SWAP, "--restore", "--apply"),
                        cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError("modlist_swap.py --restore --apply FAILED: %s"
@@ -105,6 +156,44 @@ def mod_package_id(mod_dir):
     if not m:
         raise RuntimeError("%s has no <packageId>" % about)
     return m.group(1).lower()
+
+
+def mod_dependency_ids(mod_dir):
+    """Hard `<modDependencies>` packageIds of the mod's About.xml, lowercased, in document order, minus the
+    base game and DLCs (`Ludeon.*`, always in the list) and the mod's own id. `run()` composes these BEFORE
+    the mod: appending only the mod's own id left every donor gene / def a suite depends on out of the load
+    (MEASURED 2026-10-01: StarWarsRaces read 24 of its xenotype's 38 genes). RimWorld drops an id whose
+    folder is not installed, so a missing dependency stays visible only as the suite's own failure."""
+    import re
+    about = os.path.join(mod_dir, "About", "About.xml")
+    with open(about, encoding="utf-8") as f:
+        xml = f.read()
+    own = mod_package_id(mod_dir)
+    m = re.search(r"<modDependencies>(.*?)</modDependencies>", xml, re.S)
+    out = []
+    for pid in re.findall(r"<packageId>\s*([^<\s]+)\s*</packageId>", m.group(1) if m else ""):
+        pid = pid.lower()
+        if pid.startswith("ludeon.") or pid == own or pid in out:
+            continue
+        out.append(pid)
+    return out
+
+
+def composed_into(mod_folder):
+    """`None`, or `(compose_name, packageId)` when this dev folder ships FOLDED INTO a composed mod
+    (Biomes.compose.json): such a folder is refused as a standalone deploy and its own packageId is not a
+    mod the game can load, so the run must deploy the composed mod and compose ITS id instead."""
+    sys.path.insert(0, _UTILS)
+    import biomes_compose
+    src = os.path.join(ROOT, "src")
+    try:
+        manifest = biomes_compose.load_manifest(src)
+        folded = biomes_compose.folded_sources(src)
+    except Exception:     # noqa: BLE001 - a broken manifest must not hide an ordinary mod
+        return None
+    if not manifest or mod_folder not in folded:
+        return None
+    return "biomes", manifest["about"]["packageId"].lower()
 
 
 def compose_test_list(package_ids, config_path=None):
@@ -146,7 +235,7 @@ def swap_to_test_list(package_ids=()):
     """MINIMAL + the mod(s) under test: `modlist_swap.py --minimal --apply`
     (which captures FULL first), then `compose_test_list` appends the mods
     under test. With no `package_ids` this is the plain minimal swap."""
-    r = subprocess.run(["python3", MODLIST_SWAP, "--minimal", "--apply"],
+    r = subprocess.run(py_cmd(MODLIST_SWAP, "--minimal", "--apply"),
                        cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError("modlist_swap.py --minimal --apply FAILED: %s"
@@ -210,7 +299,7 @@ def refusal(fl):
 
 
 def apply_judgement(summary, must_show_text, cannot_show_text=None,
-                    judge_runner=None):
+                    judge_runner=None, kinds=None):
     """Grade the run's screenshots and fold the result into `all_green`.
 
     Before this existed, `all_green` was the state assertions alone, so a mod
@@ -223,7 +312,7 @@ def apply_judgement(summary, must_show_text, cannot_show_text=None,
     """
     import judge  # noqa: E402
     visual = judge.judge_run(summary, must_show_text or {}, cannot_show_text or {},
-                             cwd=ROOT, runner=judge_runner)
+                             cwd=ROOT, runner=judge_runner, kinds=kinds)
     summary["visual"] = visual
     summary["visual_all_green"] = judge.visual_all_green(visual)
     summary["state_all_green"] = summary["all_green"]
@@ -272,7 +361,7 @@ def _default_anchor(session):
 
 
 def run_suite(suite, session, debug=False, anchor=None, mod=None,
-              judge_runner=None, situational=False, policy="abort"):
+              judge_runner=None, situational=False, policy="abort", bland_world=False):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -330,12 +419,21 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             fixtures = load_fixtures(clockgate.read_ticks(session))
         except Exception:     # noqa: BLE001 - no clock: start with none, never guess
             fixtures = set()
+    world_before = None
+    if bland_world:
+        # Re-establish AND prove the featureless world before this suite (no game relaunch): hostiles, wildlife,
+        # corpses, fires, queued incidents, injuries and hunger left by the previous suite or hazard job are removed
+        # and read back. A world that cannot be made bland records every chain UNMEASURED, never FAIL.
+        import bland_world as _BW  # noqa: E402
+        world_before = _BW.reset(session, expected_ids=sorted(fixtures))
     for name, fn in suite.chains:
         watch = None
         if situational:
             from watch import Watch  # noqa: E402
+            cap_kw = ({"session_cap": suite.chain_caps[name]}
+                      if name in getattr(suite, "chain_caps", {}) else {})
             watch = Watch(session, anchor, watch_dir, mod=mod or suite.name, chain=name, policy=policy,
-                          expected_ids=sorted(fixtures), resurrect=True)
+                          expected_ids=sorted(fixtures), resurrect=True, **cap_kw)
             watch.__enter__()
         t = TestContext(session, anchor=anchor, debug=debug,
                         on_finding=findings.append, watch=watch)
@@ -394,12 +492,19 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                     for chain in chains_out for c in chain["components"])
     summary = {"chains": chains_out, "all_green": all_green,
                "findings": findings, "refused": "", "walk": walk}
+    if bland_world:
+        try:
+            after = _BW.assert_world(session, expected_ids=sorted(fixtures))
+        except Exception as e:                                  # noqa: BLE001
+            after = ["UNMEASURED: assert_world raised %r" % (e,)]
+        summary["bland_world"] = {"before": world_before, "after_problems": after}
     if mod:
         import northstar  # noqa: E402
         must_text, cannot_text = (northstar.text_for(walk) if walk
                                   else ({}, {}))
         apply_judgement(summary, must_text, cannot_text,
-                        judge_runner=judge_runner)
+                        judge_runner=judge_runner,
+                        kinds=northstar.kinds_for(walk) if walk else {})
     return summary
 
 
@@ -409,8 +514,9 @@ def emit_verify(item_id, mod, config, result_summary, sheet_path, dry_run=False)
                 and c["verdict"] != "UNMEASURED")
     n_total = sum(len(chain["components"]) for chain in result_summary["chains"])
     result = "pass" if result_summary["all_green"] else "fail"
-    cmd = ["python3", RIMFLOW_CLI, "verify", item_id,
-          "--result", result, "--config", config, "--evidence", sheet_path]
+    cmd = py_cmd(RIMFLOW_CLI, "verify", item_id,
+                 "--result", result, "--config", config, "--evidence", _wsl_path(sheet_path)
+                 if os.name == "nt" else sheet_path)
     if dry_run:
         return {"cmd": cmd, "n_pass": n_pass, "n_total": n_total}
     r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
@@ -425,9 +531,9 @@ def file_findings(item_id, mod, findings, dry_run=False):
     filed = []
     for c in findings:
         name = ("MODCHECK_%s_%s" % (mod.upper(), c.name.upper()))[:60]
-        cmd = ["python3", RIMFLOW_CLI, "finding", "--from", item_id,
-              "--name", name, "--type", "modcheck-failure",
-              "--severity", "major"]
+        cmd = py_cmd(RIMFLOW_CLI, "finding", "--from", item_id,
+                     "--name", name, "--type", "modcheck-failure",
+                     "--severity", "major")
         if dry_run:
             filed.append({"cmd": cmd})
             continue
@@ -463,15 +569,22 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
             package_ids = []
             for mod_folder, _item in mods:
                 mod_dir = find_mod_dir(mod_folder)
+                folded = composed_into(mod_folder)
+                deploy_args = (("--compose", folded[0]) if folded
+                               else ("--mod", mod_folder))
                 r = subprocess.run(
-                    ["python3", os.path.join(_UTILS, "deploy_custom_mods.py"),
-                     "--mod", mod_folder, "--apply"],
+                    py_cmd(os.path.join(_UTILS, "deploy_custom_mods.py"),
+                           *deploy_args, "--apply"),
                     cwd=ROOT, capture_output=True, text=True)
                 if r.returncode != 0:
                     raise RuntimeError(
                         "deploy of %s FAILED: %s"
                         % (mod_folder, (r.stdout + r.stderr).strip()[-500:]))
-                package_ids.append(mod_package_id(mod_dir))
+                # dependencies first, then the mod: a composed folder loads as its composed mod
+                package_ids.extend(d for d in mod_dependency_ids(mod_dir) if d not in package_ids)
+                own = folded[1] if folded else mod_package_id(mod_dir)
+                if own not in package_ids:
+                    package_ids.append(own)
             compose_test_list(package_ids)
         for mod_folder, item_id in mods:
             if dry_run:
@@ -499,6 +612,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
                           "%s@%d" % (mod_folder, int(time.time())),
                           False, walk=walk, refused=why)
                 continue
+            ensure_playing_map()
             from rimdrive import Session  # noqa: E402
             with Session(lock=None) as s:
                 summary = run_suite(suite, s, debug=debug, mod=mod_folder,

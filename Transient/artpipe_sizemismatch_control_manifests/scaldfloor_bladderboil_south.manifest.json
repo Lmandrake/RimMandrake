@@ -1,0 +1,40 @@
+{
+  "attempt_elapsed_s": 66.27471875800984,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 66.27471875800984,
+  "height": 1254,
+  "id": "scaldfloor_bladderboil_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 13.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/26/rollout-2026-09-26T13-25-03-01a0df64-8b61-7110-bcb8-645f54864759.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 12.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/26/rollout-2026-09-26T13-21-17-01a0df61-19e6-79b3-98e7-8a7a985033e9.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "returned 1254x1254, job asked for 512x512 \u2014 the image tool is known to ignore requested size; never a silent ok, reference or not",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "width": 1254,
+  "worker_self_report": null,
+  "worker_status": "size_mismatch",
+  "worker_stderr_tail": "2x512 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: SEA_FISHABLES_ALIVE_IN_DEPTHS_1 (Scald portion) -- living counterpart RM_Bladderboil, Defs/ThingDefs_Races/RM_ScaldFloorFauna.xml, Graphic_Multi drawSize ~0.6. Currently a flat dark silhouette placeholder. Install to src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil_south.png. West mirrors east; three facings only. Its CATCH item art already ships as scald2_bladderboilcatch_a/b/c -- match that creature's colour and read.\n\nThen copy the generated image into the current working directory as scaldfloor_bladderboil_south.png. Report the absolute path of the file you saved.\ncodex\n{\"id\":\"scaldfloor_bladderboil_south\",\"status\":\"fail\",\"out\":null,\"width\":null,\"height\":null,\"has_alpha\":null,\"corners_transparent\":null,\"background_used\":null,\"attempts\":1,\"note\":\"Using imagegen to create the transparent, south-facing RimWorld sprite and save it in the job workspace.\"}\nexec\n\"C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe\" -Command 'Get-ChildItem -Path $env:CODEX_HOME'\"\\\\generated_images -Recurse -File -Filter *.png | Sort-Object LastWriteTime -Descending | Select-Object -First 5 FullName,Length,LastWriteTime\" in D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\scaldfloor_bladderboil_south\n succeeded in 256ms:\n\nFullName                                                                                                               \n--------                                                                                                               \nC:\\Users\\Mandrake\\.codex_workers\\artpipe\\w2\\generated_images\\01a0df64-8b61-7110-bcb8-645f54864759\\exec-301184c7-b325...\nC:\\Users\\Mandrake\\.codex_workers\\artpipe\\w2\\generated_images\\01a0df61-19e6-79b3-98e7-8a7a985033e9\\exec-73055e3e-814a...\nC:\\Users\\Mandrake\\.codex_workers\\artpipe\\w2\\generated_images\\01a0df5c-be5d-7bb0-a4a0-dd5a666b1476\\exec-d2917e5b-058f...\nC:\\Users\\Mandrake\\.codex_workers\\artpipe\\w2\\generated_images\\01a0df58-e7e4-7aa2-b6ca-a1fa5c184a1e\\exec-7de79ec5-4483...\nC:\\Users\\Mandrake\\.codex_workers\\artpipe\\w2\\generated_images\\01a0df57-9556-7282-b246-ceabc0d151a5\\exec-1a6829dd-c7fa...\n\n\n\nERROR: Selected model is at capacity. Please try a different model.\nERROR: Selected model is at capacity. Please try a different model.\ntokens used\n8,671\n\nnote: agent did not place the file; harvested exec-301184c7-b325-4609-aad8-02996d315a89.png from generated_images/\n",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/scaldfloor_bladderboil_south/scaldfloor_bladderboil_south.png\n    1254x1254  rgba  1,122,744 bytes  (58s)\n"
+}

@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 103.05574509400321,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 103.05574509400321,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "chill_plant_tarspool",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 31.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/27/rollout-2026-09-27T15-22-03-01a0e4f6-0383-74a3-ab5e-15bf52608002.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 31.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/27/rollout-2026-09-27T15-16-55-01a0e4f1-4fd1-7082-a79c-38e33436f24e.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "chill_plant_tarspool",
+    "note": "Generated via built-in imagegen and resized to exactly 256\u00d7256; preserved true alpha with all four corners transparent.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\chill_plant_tarspool\\chill_plant_tarspool.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/chill_plant_tarspool/chill_plant_tarspool.png\n    256x256  rgba  66,955 bytes  (101s)\n"
+}

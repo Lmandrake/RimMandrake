@@ -1,0 +1,379 @@
+{
+ "chains": [
+  {
+   "name": "bioferrite_stockpile_reveal",
+   "components": [
+    {
+     "name": "reveals_on_stockpile",
+     "toggle": "shipMemoryEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: expected a 'She remembers the chains' letter after stockpiling 50 Bioferrite and waiting past the 600-tick check interval; letter_list had none matching",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 1,
+        "letters": [
+         {
+          "label": {
+           "RawText": "(*Name)Martinho(/Name) pregnant",
+           "Length": 31,
+           "StrippedLength": 17
+          },
+          "defName": "HumanPregnancy",
+          "arrivalTick": 601,
+          "lookTargets": "Verse.LookTargets"
+         }
+        ],
+        "ticksGame": 701,
+        "operation": {
+         "OperationId": "op_f18612395ccf46f6940bbae4c7bf95a0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:03:53.6254991+00:00",
+         "CompletedAtUtc": "2026-10-02T01:03:53.6310129+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 10 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "ticks_spent": 700,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 601,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [HumanPregnancy] (*Name)Martinho(/Name) pregnant"
+     },
+     {
+      "tick": 701,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [HumanPregnancy] (*Name)Martinho(/Name) pregnant"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "assailant_signal_after_reveal",
+   "components": [
+    {
+     "name": "no_duplicate_reveal_once_discovered",
+     "toggle": "shipMemoryEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/signal_send",
+       "result": {
+        "success": true,
+        "tag": "RUT_ShipMemory_ContainmentTestSignal.RUT_ShipMemory_Containment",
+        "global": false,
+        "receiverCountAtSend": 8,
+        "subject": null,
+        "text": null,
+        "note": "Sent to 8 registered receiver(s). Whether any of them matched this exact tag is not observable from here - check the quest's own state (jawa/fire_quest / the save) for the effect.",
+        "ticksGame": 701,
+        "operation": {
+         "OperationId": "op_a9b8c49217e3487899bfedb6f643e6d9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/signal-send",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:03:55.1563025+00:00",
+         "CompletedAtUtc": "2026-10-02T01:03:55.1643349+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 2,
+        "letters": [
+         {
+          "label": {
+           "RawText": "(*Name)Martinho(/Name) pregnant",
+           "Length": 31,
+           "StrippedLength": 17
+          },
+          "defName": "HumanPregnancy",
+          "arrivalTick": 601,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "She remembers the chains",
+           "Length": 24,
+           "StrippedLength": 24
+          },
+          "defName": "PositiveEvent",
+          "arrivalTick": 701,
+          "lookTargets": null
+         }
+        ],
+        "ticksGame": 701,
+        "operation": {
+         "OperationId": "op_18117a464fb047b5bfce45ce7fc56656",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:03:55.1733694+00:00",
+         "CompletedAtUtc": "2026-10-02T01:03:55.1778844+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\no_duplicate_reveal_once_discovered_1790903035.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 701,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] She remembers the chains"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "containment_gate_patch_wiring",
+   "components": [
+    {
+     "name": "seven_defs_gated_on_containment",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "7 of 7 def(s) resolved",
+        "requested": 7,
+        "foundCount": 7,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "researchPrerequisites",
+         "discoveryPrerequisites"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/HoldingPlatform",
+          "found": true,
+          "defName": "HoldingPlatform",
+          "defType": "ThingDef",
+          "label": "holding platform",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/ElectricInhibitor",
+          "found": true,
+          "defName": "ElectricInhibitor",
+          "defType": "ThingDef",
+          "label": "electric inhibitor",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/ShardInhibitor",
+          "found": true,
+          "defName": "ShardInhibitor",
+          "defType": "ThingDef",
+          "label": "shard inhibitor",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/BioferriteHarvester",
+          "found": true,
+          "defName": "BioferriteHarvester",
+          "defType": "ThingDef",
+          "label": "bioferrite harvester",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/Electroharvester",
+          "found": true,
+          "defName": "Electroharvester",
+          "defType": "ThingDef",
+          "label": "electroharvester",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "ThingDef/BioferriteGenerator",
+          "found": true,
+          "defName": "BioferriteGenerator",
+          "defType": "ThingDef",
+          "label": "bioferrite generator",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         },
+         {
+          "requested": "TerrainDef/BioferritePlate",
+          "found": true,
+          "defName": "BioferritePlate",
+          "defType": "TerrainDef",
+          "label": "bioferrite plate",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": [
+            "RUT_ShipMemory_Containment"
+           ],
+           "researchPrerequisites": null
+          }
+         }
+        ],
+        "ticksGame": 701,
+        "operation": {
+         "OperationId": "op_1e50f89d94a34aa3870226c15de054c3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:03:56.5339002+00:00",
+         "CompletedAtUtc": "2026-10-02T01:03:56.5420081+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\seven_defs_gated_on_containment_1790903036.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000002910BCF9E80>"
+ ],
+ "refused": "",
+ "walk": "D:\\Luke\\dev\\RimMandrake\\design\\validation_walks\\RimUtinni\\ShipMemory.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

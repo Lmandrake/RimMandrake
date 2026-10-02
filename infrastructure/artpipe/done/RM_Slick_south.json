@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-02T02:41:58Z",
+  "derive_from": "RM_Slick_east",
+  "drawsize": 1.6,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Slick_south",
+  "priority": 60,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game animal sprite: the slick, a hydrocarbon animal of the Lantern Deeps. A long low thing that is mostly its own trail. A narrow segmented body two cells long and a third of a cell wide, pale blue and glossy, made of a dozen identical bead-segments each with a yellow drop inside, joined by clear necks \u2014 a string of drops rather than a worm. No head worth the name: the front segment is a little larger and has a ring of short feelers. It has no legs; it moves by pumping the segments in sequence, and it is always wet, sitting in a shine of its own liquid. The trail it leaves is the important part of the art: a glossy darker-blue streak with a faint yellow sheen, drawn as filth, that catches lamplight.",
+  "reference": null,
+  "rimflow_item_id": "LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1",
+  "style_notes": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; hydrocarbon life (owner's own remake brief): pale glowing blue skin, YELLOW hydrocarbon internal fluids (oil, wax, light gas) visible through it, never red blood, never fur, never an Earth animal; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is GLOSSY TEAL-BLUE AND PENTANE YELLOW: a string of glossy teal-blue beads each holding a yellow drop, a wet sheen trail; bs~0.7, drawSize ~1.6. north facing is a true rear view seen from directly behind: no face or frontal features visible."
+}

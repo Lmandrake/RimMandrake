@@ -1,0 +1,8 @@
+elapsed 7.8s  all_green=True
+CHAIN pit_capture | {'bland': True, 'sweeps': 1, 'ticks_spent': 304, 'policy': 'abort'} | problems: []
+    PASS | falls_in | 
+    PASS | struggle_clock_ticks | 
+    hits seen: []
+CHAIN uncover_disarms | {'bland': True, 'sweeps': 1, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    PASS | disarm | 
+    hits seen: [('pawn_roster_transition', 'WARN')]

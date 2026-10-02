@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 93.97572838002816,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 93.97572838002816,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 128,
+  "id": "RM_PoolPhaseIcon_Bloom",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 60.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T21-49-09-01a0f5cb-8075-74f1-9319-2eeb80b4434a.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 60.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T21-42-54-01a0f5c5-c811-7a93-89fc-254e00222884.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 128,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 128,
+    "id": "RM_PoolPhaseIcon_Bloom",
+    "note": "Generated with built-in imagegen and resized to exactly 128\u00d7128 RGBA; one post-processing retry followed a bitmap-constructor error.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_PoolPhaseIcon_Bloom\\RM_PoolPhaseIcon_Bloom.png",
+    "status": "ok",
+    "width": 128
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_PoolPhaseIcon_Bloom/RM_PoolPhaseIcon_Bloom.png\n    128x128  rgba  16,579 bytes  (91s)\n"
+}

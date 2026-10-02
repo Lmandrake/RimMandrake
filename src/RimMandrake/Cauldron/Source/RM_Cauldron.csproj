@@ -2,7 +2,7 @@
 
   <!--
     POISONFOREST_RM_MOD_BUILD_1. Same recipe as
-    src/RimMandrake/ForsakenCrags/Source/RM_ForsakenCrags.csproj — copy
+    src/RimMandrake/Abyss/Source/RM_Abyss.csproj — copy
     that header if this one goes stale.
 
     NO HARMONY REFERENCE, DELIBERATELY. The only hook this mod uses is a
@@ -45,6 +45,7 @@
     <Compile Include="RM_CompMetalYield.cs" />
     <Compile Include="RM_VentBloomExposure.cs" />
     <Compile Include="RM_CompVexxissBehaviour.cs" />
+    <Compile Include="RM_CondensateGardens.cs" />
   </ItemGroup>
 
   <ItemGroup>

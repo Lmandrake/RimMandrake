@@ -108,6 +108,12 @@ $now = Get-Fg
         raise RuntimeError("unexpected focus helper output: %r" % res)
     prev_handle, _, now_title = parts[0], parts[1], parts[2]
     if "rimworld" not in now_title.lower():
+        # MEASURED live 2026-10-01: with the owner active in Chrome the AttachThreadInput route is refused every time;
+        # a synthetic Alt tap (WScript SendKeys '%') followed by AppActivate is accepted.
+        _ps("$w=New-Object -ComObject WScript.Shell; $w.SendKeys('%'); Start-Sleep -Milliseconds 100; "
+            "[void]$w.AppActivate('RimWorld by Ludeon Studios'); Start-Sleep -Milliseconds 400")
+        now_title = foreground_title()
+    if "rimworld" not in now_title.lower():
         raise RuntimeError(
             "could not bring RimWorld forward; foreground is %r. Bridge calls "
             "that touch the game will time out until it is focused." % now_title)

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ChasingWater_MentalStates.xml   CreatureBehaviors - STILLSAND_MIRAGE_CONDITION_1
+
+  "Chasing the water": started only by RM_GameCondition_Mirage on a heat-struck pawn in full
+  sun (never a mood break). Its behaviour is RM_JobGiver_ChaseMirage, in a node prepended to
+  vanilla MentalStateNonCritical by Patches/RM_Mirage_ThinkTree.xml. It walks for the shimmer
+  band; the water recedes as it arrives. Targets stay inside the map margin, so it never leaves.
+  Ends: downed (recoverFromDowned, the vanilla default), a drafted friend adjacent, or these
+  timers. PostEnd always sends a letter. A pawn already this hot is going to collapse soon if
+  nobody fetches it; the timers are short so the state never outlives the heatstroke.
+-->
+<Defs>
+
+  <MentalStateDef ParentName="BaseMentalState">
+    <defName>RM_ChasingWater</defName>
+    <label>chasing the water</label>
+    <stateClass>RimMandrake.CreatureBehaviors.RM_MentalState_ChasingWater</stateClass>
+    <category>Misc</category>
+    <baseInspectLine>Mental state: Chasing the water on the horizon</baseInspectLine>
+    <beginLetter>{0} is out of their head with the heat and has set off walking for the water on the horizon. It is a mirage.\n\nDraft someone and send them to fetch {0} back, or {0} will walk until they collapse.</beginLetter>
+    <beginLetterLabel>chasing the water</beginLetterLabel>
+    <beginLetterDef>ThreatSmall</beginLetterDef>
+    <blockNormalThoughts>true</blockNormalThoughts>
+    <nameColor>(0.78, 0.88, 0.97)</nameColor>
+    <minTicksBeforeRecovery>2500</minTicksBeforeRecovery>
+    <maxTicksBeforeRecovery>10000</maxTicksBeforeRecovery>
+    <recoveryMtbDays>0.25</recoveryMtbDays>
+    <inCaravanCanDo>false</inCaravanCanDo>
+  </MentalStateDef>
+
+</Defs>

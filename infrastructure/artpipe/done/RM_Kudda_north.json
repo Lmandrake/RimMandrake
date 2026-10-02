@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-30T23:29:46Z",
+  "derive_from": "RM_Kudda_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Kudda_north",
+  "priority": 80,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the kudda, a cactus-form creature that rolls and creeps across the driest ground \u2014 a ribbed spined barrel body with low root-like crawling limbs, pale dew-collecting ridges along the top, no face beyond two dull seed-like eyes; lives from sunlight and morning condensation. Single creature, centered, side view, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "LONGSHADE_BEDAZZLE_CONTENT_1",
+  "style_notes": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour; lit surfaces warm amber, ochre and rust, shaded folds cool violet-blue; warm apricot key from front-top, but bake NO cast shadow onto the ground; realistic painted natural-history illustration, grounded believable anatomy, matte surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible, never a nameable Earth animal; north facing is a true rear view with no face or frontal features"
+}

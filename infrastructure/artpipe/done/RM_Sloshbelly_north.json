@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "derive_from": "RM_Sloshbelly_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Sloshbelly_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the sloshbelly, a dog-sized water-swollen parasite-shape \u2014 a taut translucent abdomen stretched to bursting with dark red liquid that visibly bulges and settles, tiny vestigial head and thin overloaded legs almost lost under the load, skin shiny-tight with stretch marks. It reads as a walking waterskin filled with something you should not drink. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the walking cistern, bs~0.6; the read is one taut translucent belly of dark red liquid dwarfing the rest of it; storm-dark red-valley register: deep red liquid glow through stretched pale skin, wet highlights, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the back of the swollen belly and legs"
+}

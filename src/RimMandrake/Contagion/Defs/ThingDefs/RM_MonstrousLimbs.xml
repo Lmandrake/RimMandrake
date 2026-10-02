@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GROWN_LIMBS_BUILD_1. The items a Monstrous genome sample
+    gestates into (AmoebaHostUtility.CompleteGestation). Parent BodyPartBase
+    (artificial-part shape, installed by Recipe_InstallArtificialBodyPart :
+    RM_InstallMonstrousLimbs.xml), NOT the natural RM_GrownArm/RM_GrownLeg.
+    Deliberately carries no CompGenomeMatched: a monstrous limb is unmatched
+    to anyone. Icon is vanilla's HealthItem, tinted; a dedicated icon is
+    owed to CONTAGION_GROWN_LIMBS_ART_1.
+  -->
+
+  <ThingDef ParentName="BodyPartBase">
+    <defName>RM_PillarArmItem</defName>
+    <label>pillar arm</label>
+    <description>A slab of bone-cored meat, grown from monstrous tissue inside a Contagion amoeba. Fitted at the shoulder, it replaces the whole arm and hand with a club that hits harder than any hand. It is not matched to anyone, and cutting it out later has consequences.</description>
+    <descriptionHyperlinks>
+      <RecipeDef>RM_InstallPillarArm</RecipeDef>
+      <HediffDef>RM_PillarArm</HediffDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Item/Health/HealthItem</texPath>
+      <color>(150, 60, 70)</color>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.80</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>2200</MarketValue>
+      <Mass>6</Mass>
+    </statBases>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+  <ThingDef ParentName="BodyPartBase">
+    <defName>RM_LashItem</defName>
+    <label>lash</label>
+    <description>A pink rope of muscle, grown from monstrous tissue inside a Contagion amoeba. Fitted at the shoulder, it replaces the whole arm and hand with a fast striker that stuns. It is not matched to anyone, and cutting it out later has consequences.</description>
+    <descriptionHyperlinks>
+      <RecipeDef>RM_InstallLash</RecipeDef>
+      <HediffDef>RM_Lash</HediffDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Item/Health/HealthItem</texPath>
+      <color>(205, 110, 130)</color>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.80</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>1500</MarketValue>
+      <Mass>3</Mass>
+    </statBases>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+
+  <ThingDef ParentName="BodyPartBase">
+    <defName>RM_EyeburstItem</defName>
+    <label>eyeburst</label>
+    <description>A wet cluster of mismatched eyes, grown from monstrous tissue inside a Contagion amoeba. Fitted in an eye socket, it sees and aims better than an eye. It is not matched to anyone, and cutting it out later has consequences.</description>
+    <descriptionHyperlinks>
+      <RecipeDef>RM_InstallEyeburst</RecipeDef>
+      <HediffDef>RM_Eyeburst</HediffDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Item/Health/HealthItem</texPath>
+      <color>(120, 150, 210)</color>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.80</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>1800</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+  <ThingDef ParentName="BodyPartBase">
+    <defName>RM_CaudalSpringItem</defName>
+    <label>caudal spring</label>
+    <description>A coiled tail of gristle, grown from monstrous tissue inside a Contagion amoeba. Fitted in place of the spine, it grants a long daily leap and costs the owner a slower walk. It is not matched to anyone, and cutting it out later has consequences.</description>
+    <descriptionHyperlinks>
+      <RecipeDef>RM_InstallCaudalSpring</RecipeDef>
+      <HediffDef>RM_CaudalSpring</HediffDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Item/Health/HealthItem</texPath>
+      <color>(170, 130, 90)</color>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.80</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>2000</MarketValue>
+      <Mass>4</Mass>
+    </statBases>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+  <ThingDef ParentName="BodyPartBase">
+    <defName>RM_BellowsItem</defName>
+    <label>bellows</label>
+    <description>A translucent bladder with red fog inside it, grown from monstrous tissue inside a Contagion amoeba. Fitted in place of a lung, it breathes better and can blow out blinding smoke. It is not matched to anyone, and cutting it out later has consequences.</description>
+    <descriptionHyperlinks>
+      <RecipeDef>RM_InstallBellows</RecipeDef>
+      <HediffDef>RM_Bellows</HediffDef>
+    </descriptionHyperlinks>
+    <graphicData>
+      <texPath>Things/Item/Health/HealthItem</texPath>
+      <color>(190, 90, 100)</color>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.80</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>1700</MarketValue>
+      <Mass>1.5</Mass>
+    </statBases>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:00:29Z",
+  "derive_from": "RM_Gennok_b_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Gennok_b_south",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game animal sprite: the gennok, a slow strong draught beast about ox-sized \u2014 low-slung and deep-chested, heavy padded feet made for endless patient walking and never for running, short dense sand-coloured coat, head carried low. Four limbs, real eyes, no nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "LONGSHADE_DESIGN_SITTING_1",
+  "style_notes": "pack/draught endurer, bs~2.4; the read is patient low-headed strength; permanent golden hour raking side-light, amber lit faces vs cool blue shadow; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner: too cartoonish - more realistic; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the back of the head and body"
+}

@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:04Z",
+  "derive_from": "RM_Peeper_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Peeper_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the peeper, a mid-sized once-predator gone soft and staring \u2014 a sleek hunting frame slackened by mutation, extra eyes opened at random across its hide and shoulders in welted sockets, original face crowded out by them; posture placid, head slightly tilted, all the eyes open. It reads as a hunter that forgot hunting for watching. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the docile eye-studded watcher-kin, bs~1.0; the read is welted extra eyes scattered over a lapsed predator's frame; storm-dark red-valley register: bruise-red hide, sclera whites at every welt, pink-blue aberrant accents, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the back of the hide (any rear-facing eye welts closed)"
+}

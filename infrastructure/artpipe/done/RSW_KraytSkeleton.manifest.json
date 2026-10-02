@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 116.40691364000668,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 116.40691364000668,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RSW_KraytSkeleton",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/30/rollout-2026-09-30T19-36-15-01a0f551-d2ef-7bf1-97c1-3615cc406943.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 58.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/30/rollout-2026-09-30T19-30-41-01a0f54c-b8b9-73c0-a636-445718f7fb4b.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RSW_KraytSkeleton",
+    "note": "Generated with built-in imagegen, preserved transparent RGBA, and resized proportionally to the exact requested 1024x512 canvas.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RSW_KraytSkeleton\\RSW_KraytSkeleton.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RSW_KraytSkeleton/RSW_KraytSkeleton.png\n    1024x512  rgba  634,506 bytes  (114s)\n"
+}

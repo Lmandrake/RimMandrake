@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_GLARE_BLIND_GOGGLES_1. Owner, typed: "the sun protection for the eyes is great for
+  races that need it, but the Jawa won't need it, but the slaves might". Immunity is the RM-tier
+  gene RM_GlareAdapted (mandrake.rm.creaturebehaviors); this RSW patch puts it on the Jawa
+  xenotype. Guarded by PatchOperationFindMod, never MayRequire on the Operation (inert in 1.6).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Creature Behaviors</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes</xpath>
+      <value>
+        <li>RM_GlareAdapted</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

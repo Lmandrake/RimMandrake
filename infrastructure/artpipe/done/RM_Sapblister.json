@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Sapblister",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: the sapblister, a swollen globular plant like a cluster of overfilled skin blisters on a short thick stem \u2014 taut translucent domes crowded together, each weeping a slow run of thick red sap from a split at its crown, surfaces beaded and shiny-tight. Single organism, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the globular aberration that drips repellent red sap; the read is taut weeping blister-domes; storm-dark red-valley register: translucent blister pinks over deep red sap, wet runs and beads, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable botany, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

@@ -46,7 +46,7 @@ The Utinni patch either:
   `RM_`-named cast at the base already, nothing vanilla to replace).
 
 Checked all 15 `RM_`-prefixed BiomeDefs in the repo (the 13 above plus
-`RM_GelatinousSlime` and `RM_PropaneLake`, neither of which has or needs a
+`RM_GelatinousSlime` and `RM_TheChill`, neither of which has or needs a
 Utinni patch — both ship their own cast at the base already) and all
 30 `RUT_`-prefixed BiomeDefs (the pre-migration / not-yet-split biomes).
 **No `RUT_` BiomeDef's own `wildAnimals` block names a vanilla animal

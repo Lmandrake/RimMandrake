@@ -135,6 +135,16 @@ namespace JawaBench.BridgeTools
                     catch { }
                 }
 
+                // NORTHSTAR_COMPANION_GAPS_1. The damage/kill ring buffer and the item
+                // lineage journal. Same lazy-init reasoning: events before the first jawa/
+                // call of a session are NOT recorded, which the read tools report.
+                try { JawaBenchEventRecorder.Install(); }
+                catch (Exception re)
+                {
+                    try { Log.Warning("[JawaBench] event recorder install threw: " + re.Message); }
+                    catch { }
+                }
+
                 // ⭐ A SECOND LINE, AND IT IS THE ONE THAT PAYS LATER. Owner's ask,
                 // 2026-08-23: print state that makes a log debuggable months from now,
                 // not just proof that the assembly loaded.

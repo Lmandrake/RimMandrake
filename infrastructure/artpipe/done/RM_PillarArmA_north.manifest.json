@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 72.52610744000413,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 60.66342946033233,
+  "derive_from_palette_distance": 13.92895926806633,
+  "elapsed_s": 72.52610744000413,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_PillarArmA_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 63.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/10/01/rollout-2026-10-01T00-05-05-01a0f647-f0b4-7a81-a7f4-b0b5808fd80f.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 62.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T23-58-56-01a0f642-52b9-7dd3-b11a-4b67c9d7522f.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_PillarArmA_north",
+    "note": "Derived the north/back-facing variant from the accepted east master using built-in imagegen; preserved palette/style and saved at exact 256\u00d7256 with transparent alpha.",
+    "out": "D:\\Luke\\dev\\RimMandrake\\infrastructure\\artpipe\\_artsrc\\RM_PillarArmA_north\\RM_PillarArmA_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_artsrc/RM_PillarArmA_north/RM_PillarArmA_north.png\n    256x256  rgba  29,731 bytes  (65s)\n"
+}

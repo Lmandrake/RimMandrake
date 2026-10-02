@@ -1,0 +1,351 @@
+{
+ "biome": "RM_BlueDesert",
+ "samples": [
+  {
+   "t": 20,
+   "ticks": 223923,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 4
+    },
+    "pawns": 4
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 41,
+   "ticks": 228170,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 4
+    },
+    "pawns": 4
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 62,
+   "ticks": 234048,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 4
+    },
+    "pawns": 4
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 82,
+   "ticks": 239161,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 7
+    },
+    "pawns": 7
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 103,
+   "ticks": 243021,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 7
+    },
+    "pawns": 7
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 124,
+   "ticks": 246896,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 6
+    },
+    "pawns": 6
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 144,
+   "ticks": 251557,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 4
+    },
+    "pawns": 4
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 165,
+   "ticks": 255454,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 4
+    },
+    "pawns": 4
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 186,
+   "ticks": 261686,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 4
+    },
+    "pawns": 4
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 206,
+   "ticks": 267574,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 5
+    },
+    "pawns": 5
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 227,
+   "ticks": 273792,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 5
+    },
+    "pawns": 5
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 247,
+   "ticks": 280441,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 5
+    },
+    "pawns": 5
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 268,
+   "ticks": 286606,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 5
+    },
+    "pawns": 5
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 289,
+   "ticks": 291048,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 5
+    },
+    "pawns": 5
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 309,
+   "ticks": 295492,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 5
+    },
+    "pawns": 5
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 331,
+   "ticks": 300056,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 5
+    },
+    "pawns": 5
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 351,
+   "ticks": 305974,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 5
+    },
+    "pawns": 5
+   },
+   "terrainDelta": {}
+  },
+  {
+   "t": 372,
+   "ticks": 312557,
+   "weather": "Clear",
+   "conditions": [
+    [
+     "RM_BlueDesertHazeCarrier",
+     "The Haze"
+    ]
+   ],
+   "extra": {
+    "hediffs": {
+     "RM_HazeFilm": 5
+    },
+    "pawns": 5
+   },
+   "terrainDelta": {}
+  }
+ ],
+ "terrain0": {
+  "Ice": 35205,
+  "RM_BrineEncasement_Rough": 12564,
+  "Granite_Rough": 7071,
+  "Gravel": 5733,
+  "Substructure": 341,
+  "BrokenSubstructure": 278,
+  "AncientConcrete": 232,
+  "AM_KemeticTileGranite": 227,
+  "TileGranite": 200,
+  "AM_TilePristineLimestone": 139,
+  "AM_SteampunkTileCragstone": 111,
+  "AM_KemeticTileSandstone": 92,
+  "AncientTile": 88,
+  "AM_KemeticTileMarble": 76,
+  "AM_JewishTileMarble": 60,
+  "BrokenAsphalt": 30,
+  "OuterRim_BrickRoadPatterned_Granite": 18,
+  "TileSandstone": 12,
+  "AM_MesoamericanTileSlate": 12,
+  "AM_MesoamericanTileObsidian": 11
+ }
+}

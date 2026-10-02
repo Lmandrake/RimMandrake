@@ -1,0 +1,2171 @@
+{
+ "chains": [
+  {
+   "name": "def_wiring",
+   "components": [
+    {
+     "name": "ion_damagedef_fields",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "harmsHealth",
+         "makesBlood",
+         "empAmountMachine",
+         "empAmountDroid"
+        ],
+        "defs": [
+         {
+          "requested": "DamageDef/RSW_JawaIon_Damage",
+          "found": true,
+          "defName": "RSW_JawaIon_Damage",
+          "defType": "IonDamageDef",
+          "label": "ion",
+          "modName": "Jawa Ion Weapons (local)",
+          "packageId": "mandrake.rsw.ionweapons",
+          "fields": {
+           "empAmountMachine": 60.0,
+           "empAmountDroid": 24.0,
+           "harmsHealth": false,
+           "makesBlood": false
+          }
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_b9772e391b13444bba53da152d6e2607",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:40.4849821+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:40.4913842+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ion_damagedef_fields_1790899540.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 1,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "flesh_buildup",
+   "components": [
+    {
+     "name": "buildup_downs_alive_no_injury",
+     "toggle": "fleshBuildupEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_8c19a10038744e7688f1d85a8fbcad96",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:41.8394276+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:41.8499386+00:00",
+         "DurationMs": 10,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_3ccdbcc8f42346189fe6311b738f8a04",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:41.8554429+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:41.8654489+00:00",
+         "DurationMs": 10,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_1d0b0807619c4306b0a6d0cb22ea6227",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:41.8716814+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:41.882198+00:00",
+         "DurationMs": 10,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_7ad89b9ae8294ecfb61a00660bd5ac2d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:41.8863295+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:41.8963636+00:00",
+         "DurationMs": 10,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_64e96e32d1674358a65ebf389c07a892",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:41.9013676+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:41.9108781+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_05a05d94b0194f17889309e55795e335",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:41.9153813+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:41.9243864+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_a382ae65c24347528f2a743dab5cdc02",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:41.9294015+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:41.9389105+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_2395ef93576243fb919ea44cda7a9a4b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:41.9439115+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:41.9544264+00:00",
+         "DurationMs": 10,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_b399270a14a041f2b9f570d1f1ae114e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:41.9606553+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:41.9701646+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37603",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": true,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_f70a7159171c4c96a5fa6decb5d03b3e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:41.9751666+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:41.9843974+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "5 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human288",
+          "name": "Vent",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 118,
+          "z": 138,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human291",
+          "name": "Maya",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 118,
+          "z": 132,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "LabradorRetriever4574",
+          "name": "Splurge",
+          "kind": "LabradorRetriever",
+          "kindDef": "LabradorRetriever",
+          "def": "LabradorRetriever",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 118,
+          "z": 132,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.75,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human294",
+          "name": "Roberts",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 121,
+          "z": 130,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human37603",
+          "name": "Narwhal",
+          "kind": "Pirate",
+          "kindDef": "Pirate",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Neanderthal",
+          "xenotypeLabel": "neanderthal",
+          "uniqueXenotype": false,
+          "faction": "TribeRoughNeanderthal",
+          "factionName": "Kinship of Dursoud",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "RSW_JawaIon_Stun",
+             "label": "ion buildup (overloaded)",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.1,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 5,
+        "truncated": 0,
+        "totalOnMap": 5,
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_ad6e376110584dbeb4fe4b23816b543a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:41.9889125+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:41.9929132+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\buildup_downs_alive_no_injury_1790899542.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "buildup_math",
+   "components": [
+    {
+     "name": "default_severity_matches_xml_rate",
+     "toggle": "stunBuildupMultiplier",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: one ion hit on a bodySize=1.00 pawn gave severity 0.375, expected ~0.240 from 0.03*8*1.0/bodySize^2",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37610",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37610",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_98c129eb41184fc684b3b99495cc8204",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:43.2937675+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:43.304279+00:00",
+         "DurationMs": 10,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "7 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human288",
+          "name": "Vent",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 118,
+          "z": 138,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human291",
+          "name": "Maya",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 118,
+          "z": 132,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "LabradorRetriever4574",
+          "name": "Splurge",
+          "kind": "LabradorRetriever",
+          "kindDef": "LabradorRetriever",
+          "def": "LabradorRetriever",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 118,
+          "z": 132,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.75,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human294",
+          "name": "Roberts",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 121,
+          "z": 130,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human37603",
+          "name": "Narwhal",
+          "kind": "Pirate",
+          "kindDef": "Pirate",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Neanderthal",
+          "xenotypeLabel": "neanderthal",
+          "uniqueXenotype": false,
+          "faction": "TribeRoughNeanderthal",
+          "factionName": "Kinship of Dursoud",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "RSW_JawaIon_Stun",
+             "label": "ion buildup (overloaded)",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off (fresh)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "right leg"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Shattered",
+             "severity": 0.5,
+             "part": "Femur",
+             "partLabel": "right femur"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Shattered",
+             "severity": 0.5,
+             "part": "Tibia",
+             "partLabel": "right tibia"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Foot",
+             "partLabel": "right foot"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Toe",
+             "partLabel": "right little toe"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Toe",
+             "partLabel": "right fourth toe"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Toe",
+             "partLabel": "right middle toe"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Toe",
+             "partLabel": "right second toe"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Toe",
+             "partLabel": "right big toe"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off (fresh)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Shattered",
+             "severity": 0.5,
+             "part": "Femur",
+             "partLabel": "left femur"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Shattered",
+             "severity": 0.5,
+             "part": "Tibia",
+             "partLabel": "left tibia"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Foot",
+             "partLabel": "left foot"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Toe",
+             "partLabel": "left little toe"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Toe",
+             "partLabel": "left fourth toe"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Toe",
+             "partLabel": "left middle toe"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Toe",
+             "partLabel": "left second toe"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Toe",
+             "partLabel": "left big toe"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.1,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 7.2
+          }
+         },
+         {
+          "id": "Human37610",
+          "name": "Morg",
+          "kind": "Pirate",
+          "kindDef": "Pirate",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Neanderthal",
+          "xenotypeLabel": "neanderthal",
+          "uniqueXenotype": false,
+          "faction": "TribeRoughNeanderthal",
+          "factionName": "Kinship of Dursoud",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "RSW_JawaIon_Stun",
+             "label": "ion buildup (building)",
+             "severity": 0.37499997,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.8,
+            "Moving": 0.8,
+            "Manipulation": 0.6,
+            "Talking": 0.8,
+            "Eating": 0.8,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Rat37618",
+          "name": "Rat",
+          "kind": "Rat",
+          "kindDef": "Rat",
+          "def": "Rat",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": "Mechanoid",
+          "factionName": "Yothiri Mechhive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 7,
+        "truncated": 0,
+        "totalOnMap": 7,
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_11113055699d4b868cc544822353b787",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:43.3094701+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:43.3124699+00:00",
+         "DurationMs": 2,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "bodysize_squared_resistance",
+     "toggle": "bodySizeResistExponent",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "thirdparty_stat_matches_formula",
+     "toggle": "thirdPartyBodySizeScaling",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "machine_and_droid_tier",
+   "components": [
+    {
+     "name": "mechanoid_overloaded_near_instant",
+     "toggle": "machineTierEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Mech_Scyther37622",
+          "def": "Mech_Scyther",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 1800
+         }
+        ],
+        "targets": [
+         {
+          "id": "Mech_Scyther37622",
+          "def": "Mech_Scyther",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 1800
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_2b4a562401dd4b9f833e96a1a9389b97",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:44.3701261+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:44.3793141+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mechanoid_overloaded_near_instant_1790899544.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "droid_tier_strong_stun",
+     "toggle": "machineTierMultiplier",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: jawa/damage returned no per-target row -- the hit did not land on anything",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": false,
+        "message": "Give either thingId, or both x and z.",
+        "details": null,
+        "operation": {
+         "OperationId": "op_dcad59b60d6c476ba919d22ea3e62ce1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:44.5985547+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:44.599554+00:00",
+         "DurationMs": 0,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "shield_break",
+   "components": [
+    {
+     "name": "ion_pops_shield_then_bullet_lands",
+     "toggle": "shieldBreakEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: bullet STILL absorbed after an ion hit -- shieldBreakEnabled's 1-point EMP dispatch did not pop the belt: before=-1 after=-1",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with Bullet 15.",
+        "damageDef": "Bullet",
+        "harmsHealth": true,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37624",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37624",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_2a82e22991da4ef58354192d4ad391e6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:45.6051127+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:45.6136201+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with RSW_JawaIon_Damage 8.",
+        "damageDef": "RSW_JawaIon_Damage",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37624",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 2,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37624",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 2,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_bcf44f6514e44ff2b1d57148d5a5ffed",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:45.6191278+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:45.6276319+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with Bullet 15.",
+        "damageDef": "Bullet",
+        "harmsHealth": true,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human37624",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 12.0,
+          "hediffsBefore": 2,
+          "hediffsAfter": 4,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human37624",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 12.0,
+          "hediffsBefore": 2,
+          "hediffsAfter": 4,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_0702aed34f4c4b6ab18a90fd335ce09c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:05:45.633137+00:00",
+         "CompletedAtUtc": "2026-10-02T00:05:45.6426443+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "vehicle_tier_without_framework",
+   "components": [
+    {
+     "name": "vehicle_tier_logs_selfdisable",
+     "toggle": "vehicleTierEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='Vehicle Framework is not loaded' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "expect_log_contains(Vehicle Framework is not loaded, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "vehicle_tier_multiplier_dormant_without_framework",
+     "toggle": "vehicleTierMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000015939616490>",
+  "<suite.Component object at 0x00000159395D0D10>",
+  "<suite.Component object at 0x00000159395D0160>",
+  "<suite.Component object at 0x00000159394A4D50>"
+ ],
+ "refused": "",
+ "walk": null
+}

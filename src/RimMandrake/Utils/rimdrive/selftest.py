@@ -259,6 +259,183 @@ def t_one_session_per_process():
     check("one Session per process is enforced", ok)
 
 
+# ------------------------------------------- situational companion tools (NORTHSTAR_COMPANION_GAPS_1)
+
+import re  # noqa: E402
+from rimdrive.fake import FakeWorld, pawn_row  # noqa: E402
+
+_CS = os.path.join(os.path.dirname(_UTILS), "bridgetools", "JawaBench.BridgeTools",
+                   "JawaBenchSituationalTools.cs")
+_NEW_TOOLS = ("jawa/pawn_census", "jawa/pawn_roles", "jawa/incident_queue_peek",
+              "jawa/incident_queue_remove", "jawa/damage_log", "jawa/thing_lineage")
+
+
+def _tool_block(src, name):
+    """The C# text from a [Tool("name") attribute to its method signature (Description +
+    ResultDescription), where every key the real tool returns is named."""
+    i = src.find('"%s"' % name)
+    if i < 0:
+        return None
+    j = src.find("public static async", i)
+    return src[i:j]
+
+
+def _keys(obj, out):
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            out.add(k)
+            _keys(v, out)
+    elif isinstance(obj, list):
+        for v in obj:
+            _keys(v, out)
+    return out
+
+
+def _world():
+    w = FakeWorld(pawns=[pawn_row("Col1", x=10, z=10),
+                         pawn_row("Husky1", kind="Husky", intelligence="Animal", x=11, z=10),
+                         pawn_row("Wolf1", kind="Wolf_Timber", faction=None, is_player=False,
+                                  intelligence="Animal", x=40, z=40),
+                         pawn_row("Raider1", kind="Tribal", faction="TribeRough", is_player=False,
+                                  hostile=True, x=60, z=60)])
+    w.mental["Raider1"] = "Berserk"
+    w.jobs["Wolf1"] = {"def": "PredatorHunt", "targetA": "Husky1"}
+    w.lords["Raider1"] = {"loadId": 7, "lordJob": "LordJob_AssaultColony", "toil": "LordToil_AssaultColony"}
+    w.queue = [{"defName": "RaidEnemy", "fireTick": 500, "retryDurationTicks": 0, "triedToFire": False,
+                "points": 300.0, "faction": "TribeRough", "forced": False, "target": "map:0",
+                "source": None, "fromQuest": False},
+               {"defName": "Eclipse", "fireTick": 900, "retryDurationTicks": 0, "triedToFire": False,
+                "points": -1.0, "faction": None, "forced": False, "target": "map:0",
+                "source": None, "fromQuest": False}]
+    w.things = {"Meat1": {"def": "Meat_Cow", "stackCount": 20, "x": 5, "z": 5},
+                "Meat2": {"def": "Meat_Cow", "stackCount": 15, "x": 6, "z": 5},
+                "Meat3": {"def": "Meat_Cow", "stackCount": 10, "x": 7, "z": 5}}
+    return w
+
+
+def t_situational_fake_keys_match_real_tool():
+    """Every key the fake emits must be named in the real tool's attribute text, so a key the fake
+    invents cannot make a detector selftest lie (northstar_helpers_plan.md §8)."""
+    src = open(_CS, encoding="utf-8").read()
+    w = _world()
+    w.kill("Col1")
+    w.eat("Meat1", "Col1")
+    calls = {
+        "jawa/pawn_census": w.call("jawa/pawn_census", includeDead=True),
+        "jawa/pawn_roles": w.call("jawa/pawn_roles", includeDead=True),
+        "jawa/incident_queue_peek": w.call("jawa/incident_queue_peek"),
+        "jawa/incident_queue_remove": w.call("jawa/incident_queue_remove", defName="Eclipse"),
+        "jawa/damage_log": w.call("jawa/damage_log", pawnsOnly=False),
+        "jawa/thing_lineage": w.call("jawa/thing_lineage", ids="Meat1,Meat2"),
+    }
+    for name in _NEW_TOOLS:
+        block = _tool_block(src, name)
+        if block is None:
+            check("contract: %s declared in C#" % name, False)
+            continue
+        r = calls[name]
+        missing = sorted(k for k in _keys(r, set()) if not re.search(r"\b%s\b" % re.escape(k), block))
+        check("contract: fake %s keys all named by the real tool" % name, r.get("success") and not missing,
+              missing or r)
+
+
+def t_situational_contract_probe_can_fail():
+    """Sanity probe: the key check must be able to fire -- an invented key is caught."""
+    src = open(_CS, encoding="utf-8").read()
+    block = _tool_block(src, "jawa/pawn_census")
+    check("contract probe: an invented key is not found in the block",
+          not re.search(r"\bmentalStateInventedKey\b", block) and re.search(r"\bpreyId\b", block))
+
+
+def t_census_reads_mental_and_hunting():
+    w = _world()
+    r = w.call("jawa/pawn_census")
+    rows = {p["id"]: p for p in r["pawns"]}
+    check("census: berserk raider shows mentalState def + aggro",
+          rows["Raider1"]["mentalState"]["def"] == "Berserk" and rows["Raider1"]["mentalState"]["isAggro"])
+    check("census: factionless wolf is NOT hostile but IS hunting, with prey id",
+          rows["Wolf1"]["hostile"] is False and rows["Wolf1"]["isPredatorHunting"]
+          and rows["Wolf1"]["preyId"] == "Husky1")
+    check("census: animal has no mood need (None), not a zero", rows["Husky1"]["needs"]["mood"] is None)
+    check("census: raider carries its lord", rows["Raider1"]["lord"]["lordJob"] == "LordJob_AssaultColony")
+
+
+def t_census_unknown_id_fails_loudly():
+    w = _world()
+    r = w.call("jawa/pawn_census", ids="Col1,Nobody9")
+    check("census: an unresolved id fails the whole call", r["success"] is False and "Nobody9" in r["message"])
+    s = _bare_session()
+    s.call = w.call
+    try:
+        s.pawn_census(ids=["Nobody9"])
+        check("session.pawn_census raises on refusal", False)
+    except SessionError:
+        check("session.pawn_census raises on refusal", True)
+
+
+def t_roles_colony_animal_is_player_not_colonist():
+    w = _world()
+    rows = {p["id"]: p for p in w.call("jawa/pawn_roles", faction="player")["pawns"]}
+    check("roles: colony husky isPlayer but not isColonist",
+          rows["Husky1"]["isPlayer"] and not rows["Husky1"]["isColonist"] and rows["Col1"]["isColonist"])
+
+
+def t_incident_queue_peek_and_selective_remove():
+    w = _world()
+    s = _bare_session()
+    s.call = w.call
+    q = s.incident_queue()
+    check("queue peek lists both entries", [e["defName"] for e in q] == ["RaidEnemy", "Eclipse"])
+    dry = s.incident_queue_remove(def_name="RaidEnemy")
+    check("queue remove: dry run is the default and removes nothing",
+          dry["dryRun"] and dry["removedCount"] == 0 and len(w.queue) == 2)
+    real = s.incident_queue_remove(def_name="RaidEnemy", dry_run=False)
+    check("queue remove: removes ONLY the matched entry, measured",
+          real["removedCount"] == 1 and [e["defName"] for e in w.queue] == ["Eclipse"])
+    try:
+        s.incident_queue_remove(def_name="RaidEnemy", dry_run=False)
+        check("queue remove: zero-match raises (never a silent 'removed')", False)
+    except SessionError:
+        check("queue remove: zero-match raises (never a silent 'removed')", True)
+
+
+def t_damage_log_records_damage_and_death():
+    w = _world()
+    s = _bare_session()
+    s.call = w.call
+    w.call("jawa/damage", thingId="Col1", damageDef="Bite", amount=12)
+    w.kill("Col1")
+    log = s.damage_log()
+    kinds = [(e["kind"], e["victimId"]) for e in log["events"]]
+    check("damage_log: a bite then a kill on the colonist, in order",
+          kinds == [("damage", "Col1"), ("kill", "Col1")], kinds)
+    nxt = log["nextSeq"]
+    w.call("jawa/damage", thingId="Raider1", damageDef="Cut", amount=5)
+    later = s.damage_log(since_seq=nxt - 1)
+    check("damage_log: sinceSeq returns only the newer event",
+          [e["victimId"] for e in later["events"]] == ["Raider1"] and later["completeSinceSeq"])
+    w.recorder_installed = False
+    try:
+        s.damage_log()
+        check("damage_log: an uninstalled recorder raises, never reads empty", False)
+    except SessionError:
+        check("damage_log: an uninstalled recorder raises, never reads empty", True)
+
+
+def t_thing_lineage_fates():
+    w = _world()
+    s = _bare_session()
+    s.call = w.call
+    w.eat("Meat1", "Col1")
+    w.merge("Meat2", "Meat3")
+    res = {r["id"]: r for r in s.thing_lineage(["Meat1", "Meat2", "Meat3", "Meat9"])}
+    check("lineage: eaten stack -> eatenBy:<pawn>", res["Meat1"]["fate"] == "eatenBy:Col1", res["Meat1"])
+    check("lineage: merged stack -> absorbedInto:<survivor>", res["Meat2"]["fate"] == "absorbedInto:Meat3")
+    check("lineage: survivor found with the merged quantity",
+          res["Meat3"]["found"] and res["Meat3"]["stackCount"] == 25)
+    check("lineage: never-journalled id is UNRECORDED, not 'destroyed'", res["Meat9"]["fate"] == "UNRECORDED")
+
+
 TESTS = [
     t_mutate_happy_path,
     t_mutate_noop_strict_raises,
@@ -273,6 +450,14 @@ TESTS = [
     t_sweep_pawn_kill_is_exact_id_and_non_explosive,
     t_sweep_empty_litter_makes_no_calls,
     t_one_session_per_process,
+    t_situational_fake_keys_match_real_tool,
+    t_situational_contract_probe_can_fail,
+    t_census_reads_mental_and_hunting,
+    t_census_unknown_id_fails_loudly,
+    t_roles_colony_animal_is_player_not_colonist,
+    t_incident_queue_peek_and_selective_remove,
+    t_damage_log_records_damage_and_death,
+    t_thing_lineage_fates,
 ]
 
 

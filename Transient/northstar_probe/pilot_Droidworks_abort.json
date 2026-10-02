@@ -1,0 +1,4994 @@
+{
+ "chains": [
+  {
+   "name": "power_state_machine",
+   "components": [
+    {
+     "name": "format_tier_defaults_to_programmable",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_GNKDroid18332",
+          "thingIdNumber": 18332,
+          "name": "Toby Pope",
+          "nameShort": "Pope",
+          "title": "sculptor",
+          "kindDef": "RSW_DW_OuterRim_GNKDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 23,
+          "ageChronologicalYears": 23,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "FrightenedChild43",
+          "adulthood": "Sculptor63",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Afro",
+          "beard": "French",
+          "position": {
+           "x": 200,
+           "z": 50
+          },
+          "traits": [
+           {
+            "def": "Nerves",
+            "degree": 1,
+            "label": "Steadfast",
+            "forced": true
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_CollarShirt",
+            "defName": "Apparel_CollarShirt",
+            "stuff": "Cloth",
+            "hp": 100
+           },
+           {
+            "def": "Apparel_Tuque",
+            "defName": "Apparel_Tuque",
+            "stuff": "Cloth",
+            "hp": 80
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Gunshot",
+            "part": "Eye",
+            "severity": 5.0
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "part": null,
+            "severity": 3.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_424dde7d702e489583f248277f283c39",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:18.9574615+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:18.9605063+00:00",
+         "DurationMs": 3,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "format tier severity",
+       "result": 3.0
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\format_tier_defaults_to_programmable_1790899878.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "power_need_present",
+     "toggle": "powerNeed",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_GNKDroid18332",
+          "thingIdNumber": 18332,
+          "name": "Toby Pope",
+          "nameShort": "Pope",
+          "title": "sculptor",
+          "kindDef": "RSW_DW_OuterRim_GNKDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 23,
+          "ageChronologicalYears": 23,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "FrightenedChild43",
+          "adulthood": "Sculptor63",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Afro",
+          "beard": "French",
+          "position": {
+           "x": 200,
+           "z": 50
+          },
+          "traits": [
+           {
+            "def": "Nerves",
+            "degree": 1,
+            "label": "Steadfast",
+            "forced": true
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_CollarShirt",
+            "defName": "Apparel_CollarShirt",
+            "stuff": "Cloth",
+            "hp": 100
+           },
+           {
+            "def": "Apparel_Tuque",
+            "defName": "Apparel_Tuque",
+            "stuff": "Cloth",
+            "hp": 80
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Gunshot",
+            "part": "Eye",
+            "severity": 5.0
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "part": null,
+            "severity": 3.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_91c6f326037c457595cd704d7520115c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:19.1736599+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:19.1766601+00:00",
+         "DurationMs": 3,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\power_need_present_1790899879.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "empty_bar_powers_down",
+     "toggle": "powerDownWhenEmpty",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_need",
+       "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+         "set RSW_DW_Power to 0"
+        ],
+        "needs": [
+         {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "DrugDesire",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RoomSize",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RSW_DW_Power",
+          "level": 0.0,
+          "pct": 0.0
+         }
+        ],
+        "memories": [],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_264d3bfe4c6f4de1a6b95c3461fa0a9b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:19.3905437+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:19.3935429+00:00",
+         "DurationMs": 2,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(600) [watched] -> 600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 600,
+        "requested": 600
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_GNKDroid18332",
+          "thingIdNumber": 18332,
+          "name": "Toby Pope",
+          "nameShort": "Pope",
+          "title": "sculptor",
+          "kindDef": "RSW_DW_OuterRim_GNKDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 23,
+          "ageChronologicalYears": 23,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "FrightenedChild43",
+          "adulthood": "Sculptor63",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Afro",
+          "beard": "French",
+          "position": {
+           "x": 200,
+           "z": 51
+          },
+          "traits": [
+           {
+            "def": "Nerves",
+            "degree": 1,
+            "label": "Steadfast",
+            "forced": true
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_CollarShirt",
+            "defName": "Apparel_CollarShirt",
+            "stuff": "Cloth",
+            "hp": 100
+           },
+           {
+            "def": "Apparel_Tuque",
+            "defName": "Apparel_Tuque",
+            "stuff": "Cloth",
+            "hp": 80
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Gunshot",
+            "part": "Eye",
+            "severity": 5.0
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "part": null,
+            "severity": 3.0
+           },
+           {
+            "def": "RSW_DW_PoweredDown",
+            "part": null,
+            "severity": 1.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5072,
+            "pct": 0.5072
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.554,
+            "pct": 0.554
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.0,
+            "pct": 0.0
+           }
+          ]
+         }
+        ],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_aaaed3e78a964b52902fe3556e4db102",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:20.8675658+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:20.8757289+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_OuterRim_GNKDroid18332, RSW_DW_PoweredDown present=True)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\empty_bar_powers_down_1790899880.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "reboot_restores_power",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "remove",
+        "didWhat": "removed RSW_DW_PoweredDown",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue",
+         "Shoulder"
+        ],
+        "hediffCount": 2,
+        "hediffs": [
+         {
+          "def": "Gunshot",
+          "part": "Eye",
+          "severity": 5.0
+         },
+         {
+          "def": "RSW_DW_FormatTier",
+          "part": null,
+          "severity": 3.0
+         }
+        ],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_06db4fe2794a4610919863ebc2ec3885",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:21.1061009+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:21.11661+00:00",
+         "DurationMs": 10,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_need",
+       "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+         "set RSW_DW_Power to 0.15"
+        ],
+        "needs": [
+         {
+          "need": "Mood",
+          "level": 0.5072,
+          "pct": 0.5072
+         },
+         {
+          "need": "DrugDesire",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RoomSize",
+          "level": 0.554,
+          "pct": 0.554
+         },
+         {
+          "need": "RSW_DW_Power",
+          "level": 0.15,
+          "pct": 0.15
+         }
+        ],
+        "memories": [],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_e5c8ca27f89842659d7a2c5a4a03abc7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:21.1281194+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:21.1366372+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_GNKDroid18332",
+          "thingIdNumber": 18332,
+          "name": "Toby Pope",
+          "nameShort": "Pope",
+          "title": "sculptor",
+          "kindDef": "RSW_DW_OuterRim_GNKDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 23,
+          "ageChronologicalYears": 23,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "FrightenedChild43",
+          "adulthood": "Sculptor63",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Afro",
+          "beard": "French",
+          "position": {
+           "x": 200,
+           "z": 51
+          },
+          "traits": [
+           {
+            "def": "Nerves",
+            "degree": 1,
+            "label": "Steadfast",
+            "forced": true
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_CollarShirt",
+            "defName": "Apparel_CollarShirt",
+            "stuff": "Cloth",
+            "hp": 100
+           },
+           {
+            "def": "Apparel_Tuque",
+            "defName": "Apparel_Tuque",
+            "stuff": "Cloth",
+            "hp": 80
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Gunshot",
+            "part": "Eye",
+            "severity": 5.0
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "part": null,
+            "severity": 3.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5072,
+            "pct": 0.5072
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.554,
+            "pct": 0.554
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.15,
+            "pct": 0.15
+           }
+          ]
+         }
+        ],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_732df16bae31435097c75fc412ab489e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:21.147139+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:21.1561753+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_OuterRim_GNKDroid18332, RSW_DW_PoweredDown present=False)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\reboot_restores_power_1790899881.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 10 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "ticks_spent": 600,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 601,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 601,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "passive_charging",
+   "components": [
+    {
+     "name": "nimbus_charges_in_range",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: RSW_DW_ChargeNimbus not found at anchor after spawn: []",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/get_cell_info",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 200,
+         "z": 50,
+         "terrainDefName": "Soil",
+         "roofDefName": null,
+         "fogged": false,
+         "walkable": true,
+         "thingCount": 1,
+         "designationCount": 0,
+         "blueprintBuildDefs": [],
+         "frameBuildDefs": [],
+         "solidThingDefs": [
+          "RSW_DW_ChargeNimbus"
+         ],
+         "zone": null,
+         "areaCount": 0,
+         "areas": [],
+         "things": [
+          {
+           "defName": "RSW_DW_ChargeNimbus",
+           "label": "Charge nimbus",
+           "className": "Verse.Building",
+           "stuffDefName": null,
+           "isBlueprint": false,
+           "isBlueprintBuild": false,
+           "blueprintBuildDefName": null,
+           "isFrame": false,
+           "frameBuildDefName": null,
+           "hitPoints": 200
+          }
+         ],
+         "designations": []
+        },
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "operation": {
+         "OperationId": "op_d8b0473330f3415d9e8226fe4769e43d",
+         "CapabilityId": "rimbridge.optional/architect/get-cell-info",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:22.532946+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:22.533945+00:00",
+         "DurationMs": 0,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "detonation",
+   "components": [
+    {
+     "name": "full_charge_detonates_on_death",
+     "toggle": "detonation",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_need",
+       "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+         "set RSW_DW_Power to 1"
+        ],
+        "needs": [
+         {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RSW_DW_Power",
+          "level": 1.0,
+          "pct": 1.0
+         }
+        ],
+        "memories": [],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_da0f6ffd9ac342d996259dc8ea7e0d0f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:23.5287155+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:23.5322228+00:00",
+         "DurationMs": 3,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Corpse_Human18331",
+          "def": "Corpse_Human",
+          "label": "Heft, Weaver (dead)",
+          "x": 108,
+          "z": 48,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 100,
+          "maxHitPoints": 100,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 1,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 0,
+        "perDef": {
+         "Corpse_Human": 1
+        },
+        "ticksGame": 601,
+        "message": "1 of 1 matching thing(s) returned, 1 examined.",
+        "operation": {
+         "OperationId": "op_ca961ddce453498ea8a1eb25245f93df",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:23.5372231+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:23.5417281+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with Bomb 5000.",
+        "damageDef": "Bomb",
+        "harmsHealth": true,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "RSW_DW_Race_OuterRim_GNKDroid18343",
+          "def": "RSW_DW_Race_OuterRim_GNKDroid",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": 0,
+          "destroyed": true,
+          "totalDamageDealt": 65.0,
+          "hediffsBefore": 2,
+          "hediffsAfter": 4,
+          "downed": false,
+          "dead": true,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "RSW_DW_Race_OuterRim_GNKDroid18343",
+          "def": "RSW_DW_Race_OuterRim_GNKDroid",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": 0,
+          "destroyed": true,
+          "totalDamageDealt": 65.0,
+          "hediffsBefore": 2,
+          "hediffsAfter": 4,
+          "downed": false,
+          "dead": true,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_30fbdce8499640b9947a460cb7e02a12",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:23.5477307+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:23.557741+00:00",
+         "DurationMs": 10,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(60) [watched] -> 60 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 60,
+        "requested": 60
+       }
+      },
+      {
+       "call": "expect_pawn_despawned(RSW_DW_Race_OuterRim_GNKDroid18343)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Corpse_Human18331",
+          "def": "Corpse_Human",
+          "label": "Heft, Weaver (dead)",
+          "x": 108,
+          "z": 48,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 100,
+          "maxHitPoints": 100,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "Corpse_RSW_DW_Race_OuterRim_GNKDroid18347",
+          "def": "Corpse_RSW_DW_Race_OuterRim_GNKDroid",
+          "label": "Morg, Digger (dead)",
+          "x": 200,
+          "z": 50,
+          "spawned": true,
+          "rot": 2,
+          "stackCount": 1,
+          "hitPoints": 25,
+          "maxHitPoints": 100,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 2,
+        "countReturned": 2,
+        "countMatched": 2,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 0,
+        "perDef": {
+         "Corpse_Human": 1,
+         "Corpse_RSW_DW_Race_OuterRim_GNKDroid": 1
+        },
+        "ticksGame": 661,
+        "message": "2 of 2 matching thing(s) returned, 2 examined.",
+        "operation": {
+         "OperationId": "op_8215bd0c833d443d9935262e5cfefeb6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:24.0819164+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:24.0869175+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\full_charge_detonates_on_death_1790899884.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "ticks_spent": 60,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "salvage_on_death",
+   "components": [
+    {
+     "name": "head_drops_with_identity",
+     "toggle": "headDrop",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\head_drops_with_identity_1790899885.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "parts_drop_from_dead_droid",
+     "toggle": "partDrop",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\parts_drop_from_dead_droid_1790899886.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "ticks_spent": 60,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "bolt_core",
+   "components": [
+    {
+     "name": "resentment_accrues",
+     "toggle": "boltResentment",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: RSW_DW_BoltResentment severity did not rise (0.000000 -> 0.000000)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human18360",
+          "thingIdNumber": 18360,
+          "name": "Otis Parker",
+          "nameShort": "Parker",
+          "title": "urbworld rebel",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 26,
+          "ageChronologicalYears": 67,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "Mute34",
+          "adulthood": "UrbworldRebel56",
+          "headType": "Male_AverageWide",
+          "bodyType": "Hulk",
+          "hair": "Mohawk",
+          "beard": "Circle",
+          "position": {
+           "x": 200,
+           "z": 50
+          },
+          "traits": [
+           {
+            "def": "DrugDesire",
+            "degree": 2,
+            "label": "Chemical fascination",
+            "forced": false
+           },
+           {
+            "def": "Psychopath",
+            "degree": 0,
+            "label": "Psychopath",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "RSW_DW_RestrainingBolt",
+            "part": null,
+            "severity": 0.5
+           },
+           {
+            "def": "RSW_DW_BoltResentment",
+            "part": null,
+            "severity": 0.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.987702,
+            "pct": 0.987702
+           },
+           {
+            "need": "Joy",
+            "level": 0.5018656,
+            "pct": 0.5018656
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 721,
+        "operation": {
+         "OperationId": "op_99e12c3f81814631892d931ce9185ab1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:27.4216258+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:27.426626+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(1200) [watched] -> 1200 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1200,
+        "requested": 1200
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human18360",
+          "thingIdNumber": 18360,
+          "name": "Otis Parker",
+          "nameShort": "Parker",
+          "title": "urbworld rebel",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 26,
+          "ageChronologicalYears": 67,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "Mute34",
+          "adulthood": "UrbworldRebel56",
+          "headType": "Male_AverageWide",
+          "bodyType": "Hulk",
+          "hair": "Mohawk",
+          "beard": "Circle",
+          "position": {
+           "x": 177,
+           "z": 66
+          },
+          "traits": [
+           {
+            "def": "DrugDesire",
+            "degree": 2,
+            "label": "Chemical fascination",
+            "forced": false
+           },
+           {
+            "def": "Psychopath",
+            "degree": 0,
+            "label": "Psychopath",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "RSW_DW_RestrainingBolt",
+            "part": null,
+            "severity": 0.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.52,
+            "pct": 0.52
+           },
+           {
+            "need": "Food",
+            "level": 0.767999947,
+            "pct": 0.767999947
+           },
+           {
+            "need": "Rest",
+            "level": 0.968701959,
+            "pct": 0.968701959
+           },
+           {
+            "need": "Joy",
+            "level": 0.489865541,
+            "pct": 0.489865541
+           },
+           {
+            "need": "Beauty",
+            "level": 0.461600065,
+            "pct": 0.461600065
+           },
+           {
+            "need": "Comfort",
+            "level": 0.4807999,
+            "pct": 0.4807999
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.498092234,
+            "pct": 0.498092234
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.93200016,
+            "pct": 0.93200016
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_978e9ecd5d254893a4c8ff2679d978a4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:30.370699+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:30.3747006+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shear_on_damage",
+     "toggle": "boltShear",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mood_penalty_nearby",
+     "toggle": "boltMoodPenalty",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mental_break_suppressed_while_bolted",
+     "toggle": "boltSuppressesMentalBreaks",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "ticks_spent": 1200,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 1321,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] Ancient mech"
+     },
+     {
+      "tick": 1921,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] Ancient mech"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "bolt_rebellion_structural",
+   "components": [
+    {
+     "name": "rebellion_recipe_wired",
+     "toggle": "boltRebellion",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "workerClass"
+        ],
+        "defs": [
+         {
+          "requested": "RecipeDef/RSW_DW_RemoveRestrainingBolt",
+          "found": true,
+          "defName": "RSW_DW_RemoveRestrainingBolt",
+          "defType": "RecipeDef",
+          "label": "remove restraining bolt",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "workerClass": "Recipe_RemoveRestrainingBolt"
+          }
+         }
+        ],
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_e8ab5e1848b4436a839ccfcd6b398219",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:31.5520762+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:31.5570746+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "get_defs(RecipeDef/RSW_DW_RemoveRestrainingBolt) contains 'Recipe_RemoveRestrainingBolt'",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "wipe_and_drift_structural",
+   "components": [
+    {
+     "name": "wipe_hediff_attaches",
+     "toggle": "wipeStumble",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "add",
+        "didWhat": "added RSW_DW_RecentlyWiped (whole body)",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue",
+         "Shoulder"
+        ],
+        "hediffCount": 3,
+        "hediffs": [
+         {
+          "def": "Bite",
+          "part": "Shoulder",
+          "severity": 4.0
+         },
+         {
+          "def": "RSW_DW_FormatTier",
+          "part": null,
+          "severity": 3.0
+         },
+         {
+          "def": "RSW_DW_RecentlyWiped",
+          "part": null,
+          "severity": 1.0
+         }
+        ],
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_91cb06453ce445bb85d81bb43e0bf1d3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:32.67351+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:32.6785114+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_ImperialLaborDroid18374",
+          "thingIdNumber": 18374,
+          "name": "Kyle 'Kahl' Kuball",
+          "nameShort": "Kahl",
+          "title": "urbworld drone",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 20,
+          "ageChronologicalYears": 20,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "WreckageExplorer93",
+          "adulthood": "UrbworldDrone32",
+          "headType": "RSW_DW_HeadType_OuterRim_ImperialLaborDroid",
+          "bodyType": "Male",
+          "hair": "Bowlcut",
+          "beard": "Lincoln",
+          "position": {
+           "x": 200,
+           "z": 50
+          },
+          "traits": [
+           {
+            "def": "Industriousness",
+            "degree": 1,
+            "label": "Hard worker",
+            "forced": true
+           },
+           {
+            "def": "SlowLearner",
+            "degree": 0,
+            "label": "Slow learner",
+            "forced": false
+           },
+           {
+            "def": "DislikesWomen",
+            "degree": 0,
+            "label": "Misogynist",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
+            "stuff": "OuterRim_Durafiber",
+            "hp": 100
+           },
+           {
+            "def": "Apparel_Tuque",
+            "defName": "Apparel_Tuque",
+            "stuff": "Cloth",
+            "hp": 80
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Bite",
+            "part": "Shoulder",
+            "severity": 4.0
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "part": null,
+            "severity": 3.0
+           },
+           {
+            "def": "RSW_DW_RecentlyWiped",
+            "part": null,
+            "severity": 1.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_3f3173f42bb2488dad447cb021690a3f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:32.6860205+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:32.6915308+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_OuterRim_ImperialLaborDroid18374, RSW_DW_RecentlyWiped present=True)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\wipe_hediff_attaches_1790899892.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "quirk_pool_marked",
+     "toggle": "wipeQuirks",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: get_defs('TraitDef/RSW_DW_Quirk_ServoTwitch', fields='modExtensions') did not contain 'HardwareQuirkExtension': {'success': True, 'message': '1 of 1 def(s) resolved', 'requested': 1, 'foundCount': 1, 'notFound': [], 'malformed': [], 'fieldsAsked': ['modExtensions'], 'defs': [{'requested': 'TraitDef/RSW_DW_Quirk_ServoTwitch', 'found': True, 'defName': 'RSW_DW_Quirk_ServoTwitch', 'defType': 'TraitDef', 'label': None, 'modName': 'Droidworks', 'packageId': 'mandrake.rsw.droidworks', 'fields': {'modExtensions': [{}]}}], 'ticksGame': 1921, 'operation': {'OperationId': 'op_fa337b96ab6f4e8bb53094a1c9b81dc0', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-02T00:11:32.9077829+00:00', 'CompletedAtUtc': '2026-10-02T00:11:32.9122983+00:00', 'DurationMs': 4, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "modExtensions"
+        ],
+        "defs": [
+         {
+          "requested": "TraitDef/RSW_DW_Quirk_ServoTwitch",
+          "found": true,
+          "defName": "RSW_DW_Quirk_ServoTwitch",
+          "defType": "TraitDef",
+          "label": null,
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "modExtensions": [
+            {}
+           ]
+          }
+         }
+        ],
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_fa337b96ab6f4e8bb53094a1c9b81dc0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:32.9077829+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:32.9122983+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "get_defs(TraitDef/RSW_DW_Quirk_ServoTwitch) contains 'HardwareQuirkExtension'",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "idiosyncrasy_pool_marked",
+     "toggle": "personalityDrift",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "get_defs(TraitDef/RSW_DW_Idio_Opinionated) contains 'DroidIdiosyncrasyExtension'",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "hutt_captive_bolt_state",
+   "components": [
+    {
+     "name": "captive_bolt_state_reachable",
+     "toggle": "huttCaptivesBolted",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human18383",
+          "thingIdNumber": 18383,
+          "name": "Sarah 'Four Eyes' Renault",
+          "nameShort": "Four Eyes",
+          "title": "deep space surveyor",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Female",
+          "ageBiologicalYears": 60,
+          "ageChronologicalYears": 154,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "AspiringPhysicist47",
+          "adulthood": "DeepSpaceSurveyor1",
+          "headType": "Female_AveragePointy",
+          "bodyType": "Female",
+          "hair": "FancyBun",
+          "beard": "NoBeard",
+          "position": {
+           "x": 200,
+           "z": 50
+          },
+          "traits": [
+           {
+            "def": "DrugDesire",
+            "degree": 2,
+            "label": "Chemical fascination",
+            "forced": false
+           },
+           {
+            "def": "Wimp",
+            "degree": 0,
+            "label": "Wimp",
+            "forced": false
+           },
+           {
+            "def": "Tough",
+            "degree": 0,
+            "label": "Tough",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 18,
+            "levelEffective": 18,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_Parka",
+            "defName": "Apparel_Parka",
+            "stuff": "Synthread",
+            "hp": 235
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Scratch",
+            "part": "Torso",
+            "severity": 6.0
+           },
+           {
+            "def": "BadBack",
+            "part": "Spine",
+            "severity": 0.001
+           },
+           {
+            "def": "KneeSpike",
+            "part": "Leg",
+            "severity": 0.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.9894113,
+            "pct": 0.9894113
+           },
+           {
+            "need": "Joy",
+            "level": 0.5222437,
+            "pct": 0.5222437
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_029eb3c9b4db4da299b5a499c7dd7fc9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:33.9927926+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:33.9977913+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(Human18383, RSW_DW_RestrainingBolt present=False)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "add",
+        "didWhat": "added RSW_DW_RestrainingBolt (whole body)",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue",
+         "Shoulder"
+        ],
+        "hediffCount": 4,
+        "hediffs": [
+         {
+          "def": "Scratch",
+          "part": "Torso",
+          "severity": 6.0
+         },
+         {
+          "def": "BadBack",
+          "part": "Spine",
+          "severity": 0.001
+         },
+         {
+          "def": "KneeSpike",
+          "part": "Leg",
+          "severity": 0.5
+         },
+         {
+          "def": "RSW_DW_RestrainingBolt",
+          "part": null,
+          "severity": 0.5
+         }
+        ],
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_faad09e747b943049b085e1fdb3c7b7a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:34.0042433+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:34.0107474+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "add",
+        "didWhat": "added RSW_DW_BoltResentment (whole body)",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue",
+         "Shoulder"
+        ],
+        "hediffCount": 5,
+        "hediffs": [
+         {
+          "def": "Scratch",
+          "part": "Torso",
+          "severity": 6.0
+         },
+         {
+          "def": "BadBack",
+          "part": "Spine",
+          "severity": 0.001
+         },
+         {
+          "def": "KneeSpike",
+          "part": "Leg",
+          "severity": 0.5
+         },
+         {
+          "def": "RSW_DW_RestrainingBolt",
+          "part": null,
+          "severity": 0.5
+         },
+         {
+          "def": "RSW_DW_BoltResentment",
+          "part": null,
+          "severity": 0.5
+         }
+        ],
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_5c0097a3278947409a5b5b9c603a4537",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:34.0157469+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:34.0208337+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human18383",
+          "thingIdNumber": 18383,
+          "name": "Sarah 'Four Eyes' Renault",
+          "nameShort": "Four Eyes",
+          "title": "deep space surveyor",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Female",
+          "ageBiologicalYears": 60,
+          "ageChronologicalYears": 154,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "AspiringPhysicist47",
+          "adulthood": "DeepSpaceSurveyor1",
+          "headType": "Female_AveragePointy",
+          "bodyType": "Female",
+          "hair": "FancyBun",
+          "beard": "NoBeard",
+          "position": {
+           "x": 200,
+           "z": 50
+          },
+          "traits": [
+           {
+            "def": "DrugDesire",
+            "degree": 2,
+            "label": "Chemical fascination",
+            "forced": false
+           },
+           {
+            "def": "Wimp",
+            "degree": 0,
+            "label": "Wimp",
+            "forced": false
+           },
+           {
+            "def": "Tough",
+            "degree": 0,
+            "label": "Tough",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 18,
+            "levelEffective": 18,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_Parka",
+            "defName": "Apparel_Parka",
+            "stuff": "Synthread",
+            "hp": 235
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Scratch",
+            "part": "Torso",
+            "severity": 6.0
+           },
+           {
+            "def": "BadBack",
+            "part": "Spine",
+            "severity": 0.001
+           },
+           {
+            "def": "KneeSpike",
+            "part": "Leg",
+            "severity": 0.5
+           },
+           {
+            "def": "RSW_DW_RestrainingBolt",
+            "part": null,
+            "severity": 0.5
+           },
+           {
+            "def": "RSW_DW_BoltResentment",
+            "part": null,
+            "severity": 0.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.9894113,
+            "pct": 0.9894113
+           },
+           {
+            "need": "Joy",
+            "level": 0.5222437,
+            "pct": 0.5222437
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_e3b800ee168e445db9b723a037ed92fe",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:34.0268359+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:34.0313457+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\captive_bolt_state_reachable_1790899894.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "module_personality",
+   "components": [
+    {
+     "name": "module_grants_personality_on_wear",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: RSW_DW_Race_guy762_DroidRace_T3series18387 hediff RSW_DW_ModulePersonality_Twitchy=False, expected present=True (hediffs: ['Gunshot', 'RSW_DW_FormatTier'])",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_guy762_DroidRace_T3series18387",
+          "thingIdNumber": 18387,
+          "name": "Taras Whitaker",
+          "nameShort": "Taras",
+          "title": "joywire artist",
+          "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 38,
+          "ageChronologicalYears": 38,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "MedievalSlave49",
+          "adulthood": "JoywireArtist8",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Lackland",
+          "beard": "Wizard",
+          "position": {
+           "x": 200,
+           "z": 50
+          },
+          "traits": [
+           {
+            "def": "TooSmart",
+            "degree": 0,
+            "label": "Too smart",
+            "forced": true
+           },
+           {
+            "def": "HAR_Xenophobia",
+            "degree": -1,
+            "label": "Xenophile",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "OuterRim_HermitTunic",
+            "defName": "OuterRim_HermitTunic",
+            "stuff": "Cloth",
+            "hp": 200
+           },
+           {
+            "def": "Apparel_Tuque",
+            "defName": "Apparel_Tuque",
+            "stuff": "Cloth",
+            "hp": 80
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Gunshot",
+            "part": "Leg",
+            "severity": 5.0
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "part": null,
+            "severity": 3.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_1a76930731064bc4b021b32af3462e90",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:35.3916371+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:35.3966425+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_guy762_DroidRace_T3series18387, RSW_DW_ModulePersonality_Twitchy present=False)",
+       "result": true
+      },
+      {
+       "call": "bridge_call rimworld/select_pawn",
+       "result": {
+        "success": false,
+        "message": "Could not find player-controlled colonist id 'RSW_DW_Race_guy762_DroidRace_T3series18387'.",
+        "exception": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.InvalidOperationException: Could not find player-controlled colonist id 'RSW_DW_Race_guy762_DroidRace_T3series18387'.\r\n[Ref CFFB33D2] Duplicate stacktrace, see ref for original\r\n   --- End of inner exception stack trace ---\r\n[Ref D3D588D] Duplicate stacktrace, see ref for original",
+        "operation": {
+         "OperationId": "op_ed8d483abdf94a068229034e8508cb9e",
+         "CapabilityId": "rimbridge.core/selection/select-pawn",
+         "Status": 3,
+         "Success": false,
+         "StartedAtUtc": "2026-10-02T00:11:35.4028062+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:35.4048067+00:00",
+         "DurationMs": 2,
+         "Result": null,
+         "HasResult": false,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": {
+          "Code": "capability.failed",
+          "Message": "Could not find player-controlled colonist id 'RSW_DW_Race_guy762_DroidRace_T3series18387'.",
+          "ExceptionType": "System.InvalidOperationException",
+          "Details": "System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.InvalidOperationException: Could not find player-controlled colonist id 'RSW_DW_Race_guy762_DroidRace_T3series18387'.\r\n[Ref CFFB33D2] Duplicate stacktrace, see ref for original\r\n   --- End of inner exception stack trace ---\r\n[Ref D3D588D] Duplicate stacktrace, see ref for original"
+         },
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\Wear apparel (selected)...\\RSW_DW_Module_DroidHardware_agility",
+        "node": {
+         "path": "Actions\\Wear apparel (selected)...\\RSW_DW_Module_DroidHardware_agility",
+         "parentPath": "Actions\\Wear apparel (selected)...",
+         "label": "RSW_DW_Module_DroidHardware_agility",
+         "category": null,
+         "actionType": "Action",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "Direct",
+          "supported": true,
+          "reason": null,
+          "requiredTargetKind": null
+         },
+         "source": null
+        },
+        "targetPawn": null,
+        "mapTarget": null,
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 0,
+         "logs": [],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_110260630f2c4cb38555c8b80e82287f",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:35.410832+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:35.4128312+00:00",
+         "DurationMs": 1,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_guy762_DroidRace_T3series18387",
+          "thingIdNumber": 18387,
+          "name": "Taras Whitaker",
+          "nameShort": "Taras",
+          "title": "joywire artist",
+          "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 38,
+          "ageChronologicalYears": 38,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "MedievalSlave49",
+          "adulthood": "JoywireArtist8",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Lackland",
+          "beard": "Wizard",
+          "position": {
+           "x": 200,
+           "z": 50
+          },
+          "traits": [
+           {
+            "def": "TooSmart",
+            "degree": 0,
+            "label": "Too smart",
+            "forced": true
+           },
+           {
+            "def": "HAR_Xenophobia",
+            "degree": -1,
+            "label": "Xenophile",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "OuterRim_HermitTunic",
+            "defName": "OuterRim_HermitTunic",
+            "stuff": "Cloth",
+            "hp": 200
+           },
+           {
+            "def": "Apparel_Tuque",
+            "defName": "Apparel_Tuque",
+            "stuff": "Cloth",
+            "hp": 80
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Gunshot",
+            "part": "Leg",
+            "severity": 5.0
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "part": null,
+            "severity": 3.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_95302fe66a5a4c7bb12514639087995f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:35.4188307+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:35.4228563+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_guy762_DroidRace_T3series18387, RSW_DW_ModulePersonality_Twitchy present=True)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "wild_droid_crash",
+   "components": [
+    {
+     "name": "wild_droid_crash_fires",
+     "toggle": "wildDroidCrash",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "4 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human794",
+          "name": "Rozalina",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 120,
+          "z": 128,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human797",
+          "name": "Jimmy",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 146,
+          "z": 109,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "YorkshireTerrier3221",
+          "name": "MJ",
+          "kind": "YorkshireTerrier",
+          "kindDef": "YorkshireTerrier",
+          "def": "YorkshireTerrier",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 118,
+          "z": 133,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32,
+          "health": null
+         },
+         {
+          "id": "Human800",
+          "name": "Nikita",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 127,
+          "z": 115,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         }
+        ],
+        "returned": 4,
+        "truncated": 0,
+        "totalOnMap": 4,
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_9ba590e34c834519bdb5fc5c9629e8c6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:36.4761817+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:36.4806922+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RSW_DW_WildDroidCrash fired with 35 points.",
+        "incident": "RSW_DW_WildDroidCrash",
+        "category": "ThreatSmall",
+        "canFireNow": true,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "faction": null,
+        "ticksGame": 1921,
+        "operation": {
+         "OperationId": "op_96de51e831e54a5d81ecc76923620ee0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:36.4866932+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:36.4982052+00:00",
+         "DurationMs": 11,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(60) [watched] -> 60 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 60,
+        "requested": 60
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "5 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human794",
+          "name": "Rozalina",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 122,
+          "z": 126,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human797",
+          "name": "Jimmy",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 147,
+          "z": 108,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "YorkshireTerrier3221",
+          "name": "MJ",
+          "kind": "YorkshireTerrier",
+          "kindDef": "YorkshireTerrier",
+          "def": "YorkshireTerrier",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 119,
+          "z": 132,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32,
+          "health": null
+         },
+         {
+          "id": "Human800",
+          "name": "Nikita",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 128,
+          "z": 114,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_BattleDroid18396",
+          "name": "Sammy",
+          "kind": "RSW_DW_OuterRim_BattleDroid",
+          "kindDef": "RSW_DW_OuterRim_BattleDroid",
+          "def": "RSW_DW_Race_OuterRim_BattleDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 17,
+          "z": 245,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         }
+        ],
+        "returned": 5,
+        "truncated": 0,
+        "totalOnMap": 5,
+        "ticksGame": 1981,
+        "operation": {
+         "OperationId": "op_baa79e73ea9d4333a54be7f898855403",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:37.0163671+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:37.0208786+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\wild_droid_crash_fires_1790899897.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "ticks_spent": 60,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 1981,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Sammy (RSW_DW_Race_OuterRim_BattleDroid18396) joined the roster"
+     },
+     {
+      "tick": 1981,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Sammy (RSW_DW_Race_OuterRim_BattleDroid18396) joined the roster"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "protocol_trade_advantage",
+   "components": [
+    {
+     "name": "protocol_droid_shifts_prices",
+     "toggle": "protocolTrade",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no buy price changed after adding a protocol droid to the player party: before={'Silver': {'defName': 'Silver', 'label': 'silver', 'baseMarketValue': 1.0, 'buy': 1.0, 'sell': 1.0}} after={'Silver': {'defName': 'Silver', 'label': 'silver', 'baseMarketValue': 1.0, 'buy': 1.0, 'sell': 1.0}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "TraderCaravanArrival fired with 610 points.",
+        "incident": "TraderCaravanArrival",
+        "category": "FactionArrival",
+        "canFireNow": true,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 610.0,
+        "faction": "OuterRim_MoistureFarmers",
+        "ticksGame": 1981,
+        "operation": {
+         "OperationId": "op_76531c8da7584feb99a11135e9e250ef",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:38.2976577+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:38.3261943+00:00",
+         "DurationMs": 28,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(120) [watched] -> 120 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 120,
+        "requested": 120
+       }
+      },
+      {
+       "call": "bridge_call jawa/trade_price_probe",
+       "result": {
+        "success": true,
+        "traderName": "Smax",
+        "traderId": "Human18402",
+        "traderKind": "OuterRim_MoistureFarmers_Caravan",
+        "traderFaction": "OuterRim_MoistureFarmers",
+        "negotiatorName": "Henry",
+        "negotiatorId": "Human18399",
+        "negotiatorTradePriceImprovement": 0.0,
+        "playerParty": [
+         {
+          "defName": "Human",
+          "label": "Rozalina",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Jimmy",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "YorkshireTerrier",
+          "label": "MJ",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Nikita",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Henry",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         }
+        ],
+        "traderParty": [
+         {
+          "defName": "Human",
+          "label": "Smax",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Muffalo",
+          "label": "muffalo",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Muffalo",
+          "label": "muffalo",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Muffalo",
+          "label": "muffalo",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Alex",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Lynx",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         }
+        ],
+        "tradeableCount": 20,
+        "prices": [
+         {
+          "defName": "Silver",
+          "label": "silver",
+          "baseMarketValue": 1.0,
+          "buy": 1.0,
+          "sell": 1.0
+         }
+        ],
+        "ticksGame": 2101,
+        "operation": {
+         "OperationId": "op_9d8562799b514e9fad9cc4bf0ed0de0e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/trade-price-probe",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:38.9927715+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:38.9987707+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "spawn_pawn RSW_DW_OuterRim_ProtocolDroid hostile=False",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 RSW_DW_OuterRim_ProtocolDroid in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "RSW_DW_Race_OuterRim_ProtocolDroid18451",
+          "name": "Whistler",
+          "kindRequested": "RSW_DW_OuterRim_ProtocolDroid",
+          "kindActual": "RSW_DW_OuterRim_ProtocolDroid",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 200,
+          "z": 50,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 2101,
+        "operation": {
+         "OperationId": "op_d3d9f5367f7b40e2b5d5a415a0356ae0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:39.0048207+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:39.0389074+00:00",
+         "DurationMs": 34,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/trade_price_probe",
+       "result": {
+        "success": true,
+        "traderName": "Smax",
+        "traderId": "Human18402",
+        "traderKind": "OuterRim_MoistureFarmers_Caravan",
+        "traderFaction": "OuterRim_MoistureFarmers",
+        "negotiatorName": "Henry",
+        "negotiatorId": "Human18399",
+        "negotiatorTradePriceImprovement": 0.0,
+        "playerParty": [
+         {
+          "defName": "Human",
+          "label": "Rozalina",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Jimmy",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "YorkshireTerrier",
+          "label": "MJ",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Nikita",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Henry",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "RSW_DW_Race_OuterRim_ProtocolDroid",
+          "label": "Whistler",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": 1
+         }
+        ],
+        "traderParty": [
+         {
+          "defName": "Human",
+          "label": "Smax",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Muffalo",
+          "label": "muffalo",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Muffalo",
+          "label": "muffalo",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Muffalo",
+          "label": "muffalo",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Alex",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Lynx",
+          "faction": "OuterRim_MoistureFarmers",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         }
+        ],
+        "tradeableCount": 20,
+        "prices": [
+         {
+          "defName": "Silver",
+          "label": "silver",
+          "baseMarketValue": 1.0,
+          "buy": 1.0,
+          "sell": 1.0
+         }
+        ],
+        "ticksGame": 2101,
+        "operation": {
+         "OperationId": "op_5018c9276a1a4f38bad1a9672ee2d2bc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/trade-price-probe",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:39.0399074+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:39.0451822+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 120,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 2101,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Smax (Human18402) joined the roster"
+     },
+     {
+      "tick": 2101,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Alex (Human18433) joined the roster"
+     },
+     {
+      "tick": 2101,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Lynx (Human18443) joined the roster"
+     },
+     {
+      "tick": 2101,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] Trader from Northeast Lahianduia: Relationship"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "ion_overload_shutdown",
+   "components": [
+    {
+     "name": "ion_overload_shuts_down_droid",
+     "toggle": "ionShutdown",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "add",
+        "didWhat": "added RSW_JawaIon_Stun (whole body)",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue",
+         "Shoulder"
+        ],
+        "hediffCount": 2,
+        "hediffs": [
+         {
+          "def": "RSW_DW_FormatTier",
+          "part": null,
+          "severity": 3.0
+         },
+         {
+          "def": "RSW_JawaIon_Stun",
+          "part": null,
+          "severity": 0.6
+         }
+        ],
+        "ticksGame": 2101,
+        "operation": {
+         "OperationId": "op_0b5dcf0a4ff44227970c98ef939a3f8e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:40.2661163+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:40.2728564+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(60) [watched] -> 60 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 60,
+        "requested": 60
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_GNKDroid18464",
+          "thingIdNumber": 18464,
+          "name": "Daniel 'Dan' Pelz",
+          "nameShort": "Dan",
+          "title": "colonist",
+          "kindDef": "RSW_DW_OuterRim_GNKDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 18,
+          "ageChronologicalYears": 18,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Nude Doctrine",
+          "childhood": "VatgrownSoldier8",
+          "adulthood": "Colonist97",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Wavy",
+          "beard": "Full",
+          "position": {
+           "x": 200,
+           "z": 50
+          },
+          "traits": [
+           {
+            "def": "Nerves",
+            "degree": 1,
+            "label": "Steadfast",
+            "forced": true
+           },
+           {
+            "def": "DislikesWomen",
+            "degree": 0,
+            "label": "Misogynist",
+            "forced": false
+           },
+           {
+            "def": "Greedy",
+            "degree": 0,
+            "label": "Greedy",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "OuterRim_DesertGarb",
+            "defName": "OuterRim_DesertGarb",
+            "stuff": "Cloth",
+            "hp": 200
+           },
+           {
+            "def": "Apparel_Tuque",
+            "defName": "Apparel_Tuque",
+            "stuff": "OuterRim_Durafiber",
+            "hp": 80
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "RSW_DW_FormatTier",
+            "part": null,
+            "severity": 3.0
+           },
+           {
+            "def": "RSW_DW_PoweredDown",
+            "part": null,
+            "severity": 1.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 2161,
+        "operation": {
+         "OperationId": "op_8223237b5b804a45851232eeaa2bc1ab",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T00:11:40.8246052+00:00",
+         "CompletedAtUtc": "2026-10-02T00:11:40.8301097+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_OuterRim_GNKDroid18464, RSW_DW_PoweredDown present=True)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ion_overload_shuts_down_droid_1790899900.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "ticks_spent": 60,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001C373CD0B00>",
+  "<suite.Component object at 0x000001C373C7AF50>",
+  "<suite.Component object at 0x000001C373D77AD0>",
+  "<suite.Component object at 0x000001C373E36150>",
+  "<suite.Component object at 0x000001C373E36200>"
+ ],
+ "refused": "",
+ "walk": null
+}

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GlassChain_Buildings.xml             RimMandrake — STILLSAND_GLASS_LENS_CHAIN_1 §3, §4, §6
+
+  Sun-fed work tables: no fuel, no power. RM_CompProperties_SunPowered (Source/RM_SunPowered.cs)
+  refuses bills under a roof, in shade, at night and in the gale, and scales work speed with
+  the sun (the fixed sun's elevation on a pinned-sun map). fillPercent stays under the shade
+  grid's 0.8 caster threshold and staticSunShadowHeight is 0, so a table never shades itself.
+
+  Art: artpipe jobs RM_SunFurnace (2x2), RM_LensBench (north/east/south), RM_SolarOven.
+  The crest-plate oven reuses the solar-oven art until it has its own.
+
+  NOT here (filed as follow-ups on the item): the solar still and wringing still, the sun
+  lance, the geophone, the sand sieve, the ship lens array.
+-->
+<Defs>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>RM_SunFurnace</defName>
+    <label>sun furnace</label>
+    <description>A shallow dish of mirror segments and biosilica lenses on a steel frame. It focuses the sun onto a small ceramic crucible until sand melts. It burns no fuel and needs no power, but it works only in open sun. It stops under a roof, in shade and in a sand gale, and it melts faster the higher the sun stands.\n\nGlass sand melts into sun glass. Fine sand melts into lens glass.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <!-- art pending: artpipe RM_SunFurnace -->
+      <texPath>Things/Building/Production/RM_SunFurnace</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <costList>
+      <Steel>60</Steel>
+      <RM_Biosilica>30</RM_Biosilica>
+    </costList>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.4</fillPercent>
+    <staticSunShadowHeight>0</staticSunShadowHeight>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <WorkToBuild>2500</WorkToBuild>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Mass>30</Mass>
+    </statBases>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <designationCategory>Production</designationCategory>
+    <surfaceType>Item</surfaceType>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <comps>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_SunPowered">
+        <kind>furnace</kind>
+        <minSunFactor>0.3</minSunFactor>
+        <scaleWorkSpeed>true</scaleWorkSpeed>
+      </li>
+      <li Class="CompProperties_ReportWorkSpeed">
+        <workSpeedStat>WorkTableWorkSpeedFactor</workSpeedStat>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_ReportWorkSpeedPenalties</li>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+  </ThingDef>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>RM_LensBench</defName>
+    <label>lens bench</label>
+    <description>A grinding wheel, a polishing lap and a sighting mirror on a long bench. Lenses are ground here and then checked against the sun, so the bench works only in open sun. It stops in a sand gale and under a roof.\n\nLens glass grinds into precision lenses. A glass pearl ground into lens glass makes a pearl lens.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <!-- art pending: artpipe RM_LensBench (north/east/south) -->
+      <texPath>Things/Building/Production/RM_LensBench</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3.5,1.75)</drawSize>
+    </graphicData>
+    <size>(3,1)</size>
+    <costList>
+      <Steel>40</Steel>
+      <WoodLog>40</WoodLog>
+    </costList>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.4</fillPercent>
+    <staticSunShadowHeight>0</staticSunShadowHeight>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <WorkToBuild>2000</WorkToBuild>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Mass>25</Mass>
+    </statBases>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <designationCategory>Production</designationCategory>
+    <surfaceType>Item</surfaceType>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <comps>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_SunPowered">
+        <kind>lensBench</kind>
+        <minSunFactor>0.15</minSunFactor>
+        <scaleWorkSpeed>false</scaleWorkSpeed>
+      </li>
+      <li Class="CompProperties_ReportWorkSpeed">
+        <workSpeedStat>WorkTableWorkSpeedFactor</workSpeedStat>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_ReportWorkSpeedPenalties</li>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <!-- The solar oven's recipe list is the fueled stove's, so it cooks every meal a
+       stove does. No workTableRoomRole: it stands outdoors, never in a kitchen. -->
+  <ThingDef Name="RM_SolarOvenBase" ParentName="BenchBase" Abstract="True">
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <!-- art pending: artpipe RM_SolarOven -->
+      <texPath>Things/Building/Production/RM_SolarOven</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.3,1.3)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.4</fillPercent>
+    <staticSunShadowHeight>0</staticSunShadowHeight>
+    <useHitPoints>true</useHitPoints>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <designationCategory>Production</designationCategory>
+    <surfaceType>Item</surfaceType>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <isMealSource>true</isMealSource>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_ReportWorkSpeedPenalties</li>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+    <recipes>
+      <li>CookMealSimple</li>
+      <li>CookMealFine</li>
+      <li>CookMealFine_Veg</li>
+      <li>CookMealFine_Meat</li>
+      <li>CookMealLavish</li>
+      <li>CookMealLavish_Veg</li>
+      <li>CookMealLavish_Meat</li>
+      <li>CookMealSurvival</li>
+      <li>CookMealSimpleBulk</li>
+      <li>CookMealFineBulk</li>
+      <li>CookMealFineBulk_Veg</li>
+      <li>CookMealFineBulk_Meat</li>
+      <li>CookMealLavishBulk</li>
+      <li>CookMealLavishBulk_Veg</li>
+      <li>CookMealLavishBulk_Meat</li>
+      <li>CookMealSurvivalBulk</li>
+      <li>Make_Pemmican</li>
+      <li>Make_PemmicanBulk</li>
+      <li MayRequire="Ludeon.RimWorld.Biotech">Make_BabyFood</li>
+      <li MayRequire="Ludeon.RimWorld.Biotech">Make_BabyFoodBulk</li>
+    </recipes>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SolarOvenBase">
+    <defName>RM_SolarOven</defName>
+    <label>solar oven</label>
+    <description>An insulated box with a glazed sun-glass lid, set on a skirt of angled reflector panels. It cooks with no fuel and no power, but only in full sun. It stops in shade, under a roof and in a sand gale, and it is slower than a stove unless the sun stands high.</description>
+    <costList>
+      <RM_SunGlass>20</RM_SunGlass>
+      <Steel>25</Steel>
+    </costList>
+    <statBases>
+      <WorkToBuild>1200</WorkToBuild>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Mass>15</Mass>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_SunPowered">
+        <kind>oven</kind>
+        <minSunFactor>0.5</minSunFactor>
+        <workSpeedAtFullSun>0.85</workSpeedAtFullSun>
+      </li>
+      <li Class="CompProperties_ReportWorkSpeed">
+        <workSpeedStat>WorkTableWorkSpeedFactor</workSpeedStat>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_SolarOvenBase">
+    <defName>RM_SolarOvenCrest</defName>
+    <label>crest-plate solar oven</label>
+    <description>A solar oven whose reflector skirt is made of muurrok crest-plate. The plates are polished by sand to a mirror finish, and they throw far more sun into the box than steel panels can. It cooks faster than any fuel stove in full sun, and it gets hot enough to bake glass sand into sun glass. Like any solar oven, it stops in shade, under a roof and in a sand gale.</description>
+    <graphicData>
+      <!-- reuses the solar-oven art, warmed toward the crest-plate's bright metal -->
+      <texPath>Things/Building/Production/RM_SolarOven</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.3,1.3)</drawSize>
+      <color>(255,245,225)</color>
+    </graphicData>
+    <costList>
+      <RM_SunGlass>20</RM_SunGlass>
+      <RM_CrestPlate>6</RM_CrestPlate>
+      <Steel>15</Steel>
+    </costList>
+    <statBases>
+      <WorkToBuild>1600</WorkToBuild>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Mass>16</Mass>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_SunPowered">
+        <kind>oven</kind>
+        <minSunFactor>0.5</minSunFactor>
+        <workSpeedAtFullSun>1.5</workSpeedAtFullSun>
+      </li>
+      <li Class="CompProperties_ReportWorkSpeed">
+        <workSpeedStat>WorkTableWorkSpeedFactor</workSpeedStat>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

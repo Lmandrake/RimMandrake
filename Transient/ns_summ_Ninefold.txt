@@ -1,0 +1,9 @@
+research_completed v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]
+mental_break_started v=PASS bland=True sweeps=1 ticks=0 surprises=1 aborted=[]
+   SURPRISE {"sidecar": "D:\\Luke\\dev\\RimMandrake\\Transient\\modcheck\\surprises\\20261001T180903\\Ninefold__mental_break_started__mental_break__t1__001.json", "png": "D:\\Luke\\dev\\RimMandrake\\Transient\\modcheck\\surprises\\20261001T180903\\Ninefold__mental_break_started__mental_break__t1__001.png", "not
+building_repaired_and_deconstructed v=FAIL,UNMEASURED bland=True sweeps=9 ticks=5000 surprises=0 aborted=[]
+   building_repaired FAIL: ExpectationFailed: no recent log line matched tag='[Ninefold] Rekko satiation +15.0 (repaired' field=None value=None (last matching line: None)
+   building_deconstructed UNMEASURED: upstream failed -- this chain's state is meaningless
+birth_outcome v=FAIL bland=True sweeps=5 ticks=3000 surprises=0 aborted=[]
+   birth_outcome_ledger FAIL: ExpectationFailed: no recent log line matched tag='[Ninefold] Oomo satiation +15.0 (birth' field=None value=None (last matching line: None)
+mood_walk_tick v=PASS bland=True sweeps=6 ticks=2600 surprises=0 aborted=[]

@@ -463,6 +463,34 @@ def t_restore_full_runs_even_when_a_mod_load_fails():
         subprocess.run = real_run
 
 
+def t_windows_python_shells_posix_scripts_through_wsl():
+    real = os.name
+    check("runner: D:\\ path maps to /mnt/d", runner._wsl_path("D:\\Luke\\dev\\x.py") == "/mnt/d/Luke/dev/x.py")
+    check("runner: POSIX path unchanged", runner._wsl_path("/tmp/a.py") == "/tmp/a.py")
+    cmd = runner.py_cmd("/x/modlist_swap.py", "--restore", "--apply")
+    if real != "nt":
+        check("runner: py_cmd is plain python3 off Windows", cmd == ["python3", "/x/modlist_swap.py", "--restore", "--apply"], cmd)
+    else:
+        check("runner: py_cmd goes through wsl.exe on Windows", cmd[:2] == ["wsl.exe", "python3"], cmd)
+
+
+def t_ensure_playing_map():
+    class C:
+        def __init__(self, st): self.st = st
+        def call(self, tool, p): return {"programState": self.st}
+    check("runner: playing map left alone", runner.ensure_playing_map(_client=C("Playing"),
+          _starter=lambda: (_ for _ in ()).throw(AssertionError("started"))) == "playing")
+    class R: returncode = 0; stdout = ""; stderr = ""
+    check("runner: no map -> starter runs", runner.ensure_playing_map(_client=C("Entry"), _starter=lambda: R()) == "started")
+    R.returncode = 1
+    try:
+        runner.ensure_playing_map(_client=C("Entry"), _starter=lambda: R())
+        check("runner: failed starter raises", False)
+    except RuntimeError:
+        check("runner: failed starter raises", True)
+    check("runner: dry-run skips", runner.ensure_playing_map(dry_run=True) == "dry-run")
+
+
 # --------------------------------------------------------- deploy skip rule
 
 def t_deploy_tool_already_skips_python_files():
@@ -506,7 +534,34 @@ def t_compose_test_list_appends_once_and_reads_back():
         os.unlink(path)
 
 
+def t_dependency_closure_and_composed_folders():
+    """`mod_dependency_ids` returns the hard deps (not Ludeon.*, not the mod itself, lowercased, once each);
+    `composed_into` maps a folded dev folder to its composed mod's id and leaves an ordinary mod alone."""
+    d = tempfile.mkdtemp()
+    try:
+        os.makedirs(os.path.join(d, "About"))
+        with open(os.path.join(d, "About", "About.xml"), "w", encoding="utf-8") as f:
+            f.write("<ModMetaData><packageId>Mandrake.Test.Mod</packageId><modDependencies>"
+                    "<li><packageId>Ludeon.RimWorld.Biotech</packageId></li>"
+                    "<li><packageId>Some.DonorMod</packageId></li>"
+                    "<li><packageId>some.donormod</packageId></li>"
+                    "<li><packageId>mandrake.test.mod</packageId></li>"
+                    "</modDependencies><loadAfter><li>not.a.dependency</li></loadAfter></ModMetaData>")
+        check("deps: donor kept, DLC/self/duplicate/loadAfter dropped",
+             runner.mod_dependency_ids(d) == ["some.donormod"], runner.mod_dependency_ids(d))
+        with open(os.path.join(d, "About", "About.xml"), "w", encoding="utf-8") as f:
+            f.write("<ModMetaData><packageId>a.b</packageId></ModMetaData>")
+        check("deps: no <modDependencies> block -> empty", runner.mod_dependency_ids(d) == [])
+    finally:
+        shutil.rmtree(d)
+    c = runner.composed_into("Pyrelands")
+    check("composed: Pyrelands ships inside mandrake.rm.biomes",
+         c == ("biomes", "mandrake.rm.biomes"), c)
+    check("composed: an ordinary mod is not folded", runner.composed_into("Droidworks") is None)
+
+
 TESTS = [
+    t_dependency_closure_and_composed_folders,
     t_floor_uncovered,
     t_floor_triage_positive_counts,
     t_compose_test_list_appends_once_and_reads_back,
@@ -524,6 +579,8 @@ TESTS = [
     t_status_rename_key_moves_entry_and_refuses_collision,
     t_report_renders_verdict_and_mod_name,
     t_run_dry_run_never_calls_subprocess,
+    t_windows_python_shells_posix_scripts_through_wsl,
+    t_ensure_playing_map,
     t_restore_full_runs_even_when_a_mod_load_fails,
     t_deploy_tool_already_skips_python_files,
 ]
