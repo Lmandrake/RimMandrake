@@ -74,7 +74,7 @@ owner has ruled the misses acceptable or filled.
 | 8 | Long Shade | 1 | 2026-09-27 sitting covered movements 1–2 + part of 3; this pass runs the full volley to the bar |
 | 9 | Stillsand | 1 | same — sitting + fill-out done; volley to the bar owed |
 | 10 | Warscar | 1 | |
-| 11 | **Abyss** (was Abyss) | 1 | 🔴 RENAME ruled 2026-09-27, owner-typed — execute at its sitting (live-tile check) |
+| 11 | **Abyss** (was the Forsaken Crags, then Black Crags) | 1 | sitting `BLACKCRAGS_BEDAZZLE_SITTING_1`, done; rename executed `a534284e4` (ABYSS_FULL_RENAME_1) |
 
 ## Grandfathered — already bedazzled, gate still applies
 
