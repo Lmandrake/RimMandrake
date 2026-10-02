@@ -146,7 +146,47 @@ def find_mismatches(cwd, base, head):
     return flagged
 
 
+ZERO = "0" * 40
+
+
+def git_pre_push(stdin_lines, cwd):
+    """Git-native mode (`--git-pre-push`, called by infrastructure/githooks/pre-push):
+    stdin lines are `<local ref> <local sha> <remote ref> <remote sha>`.
+    Returns 1 (refuse, message on stderr) or 0. Raises on anything odd; the
+    caller fails open."""
+    for line in stdin_lines:
+        parts = line.split()
+        if len(parts) < 4 or parts[1] == ZERO:
+            continue
+        head, remote_sha = parts[1], parts[3]
+        base = None
+        for c in ([remote_sha] if remote_sha != ZERO else []) + ["origin/main"]:
+            r = subprocess.run(["git", "-C", cwd, "rev-parse", "--verify", "-q", c + "^{commit}"],
+                               capture_output=True, text=True, timeout=8)
+            if r.returncode == 0:
+                base = c
+                break
+        if base is None:
+            continue
+        flagged = find_mismatches(cwd, base, head)
+        if flagged:
+            sys.stderr.write("pre-push REFUSED (DLL_SOURCE_STAMP_GUARD_1): committed DLL disagrees "
+                             "with its committed source (%s..%s):\n" % (base, head))
+            for kind, dll, _root in flagged:
+                sys.stderr.write("  %s %s\n" % (kind, dll))
+            sys.stderr.write("Rebuild (python3 src/RimMandrake/Utils/winbuild.py <Mod>) and commit "
+                             "the .dll and .dll.srchash together.\n")
+            return 1
+    return 0
+
+
 def main():
+    if "--git-pre-push" in sys.argv:
+        try:
+            return git_pre_push(sys.stdin.read().splitlines(), os.getcwd())
+        except Exception as e:
+            sys.stderr.write("pre-push: dll guard crashed, failing open: %r\n" % (e,))
+            return 0
     try:
         payload = json.load(sys.stdin)
         cmd = payload.get("tool_input", {}).get("command", "")
