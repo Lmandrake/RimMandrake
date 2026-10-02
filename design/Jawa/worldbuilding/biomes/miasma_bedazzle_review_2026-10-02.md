@@ -1,7 +1,7 @@
-# The Miasma: bedazzle review (grandfathered sitting, turn 1 drafted)
+# The Miasma: bedazzle review (grandfathered sitting, turn 1 ruled)
 
 Program: `BEDAZZLE_TOP_SHAPE_PROGRAM_1`, track (a), worst-first, sitting 12, **the last grandfathered sitting**.
-Item to be filed by the parent (`MIASMA_SCORING_SITTING_1` shape).
+Item `MIASMA_SCORING_SITTING_1`; turn 1 ruled and ticketed (§8).
 
 _BENCH design pass, 2026-10-02. Twelfth and last sitting of the grandfathered track, in the order of
 `grandfathered_bedazzle_scores_2026-10-01.md` (§ Miasma; sitting order row 12, "the strongest of the twelve,
@@ -512,3 +512,43 @@ Miasma's luxury was never made.**
   driven off. Buys: a dramatic, risky day. Costs: a large build, not tied to the Miasma; the same last slot.
 
 Held off the card (in the doc only): nothing beyond the slate.
+
+## 8. Turn 1 rulings (2026-10-02) and ticket-out
+
+Card answered Fri 2026-10-02 15:39 PDT. Items 1, 2 and 4: decision taken by question card (seat BENCH). Item 3: a card pick
+**plus** the owner's typed words, quoted verbatim below. Item `MIASMA_SCORING_SITTING_1`.
+
+| Card item | Ruling | Ticket |
+|---|---|---|
+| 1. Build first | **Land it and add the giant's choice together.** Decision taken by question card. Everything the first option listed: the free mod stands alone (its own salt ground; the fever swarm and the loam burrower moved into `RM_`, and with them the no-trees-without-the-fever rule; more sea young; the giant ambush frog remade as ours; the other September-placed creatures missing from both rosters); the warden mother's art and her young's cry; the beauty oil; the flotsam beach; and, from §1, the About text de-Star-Warsed and the three mislabelled "genuine Star Wars" rows corrected. The giant's choice (item 2) lands in the same batch. "Land what was already decided" alone and "new ideas first" are **NOT CHOSEN**. Not in this batch (not on the card's list): the arthropod harvest (trap and dish, §4 row 0c), wiring the four plants' finished renders (§4 row 0d; renders exist, see the art row). Mod Settings switches are filed under the standing law, not the card. The sando aqua monster adult stays **held** (§1 (a) 1). | `MIASMA_FREE_SALT_CRUST_1`, `MIASMA_SWARM_COMPOSTER_PORT_1`, `MIASMA_FREE_NURSERY_YOUNG_1`, `MIASMA_AMBUSH_FROG_REMAKE_1`, `MIASMA_ROUND2_IMPORTS_1`, `MIASMA_WARDEN_MOTHER_ART_1`, `MIASMA_YOUNG_CALL_1`, `MIASMA_ATTAR_STILL_1`, `MIASMA_FLOTSAM_YARD_1`, `MIASMA_SETTINGS_SWITCHES_1`; amended: `BIOME_TIER_CLEANUP_1` (About text, the thessamor's Grey Sea, inert rain rows, the three mislabelled rows) |
+| 2. The giant | **The mother's price.** Decision taken by question card. A stranded young is worth a fortune; carry it home to her or sell it; sell one and she never tolerates you again and her young never become yours. The grounded mother is **NOT CHOSEN**. Free machinery (the crèche ledger records the betrayal); the named buyers are campaign. | `MIASMA_MOTHERS_PRICE_1` (free machinery, campaign buyer) |
+| 3. New marks | **Decay cells.** Decision taken by question card, and the owner typed: *"Decay cells, but they become a rotting bed that is part of Star Wars Cuisine ingredients"*. The last dry deck, the scuttler appraisal and the first egg above water are **NOT CHOSEN**. **"Star Wars Cuisine" is our own mod `mandrake.rsw.cuisine`** ("RimStarWars: Cuisine", `src/RimStarWars/Cuisine/`, installed; found by a sweep of 2,824 `About.xml` across both mod roots, probe *Vanilla Expanded Framework* found). It ships wave 1 only (stick cooking taking `PlantFoodRaw`/`MeatRaw`/`AnimalProductRaw`, and four Grey-Sea salt-cured rations); **no rot, ferment or culture ingredient exists**, so the bed's yield is a new ingredient, cooking on a stick today and feeding the design's unbuilt hazard-pantry and fermentation rungs (`high_cuisine_deep_design.md` §4, §6.1). BENCH's reading: a spent cell becomes the rotting bed. Split: the cell is free (invented); the bed's yield is Star Wars tier. | `MIASMA_DECAY_CELLS_1` (free), `MIASMA_ROTTING_BED_CUISINE_1` (`mandrake.rsw.cuisine`) |
+| 4. Rite | **The recall of the written-off, for the god of salvage** (Rekko of the Second Hand). Decision taken by question card. The second-hand young (Rekko) and the mother's blind side (Ishko) are **NOT CHOSEN**. Register row **B17**. Recounted by hand: Rekko had four found rites (the Unfinished Laid Down, the Inherited Wreck, the Mud Claim, B7; the Mending Weld, B12); this is his fifth, **the cap** (the card's "last free slot" was right). | `MIASMA_RECALL_WRITTEN_OFF_RITE_1` (campaign) |
+
+FOUNDRY items, each `--caused-by MIASMA_SCORING_SITTING_1`. `src/` searched for each subject first; nothing here is already built:
+
+| slate row | item | tier |
+|---:|---|---|
+| 0a | `MIASMA_FREE_SALT_CRUST_1` (the free def stops naming `RUT_Jawa_SaltCrust`; `RM_SaltCrustShore` in `mandrake.rm.terminalbiomes` is a reuse candidate, Grey-Sea text) | free |
+| 0a | `MIASMA_SWARM_COMPOSTER_PORT_1` (swarm, karrobel, delta loam to `RM_`; the pollination gate into the free mod; the karrobel's finished render wired) | free |
+| 0a | `MIASMA_FREE_NURSERY_YOUNG_1` (young of crimson opee, thornback colo, shale gorger, reefback; the adult's art, as the existing juveniles do) | free |
+| 0a | `MIASMA_AMBUSH_FROG_REMAKE_1` (name at build under the noncanon process) | free |
+| 0a | `MIASMA_ROUND2_IMPORTS_1` (bogwing, a flier; blarth; blixus; marsh haunt; only sounds and a bogwing BodyDef exist; sando adult held) | campaign |
+| 0a | `MIASMA_SETTINGS_SWITCHES_1` (predation, pollination gate, deformation; standing law) | free |
+| 0a | `BIOME_TIER_CLEANUP_1`, 2026-10-02 Miasma addition (its (c) already carries the Miasma `RUT_` renames) | free text, campaign comment |
+| 0b | `MIASMA_WARDEN_MOTHER_ART_1` (art and the aged variant) | free |
+| 0b | `MIASMA_YOUNG_CALL_1` (the cry; she paths toward it within water) | free |
+| 0c | `MIASMA_ATTAR_STILL_1` (still on delta silt and delta salt; glaze and balm, never a medicine) | free |
+| 0c | `MIASMA_FLOTSAM_YARD_1` | free |
+| 1 | `MIASMA_MOTHERS_PRICE_1` | free machinery, campaign buyer |
+| 2 | `MIASMA_DECAY_CELLS_1` | free |
+| 2 | `MIASMA_ROTTING_BED_CUISINE_1` | Star Wars (`mandrake.rsw.cuisine`) |
+| 5 | `MIASMA_RECALL_WRITTEN_OFF_RITE_1` | campaign |
+| 6 | art: `infrastructure/artpipe/art_lists/miasma_turn1_2026-10-02.csv` (11 jobs: the warden mother and her aged variant, the frog, the attar and its still, the flotsam drift, the decay cell and its spent rotting bed, the bed's yield, the reclaimer machine, the disposal order). Searched first (`artpipe_state.py find`, probe `korrum` 12 hits): `wardenmother`, `attar`, `crimsonopee`, `thornback`, `shalegorger`, `reefback`, `decaycell`, `reclaim` 0 hits; the karrobel has `done/rutkarrobel_v1_south` (wired by the port, not regenerated); the four plants have finished renders (`done/miasma_ilbareen_live`/`_dead`, `miasma_ismerrow_a`..`d`, `miasma_nemreth`, `miasma_braskeen_*`; not regenerated, wiring not in this batch); the four new young reuse their adults' art; `frog`'s 20 hits are Pyrelands gizka/nuna, not ours. | |
+
+Sequencing: row 0 first (`MIASMA_FIRST_SCRIPT_1` is written against row 0's state, with the salt crust painting with the campaign
+absent as a bar); the swarm-and-loam port before decay cells; decay cells before the rotting bed; the young's cry and the mother's art
+before the mother's price; reclaimer machines before the rite fires.
+
+Program: this was the **last** grandfathered sitting, so `BEDAZZLE_TOP_SHAPE_PROGRAM_1` track (a) is done (12 of 12). The handoff's
+next step is filing `NORTHSTAR_ISHKO_PILOT_1` per `design/RimMandrake/northstar_pilot_scoping_2026-10-02.md` (not filed here).

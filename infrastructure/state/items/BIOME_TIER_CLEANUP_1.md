@@ -62,3 +62,17 @@ strip in `FishTypesStrip_NoFishBiomes.xml`, target the donor `AB_GelatinousSuper
 carries its own label and description, and no Slime def carries `fishTypes`); retire them with the donor. The rain
 strip and the shrine-denial retarget are `GELATINOUSSLIME_RAIN_STRIP_1`'s; `AA_Thunderbeast` still on the twin
 (ruled moved to the Blue Desert) goes with the twin at the repaint.
+
+## 2026-10-02 additions (Miasma)
+
+`MIASMA_SCORING_SITTING_1` turn 1 (`miasma_bedazzle_review_2026-10-02.md` §1 (b), (b′), (d), §4 row 0a; decision taken by question
+card, 15:39 PDT), beside (c)'s existing Miasma `RUT_` renames:
+- **About text:** rewrite `src/RimMandrake/Miasma/About/About.xml`'s description as a player-facing one (no Star Wars, no campaign,
+  no defNames; today it names seventeen canon and `RSW_` defNames and reads as a build log).
+- **The thessamor's description** names *the Grey Sea*, a campaign place: take it out.
+- **Inert rain rows:** drop `Rain`, `RainyThunderstorm`, `FoggyRain` from `RM_Miasma`'s weather list (the haze lock makes them inert).
+- **Three mislabelled rows:** `src/RimUtinni/UtinniPatches/Patches/WildAnimals_Miasma.xml` calls its 15 rows *"genuine Star Wars"*, but
+  `RSW_PodWorm`, `RSW_CrestedDragon` and `RSW_AaroxisDendoria` are Biomes! team ports (`RSW_BiomesTeamPort_Races.xml`); Wookieepedia's
+  search returns no page for any. Correct the comment. Whether those ports move to `RM_` is the Q12 family's question
+  (`WILDPAWN_WILDPOD_RM_PORTS_1` is the narrowed Alpha Animals case), not this item's.
+- verify, Miasma: offline parse of `About.xml` finds no `RSW_`/`RUT_`/"Star Wars"; `RM_Miasma` lists no `Rain*` weather.
