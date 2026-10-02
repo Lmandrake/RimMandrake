@@ -24,12 +24,14 @@ if HERE not in sys.path:
 import helpers as H   # noqa: E402
 
 SAVE_NAME = "BLAND_NORTHSTAR_BASE"
-WIN_SAVES = "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Saves"
-WSL_SAVES = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves"
+_UTILS = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+if _UTILS not in sys.path:
+    sys.path.insert(0, _UTILS)
+from game_paths import SAVES  # noqa: E402
 
 
 def default_saves_dir():
-    return WIN_SAVES if os.name == "nt" else WSL_SAVES
+    return SAVES
 
 
 def _window_types(s):

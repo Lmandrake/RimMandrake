@@ -30,9 +30,10 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
-LOCALLOW = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
-PLAYER_LOG = os.path.join(LOCALLOW, "Player.log")
-MODSCONFIG = os.path.join(LOCALLOW, "Config", "ModsConfig.xml")
+_UTILS = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+if _UTILS not in sys.path:
+    sys.path.insert(0, _UTILS)
+from game_paths import MODS_CONFIG as MODSCONFIG, PLAYER_LOG  # noqa: E402
 
 
 def say(step, msg):
