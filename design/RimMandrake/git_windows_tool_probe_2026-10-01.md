@@ -21,3 +21,9 @@ those callers (a pinned read mirror, or a `D:\` scratch dir the caller copies in
 Cross-read, cwd on `D:\`, prompt naming the absolute `\\wsl.localhost\...\probe.txt`:
 **hung to the 240 s timeout with no answer** (exit 124; the same task from a `D:\` path
 answers in seconds). Treat codex reading ext4 as NOT WORKING — inputs must be copied to `D:\`.
+
+**Correction, 2026-10-02:** the sandbox helper is flaky from `D:\` too. A consult run from
+`D:\Luke\dev\_rmscratch\codex\gitplan` with stdin `-` failed with the same
+`orchestrator_helper_launch_failed … program not found` and could not read its input files.
+So the earlier "works from D:\" is one success, not a guarantee. Robust pattern: **inline every
+input into the prompt** (no file reads needed) — that run succeeded.
