@@ -1028,6 +1028,15 @@ wire hidden with overlay connector lines intact; a destroyed conduit gives a liv
 source off reads dead within one 250-tick poll; master off restores vanilla art and on restores the cords; clean
 log. Recorded with `modcheck record`: REFUSED (6 UNBUILT, 2 UNCOVERED bars, by design).
 
-**Known defects / not verified:** the wall terminal's hanging tail is barely legible against a dark steel wall;
-save/load hash (walk M4) and mod removal (M9) not run; performance on a large base not measured; placeholder art
-only (Jawa family).
+**Save/load and mod removal (live pass 2, 2026-10-02)** found two defects, both fixed in
+`RM_MapComponent_CordGraph.cs` and re-proven: a loaded save drew NO cords (the first section regenerate of a load
+dirtied sections `MapDrawer.RegenerateEverythingNow` had not created yet, NRE, pieces lost), and the save carried
+the component's `<li Class=...>` so a mod-less load logged two red errors (now kept out of
+`Map.ExposeComponents` while saving). `validation.py --save-load` (M4: same geometry hash after load, the save
+holds nothing of ours) and `--removal-check` (M9: 0 errors naming the mod on the `flowworks` tier) both PASS.
+
+**Known defects / not verified:** junction, wall-grommet and rock-stub art is drawn under the cords or under the
+wall/rock sprite and is barely visible; the tin junction's stub arms point where no cord attaches; a consumer's cord
+ends at the conduit cell, so a lamp beside a branch end gets a plug lying a cell away (screenshots and notes:
+`Transient/messy_conduit_live_20261002/README.md`); performance on a large base not measured; Jawa art family only
+(8 real textures, 4 placeholders).

@@ -5,6 +5,14 @@ Design: design/RimMandrake/messy_conduit_design_2026-10-02.md (section 5 "First 
 
     python3    src/RimMandrake/MessyConduit/validation.py                 # offline tier, 0 ticks
     python.exe src/RimMandrake/MessyConduit/validation.py --live --fresh-map   # messyconduit tier, bridge held
+    python.exe src/RimMandrake/MessyConduit/validation.py --save-load NAME     # M4 on the current map's scene (after --live)
+    python.exe src/RimMandrake/MessyConduit/validation.py --removal-check NAME # M9: a tier WITHOUT the mod (e.g. flowworks)
+
+M4 (--save-load): census, save as a NEW name with the Saves folder stat'd before/after (only NAME.rws may
+appear, nothing else may change), assert the save holds nothing of ours, load it, census, compare the cord set
+(geometry hash, per-edge hashes, node types, decals, ends). M9 (--removal-check): load_game NAME with
+ignoreModCompatibility on a list without the mod, step 60 ticks, no warning+ log entry or Player.log line may
+name the mod. Batch: --live, then --save-load, then ONE cold load onto the other tier for --removal-check.
 
 Offline tier: O1 mod files (About, csproj Compile list == every Source/*.cs outside SelfTest, DLL +
 .srchash, textures, the transparent conduit PNG all-zero), O2 settings defaults == shipped table,
@@ -34,6 +42,20 @@ LEARNED (seed; each line is a check below, not prose only):
   * HARNESS: status.mod_hash takes the mod DIRECTORY (a bare "MessyConduit" hashed nothing:
     e3b0c442...), and results must land in northstar/ (excluded from the hash) or each run's own
     output makes the next record STALE.
+  * Live pass 2 (2026-10-02), two MOD defects found by the new modes and fixed in RM_MapComponent_CordGraph.cs:
+    (1) M4 FAILED: after a load the graph had 8 edges but 0 laid pieces -- no cords on ANY loaded save. Log:
+    "Could not regenerate layer SectionLayer_RM_MessyCords: NRE at MapDrawer.MapMeshDirty". MapDrawer.
+    RegenerateEverythingNow creates its Sections one by one inside the regen loop, so dirtying a later section
+    hit a null slot, and pieces were published after the dirty loop so the throw lost them. A fresh quicktest
+    map never shows it (no conduit exists at its first regenerate) -- only a load does.
+    (2) M9 FAILED: the save held <li Class="RimMandrake.MessyConduit.RM_MapComponent_CordGraph" /> (every
+    MapComponent is written, ExposeData or not); a mod-less load logged "Could not find class ..." + "Can't load
+    abstract class Verse.MapComponent". Fixed by keeping the component out of Map.ExposeComponents while saving.
+    Both re-proven: M4 PASS (hash d957f9fa758583d6 before == after), M9 PASS (0 errors naming the mod).
+  * The same scene on two different fresh quicktest maps gave the same geometry hash (d957f9fa758583d6).
+  * HARNESS: modset_builder --apply writes its "before" backup per tier name, so swapping A->B->A overwrites
+    the earlier backup of the same name; the pre-pass list is whatever tier you swap back to by name.
+  * HARNESS: sparks are flecks thrown on ticks, so a paused screenshot never shows them (look, do not hunt).
 RULED OUT: (none yet)
 """
 import glob
@@ -65,9 +87,15 @@ UNBUILT = [
     ("U_selection_highlight", "UNBUILT", "selecting a conduit highlights its net's cords (design 8.3, phase 1b)"),
     ("U_sway", "UNBUILT", "CutoutPlant sway (phase 2)"),
     ("U_other_styles", "UNBUILT", "Extension cord / Cybertek / Star Wars art families (art not installed)"),
-    ("M4_save_load_hash", "UNCOVERED", "walk M4: same polylines after save/load -- not run in the short tier"),
-    ("M9_remove_mod_clean", "UNCOVERED", "walk M9: a save made with the mod loads clean without it -- not run"),
+    ("M4_save_load_hash", "UNCOVERED", "walk M4: same polylines after save/load -- its own mode, --save-load NAME"),
+    ("M9_remove_mod_clean", "UNCOVERED", "walk M9: a save made with the mod loads clean without it -- its own mode, "
+                                         "--removal-check NAME on a tier without the mod"),
 ]
+
+SAVES = os.path.join(os.environ.get("USERPROFILE", ""), "AppData", "LocalLow", "Ludeon Studios",
+                     "RimWorld by Ludeon Studios", "Saves")
+PLAYER_LOG = os.path.join(os.path.dirname(SAVES), "Player.log")
+MOD_MARKERS = ("MessyConduit", "RM_MessyCords", "CordGraph", "ConduitTransparent")
 
 
 class Row(dict):
@@ -400,13 +428,152 @@ def run_live(args):
     return res
 
 
+# ============================================================================ M4 / M9 (own modes)
+def _saves_stat():
+    return {n: (os.path.getsize(os.path.join(SAVES, n)), int(os.path.getmtime(os.path.join(SAVES, n))))
+            for n in os.listdir(SAVES) if os.path.isfile(os.path.join(SAVES, n))}
+
+
+def _wait_playing(B, budget_s=240):
+    st = None
+    t0 = time.time()
+    while time.time() - t0 < budget_s:
+        st = B.call("rimworld/get_ui_state").get("programState")
+        if st == "Playing" and B.call("jawa/map_info").get("success"):
+            return True, int(time.time() - t0)
+        time.sleep(2)
+    return False, st
+
+
+def _frame_poll_census(B):
+    B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1] - 6, width=SITE[2], height=SITE[3] + 6, paddingCells=1)
+    B.ticks(2)                       # nets + hookups form on the next tick (LEARNED, seed)
+    time.sleep(1.0)
+    B.probe("poll")
+    return B.probe("census")
+
+
+def _cord_set(c):
+    """The comparable cord set: everything about the laid cords that must survive a save/load."""
+    return {"geometryHash": c.get("geometryHash"), "edgeHashes": c.get("edgeHashes"), "nodeTypes": c.get("nodeTypes"),
+            "decals": c.get("decals"), "conduitCells": c.get("conduitCells"), "cordEdges": c.get("cordEdges"),
+            "strands": c.get("strands"),
+            "ends": sorted((tuple(e["cell"]), e.get("wall"), e.get("netLive"), e.get("registryLive")) for e in c.get("ends") or [])}
+
+
+def run_save_load(args):
+    """M4 on whatever scene the current map holds (run after --live): census, save under a NEW name with the Saves
+    folder stat'd before/after (save_game has written the current slot instead of the name), load, census, compare."""
+    B = Bridge()
+    rows = []
+    res = {"mod": MOD, "mode": "save-load", "tier": TIER, "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
+    name = args.save_load
+    ca = _frame_poll_census(B)
+    if not ca.get("edgeHashes"):
+        row(rows, "M4_save_load_hash", "FAIL", "SITE", "no cords on the current map to compare: %s" % str(ca)[:200])
+        return res
+    before = _saves_stat()
+    if name + ".rws" in before:
+        row(rows, "M4_save_load_hash", "FAIL", "HARNESS", "%s.rws already exists; pick a new name" % name)
+        return res
+    sv = B.call("rimworld/save_game", saveName=name)
+    time.sleep(3.0)
+    after = _saves_stat()
+    new = sorted(set(after) - set(before))
+    changed = sorted(n for n in before if n in after and after[n] != before[n])
+    gone = sorted(set(before) - set(after))
+    ok_save = new == [name + ".rws"] and not changed and not gone
+    row(rows, "M4a_save_landed_new_file_only", "PASS" if ok_save else "FAIL", "HARNESS",
+        {"new": new, "changed": changed, "gone": gone, "size": after.get(name + ".rws"), "tool": sv.get("success")})
+    if not ok_save:
+        res["aborted"] = "save did not land as a new file only -- not loading"
+        return res
+    with open(os.path.join(SAVES, name + ".rws"), "rb") as f:
+        blob = f.read()
+    hits = [blob[max(0, i - 120):i + 80].decode("utf-8", "replace") for i in _find_all(blob, b"MessyConduit")]
+    res["save_mentions"] = hits
+    # Run 2026-10-02: the save held <li Class="RimMandrake.MessyConduit.RM_MapComponent_CordGraph" />, which made a
+    # mod-less load log two red errors (M9). Nothing of ours may be in a save; the packageId in the mod list is
+    # lowercase and does not match this needle.
+    row(rows, "M9a_save_holds_nothing_of_ours", "PASS" if not hits else "FAIL", "MOD",
+        {"count": len(hits), "first": [h.strip()[-160:] for h in hits[:4]]})
+    ld = B.call("rimworld/load_game", saveName=name)
+    ok, waited = _wait_playing(B)
+    if not ok:
+        row(rows, "M4_save_load_hash", "FAIL", "SITE", {"load": ld.get("success"), "state": waited})
+        return res
+    cb = _frame_poll_census(B)
+    sa, sb = _cord_set(ca), _cord_set(cb)
+    diff = sorted(k for k in sa if sa[k] != sb[k])
+    row(rows, "M4_save_load_hash", "PASS" if not diff and sa["edgeHashes"] else "FAIL", "MOD",
+        {"geometryHash": [sa["geometryHash"], sb["geometryHash"]], "edges": len(sa["edgeHashes"] or {}), "differs": diff,
+         "loadSeconds": waited, "spawned": cb.get("spawnedConduitTexture")})
+    res["before"], res["after"] = sa, sb
+    return res
+
+
+def _find_all(blob, needle):
+    i = blob.find(needle)
+    while i >= 0:
+        yield i
+        i = blob.find(needle, i + 1)
+
+
+def run_removal_check(args):
+    """M9: load a save made WITH the mod on a tier WITHOUT it; no red error may name the mod."""
+    B = Bridge()
+    rows = []
+    res = {"mod": MOD, "mode": "removal-check", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
+    rm = B.call("jawa/running_mods", details=False)
+    running = [p.lower() for p in rm.get("packageIds") or []]
+    if not running or PKG in running:
+        row(rows, "M9_remove_mod_clean", "UNMEASURED", "SITE", "mod list unreadable or %s still running" % PKG)
+        return res
+    lg0 = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
+    base = max([x.get("Sequence", 0) for x in lg0.get("logs") or []] or [0])
+    log_off = os.path.getsize(PLAYER_LOG)
+    ld = B.call("rimworld/load_game", saveName=args.removal_check, ignoreModCompatibility=True)
+    ok, waited = _wait_playing(B)
+    if not ok:
+        row(rows, "M9_remove_mod_clean", "FAIL", "MOD", {"load": ld, "state": waited})
+        return res
+    B.call("rimworld/jump_camera_to_cell", x=X0 + 14, z=Z0 + 4)
+    B.ticks(60)                                   # a second of play: ticks, nets, a section regenerate in view
+    time.sleep(1.0)
+    lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
+    new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > base]
+    errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
+    ours = [e for e in errs if any(m in (str(e.get("Message", "")) + str(e.get("StackTrace", ""))) for m in MOD_MARKERS)]
+    with open(PLAYER_LOG, "rb") as f:
+        f.seek(log_off)
+        tail = f.read().decode("utf-8", "replace").splitlines()
+    plog = [ln.strip()[:240] for ln in tail if any(m in ln for m in MOD_MARKERS)]
+    lt = B.call("jawa/list_things", defName="PowerConduit", limit=3)
+    row(rows, "M9_remove_mod_clean", "PASS" if not ours and lt.get("things") else "FAIL", "MOD",
+        {"running": len(running), "loadSeconds": waited, "errorsNamingMod": [str(e.get("Message", ""))[:240] for e in ours[:6]],
+         "playerLogLinesNamingMod": plog[:8], "otherErrors": [str(e.get("Message", ""))[:160] for e in errs if e not in ours][:6],
+         "newWarnings": len(new) - len(errs), "conduitStillThere": len(lt.get("things") or [])})
+    return res
+
+
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--live", action="store_true")
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--save-load", default=None, metavar="NAME", help="M4: census, save as NAME (new), load, census, compare")
+    ap.add_argument("--removal-check", default=None, metavar="NAME", help="M9: load NAME on a tier WITHOUT the mod, read the log")
     a = ap.parse_args(argv)
+    if a.save_load or a.removal_check:
+        res = run_save_load(a) if a.save_load else run_removal_check(a)
+        os.makedirs(os.path.join(HERE, "northstar"), exist_ok=True)
+        out = a.out or os.path.join(HERE, "northstar", "validation_%s_%s.json" % (res["mode"], time.strftime("%Y%m%dT%H%M%S")))
+        with open(out, "w", encoding="utf-8") as f:
+            json.dump(res, f, indent=1, default=str)
+        bad = [r for r in res["rows"] if r["status"] not in ("PASS", "INFO")]
+        print("%s: %d rows, %d not PASS -> %s" % (res["mode"], len(res["rows"]), len(bad), out))
+        return 1 if bad or res.get("aborted") else 0
     if not a.live:
         rows = run_offline()
         bad = [r for r in rows if r["status"] != "PASS"]
