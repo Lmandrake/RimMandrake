@@ -7,7 +7,10 @@ Tool: `src/RimMandrake/Utils/drain_worktrees.py` (run from ext4 against `/mnt/d/
 
 ## Status
 
-IN PROGRESS — census, archive tags, dirty snapshots done; shared tree running.
+DONE (part A). **Every piece of work found is reachable from origin** (116 of 116 commits) and the shared
+tree's leftovers are also on disk. 112 archive tags on origin; 108 `refs/rescue/*` refs in D:\ (none
+local-only — 0 suspect-secret). 4 worktrees removed, 98 kept (97 + the shared tree). Part B (rename D:\
+`.git`, enable the mirror) not started.
 
 ## Census
 
@@ -61,7 +64,7 @@ Safe-ignored set for removal: `obj/ bin/ __pycache__ *.pyc .vs node_modules mod_
 | `.claude/worktrees/agent-a43ce2ebd15c04667` | worktree-agent-a43ce2ebd15c04667 | 5 | 1 |  |  | keep: archived commits |
 | `.claude/worktrees/agent-a44eb0a32c3bb5b2c` | worktree-agent-a44eb0a32c3bb5b2c | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-a45b030a60a7b2cc3` | worktree-agent-a45b030a60a7b2cc3 | 8 | 0 |  |  | keep: dirty (snapshotted) |
-| `.claude/worktrees/agent-a47c03bf8fbf50ce4` | worktree-agent-a47c03bf8fbf50ce4 | 0 | 0 |  |  | remove |
+| `.claude/worktrees/agent-a47c03bf8fbf50ce4` | worktree-agent-a47c03bf8fbf50ce4 | 0 | 0 |  |  | remove -> removed |
 | `.claude/worktrees/agent-a48112638b900d2cc` | worktree-agent-a48112638b900d2cc | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-a4e097cdf67973884` | worktree-agent-a4e097cdf67973884 | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-a4f89b4041c331e00` | worktree-agent-a4f89b4041c331e00 | 1 | 0 |  |  | keep: dirty (snapshotted) |
@@ -90,7 +93,7 @@ Safe-ignored set for removal: `obj/ bin/ __pycache__ *.pyc .vs node_modules mod_
 | `.claude/worktrees/agent-a88f788f06d554de7` | worktree-agent-a88f788f06d554de7 | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-a8a31f7541396fab8` | worktree-agent-a8a31f7541396fab8 | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-a938d8d0b3726fd59` | worktree-agent-a938d8d0b3726fd59 | 1 | 0 |  |  | keep: dirty (snapshotted) |
-| `.claude/worktrees/agent-a97268cdc045210fd` | worktree-agent-a97268cdc045210fd | 0 | 0 |  |  | remove |
+| `.claude/worktrees/agent-a97268cdc045210fd` | worktree-agent-a97268cdc045210fd | 0 | 0 |  |  | remove -> removed |
 | `.claude/worktrees/agent-a9e650b272c547d2e` | worktree-agent-a9e650b272c547d2e | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-aa327ddb76b35239c` | worktree-agent-aa327ddb76b35239c | 7 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-aa4b45ef1781a1816` | worktree-agent-aa4b45ef1781a1816 | 1 | 0 |  |  | keep: dirty (snapshotted) |
@@ -112,7 +115,7 @@ Safe-ignored set for removal: `obj/ bin/ __pycache__ *.pyc .vs node_modules mod_
 | `.claude/worktrees/agent-ac4689bac515bb783` | worktree-agent-ac4689bac515bb783 | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-ac7b89266c38507bf` | worktree-agent-ac7b89266c38507bf | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-ac8053cc6bdf8bb59` | worktree-agent-ac8053cc6bdf8bb59 | 5 | 0 |  |  | keep: dirty (snapshotted) |
-| `.claude/worktrees/agent-aca6ac98a2b7a0750` | worktree-agent-aca6ac98a2b7a0750 | 0 | 0 |  |  | remove |
+| `.claude/worktrees/agent-aca6ac98a2b7a0750` | worktree-agent-aca6ac98a2b7a0750 | 0 | 0 |  |  | remove -> removed |
 | `.claude/worktrees/agent-acea828584fcaf1f1` | worktree-agent-acea828584fcaf1f1 | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-ad132f92ea6f33420` | worktree-agent-ad132f92ea6f33420 | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-ad31e65dd073ff9a1` | worktree-agent-ad31e65dd073ff9a1 | 5 | 0 |  |  | keep: dirty (snapshotted) |
@@ -128,7 +131,7 @@ Safe-ignored set for removal: `obj/ bin/ __pycache__ *.pyc .vs node_modules mod_
 | `.claude/worktrees/agent-aee3c0cb0288b9afd` | worktree-agent-aee3c0cb0288b9afd | 6 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-aee8ca27b67f43c6f` | worktree-agent-aee8ca27b67f43c6f | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-af670f7b3d9848060` | worktree-agent-af670f7b3d9848060 | 5 | 0 |  |  | keep: dirty (snapshotted) |
-| `.claude/worktrees/agent-af904f79c7e1c5be2` | worktree-agent-af904f79c7e1c5be2 | 0 | 0 |  |  | remove |
+| `.claude/worktrees/agent-af904f79c7e1c5be2` | worktree-agent-af904f79c7e1c5be2 | 0 | 0 |  |  | remove -> removed |
 | `.claude/worktrees/agent-afaf7be2eec0cf763` | worktree-agent-afaf7be2eec0cf763 | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `.claude/worktrees/agent-afcfb5957ca43a47c` | worktree-agent-afcfb5957ca43a47c | 5 | 0 |  |  | keep: dirty (snapshotted) |
 | `/mnt/d/Luke/dev/wt_live2` | detached 1ae95a9d8 | 210 | 0 |  |  | keep: dirty (snapshotted) |
@@ -154,7 +157,6 @@ Safe-ignored set for removal: `obj/ bin/ __pycache__ *.pyc .vs node_modules mod_
 | `worktree-agent-ac1ab2efa990605e6` | 1 | 1 | `archive/worktree-agent-ac1ab2efa990605e6` |
 | `worktree-agent-aebc8526d512b897c` | 2 | 0 |  |
 
-
 ## Archive tags pushed
 
 **13 tags** `refs/tags/archive/<branch>` — 9 refs carrying the 19 unaccepted commits (7 branches + 2
@@ -178,12 +180,28 @@ before any prune; every later one was killed on sight by a watcher. The script n
 
 ## Shared tree
 
-(pending)
+- **Local commits not upstream by patch or content: 2** — `e55ff18da` (northstar) and `4e2b103f3` —
+  tagged `archive/shared-tree/<sha12>`. Not re-published to main: archived ≠ accepted.
+- **Dirty + untracked: 3,497 paths** → `D:\Luke\dev\_rm_shared_tree_leftovers_2026-10\leftovers.tar`
+  (**595.7 MB**, every path at any size, deleted paths only in the manifest) +
+  `leftovers.manifest.tsv` (sha256, bytes, status, path). Kept until the owner says delete.
+- Snapshot `0d9d474540a6` = HEAD + 3,184 stored paths + 295 deletions (classes: generated 1,677, source
+  1,140, binary 247, doc 120; 0 suspect-secret); 18 untracked files >5 MB (431 MB) are in the tar only,
+  listed in the commit message. Local ref `refs/rescue/shared-tree-20261002T075419Z`, tag
+  `archive/shared-tree-dirty-20261002T075419Z`.
 
 ## Removal
 
-(pending)
+**4 removed** (`git worktree remove`, no `--force`; each re-checked at removal time: clean, unlocked, HEAD
+unchanged, no process, only cache/runtime ignored files, every commit upstream), `worktree prune` run.
+**98 kept**: 91 dirty (a clean remove is impossible without `--force`; their state is in
+`archive/dirty/*`), 6 carrying archived (unaccepted) commits, and the shared tree. No branch deleted.
+The kept dirty worktrees hold only snapshotted state, so part B can remove them with `--force` on the
+owner's word — that is his call, not this pass's.
 
 ## Verification
 
-(pending)
+`drain_worktrees.py verify` after `git fetch origin` of heads and `refs/tags/archive/*`: **116 commits
+checked** (19 unaccepted branch/detached commits, 4 stash commits, 96 dirty snapshots, 1 shared-tree
+snapshot; overlaps counted once) — **116 reachable from an origin ref, 0 not reachable, 0 local-only.**
+`git ls-remote --tags origin 'refs/tags/archive/*'` = 112 tags (13 + 96 + 2 + 1).
