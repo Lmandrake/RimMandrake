@@ -15,3 +15,39 @@ status-hint: rusted-iron-and-brass UI skin — Tier 1 is 14 loose PNG overrides 
 2. [L] Player.log after load contains "[RimMandrake.RustChrome] colour fields set." and NOT "[RimMandrake.RustChrome] field not found:" — proves all six `Widgets` fields plus the `InspectPaneUtility` tex field resolved by reflection under the currently-installed RimWorld build; a field-not-found line means the game's own field names drifted underneath this mod
 3. [D] a live RimDefDump capture confirms zero defs carry `modName` "RimMandrake: Rust Chrome"
 4. [S] (human pass) open the main menu and any dev-mode window; every button, checkbox, radio button, slider and section background should read as rusted iron/brass, not vanilla blue-grey — this is the mod's entire deliverable and cannot be verified any other way
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The skin**
+- [ ] `rustchrome_buttons_read_rusted` — menu and dialog buttons read as rusted iron
+      edged in brass, not vanilla's flat grey.
+- [ ] `rustchrome_windows_read_rusted` — window backgrounds and borders carry the
+      rust-and-brass palette.
+- [ ] `rustchrome_tabs_and_checks_match` — tabs, checkboxes and the inspect pane
+      share the same skin, with no vanilla-grey piece left among them.
+
+**Legibility**
+- [ ] `rustchrome_text_still_reads` — label text on every skinned surface reads
+      clearly at normal UI scale. (guess)
+
+### cannot show
+
+- [ ] `rustchrome_never_half_skinned` — a screen where some widgets are rusted and
+      others are vanilla grey (a missing texture or a field the reflection did not
+      set).
+- [ ] `rustchrome_never_low_contrast` — text that disappears into the new
+      background colour. (guess)

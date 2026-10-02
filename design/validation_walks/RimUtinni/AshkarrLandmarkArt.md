@@ -21,3 +21,37 @@ status-hint: repaints 48 world-map LandmarkDef icons Ash'karr draws (translucent
 7. [B] jawa/get_def {defType: "LandmarkDef", defName: "VEE_AlluvialFan"} → expect resolved iconTexturePath="World/Landmarks/Ashkarr/VEE_AlluvialFan"
 8. [B] jawa/world_landmarks_get {} on a live world with landmarks already generated → expect success, odysseyActive=true, count>0 — confirms the LandmarkDef set this patch targets is actually reachable in a real game, not just defs-only
 X. [S] (human pass) eyeball a handful of repainted icons on the world map — do they read as translucent wash + hard black rim like Ludeon's own Cliffs/Valley/Ruins, not a flat coloured cutout — separate MOD_HUMAN_EXPLORATION_PASS_1 item.
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**World-map landmark icons**
+- [ ] `landmarkart_house_style` — repainted landmark icons on the world map read as
+      one family: a translucent wash over a dark rim, matching Ludeon's own
+      Cliffs, Valley and Ruins icons.
+- [ ] `landmarkart_silhouettes_unchanged` — each icon keeps the silhouette players
+      already know; only the fill changes.
+- [ ] `landmarkart_terrain_shows_through` — the tile's biome colour is visible
+      through the icon, not hidden under a flat opaque fill.
+- [ ] `landmarkart_oceanic_still_tinted` — the four ocean landmarks (Bay,
+      Peninsula, CoastalIsland, Archipelago) still take the engine's ocean tint.
+
+### cannot show
+
+- [ ] `landmarkart_never_flat_opaque` — a landmark icon in the old flat, opaque
+      Landmarks Expanded fill.
+- [ ] `landmarkart_never_mixed_styles` — repainted and unrepainted icons side by
+      side in clashing styles. (guess)

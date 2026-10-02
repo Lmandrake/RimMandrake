@@ -38,3 +38,37 @@ status-hint: SW content for the promise/whisper structure program, riding mandra
 22. [B] jawa/run_genstep {genStepDef: "RSW_GenStep_MiningSite"} → success=true, threw=null   # tests the plan replay only; Inhabited_Cast/RM_InhabitedStock only fire when the tile also holds a WorldObject_Inhabited, out of scope for this call
 23. [B] jawa/list_things {defName: "VFEPD_AncientEmptyMiningCar"} → expect ≥1 result
 X. [S] (human pass) walk each of the 7 replayed templates on the quicktest map and confirm the layout reads as its label (moisture farm, krayt graveyard, podracer wreck, hunting lodge, bantha graveyard, mynock roost, mining site) rather than a debris pile
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**A placed structure reads as a place**
+- [ ] `sisw_structure_reads_as_its_name` — each of the seven plans, run on a map
+      (moisture farm, krayt graveyard, podracer wreck, hunting lodge and the rest),
+      reads at play zoom as what it is named, without a tooltip. (guess)
+- [ ] `sisw_structure_sits_in_terrain` — a placed structure sits on cleared ground
+      with no things half inside rock or water.
+- [ ] `sisw_krayt_bones_read_huge` — the krayt graveyard (`RSW_GenStep_KraytGraveyard`)
+      reads as the bones of one enormous beast. (guess)
+
+**Its own art**
+- [ ] `sisw_beast_nest_reads_as_nest` — the large beast nest building reads as a
+      nest, and the crawler-road pieces read as a road. (guess)
+
+### cannot show
+
+- [ ] `sisw_never_floating_things` — structure pieces spawned off the plan's
+      ground, overlapping each other or poking out of a wall.

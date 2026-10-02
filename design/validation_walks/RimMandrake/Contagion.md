@@ -91,6 +91,57 @@ The genome and organ-growing loop
 3. [L] Player.log after load has no `Contagion` error and no cross-reference error naming a Contagion def   # load-time
 Offline: `python3 src/RimMandrake/Contagion/selftest_contagion.py` runs the suite against a scripted fake game: healthy, then once per mod behaviour broken, each of which must turn exactly its own component red.
 
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The sky clock**
+- [ ] `contagion_bloom_reads_unwholesome` — a Contagion map under its standing
+      Bloom reads as a sick, storm-roofed sky, not an ordinary overcast day.
+      (guess)
+- [ ] `contagion_burn_reads_as_danger` — when the Burn arrives the light visibly
+      changes, and its tells come before it rather than after. (guess: a sequence)
+
+**Helix devices**
+- [ ] `contagion_repulsor_clears_sky` — a powered `RM_CloudRepulsor` shows a
+      cleared patch of sky or light around it while the map beyond stays under the
+      Bloom. (guess)
+- [ ] `contagion_sunbeam_reads_as_beam` — an `RM_Sunbeam` reads as a beam of light
+      striking the ground. (guess)
+
+**Flesh flora and the Unfinished**
+- [ ] `contagion_flora_reads_as_flesh` — the biome's plants (meatvine, toothmoss,
+      eyebark, wombpod) read at play zoom as grown flesh, visibly unlike vanilla
+      plants.
+- [ ] `contagion_unfinished_read_malformed` — the Unfinished (`RM_TheUnfinished`
+      and its kin) read as half-made, wrong creatures, each visibly different.
+- [ ] `contagion_coalescence_reads_as_mass` — an `RM_Coalescence` reads as a
+      living mass that is clearly the source of something. (guess)
+
+**Grown limbs**
+- [ ] `contagion_grown_limb_visible` — a colonist fitted with a Monstrous grown
+      limb looks different from one with a natural arm. (guess: hediffs often
+      draw nothing)
+
+### cannot show
+
+- [ ] `contagion_never_vanilla_forest` — a Contagion map that reads as a plain
+      vanilla forest with recoloured trees. (guess)
+- [ ] `contagion_never_magenta` — a magenta square for any flora, creature or
+      device.
+
 ## anti-guessing notes
 - RULED OUT: "the Burn needs a generated Contagion map" — `Map.Biome => TileInfo.PrimaryBiome` (decompiled `Verse/Map.cs:398`, RimSage 2026-10-01) and `jawa/map_info` says it is a live passthrough, so re-tiling the quicktest map's own tile reaches `RM_ContagionSky.ExtFor`. site.retile_to_contagion is the guard: if the map's biome does not follow, every Contagion chain records UNMEASURED, never PASS.
 - RULED OUT: "the Coalescence passively grows once a day" — the source default is 60000 ticks but `RM_Coalescence.xml` sets `passiveGrowthTicks` 6000; the suite jumps 7000 and reads the mass.

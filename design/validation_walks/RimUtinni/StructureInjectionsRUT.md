@@ -23,3 +23,37 @@ status-hint: Ash'karr "promise/whisper" structure content — 12 GenStepDef/Tile
 7. [B] `jawa/get_terrain_batch` over the oasis_shrine footprint (map origin, 16×12) → cells report `PavedTile`
 8. [B] on a second fresh quicktest map, `jawa/run_genstep` {genStepDef: "RUT_GenStep_HomesteadAbode"} → `success:true`, `threw` empty; `jawa/list_things` {defName: "AncientCrate,Bedroll,Campfire,DiningChair,Door"} finds at least one of each
 9. [S] (human pass) once a promise is actually placed on a real Ash'karr tile (follow-up work, not this pass): confirm the structure reads as intended in its arc/lore context, not just mechanically present
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**A placed structure reads as a place**
+- [ ] `sirut_structure_reads_as_its_name` — each of the twelve plans (oasis shrine,
+      cistern, toll gap, glass sea, monument, the homesteads and the rest), run on a
+      map, reads at play zoom as what it is named. (guess)
+- [ ] `sirut_oasis_shrine_reads` — `RUT_GenStep_OasisShrine` lays a paved court
+      with a well and small sculptures that reads as a shrine.
+- [ ] `sirut_homesteads_read_lived_in` — the homestead plans read as places someone
+      lives, with adobe walls and the adobe window (`RUT_WindowAdobe`). (guess)
+
+**Its own art**
+- [ ] `sirut_adobe_window_reads` — `RUT_WindowAdobe` reads as a window set in an
+      adobe wall, from every side it can be built facing. (guess)
+
+### cannot show
+
+- [ ] `sirut_never_floating_things` — structure pieces placed off the plan's
+      ground, overlapping each other or stranded in rock.
