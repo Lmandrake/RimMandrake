@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-02T01:31:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-02T01:47:49Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -3660,3 +3660,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SEA_DIVE_HATCH_RETIRE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEA_DIVE_HATCH_RETIRE_1.md
+
+## GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1 Prove a gravship can land in a non-hostile settlement (Hutt test site first) without it being treated as an attack; check GravTide and existing mods for prior art before building
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1.md
