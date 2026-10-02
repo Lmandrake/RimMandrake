@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-02T03:40:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-02T03:43:22Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -3820,3 +3820,53 @@ kind:     build
 thin:     no ## spec, no ## criteria
 summary:  LANTERNDEEPSANSWERINGRITEBUILD1
 prose:    infrastructure/state/items/LANTERNDEEPS_ANSWERING_RITE_BUILD_1.md
+
+## PYRELANDS_FAUNA_TIER_PORT_BUILD_1 Pyrelands: move the eight invented RUT_ animals to RM_ in the free mod (Q11a/Q12)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  PYRELANDSFAUNATIERPORTBUILD1
+prose:    infrastructure/state/items/PYRELANDS_FAUNA_TIER_PORT_BUILD_1.md
+
+## PYRELANDS_HEAT_KIND_BUILD_1 Pyrelands: declare heat kind (overhead, sun from latitude) and move furnace warmth onto the sun-heat code
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  PYRELANDSHEATKINDBUILD1
+prose:    infrastructure/state/items/PYRELANDS_HEAT_KIND_BUILD_1.md
+
+## PYRELANDS_LIGHTNING_BREAKER_BUILD_1 Pyrelands: lightning breakers (metal+sand forge recipe, learnable only in the Pyrelands, Mod Settings)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  PYRELANDSLIGHTNINGBREAKERBUILD1
+prose:    infrastructure/state/items/PYRELANDS_LIGHTNING_BREAKER_BUILD_1.md
+
+## PYRELANDS_ULLAI_GIANT_BUILD_1 Pyrelands: the ullai herd and the furnace-beast grown into a giant
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  PYRELANDSULLAIGIANTBUILD1
+prose:    infrastructure/state/items/PYRELANDS_ULLAI_GIANT_BUILD_1.md
+
+## PYRELANDS_STRUCK_GLASS_RITE_BUILD_1 Pyrelands: The Struck Glass rite for Zizzik (stamped lightning-glass ring, random powerful strike)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  PYRELANDSSTRUCKGLASSRITEBUILD1
+prose:    infrastructure/state/items/PYRELANDS_STRUCK_GLASS_RITE_BUILD_1.md
