@@ -62,7 +62,7 @@ def body(s, job):
 
     def cut(s, ctx):
         c = colonist(s)
-        r = call(s, "jawa/damage", thingId=c["id"], damageDef="Cut", amount=3)
+        r = call(s, "jawa/damage", thingId=c["id"], damageDef="Cut", amount=3, allowColonists=True)
         if not r.get("success"):
             raise RuntimeError("jawa/damage refused: %s" % r.get("message"))
     ab, w, why = run_case(s, job, "damage_cut", cut)

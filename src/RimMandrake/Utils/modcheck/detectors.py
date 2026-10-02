@@ -280,6 +280,12 @@ def colonist_died(snap, baseline, exps, ctx):
         if l["defName"] != "Death":
             continue
         nm = death_name(l["label"]) or l["label"]
+        if re.search(r"\([^)]+\)", nm):
+            # MEASURED live 2026-10-01 (Antiquities, 95000-tick chain): the colony dog's death letter
+            # "Marina (husky) (bonded)" read as a COLONIST death and aborted the chain. A human's death
+            # letter is the bare name; an animal's carries its species in parentheses. Not a colonist.
+            ctx["consumed"].add(l["fingerprint"])
+            continue
         if exps.matches("litter", {"name": nm}, tick):
             excluded.add(nm)
             ctx["consumed"].add(l["fingerprint"])
@@ -681,7 +687,11 @@ def condition_unexpected(snap, baseline, exps, ctx):
 def modal_open(snap, baseline, exps, ctx):
     if "window_list_close" in ctx["suppressed"]:
         return []
-    ws = [w for w in snap["windows"] if w["forcePause"] and not w["isDebug"]]
+    ws = [w for w in snap["windows"] if w["forcePause"] and not w["isDebug"]
+          # MEASURED live 2026-10-01: a quicktest/founded colony re-raises Dialog_NamePlayerFactionAndSettlement /
+          # Dialog_NamePlayerSettlement every ~600 ticks until named, closing it never sticks, and it blocks nothing
+          # the harness drives (ticks advance). Colony-naming prompts are not a surprise.
+          and "Dialog_NamePlayer" not in str(w["type"])]
     if not ws:
         return []
     return [_hit("modal_open", "%d force-pause modal(s) open: %s" % (len(ws), ", ".join(str(w["type"]) for w in ws)),

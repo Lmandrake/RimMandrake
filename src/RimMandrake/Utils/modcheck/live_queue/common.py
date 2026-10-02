@@ -155,6 +155,19 @@ def open_session(dry_run, fake_builder=None):
         yield s
 
 
+def _close_name_dialog(s, dry=False):
+    """MEASURED live 2026-10-01: jawa/colony_found opens Dialog_NamePlayerFactionAndSettlement (force-pause), and it
+    can surface AFTER the job that caused it ended; left open, modal_open SURPRISE aborts every later job's controls.
+    Closing it is part of every job's setup and teardown."""
+    if dry:
+        return
+    try:
+        s.call("jawa/window_list_close", action="close", typeName="Dialog_NamePlayerFactionAndSettlement",
+               closeAll=True)
+    except Exception:                                            # noqa: BLE001 - housekeeping, never a verdict
+        pass
+
+
 def main(job_id, body, fake_builder=None, argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     dry = "--dry-run" in argv
@@ -164,7 +177,11 @@ def main(job_id, body, fake_builder=None, argv=None):
     print("== %s%s" % (job_id, " (DRY RUN on FakeWorld)" if dry else ""))
     try:
         with open_session(dry, fake_builder) as s:
-            body(s, job)
+            _close_name_dialog(s, dry)
+            try:
+                body(s, job)
+            finally:
+                _close_name_dialog(s, dry)
     except Unmeasurable as e:
         job.unmeasured(e)
     except Exception as e:                                      # noqa: BLE001
