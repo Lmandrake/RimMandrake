@@ -130,6 +130,13 @@ def mental_break_started(t):
     t.clear_area(size=20)
     _devmode_on(t)
     colonist = t.spawn_pawn("Colonist", hostile=False)
+    # The break below is this test's OWN act. Declare it so the situational detectors do not report the
+    # induced break (its pawn state and its "<break>: <name>" letter) as a surprise (MEASURED 2026-10-01: a
+    # false SURPRISE recorded against this chain). Matches the pawn row by id and the letter by short name.
+    short = ((((t.bridge_call("jawa/pawn_get", pawn=colonist) or {}).get("pawns") or [{}])[0])
+             .get("nameShort") or "")
+    t.expect("mental", lambda e, pid=colonist, nm=short:
+             e.get("id") == pid or bool(nm and nm in (e.get("label") or "")))
     with t.component("mental_break_ledger", toggle="eventMagnitudeMultiplier"):
         t.bridge_call("jawa/pawn_force_mental_break", pawn=colonist,
                       intensity="minor")
@@ -149,9 +156,18 @@ def building_repaired_and_deconstructed(t):
     x, z = t.anchor
     cells = t.spawn(WALL_DEF, count=1, at="line")
     worker = t.spawn_pawn("Colonist", hostile=False, beyond=cells)
+    # Patch_BuildingRepaired only counts a PLAYER-faction building, and a spawn_batch wall has no faction.
+    rows = (t.bridge_call("jawa/list_things", defName=WALL_DEF,
+                          rect="%d,%d,3,3" % (x - 1, z - 1)) or {}).get("things") or []
+    wall = rows[0].get("id") if rows else None
+    if wall:
+        t.bridge_call("jawa/set_thing_props", thing=wall, faction="PlayerColony")
 
     with t.component("building_repaired", toggle="firstContactLettersEnabled"):
-        t.bridge_call("jawa/damage", damageDef="Bomb", amount=40, x=x, z=z,
+        # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): "Bomb" 40 DESTROYED the 195-HP wall
+        # (hitPointsAfter 0, destroyed true), so the Repair job had nothing to repair. A blunt hit of 40
+        # leaves it standing and damaged, which is the state the repair hook needs.
+        t.bridge_call("jawa/damage", damageDef="Blunt", amount=40, x=x, z=z,
                       allowColonists=False)
         t.bridge_call("jawa/ordered_job", pawnId=worker, jobDef="Repair",
                       targetAX=x, targetAZ=z, waitTicks=0)
@@ -180,7 +196,10 @@ def birth_outcome(t):
         t.bridge_call("jawa/pawn_pregnancy", pawn=mother, action="start")
         t.bridge_call("jawa/pawn_pregnancy", pawn=mother, action="progress",
                       progress=1.0)
-        t.wait_ticks(3000)
+        # CORRECTED 2026-10-02: 3000 ticks cannot reach a birth. Biotech's PregnancyLabor lasts
+        # 1700~25000 ticks and PregnancyLaborPushing 800~5000 more (Hediffs_Global_Misc.xml), so the
+        # worst case is 30000; the birth hook (ApplyBirthOutcome) runs only when pushing ends.
+        t.wait_ticks(31000)
         t.expect_log_contains("[Ninefold] Oomo satiation +15.0 (birth")
         t.expect_log_contains("[Ninefold] MobUnloo satiation +3.0 (birth")
         t.screenshot()

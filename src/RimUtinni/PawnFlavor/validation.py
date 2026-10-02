@@ -58,7 +58,9 @@ suite = Suite("PawnFlavor")
 suite.toggles = []   # no Source/, no ModSettings -- every component beyond_toggle
 
 
-def _get_defs(t, defs, fields):
+def _get_defs(t, defs, fields, deep=False):
+    if deep:
+        return t.bridge_call("jawa/get_defs", defs=defs, fields=fields, deep=True)
     return t.bridge_call("jawa/get_defs", defs=defs, fields=fields)
 
 
@@ -96,7 +98,8 @@ def trait_defs_readback(t):
     with t.component("forced_only_trait_resolves", beyond_toggle=True):
         r = _get_defs(t, "TraitDef/RUT_Jawa_Numbered", "commonality")
         _expect_field(t, r, "TraitDef/RUT_Jawa_Numbered", "commonality",
-                     lambda v: str(v) == "0", "commonality 0 (forcedTraits-only)")
+                     lambda v: v not in (None, "(no such field)") and float(v) == 0.0,
+                     "commonality 0 (forcedTraits-only)")   # CORRECTED 2026-10-02: the bridge reads 0.0; str(0.0) != "0"
 
 
 # =========================================================== backstory defs
@@ -111,7 +114,7 @@ def backstory_defs_readback(t):
         ("RUT_Jawa_AcademyCadet", "Childhood", "JawaBSC_Empire"),
         ("RUT_Jawa_Majordomo", "Adulthood", "JawaBSC_Hutt"),
         ("RUT_Jawa_PurificationEngineer", "Adulthood", "JawaBSC_Deepwater"),
-        ("RUT_Jawa_ColdForged", "Adulthood", "JawaBSC_FDECathedral"),
+        ("RUT_Jawa_ColdForged", "Childhood", "JawaBSC_FDENightside"),   # CORRECTED 2026-10-02: Backstories_FDE_Droids.xml
         ("RUT_Jawa_AshSpeaker", "Adulthood", "JawaBSC_Tribes"),
         ("RUT_Jawa_MootSpeaker", "Adulthood", "JawaBSC_Moot"),
         ("RUT_Jawa_RetrievalAgent", "Adulthood", "JawaBSC_Helix"),
@@ -136,8 +139,10 @@ def vqe_rakata_categories_readback(t):
                      lambda v: "VQE_AncientPatient" in str(v), "VQE_AncientPatient present")
 
     with t.component("experiment_pool_marked", beyond_toggle=True):
-        r = _get_defs(t, "BackstoryDef/RUT_Jawa_RakataLastGeneration", "spawnCategories")
-        _expect_field(t, r, "BackstoryDef/RUT_Jawa_RakataLastGeneration", "spawnCategories",
+        # CORRECTED 2026-10-02: RakataLastGeneration is an ancient-patient childhood; the two
+        # VQE_Experiment backstories are RakataTakenChild / RakataFleshShaped (Backstories_Rakata_Sleepers.xml).
+        r = _get_defs(t, "BackstoryDef/RUT_Jawa_RakataTakenChild", "spawnCategories")
+        _expect_field(t, r, "BackstoryDef/RUT_Jawa_RakataTakenChild", "spawnCategories",
                      lambda v: "VQE_Experiment" in str(v), "VQE_Experiment present")
 
 
@@ -149,12 +154,14 @@ def faction_patch_wired_vanilla(t):
     t.clear_area(size=10)
 
     with t.component("empire_filter_wired", beyond_toggle=True):
-        r = _get_defs(t, "FactionDef/Empire", "backstoryFilters")
+        # CORRECTED 2026-10-02: without deep=True get_defs names only the element TYPE
+        # (['BackstoryCategoryFilter', 'BackstoryCategoryFilter']), never its categories.
+        r = _get_defs(t, "FactionDef/Empire", "backstoryFilters", deep=True)
         _expect_field(t, r, "FactionDef/Empire", "backstoryFilters",
                      lambda v: "JawaBSC_Empire" in str(v), "JawaBSC_Empire present")
 
     with t.component("pirate_filter_wired", beyond_toggle=True):
-        r = _get_defs(t, "FactionDef/Pirate", "backstoryFilters")
+        r = _get_defs(t, "FactionDef/Pirate", "backstoryFilters", deep=True)
         _expect_field(t, r, "FactionDef/Pirate", "backstoryFilters",
                      lambda v: "JawaBSC_Blackstar" in str(v), "JawaBSC_Blackstar present")
 

@@ -174,6 +174,19 @@ def _set_need(t, pawn_id, need, level):
                          need=need, level=level)
 
 
+def _live(t):
+    """False for the offline declaration probe (no session) and for a chain past a failed component."""
+    return t.session is not None and not t.upstream_failed
+
+
+def _price_rows(probe):
+    """{defName: row} for every non-Silver price row of a jawa/trade_price_probe reply. `prices` is a list of
+    rows or a dict keyed by defName depending on the tool build; both are read."""
+    p = (probe or {}).get("prices") or []
+    rows = p.values() if isinstance(p, dict) else p
+    return {r.get("defName"): r for r in rows if r.get("defName") and r.get("defName") != "Silver"}
+
+
 def _expect_hediff(t, pawn_id, name, present=True):
     pd = _pd(t, pawn_id)
     got = name in _hediffs(pd)
@@ -261,11 +274,15 @@ def passive_charging(t):
     t.spawn("RSW_DW_ChargeNimbus", count=1)
 
     with t.component("nimbus_charges_in_range", beyond_toggle=True):
-        cell = t.bridge_call("rimworld/get_cell_info", x=x, z=z)
-        things = (cell or {}).get("things") or []
-        nimbus = next((th for th in things if th.get("defName") == "RSW_DW_ChargeNimbus"), None)
+        # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): the nimbus WAS there (MEASURED live: cell.things
+        # carried RSW_DW_ChargeNimbus). The old code read `things` from the TOP of the get_cell_info reply
+        # (it lives under `cell`) and wanted an `id` that rimworld/get_cell_info never returns. Find the
+        # thing id through jawa/list_things, whose rows are {id, def, ...}.
+        rows = (t.bridge_call("jawa/list_things", defName="RSW_DW_ChargeNimbus",
+                              rect="%d,%d,3,3" % (x - 1, z - 1)) or {}).get("things") or []
+        nimbus = rows[0] if rows else None
         if nimbus is None or not nimbus.get("id"):
-            raise ExpectationFailed("RSW_DW_ChargeNimbus not found at anchor after spawn: %s" % things)
+            raise ExpectationFailed("RSW_DW_ChargeNimbus not found at anchor after spawn: %s" % rows)
         t.bridge_call("jawa/power_net", thing=nimbus["id"], forcePowerOn=True)
 
         droid = t.spawn_pawn(GNK, hostile=False, beyond=[(x, z)])
@@ -356,7 +373,11 @@ def bolt_core(t):
     bystander = t.spawn_pawn("Colonist", hostile=False)
 
     _set_hediff(t, walker, "add", "RSW_DW_RestrainingBolt")
-    _set_hediff(t, walker, "add", "RSW_DW_BoltResentment", severity=0.0)
+    # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): seeded at severity 0.0 the hediff is REMOVED by
+    # the engine on its first tick (Hediff.ShouldRemove is Severity <= 0), so there was nothing left to
+    # accrue -- MEASURED live: the BoltResentment row was gone after the 1200-tick wait. The mod seeds it
+    # through DroidworksBoltUtility.EnsureBoltResentment at the def's default severity, never at 0.
+    _set_hediff(t, walker, "add", "RSW_DW_BoltResentment", severity=0.01)
 
     with t.component("resentment_accrues", toggle="boltResentment"):
         before = _hediffs(_pd(t, walker)).get("RSW_DW_BoltResentment") or 0.0
@@ -440,12 +461,24 @@ def wipe_and_drift_structural(t):
         t.screenshot()
 
     with t.component("quirk_pool_marked", toggle="wipeQuirks"):
-        _defs_contains(t, "TraitDef/RSW_DW_Quirk_ServoTwitch", "modExtensions",
-                       "HardwareQuirkExtension")
+        # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): jawa/get_defs serialises a DefModExtension by
+        # its FIELDS, never its type name, and HardwareQuirkExtension declares no fields, so it reads back
+        # as `[{}]` (MEASURED live: modExtensions == [{}]). The type name can therefore never appear. The
+        # marker's observable shape is "exactly one extension, empty"; that is what IsQuirk keys on.
+        r = t.bridge_call("jawa/get_defs", defs="TraitDef/RSW_DW_Quirk_ServoTwitch",
+                          fields="modExtensions", deep=True)
+        rows = (r or {}).get("defs") or []
+        exts = ((rows[0].get("fields") or {}).get("modExtensions") if rows else None)
+        t._record("quirk marker modExtensions -> %r" % (exts,), exts == [{}])
+        if _live(t) and exts != [{}]:
+            raise ExpectationFailed(
+                "RSW_DW_Quirk_ServoTwitch modExtensions read back %r, expected the single field-less "
+                "HardwareQuirkExtension marker [{}]: %r" % (exts, r))
 
     with t.component("idiosyncrasy_pool_marked", toggle="personalityDrift"):
-        _defs_contains(t, "TraitDef/RSW_DW_Idio_Opinionated", "modExtensions",
-                       "DroidIdiosyncrasyExtension")
+        # DroidIdiosyncrasyExtension has fields, so it IS visible -- by its `chassisWeights` field
+        # (the type name is not serialised, see above).
+        _defs_contains(t, "TraitDef/RSW_DW_Idio_Opinionated", "modExtensions", "chassisWeights")
 
 
 # ============================================================== hutt captives
@@ -487,21 +520,23 @@ def module_personality(t):
     SELECTED first via `rimworld/select_pawn`."""
     t.clear_area(size=20)
     droid = t.spawn_pawn(KOTOR_T3, hostile=False)
-    ch = chr(92)
 
     with t.component("module_grants_personality_on_wear", beyond_toggle=True):
         _expect_hediff(t, droid, "RSW_DW_ModulePersonality_Twitchy", present=False)
-        t.bridge_call("rimworld/select_pawn", pawnId=droid)
-        wear_path = "Actions" + ch + "Wear apparel (selected)..." + ch + "RSW_DW_Module_DroidHardware_agility"
-        t.bridge_call("rimworld/execute_debug_action", path=wear_path)
+        # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): the debug-action route needs
+        # rimworld/select_pawn, which refused the droid (MEASURED live: "Could not find player-controlled
+        # colonist id" -- ResolveColonist does not list a droid race), so the wear action ran on nobody.
+        # jawa/pawn_gear action=wear goes through Pawn_ApparelTracker.Wear, the same path that calls
+        # CompModulePersonality.Notify_Equipped, and needs no selection.
+        t.bridge_call("jawa/pawn_gear", **{"pawn": droid, "action": "wear",
+                                          "def": "RSW_DW_Module_DroidHardware_agility"})
         pd = _expect_hediff(t, droid, "RSW_DW_ModulePersonality_Twitchy", present=True)
         if "RSW_DW_Module_DroidHardware_agility" not in (
                 a.get("def") for a in (pd.get("apparel") or [])):
             raise ExpectationFailed("module did not appear in worn apparel: %s" % pd.get("apparel"))
         t.screenshot()
 
-        remove_path = "Actions" + ch + "Wear apparel (selected)..." + ch + "*Remove all apparel"
-        t.bridge_call("rimworld/execute_debug_action", path=remove_path)
+        t.bridge_call("jawa/pawn_gear", pawn=droid, action="clear", clearWhat="apparel")
         _expect_hediff(t, droid, "RSW_DW_ModulePersonality_Twitchy", present=False)
         t.screenshot()
 
@@ -556,25 +591,31 @@ def protocol_trade_advantage(t):
                 "(needs JAWA_GM_TOOLS -- see module docstring gap #5)" % r)
         t.wait_ticks(120)
 
-        probe1 = t.bridge_call("jawa/trade_price_probe",
-                               negotiatorPawnId=negotiator, defNames="Silver")
+        # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): the probe was asked for Silver only, and
+        # silver is the currency -- priced a fixed 1.0 buy / 1.0 sell whoever negotiates (MEASURED live:
+        # before == after == {'buy': 1.0, 'sell': 1.0}), so no protocol droid could ever move it. Ask for the
+        # trader's whole tradeable list (the tool's default) and compare every NON-currency row.
+        probe1 = t.bridge_call("jawa/trade_price_probe", negotiatorPawnId=negotiator)
         if not (probe1 or {}).get("success"):
             raise ExpectationFailed("baseline jawa/trade_price_probe failed: %s" % probe1)
-        rows1 = {p.get("defName"): p for p in (probe1.get("prices") or [])}
+        rows1 = _price_rows(probe1)
 
         droid = t.spawn_pawn(PROTOCOL, hostile=False)
-        probe2 = t.bridge_call("jawa/trade_price_probe",
-                               negotiatorPawnId=negotiator, defNames="Silver")
+        probe2 = t.bridge_call("jawa/trade_price_probe", negotiatorPawnId=negotiator)
         if not (probe2 or {}).get("success"):
             raise ExpectationFailed("second jawa/trade_price_probe failed: %s" % probe2)
-        rows2 = {p.get("defName"): p for p in (probe2.get("prices") or [])}
+        rows2 = _price_rows(probe2)
 
-        moved = any(rows2[d]["buy"] != rows1.get(d, {}).get("buy")
-                   for d in rows2 if d in rows1)
-        if not moved and rows1 and rows2:
+        common = [d for d in rows2 if d in rows1]
+        if not common:
             raise ExpectationFailed(
-                "no buy price changed after adding a protocol droid to the "
-                "player party: before=%s after=%s" % (rows1, rows2))
+                "no non-currency tradeable appears in both probes -- nothing to compare "
+                "(before=%s after=%s)" % (sorted(rows1)[:8], sorted(rows2)[:8]))
+        moved = any(rows2[d].get("buy") != rows1[d].get("buy") for d in common)
+        if not moved:
+            raise ExpectationFailed(
+                "no buy price changed across %d tradeable(s) after adding a protocol droid to the "
+                "player party: e.g. %s -> %s" % (len(common), rows1[common[0]], rows2[common[0]]))
         t.screenshot()
 
 

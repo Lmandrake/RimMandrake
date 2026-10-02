@@ -340,6 +340,52 @@ def test_probe_mental_break():
     ok(all(p["mentalState"] is None for p in ps["pawns"]), "list_pawns rows carry no mentalState (read as None, not 'ok')")
 
 
+def test_declared_raid_and_phase_bounded_hostiles():
+    """A chain that fires a raid itself declares it ('raid', unbounded) and bounds its raiders by phase, so
+    killing them afterwards is not a broken contract; the same raid undeclared is still a signal."""
+    base = base_of(probe_raw("D_after_kill_nostep"))
+    raw = probe_raw("E_after_raid_nostep")
+    ex = D.Expectations()
+    ex.expect("raid", {})
+    ex.expect("hostile", lambda p: p.get("hostile"), phase="raid")
+    ex.set_phase("raid")
+    h = D.sweep(snap_of(raw), base, ex)
+    ok(not det(h, "raid_arrived"), "declared raid: raid_arrived (letter + counter) is not a signal")
+    ok(not det(h, "hostile_pawns"), "declared raid: the raiders are expected hostiles while the phase is open")
+    ok(not det(h, "letter_unexpected"), "declared raid: its threat letter is consumed, not re-reported")
+    dead = copy.deepcopy(raw)
+    for p in dead["list_pawns"]["pawns"]:
+        if p["hostile"]:
+            p["dead"] = True
+    ex.set_phase("after")
+    h2 = D.sweep(snap_of(dead), base, ex)
+    ok(not det(h2, "expected_contract_broken"), "killing the raiders after the phase closes is not a broken contract")
+    ok(not det(h2, "raid_arrived"), "the raid stays declared after the phase moves on (the counter never resets)")
+    ok(len(det(D.sweep(snap_of(raw), base), "raid_arrived")) == 1, "the same raid undeclared is still raid_arrived")
+
+
+def test_induced_mental_break_is_declarable():
+    """A chain that induces a break on purpose declares it; the same break unannounced is still a hit."""
+    base = base_of(probe_raw("E_after_raid_300"))
+    raw = probe_raw("F_after_break")
+    exp = D.Expectations()
+    exp.expect("mental", lambda e: "Vas" in (e.get("label") or "") or e.get("name") == "Vas")
+    hits = D.sweep(snap_of(raw), base, exp)
+    ok(not det(hits, "mental_break"), "declared mental: the induced break's letter is not a surprise")
+    ok(not det(hits, "letter_unexpected"), "declared mental: letter consumed, not re-reported as unexpected")
+    other = D.Expectations()
+    other.expect("mental", lambda e: "Nobody" in (e.get("label") or ""))
+    ok(len(det(D.sweep(snap_of(raw), base, other), "mental_break")) == 1,
+       "a mental declaration for someone else suppresses nothing")
+    ps = snap_of(raw)
+    ps["pawns"] = [dict(ps["pawns"][0], id="Human9", name="Vas", mentalState="Wander_Sad")] if ps["pawns"] else \
+        [{"id": "Human9", "name": "Vas", "mentalState": "Wander_Sad", "colonist": True, "faction": "PlayerColony"}]
+    st = D.mental_break(ps, base, exp, {"consumed": set(), "suppressed": set()})
+    ok(not [h for h in st if h.evidence.get("mentalState")], "declared mental: the induced STATE is not a hit either")
+    st2 = D.mental_break(ps, base, D.Expectations(), {"consumed": set(), "suppressed": set()})
+    ok([h for h in st2 if h.evidence.get("mentalState")], "undeclared: the same state is a hit")
+
+
 # ---- snapshot behaviour -------------------------------------------------------------------------
 
 class FakeSession(object):
@@ -468,7 +514,7 @@ def test_fixture_exempt():
 def main():
     tests = (test_e1_seven_deaths, test_e1_pre_baseline_letters_do_not_fire, test_baseline_tick_boundary,
              test_e2_burn, test_e3_truncation, test_probe_clean_control, test_probe_kill, test_probe_fire,
-             test_probe_damage, test_probe_raid_and_expectations, test_probe_mental_break, test_wildlife_near_colonist, test_fixture_exempt,
+             test_probe_damage, test_probe_raid_and_expectations, test_probe_mental_break, test_induced_mental_break_is_declarable, test_declared_raid_and_phase_bounded_hostiles, test_wildlife_near_colonist, test_fixture_exempt,
              test_take_snapshot, test_dedup_and_severity, test_context_and_misc)
     for t in tests:
         try:

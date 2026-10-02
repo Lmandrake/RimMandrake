@@ -158,6 +158,44 @@ def mod_package_id(mod_dir):
     return m.group(1).lower()
 
 
+def mod_dependency_ids(mod_dir):
+    """Hard `<modDependencies>` packageIds of the mod's About.xml, lowercased, in document order, minus the
+    base game and DLCs (`Ludeon.*`, always in the list) and the mod's own id. `run()` composes these BEFORE
+    the mod: appending only the mod's own id left every donor gene / def a suite depends on out of the load
+    (MEASURED 2026-10-01: StarWarsRaces read 24 of its xenotype's 38 genes). RimWorld drops an id whose
+    folder is not installed, so a missing dependency stays visible only as the suite's own failure."""
+    import re
+    about = os.path.join(mod_dir, "About", "About.xml")
+    with open(about, encoding="utf-8") as f:
+        xml = f.read()
+    own = mod_package_id(mod_dir)
+    m = re.search(r"<modDependencies>(.*?)</modDependencies>", xml, re.S)
+    out = []
+    for pid in re.findall(r"<packageId>\s*([^<\s]+)\s*</packageId>", m.group(1) if m else ""):
+        pid = pid.lower()
+        if pid.startswith("ludeon.") or pid == own or pid in out:
+            continue
+        out.append(pid)
+    return out
+
+
+def composed_into(mod_folder):
+    """`None`, or `(compose_name, packageId)` when this dev folder ships FOLDED INTO a composed mod
+    (Biomes.compose.json): such a folder is refused as a standalone deploy and its own packageId is not a
+    mod the game can load, so the run must deploy the composed mod and compose ITS id instead."""
+    sys.path.insert(0, _UTILS)
+    import biomes_compose
+    src = os.path.join(ROOT, "src")
+    try:
+        manifest = biomes_compose.load_manifest(src)
+        folded = biomes_compose.folded_sources(src)
+    except Exception:     # noqa: BLE001 - a broken manifest must not hide an ordinary mod
+        return None
+    if not manifest or mod_folder not in folded:
+        return None
+    return "biomes", manifest["about"]["packageId"].lower()
+
+
 def compose_test_list(package_ids, config_path=None):
     """Append `package_ids` (the mods under test) to the live ModsConfig's
     <activeMods>, after `modlist_swap.py --minimal --apply` has made MINIMAL
@@ -517,15 +555,22 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
             package_ids = []
             for mod_folder, _item in mods:
                 mod_dir = find_mod_dir(mod_folder)
+                folded = composed_into(mod_folder)
+                deploy_args = (("--compose", folded[0]) if folded
+                               else ("--mod", mod_folder))
                 r = subprocess.run(
                     py_cmd(os.path.join(_UTILS, "deploy_custom_mods.py"),
-                           "--mod", mod_folder, "--apply"),
+                           *deploy_args, "--apply"),
                     cwd=ROOT, capture_output=True, text=True)
                 if r.returncode != 0:
                     raise RuntimeError(
                         "deploy of %s FAILED: %s"
                         % (mod_folder, (r.stdout + r.stderr).strip()[-500:]))
-                package_ids.append(mod_package_id(mod_dir))
+                # dependencies first, then the mod: a composed folder loads as its composed mod
+                package_ids.extend(d for d in mod_dependency_ids(mod_dir) if d not in package_ids)
+                own = folded[1] if folded else mod_package_id(mod_dir)
+                if own not in package_ids:
+                    package_ids.append(own)
             compose_test_list(package_ids)
         for mod_folder, item_id in mods:
             if dry_run:
