@@ -80,8 +80,21 @@ import uuid
 SETTINGS = ("/mnt/c/Users/Mandrake/AppData/Local/Packages/"
             "Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json")
 
-REPO_WIN = r"D:\Luke\dev\Rimworld"
-REPO_WSL = "/mnt/d/Luke/dev/Rimworld"
+# 🔴 EACH SEAT RUNS IN ITS OWN ext4 CLONE since 2026-10-02 (GIT_WORKFLOW_MIGRATION_1,
+# design/RimMandrake/git_workflow_plan_2026-10-01.md §2.1) — never the D:\ tree, which
+# becomes a writer-less exported mirror. A seat launches the claude_bounded.sh in ITS
+# OWN clone. Non-seat Claude tiles (SERVER, HESTIA, EMERGENCY) use BENCH's clone's copy,
+# a path that keeps existing; the Windows spelling is only WT's startingDirectory (the
+# `cd` inside the commandline is what actually sets the cwd).
+SEAT_CLONES = {
+    "BENCH":   ("/home/mandrake/rm/bench",   r"\\wsl.localhost\Ubuntu\home\mandrake\rm\bench"),
+    "FOUNDRY": ("/home/mandrake/rm/foundry", r"\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry"),
+}
+BOUNDED = "{home}/src/RimMandrake/Utils/claude_bounded.sh"
+SHARED_BOUNDED = BOUNDED.format(home=SEAT_CLONES["BENCH"][0])
+# The artpipe daemon still runs in the D:\ tree: its queue state is tracked there until
+# Phase 5 of the migration moves it out (plan §2.3/§3). Repoint it THEN, not before.
+ARTIST_HOME = ("/mnt/d/Luke/dev/RimMandrake", r"D:\Luke\dev\RimMandrake")
 DISTRO = "Ubuntu"
 
 # How the owner launches Claude Code. There is no `claude` alias in ~/.zshrc —
@@ -120,7 +133,7 @@ DISTRO = "Ubuntu"
 # flag takes an OPTIONAL name (`--remote-control [name]`), so it is given the label
 # explicitly — a bare `--remote-control` followed by another token could swallow
 # it as the name. The standalone server is the separate SERVER tile below.
-LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
+LAUNCH = ("{script} "
           "--dangerously-skip-permissions --name '{label}' --model {model} "
           "--remote-control '{label}'")
 
@@ -130,7 +143,7 @@ LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
 # or the phone, so it outlives any seat's disconnect. Through claude_bounded.sh
 # like everything else — its spawned sessions inherit the scope, hence the higher
 # MEM_MAX. `--permission-mode bypassPermissions` matches the seats' launch line.
-SERVER_CMD = ("MEM_MAX=16G /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
+SERVER_CMD = ("MEM_MAX=16G " + SHARED_BOUNDED + " "
               "remote-control --name '{label}' --permission-mode bypassPermissions")
 
 # Hue-distinct and legible on Campbell's near-black background.
@@ -165,13 +178,13 @@ SEATS = {
     # AGENT prefix, no AGENT_SEAT export, no claude launch. On 2026-09-09 this
     # window was briefly converted into a Claude seat on a mistaken premise and
     # reverted the same day — the daemon console IS the design, don't "fix" it.
-    "ARTIST":  ("#B48EFF", None, "purple — the artpipe daemon's console, NOT a Claude seat", None,
+    "ARTIST":  ("#B48EFF", None, "purple — the artpipe daemon's console, NOT a Claude seat", ARTIST_HOME,
                 "python3 src/RimMandrake/Utils/artpipe/artpiped.py"),
     # ⭐ SERVER IS NOT A CLAUDE SEAT EITHER — it is the standalone Remote Control
     # server (owner, 2026-09-19), white so it reads as infrastructure in the tab
     # strip, not as a voice. It spawns sessions on demand; it never holds a role.
     "SERVER":  ("#FFFFFF", None, "white — the standalone `claude remote-control` server, NOT a seat",
-                None, SERVER_CMD),
+                SEAT_CLONES["BENCH"], SERVER_CMD),
     "HESTIA":  ("#FFC83D", "opus", "gold-amber — the Hestia project, not a seat here",
                 ("/mnt/d/Luke/dev/Hestia", r"D:\Luke\dev\Hestia"), None),
     # EMERGENCY was a hand-made profile (guid in STALE_GUIDS) until 2026-09-19, when
@@ -227,7 +240,9 @@ def label_for(seat):
 
 def build(seat):
     colour, model, _, home, cmd = SEATS[seat]
-    home_wsl, home_win = home if home else (REPO_WSL, REPO_WIN)
+    home_wsl, home_win = home if home else SEAT_CLONES[seat]
+    # A seat runs its own clone's wrapper; every other Claude tile runs BENCH's.
+    script = BOUNDED.format(home=home_wsl) if not home else SHARED_BOUNDED
     label = label_for(seat)
     scheme = dict(CAMPBELL, name=f"Seat {seat}", foreground=colour,
                   cursorColor=colour)
@@ -244,7 +259,7 @@ def build(seat):
     else:
         export = "" if home else f"export AGENT_SEAT={seat} && "
         inner = (f"cd {home_wsl} && {export}"
-                 f"{LAUNCH.format(label=label, model=model)}; exec $SHELL -l")
+                 f"{LAUNCH.format(script=script, label=label, model=model)}; exec $SHELL -l")
     profile = {
         "guid": seat_guid(seat),
         "name": label,
