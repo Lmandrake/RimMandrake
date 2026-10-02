@@ -602,11 +602,16 @@ class Suite(object):
     def __init__(self, name):
         self.name = name
         self.chains = []          # [(name, fn)]
+        self.chain_caps = {}      # name -> situational session tick cap override (default: watch.DEFAULT_SESSION_CAP)
         self.toggles = []         # Mod Settings toggle names this mod has
 
-    def chain(self, name):
+    def chain(self, name, tick_cap=None):
+        """`tick_cap`: a chain that legitimately needs more in-game time than the default situational session
+        cap (60000) declares its own total here; the watch still sweeps every chunk and caps each wait."""
         def deco(fn):
             self.chains.append((name, fn))
+            if tick_cap:
+                self.chain_caps[name] = int(tick_cap)
             return fn
         return deco
 
