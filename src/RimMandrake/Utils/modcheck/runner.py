@@ -503,6 +503,12 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
             with Session(lock=None) as s:
                 summary = run_suite(suite, s, debug=debug, mod=mod_folder,
                                     situational=situational, policy=policy)
+            if situational:
+                try:           # SHADOW-mode Jev routing of FAIL components; absent key => one UNAVAILABLE row
+                    import jev_triage  # noqa: E402
+                    summary["jev_shadow"] = jev_triage.triage_summary(summary)
+                except Exception:   # noqa: BLE001 - Jev must never be able to break a run
+                    summary["jev_shadow"] = []
             results[mod_folder] = summary
             sheet_path = write_sheet(mod_folder, summary)
             emit_verify(item_id, mod_folder, "min+%s" % mod_folder, summary,
