@@ -1,4 +1,4 @@
-# ROT_SPORE_ALLERGY_PORT_1 — our own spore allergy (people and animals) replaces the Alpha Biomes pair in the free Rot
+# ROT_SPORE_ALLERGY_PORT_1 — our own spore allergy (people and animals) replaces the Alpha Biomes pair in the free Rot and the free Contagion
 
 Caused by `ROT_SCORING_SITTING_1` (turn 1); ruled earlier at the 2026-09-24 cast sitting (*"Spore allergy:
 port our own. Two RM_ HediffDefs of our own replace the `AB_Disease_SporesAllergy` pair so the free mod keeps
@@ -18,10 +18,12 @@ Free tier, `mandrake.rm.therot`. Design: `design/Jawa/worldbuilding/biomes/rot_b
    text copied. Interaction with the Sheen: none new (the exposure ladder is separate and ruled).
 3. **Swap** in `src/RimMandrake/TheRot/Defs/BiomeDefs/RM_TheRot_Biome.xml` (lines ~60, ~64): the two
    `diseaseInc` entries become ours, same commonalities, no `MayRequire`.
-4. **Not in scope, recorded:** `RM_Contagion` (`src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml`
-   lines ~81, ~85) and the frozen twins `RUT_TheRot`/`RUT_Contagion` also name the donor pair. The twins stay
-   frozen; whether the Contagion takes our allergy is that biome's sitting's call. The defs are written so it
-   could (no Rot-only condition inside them).
+4. **The Contagion takes it too** (owner, 2026-10-02 11:12 PDT): swap the same two `diseaseInc` entries in
+   `RM_Contagion` (`src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml` lines ~81, ~85) to
+   `RM_Disease_SporeAllergy` / `RM_Disease_AnimalSporeAllergy`, same commonalities, no `MayRequire`. The defs
+   carry no Rot-only condition. The frozen twins `RUT_TheRot`/`RUT_Contagion` stay frozen and keep the donor pair
+   (repainted once at the end). Whichever mod owns the defs, the Contagion's own mod must load them (move them
+   to a shared place or declare the dependency; check what `RimMandrake.Biomes` unification implies).
 5. Mod Settings: on/off and an incidence multiplier in the Rot screen's Biome section.
 
 Depends on: none.
@@ -31,9 +33,12 @@ Depends on: none.
 Deterministic, in `THE_ROT_FIRST_SCRIPT_1`'s `validation.py`:
 - `HediffDef/RM_SporeAllergy`, `HediffDef/RM_AnimalSporeAllergy`, `IncidentDef/RM_Disease_SporeAllergy`,
   `IncidentDef/RM_Disease_AnimalSporeAllergy` resolve (`foundCount` = 4) with Alpha Biomes **not** loaded.
-- Offline XML parse: `RM_TheRot`'s `diseases` names no `AB_` def.
+- Offline XML parse: `RM_TheRot`'s and `RM_Contagion`'s `diseases` name no `AB_` def and do name our two
+  incidents; the four defs resolve with the Contagion's mod alone plus Alpha Biomes not loaded.
 - Firing `RM_Disease_SporeAllergy` on a Rot test map adds `RM_SporeAllergy` to ≥ 1 colonist; the animal one
   adds `RM_AnimalSporeAllergy` to ≥ 1 animal; neither adds anything to the other kind.
+- Firing `RM_Disease_SporeAllergy` on a Contagion test map adds `RM_SporeAllergy` to ≥ 1 colonist (same for
+  the animal incident and `RM_AnimalSporeAllergy`).
 - Toggle off: the incident's base chance on a Rot map reads 0.
 </content>
 </invoke>

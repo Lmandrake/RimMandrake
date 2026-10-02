@@ -556,8 +556,17 @@ FOUNDRY items, each `--caused-by ROT_SCORING_SITTING_1`:
 | 3 (redo) | `ROT_STILL_ALIVE_SWALLOW_1` |
 | 4 (redo) | `ROT_GUT_MOTHER_VAT_1`; `ROT_UNJOINING_DRAUGHT_1` |
 | 5 | `ROT_UNJOINING_RITE_1` |
-| 6 | art: `infrastructure/artpipe/art_lists/rot_turn1_2026-10-02.csv` (10 subjects, 14 jobs: the hwelgrue, the casting, the drive core and its ruined form, the sac, the vat, the starter, the draught, the husk, the rite's vessel). The ten ports need **no** new art; their existing thozzik, illoth and brogg renders show plain animals, and whether to redraw them as hybrids is open for the owner. |
+| 6 | art: `infrastructure/artpipe/art_lists/rot_turn1_2026-10-02.csv` (10 subjects, 14 jobs: the hwelgrue, the casting, the drive core and its ruined form, the sac, the vat, the starter, the draught, the husk, the rite's vessel). Seven of the ten ports need no new art; the thozzik, illoth and brogg are redrawn as hybrids of our own creatures (`rot_hybrid_redraw_2026-10-02.csv`, see Follow-up rulings). |
 
 Sequencing: row 0 first (`THE_ROT_FIRST_SCRIPT_1` is written against row 0's state); the hwelgrue before its
 three dependants (navigator, swallow, gut-mother); the draught before the rite. The Rot is **not** an
 extreme-heat biome; no heat-kind declaration is owed.
+
+### Follow-up rulings (11:12)
+
+Owner, 2026-10-02 11:12 PDT, each noted in the ledger:
+
+1. **The drive core is unique** (`ROT_SWALLOWED_NAVIGATOR_1`): one hwelgrue on the planet carries it (campaign: a chosen authored Rot location; free tier: one random hwelgrue per world, tracked in a `WorldComponent` so it never spawns twice). Its range bonus is **+25% of total gravship range** (decision taken by question card), scaled by core integrity, replacing the flat +24.
+2. **The Contagion takes our spore allergy too** (`ROT_SPORE_ALLERGY_PORT_1`).
+3. **The thozzik, illoth and brogg are redrawn as hybrids of our own creatures from other biomes**, not terrain animals (owner, typed: *"I like that they were hybridized, but NOT terrain animals hybridized. Our own custom creatures from other biomes."*): thozzik from the kurreth, illoth from the vrisk, brogg from the dorrak (`ROT_RM_CAST_MIGRATION_1`).
+4. **Art queued:** `infrastructure/artpipe/art_lists/rot_hybrid_redraw_2026-10-02.csv` (9 jobs).
