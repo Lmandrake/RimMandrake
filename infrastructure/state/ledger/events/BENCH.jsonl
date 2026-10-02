@@ -828,3 +828,5 @@
 {"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-01T21:20:34Z"}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-01T22:03:03Z"}
 {"seat":"BENCH","event":"file","id":"GIT_WORKFLOW_MIGRATION_1","title":"Git workflow migration: guard D:\\ writes, per-seat ext4 clones, generated views out of git, ledger union+dedupe, worktree drain to archive tags, helper pool (2/seat, submit/ branches) — phases 0-8 of the plan; owner chose windows-land-helpers and hub-page queues by card 2026-10-02","kind":"task","target":"v1","needs":"offline","spec":"design/RimMandrake/git_workflow_plan_2026-10-01.md","for":"BENCH","ts":"2026-10-02T07:16:28Z"}
+{"seat":"BENCH","event":"claim","id":"GIT_WORKFLOW_MIGRATION_1","ts":"2026-10-02T07:22:24Z"}
+{"seat":"BENCH","event":"start","id":"GIT_WORKFLOW_MIGRATION_1","ts":"2026-10-02T07:22:25Z"}
