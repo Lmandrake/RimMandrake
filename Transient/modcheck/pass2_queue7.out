@@ -1,0 +1,54 @@
+=== J2 20:36:58
+== J2_abort_proof
+  ok   control control_quiet: no abort and no SURPRISE/FATAL hit
+  ok   hazard hostile_raid: aborts via hostile_pawns with sidecar on disk, game paused
+  ok   hazard fire_near_colonist: aborts via fire_on_map with sidecar on disk, game paused
+  ok   hazard colonist_killed: aborts via colonist_died with sidecar on disk, game paused
+  ok   hazard predator_hunts_colonist: aborts via predator_hunting with sidecar on disk, game paused
+  ok   hazard colonist_berserk: aborts via mental_break with sidecar on disk, game paused
+  ok   hazard raid_queued: aborts via incident_queued with sidecar on disk, game paused
+  ok   control control_declared: no abort and no SURPRISE/FATAL hit
+  ok   runner path: the component meeting a hostile is UNMEASURED naming hostile_pawns
+  ok   control control_after_cleanup: no abort and no SURPRISE/FATAL hit
+  FAIL after all hazards, bland_world.reset() leaves a PROVABLY bland world (corpses, hediffs, queue, fires)  -- ['ruins present: 281']
+MEASURED FAIL J2_abort_proof -- 10/11 checks ; failed: after all hazards, bland_world.reset() leaves a PROVABLY bland world (corpses, hediffs, queue, fires)
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J1bw 20:37:59
+== J1_situational_rerun
+     bland_world: tiles exported 119904 candidates 1688
+  FAIL bland world established (tile 254, map 1)  -- ["hostiles present: ['Locust22189', 'Locust22190', 'Spelopede22191', 'Megaspider22192']"]
+  -- Aftermath
+     refused='' verdicts={'PASS': 1, 'FAIL': 1, 'UNMEASURED': 1} surprises=0 serious=[]
+  -- Antiquities
+     refused='' verdicts={'FAIL': 1, 'PASS': 1} surprises=0 serious=[]
+  -- Droidworks
+     refused='' verdicts={'PASS': 17, 'FAIL': 2, 'UNMEASURED': 2} surprises=1 serious=['mental_break:SURPRISE']
+  -- FlowWorks
+     refused='' verdicts={'PASS': 31, 'FAIL': 18, 'UNMEASURED': 37} surprises=5 serious=['colonist_injured_unexpectedly:SURPRISE']
+  -- Inhabited
+     refused='' verdicts={'PASS': 10} surprises=0 serious=[]
+  -- JawaIonWeapons
+     refused='' verdicts={'PASS': 9, 'FAIL': 1} surprises=0 serious=[]
+  -- Ninefold
+     refused='' verdicts={'PASS': 4, 'FAIL': 1, 'UNMEASURED': 1} surprises=1 serious=['colonist_died:FATAL']
+  -- PawnFlavor
+     refused='' verdicts={'PASS': 14} surprises=0 serious=[]
+  -- Pyrelands
+     refused='' verdicts={'FAIL': 23} surprises=0 serious=[]
+  -- ResearchRetag
+     refused='' verdicts={'PASS': 2} surprises=0 serious=[]
+  -- ShipMemory
+     refused='' verdicts={'FAIL': 1, 'PASS': 2} surprises=0 serious=[]
+  -- StarWarsRaces
+     refused='' verdicts={'PASS': 3, 'FAIL': 1} surprises=0 serious=[]
+  -- StructureInjections
+     refused='' verdicts={'PASS': 3} surprises=0 serious=[]
+  ok   no suite raised out of run_suite
+  ok   FlowWorks ran (not refused)
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED FAIL J1_situational_rerun -- 5/6 checks ; failed: bland world established (tile 254, map 1)
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J1 done 21:03:27
+ALLDONE

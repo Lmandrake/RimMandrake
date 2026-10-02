@@ -1,0 +1,47 @@
+=== J3 19:49:43
+>> J3_bland_tile  (fails when: the map is not current, wildlife remains, no colonist stands on it, or ruins are present)
+== J3_bland_tile
+  ok   a candidate tile has no mutators, roads or rivers
+  ok   colony_found settled the tile for the player
+  ok   map generated with no failed finalize steps
+  ok   the new map is current and on the chosen tile
+  ok   destroy_bulk factionlessAnimals succeeded
+  ok   >=3 colonists stand on the bland map (census isColonist)
+  ok   no wildlife left on the map
+  ok   no non-player artificial buildings (ruins) on the map
+  ok   helpers.assert_bland passes on the new map
+  ok   2000 idle ticks on the bland map raise no SURPRISE/FATAL
+MEASURED PASS J3_bland_tile -- 10/10 checks
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J3 done exit 0 19:50:30
+=== J4 19:50:30
+>> J4_companion_live  (fails when: a direct-read detector does not fire, or fires without its direct-read evidence)
+== J4_companion_live
+  ok   census consistency: pawn_census and list_pawns name the same living pawns
+  ok   damage: colonist_damaged via damage_log names damageDef Cut
+  ok   damage: the Cut is not ALSO reported by the hediff-inference detector
+  ok   mental: Wander_Sad -> mental_break via pawn_census, isAggro False, SURPRISE not FATAL
+  ok   predator: predator_hunting via pawn_census with preyIsColonist True
+  ok   incident: benign queue entry seen as incident_queued WARN, and it does NOT abort
+  ok   kill: colonist_died carries damage_log_kill among its sources
+MEASURED PASS J4_companion_live -- 7/7 checks
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J4 done exit 0 19:51:31
+=== J2 19:51:31
+>> J2_abort_proof  (fails when: a hazard does not abort, aborts on the wrong detector, leaves no sidecar, or a control aborts)
+== J2_abort_proof
+  FAIL control control_quiet: no abort and no SURPRISE/FATAL hit  -- {'aborted': True, 'kind': 'surprise', 'hits': ['modal_open'], 'evidence': ['D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\live_queue\\J2_abort_proof\\control_quiet\\LiveQueue__control_quiet__modal_open__t269230__001.json'], 'screenshots': ['D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\live_queue\\J
+  ok   hazard hostile_raid: aborts via hostile_pawns with sidecar on disk, game paused
+  ok   hazard fire_near_colonist: aborts via fire_on_map with sidecar on disk, game paused
+  ok   hazard colonist_killed: aborts via colonist_died with sidecar on disk, game paused
+  ok   hazard predator_hunts_colonist: aborts via predator_hunting with sidecar on disk, game paused
+  ok   hazard colonist_berserk: aborts via mental_break with sidecar on disk, game paused
+  ok   hazard raid_queued: aborts via incident_queued with sidecar on disk, game paused
+  FAIL control control_declared: no abort and no SURPRISE/FATAL hit  -- {'aborted': True, 'kind': 'surprise', 'hits': ['modal_open'], 'evidence': ['D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\live_queue\\J2_abort_proof\\control_declared\\LiveQueue__control_declared__modal_open__t269350__001.json'], 'screenshots': ['D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\live_qu
+  ok   runner path: the component meeting a hostile is UNMEASURED naming hostile_pawns
+  FAIL control control_after_cleanup: no abort and no SURPRISE/FATAL hit  -- {'aborted': True, 'kind': 'surprise', 'hits': ['modal_open'], 'evidence': ['D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\live_queue\\J2_abort_proof\\control_after_cleanup\\LiveQueue__control_after_cleanup__modal_open__t269530__001.json'], 'screenshots': ['D:\\Luke\\dev\\wt_live2\\Transient\\modchec
+MEASURED FAIL J2_abort_proof -- 7/10 checks ; failed: control control_quiet: no abort and no SURPRISE/FATAL hit, control control_declared: no abort and no SURPRISE/FATAL hit, control control_after_cleanup: no abort and no SURPRISE/FATAL hit
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J2 done exit 1 19:53:45
+=== J1 19:53:45
+>> J1_situational_rerun  (fails when: a suite crashes, FlowWorks is refused, Antiquities' long chain is UNMEASURED by budget, or a chain records a surprise whose detector is the chain's own declared act)
