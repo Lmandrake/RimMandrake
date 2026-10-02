@@ -244,7 +244,8 @@ class FakeWorld(object):
 
     def _t_jawa_destroy_bulk(self, filter=None, dryRun=True, **_):
         ids = [pid for pid, p in self.pawns.items()
-               if filter == "factionlessAnimals" and p["faction"] is None and p["intelligence"] == "Animal" and not p["dead"]]
+               if (filter == "factionlessAnimals" and p["faction"] is None and p["intelligence"] == "Animal" and not p["dead"])
+               or (filter == "nonColonists" and not (p["isPlayer"] and p["intelligence"] == "Humanlike"))]
         if not dryRun:
             for pid in ids:
                 del self.pawns[pid]
@@ -547,6 +548,8 @@ class FakeWorld(object):
             return {"success": False, "message": "Tile %s already carries a Settlement." % tile}
         if not dryRun:
             self.settled.add(tile)
+        if not dryRun:
+            self.dialogs = getattr(self, "dialogs", []) + ["Dialog_NamePlayerFactionAndSettlement"]
         return {"success": True, "tile": tile, "layerId": 0, "faction": faction, "settlementId": 900 + tile % 97,
                 "name": name or "Bland", "limitReached": False}
 
@@ -586,8 +589,47 @@ class FakeWorld(object):
     def _t_jawa_drain_log(self, limit=50, errorsOnly=False, **_):
         return {"success": True, "messages": [], "totalInBuffer": 0, "ticksGame": self.ticks}
 
-    def _t_jawa_window_list_close(self, action="list", **_):
-        return {"success": True, "action": action, "count": 0, "windows": [], "ticksGame": self.ticks}
+    def _t_jawa_window_list_close(self, action="list", typeName=None, closeAll=False, **_):
+        dlgs = getattr(self, "dialogs", [])
+        rows = [{"typeName": d} for d in dlgs]
+        closed = 0
+        if action == "close":
+            keep = [d for d in dlgs if not (typeName and typeName.lower() in d.lower())]
+            closed = len(dlgs) - len(keep)
+            self.dialogs = keep
+        return {"success": True, "action": action, "count": len(rows), "windows": rows, "closedCount": closed,
+                "ticksGame": self.ticks}
+
+    def _t_jawa_name_colony(self, factionName=None, settlementName=None, **_):
+        self.named = True
+        self.dialogs = [d for d in getattr(self, "dialogs", []) if "NamePlayer" not in d]
+        return {"success": True, "factionName": factionName or "Northstar Test Colony",
+                "settlements": [{"tile": t, "name": settlementName or "Northstar Base", "namedByPlayer": True}
+                                for t in sorted(getattr(self, "settled", set()))]}
+
+    def _t_rimworld_save_game(self, saveName=None, **_):
+        """Snapshots the world model; with `saves_dir` set also writes <saveName>.rws (size > 1000 bytes).
+        Mode `save_wrong_slot` reproduces the MEASURED lie: success, but the CURRENT slot is rewritten."""
+        self.saves = getattr(self, "saves", {})
+        d = getattr(self, "saves_dir", None)
+        target = getattr(self, "current_save", None) if "save_wrong_slot" in self.modes else saveName
+        self.saves[target] = (copy.deepcopy(self.pawns), copy.deepcopy(self.fires), bool(getattr(self, "named", False)))
+        path = None
+        if d and target:
+            path = os.path.join(d, target + ".rws")
+            with open(path, "wb") as f:
+                f.write(b"<savegame>" + b"x" * (2000 + len(self.pawns)))
+        return {"success": True, "path": path or ("%s.rws" % saveName)}
+
+    def _t_rimworld_load_game_ready(self, saveName=None, **_):
+        snap = getattr(self, "saves", {}).get(saveName)
+        if snap is None:
+            return {"success": False, "message": "no save %s" % saveName}
+        self.pawns, self.fires, self.named = copy.deepcopy(snap[0]), copy.deepcopy(snap[1]), snap[2]
+        self.dialogs = []
+        self.queue = []
+        self.current_save = saveName
+        return {"success": True, "saveName": saveName}
 
     def _t_jawa_clear_ui(self, **_):
         return {"success": True}

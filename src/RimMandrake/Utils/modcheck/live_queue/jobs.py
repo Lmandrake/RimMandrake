@@ -29,6 +29,10 @@ JOBS = [
     {"id": "J5_motion_frames", "file": "j5_motion_frames.py",
      "title": "FlowWorks canal fill-front frame sequence (capture stub, no judge)",
      "fails_when": "fewer than N valid frames, all frames byte-identical, or the fill state never moved"},
+    {"id": "J6_bland_base", "file": "j6_bland_base.py",
+     "title": "one-time: build the bland world, name the colony, save BLAND_NORTHSTAR_BASE (suites load it between runs)",
+     "fails_when": "the colony is left unnamed or a naming dialog stays open, assert_bland fails, or no NEW save file appears "
+                   "(or an existing save changes size)"},
 ]
 
 SUITE_REGISTRY = os.path.join(ROOT, "infrastructure", "state", "modcheck_status.json")
