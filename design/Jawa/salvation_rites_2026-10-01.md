@@ -189,9 +189,27 @@ to rule**.
 |---|---|---|---|---|---|---|
 | The Felled Noon | Sh'kaar | feeding | the tallest living tree felled by hand at the hour of highest sun; participants stand bare-headed in the hole it leaves; on the Webwork the owners gather at the shade line and wait | Webwork, a great kollavane stump carved with a sun-mark, ringed by bleached ollathrix legs | RULED (owner, 2026-10-02, question card); build `WEBWORK_FELLED_NOON_RITE_1` | `design/Jawa/worldbuilding/biomes/webwork_bedazzle_review_2026-10-02.md` §6 R1 |
 
-**Count (by hand from the tables above, not an instrument): 103 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1. **94 are the Salvation's** (B1 to B5, B7 to B10; the
-Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 92 distinct). Sh'kaar
+### B11. Found rites ruled at the Greentide sitting (RULED)
+
+Owner, typed 2026-10-02: *"Use first and third. First can be here. Build it outside the ship and let it be
+taken.  Works better the better the room. The third works on another map that doesn’t have one for this god
+yet. Likely one with open sight lines."* The Open Boast's home, decision taken by question card 2026-10-02
+07:52 PDT: the Warscar.
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Ceded Room | Ozzik | venting | a finished room built outside the ship, above an impressiveness floor, ceded with everything in it: doors held open, cooling off, wild seed sown; nothing reclaimed for a season; works better the better the room | Greentide, a grown-through mud dome with a lintel scratched *we were proud of this* | RULED (owner, 2026-10-02, typed); build `GREENTIDE_CEDED_ROOM_RITE_1` | `design/Jawa/worldbuilding/biomes/greentide_bedazzle_review_2026-10-02.md` §6 R1 |
+| The Open Boast | Ozzik | feeding | each participant declares an ambition and the congregation answers with the colony's name; days later a warned hostile challenge may arrive; once per colony | Warscar, a broken reviewing rostrum on a slag terrace with long sight lines, its rail gouged with names | RULED (owner, 2026-10-02, typed; home by question card); build `WARSCAR_OPEN_BOAST_RITE_1` | `design/Jawa/worldbuilding/biomes/greentide_bedazzle_review_2026-10-02.md` §5 idea 4 |
+
+⚠️ **Ozzik is now over the four-rite cap: five found rites** (the Lightless Burial, B2; the Salted
+Keeping, B7, pitched; the Flawed Masterwork, B7, ruled-kept; the Ceded Room and the Open Boast, B11). The
+review (§6) counted Ozzik at three with one slot left, and the turn-1 card did not put the cap to the
+owner; he chose both. Only Zizzik carries a waiver. Nothing is cut here: whether Ozzik is waived like Zizzik or one of
+the five (the pitched Salted Keeping is the only one not yet ruled) gives way is his decision.
+
+**Count (by hand from the tables above, not an instrument): 105 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2. **96 are the Salvation's** (B1 to B5, B7 to B11;
+the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 94 distinct). Sh'kaar
 now carries four found rites (the Snuffing, the Anvil Gift, the Shade Tithe, the Felled Noon): at the cap.
 
 **Per-god cap: four found rites, except Zizzik (owner, 2026-10-01, typed: *"Just leave them all for

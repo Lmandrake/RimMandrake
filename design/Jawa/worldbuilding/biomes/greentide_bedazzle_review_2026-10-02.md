@@ -441,3 +441,31 @@ him §0's description of the Greentide, per the standing rule that he is never a
 - **The Open Boast, for the god of pride:** each member declares an ambition and the colony shouts
   its name; days later a warned enemy may come to answer the boast. Once per colony. Buys: a proud,
   risky moment. Costs: a medium build, a one-time choice, and it is less tied to this jungle.
+
+## 8. Turn 1 rulings (2026-10-02) and ticket-out
+
+Decisions taken by question card 2026-10-02 07:43 PDT (items 1 to 3) and 07:52 PDT (the Open Boast's
+home), except the sentence quoted under item 4, which the owner typed.
+
+| Card item | Ruling | Ticket |
+|---|---|---|
+| 1. Build first | **Base fixes and the giant together.** The base is rows 0 and 0b: the Roil, Breaklight, the wet-bulb lock, the dry-air blower, root causeways and the living greatbole move from the campaign tier into the free mod (Q11a; findings 1 and 2), the two `RUT_Greentide` lock patches go, and the free mod gets its own jungle animals in place of the vanilla seven, with campaign op 1's wholesale Replace deleted so the campaign only Adds canon (finding 3; precedent `CRACKEDLANDS_PLANT_LIST_OWNED_1`). Also fixed: the false "the canopy swinger fills the dianoga's slot" note (finding 4; the owner filled that slot with the Illisk and the Vurrak) and the invented swinger, sytheclaw and yearning fruit sitting in the campaign tier. Decision taken by question card. "Fix the base first" alone and "new ideas first" are **not chosen**. | Row 0: `GREENTIDE_BASE_PORT_BUILD_1`. Row 0b: `GREENTIDE_FREE_ROSTER_OWNED_1` |
+| 2. The giant | **The tree-felling herd** (§3, the thurrock): huge copper-teal browsers that fell trees to eat the crowns, open sun gaps, drop wood across the roads and shoulder walls when provoked. Decision taken by question card. "The herd plus a once-in-a-life moult" and "only the moulting giant" (§5 idea 2, the varkhoss) are **not chosen**: no moult is built. Name collision-checked 2026-10-02 (python sweep of `src/`, `design/`, `infrastructure/`: only this review; Wookieepedia 0; artpipe 0; probes `korrum`, `wyyyschokk`). | `GREENTIDE_THURROCK_HERD_BUILD_1` |
+| 3. New marks | **The blood-stopping lace only** (§5 idea 1). Decision taken by question card. GPT's name *nethr* collides and is replaced by **stellock** (clear in the repo, on Wookieepedia and in artpipe, 2026-10-02). The hull rasp (§5 idea 3) and noise cover (§5 idea 5) are **not chosen** and not ticketed; "all three" is **not chosen**. | `GREENTIDE_STELLOCK_LACE_BUILD_1` |
+| 4. Rite | Owner, typed: *"Use first and third. First can be here. Build it outside the ship and let it be taken.  Works better the better the room. The third works on another map that doesn’t have one for this god yet. Likely one with open sight lines."* **The Ceded Room, for Ozzik** (§6 R1) is the Greentide's found rite: the room is built outside the ship (never on the gravship), the jungle takes it, and its effect scales with the room's quality. **The Open Boast, for Ozzik** (§5 idea 4) is admitted and found in **the Warscar** (decision taken by question card 07:52 PDT). The Uprooting (§6 R2, Ta'Baa) is **not chosen**. Both added to the register as B11 (`design/Jawa/salvation_rites_2026-10-01.md`). ⚠️ Ozzik now carries **five** found rites, one over the four-rite cap (only Zizzik is waived); recorded there for the owner, nothing cut. | `GREENTIDE_CEDED_ROOM_RITE_1`, `WARSCAR_OPEN_BOAST_RITE_1` |
+
+FOUNDRY items, each `--caused-by GREENTIDE_SCORING_SITTING_1`:
+
+| slate row | item |
+|---:|---|
+| 0 | `GREENTIDE_BASE_PORT_BUILD_1` (Roil, Breaklight, wet-bulb, blower, causeways, living greatbole to `RM_`; twin lock patches deleted) |
+| 0b | `GREENTIDE_FREE_ROSTER_OWNED_1` (sulleth, dhollock, yammeth; swinger and yearning fruit to `RM_`; vanilla seven out; op 1 deleted, ops 2 to 4 re-gated) |
+| 1 | `GREENTIDE_THURROCK_HERD_BUILD_1` (no moult) |
+| 2 | `GREENTIDE_STELLOCK_LACE_BUILD_1` |
+| 5 | `GREENTIDE_CEDED_ROOM_RITE_1`; `WARSCAR_OPEN_BOAST_RITE_1` |
+| 6 | art: `infrastructure/artpipe/art_lists/greentide_turn1_2026-10-02.csv` |
+
+Slate rows 3 and 4 are not ticketed (not chosen). The ruled Illisk and Vurrak stay with
+`GREENTIDE_TERROR_REPLACEMENT_1` (now pointed at the `RM_` tier by Q11a and this ruling); the swinger's and
+fruit's shipping names stay with `GREENTIDE_SHIPPING_NAMES_1`; the sytheclaw's def move stays with
+`PYRELANDS_FAUNA_TIER_PORT_BUILD_1`. `GREENTIDE_FIRST_SCRIPT_1` should be written against row 0's state.
