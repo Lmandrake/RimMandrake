@@ -1,26 +1,50 @@
 # Agent_Policy — which model does which work
 
 **Binds BENCH and FOUNDRY.** Read with `CHARTER.md`. This is the ONLY file that
-says which model does what; every other doc points here. The routing axis is
-measured, not argued.
+says which model does what *for this repo's seats*; every other doc in RimMandrake
+points here. The routing axis is measured, not argued.
+
+🔴 **FOR WHAT THE FLEET CAN ACTUALLY REACH, ASK `~/dev/DispatchOpenCode/bin/delegate`.**
+A census on 2026-10-01 found six files across `~/dev` restating a model ladder in prose,
+three of them naming a model the gateway does not serve. `bin/delegate where` reports
+reachability and `bin/delegate route <kind>` picks a destination from published figures;
+a `PreToolUse` hook on `Agent|Task` now refuses an unservable model at the spawn instead
+of letting it 400 afterwards. **What stays here is the SEAT policy** — which of this
+repo's jobs is design and which is grind — because that is a judgement about RimMandrake
+and not a fact about the gateway. Anything in this file that is a claim about model
+*availability* is subordinate to `bin/delegate`, which measures it.
 
 ## 🔴 The seat models — owner, 2026-09-29 (replaces the 2026-09-02 Fable ladder);
-## Haiku struck 2026-10-01 — the sanctioned gateway serves no Haiku model at all
+## Haiku struck 2026-10-01 — no Haiku model on the gateway (but see the correction below:
+## the ALIAS resolves to Sonnet 5 and works; `fable` is the name that actually 400s)
 
 > The owner asked for **Opus 5.5 for design work and complex code generation, Sonnet 5.5 for
 > well-defined coding tasks with checkable outcomes, and the most recent Haiku only for
 > OS-level searches.** Fable is dropped from the ladder entirely (decision taken by question
 > card, 2026-09-29).
 
-**Haiku is gone, as of a measurement, not a preference.** The sanctioned gateway at
-`$ANTHROPIC_BASE_URL` serves 40 model ids — only `us-gov.anthropic.claude-{opus-4-8,opus-5,
-sonnet-4-5-20250929-v1:0,sonnet-5}`, three Amazon Nova ids, and a Titan embedder — and carries
-no Haiku id at all; the entire `us.anthropic.*` prefix is dead (HTTP 400). Verify with
-`curl -s "$ANTHROPIC_BASE_URL/v1/models" -H "x-api-key: $ANTHROPIC_API_KEY" -H
-"anthropic-version: 2023-06-01"`. A subagent dispatched with `model: haiku` launches and only
-*then* 400s, which reads as a successful dispatch followed by a dead agent. OS-level searches
-(grep, glob, inventories, existence checks) fold into **Sonnet** below; there is no cheaper
-rung on this gateway to drop them to.
+**Haiku is gone as a MODEL, and the ruling below is unchanged — but the mechanism stated
+here was wrong and is corrected.** The sanctioned gateway at `$ANTHROPIC_BASE_URL` serves 40
+model ids — only `us-gov.anthropic.claude-{opus-4-8,opus-5,sonnet-4-5-20250929-v1:0,sonnet-5}`,
+three Amazon Nova ids, and a Titan embedder — and carries no Haiku id at all; the entire
+`us.anthropic.*` prefix is dead (HTTP 400). Verify with `~/dev/DispatchOpenCode/bin/delegate
+where`, which asks the gateway and reports "could not ask" separately from "serves nothing".
+
+🔴 **CORRECTED 2026-10-01: `model: haiku` does NOT 400. It resolves to Sonnet 5 and works.**
+This paragraph previously said a haiku spawn "launches and only *then* 400s", which was true
+before the same day's fix and false after it. `ANTHROPIC_DEFAULT_HAIKU_MODEL` is
+`us-gov.anthropic.claude-sonnet-5`, so the alias is remapped and a haiku subagent returns
+normally — measured by spawning one. **An ALIAS IS NOT A MODEL ID**: the thing to check is
+what the alias resolves to, not whether the gateway lists the alias's name. The id that
+genuinely dies is **`fable`**, which the harness expands to `claude-fable-5-1` and which no
+environment key can retarget.
+
+**The ruling stands and is now simply clearer.** `haiku` and `sonnet` currently resolve to the
+*same model*, so the haiku rung is cosmetic rather than cheap — and an escalation ladder that
+retries haiku→sonnet re-runs the same weights. OS-level searches (grep, glob, inventories,
+existence checks) fold into **Sonnet** below, for the original reason: there is no cheaper
+Anthropic rung on this gateway to drop them to. Pass `sonnet`, not `haiku`, so the policy says
+what it means.
 
 BENCH runs on Opus 5.5 and orchestrates. It does not do design in-window and does not grind:
 it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the

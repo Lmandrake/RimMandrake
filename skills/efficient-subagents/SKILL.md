@@ -64,10 +64,17 @@ One question. Bounded inputs. An explicit stop condition.
   conversational turn.** A script cleared ~1,750 items in ~22 minutes where a
   turn-by-turn agent died at 10 minutes having done a handful.
 - 🔴 **Always pass `model`.** Omitting it inherits the parent — which is how every
-  grep in this project's history ran on Opus. `haiku` only for OS-level searches — greps, globs,
-  censuses, existence checks; `sonnet` for well-defined coding with a checkable
-  outcome and for sweeps that must interpret what they find; `opus` for design,
-  complex code generation, and anything acted on without re-deriving it. Full ladder: `infrastructure/agents/Agent_Policy.md`.
+  grep in this project's history ran on Opus. **`sonnet` for OS-level searches** — greps,
+  globs, censuses, existence checks — and for well-defined coding with a checkable
+  outcome and sweeps that must interpret what they find; `opus` for design,
+  complex code generation, and anything acted on without re-deriving it. Full ladder:
+  `infrastructure/agents/Agent_Policy.md`; what the gateway can actually reach:
+  `~/dev/DispatchOpenCode/bin/delegate where`.
+  **This line said `haiku` for OS-level searches until 2026-10-01 and was wrong twice
+  over.** The gateway carries no Haiku id, *and* `model: haiku` is remapped to
+  `us-gov.anthropic.claude-sonnet-5`, so it resolved to Sonnet anyway — the rung bought
+  nothing and only made the instruction disagree with `Agent_Policy.md`, which had
+  already folded OS searches onto Sonnet. Spell it `sonnet`.
 - 🔴 **A task-scoped negative instruction to a fork must explicitly SUSPEND the
   seat's own standing autonomy doctrine, not just state the narrower task.** A
   fork given "recon only, do NOT touch the bridge, do NOT claim/start/modify

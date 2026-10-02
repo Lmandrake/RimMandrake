@@ -65,9 +65,14 @@ and sounded authoritative.
   flood the parent and you have paid for a subagent and received a transcript. The
   budget is the single highest-leverage line in the prompt.
 * 🔴 **Set `model` per agent — it is the second.** A fan-out is where the cost lands:
-  four agents at the parent's tier is four times the wrong price. `sonnet` for a
-  domain the agent must interpret, `haiku` for one it only has to enumerate.
-  `infrastructure/agents/Agent_Policy.md`.
+  four agents at the parent's tier is four times the wrong price. **`sonnet` for both a
+  domain the agent must interpret and one it only has to enumerate** — this line said
+  `haiku` for the enumerating case until 2026-10-01, and the gateway serves no Haiku at
+  all, so the rung did not exist. (`model: haiku` does not fail: it is remapped to
+  `us-gov.anthropic.claude-sonnet-5` and resolves to Sonnet anyway. It just made the
+  instruction mean something other than it said.) `infrastructure/agents/Agent_Policy.md`
+  for the seat policy; `~/dev/DispatchOpenCode/bin/delegate where` for what the gateway
+  actually serves.
 * **Demand structure that survives merging:** a finding per line, each marked
   **CONFIRMED** or **UNCERTAIN**, each with its evidence (a path, a defName, a URL).
   Unmarked confidence is the thing that makes contradictions unresolvable later.
