@@ -571,7 +571,7 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 // Reflection into the BUILT CreatureBehaviors assembly: the dunes engine
                 // cannot reference it, so this is what keeps the two formulas one.
                 string dll = System.IO.Path.Combine(FindModsRoot(), "CreatureBehaviors", "Assemblies", "RimMandrake.CreatureBehaviors.dll");
-                var asm = System.Reflection.Assembly.LoadFrom(dll);
+                var asm = System.Reflection.Assembly.UnsafeLoadFrom(dll);   // not LoadFrom: from an ext4 clone the path is \\wsl.localhost, a "remote source" LoadFrom refuses
                 var geo = asm.GetType("RimMandrake.CreatureBehaviors.RM_MapComponent_PinnedSun").GetMethod("SunGeometry");
                 float[][] tiles = { new[] { 20f, -30f }, new[] { -40f, 10f }, new[] { 5f, 80f }, new[] { -60f, -120f }, new[] { 0f, 45f } };
                 foreach (float[] t in tiles)
