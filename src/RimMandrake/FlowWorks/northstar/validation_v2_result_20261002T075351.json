@@ -1,0 +1,128 @@
+{
+ "script": "validation_v2",
+ "mode": "live",
+ "faults": [],
+ "started": "2026-10-02T07:53:23",
+ "wall_s": 28.4,
+ "ticks_spent": 0,
+ "fresh_map": {
+  "menu": true,
+  "start": true,
+  "programState": "Playing",
+  "wall_s": 6.6
+ },
+ "calls": 139,
+ "aborted": "site readback",
+ "steps": [
+  {
+   "step": "L_preflight",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 17.83,
+   "calls": 54,
+   "error": null
+  },
+  {
+   "step": "SITE_paint",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 3.85,
+   "calls": 77,
+   "error": "Abort: site readback"
+  }
+ ],
+ "rows": [
+  {
+   "id": "L0_loaded_paused",
+   "status": "PASS",
+   "cls": "",
+   "detail": "programState Playing, ticksGame 1 -> 1 over 1 s"
+  },
+  {
+   "id": "L0_map_250",
+   "status": "PASS",
+   "cls": "",
+   "detail": "map 250x250 biome IceSheet"
+  },
+  {
+   "id": "L1_log_clean",
+   "status": "PASS",
+   "cls": "",
+   "detail": "no FlowWorks error in 14 warn+ entries (base seq 31)"
+  },
+  {
+   "id": "L2_assembly_identity",
+   "status": "PASS",
+   "cls": "",
+   "detail": "loaded C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll sha 571e6eb55f04 mvidMatchesFile True; repo sha 571e6eb55f04"
+  },
+  {
+   "id": "L3_defs_live",
+   "status": "PASS",
+   "cls": "",
+   "detail": "live pathCost {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300} (want {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300})"
+  },
+  {
+   "id": "L4_settings_default",
+   "status": "PASS",
+   "cls": "",
+   "detail": "43 settings read, all shipped defaults"
+  },
+  {
+   "id": "L5_site_pristine",
+   "status": "PASS",
+   "cls": "",
+   "detail": "excavated 0 bodies 0 superdeep 0 activeFluidRaw None"
+  },
+  {
+   "id": "E1a_cadence_shipped",
+   "status": "PASS",
+   "cls": "",
+   "detail": "pulseIntervalTicks 250, nextPulseTick 251 at tick 1"
+  },
+  {
+   "id": "L5_dry_weather",
+   "status": "PASS",
+   "cls": "",
+   "detail": "weather Clear rainRate 0.0"
+  },
+  {
+   "id": "SITE0_no_pawn_in_plots",
+   "status": "PASS",
+   "cls": "",
+   "detail": "3 pawns, none in 36 plot rects"
+  },
+  {
+   "id": "SITE1_painted_readback",
+   "status": "FAIL",
+   "cls": "SITE",
+   "detail": "[\"E2_east_A (18, 60) not fresh Soil: {'d': 0, 'f': 0, 'isSource': False, 'terrain': 'ThinIce'}\", \"E2_east_A (19, 60) not fresh Soil: {'d': 0, 'f': 0, 'isSource': False, 'terrain': 'ThinIce'}\", \"E2_east_B (19, 63) not fresh Soil: {'d': 0, 'f': 0, 'isSource': False, 'terrain': 'ThinIce'}\"]"
+  },
+  {
+   "id": "ABORT",
+   "status": "FAIL",
+   "cls": "HARNESS",
+   "detail": "site readback"
+  },
+  {
+   "id": "Z_settings_restored",
+   "status": "PASS",
+   "cls": "",
+   "detail": "0 touched settings back to shipped defaults"
+  }
+ ],
+ "plan_budget": {
+  "v2_target_ticks": "1,000-2,000 (plan section 10, with flowworks_pulse)",
+  "v2_without_pulse_tool": "3,000-7,300",
+  "old_suite": 112921
+ },
+ "summary": {
+  "PASS": 11,
+  "FAIL": 2,
+  "UNMEASURED": 0,
+  "UNCOVERED": 0,
+  "UNBUILT": 0,
+  "SKIP": 0
+ },
+ "green": false
+}
