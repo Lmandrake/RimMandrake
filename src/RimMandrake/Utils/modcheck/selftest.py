@@ -481,10 +481,17 @@ def t_ensure_playing_map():
     check("runner: playing map left alone", runner.ensure_playing_map(_client=C("Playing"),
           _starter=lambda: (_ for _ in ()).throw(AssertionError("started"))) == "playing")
     class R: returncode = 0; stdout = ""; stderr = ""
-    check("runner: no map -> starter runs", runner.ensure_playing_map(_client=C("Entry"), _starter=lambda: R()) == "started")
+    ok_gate = lambda: {"ok": True, "problems": []}   # noqa: E731
+    check("runner: no map -> starter runs", runner.ensure_playing_map(_client=C("Entry"), _starter=lambda: R(), _gate=ok_gate) == "started")
+    try:
+        runner.ensure_playing_map(_client=C("Entry"), _gate=lambda: {"ok": False, "problems": ["1 missing RimMandrake type(s): X"]},
+                                  _starter=lambda: (_ for _ in ()).throw(AssertionError("started a map on a broken load")))
+        check("runner: launch gate refuses to start a map when RimMandrake types are missing", False)
+    except RuntimeError as e:
+        check("runner: launch gate refuses to start a map when RimMandrake types are missing", "launch gate" in str(e))
     R.returncode = 1
     try:
-        runner.ensure_playing_map(_client=C("Entry"), _starter=lambda: R())
+        runner.ensure_playing_map(_client=C("Entry"), _starter=lambda: R(), _gate=ok_gate)
         check("runner: failed starter raises", False)
     except RuntimeError:
         check("runner: failed starter raises", True)

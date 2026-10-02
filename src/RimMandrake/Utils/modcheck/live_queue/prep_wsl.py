@@ -18,6 +18,19 @@ sys.path.insert(0, _HERE)
 from common import ROOT, UTILS   # noqa: E402
 
 
+BIOMES_PID = "mandrake.rm.biomes"
+
+
+def folded_mods():
+    """Suite mods that deploy_custom_mods folds into the composed Biomes mod (--mod refuses them)."""
+    sys.path.insert(0, UTILS)
+    try:
+        import deploy_custom_mods as d
+        return set(d.folded())
+    except Exception:                                           # noqa: BLE001
+        return set()
+
+
 def game_running():
     try:
         out = subprocess.run(["tasklist.exe", "/FI", "IMAGENAME eq RimWorldWin64.exe"], capture_output=True,
@@ -37,8 +50,9 @@ def main(argv):
         print("restored the full mod list (modlist_swap --restore --apply)")
         return 0
     pids = {}
+    folded = folded_mods()
     for m in mods:
-        pids[m] = runner.mod_package_id(runner.find_mod_dir(m))
+        pids[m] = BIOMES_PID if m in folded else runner.mod_package_id(runner.find_mod_dir(m))
     print("suite mods (%d): %s" % (len(mods), ", ".join("%s=%s" % kv for kv in sorted(pids.items()))))
     if not apply_:
         print("plan only; --apply swaps to MINIMAL, deploys these, composes them into ModsConfig")
@@ -51,8 +65,16 @@ def main(argv):
         print("REFUSED: RimWorld is running; quit it first (the deploy and ModsConfig both need it down)")
         return 2
     runner.swap_to_test_list()
+    done_compose = set()
     for m in mods:
-        r = subprocess.run(["python3", os.path.join(UTILS, "deploy_custom_mods.py"), "--mod", m, "--apply"],
+        if m in folded:      # folded into the composed Biomes mod: --mod refuses; compose once instead
+            if BIOMES_PID in done_compose:
+                continue
+            argv = ["--compose", "biomes", "--apply"]
+            done_compose.add(BIOMES_PID)
+        else:
+            argv = ["--mod", m, "--apply"]
+        r = subprocess.run(["python3", os.path.join(UTILS, "deploy_custom_mods.py")] + argv,
                            cwd=ROOT, capture_output=True, text=True)
         if r.returncode != 0:
             print("deploy %s FAILED: %s" % (m, (r.stdout + r.stderr).strip()[-400:]))
@@ -60,7 +82,7 @@ def main(argv):
             print("full list restored after the failed deploy")
             return 1
         print("deployed %s" % m)
-    added = runner.compose_test_list(list(pids.values()))
+    added = runner.compose_test_list(sorted(set(pids.values())))
     print("composed into ModsConfig: %d added (%d already present)" % (len(added), len(pids) - len(added)))
     print("next: launch through Steam -- powershell.exe -NoProfile -Command \"Start-Process 'steam://rungameid/294100'\"")
     return 0

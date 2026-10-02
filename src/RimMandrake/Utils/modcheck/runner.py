@@ -61,7 +61,7 @@ def py_cmd(script, *args):
     return ["python3", script] + [str(a) for a in args]
 
 
-def ensure_playing_map(dry_run=False, _client=None, _starter=None):
+def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None):
     """If the bridge reports no Playing map, run the existing quicktest-world starter
     (`bridgetools/prove_quicktest_world.py`, exit 0 = Playing with a world) under THIS interpreter. The runner
     used to assume a map already existed (MEASURED 2026-10-01). Returns "playing" | "started" | "dry-run".
@@ -84,6 +84,11 @@ def ensure_playing_map(dry_run=False, _client=None, _starter=None):
                            % (type(e).__name__, e))
     if state == "Playing":
         return "playing"
+    # Never start a map on top of a broken load: our own C# types missing => null thingClass => 'Error while generating map'.
+    import launch_gate  # noqa: E402
+    gate = _gate() if _gate else launch_gate.check_player_log()
+    if not gate["ok"]:
+        raise RuntimeError("launch gate REFUSES to start a map: %s" % "; ".join(gate["problems"]))
     starter = _starter or (lambda: subprocess.run([sys.executable, QUICKTEST_STARTER], cwd=ROOT,
                                                   capture_output=True, text=True))
     r = starter()

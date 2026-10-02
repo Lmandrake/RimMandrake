@@ -47,6 +47,9 @@ def fake_world():
 def body(s, job):
     import helpers as H
     from watch import Watch
+    if not job.dry_run:        # a freshly launched game sits at the main menu: world_tile_export needs a world (J6, 2026-10-01)
+        import runner
+        job.note("map", runner.ensure_playing_map())
     tmpdir = os.environ.get("TEMP") or tempfile.gettempdir()     # python.exe: the Windows %TEMP% the game can write
     path = os.path.join(tmpdir, "lq_tiles.csv")
     r = call(s, "jawa/world_tile_export", path=path)
