@@ -763,23 +763,22 @@ a duplicate, write a pointer instead.
 
 The laptop's `chore(sync): laptop` sweep commits whatever is in progress under a generic message — if the message matters, commit each unit the moment it lands (2026-09-15).
 
-🔑 **Publish with `./publish`, from the shared tree or any worktree — no checkout, no
-rebase, no merge** (2026-10-01, `design/RimMandrake/git_workflow_fix_2026-10-01.md`):
+🔑 **Publish with `./publish` from your OWN ext4 clone** — `/home/mandrake/rm/<seat>`, or a pool
+slot under `/home/mandrake/rm/pool/<seat>/` (2026-10-02,
+`design/RimMandrake/git_workflow_plan_2026-10-01.md` §2.6). It is plain git, wrapped:
 
 ```
-./publish -m "subject" path/one path/two     # those files -> one commit on origin/main
-./publish --commit <sha>                     # an existing local commit (skips if already upstream)
-./publish --sync                             # every local-only commit, then --catchup
-./publish --catchup [--dry-run]              # move this tree to origin/main, keeping all edits
-./publish --worktrees [--apply]              # remove clean, fully-published worktrees
+./publish -m "subject" path/one path/two     # commit those paths, rebase on origin, push, PUBLISHED <sha>
+./publish                                    # push local commits already made
 ```
 
-It builds the commit in a private temp index against a fresh origin/main, 3-way merges a
-path upstream also changed (refuses on a real overlap, pushing nothing), unions ledger
-shards by line, rebuilds and retries on a push race, and prints **`PUBLISHED <sha>`** —
-pass THAT to `rimflow close --sha`, never local HEAD. A subagent needs **no worktree to
-publish**; give one a worktree only to build or merge, under `/home/mandrake/wt` (ext4),
-never `/tmp` (tmpfs, filled to 100 % by 4 GB checkouts) — and it still lands with `./publish`.
+`git commit -- <paths>` + `git pull --rebase --autostash origin main` + push (`HEAD:main` from a
+seat clone, `submit/<seat>/<branch>` from a pool slot), up to 8 retries on non-ff, and a
+fetch + `merge-base --is-ancestor` check after any ambiguous push. A rebase conflict is aborted
+and named; the commit stays on HEAD for you to resolve in a tree only you write. It **refuses in
+`/mnt/d/Luke/dev/RimMandrake`**, which becomes a read-only mirror (`./mirror sync`). The old
+temp-index route and `--catchup`/`--sync`/`--commit`/`--worktrees` are deleted, and
+`shared_sync.py` only prints its retirement. Pass the printed sha to `rimflow close --sha`.
 
 Explicit paths, never `git add -A`/`.`/`-a` (hook-enforced). Never `--force`. Never a file
 over ~50 MB.
@@ -790,25 +789,12 @@ over ~50 MB.
 ⚠️ The hook is `PreToolUse`, so it refuses a **compound** command whole: if you chain a
 file write to a commit, the write never happens either. Keep writes and commits separate.
 
-🔴 **No real merge in the shared tree** (owner, 2026-09-25; hook-enforced by
-`block_shared_tree_merge.py`). This tree is never clean, so `pull --rebase` and
-`reset --keep` refuse and a bare `git pull` merges; it moves forward only with
-`./publish --catchup` (or `--sync`; `shared_sync.py` is now a wrapper for it), which updates
-upstream-changed paths one by one, merges into a file you are editing only when clean, never
-touches untracked files, and moves HEAD by compare-and-swap so a peer committing mid-run
-stops it instead of losing that commit. Linked worktrees are exempt.
+🔴 **No real merge in the shared `/mnt/d` tree** (owner, 2026-09-25; hook-enforced by
+`block_shared_tree_merge.py`) — it is retiring to a writer-free mirror; work in an ext4 clone.
 
 ⚠️ **An empty `git log origin/main..HEAD` is not proof your commit is published** (a peer
 commit was once dropped exactly that way, 2026-09-26). The proof is
 `git merge-base --is-ancestor <sha> origin/main`, which `./publish` runs itself.
-
-🔴 **When the shared tree is behind origin and won't sync, publish from a SPARSE private worktree** (2026-10-01).
-Peers' dirty files can block `shared_sync.py` for days. A full `git worktree add` then fails with write errors
-on `/mnt/d`, so use `git worktree add --no-checkout --detach <wt> origin/main; git sparse-checkout set --no-cone <dirs>; git checkout`.
-Read docs from `git show origin/main:<path>`, never from the stale disk. ⚠️ The artpipe daemon reads the SHARED
-tree's `infrastructure/artpipe/pending/`, so jobs committed only in a worktree never generate: copy them there too.
-⚠️ A worktree commit can fail on the health publisher's `index.lock`, and `merge-base --is-ancestor HEAD origin/main`
-still passes because HEAD is the base. Check `git log -1 --format=%s` first.
 
 ⚠️ **A REFUSED merge is not harmless**: git's internal restore_state() stashes, hard-resets
 and re-applies, and if a peer holds `index.lock` the re-apply fails — that erased 215 files'
@@ -840,9 +826,8 @@ so every `prune`/`list` re-dirties 5 tracked artifacts. Commit them and the reba
 `events.jsonl` is frozen history nothing appends to, and every new event lands in
 `infrastructure/state/ledger/events/<SEAT>.jsonl`, so BENCH and FOUNDRY can never rebase-conflict
 in one ledger file again. **Two windows of the SAME seat still share one shard**; publish it
-with `./publish -m "…" infrastructure/state/ledger/events/<SEAT>.jsonl`, which unions it with
-origin's copy by line (upstream's lines, then yours it lacks), so no hand resolution is
-needed. ⛔ **Never resolve a shard with `checkout --ours/--theirs`:** that silently discards a
+with `./publish -m "…" infrastructure/state/ledger/events/<SEAT>.jsonl`; a rebase conflict on it
+is a union of lines (upstream's, then yours it lacks), never a pick of one side. ⛔ **Never resolve a shard with `checkout --ours/--theirs`:** that silently discards a
 concurrent window's events. Regenerate the two derived queue views with
 `rimflow render -- --overwrite-queues` — that flag belongs to `render.py`, must come **after
 `--`**, and `reindex` does not accept it; do not publish a hand-merged queue view.
