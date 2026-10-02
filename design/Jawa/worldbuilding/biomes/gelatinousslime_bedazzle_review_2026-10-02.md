@@ -1,4 +1,4 @@
-# The Gelatinous Slime: bedazzle review (grandfathered sitting, turn 1 drafted)
+# The Gelatinous Slime: bedazzle review (grandfathered sitting, turn 1 ruled and ticketed)
 
 Program: `BEDAZZLE_TOP_SHAPE_PROGRAM_1`, track (a), worst-first, sitting 11. Item to be filed by the
 parent (`GELATINOUSSLIME_SCORING_SITTING_1` shape).
@@ -569,3 +569,41 @@ own rules ban**; and that the gene seeker, the hazard and the giant are the best
   the same last free rite.
 
 Held off the card (in the doc only): the last feeding (§3, a giant alternative).
+
+## 8. Turn 1 rulings (2026-10-02) and ticket-out
+
+Card asked 2026-10-02 ~14:25 PDT. Item 1 decision taken by question card (seat BENCH). Items 2, 3 and 4 the owner
+answered in typed words, quoted verbatim below; **none of the pitched options on 2, 3 or 4 was chosen**, and each
+typed answer replaces them.
+
+| Card item | Ruling | Ticket |
+|---|---|---|
+| 1. Build first | **Land what was already decided.** Decision taken by question card. §4 row 0 as the card listed it: the ruled creatures built in the free mod (the gappo family: the existing grazer moved to `RM_` with its finished art, plus a lesser and a greater; the dwommo, a gas-float flier; the glurro, iron-crusted, milked and rendered for a slime-resistance salve; the fubbum, the one hunter of the little herds); real art for the whole biome in place of the vanilla stand-ins; ordinary rain stripped in the campaign (both tiers); the 19 Star Wars gene strings moved to the campaign layer; switches for the hazard, farm conversion and the wanderers; the slime pit renders toxic food safe; the ruined farms. "Land it and add the giant's story together" and "new ideas first" are **NOT CHOSEN**. Not in this batch (not on the card's list): slime-in-the-eyes, the Rot-derived antidote, the Helix stocking blank seekers. | `GELATINOUSSLIME_GAPPO_FAMILY_1`, `GELATINOUSSLIME_DWOMMO_FLIER_1`, `GELATINOUSSLIME_GLURRO_SALVE_1`, `GELATINOUSSLIME_FUBBUM_HUNTER_1`, `GELATINOUSSLIME_KIT_ART_1`, `GELATINOUSSLIME_RAIN_STRIP_1`, `GELATINOUSSLIME_GENE_TEXT_TIER_1`, `GELATINOUSSLIME_SETTINGS_SWITCHES_1`, `GELATINOUSSLIME_PIT_SOLVENT_1`, `GELATINOUSSLIME_FARM_RUINS_1`; amended: `BIOME_TIER_CLEANUP_1` (the donor-only label, description and fish ops) |
+| 2. The giant | Owner, typed: *"Grab a chunk of the giant and it becomes a terrible bomb like weapon to use on someone. Bioweapon after all. Can use it to open one of the vault dungeons blocked by assailant seals."* The unfiled hull, the cook's giant and the return to sender are **NOT CHOSEN**. A torn-off chunk of the titanoslime is a carried, thrown or planted bioweapon that drenches its radius into late-stage slimification; off the body it shrinks, so it never stockpiles (ban 6). ⚠ It brushes sheet ban 7 (*no re-arming*): the body still never makes weapons; the clan makes one of a piece of it. Recorded as his ask. **The vaults:** searched; the six Forsaken vaults exist (`VAULT_DUNGEON_BUILD_1`, `VAULT_THAW_QUEST_FAMILY_1`), and V5 sits in **the Slough, the Slime's own largest patch** (a type ② flesh-breached vault, landmark `RUT_Slough_GelatinousBreach`). **No "Assailant seal" exists** anywhere in `src/` or `design/`: the item proposes one (an Assailant-flesh plug on a vault door that a chunk dissolves), owner to confirm which vault and whether it is the only way in. | `GELATINOUSSLIME_TITAN_CHUNK_BOMB_1` (free), `GELATINOUSSLIME_VAULT_SEAL_BREACH_1` (campaign; owner to confirm the seal) |
+| 3. New marks | Owner, typed: *"An ability to resurrect someone from the last time they touched the slime. Requires expensive helix tech."* (followed by his question, *"But are they the same?"*, which is the design: the identity gap is deliberate). The landing, two hammers and the tamper-proof seal are **NOT CHOSEN**. The body files everyone it touches; a procedure grows a dead person back **as of their last touch** (skills, relations, memories as of then). "Helix tech" is the **Ascendant Ladder** (`RUT_Tree_AscendantLadder`, the Helix's faction-locked tree, bought by trade and quests; top rows `Archogenetics`, `Bioregeneration`). Tier: snapshot and procedure in the free mod behind a project needing vanilla `Archogenetics`; in the campaign that project sits on the Ladder. A second tech for mark 2; marks 6 and 7 stay open. | `GELATINOUSSLIME_ARCHIVE_RESURRECTION_1` (free machinery, campaign gate) |
+| 4. Rite | Owner, typed: *"Pomp's rite. The joining water. The uncomfortable truth that we are all connected not so unlike the slime. Separate for now. Everyone briefly joins hands holding some slime. Can reduce permanent hediffs on one person to weak hediffs on several instead."* The walked-off reading (Ta'Baa), the moving grave and all accounts come due (Mob'Unloo) are **NOT CHOSEN**. **God: Pomp (as typed; unresolved — likely Oomo, owner to confirm).** No god, alias or figure named Pomp exists (searched `design/`, `src/`, `canon.yml`); Oomo, *"all the body's waters"*, is the likely voice-typed reading and holds one free slot (he would reach the cap of five). *"Separate for now"* may instead mean apart from the nine. ⚠ The hediff-spreading is a power, against the register's *cohesion, never a power*; it is his explicit ask, flagged on the item, not altered. Register: B16 row added (counted toward no god's cap until he confirms). No seed row existed for the Slime in the register (the scores doc's Ozzik/Oomo seed was never entered). | `GELATINOUSSLIME_JOINING_WATER_RITE_1` (campaign) |
+
+FOUNDRY items, each `--caused-by GELATINOUSSLIME_SCORING_SITTING_1`:
+
+| slate row | item | tier |
+|---:|---|---|
+| 0a | `GELATINOUSSLIME_GAPPO_FAMILY_1` (grazer → `RM_` gappo with `v2` art, lesser and greater; `RUT_SlimeGrazer` deleted; the "deliberately thin" header corrected) | free |
+| 0a | `GELATINOUSSLIME_DWOMMO_FLIER_1` (real flight) | free |
+| 0a | `GELATINOUSSLIME_GLURRO_SALVE_1` (milked salve slows the reading; rendered concentrate) | free |
+| 0a | `GELATINOUSSLIME_FUBBUM_HUNTER_1` | free |
+| 0a | `GELATINOUSSLIME_KIT_ART_1` (the tortoise, grass, bush, dandelion, stonecutter, stove, persona-core stand-ins replaced) | free |
+| 0b | `GELATINOUSSLIME_RAIN_STRIP_1` (`Rain`/`FoggyRain` off `RM_GelatinousSlime` and the twin; shrine denial retargeted) | campaign |
+| 0b | `GELATINOUSSLIME_GENE_TEXT_TIER_1` (57 GeneDefs, 17 hediffs, 8 thoughts to Utinni) | free → campaign |
+| 0b | `GELATINOUSSLIME_SETTINGS_SWITCHES_1` (hazard, conversion, visitors: on/off and a slider each) | free |
+| 0b | `BIOME_TIER_CLEANUP_1`, 2026-10-02 Gelatinous Slime addition | campaign |
+| 0c | `GELATINOUSSLIME_PIT_SOLVENT_1` (toxic and indigestible inputs made safe; the Rot's finest in the campaign) | free + campaign recipe |
+| 0c | `GELATINOUSSLIME_FARM_RUINS_1` | free |
+| 1 | `GELATINOUSSLIME_TITAN_CHUNK_BOMB_1` | free |
+| 1 | `GELATINOUSSLIME_VAULT_SEAL_BREACH_1` (needs the owner's word on the seal before build) | campaign |
+| new | `GELATINOUSSLIME_ARCHIVE_RESURRECTION_1` | free machinery, campaign gate |
+| 4 | `GELATINOUSSLIME_JOINING_WATER_RITE_1` (god to confirm) | campaign |
+| 5 | art: `infrastructure/artpipe/art_lists/gelatinousslime_turn1_2026-10-02.csv` (20 jobs: the gelatid, four flora, compressor, pit, block, raw slime, antidote, both seekers, lesser and greater gappo, dwommo, glurro, salve, fubbum, the giant's chunk, the rite's hand-print ring). Searched first (`artpipe_state.py find`, probe `korrum` 12 hits): the grazer has `done/rutslimegrazer_v1_*`, `v2_*` (wired by the gappo item, not regenerated); the titanoslime has `done/rmtitanoslime_v1_*`; every other subject 0 hits. | |
+
+Sequencing: row 0 first (`GELATINOUS_SLIME_FIRST_SCRIPT_1` is written against row 0's state); the gene tier move
+before any new gene work; the glurro before the pit's concentrate recipe; the chunk before the vault seal; the
+resurrection after the owner sees its snapshot field list; the rite after he names its god.

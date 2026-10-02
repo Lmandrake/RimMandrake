@@ -257,9 +257,23 @@ of debt and trade* (Mob'Unloo). The Open Water (Oomo) was not chosen; Oomo keeps
 Mob'Unloo carries five found rites (the Blind Offering, B2; the Storm's Receipt, B7, pitched; the Cold Ledger,
 B7, ruled-kept; Mob'Unloo's Price, B14; the Refused Toll, B15): at the cap. B6's "pool rites" row resolves to this.
 
-**Count (by hand from the tables above, not an instrument): 111 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2 + B13 1 + B14 2 + B15 1. **102 are the Salvation's** (B1 to B5, B7 to B15;
-the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 100 distinct). Sh'kaar
+### B16. Found rites ruled at the Gelatinous Slime sitting (RULED; god unresolved)
+
+Owner, typed 2026-10-02: *"Pomp's rite. The joining water. The uncomfortable truth that we are all connected not so
+unlike the slime. Separate for now. Everyone briefly joins hands holding some slime. Can reduce permanent hediffs on
+one person to weak hediffs on several instead."* None of the three pitched rites was chosen. **"Pomp" is not one of
+the nine gods**, and no god, alias or figure of that name exists in `design/`, `src/` or `canon.yml` (searched
+2026-10-02). The likely reading is **Oomo** (*"all the body's waters"*, *"the passing of waters between each
+other"*), by voice-typing; *"separate for now"* may instead mean the rite stands apart from the nine. **Owner to
+confirm; not assigned to any god's cap until he does.** If Oomo, he reaches five, the cap.
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Joining Water | Pomp (as typed; unresolved — likely Oomo, owner to confirm) | — (unruled) | everyone briefly joins hands, each holding some slime; one person's permanent hediffs are reduced to weak hediffs spread over several participants (the owner's explicit ask; it is a power, against the cohesion-only ruling, flagged on the item) | the Slime (site to draft at build) | RULED (owner, 2026-10-02, typed); build `GELATINOUSSLIME_JOINING_WATER_RITE_1` | `design/Jawa/worldbuilding/biomes/gelatinousslime_bedazzle_review_2026-10-02.md` §8 |
+
+**Count (by hand from the tables above, not an instrument): 112 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2 + B13 1 + B14 2 + B15 1 + B16 1. **102 are the Salvation's** (B1 to B5, B7 to B15;
+the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 100 distinct); B16's god is unresolved, so it is counted in neither until the owner confirms. Sh'kaar
 now carries four found rites (the Snuffing, the Anvil Gift, the Shade Tithe, the Felled Noon): one under the cap.
 
 **Per-god cap: five found rites** (decision taken by question card 2026-10-02 09:23 PDT, raising it from
