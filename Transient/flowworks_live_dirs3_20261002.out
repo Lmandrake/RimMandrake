@@ -1,0 +1,76 @@
+map_info keys {'sizeX': 250, 'sizeZ': 250, 'size': None}
+terrain True {'success': True, 'message': 'Applied 2/2 op(s): 2712 cell(s) changed, 0 already correct.', 'layer': 'top', 'opsRequested': 2, 'opsApplied': 2, 'cellsRequested': 2712, 'cellsChanged': 2712, 'cellsAlre
+body A {"id": 3, "limitless": true, "stock": 2760.0, "capacity": 2760.0, "cellCount": 552, "recededCount": 0, "activeCellCount": 552, "truncated": false}
+pulse0 {('E', 3): [0, 0, 0], ('N', 3): [0, 0, 0], ('S', 3): [0, 0, 0], ('E', 6): [0, 0, 0, 0, 0, 0], ('N', 6): [0, 0, 0, 0, 0, 0], ('S', 6): [0, 0, 0, 0, 0, 0]}
+('E', 3) MISMATCH
+  p1  live [0, 0, 1]  oracle [0, 0, 0] <<<
+  p2  live [0, 1, 1]  oracle [0, 0, 0] <<<
+  p3  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p4  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p5  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p6  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p7  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p8  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p9  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p10 live [1, 1, 1]  oracle [0, 0, 0] <<<
+('N', 3) MISMATCH
+  p1  live [0, 0, 1]  oracle [0, 0, 0] <<<
+  p2  live [0, 1, 1]  oracle [0, 0, 0] <<<
+  p3  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p4  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p5  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p6  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p7  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p8  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p9  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p10 live [1, 1, 1]  oracle [0, 0, 0] <<<
+('S', 3) MISMATCH
+  p1  live [0, 0, 1]  oracle [0, 0, 0] <<<
+  p2  live [0, 1, 1]  oracle [0, 0, 0] <<<
+  p3  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p4  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p5  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p6  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p7  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p8  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p9  live [1, 1, 1]  oracle [0, 0, 0] <<<
+  p10 live [1, 1, 1]  oracle [0, 0, 0] <<<
+('E', 6) MISMATCH
+  p1  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p2  live [0, 0, 0, 0, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p3  live [0, 0, 0, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p4  live [0, 0, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p5  live [0, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p6  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p7  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p8  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p9  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p10 live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+('N', 6) MISMATCH
+  p1  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p2  live [0, 0, 0, 0, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p3  live [0, 0, 0, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p4  live [0, 0, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p5  live [0, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p6  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p7  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p8  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p9  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p10 live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+('S', 6) MISMATCH
+  p1  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p2  live [0, 0, 0, 0, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p3  live [0, 0, 0, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p4  live [0, 0, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p5  live [0, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p6  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p7  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p8  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p9  live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+  p10 live [1, 1, 1, 1, 1, 1]  oracle [0, 0, 0, 0, 0, 0] <<<
+fill-complete pulse: {'E3': 3, 'N3': 3, 'S3': 3, 'E6': 6, 'N6': 6, 'S6': 6}
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\flowworks_live_dirs3_20261002.py", line 67, in <module>
+    print("len", n, "identical across dirs:", len({json.dumps(live[(d, n)]) for d in "ENWS"}) == 1)
+                                                              ~~~~^^^^^^^^
+KeyError: ('W', 3)

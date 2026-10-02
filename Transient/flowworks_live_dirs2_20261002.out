@@ -1,0 +1,115 @@
+map_info keys {'sizeX': 250, 'sizeZ': 250, 'size': None}
+terrain False {'success': False, 'message': 'Applied 4/4 op(s): 612 cell(s) changed, 1836 already correct, WARNING 22 did not read back.', 'layer': 'top', 'opsRequested': 4, 'opsApplied': 4, 'cellsRequested': 2448,
+DRIVE FAIL (12, 117) {'success': True, 'cell': {'x': 12, 'z': 117}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_4be94673cda94544bc6df074c16ebbef', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Status
+DRIVE FAIL (13, 117) {'success': True, 'cell': {'x': 13, 'z': 117}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_0744d803b6f64b16bfbb0108a48b5a1a', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Status
+DRIVE FAIL (14, 117) {'success': True, 'cell': {'x': 14, 'z': 117}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_0e8cab616464494292c5a3ebce343b20', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Status
+DRIVE FAIL (237, 117) {'success': True, 'cell': {'x': 237, 'z': 117}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_e8714a1f83aa48ec85016a10e39a13ae', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Statu
+DRIVE FAIL (236, 117) {'success': True, 'cell': {'x': 236, 'z': 117}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_6f6b3bf2f59c4a4da73987e64f304832', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Statu
+DRIVE FAIL (235, 117) {'success': True, 'cell': {'x': 235, 'z': 117}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_deae3e8ca77f4382ad3421842b274816', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Statu
+DRIVE FAIL (12, 123) {'success': True, 'cell': {'x': 12, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_ebcfa7e8ebd2479d886dfa825f8b412c', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Status
+DRIVE FAIL (13, 123) {'success': True, 'cell': {'x': 13, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_b899e463c3b747619f9621132ea0a7c7', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Status
+DRIVE FAIL (14, 123) {'success': True, 'cell': {'x': 14, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_f8deaac305c04bd9858d22b96cdc20e3', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Status
+DRIVE FAIL (15, 123) {'success': True, 'cell': {'x': 15, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_b7433093f7fd46eda50807ff42ac9bc8', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Status
+DRIVE FAIL (16, 123) {'success': True, 'cell': {'x': 16, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_c2f430f2f0254302927e21b87340cc1d', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Status
+DRIVE FAIL (17, 123) {'success': True, 'cell': {'x': 17, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_8a988672239e45bc98d02750f1a4cbc3', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Status
+DRIVE FAIL (237, 123) {'success': True, 'cell': {'x': 237, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_a236472d378147ffb8398f629c062a47', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Statu
+DRIVE FAIL (236, 123) {'success': True, 'cell': {'x': 236, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_be41fb79bd3d4404b6f2e20c65afd1c1', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Statu
+DRIVE FAIL (235, 123) {'success': True, 'cell': {'x': 235, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_84b434a346fb4a6eab1fde1df930c4eb', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Statu
+DRIVE FAIL (234, 123) {'success': True, 'cell': {'x': 234, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_81de15948b9d4777bf1487e7da057580', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Statu
+DRIVE FAIL (233, 123) {'success': True, 'cell': {'x': 233, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_da2ae12e56ee44898286ff079bd05449', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Statu
+DRIVE FAIL (232, 123) {'success': True, 'cell': {'x': 232, 'z': 123}, 'depth': 2, 'fillSet': False, 'fill': 1, 'ticksGame': 1, 'operation': {'OperationId': 'op_c617bf7685594987a141104b0b480989', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive', 'Statu
+body A {"id": 1, "limitless": true, "stock": 720.0, "capacity": 720.0, "cellCount": 144, "recededCount": 0, "activeCellCount": 144, "truncated": false}
+body B {"id": 2, "limitless": true, "stock": 720.0, "capacity": 720.0, "cellCount": 144, "recededCount": 0, "activeCellCount": 144, "truncated": false}
+pulse0 {('E', 3): [1, 1, 1], ('N', 3): [0, 0, 0], ('S', 3): [0, 0, 0], ('W', 3): [1, 1, 1], ('E', 6): [1, 1, 1, 1, 1, 1], ('N', 6): [0, 0, 0, 0, 0, 0], ('S', 6): [0, 0, 0, 0, 0, 0], ('W', 6): [1, 1, 1, 1, 1, 1]}
+('E', 3) MISMATCH
+  p1  live [1, 1, 2]  oracle [0, 0, 1] <<<
+  p2  live [1, 2, 2]  oracle [0, 1, 1] <<<
+  p3  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p4  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p5  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p6  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p7  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p8  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p9  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p10 live [2, 2, 2]  oracle [1, 1, 1] <<<
+('N', 3) MISMATCH
+  p1  live [0, 0, 1]  oracle [0, 0, 1] 
+  p2  live [0, 0, 1]  oracle [0, 1, 1] <<<
+  p3  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p4  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p5  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p6  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p7  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p8  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p9  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p10 live [0, 0, 1]  oracle [1, 1, 1] <<<
+('S', 3) MISMATCH
+  p1  live [0, 0, 1]  oracle [0, 0, 1] 
+  p2  live [0, 0, 1]  oracle [0, 1, 1] <<<
+  p3  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p4  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p5  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p6  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p7  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p8  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p9  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p10 live [0, 0, 1]  oracle [1, 1, 1] <<<
+('W', 3) MISMATCH
+  p1  live [1, 1, 2]  oracle [0, 0, 1] <<<
+  p2  live [1, 2, 2]  oracle [0, 1, 1] <<<
+  p3  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p4  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p5  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p6  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p7  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p8  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p9  live [2, 2, 2]  oracle [1, 1, 1] <<<
+  p10 live [2, 2, 2]  oracle [1, 1, 1] <<<
+('E', 6) MISMATCH
+  p1  live [1, 1, 1, 1, 1, 2]  oracle [0, 0, 0, 0, 0, 1] <<<
+  p2  live [1, 1, 1, 1, 2, 2]  oracle [0, 0, 0, 0, 1, 1] <<<
+  p3  live [1, 1, 1, 2, 2, 2]  oracle [0, 0, 0, 1, 1, 1] <<<
+  p4  live [1, 1, 2, 2, 2, 2]  oracle [0, 0, 1, 1, 1, 1] <<<
+  p5  live [1, 2, 2, 2, 2, 2]  oracle [0, 1, 1, 1, 1, 1] <<<
+  p6  live [2, 2, 2, 2, 2, 2]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p7  live [2, 2, 2, 2, 2, 2]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p8  live [2, 2, 2, 2, 2, 2]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p9  live [2, 2, 2, 2, 2, 2]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p10 live [2, 2, 2, 2, 2, 2]  oracle [1, 1, 1, 1, 1, 1] <<<
+('N', 6) MATCH
+  p1  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 0, 0, 1] 
+  p2  live [0, 0, 0, 0, 1, 1]  oracle [0, 0, 0, 0, 1, 1] 
+  p3  live [0, 0, 0, 1, 1, 1]  oracle [0, 0, 0, 1, 1, 1] 
+  p4  live [0, 0, 1, 1, 1, 1]  oracle [0, 0, 1, 1, 1, 1] 
+  p5  live [0, 1, 1, 1, 1, 1]  oracle [0, 1, 1, 1, 1, 1] 
+  p6  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p7  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p8  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p9  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p10 live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+('S', 6) MATCH
+  p1  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 0, 0, 1] 
+  p2  live [0, 0, 0, 0, 1, 1]  oracle [0, 0, 0, 0, 1, 1] 
+  p3  live [0, 0, 0, 1, 1, 1]  oracle [0, 0, 0, 1, 1, 1] 
+  p4  live [0, 0, 1, 1, 1, 1]  oracle [0, 0, 1, 1, 1, 1] 
+  p5  live [0, 1, 1, 1, 1, 1]  oracle [0, 1, 1, 1, 1, 1] 
+  p6  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p7  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p8  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p9  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p10 live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+('W', 6) MISMATCH
+  p1  live [1, 1, 1, 1, 1, 2]  oracle [0, 0, 0, 0, 0, 1] <<<
+  p2  live [1, 1, 1, 1, 2, 2]  oracle [0, 0, 0, 0, 1, 1] <<<
+  p3  live [1, 1, 1, 2, 2, 2]  oracle [0, 0, 0, 1, 1, 1] <<<
+  p4  live [1, 1, 2, 2, 2, 2]  oracle [0, 0, 1, 1, 1, 1] <<<
+  p5  live [1, 2, 2, 2, 2, 2]  oracle [0, 1, 1, 1, 1, 1] <<<
+  p6  live [2, 2, 2, 2, 2, 2]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p7  live [2, 2, 2, 2, 2, 2]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p8  live [2, 2, 2, 2, 2, 2]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p9  live [2, 2, 2, 2, 2, 2]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p10 live [2, 2, 2, 2, 2, 2]  oracle [1, 1, 1, 1, 1, 1] <<<
+fill-complete pulse: {'E3': None, 'N3': None, 'S3': None, 'W3': None, 'E6': None, 'N6': 6, 'S6': 6, 'W6': None}
+len 3 identical across dirs: False
+len 6 identical across dirs: False
+TOTAL MISMATCH scenes: 6
