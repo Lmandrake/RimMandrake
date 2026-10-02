@@ -1,0 +1,39 @@
+=== J3 19:44:48
+>> J3_bland_tile  (fails when: the map is not current, wildlife remains, no colonist stands on it, or ruins are present)
+== J3_bland_tile
+  ok   a candidate tile has no mutators, roads or rivers
+  ok   colony_found settled the tile for the player
+  ok   map generated with no failed finalize steps
+  ok   the new map is current and on the chosen tile
+  ok   destroy_bulk factionlessAnimals succeeded
+  ok   >=3 colonists stand on the bland map (census isColonist)
+  ok   no wildlife left on the map
+  FAIL no non-player artificial buildings (ruins) on the map  -- 6 ruin things, complete=True
+  ok   helpers.assert_bland passes on the new map
+  ok   2000 idle ticks on the bland map raise no SURPRISE/FATAL
+MEASURED FAIL J3_bland_tile -- 9/10 checks ; failed: no non-player artificial buildings (ruins) on the map
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J3 done exit 1 19:45:34
+=== J4 19:45:34
+>> J4_companion_live  (fails when: a direct-read detector does not fire, or fires without its direct-read evidence)
+== J4_companion_live
+  ok   census consistency: pawn_census and list_pawns name the same living pawns
+  ok   damage: colonist_damaged via damage_log names damageDef Cut
+  ok   damage: the Cut is not ALSO reported by the hediff-inference detector
+  ok   mental: Wander_Sad -> mental_break via pawn_census, isAggro False, SURPRISE not FATAL
+  ok   predator: predator_hunting via pawn_census with preyIsColonist True
+  FAIL incident: benign queue entry seen as incident_queued WARN, and it does NOT abort  -- {'aborted': True, 'seen': [{'tick': 266630, 'detector': 'incident_queued', 'severity': 'WARN', 'summary': 'incident FarmAnimalsWanderIn queued to fire in 39940 ticks'}]}
+  ok   kill: colonist_died carries damage_log_kill among its sources
+MEASURED FAIL J4_companion_live -- 6/7 checks ; failed: incident: benign queue entry seen as incident_queued WARN, and it does NOT abort
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J4 done exit 1 19:46:33
+=== J2 19:46:33
+>> J2_abort_proof  (fails when: a hazard does not abort, aborts on the wrong detector, leaves no sidecar, or a control aborts)
+== J2_abort_proof
+  FAIL control control_quiet: no abort and no SURPRISE/FATAL hit  -- {'aborted': True, 'kind': 'surprise', 'hits': ['modal_open'], 'evidence': ['D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\live_queue\\J2_abort_proof\\control_quiet\\LiveQueue__control_quiet__modal_open__t266690__001.json'], 'screenshots': ['D:\\Luke\\dev\\wt_live2\\Transient\\modcheck\\live_queue\\J
+  ok   hazard hostile_raid: aborts via hostile_pawns with sidecar on disk, game paused
+UNMEASURED J2_abort_proof -- RuntimeError: map_fire started nothing: {'success': True, 'action': 'start', 'cellsTried': 3, 'firesStarted': 0, 'firesExtinguished': 0, 'cellsFailed': 0, 'errors': [], 'errorsTruncated': False, 'note': "3 cells refused - RimWorld's ChanceToStartFireIn gates on flammability and wetness. Not a failure.", 'ticksGame': 266690, 'operation': {'OperationId': 'op_f694820292594ffd9f3768aafdb9ecb1', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-fire', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-02T02:46:58.6727092+00:00', 'CompletedAtUtc': '2026-10-02T02:46:58.7208261+00:00', 'DurationMs': 48, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J2 done exit 2 19:46:59
+=== J1 19:46:59
+>> J1_situational_rerun  (fails when: a suite crashes, FlowWorks is refused, Antiquities' long chain is UNMEASURED by budget, or a chain records a surprise whose detector is the chain's own declared act)
