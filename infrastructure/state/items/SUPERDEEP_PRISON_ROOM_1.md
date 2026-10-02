@@ -8,9 +8,11 @@ Part of the pit collapse (`PIT_SUPERDEEP_COLLAPSE_1` carries the rulings; `desig
 - With a vanilla prisoner bed in it: a **prison room** on vanilla's terms; wardens feed and tend from the lip (no one enters).
 - **Capture down** and **convert down**: jobs done by a warden **adjacent to the lip** ([B-item]); being trapped makes capture easy. Accepted risk: an armed occupant can shoot the adjacent warden.
 - Read Prisoner Realism for the "adequate confinement" shape.
+- Ladder in the room follows owner Q1 (prison door): the warden's own people may climb a lowered ladder, prisoners only in a prison break.
+- Owner Q4 width rule: a creature too wide for its pit is NOT held (`SUPERDEEP_HOLDER_RETIRE_1` step 5), so it is not "trapped" for capture-down and its presence does not make the area a working prison — it walks out.
 
 ## verify
-Bridge: a 3×3 D=4 area reads as one room; adding a prisoner bed sets its role to prison; a downed or trapped hostile is captured by an adjacent warden who never stands on D=4; recruitment interaction works from the lip.
+Bridge: a 3×3 D=4 area reads as one room; adding a prisoner bed sets its role to prison; a downed or trapped hostile is captured by an adjacent warden who never stands on D=4; recruitment interaction works from the lip; a pawn too wide for the pit is not offered capture-down.
 
 ## criteria
 No job in this feature requires a pawn to enter the pit.
@@ -20,3 +22,4 @@ No job in this feature requires a pawn to enter the pit.
 
 ## northstar
 State components: room id/role for the area before and after the bed; warden position never D=4 during capture; prisoner status after.
+**First script must prove (Q1, Q4):** a prisoner held in a 1×1 or wider-than-needed room does not leave with the ladder lowered (outside a break); a prisoner whose BodySize needs W=2 in a 1-wide room does leave (held=false) — the room's confinement follows the width rule.

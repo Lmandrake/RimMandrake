@@ -64,8 +64,9 @@ resolution"; this commission plus his lip-killing ruling closes that.
 ## open questions
 
 - **What counts as a "small creature"** for the sluice — a body-size threshold, and it
-  should be reconciled with the per-depth body-size field ruled the same day in
-  `PIT_SUPERDEEP_COLLAPSE_1` ([J]) so the two do not disagree about what "small" means.
+  should be reconciled with the pit-width hold rule (owner Q4, 2026-10-02:
+  `W = max(1, round(sqrt(BodySize)))`, so "small" = W 1, BodySize < 2.25 — unified model §7 Q4)
+  so the two do not disagree about what "small" means.
 - **Does a grate door block fire spread** the way its stuff implies, given oil is a
   fluid that can be ignited and a grate deliberately passes fluid?
 - Art. Nothing is specified, and rulings 19/20/33 already govern how excavation and

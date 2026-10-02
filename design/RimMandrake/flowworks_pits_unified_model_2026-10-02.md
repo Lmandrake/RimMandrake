@@ -43,7 +43,7 @@ States are from `rimflow show` on 2026-10-02 (items decay; re-check before actin
 | `infrastructure/state/items/FLOWWORKS_BUILD_PROGRAM_1.md` | doing, FOUNDRY | Phases 0-9. Phase 5 and Phase 9 and two Watch-out lines described the pre-collapse pit; corrected in place (§5). |
 | `infrastructure/state/items/NORTH_STAR_PIT_PILOT_1.md` | proposed, BENCH, needs owner | Its spec steps targeted the deleted `Pits.md` walk and the non-existent `src/RimMandrake/Pits/validation.py`. Superseded (§5). |
 | `FLOWWORKS_NORTHSTAR_{TRIAL,SITE_PREP,BASELINE_RUN,GREEN_MINIMAL,GREEN_FULL,SHIP}_1` | proposed | The FlowWorks north-star ladder. Unchanged in shape; the pit bars ride it. GREEN_FULL/TRIAL cite `PITS_STALE_DEPLOY_COLLISION_1` as a blocker, which closed at `bd8d58dbb`. |
-| `FLOWWORKS_CHANNEL_OSCILLATION_1` | open (another helper is on it) | Flow never fills east/north. Everything that needs liquid in a pit waits on it (§6). |
+| `FLOWWORKS_CHANNEL_OSCILLATION_1` | **closed** 2026-10-02 at `ddb473416` (rank-ordered flow; proven live at `639722ff3`) | Flow now fills in every direction, so the liquid items in §6 are unblocked. |
 | `HUTT_SLAVE_PIT_TEST_SITE_1` | proposed, FOUNDRY | Its "oubliette" is a sealed map feature at a Hutt site, **not** the cut oubliette fitting. Under this model it is simply an enclosed superdeep room with no ladder — noted in the item. |
 | `SARLACC_HABITAT_BUILD_1` | doing, blocked | A sarlacc "pit" is a creature's lair, not a FlowWorks pit. Out of scope; not touched. |
 | Closed: `RIMMANDRAKE_PITS_BUILD_1`, `PITCELL_PRISONER_BED_BRIDGE_GAP_1`, `PIT_TRAP_VISUAL_REDESIGN_1`, `MOD_VALIDATION_PIT_PILOT_1`, `PITS_STALE_DEPLOY_COLLISION_1`, `FLOWWORKS_NORTHSTAR_REVALIDATE_1` | terminal | Read for provenance. The 12 pit bars are already rewritten and VALIDATED inside FlowWorks' walk (2026-10-01). |
@@ -60,18 +60,21 @@ does not matter.
 ## 3. The unified model
 
 Every line here is one of his rulings (item `PIT_SUPERDEEP_COLLAPSE_1` unless noted) or is marked
-**DEFAULT** — a gap filled by this pass, reversible, listed in §7.
+**DEFAULT** — a gap filled by this pass, reversible. §7 records his answers to the four open questions.
 
-### 3.1 The primitive — one cell, two numbers, one per-depth field
+### 3.1 The primitive — one cell, two numbers, one fluid identity
 
 - **D** = depth 0-4 (surface, shallow, mid, deep, SUPERDEEP). Set only by digging and filling in.
   We dig down, never build up (LAW 1). `RM_ExcavationDepth` owns it.
-- **F** = fill, `0 ≤ F ≤ D`, of a **FluidDef**. The fluid's identity is held **per liquid body**, not
-  per cell or per map ([F]); the per-map `ActiveFluid` field retires.
-- **Max body size per depth** ([J]): a field on the depth, so a shallow cut cannot hold what a
-  superdeep one can. The same `BodySize` also scales spike damage ([G]) — a deliberate pairing.
-  ⚠️ Since only D=4 holds anything (answer 2), the field matters only at D=4. **DEFAULT: no limit at
-  D=4**, which makes [J] inert in play until he says otherwise — Q4.
+- **F** = fill, `0 ≤ F ≤ D`, of a **FluidDef**. The fluid's identity is held per natural liquid body
+  (`RM_LiquidBody.fluid`) and per excavated cell (a `fluidGrid` beside depth/fill — a pit is not a
+  body record, its components are re-found every pulse) ([F]); the per-map `ActiveFluid` field
+  retires. **Fluids never mix** (Q3): liquid never flows into a wet cell holding a different fluid.
+- **How big a creature a pit holds is decided by the pit's WIDTH** ([J] as answered by Q4: *"The pit
+  has to be as wide as the creature to hold it. Otherwise it gets out."*). Required width
+  `W = max(1, round(sqrt(BodySize)))` (BodySize < 2.25 → 1, < 6.25 → 2, < 12.25 → 3; bands are a
+  proposal for his word, exposed as a Mod Setting); a pawn is held only if a **W×W square of D=4 cells
+  contains its cell**. The same `BodySize` also scales spike damage ([G]) — a deliberate pairing.
 - **LAW 2** (depth reads only movement and liquid) carries **two** stated, narrow exceptions:
   ruling 23 (a D=4 occupant trades fire only with its 8 neighbours — already built, reads the grid)
   and [D] (depth may bound a room). Worded so it is not a precedent for anything else.
@@ -85,11 +88,14 @@ Every line here is one of his rulings (item `PIT_SUPERDEEP_COLLAPSE_1` unless no
 | Depth | Holds a pawn? | Movement |
 |---|---|---|
 | D 1-3 | **No.** Movement cost only. | dry cost rising with depth; **flooded strictly costlier than dry at the same depth** — the depth × fill-tier matrix [E] |
-| D 4 | **Yes, absolutely.** No climb-out, no roll, no skill check. | walking in is allowed (that is how you fall in); walking out is vetoed |
+| D 4 | **Yes, if the pit is as wide as the creature** (§3.1). No climb-out, no roll, no skill check. | walking in is allowed (that is how you fall in); walking out is vetoed for a held pawn |
 
-**The trap rule, as a grid fact (not a container):** a *spawned* pawn on a D=4 cell may not step to
-any cell with lower D, unless (a) a **lowered ladder** stands in its cell, or (b) it leaves through a
-**door/sluice opened from outside**. The pawn stays spawned, standing on terrain — which is what lets
+**The trap rule, as a grid fact (not a container):** a *spawned* pawn on a D=4 cell that the pit is
+wide enough to hold may not step to any cell with lower D, unless (a) a **lowered ladder** stands in
+its cell and it is allowed to use it (§3.4), or (b) it leaves through a **door/sluice opened from
+outside**. A pawn the pit is too narrow for is simply not held: it walks out like any canal, at the
+normal depth movement cost — that is what "otherwise it gets out" means. Width is re-read live, so a
+creature that grows, or a pit whose neighbour cell is filled in, can change the answer. The pawn stays spawned, standing on terrain — which is what lets
 it be in a room, feel temperature, be shot at from its lip, and be captured from above. Seam:
 reachability veto (no job is ever taken that needs leaving) plus a hard per-move floor
 (`RM_SuperdeepTrapUtility`, proposed in spec §3); the patch seam is measured on the Desktop first.
@@ -113,8 +119,8 @@ All are ordinary buildables with a placeworker that requires an excavated cell. 
 
 | Thing | Where | Rule |
 |---|---|---|
-| **Spikes** (`RM_Spikes`, new) | ON a D=4 cell | Per-cell. Fire on **any descent** into that cell, never on walking up to them or moving along a spiked floor between D=4 cells. Massive **Sharp** damage through the normal pipeline (armour applies, no instant death), scaled with `BodySize` [G]. The number is proposed with reasoning for his word — never presented as his. The art must show *some* spike at the pit's viewing angle. |
-| **Ladder** (`RM_Ladder`, exists) | ON a D=4 cell | Lowered = exit open; **raised = exit shut** — "like opening a prison door". Today it is presence-only (build/deconstruct); a raise/lower toggle is owed. Still wears the vanilla spike-trap texture — art owed. |
+| **Spikes** (`RM_Spikes`, new) | ON a D=4 cell, **never shallower** (Q2) | Per-cell. Fire on **any descent** into that cell, never on walking up to them or moving along a spiked floor between D=4 cells. Massive **Sharp** damage through the normal pipeline (armour applies, no instant death), scaled with `BodySize` [G]. The number is proposed with reasoning for his word — never presented as his. The art must show *some* spike at the pit's viewing angle. |
+| **Ladder** (`RM_Ladder`, exists) | ON a D=4 cell | Lowered = exit open; **raised = exit shut** — "like opening a prison door". Lowered, it works like a prison door (Q1): your own people climb freely; trapped enemies and prisoners do not, except during a prison break. Raised, it shuts everyone in, your own people too. Today it is presence-only (build/deconstruct); a raise/lower toggle is owed. Still wears the vanilla spike-trap texture — art owed. |
 | **Cover** (rehoused terrain-mimic + mass trigger) | OVER D=4 cells, multi-cell | Hides the hole; gives way under mass so pawns fall in involuntarily. |
 | **Sluice** (`FLOWWORKS_DOOR_FAMILY_1`) | at a canal mouth | Stuffable door. Passes liquid while closed. Holds small creatures only. Openable from outside or above, never from inside a D=4 cell. Releases a held mech when you choose [C]. |
 | **SecurityGrateDoor** (same item) | at a canal mouth | Stuffable door. Passes liquid while closed. Holds a real prisoner. Same open-from-outside rule. Stuff decides armour and fire survival — a wooden one burns, by design. |
@@ -125,13 +131,17 @@ All are ordinary buildables with a placeworker that requires an excavated cell. 
 Water, oil, poison, tar, slime and the rest are **FluidDefs**, entering by flow (a sluice, a breach,
 rain on an unroofed cut). There is no "water pit", "oiled pit" or "poison pit".
 
+- **Fluids never mix** (Q3). When a channel joins a water pit to an oil pit, the first fluid to reach
+  a dry channel cell claims it and the other front stops there; the two stand side by side until one
+  side drains back to dry, after which the other may advance. Rain adds water only to dry or water
+  cells. Built as one filter in the existing donor picker (`PickDonor`), so it cannot reintroduce the
+  oscillation the rank-ordered flow fixed.
+
 - **F > 0 at D=4 drowns** a non-swimmer — `RM_PitDrowning`, keyed to fill; its `CanSwim` check
   (swimming graphic, not an "aquatic" substring) moves with it.
 - **Oil** stays ignitable; fire on a body with an occupant must know the occupant is there.
   Oil + ignition is a real kill route, separate from the capture route.
 - **Poison**: its toxin is keyed to fill, not to a comp.
-- 🔴 Every liquid-in-a-pit behaviour waits on `FLOWWORKS_CHANNEL_OSCILLATION_1` (east/north canals
-  never fill). Nothing liquid can be proven until flow fills in every direction.
 
 ### 3.6 Rooms, prisoners, capture
 
@@ -183,7 +193,7 @@ remake last, that is accepted.
 | `Pits/Holding/Building_PitCell.cs` | RETIRE | Replaced by a real room + vanilla prisoner bed; vanilla wardens feed and tend. |
 | `Pits/Escape/PitEscapeUtility.cs` | RETIRE | "You can't climb out. Period." — no roll exists at any depth. |
 | `Pits/DigStage/` — `Building_PitDigSite`, `CompPitDigStage`, `CompProperties_PitDigStage`, `JobDriver_DigPitDeeper`, `WorkGiver_DigPitDeeper` | RETIRE (5) | The pit's own dig chain. FlowWorks' `JobDriver_DigCanal` already digs and is already `MiningSpeed`-scaled (MEASURED, line 37), so nothing is re-priced. |
-| `Pits/DigStage/PitDepthTier.cs` | RETIRE | The rival ladder. Its `MaxBodySize` idea REWIRES onto `RM_ExcavationDepth` as the per-depth field [J]. |
+| `Pits/DigStage/PitDepthTier.cs` | RETIRE | The rival ladder. Its `MaxBodySize` idea is replaced by the pit-width hold rule (§7 Q4), built in `SUPERDEEP_HOLDER_RETIRE_1`. |
 | `Pits/Fitting/CompPitFitting.cs` | RETIRE | Fittings collapse to spikes alone. Its `OccupyingLiquid()` query is lifted into the drowning-on-fill code; its `Stab` hit and `spikeDamage = 25f` default are the starting point for `RM_Spikes` (to be re-tuned: Sharp, BodySize-scaled). |
 | `Pits/Fitting/CompProperties_PitFitting.cs`, `PitFittingType.cs` | RETIRE (2) | Tuning for cut fittings; a one-member enum is not a model. |
 | `Pits/PitsMod.cs` | RETIRE | A second `Mod` and settings screen inside FlowWorks. Survivors REWIRE into `RimMandrakeFlowWorksSettings`: `trapTriggerEnabled`, `trapSensitivityMultiplier`, `fallDamageEnabled`, `fallDamageMultiplier`. The rest die with their mechanics. |
@@ -237,7 +247,7 @@ RETIRE 26.** Tests/tools: **KEEP 1, REWIRE 3.**
 | `FLOWWORKS_BUILD_PROGRAM_1` | **corrected** | Phase 5 said superdeep capture reuses `Building_OpenPit`'s container and struggle-escape clock — contradicted by the collapse ruling; Phase 9 told readers to `modcheck validate Pits` (walk deleted) and pointed at the superseded `PIT_TRAP_VISUAL_REDESIGN_1`; two Watch-out lines assumed pit *buildings* on canal cells; the design-doc filename `fluid_canals_mod_definition.md` no longer exists (it is `flowworks_mod_definition.md`). |
 | `FLOWWORKS_NORTHSTAR_GREEN_FULL_1`, `FLOWWORKS_NORTHSTAR_TRIAL_1` | **corrected** | Both named `PITS_STALE_DEPLOY_COLLISION_1` as a blocker; it closed `done` at `bd8d58dbb`. |
 | `PIT_SUPERDEEP_COLLAPSE_1` | **kept as the rulings record**; `## children` added | It is the cited authority (CLAUDE.md) — moving it to `closed/` would break that pointer. |
-| `FLOWWORKS_DOOR_FAMILY_1` | kept; `## depends` added | Needs the grid trap rule and the oscillation fix. |
+| `FLOWWORKS_DOOR_FAMILY_1` | kept; `## depends` added | Needs the grid trap rule (the oscillation fix it also needed closed at `ddb473416`). |
 | `HUTT_SLAVE_PIT_TEST_SITE_1` | kept; one Watch-out line | Its "oubliette" is a map feature, not the cut fitting. |
 
 **Left for FOUNDRY (not mine to edit):**
@@ -255,22 +265,22 @@ All filed 2026-10-02 for FOUNDRY, `proposed`, `needs offline`, spec = this file.
 `## spec / ## verify / ## criteria / ## depends / ## northstar`. Model ladder per
 `infrastructure/agents/Agent_Policy.md`.
 
-| # | Item | What | Depends on | Waits on oscillation fix? | Changes if owner answers differently |
-|---|---|---|---|---|---|
-| 1 | `SUPERDEEP_SEAM_MEASURE_1` | Desktop RimSage reads: exit veto seam, room/region builder, door permission, room temperature, beggar thought, Prisoner Realism | — | no | — |
-| 2 | `SUPERDEEP_HOLDER_RETIRE_1` | Delete the hidden holder; pawn stays spawned; grid trap rule; descent event; jump gizmo; per-depth body size | 1 | no (dry pits) | Q4 |
-| 3 | `PIT_LEGACY_CODE_RETIRE_1` | Delete 26 pit defs + `Source/Pits/` building model; rehouse 4 toggles | 2 | no | — |
-| 4 | `CANAL_BOTTOM_SPIKES_1` | `RM_Spikes` per-cell on the canal bottom, Sharp × BodySize on descent | 2 | no | Q2 |
-| 5 | `LADDER_PRISON_DOOR_1` | Raise/lower from the lip; who may climb; ladder art | 2 | no | Q1 |
-| 6 | `PIT_COVER_FALL_REWIRE_1` | Multi-cell cover; mass trigger drops pawns in | 2, 3 | no | — |
-| 7 | `SUPERDEEP_PRISON_ROOM_1` | Enclosed D=4 = room; bed = prison; capture/convert down from the lip | 1, 2 | no | Q1 (who exits) |
-| 8 | `PIT_TEMPERATURE_SOFTENING_1` | Hard ambient coupling; `RM_PitExposure` → resistance; Exposed Prisoner thought | 7 | no | — |
-| 9 | `PIT_DEPTH_DRAW_OFFSET_1` | Pawn sinks/rises with D; D=4 walls 20% above head | 2 | no | — |
-| 10 | `EXCAVATION_WALL_ART_1` | Wall faces for 4 depths, spikes, ladder (search artpipe first) | none to start | no | Q2 (spike art at shallow depths) |
-| 11 | `DEPTH_FILL_COST_MATRIX_1` | Flooded always slower than dry at the same depth | — | no (defs) | — |
-| 12 | `LIQUID_BODY_FLUID_IDENTITY_1` | Fluid per liquid body; merge rule | — | **yes** | Q3 |
-| 13 | `PIT_FILL_EFFECTS_1` | Drowning at D=4, poison by fill, burning oil with an occupant | 2, 12 | **yes** | Q3 |
-| — | `FLOWWORKS_DOOR_FAMILY_1` (existing) | Sluice + SecurityGrateDoor, stuffable | 2 | **yes** (liquid pass) | — |
+| # | Item | What | Depends on | Owner answer that shapes it (§7) |
+|---|---|---|---|---|
+| 1 | `SUPERDEEP_SEAM_MEASURE_1` | Desktop RimSage reads: exit veto seam, room/region builder, door permission, room temperature, beggar thought, Prisoner Realism | — | — |
+| 2 | `SUPERDEEP_HOLDER_RETIRE_1` | Delete the hidden holder; pawn stays spawned; grid trap rule; descent event; jump gizmo; pit-width hold rule | 1 | Q4 |
+| 3 | `PIT_LEGACY_CODE_RETIRE_1` | Delete 26 pit defs + `Source/Pits/` building model; rehouse 4 toggles | 2 | — |
+| 4 | `CANAL_BOTTOM_SPIKES_1` | `RM_Spikes` per-cell on the D=4 canal bottom, Sharp × BodySize on descent | 2 | Q2 |
+| 5 | `LADDER_PRISON_DOOR_1` | Raise/lower from the lip; prison-door climbing; ladder art | 2 | Q1 |
+| 6 | `PIT_COVER_FALL_REWIRE_1` | Multi-cell cover; mass trigger drops pawns in | 2, 3 | — |
+| 7 | `SUPERDEEP_PRISON_ROOM_1` | Enclosed D=4 = room; bed = prison; capture/convert down from the lip | 1, 2 | Q1, Q4 |
+| 8 | `PIT_TEMPERATURE_SOFTENING_1` | Hard ambient coupling; `RM_PitExposure` → resistance; Exposed Prisoner thought | 7 | — |
+| 9 | `PIT_DEPTH_DRAW_OFFSET_1` | Pawn sinks/rises with D; D=4 walls 20% above head | 2 | — |
+| 10 | `EXCAVATION_WALL_ART_1` | Wall faces for 4 depths, spikes (D=4 only), ladder (search artpipe first) | none to start | Q2 |
+| 11 | `DEPTH_FILL_COST_MATRIX_1` | Flooded always slower than dry at the same depth | — | — |
+| 12 | `LIQUID_BODY_FLUID_IDENTITY_1` | Fluid per natural body and per excavated cell; fluids never mix | — | Q3 |
+| 13 | `PIT_FILL_EFFECTS_1` | Drowning at D=4, poison by fill, burning oil with an occupant | 2, 12 | Q3 |
+| — | `FLOWWORKS_DOOR_FAMILY_1` (existing) | Sluice + SecurityGrateDoor, stuffable | 2 | — |
 
 **Northstar angle, in one line each** (full rows in each item's `## northstar`): every item's first
 script is a **state** component on the minimal `flowworks` tier per `debug_process.md` §2 — the
@@ -280,42 +290,58 @@ room id/role and warden position (7), temperature/exposure/resistance deltas aga
 hediff severity by fluid (13). Frame-judged bars (art) stay with the owner-validated `## north star`;
 none of these items edits that section.
 
-## 7. Questions for the owner
+## 7. Owner answers (2026-10-02)
 
-Each has a recommended default; the work above proceeds on the defaults, and the last column of §6
-says which item changes if he picks otherwise.
+Recorded on `PIT_SUPERDEEP_COLLAPSE_1` (OWNER ledger). Q1 and Q2 were decided by question card; Q3 and
+Q4 are his typed words. The consequences are folded into §3 and into each item named in §6.
 
-**Q1. When the ladder into a pit is let down, who can climb out?**
-- **Like a prison door (recommended).** Your own people climb up and down freely; trapped enemies and
-  prisoners cannot use it unless they stage a prison break. Pulling the ladder up locks everyone in,
-  your own people too. *Trade-off:* matches "works like a prison cell" and lets you send a warden down
-  safely; less literal, since an enemy standing at the foot of a ladder will not climb it.
-- **Anyone below can climb while it is down.** *Trade-off:* simple and physical; but rescuing a
-  colonist who fell in also lets every enemy in that pit out.
-- **You choose per ladder who may use it**, like door permissions. *Trade-off:* most control; one more
-  setting on every ladder to explain and manage.
+**Q1. When the ladder into a pit is let down, who can climb out?** — **Like a prison door** (card).
+Your own people climb up and down freely; trapped enemies and prisoners cannot use it except in a
+prison break. Pulling it up shuts everyone in, your own people too. → `LADDER_PRISON_DOOR_1`,
+`SUPERDEEP_PRISON_ROOM_1`.
 
-**Q2. Can spikes go in any dug canal, or only in the deepest pits?**
-- **Only in the deepest pits (recommended).** Spikes stay a pit feature; shallower canals are just
-  slow ground. *Trade-off:* no cheap "spiked trench" defence line.
-- **Any depth, and stepping down into a spiked canal of any depth hurts, more the deeper it is.**
-  *Trade-off:* a strong new defence line of shallow spiked trenches; it competes with vanilla spike
-  traps and makes your own canals risky for colonists.
-- **Any depth, but shallow spikes only wound lightly; only the deepest pits kill.** *Trade-off:* a
-  middle ground; one more damage rule to tune and explain.
+**Q2. Can spikes go in any dug canal, or only in the deepest pits?** — **Only in the deepest (D=4)
+pits** (card). Shallower canals are just slow ground; no spiked-trench line. → `CANAL_BOTTOM_SPIKES_1`,
+`EXCAVATION_WALL_ART_1` (no spike art at D 1-3).
 
-**Q3. When you dig a channel joining a pit of water to a pit of oil, what should happen?**
-- **They don't mix (recommended).** The joining channel stays dry until one pit is drained.
-  *Trade-off:* simple and predictable; can feel like the game refusing what you dug.
-- **The bigger pool wins.** The smaller pit's liquid is replaced by the bigger one's. *Trade-off:* easy
-  to read; you can lose an oil trap by one careless dig.
-- **They mix into a murky sludge** with weaker versions of both. *Trade-off:* realistic and messy; one
-  more liquid to draw and balance.
+**Q3. When a channel joins a pit of water to a pit of oil, what happens?** — He typed: *"Analyze which
+of these is most feasible in the game/code. If (1) is easiest, it's also the best for now. I had
+thought (2) would be easiest and it isn't bad either. (3) seems like a huge mess with little payoff."*
+**Analysis (read from source at `639722ff3`): (1) "they don't mix" is the easiest, so it is the
+answer for now.**
+- *Today:* the map has ONE fluid (`RM_MapComponent_Excavation.activeFluid`, default water); every flow,
+  render, rain, fill-in and body-capacity path reads it, and `RM_LiquidBody` carries no fluid. When a
+  channel joins two pits, the next pulse's BFS puts both in one component and levels equalise by the
+  rank-ordered flow — there is no second fluid for them to conflict with. Two natural bodies joined
+  by a canal never merge (the body flood fill stops at dug cells); each keeps its own record and stock.
+- *Every option* first needs a per-cell fluid identity for excavated cells (a pit is not a body record)
+  and a per-body fluid for natural bodies — that is [F] and is shared cost.
+- *(1) no mix* then costs **one filter in `PickDonor`**: no level moves into a wet cell of a different
+  fluid. It only removes donor candidates from the proven flow, so it cannot reintroduce oscillation
+  or unbalance the conservation ledger. At the join the first fluid to reach a dry channel cell claims
+  it and the other front stops there; drain one side and the other advances.
+- *(2) bigger pool wins* is (1) plus a per-pulse resolve pass that measures each touching pool and
+  rewrites the loser's cells. A natural body losing would mean rewriting a lake's base terrain and
+  re-classifying a body ruling 16 classifies once, so it would be limited to dug pools. It would add
+  flushing an oil trap with water as a tactic, and it can be added later on the same grid.
+- *(3) sludge* needs a blend fluid per pair or a per-cell mixture that breaks the whole-level grid
+  every rule is written on. That is the mess he predicted.
+→ `LIQUID_BODY_FLUID_IDENTITY_1`, `PIT_FILL_EFFECTS_1`.
 
-**Q4. Should anything be too big to be held by a deepest pit?**
-- **No — a deepest pit holds anything that falls in (recommended).** Size only decides how hard spikes
-  hit. *Trade-off:* a thrumbo or a mech in a pit is completely stuck, which is very strong.
-- **The very largest creatures (thrumbo-sized and up) can climb out.** *Trade-off:* keeps megafauna
-  dangerous; breaks "you can't climb out, period" for them and adds a size limit to tune.
-- **Big creatures are held only by a pit at least two cells wide.** *Trade-off:* realistic and rewards
-  digging bigger pits; adds a footprint rule players must learn.
+**Q4. Should anything be too big to be held by a deepest pit?** — He typed: *"The pit has to be as
+wide as the creature to hold it. Otherwise it gets out."* Defined for this codebase:
+- RimWorld pawns occupy exactly one cell, so width comes from **`Pawn.BodySize`** (base body size ×
+  life-stage factor). That is the stat spike damage [G] already uses, so the pairing he ruled holds.
+  `drawSize` is rejected because it depends on the art.
+- **Required width `W = max(1, round(sqrt(BodySize)))`**: BodySize < 2.25 → 1, < 6.25 → 2, < 12.25 → 3.
+  A pawn on a D=4 cell is **held** only if some **W×W square made entirely of D=4 cells contains its
+  cell**. A one-cell pit holds anything under 2.25. A 1×10 trench is one cell wide. The bands are a
+  proposal for his word, exposed as a Mod Setting.
+- **"Gets out"** = the trap veto does not apply to it. It walks out like any canal, at the normal depth
+  movement cost, with no roll and no special job. It still took fall damage and spikes on the way in.
+- **Edge cases.** Width is re-read live, so a creature that grows past the pit's width climbs out, and
+  so does one whose square is broken because a neighbour cell was filled in. Diagonal runs do not
+  count. A downed pawn stays put because it cannot move. A creature too big for its pit is not
+  trapped, so it cannot be captured down and does not make the room a prison. Flying pawns are not
+  covered by this rule.
+→ `SUPERDEEP_HOLDER_RETIRE_1`, `SUPERDEEP_PRISON_ROOM_1`.
