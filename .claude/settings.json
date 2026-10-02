@@ -121,6 +121,26 @@
             "statusMessage": "Checking nobody is hand-writing his validation"
           }
         ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_worktrees.py\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_worktrees.py\"",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "SessionStart": [
@@ -168,20 +188,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/src/RimMandrake/Utils/worktree_pool.py\" create",
-            "timeout": 120,
-            "statusMessage": "Allocating a pool worktree slot"
-          }
-        ]
-      }
-    ],
-    "WorktreeRemove": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/src/RimMandrake/Utils/worktree_pool.py\" remove",
-            "timeout": 60
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_worktrees.py\" --worktree-create",
+            "timeout": 10
           }
         ]
       }

@@ -43,15 +43,13 @@ is the operating doc. Charter's additions only: commit when a unit of work exist
 only in your seat clone (`/home/mandrake/rm/<seat>`) — `D:\Luke\dev\RimMandrake` is a
 read-only mirror.
 
-🔑 **A subagent touching more than a couple of files, or expected to run more than a
-couple of minutes, gets `isolation: "worktree"` on the `Agent` call.** The WorktreeCreate
-hook hands it a pool slot (2 per seat, `/home/mandrake/rm/pool/<seat>/`) with its own
-tree and index. **It never pushes `main`:** brief it to finish with `./publish -m "…" <paths>`,
-which pushes `submit/<seat>/<name>`; **the seat lands it** with
-`python3 src/RimMandrake/Utils/land_submissions.py`. Pool full → queue the work, or run
-unisolated when it is a one-path edit. A slot whose owner died is snapshotted to a local
-`refs/rescue/` ref on the next allocation. Brief every helper that `reset --hard`,
-`checkout --` and `stash` are forbidden and a conflict is reported back, never cleared.
+🔴 **Worktrees are OFF** (owner ruling 2026-10-02, by question card): worktree agents duplicated whole
+checkouts and left work stranded on side branches. **Never pass `isolation: "worktree"` and never run
+`git worktree add`** — `.claude/hooks/block_worktrees.py` refuses both, and the WorktreeCreate hook refuses
+`claude --worktree`. A writing helper edits in its window's own clone; the window commits the paths it
+changed with `./publish -m "…" <paths>`. Run writing helpers one at a time when their paths could overlap.
+Brief every helper that `reset --hard`, `checkout --` and `stash` are forbidden and a conflict is reported
+back, never cleared.
 
 ## Queue
 
