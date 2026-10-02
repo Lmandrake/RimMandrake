@@ -302,26 +302,16 @@ class Session(object):
 
         # jawa/destroy_batch NEVER destroys pawns, by design (a bad rect must
         # not be able to kill a colonist). The only route to remove a spawned
-        # TEST pawn is: kill it (lethal jawa/damage), which turns it into a
+        # TEST pawn is: kill it by exact id (jawa/pawn_force_incapacitate action=kill -- no
+        # explosion, so neighbours are not hurt and nothing ignites), which turns it into a
         # Corpse -- an Item, not a pawn -- then destroy_batch that.
         #
-        # MEASURED live 2026-09-12: `allowColonists` MUST be True here. A
-        # modcheck component that spawns its own player-faction test walker
-        # (`spawn_pawn(..., hostile=False)`) tracks a genuine PlayerColony
-        # pawn as litter -- the original comment here ("litter is never a
-        # player colonist") was simply wrong for that real, common case.
-        # Without the override, `jawa/damage`'s safety rail silently refused
-        # the kill, and a pawn a test had just proven CAPTURED (contained,
-        # off the map) walked back onto the map alive when its container
-        # (the "thing" litter) was destroyed and dropped its contents --
-        # the sweep reported success while leaving a live pawn behind. This
-        # call site tracks ONLY pawns this session itself spawned as test
-        # fixtures; it is never a real, pre-existing colonist the owner
-        # cares about, so the rail this override bypasses is not protecting
-        # anything here.
+        # This tracks ONLY pawns the session itself spawned as fixtures (some are
+        # genuine PlayerColony walkers), never a pre-existing colonist. The kill is
+        # by exact id and has no colonist rail to bypass; a captured pawn must not
+        # walk back out when its container is destroyed, so it is killed first.
         for l in pawns:
-            self.call("jawa/damage", thingId=l["id"], damageDef="Bomb",
-                      amount=99999.0, allowColonists=True)
+            self.call("jawa/pawn_force_incapacitate", pawn=l["id"], action="kill")
             if l["x"] is not None:
                 self.call("jawa/destroy_batch",
                           rects="%d,%d,1,1" % (l["x"], l["z"]), categories="Item")
