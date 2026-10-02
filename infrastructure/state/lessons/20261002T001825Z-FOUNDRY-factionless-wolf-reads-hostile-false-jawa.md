@@ -1,0 +1,1 @@
+A factionless wolf reads hostile:false in jawa/list_pawns, and isPlayer is true for the colony Husky; a colonist is isPlayer AND intelligence==Humanlike, a predator is faction None + Animal + proximity (FOUNDRY, 2026-10-01).

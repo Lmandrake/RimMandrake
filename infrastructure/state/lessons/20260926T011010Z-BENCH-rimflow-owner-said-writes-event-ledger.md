@@ -1,0 +1,1 @@
+2026-09-25 BENCH: `rimflow … --owner-said` writes the event to `ledger/events/OWNER.jsonl`, not your seat's shard — a commit of only your seat's shard leaves it (and any other window's OWNER events) uncommitted. Proposed home: `using-rimflow`.

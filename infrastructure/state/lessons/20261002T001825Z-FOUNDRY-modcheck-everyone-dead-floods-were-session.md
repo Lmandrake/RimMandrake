@@ -1,0 +1,1 @@
+modcheck "everyone is dead" floods were Session.sweep killing the suite's own test colonists (Bomb 99999) plus explosion tests at the map centre where the colony spawns; the situational Watch registers fixtures and picks an anchor away from colonists (FOUNDRY, 2026-10-01).

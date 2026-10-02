@@ -1,0 +1,1 @@
+A `Plant` ThingDef cannot block line of sight at any `fillPercent` — `GenSight`/`CanBeSeenOver` only consults the Building-only edifice grid. An owner ruling that a plant "cannot be seen over or past" has no def-only answer; it needs a Harmony hook or a comp, filed as `GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1` (FOUNDRY 2026-09-26).

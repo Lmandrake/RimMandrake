@@ -1,0 +1,1 @@
+A frozen `RUT_` biome twin's row in `infrastructure/state/facts/biome_paint_list.md` is easy to leave stale (still reading bare `PAINT`) — it recurred on 3 of 4 biomes checked in one wave (Wasteland, Stillsand/ExtremeDesert, TheRot). Whoever writes the freeze header should update the paint-list row in the same commit (FOUNDRY 2026-09-25, `BIOME_PAINT_ONCE_AT_THE_END_1`).

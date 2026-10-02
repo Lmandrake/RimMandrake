@@ -1,0 +1,1 @@
+modcheck: a checklist section's `### cannot show` ids are the OPPOSITE polarity; collecting every checkbox id in a section into one list put his rejection line into the must-show floor (found 2026-09-16, NORTH_STAR_RUNNER_WIRING_1)

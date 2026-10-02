@@ -1,0 +1,1 @@
+2026-09-28 FOUNDRY: `git commit <path>` refuses a brand-new untracked path with "did not match any file(s) known to git" even though the same command works fine for already-tracked modified/deleted paths — `git add` the new path first, then pass it to `git commit <path>` as usual.

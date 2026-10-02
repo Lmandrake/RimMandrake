@@ -1,0 +1,1 @@
+shared_sync's conflict refusal can LIE: 'nothing was written or pushed' printed after it had already replayed+pushed the first todo commit (2026-09-27, 79ad15934 published as 07676bd1d). Per-commit merge-base --is-ancestor is the only proof; also four-windows-active makes direct push a retry loop - worktree cherry-pick + fetch-rebase-push loop worked every time.

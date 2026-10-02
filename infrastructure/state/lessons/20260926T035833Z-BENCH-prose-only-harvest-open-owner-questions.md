@@ -1,0 +1,1 @@
+2026-09-25 BENCH: a prose-only harvest of 'open owner questions' re-asked 4 already-ruled questions; grep ledger shards + sibling items per question before carding (memory: verify-open-questions-against-ledger).

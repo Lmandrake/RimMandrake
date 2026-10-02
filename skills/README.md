@@ -27,8 +27,8 @@ it the same. Verified 2026-08-23: **25 skills in this repo + 1 linked in from ou
 ⭐ **SUPERSEDED IN PART 2026-08-27 (redesign #4, `infrastructure/agents/CHARTER.md`):
 the four seats are retired.** The table below survives as a DOMAIN map (whoever is
 doing that kind of work maintains that skill), not a seat roster. Skills are edited
-only in fresh-context curation sessions; lessons land one-line in
-`infrastructure/state/LESSONS_INBOX.md` until then. ⚠️ Known roster gap: the
+only in fresh-context curation sessions; lessons land one file each in
+`infrastructure/state/lessons/` (`src/RimMandrake/Utils/lessons.py add`) until then. ⚠️ Known roster gap: the
 generated table below is missing `rimworld-layout-layers` — regenerate on the next
 curation pass.
 

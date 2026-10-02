@@ -1,0 +1,1 @@
+The rimflow owner-quote flag rejects a quote ending in a question mark (read as a question) and rejects one string stitched from several separate card answers. Quote each answer in its own note, cut before any trailing question (BENCH, 2026-10-01).

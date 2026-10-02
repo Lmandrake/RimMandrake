@@ -1,0 +1,1 @@
+A review-sheet custom itemBody that caps img max-height squeezes tall sprites and the owner reads it as truncation (desert fill-out sheet 2026-09-27) - preserve aspect at natural thumb size and let data-zoom carry the detail; the giant-creature note ("render MUCH larger") also means giants deserve 512 canvas.

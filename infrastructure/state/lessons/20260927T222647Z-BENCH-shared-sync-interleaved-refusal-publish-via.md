@@ -1,0 +1,1 @@
+shared_sync "interleaved" refusal: publish via detached-worktree cherry-pick onto origin/main; once `git log --cherry-mark --right-only origin/main...HEAD` reads all `=`, plain shared_sync resets clean (BENCH 2026-09-27).

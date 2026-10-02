@@ -1,0 +1,1 @@
+2026-09-24 BENCH: sed 's/Name/…/' misses RM_Name (underscore is a word char) AND the verifying grep -E 'Name' shares the same blindness — rename sweeps must check the defName form explicitly; two instruments with one blind spot corroborate nothing.

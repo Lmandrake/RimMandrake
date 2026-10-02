@@ -1,0 +1,1 @@
+A per-biome fauna cast joins two sources: in-rows keyed to the biome PLUS move-rows resolving to it (move_mapping_v2); a `move` row keyed under a biome means the creature LEAVES it. Reading the raw decisions file naively double-counts (2026-09-10).

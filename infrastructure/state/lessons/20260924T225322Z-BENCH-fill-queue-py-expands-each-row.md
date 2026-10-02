@@ -1,0 +1,1 @@
+fill_queue.py expands each row x its facings list: per-facing input rows file NxN jobs with doubled suffixes (_south_east); dry-run count is the tell — feed one row per creature (BENCH 2026-09-24, 36 malformed jobs deleted same minute)

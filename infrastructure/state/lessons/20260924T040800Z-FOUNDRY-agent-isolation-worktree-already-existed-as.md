@@ -1,0 +1,1 @@
+2026-09-24 FOUNDRY: `Agent(isolation:"worktree")` already existed as a platform capability the whole time the events.jsonl/queue/health merge-conflict pain was being worked around by hand — the gap was nobody defaulting to it for multi-file subagents, not missing tooling. CHARTER now says to default to it. Proposed home: `efficient-subagents`.

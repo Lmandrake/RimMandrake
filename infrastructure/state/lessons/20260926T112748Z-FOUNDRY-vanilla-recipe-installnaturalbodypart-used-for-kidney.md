@@ -1,0 +1,1 @@
+Vanilla `Recipe_InstallNaturalBodyPart` (used for Kidney/Liver/Lung/Heart) is generic to any `BodyPartRecord`, not organ-specific — a "grown limb" surgery needs only new ThingDefs/RecipeDefs pointed at Leg/Arm through that same existing recipe worker, no new mechanism (FOUNDRY 2026-09-26, `CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1`).

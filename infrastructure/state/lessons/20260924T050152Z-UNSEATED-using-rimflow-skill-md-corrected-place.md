@@ -1,0 +1,1 @@
+using-rimflow SKILL.md corrected in place for the sharded ledger (EVENTS_JSONL_SHARDING_1, 2b5947555): shard commit path, --seat repair flag, merge-order projection — curation pass should re-read the whole skill for leftover single-file phrasing.

@@ -86,7 +86,7 @@ what the OWNER should see, what is half-done and where it stops, and the traps. 
 those, `--check`, commit, push. The shape is enforced (audit-driven, 2026-09-17):
 every half-done pointer is `- ITEM_ID — state; NEXT: <one imperative action>` (a
 concrete NEXT: measured near-100% pickup, prose ~0%); every trap is ONE line ending
-`(filed: LESSONS_INBOX)` or `(see: <item/doc>)`, never a re-explanation; every
+`(filed: lessons)` or `(see: <item/doc>)`, never a re-explanation; every
 `<<< WHOSE? >>>` on an uncommitted file must name a seat. `--check` refuses all
 three omissions.
 

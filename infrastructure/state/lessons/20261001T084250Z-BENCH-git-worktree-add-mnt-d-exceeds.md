@@ -1,0 +1,1 @@
+2026-10-01 BENCH: `git worktree add` on /mnt/d exceeds 2 min, so background it. Subagents cannot pass the rimflow owner-said flag (the guard cannot see the owner's chat), so the seat runs owner-quoted verbs itself.

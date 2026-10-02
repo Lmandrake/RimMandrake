@@ -1,0 +1,1 @@
+fill_queue.py silently reports "0 filed, 0 errors" on a single JSON object — input must be a LIST of rows with canvas_w/canvas_h, and a wrong shape is not an error (BENCH 2026-09-25, SCALD_FLOOR_PASS_1).

@@ -1,0 +1,1 @@
+`jawa/get_terrain_batch`'s 70000-cell cap sums ALL rects in one call together — semicolon-joining several rects into one call still hits the cap at their combined total; split into SEPARATE calls, not a longer `rects` string (FOUNDRY 2026-09-25).

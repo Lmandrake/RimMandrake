@@ -1,0 +1,1 @@
+Vanilla `GasType` is a fixed 4-value C# enum (BlindSmoke/ToxGas/RotStink/DeadlifeDust) — no new gas cloud type is buildable from XML/a simple ThingDef, only decompiling and patching Core would add one. A "new gas" design item should pick one of the four existing types by its actual gameplay effect, not invent a fifth (FOUNDRY 2026-09-26, `GREENTIDE_GRENADE_WEAPONS_1`).

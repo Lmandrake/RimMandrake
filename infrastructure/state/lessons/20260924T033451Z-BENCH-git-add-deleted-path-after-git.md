@@ -1,0 +1,1 @@
+2026-09-24 BENCH: `git add <deleted-path>` after `git rm` errors ('pathspec did not match') and kills an `&&` chain, so the commit never ran while the push after it reported 'Everything up-to-date'. Put a deleted path on the commit pathspec only.

@@ -1,0 +1,1 @@
+2026-09-26 BENCH: degradation can arrive as jobs getting FASTER — artpipe's median wall clock FELL as concurrency rose (107.9s@8, 80.5s@12, 65.2s@32) because the agent was skipping its resize step, not because it was being served better. A latency improvement under load is a defect signal, not a win.

@@ -1,0 +1,1 @@
+2026-09-30 BENCH: 'moving dunes' and 'sand swimmers' are OUR mods (mandrake.rm.movingdunes; SAND_SWIMMERS_MOD_1 spread across FlowWorks/SWBestiary) - an installed-mod About.xml sweep cannot find them; search src/ and item ids.

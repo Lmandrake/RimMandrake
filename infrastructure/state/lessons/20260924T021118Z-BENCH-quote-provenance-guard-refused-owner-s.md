@@ -1,0 +1,1 @@
+2026-09-24 BENCH: the quote-provenance guard refused the owner's quote flag TWICE in a session opened by /clear, for sentences he typed in that same session (turns 1 and 3); it also refuses any command whose TEXT merely contains the flag's name. Fallback: a plain note quoting him. Check which transcript the hook reads after /clear.

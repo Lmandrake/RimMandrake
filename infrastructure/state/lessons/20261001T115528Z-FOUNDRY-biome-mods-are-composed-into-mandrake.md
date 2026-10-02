@@ -1,0 +1,1 @@
+2026-10-01 FOUNDRY: biome mods are composed into `mandrake.rm.biomes`; any gate naming a retired packageId (stillsand, creaturebehaviors, therot, webwork, feverwood, terminalbiomes, gelatinousslime, pyrelands, contagion) is silently dead — 27 repointed in 9290b46db; use `MayRequireAnyOf` when a def must also load standalone.

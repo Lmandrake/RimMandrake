@@ -1,0 +1,1 @@
+SHIP_ONLY_DIVE ruling capture: mid-turn owner chat is invisible to block_forged_owner_said.py's transcript scan (verbatim quote refused, curly apostrophes and all), AND the hook matches the flag string inside --text too; record under own seat with words inline

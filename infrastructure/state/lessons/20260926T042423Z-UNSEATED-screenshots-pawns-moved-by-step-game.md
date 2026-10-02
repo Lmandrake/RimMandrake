@@ -1,0 +1,1 @@
+Screenshots of pawns moved by step_game_ticks while paused show STALE TWEEN POSITIONS — the sim moved but sprites did not; unpause ~1s (speed 1) then re-pause before shooting any moved pawn (cost 5 identical wrong shots, 2026-09-26)

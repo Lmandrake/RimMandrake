@@ -1,0 +1,1 @@
+2026-09-27 FOUNDRY: `rimworld/load_game_ready` is NOT the safe fallback for the known `start_debug_game_ready` world-gen crash — it hits the identical `SetupForQuickTestPlay`/`WorldPathGrid` `ArgumentOutOfRangeException` when loading a real save on the full 629-mod list, confirmed on two different saves (filed: LOAD_GAME_READY_MAPGEN_CRASH_1).

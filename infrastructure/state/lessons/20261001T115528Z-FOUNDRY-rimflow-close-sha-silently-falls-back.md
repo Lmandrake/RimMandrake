@@ -1,0 +1,1 @@
+2026-10-01 FOUNDRY: `rimflow close --sha` silently falls back to HEAD when a commit failed (peer index.lock), and agents that rebase after closing leave a dead sha — commit first, close with the post-rebase sha, correct with `rimflow note` (a closed item cannot be re-closed).
