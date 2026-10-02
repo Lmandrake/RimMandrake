@@ -527,6 +527,20 @@ body-size field ([J]), the door family (now `FLOWWORKS_DOOR_FAMILY_1`), the Expo
 Prisoner piggyback ([A-item]), BodySize-scaled spike damage ([G]), adjacent-lip capture
 ([B-item]), and the depth/draw-offset/20%-walls ruling above.
 
+## children  (filed 2026-10-02 — the build is ticketed out)
+
+One model for everything above, with a KEEP/REWIRE/RETIRE verdict for every old pit def, class,
+hediff, job and test: `design/RimMandrake/flowworks_pits_unified_model_2026-10-02.md` (it carries the
+revisions this item said the spec was owed). Owner, 2026-10-02: *"There's no 'pit' as a special thing,
+it's just a channel/canal dig."* — which settles the spec's open holder question: **no holder Thing.**
+
+Order (→ = depends on): `SUPERDEEP_SEAM_MEASURE_1` → `SUPERDEEP_HOLDER_RETIRE_1` →
+{`PIT_LEGACY_CODE_RETIRE_1`, `CANAL_BOTTOM_SPIKES_1`, `LADDER_PRISON_DOOR_1`, `PIT_DEPTH_DRAW_OFFSET_1`,
+`SUPERDEEP_PRISON_ROOM_1` → `PIT_TEMPERATURE_SOFTENING_1`}; `PIT_COVER_FALL_REWIRE_1` after the legacy
+retire. Independent now: `DEPTH_FILL_COST_MATRIX_1`, `EXCAVATION_WALL_ART_1`. Waiting on
+`FLOWWORKS_CHANNEL_OSCILLATION_1`: `LIQUID_BODY_FLUID_IDENTITY_1` → `PIT_FILL_EFFECTS_1`, and the
+liquid half of `FLOWWORKS_DOOR_FAMILY_1`.
+
 ## verify
 
 - No `.cs` file under `Source/Pits/` carries a depth concept of its own; depth is

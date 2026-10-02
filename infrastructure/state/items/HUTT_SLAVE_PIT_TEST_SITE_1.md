@@ -14,6 +14,9 @@ and a fixed `RM_HoistFrame` over the pit.
 - The oubliette is unreachable while the Hutts hold the site, and liftable by the ship's hoist after conquest.
 
 ## Watch out
+- This site's **oubliette** is a sealed map feature, not the pit "oubliette fitting" the owner CUT on 2026-09-17
+  (`PIT_SUPERDEEP_COLLAPSE_1`). With FlowWorks it is simply an enclosed superdeep (D=4) room with no ladder:
+  nobody climbs out by rule (`design/RimMandrake/flowworks_pits_unified_model_2026-10-02.md`).
 - Depends on HOIST_SHIP_PART_BUILD_1, HOIST_FIXED_SITE_FRAMES_1 and **GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1**
   (owner: *"We need a way for gravship to land properly in settlement and not be seen as attacking."*).
 - 🔑 **Animation is optional polish, and it comes LAST.** Ship with a drawn cable line (`GenDraw.DrawLineBetween`) and static sprites; transit is a hidden timer (vanish, wait, appear). Art is the final step and may be skipped. A descent animation is never in scope (owner: *"careful we don't get caught in endless animation development"*).
