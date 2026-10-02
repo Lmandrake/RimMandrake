@@ -27,7 +27,9 @@ for _p in (UTILS, MODCHECK):
 
 OUTDIR = os.path.join(ROOT, "Transient", "modcheck", "live_queue")
 RESULTS_LIVE = os.path.join(ROOT, "Transient", "modcheck", "live_queue_results.jsonl")
-RESULTS_DRY = os.path.join(OUTDIR, "dryrun_results.jsonl")
+# dry runs never touch the repo: outputs (fake PNGs included) and their results go to the temp dir
+DRY_OUTDIR = os.path.join(__import__("tempfile").gettempdir(), "northstar_live_queue_dry")
+RESULTS_DRY = os.path.join(DRY_OUTDIR, "dryrun_results.jsonl")
 
 MEASURED, UNMEASURED = "MEASURED", "UNMEASURED"
 PASS, FAIL = "PASS", "FAIL"
@@ -68,7 +70,7 @@ class Job(object):
         self.evidence = {}
         self.unmeasured_reason = None
         self.started = time.strftime("%Y-%m-%dT%H:%M:%S")
-        self.outdir = os.path.join(OUTDIR, ("dry_" if dry_run else "") + job_id)
+        self.outdir = os.path.join(DRY_OUTDIR if dry_run else OUTDIR, job_id)
         os.makedirs(self.outdir, exist_ok=True)
 
     def check(self, name, ok, detail=""):
@@ -92,7 +94,7 @@ class Job(object):
                "checks_passed": sum(c["ok"] for c in self.checks), "checks_total": len(self.checks),
                "failed": [c["name"] for c in self.checks if not c["ok"]],
                "unmeasured_reason": self.unmeasured_reason, "checks": self.checks,
-               "evidence": self.evidence, "outdir": os.path.relpath(self.outdir, ROOT)}
+               "evidence": self.evidence, "outdir": self.outdir if self.dry_run else os.path.relpath(self.outdir, ROOT)}
         path = results_path(self.dry_run)
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "a", encoding="utf-8") as f:
@@ -124,6 +126,14 @@ def tool_present(s, name):
     return hasattr(s, "_t_" + name.replace("/", "_"))       # FakeWorld
 
 
+def sandbox_dry_outputs(outdir):
+    """A dry run must never write the REAL fixture ledger or surprises folder (runner.run_suite writes both):
+    a fake id in fixtures.json would exempt a pawn on the next live run."""
+    import runner
+    runner.SHEET_DIR = outdir
+    runner.FIXTURE_LEDGER = os.path.join(outdir, "fixtures.json")
+
+
 @contextlib.contextmanager
 def open_session(dry_run, fake_builder=None):
     if dry_run:
@@ -141,6 +151,8 @@ def main(job_id, body, fake_builder=None, argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     dry = "--dry-run" in argv
     job = Job(job_id, dry_run=dry)
+    if dry:
+        sandbox_dry_outputs(job.outdir)
     print("== %s%s" % (job_id, " (DRY RUN on FakeWorld)" if dry else ""))
     try:
         with open_session(dry, fake_builder) as s:

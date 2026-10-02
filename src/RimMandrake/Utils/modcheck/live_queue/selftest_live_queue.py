@@ -27,6 +27,7 @@ def run_body(mod_name, sabotage=None, builder=None):
     """Import a job module and run its body on a (possibly sabotaged) FakeWorld; return the record."""
     m = __import__(mod_name)
     job = common.Job(mod_name + "_selftest", dry_run=True)
+    common.sandbox_dry_outputs(job.outdir)
     from rimdrive.fake import FakeWorld, pawn_row
     w = (builder or getattr(m, "fake_world", None) or
          (lambda: FakeWorld(pawns=[pawn_row("Col1"), pawn_row("Col2", x=103), pawn_row("Col3", x=106)])))()
@@ -43,6 +44,7 @@ def run_body(mod_name, sabotage=None, builder=None):
 
 def main():
     tmp = tempfile.mkdtemp(prefix="lq_self_")
+    common.DRY_OUTDIR = os.path.join(tmp, "out")          # job outdirs (fake PNGs) live and die with this test
     res = os.path.join(tmp, "r.jsonl")
     os.environ["LIVE_QUEUE_RESULTS"] = res
     old_argv = sys.argv
@@ -144,6 +146,8 @@ def main():
         check("suite_mods() derives a non-empty list from the status registry", len(jobs.suite_mods()) >= 1)
     finally:
         sys.argv = old_argv
+        import shutil
+        shutil.rmtree(tmp, ignore_errors=True)
     n = sum(_results)
     print("\n%d/%d passed" % (n, len(_results)))
     return 0 if n == len(_results) else 1
