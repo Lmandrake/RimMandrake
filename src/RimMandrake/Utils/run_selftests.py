@@ -91,12 +91,33 @@ SELFTEST_GLOB = "selftest*.py"
 # Excluding one here is a deliberate, VISIBLE act — it prints as SKIPPED with this
 # reason. A key naming no discovered file is a hard error, so a rename cannot quietly
 # turn an exclusion into a permanent disappearance.
-NOT_STANDALONE = {
-    "src/RimMandrake/Utils/rimplace/selftest.py":
-        "package module — `python3 -m rimplace selftest` from src/RimMandrake/Utils, "
-        "under ~/.local/venvs/rimlua/bin/python (needs lupa; 8/36 on plain python3)",
-    "skills/generating-rimworld-sprites/scripts/selftest.py":
-        "requires --reference <png>; a human-driven art check, not an unattended test",
+NOT_STANDALONE: dict[str, str] = {}
+
+RIMLUA_PY = Path.home() / ".local/venvs/rimlua/bin/python"
+RIMLUA_FIX = ("python3 -m venv ~/.local/venvs/rimlua && "
+              "~/.local/venvs/rimlua/bin/pip install lupa")
+SPRITE_REFERENCE = ("src/RimMandrake/Pyrinth/Textures/Things/Item/Resource/"
+                    "Pyrinth/Pyrinth_a.png")
+
+# Selftests that cannot run as bare `python3 <file>` from the repo root: rel path ->
+# (argv builder, cwd). A missing prerequisite is a visible FAIL, never a skip.
+def _rimplace():
+    if not RIMLUA_PY.exists():
+        raise FileNotFoundError(f"{RIMLUA_PY} missing (rimplace needs lupa) — create it: {RIMLUA_FIX}")
+    return [str(RIMLUA_PY), "-m", "rimplace", "selftest"], REPO_ROOT / "src/RimMandrake/Utils"
+
+
+def _sprite():
+    ref = REPO_ROOT / SPRITE_REFERENCE
+    if not ref.exists():
+        raise FileNotFoundError(f"committed reference PNG missing: {ref}")
+    return [sys.executable, str(REPO_ROOT / "skills/generating-rimworld-sprites/scripts/selftest.py"),
+            "--reference", str(ref)], REPO_ROOT
+
+
+SPECIAL_INVOCATIONS = {
+    "src/RimMandrake/Utils/rimplace/selftest.py": _rimplace,
+    "skills/generating-rimworld-sprites/scripts/selftest.py": _sprite,
 }
 
 
@@ -119,7 +140,13 @@ def _run_capped(path: Path, timeout: int):
     a dotnet, a nested python) keeps the stdout pipe open and communicate() then blocks
     until IT exits -- so a "240 s" timeout could silently take far longer.
     """
-    p = subprocess.Popen([sys.executable, str(path)], cwd=REPO_ROOT, text=True,
+    try:
+        rel = path.relative_to(REPO_ROOT).as_posix()
+    except ValueError:  # a fixture outside the repo (selftest_run_selftests.py)
+        rel = ""
+    special = SPECIAL_INVOCATIONS.get(rel)
+    argv, cwd = special() if special else ([sys.executable, str(path)], REPO_ROOT)
+    p = subprocess.Popen(argv, cwd=cwd, text=True,
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          start_new_session=True)
     try:
