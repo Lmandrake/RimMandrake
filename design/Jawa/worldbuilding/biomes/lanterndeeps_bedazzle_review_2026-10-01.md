@@ -1,4 +1,4 @@
-# Lantern Deeps: bedazzle review (grandfathered sitting, movements 1-2)
+# Lantern Deeps: bedazzle review (grandfathered sitting, turn 1 ruled, ticketed)
 
 Item: `LANTERNDEEPS_BEDAZZLE_SITTING_1` (BENCH). Program: `BEDAZZLE_TOP_SHAPE_PROGRAM_1`, track (a), worst-first, sitting 2.
 
@@ -71,10 +71,9 @@ On 2026-09-18 he cut or remade 15 of 16 animals and asked for *"more truly alien
 life forms that are utterly different than anything on the dayside... we need to repopulate this
 biome's fauna significantly with surprising life forms."* `DEEPS_FAUNA_REPOPULATION_1` answered
 with twelve concepts (`rosters/lantern_deeps_repopulation_proposals.md`: sipper, drifter, candler,
-hush, knocker, tapper, pooler, blinker, yolk, chiller, slick, shoal). 🔴 **Finding 2.** Its keep/cut sheet was ruled to
-be served *"NOW"* on 2026-09-19. **No picks were ever recorded.** The item is still `proposed`;
-none of the twelve names occurs in `src/`. The §3 roster fill starts from these twelve and invents
-only what they leave open.
+hush, knocker, tapper, pooler, blinker, galuush, chiller, slick, shoal). 🔴 **Finding 2.** Its keep/cut sheet was ruled to
+be served *"NOW"* on 2026-09-19, and no picks were recorded until this sitting. Turn 1 admitted all
+twelve (§3, §7).
 
 ### Ruled cast: the crystal life, all unbuilt
 
@@ -142,7 +141,7 @@ the sheet and the source.
 | 2 | Discoverable technology | PARTIAL | **HIT** | sowable lanternstone; mindstone head with no source | the Kindled are ruled (campaign) but unmakeable; nothing is *learned* on free |
 | 3 | Unique resources | **HIT** | **HIT** | yes | lanternstone, puffer tendrils; kyber, stygium, pyrinth |
 | 4 | Surprising creatures | **HIT** | **HIT** | free 0; campaign 8 | the crystal cast is ruled and free-tier; none built |
-| 5 | GIANT beast | MISS | PARTIAL | grabber, bs 4 | nothing ruled is giant; the yolk (bs 6) waits in the unruled twelve |
+| 5 | GIANT beast | MISS | PARTIAL | grabber, bs 4 | the galuush (bs 6) is now ruled in (§3) |
 | 6 | Gravship touch | MISS | MISS | 0 | a ship cannot go down; nothing down here reaches up to it |
 | 7 | Soundscape | **HIT** | **HIT** | hum + chorus | servo click and shatter unbuilt |
 | 8 | Interesting weather | PARTIAL | PARTIAL | `RM_DeepCalm`, inert | collapse (ruled v1) and the storm feast day (one line) are unbuilt |
@@ -162,8 +161,8 @@ Two HITs are thinner than they look:
 | hole | why it is a hole | fill |
 |---|---|---|
 | The free tier has no animals | Q11a; the light-draw has no one to draw | **port the eight** (Q12, ruled; §4 row 0) |
-| The repopulation he asked for | *"repopulate this biome's fauna significantly"*, 2026-09-18 | **his picks from the twelve** (card Q2) |
-| No giant | grabber bs 4 is the largest; nothing ruled is giant | **the yolk** (bs 6, one per Deep, a ceiling sun that is also a methane bomb), from the twelve |
+| The repopulation he asked for | *"repopulate this biome's fauna significantly"*, 2026-09-18 | **all twelve** (ruled, turn 1) |
+| No giant | grabber bs 4 is the largest; nothing ruled is giant | **the galuush** (bs 6, one per Deep, a ceiling sun that is also a methane bomb), from the twelve |
 | Darkness is safe | the Deep punishes light; nothing punishes the unlit | **the hush** (an ambush predator untargetable on unlit floor), from the twelve |
 | The ruled collapse has no voice | dust and sand warnings ruled; no animal hears it | **the knocker** (drums before a roof fails; tamed, a collapse alert), from the twelve |
 
@@ -172,30 +171,36 @@ own remake register (pale blue skin, yellow hydrocarbon blood), each with one me
 trade. The crystal cast is ruled and needs building, not filling. All twelve are invented names,
 so they belong to the free `RM_` tier, inline in `RM_LanternDeeps`.
 
-### BENCH's recommended five (he may take any, all, or none)
+### Ruled: all twelve, every one a hydrocarbon organism (owner, turn 1)
 
-1. **yolk** (`RM_Yolk`), *mark 5.* A roof-pinned sun, bs 6, at most one per Deep. Lights its whole
-   chamber and is a chamber-sized methane charge: killed cold, a fortune in fuel; one spark, and
-   the room comes down. XML (`CompGlower` + `CompExplosive`). Its glow counts toward the light-draw,
-   so a yolk chamber is always hunted ground.
-2. **hush** (`RM_Hush`), *mark 4.* Ambush predator of the unlit fungal floor, 1-2 per map; cannot be
-   seen or targeted on an unlit cell. *Your lamp makes it visible; your lamp is the beacon.* The
-   other half of the light law. Small C# on `RM_CompAquaticAmbusher`.
-3. **knocker** (`RM_Knocker`), *mark 8 support.* Blind tunnel grazer that drums before a roof fails;
-   tamed, a collapse alert with the cells marked. Gives the ruled collapse its readable sign.
-4. **candler** (`RM_Candler`), *mark 3.* The Deep's cow: milked for cold wax, a fuel that spoils and
-   ignites when warm. The Deep's economy on legs. XML only.
-5. **sipper** (`RM_Sipper`), *mark 4.* Light-drinking vermin that clusters on lamps and shrinks their
-   radius: a smaller beacon and fewer predators, at the cost of seeing less. Bottom of every chain.
+His words, typed: *"Both yes, both must be made hydrocarbons to survive, and yolk is now called
+galuush"* · *"Love these. Also hydrocarbon."* · *"Yes all 7 and ensure hydrocarbon"*.
 
-The other seven (drifter, tapper, pooler, blinker, chiller, slick, shoal) stay on the table. The
-proposals doc's twelve "invented premises" (hydrocarbon animals are not food; warm ruins their
-products; tamed Deep fauna may die above −40 °C) are rulings that come with the picks, not before.
+All twelve are admitted, free `RM_` tier, inline in `RM_LanternDeeps`, one home each. Every one is
+built in his remake register: pale glowing blue skin, yellow hydrocarbon fluids (oil, wax, light
+gas) in place of blood, metabolism that works at the Deep's 17 °C. The proposals doc's premises 1
+to 4 (hydrocarbon biology, warm-reactive products, not food, methane as a body gas) are now
+**ruled** by this answer; premise 12 (survival away from the Deep) is the build's to measure, not
+to assume.
+
+| animal | def | role (one line; full concept in `rosters/lantern_deeps_repopulation_proposals.md`) |
+|---|---|---|
+| **galuush** | `RM_Galuush` | *the giant* (mark 5): a roof-pinned sun, bs 6, one per Deep; lights its chamber; a chamber-sized methane charge |
+| hush | `RM_Hush` | ambush predator unseen and untargetable on unlit floor |
+| knocker | `RM_Knocker` | blind grazer that drums before a roof fails; tamed, a collapse alert |
+| candler | `RM_Candler` | the Deep's cow, milked for a cold wax fuel that spoils when warmed |
+| sipper | `RM_Sipper` | light-drinking vermin that clusters on lamps |
+| drifter | `RM_Drifter` | floating methane grazer; explodes if killed by fire or spark |
+| tapper | `RM_Tapper` | eats electricity; tamed, gives aurora charge back |
+| pooler | `RM_Pooler` | living puddle that drapes over the hottest thing and smothers it |
+| blinker | `RM_Blinker` | flashes when hurt: blinds attackers, draws every predator |
+| chiller | `RM_Chiller` | pumps heat out of the room |
+| slick | `RM_Slick` | sweats a flammable fuse-trail |
+| shoal | `RM_Shoal` | filter-feeders sharing one circulation (`RM_CompWoundLink`) |
 
 ## 4. The slate
 
-The sheet is frozen, so most rows are an **order of build** for ruled content. Only the
-repopulation picks (§3) and the new marks (§5, §6) need him.
+The sheet is frozen, so most rows are an **order of build** for ruled content. Owner turn 1: **everything at once**; every row below is ruled and ticketed (§7).
 
 **0. Housekeeping (ruled by Q12, no card needed).** Port the eight invented residents from `RSW_`
 to `RM_` defs wired inline in `RM_LanternDeeps`, carrying their regen art, labels and the built
@@ -207,15 +212,16 @@ the free tier's law fire. Size M.
 |---:|---|---|---|---|
 | 1 | **The well-provisioned dead and the Working Dead.** A Deep genstep that places high-technology remains (exosuit corpses, cutting gear, power cells, dead droid chassis) along galleries and at shaft bottoms; near a Shard-mind (an immobile crystal building), dead chassis stand and work, and turn toward light. The signature image, built. | 1, 4 | Anomaly shambler shape, Droidworks chassis, vanilla `ThingSetMakerDef` | L |
 | 2 | **The Lantern.** The one safe light: a colony crystal whose glow the darkness mechanic does not count. Harvested, it becomes ordinary lanternstone, and ordinary light. *Light now vs light later, sold.* | 1, 3 | `MapComponent_LanternDeepDarkness` (one exclusion) | M |
-| 3 | **The repopulation picks** (card Q2). | 4, 5 | the `CreatureBehaviors` comps named per row | M to L |
+| 3 | **The twelve hydrocarbon animals** (§3, all ruled in), the galuush among them. | 4, 5 | the `CreatureBehaviors` comps named per row | L |
 | 4 | **The Creep and the Cleavers.** The accretive predator that grows over sleepers; the fragment-life that moves by fracturing. | 4 | lanternstone formations, `RM_CompVerminBreeder` | L |
 | 5 | **The sky through the rock.** A Deep `GameCondition` when the aurora storms overhead: the lattices wake, lanternstone brightens, the Chorus rises, the Cleavers run. And the ruled collapse with its dust trails, sand piles and grumble. | 8 | Nightside's reconnection storm (ruled, surface), vanilla roof collapse | M |
 | 6 | **The mindstone and the cousins** (campaign). A mindstone gallery the Shard-minds keep; the mindstone becomes findable here and only here, which makes `RSW_DW_Head_Mindstone` and the Kindled's first making reachable. Canon from `MECHANOID_ORIGIN_CANON_1`. | 2, 9 | Droidworks assembly | L |
-| 7 | **Art commission.** Lantern, Creep, Cleavers, Chorus masses, Shard-minds, mindstone, the Working Dead's chassis poses, his picks from the twelve. Check `artpipe/done/` first. | all | artpipe | — |
+| 7 | **Orun-Ghal, the inhabitant** (§5, revised by the owner). | 5, 1 | row 1's Working Dead, the Shard-minds | L |
+| 8 | **The Answering** (§6, campaign rite). | 9 | `mandrake.rut.rites` found-rites row | M |
+| 9 | **Art commission.** The twelve animals, Lantern, Creep, Cleavers, Chorus masses, Shard-minds, mindstone, the Working Dead's chassis poses, Orun-Ghal. Checked against `artpipe/done/` first: none existed. | all | artpipe | — |
 
-Recommended: **0 and 1 together first.** Row 0 is ruled and makes the free Deep alive; row 1 is the
-sheet's own image and has been missing since the sheet was written. The Lantern (2) is the cheapest
-second: one exclusion in a component that already exists.
+Row 0 is the one ordering constraint: the animals' `RM_` names must exist before the darkness
+mechanic and the twelve are wired against them.
 
 ## 5. GPT consult: five ideas
 
@@ -226,34 +232,36 @@ research on other games and RimWorld mods cited. The prompt also listed the rule
 the twelve unruled repopulation concepts as off-limits, and barred darkness-gated rites (the
 Abyss's). Model `gpt-5.6-sol`, via `codex exec`.
 
-GPT's own check lines: verbs *demonstrate, hoist, baffle, contract, miswire*; systems *production
-pedagogy, cross-map gravship logistics, acoustic room weather, persistent giant diplomacy, Ideology
-ritual.*
+Of GPT's five, the owner took two, both changed:
 
-| # | GPT's idea (faithful summary) | marks | GPT cites | BENCH judgement on uniqueness |
-|---|---|---|---|---|
-| 1 | **Ithrix, the Bench That Remembers.** A mindstone gallery's stress-lines unlock a research row. At an Ithrix bench a skilled crafter demonstrates one recipe into a lanternstone plate; afterwards lesser workers can make that recipe at a capped skill and quality until the plate cleaves. Free, M. | 2 | Caves of Qud tinkering, Dwarf Fortress strange moods | **Unique, and the cleanest mark 2 on offer.** Piezo crystal that keeps a gesture is the sheet's physics (*"stress makes voltage"*) put to work, and it is free-tier with no kyber. Not Contagion's draftprints (those copy bodies). Risk: the owner passed on a learned-tech piece at the Nightside Ice; this one is cheaper and stays in its biome's material. |
-| 2 | **The Veyrline Keel Hoist.** A gravship parked over a Deep mouth anchors a cable; a powered capstan below winches sealed cargo cages up the shaft. The ship cannot launch while tethered. Free, M. | 6 | ONI interplanetary launcher, Anomaly pit gate | **Unique mechanism, thin need.** It is the only idea that touches the ship from underground, and the tether-locks-launch cost is honest. But pawns already carry things through a pocket-map portal, so the problem it solves is small. A mark 6 answer that exists for the mark. |
-| 3 | **Nhal, the Standing Note.** A condition in which the chorus resolves into one note: room shape, open doors and placed baffles make quiet nodes and violent antinodes. Lanternstone grows fast but shatters easily at antinodes; mining at a node is slow and safe. Free, M. | 8 | ONI room overlay, The Long Dark aurora | **Unique, and it makes the inert calm matter.** It grows straight from *"a lattice talks by singing"* and gives the Chorus a mechanical body. Not the Rust Cathedral's hum (that answers behaviour; this is geometry). Risk: a live interference field is real engineering, and legibility rests on the floor grit reading clearly. |
-| 4 | **Orun-Ghal, the Last Shiftboss.** A huge mining exoframe, its dead operator still inside, worn by a Shard-mind, walks toward the nearest Lantern. It offers work through the suit's cracked terminal: repair a system, earn a warrant, paint a route, and it cuts the tunnel, then kneels by the Lantern again. Free, L. | 5 (and 1, 4) | Dwarf Fortress forgotten beasts, Kenshi leviathans, VFE Mechanoids | **Unique, and the best fit to the sheet on the planet:** it is the signature image (*"a dead miner's suit walking toward"* the lantern) made giant, and it is the Shard-minds' first body. Not the Forge's giant-on-the-clock. BENCH would cut GPT's five-cell footprint to a huge render on an ordinary pawn (multi-cell pawns are a pathing rewrite), which keeps it L, not XL. |
-| 5 | **Zizzik's Nine Faults.** A found inscription teaches a rite: worshippers miswire one healthy machine into a controlled breakdown; quality banks "vented faults" that redirect later breakdowns into that vessel. Campaign, M. | 9 | Ideology rituals, Against the Storm blightrot | **Unique, a first venting for Zizzik, and fully lit** (clear of the Abyss). But the redirect is a granted power, which the rites law forbids (*"no rite grants a power"*). Kept in §6 as R2 with the outcome trimmed to the law. |
+- **Orun-Ghal, revised (ruled).** His words, typed: *"I like the mining suit that's alive despite
+  the skeleton within it. But it might not just mine as when animated it is controlled by the
+  sentient crystals. Instead it becomes an inhabitant on the map to study and befriend. I don't
+  think the crystals are too keen mining."* So: a huge dead mining exoframe, its miner's skeleton
+  still inside, worn and moved by the Shard-minds. **It does not mine and cuts no tunnels.** It lives
+  on the Deep's map as an inhabitant: it walks its rounds, keeps near the Lantern, and can be
+  **studied** (what the crystals are, what they want) and **befriended** over visits. Never a boss,
+  never a worker. Large build; drawn huge on an ordinary pawn footprint, not a multi-cell pawn.
+- **Zizzik's Nine Faults, redesigned and ruled elsewhere:** `design/Jawa/nine_faults_permanent_rite_2026-10-01.md`
+  (register B8), build `NINEFOLD_FAVOUR_ODDS_BUILD_1`. Its inscription is found here (a dead droid
+  with nine wires crossed).
 
-GPT's own build-first ranking: Ithrix, then Nhal. BENCH's: **Orun-Ghal first** (it builds the
-sheet's own image and the Shard-minds at once), then Ithrix.
+The keel hoist became a campaign-wide device: `SHIP_CARGO_HOIST_DESIGN_1`, built as
+`HOIST_SHIP_PART_BUILD_1`, which uses a Deep mouth as its test site. The other GPT ideas were not
+taken; the consult file keeps the record.
 
 ## 6. Discoverable rites
 
 Per `design/Jawa/salvation_rites_2026-10-01.md` (e): found at a site with a reason to be there,
 learned through the Rites tab's found-rites row (`mandrake.rut.rites`), performable anywhere after.
-Campaign tier. **None is gated on darkness**: the Abyss's four own that gate, and a dark rite here
-would be the same rite in a second cave. God balance after the Nightside Ice: Oomo 4 (overfed, gets
-nothing), Mob'Unloo 3, Ishko 3 (fed only), Ohm 3, Zizzik 3. No kind repeats inside this biome.
+Campaign tier. Owner turn 1 kept **The Answering** (Ohm). **Neither rite is gated on darkness**: the Abyss's four own that gate, and a dark rite here
+would be the same rite in a second cave. God balance after the Nightside Ice: Oomo 4 (overfed), Ohm 3.
 
 **Not taken: a rite before the aware mindstone in the dark** (the scores doc's seed). It is the Dark
 Vigil with a stone in it. **Not taken: Rekko and the dead's gear.** The Wasteland's Inherited Wreck
 already inherits a failed expedition's wreck.
 
-### R1. The Answering, for Ohm: settlement
+### R1. The Answering, for Ohm: settlement (RULED-KEPT, owner turn 1)
 
 - **Grounding:** Ohm is sentience in machinery and *"wants his droid servants back"*; displeased by
   *"droids lost"* (§2.0b ②). The Deeps hold the wild cousins of machine minds, and living droids
@@ -272,98 +280,33 @@ already inherits a failed expedition's wreck.
 - **Collision check:** Ohm's other rites feed him (the Engine Hour, the Deserter's Welcome) or
   console him (the Last Track). This is his first settlement: terms agreed, not a machine fed.
 
-### R2. Zizzik's Nine Faults, for Zizzik: venting (GPT idea 5, trimmed)
+### Zizzik's Nine Faults (ruled, specced elsewhere)
 
-- **Grounding:** Zizzik is *"the coming-apart of minds"* and the wrong spark; in the Deeps a droid
-  that lingers comes out mind-wiped.
-- **Found:** a dead droid at a gallery mouth, its panel open, nine wires crossed by its own hand: a
-  machine that chose its own fault before the stone could take its mind.
-- **Asks:** worshippers surround one healthy, powered machine of real value and miswire it, nine
-  faults in sequence, into a controlled breakdown in front of everyone.
-- **Outcomes:** Poor, the machine burns (a real fire, a real loss). Fair, the breakdown holds;
-  Zizzik's meter vents a step. Good, two steps, and the vessel stays as a fault-board others pass
-  ("we gave him his spark"). Excellent, plus an art tale. **Trimmed from GPT:** no banked charges and
-  no redirected breakdowns; an outcome is a meter step and an ordinary thing.
-- **Readable sign:** nine bulbs fail in sequence; the broken vessel stays where it stood.
-- **Collision check:** Zizzik is warded (the Kept Mistake), starved (the Capping) and settled (the
-  Calling-Pyre, the controlled waking). Never vented. The Unburdening destroys wealth to vent Ozzik's
-  pride; this breaks one working machine to let out a spark.
+Found here; designed and ruled in `design/Jawa/nine_faults_permanent_rite_2026-10-01.md`, built by
+`NINEFOLD_FAVOUR_ODDS_BUILD_1`. Not ticketed by this sitting.
 
-### R3. The Lantern Toll, for Mob'Unloo: warding
+Tally: Ohm 3 → 4 (his first settlement). No god above four.
 
-- **Grounding:** *"no gift without a counter-gift"* (§2.0b ④); the sheet's Lantern is light as an
-  economy: *"light now against light later, sold"*. The Deep eats light; a clan that pays first is
-  owed safe passage.
-- **Found:** a ring of spent lamp cells at a mineshaft bottom, counted and laid in rows, left by the
-  one expedition that came back up.
-- **Asks:** before a descent, the organiser counts out light (lamp fuel, power cells or cut
-  lanternstone) at the mouth, priced aloud, and leaves it there. Quality from value and the count's
-  care.
-- **Outcomes:** Poor, the toll is short (the ledger says by how much). Fair, paid (a ledger entry).
-  Good, the descent's light exposure starts at zero and the first draw comes late (one visit). Excellent,
-  plus Mob'Unloo warding sized by value.
-- **Readable sign:** the toll stays at the mouth, lit, until the party returns; its hover names the
-  sum.
-- **Collision check:** the Blind Offering (Abyss) leaves an item in the dark for an unseen taker; the
-  Cold Ledger pays a dead man's debt. This prices a passage in advance, in light. New kind for him.
+## 7. Turn 1 rulings (owner, 2026-10-01) and ticket-out
 
-Tally if all three are admitted: Ohm 3 → 4, Zizzik 3 → 4, Mob'Unloo 3 → 4. No god above four.
+| Card item | Ruling | Ticket |
+|---|---|---|
+| 1. Build first | **Everything at once.** Slate rows 0 to 9 all go. | Decision taken by question card. One FOUNDRY item per package, below. |
+| 2. Animals | **All twelve**, every one a hydrocarbon organism that survives the Deep; the yolk is renamed **galuush** (typed, quoted in §3). | `LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1` |
+| 3. New marks | **Orun-Ghal only, revised**: an inhabitant to study and befriend, crystal-controlled, not a miner (typed, quoted in §5). The keel hoist went to `SHIP_CARGO_HOIST_DESIGN_1`. | `LANTERNDEEPS_ORUN_GHAL_BUILD_1` |
+| 4. Rites | **The Answering** (Ohm), added to register B8. Nine Faults kept and redesigned elsewhere. | `LANTERNDEEPS_ANSWERING_RITE_BUILD_1` |
 
-## 7. Owner turn-1 card (DRAFT, for BENCH to put)
+FOUNDRY items, each `--caused-by LANTERNDEEPS_BEDAZZLE_SITTING_1`:
 
-Four questions, plain words. Headers are 12 characters or fewer, for `AskUserQuestion`.
-
-**Q1 · header "Build first" · What should FOUNDRY build first for the Lantern Deeps?**
-- **The walking dead and the dead's gear (recommended).** Fill the caverns with the
-  well-equipped dead the sheet promises: exosuit corpses, cutting gear, power cells, dead droids.
-  Near an aware crystal, the dead droids stand up and work, and turn toward your light. Big build.
-  *Why: it is the biome's own picture, and today no Deep has a single corpse in it.*
-- **The safe light first.** The Lantern: one crystal whose light does not draw the cave's hunters.
-  Medium build, small and quick to see.
-- **New animals first.** Your picks from Q2. Medium to large.
-- **Commission everything at once.** Every ruled piece in one order. Largest and slowest to see.
-
-(Either way, the eight animals you remade on 2026-09-18 move into the free mod under our own
-names, already ruled. Today the free Deep has no animals at all, so its "light draws hunters" rule
-draws nothing.)
-
-**Q2 · header "New animals" · Which of the twelve new Deep animals do you want? (pick any)**
-You asked on 2026-09-18 to repopulate the Deeps with alien, oil-blooded life. Twelve were proposed
-and are still waiting. BENCH recommends five:
-- **Yolk (the giant, recommended).** A huge glowing sac stuck to a cavern ceiling, one per Deep. It
-  lights a whole chamber and is full of gas: kill it cold for a fortune in fuel; one spark and the
-  room comes down.
-- **Hush (recommended).** A predator you cannot see or shoot on unlit ground. Your lamp reveals it,
-  and your lamp is what draws everything else. *Why: today darkness is perfectly safe.*
-- **Knocker (recommended).** A blind grazer that drums before a roof falls; tamed, it warns you
-  of cave-ins.
-- **Candler (recommended).** The Deep's cow, milked for a cold wax that burns as fuel and spoils if
-  warmed.
-- **Sipper (recommended).** Tiny pests that cluster on your lamps and drink their light: fewer
-  hunters drawn, but you see less.
-- **All twelve** (adds drifter, tapper, pooler, blinker, chiller, slick, shoal; one line each in
-  `rosters/lantern_deeps_repopulation_proposals.md`).
-
-**Q3 · header "New marks" · Which of these new pieces do you want? (pick any)**
-- **Orun-Ghal, the giant (recommended).** A huge dead mining suit, its miner still inside, walked
-  by an aware crystal. It does not attack: repair it and it will cut a tunnel where you paint one,
-  then go back to kneel by its lantern. *Why: it is your sheet's picture of a dead miner's suit
-  walking toward a lantern, made into the Deep's giant.* Large build.
-- **Ithrix, learned tech (recommended).** A crystal bench that remembers one recipe your best
-  crafter shows it; weaker hands can then make it, a little worse, until the crystal cracks.
-  Medium build.
-- **The Standing Note (cave weather).** Sometimes the hum locks into one note; room shapes and
-  baffles you place decide where crystal grows fast and shatters easily, and where it is safe to mine.
-  Medium build.
-- **The Keel Hoist (ship).** Your parked ship anchors a cable down a cave mouth and winches heavy
-  cargo up; it cannot take off until reeled in. Medium build; BENCH thinks the need is small.
-
-**Q4 · header "Rites" · Which rites should the Deeps teach the Salvation? (pick any)**
-- **The Answering (Ohm, recommended).** A droid stands before an aware crystal while the clan
-  speaks its terms: its droids kept running, never wiped. *Why: Ohm's first agreement rather than
-  another feeding.*
-- **Zizzik's Nine Faults (Zizzik).** Deliberately break one good machine in front of everyone to
-  let the bad-luck god's spark out where you chose.
-- **The Lantern Toll (Mob'Unloo).** Pay the cave in light at its mouth before going down; the first
-  hunters come later.
-- **None for now.**
+| slate row | item |
+|---:|---|
+| 0 | `LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1` (Q12 port of the eight; darkness predators repointed) |
+| 1 | `LANTERNDEEPS_WORKING_DEAD_BUILD_1` (the well-provisioned dead, the Working Dead, the Shard-minds) |
+| 2 | `LANTERNDEEPS_LANTERN_LIGHT_BUILD_1` |
+| 3 | `LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1` |
+| 4 | `LANTERNDEEPS_CREEP_CLEAVERS_BUILD_1` |
+| 5 | `LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1` |
+| 6 | `LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1` |
+| 7 | `LANTERNDEEPS_ORUN_GHAL_BUILD_1` |
+| 8 | `LANTERNDEEPS_ANSWERING_RITE_BUILD_1` |
+| 9 | art: `infrastructure/artpipe/art_lists/lanterndeeps_bedazzle_cast.csv` |
