@@ -23,8 +23,11 @@ yet" — it always was.
     python3 src/RimMandrake/Utils/code_review_status.py list --show-untracked  # + files never entered at all
     python3 src/RimMandrake/Utils/code_review_status.py migrate-hashes   # one-time, see below
 
-The log (`infrastructure/state/CODE_REVIEW_STATUS.json`) is owned by this
-script — do not hand-edit it, the same convention as the ledger.
+The log (`infrastructure/state/code_review/<SEAT>.jsonl`, append-only records,
+one shard per seat, `merge=union`) is owned by this script — do not hand-edit
+it, the same convention as the ledger. It replaced the single
+`CODE_REVIEW_STATUS.json` on 2026-10-02 (git plan Phase 5); that file's 3,911
+entries were migrated once into `code_review/SEED.jsonl` and the JSON removed.
 
 🔴 SCALING REWRITE, owner ruling 2026-09-05 — "I think we need a different
 implementation for the clean/dirty code database... this isn't scaling
@@ -75,8 +78,19 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # discipline as rimflow's RIMFLOW_LEDGER/RIMFLOW_ITEMS — a selftest must never
 # run mark-clean/reopen against this repo's own real ledger.
 ROOT = os.environ.get("CODE_REVIEW_STATUS_ROOT") or os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-LOG_PATH = os.path.join(ROOT, "infrastructure", "state", "CODE_REVIEW_STATUS.json")
-LOCK_PATH = LOG_PATH + ".lock"
+# 🔴 APPEND-ONLY RECORDS, git plan Phase 5 (2026-10-02, design/RimMandrake/
+# git_migration_phase5_2026-10-02.md). The single CODE_REVIEW_STATUS.json was a
+# whole-file rewrite every seat committed, so every concurrent mark-clean was a
+# merge conflict (X2 replay: 15 conflicted commits at K=5). It is now one
+# append-only JSONL shard per seat under `code_review/`, merged by
+# `.gitattributes` `merge=union`; a record is
+#   {path, sha256, verdict: clean|dirty|pruned, ts, seat, sha, date, cleanCount}
+# and the CURRENT state of a path is its last record, ordered by (ts, seat, line).
+# `load()` still returns the old {path: entry} dict, so every reader is unchanged.
+# The old JSON was migrated once into `code_review/SEED.jsonl` and removed.
+REC_DIR = os.path.join(ROOT, "infrastructure", "state", "code_review")
+LOG_PATH = REC_DIR          # kept for messages/back-compat: the record directory
+LOCK_PATH = os.path.join(REC_DIR, ".lock")
 
 GIT_TIMEOUT = 8  # seconds. A hung/contended git call fails fast, never hangs the caller.
 
@@ -150,61 +164,139 @@ def locked():
         os.close(fd)
 
 
-def load():
-    if not os.path.isfile(LOG_PATH):
-        return {}
-    with open(LOG_PATH, "r", encoding="utf-8") as f:
+def _seat():
+    """Which shard this process appends to. Same order as rimflow's resolver
+    minus the refusal: a code-review record's seat is provenance, not a
+    permission, so an unresolvable seat writes to UNSEATED.jsonl rather than
+    blocking a review."""
+    import re as _re
+    for val in (os.environ.get("RIMFLOW_SEAT"), os.environ.get("AGENT_SEAT")):
+        if val and _re.fullmatch(r"[A-Za-z0-9_]+", val.strip()):
+            return val.strip().upper()
+    sid = os.environ.get("CLAUDE_SESSION_ID")
+    if sid:
         try:
-            return json.load(f)
-        except ValueError as e:
-            # A tracked file several windows commit: rebase conflict markers
-            # are a realistic input, and the answer is "the ledger is
-            # corrupt", not a traceback.
-            sys.exit("FAIL: %s is not valid JSON (merge conflict markers?): %s"
-                     % (LOG_PATH, e))
+            with open(os.path.join(ROOT, ".claude", "session_roles", sid), encoding="utf-8") as fh:
+                for w in fh.read().replace("-", " ").split():
+                    if w.upper() in ("BENCH", "FOUNDRY", "BUILD", "DECIDE", "OWNER"):
+                        return w.upper()
+        except OSError:
+            pass
+    return "UNSEATED"
+
+
+def _record_files():
+    try:
+        names = sorted(n for n in os.listdir(REC_DIR) if n.endswith(".jsonl"))
+    except FileNotFoundError:
+        return []
+    return [os.path.join(REC_DIR, n) for n in names]
+
+
+def read_records():
+    """Every record across every shard, in state order (ts, seat, file line).
+    Identical duplicate lines (a union merge of the same append) collapse."""
+    out, seen = [], set()
+    for fp in _record_files():
+        with open(fp, "r", encoding="utf-8") as f:
+            for i, line in enumerate(f):
+                line = line.strip()
+                if not line:
+                    continue
+                if line.startswith(("<<<<<<<", "=======", ">>>>>>>")):
+                    sys.exit("FAIL: %s holds merge conflict markers — the shards are "
+                             "merge=union and must never conflict; fix .gitattributes." % fp)
+                try:
+                    rec = json.loads(line)
+                except ValueError as e:
+                    sys.exit("FAIL: %s line %d is not valid JSON: %s" % (fp, i + 1, e))
+                if line in seen:
+                    continue
+                seen.add(line)
+                out.append(((rec.get("ts", ""), rec.get("seat", ""), os.path.basename(fp), i), rec))
+    out.sort(key=lambda t: t[0])
+    return [r for _, r in out]
+
+
+def _entry_from(rec):
+    e = {"sha": rec.get("sha", "unknown"), "date": rec.get("date", "unknown")}
+    if rec.get("sha256"):
+        e["hash"] = rec["sha256"]
+    if "cleanCount" in rec:
+        e["cleanCount"] = rec["cleanCount"]
+    if rec.get("verdict") == "dirty":
+        e["status"] = "dirty"
+    return e
+
+
+def load():
+    """-> {path: entry} — the current state, last record per path. Same shape
+    the single JSON file had, so codebase_health/project_maturity readers are
+    unchanged."""
+    data = {}
+    for rec in read_records():
+        path = rec.get("path")
+        if not path:
+            continue
+        if rec.get("verdict") == "pruned":
+            data.pop(path, None)
+        else:
+            data[path] = _entry_from(rec)
+    return data
+
+
+_last_ts = [0]
+
+
+def _ts():
+    # Strictly increasing within a process, so two records one call writes for
+    # the same path can never tie and reorder.
+    ns = max(time.time_ns(), _last_ts[0] + 1000)
+    _last_ts[0] = ns
+    return time.strftime("%Y-%m-%dT%H:%M:%S", time.gmtime(ns // 10**9)) + ".%06dZ" % ((ns % 10**9) // 1000)
+
+
+def _record(path, entry, seat, ts):
+    if entry is None:
+        return {"path": path, "sha256": None, "verdict": "pruned", "ts": ts, "seat": seat}
+    rec = {"path": path, "sha256": entry.get("hash"),
+           "verdict": "dirty" if entry.get("status") == "dirty" else "clean",
+           "ts": ts, "seat": seat,
+           "sha": entry.get("sha", "unknown"), "date": entry.get("date", "unknown")}
+    if "cleanCount" in entry:
+        rec["cleanCount"] = entry["cleanCount"]
+    return rec
+
+
+def append_records(recs, shard=None):
+    """Append records to this seat's shard: one O_APPEND write, fsynced. Never
+    rewrites an existing line — the shard is append-only (lint enforces it)."""
+    if not recs:
+        return
+    os.makedirs(REC_DIR, exist_ok=True)
+    fp = os.path.join(REC_DIR, (shard or _seat()) + ".jsonl")
+    body = "".join(json.dumps(r, sort_keys=True, ensure_ascii=False) + "\n" for r in recs)
+    fd = os.open(fp, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
+    try:
+        os.write(fd, body.encode("utf-8"))
+        os.fsync(fd)
+    finally:
+        os.close(fd)
 
 
 def save(data):
-    # Per-call unique tmp name + lock + os.replace, same discipline as
-    # rimflow.model.write_bridge_file / atomic_copy: a fixed "<path>.tmp"
-    # truncates whatever a concurrent writer already put there (O_TRUNC
-    # fires at open(), before any lock), and an interrupt mid-write must
-    # never leave truncated/partial JSON where load() will raise on it.
-    tmp = "%s.tmp.%d.%d" % (LOG_PATH, os.getpid(), time.time_ns())
-    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
-    try:
-        try:
-            fcntl.flock(fd, fcntl.LOCK_EX)
-            try:
-                body = json.dumps(data, indent=2, sort_keys=True) + "\n"
-                os.write(fd, body.encode("utf-8"))
-                os.fsync(fd)
-            finally:
-                fcntl.flock(fd, fcntl.LOCK_UN)
-        finally:
-            os.close(fd)
-        os.replace(tmp, LOG_PATH)
-        # fsync the containing directory too: the rename itself is unsynced
-        # otherwise, and a crash could lose a clean mark the caller was told
-        # succeeded. drvfs may refuse directory fsync — degrade silently.
-        try:
-            dfd = os.open(os.path.dirname(LOG_PATH) or ".", os.O_RDONLY)
-            try:
-                os.fsync(dfd)
-            finally:
-                os.close(dfd)
-        except OSError:
-            pass
-    except BaseException:
-        # The unique tmp name means a leaked file is never overwritten and so
-        # never noticed — it just accumulates untracked next to the log, in a
-        # directory `git add` is aimed at by hand. Take it with us on any
-        # failure; os.replace has either happened (tmp gone) or has not.
-        try:
-            os.unlink(tmp)
-        except OSError:
-            pass
-        raise
+    """Make the current state equal `data` by APPENDING one record per path
+    whose entry changed (and a `pruned` record per path removed). Callers keep
+    the load-mutate-save shape under `locked()`; nothing is ever rewritten."""
+    current = load()
+    seat = _seat()
+    recs = []
+    for path in sorted(set(current) | set(data)):
+        new = data.get(path)
+        if new == current.get(path):
+            continue
+        recs.append(_record(path, new, seat, _ts()))
+    append_records(recs)
 
 
 def repo_rel(path):

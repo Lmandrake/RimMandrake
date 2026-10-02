@@ -184,7 +184,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
 
   // The headline callout used to be static prose written when green was
   // genuinely 0 — it kept saying "not one file has ever been marked clean"
-  // long after CODE_REVIEW_STATUS.json grew hundreds of entries (caught
+  // long after the code-review records (code_review/*.jsonl) grew hundreds of entries (caught
   // 2026-09-04). Compute it from the live counts every render instead.
   (function(){
     var green = D.counts.green || 0, total = D.counts.total || 0;
@@ -194,14 +194,14 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
     if (green === 0) {
       numEl.textContent = "0";
       textEl.innerHTML = '<strong>Not one file has ever been marked review-clean.</strong> ' +
-        'The doctrine exists — <span class="mono">CODE_REVIEW_STATUS.json</span> is named as ' +
+        'The doctrine exists — <span class="mono">code_review/*.jsonl</span> is named as ' +
         'the only thing that makes a file clean — but the recorded-entry count is zero. So the ' +
         'green band below is empty, and that is a true reading, not a broken tool.';
     } else {
       numEl.textContent = pct + "%";
       textEl.innerHTML = '<strong>' + green.toLocaleString() + ' of ' + total.toLocaleString() +
         ' files (' + D.reviewEntries.toLocaleString() + ' recorded review entries)</strong> ' +
-        'are marked review-clean in <span class="mono">CODE_REVIEW_STATUS.json</span> — the rest ' +
+        'are marked review-clean in <span class="mono">code_review/*.jsonl</span> — the rest ' +
         'are dirty by CLAUDE.md\'s default, not a broken tool.';
     }
   })();

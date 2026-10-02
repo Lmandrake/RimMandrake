@@ -18,7 +18,7 @@ call (or the artpipe validator's, for a fresh generation).
 USAGE
     python3 src/RimMandrake/Utils/probe_png_wellformed.py <path> [<path> ...]
     python3 src/RimMandrake/Utils/probe_png_wellformed.py --dirty-from-status
-        # reads infrastructure/state/CODE_REVIEW_STATUS.json's own `check`
+        # reads the code-review records' own `check`
         # output is NOT what this reads from (that's git-status-backed and
         # slow at scale) -- this flag instead globs every tracked .png and
         # calls `code_review_status.py check` in one batched subprocess,
@@ -100,10 +100,12 @@ def probe_one(path: Path) -> tuple[bool, str]:
 
 
 def _tracked_dirty_pngs() -> list[str]:
-    """PNG paths currently recorded DIRTY in CODE_REVIEW_STATUS.json, via one
-    batched `check` call (never one subprocess per path — see module docstring)."""
-    import json
-    status = json.loads((REPO_ROOT / "infrastructure/state/CODE_REVIEW_STATUS.json").read_text())
+    """PNG paths currently recorded DIRTY in the code-review records
+    (`infrastructure/state/code_review/*.jsonl`, read via code_review_status.load()),
+    via one batched `check` call (never one subprocess per path)."""
+    sys.path.insert(0, str(STATUS_SCRIPT.parent))
+    import code_review_status as CRS
+    status = CRS.load()
     all_pngs = [p for p in status if p.endswith(".png")]
     if not all_pngs:
         return []
@@ -141,7 +143,7 @@ def main():
 
     if args.dirty_from_status:
         paths = _tracked_dirty_pngs()
-        print(f"probing {len(paths)} DIRTY .png file(s) from CODE_REVIEW_STATUS.json", file=sys.stderr)
+        print(f"probing {len(paths)} DIRTY .png file(s) from the code-review records", file=sys.stderr)
     else:
         paths = args.paths
     if not paths:
