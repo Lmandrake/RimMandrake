@@ -38,6 +38,11 @@ Mob'Unloo delta. **Imperial Heat is never changed by this rite** (the K2 rule "H
      itself lives outside the save in `GM_BLACKBOARD_SHADOW_M4_1`; this item emits the hold-off event only.
      🔴 The vanilla-side Empire raid gate is UNMEASURED (read the incident path in RimSage first, as in the
      effigy item).
+   - **Other raids come less often on this map** (owner, by question card 2026-10-02 06:28 PDT: keep the
+     raid lull beside the Empire hold-off). A `GameConditionDef` `RUT_TarLull_Raids` (days left visible)
+     that a Harmony postfix on the storyteller's raid roll reads; it covers non-Empire factions. 🔴 Mechanism
+     UNMEASURED: read the storyteller threat comps and the campaign's raid-pacing governors
+     (`required_mods.md`) in RimSage / their source before choosing the hook.
    - **Ownership erased, widely.** Through `PROPERTY_CLAIM_ERASE_API_1`, wipe every other party's
      stored claim on almost everything the colony owns on this map: items, buildings, animals, droids
      and mechs. "Almost" is BENCH's reading, kept as a Mod Settings exclusion list, default: humanlike
@@ -65,7 +70,7 @@ Mob'Unloo delta. **Imperial Heat is never changed by this rite** (the K2 rule "H
    material reward; favour shows through events and odds only, no hediff or stat. One kind of heat:
    "Imperial Heat" is the Empire's attention, not temperature; nothing here touches temperature.
 7. **Mod Settings.** On/off for the rite and for each rider and each base effect; value floor; the shared
-   Empire hold-off multiplier (default 5) and normal interval; beast-lull days; trap count (default 3); the
+   Empire hold-off multiplier (default 5) and normal interval; raid-lull days and strength; beast-lull days; trap count (default 3); the
    ownership exclusion list.
 
 Depends on: `SALVATION_RITES_UNIFICATION_1` (found-rite machinery, `RUT_ResearchMod_GrantRite`),
@@ -84,7 +89,8 @@ All deterministic state reads through debug `[Tool]`s, recorded as cases in
   normally.
 - Any Sinking: the map holds `RUT_ImperialHoldOff` with 5 x the configured interval left and the next
   scheduled Imperial incident's tick has moved out 5x, with the Heat-event component showing no Heat change;
-  Ninefold holds one Ishko delta tagged "The Sinking"; an item seeded with a foreign `Stolen` claim reads only the colony's claim
+  the map holds `RUT_TarLull_Raids` with its days left and a seeded non-Empire raid roll reads the lowered
+  chance; Ninefold holds one Ishko delta tagged "The Sinking"; an item seeded with a foreign `Stolen` claim reads only the colony's claim
   afterwards, a colonist pawn's records are untouched, and the letter names the item.
 - The offered Thing is destroyed (no longer spawned or held); trying to offer a pawn or corpse is refused
   with a reason line; no new hediff or stat on any participant.
