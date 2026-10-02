@@ -539,6 +539,16 @@ TIERS["weepingstones_solo"] = {
     "dlc": True,
 }
 
+TIERS["ishko"] = {
+    "why": "NORTHSTAR_ISHKO_PILOT_1: the north-star script for IshkoDarkLandmarks "
+           "(mandrake.rut.ishkolandmarks): three Odyssey LandmarkDefs plus "
+           "mandrake.rut.ashkarrlandmarkart, which supplies their icon textures. Nothing "
+           "else, so a GREEN is this mod's. All five DLCs (Odyssey is its dependency) "
+           "and Harmony resolve automatically.",
+    "want": [BRIDGE, "mandrake.rut.ashkarrlandmarkart", "mandrake.rut.ishkolandmarks"],
+    "dlc": True,
+}
+
 
 def resolve_tier(name, installed):
     """(ordered packageIds, missing, refusals) for a tier -- the exact list --apply
