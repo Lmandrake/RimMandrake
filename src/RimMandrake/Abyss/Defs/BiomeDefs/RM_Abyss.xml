@@ -108,7 +108,7 @@
       <AA_NightRam MayRequire="sarg.alphaanimals">0.09</AA_NightRam>  <!-- nightram - large, keep -->
       <AA_ShadowCharger MayRequire="sarg.alphaanimals">0.09</AA_ShadowCharger>  <!-- shadow charger - large, keep -->
       <AA_Thunderox MayRequire="sarg.alphaanimals">0.09</AA_Thunderox>  <!-- thunderox - large, keep -->
-      <AA_SandProwler MayRequire="sarg.alphaanimals">0.075</AA_SandProwler>  <!-- sand prowler - medium-pred, keep -->
+      <RM_Vosska MayRequire="mandrake.rm.longshade">0.075</RM_Vosska>  <!-- sand prowler - medium-pred, keep -->
       <AA_Frostling MayRequire="sarg.alphaanimals">0.05</AA_Frostling>  <!-- frostling - medium-pred, import -->
       <AA_Darkbeast MayRequire="sarg.alphaanimals">0.005</AA_Darkbeast>  <!-- darkbeast - medium, keep -->
     </wildAnimals>
