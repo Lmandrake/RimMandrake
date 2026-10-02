@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-02T01:58:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-02T02:07:36Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -447,7 +447,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  owner ruling 2026-09-17 — do not build this on spec
+summary:  Built as a provisional seed — 2026-10-01, 8463a2734
 prose:    infrastructure/state/items/NORTHSTAR_MOTION_FRAMES_1.md
 
 ## NORTH_STAR_ATMOSPHERIC_TBD_1 TBD by owner ruling 2026-09-17: how the ship-lighting north star bars get automated waits on live play. Verbatim: 'I am not sure we should worry about how to automate these tests at this time. please stop the north star definition here and file it as TBD for now in terms of these highly subtle nuances until we can play with it live first.' The AtmosphericBase checklist is FINISHED as intent (23 bars, stays DRAFT, binds nothing) and must not be refined further - no new bars, no rewording, no nuance-chasing. NORTHSTAR_MOTION_FRAMES_1's frame-sequence judge and the material-cache count that replaced the smooth-fade bar are recorded work and are NOT to be built on spec for this mod. Reopens when he has played it
@@ -1109,3 +1109,13 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SHIP_CARGO_HOIST_DESIGN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SHIP_CARGO_HOIST_DESIGN_1.md
+
+## GODS_NOT_EVIL_SWEEP_1 No god is evil: remove 'evil' god framing from the pantheon canon and the ~25 docs/code comments listed in nine_faults_permanent_rite_2026-10-01.md section 8 (decision taken by question card)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     design
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GODS_NOT_EVIL_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GODS_NOT_EVIL_SWEEP_1.md
