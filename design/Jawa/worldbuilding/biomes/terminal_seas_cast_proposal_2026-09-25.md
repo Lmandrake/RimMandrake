@@ -6,7 +6,7 @@ Verdicts:
 1. **All 14 creatures APPROVED** as proposed (decision taken by question card).
 2. **Grey Sea catch: the newer sea law wins** — the Grey's catch is brine chemistry-life, essarn common + sorruth uncommon (card). FISH_BY_BIOME_1's no-fish ruling for the Grey is superseded.
 3. **Propane Lake is fishable** — heemin common + oovanam uncommon dredge become the propane catch (card).
-4. **There is NO two-biome Propane structure — no new shelf def, no change.** Owner, typed, verbatim: *"No. There is body of liquid called the propane lake. Then there was an alpha biome called propane lakes that we are redoing. That's not. No change. Just confusing words."* The section below is kept only as the record of a dissolved question; hoolen lives on `RM_PropaneLake`'s `wildAnimals` beside the existing flyer placements. The donor-terrain replacement (`RM_PropaneLakeDeep`/`RM_SolidPropane` for the `AB_*` terrains) remains BENCH's standing reading of the donor rulings — unconfirmed by this sitting, applied as build detail.
+4. **There is NO two-biome Propane structure — no new shelf def, no change.** Owner, typed, verbatim: *"No. There is body of liquid called the propane lake. Then there was an alpha biome called propane lakes that we are redoing. That's not. No change. Just confusing words."* The section below is kept only as the record of a dissolved question; hoolen lives on `RM_TheChill`'s `wildAnimals` beside the existing flyer placements. The donor-terrain replacement (`RM_TheChillDeep`/`RM_SolidPropane` for the `AB_*` terrains) remains BENCH's standing reading of the donor rulings — unconfirmed by this sitting, applied as build detail.
 5. **Fish retier: YES** — the invented `RUT_` fish names (Eesh…Ekkel, Niim…Tikkarr) move to `RM_` defNames as their files move into `mandrake.rm.terminalbiomes` (card).
 6. **noohm stands** — a gel-bodied jelly-analog counts as a slime for the naming law (card).
 
@@ -30,7 +30,7 @@ describes BOTH its floor and its catch: each sea species owes a floor resident i
 animals; the Grey Sea and Propane Lake have **no `fishTypes` anywhere** and 2 floor animals
 each. Worse for the standalone requirement: after the §3 wildAnimals split the `RM_` defs keep
 only their donor rows — `RM_TheScald` **zero**, `RM_TwilightSea` and `RM_GreySea` **one each**
-(`AA_Aerofleet`), `RM_PropaneLake` two (`AA_AuroraSylph`, `AA_Skyeel`) — against the standing
+(`AA_Aerofleet`), `RM_TheChill` two (`AA_AuroraSylph`, `AA_Skyeel`) — against the standing
 law that the free mod must be rich enough to stand alone. The rosters commissioned `new_defs`
 for exactly these holes and nothing has built or even *named* most of them. This proposal names
 them.
@@ -121,7 +121,7 @@ no stops).
 | **hoolen** | 2 | ice-sheet rim skimmer for the SURFACE face (§ structure below): runs the frozen sheets between lake pools, licking condensed fuel frost | no — surface `wildAnimals`, not a catch | 0.15 | 0.4 | long-legged, wide-footed silhouette on black ice, faint blue combustion shimmer at the joints (a lesser Burner-line reading) |
 
 `fishTypes`, if ruled in, copies the Scald shape (`MayRequire="Ludeon.RimWorld.Odyssey"`)
-with heemin common and oovanam uncommon; if the −79 °C objection stands, `RM_PropaneLake`
+with heemin common and oovanam uncommon; if the −79 °C objection stands, `RM_TheChill`
 ships `fishTypes` absent with a comment saying so and both species stay floor-only —
 either way the lake's cast finally exists.
 
@@ -160,7 +160,7 @@ catch in `fishTypes`, no separate deep def:
   `RM_PropaneShelf` (new): the walkable SURFACE biome — frozen ice sheets carrying propane
   pools as local-map terrain patches (exactly the shape the donor `AB_PropaneLakes` itself
   uses — a land biome whose lake is a terrain patch, per the `LIQUID_BIOMES_MAP_1`
-  reconciliation finding). `RM_PropaneLake` (existing): the engine-water lake disc, carrying
+  reconciliation finding). `RM_TheChill` (existing): the engine-water lake disc, carrying
   the floor cast in `wildAnimals` and any catch in `fishTypes`, same one-def pattern as the
   other three seas. Honors his two-biome wording; adds one paint-list row; no third def.
 - **Option B — one def + terrain patches only.** Cheapest, but a walkable surface and an
@@ -176,7 +176,7 @@ catch in `fishTypes`, no separate deep def:
 Under Option A, hoolen (and the existing auvenn/hoozan flyer placements, which hang OVER the
 lake) would live on the shelf def's `wildAnimals`; vaunoom/heemin/oovanam on the lake def.
 ⚠️ Rides with fact 4: the lake def's donor terrains (`AB_PropaneLake`/`AB_SolidPropane`) get
-own-authored `RM_` equivalents (`RM_PropaneLakeDeep`, `RM_SolidPropane`) — BENCH's standing
+own-authored `RM_` equivalents (`RM_TheChillDeep`, `RM_SolidPropane`) — BENCH's standing
 reading of the three same-day donor rulings, **flagged for his confirmation**, and the shelf
 biome would use the same two terrains from the other side (solid propane walkable, lake
 liquid impassable).
