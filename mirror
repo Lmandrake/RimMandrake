@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# mirror — keep D:\Luke\dev\RimMandrake a writer-free export of origin/main; see src/RimMandrake/Utils/mirror.py
+exec python3 "$(dirname "$(readlink -f "$0")")/src/RimMandrake/Utils/mirror.py" "$@"
