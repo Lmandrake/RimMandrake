@@ -132,7 +132,9 @@
       "decision": "keep"
     },
     "AB_Agarilux": {
-      "decision": "keep"
+      "decision": "keep",
+      "regen": true,
+      "note": "Owner 2026-10-02: tolluk cap is too cartoonish and needs regeneration. Current art stays as INTERIM until the regen lands; then replace this one only."
     },
     "AB_ArbuscularMycorrhiza": {
       "decision": "keep"
@@ -191,5 +193,7 @@
   "approvedSaid": "The rot art is approved.",
   "approvalRoute": "Blanket approval in conversation, 2026-09-20, NOT row-by-row in the sheet. touchedBySheet was false and savedBy was 'prefill-script' at the moment of approval: every one of these 61 'keep' rows is the agent's own pre-fill, ratified wholesale by the owner's sentence. No row carries an individual owner judgement.",
   "frozen": true,
-  "frozenMeaning": "Owner approved the whole Rot art wave 2026-09-20. Blacklist posture, so every row keeps. Reopen only on his word."
+  "frozenMeaning": "Owner approved the Rot art wave 2026-09-20; re-reviewed 2026-10-02: 60 keep, 1 keep-as-interim (AB_Agarilux, regen owed). Reopen only on his word.",
+  "reviewedAt": "2026-10-02",
+  "reviewedSaid": "all are accepted except tolluk cap. It needs regeneration as too cartoonish. But please use it as interim while it's being regenerated, then replace just this one later."
 }

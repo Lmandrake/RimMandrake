@@ -1922,3 +1922,4 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"northstar pass 3","ts":"2026-10-02T05:12:42Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-02T05:40:53Z"}
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-02T05:45:03Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-10-02T12:18:19Z","tsn":1790943499251430748}
