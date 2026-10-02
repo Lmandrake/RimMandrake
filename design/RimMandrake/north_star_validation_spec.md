@@ -288,7 +288,44 @@ assertion could pass. That is §Why's defect in the time dimension.
   number was derived here and none is asserted. It is per line — a before/after
   pair settles an anger reaction; a rise-hold-release plainly needs three.
 
-Owed on `NORTHSTAR_MOTION_FRAMES_1`; nothing about the single-frame bars waits on it.
+#### 4b.1 Built — PROVISIONAL seed, 2026-10-01 (`NORTHSTAR_MOTION_FRAMES_1`)
+
+Authorised by the owner, 2026-10-01, overriding the 2026-09-17 deferral: *"There
+will be many such mods that require a human nearby to build proper northstar
+scripts. You are mostly seeding the field right now with reasonable initial
+guesses for refinement later through debugging needs or live feedback."* So
+everything here is a first guess, to be refined by live use — not a settled
+design. It does not touch the AtmosphericBase checklist, which stays as he left it.
+
+- **Walk syntax.** `` - [ ] `id` (change) — prose `` declares a change line;
+  `` `id` (state) `` or a bare id is a state line. Either checklist (`must show`
+  or `cannot show`) may carry the tag. `northstar.parse()` returns `kinds`
+  (`{id: "state" | "change"}`) and strips the tag from the prose the judge reads;
+  `northstar.kinds_for(walk)` returns them for a VALIDATED section only. The tag
+  sits inside the hashed section, so adding one to a validated walk reverts it to
+  DRAFT exactly like any other edit.
+- **Capture.** `t.capture_frames(n, every_ticks, name=None, rect=None)` in
+  `suite.py` takes `n` (≥ 2) screenshots `every_ticks` real ticks apart, through
+  the verified `wait_ticks`, and records the sequence with each frame's tick offset
+  on `component.sequences`. The frames also land in `component.screenshots`.
+- **Judge.** For a change line `judge.judge_component` builds ONE prompt listing
+  every frame in order, with its tick offset, and asks whether the sequence shows
+  the stated change; a relevant region that looks the same in every frame is NO.
+  The evidence is the component's last `capture_frames` sequence, or else all its
+  screenshots in capture order. Fewer than `judge.MIN_CHANGE_FRAMES` (2) frames is
+  `UNJUDGEABLE` and the model is not asked. State lines are unchanged: judged on
+  `shots[-1]`. `runner` passes `kinds` through `apply_judgement`.
+- **Test.** `modcheck/selftest_motion_frames.py` uses a fake judge that compares
+  frame bytes: a static sequence FAILS a "moves" bar, a changing one passes it, a
+  one-frame change line is UNJUDGEABLE, and a static sequence trips a `(change)`
+  cannot-show line. So the check is shown to be able to fail.
+- ⚠️ **Effect on a validated mod.** FlowWorks' validated walk already carried
+  12 `(change)` lines. They are now judged on sequences, so a FlowWorks component
+  that claims one with a single screenshot judges UNJUDGEABLE where it used to be
+  judged on its last frame.
+- **Still open:** the frame count per line (2 is a floor, not a measurement); and
+  `never_interpolated_colour` still needs a material-cache count, because a
+  sequence cannot settle smoothness.
 
 ## 5. What GREEN means, restated
 
@@ -397,6 +434,7 @@ with code-anchored `## must be true`.
 | 3 | `judge.py` + both halves required for green | `runner.apply_judgement` |
 | 4 | DRAFT/VALIDATED hash state; `modcheck validate` | `northstar.py`, `cli.py` |
 | 5 | the GREEN definition of §5 | `status.verdict_for`, `.claude/hooks/block_forged_validation.py` |
+| 5b | `(change)` lines judged on ordered frame sequences (§4b.1, PROVISIONAL seed 2026-10-01) | `northstar.kinds_for`, `suite.capture_frames`, `judge` sequence prompt |
 
 **Owed:**
 
