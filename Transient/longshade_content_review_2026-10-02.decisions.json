@@ -1,0 +1,51 @@
+{
+ "posture": "whitelist",
+ "reviewStatus": {
+  "state": "prefill",
+  "by": null,
+  "at": null,
+  "evidence": "agent pre-fill, no human has ruled"
+ },
+ "decisions": {
+  "maidenbloom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "shadespire": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "pavecrust": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "skarrok": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "vrekka": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "sippra": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "tazzok": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  },
+  "gloomcast_art": {
+   "decision": "keep",
+   "prefill": "keep",
+   "note": ""
+  }
+ }
+}
