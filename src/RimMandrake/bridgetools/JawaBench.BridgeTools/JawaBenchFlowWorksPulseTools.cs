@@ -5,9 +5,9 @@
 //                              returning the D/F vector after every pulse (owed tool 2)
 //   flowworks_excavation_rect  D/F/source/sink/terrain for every cell of a rect in ONE call
 //                              (owed tool 1; replaces ~80% of per-cell report polls, R10)
-//   flowworks_pit_report       the SUPERDEEP holder at a cell: innerContainer, EscapeBlocked,
-//                              EscapeAssisted, HasLadder (owed tool 3; replaces the
-//                              "absent from list_pawns" proxy in S7)
+//   flowworks_pit_report       a pit as the depth GRID sees it: D/F, pit width, ladder, room,
+//                              each pawn on the cell with the trap rule's verdict and real
+//                              CanReach to the lip (owed tool 3; SUPERDEEP_HOLDER_RETIRE_1)
 //
 // COUPLING: strictly by reflection, like the other two FlowWorks tool files - the companion
 // must register on a mod list WITHOUT FlowWorks, so every resolve failure is a loud Fail
@@ -18,11 +18,13 @@
 //     depthGrid / fillGrid (byte[] by CellIndices), private excavatedCells (HashSet<IntVec3>),
 //     private nextPulseTick, public IsSourceCell / IsSinkCell, SinkTransferredTotal,
 //     OverflowDestroyedTotal, ExcavatedCellCount, Stock.
-//   RM_SuperdeepCapture.HolderAt(Map, IntVec3) (static); RM_LadderUtility.HasLadder(Map, IntVec3).
-//   Building_OpenPit: public innerContainer, covered, DepthTier, MaxOccupants; protected
-//     virtual EscapeBlocked / EscapeAssisted (overridden by Building_SuperdeepPit).
+//   RM_SuperdeepTrap (static): IsHeld(Pawn), Captures(Pawn), RequiredWidth(Pawn),
+//     MeasuredPitWidth(Map, IntVec3); RM_LadderUtility.HasLadder(Map, IntVec3);
+//   RM_MapComponent_Excavation: internal SuperdeepTrap (RM_SuperdeepTrapState: IsJumper,
+//     DescentCount, RecentDescents), private fillGrid.
 //   RimMandrakeFlowWorksSettings: static depthEngineEnabled, superdeepCaptureEnabled,
-//     ladderRequiredToExitEnabled, PulseIntervalTicks, FlowPerPulse.
+//     ladderRequiredToExitEnabled, superdeepCapturesOwnFaction, pitWidthBodySizeMultiplier,
+//     PulseIntervalTicks, FlowPerPulse.
 // Flood_FlowWorks.cs and RM_LiquidStock.cs are NOT touched or referenced by type here.
 //
 // THREAD AFFINITY: everything that touches the map lives inside ctx.MainThread.InvokeAsync.
@@ -41,7 +43,7 @@ namespace JawaBench.BridgeTools
 {
     public sealed partial class JawaBenchTerrainTools
     {
-        private const string FwCaptureTypeName = "RimMandrake.FlowWorks.RM_SuperdeepCapture";
+        private const string FwTrapTypeName = "RimMandrake.FlowWorks.RM_SuperdeepTrap";
         private const string FwLadderTypeName = "RimMandrake.FlowWorks.RM_LadderUtility";
         private const int FwMaxPulses = 500;
         private const int FwMaxVectorCells = 4096;
@@ -401,22 +403,23 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/flowworks_pit_report",
             Description =
-                "Read-only: the SUPERDEEP holder (Building_SuperdeepPit, found by " +
-                "RM_SuperdeepCapture.HolderAt) at one cell - what it HOLDS (innerContainer, the " +
-                "direct proof a pawn was captured, instead of inferring it from the pawn being " +
-                "absent/unspawned), EscapeBlocked and EscapeAssisted (protected overrides, read by " +
-                "reflection on the runtime type: blocked = ladderRequiredToExitEnabled AND no " +
-                "ladder), HasLadder (RM_LadderUtility), depth tier, cover, and the cell's raw D. " +
-                "holderPresent=false is a real reading (no holder at that cell; expected anywhere " +
-                "D != 4 or with superdeepCaptureEnabled OFF), not a failure. Also lists every OTHER " +
-                "Building_OpenPit-family Thing on the cell so a legacy building pit is not mistaken " +
-                "for the holder.",
+                "Read-only: a pit as the GRID sees it (SUPERDEEP_HOLDER_RETIRE_1 - a pit is a canal " +
+                "cell dug to D=4; there is no holder Thing). Reports the cell's dug depth and fill, " +
+                "the widest square pit containing it, ladder, room, every pawn standing on it with " +
+                "the trap rule's inputs and verdict (BodySize, required width W, held, captured, " +
+                "jumper) and REAL reachability through the game's own Reachability.CanReach / " +
+                "CanReachMapEdge with the pawn's TraverseParms (so the trap veto patch is what is " +
+                "measured): how many D<4 lip cells around the pawn's D=4 component it can reach. " +
+                "legacyHolders lists any Thing on the cell named RM_SuperdeepPit or derived from " +
+                "Building_OpenPit (must be empty after the retirement). Also the map's descent " +
+                "counter and the last descents (pawn@cell tick fall damage).",
             ResultDescription =
-                "success, cell, mapId, depthRaw, holderPresent, holder{id, def, spawned, " +
-                "occupantCount, maxOccupants, occupants[{id, def, isPawn, dead, faction, " +
-                "holdingOwnerIsThisPit}], escapeBlocked, escapeAssisted, depthTier, covered, " +
-                "coverTier} or null, hasLadder, otherPits[{id, def, type}], settings" +
-                "{superdeepCaptureEnabled, ladderRequiredToExitEnabled}, ticksGame.")]
+                "success, cell, mapId, depthRaw, fillRaw, isSuperdeep, pitWidth, hasLadder, hasSpikes " +
+                "(null: no spikes def yet), room{id, role, isPrisonCell, cellCount, touchesMapEdge}, " +
+                "pawns[{id, def, spawned, dead, downed, faction, bodySize, requiredWidth, captured, " +
+                "jumper, held, lipCells, lipReachable, canReachMapEdge}], legacyHolders[{id, def, type}], " +
+                "descentCount, recentDescents[], settings{superdeepCaptureEnabled, " +
+                "ladderRequiredToExitEnabled, superdeepCapturesOwnFaction, pitWidthBodySizeMultiplier}, ticksGame.")]
         public static async Task<object> FlowWorksPitReport(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -434,92 +437,126 @@ namespace JawaBench.BridgeTools
                     return Fail("Cell " + c + " is out of bounds on map " + map.uniqueID
                         + " (size " + map.Size.x + "x" + map.Size.z + ").");
 
-                Type capture = GenTypes.GetTypeInAnyAssembly(FwCaptureTypeName);
+                Type trap = GenTypes.GetTypeInAnyAssembly(FwTrapTypeName);
                 Type ladder = GenTypes.GetTypeInAnyAssembly(FwLadderTypeName);
                 Type settings = GenTypes.GetTypeInAnyAssembly(FwSettingsTypeName);
-                MethodInfo holderAt = capture?.GetMethod("HolderAt", FwStatic, null, new[] { typeof(Map), typeof(IntVec3) }, null);
-                MethodInfo hasLadder = ladder?.GetMethod("HasLadder", FwStatic, null, new[] { typeof(Map), typeof(IntVec3) }, null);
                 var missing = new List<string>();
-                if (holderAt == null) missing.Add(FwCaptureTypeName + ".HolderAt(Map,IntVec3)");
+                MethodInfo hasLadder = ladder?.GetMethod("HasLadder", FwStatic, null, new[] { typeof(Map), typeof(IntVec3) }, null);
+                MethodInfo isHeld = trap?.GetMethod("IsHeld", FwStatic, null, new[] { typeof(Pawn) }, null);
+                MethodInfo captures = trap?.GetMethod("Captures", FwStatic, null, new[] { typeof(Pawn) }, null);
+                MethodInfo reqW = trap?.GetMethod("RequiredWidth", FwStatic, null, new[] { typeof(Pawn) }, null);
+                MethodInfo pitW = trap?.GetMethod("MeasuredPitWidth", FwStatic, null, new[] { typeof(Map), typeof(IntVec3) }, null);
                 if (hasLadder == null) missing.Add(FwLadderTypeName + ".HasLadder(Map,IntVec3)");
+                if (isHeld == null) missing.Add(FwTrapTypeName + ".IsHeld(Pawn)");
+                if (captures == null) missing.Add(FwTrapTypeName + ".Captures(Pawn)");
+                if (reqW == null) missing.Add(FwTrapTypeName + ".RequiredWidth(Pawn)");
+                if (pitW == null) missing.Add(FwTrapTypeName + ".MeasuredPitWidth(Map,IntVec3)");
                 if (settings == null) missing.Add(FwSettingsTypeName);
+                object comp = ResolveExcavationComponent(map, out Type type, out string cerr);
+                if (comp == null) missing.Add("RM_MapComponent_Excavation (" + cerr + ")");
                 if (missing.Count > 0) return Fail("FlowWorks members not found by reflection: " + string.Join(", ", missing));
 
-                int depthRaw = -1;
-                object comp = ResolveExcavationComponent(map, out Type type, out _);
-                if (comp != null && FwField(type, comp, "depthGrid", missing) is byte[] dg)
-                    depthRaw = dg[map.cellIndices.CellToIndex(c)];
-
-                Thing holder = holderAt.Invoke(null, new object[] { map, c }) as Thing;
+                int ci = map.cellIndices.CellToIndex(c);
+                byte[] dg = FwField(type, comp, "depthGrid", missing) as byte[];
+                byte[] fg = FwField(type, comp, "fillGrid", missing) as byte[];
+                object state = type.GetProperty("SuperdeepTrap", FwInst)?.GetValue(comp);
+                if (dg == null || fg == null || state == null)
+                    return Fail("Engine members not found by reflection: " + string.Join(", ", missing)
+                        + (state == null ? " SuperdeepTrap" : ""));
+                Func<IntVec3, bool> d4 = q => q.InBounds(map) && dg[map.cellIndices.CellToIndex(q)] >= 4;
                 bool ladderHere = (bool)hasLadder.Invoke(null, new object[] { map, c });
 
-                object holderRec = null;
-                if (holder != null)
+                // The pawn's D=4 component (8-connected) and its lip: standable D<4 cells touching it.
+                var comp4 = new HashSet<IntVec3>();
+                var lip = new List<IntVec3>();
+                if (d4(c))
                 {
-                    Type ht = holder.GetType();
-                    var owner = ht.GetField("innerContainer", FwInst)?.GetValue(holder) as ThingOwner;
-                    PropertyInfo pBlocked = ht.GetProperty("EscapeBlocked", FwInst);
-                    PropertyInfo pAssisted = ht.GetProperty("EscapeAssisted", FwInst);
-                    if (owner == null) missing.Add(ht.Name + ".innerContainer");
-                    if (pBlocked == null) missing.Add(ht.Name + ".EscapeBlocked");
-                    if (pAssisted == null) missing.Add(ht.Name + ".EscapeAssisted");
-                    if (missing.Count > 0) return Fail("Holder members not found by reflection: " + string.Join(", ", missing));
-                    var occupants = new List<object>();
-                    for (int i = 0; i < owner.Count; i++)
+                    var q = new Queue<IntVec3>();
+                    q.Enqueue(c); comp4.Add(c);
+                    while (q.Count > 0 && comp4.Count < 4000)
                     {
-                        Thing t = owner[i];
-                        occupants.Add(new
+                        IntVec3 cur = q.Dequeue();
+                        for (int i = 0; i < 8; i++)
                         {
-                            id = t.ThingID,
-                            def = t.def?.defName,
-                            isPawn = t is Pawn,
-                            dead = (t as Pawn)?.Dead,
-                            faction = t.Faction?.Name,
-                            holdingOwnerIsThisPit = ReferenceEquals(t.holdingOwner, owner)
-                        });
+                            IntVec3 n = cur + GenAdj.AdjacentCells[i];
+                            if (!n.InBounds(map)) continue;
+                            if (d4(n)) { if (comp4.Add(n)) q.Enqueue(n); }
+                            else if (n.Standable(map) && !lip.Contains(n)) lip.Add(n);
+                        }
                     }
-                    holderRec = new
-                    {
-                        id = holder.ThingID,
-                        def = holder.def?.defName,
-                        spawned = holder.Spawned,
-                        occupantCount = owner.Count,
-                        maxOccupants = ht.GetProperty("MaxOccupants", FwInst)?.GetValue(holder),
-                        occupants,
-                        escapeBlocked = (bool)pBlocked.GetValue(holder),
-                        escapeAssisted = (bool)pAssisted.GetValue(holder),
-                        depthTier = ht.GetField("DepthTier", FwInst)?.GetValue(holder)?.ToString(),
-                        covered = ht.GetField("covered", FwInst)?.GetValue(holder),
-                        coverTier = ht.GetField("CoverTier", FwInst)?.GetValue(holder)?.ToString()
-                    };
                 }
 
-                var otherPits = new List<object>();
+                var pawns = new List<object>();
+                foreach (Thing t in c.GetThingList(map).ToList())
+                {
+                    if (!(t is Pawn p)) continue;
+                    int reach = 0;
+                    if (p.Spawned)
+                    {
+                        TraverseParms tp = TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn);
+                        foreach (IntVec3 l in lip)
+                            if (map.reachability.CanReach(p.Position, l, Verse.AI.PathEndMode.OnCell, tp)) reach++;
+                    }
+                    pawns.Add(new
+                    {
+                        id = p.ThingID,
+                        def = p.def?.defName,
+                        spawned = p.Spawned,
+                        dead = p.Dead,
+                        downed = p.Downed,
+                        faction = p.Faction?.Name,
+                        bodySize = p.BodySize,
+                        requiredWidth = (int)reqW.Invoke(null, new object[] { p }),
+                        captured = (bool)captures.Invoke(null, new object[] { p }),
+                        jumper = (bool)(state.GetType().GetMethod("IsJumper", FwInst)?.Invoke(state, new object[] { p }) ?? false),
+                        held = (bool)isHeld.Invoke(null, new object[] { p }),
+                        lipCells = lip.Count,
+                        lipReachable = reach,
+                        canReachMapEdge = p.Spawned && map.reachability.CanReachMapEdge(p.Position,
+                            TraverseParms.For(p, Danger.Deadly, TraverseMode.ByPawn))
+                    });
+                }
+
+                var legacy = new List<object>();
                 foreach (Thing t in c.GetThingList(map))
                 {
-                    if (ReferenceEquals(t, holder)) continue;
-                    for (Type bt = t.GetType(); bt != null; bt = bt.BaseType)
-                        if (bt.Name == "Building_OpenPit")
-                        {
-                            otherPits.Add(new { id = t.ThingID, def = t.def?.defName, type = t.GetType().FullName });
-                            break;
-                        }
+                    bool isLegacy = t.def?.defName == "RM_SuperdeepPit";
+                    for (Type bt = t.GetType(); bt != null && !isLegacy; bt = bt.BaseType)
+                        if (bt.Name == "Building_OpenPit") isLegacy = true;
+                    if (isLegacy) legacy.Add(new { id = t.ThingID, def = t.def?.defName, type = t.GetType().FullName });
                 }
 
+                Room room = c.GetRoom(map);
+                var recent = state.GetType().GetField("RecentDescents", FwInst)?.GetValue(state) as List<string>;
                 return (object)new
                 {
                     success = true,
                     cell = new { x, z },
                     mapId = map.uniqueID,
-                    depthRaw,
-                    holderPresent = holder != null,
-                    holder = holderRec,
+                    depthRaw = (int)dg[ci],
+                    fillRaw = (int)fg[ci],
+                    isSuperdeep = dg[ci] >= 4,
+                    pitWidth = (int)pitW.Invoke(null, new object[] { map, c }),
                     hasLadder = ladderHere,
-                    otherPits,
+                    hasSpikes = (object)null,
+                    room = room == null ? null : new
+                    {
+                        id = room.ID,
+                        role = room.Role?.defName,
+                        isPrisonCell = room.IsPrisonCell,
+                        cellCount = room.CellCount,
+                        touchesMapEdge = room.TouchesMapEdge
+                    },
+                    pawns,
+                    legacyHolders = legacy,
+                    descentCount = state.GetType().GetField("DescentCount", FwInst)?.GetValue(state),
+                    recentDescents = recent == null ? new List<string>() : recent.ToList(),
                     settings = new
                     {
                         superdeepCaptureEnabled = settings.GetField("superdeepCaptureEnabled", FwStatic)?.GetValue(null),
-                        ladderRequiredToExitEnabled = settings.GetField("ladderRequiredToExitEnabled", FwStatic)?.GetValue(null)
+                        ladderRequiredToExitEnabled = settings.GetField("ladderRequiredToExitEnabled", FwStatic)?.GetValue(null),
+                        superdeepCapturesOwnFaction = settings.GetField("superdeepCapturesOwnFaction", FwStatic)?.GetValue(null),
+                        pitWidthBodySizeMultiplier = settings.GetField("pitWidthBodySizeMultiplier", FwStatic)?.GetValue(null)
                     },
                     ticksGame = TicksGameSafe()
                 };

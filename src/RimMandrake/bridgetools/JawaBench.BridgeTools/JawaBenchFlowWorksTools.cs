@@ -470,7 +470,8 @@ namespace JawaBench.BridgeTools
                 "uses (CANYON_FLOOD_ERASES_CANALS_1), so it obeys the engine's own clamps " +
                 "(LAW 1: depth only ever goes down; fill clamped 0<=F<=D) rather than " +
                 "poking the grid directly. deepenLevels=0 skips digging (drive fill on an " +
-                "already-excavated cell); setFill=-1 skips the fill write (dig only).",
+                "already-excavated cell); setFill=-1 skips the fill write (dig only); fillInLevels " +
+                "calls the engine's FillIn() (raise D) that many times.",
             ResultDescription =
                 "success, cell, depth (D after any deepen calls), fillSet (whether " +
                 "TrySetDriverFill was called and returned true), fill (F after), " +
@@ -483,7 +484,9 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "How many times to call Deepen() on this cell (0 = leave depth alone).")]
             int deepenLevels,
             [ToolParameter(Description = "Fill level to set via TrySetDriverFill (clamped 0<=F<=D by the engine). -1 = do not touch fill.")]
-            int setFill)
+            int setFill,
+            [ToolParameter(Description = "How many times to call the engine's FillIn() on this cell AFTER any deepen/fill (raises D by one each; the fill-in designator's own path). 0 = none.", DefaultValue = 0)]
+            int fillInLevels = 0)
         {
             return await ctx.MainThread.InvokeAsync(() =>
             {
@@ -506,6 +509,10 @@ namespace JawaBench.BridgeTools
                 bool fillSet = false;
                 if (setFill >= 0)
                     fillSet = (bool)type.GetMethod("TrySetDriverFill").Invoke(comp, new object[] { c, setFill });
+                MethodInfo fillInMethod = type.GetMethod("FillIn", new[] { typeof(IntVec3) });
+                if (fillInLevels > 0 && fillInMethod == null) return Fail("RM_MapComponent_Excavation.FillIn(IntVec3) not found");
+                for (int i = 0; i < fillInLevels; i++)
+                    depth = (byte)fillInMethod.Invoke(comp, cellArg);
 
                 byte fillNow = (byte)type.GetMethod("FillAt").Invoke(comp, cellArg);
 

@@ -13,20 +13,33 @@ namespace RimMandrake.FlowWorks.Pits
     // standing in the pit's occupied cells, and springs the trap once the sum
     // crosses the armed cover tier's rating.
     //
-    // Only live while the parent pit is COVERED (armed). An uncovered pit is
-    // an obvious hole, not a trap - see Building_OpenPit.
+    // Only live while the host is COVERED (armed). An uncovered pit is an
+    // obvious hole, not a trap.
+    //
+    // PIT_LEGACY_CODE_RETIRE_1 (2026-10-02): the host used to be the retired
+    // Building_OpenPit (a pit as a building). The comp now talks to any
+    // IPitCoverHost; no def carries it until PIT_COVER_FALL_REWIRE_1 builds
+    // the multi-cell cover over D=4 cells whose Spring drops pawns in.
+    public interface IPitCoverHost
+    {
+        bool Covered { get; }
+        bool Sprung { get; }
+        PitCoverTier CoverTier { get; }
+        void Spring(List<Pawn> fallers);
+    }
+
     public class CompPitCoverTrigger : ThingComp
     {
         private int ticksUntilScan;
 
         public CompProperties_PitCoverTrigger Props => (CompProperties_PitCoverTrigger)props;
 
-        private Building_OpenPit Pit => (Building_OpenPit)parent;
+        private IPitCoverHost Pit => parent as IPitCoverHost;
 
         public override void CompTick()
         {
             base.CompTick();
-            if (!Pit.Covered || Pit.Sprung) return;
+            if (Pit == null || !Pit.Covered || Pit.Sprung) return;
 
             if (--ticksUntilScan > 0) return;
             ticksUntilScan = Props.scanIntervalTicks;
@@ -39,11 +52,11 @@ namespace RimMandrake.FlowWorks.Pits
         // unchanged.
         public void RunScan()
         {
-            if (!Pit.Covered || Pit.Sprung) return;
-            // Mod option: coarse gate, PitsSettings.trapTriggerEnabled. Off means
-            // an armed cover simply never sums mass or springs - no NRE, arming/
+            if (Pit == null || !Pit.Covered || Pit.Sprung) return;
+            // Mod option: coarse gate, trapTriggerEnabled. Off means an armed
+            // cover simply never sums mass or springs - no NRE, arming/
             // disarming still work, the pit just never fires on its own.
-            if (!PitsSettings.trapTriggerEnabled) return;
+            if (!RimMandrakeFlowWorksSettings.trapTriggerEnabled) return;
 
             float summedMass = 0f;
             List<Pawn> onCover = new List<Pawn>();
@@ -71,7 +84,7 @@ namespace RimMandrake.FlowWorks.Pits
                 }
             }
 
-            float threshold = Pit.CoverTier.TriggerMassKg() * PitsSettings.trapSensitivityMultiplier;
+            float threshold = Pit.CoverTier.TriggerMassKg() * RimMandrakeFlowWorksSettings.trapSensitivityMultiplier;
             if (onCover.Count > 0 && summedMass >= threshold)
             {
                 Pit.Spring(onCover);

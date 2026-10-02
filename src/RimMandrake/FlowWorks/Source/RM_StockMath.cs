@@ -6,11 +6,10 @@ namespace RimMandrake.FlowWorks
 	/// The arithmetic of the source stock model (flowworks_mod_definition.md §5),
 	/// with every Verse and UnityEngine dependency removed.
 	///
-	/// WHY THIS FILE IS SEPARATE FROM <see cref="RM_LiquidStock"/>. The Pits
-	/// selftest (Source/Pits/SelfTest/) names its own weakness in its header: the
-	/// escape-chance formula there is a HAND TRANSCRIPTION of the real method,
-	/// so it keeps passing against the old formula if the real one changes. That
-	/// trap is avoidable here. These are the numbers §5 actually specifies — the
+	/// WHY THIS FILE IS SEPARATE FROM <see cref="RM_LiquidStock"/>. A selftest that
+	/// tests a HAND TRANSCRIPTION of the real method keeps passing against the old
+	/// formula if the real one changes (the retired Pits selftest did exactly
+	/// that). That trap is avoidable here. These are the numbers §5 actually specifies — the
 	/// 5:1 budget, the refill accrual, the supported-cell count, the recession
 	/// order and the credit/debit primitives — and none of them needs a Map, a
 	/// Thing or an IntVec3 to be stated. Pulling them into a plain-C# static

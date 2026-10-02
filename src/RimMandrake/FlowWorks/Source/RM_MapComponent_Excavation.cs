@@ -158,6 +158,14 @@ namespace RimMandrake.FlowWorks
 				&& depthGrid[map.cellIndices.CellToIndex(c)] >= RM_ExcavationDepth.Superdeep;
 		}
 
+		/// <summary>SUPERDEEP_HOLDER_RETIRE_1. The DUG depth only (0 for natural
+		/// liquid and undug ground) — what the trap rule and the descent detector
+		/// read, for the same reason <see cref="IsSuperdeepExcavation"/> does.</summary>
+		public int ExcavatedDepthAt(IntVec3 c)
+		{
+			return c.InBounds(map) ? depthGrid[map.cellIndices.CellToIndex(c)] : 0;
+		}
+
 		/// <summary>Every excavated cell at D = 4. Walks the excavated set, not
 		/// the whole map.</summary>
 		public IEnumerable<IntVec3> SuperdeepCells()
@@ -225,8 +233,13 @@ namespace RimMandrake.FlowWorks
 			Scribe_Deep.Look(ref stock, "RM_liquidStock");
 			Scribe_Values.Look(ref rainAccumulator, "RM_rainAccumulator", 0f);
 			Scribe_Values.Look(ref sinkTransferredTotal, "RM_sinkTransferredTotal", 0f);
+			Scribe_Deep.Look(ref superdeepTrap, "RM_superdeepTrap");
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
+				if (superdeepTrap == null)
+				{
+					superdeepTrap = new RM_SuperdeepTrapState();
+				}
 				EnsureGrids();
 				if (originalTerrain == null)
 				{
@@ -254,10 +267,10 @@ namespace RimMandrake.FlowWorks
 				stock = new RM_LiquidStock();
 			}
 			stock.RebuildIndex(map);
-			// PHASE 5. Grow the SUPERDEEP holders a save predating this phase
-			// never had, and shed the ones a save has if capture is now off.
-			RM_SuperdeepCapture.SyncMap(map, this);
-			syncedCaptureEnabled = RimMandrakeFlowWorksSettings.superdeepCaptureEnabled;
+			// SUPERDEEP_HOLDER_RETIRE_1: a save written while the holder Thing
+			// existed carries RM_SuperdeepPit Things; the def is gone, so the
+			// loader drops them ("Could not load reference") — nothing to shed.
+			superdeepTrap.ResetDetector();
 		}
 
 		/// <summary>A save written before this grid existed has dug cells on the
@@ -398,11 +411,11 @@ namespace RimMandrake.FlowWorks
 				map.terrainGrid.SetTerrain(c, want);
 			}
 			// PHASE 5, ruling 26. The last cut is the one that makes the cell a
-			// trap, so the holder arrives with it and not before.
+			// trap. SUPERDEEP_HOLDER_RETIRE_1: the trap is the grid byte itself
+			// (RM_SuperdeepTrap); no Thing is created by digging.
 			if (d >= RM_ExcavationDepth.Superdeep)
 			{
 				superdeepCellCount++;
-				RM_SuperdeepCapture.EnsureHolder(map, c);
 			}
 			return d;
 		}
@@ -472,14 +485,12 @@ namespace RimMandrake.FlowWorks
 			int displaced = RM_StockMath.DisplacedLevels(d, f);
 			depthGrid[i] = newD;
 			fillGrid[i] = (byte)(f - displaced);
-			// PHASE 5. A cell raised out of SUPERDEEP stops being a trap, so its
-			// holder goes with it. Destroy (not Despawn) because
-			// Building_OpenPit.Destroy is what puts an occupant back on the map
-			// instead of voiding them — the earth comes in and they come out.
+			// PHASE 5. A cell raised out of SUPERDEEP stops being a trap: the
+			// grid byte drops and the trap rule stops applying on the next read.
+			// Nobody is in a container, so nobody needs dropping out.
 			if (d >= RM_ExcavationDepth.Superdeep)
 			{
 				superdeepCellCount--;
-				RM_SuperdeepCapture.RemoveHolder(map, c);
 			}
 			if (newD == RM_ExcavationDepth.Surface)
 			{
@@ -746,19 +757,18 @@ namespace RimMandrake.FlowWorks
 
 		// ── the pulse ─────────────────────────────────────────────────────
 
-		/// <summary>PHASE 5. What <see cref="RM_SuperdeepCapture.SyncMap"/> was last
-		/// run against, so flipping the capture toggle mid-game takes effect
-		/// without a reload and costs one bool compare per tick otherwise.
-		/// Deliberately NOT scribed: a load runs FinalizeInit's sync anyway.</summary>
-		private bool syncedCaptureEnabled = true;
+		/// <summary>SUPERDEEP_HOLDER_RETIRE_1. The descent detector and the
+		/// jumper set. Per-map state lives here so it scribes with the grid.</summary>
+		private RM_SuperdeepTrapState superdeepTrap = new RM_SuperdeepTrapState();
+
+		internal RM_SuperdeepTrapState SuperdeepTrap => superdeepTrap;
 
 		public override void MapComponentTick()
 		{
 			base.MapComponentTick();
-			if (syncedCaptureEnabled != RimMandrakeFlowWorksSettings.superdeepCaptureEnabled)
+			if (superdeepCellCount > 0)
 			{
-				syncedCaptureEnabled = RimMandrakeFlowWorksSettings.superdeepCaptureEnabled;
-				RM_SuperdeepCapture.SyncMap(map, this);
+				superdeepTrap.Tick(map, this);
 			}
 			if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
 			{

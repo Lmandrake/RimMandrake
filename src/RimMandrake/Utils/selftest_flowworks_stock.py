@@ -2,18 +2,18 @@
 """Wrapper for the C# selftest of the FlowWorks source stock model (§5).
 
 `selftest_*.py` is the established convention for fast, offline, pre-commit
-tests (see selftest_validate_patch.py for the canonical example, and
-selftest_pit_logic.py for the other C# one). What this covers -
-FlowWorks/Source/RM_StockMath.cs, the arithmetic of
-design/RimMandrake/flowworks_mod_definition.md section 5's source stock model -
-is C#, not Python, and this project has no xUnit/NUnit precedent. So the
+tests (see selftest_validate_patch.py for the canonical example). What this
+covers - FlowWorks/Source/RM_StockMath.cs, the arithmetic of
+design/RimMandrake/flowworks_mod_definition.md section 5's source stock model,
+and FlowWorks/Source/RM_PitTrapMath.cs, the pit-width trap rule
+(SUPERDEEP_HOLDER_RETIRE_1) - is C#, not Python, and this project has no xUnit/NUnit precedent. So the
 actual test lives in a small standalone net8.0 console app needing no
 RimWorld/Unity assemblies: FlowWorks/Source/SelfTest/.
 
-WHAT MAKES THIS ONE STRONGER THAN ITS SIBLING: selftest_pit_logic.py's project
-hand-extracts its escape-chance formula and says so in its header - it keeps
-passing against the old formula if the real method changes. This project
-extracts NOTHING. RM_StockMath.cs is the production file the shipping mod
+WHAT MAKES THIS ONE STRONG: the retired Pits selftest (selftest_pit_logic.py,
+deleted with the building pit 2026-10-02) hand-extracted its escape-chance
+formula, so it kept passing against the old formula if the real method changed.
+This project extracts NOTHING. RM_StockMath.cs is the production file the shipping mod
 compiles, pulled into the test project directly, so the 5:1 budget, the
 seepage/rain/season refill, the supported-cell floor, the recession ordering
 and the credit/debit primitives are all covered for real.

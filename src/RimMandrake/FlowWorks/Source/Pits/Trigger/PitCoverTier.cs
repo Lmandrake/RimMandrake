@@ -1,8 +1,8 @@
 namespace RimMandrake.FlowWorks.Pits
 {
     // Cover tiers, section 3 of covered_pit_traps_spec.md - the player's
-    // targeting knob, chosen when arming an open pit (Building_OpenPit's
-    // "Arm Cover" gizmos), NOT baked into the pit's ThingDef:
+    // targeting knob, chosen when arming a cover over D=4 cells, NOT baked
+    // into a ThingDef:
     //   Woven scrap        ~40kg  - humansized-and-up falls
     //   Plank & lattice    ~120kg - heavies/mechs/big game fall
     //   Reinforced frame   ~220kg - only monsters and vehicles fall

@@ -77,7 +77,6 @@ PULSE_PIN = 60             # RimMandrakeFlowWorksSettings.PulseIntervalTicks cla
 PULSE_SHIPPED = 250
 
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
-S_PITS = "RimMandrake.FlowWorks.Pits.PitsSettings"
 S_RIVER = "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings"
 
 # Shipped defaults (O2 cross-checks these against the C# initializers AND Scribe defaults).
@@ -89,13 +88,20 @@ BOOL_DEFAULTS = {
                edgeSinksEnabled=True, superdeepCaptureEnabled=True, superdeepCapturesOwnFaction=False,
                ladderRequiredToExitEnabled=True, superdeepShootingRuleEnabled=True,
                bottleLoopEnabled=True, bottleDirtyStageEnabled=True, tankLoopEnabled=True,
-               liquidDrillingEnabled=True, typedLiquidShoresEnabled=True),
-    S_PITS: dict(trapTriggerEnabled=True, fallDamageEnabled=True, escapeEnabled=True,
-                 pitCellExposureEnabled=True),
+               liquidDrillingEnabled=True, typedLiquidShoresEnabled=True,
+               trapTriggerEnabled=True, fallDamageEnabled=True),    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
-                  "minLimitlessBodyCells": 50.0}
+                  "minLimitlessBodyCells": 50.0, "pitWidthBodySizeMultiplier": 1.0,
+                  "trapSensitivityMultiplier": 1.0, "fallDamageMultiplier": 1.0}
+# PIT_LEGACY_CODE_RETIRE_1: every def the building-pit model shipped (26). O1 asserts each is ABSENT.
+RETIRED_PIT_DEFS = (["RM_OpenPit_" + n for n in ("Bare", "Spiked", "Oiled", "Poison", "Water", "Oubliette")]
+                    + ["RM_PitDigSite_Shallow_" + n for n in ("Bare", "Spiked", "Oiled", "Poison", "Water", "Oubliette")]
+                    + ["RM_PitDigSite_Deep_Bare", "RM_PitDigSite_Chasm_Bare", "RM_PitDigSite_CellSingle",
+                       "RM_PitDigSite_CellDouble", "RM_PitCell_Single", "RM_PitCell_Double",
+                       "RM_PitDigSiteBase", "RM_OpenPitBase", "RM_PitCellBase",
+                       "RM_DigPitDeeper", "RM_PinnedInPit", "RM_SuperdeepPit"])
 
 
 # ============================================================================ the pulse oracle
@@ -390,6 +396,37 @@ BODIES = {
 }
 
 
+# ============================================================================ the pit-width oracle
+# SUPERDEEP_HOLDER_RETIRE_1 (owner Q4, 2026-10-02: "The pit has to be as wide as the creature to hold
+# it. Otherwise it gets out."). A Python port of Source/RM_PitTrapMath.cs; the C# SelfTest cases
+# PitWidth_* are the authority, O10 re-asserts the item's matrix here so the live predictions use it.
+def required_width(body_size, mult=1.0):
+    b = body_size * (mult if mult > 0 else 1.0)
+    if not b > 0:
+        return 1
+    return max(1, min(9, int(math.floor(math.sqrt(b) + 0.5))))      # round half AWAY from zero
+
+
+def pit_width_at(cells, c, w):
+    cells = set(cells)
+    if c not in cells:
+        return False
+    return any(all((ox + dx, oz + dz) in cells for dx in range(w) for dz in range(w))
+               for ox in range(c[0] - w + 1, c[0] + 1) for oz in range(c[1] - w + 1, c[1] + 1))
+
+
+def measured_pit_width(cells, c):
+    w = 0
+    while w < 9 and pit_width_at(cells, c, w + 1):
+        w += 1
+    return w
+
+
+def pit_held(cells, c, body_size, ladder=False, captured=True, rule=True, mult=1.0):
+    return bool(rule and c in set(cells) and captured and not ladder
+                and pit_width_at(cells, c, required_width(body_size, mult)))
+
+
 def _run(x, z, n, dx, dz):
     return [(x + dx * i, z + dz * i) for i in range(n)]
 
@@ -435,8 +472,30 @@ SCENES = {
     # E6: rain, the LAST mutating phase (rain lands map-wide)
     "E6_open": dict(cells=[(180, 60)], D=1, phase="J"),
     "E6_roofed": dict(cells=[(182, 60)], D=1, roof=(181, 59, 3, 3), phase="J"),
+    # P: pits as GRID facts (SUPERDEEP_HOLDER_RETIRE_1), after rain, before the tail. D=4, dry.
+    # The width matrix {small, large} x {1x1, 1x5 trench, 2x2}; expected held {T,T,T ; F,F,T}.
+    "P_1x1_small": dict(cells=[(130, 100)], D=4, phase="P"),
+    "P_1x1_large": dict(cells=[(136, 100)], D=4, phase="P"),
+    "P_trench_small": dict(cells=_run(142, 98, 5, 0, 1), D=4, phase="P"),
+    "P_trench_large": dict(cells=_run(148, 98, 5, 0, 1), D=4, phase="P"),
+    "P_2x2_small": dict(cells=[(154, 100), (155, 100), (154, 101), (155, 101)], D=4, phase="P"),
+    "P_2x2_large": dict(cells=[(160, 100), (161, 100), (160, 101), (161, 101)], D=4, phase="P"),
+    # walk-in (own-faction capture ON), then a ladder; and the carve-out-OFF control twin
+    "P_walk": dict(cells=[(166, 100)], D=4, phase="P"),
+    "P_walk_ctrl": dict(cells=[(172, 100)], D=4, phase="P"),
 }
 PAWN_SPOTS = {"E7a_fillin": (191, 62), "E7b_overflow": (196, 62), "E8_dig": (200, 62)}
+# P-phase pawns: (scene, the pawn's cell, kind, faction, "small"/"large")
+PIT_MATRIX = [("P_1x1_small", (130, 100), "small"), ("P_1x1_large", (136, 100), "large"),
+              ("P_trench_small", (142, 100), "small"), ("P_trench_large", (148, 100), "large"),
+              ("P_2x2_small", (154, 100), "small"), ("P_2x2_large", (160, 100), "large")]
+PIT_KINDS = {"small": "Hare", "large": "Muffalo"}      # wild (faction none): captured; Muffalo adult 2.4 -> W=2
+PIT_EXPECT = {"P_1x1_small": True, "P_trench_small": True, "P_2x2_small": True,
+              "P_1x1_large": False, "P_trench_large": False, "P_2x2_large": True}
+PIT_SPOTS = {"P_walk": (166, 103), "P_walk_ctrl": (172, 103)}     # colonists start 3 cells off the pit
+# Live run 2026-10-02 14:40: waitTicks 300 was too short to ENTER a D=4 cell (RM_Channel_Superdeep pathCost
+# 300 -> one step costs ~300+ ticks): the walk-in read "arrived False" though the pawn got there later.
+PIT_WAIT_IN, PIT_WAIT_OUT = 1200, 600
 
 
 def edge_distance(c):
@@ -503,14 +562,24 @@ def o1_defs():
         b = defs.get(name)
         if not b or _field(b[2], "pathCost") != cost:
             probs.append("%s pathCost %r want %s" % (name, b and _field(b[2], "pathCost"), cost))
-    sp = defs.get("RM_SuperdeepPit")
-    if not sp or _field(sp[2], "drawerType") != "None":
-        probs.append("RM_SuperdeepPit drawerType is not None (the holder must be invisible)")
+    # SUPERDEEP_HOLDER_RETIRE_1 INVERTED this row: it was "RM_SuperdeepPit drawerType None (the
+    # holder must be invisible)". The holder is retired; a pit is a D=4 cell. RULED OUT, kept as a
+    # guard: "a pit needs a Thing to hold a pawn" -- the grid trap rule holds a SPAWNED pawn (P rows).
+    raw = "\n".join(open(os.path.join(r, f), encoding="utf-8").read() for r, _, fs in os.walk(DEFS)
+                    for f in fs if f.endswith(".xml"))      # abstracts carry Name="", not <defName>
+    alive = [n for n in RETIRED_PIT_DEFS if n in defs or ('Name="%s"' % n) in raw]
+    if alive:
+        probs.append("retired pit defs still defined: %s" % alive)
+    spike = sorted(n for n, b in defs.items() if "Things/Building/Security/TrapSpikeArmed" in b[2] and n != "RM_Ladder")
+    if spike:
+        probs.append("defs on the vanilla TrapSpikeArmed art (only RM_Ladder may, until its art lands): %s" % spike)
+    if "RM_Channel_Superdeep" not in defs:
+        probs.append("sanity probe: RM_Channel_Superdeep (the pit's own terrain) not found")
     lad = defs.get("RM_Ladder")
     if not lad or "PlaceWorker_LadderOnExcavation" not in lad[2]:
         probs.append("RM_Ladder lacks PlaceWorker_LadderOnExcavation")
     for n in ("RM_DigCanal", "RM_FillInCanal", "RM_DigCanalJob", "RM_DigCanalWorkGiver",
-              "RM_Fluid_Tar", "RM_Fluid_SlimeGreen", "RM_SuperdeepPit"):
+              "RM_Fluid_Tar", "RM_Fluid_SlimeGreen", "RM_Ladder"):
         if n not in defs:
             probs.append("missing def " + n)
     return Check("O1", not probs, "; ".join(probs) or "%d defs parsed" % len(defs))
@@ -536,9 +605,17 @@ def o2_settings_defaults():
         m1 = re.search(r"public static float %s\s*=\s*([\d.]+)f" % f, allsrc)
         if not m1 or float(m1.group(1)) != want:
             probs.append("%s=%s want %s" % (f, m1 and m1.group(1), want))
-    if seen != 27:
-        probs.append("toggle census %d != 27" % seen)
-    return Check("O2", not probs, "; ".join(probs) or "27 toggles + 4 floats match C#")
+    if seen != 25:
+        probs.append("toggle census %d != 25" % seen)
+    # PIT_LEGACY_CODE_RETIRE_1 northstar: one settings screen; no struggle/escape/exposure toggle survives
+    mods = re.findall(r"class \w+ : Mod\b", allsrc)
+    if len(mods) != 2:              # RimMandrakeFlowWorksMod + RiverSteamMod (PitsMod retired)
+        probs.append("Mod subclasses %s (want 2: FlowWorks + RiverSteam)" % mods)
+    dead = re.findall(r"public static \w+ (\w*(?:struggle|escape|Escape|Struggle|pitCellExposure)\w*)\s*=", allsrc)
+    if dead:
+        probs.append("retired settings still declared: %s" % dead)
+    return Check("O2", not probs, "; ".join(probs) or "25 toggles + %d floats match C#; 2 Mod screens; no "
+                 "struggle/escape/exposure setting" % len(FLOAT_DEFAULTS))
 
 
 # UNBUILT register (R9): bar -> (source fact that keeps it UNBUILT, predicate over sources).
@@ -925,6 +1002,31 @@ def o8_lint():
 UTILS = os.path.join(os.path.dirname(os.path.dirname(MOD)), "Utils")
 
 
+def o10_pit_width(held_fn=None):
+    """The item's width matrix and edge cases against the Python port (mirrors C# PitWidth_*)."""
+    held_fn = held_fn or pit_held
+    probs = []
+    bands = {0.2: 1, 1.0: 1, 2.24: 1, 2.25: 2, 6.24: 2, 6.25: 3, 12.24: 3}
+    for b, w in bands.items():
+        if required_width(b) != w:
+            probs.append("RequiredWidth(%s)=%s want %s" % (b, required_width(b), w))
+    size = {"small": 0.2, "large": 2.4}
+    for scene, cell, kind in PIT_MATRIX:
+        got = held_fn(SCENES[scene]["cells"], cell, size[kind])
+        if got != PIT_EXPECT[scene]:
+            probs.append("%s %s held=%s want %s" % (scene, kind, got, PIT_EXPECT[scene]))
+    two = [c for c in SCENES["P_2x2_large"]["cells"] if c != (161, 101)]
+    if held_fn(two, (160, 100), 2.4):
+        probs.append("2x2 with one cell filled in still holds the large pawn")
+    diag = [(10, 10), (11, 11), (12, 12)]
+    if held_fn(diag, (11, 11), 2.4) or measured_pit_width(diag, (11, 11)) != 1:
+        probs.append("diagonal run counted as width")
+    if held_fn(SCENES["P_walk"]["cells"], (166, 100), 1.0, ladder=True):
+        probs.append("a ladder in the cell still holds")
+    return Check("O10", not probs, "; ".join(probs) or "bands %d, matrix {T,T,T;F,F,T}, fill-in releases, diagonal "
+                 "and ladder free" % len(bands))
+
+
 def offline_negative_controls():
     """Each offline check must be ABLE to go red: mutate inputs in memory, expect FAIL."""
     out = []
@@ -964,6 +1066,9 @@ def offline_negative_controls():
     finally:
         PulseOracle._pick = real_pick
     out.append(("O9 shared-source walk with the source claimed (pre-fix)", o9_shared_source(claim=True).ok))
+    # the retired holder model: any D=4 cell held any pawn
+    out.append(("O10 holder model (any D=4 cell holds anything)",
+                o10_pit_width(held_fn=lambda cells, c, b, ladder=False, **k: c in set(cells) and not ladder).ok))
     fails = [name for name, ok in out if ok]
     return Check("O-NEG", not fails, ("these did NOT go red: %s" % fails) if fails else
                  "%d in-memory mutations, every one went red" % len(out))
@@ -971,7 +1076,7 @@ def offline_negative_controls():
 
 def run_offline():
     checks = [o1_defs(), o2_settings_defaults(), o3_unbuilt_register(), o4_geometry(), o5_oracle_selftest(),
-              o6_channel_directions(), o7_scene_predictions(), o8_lint(), o9_shared_source(),
+              o6_channel_directions(), o7_scene_predictions(), o8_lint(), o9_shared_source(), o10_pit_width(),
               offline_negative_controls()]
     for c in checks:
         print(c)
@@ -1222,7 +1327,7 @@ def _bbox(cells, ring):
 
 def site_rects():
     rs = [_bbox(b["cells"], 2) for b in BODIES.values()] + [_bbox(s["cells"], 2) for s in SCENES.values()]
-    rs += [_bbox([spot], 1) for spot in PAWN_SPOTS.values()]
+    rs += [_bbox([spot], 1) for spot in list(PAWN_SPOTS.values()) + list(PIT_SPOTS.values())]
     return sorted(set(rs))
 
 
@@ -1387,10 +1492,18 @@ def phase_S(L, args):
         L.row("S1n_superdeep_is_max", r.get("depth") == 4, "MOD", "deepen D=4 once more -> %s" % r.get("depth"))
         p4 = B.call("jawa/flowworks_pit_report", x=cells[3][0], z=cells[3][1])
         p3 = B.call("jawa/flowworks_pit_report", x=cells[2][0], z=cells[2][1])
-        L.row("S1p_holder_at_D4_only", p4.get("success") and p4.get("holderPresent") is True
-              and (p4.get("holder") or {}).get("occupantCount") == 0 and p3.get("success") and p3.get("holderPresent") is False,
-              "MOD", "D4 holder %s (occupants %s); D3 holder %s  [pit smoke only: pit model under redesign]" % (
-                  p4.get("holderPresent"), (p4.get("holder") or {}).get("occupantCount"), p3.get("holderPresent")))
+        # SUPERDEEP_HOLDER_RETIRE_1 INVERTED S1p (was "S1p_holder_at_D4_only": a hidden RM_SuperdeepPit on
+        # every D=4 cell). Digging creates no Thing: the D=4 cell is a grid fact, read back as such.
+        if not (p4.get("success") and p3.get("success") and "legacyHolders" in p4):
+            L.row("S1p_pit_is_grid_only", False, "HARNESS", "pit_report not the grid reader: %r / %r" % (
+                {k: p4.get(k) for k in ("success", "message", "holderPresent")}, p3.get("message")), status="UNMEASURED")
+        else:
+            L.row("S1p_pit_is_grid_only", p4.get("isSuperdeep") is True and p4.get("pitWidth") == 1
+                  and p4.get("legacyHolders") == [] and p3.get("isSuperdeep") is False and p3.get("pitWidth") == 0
+                  and p3.get("legacyHolders") == [], "MOD",
+                  "D4 cell: isSuperdeep %s width %s holders %s; D3 cell: isSuperdeep %s width %s holders %s" % (
+                      p4.get("isSuperdeep"), p4.get("pitWidth"), p4.get("legacyHolders"), p3.get("isSuperdeep"),
+                      p3.get("pitWidth"), p3.get("legacyHolders")))
         a, b = SCENES["S2_clamp"]["cells"]
         L.dig(a, 2)
         ra = L.fill(a, 9)
@@ -1462,8 +1575,6 @@ def phase_S(L, args):
                   and acc(off1) is False and "Deepening" in why(off1) and acc(off0) is True, "MOD",
                   "Designator_DigCanal: D1 ON %s; D4 %s (%s); D1 OFF %s (%s); undug soil OFF %s" % (
                       acc(on1), acc(on4), why(on4)[:40], acc(off1), why(off1)[:50], acc(off0)))
-        L.row("S7_S9_capture_ladder", True, "", "pit model (pit = depth-4 cell, no holder building) is being "
-              "redesigned by other helpers; only the S1p holder smoke runs", status="SKIP")
         s, d = _src_all(), _xml_blocks()
         for bar, (fact, pred) in sorted(UNBUILT.items()):
             L.row("U_" + bar, True, "PROMOTE", ("UNBUILT: %s" % fact) if pred(s, d) else
@@ -1850,6 +1961,132 @@ def phase_rain(L, args):
 
 
 # ---------------------------------------------------------------------------- tail (0 ticks)
+# ---------------------------------------------------------------------------- phase P (pits; ticks)
+# SUPERDEEP_HOLDER_RETIRE_1. A pit is a D=4 cell; a pawn in it STAYS SPAWNED and is held by the grid
+# trap rule (Source/Superdeep/RM_SuperdeepTrap.cs). Runs after rain (the last oracle compare) so the
+# pawns and pits it leaves cannot disturb a flow row. Every reading is jawa/flowworks_pit_report: the
+# trap verdict plus REAL Reachability.CanReach / CanReachMapEdge with the pawn's own TraverseParms.
+# RULED OUT (2026-10-02, kept as rows): "a pit needs a Thing to hold a pawn" (S1p inverted, O1);
+# "a held pawn is one that is absent from the map" (old S7: spawned=false in a container) -> P1 asserts
+# spawned=true; "any D=4 cell holds anything" (the holder model) -> P1's large rows and O10's NEG.
+def _pit_pawn(rep, pid):
+    for p in rep.get("pawns") or []:
+        if p.get("id") == pid:
+            return p
+    return None
+
+
+def _order_row(o, pid):
+    for p in o.get("pawns") or []:
+        if p.get("id") == pid:
+            return p
+    return {}
+
+
+def phase_P(L, args):
+    B = L.B
+    with L.step("P_pits", None):
+        for k in sorted(k for k, sc in SCENES.items() if sc.get("phase") == "P"):
+            L.dig_scene(k)
+        ids = {}
+        for scene, cell, kind in PIT_MATRIX:
+            r = B.call("jawa/spawn_pawn", kindDef=PIT_KINDS[kind], faction="none", x=cell[0], z=cell[1], count=1)
+            if not r.get("success"):
+                raise Abort("spawn %s for %s: %r" % (PIT_KINDS[kind], scene, r))
+            ids[scene] = r["pawns"][0]["id"]
+            if kind == "large":           # a juvenile muffalo is under BodySize 2.25 -> W=1, not a large pawn
+                B.call("jawa/set_pawn_age", pawn=ids[scene], biologicalYears=8.0)
+        got, bad, unm = [], [], []
+        for scene, cell, kind in PIT_MATRIX:
+            rp = B.call("jawa/flowworks_pit_report", x=cell[0], z=cell[1])
+            pw = _pit_pawn(rp, ids[scene])
+            if not rp.get("success") or pw is None:
+                unm.append("%s: pawn %s not on its cell (%s)" % (scene, ids[scene], rp.get("message")))
+                continue
+            want_w = 2 if kind == "large" else 1
+            if pw.get("requiredWidth") != want_w:
+                unm.append("%s: %s BodySize %s -> W %s, not a %s pawn" % (scene, pw.get("def"), pw.get("bodySize"),
+                                                                        pw.get("requiredWidth"), kind))
+                continue
+            pred = pit_held(SCENES[scene]["cells"], cell, float(pw.get("bodySize") or 0))
+            held = pw.get("held")
+            reach_ok = (pw.get("lipReachable") == 0 and pw.get("canReachMapEdge") is False) if held else \
+                (pw.get("lipReachable") or 0) > 0
+            got.append("%s %s=%s(reach %s/%s)" % (scene[2:], kind, held, pw.get("lipReachable"), pw.get("lipCells")))
+            if not (held == PIT_EXPECT[scene] == pred and reach_ok and pw.get("spawned") is True and not pw.get("dead")):
+                bad.append("%s held %s want %s (oracle %s) spawned %s dead %s lip %s/%s edge %s" % (
+                    scene, held, PIT_EXPECT[scene], pred, pw.get("spawned"), pw.get("dead"), pw.get("lipReachable"),
+                    pw.get("lipCells"), pw.get("canReachMapEdge")))
+        if unm:
+            L.row("P1_width_matrix", False, "SITE", unm[:4], status="UNMEASURED")
+        else:
+            L.row("P1_width_matrix", not bad, "MOD", bad[:4] or "held {T,T,T;F,F,T} as owner Q4 rules; all "
+                  "spawned; held -> 0 lip cells reachable + no map edge: %s" % "; ".join(got))
+        # P2: filling in one cell of the 2x2 breaks the large pawn's square -> it is released, live
+        big = ids["P_2x2_large"]
+        f = B.call("jawa/flowworks_excavation_drive", x=161, z=101, deepenLevels=0, setFill=-1, fillInLevels=1)
+        if L.o is not None and f.get("success"):
+            L.o.set_cell((161, 101), int(f.get("depth") or 0), 0)
+        rp = B.call("jawa/flowworks_pit_report", x=160, z=100)
+        pw = _pit_pawn(rp, big) or {}
+        L.row("P2_fillin_releases_large", f.get("success") and f.get("depth") == 3 and pw.get("held") is False
+              and (pw.get("lipReachable") or 0) > 0 and rp.get("pitWidth") == 1, "MOD",
+              "fill-in (161,101) -> D %s; large at (160,100): width %s held %s lip %s/%s" % (
+                  f.get("depth"), rp.get("pitWidth"), pw.get("held"), pw.get("lipReachable"), pw.get("lipCells")))
+        # P3/P4: a colonist WALKS in (own-faction capture switched ON), takes the fall, stays spawned and
+        # cannot walk out; a ladder in its cell frees it. P5n: the shipped carve-out (OFF) is the control.
+        col = {}
+        for k, spot in sorted(PIT_SPOTS.items()):
+            r = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=spot[0], z=spot[1], count=1)
+            if not r.get("success"):
+                raise Abort("spawn colonist for %s: %r" % (k, r))
+            col[k] = r["pawns"][0]["id"]
+        a, wc = col["P_walk"], SCENES["P_walk"]["cells"][0]
+        L.sset(S_FW, "superdeepCapturesOwnFaction", True)
+        try:
+            d0 = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1]).get("descentCount") or 0
+            o_in = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1], waitTicks=PIT_WAIT_IN, draft=True), a)
+            r_in = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
+            pw = _pit_pawn(r_in, a) or {}
+            rec = [d for d in r_in.get("recentDescents") or [] if d.startswith(a + "@")]
+            fall = float(rec[-1].split("fall=")[1]) if rec else 0.0
+            o_out = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), a)
+            end = o_out.get("end") or {}
+            L.row("P3_walk_in_held", o_in.get("arrived") is True and pw.get("held") is True and pw.get("spawned") is True
+                  and (r_in.get("descentCount") or 0) == d0 + 1 and fall > 0 and pw.get("lipReachable") == 0
+                  and o_out.get("canReach") is False and (end.get("x"), end.get("z")) == wc, "MOD",
+                  "walked in %s; held %s spawned %s; descents %s->%s fall %.1f; lip %s/%s; ordered out: canReach %s, "
+                  "ended %s" % (o_in.get("arrived"), pw.get("held"), pw.get("spawned"), d0, r_in.get("descentCount"),
+                                fall, pw.get("lipReachable"), pw.get("lipCells"), o_out.get("canReach"),
+                                (end.get("x"), end.get("z"))))
+            sb = B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % wc)
+            r_l = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
+            pl = _pit_pawn(r_l, a) or {}
+            o_l = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), a)
+            L.row("P4_ladder_frees", r_l.get("hasLadder") is True and pl.get("held") is False
+                  and (pl.get("lipReachable") or 0) > 0 and o_l.get("arrived") is True, "MOD",
+                  "ladder spawned %s hasLadder %s; held %s lip %s/%s; ordered out: arrived %s" % (
+                      sb.get("success"), r_l.get("hasLadder"), pl.get("held"), pl.get("lipReachable"),
+                      pl.get("lipCells"), o_l.get("arrived")))
+        finally:
+            L.sset(S_FW, "superdeepCapturesOwnFaction", False)
+        b, cc = col["P_walk_ctrl"], SCENES["P_walk_ctrl"]["cells"][0]
+        d1 = B.call("jawa/flowworks_pit_report", x=cc[0], z=cc[1]).get("descentCount") or 0
+        o_in = _order_row(B.call("jawa/order_pawn", pawnId=b, x=cc[0], z=cc[1], waitTicks=PIT_WAIT_IN, draft=True), b)
+        r_c = B.call("jawa/flowworks_pit_report", x=cc[0], z=cc[1])
+        pc = _pit_pawn(r_c, b) or {}
+        o_out = _order_row(B.call("jawa/order_pawn", pawnId=b, x=cc[0], z=cc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), b)
+        L.row("P5n_own_faction_carveout", o_in.get("arrived") is True and pc.get("captured") is False
+              and pc.get("held") is False and (r_c.get("descentCount") or 0) == d1 and o_out.get("arrived") is True,
+              "MOD", "carve-out ON (shipped): colonist in %s captured %s held %s descents %s->%s; out %s" % (
+                  o_in.get("arrived"), pc.get("captured"), pc.get("held"), d1, r_c.get("descentCount"),
+                  o_out.get("arrived")))
+        for pid in col.values():
+            B.call("jawa/set_pawn_faction", pawn=pid, faction="none")
+        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+
+
+
 def phase_tail(L, args):
     B = L.B
     with L.step("T0_E9_tail", 0):
@@ -1906,6 +2143,11 @@ class MockBridge(object):
         "workgiver_blind": ["J_workgiver_selection"],
         "workgiver_greedy": ["J_workgiver_selection"],
         "worktype_disabled_once": [],    # no row may go red: the run must re-roll the pawn, not abort
+        "pit_holder_spawned": ["S1p_pit_is_grid_only"],                # the retired holder Thing is back
+        "pit_holds_any": ["P1_width_matrix", "P2_fillin_releases_large"],   # width rule ignored
+        "pit_no_veto": ["P1_width_matrix", "P3_walk_in_held"],         # held pawn can still reach / walk out
+        "pit_no_fall": ["P3_walk_in_held"],                            # descent event never fires
+        "pit_carveout_ignored": ["P5n_own_faction_carveout"],          # own colonists captured anyway
     }
 
     def __init__(self, faults=()):
@@ -1931,6 +2173,97 @@ class MockBridge(object):
         self.overflow = 0.0
         self.pawns = []
         self.fill_written = False
+        self.mp = {}              # pit model: pawn id -> dict(kind, pos, faction, bs, drafted)
+        self.ladders = set()
+        self.descents = []
+
+    # ---- pit model (SUPERDEEP_HOLDER_RETIRE_1): the grid trap rule over the oracle's D map
+    PIT_BS = {"Hare": 0.2, "Muffalo": 2.4, "Colonist": 1.0}
+
+    def d4(self, c):
+        return self.o.D.get(c, 0) >= 4
+
+    def pit_cells(self):
+        return [c for c, d in self.o.D.items() if d >= 4]
+
+    def captured(self, p):
+        return p["faction"] != "player" or (self.S("superdeepCapturesOwnFaction")
+                                            and "pit_carveout_ignored" not in self.faults) \
+            or "pit_carveout_ignored" in self.faults
+
+    def held(self, p, c=None):
+        c = p["pos"] if c is None else c
+        cells = self.pit_cells()
+        bs = 0.0 if "pit_holds_any" in self.faults else p["bs"]
+        return pit_held(cells, c, bs, ladder=c in self.ladders, captured=self.captured(p),
+                        rule=self.S("superdeepCaptureEnabled") and self.S("ladderRequiredToExitEnabled"))
+
+    def comp4(self, c):
+        seen, q = {c}, [c]
+        while q:
+            cur = q.pop()
+            for dx in (-1, 0, 1):
+                for dz in (-1, 0, 1):
+                    n = (cur[0] + dx, cur[1] + dz)
+                    if n not in seen and self.d4(n):
+                        seen.add(n)
+                        q.append(n)
+        return seen
+
+    def trapped(self, p):
+        if "pit_no_veto" in self.faults or not self.held(p):
+            return False
+        return all(self.held(p, c) for c in self.comp4(p["pos"]))
+
+    def t_jawa_flowworks_pit_report(self, x, z):
+        c = (x, z)
+        comp = self.comp4(c) if self.d4(c) else set()
+        lip = {(a[0] + dx, a[1] + dz) for a in comp for dx in (-1, 0, 1) for dz in (-1, 0, 1)} - comp
+        rows = []
+        for pid, p in self.mp.items():
+            if p["pos"] != c:
+                continue
+            tr = self.trapped(p)
+            rows.append(dict(id=pid, def_=p["kind"], spawned=True, dead=False, downed=False, bodySize=p["bs"],
+                             requiredWidth=required_width(p["bs"]), captured=self.captured(p), jumper=False,
+                             held=self.held(p) if "pit_holds_any" not in self.faults else self.held(p),
+                             lipCells=len(lip), lipReachable=0 if tr else len(lip), canReachMapEdge=not tr))
+        return dict(success=True, cell=dict(x=x, z=z), depthRaw=self.o.D.get(c, 0), fillRaw=self.o.F.get(c, 0),
+                    isSuperdeep=self.d4(c), pitWidth=measured_pit_width(self.pit_cells(), c) if self.d4(c) else 0,
+                    hasLadder=c in self.ladders, hasSpikes=None, room=None, pawns=rows,
+                    legacyHolders=[dict(id="X", def_="RM_SuperdeepPit")] if ("pit_holder_spawned" in self.faults and self.d4(c)) else [],
+                    descentCount=len(self.descents), recentDescents=list(self.descents[-32:]))
+
+    def t_jawa_set_pawn_age(self, pawn=None, biologicalYears=-1.0, **kw):
+        return dict(success=pawn in self.mp)
+
+    def t_jawa_set_pawn_faction(self, pawn=None, faction=None, **kw):
+        if pawn in self.mp:
+            self.mp[pawn]["faction"] = faction
+        return dict(success=pawn in self.mp)
+
+    def t_jawa_spawn_batch(self, ops, **kw):
+        for op in ops.split(";"):
+            d, xy = op.split(":")
+            x, z = map(int, xy.split(",")[:2])
+            if d == "RM_Ladder":
+                self.ladders.add((x, z))
+        return dict(success=True, thingsPlaced=1)
+
+    def t_jawa_order_pawn(self, pawnId, x=-1, z=-1, waitTicks=300, draft=True, **kw):
+        p = self.mp[pawnId]
+        dest, start = (x, z), p["pos"]
+        tr = self.trapped(p)
+        can = not (tr and dest not in self.comp4(start))
+        if can:
+            if self.d4(dest) and not self.d4(start) and self.captured(p) and "pit_no_fall" not in self.faults \
+                    and self.S("superdeepCaptureEnabled"):
+                self.descents.append("%s@%d,%d t=%d fall=4.8" % (pawnId, x, z, self.tick))
+            p["pos"] = dest
+        self.tick += 60
+        return dict(success=p["pos"] == dest, ticksElapsed=60, pawns=[dict(
+            id=pawnId, start=dict(x=start[0], z=start[1]), end=dict(x=p["pos"][0], z=p["pos"][1]),
+            arrived=p["pos"] == dest, canReach=can, orderAccepted=True)])
 
     # ---- helpers
     def S(self, f):
@@ -2096,7 +2429,11 @@ class MockBridge(object):
         return dict(success=True, pawns=[dict(id="P%d" % i, position=dict(x=125 + i, z=125)) for i in range(3)] + self.pawns)
 
     def t_jawa_destroy_bulk(self, filter=None, dryRun=True):
-        return dict(success=True, matchedCount=0)
+        gone = [k for k, p in self.mp.items() if p["faction"] != "player"] if filter == "nonColonists" else []
+        if not dryRun:
+            for k in gone:
+                self.mp.pop(k)
+        return dict(success=True, matchedCount=len(gone))
 
     def t_jawa_clear_area(self, rect, dryRun=True):
         x, z, w, h = map(int, rect.split(","))
@@ -2144,8 +2481,12 @@ class MockBridge(object):
                                  terrain=self.terrain_of(c)))
         return dict(success=True, rows=rows)
 
-    def t_jawa_flowworks_excavation_drive(self, x, z, deepenLevels=0, setFill=-1):
+    def t_jawa_flowworks_excavation_drive(self, x, z, deepenLevels=0, setFill=-1, fillInLevels=0):
         c = (x, z)
+        for _ in range(fillInLevels):
+            self.fill_in(c)
+        if fillInLevels:
+            return dict(success=True, depth=self.o.D.get(c, 0), fill=self.o.F.get(c, 0), fillSet=False)
         if deepenLevels:
             self.o.dig(c, deepenLevels)
         fill_set = False
@@ -2189,10 +2530,6 @@ class MockBridge(object):
                     designationPresent=present, designator=dict(accepted=acc, reason=why), workGiver=wg, pawn=pw,
                     ticksGame=self.tick)
 
-    def t_jawa_flowworks_pit_report(self, x, z):
-        return dict(success=True, holderPresent=self.o.D.get((x, z)) == 4, holder=dict(occupantCount=0)
-                    if self.o.D.get((x, z)) == 4 else None)
-
     def t_jawa_flowworks_pulse(self, count=1, x=0, z=0, w=0, h=0, includeBodies=True, ignoreEngineToggle=False):
         if not self.S("depthEngineEnabled") and not ignoreEngineToggle:
             return dict(success=False, refused=True)
@@ -2209,6 +2546,7 @@ class MockBridge(object):
     def t_jawa_spawn_pawn(self, kindDef, faction, x, z, count=1):
         pid = "M%d" % len(self.pawns)
         self.pawns.append(dict(id=pid, position=dict(x=x, z=z)))
+        self.mp[pid] = dict(kind=kindDef, pos=(x, z), faction=faction, bs=self.PIT_BS.get(kindDef, 1.0))
         return dict(success=True, pawns=[dict(id=pid)])
 
     def t_jawa_set_pawn_skill(self, **kw):
@@ -2286,7 +2624,7 @@ class RealBridge(object):
 
 
 FROZEN_BIOMES = ("IceSheet", "SeaIce")   # temp-layer ice the site painter cannot clear (run 6)
-PHASES = ("L", "site", "S", "A", "B", "C", "R", "J", "rain", "tail")
+PHASES = ("L", "site", "S", "A", "B", "C", "R", "J", "rain", "P", "tail")
 
 
 def run_live(args, B=None, quiet=False):
@@ -2345,7 +2683,7 @@ def run_live(args, B=None, quiet=False):
     ticks0 = None
     aborted = None
     fns = dict(L=phase_L, site=phase_site, S=phase_S, A=phase_A, B=phase_B, C=phase_C, R=phase_R, J=phase_J,
-               rain=phase_rain, tail=phase_tail)
+               rain=phase_rain, P=phase_P, tail=phase_tail)
     try:
         ticks0 = L.eng().get("ticksGame")
         for ph in PHASES:

@@ -52,13 +52,10 @@ MERGED IN 2026-09-16 (FLOWWORKS_BUILD_PROGRAM_1 Phase 1) — one mod now owns
 the whole liquid domain, per the owner's ruling that depth is the single
 primitive underneath all of it:
 
-PITS (was mandrake.rm.pits). The earth that swallows: dig a pit in stages,
-arm it with a terrain-mimic cover, and enough mass crossing it drops whoever
-stood there into the hole below. Escape is a struggle clock scored off
-bodysize, health and manipulation, not a coin flip. The same holder doubles
-as a gated holding-platform pit cell for prisoners. A pit is not a separate
-thing from a canal — it is one deep excavation, and a canal is a connected
-run of shallow ones.
+PITS. A pit is any canal cell dug down to superdeep — there is no pit
+building. Whoever walks, is pushed or jumps in takes a fall and, if the pit is
+as wide as they are, cannot climb out until a ladder stands in their cell.
+They stay on the map, on the pit floor.
 
 WATER EFFECTS (was mandrake.rm.manywaters). The generic water-effects
 engine: animated river-steam ambience off a biome's own opt-in extension,

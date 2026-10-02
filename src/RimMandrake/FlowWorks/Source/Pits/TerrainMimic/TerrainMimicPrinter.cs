@@ -3,8 +3,8 @@ using Verse;
 
 namespace RimMandrake.FlowWorks.Pits
 {
-    // Terrain-mimic printing, factored out of Building_OpenPit so any future
-    // building (not just pits) can cheaply read the same trick. Verified API
+    // Terrain-mimic printing: a cover (PIT_COVER_FALL_REWIRE_1) prints the
+    // terrain under it so the hole it hides cannot be seen. Verified API
     // shape: src/RimMandrake/Spikes/Spike1_TerrainMimic.cs (BuildableDef.graphic,
     // TerrainDef : BuildableDef, Thing.Print(SectionLayer), Printer_Plane.PrintPlane).
     //
@@ -30,18 +30,6 @@ namespace RimMandrake.FlowWorks.Pits
                 center.y = thing.DrawPos.y;
                 Printer_Plane.PrintPlane(layer, center, Vector2.one, mat);
             }
-        }
-    }
-
-    // Standalone example building kept for compile-shape parity with the spike;
-    // Building_OpenPit is the one actually placed in Defs (it needs the trigger/
-    // holder machinery too, so it inlines the same TerrainMimicPrinter call
-    // rather than inheriting from here).
-    public class Building_TerrainMimicCover : Building
-    {
-        public override void Print(SectionLayer layer)
-        {
-            TerrainMimicPrinter.PrintTerrainMimic(this, layer);
         }
     }
 }

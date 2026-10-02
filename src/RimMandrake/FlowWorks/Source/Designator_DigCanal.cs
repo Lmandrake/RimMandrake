@@ -59,23 +59,8 @@ namespace RimMandrake.FlowWorks
 			Building edifice = c.GetEdifice(Map);
 			if (edifice != null)
 			{
-				// §19's hazard, settled by MEASUREMENT 2026-09-16 rather than
-				// assumed: Pits' buildings all carry a <building> block and
-				// BuildingProperties.isEdifice defaults to TRUE, so GetEdifice
-				// DOES return them and the dig was never actually allowed on a
-				// pit cell. The concern in §19 ("may not read as edifices
-				// because they are passability Standable") is false —
-				// passability and edifice-hood are unrelated fields. Kept as an
-				// explicit refusal anyway, because "must designate open ground"
-				// is the wrong thing to tell someone pointing at a hole, and
-				// because once Pits merges in (ruling 18) the two become one
-				// depth ladder and this is where the conversion will live.
-				if (IsPitBuilding(edifice))
-				{
-					return "That is already an excavation. Digging a canal into a pit is not "
-						+ "supported yet — pits and channels become one depth ladder when the "
-						+ "two mods merge.";
-				}
+				// PIT_LEGACY_CODE_RETIRE_1: there are no pit buildings any more —
+				// a pit is a canal cell dug to D=4, so digging deeper IS digging a pit.
 				return "Must designate open ground.";
 			}
 			TerrainDef terrain = c.GetTerrain(Map);
@@ -103,16 +88,6 @@ namespace RimMandrake.FlowWorks
 				return "Must designate diggable soil.";
 			}
 			return AcceptanceReport.WasAccepted;
-		}
-
-		/// <summary>Matched by namespace rather than by a hard assembly
-		/// reference: Pits is a separate mod that may simply not be installed,
-		/// and it exports no public "is this a pit" helper to reference even
-		/// when it is.</summary>
-		private static bool IsPitBuilding(Building edifice)
-		{
-			System.Type t = edifice.GetType();
-			return t.FullName != null && t.FullName.StartsWith("RimMandrake.FlowWorks.Pits.");
 		}
 
 		public override void DesignateSingleCell(IntVec3 c)

@@ -6,7 +6,7 @@
 // and refuses `public static` ones ("Could not resolve field ...") -
 // MEASURED live 2026-09-12 on Pits (MOD_VALIDATION_PIT_PILOT_1). The
 // 2026-09-13 modcheck retrofit wave found the static pattern is OUR HOUSE
-// STYLE, not a one-off: PitsSettings, RM_NinefoldSettings,
+// STYLE, not a one-off: RimMandrakeFlowWorksSettings, RM_NinefoldSettings,
 // RM_InhabitedSettings, PropertySettings, AntiquitiesSettings,
 // RM_AftermathSettings, RM_PyrelandsSettings, ShipMemorySettings,
 // RM_GraffitiMod, StructureInjections' settings all declare static fields.
@@ -112,7 +112,7 @@ namespace JawaBench.BridgeTools
         public static async Task<object> ModSettingsField(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "Type.FullName of the settings class, e.g. 'Pits.PitsSettings' - exact, not guessed; use action='list' on a near-miss to see what's actually loaded, or jawa/get_defs-adjacent source reading to confirm the real namespace.")]
+            [ToolParameter(Description = "Type.FullName of the settings class, e.g. 'RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings' - exact, not guessed; use action='list' on a near-miss to see what's actually loaded, or jawa/get_defs-adjacent source reading to confirm the real namespace.")]
             string typeName,
             [ToolParameter(Description = "'list' (default), 'get', or 'set'.")]
             string action = "list",

@@ -76,7 +76,9 @@ def test_settings_match_source():
               "C# only %s / table only %s" % (sorted(set(found) - set(want)), sorted(set(want) - set(found))))
         bad = [f for f in want if f in found and not S.settings_equal(found[f], want[f])]
         check("settings %s: defaults equal the C#" % t.rsplit(".", 1)[1], not bad, bad)
-    check("27 toggles (plan 2.5)", len(S.toggles()) == 27, len(S.toggles()))
+    # 27 until PIT_LEGACY_CODE_RETIRE_1 (2026-10-02): escapeEnabled and pitCellExposureEnabled died with
+    # the building pit; trapTriggerEnabled and fallDamageEnabled moved into RimMandrakeFlowWorksSettings.
+    check("25 toggles (plan 2.5, after the pit retirement)", len(S.toggles()) == 25, len(S.toggles()))
 
 
 # ---------------------------------------------------------------- layout
@@ -112,7 +114,7 @@ def test_backup_restore():
     mc = os.path.join(cfg, "ModsConfig.xml")
     with open(mc, "wb") as f:
         f.write(b"<ModsConfigData>\r\n<activeMods><li>ludeon.rimworld</li></activeMods>\r\n</ModsConfigData>\r\n")
-    ms = os.path.join(cfg, "Mod_mandrake.rm.flowworks_PitsMod.xml")
+    ms = os.path.join(cfg, "Mod_mandrake.rm.flowworks_RimMandrakeFlowWorksMod.xml")
     with open(ms, "wb") as f:
         f.write(b"<SettingsBlock>x</SettingsBlock>")
     orig = {p: open(p, "rb").read() for p in (mc, ms)}

@@ -8,9 +8,10 @@ namespace RimMandrake.FlowWorks
 	/// effect; removing the ladder strands whatever is down there."</i>
 	///
 	/// That is the whole mechanic and it is deliberately the whole mechanic. A
-	/// ladder does NOT change pathing cost, passability, line of sight or the
-	/// escape odds — it flips one gate, the same gate Building_PitCell's closed
-	/// door flips, and the jailer mechanic falls out of it for free.
+	/// ladder does NOT change pathing cost, passability or line of sight — it
+	/// flips one gate in the grid trap rule (RM_SuperdeepTrap.IsHeld: nobody is
+	/// held on a cell with a ladder in it), and the jailer mechanic falls out of
+	/// it for free.
 	/// </summary>
 	public static class RM_LadderUtility
 	{
