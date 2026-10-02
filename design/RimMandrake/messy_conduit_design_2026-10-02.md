@@ -384,7 +384,7 @@ owns its own geometry.
 | 5 | Sway | **EASY if the vanilla plant shader behaves as inferred, else HARD** | `CutoutPlant` already sways any mesh by vertex alpha, driven by the map's wind, with no per-frame CPU cost. |
 | 6 | Break sparking + downed wire | **EASY to MODERATE** | Terminals come out of the reduction; poll live/dead every 250 ticks; vanilla spark flecks; only a few live ends animate per frame. |
 | 7 | Clipping | **EASY-MODERATE** | Cords only ever lie on walkable floor at one altitude; the remaining risks are listed in §8.8. |
-| — | Overhead spans between poles | **NOT ADVISABLE** | Wires floating over everything cannot be occluded correctly in a top-down sprite game. |
+| — | Overhead spans between poles | **IN SCOPE (owner, 2026-10-02)** | Aerial lines are part of this mod; design in `messy_conduit_phase2_design_2026-10-02.md`. |
 
 ### 8.1 Where the drawer hooks
 
@@ -619,8 +619,7 @@ higher Y draws over a lower one. `AltInc` = 0.0366, which gives 10 sub-steps per
 - **Fog:** fogged cells are unwalkable for planning and their nodes are not drawn, so a cord never reveals
   hidden conduit or wanders into fog. FogOfWar is in the rebuild mask.
 - **Roofs:** RimWorld does not draw roofs over the map; roofed cells only zero the sway (§8.4).
-- **Overhead spans** pole-to-pole are **NOT ADVISABLE**: a span floating above the floor has no correct
-  occlusion against walls and furniture between the poles in a top-down sprite game.
+- **Overhead spans** pole-to-pole are in scope (owner, 2026-10-02): see `messy_conduit_phase2_design_2026-10-02.md`.
 
 **Mouse-over and selection.** Cords are not Things. Selection, tooltips and deconstruction still go through
 the invisible conduit's cell. Because a cord may lie far from its conduit, while a conduit is selected the
