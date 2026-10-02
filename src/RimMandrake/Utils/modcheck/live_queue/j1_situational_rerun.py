@@ -102,10 +102,19 @@ def body(s, job):
                 plan.append((m, runner.load_validation(runner.find_mod_dir(m))))
             except Exception as e:                              # noqa: BLE001
                 crashed.append("%s: load: %s" % (m, e))
+    use_world = "--bland-world" in argv
+    if use_world:
+        # the J3 recipe once, then bland_world.reset() between suites (no relaunch)
+        import bland_world
+        info = bland_world.setup(s, log=lambda *a: print("     bland_world:", *a))
+        job.note("bland_world_setup", info)
+        job.check("bland world established (tile %s, map %s)" % (info["tile"], info["mapIndex"]),
+                  not info["problems"], info["problems"])
     for m, suite in plan:
         print("  -- %s" % m)
         try:
-            summ = runner.run_suite(suite, s, mod=None if job.dry_run else m, situational=True, policy="abort")
+            summ = runner.run_suite(suite, s, mod=None if job.dry_run else m, situational=True, policy="abort",
+                                    bland_world=use_world)
         except Exception as e:                                  # noqa: BLE001
             crashed.append("%s: %s: %s" % (m, type(e).__name__, e))
             continue
