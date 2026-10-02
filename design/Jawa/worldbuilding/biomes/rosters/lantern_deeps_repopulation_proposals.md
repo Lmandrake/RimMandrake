@@ -1,14 +1,16 @@
 # Lantern Deeps — fauna repopulation proposals
 
-**Status: PROPOSAL, awaiting the owner's picks.** Item `DEEPS_FAUNA_REPOPULATION_1`.
-On 2026-09-18 the owner cut or remade 15 of the 16 Lantern Deeps animals and asked for
+**Status: RULED 2026-10-01 (owner, Lantern Deeps bedazzle sitting turn 1): all twelve admitted,
+every one a hydrocarbon organism that survives the Deep; the yolk is renamed the galuush.** Item
+`DEEPS_FAUNA_REPOPULATION_1`; build `LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1`; sitting record
+`../lanterndeeps_bedazzle_review_2026-10-01.md` §3 and §7. Premises 1 to 4 below are ruled by that
+answer. On 2026-09-18 the owner had cut or remade 15 of the 16 Lantern Deeps animals and asked for
 "more truly alien hydrocarbon-based life forms that are utterly different than anything
 on the dayside... we need to repopulate this biome's fauna significantly with surprising
-life forms." Below are twelve concepts written in the register of his own remake briefs
+life forms." Below are the twelve concepts, in the register of his own remake briefs
 (pale-blue glow, yellow hydrocarbon internal liquids, one strange specific mechanic per
-creature, each with a plain trade). Nothing here is built, named in a def, or ruled.
-He rules line by line on the summary table at the end; `## Invented premises` lists
-what this doc assumed that the biome sheet does not state.
+creature, each with a plain trade).
+`## Invented premises` lists what this doc assumed that the biome sheet does not state.
 
 ## 1. Sipper
 
@@ -293,11 +295,11 @@ hediff); the flare is a spawned short-lifespan glower building (XML: a `CompGlow
 turn toward it" needs no code — the flare IS light, and the ruled light-draw behaviour
 is what answers it.
 
-## 9. Yolk — the set-piece
+## 9. Galuush — the set-piece
 
 **Visual brief.** A sun hung under the mountain. One enormous bladder, four cells
 across (drawSize ~5 on a 3×3 or 4×4 body), a sphere of pale blue skin so thin the
-yellow inside is the picture: a great slow-turning yolk of hydrocarbon fluid, brightest
+yellow inside is the picture: a great slow-turning core of hydrocarbon fluid, brightest
 at the centre, with darker convection cells visible in it like the surface of a star.
 No limbs, no face, a crown of soft dangling filaments from its underside that stir in
 no wind. It is drawn from below as a hanging thing: it is pinned to the cavern roof
@@ -440,7 +442,7 @@ health-sharing and name-blind by tag. XML wires the tag; the filament is art.
 
 ## Summary table
 
-Rule line by line. "Tame" marks the ones with a reason to want one; ⚠ marks the
+"Tame" marks the ones with a reason to want one; ⚠ marks the
 genuinely dangerous; ⭐ the set-piece.
 
 | # | name | bodySize | niche | mechanic | trade (gain / cost) | feasibility |
@@ -453,7 +455,7 @@ genuinely dangerous; ⭐ the set-piece.
 | 6 | Tapper | 0.5 | eats electricity, gallery-dweller — **tame** | wild: drains your batteries; tame: charges from the aurora and gives it back | free storm-day power / a standing tax on the grid | new C# (~60) on `RM_JobGiver_GnawTargets` → `CompPowerBattery.DrawPower` |
 | 7 | Pooler | 0.9 | living puddle, seeks warmth — **tame** | drapes over the hottest thing: fires die, heaters stop, pawns chill | fire brigade that makes no spark / heaters go out at −40 °C | new C# (~120) on `RM_SeekTargetExtension`; `Fire.Destroy` |
 | 8 | Blinker | 0.45 | grazer on glowing plants, common prey — **tame** | flashes when hurt: blinds attackers, lights the chamber, draws every predator | living flare and alarm / tells the cave where you are | small C#: damage-notify seam + XML blind hediff + spawned glower |
-| 9 | Yolk ⭐ ⚠ | 6 | ceiling sun, one per Deep at most, nothing eats it | chamber-scale glower AND chamber-scale methane bomb | fortune in fuel if killed cold / light lost, room collapses on a spark | XML: `CompGlower` + `CompExplosive`, MoveSpeed ~0 |
+| 9 | Galuush ⭐ ⚠ | 6 | ceiling sun, one per Deep at most, nothing eats it | chamber-scale glower AND chamber-scale methane bomb | fortune in fuel if killed cold / light lost, room collapses on a spark | XML: `CompGlower` + `CompExplosive`, MoveSpeed ~0 |
 | 10 | Chiller | 1.4 | frosted grazer in the wet galleries — **tame** | pumps heat out of the room, no power | a freezer with no electricity / deadly to stand near | XML: `CompHeatPusher` negative, one quicktest to confirm on a pawn |
 | 11 | Slick | 0.7 | corridor bottom-feeder, common | sweats a flammable trail that burns like a fuse | trails lead to its warren, mop-able fuel / every corridor it used is a fuse | small C# (~30): `FilthMaker.TryMakeFilth` of `Filth_Fuel` on move |
 | 12 | Shoal | 0.2 | linked filter-feeders, very common, the Hush's food — tame-able | one shared circulation: wounds spread across the net, kin heal each other | a herd no single bite kills / never a clean kill | existing: `RM_CompWoundLink` + `RM_HediffComp_KinMending`, XML only |
@@ -468,7 +470,7 @@ flash and Knocker's drum both feed the ruled light/noise draw rather than replac
 
 Hard-ban check (sheet §6): nothing here is a crystal-studded animal (the Knocker's
 hammer is horn, the Chiller's crust is frost); nothing removes the darkness mechanic
-or the light-draw (the Yolk and Blinker ADD light and pay for it in draw, per §5);
+or the light-draw (the Galuush and Blinker ADD light and pay for it in draw, per §5);
 no kyber mechanic anywhere; nothing above −40 °C.
 
 ## Invented premises
@@ -485,11 +487,11 @@ one-line ruling if he wants it; strike the concept if he does not.
 3. **Hydrocarbon animals are not food** — butchering yields fuel-class items, never
    meat a colonist eats. Follows from the Drinker dying on iron blood in reverse, but
    it is a ruling, not a fact, and it decides what the Deep's kitchen gets.
-4. **Methane is a body gas** — the Drifter and the Yolk float on it and detonate; the
+4. **Methane is a body gas** — the Drifter and the Galuush float on it and detonate; the
    sheet names methane only as the exchange basis of Blue Desert life, not as a
    bladder gas.
 5. **Light is drinkable by animals**, not just by the crystals — the sheet gives
-   photonic metabolism to crystal life; the Sipper, Drifter, Shoal and Yolk extend it
+   photonic metabolism to crystal life; the Sipper, Drifter, Shoal and Galuush extend it
    to fauna.
 6. **Noise draws the Deep the way light does** — the Knocker's and Blinker's costs
    rest on it; the sheet has "the hum" and "light draws" but no ruled noise-draw.
@@ -498,7 +500,7 @@ one-line ruling if he wants it; strike the concept if he does not.
 8. **A collapse can be heard before it fires** — the Knocker; the collapse hazard is
    ruled v1 with dust and sand warnings, and this adds an animal warning.
 9. **The seep solutions can host a free-living liquid organism** — the Pooler.
-10. **Roof-pinned sessile fauna exist** — the Yolk; nothing in the sheet puts a living
+10. **Roof-pinned sessile fauna exist** — the Galuush; nothing in the sheet puts a living
     thing on the ceiling.
 11. **A creature can be non-glowing on purpose** — the Hush breaks the "everything
     here is lit from within" register; the sheet does not forbid it, but the house
