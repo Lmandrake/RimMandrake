@@ -846,9 +846,9 @@ Manager, which crashes on every https call from a worktree (`fatal: not a git re
 ## Code isn't clean until a review says so
 
 **Every file in this repo is dirty by default — including files nobody has
-touched today.** The only way a file is CLEAN is a recorded entry in
-`infrastructure/state/CODE_REVIEW_STATUS.json` (owned by
-`code_review_status.py`, never hand-edited) whose recorded content hash is
+touched today.** The only way a file is CLEAN is a clean
+record in `infrastructure/state/code_review/<SEAT>.jsonl` (append-only, last
+record per path wins; owned by `code_review_status.py`, never hand-edited) whose recorded content hash is
 byte-identical to the file on disk. No entry, or any byte changed — DIRTY.
 (Content-based, not commit-based: a rewrite reverted to identical bytes is
 CLEAN; a path moved by `git mv` has no entry at the new path — review 2026-09-06.)

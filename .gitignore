@@ -296,3 +296,6 @@ Transient/triposr_prototype/torchmcubes/
 # and suppressed-diff evidence patches. Stays machine-local by design so enrollment
 # (which authorizes autonomous egress of repo content) is never inherited by another checkout.
 .consult/
+
+# git plan Phase 5: code-review records are append-only shards
+infrastructure/state/code_review/.lock

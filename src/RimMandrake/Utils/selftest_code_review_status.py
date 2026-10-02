@@ -305,6 +305,32 @@ for _name, _src in (("code_review_status.py", _py_src), ("rm-codebase-health.ser
     eq(all("Transient" in l for l in _hits), True,
        f"{_name} routes the hook log under Transient/ (never /tmp — tmpfs, erased on reboot)")
 
+# ---- 13. append-only per-seat records (git plan Phase 5, 2026-10-02) -------
+# Every write APPENDS; current state = last record per path by (ts, seat, line);
+# shards from two seats merge by line (merge=union) and still resolve; an
+# identical duplicate line (a union of the same append) collapses.
+_shard_before = {fp: open(fp, encoding="utf-8").read() for fp in CRS._record_files()}
+os.environ["RIMFLOW_SEAT"] = "FOUNDRY"
+run("reopen", os.path.join(TMP, "a.xml"), "--reason", "phase5 selftest")
+for fp, body in _shard_before.items():
+    eq(open(fp, encoding="utf-8").read().startswith(body), True,
+       "a write only appends — %s kept every prior byte" % os.path.basename(fp))
+eq(os.path.isfile(os.path.join(CRS.REC_DIR, "FOUNDRY.jsonl")), True,
+   "a write lands in the resolving seat's own shard")
+CRS.append_records([{"path": "a.xml", "sha256": "x" * 64, "verdict": "clean",
+                     "ts": "2099-01-01T00:00:00.000000Z", "seat": "BENCH",
+                     "sha": "zzz", "date": "2099-01-01", "cleanCount": 9}], shard="BENCH")
+eq(CRS.load()["a.xml"].get("cleanCount"), 9, "the latest record by ts wins across shards")
+_bench = os.path.join(CRS.REC_DIR, "BENCH.jsonl")
+_line = open(_bench, encoding="utf-8").read()
+open(_bench, "a", encoding="utf-8").write(_line)   # union of the same append
+eq(len([r for r in CRS.read_records() if r["path"] == "a.xml" and r.get("ts", "").startswith("2099-01-01")]), 1,
+   "an identical duplicate line collapses")
+CRS.append_records([{"path": "a.xml", "sha256": None, "verdict": "pruned",
+                     "ts": "2099-01-02T00:00:00.000000Z", "seat": "BENCH"}], shard="BENCH")
+eq("a.xml" in CRS.load(), False, "a pruned record removes the path from current state")
+del os.environ["RIMFLOW_SEAT"]
+
 shutil.rmtree(TMP, ignore_errors=True)
 
 if FAILS:

@@ -235,7 +235,7 @@ def _trigger_health_rebuild():
 
     🔴 SKIP UNLESS THIS IS THE REAL LEDGER. `codebase_health_publish.py` has no
     concept of a redirected `RIMFLOW_LEDGER` — it always reads the real git repo
-    and the real CODE_REVIEW_STATUS.json. `selftest_cli.py` runs hundreds of
+    and the real code-review records (code_review/*.jsonl). `selftest_cli.py` runs hundreds of
     `_emit`s a second against a throwaway ledger under `.rimflow_selftest_cli/`
     (see `_state_root`'s docstring for the last bug this exact shape caused); firing
     real background rebuilds off of those would be pure waste at best and a flood of

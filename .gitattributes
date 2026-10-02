@@ -4,3 +4,5 @@
 infrastructure/state/ledger/events/*.jsonl merge=union
 *.dll binary
 *.dll.srchash -merge
+# Phase 5: code-review records are append-only per-seat shards (code_review_status.py).
+infrastructure/state/code_review/*.jsonl merge=union

@@ -23,7 +23,7 @@ spines on one page:
      inventory.
 
 Plus one small tile for the clean/dirty code sheet
-(`infrastructure/state/CODE_REVIEW_STATUS.json` via `code_review_status.py`),
+(`infrastructure/state/code_review/*.jsonl` via `code_review_status.py`),
 and a regression view — rung counts over time, derived from `events.jsonl` —
 so a DROP is visible.
 

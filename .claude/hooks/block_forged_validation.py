@@ -22,7 +22,7 @@ mod, and both are one file edit away from being forged:
      whose `verdict_for()` is where the five conditions of GREEN live. A
      hand-edited entry skips all five.
 
-This is the same shape as CODE_REVIEW_STATUS.json ("never hand-edited") and the
+This is the same shape as the code-review records in code_review/*.jsonl ("never hand-edited") and the
 ledger (written only by rimflow): the registry is not a document, it is the
 output of a gate.
 
