@@ -220,8 +220,7 @@ rite is Ohm's and is named the Stranger's Overhaul.
 | The Stranger's Overhaul | Ohm (Mob'Unloo, Ozzik react) | feeding | a damaged droid that is not the colony's, repaired in the open; at half progress, capture it (Mob'Unloo and Ohm pleased; Ozzik, the Free Droid Enclaves and the Cathedral angered) or finish and release it (Mob'Unloo annoyed; Ohm, the Enclaves and the Cathedral pleased); on the borehulk it is the Worn Bit's last stage | Rust Cathedral, a droid chassis on its back by the enclaves' road, panel open, tools laid round it, scratched *fixed, not kept* | RULED (owner, 2026-10-02, typed); build `RUSTCATHEDRAL_STRANGERS_OVERHAUL_RITE_1` | `design/Jawa/worldbuilding/biomes/rustcathedral_bedazzle_review_2026-10-02.md` §8 |
 
 Ohm carries five found rites (the Engine Hour, the Last Track, the Deserter's Welcome, B7, pitched; the
-Answering, B8, ruled; the Stranger's Overhaul, B12): at the cap. Rekko carries four (the Unfinished Laid
-Down, the Inherited Wreck, the Mud Claim, B7, pitched; the Mending Weld, B12): one under the cap.
+Answering, B8, ruled; the Stranger's Overhaul, B12): at the cap. Rekko's count is at B17 (five, at the cap).
 
 ### B13. Found rites ruled at the Rot sitting (RULED)
 
@@ -267,9 +266,23 @@ one person to weak hediffs on several instead."* None of the three pitched rites
 |---|---|---|---|---|---|---|
 | The Joining Water | Oomo | — (unruled) | everyone briefly joins hands, each holding some slime; one person's permanent hediffs are reduced to weak hediffs spread over several participants (the owner's explicit ask; a power, ruled an exception to the cohesion-only rule) | the Slime (site to draft at build) | RULED (owner, 2026-10-02, typed); build `GELATINOUSSLIME_JOINING_WATER_RITE_1` | `design/Jawa/worldbuilding/biomes/gelatinousslime_bedazzle_review_2026-10-02.md` §8 |
 
-**Count (by hand from the tables above, not an instrument): 112 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2 + B13 1 + B14 2 + B15 1 + B16 1. **102 are the Salvation's** (B1 to B5, B7 to B15;
-the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 100 distinct); B16's god is unresolved, so it is counted in neither until the owner confirms. Sh'kaar
+### B17. Found rites ruled at the Miasma sitting (RULED)
+
+Decision taken by question card 2026-10-02 15:39 PDT: *the recall of the written-off, for the god of salvage* (GPT's pitch, review §5
+idea 4). Rekko is *of the Second Hand*: salvage, repair, the discarded rewoken. The second-hand young (Rekko) and the mother's blind
+side (Ishko) were not chosen.
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Recall of the Written-Off | Rekko | — (unruled) | a found disposal order, struck out in the rite, calls an old salvage operation whose machines strip loose metal and then the colony's powered buildings, the ship included, until driven off; a dramatic, risky world event | the Miasma, a river-mouth disposal depot: an inscription under condemnation stamps | RULED (owner, 2026-10-02, question card); build `MIASMA_RECALL_WRITTEN_OFF_RITE_1` | `design/Jawa/worldbuilding/biomes/miasma_bedazzle_review_2026-10-02.md` §5 idea 4, §8 |
+
+Rekko carries five found rites (the Unfinished Laid Down, the Inherited Wreck, the Mud Claim, B7, pitched; the Mending Weld, B12;
+the Recall of the Written-Off, B17): **at the cap**. (The Seating, B4, is a pantheon-design rite, not a found one, and is not counted,
+as at every earlier count.)
+
+**Count (by hand from the tables above, not an instrument): 113 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2 + B13 1 + B14 2 + B15 1 + B16 1 + B17 1. **104 are the Salvation's** (B1 to B5, B7 to B17;
+the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 102 distinct). Sh'kaar
 now carries four found rites (the Snuffing, the Anvil Gift, the Shade Tithe, the Felled Noon): one under the cap.
 
 **Per-god cap: five found rites** (decision taken by question card 2026-10-02 09:23 PDT, raising it from
