@@ -8,8 +8,8 @@ The named files are INLINED into the prompt (codex's sandboxed file reads are fl
 reading \\\\wsl.localhost paths), and codex runs with its cwd in
 D:\\Luke\\dev\\_rmscratch\\codex\\consult-<ts>\\ (it fails from an ext4 cwd) — git_workflow_plan_2026-10-01.md
 §2.3. The prompt goes in on stdin (no Windows command-line length limit). The answer is printed,
-and written to --out when given. Default model: gpt-5.5 (CODEX_MODEL overrides; the config.toml
-default has been a model this ChatGPT account cannot run).
+and written to --out when given. Default model: gpt-6.1-sol at high effort (owner,
+2026-10-02; CODEX_CONSULT_MODEL overrides). Art (codex_image.py) stays on gpt-5.5 — a separate default.
 """
 import argparse
 import os
@@ -20,6 +20,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
+DEFAULT_CONSULT_MODEL = os.environ.get("CODEX_CONSULT_MODEL", "gpt-6.1-sol")
 sys.path.insert(0, str(ROOT / "skills" / "generating-images" / "scripts"))
 import codex_image  # noqa: E402  (find_codex_cli, wsl_to_win, DEFAULT_MODEL, CODEX_SCRATCH)
 
@@ -49,7 +50,7 @@ def main(argv=None):
     ap.add_argument("--prompt-file", help="read the question from this file")
     ap.add_argument("-f", "--file", action="append", default=[], help="inline this file; repeatable")
     ap.add_argument("--out", help="also write the answer here")
-    ap.add_argument("-m", "--model", default=codex_image.DEFAULT_MODEL)
+    ap.add_argument("-m", "--model", default=DEFAULT_CONSULT_MODEL)
     ap.add_argument("--effort", default="high", help="model_reasoning_effort (default high)")
     ap.add_argument("--timeout", type=int, default=1500)
     ap.add_argument("--keep", action="store_true", help="keep the scratch job dir")
