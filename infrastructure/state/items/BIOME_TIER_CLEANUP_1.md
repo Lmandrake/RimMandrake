@@ -53,3 +53,12 @@ mod's ten `RUT_`-prefixed defs**, which the 2026-10-01 scores doc missed
 snow-strip and label ops in `src/RimUtinni/UtinniPatches/Patches/OasisMutator_DesertOasis.xml` target the donor
 `ZBiome_DesertOasis` only. Harmless (the `RM_` def has neither problem); retire them with the donor. The whitelist and
 palm ops in the same file are `WEEPINGSTONES_OASIS_MUTATOR_FLORA_1`'s, not this item's.
+
+## 2026-10-02 additions (Gelatinous Slime)
+
+`GELATINOUSSLIME_SCORING_SITTING_1` turn 1 (`gelatinousslime_bedazzle_review_2026-10-02.md` §1 (c), §4 row 0b): the
+label and description ops for the Slime in `BiomeNames_Ashkarr.xml` and `BiomeDescriptions_Ashkarr.xml`, and the fish
+strip in `FishTypesStrip_NoFishBiomes.xml`, target the donor `AB_GelatinousSuperorganism` only. Harmless (our def
+carries its own label and description, and no Slime def carries `fishTypes`); retire them with the donor. The rain
+strip and the shrine-denial retarget are `GELATINOUSSLIME_RAIN_STRIP_1`'s; `AA_Thunderbeast` still on the twin
+(ruled moved to the Blue Desert) goes with the twin at the repaint.
