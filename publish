@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-# publish — put named files on origin/main without a checkout; see src/RimMandrake/Utils/publish.py
+# publish — commit named paths, pull --rebase, push; see src/RimMandrake/Utils/publish.py
 exec python3 "$(dirname "$(readlink -f "$0")")/src/RimMandrake/Utils/publish.py" "$@"
