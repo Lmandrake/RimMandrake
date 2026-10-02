@@ -2955,6 +2955,42 @@ def test_default_reconcile_min_age_accounts_for_gemini_timeout_too():
        artpiped.default_reconcile_min_age(600, gemini_timeout=10))
 
 
+def test_artreg_withdraw_retires_stale_queued_targets():
+    """artreg `withdrawn`: only a currently-queued target may be withdrawn; the
+    derived state is terminal-but-separate; a later `queued` re-opens it."""
+    import artreg
+    with tempfile.TemporaryDirectory() as td:
+        reg = Path(td) / "registry.jsonl"
+        lock = artreg.REGISTRY_LOCK
+        artreg.REGISTRY_LOCK = Path(td) / "registry.jsonl.lock"
+        orig_read = artreg.read_events
+        artreg.read_events = lambda path=reg: orig_read(path)
+        try:
+            ev = lambda: orig_read(reg)
+            st = lambda t: artreg.compute_target_states(ev())[t]["state"]
+            for t in ("a/south", "b/south", "c/south"):
+                artreg._append({"event": "registered", "target": t, "source": "x"}, reg)
+            artreg._append({"event": "queued", "target": "a/south", "job_id": "ja"}, reg)
+            artreg._append({"event": "queued", "target": "b/south", "job_id": "jb"}, reg)
+            e = artreg.record_withdrawn("a/south", "stale", by="t", path=reg)
+            ok("withdraw: queued target ok, event recorded", e["event"] == "withdrawn" and st("a/south") == "withdrawn")
+            for t in ("c/south", "zzz/none", "a/south"):
+                try:
+                    artreg.record_withdrawn(t, "n", path=reg); raised = False
+                except artreg.RegError:
+                    raised = True
+                ok(f"withdraw: refused on non-queued target {t}", raised)
+            artreg._append({"event": "queued", "target": "a/south", "job_id": "ja2"}, reg)
+            ok("withdraw: later queued re-opens target", st("a/south") == "queued")
+            artreg.record_withdrawn("a/south", "again", path=reg)
+            counts = artreg.build_status()["stateCounts"]
+            ok("withdraw: counts show withdrawn=1 queued=1 separately",
+               counts["withdrawn"] == 1 and counts["queued"] == 1, str(counts))
+        finally:
+            artreg.read_events = orig_read
+            artreg.REGISTRY_LOCK = lock
+
+
 def test_dry_run_never_creates_queue_directories():
     """Finding 4: --dry-run promises to touch nothing. Before the fix,
     main() called ensure_queue_dirs() (mkdir's pending/active/done/failed/
@@ -3642,6 +3678,7 @@ def main() -> int:
         test_reconcile_catches_crash_during_gemini_api_call_via_intent_row,
         test_default_reconcile_min_age_accounts_for_gemini_timeout_too,
         test_dry_run_never_creates_queue_directories,
+        test_artreg_withdraw_retires_stale_queued_targets,
         test_read_gemini_spend_counts_skipped_unparseable_lines,
         test_gemini_budget_ledger_strict_refuses_admission_on_torn_line,
         test_read_gemini_spend_locked_caches_by_size_and_mtime,
