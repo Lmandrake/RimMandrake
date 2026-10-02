@@ -28,8 +28,9 @@ Unbudgeted, like everything in `facts/`.
   AND per-launch token from `Player.log`; empty token = "too early to say", never
   "down").
 - **Queue views render on write** (owner, 2026-08-27): every `rimflow` mutation
-  rewrites `queue/*.md` in the same command (`cli.py _emit`), so a view is never
-  staler than the ledger. The 60 s `queue_publisher.sh` loop is retired with its
+  rewrites `queue/BENCH.md`/`FOUNDRY.md` in the same command (`cli.py _emit`). Since
+  2026-10-02 those views are gitignored, so a PULL does not refresh them: read with
+  `rimflow queue <SEAT>` (renders, then prints). The 60 s `queue_publisher.sh` loop is retired with its
   whole staleness apparatus; `render.py --overwrite-queues` remains the manual form.
 - **`strings -a -el` on an assembly is not a census** — it found 16 of 115 companion
   tool names; it proves a name PRESENT, never absent.

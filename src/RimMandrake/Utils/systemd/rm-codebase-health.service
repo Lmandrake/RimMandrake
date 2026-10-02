@@ -1,0 +1,16 @@
+# Codebase health heartbeat — git plan Phase 4 (design/RimMandrake/git_workflow_plan_2026-10-01.md §2.4).
+# Replaces the retired .git/hooks/post-commit heartbeat: no git hook regenerates anything.
+# Runs in FOUNDRY's ext4 clone; the publisher itself decides whether a rebuild is due
+# (MIN_INTERVAL 900 s + working-tree fingerprint), so most runs exit at once.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-codebase-health.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-codebase-health.timer
+[Unit]
+Description=RimMandrake codebase health publisher (FOUNDRY clone)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/foundry
+Nice=10
+# The log path is shared with code_review_status.py's _trigger_health_rebuild
+# (selftest_code_review_status.py checks both name it under Transient/).
+ExecStart=/bin/sh -c 'mkdir -p Transient && LOG=Transient/codebase_health_hook.log; printf "\n=== %%s timer\n" "$(date -u +%%Y-%%m-%%dT%%H:%%M:%%SZ)" >>"$LOG"; python3 src/RimMandrake/Utils/codebase_health_publish.py >>"$LOG" 2>&1; printf "exit %%s\n" "$?" >>"$LOG"'

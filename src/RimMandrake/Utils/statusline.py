@@ -49,6 +49,26 @@ BAR = 14
 REPO = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 
 
+def _render_if_stale(view):
+    """The queue view is a gitignored CACHE since git plan Phase 4 (2026-10-02): a pull
+    that brings in another window's events does not re-render it. So re-render when
+    any ledger file is newer than the view (~0.2 s, only when stale). Never raises."""
+    try:
+        led = os.path.join(REPO, "infrastructure", "state", "ledger")
+        newest = max(os.path.getmtime(os.path.join(dp, f))
+                     for dp, _, fs in os.walk(led) for f in fs if f.endswith(".jsonl"))
+        if os.path.exists(view) and os.path.getmtime(view) >= newest:
+            return
+        sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake"))
+        from rimflow import render as _render
+        import contextlib
+        import io
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            _render.render(overwrite_queues=True, quiet=True)
+    except Exception:                                   # noqa: BLE001 — cosmetic
+        pass
+
+
 def current_item(seat, max_title=44):
     """The item this seat is working RIGHT NOW, from the rendered queue view.
 
@@ -60,6 +80,7 @@ def current_item(seat, max_title=44):
     if not seat:
         return None
     path = os.path.join(REPO, "infrastructure", "state", "queue", "%s.md" % seat)
+    _render_if_stale(path)
     try:
         with open(path, encoding="utf-8", errors="ignore") as fh:
             text = fh.read(200_000)

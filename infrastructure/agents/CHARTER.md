@@ -53,7 +53,8 @@ shared tree (`block_shared_tree_merge.py` refuses it: a failed merge hard-resets
 and erased 215 files' edits 2026-09-25). The shared tree then catches up with
 `python3 src/RimMandrake/Utils/shared_sync.py`. Rebase conflicts land only on files every
 worktree regenerates (the seat's ledger shard — union it by plumbing, see CLAUDE.md Git —
-`queue/*.md`, the health artifacts: take either side and regenerate). If a Windows
+the health artifacts: take either side and regenerate; since 2026-10-02 the shards union-merge and
+`queue/BENCH.md`/`FOUNDRY.md` + health files are gitignored, so those no longer conflict at all). If a Windows
 credential-manager error blocks the push, use
 `git -c credential.helper= -c credential.helper='!gh auth git-credential' push …`.
 A quick single-file edit doesn't need a worktree — the ceremony pays only once there's
@@ -67,8 +68,9 @@ close/drop/supersede the prose moves to `items/closed/<ID>.md`** — so `items/*
 the LIVE set and a sweep stops walking finished work; `rimflow show` resolves both.
 Reboot handoffs are not items and live in `infrastructure/state/handoffs/`. The
 ledger — the frozen `events.jsonl` plus one `ledger/events/<SEAT>.jsonl` shard per
-seat since 2026-09-23, written only by `rimflow` — is the truth; `queue/*.md` are
-rendered views you never edit. Close: `rimflow close <ID> --sha <commit>`, commit
+seat since 2026-09-23, written only by `rimflow` — is the truth; `queue/BENCH.md`/`FOUNDRY.md` are
+gitignored rendered views you never edit — read one with `rimflow queue <SEAT>`, which
+renders first (`queue/HUMAN.md` is the owner's hand-written inbox and stays tracked). Close: `rimflow close <ID> --sha <commit>`, commit
 carrying `Closes: <ID>`, push.
 
 🔴 **ANY SEAT ENDS AN ITEM IT FINDS DEAD — owner's ruling, 2026-09-19.** The moment

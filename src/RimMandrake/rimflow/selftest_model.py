@@ -282,7 +282,7 @@ def t_read_merges_frozen_history_with_every_shard_in_ts_order():
     committed — so a reader that only looked at the shards would lose all of history
     and a reader that only looked at the head would lose everything since the cutover.
     Both halves are asserted, plus the ORDER, because the order is a design decision:
-    `(ts, source rank, within-file order)` with history ranked ahead of every shard.
+    `model.canonical_order` — content only, never file or position (since 2026-10-02).
     """
     d = os.path.join(TMP, "merged")
     os.makedirs(os.path.join(d, "events"), exist_ok=True)
@@ -310,15 +310,21 @@ def t_read_merges_frozen_history_with_every_shard_in_ts_order():
         ids = [(e["ts"], e.get("id") or e.get("text")) for e in evs]
         assert [t for t, _ in ids] == sorted(t for t, _ in ids), (
             "the merged ledger is not in ts order: %r" % ids)
-        # 🔑 THE TIE-BREAK, SPELLED OUT. Three events share 12:00:00Z: one in the
-        # frozen head and two in FOUNDRY's shard. History ranks first, and within one
-        # file the append order is never permuted (a stable sort over the file list).
+        # 🔑 THE TIE-BREAK, SPELLED OUT (reader invariant, git plan §2.5, 2026-10-02).
+        # Three events share 12:00:00Z: one in the frozen head and two in FOUNDRY's
+        # shard. The order is by CONTENT — (ts, tsn, subject, VERB_RANK, seat, json) —
+        # never by which file or where in it, because union-merged shards have no
+        # meaningful position. `append()` stamps `tsn` (ns), so they replay in the
+        # order they were WRITTEN: BUILD's note, then FOUNDRY's file, then its note.
         tied = [e for e in evs if e["ts"] == "2026-09-23T12:00:00Z"]
-        assert [e["seat"] for e in tied] == ["BUILD", "FOUNDRY", "FOUNDRY"], (
-            "the same-ts tie-break is not (history first, then shard by seat name, "
-            "then within-file order): %r" % [(e["seat"], e.get("text")) for e in tied])
-        assert [e.get("text") for e in tied] == ["old", None, "second"], (
-            "one shard's own append order was permuted by the merge: %r" % tied)
+        assert [(e["seat"], e.get("text")) for e in tied] == \
+            [("BUILD", "old"), ("FOUNDRY", None), ("FOUNDRY", "second")], (
+            "the same-ts tie-break is not write order (tsn): %r"
+            % [(e["seat"], e.get("text")) for e in tied])
+        # and without `tsn` (every event before 2026-10-02) it falls to content:
+        bare = [{k: v for k, v in e.items() if k != "tsn"} for e in tied]
+        got = [(e["seat"], e.get("text")) for e in model.canonical_order(bare)]
+        assert got == [("FOUNDRY", None), ("FOUNDRY", "second"), ("BUILD", "old")], got
         assert model.read() == evs, "the merge is not deterministic across two reads"
         w = model.replay()
         for iid in ("HISTORICAL_ITEM_HERE_1", "BENCH_FILED_THIS_ITEM_1",

@@ -129,7 +129,8 @@ MEASURED about the live world — the live system is the only instrument for "ri
   event, so a hand-rolled census over `model.read()` reports **0** and looks like a real
   finding. Measured 2026-09-26: a sitting census printed "0 sitting items in the ledger"
   when there are 9. Inspect one event's keys before deriving anything
-  (`json.dumps(ev[0])`), or use `rimflow show`/`next` and the rendered `queue/*.md`.
+  (`json.dumps(ev[0])`), or use `rimflow show`/`next`/`queue <SEAT>` (the queue views are gitignored caches since
+  2026-10-02; `rimflow queue` renders before printing).
 - 🔴 **A creature census must read DESCRIPTIONS, never defNames.** Our naming convention is
   invented exotic words, so a name-match for `RM_OssuaryShrimp` finds nothing while the
   creature ships as `RM_Fessk`. Measured 2026-09-26: two of the Grey Deep's three "unbuilt"

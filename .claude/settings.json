@@ -38,6 +38,12 @@
           },
           {
             "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_ledger_lint.py\" 2>/dev/null || true",
+            "timeout": 45,
+            "statusMessage": "Linting ledger shards before push"
+          },
+          {
+            "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/warn_unclosed_queue_item.py\"",
             "timeout": 10,
             "statusMessage": "Checking for a Closes: trailer"

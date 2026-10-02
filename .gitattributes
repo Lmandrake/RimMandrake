@@ -1,0 +1,6 @@
+# Git plan §2.5 / §2.7 (design/RimMandrake/git_workflow_plan_2026-10-01.md), Phase 4.
+# Per-seat ledger shards are append-only; union never conflicts, and the reader
+# (rimflow model.read) + ledger_lint.py make that safe. The frozen events.jsonl is NOT union.
+infrastructure/state/ledger/events/*.jsonl merge=union
+*.dll binary
+*.dll.srchash -merge

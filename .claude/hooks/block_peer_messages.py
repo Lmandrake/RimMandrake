@@ -137,7 +137,7 @@ def main():
                 "There is no exception for urgency, a reversed ruling, a spec, "
                 "a handoff, a finding, or a peer about to destroy work. Put it "
                 "where they already read:\n"
-                "    work for another seat   infrastructure/state/queue/<SEAT>.md\n"
+                "    work for another seat   rimflow file --for <SEAT> (read: rimflow queue <SEAT>)\n"
                 "    the owner must decide   infrastructure/state/queue/HUMAN.md\n"
                 "    a doctrine correction   the file that says otherwise, plus a commit\n"
                 "    genuinely urgent        tell the OWNER in your own reply\n\n"

@@ -187,8 +187,9 @@ never pick up the ledger delta as a side effect. A full session's queue
 history can sit uncommitted — already-lost territory if the machine goes
 down — until caught by accident.
 
-Commit your seat's shard `infrastructure/state/ledger/events/<SEAT>.jsonl` (plus the rendered
-`infrastructure/state/queue/*.md` projections) by **explicit path**, with
+Commit your seat's shard `infrastructure/state/ledger/events/<SEAT>.jsonl` by **explicit
+path** (the rendered `queue/BENCH.md`/`FOUNDRY.md` are gitignored since 2026-10-02 —
+never commit them; read them with `rimflow queue <SEAT>`, which renders first), with
 each close or at least once per work wave — not only at session end. Prefer
 a dedicated "ledger sync" commit over folding it silently into a code
 commit's file list; it keeps the code commit's message focused and makes the
@@ -206,14 +207,19 @@ parse, backs up to `Transient/` first, and sanity-caps at 25 bad lines.
 
 ## Reading projections
 
-Every ledger file is append-only and its own append order IS the truth for the
-events inside it. **Never re-sort on `(ts, event)`** — same-second `start`+`close`
-pairs get their alphabetical tiebreak inverted by an `event`-name sort, which
-once turned 61 real "doing" items into a reported 102. Across files, the merged
-order is `(ts, source rank, within-file order)` with the frozen history ranked
-ahead of the shards — `model.read()` with no path implements it; if you are
-deriving your own view of the ledger (rather than reading `rimflow show`/`next`/
-the rendered `queue/*.md`), call that rather than merging by hand.
+Every ledger file is append-only, and since 2026-10-02 the shards merge with
+`merge=union` (`.gitattributes`), so **file position means nothing**: union keeps
+duplicate lines and interleaves two clones' appends arbitrarily. `model.read()` with
+no path is the one reader that is correct under that — it collapses identical
+events and orders by `(ts, subject, model.VERB_RANK, seat, content)`, never by file.
+**Never re-sort on `(ts, event)` yourself** — same-second `start`+`close` pairs get
+their alphabetical tiebreak inverted by an `event`-name sort, which once turned 61
+real "doing" items into a reported 102; `VERB_RANK` exists to prevent exactly that.
+If you derive your own view (rather than `rimflow show`/`next`/`queue <SEAT>`), call
+`model.read()` rather than merging by hand. A concurrent claim of one item by two
+windows resolves earliest-ts-wins; `rimflow next` prints a CONTESTED CLAIM notice
+naming both timestamps so the later window stands down. `ledger_lint.py` (selftests +
+a push guard) refuses torn lines, missing newlines and any non-append edit.
 
 ## Bridge lock
 

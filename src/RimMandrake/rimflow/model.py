@@ -426,7 +426,11 @@ def now():
 # `validate` below is the ORDER they run in. The order is not incidental: the message
 # a caller sees is the FIRST refusal its event trips, and several are pinned by name in
 # the selftests. Add a check by adding a function AND a line in `validate`.
-UNIVERSAL_FIELDS = ("ts", "seat", "event", "id", "caused_by", "override", "ownerSaid")
+# `tsn` (2026-10-02): wall-clock nanoseconds stamped by `append()`. `ts` is to the second,
+# and since the shards union-merge the reader may not use file position to order a
+# same-second burst, so the order needs a CONTENT field that carries it. See
+# `canonical_order`.
+UNIVERSAL_FIELDS = ("ts", "tsn", "seat", "event", "id", "caused_by", "override", "ownerSaid")
 
 
 def _check_verb(ev):
@@ -782,6 +786,12 @@ def append(ev, path=None):
     # non-strict replay cannot collect), and callers legitimately hand this function
     # an unstamped dict. Validating before stamping would refuse every one of them.
     ev.setdefault("ts", now())
+    # Sub-second order as CONTENT (reader invariant 3): a same-second burst from one
+    # window — `game UP` then `game DOWN`, `file` then `claim` — must replay in the order
+    # it was written, and after a union merge nothing but the event itself says what
+    # that order was. Only breaks ties WITHIN one `ts`, so a caller-supplied `ts` that
+    # disagrees with the clock cannot reorder anything across seconds.
+    ev.setdefault("tsn", time.time_ns())
     validate(ev)
     # ⚠️ AFTER `validate`, never before: `_check_seat` is what guarantees `ev["seat"]`
     # is one of SEATS, and therefore that it is a safe, bounded filename. A seat
@@ -855,35 +865,26 @@ def read(path=None):
     cutover. Every caller in this repo was converted on 2026-09-23; if you are adding
     one, pass nothing.
 
-    THE TIE-BREAK, AND WHY IT IS SAFE
-    =================================
-    `ts` is UTC to the SECOND (`now()`), so same-second events have always been
-    possible. In one file the kernel's append order broke the tie by byte position.
-    Across two files there is no byte order to consult, and there is no monotonic
-    counter to invent one from — a counter would need coordination between the seats,
-    which is exactly what sharding exists to remove.
-
-    So the order is `(ts, source rank, within-file order)`, where source rank is the
-    position in `ledger_files()`: history first, then shards by seat name. Python's
-    sort is stable, so within-file order falls out for free and is never permuted.
-
-    ⭐ THE PROPERTY THAT MATTERS IS AGREEMENT, NOT TRUE INTERLEAVE. Both windows and
-    every derived view must fold the same ledger into the same `World`; a rule that is
-    deterministic and identical everywhere gives that, and single-file byte order gave
-    nothing stronger. What is genuinely lost is the real interleave of two DIFFERENT
-    seats' events inside one second — and that information was never load-bearing:
-      • Ordering decides outcomes only WITHIN one item's lifecycle (`_transition`), and
-        an item's lifecycle events come overwhelmingly from one seat, whose own
-        sequence is preserved exactly.
-      • A genuine same-second cross-seat collision on one item (two `claim`s, a `close`
-        racing a `start`) is refused the same way in either order: one wins, the other
-        lands in `world.errors`. Which one wins was already arbitrary — `cli._emit`
-        does check-then-append with no lock held across the pair, so a concurrent
-        writer can always land in the gap. That race is UNCHANGED by this, not widened:
-        it lived in the write path, and nothing about the read path narrowed it before.
-      • Nothing downstream reads the interleave. `priority.rank()`, `render`,
-        `doctor`, `queue_staleness_review` and the dashboards all read projected item
-        state and per-item history, never "which seat wrote first this second".
+    🔑 THE READER INVARIANT (git plan §2.5, Phase 4, 2026-10-02)
+    ==============================================================
+    The shards are merged by git with `merge=union` (`.gitattributes`). Union does not
+    dedupe, gives no order, and keeps BOTH lines when two sides add the same one — so
+    file position means nothing once two clones of one seat have merged. Hence, and
+    forever:
+      1. every line is parsed (a bad one raises, see below);
+      2. an event's identity is its CONTENT — identical events (same canonical JSON)
+         collapse to one, wherever and however often they appear;
+      3. the order is `canonical_order()` — `ts`, then `tsn` (nanoseconds, stamped by
+         `append()` since 2026-10-02; absent = 0 on older events), then subject
+         (`id`/`name`/`system`), then a fixed verb rank, then seat, then canonical JSON. FILE POSITION AND
+         SOURCE FILE NEVER ENTER IT, so every clone folds the same ledger into the
+         same `World` regardless of how its union merges happened to interleave.
+    The verb rank (`VERB_RANK`) puts a same-second `file` before `claim` before
+    `start` before `close`, which is the causal order one window writes them in; it
+    was checked against the live ledger on 2026-10-02 to project identically to the
+    old file-position order (`selftest_reader_invariant.py`).
+    `ledger_lint.py` is the other half: it refuses a non-append edit, a torn line or a
+    missing newline before any of them can reach origin.
 
     ⚠️ A malformed line is REPORTED, never skipped silently. Skipping one would make
     the ledger quietly lie, which is precisely the failure mode the ledger exists to
@@ -891,16 +892,70 @@ def read(path=None):
     nobody learns it happened.
     """
     if path is None:
-        merged = []
-        for rank, f in enumerate(ledger_files()):
-            # `str(...)`: a non-string `ts` is refused by `_check_stamp` on the way in,
-            # but a line that bypassed the lock can carry one, and comparing int to str
-            # raises TypeError — which is not a LedgerError, so it would take down every
-            # tool that reads the ledger instead of being collected into `world.errors`.
-            merged.extend((str(ev.get("ts") or ""), rank, ev) for ev in _read_one(f))
-        merged.sort(key=lambda t: (t[0], t[1]))      # stable: within-file order kept
-        return [t[2] for t in merged]
+        events = []
+        for f in ledger_files():
+            events.extend(_read_one(f))
+        return canonical_order(events)
     return _read_one(path)
+
+
+# A second `claim` on an item already held, landing within this many seconds of the
+# holding claim, is a CONCURRENT claim (two windows raced); a later one is a seat
+# re-claiming its own long-held work, which is routine (226 such in the ledger,
+# measured 2026-10-02) and not reported.
+CONTEST_WINDOW_S = 1800
+
+
+def _seconds_between(a, b):
+    import datetime as _dt
+    try:
+        f = lambda t: _dt.datetime.strptime(t, "%Y-%m-%dT%H:%M:%SZ")  # noqa: E731
+        return abs((f(b) - f(a)).total_seconds())
+    except (TypeError, ValueError):
+        return float("inf")
+
+
+# Same-second causal order of one window's writes. A verb not listed ranks with `note`.
+VERB_RANK = {
+    "file": 0, "spawn": 1, "finding": 1,
+    "block": 2, "unblock": 2, "needs": 2, "retarget": 2,
+    "reassign": 3, "reclaim": 3,
+    "claim": 4, "start": 5,
+    "note": 7, "verify": 8,
+    "close": 9, "drop": 9, "supersede": 9,
+}
+_BRIDGE_RANK = {"released": 0, "taken": 1}
+
+
+def event_key(ev):
+    """-> canonical JSON of one event: its identity for dedupe (reader invariant 2)."""
+    return json.dumps(ev, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def _order_key(ev, canon):
+    subj = ev.get("id") or ev.get("name") or ev.get("system") or ""
+    verb = ev.get("event")
+    rank = VERB_RANK.get(verb, 7)
+    if verb == "bridge":
+        rank += _BRIDGE_RANK.get(ev.get("state"), 2) / 10.0
+    # `str(...)`: a non-string `ts` is refused by `_check_stamp` on the way in, but a
+    # line that bypassed the lock can carry one, and comparing int to str raises
+    # TypeError — which is not a LedgerError, so it would take down every reader.
+    tsn = ev.get("tsn")
+    tsn = tsn if isinstance(tsn, int) and not isinstance(tsn, bool) else 0
+    return (str(ev.get("ts") or ""), tsn, str(subj), rank, str(ev.get("seat") or ""), canon)
+
+
+def canonical_order(events):
+    """Reader invariant 2+3: collapse identical events, order by content, never by
+    position. Pure function; `read()` with no path is `canonical_order` of every file."""
+    seen = {}
+    for ev in events:
+        k = event_key(ev)
+        if k not in seen:
+            seen[k] = ev
+    return [ev for _, ev in sorted(((_order_key(ev, k), ev) for k, ev in seen.items()),
+                                   key=lambda t: t[0])]
 
 
 def _read_one(path):
@@ -993,7 +1048,7 @@ class Item(object):
     __slots__ = ("id", "title", "kind", "owner", "row", "target", "needs", "state",
                  "blocked", "blocked_reason", "blocked_on", "this_deployment",
                  "created_at", "created_index", "closed_sha", "superseded_by",
-                 "runs", "findings", "history", "caused_by")
+                 "runs", "findings", "history", "caused_by", "claim_ts")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1006,6 +1061,7 @@ class Item(object):
         self.this_deployment = False
         self.created_at = None
         self.closed_sha = self.superseded_by = self.caused_by = None
+        self.claim_ts = None            # ts of the claim that holds it (earliest wins)
         self.runs, self.findings, self.history = [], [], []
 
     @property
@@ -1060,6 +1116,12 @@ class World(object):
         self.findings = {}              # name -> {"from":…, "type":…, "severity":…}
         self.errors = []                # refusals a replay found ALREADY IN the file
         self.capabilities = {}          # system -> Capability (latest state + full history)
+        # Concurrent claims (git plan §2.5): two windows of one seat can both `claim` an
+        # item and both events survive the union merge. Earliest `ts` wins — it is the
+        # first one `canonical_order` folds — and every later claim landing while the
+        # item is still held is recorded here so `rimflow next` can tell the loser.
+        # [{"id", "seat", "winner_ts", "loser_ts"}]
+        self.contested_claims = []
 
     def open_items(self):
         return [i for i in self.items.values() if i.open]
@@ -1415,6 +1477,13 @@ def _apply_item_verb(ev, index, item, seat, world):
     to = lambda state: _transition(item, state)          # noqa: E731 — one short alias
 
     if verb == "claim":
+        if item.state in ("ready", "doing") and item.claim_ts and \
+                _seconds_between(item.claim_ts, ev["ts"]) <= CONTEST_WINDOW_S:
+            world.contested_claims.append({"id": item.id, "seat": seat,
+                                           "winner_ts": item.claim_ts,
+                                           "loser_ts": ev["ts"]})
+        else:
+            item.claim_ts = ev["ts"]
         item.owner = seat
         to("ready")
     elif verb == "start":

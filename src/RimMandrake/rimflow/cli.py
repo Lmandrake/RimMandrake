@@ -228,8 +228,8 @@ def _trigger_health_rebuild():
     """Give the codebase-health map a heartbeat after a ledger write. `claim`/`file
     --kind bug`/`close`/`drop` flip a file between blue ("doing") and red ("named
     by an open bug") with no git commit involved — the ledger append here is not
-    tracked by the post-commit hook — so nothing else fires this. Same three rules
-    as src/RimMandrake/Utils/git_hooks/post-commit: never block the caller, never
+    seen until the 15-min health timer (src/RimMandrake/Utils/systemd/, which replaced
+    the git post-commit hook 2026-10-02) — so this fires it now. Three rules: never block the caller, never
     fail the caller, never touch the index. The publisher decides if a rebuild is
     actually due.
 
@@ -330,6 +330,37 @@ def _emit(ev, world=None, quiet=False):
     _rerender_queue_views()
     _trigger_health_rebuild()
     return ev
+
+
+def cmd_queue(args, seat):
+    """`rimflow queue [SEAT]` — RENDER, THEN READ (git plan §2.4, Phase 4, 2026-10-02).
+
+    `queue/BENCH.md` and `queue/FOUNDRY.md` are no longer tracked: they are a gitignored
+    cache of the ledger, re-rendered on every rimflow write in THIS clone but not when a
+    pull brings in another window's events. So nothing reads them without rendering
+    first, and this verb is how a person or an agent does that. (`queue/HUMAN.md` is
+    the owner's hand-written inbox, not a view — it stays tracked and is never rendered.)
+    """
+    which = (args.which or seat or "").upper()
+    try:
+        from . import render as _render
+    except ImportError:
+        from rimflow import render as _render
+    if which not in _render.VIEW_SEATS:
+        die("`rimflow queue` renders %s; %r is not one of them. (HUMAN.md is the "
+            "owner's hand-written inbox — open it directly.)"
+            % (" / ".join(_render.VIEW_SEATS), which))
+    _rerender_queue_views()
+    path = os.path.join(_state_root(model.EVENTS), "queue", "%s.md" % which)
+    if getattr(args, "path", False):
+        print(path)
+        return 0
+    try:
+        with open(path, encoding="utf-8") as fh:
+            sys.stdout.write(fh.read())
+    except OSError as e:
+        die("rendered, but %s could not be read: %s" % (path, e))
+    return 0
 
 
 def _rerender_queue_views():
@@ -802,6 +833,7 @@ def cmd_next(args, seat):
     # somebody last typed. Owner, 2026-08-22: the measurement wins, silently. Cached for
     # 20 s in probe.py, so a seat in a loop does not shell out every call.
     sync_game_state(w, seat)
+    _warn_contested_claims(w, seat)
     ctx = _ctx(args)
     it = priority.next_item(w, seat, args.target, ctx)
     if it is None:
@@ -859,6 +891,28 @@ def cmd_next(args, seat):
                  "" if len(also) <= 4 else ", +%d" % (len(also) - 4)))
         print("    filed for you by another seat. `rimflow claim <ID>` to take one.")
     return 0
+
+
+CONTEST_NOTICE_S = 24 * 3600
+
+
+def _warn_contested_claims(w, seat):
+    """Tell the LOSER of a concurrent claim (git plan §2.5). Both claims survive the
+    shard union; the earliest `ts` holds the item (`model.World.contested_claims`).
+    Two windows of one seat sign identically, so the notice names both timestamps and
+    the window whose claim is the later one recognises itself and stands down."""
+    import datetime as _dt
+    now = _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    for c in getattr(w, "contested_claims", []):
+        it = w.items.get(c["id"])
+        if c["seat"] != seat or it is None or not it.open:
+            continue
+        if model._seconds_between(c["loser_ts"], now) > CONTEST_NOTICE_S:
+            continue
+        print("⚠️  CONTESTED CLAIM on %s: the claim at %s LOST to the earlier claim at %s."
+              % (c["id"], c["loser_ts"], c["winner_ts"]))
+        print("    If YOUR window claimed it at %s, another %s window holds it — stop "
+              "work on it and take the next item." % (c["loser_ts"], seat))
 
 
 def _claimable(w, seat, target="v1"):
@@ -2296,6 +2350,12 @@ def build_parser():
                    help="register it, write the report, file the item")
     s.add_argument("--full", action="store_true", help="print the whole report")
 
+    s = add("queue", "render this seat's queue view, then print it (render-on-read)",
+            cmd_queue)
+    s.add_argument("which", nargs="?", default=None,
+                   help="BENCH or FOUNDRY (default: this seat)")
+    s.add_argument("--path", action="store_true",
+                   help="render, then print only the view's path")
     s = add("render", "rebuild queue/*.md (owned by render.py)",
             _delegate("render"))
     s.add_argument("rest", nargs=argparse.REMAINDER,
@@ -2307,7 +2367,7 @@ def build_parser():
     return p
 
 
-READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex")
+READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex", "queue")
 
 
 # \u26d4 Bare assent is not an instruction. These are the words that mean "I agree
