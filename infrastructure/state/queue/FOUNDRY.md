@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T23:22:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-02T00:56:19Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -3620,3 +3620,43 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  NIGHTSIDEICEHEATDIALBUILD1
 prose:    infrastructure/state/items/NIGHTSIDEICE_HEAT_DIAL_BUILD_1.md
+
+## NORTHSTAR_SITUATIONAL_ROLLOUT_1 Flip modcheck --situational to default after an abort-only pass over every suite
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NORTHSTAR_SITUATIONAL_ROLLOUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTHSTAR_SITUATIONAL_ROLLOUT_1.md
+
+## NORTHSTAR_BLAND_TILE_1 Generate a genuinely bland test map (flat dry tile, no ruins) via jawa/world_tile_map_generate instead of the random quicktest forest
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NORTHSTAR_BLAND_TILE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTHSTAR_BLAND_TILE_1.md
+
+## NORTHSTAR_COMPANION_GAPS_1 Companion tools: pawn census (mental state+job), incident-queue peek/selective remove, damage-event ring buffer, holder/stack lineage, pawn roles+lord
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NORTHSTAR_COMPANION_GAPS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NORTHSTAR_COMPANION_GAPS_1.md
+
+## SEA_DIVE_HATCH_RETIRE_1 Retire RM_SeaDiveHatch: the ship flies to the RM_SeabedLayer planet layer instead; remove the hatch and fix docs that still describe it (sea_dive_maps_spec.md, SEA_FLOOR_AND_CATCH_PASS_1)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SEA_DIVE_HATCH_RETIRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEA_DIVE_HATCH_RETIRE_1.md
