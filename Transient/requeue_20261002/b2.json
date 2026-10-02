@@ -1,0 +1,30 @@
+[
+ {
+  "id": "rut_ventsmelter_v2",
+  "rimflow_item_id": "ART_PIPELINE_DAEMON_1",
+  "prompt": "RimWorld game building sprite, seen from the side at its own eye level, 2x2 cells: a smelter with a squat brick-and-iron furnace body built over a steam vent grate, a chimney stub, ore chute and tapping spout, steam leaking from the vent beneath. No fuel store, no power cable; the vent alone is the heat.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "RUT_VentSmelter (vent smelter, Graphic_Multi, 2x2, Things/Building/Production). Sump/steam-vent register: soot, mineral crust, rust. painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, never cute, no outlines, soft contact shadow only",
+  "priority": 90
+ },
+ {
+  "id": "rut_ventforge_v2",
+  "rimflow_item_id": "ART_PIPELINE_DAEMON_1",
+  "prompt": "RimWorld game building sprite, seen from the side at its own eye level, 2x2 cells: a smithing forge with an anvil and bellows-less hearth built over a steam vent grate, a hooded chimney, tool rack, steam leaking from the vent beneath. No fuel store, no power cable; the vent alone is the heat.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "RUT_VentForge (vent forge, Graphic_Multi, 2x2, Things/Building/Production). Sump/steam-vent register: soot, mineral crust, rust. painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, never cute, no outlines, soft contact shadow only",
+  "priority": 90
+ }
+]

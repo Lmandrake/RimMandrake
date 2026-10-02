@@ -1,0 +1,36 @@
+[
+ {
+  "id": "rm_greatbolehardwood_v2",
+  "rimflow_item_id": "ART_PIPELINE_DAEMON_1",
+  "prompt": "RimWorld item icon: a stack of dense dark-grained hardwood planks, deep brown-black grain with a faint warm red glow in the rings, one plank very slightly bowed as if still growing.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "RM_GreatboleHardwood (Things/Item/Resource, label heartwood). Greentide register; living heartwood that never fully stops growing. painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, never cute, no outlines, soft contact shadow only",
+  "priority": 90
+ },
+ {
+  "id": "rut_sweetlinewool_v2",
+  "rimflow_item_id": "ART_PIPELINE_DAEMON_1",
+  "prompt": "RimWorld item icon: a heap of long silver-grey hanks of coarse animal wool, oily and matted, snagged tufts with a few flecks of pale tree bark caught in them.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "Serves BOTH RUT_SweetlineWool (Things/Item/Resource/RUT_SweetlineWool) and RM_SweetlineWool (Things/Item/Resource/RM_SweetlineWool) - identical item, wire one render to both texPaths. painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, never cute, no outlines, soft contact shadow only",
+  "priority": 90
+ },
+ {
+  "id": "rut_livingbolt_v2",
+  "rimflow_item_id": "ART_PIPELINE_DAEMON_1",
+  "prompt": "RimWorld game creature sprite: the living bolt, a large hex bolt with stubby jointed insect-like legs, or a gear with opinions: a weathered threaded steel bolt body, rust and grime, a scuffed hex head tilted like a face-less head, four slender precise legs mid-step. Slow, repeated, purposeful.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "RUT_LivingBolt (Rust Cathedral, drawSize 0.45). Rust register: oxidised steel, orange-brown rust, dull grey. North facing is a rear view with no features. painterly vanilla-RimWorld art style, grounded believable materials, matte, never cartoonish, never cute, no outlines, soft contact shadow only",
+  "priority": 85
+ }
+]
