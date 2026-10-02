@@ -1,0 +1,1208 @@
+{
+  "mod": "Wasteland",
+  "mode": "mock",
+  "started_utc": "2026-10-01T22:01:47Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
+  "bars": [],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "46 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=1000 map=200x200",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 1000 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "2 active, sha256 2edc3c136a6e28d5 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "components": [
+    {
+      "chain": "log_clean",
+      "name": "player_log_names_no_wasteland_error",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "resolve_probe_sees_absence",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_BiomeDef",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_FleckDef",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_GenStepDef",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_HediffDef",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_IncidentDef",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_JobDef",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_LetterDef",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_PawnKindDef",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_QuestScriptDef",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_SoundDef",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_TerrainDef",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_ThingDef",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_ThinkTreeDef",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_WeatherDef",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_WorkGiverDef",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "settings_source_parse_floor",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_ambientDoseEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_ambientDoseMultiplier",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_ashFallPollutionEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_brineDepositsEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_caskBayPerCell",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_caskLaunchCheckEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_caskLeakSeverity",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_caskLeaksEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_caskProcessingEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_caskProcessingPerDay",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_caskReburialEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_cinderfeltGerminationEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_cinderwireEmpEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_gripperSpawnsCarrying",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_gripperTheftEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_gripperTheftMtbHours",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_middenshellEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_middenshellGrabEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_middenshellLureEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_middenshellLureRange",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_middenshellOmenHours",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_middenshellProcessionEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_middenshellStepTicks",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_middenshellTrailEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_namedStormPhasesEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_namedStormWarningFactor",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_processorGatherEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_processorUnpolluteEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_radiothermalHeatEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_stormDoseEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_stormDoseMultiplier",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_tippingEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_defaults",
+      "name": "default_wastelandEnabled",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "biome_probe_ready",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "biome_flags_and_densities",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "wild_animals_wired",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "wild_plants_wired",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "probe_states_are_honest_and_no_donor_rows",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "biome_extension_opts_into_the_storm_layer",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "cinderwire_storm_is_not_on_the_weather_list",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "no_rain_of_any_kind",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "patches_landed",
+      "name": "dune_field_binding_on_the_biome",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "patches_landed",
+      "name": "dune_weather_binding_on_the_ash_storm",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "patches_landed",
+      "name": "dune_material_def_exists",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "patches_landed",
+      "name": "brine_scatters_registered_on_the_biome",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flyer_state",
+      "name": "site_ready_flyer",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flyer_state",
+      "name": "grimewing_can_ever_fly",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flyer_state",
+      "name": "ground_creature_cannot_fly_control",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "storm_ash_on",
+      "name": "site_ready_ash",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "storm_ash_on",
+      "name": "ash_storm_doses_an_unroofed_pawn",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "storm_ash_on",
+      "name": "ash_fall_pollutes_the_ground",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "storm_ash_on",
+      "name": "ash_storm_end_germinates_cinderfelt",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "storm_ash_off",
+      "name": "site_ready_ash_off",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "storm_ash_off",
+      "name": "dose_off_means_no_buildup",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "storm_ash_off",
+      "name": "fall_off_means_no_pollution",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "storm_ash_off",
+      "name": "germination_off_means_no_cinderfelt",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_halo",
+      "name": "site_ready_halo",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_halo",
+      "name": "warning_message_arrives",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_halo",
+      "name": "dose_is_held_during_the_warning",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_halo",
+      "name": "unleashed_message_arrives",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_halo",
+      "name": "dose_begins_after_the_warning",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_cinderwire",
+      "name": "site_ready_cinderwire",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_cinderwire",
+      "name": "warning_message_arrives",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_cinderwire",
+      "name": "dose_is_held_during_the_warning",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_cinderwire",
+      "name": "unleashed_message_arrives",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_cinderwire",
+      "name": "dose_begins_after_the_warning",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_phases_off",
+      "name": "site_ready_phases_off",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_phases_off",
+      "name": "no_warning_message_when_off",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "named_storm_phases_off",
+      "name": "dose_starts_at_once_when_off",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smolderback_room",
+      "name": "site_ready_smolderback",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smolderback_room",
+      "name": "smolderback_doses_its_own_room",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smolderback_room",
+      "name": "dose_stays_in_its_room",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smolderback_room",
+      "name": "smolderback_heats_its_own_room",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smolderback_room",
+      "name": "dose_off_stops_dosing",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smolderback_room",
+      "name": "heat_off_stops_heating",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "smolderback_room",
+      "name": "master_switch_off_stops_dosing",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "processor_animals",
+      "name": "site_ready_processors",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "processor_animals",
+      "name": "polluted_ground_is_feed_ground",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "processor_animals",
+      "name": "clean_ground_is_slow_ground",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "processor_animals",
+      "name": "sootgrazer_is_a_soot_brick_press_on_polluted_ground",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "processor_animals",
+      "name": "gather_places_RM_ContaminantBezoar",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "processor_animals",
+      "name": "gather_places_RM_SootBrick",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "processor_animals",
+      "name": "gather_off_hides_the_growth_pane",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gripper",
+      "name": "site_ready_gripper",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gripper",
+      "name": "wild_gripper_spawns_carrying_scrap",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gripper",
+      "name": "steal_swaps_scrap_for_gold",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gripper",
+      "name": "hurt_gripper_drops_its_haul",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gripper",
+      "name": "theft_off_gripper_spawns_empty_handed",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gripper",
+      "name": "spawns_carrying_off_gripper_spawns_empty_handed",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "gripper",
+      "name": "tamed_gripper_never_steals",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora_harvest",
+      "name": "site_ready_flora",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora_harvest",
+      "name": "harvest_yields_WoodLog_from_RM_VaultRoot",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora_harvest",
+      "name": "harvest_yields_RawBerries_from_RM_Pusberry",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora_harvest",
+      "name": "harvest_yields_RawPotatoes_from_RM_Boilbulb",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora_harvest",
+      "name": "harvest_yields_Chemfuel_from_RM_Wartshrub",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "brine_deposits",
+      "name": "site_ready_brine",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "brine_deposits",
+      "name": "scatter_places_RM_BrineDeposit_Tekk",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "brine_deposits",
+      "name": "scatter_places_RM_BrineDeposit_Drazz",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "brine_deposits",
+      "name": "scatter_places_RM_BrineDeposit_BrinePlate",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "brine_deposits",
+      "name": "RM_BrineDeposit_Tekk_mines_to_RM_Tekk",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "brine_deposits",
+      "name": "RM_BrineDeposit_Drazz_mines_to_RM_Drazz",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "brine_deposits",
+      "name": "RM_BrineDeposit_BrinePlate_mines_to_RM_BrinePlate",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "brine_deposits",
+      "name": "raw_brineleech_gives_brine_shock",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cask_leaks",
+      "name": "site_ready_casks",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cask_leaks",
+      "name": "intact_cask_is_inert",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cask_leaks",
+      "name": "breached_cask_leaks_loudly",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cask_leaks",
+      "name": "leaking_drains_the_stored_dose",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cask_leaks",
+      "name": "leaks_off_makes_a_breached_cask_inert",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cask_leaks",
+      "name": "breached_cask_text_does_not_claim_a_bay_that_is_not_there",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cask_bay",
+      "name": "site_ready_bay",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cask_bay",
+      "name": "bay_readout_shows_capacity_integrity_and_launch_safety",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cask_bay",
+      "name": "bay_holds_a_breached_cask_without_leaking",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cask_bay",
+      "name": "shot_up_bay_leaks_loudly",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cask_bay",
+      "name": "unpowered_bay_says_so_and_power_clears_it",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "launch_check_patch",
+      "name": "can_launch_postfix_is_installed",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_body",
+      "name": "site_ready_middenshell",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_body",
+      "name": "middenshell_is_twenty_cells_wide",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_body",
+      "name": "wake_flattens_buildings_and_swallows_items",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_body",
+      "name": "crawl_leaves_trail_filth",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_body",
+      "name": "trail_off_leaves_no_new_filth",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_body",
+      "name": "off_stands_still_and_on_resumes",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_body",
+      "name": "ambient_aura_doses_a_pawn_beside_it",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_body",
+      "name": "on_again_resumes_the_crawl",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_body",
+      "name": "killed_body_hardens_into_a_quarry",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_procession",
+      "name": "site_ready_procession",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_procession",
+      "name": "incident_can_fire_on_a_wasteland_map",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_procession",
+      "name": "incident_is_blocked_when_the_body_is_switched_off",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_procession",
+      "name": "omen_letter_and_creeping_metal",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_procession",
+      "name": "body_arrives_already_crossing",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_procession",
+      "name": "procession_trail_is_laid_and_trail_off_stops_it",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "middenshell_procession",
+      "name": "procession_off_arrives_at_once_without_a_route",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rite_of_tipping",
+      "name": "site_ready_tipping",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rite_of_tipping",
+      "name": "pad_reads_unlicensed_without_a_contract",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rite_of_tipping",
+      "name": "quest_fires_and_is_ongoing",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rite_of_tipping",
+      "name": "pad_reads_licensed_with_a_contract",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "rite_of_tipping",
+      "name": "tipping_off_refuses_the_offer",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 0
+  },
+  "all_green": false,
+  "timing": {
+    "n": 187,
+    "total_ms": 0.821,
+    "mean_ms": 0.0044,
+    "p50_ms": 0.0012,
+    "p95_ms": 0.0253,
+    "by_tool": {
+      "rimworld/get_game_info": {
+        "n": 4,
+        "mean_ms": 0.0068,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 12,
+        "mean_ms": 0.0011,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 0.0014,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 20,
+        "mean_ms": 0.0043,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 61,
+        "mean_ms": 0.0014,
+        "errors": 0
+      },
+      "jawa/biome_probe": {
+        "n": 1,
+        "mean_ms": 0.0064,
+        "errors": 1
+      },
+      "jawa/destroy_batch": {
+        "n": 50,
+        "mean_ms": 0.0031,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 8,
+        "mean_ms": 0.0504,
+        "errors": 0
+      },
+      "jawa/set_roof_batch": {
+        "n": 8,
+        "mean_ms": 0.0012,
+        "errors": 0
+      },
+      "jawa/set_fog": {
+        "n": 8,
+        "mean_ms": 0.0005,
+        "errors": 0
+      },
+      "jawa/set_pollution": {
+        "n": 8,
+        "mean_ms": 0.003,
+        "errors": 8
+      },
+      "jawa/weather_set": {
+        "n": 5,
+        "mean_ms": 0.0006,
+        "errors": 0
+      },
+      "jawa/harmony_patches": {
+        "n": 1,
+        "mean_ms": 0.0008,
+        "errors": 1
+      }
+    }
+  }
+}
