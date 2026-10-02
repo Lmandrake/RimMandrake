@@ -46,3 +46,10 @@ mod's ten `RUT_`-prefixed defs**, which the 2026-10-01 scores doc missed
 - verify, Fever Wood: offline parse finds no `<defName>RUT_` and no `"RUT_` string literal under
   `src/RimMandrake/FeverWood/` or `src/RimMandrake/EnvironmentalHazards/`; `jawa/get_defs` on the ten `RM_`
   names returns `foundCount` 10; `Player.log` has no `Could not resolve` naming any old or new name.
+
+## 2026-10-02 additions (Weeping Stones)
+
+`WEEPINGSTONES_SCORING_SITTING_1` turn 1 (`weepingstones_bedazzle_review_2026-10-02.md` §1 (b), §4 row 0): the
+snow-strip and label ops in `src/RimUtinni/UtinniPatches/Patches/OasisMutator_DesertOasis.xml` target the donor
+`ZBiome_DesertOasis` only. Harmless (the `RM_` def has neither problem); retire them with the donor. The whitelist and
+palm ops in the same file are `WEEPINGSTONES_OASIS_MUTATOR_FLORA_1`'s, not this item's.

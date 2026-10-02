@@ -1,0 +1,48 @@
+# WEEPINGSTONES_CONDENSER_QUESTS_1 — two optional quests on the walking condenser: the Hutts' capture for the Arena, or keeping it free with the Moisture Farmers against Blackstar's fame hunters
+
+Caused by `WEEPINGSTONES_SCORING_SITTING_1` (turn 1). **Tier: quest machinery free, faction mapping campaign.**
+The two QuestScriptDefs live in `mandrake.rm.weepingstones` with faction *slots* filled by vanilla factions in the
+free mod (a wealthy collector faction for the capture; a settler faction and a pirate faction for keep-free); the
+campaign layer (`src/RimUtinni/UtinniPatches`) maps the slots to the canon/campaign factions the owner named. Hutts are
+IP and never appear in free text (Q11, Q11a: the free mod looks the same save the canon content). Design: `design/Jawa/worldbuilding/biomes/weepingstones_bedazzle_review_2026-10-02.md` §8.
+
+Ruling: owner, typed 2026-10-02: *"I love (1). Optional quest from Hutts to capture it for the Arena (sad), or work
+with Moisture Farmers to keep it free by foiling fellow hunters (Blackstar hunting it for fame)."*
+
+## What exists
+
+- `RUT_Jawa_HuttCartel` (FactionDef). The Arena is offstage by `HUTT_SLAVE_PIT_TEST_SITE_1` (*"A visitable arena is a
+  later, separate build"*): the captured crab goes to it by letter.
+- Blackstar Company reskins vanilla `Pirate` (`BlackstarCompany.xml`; `faction_roster_v2.md` l.171).
+- "Moisture Farmer" is a forced pawn kind of the Homestead faction (`faction_roster_v2.md` l.955; the sheet's
+  *"vaporator farmers"*). Its FactionDef defName: **measure, do not guess**.
+- No quest, def or design text for either branch exists (searched `src/`, `design/`, items: "Arena" hits are the
+  Geonosian hive and the slave pit's offstage note only).
+
+## spec
+
+Both optional, offered once the walking condenser is known; taking one forecloses the other.
+
+1. **Capture for the Arena (sad).** The Hutt Cartel (free: a wealthy collector) offers a large reward to subdue and
+   deliver the oldest gorrask alive. The crab is not killed: it is downed/sedated and hauled out by the buyer's
+   party. The moving oasis ends; a letter says where it went and that it will never walk again (the sadness is in
+   the text). Relations: buyer pleased; the water stewards and the moisture farmers displeased.
+2. **Keep it free.** The Moisture Farmers (free: a settler faction) ask the clan to protect the crab through its next
+   season; Blackstar hunters (free: a pirate faction) arrive hunting it **for fame** (trophy, not profit: their
+   letter brags). Foil them (fight, misdirect, or turn the truce on them: a hunter who strikes first at the crab's
+   pool brings the wild herds down on Blackstar). Success: farmers' goodwill, the crab walks on, and the farmers
+   share a season at its pool.
+3. Readable signs throughout (letters, quest text, the truce radius drawn at the crab's pool).
+4. Quest validator: `rimworld-quests` skill's offline validator before any load.
+
+Depends on: `WEEPINGSTONES_WALKING_CONDENSER_1`, `WEEPINGSTONES_TRUCE_HUNT_SUPPRESSION_1`.
+
+## criteria
+
+- Both QuestScriptDefs pass the offline validator; each fires from the dev quest menu on a quicktest with a
+  debug-spawned condenser crab.
+- Capture branch: crab removed with letter; the walking condenser's world state ends.
+- Keep-free branch: hunters spawn, a guilty strike at the pool triggers retribution against their faction; success
+  letter and goodwill.
+- Free mod alone: no Hutt/Blackstar/canon string in any free-tier text (search); campaign loaded: the slots show the
+  Hutt Cartel, the Homestead's moisture farmers and Blackstar.

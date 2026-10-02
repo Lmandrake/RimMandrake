@@ -514,3 +514,35 @@ landmark patch that only names the old donor biome**, while the Mod Settings scr
 
 Held off the card (in the doc only): the stone lets go (§5 idea 4, the weather alternative), weeping
 masonry (§4 row 4, the tech alternative).
+
+## 8. Turn 1 rulings (2026-10-02) and ticket-out
+
+Card asked 2026-10-02 12:53 PDT. Item 1 decision taken by question card (seat BENCH). Items 2, 3 and 4 the owner
+answered in typed words, quoted verbatim below.
+
+| Card item | Ruling | Ticket |
+|---|---|---|
+| 1. Build first | **Land it and add the giant's story together.** Decision taken by question card. Row 0 in full (§4): the murrin catchable (floor resident + `RM_MurrinCatch` in `fishTypes`; the netting job can start a pool from its baseline); the truce's suppression half (predators never start a hunt at full water; tamed predators included); dewsilk from the mirrik swarm's cocoons; the heat kind by sun height from the tile's latitude, overhang shade working; the twelve "wind-hour" descriptions rewritten; the Earth palms (including the banned date palm) out of every oasis, and the biome registered with the Oasis landmark mutator in both tiers instead of donor-only; real Mod Settings sliders. "Land what was already decided" alone and "new ideas first" are **NOT CHOSEN**. Not in this batch (no ruling asked them): the oasis-maker's quests, the gorrask as a general landform beyond what the giant needs. | `WEEPINGSTONES_MURRIN_CATCH_WIRING_1`, `WEEPINGSTONES_TRUCE_HUNT_SUPPRESSION_1`, `WEEPINGSTONES_DEWSILK_COCOON_1`, `WEEPINGSTONES_HEAT_WINDHOUR_TEXT_1`, `WEEPINGSTONES_OASIS_MUTATOR_FLORA_1`, `WEEPINGSTONES_SETTINGS_SLIDERS_1`; amended: `BIOME_TIER_CLEANUP_1` (the donor-only snow and label ops) |
+| 2. The giant | Owner, typed: *"I love (1). Optional quest from Hutts to capture it for the Arena (sad), or work with Moisture Farmers to keep it free by foiling fellow hunters (Blackstar hunting it for fame)."* (1) is **the walking condenser**: the oldest gorrask carries a running ancient water machine; a pool and its truce form wherever it settles for a season; guide it onto your land, sell where it settles next, or cut the machine out for the last working ancient condenser as a ship water plant. **Plus two optional quests**, one forecloses the other: the Hutts' capture for the Arena (offstage, by letter; the crab never walks again) or keeping it free with the Moisture Farmers against Blackstar hunters seeking fame. The last caravan and the crab on the hatch are **NOT CHOSEN**. Tiers: the creature, machine and choices are free (`mandrake.rm.weepingstones`); the quests' machinery is free with vanilla-faction slots, and the Hutt Cartel, the Homestead's moisture farmers and Blackstar are mapped onto those slots in the campaign layer. | `WEEPINGSTONES_WALKING_CONDENSER_1` (free), `WEEPINGSTONES_CONDENSER_QUESTS_1` (free machinery, campaign mapping) |
+| 3. New marks | Owner, typed: *"None of these. Close misses."* **No new mark this round.** The fish walk (weather), the pilgrim passage (ship), the dewsilk casket (technology) and the fish that lies (sound) are recorded as **close misses**, not dead: none is ticketed, and none should be re-pitched as if new. Marks 2, 6, 7 and 8 stay open. The stone lets go (§5 idea 4) and weeping masonry (§4 row 4) were held off the card and stay unticketed. | none |
+| 4. Rite | Owner, typed: *"This is pretty cool (2). Gotta do it."* (2) is **the Refused Toll, for Mob'Unloo** (the god of debt and trade): draw water in the open at a station metered by someone who does not live on it, and walk away without paying; the toll-keeper answers, and a participant who strikes first there turns the truce on the clan. Mob'Unloo now carries **five found rites, at the cap** (the Blind Offering, the Storm's Receipt, the Cold Ledger, Mob'Unloo's Price, the Refused Toll; counted by hand from the register). The Open Water (Oomo) is **NOT CHOSEN**; Oomo keeps his one slot. Register: B15 row added; B6's "pool rites" row resolved to it. | `WEEPINGSTONES_REFUSED_TOLL_RITE_1` (campaign) |
+
+FOUNDRY items, each `--caused-by WEEPINGSTONES_SCORING_SITTING_1`:
+
+| slate row | item | tier |
+|---:|---|---|
+| 0 | `WEEPINGSTONES_MURRIN_CATCH_WIRING_1` (murrin inline, `RM_MurrinCatch`, the dead FISH_BY_BIOME_1 citations removed) | free |
+| 0 | `WEEPINGSTONES_TRUCE_HUNT_SUPPRESSION_1` (predators never start a hunt in the truce radius; setting) | free (`environmentalhazards`) |
+| 0 | `WEEPINGSTONES_DEWSILK_COCOON_1` (cocoon item, tamed-swarm harvest, the cloth) | free |
+| 0 | `WEEPINGSTONES_HEAT_WINDHOUR_TEXT_1` (`RM_SunHeatExtension` sun angle from latitude; twelve sentences and one comment) | free |
+| 0 | `WEEPINGSTONES_OASIS_MUTATOR_FLORA_1` (whitelist both tiers; palms out; native flora at our oases only) | free + one campaign patch |
+| 0 | `WEEPINGSTONES_SETTINGS_SLIDERS_1` (truce radius, vhorrin odds, vizhik escape) | free |
+| 0 | `BIOME_TIER_CLEANUP_1`, 2026-10-02 Weeping Stones addition (donor-only snow and label ops) | campaign |
+| 1 | `WEEPINGSTONES_WALKING_CONDENSER_1` | free |
+| 1 | `WEEPINGSTONES_CONDENSER_QUESTS_1` | free machinery, campaign mapping |
+| 6 | `WEEPINGSTONES_REFUSED_TOLL_RITE_1` (with the Imperial metering station site) | campaign |
+| 7 | art: `infrastructure/artpipe/art_lists/weepingstones_turn1_2026-10-02.csv` (7 jobs: murrin catch, dewsilk cocoon, dewsilk cloth, the condenser overlay on the gorrask, the ancient condenser plant, the torn meter, the metering station). Searched first: the murrin and gorrask pawns have art (`done/weepingstones_murrin_*`, `done/weepingstones2_gorrask_*`); dewsilk 0 hits. | |
+
+Sequencing: row 0 first (`WEEPING_STONES_FIRST_SCRIPT_1` is written against row 0's state); the truce suppression
+before the walking condenser and the rite (both carry the truce off the stocked pools); the walking condenser before
+its quests; the settings sliders after the suppression (one radius for every truce reader).
