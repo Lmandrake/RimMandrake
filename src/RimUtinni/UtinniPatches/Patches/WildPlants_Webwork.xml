@@ -40,7 +40,7 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildPlants</xpath>
       <value>
-        <Plant_TookeTrap_Wild>0.3</Plant_TookeTrap_Wild>
+        <Plant_TookeTrap_Wild MayRequire="mlie.starwarsanimalcollection">0.3</Plant_TookeTrap_Wild>
       </value>
     </match>
   </Operation>

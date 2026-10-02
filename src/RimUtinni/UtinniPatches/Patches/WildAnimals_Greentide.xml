@@ -220,8 +220,8 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
       <value>
-        <AA_Needlepost>0.3</AA_Needlepost>
-        <AA_BloodShrimp>0.2</AA_BloodShrimp>
+        <AA_Needlepost MayRequire="sarg.alphaanimals">0.3</AA_Needlepost>
+        <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>
       </value>
     </match>
   </Operation>
@@ -233,7 +233,7 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
       <value>
-        <VFEI2_Swarmling>0.4</VFEI2_Swarmling>
+        <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.4</VFEI2_Swarmling>
       </value>
     </match>
   </Operation>
