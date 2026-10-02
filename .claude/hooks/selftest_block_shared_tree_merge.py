@@ -85,6 +85,40 @@ def main():
         (ALLOW, "echo 'git merge is banned here'", S),
         (ALLOW, "git log --merges", S),
     ]
+    D, DW = "/mnt/d/Luke/dev/RimMandrake", "/mnt/d/Luke/dev/Rimworld"
+    E4 = "/home/mandrake/rm/bench"          # ext4 clone (any non-D path behaves the same)
+    cases += [
+        # --- D:\\ tree, by path (2026-10-02, plan Phase 1) ---
+        (DENY,  "git checkout origin/main -- src/a.xml", D),
+        (DENY,  "git checkout HEAD~3 -- infrastructure/state/x.md", DW),
+        (DENY,  "git -C %s checkout abc123 -- f" % D, E4),
+        (DENY,  "cd %s && git checkout origin/main -- f" % D, E4),
+        (DENY,  "git restore --source=origin/main src/a.xml", D),
+        (DENY,  "git restore --source origin/main -- f", DW),
+        (DENY,  "git restore -s HEAD~1 f", D),
+        (DENY,  "git worktree add /mnt/d/Luke/dev/wt1 origin/main", E4),
+        (DENY,  "git worktree add --detach /mnt/d/Luke/dev/RimMandrake_wt", D),
+        (DENY,  "git worktree add -b x ../wt2 origin/main", D),   # relative, lands under /mnt/d
+        (DENY,  "git reset --hard HEAD", D),                      # by path
+        (DENY,  "git stash", D),
+        (DENY,  "git clean -fd", DW),
+        (DENY,  "git merge feature", D),
+        (ALLOW, "git checkout -- src/a.xml", D),                  # own-path discard, no ref
+        (ALLOW, "git checkout main", D),
+        (ALLOW, "git status", D),
+        (ALLOW, "git restore src/a.xml", D),
+        (ALLOW, "git restore --staged f", D),
+        (ALLOW, "git pull --ff-only", D),
+        # --- ext4 clones are untouched ---
+        (ALLOW, "git checkout origin/main -- src/a.xml", S),
+        (ALLOW, "git checkout origin/main -- f", E4),
+        (ALLOW, "git restore --source=origin/main f", S),
+        (ALLOW, "git restore --source=HEAD f", E4),
+        (ALLOW, "git worktree add /home/mandrake/wt/x origin/main", E4),
+        (ALLOW, "git worktree add --detach %s/wt3 origin/main" % tmp, S),
+        (ALLOW, "git worktree list", D),
+        (ALLOW, "git log --oneline", E4),
+    ]
     bad = 0
     for want, cmd, cwd in cases:
         got = verdict(cmd, cwd)

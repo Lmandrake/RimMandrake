@@ -3,7 +3,7 @@
 
 WHY
 ===
-Several windows edit /mnt/d/Luke/dev/Rimworld at once, so at any moment its
+Several windows edit /mnt/d/Luke/dev/RimMandrake (symlinked as .../Rimworld) at once, so at any moment its
 worktree holds other threads' uncommitted work. A merge rewrites files in that
 worktree; a merge that stops half-way leaves conflict markers or a MERGE_HEAD in
 files nobody in the merging window owns; and the recovery reflex (abort, reset,
@@ -24,7 +24,7 @@ from there. The shared tree only ever moves forward:
     git worktree add --detach /tmp/claude-1000/merge-<x> origin/main
     cd /tmp/claude-1000/merge-<x> && git merge origin/<branch>   # resolve, build, test
     git push origin HEAD:main
-    cd /mnt/d/Luke/dev/Rimworld && git pull --ff-only             # or pull --rebase
+    cd /home/mandrake/rm/<seat> && git pull --rebase origin main   # ext4 clone, never D:\\
 
 WHAT IS BLOCKED (only in the main worktree — linked worktrees are free)
 =============================================
@@ -35,6 +35,16 @@ WHAT IS BLOCKED (only in the main worktree — linked worktrees are free)
   git reset --hard/--merge, git checkout -f / . / -- .,
   git restore . (worktree), git stash with no pathspec, git clean -f,
   git checkout-index -a          whole-tree discards
+
+ADDED 2026-10-02 (git_workflow_plan_2026-10-01.md Phase 1) -- the D:\\ tree is guarded by PATH,
+not only by "main worktree": when the command's target tree (cwd, `cd X &&`, `git -C X`)
+is /mnt/d/Luke/dev/RimMandrake or /mnt/d/Luke/dev/Rimworld it ALSO refuses
+  git checkout <ref> -- <path>     (rewrites files from another commit under peers)
+  git restore --source/-s ...      (same)
+and, wherever the command runs, `git worktree add <path under /mnt/d>` (a drvfs
+worktree repeats the 9p index-corruption class). Every whole-tree refusal above also
+applies by path, so a missing/renamed .git on D:\\ cannot make the guard fail open.
+ext4 clones (/home/mandrake/rm/*) are unaffected.
 
 WHAT IS NOT BLOCKED
 ===================
@@ -72,6 +82,67 @@ def is_shared_tree(path):
         return git_dir == os.path.realpath(common)
     except Exception:
         return False                         # fail open
+
+
+D_ROOTS = ("/mnt/d/Luke/dev/RimMandrake", "/mnt/d/Luke/dev/Rimworld")
+
+
+def _real(p):
+    return os.path.realpath(os.path.expanduser(p))
+
+
+def is_d_path(path):
+    """True when `path` is the D:\\ shared tree or inside it (symlink-resolved)."""
+    try:
+        rp = _real(path)
+        return any(rp == _real(r) or rp.startswith(_real(r) + os.sep) for r in D_ROOTS)
+    except Exception:
+        return False
+
+
+def is_under_mnt_d(path):
+    try:
+        rp = _real(path)
+        return rp == "/mnt/d" or rp.startswith("/mnt/d/")
+    except Exception:
+        return False
+
+
+def sub_and_args(tok):
+    i = 1
+    while i < len(tok) and tok[i].startswith("-"):
+        i += 1 if tok[i] not in TAKES_ARG else 2
+    return (tok[i], tok[i + 1:]) if i < len(tok) else (None, [])
+
+
+def d_offence(tok):
+    """Reason for verbs refused on the D:\\ tree specifically, else None."""
+    sub, args = sub_and_args(tok)
+    if sub == "checkout" and "--" in args:
+        before = args[:args.index("--")]
+        if [a for a in before if not a.startswith("-")]:
+            return "`git checkout <ref> -- <path>` overwrites files from another commit"
+    if sub == "restore" and any(a == "-s" or a.startswith("--source")
+                                or (a.startswith("-s") and not a.startswith("--"))
+                                for a in args):
+        return "`git restore --source` overwrites files from another commit"
+    return None
+
+
+def worktree_add_target(tok, cwd):
+    """Absolute target path of `git worktree add`, else None."""
+    sub, args = sub_and_args(tok)
+    if sub != "worktree" or not args or args[0] != "add":
+        return None
+    skip = False
+    for a in args[1:]:
+        if skip:
+            skip = False
+        elif a in ("-b", "-B", "--reason"):
+            skip = True
+        elif not a.startswith("-"):
+            return os.path.join(cwd, os.path.expanduser(a))
+    return None
 
 
 def offence(tok):
@@ -152,35 +223,43 @@ def main():
             continue
         if tok[0] != "git":
             continue
-        why = offence(tok)
-        if not why:
-            continue
         where = git_dir_arg(tok)
         where = os.path.join(cwd, where) if where else cwd
-        if not is_shared_tree(where):
+        wt = worktree_add_target(tok, where)
+        if wt is not None:
+            if is_under_mnt_d(wt):
+                print(deny("`git worktree add` under /mnt/d: drvfs worktrees are slow "
+                           "and corruption-prone"))
+                return 0
             continue
-        print(json.dumps({"hookSpecificOutput": {
-            "hookEventName": "PreToolUse",
-            "permissionDecision": "deny",
-            "permissionDecisionReason": (
-                "Blocked by project house rule: %s, and this is the SHARED tree.\n\n"
-                "Other windows have uncommitted work in it. A failed merge "
-                "hard-resets the tree internally — it erased 215 files' edits "
-                "2026-09-25 07:54 — and a whole-tree reset/checkout/restore/stash/"
-                "clean does the same directly. Discard only YOUR paths "
-                "(`git checkout -- <file>`, `git stash push -- <file>`).\n\n"
-                "Merge in a private worktree and push from there:\n"
-                "    git worktree add --detach /tmp/claude-1000/merge-x origin/main\n"
-                "    cd /tmp/claude-1000/merge-x && git merge origin/<branch>\n"
-                "    git push origin HEAD:main\n"
-                "Then move the shared tree forward only:\n"
-                "    python3 src/RimMandrake/Utils/shared_sync.py   (this tree is never clean, so\n"
-                "    pull --rebase refuses; the tool replays + reset --keep)\n\n"
-                "⚠️  NOTHING IN THAT COMMAND RAN — a compound "
-                "command is refused whole." % why),
-        }}))
+        on_d = is_d_path(where)
+        why = offence(tok) or (d_offence(tok) if on_d else None)
+        if not why or not (on_d or is_shared_tree(where)):
+            continue
+        print(deny(why))
         return 0
     return 0
+
+
+def deny(why):
+    return json.dumps({"hookSpecificOutput": {
+        "hookEventName": "PreToolUse",
+        "permissionDecision": "deny",
+        "permissionDecisionReason": (
+            "Blocked by project house rule: %s, and this is the SHARED D:\\ tree "
+            "(or a worktree under /mnt/d).\n\n"
+            "Other windows have uncommitted work in it. A failed merge "
+            "hard-resets the tree internally — it erased 215 files' edits "
+            "2026-09-25 07:54 — and a whole-tree reset/checkout/restore/stash/"
+            "clean, or a checkout/restore from another ref, does the same directly.\n\n"
+            "Work in your ext4 clone instead: /home/mandrake/rm/<seat> "
+            "(bench, foundry; git status there is ~0.06 s vs ~15 s on D:\\), "
+            "or a private worktree under /home/mandrake/wt/. Publish with "
+            "`git pull --rebase origin main && git push origin HEAD:main`.\n"
+            "Discard only YOUR paths here (`git checkout -- <file>`, "
+            "`git stash push -- <file>`).\n\n"
+            "NOTHING IN THAT COMMAND RAN — a compound command is refused whole." % why),
+    }})
 
 
 if __name__ == "__main__":
