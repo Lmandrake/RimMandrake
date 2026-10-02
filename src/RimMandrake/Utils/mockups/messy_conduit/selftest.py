@@ -52,6 +52,68 @@ def main():
             fails += 1
             checks += 1
             print("FAIL no live end", st)
+    # load-proportional bundles (§8.10)
+    import load
+    for state in ("day", "day_off", "night"):
+        lsc = load.load_scene(state)
+        net = render.Net(lsc, 1, load=True)
+        inj, dev = load.injections(net)
+        fk = load.solve_kirchhoff(net, inj)
+        checks += 1
+        worst = max(abs(sum(fk.get((c, q), 0) for q in net.nb[c] if q in net.live) - inj.get(c, 0))
+                    for c in net.live)
+        if worst > 1e-6:
+            fails += 1
+            print(f"FAIL kirchhoff conservation {state}: {worst}")
+        model = load.make_model(lsc, 250)(net, STYLES["jawa"], 1)
+        checks += 1
+        if not all(1 <= n <= 10 for n in model["n"]):
+            fails += 1
+            print("FAIL strand range", state, model["n"])
+        # every junction: matched pairs never join two strands flowing the same way
+        checks += 1
+        for J, (sl, pairs, loose) in model["plan"].items():
+            if any(sl[a]["io"] == sl[b]["io"] for a, b in pairs):
+                fails += 1
+                print("FAIL junction matching", state, J)
+                break
+    # a tree net: Kirchhoff == spanning tree
+    tsc = load.load_scene("day")
+    tsc["conduit"] = [c for c in tsc["conduit"] if c not in [(7, 6), (8, 6), (7, 7)]]
+    tsc["lamps"] = []
+    tnet = render.Net(tsc, 1, load=True)
+    ti, _ = load.injections(tnet)
+    a_, b_ = load.solve_kirchhoff(tnet, ti), load.solve_tree(tnet, ti)
+    checks += 1
+    if max(abs(a_[k] - b_.get(k, 0)) for k in a_) > 1e-6:
+        fails += 1
+        print("FAIL tree: kirchhoff != subtree sums")
+    checks += 1
+    seq, prev = [], None
+    for w in [740, 755, 748, 752, 745, 760, 700, 610]:
+        prev = load.strands_hyst(w, prev, 250)
+        seq.append(prev)
+    if seq != [3, 4, 4, 4, 4, 4, 3, 3]:
+        fails += 1
+        print("FAIL hysteresis", seq)
+    # owner excursions (§8.11): big loops still never put a vertex in an unwalkable cell
+    from scene import sprawl_scene
+    ssc = sprawl_scene()
+    for st in ("jawa", "extcord"):
+        net = render.Net(ssc, 1)
+        strands, ex = render.build_strands(net, STYLES[st], dict(LEVELS["default"], loop_p=0, coil_p=0),
+                                           {"sprawl": {"slack": 0.9, "cap": 2.6, "loops": 0.16, "heap_p": 0.35,
+                                                       "iters": 70}})
+        checks += 1
+        bad = 0
+        for s_ in strands:
+            for p in s_["pts"]:
+                c = (int(math.floor(p[0])), int(math.floor(p[1])))
+                if net.blocked(c):
+                    bad += 1
+        if bad:
+            fails += 1
+            print(f"FAIL sprawl geometry {st}: {bad} vertices in unwalkable cells")
     print(f"{checks - fails}/{checks} checks passed")
     return 1 if fails else 0
 

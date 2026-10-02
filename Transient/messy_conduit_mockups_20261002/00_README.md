@@ -8,15 +8,25 @@ was used. Renderer, scene and selftest: `D:\Luke\dev\RimMandrake\src\RimMandrake
 
 | file | shows |
 |---|---|
-| `00_overview.png` | all four styles side by side, DEFAULT messiness, same network |
-| `0Na/b/c_<style>_<level>.png` | the base scene at 80 px/cell, messiness 1 tidy-ropey / 2 ropey-jury-rigged (DEFAULT) / 3 rat's nest |
-| `0Ns_<style>_swatches.png` | close-ups at 110 px/cell: every strand type, the default bundle, T and X junctions, splice/joiner, slack loop, capped stub + spare coil, over-a-wall, into-rock grommet, trunk wrap, lamp-post climb, machine hookups, break live vs dead |
-| `0Nt_<style>_break.png` | break readout: 4 frames of the live end (whip + sparks) beside the still dead end, plus a power-off panel where both ends read dead |
+| `00_overview.png` | the three families (Star Wars shown as base + Jawa variant) side by side, DEFAULT messiness, same network |
+| `<NN>a/b/c_<style>_<level>.png` (NN = 01, 02, 03, 03j) | the base scene at 80 px/cell, messiness 1 tidy-ropey / 2 ropey-jury-rigged (DEFAULT) / 3 rat's nest |
+| `<NN>s_<style>_swatches.png` | close-ups at 110 px/cell: every strand type, the default bundle, T and X junctions, splice/joiner, slack loop, capped stub + spare coil, over-a-wall, into-rock grommet, trunk wrap, lamp-post climb, machine hookups, break live vs dead |
+| `<NN>t_<style>_break.png` | break readout: 4 frames of the live end (whip + sparks) beside the still dead end, plus a power-off panel where both ends read dead |
 
-Styles: **01 Cybertek** (sleek silver/graphite metallic, chrome ferrules, hex pods with a cyan light) ·
-**02 Extension cord** (glossy orange/green/brown/yellow/blue, power-strip junctions, plug-into-socket joiners, unplugged plug heads as caps) ·
-**03 Star Wars friendly** (thick black rubber, corrugated steel hose, coiled black cord, greebled boxes) ·
-**04 Jawa** (faded orange cord, ribbed armoured grey, red/black twin-lead, bare copper, braided green, greasy black; tape lumps, hose clamps, rag caps, ration-tin box, grease).
+| `05_load_<style>_day.png` | **load-proportional bundles** (design §8.10): 1-10 strands per run from the watts it carries; labels show W, strand count, flow direction; legend at right |
+| `05_load_beforeafter_jawa.png` | smelter ON / smelter OFF (its spur thins, the battery branch thickens) / NIGHT (battery discharges, trunk flow reverses) |
+| `05_load_method_ring.png` | Kirchhoff (recommended) vs spanning-tree flow on the conduit loop |
+| `06_sprawl_<style>.png` | **owner excursions** (§8.11): BEFORE = phase-0 routing capped at 0.38 cell, AFTER = 1.9x slack laid as big walkability-aware loops, figure-eights and heaps that pile against walls/rock, on a new open-floor scene |
+| `00_owner_reference_orange_cord.png` | the owner's reference photo for §8.11 |
+
+**Style structure (owner, 2026-10-02): three families, Jawa is a variant of Star Wars.**
+
+| | family | look |
+|---|---|---|
+| 01 | Cybertek | sleek silver/graphite metallic, chrome ferrules, hex pods with a cyan light (silver is allowed) |
+| 02 | Extension cord | glossy orange/green/brown/yellow/blue, power-strip junctions, plug-into-socket joiners |
+| 03 | Star Wars (base) | mostly smooth **matte** black cable (low shine), a few dark corrugated-steel hoses and coiled black cords, greebled boxes. **No white.** |
+| 03j | Star Wars: **Jawa variant** | the same matte-black set gone feral: dark/ochre/oil-stained tape, hose clamps, rag caps, a ration-tin box, grease. **No white.** |
 
 ## Grid key (columns A.., rows 0.. — printed on every scene)
 
@@ -34,6 +44,8 @@ Styles: **01 Cybertek** (sleek silver/graphite metallic, chrome ferrules, hex po
 | U7 | end of the main line, hooked into the heater at U8 |
 | P12 | lone dead end: a deliberate capped stub (never sparks) |
 | E12, R8, N8, K11, M9 | floor items, always drawn over wires |
+| I1:K2, J4 | 05 only: solar array, enters the trunk at the X junction J4 |
+| O13:Q13 | 05 only: smelter (1500 W) on the old capped stub P12 |
 
 ## Knobs (`styles.py`)
 
@@ -61,7 +73,9 @@ corrugated, coil, twin-lead, braid, bare copper), junction/splice/cap decals, wa
 
 ## What the owner is asked to judge
 
-1. Which style(s) ship, and whether 04 Jawa is the default or the campaign-only set.
+1. Which families ship, and whether the 03j Jawa variant is the default or the campaign-only set.
+5. Load bundles: is 1 strand per 250 W the right scale, and does the battery branch thickening (05 before/after) read as right?
+6. Excursions: is the AFTER level of 06 the default, or between BEFORE and AFTER?
 2. Which messiness level is the default (proposed: level 2).
 3. Whether the break readout (live sparks vs limp dead end) reads at a glance.
 4. Wire on the wall top and the trunk wrap: keep, change or drop.

@@ -84,3 +84,44 @@ def break_scene():
     return mini([(1, 1), (2, 1), (3, 1), (5, 1), (6, 1), (7, 1)], 9, 3, name="break",
                 machines=[{"id": "battery", "kind": "battery", "x": 0, "y": 0, "w": 1, "h": 2,
                            "hookup": (1, 1), "source": True}])
+
+
+def sprawl_scene():
+    """Owner-excursion test bed (§8.11): real open floor, a rock outcrop and a pillar block to
+    avoid, runs laid one cell off a wall base (excess piles against it) and through a doorway."""
+    W, Hh = 26, 16
+    door = (9, 10)
+    walls = [c for c in _rect_perimeter(9, 2, 24, 14) if c != door]
+    rock = [(x, y) for x in range(0, 4) for y in range(0, 4)] + [(1, 4), (2, 4), (0, 4)]
+    rock += [(15, 6), (16, 6), (15, 7), (16, 7)]          # a rock pillar inside the hall
+    outdoor = [(x, 10) for x in range(3, 9)]                # generator -> door
+    lamp_run = [(5, y) for y in range(5, 10)]               # north past the outcrop to a lamp
+    west_base = [(10, y) for y in range(3, 10)]             # along the base of the west wall
+    north_base = [(x, 3) for x in range(11, 23)]            # along the base of the north wall
+    hall = [(x, 10) for x in range(10, 22)]                 # across the open hall floor
+    south = [(10, 11), (10, 12), (10, 13)] + [(x, 13) for x in range(11, 17)]
+    conduit = outdoor + [door] + lamp_run + west_base + north_base + hall + south
+    return {
+        "name": "sprawl", "w": W, "h": Hh,
+        "indoor": [(9, 2, 24, 14)], "walls": walls, "doors": [door], "rock": rock,
+        "machines": [
+            {"id": "generator", "kind": "generator", "x": 1, "y": 9, "w": 2, "h": 2, "hookup": (3, 10),
+             "source": True},
+            {"id": "heater", "kind": "heater", "x": 22, "y": 4, "w": 1, "h": 1, "hookup": (22, 3)},
+            {"id": "workbench", "kind": "workbench", "x": 22, "y": 9, "w": 2, "h": 3, "hookup": (21, 10)},
+            {"id": "battery", "kind": "battery", "x": 17, "y": 12, "w": 2, "h": 2, "hookup": (16, 13)},
+        ],
+        "lamps": [{"x": 5, "y": 4, "hookup": (5, 5)}],
+        "trees": [], "items": [(13, 12, "crate"), (19, 5, "components"), (7, 13, "steel")],
+        "conduit": conduit,
+    }
+
+
+SPRAWL_KEY = [
+    ("A0:D4, P6:Q7", "rock outcrop and a rock pillar: unwalkable, loops must go round or pile against them"),
+    ("D10..I10", "generator -> door; excess heaps around the doorway J10"),
+    ("F5..F9", "branch north past the outcrop to a lamp at F5"),
+    ("K3..K9, L3..W3", "runs one cell off the west and north wall bases: slack bunches against the walls"),
+    ("K10..V10", "across open hall floor to the workbench: room for big loops and figure-eights"),
+    ("K11..Q13", "south to the battery bank"),
+]

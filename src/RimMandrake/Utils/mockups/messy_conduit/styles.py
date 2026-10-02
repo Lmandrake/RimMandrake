@@ -3,10 +3,14 @@
 A STRAND KIND is one cable type: width (in cells), colours and a surface pattern.
 A STYLE is a weighted mix of strand kinds plus its decal vocabulary (junctions,
 splices, caps, hookups, grime). A LEVEL is how ropey the routing is.
+
+Structure (owner, 2026-10-02): THREE families -- 1 Cybertek, 2 Extension cord, 3 Star Wars --
+and Jawa is a VARIANT of the Star Wars family ("03j"), not a fourth pile. The Star Wars family
+carries no white cable or tape at all.
 Colours are hex strings; the renderer derives outline/shade/highlight when absent.
 """
 
-PATTERNS = ("plain", "gloss", "metal", "rubber", "corrugated", "coil", "twin", "braid", "copper")
+PATTERNS = ("plain", "matte", "gloss", "metal", "rubber", "corrugated", "coil", "twin", "braid", "copper")
 
 
 def K(name, width, base, pattern="plain", **kw):
@@ -17,7 +21,7 @@ def K(name, width, base, pattern="plain", **kw):
 
 STYLES = {
     "cybertek": {
-        "num": 1, "title": "Cybertek",
+        "num": 1, "file": "01", "family": "Cybertek", "title": "Cybertek",
         "blurb": "ultra-sleek grey metallic cables, chrome ferrules, hex junction pods with a cyan status light",
         "kinds": [
             (K("silver", 0.085, "#b7bec6", "metal", dark="#14171a", hi="#ffffff"), 3),
@@ -31,7 +35,7 @@ STYLES = {
         "fray_live": "#ffd27a", "fray_dead": "#7a6a5a",
     },
     "extcord": {
-        "num": 2, "title": "Extension cord",
+        "num": 2, "file": "02", "family": "Extension cord", "title": "Extension cord",
         "blurb": "glossy modern extension cords in orange, green, brown, yellow and blue; power-strip junctions, plug-into-socket joiners",
         "kinds": [
             (K("orange", 0.09, "#ee7a1c", "gloss"), 3),
@@ -46,33 +50,34 @@ STYLES = {
         "fray_live": "#ffc070", "fray_dead": "#9a6a40",
     },
     "starwars": {
-        "num": 3, "title": "Star Wars friendly",
-        "blurb": "solid black thick power cables, corrugated steel conduit hose, coiled black cord; greebled junction boxes",
+        "num": 3, "file": "03", "family": "Star Wars", "title": "Star Wars family: base",
+        "blurb": "mostly smooth matte black power cable (low shine); a few dark corrugated-steel hoses and coiled black cords; greebled junction boxes. No white anywhere",
         "kinds": [
-            (K("black_thick", 0.135, "#1d1d20", "rubber", hi="#7a7e86"), 3),
-            (K("corrugated", 0.12, "#8f918c", "corrugated", dark="#1c1d1b", hi="#e6e8e2"), 2),
-            (K("coiled", 0.1, "#202024", "coil", hi="#8c9098"), 2),
+            (K("black_matte", 0.12, "#1b1b1d", "matte", hi="#3c3e42", dark="#060607"), 5),
+            (K("black_heavy", 0.145, "#202022", "matte", hi="#404246", dark="#070708"), 2),
+            (K("corrugated", 0.115, "#55574f", "corrugated", dark="#141512", hi="#8e9087"), 1),
+            (K("coiled", 0.1, "#1e1e21", "coil", hi="#4a4c52"), 1),
         ],
         "junction_t": "greeble", "junction_x": "greeble_big", "splice": "collar",
         "splice_mode": "strand", "cap": "boot", "plug": "collar",
-        "wander_scale": 0.85, "grease": 0.25, "tape": None, "staple": "#9a9c98",
+        "wander_scale": 0.85, "grease": 0.25, "tape": None, "staple": "#5a5c58",
         "fray_live": "#ffcf70", "fray_dead": "#7a5838",
     },
     "jawa": {
-        "num": 4, "title": "Jawa: truck drivers in space",
-        "blurb": "nothing matches: faded orange cord, ribbed armoured grey, red/black twin-lead, bare copper, braided green; tape lumps, grease, ration-tin junction box",
+        "num": 4, "file": "03j", "family": "Star Wars", "title": "Star Wars family: Jawa variant",
+        "blurb": "the Star Wars set gone feral: matte black cable dominates, a few dark corrugated and coiled pieces; dark/ochre/oil-stained tape, hose clamps, rag caps, ration-tin box, grease. No white anywhere",
         "kinds": [
-            (K("orange_cord", 0.1, "#d2681f", "gloss"), 3),
-            (K("armoured", 0.1, "#7f817b", "corrugated", dark="#1b1c1a", hi="#d8dad2"), 3),
-            (K("twin_lead", 0.085, "#3a3a3a", "twin", c1="#c8261e", c2="#151515"), 2),
-            (K("bare_copper", 0.05, "#c4733a", "copper", hi="#ffd2a0", dark="#3a1e0c"), 2),
-            (K("braided_green", 0.085, "#6c7a36", "braid"), 1),
-            (K("greasy_black", 0.095, "#26221d", "rubber", hi="#6e655a"), 1),
+            (K("black_matte", 0.11, "#1c1b1a", "matte", hi="#3d3b37", dark="#070606"), 5),
+            (K("greasy_black", 0.125, "#24211d", "matte", hi="#45403a", dark="#080706"), 2),
+            (K("corrugated_rust", 0.11, "#5a5246", "corrugated", dark="#16130f", hi="#8a7e6a"), 1),
+            (K("coiled", 0.095, "#1f1e1c", "coil", hi="#4a4740"), 1),
         ],
         "junction_t": "tapelump", "junction_x": "rationtin", "splice": "tape",
         "splice_mode": "bundle", "cap": "ragcap", "plug": "tape",
-        "wander_scale": 1.15, "grease": 1.0, "tape": ["#1c1c1c", "#d8b21e", "#b8b4a8", "#2f5aa0"],
-        "staple": "#b0a890", "fray_live": "#ffb860", "fray_dead": "#9a6a3c",
+        "wander_scale": 1.15, "grease": 1.0, "tape": ["#1a1917", "#3a3128", "#8a6a2a", "#4e4230"],
+        "tape_lump": "#8a6a2a", "clamp": "#6e7072", "rag": ["#6a5a40", "#5a4c36", "#7a6648"],
+        "tin_hi": "#8a8a7e", "tin_shade": 0.72,
+        "staple": "#5e5648", "fray_live": "#ffb860", "fray_dead": "#9a6a3c",
     },
 }
 
