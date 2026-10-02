@@ -1,51 +1,59 @@
 {
- "posture": "whitelist",
- "reviewStatus": {
-  "state": "prefill",
-  "by": null,
-  "at": null,
-  "evidence": "agent pre-fill, no human has ruled"
- },
- "decisions": {
-  "maidenbloom": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
+  "decidedCount": 8,
+  "decisions": {
+    "gloomcast_art": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "maidenbloom": {
+      "at": "2026-10-02T13:34:21.653Z",
+      "decision": "revise",
+      "note": "Tint it a little more green please",
+      "prefill": "keep"
+    },
+    "pavecrust": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "shadespire": {
+      "at": "2026-10-02T13:34:02.176Z",
+      "decision": "revise",
+      "note": "Too Terran, more alien please, and more varied in color!",
+      "prefill": "keep"
+    },
+    "sippra": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "skarrok": {
+      "at": "2026-10-02T13:35:48.234Z",
+      "decision": "revise",
+      "note": "This is just a bird. More alien please, and much more colorful. Perhaps a pale blue?",
+      "prefill": "keep"
+    },
+    "tazzok": {
+      "at": "2026-10-02T13:36:24.800Z",
+      "decision": "revise",
+      "note": "Tint this more red",
+      "prefill": "keep"
+    },
+    "vrekka": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    }
   },
-  "shadespire": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
+  "posture": "whitelist",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "agent pre-fill, no human has ruled",
+    "state": "prefill"
   },
-  "pavecrust": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "skarrok": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "vrekka": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "sippra": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "tazzok": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "gloomcast_art": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  }
- }
+  "savedAt": "2026-10-02T06:36:25-0700",
+  "savedBy": "review-sheet-sidecar",
+  "writeCount": 14
 }
