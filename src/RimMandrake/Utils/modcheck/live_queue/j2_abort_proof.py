@@ -192,6 +192,11 @@ def body(s, job):
     case(s, job, "control_declared", hz_declared, None, wait=60, control=True, declare=control_declared)
     runner_path(s, job)
     case(s, job, "control_after_cleanup", lambda s, c: None, None, wait=600, control=True)
+    import bland_world
+    rep = bland_world.reset(s)
+    job.note("final_reset", rep)
+    job.check("after all hazards, bland_world.reset() leaves a PROVABLY bland world (corpses, hediffs, queue, fires)",
+              rep["bland"], rep["problems"])
 
 
 if __name__ == "__main__":

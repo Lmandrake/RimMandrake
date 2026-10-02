@@ -361,7 +361,7 @@ def _default_anchor(session):
 
 
 def run_suite(suite, session, debug=False, anchor=None, mod=None,
-              judge_runner=None, situational=False, policy="abort"):
+              judge_runner=None, situational=False, policy="abort", bland_world=False):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -419,6 +419,13 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             fixtures = load_fixtures(clockgate.read_ticks(session))
         except Exception:     # noqa: BLE001 - no clock: start with none, never guess
             fixtures = set()
+    world_before = None
+    if bland_world:
+        # Re-establish AND prove the featureless world before this suite (no game relaunch): hostiles, wildlife,
+        # corpses, fires, queued incidents, injuries and hunger left by the previous suite or hazard job are removed
+        # and read back. A world that cannot be made bland records every chain UNMEASURED, never FAIL.
+        import bland_world as _BW  # noqa: E402
+        world_before = _BW.reset(session, expected_ids=sorted(fixtures))
     for name, fn in suite.chains:
         watch = None
         if situational:
@@ -485,6 +492,12 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                     for chain in chains_out for c in chain["components"])
     summary = {"chains": chains_out, "all_green": all_green,
                "findings": findings, "refused": "", "walk": walk}
+    if bland_world:
+        try:
+            after = _BW.assert_world(session, expected_ids=sorted(fixtures))
+        except Exception as e:                                  # noqa: BLE001
+            after = ["UNMEASURED: assert_world raised %r" % (e,)]
+        summary["bland_world"] = {"before": world_before, "after_problems": after}
     if mod:
         import northstar  # noqa: E402
         must_text, cannot_text = (northstar.text_for(walk) if walk

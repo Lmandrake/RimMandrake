@@ -194,12 +194,29 @@ class FakeWorld(object):
         return d
 
     def _t_jawa_list_things(self, defName=None, group=None, **_):
+        if group == "Corpse":
+            rows = list(getattr(self, "corpses", []))
+            return {"success": True, "things": rows, "countReturned": len(rows), "countMatched": len(rows),
+                    "isCompleteList": True, "truncated": 0, "ticksGame": self.ticks}
         if defName == "Fire":
             return {"success": True, "things": [dict(f, **{"def": "Fire"}) for f in self.fires],
                     "scanned": 43183, "countReturned": len(self.fires), "countMatched": len(self.fires),
                     "isCompleteList": True, "truncated": 0, "ticksGame": self.ticks}
         return {"success": True, "things": [], "scanned": 0, "countReturned": 0, "countMatched": 0,
                 "isCompleteList": True, "truncated": 0, "ticksGame": self.ticks}
+
+    def _t_jawa_destroy_batch(self, rects="", categories="Plant", **_):
+        """Things only (never pawns, like the live tool): removes fake corpses standing in the given 1x1 cells."""
+        cells = set()
+        for r in str(rects).split(";"):
+            v = [int(q) for q in r.split(":")[-1].split(",") if q != ""]
+            if len(v) >= 2:
+                cells.add((v[0], v[1]))
+        before = len(getattr(self, "corpses", []))
+        if "Item" in categories or "All" in categories:
+            self.corpses = [c for c in getattr(self, "corpses", []) if (c["x"], c["z"]) not in cells]
+        return {"success": True, "message": "Destroyed %d thing(s) across %d cell(s)." % (
+            before - len(getattr(self, "corpses", [])), len(cells))}
 
     def _t_jawa_map_fire(self, action="start", rect=None, fireSize=0.5):
         if action == "extinguish":
