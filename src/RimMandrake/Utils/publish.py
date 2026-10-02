@@ -27,6 +27,7 @@ reported conflict unless byte-identical.
 import argparse
 import fnmatch
 import hashlib
+import json
 import os
 import shutil
 import subprocess
@@ -198,9 +199,9 @@ def resolve(top, base, ours, theirs, known):
     for p, o in ours.items():
         b, t = base.get(p), theirs.get(p)
         mode = (t or b or ("100644",))[0]
-        if o is not None and o[0] is None:
-            o = (mode, o[1])
-        same = lambda x, y: (x and x[1]) == (y and y[1])
+        if o is not None and o[0] is None:      # core.fileMode=false (drvfs): a shebang is +x
+            o = ("100755" if known.get(o[1], b"")[:2] == b"#!" else mode, o[1])
+        same = lambda x, y: (x and tuple(x)) == (y and tuple(y))
         if same(o, t):
             continue
         if o is not None and t is not None and any(fnmatch.fnmatch(p, g) for g in UNION_GLOBS):
@@ -283,7 +284,31 @@ def push_loop(top, make, label):
     raise Refuse("origin kept moving for 8 attempts; nothing lost — re-run")
 
 
+def bases(top, update=None, clear=False):
+    """What THIS tree last published per path, so a second publish before catch-up uses it
+    as the 3-way base instead of conflicting with itself. {path: [commit, mode, sha]|None}"""
+    fn = os.path.join(out(top, "rev-parse", "--path-format=absolute", "--git-common-dir"),
+                      "publish-bases.json")
+    try:
+        with open(fn) as f:
+            allb = json.load(f)
+    except (OSError, ValueError):
+        allb = {}
+    key = os.path.realpath(top)
+    if update is None and not clear:
+        return allb.get(key, {})
+    if clear:
+        allb.pop(key, None)
+    else:
+        allb.setdefault(key, {}).update(update)
+    tmp = fn + ".%d" % os.getpid()
+    with open(tmp, "w") as f:
+        json.dump(allb, f)
+    os.replace(tmp, fn)
+
+
 def publish_paths(top, paths, message):
+    last = {}
     def make(up):
         mb = out(top, "merge-base", "HEAD", up)
         known, ours = {}, {}
@@ -293,12 +318,23 @@ def publish_paths(top, paths, message):
                 known[d[0]] = d[1]
             ours[p] = (None, d[0]) if d else None
         base, theirs = entries(top, mb, paths), entries(top, up, paths)
+        for p, rec in bases(top).items():
+            if p in ours and is_ancestor(top, rec[0], up):
+                if rec[1]:
+                    base[p] = (rec[1], rec[2])
+                else:
+                    base.pop(p, None)
         missing = [p for p in paths if ours[p] is None and p not in base and p not in theirs]
         if missing:
             raise Refuse("no such file here or on origin: " + ", ".join(missing))
         changes = resolve(top, base, ours, theirs, known)
+        last.clear()
+        last.update(changes)
         return build(top, up, changes, known, message) if changes else None
-    return push_loop(top, make, "%d path(s)" % len(paths))
+    sha = push_loop(top, make, "%d path(s)" % len(paths))
+    if sha:
+        bases(top, {p: [sha, e[0], e[1]] if e else [sha, None, None] for p, e in last.items()})
+    return sha
 
 
 def commit_paths(top, c):
@@ -439,6 +475,7 @@ def catchup(top, dry=False):
         git(top, "update-index", "-z", "--index-info", inp=back)
         raise Refuse("HEAD moved during catch-up (a peer committed); HEAD untouched, the "
                      "files written hold upstream content (harmless) — re-run")
+    bases(top, clear=True)
     print("tree at %s (%d merged in place: %s)" % (up[:9], len(merged),
                                                   ", ".join(sorted(merged)) or "none"))
 

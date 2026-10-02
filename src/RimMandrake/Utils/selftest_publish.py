@@ -99,6 +99,15 @@ def t_publish_paths_leaves_everything_else(a, b):
     assert sh(a, "diff", "--cached", "--name-only") == ""            # shared index untouched
 
 
+def t_second_publish_before_catchup(a, b):
+    write(a, "new.sh", "#!/bin/sh\necho 1\n")
+    quiet(P.publish_paths, a, ["new.sh"], "one\n")
+    write(a, "new.sh", "#!/bin/sh\necho 2\n")
+    quiet(P.publish_paths, a, ["new.sh"], "two\n")                # must not conflict with itself
+    assert show(a, "new.sh").endswith("echo 2\n")
+    assert sh(a, "ls-tree", "origin/main", "new.sh").startswith("100755")
+
+
 def t_push_race_rebuilds_on_new_tip(a, b):
     write(a, "f.txt", LINES.replace("line 9", "LINE 9"))
     seen = {}
