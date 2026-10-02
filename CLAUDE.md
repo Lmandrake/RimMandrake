@@ -399,10 +399,10 @@ MEASURED about the live world — the live system is the only instrument for "ri
 
 ### North-star validation state
 
-- 🔴 **The north-star system cannot GREEN anything: `shows=` appears in 0 of 54 mod
-  `validation.py` files** (RE-MEASURED 2026-09-17), so every VALIDATED mod's must-show bars are
-  bound-and-uncovered and a `modcheck run` against one returns REFUSED before the game is
-  consulted. Authoring more bars adds refusals, not coverage; `NORTH_STAR_PIT_PILOT_1` is the
+- 🔴 **`shows=` coverage is NOT zero** (RE-MEASURED 2026-10-01: 3 of 35 `validation.py` files carry it;
+  `modcheck floor --all` reports FlowWorks 38/38 must-show lines covered, so a run is not refused). The
+  old "0 of 54 / cannot GREEN" figure is stale. FlowWorks still reads STALE until a live `modcheck run`;
+  6 lines fail by design (unbuilt features). Detail: `design/RimMandrake/flowworks_shows_wiring_2026-10-01.md`. Authoring more bars adds refusals, not coverage; `NORTH_STAR_PIT_PILOT_1` is the
   falsification test and has never run. 🔴 **And the 81 walk findings are NOT rot:**
   `doctor` derives a walk's mod from the walk's BASENAME, never from its `subject:` line, so its
   24 ORPHAN_WALKs and 10 SUBJECT_COLLISIONs are ONE phenomenon — **34 of 78 walks are deliberate

@@ -147,7 +147,7 @@ class MockGame(object):
              "jawa/spawn_batch", "jawa/spawn_pawn", "jawa/log_autoopen_suppress", "jawa/map_commit", "jawa/pawn_health", "jawa/pawn_need",
              "jawa/set_pawn_skill", "jawa/set_draft", "jawa/set_work_priority", "jawa/paint_area",
              "jawa/mod_settings_field", "jawa/dlc_status", "jawa/thing_stats", "jawa/clear_ui",
-             "jawa/window_list_close", "jawa/get_defs", "jawa/pawn_force_mental_break", "jawa/pawn_get",
+             "jawa/window_list_close", "jawa/get_defs", "jawa/pawn_force_mental_break", "jawa/pawn_get", "jawa/pawn_force_incapacitate",
              "jawa/ordered_job", "rimworld/step_game_ticks", "rimworld/screenshot_cell_rect",
              "rimworld/get_camera_state", "rimworld/jump_camera_to_cell", "rimworld/take_screenshot"]
 
@@ -315,6 +315,10 @@ class MockGame(object):
                 self.pawns = [q for q in self.pawns
                               if not (q.get("x") is not None and x <= q["x"] < x + w and z <= q["z"] < z + h)]
             return {"success": True}
+        if tool == "jawa/pawn_force_incapacitate":
+            before = len(self.pawns)
+            self.pawns = [q for q in self.pawns if q.get("id") != p.get("pawn")]
+            return {"success": len(self.pawns) < before or p.get("action") != "kill"}
         if tool == "jawa/damage":
             self.pawns = [q for q in self.pawns if q.get("id") != p.get("thingId")]
             return {"success": True}
