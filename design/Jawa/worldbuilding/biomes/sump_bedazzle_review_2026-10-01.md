@@ -1,4 +1,4 @@
-# The Sump: bedazzle review (grandfathered sitting, turn 1 card drafted)
+# The Sump: bedazzle review (grandfathered sitting, turn 1 ruled and ticketed; the tar-offering rite open)
 
 Item: `SUMP_BEDAZZLE_SITTING_1` (BENCH). Program: `BEDAZZLE_TOP_SHAPE_PROGRAM_1`, track (a), worst-first, sitting 4.
 
@@ -84,7 +84,8 @@ not chased here.
 nothing (1.6 never reads `MayRequire` on an `<Operation>`); the Conditional only tests that
 `RM_TheSump` exists. Without SWBestiary the patch still adds `<RSW_Hssiss>`, an unresolved
 cross-reference. Low harm (a red log line, not the corrupted-mods reset the two TheSump-ingredient
-patches caused), but it is one of the 74 in `PATCH_MAYREQUIRE_GUARD_INERT_1`. The two live-hit
+patches caused); `PATCH_MAYREQUIRE_GUARD_INERT_1` closed with this one still standing, so the
+tier-move item (§7) re-gates it. The two live-hit
 files (`RUT_Bitumen_KorvethSource.xml`, `RUT_ThrummelSeepwax_RosterSource.xml`) are already fixed:
 they gate on the donor def through a Conditional.
 
@@ -185,7 +186,7 @@ rite.
 | No giant | sheet §4 rules the tar beasts; the bulge emerges a Thrumbo | **the tar beast, given a body** (below) |
 | Everything else | instrument, grazers, hunter, flier, under-layer all present | none; the Sump is "sparse-but-strange" by ruling |
 
-### Proposed: wire the four, no eviction
+### Wire the four, no eviction (executes the ruled roster; ticketed)
 
 `RM_Gulveth` 0.45, `RM_Thrummel` 0.35, `RM_ThrummelWarden` 0.15, `RM_ThrummelBroodmother` 0.05,
 inline in `RM_TheSump`, at the roster's ruled weights. The four `AA_` rows stay (evictions stopped).
@@ -193,7 +194,7 @@ inline in `RM_TheSump`, at the roster's ruled weights. The four `AA_` rows stay 
 is still UNMEASURED against the engine; wiring the three castes as plain animals first is honest and
 cheap, and the mound follows.
 
-### Proposed: the tar beast (`RM_TarBeast`, free tier)
+### RULED: the tar beast, the full station-eater (`RM_TarBeast`, free tier; owner turn 1, by card)
 
 Label **tar beast**, the sheet's own name (*"the tar beasts (owner, prior canon confirmed)"*); no
 collision in `src/` or `design/`. The third of the Patient family (sarlacc, the Fever Wood's deep
@@ -220,153 +221,288 @@ thing), and it must rhyme with them: huge, buried, patient, unmoving until it mo
 
 **Not a hunter, not a raid, not fightable:** the same ban that the roster honoured.
 
+
+### RULED: the kethrel (`RM_Kethrel`, free tier; owner turn 1, by card)
+
+From the GPT consult (§5). A boneless hydrocarbon animal of the tar's surface that picks up loose
+rigid things (dropped weapons, slag, components, scrap) and wears them as an armour shell, getting
+heavier, slower, better armoured and louder as it loads. A handler can coax a molt, and everything
+it carried drops where it stands; a badly handled molt can end in a panicked charge. Sump-only (one
+home: it needs tar to bind the shell). It never digs and never comes out of deep tar.
+
+- **Four armour stages, static art:** bare, light shell, heavy shell, full carapace. Drawn as four
+  whole-body sprite sets (three facings each), swapped by load. No rig, no animation.
+- **Nothing vanishes:** every carried object stays a real `ThingOwner` item, listed on an inspect
+  tab, and drops on molt, death or leaving the map (a molt cairn and a letter if it leaves). Taking
+  colony property is a Mod Settings toggle.
+- **Mod Settings:** on/off, density, the value ceiling of what it will pick up, taking colony
+  property, molt threshold and handling difficulty.
+
 ## 4. The slate
 
-Rows 0 to 0c execute rulings already made, so they need no card; rows 1 to 4 wait on turn 1.
+All rows are ruled and ticketed (§7). The rite (§6) is still open.
 
-**0. The tier move (Finding 1 and 2), shape on the card (Q1).** Move the tar coating, `RUT_Tarred`
-(as `RM_Tarred`), solvents and their surgery, walkways, gaslight lamp, the gas, the tar vault and
-both research projects from `mandrake.rut.patches` into `mandrake.rm.thesump` (or the shared
-EnvironmentalHazards kit where they are not Sump-specific) under `RM_` names. The campaign keeps
-only the Sumpgas label, the Holy Flame precept and the arrival letter. Repoint the free BiomeDef's
-`RM_CarriedFilthHediffExtension`. ⚠ Rename cost on the frozen world: a placed `RUT_` Thing in the
-campaign save needs a back-compat alias. Size M.
+**0. The tier move (owner Q1).** His words, typed: *"Move it all into the free mod that is now
+part of the Baroque Biomes mod"*. The free tier is now `mandrake.rm.biomes` ("RimMandrake: Baroque
+Biomes", `BIOME_MOD_UNIFICATION_1`), composed at deploy time by `biomes_compose.py` from the per-biome
+dev folders listed in `src/RimMandrake/Biomes.compose.json`; `TheSump` and `EnvironmentalHazards` are
+both entries. So the content moves into `src/RimMandrake/TheSump/` (Sump-specific) and
+`src/RimMandrake/EnvironmentalHazards/` (the generic tar coating and hediff), under `RM_` names: tar
+coating, `RUT_Tarred` as `RM_Tarred`, solvents and their surgery, walkways, gaslight lamp, the gas,
+the tar vault, both research projects. The campaign keeps only the Sumpgas label, the Holy Flame
+precept and the arrival letter. Repoint `RM_CarriedFilthHediffExtension`. Re-gate
+`WildAnimals_Sump.xml` (its `<Operation MayRequire>` is inert).
+- ⚠ **No new hard dependency on Helixien.** A `modDependencies` entry in `TheSump/About.xml` is
+  unioned into Baroque Biomes' own About, so it would make all 29 biomes require Helixien. The gas
+  is already its own ThingDef (`RUT_Sumpgas`, not a disguised `VHGE_Helixien`), so it needs none.
+- ⚠ **The frozen world.** A placed `RUT_` Thing or a pawn's `RUT_Tarred` in the campaign save
+  orphans on rename: each moved def needs a back-compat alias (a `BackCompatibilityConverter` or
+  the 1.6 def-rename mechanism; which one is UNMEASURED and is the item's first read).
 
 **0b. Wire the four built animals beside the donors** (`RM_Gulveth`, `RM_Thrummel`,
-`RM_ThrummelWarden`, `RM_ThrummelBroodmother`, roster weights). Additive; no donor row removed. Size S.
+`RM_ThrummelWarden`, `RM_ThrummelBroodmother`, roster weights). Additive. Art for these exists in
+the artpipe registry (gulveth: 28 registry lines).
 
-**0c. Strike "evil" from the descriptive text** (Finding 4): `TheSump/About/About.xml` (player
-visible) and the four def-file comments. Sh'kaar is a hungry god. The owner's dated quote stays
-where it is cited as history. Size S.
+**0c. Strike "evil" from the descriptive text.** Re-verified on `origin/main` today: still in
+`TheSump/About/About.xml` l.70 (player visible) and comments in `RM_FlameStatuary.xml`,
+`RUT_HolyFlameEvents.xml`, `RUT_HolyFlameIssue.xml`, `RUT_HolyFlamePrecepts.xml`. Sh'kaar is a
+hungry god; the owner's dated 2026-09-24 quote stays where it is cited as history.
 
 | order | package | marks | reuses | size |
 |---:|---|---|---|---|
-| 1 | **The tar beast's body** (§3), Q2. | 5 | the bulge and its wake path; dread field; tar coating | M to L |
-| 2 | **The natural seep flames and the discovery pilot** (ruled 2026-09-24, unbuilt): little dancing flames over seeps; the first pawn to see one learns gaslight chemistry; the first to handle tar learns tar rendering. Once learned, usable everywhere. | 2 | `RM_Comp_WarblingGlow`; the Anomaly encounter-unlock shape | M |
-| 3 | **Whatever turn 1 takes from the GPT five** (§5), Q3. | 2, 5, 7 | per idea | — |
-| 4 | **The soundscape the sheet wrote**: derrick creak and pump thud carrying for miles; mouse skitter on glass tar; a room-sized bubble rising, which doubles as the tar beast's warning a day before a wake. Placeholder audio first. | 7 | `RM_HeatSoundscapeExtension` pattern | S to M |
-| 5 | **Found rites** (§6), Q4. | 9 | found-rites row | M |
-| 6 | **Art commission:** the tar beast, the gulveth and thrummels if their art is still owed (check `artpipe/done/` first), the seep flame, whatever the card takes. | all | artpipe | — |
-
-Row 2 needs no card: it is ruled. Row 4 is offered as the ordered backlog for mark 7, not carded
-(the Pyrelands precedent).
+| 1 | **The tar beast, the full station-eater** (§3). | 5 | the bulge and its wake path; dread field; tar coating | M to L |
+| 2 | **The capstan turret** (§5, revised by the owner). | 2 | Melee Animation's lasso pull | M |
+| 3 | **The kethrel** (§3). | 4 | `RM_CompFilthTrail`-style comps; ThingOwner | M |
+| 4 | **The natural seep flames and the discovery pilot** (ruled 2026-09-24, unbuilt). | 2 | `RM_Comp_WarblingGlow` | M |
+| 5 | **The soundscape the sheet wrote** (not carded; ordered backlog for mark 7, not filed). | 7 | `RM_HeatSoundscapeExtension` | S to M |
+| 6 | **The lasso removal** (owner Q3). | — | Cherry Picker | S |
+| 7 | **Art:** tar beast, kethrel's four stages, the capstan turret. | all | artpipe | — |
 
 ## 5. GPT consult: five ideas
 
-Consult: `Transient/bedazzle_gpt_enrich_2026-10-01/sump.md` (prompt `sump.prompt.md` beside it),
-run 2026-10-01 under the standing rule: exactly five ideas, different from each other and from
-every other biome's signature (the prompt carried all of them, now including the Pyrelands'
-breakers and Struck Glass), with research on other games and RimWorld mods cited. Model
-`gpt-5.6-sol`, via `codex exec`. GPT's own check: verbs winch · retime · aim · reckon · induce;
-systems displacement · pump acoustics · terrain transformation · ritual diplomacy · item custody.
+Consult: `Transient/bedazzle_gpt_enrich_2026-10-01/sump.md` (prompt beside it), model
+`gpt-5.6-sol` via `codex exec`, run 2026-10-01 under the standing rule (five, different from each
+other and from every other biome's signature, research cited). The owner took two (Q3): the
+Blackline capstan, revised, and the kethrel (§3). The pump rhythm, the buried dragline and the
+Reckoning of Owners were not taken; the consult file keeps the record.
 
-| # | GPT's idea | what it is, plainly | BENCH's assessment |
+### The capstan turret (RULED, revised from GPT's "Blackline Capstan")
+
+His words, typed: *"I love the Blackline Capstan. Model it after the Lasso already built in the
+game (pulls people towards you, weirdly nonphysical since it doesn't move you at all. But if that
+mechanic is attached to a turret, it makes complete sense and is awesome. Remove lasso's from the
+game, but keep this)"*.
+
+**The lasso he means, measured:** Melee Animation (packageId `co.uk.epicguru.meleeanimation`,
+workshop 2944488802, active). `1.6/Defs/Lassos.xml` defines three lassos, all **apparel** on its own
+hip layer (`AM_Hip`), not weapons: `AM_LassoCloth`, `AM_LassoDevilstrand`, `AM_LassoHyperwave`.
+The pull is the job `AM_GrapplePawn` (driver `AM.Grappling.JobDriver_GrapplePawn`), tuned by the
+stats `AM_GrappleRadius` ("Max Lasso Distance", base 10), `AM_GrappleCooldown` (base 20 s) and
+`AM_GrappleSpeed` (reel speed); the mod's settings cap it by the target's mass and body size and
+by how much a building in the way fills its cell.
+
+- **What it is:** a fixed turret that ropes one visible pawn (enemy, animal, or a friendly downed
+  colonist) and reels it in toward the turret, along the ground, through anything it can pass. The
+  pull is the lasso's, made physical by the anchor: the turret does not move, so pulling toward it
+  finally makes sense.
+- **Learned here:** studying two preserved draw-joints from the Sump's dig strata teaches the
+  research (GPT's discovery), once; after that it is built anywhere. The first one is made from
+  local materials (tar-glass bearings, seepwax-packed cable); the learned recipe uses steel,
+  components and cloth.
+- **Powerful, balanced by cost:** range, reel speed and cooldown come from the turret's own stat
+  values (the lasso's three stats, set on the building). It needs a crew or power (FOUNDRY to pick
+  the vanilla shape that reads cleanest), and a heavy or struggling target can snap the line and
+  damage the anchor. It is not narrowed to enemies or to small targets beyond the lasso's own mass
+  and size caps.
+- **Readable signs:** a visible line from turret to target, the reel's ratchet sound rising, and a
+  snapped-line mote and message when it fails.
+- **The hook (UNMEASURED):** how `JobDriver_GrapplePawn` moves the target, and whether a building's
+  verb can start it with the turret as the anchor, is read from the decompiled mod (RimSage or
+  `zAnimationMod.dll`) before anything is written. If the pull cannot be driven from a non-pawn,
+  the turret re-implements the pull (a flight-free forced move along a cell line) and keeps the
+  lasso's numbers.
+- **Mod Settings:** on/off; range, reel speed, cooldown; friendly-pull on/off; snap chance.
+
+### The lasso removal (RULED, its own item)
+
+"Remove lasso's from the game": by Cherry Picker, never by uninstalling Melee Animation (its
+animations stay). `CherryPicker.SHIP.xml` and the live config already cut `AM_LassoHyperwave` and
+`AM_LassoDevilstrand`; the live list still carries `AM_LassoCloth`, so it is the one to add, with
+its tailoring recipe (`recipeMaker`).
+- **The disarm check, measured:** lassos are apparel, so no pawnkind weapon tag depends on them.
+  The def dump (`defs.sqlite`, capture 2026-10-01) holds **0** PawnKindDefs with apparel tag
+  `Lasso` (probe: 51 carry `Neolithic`). Pawns get lassos from Melee Animation's own C# spawn roll
+  (its setting "Lasso Commonality", a % of melee fighters), not from pawnkind tags.
+- ⚠ **So the cut needs the mod setting too.** With every lasso def cut, that spawn roll has nothing
+  to give; whether it then no-ops or errors is UNMEASURED. The safe order is the mod's own
+  "No Lassos" preset (*"enemies will not spawn with or use lassos"*), or "Lasso Commonality" at 0,
+  plus the Cherry Picker cut. No saved Melee Animation settings file exists in the Config folder
+  today, so it runs on defaults.
+
+## 6. The tar offering: the owner's rite (OPEN, turn 2)
+
+None of the three offered rites was taken (the Giving-Back, the Deep Draw, the Reckoning of Owners;
+the consult file and git keep them). The owner wrote his own, typed:
+
+> *"There should be a rite where the tribe tosses an object of value as sacrifice into the tar, as
+> well as an effigy of something hated. If it's the Empire, it might reduce the current heat level.
+> If it's one of the factions, perhaps some of their members when next seen appear covered in tar.
+> You should keep going on these ideas and flesh them out more. What else could be put in the tar?
+> What else could it do?"*
+
+Working name: **the Tar Offering**. Campaign tier (a Salvation rite: found here, learned through the
+Rites tab's found-rites row, performable anywhere there is tar after: the mere, a pond, a poured
+moat, a tar vault). The laws hold: **cohesion, never a material reward or a power**; **favour shows
+only through events, world state and subtle odds**, told by the Narrator; a risky world event is
+welcome.
+
+### The shape
+
+- **Found:** at a Junker station's edge, a sunk barrel-ring of effigies half-swallowed by the black,
+  straw-and-rag figures in the colours of half the planet's factions, one still holding a carved
+  stormtrooper's helmet out of the tar. A tally board names what each cost.
+- **Asks:** two things, carried to the tar's edge and thrown in by the participants: **an object of
+  value** (the sacrifice) and **an effigy of something hated** (the curse). Both are gone for good:
+  the tar keeps them perfectly, and nothing comes back.
+- **The object of value:** any single item over a market-value floor (a Mod Settings number). Its
+  value sets the rite's quality, alongside the usual attendance and role terms. Weapons, art, gold,
+  a masterwork: the tar takes them all. ⛔ No pawn, prisoner, corpse or animal: no living or dead
+  body is ever thrown in (no human sacrifice; nothing vanishes without a sign).
+- **The effigy:** a new craftable, cheap item made at a crafting spot, with a target picked when it
+  is made (its label then reads "effigy of the Galactic Empire", etc.). The effigy carries the
+  curse; the object carries the price.
+
+### What the effigy can be
+
+| Effigy | Allowed | Effect (the world, never a buff) |
+|---|---|---|
+| **The Galactic Empire** | yes | Imperial Heat falls (below). |
+| **Any other faction** (Hutt Cartel, Homestead Defense League, Deep Desert Tribes, Free Droid Enclaves, Wildsteam Clan, Deepwater Compact, Geonosian Foundry Hive, Ascendant Helix, Blackstar Company, Jawa Trade Moot, the Junkers) | yes | Some of their members, the next time any group of theirs is seen, arrive covered in tar (below). Goodwill is untouched: they never learn who did it. |
+| **A hated beast** (a species: the skarrid that took a child, a thrummel warden) | yes, proposed | For a while, that species keeps its distance from the colony: the next ones that wander in arrive tarred and slow, and the mouse-lines bend around where they lie up. Never deleted, never vanished. |
+| **A god** | **no** | No god is ever evil, and no god may be made an enemy; the Salvation does not curse its own gods. The rite refuses a god as a target (the effigy cannot be made with one). |
+| **The colony's own faction or a colonist** | no | A curse on your own is a different story and this rite does not tell it. |
+
+### "The current heat level" is Imperial Heat
+
+The campaign's Empire attention mechanic is **Imperial Heat**: one number kept by the GM layer
+outside the save, not a stat in the game (`design/Jawa/build_plan.md` §2 and milestone M4,
+*"Put all GM state outside the game. Imperial Heat, the orbital timer, the dark-tile flag..."*).
+Sales of kyber raise it (`kyber_trade_plot_spec.md` §2–3); the Cathedral arc reads it
+(`cathedral_concealment_arc_spec.md`). **Built state:** `src/RimMandrake/Utils/gm_blackboard_shadow.py`
+computes it in **shadow mode only** (it logs what it would fire and fires nothing), under the open
+item `GM_BLACKBOARD_SHADOW_M4_1`; the in-game gauge is a fast-follow at M4, not v1.
+
+So the Empire effigy's effect is an **input to that blackboard**: the rite fires a history event
+(`RUT_TarOffering_Empire`), and the blackboard reads it and lowers Heat. Until M4 leaves shadow
+mode, the effect is logged, and the Narrator still speaks it. ⚠ **It collides with a standing
+rule:** the kyber spec's K2 anti-laundering law says Heat is *"never scrubbed by success"*. The
+owner's rite is a deliberate exception, and how big it is decides whether it becomes a laundering
+loop (turn-2 card Q2).
+
+### Covered in tar: the faction curse as a readable sign
+
+The next time any group of the cursed faction appears on any map the player sees (a raid, a
+caravan, visitors, a camp on a quest site), a share of its members (proposed: a third to a half,
+scaled by rite quality) arrive **tarred**: the moved `RM_Tarred` condition (slowed, stinking,
+filthy), black-coated sprites, and a tar trail of filth behind them. One curse, one appearance:
+after that group it is spent. The Narrator names it when they arrive (*"the tar remembers who you
+gave it"*). This is the readable sign the owner asked for; it is also an advantage in a fight, which
+he chose, and the odds stay subtle (some, not all).
+
+### Which god: Mob'Unloo, proposed
+
+Mob'Unloo is debt, trade and exchange, and his catalog devotion already includes **the Collected
+Grudge**. The rite is an exchange in its plainest form: a price paid (the object) for a grudge
+collected (the effigy). Kind: **settlement**. Collision check: his Blind Offering (Abyss) is left in
+the dark overnight; his Cold Ledger (Nightside Ice) seals a counter-gift to pay a dead man's debt.
+Here a price is paid to curse a living enemy, and the tar keeps both. Alternatives are on the card.
+
+### What else could go in the tar, and what else could it do? (GPT, five)
+
+Consult: `Transient/bedazzle_gpt_enrich_2026-10-01/sump_tar_rite.md` (prompt beside it), model
+`gpt-5.6-sol`, run 2026-10-01 on exactly the owner's question, five ideas, each a further offering
+within this one rite. Assessed:
+
+| # | GPT's idea | What goes in → what follows | BENCH's assessment |
 |---|---|---|---|
-| 1 | **The Blackline Capstan** | Two preserved draw-joints from the dig strata teach a hidden research row: a hand capstan with tar-glass bearings and seepwax-packed cable that winches one visible pawn, corpse, animal or item along a straight line, dragging a downed colonist out, pulling an enemy off a firing position, recovering something beyond a burning moat. A heavy or resisting load can tear the anchor out and exposes the operator. | **Recommended.** Exactly the shape he picked in the Pyrelands: learned only here (from what the tar kept), made from local materials, then buildable anywhere (the learned recipe uses ordinary cloth, chemfuel and steel). Powerful and balanced by the exposed operator and anchor wear, not narrowed. Risk: dragging a pawn through RimWorld's pathing is real C# (a tether state machine), M. |
-| 2 | **The Fifth Stroke** | Every derrick's pump thud is slightly different. A neat bank of pumps started together slowly falls into one perfect beat, and then something beneath the glass answers with a fifth. Players send a pawn to re-time pumps by hand, losing output; ignore it and the tar beast's wake pressure builds. | **Strong on the biome's law** (*"frustrate neat, tidy, controlled"*) and the one sound idea that matters in play (mark 7). It also gives the ruled "greedy pumping wakes the beast" cause a body. Cost: it is a re-timing chore, close to the "repeatable choice" he dislikes, and needs pump-phase bookkeeping, M. |
-| 3 | **The Buried Reach** | A rare dig exposes one knuckle of a buried ancient dragline (never a whole machine). Mouse-line bends reveal its buried arc; an expensive restoration buys one enormous, aimed sweep that crushes everything in a lane and heaps every loose thing at its end, then the machine seizes forever. | **A giant of a different kind** (mechanical, irreversible, once), which fits both his love of giants and his dislike of reversible choices. Costs: L, a big preview-and-sweep system; and it competes with the tar beast for the mark-5 slot. Second choice if he wants only one new idea beyond the capstan. |
-| 4 | **The Reckoning of Owners** | A preserved tally-plate teaches a Mob'Unloo rite: nine owned objects laid out openly and their histories recited. Days later, two delegations may arrive with contradicting records for one valuable thing, and the colony must return it, pay, or hold it by force. | **Carried to Q4 as a rite.** Its effect is a risky world event, not a reward, which is the rite shape he picks. Weaknesses: its tie to the Sump is thin (it would work in any biome), Mob'Unloo already has the Cold Ledger in Nightside Ice, and two-faction claim incidents are L. |
-| 5 | **The Kethrel's Borrowed Skeleton** | A boneless surface hydrocarbon animal that picks up loose rigid things (dropped weapons, slag, components) and wears them as armour, getting slower and louder. A handler can induce a molt to get everything back, risking a panicked charge. | **Alien fauna he would likely enjoy**, and the item custody keeps nothing vanishing (an inspect tab lists every carried thing; a molt cairn and letter if it leaves). Costs: four static shell overlays (no rig), M; and property theft can read as a nuisance. The Sump is "sparse-but-strange" by ruling, so a tenth resident is a choice, not a gap. |
+| 1 | **The Weapon That Lost the Argument** | A weapon that has killed, bent first → the effigy faction's next armed group halts while its commanders quarrel, then either splits into two hostile groups or reconciles into one sharp, coordinated attack. | **Good gamble**: it can make the fight worse, which is the rite shape he picks. Needs a second lord job for a split force, M. |
+| 2 | **The Threshold the Tar Keeps** | A door torn from the colony's cleanest room → hours later, tar seals every doorway of another very clean room until cut or dissolved with acid. | **Most Sump of the five** (the tidy are punished, the law he set), and small (S). It is a cost to the player, so it is a pure gamble with nothing gained. |
+| 3 | **The Last Tool Has Standing** | A dead colonist's last tool or relic → a visitor who knew them (friend, rival, creditor) comes to argue the story of their life; no reward either way. | **Consolation, honestly grounded** in the pawn's real relations and tales. Weaker tie to the tar; M. |
+| 4 | **A Black Box for Yesterday** | A recorder holding the colony's last three big incidents → the Narrator stages a dangerous "rhyme" of one of them. | **Not carded**: L, and it hands the storyteller a new authoring system that overlaps the GM layer. Kept in the consult file. |
+| 5 | **Give the Pump Its Answer** | A working derrick head → a tar beast sets off toward one pumping site picked by an open lottery: it may wipe out a Junker station or cross the player's map. | **The biggest gamble**, and it uses the giant he just ruled. L (a tracked world journey); nothing spawns that can be fought. |
 
-## 6. Discoverable rites
+## 7. Turn 1 rulings (owner, 2026-10-01) and ticket-out
 
-Per `design/Jawa/salvation_rites_2026-10-01.md` (e): found at a site with a reason to be there,
-learned through the Rites tab's found-rites row (`mandrake.rut.rites`), performable anywhere after.
-Campaign tier. Today's rulings bind them: **no god is evil**; **a rite gives cohesion, never a
-power or a material reward**; **favour shows only through events, world state and subtle odds**,
-voiced by the Narrator. The Zizzik cap is waived, and there is no cap pressure, but neither pitch
-uses Zizzik (he already has five).
+Recorded on the ledger at `372642ebb` and `c71911f79` (OWNER notes on this item).
 
-**Not pitched:** a rite at the flame statues (the Holy Flame precept already is one, Sh'kaar); any
-rite in darkness (the Abyss); sealing an offering in the tar (too close to the Cold Ledger).
+| Card item | Ruling | Ticket |
+|---|---|---|
+| 1. Free tier | *"Move it all into the free mod that is now part of the Baroque Biomes mod"* (typed). | Rows 0, 0b, 0c |
+| 2. Tar beast | **The full station-eater.** Decision taken by question card. | row 1 |
+| 3. New ideas | **The Blackline capstan, revised into a turret on the lasso's pull** (typed, §5), **and the kethrel**. Pump rhythm and the buried dragline not taken. Lassos removed from the game. | rows 2, 3, 6 |
+| 4. Rites | **None of the three offered.** His own rite, typed (§6). | open: turn 2 |
 
-### R1. The Giving-Back, for Rekko: consolation (PITCHED)
+FOUNDRY items, each `--caused-by SUMP_BEDAZZLE_SITTING_1`:
 
-- **Grounding:** Rekko is salvage and the discarded rewoken. The tar keeps everyone it took,
-  perfectly; the sheet's own rite seed is the ship's memory of others sinking here.
-- **Found:** at the edge of the deep black mere, a ring of tar-stiff coats hung on stakes, one per
-  name, the Junkers' memorial to the gangs the ponds took. A plate on the tallest stake carries the
-  words.
-- **Asks:** the participants stand at the edge of deep tar (any deep tar: the mere, a pond, a
-  poured moat) and call the names of the lost, the colony's own dead first.
-- **The event:** the tar answers, and that is the risk. Within the hour it **heaves**: a slow belch
-  at the spot (the built belch) that gives back what it kept. Most often preserved bodies of the long
-  drowned, whole and unrotted, which the colony may bury; sometimes an armed trap of the old era
-  surfaces with them (the dig lottery's own weighting); and if a tar beast's bulge lies within range,
-  it may stir. Nothing is aimed; the risk is the point.
-- **Outcomes (cohesion only):** shared memories by quality; a funeral for the returned dead is the
-  natural sequel. Rekko's pleasure is told by the Narrator and shows only in events and odds.
-- **Readable signs:** the heave and its tar splash; the bodies on the surface; a letter naming what
-  came up and whether anything stirred.
-- **Collision check:** the Lightless Burial (Ozzik, Abyss) buries in the dark; the Returned (Ta'Baa,
-  Blue Desert) seals a body the ablation line gave up aboard the ship; the Cold Ledger (Mob'Unloo)
-  seals a gift in ice. Here nothing is given: the colony calls, and the ground gives back, with
-  whatever else it was holding.
+| slate row | item |
+|---:|---|
+| 0 | `SUMP_FREE_TIER_MOVE_BUILD_1` (into Baroque Biomes; the `RUT_Tarred` reference; frozen-world aliases; the inert Hssiss guard) |
+| 0b | `SUMP_FAUNA_WIRING_BUILD_1` |
+| 0c | `SUMP_HUNGRY_GOD_TEXT_1` |
+| 1 | `SUMP_TAR_BEAST_BUILD_1` |
+| 2 | `SUMP_CAPSTAN_TURRET_BUILD_1` |
+| 3 | `SUMP_KETHREL_BUILD_1` |
+| 6 | `LASSO_CHERRYPICKER_REMOVAL_1` |
+| 7 | art: `infrastructure/artpipe/art_lists/sump_bedazzle_cast.csv` |
 
-### R2. The Deep Draw, for Ozzik: venting (PITCHED)
+Rows 4 (seep flames and the discovery pilot) and 5 (sound) are not filed in this pass: row 4 is
+ruled under `SUMP_GASLIGHT_1` pieces 5–6 and rides the tier move; row 5 stays the ordered backlog.
 
-- **Grounding:** Ozzik is ambition, pride and grief. The sheet: *"Everyone at the derricks knows
-  which ponds you don't pump deep."* Pumping the forbidden pond is pride made into a rite.
-- **Found:** a derrick standing alone over a pond no station will touch, its pump rod snapped at the
-  stroke, a single tar-stiff glove still on the handle.
-- **Asks:** the colony's proudest pawn (highest skill or highest ambition, chosen as the rite's
-  role) works a hand pump on deep tar for a night while the others watch.
-- **The event:** the deep answers once, at random. A gusher of gas that lights into a field of
-  dancing seep flames across part of the map (real fire, real danger, very beautiful); a great
-  belch; or, if a bulge is near, a wake. Or nothing, and the silence is its own story.
-- **Outcomes (cohesion only):** memories by quality; the role pawn's pride is vented, not rewarded.
-- **Readable signs:** the gusher or the belch, the flames, a letter; a wake gets the full tar-beast
-  warning (the bubble sound, the mouse-lines bending).
-- **Collision check:** the Struck Glass (Zizzik) breaks found glass for a random lightning blast;
-  the Unburdening (Ozzik) destroys wealth. Here the colony provokes the ground itself, by work.
+## 8. Draft turn-2 card: the Tar Offering
 
-GPT's **Reckoning of Owners** (§5 #4, Mob'Unloo) is the third candidate on Q4.
+For BENCH to put to the owner. Four questions; Q4 is multi-select. Each explains its subject in
+full.
 
-## 7. Draft turn-1 card
-
-For BENCH to put to the owner. Four questions; Q3 and Q4 are multi-select. Each subject is
-explained in full, because he does not rely on memory. Headers are 12 characters or fewer and every
-question ends in "?".
-
-**Q1. Header: `Free tier`.** *The free Sump mod (the one without Star Wars) is missing almost
-everything you ruled on 24 September: tar sticking to pawns and the ground, the acid that cleans
-it, the warbling gaslight lamps and the gas, the tar vault larder, the duckboards and glasswalk, and
-both Sump research projects. They were all built into the campaign patch instead, and the free
-biome even points at a campaign-only "tarred" condition, which breaks it when the campaign is
-absent. Where should that content live?*
+**Q1. Header: `Which god`.** *Your tar rite: the colony throws a valuable object and an effigy of
+something it hates into the tar, and the tar keeps both forever. Every Salvation rite belongs to one
+of the nine gods. Which god does the tar offering speak to?*
 
 | Option | What it buys | What it costs |
 |---|---|---|
-| **Move it all into the free mod** *(recommended: the free Sump then plays the same as the campaign one, which is the rule you set)* | The free mod is the full Sump; the broken reference is gone; the campaign keeps only the Sumpgas name, the Holy Flame worship and the ship's arrival letter. | A medium build, and the free mod then requires Helixien gas, which you already allowed. Renamed defs need a compatibility alias on the frozen world. |
-| **Move the tar mess only** | Tar on pawns and ground, the acid and the walkways come down; the broken reference is fixed. | The free Sump has no gaslight, no vault and nothing to learn; it plays thinner than the campaign. |
-| **Fix the broken reference only** | Smallest job: the free mod loads clean. | The free Sump stays a bare biome with none of the 24 September content. |
+| **Mob'Unloo** *(recommended: he is debt and exchange, and "a price paid for a grudge collected" is his plainest form)* | A clean fit: the object is the price, the effigy is the grudge. His existing devotion "the Collected Grudge" already names the idea. | He already has two offering rites (the Blind Offering in the dark, the Cold Ledger in the ice); this is his third. |
+| **Ishko** | The god of hiding and the prepared ambush: the curse is a trap laid ahead for an enemy who has not arrived yet. | A looser fit for a rite that pays a price; Ishko's rites so far are about stillness and the dark. |
+| **Zizzik** | The wrong spark: the tar fouls the enemy's works and their next group arrives broken and filthy. He loves this kind of mischief. | He already has five rites, so he keeps growing while others stay thin. |
 
-**Q2. Header: `Tar beast`.** *The sheet says huge, slow tar beasts lie in the deepest tar and wake
-when you dig deep, blast nearby or pump greedily, and that a woken one is an unstoppable,
-station-eating catastrophe you run from, never fight. The waking machinery is built, but the thing
-that comes out is a placeholder thrumbo; the beast has never had a body. What should it be?*
-
-| Option | What it buys | What it costs |
-|---|---|---|
-| **The full station-eater** *(recommended: it is the giant the sheet already rules, and the one thing the Sump's dread has never delivered)* | A body more than twice a thrumbo's size that crawls very slowly toward your buildings, swallows each one it reaches (leaving a tar mound and a letter), turns its trail to tar, shoves pawns aside without biting, shrugs off damage, and after a while sinks back to a new spot. Mice and a rising room-sized bubble warn you a day ahead. | A medium-to-large build plus giant art (static, no new animation). It can wreck a colony that built in the wrong place, which is the point. |
-| **It surfaces, then sinks** | The giant rises, oozes tar over the area around it and sinks again: a spectacle and a terrain change, with no buildings swallowed. | Less dread; the sheet's "station-eating" stays unbuilt. Cheaper art and code. |
-| **It never surfaces** | A wake becomes a huge belch only; the beast stays a rumour under the bulge. | Cheapest; the Sump keeps no giant you ever see. |
-
-**Q3. Header: `New ideas`.** *GPT was asked for five ideas unlike any other biome's. Four are
-offered here (the fifth is a rite, in the next question). Which should be built? Pick any.*
+**Q2. Header: `Empire heat`.** *"The current heat level" is Imperial Heat: one number the game-master
+layer keeps outside the save, measuring how hard the Empire is looking for you. Selling kyber raises
+it; raids, inspections and orbital detection key off it. Today it runs in a watch-only test mode
+that fires nothing. A standing rule says Heat is never lowered by success, so it cannot be
+laundered. How strong should an Empire effigy be?*
 
 | Option | What it buys | What it costs |
 |---|---|---|
-| **Blackline capstan** *(recommended: it is the lightning-breaker shape you picked, tech learned only from what the tar kept and then usable everywhere)* | Study two ancient winch joints dug out of the tar to learn a hand capstan that drags one pawn, body, animal or item in a straight line: pull a downed colonist out of a fight, an enemy off a wall, a crate back across a burning moat. Learned here, built anywhere from ordinary materials. | A medium build. The operator stands exposed, and a heavy or struggling load can rip the anchor out. |
-| **Pump rhythm** | Your pumps' thuds drift into one perfect beat if you keep them neat, and something under the tar answers with a fifth beat; let it go and the tar beast wakes. Re-timing a pump by hand costs output. A sound that matters, and tidiness punished. | A medium build, and a recurring chore: someone has to keep re-timing pumps. |
-| **Buried dragline** | A rare dig finds one joint of a buried ancient dragline; you trace its arc, pay to restore it, and fire it once: one enormous sweep that crushes everything in a lane and heaps every loose thing at the end, then it seizes forever. | A large build, and a second giant beside the tar beast. |
-| **Kethrel** | A new boneless tar-country animal that picks up dropped weapons and scrap and wears them as armour, getting slower and louder; a handler can coax it to molt and give everything back. | A medium build plus four armour-stage pictures; it sometimes walks off with your things (always visible, always recoverable). |
+| **A modest drop, once a season** *(recommended: your rite stays real without becoming a way to wash Heat clean)* | Each Empire offering lowers Heat by a small step, scaled by the value thrown in, at most once a season. The Narrator tells it. | The effect is quiet: a slight easing you feel over weeks, not a reprieve. |
+| **A big drop, with a gamble** | A large drop, but sometimes the Empire hears of a burned stormtrooper and Heat rises instead. A real bet. | Can backfire badly; the odds need tuning in play. |
+| **A lull, not a drop** | Heat is untouched (the no-laundering rule holds), but the Empire's next raid or inspection is delayed for a while. | It does not lower "the heat level" as you said; it only buys time. |
 
-**Q4. Header: `Rites`.** *The Sump has no Salvation rite you can find and learn. A rite's effect is
-a world event and its gift is cohesion, never a reward. Which should be found here? Pick any.*
+**Q3. Header: `Faction tar`.** *An effigy of any other faction curses that faction: the next time a
+group of theirs is seen (a raid, a caravan, visitors), some of its members arrive covered in tar:
+slowed, stinking and leaving a black trail, and the Narrator says why. Goodwill does not change;
+they never learn who did it. How much tar?*
 
 | Option | What it buys | What it costs |
 |---|---|---|
-| **The Giving-Back** *(recommended: it is the rite the Sump's own memory of the drowned asks for, and its effect is a risky world event)* | For Rekko. Found at a ring of tar-stiff coats on stakes beside the black mere. The colony calls the names of its lost at deep tar, and within the hour the tar heaves up what it kept: the long-drowned dead, whole, to bury; sometimes an old armed trap with them; and if a tar beast lies near, it may stir. | A medium build. Anyone the heave catches is in danger, and it can wake the giant. |
-| **The Deep Draw** | For Ozzik. Found at a lone derrick over a pond nobody pumps, a glove still on the snapped handle. The colony's proudest pawn pumps the forbidden pond by hand for a night; the deep answers once at random: a gas gusher that lights a field of dancing flames, a great belch, a beast waking, or nothing. | A medium build. Real fire and real danger near the pump. |
-| **Reckoning of Owners** | GPT's idea, for Mob'Unloo. Lay out nine owned things and recite how each changed hands; days later, two groups may arrive with rival claims to one valuable, and you return it, pay, or hold it by force. | A large build (two-faction claim visits); it is barely tied to the Sump and would work anywhere. |
+| **Some of the next group** *(recommended: your words were "some of their members", and subtle odds are the rule for a god's favour)* | A third to a half of that one group arrives tarred, more if the offering was rich. One curse, one appearance. | A modest edge in that one fight or trade. |
+| **All of the next group** | Unmistakable: every member arrives black with tar. | A big edge against a raid, which leans toward a reward. |
+| **Lasting, thinning** | Their groups arrive with a few tarred members for a season, fewer each time. | Longer bookkeeping; the curse becomes a background condition rather than an event. |
+
+**Q4. Header: `More offers`.** *You asked what else could go in the tar and what else it could do.
+GPT gave five; four are here (the fifth, a recorder whose incidents the Narrator re-stages, is too
+large and overlaps the game-master layer). Each is a further offering within the same rite. Pick any.*
+
+| Option | What it buys | What it costs |
+|---|---|---|
+| **Threshold kept** *(recommended: it is the Sump's own law, the tidy punished, and it is the smallest build)* | Throw in a door torn from your cleanest room; hours later the tar seals every doorway of another very clean room until you cut it free or dissolve it with acid. | Pure risk to yourself, nothing gained but the rite's cohesion. Small build. |
+| **Pump's answer** | Throw in a working derrick head; a tar beast sets off toward one pumping site picked by an open lottery: it may wipe out a Junker station or cross your own map. | The biggest gamble, and a large build (a tracked journey across the world map). |
+| **Weapon's quarrel** | Throw in a weapon that has killed; the cursed faction's next armed group halts while its commanders argue, then splits into two hostile bands or comes at you as one sharper attack. | Can make the fight worse. Medium build. |
+| **Last tool** | Throw in a dead colonist's last tool; someone who knew them (a friend, a rival, a creditor) comes to argue the story of their life, with no reward either way. | A quiet, sad event; the weakest tie to the tar. Medium build. |

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-02T05:02:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-02T05:25:45Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -3870,3 +3870,73 @@ kind:     build
 thin:     no ## spec, no ## criteria
 summary:  PYRELANDSSTRUCKGLASSRITEBUILD1
 prose:    infrastructure/state/items/PYRELANDS_STRUCK_GLASS_RITE_BUILD_1.md
+
+## SUMP_FREE_TIER_MOVE_BUILD_1 Sump: move all 24 Sep content (tar coating, tarred, solvents, walkways, gaslight, vault, research) into Baroque Biomes as RM_; fix the RUT_Tarred reference; frozen-world aliases
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  SUMPFREETIERMOVEBUILD1
+prose:    infrastructure/state/items/SUMP_FREE_TIER_MOVE_BUILD_1.md
+
+## SUMP_FAUNA_WIRING_BUILD_1 Sump: wire the built gulveth and thrummel family into RM_TheSump beside the donors (no eviction)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  SUMPFAUNAWIRINGBUILD1
+prose:    infrastructure/state/items/SUMP_FAUNA_WIRING_BUILD_1.md
+
+## SUMP_HUNGRY_GOD_TEXT_1 Sump: strike 'evil sun god' from About.xml and four def comments (no god is evil)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  SUMPHUNGRYGODTEXT1
+prose:    infrastructure/state/items/SUMP_HUNGRY_GOD_TEXT_1.md
+
+## SUMP_TAR_BEAST_BUILD_1 Sump: the tar beast, full station-eater (RM_TarBeast replaces the Thrumbo placeholder)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  SUMPTARBEASTBUILD1
+prose:    infrastructure/state/items/SUMP_TAR_BEAST_BUILD_1.md
+
+## SUMP_CAPSTAN_TURRET_BUILD_1 Sump: the capstan turret, a turret on Melee Animation's lasso pull, learned at the Sump
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  SUMPCAPSTANTURRETBUILD1
+prose:    infrastructure/state/items/SUMP_CAPSTAN_TURRET_BUILD_1.md
+
+## SUMP_KETHREL_BUILD_1 Sump: the kethrel, scrap-armoured hydrocarbon animal with four static armour stages
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  SUMPKETHRELBUILD1
+prose:    infrastructure/state/items/SUMP_KETHREL_BUILD_1.md
+
+## LASSO_CHERRYPICKER_REMOVAL_1 Remove lassos: Cherry Picker cut AM_LassoCloth + Melee Animation lasso spawning off
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## criteria
+summary:  LASSOCHERRYPICKERREMOVAL1
+prose:    infrastructure/state/items/LASSO_CHERRYPICKER_REMOVAL_1.md
