@@ -19,8 +19,10 @@ Plan: `design/RimMandrake/git_workflow_plan_2026-10-01.md` §2.4 rows 5–7, §2
   CLAUDE.md now name the records. A frozen copy would only be a stale second answer.
 - Selftest `selftest_code_review_status.py` gained case 13: append-only, per-seat shard, cross-shard last-by-ts,
   duplicate collapse, pruned record.
-- Append-only lint: `ledger_lint.py` did not exist on origin when this landed (Phase 4 in flight) — **its glob must be
-  extended to `infrastructure/state/code_review/*.jsonl`** (see §6).
+- Append-only lint: Phase 4's `ledger_lint.py` landed mid-way; its shard set is now `SHARD_DIRS = (ledger/events,
+  state/code_review)` and identity falls back to `path` for review records (`5e3e1472c`). Probe: editing one SEED line
+  in place → NOT_APPEND + DUP_DIFFERENT; clean tree → 0 findings. The push guard `block_ledger_lint.py` calls the same
+  script, so it covers the records with no change.
 
 ## 2. LESSONS_INBOX → one file per lesson
 
@@ -65,3 +67,14 @@ set = Phase 4's (ledger shards union, queue views, health html/json, `codebase_h
 **K=5 = 10.8%, under the 13.6% bar.** Untracking the artpipe top-level registry/logs too moves K=5 by 4 commits
 (10.7%). Top residual paths at K=5: DLL/`.srchash` pairs (Phase 3's single-writer rule), roster/item docs.
 Script: scratchpad `p5_replay.py`.
+
+## 6. Residual risks / follow-ups
+
+- **Old code still writes the JSON.** Any checkout running pre-Phase-5 `code_review_status.py` (the D:\ shared tree
+  until the Phase 6 freeze) recreates `infrastructure/state/CODE_REVIEW_STATUS.json` on its next mark-clean; the new
+  `load()` ignores that file, so such a mark is invisible until re-recorded. Remedy if one lands: re-run
+  `mark-clean` for those paths from an updated clone, then `git rm` the stray JSON.
+- Lodestar `bin/handoff.py` change is `bd240f7` on Lodestar main; the installed copy `~/dev/Lodestar`
+  (`D:\Luke\dev\Lodestar`) picks it up on its next hourly sync pull. Measured on the stale installed copy: it reads
+  the new list value as no drain (`None`), so a `--harvest` run before that pull over-collects handoff lessons
+  (all of them, not since 2026-09-25). Nothing else in it reads `lessons_file`.
