@@ -27,3 +27,43 @@ status-hint: absorbed-content salvage bin — 10 creature ThingDef/PawnKindDef p
 11. [B] jawa/spawn_pawn {kindDef: "RSW_Baseopsis", faction: "none"} → returns success, one Baseopsis pawn spawned (spot-checks the absorbed-dinosaur wave loads and generates, not just parses)
 12. [B] jawa/list_pawns {} on the quicktest map after steps 9-11 → 3 pawns present, races RSW_Bantha/RSW_Jerba/RSW_Baseopsis
 X. [S] (human pass) the 589-clip SoundDefs library and the extracted-AssetBundle dinosaur sprites — audio timbre/mix and whether the recovered art still reads clean at game scale are both a listen/look, not a script
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The absorbed beasts on the map**
+- [ ] `bestiary_beasts_render_whole` — each absorbed creature (`RSW_Bantha`,
+      `RSW_Jerba`, the eight ex-Jurassic animals such as `RSW_Segnosaurus` and
+      `RSW_Termitotron`) is drawn as a whole animal at play zoom, at every life stage.
+- [ ] `bestiary_beasts_hold_across_facings` — each beast reads as the same animal
+      walking north, east and south, with no facing swapping to a different
+      creature or vanishing.
+- [ ] `bestiary_jerba_smaller_than_bantha` — a jerba beside a bantha is plainly the
+      smaller animal (it reuses the bantha's unwooled sprite at a smaller drawSize).
+
+**Products**
+- [ ] `bestiary_blue_milk_reads_blue` — `RSW_BlueMilk` in a stockpile reads as blue
+      milk, distinct from vanilla milk at a glance. (guess)
+- [ ] `bestiary_eggs_read_as_eggs` — the absorbed creatures' eggs read as eggs in a
+      stockpile, not as generic chunks or a magenta square. (guess)
+
+### cannot show
+
+- [ ] `bestiary_never_magenta` — a magenta or missing-texture square where one of
+      these beasts or its products should be.
+- [ ] `bestiary_jerba_reads_as_shrunk_bantha` — the jerba reading as nothing but a
+      scaled-down bantha rather than its own animal. (guess: the reused sprite may
+      be accepted as-is; his call)

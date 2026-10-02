@@ -21,3 +21,41 @@ status-hint: Tellurox — Ascendant Helix labour-line draft/pack animal with a P
 6. [B] jawa/spawn_pawn {kind: RSW_Tellurox} → expect a live pawn, race RSW_TelluroxRace
 7. [B] jawa/list_things {defName: RSW_TelluroxShell} after butchering a spawned-then-killed adult tellurox → expect RSW_TelluroxShell items present (proves the butcherProducts cross-ref actually resolves at runtime, not just in the def read-back)
 X. [S] (human pass) Tellurox.png sprite at each of the 3 drawSize life stages — out of scope here
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The tellurox**
+- [ ] `tellurox_reads_shelled_beast` — `RSW_Tellurox` reads at play zoom as a
+      heavy armoured labour animal, its permanent shell the obvious feature.
+      (guess)
+- [ ] `tellurox_grows_visibly` — the three life stages (drawSize 1.3 / 2.0 / 2.6)
+      read as a calf, a youngster and a full-grown beast side by side.
+- [ ] `tellurox_reads_as_pack_animal` — a caravan tellurox carrying packs reads as
+      a beast of burden. (guess)
+
+**The shell**
+- [ ] `tellurox_shell_reads_as_plate` — `RSW_TelluroxShell` in a stockpile reads as
+      shell plate, not ordinary leather.
+
+### cannot show
+
+- [ ] `tellurox_never_shorn` — a shear job or molt yielding shell plate; the shell
+      only arrives from a butchered mature animal. (guess)
+
+- [ ] `tellurox_never_sideways_walking_north` — one `Graphic_Single` texture, so
+      the beast may show its side profile walking north or south; acceptable or
+      not is his call. (guess)

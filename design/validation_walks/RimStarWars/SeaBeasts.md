@@ -24,3 +24,43 @@ status-hint: 18 Naboo/Star Wars sea creatures across six roles (opee silt-ambush
 8. [B] jawa/spawn_pawn {kindDef: "RSW_Reefback", faction: "none"} → returns success, one reefback spawned (spot-checks a colossus at baseBodySize 32 generates without erroring on its own scale)
 9. [B] jawa/list_pawns {} after steps 7-8 → 2 pawns present, races RSW_OpeeSeaKiller/RSW_Reefback, and jawa/pawn_get {pawn: <reefback id>} reports needs excluding Food (confirms foodType=None actually suppressed the food need at runtime, not just in the def)
 X. [S] (human pass) the 4-facing sprite sets for all 18 creatures (Graphic_Multi's silent-fail-on-missing-facing means a broken set never magenta's — only a look catches it) and whether the colo/sando/opee/scalefish silhouettes read as their named Star Wars creature at map scale
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**In the water**
+- [ ] `seabeast_drawn_while_swimming` — a sea beast entering shallow water stays
+      drawn as the same creature (its `swimmingGraphicData`), never vanishing.
+- [ ] `seabeast_reads_aquatic` — each of the 18 reads at play zoom as a sea
+      creature (fin, tentacle, shell or maw), not a land animal standing in water.
+      (guess)
+
+**Six roles, visibly different**
+- [ ] `seabeast_families_distinct` — an opee (`RSW_OpeeSeaKiller`), a colo
+      (`RSW_ColoClawFish`) and a sando (`RSW_SandoAquaMonster`) side by side are
+      unmistakably three different kinds of animal, not recolours.
+- [ ] `seabeast_colossi_read_colossal` — `RSW_Reefback`, `RSW_Starmaw` and
+      `RSW_Lanternwhale` read as enormous beside a colonist, the biggest things on
+      the map.
+- [ ] `seabeast_four_facings_hold` — each creature reads correctly from all four
+      facings (every species ships separate north/east/south/west art).
+
+### cannot show
+
+- [ ] `seabeast_never_invisible_in_water` — a sea beast that disappears on a water
+      cell (the silent `Graphic_Multi` facing failure the walk warns of).
+- [ ] `seabeast_colossus_never_hostile_posture` — a colossus drawn charging or
+      fighting; they are neutral plankton-strainers. (guess)

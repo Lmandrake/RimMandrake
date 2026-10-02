@@ -22,3 +22,34 @@ status-hint: an ikee (Alpha Animals' AA_Eyeling) nearby gives Jawa/Hutt/etc a mo
 5. [B] jawa/pawn_get pawn=<step-3 pawn> after a few ticks → needs/mood section lists the RSW_Jawa_IkeeWatching thought at stage 0 ("ikee underfoot")
 6. [B] jawa/spawn_pawn kindDef=<a non-tolerant PawnKindDef, e.g. a baseliner colonist> faction=player, at a cell within 12 of the same ikee → jawa/pawn_get on it lists RSW_Jawa_IkeeWatching at stage 1 ("the ikee is watching me")
 7. [B] jawa/spawn_pawn kindDef=<any humanlike>, faction=player, at a cell far (>12) from the ikee → jawa/pawn_get shows the RSW_Jawa_IkeeWatching thought absent
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The ikee and who it watches**
+- [ ] `ikee_present_and_readable` — an ikee (Alpha Animals' eyeling) near a
+      colony is visibly on the map, the thing a colonist's thought is about. (guess)
+- [ ] `ikee_thought_differs_by_xenotype` — a Jawa colonist and a baseliner standing
+      within 12 cells of the same ikee show different needs-tab entries for
+      `RSW_Jawa_IkeeWatching`: a buff for the Jawa, "the ikee is watching me"
+      malus for the baseliner.
+- [ ] `ikee_thought_gone_when_away` — the same colonists 30 cells away show neither
+      entry.
+
+### cannot show
+
+- [ ] `ikee_never_buffs_baseliner` — a baseliner, or a pawn with no genes, showing
+      the tolerant (buff) stage.
