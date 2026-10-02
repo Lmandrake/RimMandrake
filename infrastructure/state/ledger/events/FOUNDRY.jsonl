@@ -1892,3 +1892,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"NORTHSTAR_SWEEP_BOMB_1","ts":"2026-10-02T00:53:17Z"}
 {"seat":"FOUNDRY","event":"start","id":"NORTHSTAR_SWEEP_BOMB_1","ts":"2026-10-02T00:53:18Z"}
 {"seat":"FOUNDRY","event":"close","id":"NORTHSTAR_SWEEP_BOMB_1","sha":"b246bc43797b2fd8c180168eb7bc04027386a6f7","ts":"2026-10-02T00:54:18Z"}
+{"seat":"FOUNDRY","event":"note","id":"NORTHSTAR_COMPANION_GAPS_1","text":"BUILT, not deployed: jawa/pawn_census, jawa/pawn_roles, jawa/incident_queue_peek, jawa/incident_queue_remove (GM, dryRun default), jawa/damage_log (Harmony ring on Thing.TakeDamage+Pawn.Kill), jawa/thing_lineage (holder chain + absorb/split/ingest/destroy journal) in JawaBenchSituationalTools.cs; none pre-existed. build.py --gm: 0 warnings/0 errors; rimdrive wrappers+fake+selftest 21/21. OWED: deploy with game down + live proof on minimal list (notes: Transient/companion_gaps_2026-10-01.md).","ts":"2026-10-02T01:14:11Z"}
