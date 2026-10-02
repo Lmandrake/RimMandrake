@@ -66,6 +66,14 @@ VANILLA_PACKED = {
     "UI/TickLow": "vanilla Tick_Low",
     "UI/TinyBell": "vanilla TinyBell",
     "Electricity/Watermill_Loop_01a": "vanilla WaterMill_Ambience",
+    # TheForge RM_ForgeVoices / Wasteland RM_WastelandSounds placeholder grains;
+    # each verbatim from the named SoundDef's own clipPath, verified by reading
+    # the installed Data/<Core|Ideology>/Defs/SoundDefs XML 2026-10-02.
+    "Electricity/GeothermalPlant/Run/GeothermalPlantRun_Loop1a": "vanilla GeothermalPlant_Ambience",
+    "Misc/Steam_Geyser/SteamGeyser_Venting": "vanilla GeyserSpray",
+    "Misc/Hiss/HissJet": "vanilla HissJet",
+    "Misc/RockCollapse": "vanilla Roof_Collapse",
+    "Ambience/Spacedrone_Ambience_Loop_01a": "Ideology SpacedroneIdle_Ambience",
 }
 
 

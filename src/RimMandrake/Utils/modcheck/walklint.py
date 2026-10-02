@@ -39,6 +39,7 @@ and `lint` both return their input counts so a caller -- and the selftest --
 can assert them positive.
 """
 
+import json
 import os
 import re
 import sys
@@ -140,6 +141,15 @@ def build_index(repo_root):
                     packageids.add(m.group(1).strip())
                 # Fall through: About.xml is also scanned for defName/Name
                 # below like any other xml, which is harmless (it has none).
+            if low.endswith(".compose.json"):
+                # A composed mod (deploy_custom_mods --compose) has no About.xml
+                # under src/; its manifest's about.packageId is the declaration.
+                try:
+                    pid = json.loads(_read(full)).get("about", {}).get("packageId")
+                except (ValueError, AttributeError):
+                    pid = None
+                if pid:
+                    packageids.add(pid.strip())
             if low.endswith(".xml"):
                 text = _read(full)
                 xml_names.update(_DEFNAME_RE.findall(text))

@@ -16,12 +16,14 @@ import sys
 
 PAT = re.compile(r"Could not find (?:a )?type named (RimMandrake|RimStarWars|RimUtinni)[.\w]*")
 PROBE = "Bridge token:"
-WIN_LOG = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log"
-WSL_LOG = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log"
+_UTILS = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+if _UTILS not in sys.path:
+    sys.path.insert(0, _UTILS)
+from game_paths import PLAYER_LOG  # noqa: E402
 
 
 def default_log():
-    return WIN_LOG if os.name == "nt" else WSL_LOG
+    return PLAYER_LOG
 
 
 def scan(text):
