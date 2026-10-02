@@ -295,7 +295,8 @@ def headings_of(rev, path):
             continue
         m = HEADING_RE.match(line)
         if m:
-            heads.append(f"{m.group(1)} {re.sub(r'\s+', ' ', m.group(2)).strip()}")
+            text = re.sub(r"\s+", " ", m.group(2)).strip()   # no backslash inside an f-string: py<3.12 SyntaxError
+            heads.append(f"{m.group(1)} {text}")
     return heads
 
 
