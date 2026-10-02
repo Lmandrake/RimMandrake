@@ -20,3 +20,31 @@ status-hint: ships the missing north/northm worn-art for bandolier_chewbacca and
 5. [B] jawa/get_def {defType: "ThingDef", defName: "guy762_Accessory_chewiebandolier"} → apparel.wornGraphicPath still reads SWApparel/Accessories/bandolier_chewbacca/Apparel and apparel.drawData.dataNorth.layer still reads 65 — confirms the donor def this mod targets hasn't drifted since About.xml was written
 6. [B] jawa/get_def {defType: "ThingDef", defName: "guy762_Accessory_travelerbag"} → same check for wornGraphicPath SWApparel/Accessories/bandolier_traveler/Apparel
 X. [S] (human pass) spawn a pawn wearing guy762_Accessory_chewiebandolier (or _travelerbag), rotate to face north, and confirm bare leather renders on the back instead of the chest pouches
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The back of a bandolier**
+- [ ] `bandolier_north_shows_back` — a pawn wearing the chewbacca or traveler
+      bandolier walking north shows the strap from behind, with no chest pouches
+      drawn on its back.
+- [ ] `bandolier_north_matches_south` — the north view sits on the body at the same
+      size and place as the south view, on every body type.
+
+### cannot show
+
+- [ ] `bandolier_never_mirrored_front_on_back` — the 180-degree-mirrored south art
+      (pouches on the back) this mod exists to remove.

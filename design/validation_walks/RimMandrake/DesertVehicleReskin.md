@@ -21,6 +21,38 @@ status-hint: redraws Alpha Vehicles - Neolithic's draught animals as desert faun
 7. [B] jawa/vehicle_spawn_airdrop (or the mod's own spawn route) an `AV_OxCart`, then attempt to refuel it from a non-Hay vegetable item (e.g. a potato/`RawPotatoes`) via `jawa/order_pawn`/refuel job → expect the fuel comp accepts it (no "no valid fuel" refusal)
 8. [B] repeat step 7 with a meat item (e.g. `Meat_Human` or any `Meat*` defName) → expect REFUSAL — meat is explicitly excluded even though it is nutrition-giving
 
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**Desert draught beasts**
+- [ ] `vehreskin_beasts_read_desert` — the chariot, war chariot, ox cart, covered
+      carriage and sled are drawn behind dewback, ronto, bantha or eopie art, not
+      horses, oxen or dogs.
+- [ ] `vehreskin_vehicles_hold_across_facings` — each reskinned vehicle reads as the
+      same beast and cart from north, east and south.
+- [ ] `vehreskin_sled_reads_leather_brown` — the eopie sled (`AV_DogSled`) reads
+      leather-brown, not the donor's grey.
+
+### cannot show
+
+- [ ] `vehreskin_never_horse_or_dog` — a horse, ox or sled-dog visible on any of
+      the five vehicles (the override lost its load-order race).
+- [ ] `vehreskin_never_snow_sled` — snow or ice-sled styling on the desert sled.
+      (guess)
+
 ## anti-guessing notes
 - No dedicated [B] bridge tool exists for "attempt refuel" specifically; use whichever real jawa/order_pawn or vehicle-fuel tool is live at walk-run time and confirm its name against `Transient/bench_tools_dump.json` before writing the final concrete call — `jawa/vehicle_spawn_airdrop` is confirmed to exist there, the refuel-trigger step is not yet pinned to one tool name.
 

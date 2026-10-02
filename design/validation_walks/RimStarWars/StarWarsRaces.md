@@ -27,3 +27,40 @@ status-hint: owns 69 Star Wars species outright (xenotype + genes + head types +
 12. [B] jawa/spawn_pawn {kindDef: "RSW_RimMandrakeAbednedo_Kind", faction: "player"} → returns success, one pawn spawned with xenotype RSW_RimMandrakeAbednedo (spot-checks a non-Jawa species out of the 69 actually generates end to end)
 13. [B] jawa/pawnkind_audit {filter: "RSW_"} → no RSW_-prefixed colonist kind reports noWeaponTags/emptyTagPool/cannotAfford as a reason it cannot arm itself (these are colonist pawnkinds fielded by the player, not raiders, so an unarmable result would be a real design gap, not vanilla-expected)
 X. [S] (human pass) the recovered Outer Rim art (species icons, head sprites pulled back from a relocated art folder) and the 112+22 gene textures actually render correctly at the pawn-editor scale, not just resolve a texPath
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**Species read as species**
+- [ ] `swraces_species_recognisable` — a line-up of species pawns (Wookiee,
+      Rodian, Twi'lek, Mon Calamari, Gamorrean) reads at play zoom as those
+      species, recognisable to a Star Wars viewer without a tooltip.
+- [ ] `swraces_heads_hold_across_facings` — each species' head reads as the same
+      head from north, east and south, with no facing showing a human head or none.
+- [ ] `swraces_species_visibly_various` — twenty different species in one map are
+      visibly twenty, not recolours of a few heads. (guess)
+
+**The Jawa**
+- [ ] `swraces_jawa_reads_hooded_small` — an `RSW_MandrakeJawa` pawn reads as a
+      small hooded figure with glowing eyes, the campaign's signature look.
+      (guess)
+
+### cannot show
+
+- [ ] `swraces_never_bald_or_headless` — a species pawn rendered with no head art,
+      a bald stand-in, or a missing-texture square.
+- [ ] `swraces_never_human_face` — a non-human species showing a baseline human
+      face. (guess)

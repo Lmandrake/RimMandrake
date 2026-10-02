@@ -24,3 +24,44 @@ status-hint: the one droid platform — five states (functional/ion-stunned/powe
 8. [B] jawa/pawn_need {pawn: <spawned above>, need: RSW_DW_Power} → expect the need to exist and report a level (proves Patch_ShouldHaveNeed_Power's Harmony gate granted the need to this non-flesh-Humanlike pawn instead of silently skipping it)
 9. [D] def read-back: RecipeDef RSW_DW_RebootDroid, RSW_DW_InstallRestrainingBolt, RSW_DW_RemoveRestrainingBolt, RSW_DW_MemoryWipe each resolve with workerClass RimMandrake.StarWars.Droidworks.Recipe_RebootDroid / Recipe_InstallRestrainingBolt / Recipe_RemoveRestrainingBolt / Recipe_DWMemoryWipe
 X. [S] (human pass) droid five-state visual read (functional/ion-stunned/powered-down/unbootable/detonation) — icon/overlay legibility is out of scope here
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**Droids**
+- [ ] `droidworks_droids_read_as_droids` — a line-up of droid kinds (B1, HK,
+      protocol, KX, Magnaguard) reads as machines, each recognisable as its chassis.
+- [ ] `droidworks_droid_facings_hold` — each droid reads as the same chassis from
+      north, east and south.
+
+**The five states**
+- [ ] `droidworks_states_distinguishable` — a functional droid, an ion-stunned
+      one and a powered-down one (`RSW_DW_PoweredDown`) are distinguishable at a
+      glance, without a tooltip. (guess: may need an overlay or posture)
+- [ ] `droidworks_bolt_visible` — a droid fitted with a restraining bolt
+      (`RSW_DW_RestrainingBolt`) shows it, or shows a readable marker. (guess)
+
+**Charging**
+- [ ] `droidworks_chargers_read_as_chargers` — `RSW_DW_ChargeSocket`,
+      `RSW_DW_ChargeDock` and `RSW_DW_ChargeNimbus` read as three sizes of charging
+      station, with a droid visibly docked at one.
+
+### cannot show
+
+- [ ] `droidworks_never_downed_like_flesh` — a powered-down droid drawn as a
+      bleeding, collapsed flesh pawn. (guess)
+- [ ] `droidworks_never_magenta` — a missing-texture square on any droid or droid
+      building.

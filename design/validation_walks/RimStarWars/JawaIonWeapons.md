@@ -25,3 +25,35 @@ status-hint: capture-not-kill ion blaster — RSW_JawaIon_Damage EMP-stuns mechs
 8. [B] jawa/spawn_pawn kindDef=<a flesh PawnKindDef, e.g. a Tribal warrior> faction=hostile at (x,z) then jawa/damage damageDef=RSW_JawaIon_Damage amount=8 thingId=<pawn> repeated ~6x → jawa/pawn_get shows the pawn downed, alive, hediffs contain RSW_JawaIon_Stun, and no injury hediffs (health log clean of wounds)
 9. [D] jawa/get_def defType=ThingDef defName=BaseHumanMakeableGun (parent check only if RSW_JawaIon_Blaster fails to resolve — confirms the parent template itself still exists in the current mod set)
 X. [S] (human pass) the blaster's bundled sprite (Textures/JawaIon/Weapon_JawaIonBlaster.png) and the fired-bolt look reusing Outer Rim Core's blue ion sprite/audio, read correctly in-game
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The weapon and its bolt**
+- [ ] `ion_blaster_reads_in_hand` — `RSW_JawaIon_Blaster` held by a drafted Jawa
+      reads as a blaster at a sensible scale.
+- [ ] `ion_bolt_reads_as_ion` — `RSW_JawaIon_Bullet` in flight reads as a blue ion
+      bolt, distinct from an ordinary blaster bolt. (guess)
+
+**Capture, not kill**
+- [ ] `ion_target_collapses_unhurt` — a flesh pawn shot down by ion fire lies
+      downed with no blood pool and no wounds on its health tab.
+- [ ] `ion_machine_stunned` — a mech or droid hit by ion fire shows the vanilla
+      stun/EMP effect and stops moving.
+
+### cannot show
+
+- [ ] `ion_never_bloody` — blood splatter or bleeding wounds from an ion hit.

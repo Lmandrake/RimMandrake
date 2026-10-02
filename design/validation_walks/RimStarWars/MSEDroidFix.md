@@ -19,3 +19,30 @@ status-hint: no Defs, no Patches, no Assemblies — a single loose PNG (`Texture
 4. [B] `jawa/texture_audit` on `OuterRim_MSEDroid` (or on `OuterRim/Droid/MSE`) → expect all four directions (`MSE_north`, `MSE_south`, `MSE_east`, and the mirrored west) resolve to a texture, with `MSE_north` specifically resolving to THIS mod's loose file rather than a fallback.
 5. [B] `jawa/spawn_pawn` an `OuterRim_MSEDroid` pawn on a quicktest map with Outer Rim - Droid Depot active → `jawa/set_pawn_rotation` (or the pawn's facing) set to North → `jawa/pawn_atlas` (or an equivalent render/atlas read) confirms the resolved graphic path is `OuterRim/Droid/MSE_north`, not a silent south fallback.
 6. [S] (human pass) look at an MSE-6 droid walking away from camera in play and confirm it shows a rear panel, not its own front.
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The MSE droid walking away**
+- [ ] `mse_north_shows_back` — an MSE droid walking north shows a back view, not
+      its front face.
+- [ ] `mse_north_registers_with_south` — turning from south to north the droid
+      keeps the same size and footprint; it does not jump or shrink.
+
+### cannot show
+
+- [ ] `mse_never_front_when_walking_away` — the silent `Graphic_Multi` fallback
+      that shows `MSE_south` on a north-facing droid.
