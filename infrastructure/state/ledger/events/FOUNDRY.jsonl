@@ -1949,3 +1949,11 @@
 {"seat":"FOUNDRY","event":"claim","id":"FLOWWORKS_SHARED_SOURCE_STALL_1","ts":"2026-10-02T14:46:38Z","tsn":1790952398956106041}
 {"seat":"FOUNDRY","event":"start","id":"FLOWWORKS_SHARED_SOURCE_STALL_1","ts":"2026-10-02T14:46:39Z","tsn":1790952399519206652}
 {"seat":"FOUNDRY","event":"close","id":"FLOWWORKS_SHARED_SOURCE_STALL_1","sha":"a8e179a4007f","ts":"2026-10-02T14:56:42Z","tsn":1790953002462819740}
+{"seat":"FOUNDRY","event":"note","id":"MESSY_CONDUIT_MOD_1","text":"Owner chat go-ahead 2026-10-02 (quote guard did not accept the mid-turn message, so recorded without the flag): build Messy Conduit phase 1a (nodal cords, break readout); build pause lifted for this mod. FOUNDRY's call to proceed on that message.","ts":"2026-10-02T20:24:16Z","tsn":1790972656974591885}
+{"seat":"FOUNDRY","event":"note","id":"MESSY_CONDUIT_MOD_1","text":"FOUNDRY building phase 1a now (owner chat go-ahead 2026-10-02). claim refused: item owned by OWNER; build tracked by this note + Transient/belt_messyconduit_build_20261002.md.","ts":"2026-10-02T20:28:30Z","tsn":1790972910144333353}
+{"seat":"FOUNDRY","event":"claim","id":"SUPERDEEP_SEAM_MEASURE_1","ts":"2026-10-02T21:20:55Z","tsn":1790976055672306325}
+{"seat":"FOUNDRY","event":"claim","id":"SUPERDEEP_HOLDER_RETIRE_1","ts":"2026-10-02T21:20:56Z","tsn":1790976056285646351}
+{"seat":"FOUNDRY","event":"claim","id":"PIT_LEGACY_CODE_RETIRE_1","ts":"2026-10-02T21:20:56Z","tsn":1790976056789040709}
+{"seat":"FOUNDRY","event":"start","id":"SUPERDEEP_SEAM_MEASURE_1","ts":"2026-10-02T21:20:57Z","tsn":1790976057278805297}
+{"seat":"FOUNDRY","event":"start","id":"SUPERDEEP_HOLDER_RETIRE_1","ts":"2026-10-02T21:25:07Z","tsn":1790976307509672182}
+{"seat":"FOUNDRY","event":"file","id":"ALPHA_ANIMAL_PORTS_RM_TIER_1","title":"Alpha Animals ports carry RSW_ names (RSW_Durrok, RSW_Mullgoth, RSW_Chikka, RSW_Skorra, RSW_Vurra) though the creatures are Alpha Animals, not Star Wars: re-home to RM_ per Q12, then finish their donor swaps","kind":"task","target":"v1","needs":"offline","spec":"Transient/belt_art_wiring2_20261002.md","for":"FOUNDRY","ts":"2026-10-02T21:25:28Z","tsn":1790976328281347673}
