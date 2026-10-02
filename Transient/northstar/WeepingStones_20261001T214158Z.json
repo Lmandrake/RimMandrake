@@ -1,0 +1,434 @@
+{
+  "mod": "WeepingStones",
+  "mode": "mock",
+  "started_utc": "2026-10-01T21:41:57Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (state: is DRAFT, not VALIDATED)",
+  "bars": [],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "46 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=1000 map=200x200",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 1000 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "2 active, sha256 2edc3c136a6e28d5 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "components": [
+    {
+      "chain": "log_clean",
+      "name": "player_log_names_no_weepingstones_error",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "resolve_probe_sees_absence",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_race_things",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_pawnkinds",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_items",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_plants",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_recipes",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_thoughts",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_jobs",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_workgivers",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_set_makers",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_resolve_biome",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs_resolve",
+      "name": "defs_pair_up_by_convention",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "biome_probe_ready",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "biome_flags_and_densities",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "wild_animals_wired",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "wild_plants_wired",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "vhorrin_never_ambient_and_probe_is_honest",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "stocked_catch_has_living_counterpart",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "fish_types_wired",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "biome_roster",
+      "name": "water_truce_extension_present",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cuisine_wiring",
+      "name": "recipes_on_both_stoves",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "cuisine_wiring",
+      "name": "rottable_items_tick",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_and_designator",
+      "name": "setting_default_on_and_assembly_loaded",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_and_designator",
+      "name": "designator_listed_when_on",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "settings_and_designator",
+      "name": "designator_hidden_when_off",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "pen_zone",
+      "name": "site_ready_pen_zone",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "pen_zone",
+      "name": "pen_refuses_dry_floor",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "pen_zone",
+      "name": "pen_covers_exactly_the_water",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_net",
+      "name": "site_ready_net",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_net",
+      "name": "net_turns_wild_pawn_into_breeding_stock",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_stock",
+      "name": "site_ready_stock",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_stock",
+      "name": "stock_releases_species_pawn_into_pen",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_stock_outside_pen",
+      "name": "site_ready_stock_dry",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_stock_outside_pen",
+      "name": "stock_outside_pen_releases_nothing",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_feed",
+      "name": "site_ready_feed",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_feed",
+      "name": "feed_consumes_food_at_the_pen",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_harvest",
+      "name": "site_ready_harvest",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_harvest",
+      "name": "harvest_yields_species_meat",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_cull",
+      "name": "site_ready_cull",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "job_cull",
+      "name": "cull_yields_enormous_harvest",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora_RM_Bladderquill",
+      "name": "site_ready_RM_Bladderquill",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora_RM_Bladderquill",
+      "name": "harvest_yields_RM_BladderFruit",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora_RM_Steamfrond",
+      "name": "site_ready_RM_Steamfrond",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora_RM_Steamfrond",
+      "name": "harvest_yields_RM_SeepSalt",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora_RM_Dewgourd",
+      "name": "site_ready_RM_Dewgourd",
+      "verdict": "FAIL",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "flora_RM_Dewgourd",
+      "name": "harvest_yields_RM_DewgourdFruit",
+      "verdict": "UNMEASURED",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 0
+  },
+  "all_green": false,
+  "timing": {
+    "n": 49,
+    "total_ms": 0.069,
+    "mean_ms": 0.0014,
+    "p50_ms": 0.0008,
+    "p95_ms": 0.0063,
+    "by_tool": {
+      "rimworld/get_game_info": {
+        "n": 4,
+        "mean_ms": 0.0042,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 2,
+        "mean_ms": 0.0034,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 0.0015,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 14,
+        "mean_ms": 0.0013,
+        "errors": 0
+      },
+      "jawa/biome_probe": {
+        "n": 1,
+        "mean_ms": 0.0033,
+        "errors": 1
+      },
+      "jawa/mod_settings_field": {
+        "n": 5,
+        "mean_ms": 0.0012,
+        "errors": 0
+      },
+      "rimworld/list_architect_categories": {
+        "n": 2,
+        "mean_ms": 0.0015,
+        "errors": 2
+      },
+      "jawa/map_zones": {
+        "n": 20,
+        "mean_ms": 0.0007,
+        "errors": 20
+      }
+    }
+  }
+}
