@@ -1,5 +1,6 @@
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import sys, json, time
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'))
 import rimbridge_client as rb
 
 host, port, token = rb.resolve_endpoint()
@@ -32,7 +33,7 @@ print("=== jawa/startup_types (excludeVanilla=True) ===")
 print("success:", r_full.get("success"), "count:", r_full.get("count"),
       "staticCtorError:", r_full.get("staticCtorError"), "modSubclassError:", r_full.get("modSubclassError"))
 
-with open(r"D:\Luke\dev\Rimworld\Transient\startup_types_full_sweep.json", "w") as f:
+with open(str(_RM_ROOT / 'Transient' / 'startup_types_full_sweep.json'), "w") as f:
     json.dump(r_full, f, indent=1)
 print("full sweep written, count:", r_full.get("count"))
 

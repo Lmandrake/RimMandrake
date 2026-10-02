@@ -15,6 +15,7 @@ The sheet's row data merges two sources:
 the page). This generator refuses to overwrite it without
 --i-know-this-overwrites-the-owners-decisions.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import argparse
 import glob
 import json
@@ -26,8 +27,8 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")
 OUT_DIR = os.path.join(ROOT, "design", "Jawa", "worldbuilding", "review")
 HTML_OUT = os.path.join(OUT_DIR, "pawn_flavor_register.html")
 DEC_OUT = os.path.join(OUT_DIR, "pawn_flavor_register.decisions.json")
-DEC_NATIVE = r"D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\pawn_flavor_register.decisions.json"
-HTML_NATIVE = r"D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\pawn_flavor_register.html"
+DEC_NATIVE = str(_RM_ROOT / 'design' / 'Jawa' / 'worldbuilding' / 'review' / 'pawn_flavor_register.decisions.json')
+HTML_NATIVE = str(_RM_ROOT / 'design' / 'Jawa' / 'worldbuilding' / 'review' / 'pawn_flavor_register.html')
 
 FACTION_OF_CAT = {
     "JawaBSC_Homestead": "Homestead Defense League",

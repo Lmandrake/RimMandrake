@@ -15,13 +15,14 @@ reading and cannot answer what the game finally has. The live bridge can.
 A biome reported missing here is real: world/ASHKARR_WORLDMAP_tiles.csv names it on
 N tiles and the stamp would have nothing to put there.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import csv, collections, io, json, os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 for cand in (os.path.join(REPO, "src", "RimMandrake", "Utils"),
-             r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils",
-             "/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils"):
+             str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'),
+             str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils')):
     if os.path.isdir(cand):
         sys.path.insert(0, cand)
         break
@@ -31,8 +32,8 @@ import rimbridge_client as rb
 
 TILES_CSV = None
 for cand in (os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv"),
-             r"D:\Luke\dev\Rimworld\world\ASHKARR_WORLDMAP_tiles.csv",
-             "/mnt/d/Luke/dev/Rimworld/world/ASHKARR_WORLDMAP_tiles.csv"):
+             str(_RM_ROOT / 'world' / 'ASHKARR_WORLDMAP_tiles.csv'),
+             str(_RM_ROOT / 'world' / 'ASHKARR_WORLDMAP_tiles.csv')):
     if os.path.isfile(cand):
         TILES_CSV = cand
         break

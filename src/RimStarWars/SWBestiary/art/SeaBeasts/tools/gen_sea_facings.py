@@ -12,6 +12,7 @@ Skips any raw that already exists. No cleanup/kill line anywhere: `timeout`
 inside codex_image.py reaps its own child, and a pgrep-based cleanup would
 match this script's own argv and SIGKILL the job it is retrying.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[6]  # repo root, derived (not hardcoded)
 import subprocess
 import sys
 import threading
@@ -22,7 +23,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sea_creatures import CREATURES, MOCKUPS, RAW, prompt_for  # noqa: E402
 
-GEN = "/mnt/d/Luke/dev/Rimworld/skills/generating-images/scripts/codex_image.py"
+GEN = str(_RM_ROOT / 'skills' / 'generating-images' / 'scripts' / 'codex_image.py')
 # Measured on this batch: an `edit` carrying a ~1.5 Mpx mockup lands at
 # 120-170 s, not the ~80 s the skill measured for generate. Raised past the old
 # 210 s because the wrapper now HARVESTS on timeout instead of discarding the

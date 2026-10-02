@@ -10,7 +10,7 @@
 # Application/System entries near the death instant) and exits. Does
 # nothing while the game is running beyond sampling RSS every 5s.
 set -u
-HERE="/mnt/d/Luke/dev/Rimworld/Transient"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/../../.." && pwd)/Transient"
 MEMLOG="$HERE/rimworld_mem_watch_2026-09-05.log"
 PLOG="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log"
 

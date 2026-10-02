@@ -18,6 +18,7 @@ Usage:
 The original `The Salvation.rid` is never touched. Output is a separate name so
 the owner can load both in the ideo browser and compare.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 
 import argparse
 import xml.etree.ElementTree as ET
@@ -34,7 +35,7 @@ from game_paths import IDEOS as _IDEOS                            # noqa: E402
 IDEOS = Path(_IDEOS)
 SRC = IDEOS / "The Salvation.rid"
 OUT = IDEOS / "The Salvation (built).rid"
-REPO = Path("/mnt/d/Luke/dev/Rimworld")
+REPO = Path(str(_RM_ROOT))
 DESC_DOC = REPO / "design/Jawa/worldbuilding/ideoligion/the_salvation_description.md"
 
 # ---------------------------------------------------------------- description

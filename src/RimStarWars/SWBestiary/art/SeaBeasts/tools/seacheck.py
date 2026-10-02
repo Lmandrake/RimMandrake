@@ -17,11 +17,12 @@ magenta never fires.
 Exit 0 all clear (warnings allowed), 1 any REJECT, 2 the set is incomplete.
 """
 from __future__ import annotations
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[6]  # repo root, derived (not hardcoded)
 
 import sys
 from pathlib import Path
 
-sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/skills/generating-rimworld-sprites/scripts")
+sys.path.insert(0, str(_RM_ROOT / 'skills' / 'generating-rimworld-sprites' / 'scripts'))
 import validate_sprite as V  # noqa: E402
 
 FACINGS = ("south", "east", "north", "west")

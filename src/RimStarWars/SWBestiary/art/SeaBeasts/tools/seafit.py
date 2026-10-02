@@ -12,12 +12,13 @@ the property a per-file validator cannot check and a player sees instantly.
 Exit 0 ok, 1 nothing visible in the input.
 """
 from __future__ import annotations
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[6]  # repo root, derived (not hardcoded)
 
 import argparse
 import sys
 from pathlib import Path
 
-sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/skills/generating-images/scripts")
+sys.path.insert(0, str(_RM_ROOT / 'skills' / 'generating-images' / 'scripts'))
 import pnglib  # noqa: E402
 
 # Bounding box measured at alpha >= 32: a handful of near-invisible stray

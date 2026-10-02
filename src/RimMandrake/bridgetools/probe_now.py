@@ -1,5 +1,6 @@
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import sys, json, time
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'))
 import rimbridge_client as rb
 host, port, token = rb.resolve_endpoint()
 S = rb.RimBridge(host=host, port=port, token=token, timeout=45.0); S.connect()

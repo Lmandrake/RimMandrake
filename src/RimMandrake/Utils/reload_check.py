@@ -15,6 +15,7 @@ read ZERO — that handler fires on MAP init, and a save with no map dies in `Fi
 with nothing to write the usual line. A canary that checks only the old string calls a dead
 game healthy. This one checks both, and then reads `programState` back as a third instrument.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import argparse
 import io
 import json
@@ -32,8 +33,8 @@ from game_paths import PLAYER_LOG as _PLAYER_LOG  # noqa: E402
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 TILES = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv")
 LINKS = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_links.csv")
-WIN_TILES = r"D:\Luke\dev\Rimworld\world\ASHKARR_WORLDMAP_tiles.csv"
-WIN_LINKS = r"D:\Luke\dev\Rimworld\world\ASHKARR_WORLDMAP_links.csv"
+WIN_TILES = str(_RM_ROOT / 'world' / 'ASHKARR_WORLDMAP_tiles.csv')
+WIN_LINKS = str(_RM_ROOT / 'world' / 'ASHKARR_WORLDMAP_links.csv')
 PLAYER_LOG = _PLAYER_LOG
 SAVE = "WORLDMAP_gen"
 PROBE = [2476, 11350, 15087, 8147, 19495, 10, 12411]

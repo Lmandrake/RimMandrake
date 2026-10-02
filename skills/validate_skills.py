@@ -10,10 +10,11 @@ precisely why this check is worth its keep.
     python3 skills/validate_skills.py                # all skills
     python3 skills/validate_skills.py rimbridge ...  # named ones
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[1]  # repo root, derived (not hardcoded)
 import os, re, sys
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-SRC = "/mnt/d/Luke/dev/Rimworld/src/RimMandrake/bridgetools/JawaBench.BridgeTools"
+SRC = str(_RM_ROOT / 'src' / 'RimMandrake' / 'bridgetools' / 'JawaBench.BridgeTools')
 
 # Documentation legitimately contains a glob and a teaching placeholder.
 ALLOWED_NONTOOLS = {"jawa/world_", "jawa/thing_do", "jawa/set_"}

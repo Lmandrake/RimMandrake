@@ -30,7 +30,7 @@
 #         ./biome_load_proof.sh --all
 set -u
 
-REPO="/mnt/d/Luke/dev/Rimworld"
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/../../../.." && pwd)"
 DIR="$(cd "$(dirname "$0")" && pwd)"
 LOGDIR="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
 LOG="$LOGDIR/Player.log"

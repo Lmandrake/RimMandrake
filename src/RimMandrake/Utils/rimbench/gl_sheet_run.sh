@@ -6,7 +6,7 @@
 # Usage: gl_sheet_run.sh <recipes_dir> <out_dir> <modsconfig_minimal_gl.xml> <log>
 set -uo pipefail
 REC="$1"; OUT="$2"; MC_GL="$3"; RUNLOG="$4"
-REPO=/mnt/d/Luke/dev/Rimworld
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")/../../../.." && pwd)"
 LL="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
 LOG="$LL/Player.log"; CFG="$LL/Config/ModsConfig.xml"; CL="$LL/Config/CustomLandforms-v1"
 SS="$LL/Screenshots"

@@ -6,11 +6,12 @@ three labeled contact sheets. Pattern proven by SeaBeasts/art/gen_sea_mockups.py
 Skip-existing; rerunnable if Transient ages out. Art direction is the ruled
 table in design/Jawa/proposals/ludicrous_livestock_deep_design.md.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[5]  # repo root, derived (not hardcoded)
 import subprocess, sys, time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-REPO = Path("/mnt/d/Luke/dev/Rimworld")
+REPO = Path(str(_RM_ROOT))
 OUT = REPO / "Transient" / "livestock_mockups"
 OUT.mkdir(parents=True, exist_ok=True)
 GEN = REPO / "skills/generating-images/scripts/codex_image.py"

@@ -4,11 +4,12 @@
 18 options (6 creatures x 3), side-profile concept PNGs on a chroma key.
 Serial (1 worker), 420s timeout, one retry per call.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[5]  # repo root, derived (not hardcoded)
 import subprocess, sys, time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-REPO = Path("/mnt/d/Luke/dev/Rimworld")
+REPO = Path(str(_RM_ROOT))
 OUT = REPO / "Transient" / "sea_monsters_mockups"
 OUT.mkdir(parents=True, exist_ok=True)
 GEN = REPO / "skills/generating-images/scripts/codex_image.py"

@@ -36,11 +36,12 @@ Pawn.Flying and on nothing else.
 lethal to small animals within a few in-game hours; a 57,000-tick attempt killed
 all 60 test animals and returned nothing. These windows are ~200 ticks.
 """
+_RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import json
 import sys
 import time
 
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, str(_RM_ROOT / 'src' / 'RimMandrake' / 'Utils'))
 import rimbridge_client as rb  # noqa: E402
 
 # The arena. 30x30 of solid vine, so nobody in it can stand off a vine and
@@ -253,7 +254,7 @@ def main():
               and h4[0] == h4[1] and clean)
     say("  EXEMPTION OBSERVED: %s" % proven)
 
-    with open(r"D:\Luke\dev\Rimworld\Transient\venomvine_flyer_run.txt", "w",
+    with open(str(_RM_ROOT / 'Transient' / 'venomvine_flyer_run.txt'), "w",
               encoding="utf-8") as f:
         f.write("\n".join(LOG) + "\n")
         f.write("\nraw after1=%s\n" % json.dumps(after1)[:4000])
