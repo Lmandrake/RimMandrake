@@ -397,8 +397,10 @@ Nothing living or dead is ever thrown in.
     there is **no remove or clear call**, and nothing reads `FactionRecord.GetSuspicion` yet (the
     consequence layer is unbuilt). The rite needs one new ledger method (clear the records of other
     claimants on a Thing).
-  - **Open (card Q2):** which kept item is cleansed (one the player picks, or everything in the
-    colony stolen before the rite), and whether the faction's suspicion of the thief is erased too.
+  - **Ruled 2026-10-02 (typed):** *"I like Vault forgets, but it should be true about almost
+    anything you own"*: other parties' claims are wiped on almost everything the colony owns, not one
+    chosen item (§9). Whether the faction's suspicion of the thief is erased too is not ruled; the
+    build leaves `FactionRecord` alone.
 - **Readable signs:** the offering sinking with a slow bubble; a letter naming the cleansed item and
   whose claim was wiped; the Heat change voiced by the Narrator; the raid lull shown as a map
   condition with its days left.
@@ -496,7 +498,8 @@ Turn 2, ledger `6daef10b1` (OWNER notes on this item), all typed:
 
 ### Draft turn-3 card
 
-For BENCH to put to the owner. Four questions; Q4 is multi-select. Each explains its subject in full.
+For BENCH to put to the owner. Two questions (Q2 "Erase claims" and Q4 "More offers" were answered on
+2026-10-02, §9). Each explains its subject in full.
 
 **Q1. Header: `Sinking god`.** *Rite A, the Sinking: the colony throws one thing of value into the
 tar, and in return the Empire's attention on you falls, raids come less often for a while, and the
@@ -509,18 +512,6 @@ does the Sinking belong to?*
 | **Sh'kaar** | The hungry sun god's warding kind: the colony pays to keep the sky's eye off it. It ties the rite to the Empire "from orbit". | Sh'kaar already has the Holy Flame here, the Snuffing, the Shade Tithe and the Anvil Gift; he grows crowded. |
 | **Rekko** | The salvage god: the tar is the planet's great salvage store, and wiping a salvaged thing's old owner makes it truly yours. | Fits only the ownership effect, not the Heat or raid effects. |
 
-**Q2. Header: `Erase claims`.** *RimProperty is the mod that remembers who owns what. Every stolen or
-looted thing carries its old owner's claim, which fades over time, slowly for anything memorable (a
-named droid, a masterwork weapon) and fast for plain goods; traders and registries can recognise
-stolen goods by it, and each faction quietly remembers which of your pawns they suspect. Your words:
-the Sinking "erases ownership ... perhaps of something you still keep". What should it erase?*
-
-| Option | What it buys | What it costs |
-|---|---|---|
-| **One kept thing, chosen** *(recommended: one deliberate act per rite, and the price you throw in has to be worth the thing you are cleaning)* | The colony picks one item it holds; every other party's claim on it is wiped, so no owner, trader or registry will ever call it stolen again. | One item per rite; a hoard of loot takes many offerings. |
-| **Everything stolen, at once** | Every claim by others on everything the colony holds is wiped in one go. | A very strong reset button for a thieving colony; the stolen-goods game loses its teeth. |
-| **The thing and the suspicion** | One chosen item cleaned, and the faction it came from also forgets which of your pawns it suspected. | Stronger, and it touches the faction memory that bounties and guards will read when they are built. |
-
 **Q3. Header: `Heat size`.** *A standing rule elsewhere says the Empire's attention (Imperial Heat)
 is never lowered by success, so the player cannot wash it clean. Your Sinking overrides that for
 this rite. Heat today is a number the game-master layer keeps outside the save, in a watch-only test
@@ -532,13 +523,28 @@ mode. How hard should one Sinking push it down?*
 | **By value, any time** | Each Sinking lowers Heat as much as the offering is worth, as often as the colony can pay. | A rich colony can keep Heat near zero; the Empire threat thins. |
 | **A big fixed drop, once a year** | One dramatic reset a year, a real event in the campaign. | Rare; most seasons it does nothing to Heat. |
 
-**Q4. Header: `More offers`.** *You asked for offerings a player on THIS map would care about. These
-four come from your own colony, and each decides where the rite's gamble lands, on your own map
-within a day or two. The thing thrown in is destroyed; nothing comes back. Pick any.*
+## 9. Turn 2 ruled (2026-10-02) and ticket-out
 
-| Option | What it buys | What it costs |
-|---|---|---|
-| **Beast turns over** *(recommended: it makes the tar beast you just ruled matter between wakes, on your own map)* | Throw in your ground scanner: within a day and a half the mice flee the tar beast's bulge, and the sleeping beast rolls once, sending slow pressure rings that crack walkways, collapse dig shafts and damage whatever you built in reach. It never wakes. | A large build, and real damage to anything you placed near the bulge. |
-| **Pump backflow** | Throw in a barrel of your busiest pump's day: within a day its gauges reverse and tar floods back out of its own barrel yard and pump shed; you can slow it by cutting power, not stop it. | Damage to your own industry; a medium build. |
-| **Empty stall** | Throw in the bed your bonded animal last slept in (never the animal): next night a ring of tar closes slowly around its pen, and you have hours to get the herd out or lay boards across. | A rescue scramble; a medium build. |
-| **Grudge at table** | For Mob'Unloo's rite: your best dining table as the price and an effigy of a colonist someone in the colony truly hates. At the next meal the grudges come out in front of everyone: accusations, a fist fight, or smashed furniture. | It turns the colony on one of its own; a medium build. |
+OWNER and BENCH notes on `SUMP_BEDAZZLE_SITTING_1`, 2026-10-02. The offerings card was built from
+`Transient/bedazzle_gpt_enrich_2026-10-01/sump_tar_offerings_redo_2026-10-02.md` (the redo), not from
+§6's round-2 table.
+
+| Subject | Ruling |
+|---|---|
+| Rite A, the Sinking | One thing of value into the tar: Imperial Heat falls, other parties' ownership claims are erased through RimProperty, raids come less often (typed). God unassigned (turn-3 Q1); Heat size open (turn-3 Q3). |
+| Rite A offerings | By card: **the beast sleeps a season** (pitch thrown in: bulges ignore building, digging and pumping for a season; explosions still wake it) and **the ancient traps fizzle** (a dig find thrown in: the next three era traps the shafts roll click and go out harmlessly). Typed: *"I like Vault forgets, but it should be true about almost anything you own"*: the ownership wipe covers almost everything the colony owns, not only the tar vault. |
+| Rite B, Mob'Unloo's Price | A good thing plus a hated effigy, consequences on someone else, paid by you (typed). **Empire effigy:** Heat untouched, the Empire held off this map for 5× the normal time (typed). **Faction effigy:** all of the next group of that faction arrive tarred (card). None of the redo's three further Rite B offerings taken. |
+| Solvent wake | Typed: *"Oh! Throwing solvent into the pit should INSTANTLY wake the beast in Manhunter"*. By card: a deliberate player **weapon**, a scorched-earth last resort, not a rite and not a passive hazard; it serves **both** Sh'kaar and Zizzik at once (a rare shared offering). |
+
+FOUNDRY items, each `--caused-by SUMP_BEDAZZLE_SITTING_1`:
+
+| Unit | Item |
+|---|---|
+| RimProperty clear-claims call | `PROPERTY_CLAIM_ERASE_API_1` |
+| Rite A with its two riders | `SUMP_SINKING_RITE_BUILD_1` |
+| Rite B, the effigy and both effects | `SUMP_EFFIGY_RITE_BUILD_1` |
+| The solvent wake | `SUMP_SOLVENT_WAKE_BUILD_1` |
+
+They rely on `SUMP_TAR_BEAST_BUILD_1`, `SUMP_FREE_TIER_MOVE_BUILD_1`, `SALVATION_RITES_UNIFICATION_1`
+and `GM_BLACKBOARD_SHADOW_M4_1`. Art owed: the effigy item and the two rites' inscriptions (the
+Sinking's tally ring, the effigy ring); the solvent already has art.
