@@ -23,6 +23,7 @@ namespace RimMandrake.MessyConduit
         public const float StrandWidth = 0.11f;
         public const float ShadowWidth = 0.17f;
         public static int LastPrintedVerts;
+        private const int MaxMeshVerts = 65000;
 
         public SectionLayer_RM_MessyCords(Section section) : base(section)
         {
@@ -86,6 +87,7 @@ namespace RimMandrake.MessyConduit
             if (pts.Count < 2) return 0;
             LayerSubMesh sm = GetSubMesh(mat);
             int start = sm.verts.Count;
+            if (start + 2 * pts.Count > MaxMeshVerts) return 0;   // 16-bit index mesh: drop, never corrupt
             float hw = width / 2f;
             double tile = width * 4.0;
             double u = s0 * 4.0;
@@ -115,6 +117,7 @@ namespace RimMandrake.MessyConduit
         {
             LayerSubMesh sm = GetSubMesh(mat);
             int start = sm.verts.Count;
+            if (start + 4 > MaxMeshVerts) return 0;
             float ca = Mathf.Cos(angle), sa = Mathf.Sin(angle);
             Vector2[] corners = { new Vector2(-sx, -sz), new Vector2(-sx, sz), new Vector2(sx, sz), new Vector2(sx, -sz) };
             Vector2[] uv = { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0) };
