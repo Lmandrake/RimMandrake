@@ -349,6 +349,10 @@ can, and the existing dig-site fiction ("heavier game", "megafauna") stays true.
   directions — a big creature is harder to hold and takes more spike damage. That is
   coherent and worth stating in the spec as a deliberate pairing rather than two
   unrelated uses of `BodySize`.
+- **Made concrete 2026-10-02** (only D=4 holds anything, so a per-depth field had nothing to vary):
+  *"The pit has to be as wide as the creature to hold it. Otherwise it gets out."* The size gate is
+  the pit's WIDTH against `BodySize` — definition in the unified model §7 Q4, build in
+  `SUPERDEEP_HOLDER_RETIRE_1` step 5.
 
 **[C] A trapped mech is killable from the lip — and he commissioned a door family
 off the back of it.** He took option 1, then added:
