@@ -9,14 +9,20 @@ Decision taken by question card (owner, 2026-10-02 15:39 PDT, item 3, *New marks
 ## spec (numbers `// INVENTED`)
 1. Learned here: a research project unlocked by finding an old meter still reading current in a compost bed (a Miasma map feature);
    buildable anywhere after.
-2. A bed of delta loam, silt ceramic and delta salt fed rotting goods (`CompRottable` items, spoiled meals, corpses at FOUNDRY's call)
+2. A bed of delta loam, silt ceramic and delta salt fed rotting goods (`CompRottable` items, spoiled meals, corpses)
    makes electricity (`CompPowerPlant`-style), output falling as the feed is spent.
 3. **A spent cell becomes a rotting bed** (BENCH's reading of the typed ruling): the building swaps to a rotting-bed state that
    `MIASMA_ROTTING_BED_CUISINE_1` gives a yield. In the free tier the bed is inert or yields only compost; the yield is Star Wars tier.
-4. Clear of ban 1 (it collects rot, directs nothing) and ban 3 (not medicine). Settings: on/off and a power slider.
+4. **Corpse disposal, yielding skulls and bones** (owner, typed 2026-10-02: *"That rotting bed could also be used to
+   corpse dispose as well... and produce skulls and bones!"*). Free tier: the bed accepts corpses as a disposal
+   target (hauled like a crematorium or grave), rots them down, and yields bones and the skull. Measure first
+   whether 1.6 + DLCs already define a Skull item (Ideology) and any bone item, and reuse them; invent only what
+   is missing.
+5. Clear of ban 1 (it collects rot, directs nothing) and ban 3 (not medicine). Settings: on/off and a power slider.
 
 ## Depends on
 `MIASMA_SWARM_COMPOSTER_PORT_1` (delta loam must be free tier first). Delta salt finally gets a use.
 
 ## criteria
 - A fed cell powers a lamp in a quicktest; unfed, output falls to zero; a spent cell shows its rotting-bed state.
+- A corpse hauled to the bed is consumed and leaves its skull and bones.
