@@ -49,13 +49,14 @@ class SurpriseAbort(Exception):
 class Watch(object):
     def __init__(self, session, anchor, outdir, mod="mod", chain="chain", policy="abort",
                  chunk=DEFAULT_CHUNK, session_cap=DEFAULT_SESSION_CAP, screenshots=True,
-                 prepare=True, kill=True, expected_ids=()):
+                 prepare=True, kill=True, expected_ids=(), resurrect=False):
         if policy not in ("abort", "record"):
             raise ValueError("policy must be 'abort' or 'record'")
         self.session, self.anchor, self.outdir = session, anchor, outdir
         self.mod, self.chain, self.policy = mod, chain, policy
         self.chunk, self.screenshots = chunk, screenshots
         self.prepare_map, self.kill, self.expected_ids = prepare, kill, tuple(expected_ids)
+        self.resurrect = resurrect
         self.gate = clockgate.ClockGate(session_cap)
         self.exps = D.Expectations()
         self.dedup = D.Dedup()
@@ -76,7 +77,8 @@ class Watch(object):
         self.tx = H.SettingsTransaction(self.session).__enter__()
         self.gate.observe(clockgate.read_ticks(self.session), reason="watch-open")
         if self.prepare_map:
-            self.report = H.prepare_bland_map(self.session, self.tx, self.expected_ids, kill=self.kill)
+            self.report = H.prepare_bland_map(self.session, self.tx, self.expected_ids, kill=self.kill,
+                                              resurrect=self.resurrect)
             self.bland = self.report.bland
         for pid in self.expected_ids:                 # earlier chains' leftover fixtures stay the test's own
             self.exps.expect("fixture", {"id": pid})
@@ -220,6 +222,7 @@ class Watch(object):
     def summary(self):
         return {"bland": self.bland,
                 "bland_problems": (self.report.problems if self.report else []),
+                "bland_notes": (self.report.notes if self.report else []),
                 "policy": self.policy, "chunk": self.chunk, "sweeps": self.sweeps,
                 "ticks_spent": self.gate.total_spent,
                 "surprises": [{"sidecar": c.get("sidecar"), "png": c.get("png"), "notes": c.get("notes")}
