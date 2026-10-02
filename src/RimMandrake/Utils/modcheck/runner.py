@@ -40,6 +40,57 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(_UTILS)))
 RIMFLOW_CLI = os.path.join(ROOT, "src", "RimMandrake", "rimflow", "cli.py")
 MODLIST_SWAP = os.path.join(_UTILS, "modlist_swap.py")
 SHEET_DIR = os.path.join(ROOT, "Transient", "modcheck")
+QUICKTEST_STARTER = os.path.join(os.path.dirname(_UTILS), "bridgetools", "prove_quicktest_world.py")
+
+
+def _wsl_path(p):
+    """`D:\\Luke\\dev\\x` -> `/mnt/d/Luke/dev/x` (a POSIX path passes through unchanged)."""
+    import re
+    m = re.match(r"^([A-Za-z]):[\\/](.*)$", p)
+    if not m:
+        return p
+    return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/"))
+
+
+def py_cmd(script, *args):
+    """Command line for a script that must run under POSIX python3 (modlist_swap, rimflow and
+    deploy_custom_mods import `fcntl`). Under Windows python.exe -- the only place the bridge is reachable --
+    it is shelled through `wsl.exe python3` with the script path translated; elsewhere plain `python3`."""
+    if os.name == "nt":
+        return ["wsl.exe", "python3", _wsl_path(script)] + [str(a) for a in args]
+    return ["python3", script] + [str(a) for a in args]
+
+
+def ensure_playing_map(dry_run=False, _client=None, _starter=None):
+    """If the bridge reports no Playing map, run the existing quicktest-world starter
+    (`bridgetools/prove_quicktest_world.py`, exit 0 = Playing with a world) under THIS interpreter. The runner
+    used to assume a map already existed (MEASURED 2026-10-01). Returns "playing" | "started" | "dry-run".
+    Raises RuntimeError when the bridge cannot be asked or the starter fails -- never guesses."""
+    if dry_run:
+        return "dry-run"
+    state = None
+    try:
+        if _client is None:
+            import rimbridge_client as rb
+            host, port, token = rb.resolve_endpoint()
+            _client = rb.RimBridge(host=host, port=port, token=token, timeout=30.0)
+            _client.connect()
+        r = _client.call("rimworld/get_ui_state", {}) or {}
+        if isinstance(r, dict) and r.get("content"):
+            r = json.loads(r["content"][0]["text"])
+        state = r.get("programState")
+    except Exception as e:  # noqa: BLE001
+        raise RuntimeError("ensure_playing_map: cannot ask the bridge for programState (%s: %s)"
+                           % (type(e).__name__, e))
+    if state == "Playing":
+        return "playing"
+    starter = _starter or (lambda: subprocess.run([sys.executable, QUICKTEST_STARTER], cwd=ROOT,
+                                                  capture_output=True, text=True))
+    r = starter()
+    if r.returncode != 0:
+        raise RuntimeError("quicktest world start FAILED (programState was %r): %s"
+                           % (state, (r.stdout + r.stderr).strip()[-500:]))
+    return "started"
 
 
 def find_mod_dir(mod_folder_name):
@@ -86,7 +137,7 @@ def restore_full():
     failure here is loud (non-zero exit propagates to the caller) but never
     swallowed, because leaving the owner's mod list on MINIMAL silently is
     exactly the failure mode this function exists to prevent."""
-    r = subprocess.run(["python3", MODLIST_SWAP, "--restore", "--apply"],
+    r = subprocess.run(py_cmd(MODLIST_SWAP, "--restore", "--apply"),
                        cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError("modlist_swap.py --restore --apply FAILED: %s"
@@ -146,7 +197,7 @@ def swap_to_test_list(package_ids=()):
     """MINIMAL + the mod(s) under test: `modlist_swap.py --minimal --apply`
     (which captures FULL first), then `compose_test_list` appends the mods
     under test. With no `package_ids` this is the plain minimal swap."""
-    r = subprocess.run(["python3", MODLIST_SWAP, "--minimal", "--apply"],
+    r = subprocess.run(py_cmd(MODLIST_SWAP, "--minimal", "--apply"),
                        cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError("modlist_swap.py --minimal --apply FAILED: %s"
@@ -334,8 +385,10 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
         watch = None
         if situational:
             from watch import Watch  # noqa: E402
+            cap_kw = ({"session_cap": suite.chain_caps[name]}
+                      if name in getattr(suite, "chain_caps", {}) else {})
             watch = Watch(session, anchor, watch_dir, mod=mod or suite.name, chain=name, policy=policy,
-                          expected_ids=sorted(fixtures), resurrect=True)
+                          expected_ids=sorted(fixtures), resurrect=True, **cap_kw)
             watch.__enter__()
         t = TestContext(session, anchor=anchor, debug=debug,
                         on_finding=findings.append, watch=watch)
@@ -409,8 +462,9 @@ def emit_verify(item_id, mod, config, result_summary, sheet_path, dry_run=False)
                 and c["verdict"] != "UNMEASURED")
     n_total = sum(len(chain["components"]) for chain in result_summary["chains"])
     result = "pass" if result_summary["all_green"] else "fail"
-    cmd = ["python3", RIMFLOW_CLI, "verify", item_id,
-          "--result", result, "--config", config, "--evidence", sheet_path]
+    cmd = py_cmd(RIMFLOW_CLI, "verify", item_id,
+                 "--result", result, "--config", config, "--evidence", _wsl_path(sheet_path)
+                 if os.name == "nt" else sheet_path)
     if dry_run:
         return {"cmd": cmd, "n_pass": n_pass, "n_total": n_total}
     r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
@@ -425,9 +479,9 @@ def file_findings(item_id, mod, findings, dry_run=False):
     filed = []
     for c in findings:
         name = ("MODCHECK_%s_%s" % (mod.upper(), c.name.upper()))[:60]
-        cmd = ["python3", RIMFLOW_CLI, "finding", "--from", item_id,
-              "--name", name, "--type", "modcheck-failure",
-              "--severity", "major"]
+        cmd = py_cmd(RIMFLOW_CLI, "finding", "--from", item_id,
+                     "--name", name, "--type", "modcheck-failure",
+                     "--severity", "major")
         if dry_run:
             filed.append({"cmd": cmd})
             continue
@@ -464,8 +518,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
             for mod_folder, _item in mods:
                 mod_dir = find_mod_dir(mod_folder)
                 r = subprocess.run(
-                    ["python3", os.path.join(_UTILS, "deploy_custom_mods.py"),
-                     "--mod", mod_folder, "--apply"],
+                    py_cmd(os.path.join(_UTILS, "deploy_custom_mods.py"),
+                           "--mod", mod_folder, "--apply"),
                     cwd=ROOT, capture_output=True, text=True)
                 if r.returncode != 0:
                     raise RuntimeError(
@@ -499,6 +553,7 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
                           "%s@%d" % (mod_folder, int(time.time())),
                           False, walk=walk, refused=why)
                 continue
+            ensure_playing_map()
             from rimdrive import Session  # noqa: E402
             with Session(lock=None) as s:
                 summary = run_suite(suite, s, debug=debug, mod=mod_folder,
