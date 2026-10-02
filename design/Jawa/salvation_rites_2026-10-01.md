@@ -135,7 +135,7 @@ Unburdening, the Named Grief, the Dedication.
 | The Rite of Tipping | unassigned | unknown | Wasteland | PITCHED (one line) | `design/Jawa/worldbuilding/biomes/warscar_bedazzle_review_2026-09-30.md` |
 | The Watch (stand a night facing outward) | — | — | Warscar | RULED OUT (turn 3) | `design/Jawa/worldbuilding/biomes/warscar_turn3_development_2026-09-30.md` |
 | The pilgrim camps (lore rungs, not a rite) | Rust Cathedral, "a god's deathbed" | — | Warscar | SPECCED (lore ladder caller) | same, §2.10 |
-| The pool rites | unassigned | — | Weeping Stones | PITCHED | `design/Jawa/worldbuilding/biomes/weeping_stones.md` §4 |
+| The pool rites | Mob'Unloo (resolved as the Refused Toll, B15) | feeding | Weeping Stones | RULED as B15 (owner, 2026-10-02, typed) | `design/Jawa/worldbuilding/biomes/weeping_stones.md` §4; `weepingstones_bedazzle_review_2026-10-02.md` §6 R2, §8 |
 | The rite of offering and forgetting | Deep Desert Tribes | settlement | sarlacc habitat | DRAFT | `design/Jawa/worldbuilding/sarlacc_native_habitat_draft.md` §3.1 |
 
 ### B7. Found rites of the other ten biomes (PITCHED, owner to rule)
@@ -245,9 +245,21 @@ These two were ticketed without a register row; added here.
 | The Sinking | Ishko | warding | one valuable thrown into the tar: the next Imperial probe or raid is pushed 5x further away (Heat untouched), other raids lull on this map, other parties' ownership claims on almost anything the colony owns are erased; offering riders: the tar beast sleeps a season, the next three dug-up ancient traps fizzle | the Sump, a sunk tar ring with a tally board at a barrel yard | RULED (owner, 2026-10-02, typed + question card); build `SUMP_SINKING_RITE_BUILD_1` | `design/Jawa/worldbuilding/biomes/sump_bedazzle_review_2026-10-01.md` §6, §9 |
 | Mob'Unloo's Price | Mob'Unloo | venting | one good thing plus one hated effigy into the tar: misfortune on someone else, paid by you; Empire effigy holds the Empire off 5x on this map (Heat untouched), faction effigy makes that faction's next group arrive tarred | the Sump, a ring of half-sunk effigies, one holding a carved stormtrooper helmet | RULED (owner, 2026-10-02, typed); build `SUMP_EFFIGY_RITE_BUILD_1` | same, §6, §9 |
 
-**Count (by hand from the tables above, not an instrument): 110 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2 + B13 1 + B14 2. **101 are the Salvation's** (B1 to B5, B7 to B14;
-the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 99 distinct). Sh'kaar
+### B15. Found rites ruled at the Weeping Stones sitting (RULED)
+
+Owner, typed 2026-10-02: *"This is pretty cool (2). Gotta do it."* Option (2) was *the refused toll, for the god
+of debt and trade* (Mob'Unloo). The Open Water (Oomo) was not chosen; Oomo keeps his one slot.
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Refused Toll | Mob'Unloo | feeding | water metered by someone who does not live on it (an Imperial metering station, a new campaign site): draw in the open, in sight of the meter, and walk away without paying; the toll-keeper answers, and a participant who strikes first at that water turns the truce's wild herds on the clan | Weeping Stones, an oasis outside an Imperial garrison: a water meter torn off its post, face-down in the pool's ring, dial jammed at zero, scratched *nothing owed* | RULED (owner, 2026-10-02, typed); build `WEEPINGSTONES_REFUSED_TOLL_RITE_1` | `design/Jawa/worldbuilding/biomes/weepingstones_bedazzle_review_2026-10-02.md` §6 R2, §8 |
+
+Mob'Unloo carries five found rites (the Blind Offering, B2; the Storm's Receipt, B7, pitched; the Cold Ledger,
+B7, ruled-kept; Mob'Unloo's Price, B14; the Refused Toll, B15): at the cap. B6's "pool rites" row resolves to this.
+
+**Count (by hand from the tables above, not an instrument): 111 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2 + B13 1 + B14 2 + B15 1. **102 are the Salvation's** (B1 to B5, B7 to B15;
+the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 100 distinct). Sh'kaar
 now carries four found rites (the Snuffing, the Anvil Gift, the Shade Tithe, the Felled Noon): one under the cap.
 
 **Per-god cap: five found rites** (decision taken by question card 2026-10-02 09:23 PDT, raising it from
