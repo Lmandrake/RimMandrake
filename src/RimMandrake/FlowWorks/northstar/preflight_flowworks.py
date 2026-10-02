@@ -201,12 +201,42 @@ def p_o4(P):
     full, live = active_ids(P.full_latest), active_ids(pre)
     if live == full:
         return row("P-O4", PASS, "pre-swap list == FULL.LATEST (%d mods)" % len(full))
-    if live == [i for i in full if i != PITS]:
-        return row("P-O4", PASS, "pre-swap list == FULL.LATEST minus %s (%d mods)" % (PITS, len(live)))
+    # Pits merged into FlowWorks (cade628c1) and FULL.LATEST dropped mandrake.rm.pits at f6a81fb5d,
+    # while the owner's live list may still carry the dangling id. A PITS-only difference, in
+    # EITHER direction, is harmless ONLY while no installed mod carries that packageId (RimWorld
+    # drops an activeMods id with no folder). The old row accepted only "live minus pits", so it
+    # refused the real 2026-10-02 state (live = FULL.LATEST + pits) -- a stale expectation.
+    if [i for i in live if i != PITS] == [i for i in full if i != PITS]:
+        inst = installed_with_pid(P, PITS)
+        if inst is None:
+            return row("P-O4", UNMEASURED, "lists differ only by %s, but the mod roots were unreadable" % PITS)
+        if inst:
+            return row("P-O4", FAIL, "lists differ by %s and it IS installed at %s (stale Pits deploy)" % (PITS, inst[:2]))
+        return row("P-O4", PASS, "pre-swap list == FULL.LATEST except dangling %s (%s the live list; not installed in "
+                   "any mod root, so RimWorld ignores it) (%d mods)" % (PITS, "in" if PITS in live else "absent from",
+                                                                    len(full)))
     extra = [i for i in live if i not in full]
     gone = [i for i in full if i not in live and i != PITS]
     return row("P-O4", FAIL, "unexpected diff vs FULL.LATEST: +%s -%s%s; restore_full() would change his list"
                % (extra[:5], gone[:5], " (order differs)" if not (extra or gone) else ""))
+
+
+def installed_with_pid(P, pid):
+    """Mod folders (both roots) whose About.xml packageId == pid; None if a root is unreadable."""
+    hits = []
+    for root in P.mod_roots:
+        if not os.path.isdir(root):
+            return None
+        for d in os.listdir(root):
+            about = os.path.join(root, d, "About", "About.xml")
+            if os.path.isfile(about):
+                try:
+                    got = (ET.parse(about).getroot().findtext("packageId") or "").strip().lower()
+                except ET.ParseError:
+                    continue
+                if got == pid:
+                    hits.append(os.path.join(root, d))
+    return hits
 
 
 def p_o5(P):
