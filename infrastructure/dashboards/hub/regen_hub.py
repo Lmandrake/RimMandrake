@@ -22,7 +22,7 @@ Two independent subprocess steps, run concurrently:
   * `make_tab_data.py health maturity worldmap artsheets` — rebuilds
     hub/data/{health,maturity,worldmap,artsheets}.json from whatever
     Transient/*.json and world/_audit/*.json sources are on disk right now.
-  * `artreg.py render` — rebuilds infrastructure/artpipe/art_status.{json,html},
+  * `artreg.py render` — rebuilds <artpipe state dir>/art_status.{json,html},
     published as data/art.json.
 
 WHAT --full COVERS (investigated 2026-09-13; not guessed)
@@ -92,6 +92,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
+sys.path.insert(0, str(REPO / "src" / "RimMandrake" / "Utils" / "artpipe"))
+import state_dir  # noqa: E402 — art_status.json lives in the artpipe state dir (2026-10-02)
 DATA = HERE / "data"
 
 MAKE_TAB_DATA = HERE / "make_tab_data.py"
@@ -102,7 +104,7 @@ PUBLISH_READY = DATA / "publish_ready.json"
 CODEBASE_HEALTH_PUBLISH = REPO / "src/RimMandrake/Utils/codebase_health_publish.py"
 PROJECT_MATURITY_DASHBOARD = REPO / "src/RimMandrake/Utils/project_maturity_dashboard.py"
 ARTREG = REPO / "src/RimMandrake/Utils/artpipe/artreg.py"
-ART_STATUS_JSON = REPO / "infrastructure/artpipe/art_status.json"
+ART_STATUS_JSON = state_dir.STATE_ROOT / "art_status.json"
 
 MAX_FILE_BYTES = 15 * 1024 * 1024
 MAX_TOTAL_BYTES = 60 * 1024 * 1024

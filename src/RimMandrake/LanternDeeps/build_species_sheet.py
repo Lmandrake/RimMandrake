@@ -25,6 +25,8 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO_ROOT / "src" / "RimMandrake" / "Utils" / "artpipe"))
+import state_dir  # noqa: E402 — artpipe queue state lives outside git (2026-10-02)
 TEMPLATE = Path("/home/mandrake/.claude/skills/review-sheets/assets/sheet_template.html")
 
 OUT_HTML = REPO_ROOT / "Transient" / "deeps_flora_fauna_review_2026-09-18.html"
@@ -32,7 +34,7 @@ OUT_THUMBS_DIR = REPO_ROOT / "Transient" / "deeps_review_thumbs_2026-09-18"
 OUT_DECISIONS = REPO_ROOT / "Transient" / "deeps_flora_fauna_review_2026-09-18.decisions.json"
 
 LD_TEX = REPO_ROOT / "src/RimMandrake/LanternDeeps/Textures/RM_LanternDeeps/Things"
-ARTSRC = REPO_ROOT / "infrastructure/artpipe/_artsrc"
+ARTSRC = state_dir.STATE_ROOT / "_artsrc"
 SWB_TEX = REPO_ROOT / "src/RimStarWars/SWBestiary/Textures"
 ART_DECISIONS = REPO_ROOT / "Transient/deeps_art_review_2026-09-18.decisions.json"
 

@@ -40,8 +40,10 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-ARTSRC = REPO_ROOT / "infrastructure" / "artpipe" / "_artsrc"
-DONE = REPO_ROOT / "infrastructure" / "artpipe" / "done"
+sys.path.insert(0, str(REPO_ROOT / "src" / "RimMandrake" / "Utils" / "artpipe"))
+import state_dir  # noqa: E402 — artpipe queue state lives outside git (2026-10-02)
+ARTSRC = state_dir.STATE_ROOT / "_artsrc"
+DONE = state_dir.STATE_ROOT / "done"
 TEXTURES = Path(__file__).resolve().parent / "Textures"
 
 # job_id -> (dest path relative to Textures/, expected (w,h))

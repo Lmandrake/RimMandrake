@@ -92,9 +92,11 @@ SEAT_CLONES = {
 }
 BOUNDED = "{home}/src/RimMandrake/Utils/claude_bounded.sh"
 SHARED_BOUNDED = BOUNDED.format(home=SEAT_CLONES["BENCH"][0])
-# The artpipe daemon still runs in the D:\ tree: its queue state is tracked there until
-# Phase 5 of the migration moves it out (plan §2.3/§3). Repoint it THEN, not before.
-ARTIST_HOME = ("/mnt/d/Luke/dev/RimMandrake", r"D:\Luke\dev\RimMandrake")
+# The artpipe daemon runs FOUNDRY's clone's code; its queue state lives outside git in
+# ARTIST_STATE (Phase 5, design/RimMandrake/git_migration_phase5_artpipe_2026-10-02.md).
+# It writes nothing into the clone, so sharing FOUNDRY's tree dirties nothing.
+ARTIST_HOME = SEAT_CLONES["FOUNDRY"]
+ARTIST_STATE = "/mnt/d/Luke/dev/_artpipe"
 DISTRO = "Ubuntu"
 
 # How the owner launches Claude Code. There is no `claude` alias in ~/.zshrc —
@@ -179,7 +181,7 @@ SEATS = {
     # window was briefly converted into a Claude seat on a mistaken premise and
     # reverted the same day — the daemon console IS the design, don't "fix" it.
     "ARTIST":  ("#B48EFF", None, "purple — the artpipe daemon's console, NOT a Claude seat", ARTIST_HOME,
-                "python3 src/RimMandrake/Utils/artpipe/artpiped.py"),
+                f"export ARTPIPE_STATE_DIR={ARTIST_STATE} && python3 src/RimMandrake/Utils/artpipe/artpiped.py"),
     # ⭐ SERVER IS NOT A CLAUDE SEAT EITHER — it is the standalone Remote Control
     # server (owner, 2026-09-19), white so it reads as infrastructure in the tab
     # strip, not as a voice. It spawns sessions on demand; it never holds a role.
