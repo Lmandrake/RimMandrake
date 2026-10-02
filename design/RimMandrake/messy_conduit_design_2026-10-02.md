@@ -5,10 +5,10 @@ Jawa should celebrate that. I almost want to make it weirder like snakey, ropey 
 Spawn out a design pass to consider how hard it would be to make MESSY CONDUIT, an alternative mod that would
 make conduit sprawl all over the floor in loose wirey mess like it does in real life."*
 
-Status: DESIGN ONLY. Nothing built. Filed as `MESSY_CONDUIT_MOD_1` (ledger event, `3bb58a7e5`). The current
-recommendation is the **nodal cord model** (§8.2, owner ruling 2026-10-02): conduit reduced to a node graph,
-one too-long extension cord per edge planned over the floor, buried conduit never drawn.
-Engine facts below are from RimSage (decompiled 1.6) unless marked otherwise.
+Status: PHASE 1a BUILT 2026-10-02 (owner chat go-ahead; build pause lifted for this mod), item
+`MESSY_CONDUIT_MOD_1`. Mod: `src/RimMandrake/MessyConduit` (`mandrake.rm.messyconduit`). The model is the **nodal
+cord model** (§8.2): conduit reduced to a node graph, one too-long extension cord per edge planned over the floor,
+buried conduit never drawn. What 1a built and where it departs from this design: §8.13.
 
 ## 0. Retired-mod fact
 
@@ -310,9 +310,7 @@ surfaces, tangles) and draws one too-long extension cord per graph edge, path-pl
 between its two nodes. Buried conduit is never drawn. Breaks are terminal nodes that spark when live. Tier A
 cannot sprawl past the cell. Tier C (hazards) stays a later, separate opt-in (`MessyConduit.Hazards`), if ever.
 
-🔴 **This is gated by the 2026-10-01 build pause.** A new mod is new content, and the pause holds it until
-every mod has a first script with a recorded run (`debug_process.md` §1, "DONE"). The phase-0 mock-ups are
-design work and can go ahead now. Everything after waits for the lift, or for the owner's explicit word.
+Phase 1a is built (§8.13); 1b onward follows §8.10.
 
 **Build order, phases, effort and the art list:** §8.10 and §8.11.
 
@@ -405,15 +403,17 @@ planned and laid polylines per edge, and the dirty set. Each `SectionLayer_RM_Me
 **owned** by its section: a cord is owned by the section holding the lower-index endpoint of its edge, so every
 cord is printed exactly once.
 
-**Rebuild triggers** use existing flags. The layer sets `relevantChangeTypes = Things | Buildings | PowerGrid |
-FogOfWar | Terrain`.
+**Rebuild triggers** use existing flags. The layer sets `relevantChangeTypes = Buildings | PowerGrid | FogOfWar |
+Terrain | RM_MessyCords` (our own `MapMeshFlagDef`). `Things` is left out on purpose: it fires on every haul, and
+each of our regenerates snapshots the map.
 - **Conduit placed or removed:** the conduit keeps `linkType Transmitter`, so it still satisfies
   `def.CanAffectLinker`, and `Thing.SpawnSetup` and `DeSpawn` call `MapMeshDirty(Position, Things,
   regenAdjacentCells: true)`.
 - **Net change:** `PowerNetManager.NotifyDrawersForWireUpdate` dirties `Things` and `PowerGrid`.
 - **Buildings, walls, doors:** `Building.SpawnSetup` dirties `Buildings` on every occupied cell.
 - **Terrain** (water, bridges): dirties `Terrain` on the cell and neighbours.
-- **Trees:** spawn, despawn and growth-stage changes dirty `Things`.
+- **Trees:** dirty only `Things`, which the layer ignores; a tree change reaches a cord's plan only when that
+  cord is re-planned for another reason (its corridor hash also covers walkability, not trees).
 - **Fog:** `FogGrid` dirties `FogOfWar|Things`.
 - 🔑 A section rebuild does **not** re-plan everything: it asks the map component for the cords it owns, and
   the component re-plans only edges in its dirty set (§8.2.7). An unchanged cord re-emits its cached polyline.
@@ -428,8 +428,9 @@ FogOfWar | Terrain`.
 - `CompPower.connectParent` and `connectChildren` give the machine hookups (machines up to
   `PowerConnectionMaker.ConnectMaxDist` = 6 cells from their conduit).
 - `map.pathing.Normal.pathGrid.WalkableFast(idx)` gives walkability for planning (§8.6).
-- Copy the Odyssey rule from `Graphic_Linked.ShouldLinkWith`: never join across a substructure/non-substructure
-  edge.
+- The Odyssey substructure rule (`Graphic_Linked.ShouldLinkWith`) is NOT applied by the reduction: power flows
+  across a hull edge, so splitting the graph there would put two sparking "break" ends at every gravship hull
+  (§8.13).
 
 **Culling.** `SectionLayer_RM_MessyCords` accumulates a `CellRect` of every vertex it prints and returns it
 from `GetBoundaryRect()`, exactly as `SectionLayer_Things` does for oversized prints. `Section.Bounds`
@@ -910,7 +911,7 @@ owner to walk; a screenshot is never a pass bar.
 
 ### 8.10 Effort, cost verdict and phased plan
 
-🔴 Still gated by the 2026-10-01 build pause (§6). Days are estimates for when it lifts.
+Phase 1a was built 2026-10-02 (§8.13). Days below are the original estimates.
 
 **Is the nodal model cheaper than the per-cell overlay? Yes.**
 
@@ -982,10 +983,51 @@ Sparks, drips and the downed-wire flash reuse vanilla `MicroSparks`/`LightningGl
 - **The conduit defs of VFE Power and LED Lights Strip.**
 - **Any C# performance number.** All C# costs are arithmetic; only the Python mock-up timings are measured.
 - `CameraDriver.CurrentViewRect`'s own body and the vanilla battery def's comps were not read.
-- The model was not tried in game. This pass did not touch the game, the bridge or `src/` outside the mock-up
-  folder.
+- Phase 1a was tried in game on 2026-10-02 (§8.13); the sway, the gravship cutscene and the multi-family art were not.
 
 **Mock-ups:** `Transient/messy_conduit_mockups_20261002/07_nodal_*.png` (main scene in three families, break
 readout, per-cell vs nodal, node-graph debug view) and `08_tricky_*.png` (§8.7). Renderer:
 `src/RimMandrake/Utils/mockups/messy_conduit/nodal.py` and `tricky.py`; `selftest.py` covers the reduction
 census, connected-only cords, the gap, geometry, determinism under unrelated edits and the tricky rules.
+
+### 8.13 Phase 1a as built (2026-10-02)
+
+**Where it lives.** `src/RimMandrake/MessyConduit/`: `Source/Core/` (Verse-free: `CordWorld` snapshot, `CordGraph`
+reduction, `CordPlanner` A* + string-pull + corner rounding, `CordLayer` slack, `CordBuilder` per-edge cache);
+`CordWorldAdapter` (map -> `CordWorld`, the only power-specific piece, so hoses or suspended wires can reuse the
+core with their own adapter); `RM_MapComponent_CordGraph`; `SectionLayer_RM_MessyCords`; `ConduitVisuals` (+ the
+hookup-wire prefix); settings; `MessyConduitProbe` (the functional script's state-read channel). Offline oracle
+parity: `Source/SelfTest/` compiles `Core/` against `export_oracle.py`'s scenes (`selftest_messyconduit.py`).
+
+**Departures from the design above, each chosen after the engine said so:**
+- **The conduit texture swap is C#, not an XML patch.** An XML `texPath` replace can only be undone by a restart;
+  the settings contract is "all-off restores vanilla". `ConduitVisuals` swaps each target def's `GraphicData` for a
+  copy pointing at a fully transparent PNG, keeps the original to put back, and calls `Notify_ColorChanged` on
+  spawned conduit. `linkType Transmitter` is kept (§1). Beauty/Flammability untouched (§2).
+- **Slack is canned shapes, not the PBD settle** (as §8.10 phase 1a planned): excursions clipped to the open
+  floor, loops/figure-eights/heaps spliced where every point clears unwalkable cells, 6 rounds of bend smoothing
+  with a hard projection out of obstacles, and a fallback to the planned centreline if any vertex still sits in
+  an unwalkable cell (0 fallbacks on all 7 oracle scenes and in game). Clearance is an exact box distance over a
+  5x5 window, not the oracle's sampled SDF.
+- **Rebuild = the first regenerate of a frame.** The component rebuilds once per frame on demand (snapshot +
+  reduce; unchanged edges re-emit their cached polylines by key + corridor walkability hash) and dirties every
+  OTHER section whose owned pieces changed with `RM_MessyCords`.
+- **Live/dead flips rebuild only the owner section:** a terminal's live flag is part of its edge's cache key, so
+  a dead end lies limp (curled tail, dull fray) and a live end is straight with the bright fray and vanilla
+  `MicroSparks`/`LightningGlow` on a deterministic per-end schedule (max 24 sparking ends per map). No whip yet.
+- **Substructure rule not applied** (see §8.1): a hull edge would read as a break.
+- **Machine-to-machine hookups** (a heater wired to a battery) keep vanilla's thin wire; only hookups to our
+  conduit are suppressed and drawn as cords.
+- **Section meshes regenerate only in view** (engine: `Section.TryUpdate`), so a state read of the drawer's
+  meshes needs the camera on the scene; the functional script frames it first.
+
+**Proven live** (fresh quicktest map, messyconduit tier, `validation.py --live`, 19/19 live rows PASS, ~270
+ticks): transparent conduit; cords and end pieces printed; node census incl. a live wall terminal; no cord across
+nets; no vertex in an unwalkable cell; fresh-builder determinism; local invalidation (1 edge re-planned); hookup
+wire hidden with overlay connector lines intact; a destroyed conduit gives a live and a dead end, no cord across;
+source off reads dead within one 250-tick poll; master off restores vanilla art and on restores the cords; clean
+log. Recorded with `modcheck record`: REFUSED (6 UNBUILT, 2 UNCOVERED bars, by design).
+
+**Known defects / not verified:** the wall terminal's hanging tail is barely legible against a dark steel wall;
+save/load hash (walk M4) and mod removal (M9) not run; performance on a large base not measured; placeholder art
+only (Jawa family).

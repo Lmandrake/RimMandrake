@@ -76,6 +76,45 @@
     "status": "RED",
     "ts": 1789295382.3548174
   },
+  "MessyConduit": {
+    "components": {
+      "counts": {
+        "PASS": 19,
+        "UNBUILT": 6,
+        "UNCOVERED": 2
+      },
+      "not_ok": [],
+      "unbuilt": [
+        "U_whip_tails",
+        "U_downed_wire_bursts",
+        "U_pbd_settle",
+        "U_selection_highlight",
+        "U_sway",
+        "U_other_styles"
+      ],
+      "uncovered": [
+        "M4_save_load_hash",
+        "M9_remove_mod_clean"
+      ]
+    },
+    "hash": "c9d4910b8f3e19101ae802062d94c6ada199214303bd4d251f7449b5e1e1e207",
+    "minor": null,
+    "owner_review": null,
+    "refused": "19 live rows PASS but 6 bars UNBUILT, 2 UNCOVERED: U_whip_tails, U_downed_wire_bursts, U_pbd_settle, U_selection_highlight, U_sway, U_other_styles, M4_save_load_hash, M9_remove_mod_clean",
+    "run_id": "MessyConduit/script@validation_result_20261002T135728.json",
+    "source": {
+      "assembly_sha256": null,
+      "env_running_count": 9,
+      "env_running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623",
+      "result": "src/RimMandrake/MessyConduit/northstar/validation_result_20261002T135728.json",
+      "started": "2026-10-02T13:56:51",
+      "ticks_spent": null,
+      "tier": "messyconduit",
+      "verb": "modcheck record"
+    },
+    "status": "REFUSED",
+    "ts": 1790974660.1446674
+  },
   "Ninefold": {
     "hash": "a259fa805551aaff10924d6897e95fedd138d698854ce58f086cbd053533fce3",
     "minor": null,

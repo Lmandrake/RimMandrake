@@ -1,0 +1,88 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Messy Conduit (mandrake.rm.messyconduit), design/RimMandrake/messy_conduit_design_2026-10-02.md.
+    Core/ is Verse-free and is ALSO compiled by Source/SelfTest/ (net8.0) against the Python
+    oracle; SelfTest/ itself is a separate project and deliberately absent below.
+    EnableDefaultCompileItems is false: a new .cs file needs its own Compile line here.
+
+    Build: python3 src/RimMandrake/Utils/winbuild.py MessyConduit
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeMessyConduit</AssemblyName>
+    <RootNamespace>RimMandrake.MessyConduit</RootNamespace>
+    <Version>0.1.0</Version>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <!-- Verse-free core (also compiled by SelfTest) -->
+  <ItemGroup>
+    <Compile Include="Core\CordMath.cs" />
+    <Compile Include="Core\CordWorld.cs" />
+    <Compile Include="Core\CordGraph.cs" />
+    <Compile Include="Core\CordPlanner.cs" />
+    <Compile Include="Core\CordLayer.cs" />
+    <Compile Include="Core\CordBuilder.cs" />
+  </ItemGroup>
+
+  <!-- game side: power-network adapter, map component, drawer, settings, probe -->
+  <ItemGroup>
+    <Compile Include="MessyConduitDefOf.cs" />
+    <Compile Include="MessyConduitMod.cs" />
+    <Compile Include="ConduitVisuals.cs" />
+    <Compile Include="CordMaterials.cs" />
+    <Compile Include="CordWorldAdapter.cs" />
+    <Compile Include="RM_MapComponent_CordGraph.cs" />
+    <Compile Include="SectionLayer_RM_MessyCords.cs" />
+    <Compile Include="MessyConduitProbe.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

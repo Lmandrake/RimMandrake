@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Messy Conduit</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.messyconduit</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Conduit the way it really ends up: loose, too-long extension cords lying all over the floor.
+
+The conduit itself becomes invisible and keeps working exactly like vanilla conduit. A purely cosmetic layer reads the conduit network as a graph of the things it connects (generators, batteries, machines, junctions, the places where it disappears into a wall or rock and comes out again) and draws one or more loose, loopy cords between connected neighbours over the walkable floor. Cords never cross a wall and never join two things that are not really connected.
+
+Breaks read at a glance: a conduit end still on a powered net sparks; a dead end lies limp.
+
+Cosmetic only. Nothing is saved, so adding or removing the mod mid-game is safe; vanilla's Hidden Conduit stays the tidy invisible option, and the power overlay's connection lines are left alone. Every behaviour has a Mod Settings switch, and turning the master switch off brings the vanilla conduit art back at once.
+
+Phase 1a: Jawa (matte black) art set only, placeholder textures, canned slack shapes.</description>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+  <incompatibleWith>
+    <li>GlitchGoblin.InvisibleConduitCont</li>
+  </incompatibleWith>
+</ModMetaData>
