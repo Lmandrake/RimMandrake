@@ -59,19 +59,28 @@ def body(s, job):
     job.note("candidates", len(cands))
     if not cands:
         raise Unmeasurable("no Flat dry 15-30C tile in this world (%d tiles exported)" % len(rows))
-    tile, info = None, None
-    for t in cands[:12]:
+    tile, info, cf = None, None, {}
+    for t in cands[:40]:
         g = call(s, "jawa/world_tile_get", tiles=str(t))
         row = (g.get("tiles") or [{}])[0]
-        if all(int(row.get(k) or 0) == 0 for k in ("mutatorCount", "roadCount", "riverCount")):
-            tile, info = t, row
-            break
+        if not all(int(row.get(k) or 0) == 0 for k in ("mutatorCount", "roadCount", "riverCount")):
+            continue
+        cf = call(s, "jawa/colony_found", tile=t, faction="Player", name="NorthstarBland")
+        if not cf.get("success") and "already has" in str(cf.get("message")):
+            continue            # settled by an earlier run in this same game session: pick another tile
+        tile, info = t, row
+        break
     job.check("a candidate tile has no mutators, roads or rivers", tile is not None, cands[:12])
     if tile is None:
         return
     job.note("tile", info)
-    cf = call(s, "jawa/colony_found", tile=tile, faction="Player", name="NorthstarBland")
     job.check("colony_found settled the tile for the player", cf.get("success"), cf.get("message"))
+    # colony_found opens Dialog_NamePlayerFactionAndSettlement (force-pause). MEASURED 2026-10-01: left open it makes
+    # modal_open SURPRISE abort every later job's controls. Close it now, and again after map generation.
+    def _close_name_dialog():
+        return call(s, "jawa/window_list_close", action="close", typeName="Dialog_NamePlayerFactionAndSettlement",
+                    closeAll=True)
+    job.note("name_dialog_closed", _close_name_dialog().get("closedCount"))
     g = call(s, "jawa/world_tile_map_generate", tile=tile, suggestedMapParent="Settlement")
     job.note("map_generate", {k: g.get(k) for k in ("mapIndex", "mapParentDef", "wasAlreadyGenerated", "pawnCount",
                                                     "thingCount", "mapFinalize", "message")})
@@ -79,6 +88,7 @@ def body(s, job):
         raise Unmeasurable("world_tile_map_generate refused after colony_found: %s" % (g.get("message") or g))
     failed_steps = (g.get("mapFinalize") or {}).get("failedSteps") or []
     job.check("map generated with no failed finalize steps", not failed_steps, failed_steps)
+    _close_name_dialog()
     sc = call(s, "jawa/set_current_map", mapId=g["mapIndex"])
     job.check("the new map is current and on the chosen tile",
               sc.get("success") and int(sc.get("tile", tile)) == tile, sc.get("message") or sc)
@@ -102,10 +112,22 @@ def body(s, job):
     wild = [p["id"] for p in pawns if H.is_wildlife(p)]
     job.check("no wildlife left on the map", not wild, wild[:10])
     lt = call(s, "jawa/list_things", group="BuildingArtificial", limit=2000)
+    # Ancient ruins are map-gen scenery (MEASURED 2026-10-01 live: 161 Wall/Urn/Table things on a fresh tile map).
+    # A bland map removes them: destroy_batch the non-player artificial things cell by cell, then re-census.
+    for _ in range(5):
+        pre = [t for t in lt.get("things") or [] if (t.get("factionName") or t.get("faction")) in (None, "", "None")
+               and t.get("def") != "SteamGeyser"]    # natural, indestructible scenery (MEASURED: 'non-destroyable'), not a ruin
+        if not pre:
+            break
+        rects = ";".join("%d,%d,1,1" % (t["x"], t["z"]) for t in pre)
+        db = call(s, "jawa/destroy_batch", rects=rects, categories="Building,Item")
+        job.note("ruins_destroyed_pass", {"targeted": len(pre), "success": db.get("success"), "msg": str(db.get("message"))[:200]})
+        lt = call(s, "jawa/list_things", group="BuildingArtificial", limit=2000)
     if not lt.get("success"):
         job.check("ruin census answered (list_things group=BuildingArtificial)", False, lt.get("message"))
     else:
-        ruins = [t for t in lt.get("things") or [] if (t.get("factionName") or t.get("faction")) in (None, "", "None")]
+        ruins = [t for t in lt.get("things") or [] if (t.get("factionName") or t.get("faction")) in (None, "", "None")
+               and t.get("def") != "SteamGeyser"]    # natural, indestructible scenery (MEASURED: 'non-destroyable'), not a ruin
         job.note("ruins_sample", [(t.get("def"), t.get("x"), t.get("z")) for t in ruins[:15]])
         job.check("no non-player artificial buildings (ruins) on the map", not ruins and lt.get("isCompleteList", True),
                   "%d ruin things, complete=%s" % (len(ruins), lt.get("isCompleteList")))

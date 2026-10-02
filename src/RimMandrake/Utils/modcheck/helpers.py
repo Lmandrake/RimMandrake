@@ -327,6 +327,16 @@ def restore_colonists(session, baseline, resurrect=False):
                 session.call("jawa/pawn_health", pawn=pid, action="remove", hediff=h["def"])
     after = dict((r["id"], r) for r in read_pawns(session))
     live = [pid for pid in baseline if pid in after and not after[pid]["dead"]]
+    # MEASURED live 2026-10-01 (J2 predator case): 'Gunshot/Shoulder' on a colonist read back as unremoved right
+    # after a part-qualified remove, yet the pawn was clean minutes later. One retry by def alone, then re-read.
+    for pid in live:
+        for h in after[pid]["health"]["hediffs"]:
+            if (hediff_key(h) not in baseline[pid] and h["def"] in INJURY_DEFS
+                    and not any(k[0] == h["def"] for k in baseline[pid])):     # never sweep up a baseline instance
+                session.call("jawa/pawn_health", pawn=pid, action="remove", hediff=h["def"])
+                acted += 1
+    after = dict((r["id"], r) for r in read_pawns(session))
+    live = [pid for pid in baseline if pid in after and not after[pid]["dead"]]
     for pid in live:
         for h in after[pid]["health"]["hediffs"]:
             if hediff_key(h) not in baseline[pid] and h["def"] in INJURY_DEFS:

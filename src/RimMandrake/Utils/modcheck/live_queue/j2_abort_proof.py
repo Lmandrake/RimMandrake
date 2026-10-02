@@ -97,7 +97,11 @@ def hz_fire(s, ctx):
     x, z = _clamp(c["x"] + 4, n), _clamp(c["z"], n)
     r = call(s, "jawa/map_fire", action="start", rect="%d,%d,3,1" % (x, z), fireSize=0.5)
     if not r.get("success") or not r.get("firesStarted"):
-        raise RuntimeError("map_fire started nothing: %s" % r)
+        # MEASURED 2026-10-01: map_fire is gated by flammability/wetness (0 of 3 cells on a bare desert tile).
+        # Fall back to placing Fire things directly.
+        sb = call(s, "jawa/spawn_batch", ops=";".join("Fire:%d,%d" % (x + i, z) for i in range(3)))
+        if not sb.get("success"):
+            raise RuntimeError("map_fire started nothing and spawn_batch Fire failed: %s / %s" % (r, sb))
 
 
 def hz_kill_colonist(s, ctx):
