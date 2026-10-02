@@ -45,6 +45,7 @@ namespace RimMandrake.MessyConduit
             if (cmd == "rebuild") { comp.Rebuild(); return "{\"success\":true,\"cmd\":\"rebuild\",\"planned\":" + comp.LastPlanned + ",\"reused\":" + comp.LastReused + "}"; }
             if (cmd == "poll") { int f = comp.PollLive(); return "{\"success\":true,\"cmd\":\"poll\",\"flips\":" + f + "}"; }
             if (cmd == "fresh") return Fresh(map, comp);
+            if (cmd == "artfit") return ArtFit(map, comp);
             if (cmd == "defaults")
             {
                 MessyConduitSettings.ResetToDefaults();
@@ -81,6 +82,48 @@ namespace RimMandrake.MessyConduit
             }
             return "{\"success\":true,\"cmd\":\"fresh\",\"edges\":" + fresh.Count(p => p.EndA != null) + ",\"same\":" + same +
                    ",\"different\":" + diff + ",\"missing\":" + missing + "}";
+        }
+
+        /// <summary>Polish pass 2026-10-02: the art-fit audit on the LIVE laid pieces (the same
+        /// Core.CordAudit the SelfTest runs), every decal's pose, the render queues our materials hold,
+        /// and the queue/shader/altitude of whatever wall and rock edifices our stubs sit on.</summary>
+        private static string ArtFit(Map map, RM_MapComponent_CordGraph comp)
+        {
+            if (comp.Graph == null) return "{\"success\":false,\"error\":\"no graph\"}";
+            ArtFitResult r = CordAudit.ArtFit(comp.Graph, comp.Pieces.ToList(), c => comp.EndLive(c) ?? CordWorldAdapter.IsLive(map, c));
+            var sb = new StringBuilder("{\"success\":true,\"cmd\":\"artfit\"");
+            void F(string k, string v) => sb.Append(",\"").Append(k).Append("\":").Append(v);
+            F("faults", r.Faults.ToString());
+            F("junctions", r.Junctions.ToString()); F("junctionFaults", r.JunctionFaults.ToString());
+            F("plugEnds", r.PlugEnds.ToString()); F("plugFaults", r.PlugFaults.ToString());
+            F("stubs", r.Stubs.ToString()); F("stubFaults", r.StubFaults.ToString());
+            F("deadEnds", r.DeadEnds.ToString()); F("deadFaults", r.DeadFaults.ToString());
+            F("deadOffLine", J.Arr(r.DeadOffLine.Select(J.D)));
+            F("liveEnds", r.LiveEnds.ToString()); F("liveFaults", r.LiveFaults.ToString());
+            F("liveArrivalDeg", J.Arr(r.LiveArrivalDeg.Select(J.D)));
+            F("messages", J.Arr(r.Messages.Take(12).Select(J.S)));
+            F("decalList", J.Arr(comp.Pieces.SelectMany(p => p.Decals).Select(d =>
+                "{\"k\":" + J.S(d.Kind.ToString()) + ",\"x\":" + J.D(d.Pos.X) + ",\"z\":" + J.D(d.Pos.Z) + ",\"deg\":" + J.D(d.Angle * 180 / Math.PI) + ",\"s\":" + J.D(d.Scale) + "}")));
+            F("queues", "{\"strand\":" + CordMaterials.StrandQueue + ",\"shadow\":" + (CordMaterials.Shadow?.renderQueue ?? -1) +
+                        ",\"piece\":" + (CordMaterials.Decal(DecalKind.JunctionTin)?.renderQueue ?? -1) +
+                        ",\"face\":" + (CordMaterials.Decal(DecalKind.StubWall)?.renderQueue ?? -1) +
+                        ",\"strandFace\":" + (CordMaterials.StrandFace?.renderQueue ?? -1) + "}");
+            F("altitudes", "{\"conduits\":" + J.D(AltitudeLayer.Conduits.AltitudeFor()) + ",\"building\":" + J.D(AltitudeLayer.Building.AltitudeFor()) +
+                           ",\"face\":" + J.D(AltitudeLayer.BuildingOnTop.AltitudeFor() + SectionLayer_RM_MessyCords.FaceLift) + "}");
+            var seen = new List<string>();
+            foreach (CordNode nd in comp.Graph.Nodes.Values.Where(n => n.Type == NodeType.StubWall || n.Type == NodeType.StubRock))
+            {
+                Building ed = map.edificeGrid[CordWorldAdapter.I(nd.Buried)];
+                if (ed == null) continue;
+                UnityEngine.Material m = ed.Graphic?.MatSingle;
+                if (ed.Graphic is Graphic_Linked gl) m = gl.SubGraphic?.MatSingle ?? m;
+                seen.Add("{\"node\":" + J.S(nd.Type.ToString()) + ",\"def\":" + J.S(ed.def.defName) + ",\"shader\":" + J.S(m?.shader?.name) +
+                         ",\"queue\":" + (m?.renderQueue ?? -1) + ",\"altitude\":" + J.D(ed.def.Altitude) + "}");
+            }
+            F("faceEdifices", J.Arr(seen));
+            F("glowDraws", RM_MapComponent_CordGraph.LastGlowDraws.ToString());
+            sb.Append("}");
+            return sb.ToString();
         }
 
         private static string Census(Map map, RM_MapComponent_CordGraph comp)

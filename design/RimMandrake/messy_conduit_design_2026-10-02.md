@@ -1013,8 +1013,8 @@ parity: `Source/SelfTest/` compiles `Core/` against `export_oracle.py`'s scenes 
   reduce; unchanged edges re-emit their cached polylines by key + corridor walkability hash) and dirties every
   OTHER section whose owned pieces changed with `RM_MessyCords`.
 - **Live/dead flips rebuild only the owner section:** a terminal's live flag is part of its edge's cache key, so
-  a dead end lies limp (curled tail, dull fray) and a live end is straight with the bright fray and vanilla
-  `MicroSparks`/`LightningGlow` on a deterministic per-end schedule (max 24 sparking ends per map). No whip yet.
+  a dead end lies limp (curled tail, dull fray) and a live end is straight with the bright fray, a per-frame glow
+  and vanilla `MicroSparks`/`LightningGlow` on a deterministic per-end schedule (max 24 sparking ends per map). No whip yet.
 - **Substructure rule not applied** (see §8.1): a hull edge would read as a break.
 - **Machine-to-machine hookups** (a heater wired to a battery) keep vanilla's thin wire; only hookups to our
   conduit are suppressed and drawn as cords.
@@ -1035,8 +1035,23 @@ the component's `<li Class=...>` so a mod-less load logged two red errors (now k
 `Map.ExposeComponents` while saving). `validation.py --save-load` (M4: same geometry hash after load, the save
 holds nothing of ours) and `--removal-check` (M9: 0 errors naming the mod on the `flowworks` tier) both PASS.
 
-**Known defects / not verified:** junction, wall-grommet and rock-stub art is drawn under the cords or under the
-wall/rock sprite and is barely visible; the tin junction's stub arms point where no cord attaches; a consumer's cord
-ends at the conduit cell, so a lamp beside a branch end gets a plug lying a cell away (screenshots and notes:
-`Transient/messy_conduit_live_20261002/README.md`); performance on a large base not measured; Jawa art family only
-(8 real textures, 4 placeholders).
+**Art-fit polish (2026-10-02, after the real art landed).** The live pass 2 defects are fixed in the core and
+proven offline (`CordAudit`, shared by the SelfTest and the probe's `artfit`) and live (artfit 0 faults on the
+keeper scene and a fresh map; 19/19, `--save-load`, `--removal-check` re-run PASS):
+- **Junctions are posed from their cords**: four arm directions take the tin cross, fewer the taped T turned so its
+  missing arm faces the empty side, the art's junction point on the node; every cord ends at an arm tip arriving
+  along the arm (`CordBuilder.PoseJunction`, `AttachEnd`, `CordLayer.Approach`). The +-0.08 knot jitter is gone.
+- **Draw order is a render queue, not altitude.** `MapDrawLayer.RefreshSubMeshBounds` gives every section submesh
+  the same bounds, so transparent submeshes tie on sort distance; the Transparent shader and the wall/granite
+  `Custom/Cutout` materials all sit at queue 2900 (measured live). Shadow 2899, strand 2900, end pieces 2901,
+  face pieces 2902; face pieces also at `BuildingOnTop` altitude. Pawns and items still draw over all of them
+  (checked live).
+- **Stub art turned along the cord** (the real art's cord runs along its +X), plate/hole on the face line.
+- **One plug per machine end, its head pointing into the footprint** and pushed past the edge.
+- **Dead ends curl over** (0.7 cell, tip 0.27-0.38 cell off the conduit line, dull-tinted fray); **live ends run
+  straight out of the conduit end** and pulse a glow every frame (works paused) besides the sparks. No whip yet.
+
+**Known defects / not verified:** the dead end's curl is clear close up and subtle at far zoom; a wall terminal
+inside natural rock hangs its tail down the rock face like a wall's (reads as a thin line); plug heads tuck under
+the machine sprite; performance on a large base not measured; Jawa art family only (8 real textures, 4
+placeholders: EndFrayed_Live, SparkGlow, PowerStrip, ConduitTransparent).

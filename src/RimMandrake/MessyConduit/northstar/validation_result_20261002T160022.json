@@ -1,0 +1,443 @@
+{
+ "mod": "MessyConduit",
+ "mode": "live",
+ "tier": "messyconduit",
+ "started": "2026-10-02T15:59:46",
+ "rows": [
+  {
+   "id": "L0_fresh_map",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "start": true,
+    "programState": "Playing"
+   }
+  },
+  {
+   "id": "L1_tier_running",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": "9 mods running, messyconduit True"
+  },
+  {
+   "id": "L2_startup_log_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "no MessyConduit error in 14 warn+ startup entries (sanity: [RimBridge] line seen=True)"
+  },
+  {
+   "id": "S0_scene_built",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "walls": [
+     27,
+     0
+    ],
+    "door": [
+     1,
+     0
+    ],
+    "battery": "Battery18623",
+    "conduit": [
+     21,
+     0
+    ],
+    "lamp": [
+     1,
+     0
+    ],
+    "stored": 600.0
+   }
+  },
+  {
+   "id": "M1_conduit_transparent",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "texPaths": {
+     "PowerConduit": "RimMandrake/MessyConduit/ConduitTransparent",
+     "WaterproofConduit": "RimMandrake/MessyConduit/ConduitTransparent"
+    },
+    "spawned": "ConduitTransparent"
+   }
+  },
+  {
+   "id": "M1_cords_exist",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "conduitCells": 21,
+    "cordEdges": 4,
+    "hiddenEdges": 1,
+    "strands": 13,
+    "layerVerts": 12256,
+    "layerSectionsWithCords": 2,
+    "nodes": {
+     "battery": 1,
+     "consumer": 1,
+     "hidden_end": 1,
+     "junction": 1,
+     "stub_wall": 1,
+     "terminal": 2
+    }
+   }
+  },
+  {
+   "id": "M1_node_census",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "need ['battery', 'consumer', 'junction', 'stub_wall'] + >=2 terminals (FAR run ends) + a live wall terminal; got {'battery': 1, 'consumer': 1, 'hidden_end': 1, 'junction': 1, 'stub_wall': 1, 'terminal': 2}, live wall ends 1"
+  },
+  {
+   "id": "M1c_end_pieces",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "decals": {
+     "FrayDead": 6,
+     "FrayLive": 1,
+     "JunctionTape": 1,
+     "Plug": 2,
+     "StubWall": 1
+    }
+   }
+  },
+  {
+   "id": "M2_cords_only_within_net",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "cordsAcrossNets": 0,
+    "cordsAcrossNetsList": [],
+    "cordEndsWithoutNet": 0
+   }
+  },
+  {
+   "id": "M2b_no_vertex_unwalkable",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "verticesInUnwalkable": 0,
+    "interiorVertices": 3021,
+    "fellBack": 0,
+    "unroutable": 0
+   }
+  },
+  {
+   "id": "M6_overlay_lines_intact",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "hookupWiresSuppressed": 3,
+    "overlayWiresPrinted": 3,
+    "overlayConnectorVerts": 4
+   }
+  },
+  {
+   "id": "D1_determinism_fresh_build",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "success": true,
+    "cmd": "fresh",
+    "edges": 4,
+    "same": 4,
+    "different": 0,
+    "missing": 0
+   }
+  },
+  {
+   "id": "M5_local_invalidation",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "changed": [],
+    "gone": [
+     "terminal:178,159|terminal:179,159"
+    ],
+    "lastPlanned": 1,
+    "lastReused": 3
+   }
+  },
+  {
+   "id": "M8_break_two_ends_live_dead",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "west(battery side)": {
+     "cell": [
+      156,
+      153
+     ],
+     "tip": [
+      156.86,
+      153.47
+     ],
+     "wall": false,
+     "registryLive": true,
+     "netLive": true,
+     "net": "-1383266188"
+    },
+    "east": {
+     "cell": [
+      158,
+      153
+     ],
+     "tip": [
+      158.26,
+      153.17
+     ],
+     "wall": false,
+     "registryLive": false,
+     "netLive": false,
+     "net": "-608712354"
+    },
+    "cordsAcrossNets": 0
+   }
+  },
+  {
+   "id": "M8b_no_cord_across_gap",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "cordsAcrossNets": 0,
+    "list": []
+   }
+  },
+  {
+   "id": "M8c_source_off_reads_dead_250",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "west": {
+     "cell": [
+      156,
+      153
+     ],
+     "tip": [
+      156.74,
+      153.77
+     ],
+     "wall": false,
+     "registryLive": false,
+     "netLive": false,
+     "net": "-1383266188"
+    }
+   }
+  },
+  {
+   "id": "M7_off_restores_vanilla",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "texPaths": {
+     "PowerConduit": "Things/Building/Linked/PowerConduit_Atlas",
+     "WaterproofConduit": "Things/Building/Linked/WaterproofConduit_Atlas"
+    },
+    "spawned": "PowerConduit_Atlas",
+    "layerVisible": false
+   }
+  },
+  {
+   "id": "M7b_on_again_invisible",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": "ConduitTransparent",
+    "layerVerts": 13232
+   }
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errors": [],
+    "newWarnings": 0
+   }
+  },
+  {
+   "id": "U_whip_tails",
+   "status": "UNBUILT",
+   "class": "SCOPE",
+   "detail": "live tails whip (phase 1b); 1a tails are static, live = straight + sparks"
+  },
+  {
+   "id": "U_downed_wire_bursts",
+   "status": "UNBUILT",
+   "class": "SCOPE",
+   "detail": "wall-terminal drip/flash schedule (phase 1b); 1a uses the plain spark poll"
+  },
+  {
+   "id": "U_pbd_settle",
+   "status": "UNBUILT",
+   "class": "SCOPE",
+   "detail": "rope settle / SDF (phase 1b); 1a lays canned loops + smoothing"
+  },
+  {
+   "id": "U_selection_highlight",
+   "status": "UNBUILT",
+   "class": "SCOPE",
+   "detail": "selecting a conduit highlights its net's cords (design 8.3, phase 1b)"
+  },
+  {
+   "id": "U_sway",
+   "status": "UNBUILT",
+   "class": "SCOPE",
+   "detail": "CutoutPlant sway (phase 2)"
+  },
+  {
+   "id": "U_other_styles",
+   "status": "UNBUILT",
+   "class": "SCOPE",
+   "detail": "Extension cord / Cybertek / Star Wars art families (art not installed)"
+  },
+  {
+   "id": "M4_save_load_hash",
+   "status": "UNCOVERED",
+   "class": "SCOPE",
+   "detail": "walk M4: same polylines after save/load -- its own mode, --save-load NAME"
+  },
+  {
+   "id": "M9_remove_mod_clean",
+   "status": "UNCOVERED",
+   "class": "SCOPE",
+   "detail": "walk M9: a save made with the mod loads clean without it -- its own mode, --removal-check NAME on a tier without the mod"
+  }
+ ],
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "mandrake.rm.messyconduit"
+  ],
+  "running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623",
+  "assembly_matches": 1
+ },
+ "mod_hash": "26a3dd51c5423490c73f26414186af235e391fab8275b9778b6956ac431fdd3a",
+ "ticks": 268,
+ "log": [
+  {
+   "census0": {
+    "success": true,
+    "cmd": "census",
+    "ticksGame": 3,
+    "enabled": true,
+    "settings": {
+     "enabled": "True",
+     "style": "StarWarsJawa",
+     "slack": "1",
+     "sprawlCap": "16",
+     "cordsPerConnection": "3",
+     "tangles": "True",
+     "needlessLoops": "True",
+     "breakReadout": "True",
+     "sparkIntensity": "1",
+     "hideHookupWires": "True",
+     "debugDraw": "False"
+    },
+    "invisibleApplied": true,
+    "texPaths": {
+     "PowerConduit": "RimMandrake/MessyConduit/ConduitTransparent",
+     "WaterproofConduit": "RimMandrake/MessyConduit/ConduitTransparent"
+    },
+    "spawnedConduitTexture": "ConduitTransparent",
+    "hookupWiresSuppressed": 3,
+    "overlayWiresPrinted": 3,
+    "builds": 10,
+    "lastPlanned": 0,
+    "lastReused": 4,
+    "conduitCells": 21,
+    "buriedCells": 1,
+    "nodeTypes": {
+     "battery": 1,
+     "consumer": 1,
+     "hidden_end": 1,
+     "junction": 1,
+     "stub_wall": 1,
+     "terminal": 2
+    },
+    "cordEdges": 4,
+    "hiddenEdges": 1,
+    "cordsAcrossNets": 0,
+    "cordsAcrossNetsList": [],
+    "cordEndsWithoutNet": 0,
+    "pieces": 5,
+    "decals": {
+     "FrayDead": 6,
+     "FrayLive": 1,
+     "JunctionTape": 1,
+     "Plug": 2,
+     "StubWall": 1
+    },
+    "strands": 13,
+    "interiorVertices": 3021,
+    "verticesInUnwalkable": 0,
+    "fellBack": 0,
+    "unroutable": 0,
+    "ends": [
+     {
+      "cell": [
+       167,
+       152
+      ],
+      "tip": [
+       168.04,
+       151.943
+      ],
+      "wall": true,
+      "registryLive": true,
+      "netLive": true,
+      "net": "1736449768"
+     },
+     {
+      "cell": [
+       178,
+       159
+      ],
+      "tip": [
+       178.26,
+       159.17
+      ],
+      "wall": false,
+      "registryLive": false,
+      "netLive": false,
+      "net": "961895934"
+     },
+     {
+      "cell": [
+       179,
+       159
+      ],
+      "tip": [
+       179.74,
+       159.17
+      ],
+      "wall": false,
+      "registryLive": false,
+      "netLive": false,
+      "net": "961895934"
+     }
+    ],
+    "edgeHashes": {
+     "junction:163,153|battery:153,153": "eba606c81b2bf783",
+     "junction:163,153|consumer:163,155": "12856ebf91eeff89",
+     "junction:163,153|stub_wall:167,152": "1bfa5242c867ce6a",
+     "terminal:178,159|terminal:179,159": "fcdf8dfaf8365c0b"
+    },
+    "geometryHash": "06738a6c9f21b848",
+    "layerVisible": true,
+    "layerVerts": 12256,
+    "layerSectionsWithCords": 2,
+    "overlayConnectorVerts": 4
+   }
+  }
+ ]
+}

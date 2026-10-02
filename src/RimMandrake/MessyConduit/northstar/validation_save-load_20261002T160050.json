@@ -1,0 +1,230 @@
+{
+ "mod": "MessyConduit",
+ "mode": "save-load",
+ "tier": "messyconduit",
+ "started": "2026-10-02T16:00:35",
+ "rows": [
+  {
+   "id": "M4a_save_landed_new_file_only",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "new": [
+     "MC_POLISH_20261002.rws"
+    ],
+    "changed": [],
+    "gone": [],
+    "size": [
+     7356702,
+     1790982040
+    ],
+    "tool": true
+   }
+  },
+  {
+   "id": "M9a_save_holds_nothing_of_ours",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "count": 0,
+    "first": []
+   }
+  },
+  {
+   "id": "M4_save_load_hash",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "geometryHash": [
+     "c28208f0d5e60028",
+     "c28208f0d5e60028"
+    ],
+    "edges": 8,
+    "differs": [],
+    "loadSeconds": 2,
+    "spawned": "ConduitTransparent"
+   }
+  }
+ ],
+ "save_mentions": [],
+ "before": {
+  "geometryHash": "c28208f0d5e60028",
+  "edgeHashes": {
+   "junction:155,153|terminal:156,153": "eb307b32f706ccc2",
+   "junction:155,153|battery:153,153": "c810e13348c39893",
+   "junction:155,153|consumer:155,156": "cc6576a579999df6",
+   "junction:155,153|stub_rock:155,150": "42a6705361ee9379",
+   "terminal:158,153|junction:163,153": "9025c5a06825651d",
+   "junction:163,153|consumer:163,155": "12856ebf91eeff89",
+   "junction:163,153|stub_wall:167,152": "1bfa5242c867ce6a",
+   "terminal:178,159|terminal:180,159": "eca808cbb1d153af"
+  },
+  "nodeTypes": {
+   "battery": 1,
+   "consumer": 2,
+   "hidden_end": 2,
+   "junction": 2,
+   "stub_rock": 1,
+   "stub_wall": 1,
+   "terminal": 4
+  },
+  "decals": {
+   "FrayDead": 10,
+   "FrayLive": 2,
+   "JunctionTape": 1,
+   "JunctionTin": 1,
+   "Plug": 3,
+   "StubRock": 1,
+   "StubWall": 1
+  },
+  "conduitCells": 28,
+  "cordEdges": 8,
+  "strands": 22,
+  "ends": [
+   [
+    [
+     155,
+     150
+    ],
+    true,
+    true,
+    true
+   ],
+   [
+    [
+     156,
+     153
+    ],
+    false,
+    true,
+    true
+   ],
+   [
+    [
+     158,
+     153
+    ],
+    false,
+    false,
+    false
+   ],
+   [
+    [
+     167,
+     152
+    ],
+    true,
+    false,
+    false
+   ],
+   [
+    [
+     178,
+     159
+    ],
+    false,
+    false,
+    false
+   ],
+   [
+    [
+     180,
+     159
+    ],
+    false,
+    false,
+    false
+   ]
+  ]
+ },
+ "after": {
+  "geometryHash": "c28208f0d5e60028",
+  "edgeHashes": {
+   "junction:155,153|terminal:156,153": "eb307b32f706ccc2",
+   "junction:155,153|battery:153,153": "c810e13348c39893",
+   "junction:155,153|consumer:155,156": "cc6576a579999df6",
+   "junction:155,153|stub_rock:155,150": "42a6705361ee9379",
+   "terminal:158,153|junction:163,153": "9025c5a06825651d",
+   "junction:163,153|consumer:163,155": "12856ebf91eeff89",
+   "junction:163,153|stub_wall:167,152": "1bfa5242c867ce6a",
+   "terminal:178,159|terminal:180,159": "eca808cbb1d153af"
+  },
+  "nodeTypes": {
+   "battery": 1,
+   "consumer": 2,
+   "hidden_end": 2,
+   "junction": 2,
+   "stub_rock": 1,
+   "stub_wall": 1,
+   "terminal": 4
+  },
+  "decals": {
+   "FrayDead": 10,
+   "FrayLive": 2,
+   "JunctionTape": 1,
+   "JunctionTin": 1,
+   "Plug": 3,
+   "StubRock": 1,
+   "StubWall": 1
+  },
+  "conduitCells": 28,
+  "cordEdges": 8,
+  "strands": 22,
+  "ends": [
+   [
+    [
+     155,
+     150
+    ],
+    true,
+    true,
+    true
+   ],
+   [
+    [
+     156,
+     153
+    ],
+    false,
+    true,
+    true
+   ],
+   [
+    [
+     158,
+     153
+    ],
+    false,
+    false,
+    false
+   ],
+   [
+    [
+     167,
+     152
+    ],
+    true,
+    false,
+    false
+   ],
+   [
+    [
+     178,
+     159
+    ],
+    false,
+    false,
+    false
+   ],
+   [
+    [
+     180,
+     159
+    ],
+    false,
+    false,
+    false
+   ]
+  ]
+ }
+}

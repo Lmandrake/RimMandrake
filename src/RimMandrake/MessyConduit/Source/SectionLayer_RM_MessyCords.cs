@@ -22,6 +22,7 @@ namespace RimMandrake.MessyConduit
         private CellRect bounds;
         public const float StrandWidth = 0.11f;
         public const float ShadowWidth = 0.17f;
+        public const float FaceLift = 0.01f;
         public static int LastPrintedVerts;
         private const int MaxMeshVerts = 65000;
 
@@ -47,7 +48,10 @@ namespace RimMandrake.MessyConduit
             if (owned != null && CordMaterials.Strand != null)
             {
                 float baseY = AltitudeLayer.Conduits.AltitudeFor();
-                float faceY = AltitudeLayer.Building.AltitudeFor() + 0.012f;
+                // face pieces sit ABOVE the wall/rock sprite: a stub drawn at Building altitude was
+                // hidden by the wall (live pass 2). BuildingOnTop is the engine's own layer for things
+                // drawn on top of a building (Building_MechCharger, CompRitualFireOverlay).
+                float faceY = AltitudeLayer.BuildingOnTop.AltitudeFor() + FaceLift;
                 int k = 0;
                 foreach (LaidPiece p in owned)
                 {
@@ -56,14 +60,15 @@ namespace RimMandrake.MessyConduit
                         float y = s.OverFace ? faceY : baseY + 0.0006f * (k % 12);
                         if (!s.OverFace && CordMaterials.Shadow != null)
                             verts += Ribbon(CordMaterials.Shadow, s.Pts, ShadowWidth, y - 0.0003f, s.S0, new Vector2(0.03f, -0.045f));
-                        verts += Ribbon(CordMaterials.Strand, s.Pts, StrandWidth, y, s.S0, Vector2.zero);
+                        verts += Ribbon(s.OverFace && CordMaterials.StrandFace != null ? CordMaterials.StrandFace : CordMaterials.Strand,
+                                        s.Pts, StrandWidth, y, s.S0, Vector2.zero);
                         k++;
                     }
                     foreach (CordDecal d in p.Decals)
                     {
                         Material m = CordMaterials.Decal(d.Kind);
                         if (m == null) continue;
-                        bool face = d.Kind == DecalKind.StubWall || d.Kind == DecalKind.StubRock;
+                        bool face = CordMaterials.IsFace(d.Kind);
                         float y = face ? faceY + 0.002f : baseY + 0.009f;
                         float aspect = d.Kind == DecalKind.PowerStrip ? 0.5f : 1f;
                         verts += Quad(m, d.Pos, (float)d.Angle, (float)d.Scale, (float)d.Scale * aspect, y);

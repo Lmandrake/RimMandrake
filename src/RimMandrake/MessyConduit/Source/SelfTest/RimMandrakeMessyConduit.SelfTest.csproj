@@ -32,6 +32,7 @@
     <Compile Include="..\Core\CordPlanner.cs" />
     <Compile Include="..\Core\CordLayer.cs" />
     <Compile Include="..\Core\CordBuilder.cs" />
+    <Compile Include="..\Core\CordAudit.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

@@ -1,0 +1,412 @@
+[
+ {
+  "id": "RM_MessyConduit_Cybertek_Strand",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of one slim smooth brushed grey metallic sheathed cable with a thin teal accent line along the top third seen from directly above, running edge to edge left to right, centred vertically with transparent margin above and below, the cable body about 16 px tall, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 128,
+  "canvas_h": 32,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, ultra-sleek futuristic cybertek look, smooth brushed grey metallic sheathed cable, cool light-grey and gunmetal tones with a thin teal accent line, clean precision-machined fittings, tidy and modern",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Cybertek_Node_T",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "T junction node: a sleek hexagonal gunmetal hub with a small teal glowing dot at its centre. Three cable ends of a slim brushed grey metallic cable leave it to the left, right and bottom edges at the vertical centre and horizontal centre, node about 50 px across at the centre.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, ultra-sleek futuristic cybertek look, smooth brushed grey metallic sheathed cable, cool light-grey and gunmetal tones with a thin teal accent line, clean precision-machined fittings, tidy and modern",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Cybertek_Node_X",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "X junction node: a sleek hexagonal gunmetal hub with a teal dot at its centre and four machined collars. Four cable ends of a slim brushed grey metallic cable enter it at the left, right, top and bottom edge midpoints, node about 64 px across at the centre.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, ultra-sleek futuristic cybertek look, smooth brushed grey metallic sheathed cable, cool light-grey and gunmetal tones with a thin teal accent line, clean precision-machined fittings, tidy and modern",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Cybertek_Plug_Casing",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "a slim brushed grey metallic cable entering from the left edge at the vertical centre ending in a slim machined gunmetal connector with a teal ring, seen from above, plug about 40 px long, pushed into a small casing socket on the right, transparent elsewhere.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, ultra-sleek futuristic cybertek look, smooth brushed grey metallic sheathed cable, cool light-grey and gunmetal tones with a thin teal accent line, clean precision-machined fittings, tidy and modern",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Cybertek_Stub_Wall",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Wall stub plate: a brushed steel square plate with four tiny hex bolts and a clean round grommet. A square plate about 72 px across centred on the canvas with a round hole in its centre where a slim brushed grey metallic cable disappears into the wall, a short length of cable emerging toward the left edge.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, ultra-sleek futuristic cybertek look, smooth brushed grey metallic sheathed cable, cool light-grey and gunmetal tones with a thin teal accent line, clean precision-machined fittings, tidy and modern",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Cybertek_Stub_Rock",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Rock cable hole: a rough round hole drilled into stone, about 56 px across centred on the canvas, chipped grey rim of broken rock, deep dark interior, a slim brushed grey metallic cable emerging from the hole toward the left edge, a neat machined collar where it enters,",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, ultra-sleek futuristic cybertek look, smooth brushed grey metallic sheathed cable, cool light-grey and gunmetal tones with a thin teal accent line, clean precision-machined fittings, tidy and modern",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Cybertek_Decal_FrayedEndDead",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Dead frayed cable end decal: a slim brushed grey metallic cable coming in from the left edge at the vertical centre ending in a ragged cut with splayed dull copper wire strands, the copper dull tarnished and limp, a clean tidy cut and a faint grey smudge at the tip, transparent elsewhere.",
+  "canvas_w": 64,
+  "canvas_h": 64,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, ultra-sleek futuristic cybertek look, smooth brushed grey metallic sheathed cable, cool light-grey and gunmetal tones with a thin teal accent line, clean precision-machined fittings, tidy and modern",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_ExtCord_Strand_Orange",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of one thick glossy-matte bright orange PVC extension cord with a faint stripe of lighter shade along the top third seen from directly above, running edge to edge left to right, centred vertically with transparent margin above and below, the cable body about 18 px tall, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 128,
+  "canvas_h": 32,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, cheap modern household extension cord look, glossy-matte coloured PVC insulation, mismatched ugly plastic joiners and power strips, slightly grubby, truck-drivers-in-space repaired feel, warm 70s palette",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_ExtCord_Strand_Green",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of one thick glossy-matte bright green PVC extension cord with a faint stripe of lighter shade along the top third seen from directly above, running edge to edge left to right, centred vertically with transparent margin above and below, the cable body about 18 px tall, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 128,
+  "canvas_h": 32,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, cheap modern household extension cord look, glossy-matte coloured PVC insulation, mismatched ugly plastic joiners and power strips, slightly grubby, truck-drivers-in-space repaired feel, warm 70s palette",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_ExtCord_Strand_Brown",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of one thick glossy-matte muddy brown PVC extension cord with a faint stripe of lighter shade along the top third seen from directly above, running edge to edge left to right, centred vertically with transparent margin above and below, the cable body about 18 px tall, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 128,
+  "canvas_h": 32,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, cheap modern household extension cord look, glossy-matte coloured PVC insulation, mismatched ugly plastic joiners and power strips, slightly grubby, truck-drivers-in-space repaired feel, warm 70s palette",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_ExtCord_Strand_Yellow",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of one thick glossy-matte mustard yellow PVC extension cord with a faint stripe of lighter shade along the top third seen from directly above, running edge to edge left to right, centred vertically with transparent margin above and below, the cable body about 18 px tall, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 128,
+  "canvas_h": 32,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, cheap modern household extension cord look, glossy-matte coloured PVC insulation, mismatched ugly plastic joiners and power strips, slightly grubby, truck-drivers-in-space repaired feel, warm 70s palette",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_ExtCord_Strand_Blue",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of one thick glossy-matte cobalt blue PVC extension cord with a faint stripe of lighter shade along the top third seen from directly above, running edge to edge left to right, centred vertically with transparent margin above and below, the cable body about 18 px tall, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 128,
+  "canvas_h": 32,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, cheap modern household extension cord look, glossy-matte coloured PVC insulation, mismatched ugly plastic joiners and power strips, slightly grubby, truck-drivers-in-space repaired feel, warm 70s palette",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_ExtCord_Node_T",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "T junction node: an ugly mismatched plastic cube joiner in dirty beige-grey, three cord sockets, one cracked corner, a strip of electrical tape. Three cable ends of a thick orange extension cord leave it to the left, right and bottom edges at the vertical centre and horizontal centre, node about 50 px across at the centre.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, cheap modern household extension cord look, glossy-matte coloured PVC insulation, mismatched ugly plastic joiners and power strips, slightly grubby, truck-drivers-in-space repaired feel, warm 70s palette",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_ExtCord_Node_X",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "X junction node: a dirty off-white power strip body lying across the node with five sockets, small red switch, and four cords plugged in from four sides, scuffed and cluttered. Four cable ends of a thick orange extension cord enter it at the left, right, top and bottom edge midpoints, node about 64 px across at the centre.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, cheap modern household extension cord look, glossy-matte coloured PVC insulation, mismatched ugly plastic joiners and power strips, slightly grubby, truck-drivers-in-space repaired feel, warm 70s palette",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_ExtCord_Plug_Casing",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "a thick orange extension cord entering from the left edge at the vertical centre ending in a chunky mismatched orange-brown plastic three-prong plug, seen from above, plug about 40 px long, pushed into a small casing socket on the right, transparent elsewhere.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, cheap modern household extension cord look, glossy-matte coloured PVC insulation, mismatched ugly plastic joiners and power strips, slightly grubby, truck-drivers-in-space repaired feel, warm 70s palette",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_ExtCord_Stub_Wall",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Wall stub plate: a dull scuffed beige plastic wall socket plate with two screws and a round hole, grime around it. A square plate about 72 px across centred on the canvas with a round hole in its centre where a thick orange extension cord disappears into the wall, a short length of cable emerging toward the left edge.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, cheap modern household extension cord look, glossy-matte coloured PVC insulation, mismatched ugly plastic joiners and power strips, slightly grubby, truck-drivers-in-space repaired feel, warm 70s palette",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_ExtCord_Stub_Rock",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Rock cable hole: a rough round hole drilled into stone, about 56 px across centred on the canvas, chipped grey rim of broken rock, deep dark interior, a thick orange extension cord emerging from the hole toward the left edge, a loop of grubby electrical tape where it enters,",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, cheap modern household extension cord look, glossy-matte coloured PVC insulation, mismatched ugly plastic joiners and power strips, slightly grubby, truck-drivers-in-space repaired feel, warm 70s palette",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_ExtCord_Decal_FrayedEndDead",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Dead frayed cable end decal: a thick orange extension cord coming in from the left edge at the vertical centre ending in a ragged cut with splayed dull copper wire strands, the copper dull tarnished and limp, a smear of soot at the tip, transparent elsewhere.",
+  "canvas_w": 64,
+  "canvas_h": 64,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, cheap modern household extension cord look, glossy-matte coloured PVC insulation, mismatched ugly plastic joiners and power strips, slightly grubby, truck-drivers-in-space repaired feel, warm 70s palette",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_StarWars_Strand_BlackRubber",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of one very thick smooth matte black rubber cable, broad faint sheen, no specular line seen from directly above, running edge to edge left to right, centred vertically with transparent margin above and below, the cable body about 22 px tall, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 128,
+  "canvas_h": 32,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, Star Wars used-future industrial look, dark worn greasy rubber and steel, soot grey, matte black, dark brown, rust, scuffed and repaired, all colours dark, no white or pale tones anywhere in the piece",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_StarWars_Strand_CorrugatedSteel",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of one dark corrugated steel flexible hose with fine ribbing across its width, dark gunmetal with rust at the grooves seen from directly above, running edge to edge left to right, centred vertically with transparent margin above and below, the cable body about 22 px tall, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 128,
+  "canvas_h": 32,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, Star Wars used-future industrial look, dark worn greasy rubber and steel, soot grey, matte black, dark brown, rust, scuffed and repaired, all colours dark, no white or pale tones anywhere in the piece",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_StarWars_Strand_CoiledBlack",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of one coiled black cable wound as a tight helix of matte black rubber loops, each loop visible, about 20 px tall seen from directly above, running edge to edge left to right, centred vertically with transparent margin above and below, the cable body about 20 px tall, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 128,
+  "canvas_h": 32,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, Star Wars used-future industrial look, dark worn greasy rubber and steel, soot grey, matte black, dark brown, rust, scuffed and repaired, all colours dark, no white or pale tones anywhere in the piece",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_StarWars_Node_T",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "T junction node: a clamped dark steel junction clamp with two bolts, hose clamp band and oil stains. Three cable ends of a thick matte black rubber cable leave it to the left, right and bottom edges at the vertical centre and horizontal centre, node about 50 px across at the centre.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, Star Wars used-future industrial look, dark worn greasy rubber and steel, soot grey, matte black, dark brown, rust, scuffed and repaired, all colours dark, no white or pale tones anywhere in the piece",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_StarWars_Node_X",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "X junction node: a heavy dark scuffed steel junction box with bolted corners, a small amber lamp and grease smears. Four cable ends of a thick matte black rubber cable enter it at the left, right, top and bottom edge midpoints, node about 64 px across at the centre.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, Star Wars used-future industrial look, dark worn greasy rubber and steel, soot grey, matte black, dark brown, rust, scuffed and repaired, all colours dark, no white or pale tones anywhere in the piece",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_StarWars_Plug_Casing",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "a thick matte black rubber cable entering from the left edge at the vertical centre ending in a heavy dark grey industrial plug with a locking ring, seen from above, plug about 40 px long, pushed into a small casing socket on the right, transparent elsewhere.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, Star Wars used-future industrial look, dark worn greasy rubber and steel, soot grey, matte black, dark brown, rust, scuffed and repaired, all colours dark, no white or pale tones anywhere in the piece",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_StarWars_Stub_Wall",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Wall stub plate: a dark scuffed steel bulkhead plate with four rivets and a thick rubber grommet, rust and grease stains. A square plate about 72 px across centred on the canvas with a round hole in its centre where a thick matte black rubber cable disappears into the wall, a short length of cable emerging toward the left edge.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, Star Wars used-future industrial look, dark worn greasy rubber and steel, soot grey, matte black, dark brown, rust, scuffed and repaired, all colours dark, no white or pale tones anywhere in the piece",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_StarWars_Stub_Rock",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Rock cable hole: a rough round hole drilled into stone, about 56 px across centred on the canvas, chipped grey rim of broken rock, deep dark interior, a thick matte black rubber cable emerging from the hole toward the left edge, grease and grit around the rim,",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, Star Wars used-future industrial look, dark worn greasy rubber and steel, soot grey, matte black, dark brown, rust, scuffed and repaired, all colours dark, no white or pale tones anywhere in the piece",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_StarWars_Decal_FrayedEndDead",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Dead frayed cable end decal: a thick matte black rubber cable coming in from the left edge at the vertical centre ending in a ragged cut with splayed dull copper wire strands, the copper dull tarnished and limp, a smudge of soot at the tip, transparent elsewhere.",
+  "canvas_w": 64,
+  "canvas_h": 64,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit cylinder form with soft dark keyline, value over detail, transparent background, Star Wars used-future industrial look, dark worn greasy rubber and steel, soot grey, matte black, dark brown, rust, scuffed and repaired, all colours dark, no white or pale tones anywhere in the piece",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Shared_SparkGlow",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Spark burst decal: a small cluster of bright yellow-white electric sparks and short orange streaks radiating from the centre with a soft warm orange glow halo fading to transparent, painterly, centred on the canvas.",
+  "canvas_w": 64,
+  "canvas_h": 64,
+  "style_notes": "painterly RimWorld game sprite, soft additive-style glow, transparent background, warm colours",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Aerial_Strand_Wire",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of one thin dark weathered overhead power wire seen from the side, running edge to edge left to right, centred vertically, wire only about 6 px tall with a faint soft sheen on top, transparent margin above and below, left and right ends meet at identical height and shading so copies join invisibly, usable as a drooping catenary when bent.",
+  "canvas_w": 128,
+  "canvas_h": 32,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, value over detail, transparent background, weathered utility infrastructure, warm 70s-brown palette, dark weathered wood, grey porcelain and black wire, truck-drivers-in-space jury-rigged look",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Aerial_Strand_WireShadow",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable soft drop-shadow strip for a thin wire: a blurred dark brown-black translucent band running edge to edge, centred vertically, about 10 px tall with feathered edges, uniform along its length, shadow only.",
+  "canvas_w": 128,
+  "canvas_h": 32,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, value over detail, transparent background, weathered utility infrastructure, warm 70s-brown palette, dark weathered wood, grey porcelain and black wire, truck-drivers-in-space jury-rigged look",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Aerial_Pole_Top",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Utility pole seen from directly above: a round dark weathered wooden pole end about 36 px across at the centre, a long wooden crossarm about 110 px long running left to right through it, an insulator on each end of the arm, bolts and iron straps, rope tie marks, centred on the canvas.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, value over detail, transparent background, weathered utility infrastructure, warm 70s-brown palette, dark weathered wood, grey porcelain and black wire, truck-drivers-in-space jury-rigged look",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Aerial_Pole_Side",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Tall weathered wooden utility pole seen from the side, standing vertical and centred, base at the bottom edge with a small mound of packed earth, a wooden crossarm near the top with three grey porcelain insulators and short wire stubs leaving sideways, iron bolts, patched with tape, slight lean, leaving transparent space at the sides.",
+  "canvas_w": 128,
+  "canvas_h": 256,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, value over detail, transparent background, weathered utility infrastructure, warm 70s-brown palette, dark weathered wood, grey porcelain and black wire, truck-drivers-in-space jury-rigged look",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Aerial_Insulator",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Grey porcelain pin insulator on a short wooden crossarm piece, a black wire wrapped around its groove, seen from slightly above, chipped, centred.",
+  "canvas_w": 64,
+  "canvas_h": 64,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, value over detail, transparent background, weathered utility infrastructure, warm 70s-brown palette, dark weathered wood, grey porcelain and black wire, truck-drivers-in-space jury-rigged look",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Aerial_Hanger_Bracket",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Small rusty iron wall hanger bracket with a ceramic knob insulator and a black wire looped through it, seen from slightly above, centred.",
+  "canvas_w": 64,
+  "canvas_h": 64,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, value over detail, transparent background, weathered utility infrastructure, warm 70s-brown palette, dark weathered wood, grey porcelain and black wire, truck-drivers-in-space jury-rigged look",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_Strand_Flat",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of a collapsed empty fire hose lying flat on the ground, a limp wide woven canvas ribbon about 34 px tall, pale grey-tan flat-woven fabric with fine weave lines, two parallel stitched seams along its length, slightly wrinkled and soft, edge to edge left to right, centred vertically with transparent margin, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 256,
+  "canvas_h": 64,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit form with soft dark keyline, value over detail, transparent background, firefighter hose look, flat-woven canvas jacket in pale grey-tan, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_Strand_Plump",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of a fully pressurised fire hose seen from above, a round swollen taut cylinder about 42 px tall, pale grey-tan woven canvas jacket with fine weave lines and one visible lengthwise seam, soft highlight along the top third with slight sheen, rounded smooth shading, edge to edge left to right, centred vertically with transparent margin, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 256,
+  "canvas_h": 64,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit form with soft dark keyline, value over detail, transparent background, firefighter hose look, flat-woven canvas jacket in pale grey-tan, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_Strand_Shadow",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable soft drop-shadow strip for a thick hose: a blurred dark brown-black translucent band running edge to edge left to right, centred vertically, about 46 px tall with feathered soft edges fading to transparency, uniform along its length, shadow only.",
+  "canvas_w": 256,
+  "canvas_h": 64,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit form with soft dark keyline, value over detail, transparent background, firefighter hose look, flat-woven canvas jacket in pale grey-tan, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_Coupling_Brass",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Brass fire hose coupling: a threaded tarnished brass cylindrical end fitting with two lugs and ribbed grip, about 56 px long, a pale grey-tan canvas hose entering from the left edge at the vertical centre and joined into it, the threaded end on the right.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit form with soft dark keyline, value over detail, transparent background, firefighter hose look, flat-woven canvas jacket in pale grey-tan, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_Nozzle",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Fire hose nozzle: a tarnished brass and dark steel hand nozzle with a pistol-grip valve lever and tapered tip pointing right, a pale grey-tan canvas hose entering from the left edge at the vertical centre, about 90 px long overall.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit form with soft dark keyline, value over detail, transparent background, firefighter hose look, flat-woven canvas jacket in pale grey-tan, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_Reel_PumpHookup",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Hose reel and pump hookup: a squat dark red-brown steel pump housing about 70 px across with a round brass inlet valve wheel, a brass outlet coupling on the left edge at the vertical centre, a few coils of pale grey-tan canvas hose wound on a small reel, grease stains.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit form with soft dark keyline, value over detail, transparent background, firefighter hose look, flat-woven canvas jacket in pale grey-tan, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 62,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_EndCap",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Hose end cap: a threaded brass blanking cap screwed onto the end of a pale grey-tan canvas hose entering from the left edge at the vertical centre, a short chain tying the cap to the hose, tarnished and dented, about 44 px long.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit form with soft dark keyline, value over detail, transparent background, firefighter hose look, flat-woven canvas jacket in pale grey-tan, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 62,
+  "background": "transparent"
+ }
+]
