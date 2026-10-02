@@ -26,6 +26,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import codex_image as ci  # noqa: E402
 
+# Temp dirs here are on ext4, which would route every do_image through the D:-drive staging path.
+# The contract tests below are about the unstaged core; test_staging_round_trip covers staging.
+_REAL_NEEDS_STAGING = ci.needs_staging
+ci.needs_staging = lambda args: False
+
 FAILURES: list[str] = []
 
 
@@ -739,8 +744,50 @@ def test_home_must_be_windows_visible() -> None:
         check("a WSL-only worker home is refused", "Windows" in str(exc), str(exc))
 
 
+def test_staging_round_trip() -> None:
+    """ext4 caller paths: inputs copied into a scratch job dir, codex runs THERE, outputs come back."""
+    real_run_codex, real_scratch = ci.run_codex, ci.CODEX_SCRATCH
+    seen = {}
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            ci.CODEX_SCRATCH = td / "scratch"
+            ref = tiny_png(td / "in" / "ref.png")
+            schema = td / "schema.json"
+            schema.write_text("{}")
+
+            def fake(prompt, images, workdir, timeout, verbose, model=None, hm=None,
+                     reasoning_effort=None, output_schema=None, output_last_message=None):
+                seen.update(workdir=workdir, images=images, schema=output_schema, model=model)
+                tiny_png(Path(workdir) / "art.png")
+                Path(output_last_message).write_text('{"status":"ok"}')
+                return 0, "", False
+            ci.run_codex = fake
+            args = args_for(td / "out" / "art.png")
+            args.image = [str(ref)]
+            args.model = ci.DEFAULT_MODEL
+            args.output_schema = str(schema)
+            args.output_last_message = str(td / "out" / "last.json")
+            check("ext4 paths need staging", _REAL_NEEDS_STAGING(args) is True)
+            rc = ci.stage_and_run(args)
+            check("staged run succeeds", rc == 0)
+            check("codex ran inside the scratch job dir",
+                  str(seen.get("workdir", "")).startswith(str(ci.CODEX_SCRATCH)), str(seen))
+            check("the input image handed to codex is the staged copy",
+                  all(str(i).startswith(str(ci.CODEX_SCRATCH)) for i in seen.get("images", [])))
+            check("schema staged too", str(seen.get("schema", "")).startswith(str(ci.CODEX_SCRATCH)))
+            check("output copied back to the caller's path", (td / "out" / "art.png").is_file())
+            check("last message copied back", (td / "out" / "last.json").read_text() == '{"status":"ok"}')
+            check("job dir removed after success", not any(ci.CODEX_SCRATCH.iterdir()))
+            check("default model is passed explicitly", seen.get("model") == ci.DEFAULT_MODEL)
+            args2 = args_for(Path("/mnt/d/x/art.png"))
+            check("Windows-drive paths are not staged", _REAL_NEEDS_STAGING(args2) is False)
+    finally:
+        ci.run_codex, ci.CODEX_SCRATCH = real_run_codex, real_scratch
+
+
 def main() -> int:
-    for fn in (test_prompt, test_run_codex_timeout, test_reasoning_effort_flag,
+    for fn in (test_prompt, test_staging_round_trip, test_run_codex_timeout, test_reasoning_effort_flag,
                test_timeout_still_harvests,
                test_force_regen_failure_does_not_report_stale_success,
                test_output_schema_passthrough,

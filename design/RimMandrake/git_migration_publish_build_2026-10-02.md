@@ -89,8 +89,41 @@ sync --timer`, Nice 10, idle IO, `TimeoutStartSec=30min`) and `rm-mirror.timer` 
 ⚠️ The service runs the FOUNDRY clone's copy, which exists only after `/home/mandrake/rm/foundry` pulls past
 this commit — the drain must pull first.
 
-## 4. Codex staging
-(in progress)
+## 4. Codex staging — DONE, proven with real calls
+
+- `skills/generating-images/scripts/codex_image.py`: when the output dir, an input image, the
+  `--output-schema` or the `--output-last-message` path is not on a Windows drive, the call is staged in
+  `D:\Luke\dev\_rmscratch\codex\<ts>-<pid>-<stem>\` (inputs copied in, codex cwd there), the PNG and the
+  last-message file are copied back (`copyfile`, not `copy2` — drvfs reports 0777, which git would
+  record as a mode change), and the job dir is removed on success / kept on failure. Paths on `/mnt/`
+  behave exactly as before.
+- **The artpipe codex worker needs no change of its own**: it is `codex_image.py` as a subprocess
+  (`artpiped.run_worker`), so its `_artsrc/<job>/` outputs, reference image and schema are staged by
+  the same path. Its CODEX_HOMEs were already under `C:\Users\Mandrake\.codex_workers\artpipe`.
+  (`selftest_artpipe.py` passes.)
+- Model: `$CODEX_HOME/config.toml` says `model = "gpt-6.1-sol"`, which this ChatGPT account cannot run.
+  `codex_image.py --model` now defaults to `DEFAULT_MODEL = $CODEX_MODEL or "gpt-5.5"` and always passes
+  `-m`; `--model inherit` restores config.toml's choice. artpipe passes `--model` only when a job names
+  one, so it inherits the new default. config.toml itself was not edited (the owner's file).
+- Proof: a real `codex_image.py edit` with input and output on ext4 (`/home/mandrake/wt/codextest/`) →
+  `OK … 1254x1254 rgba` in 60 s, file back on ext4, scratch job dir gone.
+  `selftest_codex_image.py` gains `test_staging_round_trip` (inputs/schema staged, codex cwd in the job
+  dir, outputs back, job dir removed, model passed); the legacy contract tests pin staging off.
+- `src/RimMandrake/Utils/gpt_consult.py "question" -f file… [--out f] [-m model] [--effort high]`:
+  inlines the files into the prompt, writes it to the job dir, runs `codex.exe exec --sandbox read-only
+  -o answer.md -` with the prompt on stdin (no command-line length limit) and cwd in
+  `D:\Luke\dev\_rmscratch\codex\consult-<ts>-<pid>\`. Proven: a question about `publish.py` answered
+  correctly in 4 s with gpt-5.5.
 
 ## 5. Left open
-(in progress)
+
+- **Mirror first run must be backgrounded** (cold checkout > 10 min; see §3). The drain enables
+  `rm-mirror.timer` only after `/home/mandrake/rm/foundry` has pulled past this work.
+- `./publish` now refuses in `/mnt/d/Luke/dev/RimMandrake`: any session still working there must move to
+  its seat clone (or use plain git) — intended by §2.6, but it bites immediately.
+- Skills `rimbridge-companion` / `rimworld-deploy` / `generating-images` still describe the old in-place
+  routes (python.exe build.py from /mnt/d); skills are edited only in curation sessions.
+- Pre-existing selftest failures on origin/main, unrelated to this work and failing identically on a
+  clean checkout of it: `selftest_walklint.py` (3 walklint FAILs), `selftest_one_path_seam.py`
+  (5 LocalLow literals in modcheck), `selftest_sound_paths.py` (TheForge clipPaths),
+  `selftest_items_glob_live.py` (1 drifted item file).
