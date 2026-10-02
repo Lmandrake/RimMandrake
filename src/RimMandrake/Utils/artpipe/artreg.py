@@ -36,6 +36,15 @@ most sensibly means 3 retries are ALLOWED after a rejection (attempts 2, 3,
 the 3rd retry didn't fix it either — which is exactly the item's literal,
 checkable test. `PARK_AFTER_REJECTIONS = 4` implements that reading; it is
 one named constant, trivially moved if the owner meant literally 3.
+
+**Registry events** (one JSON object per line, append-only): `registered`,
+`queued`, `generated`, `validated`, `sheeted`, `verdict`, `committed`,
+`deployed`, and `withdrawn` — `{event, target, notes, by, ts}`. `withdrawn`
+retires a target whose `queued` record is stale (no job file exists anywhere,
+so nothing will ever resolve it). It is accepted ONLY while the target's
+current state is `queued`; the target's derived state becomes the terminal
+`withdrawn` (counted separately, never as queued), and a later `queued` event
+for the same target re-opens it normally. CLI: `withdraw --target T --notes N`.
 """
 from __future__ import annotations
 
@@ -71,7 +80,7 @@ WEEKLY_WINDOW_MINUTES = 10080  # the "secondary" codex meter window == 7 days
 PARK_AFTER_REJECTIONS = 4      # see module docstring — resolves design-vs-item wording
 
 EVENT_TYPES = ("registered", "queued", "generated", "validated", "sheeted",
-               "verdict", "committed", "deployed")
+               "verdict", "committed", "deployed", "withdrawn")
 
 TERMINAL_STATES = ("committed", "deployed")
 
@@ -287,6 +296,20 @@ def record_committed(target: str, repo_path: str, sha: str, by: str = "unknown")
                      "sha": sha, "by": by})
 
 
+def record_withdrawn(target: str, notes: str, by: str = "unknown",
+                      path: Path | None = None) -> dict:
+    """Retire a stale `queued` target. Refuses loudly unless the target's
+    CURRENT derived state is `queued`."""
+    path = path or REGISTRY_PATH
+    with _locked():
+        cur = compute_target_states(read_events(path)).get(target)
+        state = cur["state"] if cur else "unregistered"
+        if state != "queued":
+            raise RegError(f"cannot withdraw {target!r}: state is {state!r}, not 'queued'")
+        return _append({"event": "withdrawn", "target": target, "notes": notes,
+                         "by": by}, path)
+
+
 def record_deployed(target: str, by: str = "unknown") -> dict:
     return _append({"event": "deployed", "target": target, "by": by})
 
@@ -355,6 +378,9 @@ def compute_target_states(events: list[dict]) -> dict[str, dict]:
                 state = "committed"
             elif kind == "deployed":
                 state = "deployed"
+            elif kind == "withdrawn":
+                state = "withdrawn"
+                last_notes = ev.get("notes") or last_notes
         out[target] = {
             "state": state, "iteration": iteration, "renders": renders,
             "rejected_count": rejected_count,
@@ -586,7 +612,7 @@ def fingerprint_file(path: Path) -> dict:
 
 STATE_ORDER = ("registered", "queued", "generated", "awaiting_verdict", "accepted",
                "rejected_in_retry", "parked_at_cap", "repurposed", "committed",
-               "deployed", "unregistered")
+               "deployed", "withdrawn", "unregistered")
 
 
 def build_status(target_filter: str | None = None) -> dict:
@@ -926,6 +952,10 @@ def main(argv=None) -> int:
     p = sub.add_parser("deployed"); _add_common(p)
     p.add_argument("--target", required=True)
 
+    p = sub.add_parser("withdraw"); _add_common(p)
+    p.add_argument("--target", required=True)
+    p.add_argument("--notes", required=True)
+
     p = sub.add_parser("backfill")
     p.add_argument("--done-dir", type=Path, default=common.DEFAULT_DONE)
     p.add_argument("--failed-dir", type=Path, default=common.DEFAULT_FAILED)
@@ -970,6 +1000,9 @@ def main(argv=None) -> int:
             print(json.dumps(ev))
         elif args.cmd == "deployed":
             ev = record_deployed(args.target, by=args.by)
+            print(json.dumps(ev))
+        elif args.cmd == "withdraw":
+            ev = record_withdrawn(args.target, args.notes, by=args.by)
             print(json.dumps(ev))
         elif args.cmd == "backfill":
             result = backfill(args.done_dir, args.failed_dir, by=args.by, dry_run=args.dry_run)
