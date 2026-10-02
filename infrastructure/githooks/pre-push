@@ -1,0 +1,16 @@
+#!/bin/sh
+# Git-native pre-push guard (core.hooksPath = infrastructure/githooks, set per clone).
+# Runs the same checks as the Claude PreToolUse hooks, so timers/scripts/plain shells are guarded too.
+# A refusal (exit 1 from a guard) blocks the push; a crash or missing python fails OPEN.
+root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+input=$(cat)
+command -v python3 >/dev/null 2>&1 || { echo "pre-push: python3 missing, guards skipped" >&2; exit 0; }
+rc=0
+for g in block_dll_source_mismatch.py block_ledger_lint.py; do
+  [ -f "$root/.claude/hooks/$g" ] || continue
+  printf '%s\n' "$input" | python3 "$root/.claude/hooks/$g" --git-pre-push
+  r=$?
+  [ "$r" -eq 1 ] && rc=1
+  [ "$r" -gt 1 ] && echo "pre-push: $g crashed (exit $r), failing open" >&2
+done
+exit $rc

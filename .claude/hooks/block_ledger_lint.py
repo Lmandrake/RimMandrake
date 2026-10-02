@@ -27,7 +27,39 @@ def is_push(tok):
     return (i < len(tok) and tok[i] == "push"), where
 
 
+ZERO = "0" * 40
+
+
+def git_pre_push(stdin_lines, cwd):
+    """Git-native mode (`--git-pre-push`): lint each pushed local sha against the
+    remote sha (or origin/main for a new branch). Returns 1 to refuse, else 0."""
+    root = subprocess.run(["git", "-C", cwd, "rev-parse", "--show-toplevel"],
+                          capture_output=True, text=True, timeout=8).stdout.strip()
+    script = os.path.join(root, "src", "RimMandrake", "Utils", "ledger_lint.py")
+    if not root or not os.path.isfile(script):
+        return 0
+    for line in stdin_lines:
+        parts = line.split()
+        if len(parts) < 4 or parts[1] == ZERO:
+            continue
+        base = parts[3] if parts[3] != ZERO else "origin/main"
+        r = subprocess.run([sys.executable or "python3", script, "--rev", parts[1],
+                            "--root", root, "--base", base],
+                           capture_output=True, text=True, timeout=40)
+        if r.returncode == 1:
+            found = [l for l in r.stdout.splitlines() if not l.startswith(("note:", "ledger_lint:"))]
+            sys.stderr.write("pre-push REFUSED (ledger_lint) on %s:\n  %s\n" % (parts[0], "\n  ".join(found[:12])))
+            return 1
+    return 0
+
+
 def main():
+    if "--git-pre-push" in sys.argv:
+        try:
+            return git_pre_push(sys.stdin.read().splitlines(), os.getcwd())
+        except Exception as e:
+            sys.stderr.write("pre-push: ledger guard crashed, failing open: %r\n" % (e,))
+            return 0
     try:
         payload = json.load(sys.stdin)
         cmd = payload.get("tool_input", {}).get("command", "")
