@@ -176,3 +176,5 @@ TRAP: a faced animal job whose prompt says 'top-down' is refused whole by artpip
 - jawa/pawn_health remove with bodyPart can answer "no hediff on Leg" for a hediff listed on Leg; removing by def alone worked (FOUNDRY, 2026-10-01).
 - jawa/debug_settings takes field/value (not name); jawa/damage Cut 500 on a raider reported success and left it alive, pawn_force_incapacitate kill worked (FOUNDRY, 2026-10-01).
 - Codex consult route: codex.exe exec --ignore-user-config --ephemeral -m gpt-5.6-sol --sandbox read-only with the plan on stdin; without --ignore-user-config it reached for computer-control tools on the desktop (FOUNDRY, 2026-10-01).
+- handoff.py --wake run in the stale shared checkout prints that checkout's newest handoff, not origin's: it woke BENCH on a 05:27 handoff while 21:19 existed on origin. Read `git show origin/main:infrastructure/state/handoffs/<newest>` instead (BENCH, 2026-10-01).
+- The rimflow owner-quote flag rejects a quote ending in a question mark (read as a question) and rejects one string stitched from several separate card answers. Quote each answer in its own note, cut before any trailing question (BENCH, 2026-10-01).
