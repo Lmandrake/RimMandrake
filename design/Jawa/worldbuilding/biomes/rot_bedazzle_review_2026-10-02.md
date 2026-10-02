@@ -1,7 +1,7 @@
 # The Rot: bedazzle review (grandfathered sitting, turn 1 drafted)
 
-Program: `BEDAZZLE_TOP_SHAPE_PROGRAM_1`, track (a), worst-first, sitting 8. Item to be filed by the
-parent (`THEROT_SCORING_SITTING_1` shape).
+Program: `BEDAZZLE_TOP_SHAPE_PROGRAM_1`, track (a), worst-first, sitting 8. Item:
+`ROT_SCORING_SITTING_1`. Turn 1 is ruled: §8.
 
 _BENCH design pass, 2026-10-02. Eighth sitting of the grandfathered track, in the order of
 `grandfathered_bedazzle_scores_2026-10-01.md` (§ The Rot; sitting order row 8). The sheet `the_rot.md` is
@@ -526,3 +526,38 @@ retired donor biome and never fires), and that the Mod Settings screen is hollow
 
 Held off the card (in the doc only): §6 R3, Standing in the Sheen for Oomo (the weakest; close to the
 Sunning), and BENCH's wound-tie (it would repeat the yssomar's root).
+
+## 8. Turn 1 rulings (2026-10-02) and ticket-out
+
+Items 1 and 4 decision taken by question card 2026-10-02 10:20 PDT. Item 2 the owner answered in typed words
+(ledger `ROT_SCORING_SITTING_1`, seat OWNER, 17:44 UTC). Item 3's three ideas he turned down in typed words the
+same minute; six new ideas were pitched in `design/Jawa/worldbuilding/biomes/rot_new_marks_redo_2026-10-02.md`
+and ruled by question card 2026-10-02 10:50 PDT, with a typed extension (OWNER, 17:56 UTC). His typed words are
+quoted verbatim below.
+
+| Card item | Ruling | Ticket |
+|---|---|---|
+| 1. Build first | **Land what was already decided, and add the giant together.** Decision taken by question card. Row 0 in full: the ten creatures ruled into the free mod on 2026-09-24 (art done, MEASURED in the artpipe `done/` for all seven sets incl. `rot_fungalweevil_v2_*` for the grellik) move from `RSW_` campaign patch rows into `RM_` defs in the free mod, the thozzik, illoth and brogg rewritten as fungus-animal hybrids and the brullith's lab origin deleted (ban 7); real wound-sharing on the five creatures whose descriptions promise it (chittik, gromma, rennok: wound-link; mullgoth, durrok: kin-mending); our own spore allergy; a settings screen whose every control works; the fungal-soil trade regated from `AB_MycoticJungle` to `RM_TheRot`; the Force taken off the free pale tree (the campaign patches it back). "Land what was already decided" alone and "new ideas first" are **NOT CHOSEN**. | `ROT_RM_CAST_MIGRATION_1`, `ROT_WOUND_SHARING_WIRING_1`, `ROT_SPORE_ALLERGY_PORT_1`, `ROT_MOD_SETTINGS_WIRING_1`, `ROT_TIER_LEAKS_FIX_1` |
+| 2. The giant | Owner, typed: *"(2) is AWESOME. Like a huge maggot slow maggot covered in small wriggling tentacles and eye spots, I love the old ship that's pinging from within begging the players to figure out how to kill it."* = **the gut that walks**, named **the hwelgrue** (`RM_Hwelgrue`; collision-checked §3, re-checked 2026-10-02: 0 artpipe hits). Its body is his: a huge slow maggot, small wriggling (fungal) tendrils, eye spots; it eats whatever lies down, digests all but metal and passes polished salvage; the gravship pings the swallowed piece on every landing. The wound-bearer (the yssomar) and the giant that cannot lie down are **NOT CHOSEN**; no yssomar is built. | `ROT_HWELGRUE_GIANT_BUILD_1` |
+| 3. New marks | Owner, typed, on the sheened hull, the ground's heartbeat and Unseaming: *"none of these hit the mark"*; all three **NOT CHOSEN** (and "all three"). Redo, by question card: **ship = the Swallowed Navigator** (the pinging core feeds the console a dead ship's log revealing salvage sites; killing the gut ends the log), extended by the owner, typed: *"(1) but more. The thing inside would also be a significant upgrade to your ship if extracted. But you can't use ship weapons on the giant without harming it, making the fight much harder. Would upgrade your range, as it was part of a drive system of an older ship."* (range is Odyssey's `GravshipRange` stat, offset by facilities like the thrusters: MEASURED in RimSage, see the item); **sound = Still Alive In There** (the gut swallows downed pawns; muffled knocking says who is inside and how long they have; cut them out in time; modelled on Anomaly's `CompDevourer`, MEASURED, not attached as-is); **technology = BOTH the Gut-Mother** (a sac cut from the dead gut grows a vat anywhere that gives back implants and gear from corpses; starter cultures are a trade good) **and the Unjoining Draught** (learned from the rite: a brutal purge driving out parasites, symbionts and Anomaly metalhorrors, anywhere). 🔴 **Ruled exception to ban 4:** the Gut-Mother was chosen with the card's stated condition that **a gut-mother culture may leave the Rot**; it is neither a tea nor a symbiont, and the ban is otherwise unchanged. The Rot Won't Let Them Go (S2) and the Joined Ear (O2) are **NOT CHOSEN**. | `ROT_SWALLOWED_NAVIGATOR_1`, `ROT_STILL_ALIVE_SWALLOW_1`, `ROT_GUT_MOTHER_VAT_1`, `ROT_UNJOINING_DRAUGHT_1` |
+| 4. Rite | **The Unjoining, for Ta'Baa** (§6 R2), decision taken by question card: a symbiont-joined colonist held through a hard purge until the symbiont dies, just before the clan leaves. Ta'Baa is *"the Unrooted — flight, the refusal to root"* (`divine_satiation_engine.md` ⑥), confirmed. Added to the register as B13 (`design/Jawa/salvation_rites_2026-10-01.md`). Cap check (five per god): **Ta'Baa four** (the Returned, the Shadow Walk, the Vindication Walk, the Unjoining), one under the cap. The Gut's Due and the Bought Quarrel (Mob'Unloo) are **NOT CHOSEN**; Standing in the Sheen (§6 R3) and BENCH's wound-tie were held off the card and stay unticketed. | `ROT_UNJOINING_RITE_1` |
+
+FOUNDRY items, each `--caused-by ROT_SCORING_SITTING_1`:
+
+| slate row | item |
+|---:|---|
+| 0 | `ROT_RM_CAST_MIGRATION_1` (ten `RM_` defs, hybrid descriptions, illoth flight, `RSW_` rows retired) |
+| 0 | `ROT_WOUND_SHARING_WIRING_1` (wound-link and kin-mending on five donor bodies; the *Health sharing* toggle) |
+| 0 | `ROT_SPORE_ALLERGY_PORT_1` |
+| 0 | `ROT_MOD_SETTINGS_WIRING_1` |
+| 0 | `ROT_TIER_LEAKS_FIX_1` (FungalSoilTrade regate; pale-tree text) |
+| 1 | `ROT_HWELGRUE_GIANT_BUILD_1` |
+| 2 (redo) | `ROT_SWALLOWED_NAVIGATOR_1` |
+| 3 (redo) | `ROT_STILL_ALIVE_SWALLOW_1` |
+| 4 (redo) | `ROT_GUT_MOTHER_VAT_1`; `ROT_UNJOINING_DRAUGHT_1` |
+| 5 | `ROT_UNJOINING_RITE_1` |
+| 6 | art: `infrastructure/artpipe/art_lists/rot_turn1_2026-10-02.csv` (10 subjects, 14 jobs: the hwelgrue, the casting, the drive core and its ruined form, the sac, the vat, the starter, the draught, the husk, the rite's vessel). The ten ports need **no** new art; their existing thozzik, illoth and brogg renders show plain animals, and whether to redraw them as hybrids is open for the owner. |
+
+Sequencing: row 0 first (`THE_ROT_FIRST_SCRIPT_1` is written against row 0's state); the hwelgrue before its
+three dependants (navigator, swallow, gut-mother); the draught before the rite. The Rot is **not** an
+extreme-heat biome; no heat-kind declaration is owed.
