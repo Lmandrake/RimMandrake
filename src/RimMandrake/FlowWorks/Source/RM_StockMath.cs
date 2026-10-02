@@ -312,5 +312,39 @@ namespace RimMandrake.FlowWorks
 			}
 			return levels < offeredLevels ? levels : offeredLevels;
 		}
+
+		// ── flow order (FLOWWORKS_CHANNEL_OSCILLATION_1) ──────────────────
+
+		/// <summary>May a NON-SOURCE neighbour give a level to a recipient, given
+		/// the donor already passes PickDonor's GRAVITY-or-OVERFLOW test?
+		///
+		/// Each cell of a component carries a key, fixed for the pulse:
+		/// (hops from the nearest SUPPLYING source, then hops to the nearest sink
+		/// with nearer-the-sink later), and depth breaks a key tie. A level may only
+		/// move to a STRICTLY LATER cell in that order: a brimming donor overflows
+		/// only to a later key; at an equal key only gravity (a deeper recipient)
+		/// moves. A static strict order is acyclic, so no level can ever come back.
+		///
+		/// Why (measured 2026-10-01, plot D): without it OVERFLOW let a brimming
+		/// cell hand a level to an equal-depth neighbour that could hand it straight
+		/// back, and with recipients ordered by cell index, any channel whose index
+		/// rose away from its source (east/north) shuttled with period 2 forever and
+		/// never filled. Hops are geometry, so the result is direction-independent.
+		/// With no supplying source the source hops are 0 everywhere, and with no
+		/// sink the sink hops are; a constant drops out of the comparison.</summary>
+		public static bool MayFlowBetween(
+			int donorSourceHops, int donorSinkHops, int donorDepth,
+			int recipientSourceHops, int recipientSinkHops, int recipientDepth)
+		{
+			if (donorSourceHops != recipientSourceHops)
+			{
+				return donorSourceHops < recipientSourceHops;
+			}
+			if (donorSinkHops != recipientSinkHops)
+			{
+				return donorSinkHops > recipientSinkHops;
+			}
+			return recipientDepth > donorDepth;
+		}
 	}
 }
