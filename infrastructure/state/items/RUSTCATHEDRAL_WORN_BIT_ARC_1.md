@@ -87,8 +87,10 @@ Owner-level shape: four stages, each a real cost, each readable; nothing of the 
        the fiction).
    - **Free it (the rite's complete-and-release branch).** The borehulk stays wild on its map, drill
      restored (comp `Restored`): it now really bores plain deck plate on its own now and then (cells mined,
-     plain tier only, yield left where it falls). It **takes no orders**, anywhere: no dig area, no
-     follow, and it never mines the Rust Cathedral for you. The payoff is **major favour elsewhere**: the
+     plain tier only, yield left where it falls). It **answers favours, not orders** (question card 2026-10-02 10:44
+     PDT): no dig area and no command, but when the colony asks (a comms/letter request, a few times a
+     year, cooldown in Mod Settings) it comes to help on a dig job as a friend would, on any map except the
+     Rust Cathedral, where it never mines for you. Each favour shows as a letter and an inspect line. The payoff is **major favour elsewhere**: the
      rite's release deltas multiplied (default ×3): Free Droid Enclaves goodwill rises a lot; the Cathedral
      calms (irritation falls) and, in the campaign, Regard rises; Ohm pleased; Mob'Unloo annoyed. Each
      shows as the rite already shows it (goodwill numbers on the faction screen, the hum's band, the
