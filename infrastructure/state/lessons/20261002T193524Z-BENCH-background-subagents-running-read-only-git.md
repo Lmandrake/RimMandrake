@@ -1,0 +1,1 @@
+Background subagents running read-only git (status/grep/diff) in the seat clone briefly take .git/index.lock, so ./publish fails with 'remove the file manually to continue' even with gc.auto=0; the lock is gone a second later — retry, and check git status afterwards because a failed publish commits NONE of its paths (untracked files stay untracked).
